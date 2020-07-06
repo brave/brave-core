@@ -2124,7 +2124,6 @@ Pretende pará-lo?</translation>
 <translation id="3771294271822695279">Ficheiros de vídeo</translation>
 <translation id="3775432569830822555">Certificado de servidor SSL</translation>
 <translation id="3775705724665058594">Envie para os seus dispositivos</translation>
-<translation id="6945695820322143954">Esta extensão viola a política da Brave Web Store.</translation>
 <translation id="3777483481409781352">Não foi possível ativar o dispositivo móvel</translation>
 <translation id="3777806571986431400">Extensão Ativada</translation>
 <translation id="3778152852029592020">A transferência foi cancelada.</translation>
@@ -2906,7 +2905,6 @@ Pretende pará-lo?</translation>
 <translation id="48704129375571883">Adicionar mais funcionalidades</translation>
 <translation id="4870758487381879312">Introduza a palavra-passe fornecida pelo administrador para obter informações de configuração.</translation>
 <translation id="4870903493621965035">Sem dispositivos sincronizados</translation>
-<translation id="8839398440242019256">Não é da Brave Web Store</translation>
 <translation id="4871322859485617074">O PIN contém carateres inválidos.</translation>
 <translation id="4871370605780490696">Adicionar marcador</translation>
 <translation id="4871719318659334896">Fechar grupo</translation>
@@ -4968,7 +4966,6 @@ Certifique-se de que não revela informações confidenciais.</translation>
 <translation id="767127784612208024">Toque para confirmar a reposição</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, em <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Envie a sua voz para o Brave para permitir a introdução por voz em qualquer campo de texto.</translation>
-<translation id="3098826269712097986">Os dados de início de sessão são armazenados no Brave depois de sair do modo de navegação anónima. Isto permite-lhe utilizar novamente o Touch ID neste Website mais tarde.</translation>
 <translation id="7681095912841365527">O site pode utilizar o Bluetooth.</translation>
 <translation id="7683373461016844951">Para continuar, clique em OK e, de seguida, clique em Adicionar pessoa para criar um novo perfil para o seu endereço de email de <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Instalada pelo gestor</translation>
@@ -5445,7 +5442,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8259239505248583312">Vamos lá</translation>
 <translation id="8260126382462817229">Experimente iniciar sessão novamente</translation>
 <translation id="8260864402787962391">Rato</translation>
-<translation id="8261378640211443080">Esta extensão não está listada no <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e é possível que tenha sido adicionada sem o seu conhecimento.</translation>
 <translation id="8261506727792406068">Eliminar</translation>
 <translation id="8263336784344783289">Dar um nome a este grupo</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> desativou o cursor do rato.</translation>
@@ -6007,7 +6003,6 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="8983632908660087688"><ph name="ORIGIN"/> pode editar <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Ativo há <ph name="DEVICE_LAST_ACTIVATED_TIME"/> dia</translation>
 <translation id="8986362086234534611">Esquecer</translation>
-<translation id="9079153198295609735">Enviar automaticamente estatísticas de utilização e relatórios de falhas para a Brave</translation>
 <translation id="8987927404178983737">Mês</translation>
 <translation id="8991520179165052608">O site pode utilizar o microfone.</translation>
 <translation id="899403249577094719">URL base do certificado Netscape</translation>
@@ -6226,6 +6221,38 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">A estabelecer ligação segura...</translation>
 <translation id="998747458861718449">I&amp;nspecionar</translation>
+<translation id="658539216370629794">Abrir link numa janela sem re&amp;gisto</translation>
+<translation id="1432267168815937878">Abrir Link numa Janela de Nave&amp;gação Anónima</translation>
+<translation id="6516243500644829484">&amp;Nova janela sem registo</translation>
+<translation id="7973394300052703468">Nova Janela de Navegação Anón&amp;ima</translation>
+<translation id="6395403722585816044">Transferido em modo de navegação anónima</translation>
+<translation id="203837651858678035">Pretende sair do modo de navegação anónima mesmo assim?</translation>
+<translation id="7376221878517288144">Pretende sair do modo de navegação anónima mesmo assim?</translation>
+<translation id="871606814707918245">A maioria das pessoas bloqueia as notificações deste site.</translation>
+<translation id="5053701565089446556">Extensão da navegação anónima: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplicação em navegação anónima: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Separador de navegação anónima: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Subestrutura da navegação anónima: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal de Navegação anónima: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Esta extensão não está listada no <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e é possível que tenha sido adicionada sem o seu conhecimento.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navegação anónima)</translation>
+<translation id="4369414322596874629">Pode navegar em privado com uma janela de navegação anónima</translation>
+<translation id="3772947852642271642">Navegue na Web sem guardar o seu histórico de navegação com uma janela de navegação anónima</translation>
+<translation id="3871738366246972820">Está a utilizar um computador partilhado? Experimente abrir uma janela de navegação anónima.</translation>
+<translation id="5808622652939943719">Para navegar em privado, clique no menu dos três pontos de forma a abrir uma janela de navegação anónima</translation>
+<translation id="9079153198295609735">Enviar automaticamente estatísticas de utilização e relatórios de falhas para a Brave</translation>
+<translation id="8839398440242019256">Não é da Brave Web Store</translation>
+<translation id="6945695820322143954">Esta extensão viola a política da Brave Web Store.</translation>
+<translation id="1676595396635191120">Nova janela de navegação anónima</translation>
+<translation id="5094764494104066239">Mostrar Sempre a Barra de Marcadores</translation>
+<translation id="4471385409549756595">Nova janela de navegação anónima</translation>
+<translation id="4540437243849625078">Este site está prestes a partilhar informações com uma aplicação fora do modo de navegação anónima.</translation>
+<translation id="1227836882233136433">Sair da navegação anónima?</translation>
+<translation id="7618452966706304788">Pretende utilizar o Touch ID com a aplicação <ph name="APP_NAME"/> no modo de navegação anónima?</translation>
+<translation id="3098826269712097986">Os dados de início de sessão são armazenados no Brave depois de sair do modo de navegação anónima. Isto permite-lhe utilizar novamente o Touch ID neste Website mais tarde.</translation>
+<translation id="5186185447130319458">Navegação anónima</translation>
+<translation id="2579188629646253712">Sair do modo de navegação anónima</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Abrir todos numa &amp;janela de navegação anónima}=1{Abrir numa &amp;janela de navegação anónima}other{Abrir todos (#) numa &amp;janela de navegação anónima}}</translation>
 <translation id="2431625704210501303">Abrir na janela de &amp;navegação anónima</translation>
 <translation id="4620367155626060530">&amp;Mostrar barra de marcadores</translation>
@@ -6275,10 +6302,8 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="3860292630623580294">(Navegação anónima)</translation>
 <translation id="4854477725773269949">Permitir em modo de navegação anónima</translation>
 <translation id="6436164536244065364">Ver na Web Store do Brave</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Encontre extensões e temas na <ph name="BEGIN_LINK"/>Web Store do Brave<ph name="END_LINK"/>.</translation>
 <translation id="6336451774241870485">Novo separador anónimo</translation>
 <translation id="6610147964972079463">Fechar sep. de naveg. anón.</translation>
-<translation id="5186185447130319458">Navegação anónima</translation>
 <translation id="4933782374919065856">Tem dúvidas? Contacte a pessoa que supervisiona o seu perfil.</translation>
 </translationbundle>

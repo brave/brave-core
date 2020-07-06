@@ -2121,7 +2121,6 @@
 <translation id="3771294271822695279">فایل‌های ویدئویی</translation>
 <translation id="3775432569830822555">‏گواهی سرور SSL</translation>
 <translation id="3775705724665058594">ارسال به دستگاه‌هایتان</translation>
-<translation id="6945695820322143954">‏این افزونه حریم خصوصی «نت‌بازار Brave» را نقض می‌کند.</translation>
 <translation id="3777483481409781352">دستگاه تلفن همراه فعال نشد</translation>
 <translation id="3777806571986431400">برنامه افزودنی فعال شد</translation>
 <translation id="3778152852029592020">بارگیری لغو شد.</translation>
@@ -2903,7 +2902,6 @@
 <translation id="48704129375571883">افزودن قابلیت‌های بیشتر</translation>
 <translation id="4870758487381879312">برای دریافت اطلاعات پیکربندی، گذرواژه ارائه‌شده توسط سرپرست را وارد کنید</translation>
 <translation id="4870903493621965035">دستگاه مرتبطی وجود ندارد</translation>
-<translation id="8839398440242019256">‏از «نت‌بازار Brave» نیست.</translation>
 <translation id="4871322859485617074">پین حاوی نویسه‌های نامعتبر است</translation>
 <translation id="4871370605780490696">افزودن نشانک</translation>
 <translation id="4871719318659334896">بستن گروه</translation>
@@ -4964,7 +4962,6 @@
 <translation id="767127784612208024">برای تأیید بازنشانی، لمس کنید</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>، در <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">‏صدایتان را برای Brave ارسال کنید تا بتوانید هر فیلد نوشتاری را با دیکته کردن پر کنید.</translation>
-<translation id="3098826269712097986">‏داده‌های مربوط به ورود به سیستم، پس از خروج از حالت ناشناس، در Brave ذخیره می‌شود. بنابراین، بعداً دوباره می‌توانید در این وب‌سایت از «شناسه لمسی» استفاده کنید.</translation>
 <translation id="7681095912841365527">سایت می‌تواند از بلوتوث استفاده کند</translation>
 <translation id="7683373461016844951">برای ادامه، روی «تأیید» کلیک کنید و سپس برای ایجاد نمایه‌ای جدید برای نشانی ایمیل‌ <ph name="DOMAIN"/> خود، روی «افزودن شخص» کلیک کنید.</translation>
 <translation id="7684212569183643648">سرپرست سیستم شما نصب کرده است</translation>
@@ -5442,7 +5439,6 @@
 <translation id="8259239505248583312">بیایید شروع کنیم</translation>
 <translation id="8260126382462817229">دوباره سعی کنید به سیستم وارد شوید</translation>
 <translation id="8260864402787962391">ماوس</translation>
-<translation id="8261378640211443080">این برنامه‌افزودنی در <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> فهرست نشده است و ممکن است بدون اطلاع شما اضافه شده باشد.</translation>
 <translation id="8261506727792406068">حذف</translation>
 <translation id="8263336784344783289">نامی برای گروه وارد کنید</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> مکان‌نمای ماوس شما را غیرفعال کرد.</translation>
@@ -6004,7 +6000,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> می‌تواند <ph name="FILENAME"/> را ویرایش کند</translation>
 <translation id="8985264973231822211">آخرین فعالیت: <ph name="DEVICE_LAST_ACTIVATED_TIME"/> روز قبل</translation>
 <translation id="8986362086234534611">فراموش شود</translation>
-<translation id="9079153198295609735">‏ارسال خودکار آمار کاربرد و گزارش‌های خرابی به Brave</translation>
 <translation id="8987927404178983737">ماه</translation>
 <translation id="8991520179165052608">سایت می‌تواند از میکروفن شما استفاده کند</translation>
 <translation id="899403249577094719">‏نشانی وب گواهی Netscape</translation>
@@ -6223,6 +6218,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">در حال برقراری اتصال ایمن...</translation>
 <translation id="998747458861718449">بازرسی</translation>
+<translation id="658539216370629794">باز کردن پیوند در پنجره حالت &amp;ناشناس</translation>
+<translation id="1432267168815937878">باز کردن پیوند در پنجره حالت &amp;ناشناس</translation>
+<translation id="6516243500644829484">&amp;پنجره جدید حالت ناشناس</translation>
+<translation id="7973394300052703468">پنجرهٔ جدید حالت &amp;ناشناس</translation>
+<translation id="6395403722585816044">دانلود‌شده در ناشناس</translation>
+<translation id="203837651858678035">درهرصورت از حالت ناشناس خارج می‌شوید؟</translation>
+<translation id="7376221878517288144">درهرصورت از حالت ناشناس خارج می‌شوید؟</translation>
+<translation id="871606814707918245">افراد اکثراً اعلان‌های این سایت را مسدود می‌کنند</translation>
+<translation id="5053701565089446556">افزونه ناشناس: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">برنامه ناشناس: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">برگه ناشناس: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">قاب فرعی ناشناس: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">درگاه ناشناس: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">‏«نت‌بازار Brave»</translation>
+<translation id="8261378640211443080">این برنامه‌افزودنی در <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> فهرست نشده است و ممکن است بدون اطلاع شما اضافه شده باشد.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ناشناس)</translation>
+<translation id="4369414322596874629">با پنجره ناشناس، می‌توانید خصوصی مرور کنید</translation>
+<translation id="3772947852642271642">با پنجره ناشناس، بدون ذخیره کردن سابقه مرور از وب استفاده کنید</translation>
+<translation id="3871738366246972820">از رایانه مشترکی استفاده می‌کنید؟ پنجره ناشناس را امتحان کنید.</translation>
+<translation id="5808622652939943719">برای مرور خصوصی، روی منوی نماد نقطه‌ها کلیک کنید تا پنجره ناشناسی باز شود</translation>
+<translation id="9079153198295609735">‏ارسال خودکار آمار کاربرد و گزارش‌های خرابی به Brave</translation>
+<translation id="8839398440242019256">‏از «نت‌بازار Brave» نیست.</translation>
+<translation id="6945695820322143954">‏این افزونه حریم خصوصی «نت‌بازار Brave» را نقض می‌کند.</translation>
+<translation id="1676595396635191120">پنجره جدید ناشناس</translation>
+<translation id="5094764494104066239">همیشه نوار نشانک‌ها نمایش داده شود</translation>
+<translation id="4471385409549756595">پنجره جدید ناشناس</translation>
+<translation id="4540437243849625078">این سایت می‌خواهد خارج از حالت ناشناس، اطلاعاتی را با برنامه‌ای به اشتراک بگذارد.</translation>
+<translation id="1227836882233136433">از حالت ناشناس خارج می‌شوید؟</translation>
+<translation id="7618452966706304788">می‌خواهید در <ph name="APP_NAME"/> درحالت ناشناس از «شناسه لمسی» استفاده کنید؟</translation>
+<translation id="3098826269712097986">‏داده‌های مربوط به ورود به سیستم، پس از خروج از حالت ناشناس، در Brave ذخیره می‌شود. بنابراین، بعداً دوباره می‌توانید در این وب‌سایت از «شناسه لمسی» استفاده کنید.</translation>
+<translation id="5186185447130319458">ناشناس</translation>
+<translation id="2579188629646253712">خروج از حالت ناشناس</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{باز کردن همه در پنجره ناشناس}=1{باز کردن در پنجره ناشناس}one{باز کردن همه (#) در پنجره ناشناس}other{باز کردن همه (#) در پنجره ناشناس}}</translation>
 <translation id="2431625704210501303">باز کردن در پنجره &amp;ناشناس</translation>
 <translation id="4620367155626060530">&amp;نمایش نوار نشانک‌ها</translation>
@@ -6272,10 +6299,8 @@
 <translation id="3860292630623580294">(ناشناس)</translation>
 <translation id="4854477725773269949">در ناشناس مجاز است</translation>
 <translation id="6436164536244065364">‏مشاهده در «نت‌بازار Brave»</translation>
-<translation id="8808478386290700967">‏«نت‌بازار Brave»</translation>
 <translation id="38046578254905003">‏افزونه‌ها و طرح‌های زمینه را در <ph name="BEGIN_LINK"/>نت‌بازار Brave<ph name="END_LINK"/> پیدا کنید</translation>
 <translation id="6336451774241870485">برگه جدید ناشناس</translation>
 <translation id="6610147964972079463">بستن برگه‌های ناشناس</translation>
-<translation id="5186185447130319458">ناشناس</translation>
 <translation id="4933782374919065856">سؤال دارید؟ با فردی که بر نمایه‌تان نظارت دارد تماس بگیرید.</translation>
 </translationbundle>

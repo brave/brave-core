@@ -2120,7 +2120,6 @@
 <translation id="3771294271822695279">વીડિયો ફાઇલો</translation>
 <translation id="3775432569830822555">SSL સર્વર પ્રમાણપત્ર</translation>
 <translation id="3775705724665058594">તમારા ડિવાઇસ પર મોકલો</translation>
-<translation id="6945695820322143954">આ એક્સટેન્શન Brave વેબ દુકાન નીતિનું ઉલ્લંઘન કરે છે.</translation>
 <translation id="3777483481409781352">સેલ્યુલર ડિવાઇસને સક્રિય કરી શક્યાં નથી</translation>
 <translation id="3777806571986431400">એક્સ્ટેન્શન સક્ષમ કર્યું</translation>
 <translation id="3778152852029592020">ડાઉનલોડ રદ થયું હતું.</translation>
@@ -2902,7 +2901,6 @@
 <translation id="48704129375571883">વધારાની સુવિધાઓ ઉમેરો</translation>
 <translation id="4870758487381879312">ગોઠવણીની માહિતી મેળવવા માટે, વ્યવસ્થાપક દ્વારા અપાયેલો પાસવર્ડ દાખલ કરો</translation>
 <translation id="4870903493621965035">કોઈ જોડી કરેલા ઉપકરણો નથી</translation>
-<translation id="8839398440242019256">Brave વેબ દુકાનમાંથી નહીં.</translation>
 <translation id="4871322859485617074">પિનમાં અમાન્ય અક્ષરો છે</translation>
 <translation id="4871370605780490696">બુકમાર્ક ઉમેરો</translation>
 <translation id="4871719318659334896">ગ્રૂપ બંધ કરો</translation>
@@ -4965,7 +4963,6 @@ USB ડિવાઇસ</translation>
 <translation id="767127784612208024">રીસેટ કન્ફર્મ કરવા માટે ટચ કરો</translation>
 <translation id="7672520070349703697"><ph name="PAGE_TITLE"/>માં <ph name="HUNG_IFRAME_URL"/>.</translation>
 <translation id="1800308196794859773">કોઈપણ ટેક્સ્ટ ફીલ્ડમાં શ્રુતલેખનને મંજૂરી આપવા માટે Braveને તમારો અવાજ મોકલો.</translation>
-<translation id="3098826269712097986">તમે 'છૂપો મોડ'થી બહાર નીકળો તે પછી સાઇન-ઇન ડેટાને Braveમાં સ્ટોર કરવામાં આવશે. આ રીતે તમે આ વેબસાઇટ સાથે થોડીવાર પછી ફરી સ્પર્શ IDનો ઉપયોગ કરી શકશો.</translation>
 <translation id="7681095912841365527">સાઇટ બ્લૂટૂથનો ઉપયોગ કરી શકે</translation>
 <translation id="7683373461016844951">ચાલુ રાખવા માટે, ઓકે ક્લિક કરો, પછી તમારા <ph name="DOMAIN"/> ઇમેઇલ ઍડ્રેસ માટે નવી પ્રોફાઇલ બનાવવા માટે વ્યક્તિને ઉમેરો પર ક્લિક કરો.</translation>
 <translation id="7684212569183643648">તમારા વ્યવસ્થાપક દ્વારા ઇન્સ્ટોલ કરાયું</translation>
@@ -5437,7 +5434,6 @@ USB ડિવાઇસ</translation>
 <translation id="8259239505248583312">ચાલો જઈએ</translation>
 <translation id="8260126382462817229">ફરીથી સાઇન ઇન કરવાનો પ્રયાસ કરો</translation>
 <translation id="8260864402787962391">માઉસ</translation>
-<translation id="8261378640211443080">આ એક્સટેન્શન <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> માં સૂચિબદ્ધ નથી અને તમારી જાણ વિના ઉમેરવામાં આવ્યું હોઈ શકે છે.</translation>
 <translation id="8261506727792406068">ડિલીટ કરો</translation>
 <translation id="8263336784344783289">આ ગ્રૂપને નામ આપો</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> એ તમારા માઉસ કર્સરને અક્ષમ કર્યું છે.</translation>
@@ -5999,7 +5995,6 @@ USB ડિવાઇસ</translation>
 <translation id="8983632908660087688"><ph name="ORIGIN"/> <ph name="FILENAME"/>માં ફેરફાર કરી શકે છે</translation>
 <translation id="8985264973231822211"><ph name="DEVICE_LAST_ACTIVATED_TIME"/> દિવસ પહેલાં સક્રિય</translation>
 <translation id="8986362086234534611">ભૂલી ગયા</translation>
-<translation id="9079153198295609735">ઉપયોગિતા આંકડાઓ અને ક્રૅશ રિપોર્ટ Braveને ઑટોમૅટિક રીતે મોકલો</translation>
 <translation id="8987927404178983737">મહિનો</translation>
 <translation id="8991520179165052608">સાઇટ તમારા માઇક્રોફોનનો ઉપયોગ કરી શકે છે</translation>
 <translation id="899403249577094719">નેટસ્કેપ પ્રમાણપત્ર બેઝ URL</translation>
@@ -6218,6 +6213,38 @@ USB ડિવાઇસ</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">સુરક્ષિત કનેક્શન સ્થાપિત કરી રહ્યું છે...</translation>
 <translation id="998747458861718449">ત&amp;પાસ કરો</translation>
+<translation id="658539216370629794">છુ&amp;પી વિંડોમાં લિંક ખોલો</translation>
+<translation id="1432267168815937878">છુ&amp;પી વિંડોમાં લિંક ખોલો</translation>
+<translation id="6516243500644829484">નવી &amp;છુપી વિંડો</translation>
+<translation id="7973394300052703468">નવી &amp;છુપી વિંડો</translation>
+<translation id="6395403722585816044">છૂપા મોડમાં ડાઉનલોડ કર્યું</translation>
+<translation id="203837651858678035">છૂપો મોડ બંધ કરી જ દઈએ?</translation>
+<translation id="7376221878517288144">છૂપો મોડ બંધ કરી જ દઈએ?</translation>
+<translation id="871606814707918245">મોટાભાગના લોકો આ સાઇટના બધા નોટિફિકેશનને બ્લૉક કરે છે</translation>
+<translation id="5053701565089446556">છુપું એક્સ્ટેંશન: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">છૂપી ઍપ્લિકેશન: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">છુપો ટેબ: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">છુપો મોડ સબફ્રેમ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">છૂપું પોર્ટલ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave વેબ બજાર</translation>
+<translation id="8261378640211443080">આ એક્સટેન્શન <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> માં સૂચિબદ્ધ નથી અને તમારી જાણ વિના ઉમેરવામાં આવ્યું હોઈ શકે છે.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (છૂપી)</translation>
+<translation id="4369414322596874629">તમે છુપી વિંડોનો ઉપયોગ કરીને ખાનગી રૂપે બ્રાઉઝ કરી શકો છો</translation>
+<translation id="3772947852642271642">છુપી વિંડો વડે, તમારો બ્રાઉઝિંગ ઇતિહાસ સાચવ્યા વિના વેબનો ઉપયોગ કરો</translation>
+<translation id="3871738366246972820">શેર કરેલા કમ્પ્યુટરનો ઉપયોગ કરી રહ્યા છો? છુપી વિંડો ખોલવાનો પ્રયાસ કરો.</translation>
+<translation id="5808622652939943719">ખાનગી રીતે બ્રાઉઝ કરવા માટે, છુપી વિંડો ખોલવા માટે બિંદુના આઇકનવાળા મેનૂ પર ક્લિક કરો</translation>
+<translation id="9079153198295609735">ઉપયોગિતા આંકડાઓ અને ક્રૅશ રિપોર્ટ Braveને ઑટોમૅટિક રીતે મોકલો</translation>
+<translation id="8839398440242019256">Brave વેબ દુકાનમાંથી નહીં.</translation>
+<translation id="6945695820322143954">આ એક્સટેન્શન Brave વેબ દુકાન નીતિનું ઉલ્લંઘન કરે છે.</translation>
+<translation id="1676595396635191120">નવી છુપી વિંડો</translation>
+<translation id="5094764494104066239">બુકમાર્ક્સ બાર હંમેશા બતાવો</translation>
+<translation id="4471385409549756595">નવી છુપી વિંડો</translation>
+<translation id="4540437243849625078">આ સાઇટ છુપા મોડની બહારની એક ઍપ્લિકેશન વડે માહિતી શેર કરવા જઈ રહી છે.</translation>
+<translation id="1227836882233136433">છુપો મોડ છોડીએ?</translation>
+<translation id="7618452966706304788">શું તમારે છૂપા મોડમાં <ph name="APP_NAME"/> સાથે સ્પર્શ IDનો ઉપયોગ કરવો છે?</translation>
+<translation id="3098826269712097986">તમે 'છૂપો મોડ'થી બહાર નીકળો તે પછી સાઇન-ઇન ડેટાને Braveમાં સ્ટોર કરવામાં આવશે. આ રીતે તમે આ વેબસાઇટ સાથે થોડીવાર પછી ફરી સ્પર્શ IDનો ઉપયોગ કરી શકશો.</translation>
+<translation id="5186185447130319458">છૂપી</translation>
+<translation id="2579188629646253712">છૂપા મોડથી બહાર નીકળો</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{તમામ URLને &amp;છુપી વિંડોમાં ખોલો}=1{URLને &amp;છુપી વિંડોમાં ખોલો}one{તમામ (#) URLને છુપી વિંડોમાં ખોલો}other{તમામ (#) URLને છુપી વિંડોમાં ખોલો}}</translation>
 <translation id="2431625704210501303">&amp;છુપી વિંડોમાં ખોલો</translation>
 <translation id="4620367155626060530">બુકમાર્ક્સ બાર &amp;બતાવો</translation>
@@ -6267,10 +6294,8 @@ USB ડિવાઇસ</translation>
 <translation id="3860292630623580294">(છૂપી)</translation>
 <translation id="4854477725773269949">છૂપા મોડમાં મંજૂરી આપો</translation>
 <translation id="6436164536244065364">Brave વેબ સ્ટોરમાં જુઓ</translation>
-<translation id="8808478386290700967">Brave વેબ બજાર</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave વેબ દુકાન<ph name="END_LINK"/>માં એક્સ્ટેંશન અને થીમ શોધો.</translation>
 <translation id="6336451774241870485">નવી છુપી ટેબ</translation>
 <translation id="6610147964972079463">છુપા ટેબ્સ બંધ કરો</translation>
-<translation id="5186185447130319458">છૂપી</translation>
 <translation id="4933782374919065856">પ્રશ્નો છે? તમારી પ્રોફાઇલનું નિરીક્ષણ કરનાર વ્યક્તિનો સંપર્ક કરો.</translation>
 </translationbundle>

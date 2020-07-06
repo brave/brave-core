@@ -94,7 +94,7 @@
 <translation id="3829010735958850433">Ignorar a apresentação das boas-vindas</translation>
 <translation id="1201402288615127009">Seguinte</translation>
 <translation id="7954950242989581218">Navegue em segurança</translation>
-<translation id="2188651882929633653">As «Proteções» do Brave bloqueiam as coisas assustadoras que o tentam monitorizar na Web, incluindo a maioria dos anúncios. Defina as «Proteções» como “inativa” se um ''site'' parecer não estar a funcionar. Brave utiliza a &lt;ph name="BEGIN_LINK_P3A"&gt;&amp;lt;a target="_blank" href="$1"&amp;gt;&lt;/ph&gt;analítica de produto totalmente confidencial&lt;ph name="END_LINK_P3A"&gt;&amp;lt;/a&amp;gt;&lt;/ph&gt; para calcular a utilização geral de certas funcionalidades. Pode desativar isto nas &lt;ph name="BEGIN_LINK_P3A_SETTINGS"&gt;&amp;lt;a target="_blank" href="$2"&amp;gt;&lt;/ph&gt;Definições&lt;ph name="END_LINK_P3A_SETTINGS"&gt;&amp;lt;/a&amp;gt;&lt;/ph&gt;.</translation>
+<translation id="2188651882929633653">As «Proteções» do Brave bloqueiam as coisas assustadoras que o tentam monitorizar na Web, incluindo a maioria dos anúncios. Defina as «Proteções» como “inativa” se um ''site'' parecer não estar a funcionar. Brave utiliza a <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>analítica de produto totalmente confidencial<ph name="END_LINK_P3A">&lt;/a&gt;</ph> para calcular a utilização geral de certas funcionalidades. Pode desativar isto nas <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Definições<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">Anúncios</translation>
 <translation id="2128226640852355533">Ganhe {{currency}} por ver anúncios no Brave. Os anúncios apresentados são baseados nos seus interesses, inferido dos seus hábitos de navegação. Nenhum dado pessoal ou histórico de navegação sairá do seu navegador.</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
@@ -493,7 +493,7 @@
 <translation id="6215565499749144110">Com a TAP Network, pode resgatar os seus BAT por cartões-presente de marcas populares.</translation>
 <translation id="526152301446370337">Visite a TAP.</translation>
 <translation id="6915065518766963119">* Requer verificação da Uphold</translation>
-<translation id="4360054110030715117">&lt;ph name="LINK_BEGIN"&gt;$1&lt;/ph&gt;Saiba mais&lt;ph name="LINK_END"&gt;$2&lt;/ph&gt; sobre «Recompensas Brave»</translation>
+<translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/> sobre «Recompensas Brave»</translation>
 <translation id="5826706758731195747">Ao ativar o Rewards, você concorda com os <ph name="LINK_BEGIN"/>Termos de Serviço<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Atuais ganhos estimados para o presente mês.</translation>
 <translation id="6778392839723468409">Ganhe tokens visualizando anúncios que respeitam a privacidade.</translation>
@@ -506,12 +506,12 @@
 <translation id="8092889639392847252">Seja pago para ver esta imagem de fundo patrocinada.</translation>
 <translation id="2542495049135486284">Experimente novamente «Recompensas Brave» e pague depois, conforme os seus ganhos!</translation>
 <translation id="53513464591392992">Ative «Recompensas Brave» e seja pago para ver anúncios que respeitam a privacidade.</translation>
-<translation id="8463996294416161140">Ative &lt;ph name="PRODUCT_NAME"&gt;$3&lt;ex&gt;Recompsensas Brave&lt;/ex&gt;&lt;/ph&gt; para reclamar a sua parte. Também pode optar por &lt;ph name="LINK_BEGIN"&gt;$1&lt;/ph&gt;ocultar as imagens patrocinadas&lt;ph name="LINK_END"&gt;$2&lt;/ph&gt;.</translation>
+<translation id="8463996294416161140">Ative <ph name="PRODUCT_NAME"/> para reclamar a sua parte. Também pode optar por <ph name="LINK_BEGIN"/>ocultar as imagens patrocinadas<ph name="LINK_END"/>.</translation>
 <translation id="8568666589217601917">Caminho a Seguir!</translation>
 <translation id="764235488372037377">As suas recompensas dos anúncios estão aqui</translation>
 <translation id="7091215606170476659">Recebeu uma concessão UGP da Brave.</translation>
 <translation id="6759185676704303656">Você está a ser pago para visualizar esta imagem de fundo.</translation>
-<translation id="1749232564087138444">&lt;ph name="LINK_BEGIN"&gt;$1&lt;/ph&gt;Saiba mais&lt;ph name="LINK_END"&gt;$2&lt;/ph&gt; sobre as imagens patrocinadas de «Recompensas Brave»</translation>
+<translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/> sobre as imagens patrocinadas de «Recompensas Brave»</translation>
 <translation id="6113004497629356998">Ocultar imagens patrocinadas</translation>
 <translation id="5977237145327845546">Inicie uma videochamada particular com os seus amigos e colegas.</translation>
 <translation id="5850325887346946383">Iniciar videochamada</translation>

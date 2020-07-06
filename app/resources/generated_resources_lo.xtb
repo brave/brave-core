@@ -2122,7 +2122,6 @@
 <translation id="3771294271822695279">ໄຟລ​໌​ວິ​ດີ​ໂອ</translation>
 <translation id="3775432569830822555">ໃບຢັ້ງຢືນເຊີບເວີ SSL</translation>
 <translation id="3775705724665058594">ສົ່ງຫາອຸປະກອນຂອງທ່ານ</translation>
-<translation id="6945695820322143954">ສ່ວນຂະຫຍາຍນີ້ລະເມີດນະໂຍບາຍ Brave Web Store.</translation>
 <translation id="3777483481409781352">ບໍ່ສາມາດເປີດນຳໃຊ້ອຸປະກອນມືຖືໄດ້</translation>
 <translation id="3777806571986431400">ເປີດໃຊ້ງານສ່ວນຂະຫຍາຍແລ້ວ</translation>
 <translation id="3778152852029592020">ດາວ​ໂຫລດ​ຖືກ​ຍົກ​ເລີກແລ້ວ​.</translation>
@@ -2904,7 +2903,6 @@
 <translation id="48704129375571883">ເພີ່ມຄຸນສົມບັດເພີ່ມເຕີມ</translation>
 <translation id="4870758487381879312">ປ້ອນລະຫັດຜ່ານທີ່ຜູ້ເບິ່ງແຍງລະບົບສະໜອງໃຫ້ເພື່ອຮັບຂໍ້ມູນການກຳນົດຄ່າ</translation>
 <translation id="4870903493621965035">ບໍ່ມີອຸປະກອນທີ່ຈັບຄູ່ແລ້ວ</translation>
-<translation id="8839398440242019256">ບໍ່ໄດ້ມາຈາກ Brave Web Store.</translation>
 <translation id="4871322859485617074">PIN ປະກອບມີຕົວອັກສອນທີ່ບໍ່ຖືກຕ້ອງ</translation>
 <translation id="4871370605780490696">ເພີ່ມບຸກມາກຄ໌</translation>
 <translation id="4871719318659334896">ປິດກຸ່ມ</translation>
@@ -4965,7 +4963,6 @@
 <translation id="767127784612208024">ສຳຜັດເພື່ອຢືນຢັນການຣີເຊັດ</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, ໃນ <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">ສົ່ງສຽງຂອງທ່ານໃຫ້ Brave ເພື່ອອະນຸຍາດການຂຽນຕາມຄຳບອກໃສ່ໃນຊ່ອງໃສ່ຂໍ້ຄວາມຕ່າງໆ.</translation>
-<translation id="3098826269712097986">ລະບົບຈະເກັບຂໍ້ມູນເຂົ້າສູ່ລະບົບໄວ້ໃນ Brave ຫຼັງຈາກທີ່ທ່ານອອກຈາກໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນ. ນີ້ຈະເຮັດໃຫ້ທ່ານສາມາດໃຊ້ Touch ID ກັບເວັບໄຊນີ້ໄດ້ອີກຄັ້ງໃນພາຍຫຼັງ.</translation>
 <translation id="7681095912841365527">ເວັບໄຊສາມາດໃຊ້ bluetooth</translation>
 <translation id="7683373461016844951">ເພື່ອສືບຕໍ່, ໃຫ້ຄລິກ ຕົກລົງ, ຈາກນັ້ນຄລິກ ເພີ່ມບຸກຄົນ ເພື່ອສ້າງໂປຣໄຟລ໌ໃໝ່ສຳລັບທີ່ຢູ່ອີເມວ <ph name="DOMAIN"/> ຂອງທ່ານ.</translation>
 <translation id="7684212569183643648">ຕິດ​ຕັ້ງ​ໂດຍ​ຜູ້​ບໍ​ລິ​ຫານ​ຂອງ​ທ່ານ​ແລ້ວ</translation>
@@ -5441,7 +5438,6 @@
 <translation id="8259239505248583312">ເລີ່ມກັນເລີຍ</translation>
 <translation id="8260126382462817229">ລອງເຂົ້າສູ່ລະບົບອີກຄັ້ງ</translation>
 <translation id="8260864402787962391">ເມົາສ໌</translation>
-<translation id="8261378640211443080">ສ່ວນຂະຫຍາຍນີ້ບໍ່ມີລາຍຊື່ຢູ່ໃນ <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ແລະອາດຈະຖືກເພີ່ມເຂົ້າໂດຍທີ່ທ່ານບໍ່ຮູ້ຈັກ.</translation>
 <translation id="8261506727792406068">ລຶບ</translation>
 <translation id="8263336784344783289">ຕັ້ງຊື່ໃຫ້ກຸ່ມນີ້</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> ປິດໃຊ້ງານເຄີເຊີເມົາສ໌ຂອງທ່ານແລ້ວ.</translation>
@@ -6003,7 +5999,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> ສາມາດແກ້ໄຂ <ph name="FILENAME"/> ໄດ້</translation>
 <translation id="8985264973231822211">ເປີດນຳໃຊ້ເມື່ອ <ph name="DEVICE_LAST_ACTIVATED_TIME"/> ກ່ອນ</translation>
 <translation id="8986362086234534611">ລືມ</translation>
-<translation id="9079153198295609735">ສົ່ງສະຖິຕິການໃຊ້ ແລະລາຍງານກາ​ນຂັດຂ້ອງໄປຫາ Brave ໂດຍອັດຕະໂນມັດ</translation>
 <translation id="8987927404178983737">ເດືອນ</translation>
 <translation id="8991520179165052608">ເວັບໄຊສາມາດໃຊ້ໄມໂຄຣໂຟນຂອງທ່ານໄດ້</translation>
 <translation id="899403249577094719">URL ຖານໃບຢັ້ງຢືນ Netscape</translation>
@@ -6222,6 +6217,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">ກໍາລັງຕັ້ງການເຊື່ອມຕໍ່ທີ່ປອດໄພ...</translation>
 <translation id="998747458861718449">ກວດ​ກາ</translation>
+<translation id="658539216370629794">ເປີດລິ້ງຢູ່ໃນໜ້າ​ຕ່າງ​ທີ່ບໍ່ເປີດເຜີຍຕົນຕົວ</translation>
+<translation id="1432267168815937878">ເປີດລິ້ງຢູ່ໃນໜ້າ​ຕ່າງທີ່ບໍ່ເຜີຍຕົນຕົວ</translation>
+<translation id="6516243500644829484">ໜ້າ​ຕ່າງ​ທີ່ບໍ່ເປີດເຜີຍຕົນຕົວໃໝ່</translation>
+<translation id="7973394300052703468">ໜ້າ​ຕ່າງທີ່ບໍ່ເຜີຍຕົວໃໝ່</translation>
+<translation id="6395403722585816044">ດາວ​ໂຫຼດຢູ່ໃນບໍ່ເຜີຍຕົວຕົນ</translation>
+<translation id="203837651858678035">ແນວໃດກໍອອກຈາກໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນບໍ?</translation>
+<translation id="7376221878517288144">ແນວໃດກໍອອກຈາກໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນບໍ?</translation>
+<translation id="871606814707918245">ຄົນສ່ວນໃຫຍ່ບລັອກການແຈ້ງເຕືອນຈາກເວັບໄຊນີ້</translation>
+<translation id="5053701565089446556">ສ່ວນຂະຫຍາຍທີ່​ບໍ່​ເຜີຍ​ຕົນ​ຕົວ: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ແອັບບໍ່ເປີດເຜີຍຕົນຕົວ: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">ແຖບທີ່​ບໍ່​ເຜີຍ​ຕົນ​ຕົວ: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ຂອບຍ່ອຍທີ່ບໍ່ເຜີຍຕົນຕົວ​: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ໜ້າເວັບທີ່ບໍ່ເປີດເຜີຍຕົວຕົນ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">ສ່ວນຂະຫຍາຍນີ້ບໍ່ມີລາຍຊື່ຢູ່ໃນ <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ແລະອາດຈະຖືກເພີ່ມເຂົ້າໂດຍທີ່ທ່ານບໍ່ຮູ້ຈັກ.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ບໍ່ເປີດເຜີຍຕົນຕົວ)</translation>
+<translation id="4369414322596874629">ທ່ານສາມາດທ່ອງເວັບແບບເປັນສ່ວນຕົວໂດຍໃຊ້ໜ້າຈໍທີ່ບໍ່ເປີດເຜີຍຕົວຕົນໄດ້</translation>
+<translation id="3772947852642271642">ໃຊ້ເວັບໂດຍບໍ່ບັນທຶກປະຫວັດການທ່ອງເວັບຂອງທ່ານດ້ວຍໜ້າ​ຈໍທີ່ບໍ່ເປີດເຜີຍຕົວຕົນ</translation>
+<translation id="3871738366246972820">ກຳລັງໃຊ້ຄອມພິວເຕີທີ່ໃຊ້ຮ່ວມກັນຫຼາຍຄົນບໍ? ລອງເປີດໜ້າຈໍທີ່ບໍ່ເປີດເຜີຍຕົວຕົນເບິ່ງ.</translation>
+<translation id="5808622652939943719">ເພື່ອທ່ອງເວັບແບບເປັນສ່ວນຕົວ, ກະລຸນາຄລິກເມນູໄອຄອນຈຸດໆເພື່ອເປີດໜ້າຈໍທີ່ບໍ່ເປີດເຜີຍຕົວຕົນ</translation>
+<translation id="9079153198295609735">ສົ່ງສະຖິຕິການໃຊ້ ແລະລາຍງານກາ​ນຂັດຂ້ອງໄປຫາ Brave ໂດຍອັດຕະໂນມັດ</translation>
+<translation id="8839398440242019256">ບໍ່ໄດ້ມາຈາກ Brave Web Store.</translation>
+<translation id="6945695820322143954">ສ່ວນຂະຫຍາຍນີ້ລະເມີດນະໂຍບາຍ Brave Web Store.</translation>
+<translation id="1676595396635191120">ໜ້າ​ຕ່າງທີ່ບໍ່ເຜີຍຕົນຕົວໃໝ່</translation>
+<translation id="5094764494104066239">ສະແດງແຖບບຸກມາກສ໌ທຸກຄັ້ງ</translation>
+<translation id="4471385409549756595">ໜ້າ​ຕ່າງ​ທີ່ບໍ່ເປີດເຜີຍຕົນຕົວໃໝ່</translation>
+<translation id="4540437243849625078">ເວັບໄຊນີ້ກຳລັງຈະແບ່ງປັນຂໍ້ມູນກັບແອັບທີ່ຢູ່ພາຍນອກໂໝດບໍ່ເຜີຍຕົວຕົນ.</translation>
+<translation id="1227836882233136433">ອອກຈາກໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນບໍ?</translation>
+<translation id="7618452966706304788">ທ່ານຕ້ອງການໃຊ້ Touch ID ກັບ <ph name="APP_NAME"/> ໃນໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນບໍ?</translation>
+<translation id="3098826269712097986">ລະບົບຈະເກັບຂໍ້ມູນເຂົ້າສູ່ລະບົບໄວ້ໃນ Brave ຫຼັງຈາກທີ່ທ່ານອອກຈາກໂໝດທີ່ບໍ່ເຜີຍຕົວຕົນ. ນີ້ຈະເຮັດໃຫ້ທ່ານສາມາດໃຊ້ Touch ID ກັບເວັບໄຊນີ້ໄດ້ອີກຄັ້ງໃນພາຍຫຼັງ.</translation>
+<translation id="5186185447130319458">ບໍ່​ເຜີຍ​ຕົວຕົນ</translation>
+<translation id="2579188629646253712">ອອກຈາກໂໝດບໍ່ເປີດເຜີຍຕົວຕົນ</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{ເປີດທັງໝົດໃນ&amp;ໜ້າຈໍທີ່ບໍ່ເຜີຍຕົວຕົນ}=1{ເປີດໃນ&amp;ໜ້າຈໍທີ່ບໍ່ເຜີຍຕົວຕົນ}other{ເປີດທັງໝົດ (#) ໃນ&amp;ໜ້າຈໍທີ່ບໍ່ເຜີຍຕົວຕົນ}}</translation>
 <translation id="2431625704210501303">ເປີດ​ຢູ່ໃນໜ້າຕ່າງ​ທີ່ບໍ່ເຜີຍຕົນຕົວ</translation>
 <translation id="4620367155626060530">ສະແດງແຖບບຸກມາກສ໌</translation>
@@ -6271,10 +6298,8 @@
 <translation id="3860292630623580294">(ບໍ່​ເຜີຍ​ຕົນ​ຕົວ)</translation>
 <translation id="4854477725773269949">ອະນຸຍາດຢູ່ໃນການບໍ່ເປີດເຜີຍຕົນຕົວ</translation>
 <translation id="6436164536244065364">ເບິ່ງໃນ Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">ຊອກຫາສ່ວນຂະຫຍາຍ ແລະ ສີສັນໜ້າຕາໃນ <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">ແຖບບໍ່ເຜີຍຕົວຕົນໃໝ່</translation>
 <translation id="6610147964972079463">ປິດແຖບທີ່ບໍ່ເຜີຍຕົວຕົນ</translation>
-<translation id="5186185447130319458">ບໍ່​ເຜີຍ​ຕົວຕົນ</translation>
 <translation id="4933782374919065856">ມີຄຳຖາມບໍ? ກະລຸນາຕິດຕໍ່ຫາບຸກຄົນທີ່ຄວບຄຸມເບິ່ງແຍງໂປຣໄຟລ໌ຂອງທ່ານ.</translation>
 </translationbundle>

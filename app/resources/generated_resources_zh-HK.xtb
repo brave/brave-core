@@ -2122,7 +2122,6 @@
 <translation id="3771294271822695279">影片檔</translation>
 <translation id="3775432569830822555">SSL 伺服器憑證</translation>
 <translation id="3775705724665058594">傳送至您的裝置</translation>
-<translation id="6945695820322143954">這個擴充功能違反了 Brave 網上應用程式商店政策。</translation>
 <translation id="3777483481409781352">無法啟用流動裝置</translation>
 <translation id="3777806571986431400">擴充功能已啟用</translation>
 <translation id="3778152852029592020">下載操作已取消。</translation>
@@ -2904,7 +2903,6 @@
 <translation id="48704129375571883">新增其他功能</translation>
 <translation id="4870758487381879312">輸入管理員提供的密碼，即可取得設定資料</translation>
 <translation id="4870903493621965035">沒有已配對的裝置</translation>
-<translation id="8839398440242019256">來源不是 Brave 網上應用程式商店。</translation>
 <translation id="4871322859485617074">PIN 中包含無效的字元</translation>
 <translation id="4871370605780490696">新增書籤</translation>
 <translation id="4871719318659334896">關閉群組</translation>
@@ -4965,7 +4963,6 @@
 <translation id="767127784612208024">輕觸即可確認重設</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/> (在 <ph name="PAGE_TITLE"/> 中)。</translation>
 <translation id="1800308196794859773">傳送語音給 Brave，透過語音輸入填寫文字欄位。</translation>
-<translation id="3098826269712097986">離開無痕模式後，登入資料會儲存在 Brave 中；這讓您日後在此網站上再次使用 Touch ID。</translation>
 <translation id="7681095912841365527">網站可以使用藍牙</translation>
 <translation id="7683373461016844951">如要繼續操作，請按一下 [確定]，然後按一下 [新增使用者]，即可為您的 <ph name="DOMAIN"/> 電郵地址建立新的設定檔。</translation>
 <translation id="7684212569183643648">已由管理員安裝</translation>
@@ -5442,7 +5439,6 @@
 <translation id="8259239505248583312">開始使用</translation>
 <translation id="8260126382462817229">請嘗試再次登入</translation>
 <translation id="8260864402787962391">滑鼠</translation>
-<translation id="8261378640211443080">這個擴充功能未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> 中，可能是在您不知情的情況下加入瀏覽器。</translation>
 <translation id="8261506727792406068">刪除</translation>
 <translation id="8263336784344783289">為此群組命名</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> 已停用滑鼠游標。</translation>
@@ -6004,7 +6000,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> 可編輯 <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">曾於 <ph name="DEVICE_LAST_ACTIVATED_TIME"/> 天前在線</translation>
 <translation id="8986362086234534611">清除</translation>
-<translation id="9079153198295609735">自動將使用統計資料和當機報告傳送給 Brave</translation>
 <translation id="8987927404178983737">月</translation>
 <translation id="8991520179165052608">網站可以使用您的麥克風</translation>
 <translation id="899403249577094719">Netscape 憑證基底網址</translation>
@@ -6223,6 +6218,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">正在建立安全連線…</translation>
 <translation id="998747458861718449">檢查(&amp;N)</translation>
+<translation id="658539216370629794">在無痕式視窗中開啟連結(&amp;G)</translation>
+<translation id="1432267168815937878">在無痕式視窗中開啟連結(&amp;G)</translation>
+<translation id="6516243500644829484">新增無痕式視窗(&amp;I)</translation>
+<translation id="7973394300052703468">新增無痕式視窗(&amp;I)</translation>
+<translation id="6395403722585816044">已透過無痕模式下載</translation>
+<translation id="203837651858678035">仍要結束無痕模式嗎？</translation>
+<translation id="7376221878517288144">仍要離開無痕模式嗎？</translation>
+<translation id="871606814707918245">大多數使用者封鎖了此網站傳送的通知</translation>
+<translation id="5053701565089446556">無痕模式擴充功能：<ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">無痕模式應用程式：<ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">無痕式分頁：<ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">無痕模式子頁框：<ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">無痕模式入口網站：<ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave 網上應用程式商店</translation>
+<translation id="8261378640211443080">這個擴充功能未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> 中，可能是在您不知情的情況下加入瀏覽器。</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (無痕模式)</translation>
+<translation id="4369414322596874629">使用無痕式視窗，即可私密瀏覽</translation>
+<translation id="3772947852642271642">如果您使用無痕式視窗瀏覽網頁，系統便不會保留您的瀏覽記錄</translation>
+<translation id="3871738366246972820">與其他人共用電腦嗎？請嘗試開啟無痕式視窗。</translation>
+<translation id="5808622652939943719">如要私密瀏覽，請按一下三點圖示選單，然後開啟無痕式視窗</translation>
+<translation id="9079153198295609735">自動將使用統計資料和當機報告傳送給 Brave</translation>
+<translation id="8839398440242019256">來源不是 Brave 網上應用程式商店。</translation>
+<translation id="6945695820322143954">這個擴充功能違反了 Brave 網上應用程式商店政策。</translation>
+<translation id="1676595396635191120">新增無痕式視窗</translation>
+<translation id="5094764494104066239">永遠顯示書籤列</translation>
+<translation id="4471385409549756595">新增無痕式視窗</translation>
+<translation id="4540437243849625078">此網站即將與外部應用程式分享資料，分享時會離開無痕模式。</translation>
+<translation id="1227836882233136433">要離開無痕模式嗎？</translation>
+<translation id="7618452966706304788">您要在無痕模式下使用 Touch ID 登入 <ph name="APP_NAME"/> 嗎？</translation>
+<translation id="3098826269712097986">離開無痕模式後，登入資料會儲存在 Brave 中；這讓您日後在此網站上再次使用 Touch ID。</translation>
+<translation id="5186185447130319458">無痕模式</translation>
+<translation id="2579188629646253712">結束無痕模式</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{在無痕式視窗中開啟所有書籤(&amp;I)}=1{在無痕式視窗中開啟(&amp;I)}other{在無痕式視窗中開啟全部 # 個書籤(&amp;I)}}</translation>
 <translation id="2431625704210501303">在無痕式視窗中開啟(&amp;I)</translation>
 <translation id="4620367155626060530">顯示書籤列(&amp;S)</translation>
@@ -6272,10 +6299,8 @@
 <translation id="3860292630623580294">(無痕模式)</translation>
 <translation id="4854477725773269949">允許在無痕模式中執行</translation>
 <translation id="6436164536244065364">在「Brave 網上應用程式商店」上查看</translation>
-<translation id="8808478386290700967">Brave 網上應用程式商店</translation>
 <translation id="38046578254905003">在「<ph name="BEGIN_LINK"/>Brave 網上應用程式商店<ph name="END_LINK"/>」中尋找擴充程式和主題背景</translation>
 <translation id="6336451774241870485">新增無痕式分頁</translation>
 <translation id="6610147964972079463">關閉無痕式分頁</translation>
-<translation id="5186185447130319458">無痕模式</translation>
 <translation id="4933782374919065856">有問題嗎？請與您個人資料的監管者聯絡。</translation>
 </translationbundle>

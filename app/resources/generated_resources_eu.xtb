@@ -2124,7 +2124,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3771294271822695279">Bideo-fitxategiak</translation>
 <translation id="3775432569830822555">SSL zerbitzariaren ziurtagiria</translation>
 <translation id="3775705724665058594">Bidali zure gailuetara</translation>
-<translation id="6945695820322143954">Luzapenak Brave Web-dendaren gidalerroak urratzen ditu.</translation>
 <translation id="3777483481409781352">Ezin izan da aktibatu gailu mugikorra</translation>
 <translation id="3777806571986431400">Luzapena gaitu da</translation>
 <translation id="3778152852029592020">Deskarga bertan behera utzi da.</translation>
@@ -2906,7 +2905,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="48704129375571883">Gehitu eginbide gehiago</translation>
 <translation id="4870758487381879312">Konfigurazioari buruzko informazioa lortzeko, idatzi administratzaileak emandako pasahitza</translation>
 <translation id="4870903493621965035">Ez dago parekatutako gailurik</translation>
-<translation id="8839398440242019256">Ez da Brave Web Store dendakoa.</translation>
 <translation id="4871322859485617074">PIN kodeak balio ez duten karaktereak ditu</translation>
 <translation id="4871370605780490696">Gehitu laster-marka</translation>
 <translation id="4871719318659334896">Itxi taldea</translation>
@@ -4967,7 +4965,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="767127784612208024">Ukitu berrezarri nahi duzula berresteko</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, <ph name="PAGE_TITLE"/> orrian.</translation>
 <translation id="1800308196794859773">Bidali ahotsa Brave-ri, testu-eremuetan diktatu ahal izateko.</translation>
-<translation id="3098826269712097986">Ezkutuko modutik irteten zarenean, saio-hasierako datuak Brave-n gordeko dira. Horri esker, Touch ID erabili ahalko duzu webgune honetan berriro sartzen zarenean.</translation>
 <translation id="7681095912841365527">Webguneak Bluetooth konexioa erabil dezake</translation>
 <translation id="7683373461016844951">Aurrera egiteko, sakatu Ados eta sakatu Gehitu pertsona bat <ph name="DOMAIN"/> domeinuko zure helbide elektronikorako profila sortzeko.</translation>
 <translation id="7684212569183643648">Administratzaileak instalatu du</translation>
@@ -5444,7 +5441,6 @@ Horrek ez die eragiten beste gailu batzuetako aplikazioei edo edukiei.</translat
 <translation id="8259239505248583312">Has gaitezen</translation>
 <translation id="8260126382462817229">Hasi saioa berriro</translation>
 <translation id="8260864402787962391">Sagua</translation>
-<translation id="8261378640211443080">Luzapen hau ez dago <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dendan, eta agian zuk jakin gabe gehitu da.</translation>
 <translation id="8261506727792406068">Ezabatu</translation>
 <translation id="8263336784344783289">Eman izena taldeari</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> orriak saguaren kurtsorea desgaitu du.</translation>
@@ -6006,7 +6002,6 @@ Horrek ez die eragiten beste gailu batzuetako aplikazioei edo edukiei.</translat
 <translation id="8983632908660087688"><ph name="ORIGIN"/> webguneak <ph name="FILENAME"/> edita dezake</translation>
 <translation id="8985264973231822211">Aktibo duela <ph name="DEVICE_LAST_ACTIVATED_TIME"/> egun</translation>
 <translation id="8986362086234534611">Ahaztu</translation>
-<translation id="9079153198295609735">Bidali automatikoki erabilera-estatistikak eta hutsegite-txostenak Brave-ra</translation>
 <translation id="8987927404178983737">Hilabetea</translation>
 <translation id="8991520179165052608">Webguneak mikrofonoa erabil dezake</translation>
 <translation id="899403249577094719">Netscape ziurtagiriaren oinarrizko URLa</translation>
@@ -6225,6 +6220,38 @@ Horrek ez die eragiten beste gailu batzuetako aplikazioei edo edukiei.</translat
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Konexio segurua ezartzen…</translation>
 <translation id="998747458861718449">I&amp;kuskatu</translation>
+<translation id="658539216370629794">Ireki esteka &amp;ezkutuko moduko leihoan</translation>
+<translation id="1432267168815937878">Ireki esteka &amp;ezkutuko moduko leihoan</translation>
+<translation id="6516243500644829484">&amp;Ezkutuko leiho berria</translation>
+<translation id="7973394300052703468">&amp;Ezkutuko moduko leiho berria</translation>
+<translation id="6395403722585816044">Ezkutuko moduan deskargatu da</translation>
+<translation id="203837651858678035">Ezkutuko modutik irten nahi duzu hala ere?</translation>
+<translation id="7376221878517288144">Ezkutuko modutik irten nahi duzu hala ere?</translation>
+<translation id="871606814707918245">Jende gehienak blokeatu egiten ditu webgune honen jakinarazpenak</translation>
+<translation id="5053701565089446556">Ezkutuko luzapena: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Ezkutuko aplikazioa: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Ezkutuko fitxa: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Ezkutuko moduko azpimarkoa: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Ezkutuko moduaren ataria: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Luzapen hau ez dago <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dendan, eta agian zuk jakin gabe gehitu da.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ezkutuko moduan)</translation>
+<translation id="4369414322596874629">Sarea modu pribatuan araka dezakezu ezkutuko moduko leihoak erabilita</translation>
+<translation id="3772947852642271642">Sarean egiten duzuna historian gordeta geratzerik nahi ez baduzu, ireki leiho bat ezkutuko moduan</translation>
+<translation id="3871738366246972820">Ordenagailua jende gehiagok erabiltzen du? Erabili arakatzailearen ezkutuko modua.</translation>
+<translation id="5808622652939943719">Sarea modu pribatuan arakatzeko, sakatu hiru puntuen ikonoa duen menua eta ireki leiho bat ezkutuko moduan</translation>
+<translation id="9079153198295609735">Bidali automatikoki erabilera-estatistikak eta hutsegite-txostenak Brave-ra</translation>
+<translation id="8839398440242019256">Ez da Brave Web Store dendakoa.</translation>
+<translation id="6945695820322143954">Luzapenak Brave Web-dendaren gidalerroak urratzen ditu.</translation>
+<translation id="1676595396635191120">Ezkutuko leiho berria</translation>
+<translation id="5094764494104066239">Erakutsi beti laster-marken barra</translation>
+<translation id="4471385409549756595">Ezkutuko leiho berria</translation>
+<translation id="4540437243849625078">Webgune hau informazioa partekatzera doa aplikazio batekin ezkutuko modutik kanpo.</translation>
+<translation id="1227836882233136433">Ezkutuko modutik irten?</translation>
+<translation id="7618452966706304788">Touch ID erabili nahi duzu <ph name="APP_NAME"/> aplikazioarekin ezkutuko moduan zaudenean?</translation>
+<translation id="3098826269712097986">Ezkutuko modutik irteten zarenean, saio-hasierako datuak Brave-n gordeko dira. Horri esker, Touch ID erabili ahalko duzu webgune honetan berriro sartzen zarenean.</translation>
+<translation id="5186185447130319458">Ezkutuko modua</translation>
+<translation id="2579188629646253712">Irten ezkutuko modutik</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Ireki guztiak &amp;ezkutuko moduko leiho batean}=1{Ireki &amp;ezkutuko moduko leiho batean}other{Ireki guztiak (#) &amp;ezkutuko moduko leiho batean}}</translation>
 <translation id="2431625704210501303">Ireki &amp;ezkutuko nabigazio-leihoan</translation>
 <translation id="4620367155626060530">&amp;Erakutsi laster-marken barra</translation>
@@ -6274,10 +6301,8 @@ Horrek ez die eragiten beste gailu batzuetako aplikazioei edo edukiei.</translat
 <translation id="3860292630623580294">(Ezkutuko modua)</translation>
 <translation id="4854477725773269949">Baimendu ezkutuko moduan</translation>
 <translation id="6436164536244065364">Ikusi Brave Web Store dendan</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Aurkitu luzapenak eta gaiak <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> dendan</translation>
 <translation id="6336451774241870485">Ezkutuko moduko fitxa berria</translation>
 <translation id="6610147964972079463">Itxi ezkutuko moduko fitxak</translation>
-<translation id="5186185447130319458">Ezkutuko modua</translation>
 <translation id="4933782374919065856">Galderak dituzu? Jarri harremanetan zure profila gainbegiratzen duen pertsonarekin.</translation>
 </translationbundle>

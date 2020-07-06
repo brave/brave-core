@@ -6,10 +6,10 @@
 <translation id="1015730422737071372">Տրամադրել լրացուցիչ տեղեկություններ</translation>
 <translation id="1019413721762100891">Անջատ</translation>
 <translation id="1021110881106174305">Քարտեր, որոնցով կարելի է վճարել</translation>
-<translation id="3898257577441589237">Այս խնդիրը կարող է առաջանալ հավաստագրի պատճառով, որը դուք կամ ինչ-որ մեկը տեղադրել եք ձեր սարքում։ Հավաստագիրն օգտագործվում է ցանցեր որսալու ու հետագծելու նպատակով։ Այն վստահելի չէ Brave-ի համար։ Թեև լինում են օրինական հետագծման դեպքեր, օրինակ՝ դպրոցի կամ ընկերության ցանցում, Brave-ին անհրաժեշտ է համոզվել, որ դուք գիտեք այդ մասին, նույնիսկ եթե չեք կարող դադարեցնել դա։ Հետագծումը կարող է իրականացվել ցանկացած դիտարկիչում կամ հավելվածում, որին հասանելի է համացանցը։</translation>
 <translation id="1030706264415084469"><ph name="URL"/> կայքն ուզում է ձեր սարքում մեծ ծավալով տվյալներ մշտապես պահել</translation>
 <translation id="1032854598605920125">Պտտել ժամացույցի սլաքի ուղղությամբ</translation>
 <translation id="1036348656032585052">Անջատել</translation>
+<translation id="1038106730571050514">Ցուցադրել առաջարկները</translation>
 <translation id="1038842779957582377">անհայտ անուն</translation>
 <translation id="1041998700806130099">Հաղորդագրություն առաջադրանքի թերթի վրա</translation>
 <translation id="1050038467049342496">Փակեք մյուս հավելվածները</translation>
@@ -29,7 +29,6 @@
 <translation id="1920681928837417101">Կառավարեք գաղտնաբառերը Brave-ի կարգավորումներում</translation>
 <translation id="1101672080107056897">Գործողություն սխալի դեպքում</translation>
 <translation id="1103523840287552314">Միշտ թարգմանել <ph name="LANGUAGE"/>-ից</translation>
-<translation id="5047769237368272183">Նշված լինելու դեպքում Brave-ը ձևերում արագ լրացման համար այս սարքում կպահի ձեր քարտի պատճենը:</translation>
 <translation id="1110994991967754504"><ph name="PERMISSION_NAME"/>՝ ընտրեք թույլտվություն</translation>
 <translation id="1113869188872983271">&amp;Հետարկել վերադասավորումը</translation>
 <translation id="1125573121925420732">Կայքերի անվտանգության հավաստագրերի թարմացման ժամանակ կարող են զգուշացումներ ցուցադրվել: Այս խնդիրը շուտով կշտկվի:</translation>
@@ -160,6 +159,7 @@
 <translation id="161042844686301425">Երկնագույն</translation>
 <translation id="1620510694547887537">Տեսախցիկ</translation>
 <translation id="1623104350909869708">Թույլ չտալ այս էջին ստեղծել լրացուցիչ երկխոսություններ</translation>
+<translation id="1623253368136559158">Տեսախցիկի տեղաշարժ</translation>
 <translation id="16338877384480380">Architecture-B</translation>
 <translation id="1638780421120290329">Չհաջողվեց պահել քարտը</translation>
 <translation id="1639239467298939599">Բեռնում</translation>
@@ -174,7 +174,6 @@
 <translation id="1662550410081243962">Պահել վճարման եղանակները և դրանց տվյալներով ինքնալրացնել ձևերը</translation>
 <translation id="1838576226863399477">Քարտերն ու հասցեները նշված են Brave-ում: Դրանք կարող եք կառավարել <ph name="BEGIN_LINK"/>Կարգավորումներում<ph name="END_LINK"/>:</translation>
 <translation id="1671391448414634642">Այսուհետ <ph name="SOURCE_LANGUAGE"/> լեզվով էջերը կթարգմանվեն <ph name="TARGET_LANGUAGE"/>:</translation>
-<translation id="6373940988468425649">Ձեր տվյալները պաշտպանելու համար <ph name="SITE"/> կայքը սովորաբար գաղտնագրում է օգտագործում: Brave-ի՝ <ph name="SITE"/> կայքին կապակցվելու փորձի ժամանակ կայքը վերադարձրեց արտասովոր և սխալ մուտքային տվյալներ: Հնարավոր է, որ <ph name="SITE"/> կայքի անվան տակ նենգորդ է հանդես գալիս, կամ Wi-Fi մուտքի էկրանի կապն ընդհատվել է: Ձեր տվյալները, այնուամենայնիվ, ապահով են, քանի որ Brave-ն ընդհատել էր կապը՝ նախքան տեղի կունենար տվյալների փոխանակում:</translation>
 <translation id="1682696192498422849">Կարճ եզրից սկսած</translation>
 <translation id="168841957122794586">Սերվերի վկայագիրը թույլ գաղտնագրման բանալի ունի:</translation>
 <translation id="1697532407822776718">Տեղակայումը բարեհաջող ավարտված է:</translation>
@@ -195,7 +194,6 @@
 <translation id="1736420071277903564">Համակարգիչ</translation>
 <translation id="1740951997222943430">Մուտքագրեք ժամկետի սպառման վավեր ամիս</translation>
 <translation id="1741613555002899862">Պետք է լինի նշված և վավեր տող, եթե DnsOverHttpsMode կանոնի համար կարգավորված է <ph name="SECURE_DNS_MODE_SECURE"/> արժեքը:</translation>
-<translation id="8425351843056705489">Հաջորդ անգամ ավելի արագ վճարելու համար պահեք ձեր քարտը, անունն ու վճարային հասցեն Brave հաշվում և այս սարքում:</translation>
 <translation id="1743570585616704562">Չճանաչվեց</translation>
 <translation id="1745880797583122200">Ձեր դիտարկիչը կառավարվում է</translation>
 <translation id="1746113442205726301">Պատկերի տեղաշարժ Y առանցքով</translation>
@@ -218,6 +216,7 @@
 <translation id="1838374766361614909">Մաքրել որոնումը</translation>
 <translation id="1839551713262164453">Չհաջողվեց ստուգել կանոնի արժեքները</translation>
 <translation id="1842969606798536927">Վճարել</translation>
+<translation id="359494141189433808">Հուսալի գաղտնաբառ ստեղծելու համար օգտագործեք ձեր Brave հաշիվը</translation>
 <translation id="1871208020102129563">Ընտրված է ֆիքսված պրոքսի-սերվերների, այլ ոչ PAC սկրիպտի URL-ի օգտագործումը:</translation>
 <translation id="1871284979644508959">Պարտադիր դաշտ</translation>
 <translation id="85321348617848915">Brave Ձևաթղթեր</translation>
@@ -268,6 +267,7 @@
 <translation id="2094505752054353250">Տիրույթի անհամապատասխանություն</translation>
 <translation id="2096368010154057602">Դեպարտամենտ</translation>
 <translation id="2099652385553570808">Երեք ամրակ ձախ կողմում</translation>
+<translation id="2101225219012730419">Տարբերակ՝</translation>
 <translation id="2102134110707549001">Ստեղծել հուսալի գաղտնաբառ…</translation>
 <translation id="2107021941795971877">Տպման աջակցում</translation>
 <translation id="2108755909498034140">Վերագործարկեք համակարգիչը</translation>
@@ -400,11 +400,13 @@
 <translation id="2666092431469916601">Վերին</translation>
 <translation id="2666117266261740852">Փակեք մյուս ներդիրներն ու հավելվածները</translation>
 <translation id="2674170444375937751">Իսկապե՞ս ուզում եք ջնջել այս էջերը ձեր պատմությունից:</translation>
+<translation id="2674804415323431591">Թաքցնել առաջարկները</translation>
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">Դուրս գալ էջից</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Լավագույն տարբերակ</translation>
 <translation id="2691924980723297736">Զգուշացում</translation>
+<translation id="7246459936780600154">Օգտագործել Brave հաշվում պահված գաղտնաբառերը</translation>
 <translation id="2699302886720511147">Քարտեր, որոնցով կարելի է վճարել</translation>
 <translation id="2701514975700770343">Երեսի կողմով ներքև</translation>
 <translation id="2702801445560668637">Ընթերցանության ցանկ</translation>
@@ -442,6 +444,7 @@
 <translation id="2856444702002559011">Հարձակվողները կարող են գողանալ ձեր տեղեկությունները (օրինակ՝ գաղտնաբառերը, նամակները կամ վարկային քարտերը) <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> կայքից։ <ph name="BEGIN_LEARN_MORE_LINK"/>Իմանալ ավելին<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Կրկնակի ուղղահայաց ծալում</translation>
 <translation id="2878424575911748999">A1</translation>
+<translation id="2880660355386638022">Պատուհանների տեղակայում</translation>
 <translation id="2881276955470682203">Պահե՞լ քարտը</translation>
 <translation id="2882949212241984732">Եռափեղկ ծալում</translation>
 <translation id="2903493209154104877">Հասցեներ</translation>
@@ -452,6 +455,7 @@
 <translation id="2915068235268646559">Խափանման օրը և ժամը՝ <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Փակեք մյուս ծրագրերը</translation>
 <translation id="2922350208395188000">Հնարավոր չէ ստուգել սերվերի վկայագիրը:</translation>
+<translation id="6005097315762840167">Մուտք գործեք՝ Brave հաշվում պահված գաղտնաբառերն օգտագործելու համար</translation>
 <translation id="2925673989565098301">Առաքման եղանակը</translation>
 <translation id="2928905813689894207">Վճարային հասցե</translation>
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> և ուղարկման ևս <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> տարբերակ}one{<ph name="SHIPPING_ADDRESS_PREVIEW"/> և ուղարկման ևս <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> տարբերակ}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> և ուղարկման ևս <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> տարբերակ}}</translation>
@@ -463,11 +467,9 @@
 <translation id="2951588413176968965">Իմ փոստարկղը</translation>
 <translation id="295526156371527179">Զգուշացում. այս կանոնը չի միավորվել որպես բառարան, ինչպես նշված է կանոնում, քանի որ այն բառարան չէ:</translation>
 <translation id="2955913368246107853">Փակել որոնման գոտին</translation>
-<translation id="6326805297893828864">Անվտանգ կապակցում հաստատելու համար ձեր ժամացույցը պետք է ճիշտ կարգավորված լինի: Պատճառն այն է, որ վկայագրերը, որոնք կայքերն օգտագործում են իրենց նույնականացնելու համար, վավեր են միայն որոշակի ժամանակահատվածում: Քանի որ ձեր սարքի ժամացույցը սխալ է, Brave-ը չի կարող ստուգել այս վկայագրերը:</translation>
 <translation id="2972581237482394796">&amp;Վերարկել</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, ներկայումս ընտրված է: <ph name="ROW_CONTENT"/></translation>
 <translation id="2982481275546140226">Մաքրել տվյալները</translation>
-<translation id="3676215163710610678">Եթե միացված է, Brave-ն այս սարքում կպահի ձեր քարտի կրկնօրինակը՝ ձևն արագ լրացնելու համար:</translation>
 <translation id="2985398929374701810">Մուտքագրեք վավեր հասցե</translation>
 <translation id="2986368408720340940">Ստացման այս եղանակը հասանելի չէ: Փորձեք այլ եղանակ:</translation>
 <translation id="2987034854559945715">Համընկնող գործառույթներ չկան</translation>
@@ -581,7 +583,6 @@
 <translation id="3467763166455606212">Քարտատիրոջ անունը պարտադիր է</translation>
 <translation id="3468054117417088249">Բացված է <ph name="TAB_SWITCH_SUFFIX"/> ներդիրը։ Այս ներդիրին անցնելու համար սեղմեք «Tab», ապա՝ «Enter»։</translation>
 <translation id="3479552764303398839">Հիմա չէ</translation>
-<translation id="1096085967892725815">Հնարավոր է՝ չկարողանաք մտնել ձեր Brave հաշիվ։ Brave-ը խորհուրդ է տալիս փոխել գաղտնաբառը, որից հետո հարկավոր կլինի նորից մուտք գործել։</translation>
 <translation id="3487845404393360112">Դարակ 4</translation>
 <translation id="3495081129428749620">Որոնում
     <ph name="PAGE_TITLE"/> էջում</translation>
@@ -641,8 +642,8 @@
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Ստուգել պրոքսի-սերվերի, հրապատի և DNS-ի կազմաձևումը<ph name="END_LINK"/></translation>
 <translation id="372429172604983730">Սխալի պատճառ կարող է լինել հակավիրուսային ծրագիրը, հրապատը, վեբ բովանդակության զտման կամ միջնորդ սերվերի ծրագրերը:</translation>
 <translation id="373042150751172459">B4 (ծրար)</translation>
+<translation id="3731873414101415120">Ձեր այցելած կայքերը և չպաշտպանված էջերի բովանդակությունը</translation>
 <translation id="3736520371357197498">Եթե դուք հասկանում եք ձեզ սպառնացող վտանգը, ապա կարող եք նախքան վտանգավոր ծրագրերի հեռացնելը <ph name="BEGIN_LINK"/>այցելել այս ոչ ապահով կայքը<ph name="END_LINK"/>:</translation>
-<translation id="8896585555528145662">Դուք չեք կարող այցելել <ph name="SITE"/> հենց հիմա, քանի որ կայքն ուղարկել է գաղտնագրված հավատարմագրեր, որոնք Brave-ը չի կարող մշակել: Ցանցային սխալներն ու հարձակումները սովորաբար ժամանակավոր են, այնպես որ այս էջը, հավանաբար, կաշխատի ավելի ուշ:</translation>
 <translation id="7375171421124325498">Հաստատումից հետո ձեր Brave հաշվին կցված քարտի տվյալները կօգտագործվեն այս կայքի կողմից։</translation>
 <translation id="3748148204939282805"><ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> կայքում հարձակվողները կարող են խաբեությամբ ձեր սարքի վրա տեղադրել ծրագրեր կամ բացահայտել ձեր անձնական տեղեկությունները (օրինակ՝ գաղտնաբառերը, հեռախոսահամարները կամ վարկային քարտերը): <ph name="BEGIN_LEARN_MORE_LINK"/>Իմանալ ավելին<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="375403751935624634">Սերվերի սխալի պատճառով թարգմանությունը չհաջողվեց:</translation>
@@ -802,7 +803,6 @@
 <translation id="4356973930735388585">Այս կայքում գտնվող հարձակվողները կարող են վտանգավոր ծրագրեր տեղադրել ձեր համակարգչում, որոնք կարող են գողանալ կամ ջնջել ձեր տեղեկությունները (օրինակ՝ լուսանկարները, գաղտնաբառերը, նամակները և վարկային քարտերը):</translation>
 <translation id="4358059973562876591">Ձեր նշած ձևանմուշները չեն կարող կիրառվել DnsOverHttpsMode կանոնի հետ կապված սխալի պատճառով:</translation>
 <translation id="4358461427845829800">Վճարման եղանակների կառավարում...</translation>
-<translation id="5442778523450464826">Դուք հենց նոր մուտքագրեցիք ձեր գաղտնաբառը կասկածելի կայքում։ Brave-ը կարող է օգնել։ Որպեսզի գաղտնաբառը փոխեք և Brave-ին տեղեկացնեք, որ ձեր հաշիվը վտանգված է, սեղմեք «Պաշտպանել հաշիվը»։</translation>
 <translation id="4367563149485757821">Number-12 (ծրար)</translation>
 <translation id="437058704415269440">Հաշվի մնացորդը</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -814,7 +814,6 @@
 <translation id="4408413947728134509">Քուքիներ՝ <ph name="NUM_COOKIES"/></translation>
 <translation id="4414290883293381923">Դուք հենց նոր մուտքագրեցիք ձեր գաղտնաբառը կասկածելի կայքում։ Խորհուրդ ենք տալիս փոխել ձեր գաղտնաբառը, որն օգտագործում եք <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> և այլ կայքերում։</translation>
 <translation id="4415426530740016218">Ստացման հասցեն</translation>
-<translation id="4906192414477726331">Այս սերվերը չի կարող ապացուցել, որ <ph name="DOMAIN"/> է: Brave-ը չի վստահում դրա անվտանգության վկայականին: Պատճառը կարող է լինել սխալ կազմաձևումը կամ կապակցման խափանումը հարձակվողի կողմից:</translation>
 <translation id="443121186588148776">Սերիական միացք</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> տիրույթը չի ընդունել ձեր մուտքի վկայագիրը, կամ դուք չեք տրամադրել այն:</translation>
 <translation id="4434045419905280838">Ելնող պատուհաններ և վերահղում</translation>
@@ -845,7 +844,6 @@
 <translation id="457875822857220463">Առաքում</translation>
 <translation id="4579056131138995126">Personal (ծրար)</translation>
 <translation id="4582204425268416675">Հեռացնել քարտը</translation>
-<translation id="8385639954311581596">Հեռացնե՞լ հասցեն Brave-ից:</translation>
 <translation id="4592951414987517459">Կապակցումը <ph name="DOMAIN"/>-ի հետ գաղտնագրված է ժամանակակից ծածկագրերի լրակազմով:</translation>
 <translation id="4594403342090139922">&amp;Հետարկել ջնջումը</translation>
 <translation id="4597348597567598915">Չափ 8</translation>
@@ -862,7 +860,6 @@
 <translation id="467662567472608290">Այս սերվերը չի կարող ապացուցել, որ <ph name="DOMAIN"/> է: Դրա անվտանգության վկայականը սխալներ է պարունակում: Պատճառը կարող է լինել սխալ կազմաձևումը կամ կապակցման խափանումը հարձակվողի կողմից:</translation>
 <translation id="4677585247300749148"><ph name="URL"/> կայքն ուզում է օգտագործել հատուկ գործողությունները</translation>
 <translation id="8197094463444457125">Brave Սլայդներ</translation>
-<translation id="3619365259205518877">Դուք հենց նոր մուտքագրեցիք ձեր գաղտնաբառը կասկածելի կայքում։ Brave-ը խորհուրդ է տալիս ստուգել պահված գաղտնաբառերը <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> և այլ կայքերի համար, որտեղ դուք այժմ օգտագործում եք այս գաղտնաբառը։</translation>
 <translation id="4690462567478992370">Դադարեցնել անվավեր վկայագրի օգտագործումը</translation>
 <translation id="4691835149146451662">Architecture-A (ծրար)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
@@ -872,9 +869,9 @@
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Գործարկել Windows-ի ցանցի ախտորոշումը<ph name="END_LINK"/></translation>
 <translation id="4726672564094551039">Վերաբեռնել կանոնները</translation>
 <translation id="4728558894243024398">Հենք</translation>
+<translation id="4731638775147756694">Ձեր ադմինիստրատորն արգելափակել է այս հավելվածը</translation>
 <translation id="4731967714531604179">Prc2 (ծրար)</translation>
 <translation id="4733082559415072992"><ph name="URL"/> կայքն ուզում է օգտագործել ձեր սարքի տեղադրությունը</translation>
-<translation id="3960299545138990065">Վերագործարկեք Brave-ը</translation>
 <translation id="4880298864945336181">Ձեր ադմինիստրատորը միացրել է Brave Enterprise-ի միակցիչները ձեր դիտարկիչում։ Այս միակցիչներին հասանելի են ձեզ պատկանող որոշ տվյալներ։</translation>
 <translation id="473775607612524610">Թարմացնել</translation>
 <translation id="4738601419177586157">Առաջարկվող որոնման հարցում՝ «<ph name="TEXT"/>»</translation>
@@ -907,6 +904,7 @@
 <translation id="4877083676943085827">{COUNT,plural, =0{Չկա}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}one{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">Որոնել «<ph name="TEXT"/>»</translation>
 <translation id="4879491255372875719">Ավտոմատ (կանխադրված)</translation>
+<translation id="4879725228911483934">Բացել և տեղակայել պատուհանները ձեր էկրաններին</translation>
 <translation id="4880827082731008257">Որոնել պատմությունում</translation>
 <translation id="4881695831933465202">Բացել</translation>
 <translation id="4892518386797173871">Հետևի կողմ</translation>
@@ -1073,6 +1071,7 @@
 <translation id="5523118979700054094">Կանոնի անունը</translation>
 <translation id="55293785478302737">Եզրակար</translation>
 <translation id="553484882784876924">Prc6 (ծրար)</translation>
+<translation id="5536214594743852365">Ցուցադրել «<ph name="SECTION"/>» բաժինը</translation>
 <translation id="5539243836947087108">Լաստ</translation>
 <translation id="5540224163453853">Չհաջողվեց գտնել հոդվածը, որի համար հարցում էր ուղարկվել:</translation>
 <translation id="5541086400771735334">Փոստարկղ 7</translation>
@@ -1216,7 +1215,6 @@
 <translation id="6116338172782435947">Տեսնել սեղմատախտակին պատճենված տեքստը և պատկերները</translation>
 <translation id="6120179357481664955">Հիշո՞ւմ եք ձեր UPI ID-ն</translation>
 <translation id="5972135347314259717">Brave Enterprise-ի միակցիչներ</translation>
-<translation id="1504280350970284172">Հուսալի գաղտնաբառ ստեղծելու համար օգտագործեք ձեր Brave հաշիվը։</translation>
 <translation id="6146055958333702838">Ստուգեք բոլոր մալուխները և վերաբեռնեք երթուղիչները, մոդեմները կամ օգտագործվող
     այլ ցանցային սարքերը:</translation>
 <translation id="614940544461990577">Փորձեք՝</translation>
@@ -1242,6 +1240,7 @@
 <translation id="6263376278284652872"><ph name="DOMAIN"/>-ի էջանիշներ</translation>
 <translation id="6264485186158353794">Վերադառնալ անվտանգության</translation>
 <translation id="6266934640124581640">Բաց փիրուզագույն</translation>
+<translation id="9136010393039243713">Brave Update</translation>
 <translation id="6276112860590028508">Ձեր ընթերցանության ցանկի էջերը կցուցադրվեն այստեղ</translation>
 <translation id="4491702030396251550">Հաջորդ անգամ ավելի արագ վճարելու համար պահեք ձեր քարտը և վճարային հասցեն Brave հաշվում:</translation>
 <translation id="293801390522973485">Brave-ում <ph name="BEGIN_EMPHASIS"/>չեն պահվի<ph name="END_EMPHASIS"/>՝
@@ -1262,7 +1261,6 @@
 <translation id="6328639280570009161">Անջատեք ցանցի գործողությունների կանխատեսումը</translation>
 <translation id="6328784461820205019">«Ձեր կապը պաշտպանված չէ» կամ «&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;» կամ «&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;» կամ «&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;» կամ «&lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt;» կամ «SSL հավաստագրի սխալ»</translation>
 <translation id="6328786501058569169">Սա կեղծ կայք է</translation>
-<translation id="2679184024759659109">Օգտագործել Brave հաշվում պահված գաղտնաբառերը</translation>
 <translation id="6337133576188860026">Կազատվի մինչև <ph name="SIZE"/> տարածք։ Դրանից հետո որոշ կայքեր հնարավոր է՝ ավելի դանդաղ բեռնվեն։</translation>
 <translation id="6337534724793800597">Զտել կանոններն ըստ անվան</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Չկա}=1{1 գաղտնաբառ (հետևյալ տիրույթների համար՝ <ph name="DOMAIN_LIST"/>, համաժամացված է)}=2{2 գաղտնաբառ (հետևյալ տիրույթների համար՝ <ph name="DOMAIN_LIST"/>, համաժամացված են)}one{# գաղտնաբառ (հետևյալ տիրույթների համար՝ <ph name="DOMAIN_LIST"/>, համաժամացված են)}other{# գաղտնաբառ (հետևյալ տիրույթների համար՝ <ph name="DOMAIN_LIST"/>, համաժամացված են)}}</translation>
@@ -1274,7 +1272,6 @@
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Կարող են վճարներ գանձվել</translation>
 <translation id="6386120369904791316">{COUNT,plural, =1{1 այլ առաջարկ}one{# other suggestions}other{# այլ առաջարկ}}</translation>
-<translation id="2374115610089464099">Հաջորդ անգամ ավելի արագ վճարելու համար պահեք ձեր քարտն ու վճարային հասցեն Brave հաշվում և այս սարքում:</translation>
 <translation id="6389470377220713856">Քարտատիրոջ անունը</translation>
 <translation id="6390200185239044127">Զիգզագաձև ծալում կիսով չափ</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
@@ -1283,7 +1280,6 @@
 <translation id="6406765186087300643">C0 (ծրար)</translation>
 <translation id="6409754798200046165">Դուք հենց նոր մուտքագրեցիք ձեր գաղտնաբառը կասկածելի կայքում: Խորհուրդ ենք տալիս փոխել գաղտնաբառը։</translation>
 <translation id="6410264514553301377">Մուտքագրեք <ph name="CREDIT_CARD"/> քարտի սպառման ամսաթիվը և CVC կոդը</translation>
-<translation id="7435155322279654755">Brave-ը կօգնի պաշտպանել ձեր Brave հաշիվը և փոխել գաղտնաբառը։</translation>
 <translation id="6423385022588644828">Այսուհետ ավելի արագ հաստատեք ձեր քարտերը Touch ID-ի միջոցով</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Երկփեղկ ծալում</translation>
@@ -1338,7 +1334,6 @@
 <translation id="6657585470893396449">Գաղտնաբառ</translation>
 <translation id="6665553082534466207">Երեք անցք աջ կողմում</translation>
 <translation id="6670613747977017428">Վերադառնալ անվտանգ միջավայր:</translation>
-<translation id="4670564340385807132">Հեռացնե՞լ ձևերի առաջարկները Brave-ից:</translation>
 <translation id="6685834062052613830">Դուրս եկեք հաշվից և ավարտեք կարգավորումը</translation>
 <translation id="6687335167692595844">Տառաչափի հարցումն ուղարկվել է</translation>
 <translation id="6689249931105087298">Հարաբերական՝ սև կետի սեղմումով</translation>
@@ -1410,6 +1405,7 @@
 <translation id="7050187094878475250">Դուք փորձում էիք մտնել <ph name="DOMAIN"/>, սակայն սերվերի կողմից ներկայացված վկայականի վավերականության ժամկետը չափազանց երկար է, ինչը վստահություն չի ներշնչում:</translation>
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Քարտն այս պահին չի կարող պահվել}one{Քարտն այս պահին չի կարող պահվել}other{Քարտերն այս պահին չեն կարող պահվել}}</translation>
 <translation id="7053983685419859001">Արգելափակել</translation>
+<translation id="7058163556978339998"><ph name="BROWSER"/> դիտարկիչը հաստատել է, որ այս կայքի հավաստագիրը թողարկել է <ph name="ISSUER"/> ընկերությունը:</translation>
 <translation id="7062635574500127092">Փիրուզագույն</translation>
 <translation id="7064851114919012435">Կոնտակտային տվյալներ</translation>
 <translation id="70705239631109039">Ձեր կապը լիարժեք պաշտպանված չէ</translation>
@@ -1473,6 +1469,7 @@
 <translation id="7313965965371928911"><ph name="BEGIN_LINK"/>Անվտանգ դիտարկման<ph name="END_LINK"/> զգուշացումներ</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Օգնություն կապի խնդիրների դեպքում</translation>
+<translation id="7323804146520582233">Թաքցնել «<ph name="SECTION"/>» բաժինը</translation>
 <translation id="733354035281974745">Լոկալ հաշվի փոփոխում սարքում</translation>
 <translation id="7333654844024768166">Դուք հենց նոր մուտքագրեցիք ձեր գաղտնաբառը կասկածելի կայքում։ Խորհուրդ ենք տալիս փոխել ձեր գաղտնաբառը, որն օգտագործում եք <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> և այլ կայքերում։</translation>
 <translation id="7334320624316649418">&amp;Վերարկել վերադասավորումը</translation>
@@ -1519,7 +1516,6 @@
 <translation id="7485870689360869515">Տվյալներ չեն գտնվել:</translation>
 <translation id="3692186536781145635">Ձեր գաղտնաբառը բացահայտվել է որոշակի կայքում կամ հավելվածում տեղի ունեցած տվյալների արտահոսքի հետևանքով։ Brave-ը խորհուրդ է տալիս ստուգել պահված գաղտնաբառերի ապահովությունը և անհապաղ փոխել <ph name="ORIGIN"/> ռեսուրսում օգտագործվող գաղտնաբառը:</translation>
 <translation id="7498234416455752244">Շարունակել աշխատանքը</translation>
-<translation id="1012292338579042608">Դուք հենց նոր մուտքագրեցիք ձեր գաղտնաբառը կասկածելի կայքում։ Bravee-ը խորհուրդ է տալիս ստուգել պահված գաղտնաբառերը <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> և այլ կայքերի համար, որտեղ դուք այժմ օգտագործում եք այս գաղտնաբառը։</translation>
 <translation id="7508255263130623398">Սարքի վերադարձված կանոնի ID-ն դատարկ է կամ չի համապատասխանում ընթացիկ ID-ին</translation>
 <translation id="7508870219247277067">Ավոկադոյի կանաչ</translation>
 <translation id="7511955381719512146">Անլար կապը, որից օգտվում եք, կարող է պահանջել, որպեսզի դուք այցելեք <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>:</translation>
@@ -1540,7 +1536,6 @@
 <translation id="7554791636758816595">Նոր ներդիր</translation>
 <translation id="7564049878696755256">Հնարավոր է՝ չկարողանաք օգտագործել ձեր <ph name="ORG_NAME"/> հաշիվը, կամ ինչ-որ մեկը կարող է գողանալ ձեր անձնական տվյալները։ Խորհուրդ ենք տալիս փոխել գաղտնաբառը։</translation>
 <translation id="7567204685887185387">Այս սերվերը չի կարող ապացուցել, որ <ph name="DOMAIN"/> է: Դրա անվտանգության վկայականը, հավանաբար, թողարկվել է խարդախաբար: Պատճառը կարող է լինել սխալ կազմաձևումը կամ կապակցման խափանումը հարձակվողի կողմից:</translation>
-<translation id="6386821459680628976">Հեռացնե՞լ վարկային քարտը Brave-ից:</translation>
 <translation id="7569983096843329377">Սև</translation>
 <translation id="7575207903026901870">Հուշումը հեռացնելու կոճակ։ Սեղմեք Enter՝ հեռացնելու համար։</translation>
 <translation id="405970181812690156">Պահեք քարտերը Brave-ում, որպեսզի արագ կատարեք վճարումներ կայքերում և հավելվածներում ձեր բոլոր սարքերով:</translation>
@@ -1597,7 +1592,6 @@
 <translation id="7763386264682878361">Վճարումների մանիֆեստների վերլուծիչ</translation>
 <translation id="7764225426217299476">Ավելացնել հասցե</translation>
 <translation id="7766518757692125295">Կիսաշրջազգեստ</translation>
-<translation id="7767271804335921384">Ձեր ամինիստրատորն արգելափակել է հավելվածը</translation>
 <translation id="7770259615151589601">Designated-Long</translation>
 <translation id="7773005668374414287">Նույն հերթականությամբ՝ երեսի կողմով վերև</translation>
 <translation id="777702478322588152">Պրեֆեկտուրա</translation>
@@ -1626,6 +1620,7 @@
 <translation id="7887885240995164102">Անցնել «նկար նկարի մեջ» ռեժիմի</translation>
 <translation id="7888575728750733395">Գույները վերահաշվելու եղանակ տպման համար</translation>
 <translation id="7904208859782148177">C3 (ծրար)</translation>
+<translation id="7923775243649974918">Տեղափոխել տեսախցիկը</translation>
 <translation id="7932579305932748336">Ծածկույթ</translation>
 <translation id="79338296614623784">Մուտքագրեք վավեր հեռախոսահամար</translation>
 <translation id="7934052535022478634">Վճարումը կատարված է</translation>
@@ -1665,6 +1660,7 @@
 <translation id="8074253406171541171">10x13 (ծրար)</translation>
 <translation id="8078141288243656252">Հնարավոր չէ ծանոթագրություն ավելացնել, երբ փաստաթուղթը պտտված է</translation>
 <translation id="8079031581361219619">Վերաբեռնե՞լ կայքը</translation>
+<translation id="939305735877869636">Brave</translation>
 <translation id="8086971161893892807">Սևագիր</translation>
 <translation id="8088680233425245692">Չհաջողվեց դիտել հոդվածը:</translation>
 <translation id="808894953321890993">Փոխել գաղտնաբառը</translation>
@@ -1757,7 +1753,6 @@
 <translation id="8474910779563686872">Ցուցադրել մշակողի տվյալները</translation>
 <translation id="8479754468255770962">Ամրակ ներքևի ձախ կողմում</translation>
 <translation id="503686638841780887">Brave հաշվի քարտերն օգտագործելու համար Brave-ում մուտք գործեք ձեր հաշիվ</translation>
-<translation id="565908431635579039">Դուք հենց նոր մուտքագրեցիք ձեր գաղտնաբառը կասկածելի կայքում։ Brave-ը խորհուրդ է տալիս ստուգել պահված գաղտնաբառերը <ph name="WEBSITE_1"/> և այլ կայքերի համար, որտեղ դուք այժմ օգտագործում եք այս գաղտնաբառը։</translation>
 <translation id="8488350697529856933">Վերաբերում է՝</translation>
 <translation id="8490137692873530638">Շեղջիչ 10</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/>-ը չափից երկար է պատասխանում:</translation>
@@ -1781,6 +1776,7 @@
 <translation id="8606726445206553943">Օգտագործել ձեր MIDI սարքերը</translation>
 <translation id="861775596732816396">Չափ 4</translation>
 <translation id="8622948367223941507">Legal-Extra</translation>
+<translation id="8623885649813806493">Համընկնող գաղտնաբառեր չկան։ Ցուցադրել բոլոր պահված գաղտնաբառերը։</translation>
 <translation id="8625384913736129811">Պահել քարտն այս սարքում</translation>
 <translation id="8663226718884576429">Տեղեկություն պատվերի մասին, <ph name="TOTAL_LABEL"/>, մանրամասներ</translation>
 <translation id="867224526087042813">Ստորագրություն</translation>

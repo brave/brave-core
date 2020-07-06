@@ -2124,7 +2124,6 @@
 <translation id="3771294271822695279">Відеофайли</translation>
 <translation id="3775432569830822555">Сертифікат SSL-сервера</translation>
 <translation id="3775705724665058594">Надіслати на пристрої</translation>
-<translation id="6945695820322143954">Це розширення порушує політику Веб-магазину Brave.</translation>
 <translation id="3777483481409781352">Не вдалось активувати мобільний пристрій</translation>
 <translation id="3777806571986431400">Розширення ввімкнено</translation>
 <translation id="3778152852029592020">Завантаження скасовано.</translation>
@@ -2906,7 +2905,6 @@
 <translation id="48704129375571883">Додати більше функцій</translation>
 <translation id="4870758487381879312">Введіть наданий адміністратором пароль, щоб отримати інформацію про налаштування</translation>
 <translation id="4870903493621965035">Немає підключених пристроїв</translation>
-<translation id="8839398440242019256">Не з Веб-магазину Brave.</translation>
 <translation id="4871322859485617074">PIN-код містить недійсні символи</translation>
 <translation id="4871370605780490696">Додати закладку</translation>
 <translation id="4871719318659334896">Закрити групу</translation>
@@ -4967,7 +4965,6 @@
 <translation id="767127784612208024">Торкніться, щоб підтвердити скидання</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, на сторінці <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Надішліть зразок свого голосу в Brave, щоб дозволити диктування в будь-якому текстовому полі.</translation>
-<translation id="3098826269712097986">Дані для входу зберігатимуться в Brave після виходу з режиму анонімного перегляду. Так ви зможете знову скористатися Touch ID на цьому веб-сайті.</translation>
 <translation id="7681095912841365527">Сайт може використовувати Bluetooth</translation>
 <translation id="7683373461016844951">Натисніть OK і виберіть "Додати користувача", щоб створити новий профіль для своєї електронної адреси <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Установив адміністратор</translation>
@@ -5445,7 +5442,6 @@
 <translation id="8259239505248583312">Почати</translation>
 <translation id="8260126382462817229">Спробуйте ввійти ще раз</translation>
 <translation id="8260864402787962391">Миша</translation>
-<translation id="8261378640211443080">Це розширення встановлено не із сайту <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>. Можливо, його було додано без вашого відома.</translation>
 <translation id="8261506727792406068">Видалити</translation>
 <translation id="8263336784344783289">Введіть назву групи</translation>
 <translation id="8263744495942430914">Сторінка <ph name="FULLSCREEN_ORIGIN"/> вимкнула курсор миші.</translation>
@@ -6007,7 +6003,6 @@
 <translation id="8983632908660087688">Сайт <ph name="ORIGIN"/> може змінювати файл "<ph name="FILENAME"/>"</translation>
 <translation id="8985264973231822211">У мережі <ph name="DEVICE_LAST_ACTIVATED_TIME"/> дн. тому</translation>
 <translation id="8986362086234534611">Видалити</translation>
-<translation id="9079153198295609735">Автоматично надсилати статистику використання та звіти про аварійне завершення роботи в Brave</translation>
 <translation id="8987927404178983737">Місяць</translation>
 <translation id="8991520179165052608">Сайт може використовувати мікрофон</translation>
 <translation id="899403249577094719">Основна URL-адреса сертифіката Netscape</translation>
@@ -6226,6 +6221,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Встановлення безпечного з'єднання...</translation>
 <translation id="998747458861718449">Перевірити</translation>
+<translation id="658539216370629794">Відкрити посилання в аноні&amp;мному вікні</translation>
+<translation id="1432267168815937878">Відкрити посилання в аноні&amp;мному вікні</translation>
+<translation id="6516243500644829484">Нове &amp;анонімне вікно</translation>
+<translation id="7973394300052703468">Нове &amp;анонімне вікно</translation>
+<translation id="6395403722585816044">Завантажено в режимі анонімного перегляду</translation>
+<translation id="203837651858678035">Усе одно вийти з режиму анонімного перегляду?</translation>
+<translation id="7376221878517288144">Усе одно вийти з режиму анонімного перегляду?</translation>
+<translation id="871606814707918245">Більшість людей блокують усі сповіщення від цього сайту</translation>
+<translation id="5053701565089446556">Розширення в режимі анонімного перегляду: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Програма в режимі анонімного перегляду: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Анонімна вкладка: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Додатковий анонімний фрейм: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Портал анонімного режиму: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Це розширення встановлено не із сайту <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>. Можливо, його було додано без вашого відома.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Анонімний перегляд)</translation>
+<translation id="4369414322596874629">Ви можете переглядати веб-сторінки конфіденційно в режимі анонімного перегляду</translation>
+<translation id="3772947852642271642">Відкрийте анонімне вікно й користуйтесь Інтернетом, не зберігаючи історію веб-перегляду</translation>
+<translation id="3871738366246972820">Користуєтеся комп’ютером спільно з іншими? Відкрийте вікно в режимі анонімного перегляду.</translation>
+<translation id="5808622652939943719">Щоб переглядати веб-сторінки конфіденційно, натисніть значок меню з трьома крапками й відкрийте вікно в режимі анонімного перегляду</translation>
+<translation id="9079153198295609735">Автоматично надсилати статистику використання та звіти про аварійне завершення роботи в Brave</translation>
+<translation id="8839398440242019256">Не з Веб-магазину Brave.</translation>
+<translation id="6945695820322143954">Це розширення порушує політику Веб-магазину Brave.</translation>
+<translation id="1676595396635191120">Нове анонімне вікно</translation>
+<translation id="5094764494104066239">Завжди показувати панель закладок</translation>
+<translation id="4471385409549756595">Нове анонімне вікно</translation>
+<translation id="4540437243849625078">Цей сайт збирається надіслати інформацію в додаток, у якому вимкнено режим анонімного перегляду.</translation>
+<translation id="1227836882233136433">Завершити анонімний перегляд?</translation>
+<translation id="7618452966706304788">Використовувати Touch ID для додатка <ph name="APP_NAME"/> у режимі анонімного перегляду?</translation>
+<translation id="3098826269712097986">Дані для входу зберігатимуться в Brave після виходу з режиму анонімного перегляду. Так ви зможете знову скористатися Touch ID на цьому веб-сайті.</translation>
+<translation id="5186185447130319458">Анонімний перегляд</translation>
+<translation id="2579188629646253712">Закрити анонімні вікна</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Відкрити всі в &amp;анонімному вікні}=1{Відкрити в &amp;анонімному вікні}one{Відкрити всі (#) в &amp;анонімному вікні}few{Відкрити всі (#) в &amp;анонімному вікні}many{Відкрити всі (#) в &amp;анонімному вікні}other{Відкрити всі (#) в &amp;анонімному вікні}}</translation>
 <translation id="2431625704210501303">Відкрити в &amp;анонімному вікні</translation>
 <translation id="4620367155626060530">&amp;Показати панель закладок</translation>
@@ -6275,10 +6302,8 @@
 <translation id="3860292630623580294">(Анонімний перегляд)</translation>
 <translation id="4854477725773269949">Дозволити в режимі анонімного перегляду</translation>
 <translation id="6436164536244065364">Переглянути у Веб-магазині Brave</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Шукайте розширення й теми у <ph name="BEGIN_LINK"/>Веб-магазині Brave <ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Нова анонімна вкладка</translation>
 <translation id="6610147964972079463">Закрити анонімні вкладки</translation>
-<translation id="5186185447130319458">Анонімний перегляд</translation>
 <translation id="4933782374919065856">Маєте запитання? Зв’яжіться з особою, яка контролює ваш профіль.</translation>
 </translationbundle>

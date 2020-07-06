@@ -2124,7 +2124,6 @@ Możesz zarządzać ustawieniami konta, korzystając z aplikacji Family Link na
 <translation id="3771294271822695279">Pliki wideo</translation>
 <translation id="3775432569830822555">Certyfikat serwera SSL</translation>
 <translation id="3775705724665058594">Wyślij na swoje urządzenia</translation>
-<translation id="6945695820322143954">To rozszerzenie narusza zasady Brave Web Store.</translation>
 <translation id="3777483481409781352">Nie udało się aktywować urządzenia komórkowego</translation>
 <translation id="3777806571986431400">Włączono rozszerzenie</translation>
 <translation id="3778152852029592020">Pobieranie zostało anulowane.</translation>
@@ -2906,7 +2905,6 @@ Możesz zarządzać ustawieniami konta, korzystając z aplikacji Family Link na
 <translation id="48704129375571883">Dodaj inne funkcje</translation>
 <translation id="4870758487381879312">Wpisz hasło uzyskane od administratora, by uzyskać dane do konfiguracji</translation>
 <translation id="4870903493621965035">Brak sparowanych urządzeń</translation>
-<translation id="8839398440242019256">Nie pochodzi z Brave Web Store.</translation>
 <translation id="4871322859485617074">Kod PIN zawiera niedozwolone znaki</translation>
 <translation id="4871370605780490696">Dodaj zakładkę</translation>
 <translation id="4871719318659334896">Zamknij grupę</translation>
@@ -5445,7 +5443,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8259239505248583312">Rozpocznij</translation>
 <translation id="8260126382462817229">Spróbuj zalogować się jeszcze raz</translation>
 <translation id="8260864402787962391">Mysz</translation>
-<translation id="8261378640211443080">To rozszerzenie nie jest oferowane w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i mogło zostać dodane bez Twojej wiedzy.</translation>
 <translation id="8261506727792406068">Usuń</translation>
 <translation id="8263336784344783289">Nazwij grupę</translation>
 <translation id="8263744495942430914">Witryna <ph name="FULLSCREEN_ORIGIN"/> wyłączyła kursor myszy.</translation>
@@ -6007,7 +6004,6 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8983632908660087688">Strona <ph name="ORIGIN"/> może edytować plik <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Aktywność <ph name="DEVICE_LAST_ACTIVATED_TIME"/> dzień temu</translation>
 <translation id="8986362086234534611">Zapomnij</translation>
-<translation id="9079153198295609735">Automatycznie przesyłaj do Brave statystyki użytkowania i raporty o awariach</translation>
 <translation id="8987927404178983737">Miesiąc</translation>
 <translation id="8991520179165052608">Strona może używać mikrofonu</translation>
 <translation id="899403249577094719">Podstawowy adres URL certyfikatu firmy Netscape</translation>
@@ -6226,6 +6222,38 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Nawiązuję bezpieczne połączenie...</translation>
 <translation id="998747458861718449">&amp;Zbadaj</translation>
+<translation id="658539216370629794">Otwórz link w oknie inco&amp;gnito</translation>
+<translation id="1432267168815937878">Otwórz link w oknie inco&amp;gnito</translation>
+<translation id="6516243500644829484">Nowe okno &amp;incognito</translation>
+<translation id="7973394300052703468">Nowe okno &amp;incognito</translation>
+<translation id="6395403722585816044">Pobrano w trybie incognito</translation>
+<translation id="203837651858678035">Zamknąć tryb incognito mimo to?</translation>
+<translation id="7376221878517288144">Zamknąć tryb incognito mimo to?</translation>
+<translation id="871606814707918245">Większość użytkowników blokuje powiadomienia z tej strony</translation>
+<translation id="5053701565089446556">Rozszerzenie w trybie incognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplikacja w trybie incognito: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Karta incognito: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Ramka podrzędna incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">To rozszerzenie nie jest oferowane w <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i mogło zostać dodane bez Twojej wiedzy.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="4369414322596874629">Możesz przeglądać prywatnie w oknie incognito</translation>
+<translation id="3772947852642271642">Korzystaj z internetu w oknie incognito, by nie zapisywać historii przeglądania</translation>
+<translation id="3871738366246972820">Korzystasz ze wspólnego komputera? Otwórz okno incognito.</translation>
+<translation id="5808622652939943719">Aby przeglądać prywatnie, kliknij ikonę menu z kropkami i otwórz okno incognito</translation>
+<translation id="9079153198295609735">Automatycznie przesyłaj do Brave statystyki użytkowania i raporty o awariach</translation>
+<translation id="8839398440242019256">Nie pochodzi z Brave Web Store.</translation>
+<translation id="6945695820322143954">To rozszerzenie narusza zasady Brave Web Store.</translation>
+<translation id="1676595396635191120">Nowe okno incognito</translation>
+<translation id="5094764494104066239">Zawsze pokazuj pasek zakładek</translation>
+<translation id="4471385409549756595">Nowe okno incognito</translation>
+<translation id="4540437243849625078">Ta strona zamierza udostępnić informacje aplikacji poza trybem incognito.</translation>
+<translation id="1227836882233136433">Zamknąć tryb incognito?</translation>
+<translation id="7618452966706304788">Czy chcesz używać funkcji Touch ID w aplikacji <ph name="APP_NAME"/> w trybie incognito?</translation>
+<translation id="3098826269712097986">Dane logowania zostaną zapisane po wyjściu z trybu incognito. Umożliwi Ci to późniejsze korzystanie na tej stronie z funkcji Touch ID.</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="2579188629646253712">Zamknij tryb incognito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Otwórz wszystkie w oknie &amp;incognito}=1{Otwórz w oknie &amp;incognito}few{Otwórz wszystkie (#) w oknie &amp;incognito}many{Otwórz wszystkie (#) w oknie &amp;incognito}other{Otwórz wszystkie (#) w oknie &amp;incognito}}</translation>
 <translation id="2431625704210501303">Otwórz w oknie &amp;incognito</translation>
 <translation id="4620367155626060530">&amp;Pokaż pasek zakładek</translation>
@@ -6275,10 +6303,8 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3860292630623580294">(Incognito)</translation>
 <translation id="4854477725773269949">Zezwalaj w trybie incognito</translation>
 <translation id="6436164536244065364">Wyświetl w Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Znajdź rozszerzenia i motywy w <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nowa karta incognito</translation>
 <translation id="6610147964972079463">Zamknij karty incognito</translation>
-<translation id="5186185447130319458">Incognito</translation>
 <translation id="4933782374919065856">Masz pytania? Skontaktuj się z osobą, która nadzoruje Twój profil.</translation>
 </translationbundle>

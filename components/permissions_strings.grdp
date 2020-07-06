@@ -85,6 +85,9 @@
   <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's camera.">
     Use your camera
   </message>
+  <message name="IDS_MEDIA_CAPTURE_CAMERA_PAN_TILT_ZOOM_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions prompt when a web page requests access to the computer's camera, including zoom and move.">
+    Move your camera
+  </message>
   <message name="IDS_ACCESSIBILITY_EVENTS_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to respond to accessibility events, for example if the user is using a screen reader and the site has custom accessibility features. Follows a prompt: 'This site would like to:'">
     Respond to Accessibility Events
   </message>
@@ -106,6 +109,9 @@
 Do you want to allow <ph name="EMBEDDED_URL">$1<ex>news.site</ex></ph> to use cookies and site data on <ph name="TOP_LEVEL_URL">$2<ex>content_domain.site</ex></ph>?
 
 This will otherwise be blocked by your privacy settings. This will allow the content you interacted with to work correctly, but may allow <ph name="EMBEDDED_URL">$1<ex>news.site</ex></ph> to track your activity.
+  </message>
+  <message name="IDS_WINDOW_PLACEMENT_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to place windows. Follows a prompt: 'This site would like to:'">
+    Open and place windows on your screens
   </message>
   <message name="IDS_PERMISSION_ALLOW" desc="Label on button to allow a permissions request.">
     Allow

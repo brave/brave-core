@@ -2124,7 +2124,6 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="3771294271822695279">Tệp video</translation>
 <translation id="3775432569830822555">Chứng chỉ Máy chủ SSL</translation>
 <translation id="3775705724665058594">Gửi đến các thiết bị của bạn</translation>
-<translation id="6945695820322143954">Tiện ích này vi phạm chính sách của Cửa hàng Brave trực tuyến.</translation>
 <translation id="3777483481409781352">Không kích hoạt được thiết bị di động</translation>
 <translation id="3777806571986431400">Đã bật tiện ích</translation>
 <translation id="3778152852029592020">Đã hủy tải xuống.</translation>
@@ -2906,7 +2905,6 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="48704129375571883">Thêm tính năng bổ sung</translation>
 <translation id="4870758487381879312">Nhập mật khẩu do quản trị viên cung cấp để lấy thông tin cấu hình</translation>
 <translation id="4870903493621965035">Không có thiết bị nào được ghép nối</translation>
-<translation id="8839398440242019256">Không phải từ Cửa hàng Brave trực tuyến.</translation>
 <translation id="4871322859485617074">Mã PIN chứa ký tự không hợp lệ</translation>
 <translation id="4871370605780490696">Thêm dấu trang</translation>
 <translation id="4871719318659334896">Đóng nhóm</translation>
@@ -4967,7 +4965,6 @@ Bạn có thể quản lý các tùy chọn cài đặt của tài khoản này 
 <translation id="767127784612208024">Chạm để xác nhận đặt lại</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, trong <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Gửi giọng nói của bạn tới Brave để cho phép nhập bằng giọng nói vào bất kỳ trường văn bản nào.</translation>
-<translation id="3098826269712097986">Brave sẽ lưu dữ liệu đăng nhập sau khi bạn thoát chế độ Ẩn danh. Nhờ đó, bạn có thể sử dụng lại Touch ID với trang web này vào thời điểm khác.</translation>
 <translation id="7681095912841365527">Trang web có thể sử dụng Bluetooth</translation>
 <translation id="7683373461016844951">Để tiếp tục, hãy nhấp vào OK, sau đó nhấp vào Thêm người để tạo hồ sơ mới cho địa chỉ email <ph name="DOMAIN"/> của bạn.</translation>
 <translation id="7684212569183643648">Do quản trị viên của bạn cài đặt</translation>
@@ -5445,7 +5442,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8259239505248583312">Bắt đầu</translation>
 <translation id="8260126382462817229">Thử đăng nhập lại</translation>
 <translation id="8260864402787962391">Chuột</translation>
-<translation id="8261378640211443080">Tiện ích này không được liệt kê trong <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> và có thể đã được thêm mà bạn không biết.</translation>
 <translation id="8261506727792406068">Xóa</translation>
 <translation id="8263336784344783289">Đặt tên cho nhóm này</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> đã tắt con trỏ chuột của bạn.</translation>
@@ -6007,7 +6003,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8983632908660087688"><ph name="ORIGIN"/> có thể chỉnh sửa <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Hoạt động <ph name="DEVICE_LAST_ACTIVATED_TIME"/> ngày trước</translation>
 <translation id="8986362086234534611">Quên</translation>
-<translation id="9079153198295609735">Tự động gửi số liệu thống kê về việc sử dụng và báo cáo sự cố cho Brave</translation>
 <translation id="8987927404178983737">Tháng</translation>
 <translation id="8991520179165052608">Trang web có thể sử dụng micrô của bạn</translation>
 <translation id="899403249577094719">URL Cơ sở Chứng chỉ Netscape</translation>
@@ -6226,6 +6221,38 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Thiết lập kết nối an toàn...</translation>
 <translation id="998747458861718449">K&amp;iểm tra</translation>
+<translation id="658539216370629794">Mở liên kết bằn&amp;g cửa số ẩn danh</translation>
+<translation id="1432267168815937878">Mở Liên kết bằn&amp;g Cửa sổ Ẩn danh</translation>
+<translation id="6516243500644829484">Cửa sổ ẩn &amp;danh mới</translation>
+<translation id="7973394300052703468">Cửa sổ ẩn &amp;danh mới</translation>
+<translation id="6395403722585816044">Đã tải xuống ở chế độ Ẩn danh</translation>
+<translation id="203837651858678035">Bạn vẫn muốn thoát khỏi chế độ ẩn danh?</translation>
+<translation id="7376221878517288144">Bạn vẫn muốn thoát khỏi chế độ ẩn danh?</translation>
+<translation id="871606814707918245">Hầu hết mọi người đều chặn thông báo từ trang web này</translation>
+<translation id="5053701565089446556">Tiện ích Ẩn danh: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Ứng dụng Ẩn danh: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Tab ẩn danh: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Khung ẩn danh phụ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Cổng thông tin ẩn danh: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Tiện ích này không được liệt kê trong <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> và có thể đã được thêm mà bạn không biết.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Ẩn danh)</translation>
+<translation id="4369414322596874629">Bạn có thể duyệt web riêng tư bằng cách sử dụng cửa sổ ẩn danh</translation>
+<translation id="3772947852642271642">Duyệt web mà không lưu lịch sử bằng cửa sổ ẩn danh</translation>
+<translation id="3871738366246972820">Bạn đang sử dụng máy tính dùng chung? Hãy thử mở cửa sổ ẩn danh.</translation>
+<translation id="5808622652939943719">Để duyệt web riêng tư, hãy nhấp vào menu biểu tượng ba dấu chấm để mở cửa sổ ẩn danh</translation>
+<translation id="9079153198295609735">Tự động gửi số liệu thống kê về việc sử dụng và báo cáo sự cố cho Brave</translation>
+<translation id="8839398440242019256">Không phải từ Cửa hàng Brave trực tuyến.</translation>
+<translation id="6945695820322143954">Tiện ích này vi phạm chính sách của Cửa hàng Brave trực tuyến.</translation>
+<translation id="1676595396635191120">Cửa sổ ẩn danh mới</translation>
+<translation id="5094764494104066239">Luôn Hiển thị Thanh Dấu trang</translation>
+<translation id="4471385409549756595">Cửa sổ ẩn danh mới</translation>
+<translation id="4540437243849625078">Trang web này sắp chia sẻ thông tin với một ứng dụng bên ngoài chế độ ẩn danh.</translation>
+<translation id="1227836882233136433">Thoát chế độ ẩn danh?</translation>
+<translation id="7618452966706304788">Bạn có muốn sử dụng Touch ID với <ph name="APP_NAME"/> trong chế độ Ẩn danh không?</translation>
+<translation id="3098826269712097986">Brave sẽ lưu dữ liệu đăng nhập sau khi bạn thoát chế độ Ẩn danh. Nhờ đó, bạn có thể sử dụng lại Touch ID với trang web này vào thời điểm khác.</translation>
+<translation id="5186185447130319458">Ẩn danh</translation>
+<translation id="2579188629646253712">Thoát khỏi chế độ ẩn danh</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Mở tất cả trong &amp;cửa sổ ẩn danh}=1{Mở trong &amp;cửa sổ ẩn danh}other{Mở tất cả (#) trong &amp;cửa sổ ẩn danh}}</translation>
 <translation id="2431625704210501303">Mở trong cửa sổ ẩ&amp;n danh</translation>
 <translation id="4620367155626060530">&amp;Hiển thị thanh dấu trang</translation>
@@ -6275,10 +6302,8 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3860292630623580294">(Ẩn danh)</translation>
 <translation id="4854477725773269949">Cho phép ở chế độ ẩn danh</translation>
 <translation id="6436164536244065364">Xem trong Cửa hàng Brave trực tuyến</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Tìm tiện ích và chủ đề trong <ph name="BEGIN_LINK"/>Cửa hàng Brave trực tuyến<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Tab ẩn danh mới</translation>
 <translation id="6610147964972079463">Đóng tab ẩn danh</translation>
-<translation id="5186185447130319458">Ẩn danh</translation>
 <translation id="4933782374919065856">Bạn có câu hỏi? Hãy liên hệ với người giám sát hồ sơ của bạn.</translation>
 </translationbundle>

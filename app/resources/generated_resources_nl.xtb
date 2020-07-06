@@ -2124,7 +2124,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="3771294271822695279">Videobestanden</translation>
 <translation id="3775432569830822555">SSL-servercertificaat</translation>
 <translation id="3775705724665058594">Verzenden naar je apparaten</translation>
-<translation id="6945695820322143954">Deze extensie schendt het beleid voor de Brave Web Store.</translation>
 <translation id="3777483481409781352">Kan mobiel apparaat niet activeren</translation>
 <translation id="3777806571986431400">Extensie ingeschakeld</translation>
 <translation id="3778152852029592020">Downloaden is geannuleerd.</translation>
@@ -2906,7 +2905,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="48704129375571883">Aanvullende functies toevoegen</translation>
 <translation id="4870758487381879312">Geef het wachtwoord op dat je van de beheerder hebt gekregen om configuratie-informatie te ontvangen</translation>
 <translation id="4870903493621965035">Geen gekoppelde apparaten</translation>
-<translation id="8839398440242019256">Niet via de Brave Web Store.</translation>
 <translation id="4871322859485617074">Pincode bevat ongeldige tekens</translation>
 <translation id="4871370605780490696">Bladwijzer toevoegen</translation>
 <translation id="4871719318659334896">Groep sluiten</translation>
@@ -4967,7 +4965,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="767127784612208024">Tik hierop om het resetten te bevestigen</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, in <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Verzend je stem naar Brave zodat je kunt dicteren in tekstvelden.</translation>
-<translation id="3098826269712097986">Inloggegevens worden in Brave opgeslagen nadat je de incognitomodus hebt afgesloten. Hierdoor kun je Touch ID later opnieuw gebruiken voor deze website.</translation>
 <translation id="7681095912841365527">Site kan Bluetooth gebruiken</translation>
 <translation id="7683373461016844951">Als je verder wilt gaan, klik je op 'OK' en vervolgens op 'Persoon toevoegen' om een nieuw profiel te maken voor je <ph name="DOMAIN"/>-mailadres.</translation>
 <translation id="7684212569183643648">Geïnstalleerd door je beheerder</translation>
@@ -5444,7 +5441,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8259239505248583312">Aan de slag</translation>
 <translation id="8260126382462817229">Probeer opnieuw in te loggen</translation>
 <translation id="8260864402787962391">Muis</translation>
-<translation id="8261378640211443080">Deze extensie wordt niet vermeld in de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> en is mogelijk zonder je medeweten toegevoegd.</translation>
 <translation id="8261506727792406068">Verwijderen</translation>
 <translation id="8263336784344783289">Deze groep een naam geven</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> heeft je muisaanwijzer uitgeschakeld.</translation>
@@ -6007,7 +6003,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8983632908660087688"><ph name="ORIGIN"/> kan <ph name="FILENAME"/> bewerken</translation>
 <translation id="8985264973231822211"><ph name="DEVICE_LAST_ACTIVATED_TIME"/> dag geleden actief</translation>
 <translation id="8986362086234534611">Vergeten</translation>
-<translation id="9079153198295609735">Automatisch gebruiksstatistieken en crashrapporten naar Brave verzenden</translation>
 <translation id="8987927404178983737">Maand</translation>
 <translation id="8991520179165052608">Site kan je microfoon gebruiken</translation>
 <translation id="899403249577094719">Basis-URL voor Netscape-certificaat</translation>
@@ -6226,6 +6221,38 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Beveiligde verbinding tot stand brengen...</translation>
 <translation id="998747458861718449">I&amp;nspecteren</translation>
+<translation id="658539216370629794">Link openen in inco&amp;gnitovenster</translation>
+<translation id="1432267168815937878">Link openen in inco&amp;gnitovenster</translation>
+<translation id="6516243500644829484">Nieuw &amp;incognitovenster</translation>
+<translation id="7973394300052703468">Nieuw &amp;incognitovenster</translation>
+<translation id="6395403722585816044">Gedownload in incognitomodus</translation>
+<translation id="203837651858678035">Incognitomodus toch afsluiten?</translation>
+<translation id="7376221878517288144">Incognitomodus toch afsluiten?</translation>
+<translation id="871606814707918245">De meeste mensen blokkeren meldingen van deze site</translation>
+<translation id="5053701565089446556">Incognito-extensie: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Incognitotoepassing: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Incognitotabblad: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Incognito-subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Incognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Deze extensie wordt niet vermeld in de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> en is mogelijk zonder je medeweten toegevoegd.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="4369414322596874629">Je kunt privé browsen in een incognitovenster</translation>
+<translation id="3772947852642271642">Gebruik een incognitovenster om te internetten zonder dat je browsegeschiedenis wordt opgeslagen</translation>
+<translation id="3871738366246972820">Gebruik je een gedeelde computer? Open een incognitovenster.</translation>
+<translation id="5808622652939943719">Als je privé wilt browsen, klik je op het menupictogram met de stippen om een incognitovenster te openen</translation>
+<translation id="9079153198295609735">Automatisch gebruiksstatistieken en crashrapporten naar Brave verzenden</translation>
+<translation id="8839398440242019256">Niet via de Brave Web Store.</translation>
+<translation id="6945695820322143954">Deze extensie schendt het beleid voor de Brave Web Store.</translation>
+<translation id="1676595396635191120">Nieuw incognitovenster</translation>
+<translation id="5094764494104066239">Bladwijzerbalk altijd weergeven</translation>
+<translation id="4471385409549756595">Nieuw incognitovenster</translation>
+<translation id="4540437243849625078">Deze site staat op het punt buiten de incognitomodus informatie met een app te delen.</translation>
+<translation id="1227836882233136433">Incognitomodus verlaten?</translation>
+<translation id="7618452966706304788">Wil je in incognitomodus Touch ID gebruiken met <ph name="APP_NAME"/>?</translation>
+<translation id="3098826269712097986">Inloggegevens worden in Brave opgeslagen nadat je de incognitomodus hebt afgesloten. Hierdoor kun je Touch ID later opnieuw gebruiken voor deze website.</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="2579188629646253712">Incognitomodus sluiten</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Alles openen in &amp;incognitovenster}=1{Openen in &amp;incognitovenster}other{Alles (#) openen in &amp;incognitovenster}}</translation>
 <translation id="2431625704210501303">Openen in &amp;incognitovenster</translation>
 <translation id="4620367155626060530">&amp;Bladwijzerbalk weergeven</translation>
@@ -6275,10 +6302,8 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="3860292630623580294">(Incognito)</translation>
 <translation id="4854477725773269949">Toestaan in incognitomodus</translation>
 <translation id="6436164536244065364">Bekijken in de Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Zoek extensies en thema's in de <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nieuw incognitotabblad</translation>
 <translation id="6610147964972079463">Incognitotabbladen sluiten</translation>
-<translation id="5186185447130319458">Incognito</translation>
 <translation id="4933782374919065856">Vragen? Neem contact op met de persoon die je profiel beheert.</translation>
 </translationbundle>

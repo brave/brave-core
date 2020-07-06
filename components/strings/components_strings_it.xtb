@@ -6,10 +6,10 @@
 <translation id="1015730422737071372">Fornisci ulteriori dettagli</translation>
 <translation id="1019413721762100891">Off</translation>
 <translation id="1021110881106174305">Carte di credito accettate</translation>
-<translation id="3898257577441589237">Questo problema si verifica a causa di un certificato installato sul dispositivo da te o da un'altra persona. È noto che il certificato viene usato per monitorare e intercettare le reti e non è considerato attendibile da Brave. Esistono alcuni casi leciti per il monitoraggio, ad esempio su una rete scolastica o aziendale, ma Brave vuole assicurarsi che tu sappia che viene effettuato, anche se non puoi interromperlo. Il monitoraggio potrebbe essere effettuato in qualsiasi browser o applicazione che accede al Web.</translation>
 <translation id="1030706264415084469"><ph name="URL"/> vuole memorizzare in modo definitivo grandi quantità di dati sul dispositivo</translation>
 <translation id="1032854598605920125">Ruota in senso orario</translation>
 <translation id="1036348656032585052">Disattiva</translation>
+<translation id="1038106730571050514">Mostra suggerimenti</translation>
 <translation id="1038842779957582377">nome sconosciuto</translation>
 <translation id="1041998700806130099">Messaggio foglio di lavoro</translation>
 <translation id="1050038467049342496">Chiudi altre app</translation>
@@ -29,7 +29,6 @@
 <translation id="1920681928837417101">Gestisci le password nelle impostazioni di Brave</translation>
 <translation id="1101672080107056897">Azione errore</translation>
 <translation id="1103523840287552314">Traduci sempre <ph name="LANGUAGE"/></translation>
-<translation id="5047769237368272183">Se questa opzione viene selezionata, Brave memorizza una copia della carta sul dispositivo per velocizzare la compilazione dei moduli.</translation>
 <translation id="1110994991967754504">Seleziona l'autorizzazione per <ph name="PERMISSION_NAME"/></translation>
 <translation id="1113869188872983271">&amp;Annulla ridisposizione</translation>
 <translation id="1125573121925420732">Gli avvisi potrebbero essere frequenti durante l'aggiornamento della sicurezza dei siti web. La situazione dovrebbe migliorare a breve.</translation>
@@ -160,6 +159,7 @@
 <translation id="161042844686301425">Ciano</translation>
 <translation id="1620510694547887537">Videocamera</translation>
 <translation id="1623104350909869708">Impedisci la creazione di altre finestre di dialogo in questa pagina</translation>
+<translation id="1623253368136559158">Movimento della videocamera</translation>
 <translation id="16338877384480380">Architecture-B</translation>
 <translation id="1638780421120290329">Impossibile salvare la carta</translation>
 <translation id="1639239467298939599">Caricamento</translation>
@@ -174,7 +174,6 @@
 <translation id="1662550410081243962">Salva e compila i metodi di pagamento</translation>
 <translation id="1838576226863399477">Carte di credito e indirizzi provengono da Brave. Puoi gestirli in <ph name="BEGIN_LINK"/>Impostazioni<ph name="END_LINK"/>.</translation>
 <translation id="1671391448414634642">D'ora in poi, le pagine in <ph name="SOURCE_LANGUAGE"/> verranno tradotte in <ph name="TARGET_LANGUAGE"/>.</translation>
-<translation id="6373940988468425649"><ph name="SITE"/> in genere utilizza la crittografia per proteggere le tue informazioni. Questa volta, quando Brave ha provato a connettersi a <ph name="SITE"/>, il sito web ha restituito credenziali insolite e sbagliate. È possibile che un malintenzionato stia cercando di spacciarsi per il sito <ph name="SITE"/> oppure che una schermata di accesso alla rete Wi-Fi abbia interrotto la connessione. Le tue informazioni sono ancora al sicuro perché Brave ha interrotto la connessione prima che avvenissero scambi di dati.</translation>
 <translation id="1682696192498422849">Prima il lato corto</translation>
 <translation id="168841957122794586">Il certificato del server contiene una chiave crittografica debole.</translation>
 <translation id="1697532407822776718">Ecco fatto!</translation>
@@ -195,7 +194,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1740951997222943430">Inserisci un mese di scadenza valido</translation>
 <translation id="1741613555002899862">Deve essere specificato e corrispondere a una stringa valida quando DnsOverHttpsMode è <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
-<translation id="8425351843056705489">Per pagare più velocemente la prossima volta, salva la carta e l'indirizzo di fatturazione sul tuo Account Brave e su questo dispositivo.</translation>
 <translation id="1743570585616704562">Non riconosciuta</translation>
 <translation id="1745880797583122200">Il browser in uso è gestito</translation>
 <translation id="1746113442205726301">Spostamento Y immagine</translation>
@@ -218,6 +216,7 @@
 <translation id="1838374766361614909">Cancella ricerca</translation>
 <translation id="1839551713262164453">Convalida dei valori della norma non riuscita con errori</translation>
 <translation id="1842969606798536927">Paga</translation>
+<translation id="359494141189433808">Usa il tuo Account Brave per generare una password efficace</translation>
 <translation id="1871208020102129563">L'impostazione del proxy prevede l'utilizzo di server proxy fissi, non di un URL script .pac.</translation>
 <translation id="1871284979644508959">Campo obbligatorio</translation>
 <translation id="85321348617848915">Moduli Brave</translation>
@@ -234,7 +233,6 @@
 <translation id="1919367280705858090">Assistenza per un messaggio di errore specifico</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Nessuno}=1{1 sito}other{# siti}}</translation>
 <translation id="194030505837763158">Vai al link: <ph name="LINK"/></translation>
-<translation id="8515152881111950319">Potresti perdere l'accesso all'account della tua organizzazione oppure subire un furto d'identità. Brave ti consiglia di cambiare subito la password.</translation>
 <translation id="1947454675006758438">Pinzatura in alto a destra</translation>
 <translation id="1962204205936693436">Segnalibri di <ph name="DOMAIN"/></translation>
 <translation id="1973335181906896915">Errore di serializzazione</translation>
@@ -268,6 +266,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2094505752054353250">Dominio non corrispondente</translation>
 <translation id="2096368010154057602">Dipartimento</translation>
 <translation id="2099652385553570808">Tripla pinzatura a sinistra</translation>
+<translation id="2101225219012730419">Versione:</translation>
 <translation id="2102134110707549001">Suggerisci password efficace…</translation>
 <translation id="2107021941795971877">Supporti di stampa</translation>
 <translation id="2108755909498034140">Riavvia il computer</translation>
@@ -346,7 +345,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2410754574180102685">Government-Legal</translation>
 <translation id="2413528052993050574">Questo server non è riuscito a dimostrare che si tratta di <ph name="DOMAIN"/>; il relativo certificato di sicurezza potrebbe essere revocato. Il problema potrebbe essere dovuto a un'errata configurazione o a un malintenzionato che intercetta la connessione.</translation>
 <translation id="2438874542388153331">Perforatura quadrupla a destra</translation>
-<translation id="9018981925326888629">Hai appena inserito la tua password su un sito ingannevole. Brave consiglia di cambiare subito la password.</translation>
 <translation id="2463193859425327265">Cambia la pagina iniziale</translation>
 <translation id="2463739503403862330">Compila</translation>
 <translation id="2465402087343596252">Architecture-E</translation>
@@ -400,11 +398,13 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2666092431469916601">In alto</translation>
 <translation id="2666117266261740852">Chiudi altre schede o app</translation>
 <translation id="2674170444375937751">Eliminare le pagine dalla cronologia?</translation>
+<translation id="2674804415323431591">Nascondi suggerimenti</translation>
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">Esci</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Dimensioni predefinite</translation>
 <translation id="2691924980723297736">Avviso di sicurezza</translation>
+<translation id="7246459936780600154">Usa le password memorizzate nel tuo Account Brave</translation>
 <translation id="2699302886720511147">Carte accettate</translation>
 <translation id="2701514975700770343">A faccia in giù</translation>
 <translation id="2702801445560668637">Elenco di lettura</translation>
@@ -442,6 +442,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2856444702002559011">Gli utenti malintenzionati potrebbero provare a carpire le tue informazioni da <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (ad esempio, password, messaggi o carte di credito). <ph name="BEGIN_LEARN_MORE_LINK"/>Ulteriori informazioni<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Piegatura a mappa</translation>
 <translation id="2878424575911748999">A1</translation>
+<translation id="2880660355386638022">Posizionamento delle finestre</translation>
 <translation id="2881276955470682203">Salvare la carta?</translation>
 <translation id="2882949212241984732">Piegatura a doppia finestra</translation>
 <translation id="2903493209154104877">Indirizzi</translation>
@@ -452,6 +453,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2915068235268646559">Arresto anomalo dalle ore <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Chiudi altri programmi</translation>
 <translation id="2922350208395188000">Il certificato del server non può essere verificato.</translation>
+<translation id="6005097315762840167">Accedi per usare le password memorizzate nel tuo Account Brave</translation>
 <translation id="2925673989565098301">Metodo di consegna</translation>
 <translation id="2928905813689894207">Indirizzo di fatturazione</translation>
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> e <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> altro}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> e altri <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}}</translation>
@@ -463,11 +465,9 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2951588413176968965">Mailbox personale</translation>
 <translation id="295526156371527179">Avviso: questo criterio non è stato unito come dizionario come specificato dal criterio perché non è un dizionario.</translation>
 <translation id="2955913368246107853">Chiudi la barra di ricerca</translation>
-<translation id="6326805297893828864">Per poter stabilire una connessione protetta, l'orologio deve essere impostato correttamente perché i certificati utilizzati dai siti web per identificarsi sono validi soltanto per determinati periodi di tempo. L'orologio del dispositivo non è impostato sull'orario corretto, pertanto Brave non può verificare i certificati.</translation>
 <translation id="2972581237482394796">&amp;Ripeti</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, attualmente selezionata. <ph name="ROW_CONTENT"/></translation>
 <translation id="2982481275546140226">Cancella dati</translation>
-<translation id="3676215163710610678">Se questa opzione viene attivata, Brave memorizza una copia della carta sul dispositivo per velocizzare la compilazione dei moduli.</translation>
 <translation id="2985398929374701810">Inserisci un indirizzo valido</translation>
 <translation id="2986368408720340940">Questo metodo di ritiro non è disponibile. Prova un metodo diverso.</translation>
 <translation id="2987034854559945715">Nessuna funzionalità corrispondente</translation>
@@ -562,7 +562,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="3423742043356668186">Sistema specificato</translation>
 <translation id="3427092606871434483">Consenti (predefinita)</translation>
 <translation id="3427342743765426898">&amp;Ripeti modifica</translation>
-<translation id="3006790309890592320">Brave ti consiglia di reimpostare la password, se l'hai utilizzata su altri siti.</translation>
 <translation id="3428151540071562330">Uno o più URI del modello server DnsOverHttpsTemplates non sono validi e non verranno utilizzati.</translation>
 <translation id="3431636764301398940">Salva la carta per questo dispositivo</translation>
 <translation id="3432601291244612633">Chiudi pagina</translation>
@@ -578,7 +577,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="3467763166455606212">Nome titolare carta obbligatorio</translation>
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, attualmente aperta, premi TAB poi INVIO per passare alla scheda aperta</translation>
 <translation id="3479552764303398839">Non adesso</translation>
-<translation id="1096085967892725815">Potresti non riuscire più ad accedere al tuo Account Brave. Brave consiglia di cambiare subito la password. Ti verrà chiesto di eseguire l'accesso.</translation>
 <translation id="3487845404393360112">Vassoio 4</translation>
 <translation id="3495081129428749620">Trova nella pagina
     <ph name="PAGE_TITLE"/></translation>
@@ -638,8 +636,8 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Controllare la configurazione del proxy, firewall e DNS<ph name="END_LINK"/></translation>
 <translation id="372429172604983730">Le applicazioni che possono causare questo errore includono software antivirus, firewall e proxy o di filtraggio web.</translation>
 <translation id="373042150751172459">B4 (Envelope)</translation>
+<translation id="3731873414101415120">Siti web visitati e contenuti delle pagine non sicure</translation>
 <translation id="3736520371357197498">Se sei consapevole dei rischi per la tua sicurezza, potresti <ph name="BEGIN_LINK"/>visitare questo sito non sicuro<ph name="END_LINK"/> senza aspettare che vengano rimossi i programmi pericolosi.</translation>
-<translation id="8896585555528145662">Al momento non puoi visitare il sito <ph name="SITE"/> perché tale sito web ha inviato credenziali criptate che Brave non è riuscito a elaborare. Gli attacchi e gli errori di rete in genere sono temporanei, pertanto è possibile che questa pagina funzioni più tardi.</translation>
 <translation id="7375171421124325498">Dopo essere stati confermati, i dati della carta del tuo Account Brave saranno condivisi con questo sito.</translation>
 <translation id="3748148204939282805">Gli utenti malintenzionati presenti sul sito <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> potrebbero indurti con l'inganno a effettuare operazioni pericolose, come installare software o rivelare informazioni personali (ad esempio password, numeri di telefono o carte di credito). <ph name="BEGIN_LEARN_MORE_LINK"/>Ulteriori informazioni<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="375403751935624634">La traduzione non è riuscita a causa di un errore del server.</translation>
@@ -778,11 +776,9 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="6116812392674177288">Questo computer sembra non essere gestito dall'azienda, pertanto la norma consente di installare automaticamente soltanto le estensioni ospitate sul Brave Web Store. L'URL di aggiornamento del Brave Web Store è "<ph name="CWS_UPDATE_URL"/>".</translation>
 <translation id="4346197816712207223">Carte di credito accettate</translation>
 <translation id="4346833872170306413">Roc-16K</translation>
-<translation id="846000886289004690">Hai appena inserito la tua password su un sito ingannevole. Brave ti consiglia di visitare i siti <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> e altri siti in cui utilizzi questa password e di cambiarla subito.</translation>
 <translation id="4356973930735388585">I malintenzionati su questo sito potrebbero tentare di installare sul tuo computer programmi pericolosi che scoprono o eliminano i tuoi dati (ad esempio foto, password, messaggi e carte di credito).</translation>
 <translation id="4358059973562876591">I modelli che hai specificato potrebbero non essere applicati a causa di un errore con il criterio DnsOverHttpsMode.</translation>
 <translation id="4358461427845829800">Gestisci metodi di pagamento…</translation>
-<translation id="5442778523450464826">Hai appena inserito la tua password su un sito ingannevole. Brave può aiutarti. Per cambiare la password e informare Brave che il tuo account potrebbe essere a rischio, fai clic su Proteggi account.</translation>
 <translation id="4367563149485757821">Number-12 (Envelope)</translation>
 <translation id="437058704415269440">Saldo dell'account</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -792,9 +788,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="4390472908992056574">Brim</translation>
 <translation id="4406896451731180161">risultati di ricerca</translation>
 <translation id="4408413947728134509">Cookie: <ph name="NUM_COOKIES"/></translation>
-<translation id="8539546768943490744">Hai appena inserito la tua password su un sito ingannevole. Brave ti consiglia di visitare i siti <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> e altri siti in cui utilizzi questa password e di cambiarla subito.</translation>
 <translation id="4415426530740016218">Indirizzo di ritiro</translation>
-<translation id="4906192414477726331">Questo server non è riuscito a dimostrare che si tratta di <ph name="DOMAIN"/>; il relativo certificato di sicurezza non è considerato attendibile da Brave. Il problema potrebbe essere dovuto a un'errata configurazione o a un malintenzionato che intercetta la connessione.</translation>
 <translation id="443121186588148776">Porta seriale</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> non ha accettato il certificato di accesso oppure non ne è stato fornito uno.</translation>
 <translation id="4434045419905280838">Popup e reindirizzamenti</translation>
@@ -825,7 +819,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="457875822857220463">Consegna</translation>
 <translation id="4579056131138995126">Personal (Envelope)</translation>
 <translation id="4582204425268416675">Carta rimossa</translation>
-<translation id="8385639954311581596">Rimuovere l'indirizzo da Brave?</translation>
 <translation id="4592951414987517459">La connessione a <ph name="DOMAIN"/> è criptata tramite un pacchetto di crittografia moderno.</translation>
 <translation id="4594403342090139922">&amp;Annulla eliminazione</translation>
 <translation id="4597348597567598915">Dimensione 8</translation>
@@ -842,7 +835,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="467662567472608290">Questo server non è riuscito a dimostrare che si tratta di <ph name="DOMAIN"/>; il relativo certificato di sicurezza contiene errori. Il problema potrebbe essere dovuto a un'errata configurazione o a un malintenzionato che intercetta la connessione.</translation>
 <translation id="4677585247300749148"><ph name="URL"/> vuole rispondere agli eventi di accessibilità</translation>
 <translation id="8197094463444457125">Presentazioni Brave</translation>
-<translation id="3619365259205518877">Hai appena inserito la tua password su un sito ingannevole. Brave ti consiglia di controllare le password salvate per <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> e altri siti su cui utilizzi questa password.</translation>
 <translation id="4690462567478992370">Interrompi l'utilizzo di un certificato non valido</translation>
 <translation id="4691835149146451662">Architecture-A (Envelope)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
@@ -852,9 +844,9 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Eseguire lo strumento Diagnostica di rete Windows<ph name="END_LINK"/></translation>
 <translation id="4726672564094551039">Ricarica criteri</translation>
 <translation id="4728558894243024398">Piattaforma</translation>
+<translation id="4731638775147756694">Questa applicazione è stata bloccata dal tuo amministratore</translation>
 <translation id="4731967714531604179">Prc2 (Envelope)</translation>
 <translation id="4733082559415072992"><ph name="URL"/> vuole usare la posizione del dispositivo</translation>
-<translation id="3960299545138990065">Riavvia Brave</translation>
 <translation id="4880298864945336181">L'amministratore ha attivato i connettori di Brave Enterprise sul tuo browser. Questi connettori hanno accesso ad alcuni dei tuoi dati.</translation>
 <translation id="473775607612524610">Aggiorna</translation>
 <translation id="4738601419177586157"><ph name="TEXT"/> suggerimento di ricerca</translation>
@@ -887,6 +879,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="4877083676943085827">{COUNT,plural, =0{Nessuna}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">Ricerca di <ph name="TEXT"/></translation>
 <translation id="4879491255372875719">Automatica (impostazione predefinita)</translation>
+<translation id="4879725228911483934">Aprire finestre e posizionarle sugli schermi</translation>
 <translation id="4880827082731008257">Cerca nella cronologia</translation>
 <translation id="4881695831933465202">Apri</translation>
 <translation id="4892518386797173871">Posteriore</translation>
@@ -1053,6 +1046,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="5523118979700054094">Nome criterio</translation>
 <translation id="55293785478302737">Impuntura</translation>
 <translation id="553484882784876924">Prc6 (Envelope)</translation>
+<translation id="5536214594743852365">Mostra la sezione "<ph name="SECTION"/>"</translation>
 <translation id="5539243836947087108">Raft</translation>
 <translation id="5540224163453853">Impossibile trovare l'articolo richiesto.</translation>
 <translation id="5541086400771735334">Mailbox 7</translation>
@@ -1196,7 +1190,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="6116338172782435947">Leggere testi e immagini copiati negli appunti</translation>
 <translation id="6120179357481664955">Ricordi il tuo ID UPI?</translation>
 <translation id="5972135347314259717">Connettori di Brave Enterprise</translation>
-<translation id="1504280350970284172">Utilizza il tuo Account Brave per creare una password efficace</translation>
 <translation id="6146055958333702838">Controlla eventuali cavi e riavvia eventuali router, modem o altri dispositivi di rete in uso.</translation>
 <translation id="614940544461990577">Prova a:</translation>
 <translation id="6150036310511284407">Tripla perforatura a sinistra</translation>
@@ -1221,6 +1214,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="6263376278284652872">Segnalibri di <ph name="DOMAIN"/></translation>
 <translation id="6264485186158353794">Torna nell'area protetta</translation>
 <translation id="6266934640124581640">Verde acqua</translation>
+<translation id="9136010393039243713">Brave Update</translation>
 <translation id="6276112860590028508">Le pagine del tuo elenco di lettura vengono visualizzate qui</translation>
 <translation id="4491702030396251550">Per pagare più velocemente la prossima volta, salva la carta e l'indirizzo di fatturazione sul tuo Account Brave.</translation>
 <translation id="293801390522973485">Brave <ph name="BEGIN_EMPHASIS"/>non salverà<ph name="END_EMPHASIS"/> le seguenti informazioni:
@@ -1241,7 +1235,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="6328639280570009161">Prova a disattivare la previsione della rete</translation>
 <translation id="6328784461820205019">"La connessione non è privata", "&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;", "&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;", "&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;", "&lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt;" o "Errore certificato SSL"</translation>
 <translation id="6328786501058569169">Questo sito è ingannevole</translation>
-<translation id="2679184024759659109">Utilizza le password memorizzate nel tuo Account Brave</translation>
 <translation id="6337133576188860026">Consente di liberare meno di <ph name="SIZE"/>. Alcuni siti potrebbero caricarsi più lentamente alla prossima visita.</translation>
 <translation id="6337534724793800597">Filtra i criteri per nome</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Nessuna}=1{1 password per <ph name="DOMAIN_LIST"/> (sincronizzata)}=2{2 password per <ph name="DOMAIN_LIST"/> (sincronizzate)}other{# password per (<ph name="DOMAIN_LIST"/>, sincronizzate)}}</translation>
@@ -1253,7 +1246,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Potrebbe essere applicato un addebito.</translation>
 <translation id="6386120369904791316">{COUNT,plural, =1{1 altro suggerimento}other{# altri suggerimenti}}</translation>
-<translation id="2374115610089464099">Per pagare più velocemente la prossima volta, salva la carta e l'indirizzo di fatturazione sul tuo Account Brave e su questo dispositivo.</translation>
 <translation id="6389470377220713856">Nome sulla carta</translation>
 <translation id="6390200185239044127">Piegatura a Z a metà</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
@@ -1262,7 +1254,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="6406765186087300643">C0 (Envelope)</translation>
 <translation id="9018981925326888629">Hai appena inserito la tua password su un sito ingannevole. Brave consiglia di cambiare subito la password.</translation>
 <translation id="6410264514553301377">Inserisci la data di scadenza e il codice CVC della carta <ph name="CREDIT_CARD"/></translation>
-<translation id="7435155322279654755">Brave può aiutarti a proteggere il tuo Account Brave e a modificare la password.</translation>
 <translation id="6423385022588644828">Verifica più velocemente le tue carte usando Touch ID d'ora in poi</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Piegatura a finestra</translation>
@@ -1317,7 +1308,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="6657585470893396449">Password</translation>
 <translation id="6665553082534466207">Tripla perforatura a destra</translation>
 <translation id="6670613747977017428">Torna nell'area protetta.</translation>
-<translation id="4670564340385807132">Rimuovere il suggerimento per i moduli da Brave?</translation>
 <translation id="6685834062052613830">Esci e completa la configurazione</translation>
 <translation id="6687335167692595844">Dimensioni carattere richieste</translation>
 <translation id="6689249931105087298">Relativo con compressione del punto nero</translation>
@@ -1389,6 +1379,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="7050187094878475250">Hai tentato di visitare il sito <ph name="DOMAIN"/>, ma il server ha presentato un certificato con periodo di validità troppo lungo per poter essere ritenuto attendibile.</translation>
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Al momento questa carta non può essere salvata}other{Al momento queste carte non possono essere salvate}}</translation>
 <translation id="7053983685419859001">Blocca</translation>
+<translation id="7058163556978339998"><ph name="BROWSER"/> ha verificato che <ph name="ISSUER"/>ha rilasciato il certificato di questo sito web.</translation>
 <translation id="7062635574500127092">Verde petrolio</translation>
 <translation id="7064851114919012435">Informazioni di contatto</translation>
 <translation id="70705239631109039">La connessione non è completamente sicura</translation>
@@ -1452,6 +1443,7 @@ Ulteriori dettagli:
 <translation id="7313965965371928911">Avvisi di <ph name="BEGIN_LINK"/>Navigazione sicura<ph name="END_LINK"/></translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Guida alla connessione</translation>
+<translation id="7323804146520582233">Nascondi la sezione "<ph name="SECTION"/>"</translation>
 <translation id="733354035281974745">Override account locale del dispositivo</translation>
 <translation id="8539546768943490744">Hai appena inserito la tua password su un sito ingannevole. Brave ti consiglia di visitare i siti <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> e altri siti in cui utilizzi questa password e di cambiarla subito.</translation>
 <translation id="7334320624316649418">&amp;Ripeti ridisposizione</translation>
@@ -1498,7 +1490,6 @@ Ulteriori dettagli:
 <translation id="7485870689360869515">Nessun dato trovato.</translation>
 <translation id="3692186536781145635">A causa di una violazione dei dati su un sito o un'app, la tua password è stata esposta. Brave ti consiglia di controllare le password che hai salvato e di cambiare subito la password su <ph name="ORIGIN"/>.</translation>
 <translation id="7498234416455752244">Continua modifica</translation>
-<translation id="1012292338579042608">Hai appena inserito la tua password su un sito ingannevole. Brave ti consiglia di controllare le password salvate per <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> e altri siti su cui utilizzi questa password.</translation>
 <translation id="7508255263130623398">L'ID dispositivo della norma restituito è vuoto o non corrisponde all'ID dispositivo corrente</translation>
 <translation id="7508870219247277067">Verde pisello</translation>
 <translation id="7511955381719512146">La rete Wi-Fi in uso potrebbe richiedere la visita della pagina <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
@@ -1517,9 +1508,7 @@ Ulteriori dettagli:
 <translation id="5474381306981932386">Nome utente del dispositivo e nome utente di Brave</translation>
 <translation id="7552846755917812628">Prova i seguenti suggerimenti:</translation>
 <translation id="7554791636758816595">Nuova scheda</translation>
-<translation id="5304100303568917877">Potresti non riuscire più ad accedere al tuo account <ph name="ORG_NAME"/> o subire un furto d'identità. Brave ti consiglia di cambiare subito la password.</translation>
 <translation id="7567204685887185387">Questo server non è riuscito a dimostrare che si tratta di <ph name="DOMAIN"/>; il relativo certificato di sicurezza potrebbe essere stato emesso in modo fraudolento. Il problema potrebbe essere dovuto a un'errata configurazione o a un malintenzionato che intercetta la connessione.</translation>
-<translation id="6386821459680628976">Rimuovere la carta di credito da Brave?</translation>
 <translation id="7569983096843329377">Nero</translation>
 <translation id="7575207903026901870">Rimuovi il pulsante Suggerimento, premi INVIO per rimuovere questo suggerimento</translation>
 <translation id="405970181812690156">Paga velocemente su siti e app su più dispositivi utilizzando le carte salvate su Brave.</translation>
@@ -1576,7 +1565,6 @@ Ulteriori dettagli:
 <translation id="7763386264682878361">Analizzatore sintattico dei file manifest dei pagamenti</translation>
 <translation id="7764225426217299476">Aggiungi indirizzo</translation>
 <translation id="7766518757692125295">Skirt</translation>
-<translation id="7767271804335921384">L'applicazione è stata bloccata dal tuo amministratore</translation>
 <translation id="7770259615151589601">Designated-Long</translation>
 <translation id="7773005668374414287">Stesso ordine a faccia in su</translation>
 <translation id="777702478322588152">Prefettura</translation>
@@ -1605,6 +1593,7 @@ Ulteriori dettagli:
 <translation id="7887885240995164102">Attiva Picture in picture</translation>
 <translation id="7888575728750733395">Stampa intent di rendering</translation>
 <translation id="7904208859782148177">C3 (Envelope)</translation>
+<translation id="7923775243649974918">Spostare la videocamera</translation>
 <translation id="7932579305932748336">Rivestimento</translation>
 <translation id="79338296614623784">Inserisci un numero di telefono valido</translation>
 <translation id="7934052535022478634">Pagamento completato</translation>
@@ -1644,6 +1633,7 @@ Ulteriori dettagli:
 <translation id="8074253406171541171">10x13 (Envelope)</translation>
 <translation id="8078141288243656252">Non è possibile inserire annotazioni se il documento è ruotato</translation>
 <translation id="8079031581361219619">Vuoi ricaricare il sito?</translation>
+<translation id="939305735877869636">Brave</translation>
 <translation id="8086971161893892807">Bozza</translation>
 <translation id="8088680233425245692">Impossibile visualizzare l'articolo.</translation>
 <translation id="808894953321890993">Cambia password</translation>
@@ -1657,7 +1647,6 @@ Ulteriori dettagli:
 <translation id="8105368624971345109">Disattiva</translation>
 <translation id="8118489163946903409">Metodo di pagamento</translation>
 <translation id="8127301229239896662">"<ph name="SOFTWARE_NAME"/>" non è stato installato correttamente sul computer o sulla rete. Chiedi all'amministratore IT di risolvere il problema.</translation>
-<translation id="3272614036080146686">Hai appena inserito la tua password su un sito ingannevole. Brave ti consiglia di visitare il sito <ph name="WEBSITE_1"/> e altri siti in cui utilizzi questa password e di cambiarla subito.</translation>
 <translation id="8131740175452115882">Conferma</translation>
 <translation id="8149426793427495338">Il computer è entrato in modalità sospensione.</translation>
 <translation id="8150722005171944719">Il file all'indirizzo <ph name="URL"/> non è leggibile. Potrebbe essere stato rimosso, spostato oppure delle autorizzazioni del file potrebbero impedire l'accesso.</translation>
@@ -1736,7 +1725,6 @@ Ulteriori dettagli:
 <translation id="8474910779563686872">Mostra i dettagli dello sviluppatore</translation>
 <translation id="8479754468255770962">Pinzatura in basso a sinistra</translation>
 <translation id="503686638841780887">Accedi a Brave per usare le carte memorizzate nel tuo Account Brave</translation>
-<translation id="565908431635579039">Hai appena inserito la tua password su un sito ingannevole. Brave ti consiglia di controllare le password salvate per <ph name="WEBSITE_1"/> e altri siti su cui utilizzi questa password.</translation>
 <translation id="8488350697529856933">Si applica a</translation>
 <translation id="8490137692873530638">Fascicolatore 10</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> ha impiegato troppo tempo a rispondere.</translation>
@@ -1751,7 +1739,6 @@ Ulteriori dettagli:
 <translation id="8557066899867184262">Il codice CVC si trova sul lato posteriore della carta.</translation>
 <translation id="8559762987265718583">Impossibile stabilire una connessione privata con il sito <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> perché data e ora del dispositivo (<ph name="DATE_AND_TIME"/>) sono sbagliate.</translation>
 <translation id="8564182942834072828">Documenti separati/Copie non fascicolate</translation>
-<translation id="4764754838347156633">Brave ti consiglia di reimpostare la password di <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>, se l'hai utilizzata su altri siti.</translation>
 <translation id="8571890674111243710">Traduzione della pagina in <ph name="LANGUAGE"/> in corso...</translation>
 <translation id="8574899947864779331">Usa Touch ID per verificare più velocemente le carte</translation>
 <translation id="858637041960032120">Aggiungi telefono</translation>
@@ -1760,6 +1747,7 @@ Ulteriori dettagli:
 <translation id="8606726445206553943">Utilizzare i tuoi dispositivi MIDI</translation>
 <translation id="861775596732816396">Dimensione 4</translation>
 <translation id="8622948367223941507">Legal-Extra</translation>
+<translation id="8623885649813806493">Nessuna password corrispondente. Mostra tutte le password salvate.</translation>
 <translation id="8625384913736129811">Salva la carta su questo dispositivo</translation>
 <translation id="8663226718884576429">Riepilogo ordine, <ph name="TOTAL_LABEL"/>, altri dettagli</translation>
 <translation id="867224526087042813">Firma</translation>

@@ -2121,7 +2121,6 @@
 <translation id="3771294271822695279">Видео датотеке</translation>
 <translation id="3775432569830822555">Сертификат SSL сервера</translation>
 <translation id="3775705724665058594">Пошаљите на своје уређаје</translation>
-<translation id="6945695820322143954">Овај додатак крши смернице Brave веб-продавнице.</translation>
 <translation id="3777483481409781352">Активирање мобилног уређаја није успело</translation>
 <translation id="3777806571986431400">Додатак је омогућен</translation>
 <translation id="3778152852029592020">Преузимање је отказано.</translation>
@@ -2903,7 +2902,6 @@
 <translation id="48704129375571883">Додајте још функција</translation>
 <translation id="4870758487381879312">Унесите лозинку коју сте добили од администратора да бисте добили информације о конфигурацији</translation>
 <translation id="4870903493621965035">Нема упарених уређаја</translation>
-<translation id="8839398440242019256">Није из Brave веб-продавнице.</translation>
 <translation id="4871322859485617074">PIN садржи неважеће знакове</translation>
 <translation id="4871370605780490696">Додавање обележивача</translation>
 <translation id="4871719318659334896">Затвори групу</translation>
@@ -4965,7 +4963,6 @@
 <translation id="767127784612208024">Додирните да бисте потврдили ресетовање</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, на страници <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Шаљите податке о гласу Brave-у да би се омогућило диктирање у свим пољима за текст.</translation>
-<translation id="3098826269712097986">Подаци о пријављивању се чувају у Brave-у када изађете из режима без архивирања. То ће вам омогућити да касније поново користите Touch ID са овим веб-сајтом.</translation>
 <translation id="7681095912841365527">Сајт може да користи Bluetooth</translation>
 <translation id="7683373461016844951">Да бисте наставили, кликните на Потврди, па на Додај особу да бисте отворили нови профил за имејл адресу за <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Инсталирао је администратор</translation>
@@ -5443,7 +5440,6 @@
 <translation id="8259239505248583312">Идемо</translation>
 <translation id="8260126382462817229">Пробајте поново да се пријавите</translation>
 <translation id="8260864402787962391">Миш</translation>
-<translation id="8261378640211443080"><ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> не наводи овај додатак и он је можда додат без вашег знања.</translation>
 <translation id="8261506727792406068">Избриши</translation>
 <translation id="8263336784344783289">Дајте назив овој групи</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> је онемогућио курсор.</translation>
@@ -6005,7 +6001,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> може да мења датотеку <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Последња активност: пре <ph name="DEVICE_LAST_ACTIVATED_TIME"/> дан/а</translation>
 <translation id="8986362086234534611">Заборави</translation>
-<translation id="9079153198295609735">Аутоматски шаљи Brave-у статистичке податке о коришћењу и извештаје о отказивању</translation>
 <translation id="8987927404178983737">Месец</translation>
 <translation id="8991520179165052608">Сајт може да користи микрофон</translation>
 <translation id="899403249577094719">Основна URL адреса за Netscape сертификат</translation>
@@ -6224,6 +6219,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Успостављање безбедне везе...</translation>
 <translation id="998747458861718449">П&amp;регледај</translation>
+<translation id="658539216370629794">Отвори линк у прозору без архивирања</translation>
+<translation id="1432267168815937878">Отвори линк у прозору за пре&amp;гледање без архивирања</translation>
+<translation id="6516243500644829484">Нови &amp;прозор „Без архивирања“</translation>
+<translation id="7973394300052703468">Нови &amp;прозор без архивирања</translation>
+<translation id="6395403722585816044">Преузето је у режиму без архивирања</translation>
+<translation id="203837651858678035">Желите ли да ипак изађете из режима без архивирања?</translation>
+<translation id="7376221878517288144">Желите ли да ипак изађете из режима без архивирања?</translation>
+<translation id="871606814707918245">Већина људи блокира обавештења са овог сајта</translation>
+<translation id="5053701565089446556">Додатак у режиму без архивирања: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Апл. у режиму без архивирања: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Картица Без архивирања: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Подоквир Без архивирања: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Портал у режиму без архивирања: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080"><ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> не наводи овај додатак и он је можда додат без вашег знања.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (без архивирања)</translation>
+<translation id="4369414322596874629">Можете да прегледате приватно у прозору без архивирања</translation>
+<translation id="3772947852642271642">Прегледајте веб без чувања историје прегледања у прозору без архивирања</translation>
+<translation id="3871738366246972820">Користите дељени рачунар? Отворите прозор без архивирања.</translation>
+<translation id="5808622652939943719">Да бисте прегледали приватно, кликните на икону менија са тачкама да бисте отворили прозор без архивирања</translation>
+<translation id="9079153198295609735">Аутоматски шаљи Brave-у статистичке податке о коришћењу и извештаје о отказивању</translation>
+<translation id="8839398440242019256">Није из Brave веб-продавнице.</translation>
+<translation id="6945695820322143954">Овај додатак крши смернице Brave веб-продавнице.</translation>
+<translation id="1676595396635191120">Нови прозор без архивирања</translation>
+<translation id="5094764494104066239">Увек приказуј траку са обележивачима</translation>
+<translation id="4471385409549756595">Нови прозор без архивирања</translation>
+<translation id="4540437243849625078">Овај сајт ће делити информације са апликацијом изван режима без архивирања.</translation>
+<translation id="1227836882233136433">Излазите из режима без архивирања?</translation>
+<translation id="7618452966706304788">Да ли желите да користите Touch ID са апликацијом <ph name="APP_NAME"/> у режиму без архивирања?</translation>
+<translation id="3098826269712097986">Подаци о пријављивању се чувају у Brave-у када изађете из режима без архивирања. То ће вам омогућити да касније поново користите Touch ID са овим веб-сајтом.</translation>
+<translation id="5186185447130319458">Без архивирања</translation>
+<translation id="2579188629646253712">Затвори режим без архивирања</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Отвори све у &amp;прозору Без архивирања}=1{Отвори у &amp;прозору Без архивирања}one{Отвори све (#) у &amp;прозору Без архивирања}few{Отвори све (#) у &amp;прозору Без архивирања}other{Отвори све (#) у &amp;прозору Без архивирања}}</translation>
 <translation id="2431625704210501303">Отвори у &amp;прозору без архивирања</translation>
 <translation id="4620367155626060530">&amp;Прикажи траку са обележивачима</translation>
@@ -6273,10 +6300,8 @@
 <translation id="3860292630623580294">(Без архивирања)</translation>
 <translation id="4854477725773269949">Омогући у режиму без архивирања</translation>
 <translation id="6436164536244065364">Прикажи у Brave веб-продавници</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Пронађите додатке и теме у <ph name="BEGIN_LINK"/>Brave веб-продавници<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Нова картица без архивирања</translation>
 <translation id="6610147964972079463">Затвори картице без архив.</translation>
-<translation id="5186185447130319458">Без архивирања</translation>
 <translation id="4933782374919065856">Имате питања? Контактирајте особу која вам надгледа профил.</translation>
 </translationbundle>

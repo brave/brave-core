@@ -8,6 +8,28 @@
   <message name="IDS_SETTINGS_TURN_ON" desc="Label for turn on buttons.">
     Turn on
   </message>
+  <message name="IDS_SETTINGS_DEVICE_OFF" desc="In Settings pages, the label when a bluetooth, wifi, or mobile device is off (disabled)." meaning="Device is disabled.">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_DEVICE_ON" desc="In Settings pages, the label when a bluetooth, wifi, or mobile device is on (enabled)." meaning="Device is enabled.">
+    On
+  </message>
+
+  <!--Main Page-->
+  <message name="IDS_SETTINGS_SECONDARY_USER_BANNER" desc="Banner displayed in settings page when the user is secondary in a multi-profile session.">
+    Some settings belonging to <ph name="PRIMARY_EMAIL">$1<ex>john@google.com</ex></ph> are being shared with you. These settings only affect your account when using multiple sign-in.
+  </message>
+
+  <!-- Settings Search Box -->
+  <message name="IDS_OS_SEARCH_RESULT_ROW_A11Y_RESULT_SELECTED" desc="BraveVox alert to indicate the position number of a selected result in a list of search results and the selected result text itself, and that the user can press enter to navigate to section described by the search result.">
+    Search result <ph name="LIST_POSITION">$1<ex>1</ex></ph> of <ph name="LIST_SIZE">$2<ex>2</ex></ph>: <ph name="SEARCH_RESULT_TEXT">$3<ex>Network Settings</ex></ph>. Press Enter to navigate to section.
+  </message>
+  <message name="IDS_OS_SEARCH_BOX_A11Y_ONE_RESULT" desc="BraveVox alert to indicate the that one search result has been found.">
+    Displaying 1 search result for <ph name="QUERY">$1<ex>Wi-Fi</ex>.</ph>
+  </message>
+  <message name="IDS_OS_SEARCH_BOX_A11Y_RESULT_COUNT" desc="BraveVox alert to indicate the number of settings search results found.">
+    Displaying <ph name="NUMBER">$1<ex>1</ex></ph> search results for <ph name="QUERY">$2<ex>Wi-Fi</ex>.</ph>
+  </message>
 
   <!-- About (OS Settings) -->
   <message name="IDS_OS_SETTINGS_ABOUT_PAGE_BUILD_DETAILS" desc="Label of the row button that clicks into Build details">
@@ -177,6 +199,9 @@
   <message name="IDS_OS_SETTINGS_WALLPAPER_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of wallpaper across devices.">
     Wallpaper
   </message>
+  <message name="IDS_OS_SETTINGS_WIFI_CONFIGURATIONS_CHECKBOX_LABEL" desc="Label for the checkbox which enables syncing of Wi-Fi networks across devices.">
+    Wi-Fi networks
+  </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SUBMENU_LABEL" desc="Label of Account Manager submenu in Settings page.">
     Brave Accounts
   </message>
@@ -188,6 +213,27 @@
   </message>
   <message name="IDS_SETTINGS_PEOPLE_MANAGE_OTHER_PEOPLE" desc="Label for the button that opens the multi-profile user manager.">
     Manage other profiles
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_EDUCATION_ACCOUNT" desc="Status label which indicates that specified account is a school/EDU account.">
+    School account
+  </message>
+  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON" desc="Text in the add fingerprint dialog telling users to place finger on the power button which is the sensor.">
+    Touch the power button with your finger
+  </message>
+    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_POWER_BUTTON_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the power button. Only visible by screen reader software.">
+    The fingerprint sensor is in the power button. Touch it lightly with any finger.
+  </message>
+  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD" desc="Text in the add fingerprint dialog telling users to place finger on the sensor on the keyboard.">
+    Touch the fingerprint sensor with your finger
+  </message>
+  <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_LEFT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom left corner of the keyboard. Only visible by screen reader software.">
+    The fingerprint sensor is the bottom left-hand key on your keyboard. Touch it lightly with any finger.
+  </message>
+    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_BOTTOM_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the bottom right corner of the keyboard. Only visible by screen reader software.">
+    The fingerprint sensor is the bottom right-hand key on your keyboard. Touch it lightly with any finger.
+  </message>
+    <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_INSTRUCTION_LOCATE_SCANNER_KEYBOARD_TOP_RIGHT_ARIA_LABEL" desc="Aria label in the add fingerprint dialog telling users that the fingerprint sensor is in the top right corner of the keyboard. Only visible by screen reader software.">
+    The fingerprint sensor is the top right-hand key on your keyboard. Touch it lightly with any finger.
   </message>
 
   <!-- Languages and Inputs (OS settings) -->
@@ -230,6 +276,23 @@
   <!-- The non-Chrome OS string is in settings_google_chrome_strings.grdp -->
   <message name="IDS_SETTINGS_LANGUAGES_IS_DISPLAYED_IN_THIS_LANGUAGE" desc="The label for a language that is currently used as the UI display language.">
     System text is shown in this language
+  </message>
+
+  <!-- Smart Inputs Section -->
+  <message name="IDS_SETTINGS_SMART_INPUTS_TITLE" desc="The label for the smart inputs section, which contains features to help users type faster or more expressively such as suggesting personal information or suggesting emoji to use.">
+    Smart inputs
+  </message>
+  <message name="IDS_SETTINGS_SMART_INPUTS_PERSONAL_INFO_TITLE" desc="The label for personal information suggestion section.">
+    Personal information suggestions
+  </message>
+  <message name="IDS_SETTINGS_SMART_INPUTS_PERSONAL_INFO_DESCRIPTION" desc="The description for personal information suggestion section.">
+    Personal information suggestions help you write faster by suggesting your name, address or phone number when you type some specific words. Only you see your own private, personalized suggestions for your account.
+  </message>
+  <message name="IDS_SETTINGS_SMART_INPUTS_SHOW_PERSONAL_INFO" desc="The label for the toggle button controlling showing personal information suggestions.">
+    Show input personal information suggestions
+  </message>
+  <message name="IDS_SETTINGS_SMART_INPUTS_MANAGE_PERSONAL_INFO" desc="The label for opening Brave's browser settings page for managing personal addresses">
+    Manage personal information
   </message>
 
   <!-- Device Page (OS Settings) -->
@@ -733,6 +796,11 @@
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
     Add a school account or manage child accounts here. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_DESCRIPTION_2" desc="Description of the Account Manager Settings page for child users. Shown just below the title of the page.">
+    Manage your accounts here. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>&lt;br&gt;&lt;br&gt;
+    Bookmarks, passwords, and other browser data are synced with the primary account.&lt;br&gt;&lt;br&gt;
+    Adding a school account enables easy sign-in to websites and extensions as a student while still operating under parental controls.
+  </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
     Accounts
   </message>
@@ -753,6 +821,9 @@
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ADD_SCHOOL_ACCOUNT_LABEL" desc="Label of the button to add a school/EDU account in Account Manager.">
     Add school account
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_ADD_SCHOOL_ACCOUNT_LABEL_2" desc="Label of the button to add a school/EDU account in Account Manager.">
+    School Account
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_TEXT" desc="Text for 'secondary accounts disabled' message in Settings page.">
     Your administrator has disabled the addition of more Brave Accounts
@@ -784,46 +855,14 @@
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_MANAGED_ACCOUNT" desc="Management status label for managed accounts. This will be e.g. 'Managed by google.com' for Enterprise accounts and 'Managed by Family Link' for child accounts.">
     Managed by <ph name="DOMAIN">$1<ex>google.com</ex></ph>
   </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_PRIMARY_ACCOUNT" desc="Indicates this account is the primary account, when the primary account is a child account.">
+    Primary Account
+  </message>
+  <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_SCHOOL_ACCOUNT" desc="Indicates this account is the school account, when the primary account is a child account.">
+    School Account
+  </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_UNMANAGED_ACCOUNT" desc="Management status label for unmanaged accounts.">
     Primary account
-  </message>
-
-  <!-- Plugin VM page (OS settings) -->
-  <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_TITLE" desc="The title of Plugin VM section.">
-    Plugin VM
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_LABEL" desc="The text associated with the primary section setting for Plugin VM.">
-    Plugin VM
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_SUBTEXT" desc="Description for the section for managing Plugin VM.">
-    Set up permissions
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_PRINTER_ACCESS" desc="The text in the settings page for allowing printer access from Plugin VM.">
-    Give access to printers
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS" desc="Label for managing shared folders for Plugin VM.">
-    Manage shared folders
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS_LIST_HEADING" desc="Label for list of shared folders.">
-    Shared folders
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Plugin VM.">
-    To share, right-click on a folder in Files app, then select "Share with Plugin VM".
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_REMOVE" desc="Instructions for removing shared folders in Plugin VM.">
-    Removing folders from here will stop sharing but will not delete files.
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_SHARED_PATHS_REMOVE_SHARING" desc="Tooltip to show when hovering on the remove icon for a Plugin VM shared folder.">
-    Remove sharing
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_REMOVE_LABEL" desc="Label for the row to open a dialog confirming removal of Plugin VM.">
-    Uninstall Plugin VM
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_REMOVE_BUTTON" desc="Label for the button to open a dialog confirming removal of Plugin VM.">
-    Uninstall
-  </message>
-  <message name="IDS_SETTINGS_PLUGIN_VM_CONFIRM_REMOVE_DIALOG_BODY" desc="Message of the confirmation dialog displayed before removal begins.">
-    Removing Plugin VM will delete your VM. This includes its applications, settings, and data. Are you sure you wish to continue?
   </message>
 
   <!-- Crostini -->
@@ -950,26 +989,62 @@
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_LABEL" desc="Label for the text input of an optional label.">
     Label (Optional)
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_TCP" desc="Label for the TCP protocol when forwarding ports.">
-    TCP
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_TCP" desc="Label for the TCP protocol when forwarding ports. The parentheses are for formatting reasons.">
+    (TCP)
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_UDP" desc="Label for the UDP protocol when forwarding ports.">
-    UDP
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_UDP" desc="Label for the UDP protocol when forwarding ports. The parentheses are for formatting reasons.">
+    (UDP)
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_ERROR" desc="Description for the error when adding an invalid port.">
     Error forwarding port
   </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_REMOVE_ALL_PORTS" desc="Label for the button to deallocate all ports currently being forwarded in Crostini and clear the list of ports in the Crostini port forwarding settings page.">
+    Remove all ports
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_REMOVE_PORT" desc="Label for the button to deallocate a specified port and remove it from the list of ports in the Crostini port forwarding settings page.">
+    Remove port
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_TOGGLE_PORT_ARIA_LABEL" desc="The aria label for the toggle that controls the state of a port i.e. the text that screen readers will read out for the button.">
+    Activate port
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_REMOVE_ALL_PORTS_ARIA_LABEL" desc="The aria label for the button to deallocate all ports currently being forwarded in Crostini and clears the list of ports in the Crostini port forwarding settings page i.e. the text that screen readers will read out for the button.">
+    Deactivate all ports being forwarded in Linux
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_SHOW_MORE_ACTIONS_ARIA_LABEL" desc="The aria label for the button that displays more actions to the user for an individual port i.e. the text that screen readers will read out for the button.">
+    Show more actions for this port
+  </message>
   <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_SHOW_BUTTON" desc="The label of the button/link the user clicks to open the disk resizing dialogue." meaning="The label of the button/link the user clicks to open the disk resizing dialogue.">
     Change
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_SHOW_BUTTON_ARIA_LABEL" desc="The aria label for the button to show the disk resize dialog i.e. the text that screen readers will read out for the button.">
+    Change disk size
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESERVE_SIZE_BUTTON" desc="The label of the button/link the user clicks to open the disk resizing dialog when the existing disk is dynamically allocated (size was not user chosen)." meaning="The label of the button/link the user clicks to open the disk resizing dialog when the existing disk is dynamically allocated (size was not user chosen).">
+    Reserve size
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESERVE_SIZE_BUTTON_ARIA_LABEL" desc="The aria label for the button to show the disk resize dialog when the existing disk is dynamically allocated (size was not user chosen), i.e. the text that screen readers will read out for the button.">
+    Reserve disk size
   </message>
   <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_LABEL" desc="The label on the row in settings for managing Crostini's disk size.">
     Disk size
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_TITLE" desc="The title of the settings dialogue the user uses to resize the Crostini (AKA Linux (Beta)) Disk.">
-    Resize Linux Disk
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_DYNAMICALLY_ALLOCATED_SUBTEXT" desc="The subtext on the row in settings for managing Crostini's disk size when the existing disk is dynamically allocated (size was not user chosen).">
+    Dynamically allocated
   </message>
-  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_UNSUPPORTED" desc="The message diusplayed to the user when resizing their Crostini disk isn't supported, explaining a workaround.">
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_NOT_SUPPORTED_SUBTEXT" desc="The subtext on the row in settings for managing Crostini's disk size when the existing disk does not support resizing.">
+    Your container is not configured to support disk resizes. To adjust the amount of space that is reserved for Linux (Beta), back up and then restore into a new container.
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_TITLE" desc="The title of the settings dialogue the user uses to resize the Crostini (AKA Linux (Beta)) Disk.">
+    Resize Linux disk
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_UNSUPPORTED" desc="The message displayed to the user when resizing their Crostini disk isn't supported, explaining a workaround.">
     Your container doesn't support being resized. To adjust the amount of space that is pre-allocated to Linux (Beta), back up and then restore into a new container.
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_RECOMMENDED" desc="The message shown indicating the recommended disk size in Gigabytes.">
+    At least <ph name="INSTALL_SIZE">$1<ex>5.0 GB</ex></ph>  of space is recommended for Linux.
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_RECOMMENDED_WARNING" desc="The message shown indicating the recommended disk size in Gigabytes, when disk space must be freed to make this possible.">
+    At least <ph name="INSTALL_SIZE">$1<ex>5.0 GB</ex></ph> of space is recommended for Linux. To increase free space, delete files from your device.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_LOADING" desc="The message shown to the user while fetching the data needed to resize their disk.">
     Loading data, this may take up to a few seconds.
@@ -995,6 +1070,15 @@
   <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_DONE" desc="The message displayed to the user once disk resizing has completed successfully.">
     Done
   </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_CONFIRMATION_DIALOG_TITLE" desc="Confirmation dialog title when a user is about to reserve a size for a disk which previously did not have a fixed size.">
+    Are you sure you want to reserve a fixed size disk for Linux (Beta)?
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_CONFIRMATION_DIALOG_MESSAGE" desc="Message displayed in the confirmation dialog when the user is about to resize a disk to one with a fixed size.">
+    This operation cannot be undone
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_DISK_RESIZE_CONFIRMATION_DIALOG_BUTTON" desc="Button text in the confirmation dialog when the user confirms they want to resize the disk.">
+    Reserve size
+  </message>
   <message name="IDS_SETTINGS_CROSTINI_ARC_ADB_POWERWASH_REQUIRED_SUBLABEL" desc="Sublabel notifying user of powerwash requirement before enabling ARC ADB sideloading.">
     A factory reset of this Bravebook is required to enable ADB debugging. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
   </message>
@@ -1017,13 +1101,13 @@
     Ports
   </message>
   <message name="IDS_SETTINGS_CROSTINI_MIC_TITLE" desc="Title for sharing mic with Crostini.">
-    Give access to microphone
-  </message>
-  <message name="IDS_SETTINGS_CROSTINI_MIC_DIALOG_TITLE" desc="Dialog title for sharing mic with Crostini.">
-    Linux restart required
+    Allow Linux to access your microphone
   </message>
   <message name="IDS_SETTINGS_CROSTINI_MIC_DIALOG_LABEL" desc="Dialog label for sharing mic with Crostini.">
-    Changes to microphone will take effect when Linux is next restarted.
+    The change in microphone setting requires Linux to shut down. Shut down Linux to proceed.
+  </message>
+  <message name="IDS_SETTINGS_CROSTINI_MIC_DIALOG_SHUTDOWN_BUTTON" desc="Label for the shutdown button in the Crostini mic sharing dialog.">
+    Shut down
   </message>
 
   <!-- Android apps page (OS settings) -->
@@ -1525,6 +1609,12 @@
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINT_SERVER_REACHABLE_BUT_CANNOT_ADD" desc="Message shown on the print server dialog when we are able to reach the print server but still ran into some error with adding the print server.">
     Couldn't add the print server. Please check the server's configuration and try again.
   </message>
+  <message name="IDS_SETTINGS_PRINTING_PRINT_JOBS_LAUNCH_APP_TITLE_LABEL" desc="Label for launching the print management app from the os settings page.">
+    Print jobs
+  </message>
+  <message name="IDS_SETTINGS_PRINTING_PRINT_JOBS_LAUNCH_APP_SUBLABEL" desc="Sub-label that describes that the print management app lets users view and manage their print jobs.">
+    View and manage print jobs
+  </message>
 
   <!-- Internet page (OS settings) -->
   <message name="IDS_SETTINGS_INTERNET_ADD_CONNECTION" desc="Settings &gt; Internet &gt; Add connection expanding section label.">
@@ -1682,6 +1772,12 @@
   </message>
   <message name="IDS_SETTINGS_INTERNET_NETWORK_SHARED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is shared.">
     Other users of this device can use this network.
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_SHARED" desc="Settings &gt; Internet &gt; Network details: Text to show when a network is both synced to the users account and shared to all users on the device.  Also notes that changes made by other users are not synced.">
+    Synced with other devices on your account. Other users of this device can use this network. Settings modified by other users will not be synced. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_INTERNET_NETWORK_SYNCED_USER" desc="Settings &gt; Internet &gt; Network details: Text to show when a user network is synced.">
+    Synced with other devices on your account. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_INTERNET_WIFI_NETWORK_OUT_OF_RANGE" desc="Text shown when viewing the Wi-Fi network detail page when the currently-viewed Wi-Fi network has been lost (e.g., has gone out of range).">
     Network out of range
@@ -2259,6 +2355,21 @@
   <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_INTERLACED_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display resolution drop down menu, when the display mode is interlaced (which means the display's odd and even lines are scanned alternately in two interwoven rasterized lines).">
     <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph> (<ph name="REFRESH_RATE">$3<ex>60</ex></ph> Hertz) - interlaced
   </message>
+  <message name="IDS_SETTINGS_DISPLAY_RESOLUTION_ONLY_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display resolution drop down menu, when Resolution and Refresh Rate are displayed separately.">
+    <ph name="WIDTH">$1<ex>1600</ex></ph> x <ph name="HEIGHT">$2<ex>1200</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_TITLE" desc="In Device Settings &gt; Displays, the label for the section for changing a display's refresh rate.">
+    Refresh Rate
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_SUBLABEL" desc="In Device Settings &gt; Displays, the text describing the drop down menu to select the desired refresh rate of the selected external display.">
+    Determines the frequency that the screen updates
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display refresh rate drop down menu, when Resolution and Refresh Rate are displayed separately. Hz is the SI unit Hertz">
+    <ph name="REFRESH_RATE">$1<ex>60</ex></ph> Hz
+  </message>
+  <message name="IDS_SETTINGS_DISPLAY_REFRESH_RATE_INTERLACED_MENU_ITEM" desc="In Device Settings &gt; Displays, the text entry for a single item in the external display refresh rate drop down menu, when Resolution and Refresh Rate are displayed separately and the display mode is interlaced (which means the display's odd and even lines are scanned alternately in two interwoven rasterized lines). Hz is the SI unit Hertz">
+    <ph name="REFRESH_RATE">$1<ex>60</ex></ph> Hz - interlaced
+  </message>
   <message name="IDS_SETTINGS_DISPLAY_ZOOM_TITLE" desc="In Device Settings &gt; Displays, the title for the section for changing the display's zoom.">
     Display Size
   </message>
@@ -2516,6 +2627,41 @@
   <message name="IDS_SETTINGS_APPS_LINK_TEXT" desc="The label for the button which links to the App Management page.">
     Manage your apps
   </message>
+  <message name="IDS_SETTINGS_ANDROID_APPS_TITLE" desc="The title of Google Play Store (Arc++ / Android Apps) section.">
+    Google Play Store
+  </message>
+  <message name="IDS_SETTINGS_ANDROID_SETTINGS_TITLE" desc="The title of Android settings section in case Play Store app is not available.">
+    Android settings
+  </message>
+  <message name="IDS_SETTINGS_ANDROID_APPS_SUBTEXT" desc="Description for the section for enabling and managing Google Play Store (Android) apps.">
+    Install apps and games from Google Play on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
+  </message>
+  <!-- TODO(jamescook): Use device type instead of "Bravebook", which may
+        require changing ArcPlayTermsOfServiceConsent resource id handling. -->
+  <message name="IDS_SETTINGS_ANDROID_APPS_DISABLE_DIALOG_MESSAGE" desc="Describes what will happen if the user opts out of android apps.">
+    Apps you’ve downloaded from Google Play will be deleted from this Bravebook.
+    <ph name="LINE_BREAKS1">&lt;br&gt;&lt;br&gt;</ph>
+    Content you’ve purchased such as movies, TV shows, music, books, or other in-app purchases may also be deleted.
+    <ph name="LINE_BREAKS2">&lt;br&gt;&lt;br&gt;</ph>
+    This doesn’t affect apps or content on other devices.
+  </message>
+
+  <!-- Apps > Manage your apps > Plugin VM > Shared folders -->
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS" desc="Label for managing shared folders for Plugin VM.">
+    Manage shared folders
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_LIST_HEADING" desc="Label for list of shared folders.">
+    Shared folders
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Plugin VM.">
+    To share, right-click on a folder in Files app, then select "Share with Plugin VM".
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_REMOVE" desc="Instructions for removing shared folders in Plugin VM.">
+    Removing folders will stop sharing but will not delete files.
+  </message>
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_REMOVE_SHARING" desc="Tooltip to show when hovering on the remove icon for a Plugin VM shared folder.">
+    Stop sharing
+  </message>
 
   <!-- Storage -->
   <message name="IDS_SETTINGS_STORAGE_TITLE" desc="In Device Settings, the title for storage management.">
@@ -2578,11 +2724,39 @@
   <message name="IDS_SETTINGS_STORAGE_EXTERNAL_STORAGE_LIST_HEADER" desc="Header of the list of external storage devices for the subpage for setting preferences for external storage. This is shown when the list is not empty.">
     Available devices
   </message>
+  <message name="IDS_SETTINGS_STORAGE_MANAGE_DOWNLOADED_CONTENT_ROW_TITLE" desc="Header of the list of manage downloaded content for the subpage for managing DLC.">
+    Manage downloaded content
+  </message>
   <message name="IDS_SETTINGS_STORAGE_OVERVIEW_ARIA_LABEL" desc="The label to be read aloud by BraveVox to describe the storage usage progress bar on the Storage page">
     Storage Usage Overview
   </message>
   <message name="IDS_SETTINGS_STORAGE_ITEM_SYSTEM" desc="In Device Settings &gt; Storage, label for the total system size, difference between the size of the filesystem and the size of all items listed on the storage page.">
     System
+  </message>
+
+  <!-- DLC Device Subpage -->
+  <message name="IDS_SETTINGS_DLC_SUBPAGE_TITLE" desc="Title for the DLC subpage.">
+    Downloaded Content
+  </message>
+  <message name="IDS_SETTINGS_DLC_REMOVE" desc="Label for a button that will remove a DLC from disk.">
+    Remove
+  </message>
+  <message name="IDS_SETTINGS_DLC_SUBPAGE_DESCRIPTION" desc="A description shown at the top of the subpage that informs users that if they modify any of the DLCs in the list, other users of the device may be impacted by those changes.">
+    These components are shared with other users on this device. Removing components may affect other users.
+  </message>
+
+  <!-- Privacy Page -->
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_TITLE" desc="The label of the checkbox to enable/disable crash and user metrics logging in Chrome OS.">
+    Help improve Chrome OS features and performance
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_TOGGLE_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging in Chrome OS.">
+    Automatically sends diagnostic and usage data to Brave
+  </message>
+  <message name="IDS_SETTINGS_ENABLE_CONTENT_PROTECTION_ATTESTATION" desc="description label for verified access about premium contents">
+    Enable Verified Access
+  </message>
+  <message name="IDS_SETTINGS_WAKE_ON_WIFI_DESCRIPTION" desc="In the settings tab, the text next to the checkbox for enabling quickly reconnecting to known Wi-Fi SSIDs.">
+    Keep Wi-Fi on during sleep
   </message>
 </if>
 </grit-part>

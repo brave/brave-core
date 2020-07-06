@@ -2121,7 +2121,6 @@
 <translation id="3771294271822695279">ভিডিঅ’ ফাইল</translation>
 <translation id="3775432569830822555">SSL ছাৰ্ভাৰৰ প্ৰমাণপত্ৰ</translation>
 <translation id="3775705724665058594">আপোনাৰ ডিভাইচসমূহলৈ পঠিয়াওক</translation>
-<translation id="6945695820322143954">এই এক্সটেনশ্বনে Braveৰ Brave Web Storeৰ নীতি উলংঘা কৰে।</translation>
 <translation id="3777483481409781352">চেলুলাৰ ডিভাইচ সক্রিয় কৰিব পৰা নগ’ল</translation>
 <translation id="3777806571986431400">এক্সটেনশ্বন সক্ষম কৰা হ'ল</translation>
 <translation id="3778152852029592020">ডাউনল’ড বাতিল কৰা হৈছে।</translation>
@@ -2899,7 +2898,6 @@
 <translation id="48704129375571883">অতিৰিক্ত সুবিধা যোগ কৰক</translation>
 <translation id="4870758487381879312">কনফিগাৰেশ্বনৰ তথ্য পাবলৈ প্ৰশাসকে দিয়া পাছৱর্ডটো দিয়ক</translation>
 <translation id="4870903493621965035">যোৰা লগোৱা কোনো ডিভাইচ নাই</translation>
-<translation id="8839398440242019256">Brave ৱেব ষ্ট’ৰৰ নহয়৷</translation>
 <translation id="4871322859485617074">পিনত অমান্য বৰ্ণ আছে</translation>
 <translation id="4871370605780490696">বুকমাৰ্ক যোগ কৰক</translation>
 <translation id="4871719318659334896">গোটটো বন্ধ কৰক</translation>
@@ -4952,7 +4950,6 @@
 <translation id="767127784612208024">ৰিছেট নিশ্চিত কৰিবলৈ স্পৰ্শ কৰক</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, <ph name="PAGE_TITLE"/>ত।</translation>
 <translation id="1800308196794859773">সকলো পাঠৰ ক্ষেত্ৰত Braveএ চিনাক্তকৰণৰ অনুমতি দিবলৈ Braveলৈ আপোনাৰ কণ্ঠস্বৰ পঠিয়াওক।</translation>
-<translation id="3098826269712097986">আপুনি ইনক'গনিট' ম'ডৰ পৰা বাহিৰ ওলালে ছাইন ইনৰ লগত জড়িত ডেটা Braveত ষ্ট'ৰ কৰা হ'ব। এই কাৰ্যটোৱে আপোনাক এই ৱেবছাইটটোৰ সৈতে পাছত পুনৰ স্পৰ্শ আইডি ব্যৱহাৰ কৰিবলৈ দিব।</translation>
 <translation id="7681095912841365527">ছাইটে ব্লুটুথ ব্যৱহাৰ কৰিব পাৰে</translation>
 <translation id="7683373461016844951">অব্যাহত ৰাখিবলৈ 'ঠিক আছে'-ত ক্লিক কৰক আৰু 'অন্য লোক যোগ দিয়ক'-ত টিপি আপোনাৰ <ph name="DOMAIN"/> ইমেইল ঠিকনাৰ বাবে এটা নতুন প্ৰ'ফাইল সৃষ্টি কৰক।</translation>
 <translation id="7684212569183643648">আপোনাৰ প্ৰশাসকে ইনষ্টল কৰিছে</translation>
@@ -5429,7 +5426,6 @@
 <translation id="8259239505248583312">আৰম্ভ কৰক</translation>
 <translation id="8260126382462817229">আকৌ ছাইন ইন কৰিবলৈ চেষ্টা কৰক</translation>
 <translation id="8260864402787962391">মাউছ</translation>
-<translation id="8261378640211443080">এই এক্সটেনশ্বনটো <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>ত সূচীবদ্ধ কৰা হোৱা নাই আৰু আপুনি নজনাকৈয়ে ইয়াক যোগ কৰা হ’ব পাৰে।</translation>
 <translation id="8261506727792406068">মচক</translation>
 <translation id="8263336784344783289">এই গোটটোৰ নাম দিয়ক</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/>এ আপোনাৰ মাউছৰ কাৰ্ছৰ অক্ষম কৰিছে।</translation>
@@ -5990,7 +5986,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/>এ <ph name="FILENAME"/>ক সম্পাদনা কৰিব পাৰে</translation>
 <translation id="8985264973231822211"><ph name="DEVICE_LAST_ACTIVATED_TIME"/> দিনৰ পূর্বে সক্ৰিয় আছিল</translation>
 <translation id="8986362086234534611">পাহৰক</translation>
-<translation id="9079153198295609735">স্বয়ংক্ৰিয়ভাৱে Braveলৈ ব্যৱহাৰৰ পৰিসংখ্যা আৰু ক্ৰেশ্ব ৰিপ’ৰ্ট পঠিয়াওক</translation>
 <translation id="8987927404178983737">মাহ</translation>
 <translation id="8991520179165052608">ছাইটে আপোনাৰ ডিভাইচৰ মাইক্ৰ’ফ’ন ব্যৱহাৰ কৰিব পাৰে</translation>
 <translation id="899403249577094719">Netscape প্ৰমাণপত্ৰ ভিত্তিক URL</translation>
@@ -6209,6 +6204,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">সুৰক্ষিত সংযোগ স্থাপন কৰি থকা হৈছে...</translation>
 <translation id="998747458861718449">প&amp;ৰীক্ষা কৰক</translation>
+<translation id="658539216370629794">লিংকটো ইনক’&amp;গনিট’ ৱিণ্ড'ত খোলক</translation>
+<translation id="1432267168815937878">লিংকটো ইনক’&amp;গনিট’ ৱিণ্ড'ত খোলক</translation>
+<translation id="6516243500644829484">নতুন &amp;ইনক'গনিট' ৱিণ্ড'</translation>
+<translation id="7973394300052703468">নতুন &amp;ইনক'গনিট' ৱিণ্ড'</translation>
+<translation id="6395403722585816044">ইনক’গনিট’ ম’ডত ডাউনল’ড কৰা হৈছে</translation>
+<translation id="203837651858678035">যিকোনো প্ৰকাৰে ইনক’গনিট’ ম’ডৰ পৰা বাহিৰ হ’বনে?</translation>
+<translation id="7376221878517288144">যিয়েই কি নহ’লেও ইনক’গনিট’ ম’ডৰ বন্ধ কৰিবনে?</translation>
+<translation id="871606814707918245">অধিকাংশ লোকে এই ছাইটটোৰ জাননীসমূহ অৱৰোধ কৰে</translation>
+<translation id="5053701565089446556">ইনক’গনিট’ এক্সটেনশ্বন: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ইনক’গনিট’ এপ্: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">ইনক'গনিট' টেব: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ইনক’গনিট’ ছাবফ্ৰেম: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ইনক’গনিট’ পর্টেল: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">এই এক্সটেনশ্বনটো <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>ত সূচীবদ্ধ কৰা হোৱা নাই আৰু আপুনি নজনাকৈয়ে ইয়াক যোগ কৰা হ’ব পাৰে।</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ইনক’গনিট’)</translation>
+<translation id="4369414322596874629">আপুনি এখন ইনকগনিট‘ ৱিণ্ড‘ ব্যৱহাৰ কৰি ব্যক্তিগতভাৱে ব্ৰাউজ কৰিব পাৰে</translation>
+<translation id="3772947852642271642">আপোনাৰ ব্ৰাউজিঙৰ ইতিহাস ছেভ নকৰাকৈ কোনো ইনক’গনিট’ ৱিণ্ড’ৰ জৰিয়তে ৱেব ব্যৱহাৰ কৰক</translation>
+<translation id="3871738366246972820">কোনো শ্বেয়াৰ কৰা কম্পিউটাৰৰ জৰিয়তে? এটা ইনক’গনিট’ ৱিণ্ড’ত খুলি চাওক।</translation>
+<translation id="5808622652939943719">ব্যক্তিগতভাৱে ব্ৰাউজ কৰিবলৈ বিন্দু আইকন মেনুত ক্লিক কৰি এখন ইনক'গনিট' ৱিণ্ড' খোলক</translation>
+<translation id="9079153198295609735">স্বয়ংক্ৰিয়ভাৱে Braveলৈ ব্যৱহাৰৰ পৰিসংখ্যা আৰু ক্ৰেশ্ব ৰিপ’ৰ্ট পঠিয়াওক</translation>
+<translation id="8839398440242019256">Brave ৱেব ষ্ট’ৰৰ নহয়৷</translation>
+<translation id="6945695820322143954">এই এক্সটেনশ্বনে Braveৰ Brave Web Storeৰ নীতি উলংঘা কৰে।</translation>
+<translation id="1676595396635191120">নতুন ইনক’গনিট’ ৱিণ্ড’</translation>
+<translation id="5094764494104066239">বুকমাৰ্কৰ বাৰ সদায়েই দেখুৱাওক</translation>
+<translation id="4471385409549756595">নতুন ইনক’গনিট’ ৱিণ্ড’</translation>
+<translation id="4540437243849625078">এই ছাইটটোৱে ইনক'গনিট' ম'ডৰ বাহিৰৰ এটা এপৰ সৈতে তথ্য শ্বেয়াৰ কৰিব ওলাইছে।</translation>
+<translation id="1227836882233136433">ইনক’গনিট’ ম’ডৰ পৰা বাহিৰ হ’বনে?</translation>
+<translation id="7618452966706304788">আপুনি ইনক'গনিট' ম'ডত <ph name="APP_NAME"/>ৰ সৈতে স্পৰ্শ আইডিটো ব্যৱহাৰ কৰিবলৈ বিচাৰেনে?</translation>
+<translation id="3098826269712097986">আপুনি ইনক'গনিট' ম'ডৰ পৰা বাহিৰ ওলালে ছাইন ইনৰ লগত জড়িত ডেটা Braveত ষ্ট'ৰ কৰা হ'ব। এই কাৰ্যটোৱে আপোনাক এই ৱেবছাইটটোৰ সৈতে পাছত পুনৰ স্পৰ্শ আইডি ব্যৱহাৰ কৰিবলৈ দিব।</translation>
+<translation id="5186185447130319458">ইনক’গনিট’</translation>
+<translation id="2579188629646253712">ইনক’গনিট’ৰ পৰা বাহিৰ হওক</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{সকলো &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}=1{ই&amp;নক’গনিট’ ৱিণ্ড’ত খোলক}one{সকলো (#) &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}other{সকলো (#) &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}}</translation>
 <translation id="2431625704210501303">&amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক</translation>
 <translation id="4620367155626060530">বুকমার্ক বাৰ &amp;দেখুৱাওক</translation>
@@ -6258,10 +6285,8 @@
 <translation id="3860292630623580294">(ইনক’গনিট’)</translation>
 <translation id="4854477725773269949">ইনক’গনিট’ ম'ডত সক্ষম কৰিবলৈ অনুমতি দিয়ক</translation>
 <translation id="6436164536244065364">Brave Web Storeত চাওক</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>ত এক্সটেনশ্বন আৰু থীমসমূহ পাওক</translation>
 <translation id="6336451774241870485">নতুন ইনকগনিট’ টেব</translation>
 <translation id="6610147964972079463">ইনক’গনিট’ টেবসমূহ বন্ধ কৰক</translation>
-<translation id="5186185447130319458">ইনক’গনিট’</translation>
 <translation id="4933782374919065856">প্ৰশ্ন সুধিব লগা আছে নেকি? আপোনাৰ প্ৰ’ফাইল তদাৰক কৰা লোকৰ সৈতে যোগাযোগ কৰক।</translation>
 </translationbundle>

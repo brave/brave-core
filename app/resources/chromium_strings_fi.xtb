@@ -10,6 +10,7 @@
 <translation id="8132634101975074716">Olet kirjautunut Braveiin!</translation>
 <translation id="7419046106786626209">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, koska synkronointi ei ole käytettävissä verkkotunnuksessasi.</translation>
 <translation id="5147525139567260139">Jaa Brave-välilehti</translation>
+<translation id="1530633922026945685">Brave tarvitsee luvan käyttää kameraasi ympäristön 3D-kartoittamiseen</translation>
 <translation id="5616153642055197778">Braveista on saatavilla uusi, turvallisempi versio.</translation>
 <translation id="6797402139308059782">Jätä Brave käyntiin taustalle</translation>
 <translation id="5875673934455379806">Asenna Brave uudelleen</translation>
@@ -18,9 +19,10 @@
 <translation id="189297655255130768">Brave ei vastaa. Käynnistetäänkö uudelleen?</translation>
 <translation id="1775322105159056176">Brave ei voi tunnistaa tai asettaa oletusselainta.</translation>
 <translation id="9220324636239049437">Tämä poistaa yhden kohteen pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
-<translation id="7916016681687251387">Brave-käyttöjärjestelmä ei voinut synkronoida tietojasi. Korjaa nyt.</translation>
 <translation id="8745514854244955877">Brave – Kirjautuminen verkkoon – <ph name="PAGE_TITLE"/></translation>
+<translation id="162629503687514352">Brave-käyttöjärjestelmä ei voinut synkronoida salasanojasi.</translation>
 <translation id="5659384504794665581">Jos käytät jaettua tietokonetta, kaverisi ja perheenjäsenesi voivat selata verkkoa omista profiileistaan käsin ja muokata Braveista juuri itselleen sopivan.</translation>
+<translation id="5997267581285668459">Valinnainen: Auta parantamaan Brave-käyttöjärjestelmän ominaisuuksia ja suorituskykyä lähettämällä automaattisesti diagnostiikka- ja käyttödataa Bravelle.</translation>
 <translation id="3813272600615358652">Tämä laajennus on vaihtanut Bravein aloitussivun.</translation>
 <translation id="2576129394594491151">Laajennus <ph name="EXTENSION_NAME"/> on vaihtanut Bravein aloitussivun.</translation>
 <translation id="6078442581074612226">Braveissa</translation>
@@ -35,12 +37,11 @@
 <translation id="8372880274820509128">Brave lisää suojausta salaamalla tietosi.</translation>
 <translation id="2770231113462710648">Vaihda oletusselaimeksi:</translation>
 <translation id="2799223571221894425">Käynnistä uudelleen</translation>
-<translation id="2341767445688917208">Brave-käyttöjärjestelmä ei voinut synkronoida salasanojasi. Korjaa nyt.</translation>
 <translation id="777113543093865885">Poista Braveista…</translation>
-<translation id="8417700129970341035">Valinnainen: Lähetä Bravelle automaattisesti käyttötilastoja ja virheraportteja Bravein kehittämiseksi.</translation>
 <translation id="2176825726964012531">Tietoja &amp;Braveista</translation>
 <translation id="8208853227947884571">Brave on ajan tasalla.</translation>
 <translation id="2953892977076487219">Brave yrittää muuttaa salasanoja.</translation>
+<translation id="8755404239607088219">Brave ei voi tarkistaa salasanojasi. Yritä myöhemmin uudelleen.</translation>
 <translation id="8880183781256147665">Lisätään Braveiin...</translation>
 <translation id="7918740962659365265">Auta parantamaan Braveia lähettämällä kaatumisilmoitukset ja <ph name="UMA_LINK"/> Bravelle</translation>
 <translation id="7365690458036015383">Asennusohjelma ei pystynyt purkamaan arkistotiedostoa. Lataa Brave uudelleen.</translation>
@@ -51,13 +52,16 @@
 <translation id="2585240446624043880">Brave ei voi lukea tietohakemistoaan ja kirjoittaa siihen:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
+<translation id="2423637317249323944">Bravein versio <ph name="PRODUCT_VERSION"/> asennettu</translation>
 <translation id="2339258256897053758">Braven sovellusliittymän avaimet puuttuvat. Jotkin Bravein toiminnoista poistetaan käytöstä.</translation>
 <translation id="8926637909431618259">Jätä taustasovellukset käyntiin, kun Brave suljetaan</translation>
 <translation id="4480040274068703980">Brave-käyttöjärjestelmä ei voi synkronoida tietoja kirjautumisvirheen vuoksi.</translation>
+<translation id="9216183508558772570">Brave ilmoittaa, kun kirjaudut sisään vaarantuneella salasanalla</translation>
 <translation id="5853262807109651878">Tämä poistaa <ph name="ITEMS_COUNT"/> kohdetta pysyvästi laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
 <translation id="8703492925273919597">Sulje kaikki Brave-ikkunat ja yritä uudelleen.</translation>
 <translation id="1384923383737428730">Tietokoneellasi on haitallinen ohjelmisto. Brave voi poistaa sen, palauttaa asetuksesi ja poistaa laajennukset käytöstä, jotta selaimesi toimii taas normaalisti.</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
+<translation id="4304059894777924102">Brave ei voi tarkistaa salasanojasi. Tarkista internetyhteytesi.</translation>
 <translation id="1807774211756215222">Avaa linkki uudella Bravein välilehdellä</translation>
 <translation id="7453070689008684791">Brave käyttää Drivea antaakseen ehdotuksia osoitepalkissa</translation>
 <translation id="2106568569080763501">Bravein avulla voit soittaa Skypellä puhelinnumeroon klikkaamalla sitä verkossa!</translation>
@@ -85,11 +89,13 @@
 <translation id="3834935463915107022">Suljetaanko Brave silti?</translation>
 <translation id="8668413672647811944">Bravein tärkeä tietoturvapäivitys on asennettu. Käynnistä selain uudelleen – palautamme avoimet välilehdet.</translation>
 <translation id="7914115000169617076">Melkein ajan tasalla. Viimeistele päivitys käynnistämällä Brave uudelleen. Incognito-ikkunoita ei avata uudelleen.</translation>
+<translation id="1537736472315689033">Brave ei voi tarkistaa salasanojasi. Yritä uudelleen 24 tunnin kuluttua tai <ph name="BEGIN_LINK"/>tarkista salasanat Brave-tililtä<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Tämä käyttää samaa oikeinkirjoituksen tarkistusta kuin Brave Haku. Selaimeen kirjoittamasi teksti lähetetään Bravelle. Voit muuttaa tätä milloin tahansa asetuksista.</translation>
 <translation id="1912973375560256099">Bravein saapuvien yhteyksien sääntö, joka sallii mDNS-liikenteen.</translation>
 <translation id="8797356639448065696">Brave on käynnissä taustalla</translation>
 <translation id="7406627712452599344">Vierailijat voivat käyttää Braveia jälkiä jättämättä.</translation>
 <translation id="5952898964075639679">Lisää itsesi Braveiin</translation>
+<translation id="9078804073692109646">Ei tallennettuja salasanoja. Brave voi tarkistaa salasanasi, kun tallennat niitä.</translation>
 <translation id="8586264863973514035">Ota muutokset käyttöön käynnistämällä Brave uudelleen</translation>
 <translation id="1326766910007115955">Olet kirjautumassa sisään hallinnoidulla tilillä ja antamassa tilin järjestelmänvalvojalle oikeuden hallita Brave-profiiliasi. Brave-tietosi, kuten sovelluksesi, kirjanmerkkisi, historiasi, salasanasi ja muut asetuksesi, yhdistetään pysyvästi käyttäjätiliin <ph name="USER_NAME"/>. Voit poistaa nämä tiedot Brave-tilien Hallintapaneelissa, mutta et voi liittää tietoja toiseen tiliin. <ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">Päivitetään Braveia (<ph name="PROGRESS_PERCENT"/>)</translation>
@@ -123,6 +129,7 @@
 <translation id="7006260220514217183">Selaussuoja on pois päältä. Brave suosittelee laittamaan sen päälle.</translation>
 <translation id="8320964054148936490">Tälle tietokoneelle on jo asennettu Bravein uudempi versio. Jos Brave ei toimi, poista sen asennus ja yritä uudelleen.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave käynnistetään uudelleen nyt}=1{Brave käynnistetään uudelleen 1 sekunnin kuluttua}other{Brave käynnistetään uudelleen # sekunnin kuluttua}}</translation>
+<translation id="3127818369811890733">Brave-käyttöjärjestelmä ei voinut synkronoida dataasi.</translation>
 <translation id="5019879183386042809">Tee Braveista oletusselain</translation>
 <translation id="428541510811554120">Brave ei voi tarkistaa päivityksiä. Tarkista internetyhteytesi.</translation>
 <translation id="6268381023930128611">Kirjaudutaanko ulos?</translation>
@@ -145,6 +152,7 @@
 Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu profiilihakemisto tai käytä Bravein uudempaa versiota.</translation>
 <translation id="5450493308072741203">Päivitä &amp;Brave</translation>
 <translation id="6666624454809779082">Brave on jo asennettuna kaikille tietokoneen käyttäjille.</translation>
+<translation id="8291513491595858997">Vanhempasi ovat laittaneet Bravein sivustojen, sovellusten ja laajennusten käyttöluvat pois päältä. Käyttöönottoa (<ph name="EXTENSION_TYPE_PARAMETER"/>) ei sallita.</translation>
 <translation id="8211837073776713955">Brave ilmoittaa sinulle, jos salasanasi ovat vaarantuneet</translation>
 <translation id="7830723774663008396">Brave – <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (kopioitu Braveiin)</translation>
@@ -155,6 +163,7 @@ Kaikki ominaisuudet eivät ehkä ole käytettävissä. Määritä jokin muu prof
 <translation id="123620459398936149">Brave-käyttöjärjestelmä ei voi synkronoida tietoja. Päivitä synkronoinnin tunnuslause.</translation>
 <translation id="5499063270485366718">Jos kuvalla ei ole hyödyllistä kuvausta, Brave yrittää luoda sellaisen. Kuvat lähetetään Bravelle kuvausten luomista varten.</translation>
 <translation id="1197672524850678392">Bravein käynnistäminen epäonnistui. Yritä uudelleen.</translation>
+<translation id="3405035915691517126">Brave ei voi tarkistaa salasanojasi. Yritä uudelleen 24 tunnin päästä.</translation>
 <translation id="5660079256336839395">Piilota Brave-valikossa</translation>
 <translation id="5516268345616100622">Tehtävänhallinta - Brave</translation>
 <translation id="61852838583753520">Päivitä &amp;Brave-käyttöjärjestelmä</translation>
@@ -200,7 +209,9 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Käynnistä Brave uudelleen vuorokauden kuluessa}other{Käynnistä Brave uudelleen # vuorokauden kuluessa}}</translation>
 <translation id="6914496861676471566">Asennusarkisto on virheellinen. Lataa Brave uudelleen.</translation>
 <translation id="2097604701283463988">Brave on vanhentunut</translation>
-<translation id="6457351952130887648">Copyright © <ph name="YEAR"/> Brave Software Inc. Kaikki oikeudet pidätetään.</translation>
+<translation id="2452889775041290116">Vanhempasi ovat laittaneet Bravein sivustojen, sovellusten ja laajennusten käyttöluvat pois päältä. Lisäämistä (<ph name="EXTENSION_TYPE_PARAMETER"/>) ei sallita.</translation>
+<translation id="80177348132855464">Brave voi tarkistaa salasanasi, kun kirjaudut sisään Brave-tililläsi</translation>
+<translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Brave Software Inc. Kaikki oikeudet pidätetään.</translation>
 <translation id="3052349005266761501">Käynnistetään Braveia…</translation>
 <translation id="6283840329609797763">Asennus epäonnistui määrittelemättömän virheen vuoksi. Lataa Brave uudelleen.</translation>
 <translation id="6235873178214143377">Jos asetus ei näy tällä sivulla, siirry <ph name="LINK_BEGIN"/>
@@ -211,6 +222,7 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="7408085963519505752">Brave-käyttöjärjestelmän käyttöehdot</translation>
 <translation id="2262856633481902138">Brave ei voinut synkronoida tietoja, sillä tilin kirjautumistiedot ovat vanhentuneet.</translation>
 <translation id="8862326446509486874">Sinulla ei ole käyttöoikeuksia järjestelmätason asennukseen. Kokeile asennusohjelman suorittamista uudelleen järjestelmänvalvojana.</translation>
+<translation id="6412037018950369131">Jos vaihdoit, päivitä muutos Bravein tallennettuihin salasanoihin.</translation>
 <translation id="3215652305414474626">Määrittää myös Bravein aloitussivun ja Etusivu-painikkeella avattavan sivun.</translation>
 <translation id="8285294305439559616">Brave yrittää näyttää salasanat. Salli tämä kirjoittamalla Windows-salasanasi.</translation>
 <translation id="6389268239133412586">Bravein päivitys epäonnistui</translation>
