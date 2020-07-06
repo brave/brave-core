@@ -34,8 +34,6 @@ interface BatAdsClient {
   [Sync]
   LoadResourceForId(string id) => (string value);
   [Sync]
-  CanShowBackgroundNotifications() => (bool can_show);
-  [Sync]
   ShouldAllowAdsSubdivisionTargeting() => (bool should_allow);
   [Sync]
   GetAdsSubdivisionTargetingCode() => (string subdivision_targeting_code);

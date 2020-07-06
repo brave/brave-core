@@ -55,8 +55,6 @@ class AdsClientMock : public AdsClient {
 
   MOCK_CONST_METHOD0(IsForeground, bool());
 
-  MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
-
   MOCK_METHOD1(ShowNotification, void(
       std::unique_ptr<AdNotificationInfo> info));
 

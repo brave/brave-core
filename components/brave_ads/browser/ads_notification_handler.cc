@@ -60,7 +60,6 @@ void AdsNotificationHandler::OnClose(
   base::OnceClosure completed_closure_local =
       base::BindOnce(&AdsNotificationHandler::CloseOperationCompleted,
       base::Unretained(this), id);
-  pending_close_callbacks_.emplace(id, std::move(completed_closure));
 
   if (!ads_service_) {
     auto notification = base::BindOnce(
@@ -137,7 +136,7 @@ void AdsNotificationHandler::SetAdsService(
     ads_service_ = ads_service;
     SendPendingNotifications();
   } else {
-    ads_service = nullptr;
+    ads_service_ = nullptr;
   }
 }
 
@@ -156,12 +155,6 @@ const void* AdsNotificationHandler::UserDataKey() {
 
 void AdsNotificationHandler::CloseOperationCompleted(
     const std::string& notification_id) {
-
-  auto iter = pending_close_callbacks_.find(notification_id);
-  if (iter != pending_close_callbacks_.end()) {
-    std::move(iter->second).Run();
-    pending_close_callbacks_.erase(iter);
-  }
 #if defined(OS_ANDROID)
   StartShutDownTimerIfNecessary(notification_id);
 #endif

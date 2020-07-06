@@ -411,8 +411,6 @@ class AdsServiceImpl : public AdsService,
   void CloseNotification(
       const std::string& uuid) override;
 
-  bool CanShowBackgroundNotifications() const override;
-
   void UrlRequest(
       ads::UrlRequestPtr url_request,
       ads::UrlRequestCallback callback) override;

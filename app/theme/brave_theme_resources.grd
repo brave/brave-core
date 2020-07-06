@@ -62,6 +62,8 @@
         <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_88" file="common/avatars/avatar_bonbon_royal.png" />
         <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_89" file="common/avatars/avatar_bonbon_ninja.png" />
       </if>
+      <structure type="chrome_scaled_image" name="IDR_BAT_ADS_CLOSE_BUTTON_16" file="brave/bat_ads_close_btn_16.png" />
+      <structure type="chrome_scaled_image" name="IDR_BAT_ADS_LOGO_20" file="brave/bat_ads_logo_20.png" />
     </structures>
   </release>
 </grit>

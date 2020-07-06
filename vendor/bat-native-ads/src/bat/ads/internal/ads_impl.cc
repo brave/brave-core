@@ -79,15 +79,6 @@ const uint64_t kSustainAdNotificationInteractionAfterSeconds = 10;
 
 const uint16_t kPurchaseIntentMaxSegments = 3;
 
-const int kDoNotDisturbFromHour = 21;  // 9pm
-const int kDoNotDisturbToHour = 6;     // 6am
-
-#if defined(OS_ANDROID)
-const int kMaximumAdNotifications = 3;
-#else
-const int kMaximumAdNotifications = 0;  // No limit
-#endif
-
 std::string GetDisplayUrl(const std::string& url) {
   GURL gurl(url);
   if (!gurl.is_valid())
@@ -222,13 +213,6 @@ void AdsImpl::InitializeStep6(
 
   MaybeServeAdNotification(false);
 
-#if defined(OS_ANDROID)
-    // Ad notifications do not sustain a reboot or update, so we should remove
-    // orphaned ad notifications
-    RemoveAllAdNotificationsAfterReboot();
-    RemoveAllAdNotificationsAfterUpdate();
-#endif
-
   client_->UpdateAdUUID();
 
   if (PlatformHelper::GetInstance()->IsMobile()) {
@@ -249,33 +233,6 @@ void AdsImpl::InitializeStep6(
 
   get_catalog_->Download();
 }
-
-#if defined(OS_ANDROID)
-void AdsImpl::RemoveAllAdNotificationsAfterReboot() {
-  auto ads_shown_history = client_->GetAdsHistory();
-  if (!ads_shown_history.empty()) {
-    uint64_t ad_shown_timestamp =
-        ads_shown_history.front().timestamp_in_seconds;
-    uint64_t boot_timestamp =
-        static_cast<uint64_t>(base::Time::Now().ToDoubleT() -
-            static_cast<uint64_t>(base::SysInfo::Uptime().InSeconds()));
-    if (ad_shown_timestamp <= boot_timestamp) {
-      ad_notifications_->RemoveAll(false);
-    }
-  }
-}
-
-void AdsImpl::RemoveAllAdNotificationsAfterUpdate() {
-  // Ad notifications do not sustain app update, so remove all ad notifications
-  std::string current_version_code(
-      base::android::BuildInfo::GetInstance()->package_version_code());
-  std::string last_version_code = client_->GetVersionCode();
-  if (last_version_code != current_version_code) {
-    client_->SetVersionCode(current_version_code);
-    ad_notifications_->RemoveAll(false);
-  }
-}
-#endif
 
 bool AdsImpl::IsInitialized() {
   if (!is_initialized_ || !ads_client_->IsEnabled()) {
@@ -310,8 +267,7 @@ void AdsImpl::OnForeground() {
 
   BLOG(1, "Browser window did become active");
 
-  if (PlatformHelper::GetInstance()->IsMobile() &&
-      !ads_client_->CanShowBackgroundNotifications()) {
+  if (PlatformHelper::GetInstance()->IsMobile()) {
     StartDeliveringAdNotifications();
   }
 }
@@ -321,8 +277,7 @@ void AdsImpl::OnBackground() {
 
   BLOG(1, "Browser window did enter background");
 
-  if (PlatformHelper::GetInstance()->IsMobile() &&
-      !ads_client_->CanShowBackgroundNotifications()) {
+  if (PlatformHelper::GetInstance()->IsMobile()) {
     deliver_ad_notification_timer_.Stop();
   }
 }
@@ -410,15 +365,6 @@ bool AdsImpl::ShouldNotDisturb() const {
   }
 
   if (IsForeground()) {
-    return false;
-  }
-
-  auto now = base::Time::Now();
-  base::Time::Exploded now_exploded;
-  now.LocalExplode(&now_exploded);
-
-  if (now_exploded.hour >= kDoNotDisturbToHour &&
-      now_exploded.hour <= kDoNotDisturbFromHour) {
     return false;
   }
 
@@ -1121,11 +1067,6 @@ bool AdsImpl::ShowAdNotification(
       << "  targetUrl: " << ad_notification->target_url);
 
   ad_notifications_->PushBack(*ad_notification);
-
-  if (kMaximumAdNotifications > 0 &&
-      ad_notifications_->Count() > kMaximumAdNotifications) {
-    ad_notifications_->PopFront(true);
-  }
 
   return true;
 }

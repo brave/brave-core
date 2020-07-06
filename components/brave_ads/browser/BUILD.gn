@@ -68,7 +68,6 @@ source_set("browser") {
       "//services/network/public/cpp",
       "//services/network/public/mojom",
       "//ui/base",
-      "//ui/message_center/public/cpp",
     ]
 
     if (is_android) {
@@ -79,7 +78,7 @@ source_set("browser") {
         "notification_helper_android.h",
       ]
       deps += [
-        "//brave/browser/brave_ads/android:jni_headers",
+        "//brave/browser/brave_ads/android",
         "//brave/build/android:jni_headers",
         "//chrome/android:jni_headers",
       ]

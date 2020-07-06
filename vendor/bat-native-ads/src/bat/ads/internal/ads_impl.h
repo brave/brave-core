@@ -284,11 +284,6 @@ class AdsImpl
       const uint64_t seconds);
   void DeliverAdNotification();
 
-  #if defined(OS_ANDROID)
-  void RemoveAllAdNotificationsAfterReboot();
-  void RemoveAllAdNotificationsAfterUpdate();
-  #endif
-
   const AdNotificationInfo& get_last_shown_ad_notification() const;
   void set_last_shown_ad_notification(
       const AdNotificationInfo& info);
