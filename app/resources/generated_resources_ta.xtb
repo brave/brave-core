@@ -2124,7 +2124,6 @@
 <translation id="3771294271822695279">வீடியோ கோப்புகள்</translation>
 <translation id="3775432569830822555">SSL சேவையக சான்றிதழ்</translation>
 <translation id="3775705724665058594">உங்கள் சாதனங்களுக்கு அனுப்புதல்</translation>
-<translation id="6945695820322143954">Brave இணைய அங்காடிக் கொள்கையை இந்த நீட்டிப்பு மீறுகிறது.</translation>
 <translation id="3777483481409781352">மொபைல் சாதனத்தை இயக்க முடியவில்லை</translation>
 <translation id="3777806571986431400">நீட்டிப்பு இயக்கப்பட்டது</translation>
 <translation id="3778152852029592020">பதிவிறக்கம் ரத்துசெய்யப்பட்டது.</translation>
@@ -2906,7 +2905,6 @@
 <translation id="48704129375571883">கூடுதல் அம்சங்களைச் சேர்</translation>
 <translation id="4870758487381879312">உள்ளமைவுத் தகவலைப் பெற நிர்வாகி வழங்கிய கடவுச்சொல்லை உள்ளிடவும்</translation>
 <translation id="4870903493621965035">இணைத்த சாதனங்கள் இல்லை</translation>
-<translation id="8839398440242019256">Brave இணைய அங்காடியில் இருந்து அல்ல.</translation>
 <translation id="4871322859485617074">பின்னில் செல்லாத எழுத்துக்கள் உள்ளன</translation>
 <translation id="4871370605780490696">புக்மார்க்குகளைச் சேர்</translation>
 <translation id="4871719318659334896">குழுவை மூடுக</translation>
@@ -4968,7 +4966,6 @@
 <translation id="767127784612208024">ரீசெட்டை உறுதிப்படுத்தத் தொடவும்</translation>
 <translation id="7672520070349703697"><ph name="PAGE_TITLE"/> இல் <ph name="HUNG_IFRAME_URL"/>.</translation>
 <translation id="1800308196794859773">உரை புலங்களில் நீங்கள் சொல்வதை எழுதும் வசதியை அனுமதிக்க, Braveளுக்கு உங்கள் குரலை அனுப்பும்.</translation>
-<translation id="3098826269712097986">மறைநிலையை விட்டு வெளியேறிய பிறகு உள்நுழைவு பற்றிய தரவு Braveமில் சேமிக்கப்படும். இந்த இணையதளத்தில் Touch IDயைப் பின்னர் பயன்படுத்த இது உங்களை அனுமதிக்கும்.</translation>
 <translation id="7681095912841365527">தளத்தால் புளூடூத்தைப் பயன்படுத்த முடியும்</translation>
 <translation id="7683373461016844951">தொடர, சரி என்பதைக் கிளிக் செய்யவும், உங்கள் <ph name="DOMAIN"/> மின்னஞ்சல் முகவரிக்குப் புதிய சுயவிவரத்தை உருவாக்க, நபரைச் சேர் என்பதைக் கிளிக் செய்யவும்.</translation>
 <translation id="7684212569183643648">உங்கள் நிர்வாகி நிறுவினார்</translation>
@@ -5446,7 +5443,6 @@
 <translation id="8259239505248583312">தொடங்குக</translation>
 <translation id="8260126382462817229">மீண்டும் உள்நுழையவும்</translation>
 <translation id="8260864402787962391">சுட்டி</translation>
-<translation id="8261378640211443080">இந்த நீட்டிப்பு <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> இல் பட்டியலிடப்படவில்லை, மேலும் அது உங்களுக்குத் தெரியாமல் சேர்க்கப்பட்டிருக்கலாம்.</translation>
 <translation id="8261506727792406068">நீக்கு</translation>
 <translation id="8263336784344783289">இந்தக் குழுவிற்குப் பெயரிடவும்</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/>, உங்கள் இடஞ்சுட்டியை முடக்கியுள்ளது.</translation>
@@ -6008,7 +6004,6 @@
 <translation id="8983632908660087688"><ph name="FILENAME"/> கோப்பை <ph name="ORIGIN"/> தளத்தால் திருத்த முடியும்</translation>
 <translation id="8985264973231822211">கடைசியாக <ph name="DEVICE_LAST_ACTIVATED_TIME"/> நாளுக்கு முன் பயன்படுத்தியுள்ளார்</translation>
 <translation id="8986362086234534611">மற</translation>
-<translation id="9079153198295609735">பயன்பாட்டுப் புள்ளிவிவரங்களையும் சிதைவு அறிக்கைகளையும் தானாகவே Brave க்கு அனுப்பு</translation>
 <translation id="8987927404178983737">மாதம்</translation>
 <translation id="8991520179165052608">தளத்தால் உங்கள் மைக்ரோஃபோனைப் பயன்படுத்த முடியும்</translation>
 <translation id="899403249577094719">Netscape சான்றிதழ் அடிப்படை URL</translation>
@@ -6227,6 +6222,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">பாதுகாப்பான இணைப்பை உருவாக்குகிறது...</translation>
 <translation id="998747458861718449">க&amp;ண்காணி</translation>
+<translation id="658539216370629794">மறை&amp;நிலை சாளரத்தில் இணைப்பைத் திற</translation>
+<translation id="1432267168815937878">மறை&amp;நிலை சாளரத்தில் இணைப்பைத் திற</translation>
+<translation id="6516243500644829484">புதிய &amp;மறைநிலை சாளரம்</translation>
+<translation id="7973394300052703468">புதிய &amp;மறைநிலை சாளரம்</translation>
+<translation id="6395403722585816044">மறைநிலையில் பதிவிறக்கப்பட்டது</translation>
+<translation id="203837651858678035">எனினும் மறைநிலைப் பயன்முறையை விட்டு வெளியேறவா?</translation>
+<translation id="7376221878517288144">எனினும் மறைநிலைப் பயன்முறையை மூடவா?</translation>
+<translation id="871606814707918245">இந்தத் தளத்திலிருந்து வரும் அறிவிப்புகளைப் பெரும்பாலானோர் தடுக்கின்றனர்</translation>
+<translation id="5053701565089446556">மறைநிலை நீட்டிப்பு: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">மறைநிலை ஆப்ஸ்: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">மறைநிலைத் தாவல்: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">மறைநிலை துணைச்சட்டகம்: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">மறைநிலைப் போர்ட்டல்: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">இந்த நீட்டிப்பு <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> இல் பட்டியலிடப்படவில்லை, மேலும் அது உங்களுக்குத் தெரியாமல் சேர்க்கப்பட்டிருக்கலாம்.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (மறைநிலை)</translation>
+<translation id="4369414322596874629">மறைநிலைச் சாளரத்தைப் பயன்படுத்தி, தனிப்பட்ட முறையில் உலாவலாம்</translation>
+<translation id="3772947852642271642">மறைநிலைச் சாளரம் மூலம் உங்கள் உலாவல் வரலாற்றைச் சேமிக்காமலே இணையத்தைப் பயன்படுத்தலாம்</translation>
+<translation id="3871738366246972820">பலரும் பயன்படுத்தும் கம்ப்யூட்டரைப் பயன்படுத்துகிறீர்களா? மறைநிலைச் சாளரத்தைப் பயன்படுத்திப் பார்க்கவும்.</translation>
+<translation id="5808622652939943719">தனிப்பட்ட முறையில் உலாவ, புள்ளி ஐகான் மெனுவைக் கிளிக் செய்து, மறைநிலைச் சாளரத்தைத் திறக்கவும்</translation>
+<translation id="9079153198295609735">பயன்பாட்டுப் புள்ளிவிவரங்களையும் சிதைவு அறிக்கைகளையும் தானாகவே Brave க்கு அனுப்பு</translation>
+<translation id="8839398440242019256">Brave இணைய அங்காடியில் இருந்து அல்ல.</translation>
+<translation id="6945695820322143954">Brave இணைய அங்காடிக் கொள்கையை இந்த நீட்டிப்பு மீறுகிறது.</translation>
+<translation id="1676595396635191120">புதிய மறைநிலை சாளரம்</translation>
+<translation id="5094764494104066239">எப்பொழுதும் புக்மார்க்ஸ் பட்டியைக் காட்டு</translation>
+<translation id="4471385409549756595">புதிய மறைநிலைச் சாளரம்</translation>
+<translation id="4540437243849625078">இந்தத் தளமானது மறைநிலைக்கு வெளியே உள்ள பயன்பாட்டுடன் தகவலைப் பகிரவிருக்கிறது.</translation>
+<translation id="1227836882233136433">மறைநிலையிலிருந்து வெளியேறவா?</translation>
+<translation id="7618452966706304788"><ph name="APP_NAME"/>ல் Touch IDயை மறைநிலையில் பயன்படுத்த விரும்புகிறீர்களா?</translation>
+<translation id="3098826269712097986">மறைநிலையை விட்டு வெளியேறிய பிறகு உள்நுழைவு பற்றிய தரவு Braveமில் சேமிக்கப்படும். இந்த இணையதளத்தில் Touch IDயைப் பின்னர் பயன்படுத்த இது உங்களை அனுமதிக்கும்.</translation>
+<translation id="5186185447130319458">மறைநிலை</translation>
+<translation id="2579188629646253712">மறைநிலையிலிருந்து வெளியேறு</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{எல்லாவற்றையும் &amp;மறைநிலைச் சாளரத்தில் திற}=1{&amp;மறைநிலைச் சாளரத்தில் திற}other{எல்லாவற்றையும் (#) &amp;மறைநிலைச் சாளரத்தில் திற}}</translation>
 <translation id="2431625704210501303">&amp;மறைநிலை சாளரத்தில் திற</translation>
 <translation id="4620367155626060530">புக்மார்க்ஸ் பட்டியைக் &amp;காட்டு</translation>
@@ -6276,10 +6303,8 @@
 <translation id="3860292630623580294">(மறைநிலை)</translation>
 <translation id="4854477725773269949">மறைநிலையில் அனுமதி</translation>
 <translation id="6436164536244065364">Brave இணைய அங்காடியில் காட்டு</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave இணைய அங்காடியில்<ph name="END_LINK"/> நீட்டிப்புகளையும் தீம்களையும் பெறுங்கள்</translation>
 <translation id="6336451774241870485">புதிய மறைநிலை தாவல்</translation>
 <translation id="6610147964972079463">மறைநிலை தாவல்களை மூடு</translation>
-<translation id="5186185447130319458">மறைநிலை</translation>
 <translation id="4933782374919065856">கேள்விகள் உள்ளனவா? உங்கள் சுயவிவரக் கண்காணிப்பாளரைத் தொடர்புகொள்ளவும்.</translation>
 </translationbundle>

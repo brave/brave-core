@@ -2121,7 +2121,6 @@
 <translation id="3771294271822695279">വീഡിയോ ഫയലുകള്‍</translation>
 <translation id="3775432569830822555">SSL സെര്‍വര്‍ സര്‍‌ട്ടിഫിക്കറ്റ്</translation>
 <translation id="3775705724665058594">നിങ്ങളുടെ ഉപകരണങ്ങളിലേക്ക് അയയ്‌ക്കുക</translation>
-<translation id="6945695820322143954">ഈ വിപുലീകരണം Brave വെബ് സ്റ്റോർ നയം ലംഘിക്കുന്നു.</translation>
 <translation id="3777483481409781352">സെല്ലുലാർ ഉപകരണം ഓണാക്കാനായില്ല</translation>
 <translation id="3777806571986431400">വിപുലീകരണം പ്രവർത്തനക്ഷമമാക്കി</translation>
 <translation id="3778152852029592020">ഡൗൺലോഡ് റദ്ദാക്കി.</translation>
@@ -2902,7 +2901,6 @@
 <translation id="48704129375571883">കൂടുതൽ ഫീച്ചറുകൾ ചേർക്കുക</translation>
 <translation id="4870758487381879312">കോൺഫിഗറേഷൻ വിവരം ലഭിക്കാൻ അഡ്‌മിൻ നൽകിയ പാസ്‌വേഡ് നൽകുക</translation>
 <translation id="4870903493621965035">ജോടിയാക്കിയ ഉപകരണങ്ങളൊന്നുമില്ല</translation>
-<translation id="8839398440242019256">Brave വെബ് സ്റ്റോറിൽ നിന്നല്ല.</translation>
 <translation id="4871322859485617074">അസാധുവായ പ്രതീകങ്ങളുള്ള പിൻ</translation>
 <translation id="4871370605780490696">ബുക്ക്‌മാർക്ക് ചേർക്കുക</translation>
 <translation id="4871719318659334896">ഗ്രൂപ്പ് അടയ്ക്കുക</translation>
@@ -4965,7 +4963,6 @@
 <translation id="767127784612208024">റീസെറ്റ് സ്ഥിരീകരിക്കാൻ സ്‌പർശിക്കുക</translation>
 <translation id="7672520070349703697"><ph name="PAGE_TITLE"/>-ൽ <ph name="HUNG_IFRAME_URL"/>.</translation>
 <translation id="1800308196794859773">ഏതെങ്കിലും ടെക്‌സ്‌റ്റ് ഫീൽഡിലേക്ക് കേട്ടെഴുതുന്നത് അനുവദിക്കാൻ നിങ്ങളുടെ വോയ്‌സ് Brave-ലേക്ക് അയയ്‌ക്കുക.</translation>
-<translation id="3098826269712097986">നിങ്ങൾ അദൃശ്യ മോഡിന് പുറത്തുകടന്ന ശേഷം സൈൻ ഇൻ ഡാറ്റ Brave-ൽ സംഭരിക്കും. ഈ വെബ്‌സൈറ്റിൽ ടച്ച് ഐഡി വീണ്ടും ഉപയോഗിക്കാൻ ഇത് നിങ്ങളെ അനുവദിക്കും.</translation>
 <translation id="7681095912841365527">സൈറ്റിന് bluetooth ഉപയോഗിക്കാനാകും</translation>
 <translation id="7683373461016844951">തുടരാൻ, ശരി ക്ലിക്ക് ചെയ്യുക, തുടർന്ന് നിങ്ങളുടെ <ph name="DOMAIN"/> എന്ന ഇമെയിൽ വിലാസത്തിനൊരു പുതിയ പ്രൊഫൈൽ സൃഷ്ടിക്കാൻ, 'ഒരു വ്യക്തിയെ ചേർക്കുക' ക്ലിക്ക് ചെയ്യുക.</translation>
 <translation id="7684212569183643648">നിങ്ങളുടെ അഡ്‌മിനിസ്‌ട്രേറ്റർ ഇൻസ്റ്റാൾ ചെയ്‌തു</translation>
@@ -5443,7 +5440,6 @@
 <translation id="8259239505248583312">നമുക്ക് ആരംഭിക്കാം</translation>
 <translation id="8260126382462817229">വീണ്ടും സൈൻ ഇൻ ചെയ്യാൻ ശ്രമിക്കുക</translation>
 <translation id="8260864402787962391">മൗസ്</translation>
-<translation id="8261378640211443080">ഈ വിപുലീകരണം <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> എന്നതിൽ ലിസ്റ്റ് ചെയ്‌തിട്ടില്ല, ഇത് നിങ്ങളുടെ അറിവില്ലാതെ ചേർത്തിരിക്കാനിടയുണ്ട്.</translation>
 <translation id="8261506727792406068">ഇല്ലാതാക്കുക</translation>
 <translation id="8263336784344783289">ഈ ഗ്രൂപ്പിന് പേര് നൽകുക</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> നിങ്ങളുടെ മൗസ് കഴ്‌സർ അപ്രാപ്‌തമാക്കി.</translation>
@@ -6004,7 +6000,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> എന്നതിന് <ph name="FILENAME"/> എഡിറ്റ് ചെയ്യാനാവും</translation>
 <translation id="8985264973231822211"><ph name="DEVICE_LAST_ACTIVATED_TIME"/> ദിവസം മുമ്പ് സജീവമായിരുന്നു</translation>
 <translation id="8986362086234534611">മറന്നു</translation>
-<translation id="9079153198295609735">Brave ലേക്ക് സ്വയമേവ ഉപയോഗ വിവരക്കണക്കുകളും ക്രാഷ് റിപ്പോര്‍ട്ടുകളും അയയ്ക്കുക</translation>
 <translation id="8987927404178983737">മാസം</translation>
 <translation id="8991520179165052608">സൈറ്റിന് നിങ്ങളുടെ മൈക്രോഫോൺ ഉപയോഗിക്കാനാകും</translation>
 <translation id="899403249577094719">നെറ്റ്‌സ്‌കേപ്പ് സര്‍‌ട്ടിഫിക്കറ്റ് ബേസ് URL</translation>
@@ -6223,6 +6218,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">സുരക്ഷിത കണക്ഷന്‍‌ സ്ഥാപിക്കുന്നു...</translation>
 <translation id="998747458861718449">പരിശോധിക്കുക</translation>
+<translation id="658539216370629794">അദൃശ്യ വിൻഡോയിൽ ലിങ്ക് തുറക്കുക</translation>
+<translation id="1432267168815937878">അദൃശ്യ വിൻഡോയിൽ ലിങ്ക് തുറക്കുക</translation>
+<translation id="6516243500644829484">പുതിയ &amp;അദൃശ്യ വിൻഡോ</translation>
+<translation id="7973394300052703468">പുതിയ &amp;അദൃശ്യ വിൻഡോ</translation>
+<translation id="6395403722585816044">ആൾമാറാട്ട മോഡിൽ ഡൗൺലോഡുചെയ്‌തു</translation>
+<translation id="203837651858678035">എന്തായാലും, അദൃശ്യ മോഡ് വിടണോ?</translation>
+<translation id="7376221878517288144">അദൃശ്യ മോഡിൽ നിന്ന് എന്തായാലും പുറത്തുകടക്കണോ?</translation>
+<translation id="871606814707918245">മിക്കവരും ഈ സൈറ്റിൽ നിന്നുള്ള അറിയിപ്പുകൾ ബ്ലോക്ക് ചെയ്യുന്നു</translation>
+<translation id="5053701565089446556">ആള്‍മാറാട്ട വിപുലീകരണം: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">അദൃശ്യ മോഡ് ആപ്പ്: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">അദൃശ്യ ടാബ്: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ആൾമാറാട്ട സബ്‌ഫ്രെയിം: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">അദൃശ്യ മോഡ് പോർട്ടൽ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave വെബ് സ്റ്റോര്‍</translation>
+<translation id="8261378640211443080">ഈ വിപുലീകരണം <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> എന്നതിൽ ലിസ്റ്റ് ചെയ്‌തിട്ടില്ല, ഇത് നിങ്ങളുടെ അറിവില്ലാതെ ചേർത്തിരിക്കാനിടയുണ്ട്.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ആള്‍മാറാട്ടം)</translation>
+<translation id="4369414322596874629">അദൃശ്യ വിൻഡോ ഉപയോഗിച്ച് നിങ്ങൾക്ക് സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാനാകും</translation>
+<translation id="3772947852642271642">അദൃശ്യ വിൻഡോ ഉപയോഗിച്ച്, നിങ്ങളുടെ ബ്രൗസിംഗ് ചരിത്രം സംരക്ഷിക്കാതെ, വെബ് ഉപയോഗിക്കുക</translation>
+<translation id="3871738366246972820">പങ്കിട്ട കമ്പ്യൂട്ടറാണോ ഉപയോഗിക്കുന്നത്? അദൃശ്യ വിൻഡോ പരീക്ഷിച്ചുനോക്കൂ.</translation>
+<translation id="5808622652939943719">സ്വകാര്യമായി ബ്രൗസ് ചെയ്യാൻ, അദൃശ്യ വിൻഡോ തുറക്കാൻ, ഡോട്ട് ഐക്കൺ ‌മെനുവിൽ ക്ലിക്ക് ചെയ്യുക</translation>
+<translation id="9079153198295609735">Brave ലേക്ക് സ്വയമേവ ഉപയോഗ വിവരക്കണക്കുകളും ക്രാഷ് റിപ്പോര്‍ട്ടുകളും അയയ്ക്കുക</translation>
+<translation id="8839398440242019256">Brave വെബ് സ്റ്റോറിൽ നിന്നല്ല.</translation>
+<translation id="6945695820322143954">ഈ വിപുലീകരണം Brave വെബ് സ്റ്റോർ നയം ലംഘിക്കുന്നു.</translation>
+<translation id="1676595396635191120">പുതിയ അദൃശ്യ വിൻഡോ</translation>
+<translation id="5094764494104066239">ബുക്ക്‌മാർക്ക് ബാർ എപ്പോഴും കാണിക്കുക</translation>
+<translation id="4471385409549756595">പുതിയ അദൃശ്യ വിൻഡോ</translation>
+<translation id="4540437243849625078">അദൃശ്യതാ സംവിധാനത്തിനു പുറത്തുള്ള ഒരു ആപ്പുമായി ഈ സൈറ്റ് വിവരങ്ങൾ പങ്കിടാൻ പോകുന്നു.</translation>
+<translation id="1227836882233136433">അദൃശ്യ മോഡ് വിടണോ?</translation>
+<translation id="7618452966706304788">അദൃശ്യ മോഡിൽ <ph name="APP_NAME"/> ആപ്പിൽ ടച്ച് ഐഡി ഉപയോഗിക്കാൻ നിങ്ങൾക്ക് താൽപ്പര്യമുണ്ടോ?</translation>
+<translation id="3098826269712097986">നിങ്ങൾ അദൃശ്യ മോഡിന് പുറത്തുകടന്ന ശേഷം സൈൻ ഇൻ ഡാറ്റ Brave-ൽ സംഭരിക്കും. ഈ വെബ്‌സൈറ്റിൽ ടച്ച് ഐഡി വീണ്ടും ഉപയോഗിക്കാൻ ഇത് നിങ്ങളെ അനുവദിക്കും.</translation>
+<translation id="5186185447130319458">ആള്‍‌മാറാട്ടം</translation>
+<translation id="2579188629646253712">അദൃശ്യ മോഡിൽ നിന്ന് പുറത്തുകടക്കുക</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{എല്ലാം &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}=1{&amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}other{എല്ലാം (#) &amp;അദൃശ്യ വിൻഡോയിൽ തുറക്കുക}}</translation>
 <translation id="2431625704210501303">&amp;അദൃശ്യ വിന്‍ഡോയില്‍ തുറക്കുക</translation>
 <translation id="4620367155626060530">ബുക്ക്മാർക്കുകൾ ബാർ &amp;കാണിക്കുക</translation>
@@ -6272,10 +6299,8 @@
 <translation id="3860292630623580294">(ആള്‍മാറാട്ടം)</translation>
 <translation id="4854477725773269949">ആള്‍‌മാറാട്ടത്തില്‍‌ അനുവദിക്കുക</translation>
 <translation id="6436164536244065364">Brave വെബ് സ്‌റ്റോറിൽ കാണുക</translation>
-<translation id="8808478386290700967">Brave വെബ് സ്റ്റോര്‍</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave വെബ് സ്‌റ്റോറിൽ<ph name="END_LINK"/> വിപുലീകരണങ്ങളും തീമുകളും കണ്ടെത്തുക</translation>
 <translation id="6336451774241870485">പുതിയ അദൃശ്യ ടാബ്</translation>
 <translation id="6610147964972079463">ആൾമാറാട്ട ടാബുകൾ അടയ്‌ക്കുക</translation>
-<translation id="5186185447130319458">ആള്‍‌മാറാട്ടം</translation>
 <translation id="4933782374919065856">ചോദ്യങ്ങളുണ്ടോ? നിങ്ങളുടെ പ്രൊഫൈൽ മേൽനോട്ടത്തിലുള്ള വ്യക്തിയെ ബന്ധപ്പെടുക.</translation>
 </translationbundle>

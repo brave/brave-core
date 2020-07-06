@@ -10,6 +10,7 @@
 <translation id="8132634101975074716">Anda sudah masuk ke Brave!</translation>
 <translation id="7419046106786626209">Chrome OS tidak dapat menyinkronkan data Anda karena Sinkronisasi tidak tersedia untuk domain Anda.</translation>
 <translation id="5147525139567260139">Bagikan tab Brave</translation>
+<translation id="1530633922026945685">Brave memerlukan izin untuk mengakses kamera guna membuat peta 3D untuk area di sekeliling Anda.</translation>
 <translation id="5616153642055197778">Tersedia versi Brave yang baru dan lebih aman.</translation>
 <translation id="6797402139308059782">Jalankan Brave di latar belakang</translation>
 <translation id="5875673934455379806">Instal ulang Brave</translation>
@@ -18,9 +19,10 @@
 <translation id="189297655255130768">Brave tidak merespons. Luncurkan ulang sekarang?</translation>
 <translation id="1775322105159056176">Brave tidak dapat menentukan atau menyetel browser default</translation>
 <translation id="9220324636239049437">Tindakan ini akan menghapus 1 item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
-<translation id="7916016681687251387">Chrome OS tidak dapat menyinkronkan data Anda. Perbaiki sekarang.</translation>
 <translation id="8745514854244955877">Brave - Login Jaringan - <ph name="PAGE_TITLE"/></translation>
+<translation id="162629503687514352">Chrome OS tidak dapat menyinkronkan sandi Anda.</translation>
 <translation id="5659384504794665581">Jika Anda berbagi komputer, teman dan keluarga bisa menjelajah secara terpisah dan menyiapkan Brave sesuai keinginannya.</translation>
+<translation id="5997267581285668459">Opsional: Bantu sempurnakan fitur dan performa Chrome OS dengan mengirimkan data diagnostik dan penggunaan secara otomatis ke Brave.</translation>
 <translation id="3813272600615358652">Ekstensi ini telah mengubah apa yang ditampilkan oleh halaman saat Anda memulai Brave.</translation>
 <translation id="2576129394594491151">Ekstensi "<ph name="EXTENSION_NAME"/>" telah mengubah apa yang ditampilkan oleh halaman saat Anda memulai Brave.</translation>
 <translation id="6078442581074612226">Di Brave</translation>
@@ -35,12 +37,11 @@
 <translation id="8372880274820509128">Untuk keamanan tambahan, Brave akan mengenkripsi data Anda.</translation>
 <translation id="2770231113462710648">Ubah browser default ke:</translation>
 <translation id="2799223571221894425">Luncurkan Ulang</translation>
-<translation id="2341767445688917208">Chrome OS tidak dapat menyinkronkan sandi Anda. Perbaiki sekarang.</translation>
 <translation id="777113543093865885">Buang dari Brave...</translation>
-<translation id="8417700129970341035">Opsional: Bantu menjadikan Brave lebih baik dengan mengirim statistik penggunaan dan laporan kerusakan secara otomatis ke Brave.</translation>
 <translation id="2176825726964012531">Tentang &amp;Brave</translation>
 <translation id="8208853227947884571">Brave sudah diperbarui</translation>
 <translation id="2953892977076487219">Brave mencoba mengedit sandi.</translation>
+<translation id="8755404239607088219">Brave tidak dapat memeriksa sandi Anda. Coba lagi nanti.</translation>
 <translation id="8880183781256147665">Menambahkan Brave...</translation>
 <translation id="7918740962659365265">Bantu Brave menjadi lebih baik dengan mengirim laporan kerusakan dan <ph name="UMA_LINK"/> ke Brave</translation>
 <translation id="7365690458036015383">Pemasang gagal membatalkan kompresi arsip. Download Brave lagi.</translation>
@@ -51,13 +52,16 @@
 <translation id="2585240446624043880">Brave tidak dapat membaca dan menulis ke direktori datanya:
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
+<translation id="2423637317249323944">Brave versi <ph name="PRODUCT_VERSION"/> telah terinstal</translation>
 <translation id="2339258256897053758">Kunci API Brave tidak ada. Beberapa fungsi Brave tidak akan berfungsi.</translation>
 <translation id="8926637909431618259">Lanjutkan aplikasi yang berjalan di latar belakang jika Brave ditutup</translation>
 <translation id="4480040274068703980">Chrome OS tidak dapat menyinkronkan data Anda karena kesalahan saat masuk.</translation>
+<translation id="9216183508558772570">Brave akan memberi tahu Anda saat Anda login dengan sandi yang telah dibobol</translation>
 <translation id="5853262807109651878">Tindakan ini akan menghapus <ph name="ITEMS_COUNT"/> item dari perangkat. Untuk mengambil data nanti, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
 <translation id="8703492925273919597">Tutup semua jendela Brave dan coba lagi.</translation>
 <translation id="1384923383737428730">Ada software berbahaya di komputer Anda. Brave dapat menghapusnya, memulihkan setelan Anda, dan menonaktifkan ekstensi agar browser berfungsi kembali secara normal.</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
+<translation id="4304059894777924102">Brave tidak dapat memeriksa sandi Anda. Coba periksa koneksi internet Anda.</translation>
 <translation id="1807774211756215222">Buka link di &amp;tab Brave baru</translation>
 <translation id="7453070689008684791">Brave akan mengakses Drive Anda untuk membuat saran di kolom URL</translation>
 <translation id="2106568569080763501">Brave memungkinkan Anda mengeklik nomor telepon pada web dan menghubunginya melalui Skype!</translation>
@@ -85,11 +89,13 @@
 <translation id="3834935463915107022">Tetap tutup Brave?</translation>
 <translation id="8668413672647811944">Update keamanan khusus untuk Brave baru saja diterapkan. Mulai ulang Brave sekarang dan kami akan memulihkan tab Anda.</translation>
 <translation id="7914115000169617076">Update hampir selesai. Luncurkan ulang Brave untuk menyelesaikan update. Jendela Samaran tidak akan dibuka kembali.</translation>
+<translation id="1537736472315689033">Brave tidak dapat memeriksa sandi Anda. Coba lagi setelah 24 jam atau <ph name="BEGIN_LINK"/>periksa sandi di Akun Brave Anda<ph name="END_LINK"/>.</translation>
 <translation id="215320507915280336">Tindakan ini akan menggunakan pemeriksa ejaan yang sama dengan yang digunakan di penelusuran Brave. Teks yang Anda ketikkan di browser dikirim ke Brave. Anda dapat mengubah perilaku ini di setelan.</translation>
 <translation id="1912973375560256099">Inbound rule untuk Brave guna mengizinkan lalu lintas mDNS.</translation>
 <translation id="8797356639448065696">Brave berjalan di mode latar belakang.</translation>
 <translation id="7406627712452599344">Tamu dapat menggunakan Brave tanpa meninggalkan apa pun.</translation>
 <translation id="5952898964075639679">Tambahkan diri Anda ke Brave</translation>
+<translation id="9078804073692109646">Tidak ada sandi yang tersimpan. Brave dapat memeriksa sandi Anda jika Anda menyimpannya.</translation>
 <translation id="8586264863973514035">Untuk menerapkan perubahan Anda, luncurkan ulang Brave</translation>
 <translation id="1326766910007115955">Anda masuk dengan akun terkelola dan memberikan administratornya kontrol atas profil Brave Anda. Data Brave Anda, seperti aplikasi, bookmark, histori, sandi, dan setelan lain selamanya akan dikaitkan ke <ph name="USER_NAME"/>. Anda dapat menghapus data ini melalui Dasbor Akun Brave, namun Anda tidak akan dapat mengaitkan data ini dengan akun yang lain. <ph name="LEARN_MORE"/></translation>
 <translation id="1786715389543715322">Memperbarui Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
@@ -123,6 +129,7 @@
 <translation id="7006260220514217183">Safe Browsing nonaktif. Brave merekomendasikan untuk mengaktifkannya.</translation>
 <translation id="8320964054148936490">Komputer ini sudah memiliki versi Brave yang lebih baru. Jika software tidak bekerja, harap coba uninstal Brave, lalu cobalah kembali.</translation>
 <translation id="3574823187131579180">{0,plural, =0{Brave akan diluncurkan ulang sekarang}=1{Brave akan diluncurkan ulang dalam 1 detik}other{Brave akan diluncurkan ulang dalam # detik}}</translation>
+<translation id="3127818369811890733">Chrome OS tidak dapat menyinkronkan data Anda.</translation>
 <translation id="5019879183386042809">Jadikan Brave browser default</translation>
 <translation id="428541510811554120">Brave tidak dapat memeriksa update. Coba periksa koneksi internet Anda.</translation>
 <translation id="7445061995866044926">Keluar dari Brave?</translation>
@@ -145,6 +152,7 @@
 Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda atau gunakan versi Brave yang lebih baru.</translation>
 <translation id="5450493308072741203">Pembaruan &amp;Brave</translation>
 <translation id="6666624454809779082">Brave sudah terpasang untuk semua pengguna di komputer Anda.</translation>
+<translation id="8291513491595858997">Orang tuamu telah menonaktifkan "Izin untuk situs, aplikasi, dan ekstensi" untuk Brave. Tindakan mengaktifkan <ph name="EXTENSION_TYPE_PARAMETER"/> ini tidak diizinkan.</translation>
 <translation id="8211837073776713955">Brave akan memberi tahu jika sandi Anda disusupi</translation>
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="5253815230176279256">Brave Pay (disalin ke Brave)</translation>
@@ -155,6 +163,7 @@ Sebagian fitur mungkin tidak tersedia. Tentukan direktori profil yang berbeda at
 <translation id="123620459398936149">Chrome OS tidak dapat menyinkronkan data Anda. Perbarui frasa sandi Sinkronisasi Anda.</translation>
 <translation id="5499063270485366718">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave.</translation>
 <translation id="1197672524850678392">Tidak dapat meluncurkan Brave. Harap coba lagi.</translation>
+<translation id="3405035915691517126">Brave tidak dapat memeriksa sandi Anda. Coba lagi setelah 24 jam.</translation>
 <translation id="5660079256336839395">Sembunyikan di Menu Brave</translation>
 <translation id="5516268345616100622">Pengelola Tugas - Brave</translation>
 <translation id="61852838583753520">Pembaruan &amp;Chrome OS</translation>
@@ -200,7 +209,9 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="5337999052834672687">{0,plural, =1{Luncurkan ulang Brave dalam 1 hari}other{Luncurkan ulang Brave dalam # hari}}</translation>
 <translation id="6914496861676471566">Arsip pemasang rusak atau tidak valid. Download Brave lagi.</translation>
 <translation id="2097604701283463988">Brave Terlalu Lawas</translation>
-<translation id="6457351952130887648">Hak Cipta <ph name="YEAR"/> Pengarang Brave. Semua hak dilindungi undang-undang.</translation>
+<translation id="2452889775041290116">Orang tuamu telah menonaktifkan "Izin untuk situs, aplikasi, dan ekstensi" untuk Brave. Tindakan menambahkan <ph name="EXTENSION_TYPE_PARAMETER"/> ini tidak diizinkan.</translation>
+<translation id="80177348132855464">Brave dapat memeriksa sandi saat Anda login dengan Akun Brave</translation>
+<translation id="8121009781989288430">Hak Cipta <ph name="YEAR"/> Pengarang Brave. Semua hak dilindungi undang-undang.</translation>
 <translation id="3052349005266761501">Meluncurkan Brave...</translation>
 <translation id="6283840329609797763">Pemasangan gagal karena kesalahan yang tidak ditentukan. Download Brave lagi.</translation>
 <translation id="6235873178214143377">Jika setelan tidak muncul di halaman ini, buka <ph name="LINK_BEGIN"/>
@@ -211,6 +222,7 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="7408085963519505752">Persyaratan Chrome OS</translation>
 <translation id="2262856633481902138">Brave tidak dapat menyinkronkan data karena detail proses masuk Anda sebelum diperbarui.</translation>
 <translation id="8862326446509486874">Anda tidak memiliki hak yang diperlukan untuk pemasangan tingkat sistem. Coba jalankan lagi pemasang saat login sebagai Administrator.</translation>
+<translation id="6412037018950369131">Jika ya, edit sandi Anda yang tersimpan di Brave agar cocok dengan sandi baru Anda.</translation>
 <translation id="3215652305414474626">Juga mengontrol halaman apa yang ditampilkan saat Anda memulai Brave atau mengeklik tombol Beranda.</translation>
 <translation id="8285294305439559616">Brave mencoba menampilkan sandi. Ketik sandi Windows untuk mengizinkannya.</translation>
 <translation id="6389268239133412586">Tidak dapat mengupdate Brave</translation>

@@ -2124,7 +2124,6 @@
 <translation id="3771294271822695279">वीडियो फ़ाइलें</translation>
 <translation id="3775432569830822555">SSL सर्वर प्रमाणपत्र</translation>
 <translation id="3775705724665058594">अपने डिवाइस पर भेजें</translation>
-<translation id="6945695820322143954">यह एक्सटेंशन Brave वेब स्टोर नीति का उल्लंघन करता है.</translation>
 <translation id="3777483481409781352">मोबाइल डिवाइस चालू नहीं किया जा सका</translation>
 <translation id="3777806571986431400">एक्सटेंशन सक्षम किया गया</translation>
 <translation id="3778152852029592020">डाउनलोड रद्द कर दिया गया था.</translation>
@@ -2905,7 +2904,6 @@
 <translation id="48704129375571883">अतिरिक्त सुविधाएं जोड़ें</translation>
 <translation id="4870758487381879312">कॉन्फ़िगरेशन की जानकारी पाने के लिए एडमिन का दिया हुआ पासवर्ड डालें</translation>
 <translation id="4870903493621965035">कोई भी युग्मित डिवाइस नहीं</translation>
-<translation id="8839398440242019256">Brave वेब स्टोर से नहीं.</translation>
 <translation id="4871322859485617074">पिन में गलत वर्ण शामिल हैं</translation>
 <translation id="4871370605780490696">बुकमार्क जोड़ें</translation>
 <translation id="4871719318659334896">ग्रुप बंद करें</translation>
@@ -4966,7 +4964,6 @@
 <translation id="767127784612208024">रीसेट की पुष्टि करने के लिए छुएं</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, <ph name="PAGE_TITLE"/> में.</translation>
 <translation id="1800308196794859773">किसी भी लेख फ़ील्ड में बोलकर टाइप करने की सुविधा देने के लिए आपकी आवाज़ Brave को भेजी जाती है.</translation>
-<translation id="3098826269712097986">जब आप 'गुप्त मोड' से बाहर निकल जाएंगे तब साइन-इन का डेटा Brave में सेव किया जाएगा. इससे आप बाद में इस वेबसाइट में 'टच आईडी' का इस्तेमाल कर पाएंगे.</translation>
 <translation id="7681095912841365527">साइट ब्लूटूथ का इस्तेमाल कर सकती है</translation>
 <translation id="7683373461016844951">जारी रखने के लिए, 'ठीक' पर क्लिक करें, फिर 'व्‍यक्ति जोड़ें' पर क्लिक करें, ताकि आप अपने <ph name="DOMAIN"/> ईमेल पते के लिए नई प्रोफ़ाइल बना सकें.</translation>
 <translation id="7684212569183643648">आपके नियंत्रक द्वारा इंस्‍टॉल किया गया</translation>
@@ -5443,7 +5440,6 @@
 <translation id="8259239505248583312">आइए शुरू करें</translation>
 <translation id="8260126382462817229">फिर से प्रवेश करके देखें</translation>
 <translation id="8260864402787962391">माउस</translation>
-<translation id="8261378640211443080">यह एक्सटेंशन <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> में सूचीबद्ध नहीं है और यह आपकी जानकारी के बिना जोड़ा गया हो सकता है.</translation>
 <translation id="8261506727792406068">मिटाएं</translation>
 <translation id="8263336784344783289">इस ग्रुप को नाम दें</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> ने आपका माउस कर्सर अक्षम कर दिया है.</translation>
@@ -6005,7 +6001,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/>, <ph name="FILENAME"/> में बदलाव कर सकती है</translation>
 <translation id="8985264973231822211"><ph name="DEVICE_LAST_ACTIVATED_TIME"/> दिन पहले चालू था</translation>
 <translation id="8986362086234534611">भूल जाएं</translation>
-<translation id="9079153198295609735">इस्तेमाल के आंकड़े और खराबी रिपोर्ट अपने आप Brave को भेजें</translation>
 <translation id="8987927404178983737">माह</translation>
 <translation id="8991520179165052608">साइट आपके माइक्रोफ़ोन का इस्तेमाल कर सकती है</translation>
 <translation id="899403249577094719">Netscape प्रमाणपत्र आधार URL</translation>
@@ -6224,6 +6219,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">सुरक्षित कनेक्शन स्थापित कर रहा है...</translation>
 <translation id="998747458861718449">नि&amp;रीक्षण करें</translation>
+<translation id="658539216370629794">लिंक को गुप्त&amp; विंडो में खोलें</translation>
+<translation id="1432267168815937878">लिंक को गुप्त&amp; विंडो में खोलें</translation>
+<translation id="6516243500644829484">नई &amp;गुप्त विंडो</translation>
+<translation id="7973394300052703468">नई &amp;गुप्त विंडो</translation>
+<translation id="6395403722585816044">गुप्त मोड में डाउनलोड किया गया</translation>
+<translation id="203837651858678035">फिर भी गुप्त मोड से बाहर निकलना चाहते हैं?</translation>
+<translation id="7376221878517288144">फिर भी गुप्त मोड छोड़ना चाहते हैं?</translation>
+<translation id="871606814707918245">ज़्यादातर लोग इस साइट को सूचनाएं दिखाने से रोकते हैं</translation>
+<translation id="5053701565089446556">गुप्‍त एक्सटेंशन: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">गुप्‍त ऐप्लिकेशन: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">गुप्त टैब: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">गुप्त सबफ़्रेम: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">गुप्त पोर्टल: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">यह एक्सटेंशन <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> में सूचीबद्ध नहीं है और यह आपकी जानकारी के बिना जोड़ा गया हो सकता है.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (गुप्त)</translation>
+<translation id="4369414322596874629">आप गुप्त विंडो का उपयोग करके निजी रूप से ब्राउज़ कर सकते हैं</translation>
+<translation id="3772947852642271642">गुप्त विंडो के ज़रिए अपना ब्राउज़िंग इतिहास सेव किए बगैर वेब का उपयोग करें</translation>
+<translation id="3871738366246972820">शेयर किए गए कंप्यूटर का उपयोग कर रहे हैं? तो गुप्त विंडो खोलकर देखें.</translation>
+<translation id="5808622652939943719">निजी रूप से ब्राउज़ करने के लिए, 'डॉट आइकॉन मेन्यू' पर क्लिक करके 'गुप्त विंडो' खोलें</translation>
+<translation id="9079153198295609735">इस्तेमाल के आंकड़े और खराबी रिपोर्ट अपने आप Brave को भेजें</translation>
+<translation id="8839398440242019256">Brave वेब स्टोर से नहीं.</translation>
+<translation id="6945695820322143954">यह एक्सटेंशन Brave वेब स्टोर नीति का उल्लंघन करता है.</translation>
+<translation id="1676595396635191120">नई &amp;गुप्त विंडो</translation>
+<translation id="5094764494104066239">बुकमार्क बार हमेशा दिखाएं</translation>
+<translation id="4471385409549756595">नई गुप्त विंडो</translation>
+<translation id="4540437243849625078">यह साइट गुप्त मोड से बाहर के ऐप्लिकेशन के साथ जानकारी शेयर करने वाली है.</translation>
+<translation id="1227836882233136433">गुप्त मोड छोड़ें?</translation>
+<translation id="7618452966706304788">क्या आप 'गुप्त मोड' में 'टच आईडी' का इस्तेमाल <ph name="APP_NAME"/> के साथ करना चाहते हैं?</translation>
+<translation id="3098826269712097986">जब आप 'गुप्त मोड' से बाहर निकल जाएंगे तब साइन-इन का डेटा Brave में सेव किया जाएगा. इससे आप बाद में इस वेबसाइट में 'टच आईडी' का इस्तेमाल कर पाएंगे.</translation>
+<translation id="5186185447130319458">गुप्त</translation>
+<translation id="2579188629646253712">गुप्त मोड से बाहर निकलें</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{सभी को &amp;गुप्त विंडो में खोलें}=1{&amp;गुप्त विंडों में खोलें}one{सभी (#) को &amp;गुप्त विंडो में खोलें}other{सभी (#) को &amp;गुप्त विंडो में खोलें}}</translation>
 <translation id="2431625704210501303">&amp;गुप्त विंडो में खोलें</translation>
 <translation id="4620367155626060530">बुकमार्क बार &amp;दिखाएं</translation>
@@ -6273,10 +6300,8 @@
 <translation id="3860292630623580294">(गुप्त)</translation>
 <translation id="4854477725773269949">गुप्त विंडो में अनुमति दें</translation>
 <translation id="6436164536244065364">Brave वेब स्टोर में देखें</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave वेब स्टोर<ph name="END_LINK"/> में एक्सटेंशन और थीम ढूंढें</translation>
 <translation id="6336451774241870485">नया गुप्त टैब</translation>
 <translation id="6610147964972079463">गुप्त टैब बंद करें</translation>
-<translation id="5186185447130319458">गुप्त</translation>
 <translation id="4933782374919065856">प्रश्न पूछना चाहते हैं? तो उस व्यक्ति से संपर्क करें जो आपकी प्रोफ़ाइल की निगरानी करता है.</translation>
 </translationbundle>

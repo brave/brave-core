@@ -754,13 +754,18 @@ def combine_override_xtb_into_original(source_string_path):
         override_xtb_tree = lxml.etree.parse(os.path.join(override_base_path, override_xtb_path))
         translationbundle = xtb_tree.xpath('//translationbundle')[0]
         override_translations = override_xtb_tree.xpath('//translation')
+        translations = xtb_tree.xpath('//translation')
 
         override_translation_fps = [t.attrib['id'] for t in override_translations]
+        translation_fps = [t.attrib['id'] for t in translations]
 
         # Remove translations that we have a matching FP for
         for translation in xtb_tree.xpath('//translation'):
             if translation.attrib['id'] in override_translation_fps:
                 translation.getparent().remove(translation)
+            if  translation_fps.count(translation.attrib['id']) > 1:
+                translation.getparent().remove(translation)
+                translation_fps.remove(translation.attrib['id'])
 
         # Append the override translations into the original translation bundle
         for translation in override_translations:

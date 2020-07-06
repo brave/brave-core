@@ -2122,7 +2122,6 @@
 <translation id="3771294271822695279">Видеофайлове</translation>
 <translation id="3775432569830822555">Сертификат на SSL сървър</translation>
 <translation id="3775705724665058594">Изпращане до устройствата ви</translation>
-<translation id="6945695820322143954">Това разширение нарушава правилата на уеб магазина на Brave.</translation>
 <translation id="3777483481409781352">Мобилното устройство не можа да бъде активирано</translation>
 <translation id="3777806571986431400">Разширението е активирано</translation>
 <translation id="3778152852029592020">Изтеглянето бе анулирано.</translation>
@@ -2905,7 +2904,6 @@
 <translation id="48704129375571883">Добавяне на допълнителни функции</translation>
 <translation id="4870758487381879312">Въведете паролата, предоставена от администратора, за да получите информация за конфигуриране</translation>
 <translation id="4870903493621965035">Няма сдвоени устройства</translation>
-<translation id="8839398440242019256">Извън уеб магазина на Brave.</translation>
 <translation id="4871322859485617074">ПИН кодът съдържа невалидни знаци</translation>
 <translation id="4871370605780490696">Добавяне на отметка</translation>
 <translation id="4871719318659334896">Затваряне на групата</translation>
@@ -4967,7 +4965,6 @@
 <translation id="767127784612208024">Докоснете, за да потвърдите нулирането</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, в страницата „<ph name="PAGE_TITLE"/>“.</translation>
 <translation id="1800308196794859773">Изпращане на гласа ви до Brave, за да можете да диктувате във всяко текстово поле.</translation>
-<translation id="3098826269712097986">Данните за влизане в профила ще бъдат съхранени в Brave, след като излезете от режим „инкогнито“. Това ще ви даде възможност по-късно отново да използвате Touch ID за този уебсайт.</translation>
 <translation id="7681095912841365527">Сайтът може да използва Bluetooth</translation>
 <translation id="7683373461016844951">За да продължите, кликнете върху „OK“ и след това – върху „Добавяне на човек“, така че да създадете нов потребителски профил за имейл адреса си от <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Инсталирано от администратора ви</translation>
@@ -5445,7 +5442,6 @@
 <translation id="8259239505248583312">Начало</translation>
 <translation id="8260126382462817229">Опитайте да влезете отново</translation>
 <translation id="8260864402787962391">Мишка</translation>
-<translation id="8261378640211443080">Това разширение не е посочено в <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> и може да е било добавено без ваше знание.</translation>
 <translation id="8261506727792406068">Изтриване</translation>
 <translation id="8263336784344783289">Наименувайте тази група</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> деактивира курсора на мишката ви.</translation>
@@ -6007,7 +6003,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> може да редактира „<ph name="FILENAME"/>“</translation>
 <translation id="8985264973231822211">Активно преди <ph name="DEVICE_LAST_ACTIVATED_TIME"/> ден</translation>
 <translation id="8986362086234534611">Забравяне</translation>
-<translation id="9079153198295609735">Автоматично изпращане до Brave на статистически данни за използването на Brave и сигнали за сривове</translation>
 <translation id="8987927404178983737">Месец</translation>
 <translation id="8991520179165052608">Сайтът може да използва микрофона ви</translation>
 <translation id="899403249577094719">Основен URL адрес на сертификат на Netscape</translation>
@@ -6226,6 +6221,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Установява се защитена връзка...</translation>
 <translation id="998747458861718449">И&amp;нспектиране</translation>
+<translation id="658539216370629794">О&amp;тваряне на връзката в прозореца „инкогнито“</translation>
+<translation id="1432267168815937878">Отваряне на връзката в прозорец при използване на функ&amp;цията „инкогнито“</translation>
+<translation id="6516243500644829484">Нов &amp;прозорец в режим „инкогнито“</translation>
+<translation id="7973394300052703468">Нов &amp;прозорец в режим „инкогнито“</translation>
+<translation id="6395403722585816044">Изтеглено в режим „инкогнито“</translation>
+<translation id="203837651858678035">Да се излезе ли от режим „инкогнито“ въпреки това?</translation>
+<translation id="7376221878517288144">Да се излезе ли от режим „инкогнито“ въпреки това?</translation>
+<translation id="871606814707918245">Повечето хора блокират известията от този сайт</translation>
+<translation id="5053701565089446556">Разширение „Инкогнито“: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Приложение „Инкогнито“: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Раздел в режим „инкогнито“: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Подрамка в режим „инкогнито“: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Портал в режим „инкогнито“: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Това разширение не е посочено в <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> и може да е било добавено без ваше знание.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Инкогнито)</translation>
+<translation id="4369414322596874629">Можете да сърфирате частно посредством прозорец в режим „инкогнито“</translation>
+<translation id="3772947852642271642">Отворете прозорец в режим „инкогнито“, за да използвате мрежата, без да се запазва история на сърфирането ви</translation>
+<translation id="3871738366246972820">Използвате общ компютър? Отворете прозорец в режим „инкогнито“.</translation>
+<translation id="5808622652939943719">За да сърфирате частно, кликнете върху иконата с точки и отворете прозорец в режим „инкогнито“ от менюто</translation>
+<translation id="9079153198295609735">Автоматично изпращане до Brave на статистически данни за използването на Brave и сигнали за сривове</translation>
+<translation id="8839398440242019256">Извън уеб магазина на Brave.</translation>
+<translation id="6945695820322143954">Това разширение нарушава правилата на уеб магазина на Brave.</translation>
+<translation id="1676595396635191120">Нов прозорец инкогнито</translation>
+<translation id="5094764494104066239">Непрекъснато показване на лентата на отметките</translation>
+<translation id="4471385409549756595">Нов прозорец в режим „инкогнито“</translation>
+<translation id="4540437243849625078">Този сайт е напът да сподели информация с приложение, което не е в режим „инкогнито“.</translation>
+<translation id="1227836882233136433">Излизане от режим „инкогнито“?</translation>
+<translation id="7618452966706304788">Искате ли да използвате Touch ID за <ph name="APP_NAME"/> в режим „инкогнито“?</translation>
+<translation id="3098826269712097986">Данните за влизане в профила ще бъдат съхранени в Brave, след като излезете от режим „инкогнито“. Това ще ви даде възможност по-късно отново да използвате Touch ID за този уебсайт.</translation>
+<translation id="5186185447130319458">„Инкогнито“</translation>
+<translation id="2579188629646253712">Изход от режим „инкогнито“</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Отваряне на всички в прозорец в режим „&amp;инкогнито“}=1{Отваряне в прозорец в режим „&amp;инкогнито“}other{Отваряне на всички (#) в прозорец в режим „&amp;инкогнито“}}</translation>
 <translation id="2431625704210501303">Отваряне на прозорец в режим „&amp;инкогнито“</translation>
 <translation id="4620367155626060530">&amp;Показване на лентата на отметките</translation>
@@ -6275,10 +6302,8 @@
 <translation id="3860292630623580294">(„Инкогнито“)</translation>
 <translation id="4854477725773269949">Да се разреши в режим инкогнито</translation>
 <translation id="6436164536244065364">Преглед в уеб магазина на Brave</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Намерете разширения и теми в <ph name="BEGIN_LINK"/>уеб магазина на Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Нов раздел „инкогнито“</translation>
 <translation id="6610147964972079463">Раздели „инкогнито“: Затв.</translation>
-<translation id="5186185447130319458">„Инкогнито“</translation>
 <translation id="4933782374919065856">При въпроси се свържете с лицето, което контролира потребителския ви профил.</translation>
 </translationbundle>

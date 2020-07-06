@@ -2124,7 +2124,6 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="3771294271822695279">Datoteke videozapisa</translation>
 <translation id="3775432569830822555">Certifikat SSL poslužitelja</translation>
 <translation id="3775705724665058594">Pošaljite na svoje uređaje</translation>
-<translation id="6945695820322143954">To proširenje krši pravila Brave web-trgovine.</translation>
 <translation id="3777483481409781352">Nije uspjela aktivacija mobilnog uređaja</translation>
 <translation id="3777806571986431400">Proširenje omogućeno</translation>
 <translation id="3778152852029592020">Preuzimanje je otkazano.</translation>
@@ -2906,7 +2905,6 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="48704129375571883">Dodajte još značajki</translation>
 <translation id="4870758487381879312">Unesite zaporku koju ste dobili od administratora da biste dobili podatke o konfiguraciji</translation>
 <translation id="4870903493621965035">Nema uparenih uređaja</translation>
-<translation id="8839398440242019256">Nije iz web-trgovine Brave.</translation>
 <translation id="4871322859485617074">PIN sadrži nevažeće znakove</translation>
 <translation id="4871370605780490696">Dodavanje oznake</translation>
 <translation id="4871719318659334896">Zatvori grupu</translation>
@@ -4967,7 +4965,6 @@ Postavkama računa možete upravljati tako da instalirate aplikaciju Family Link
 <translation id="767127784612208024">Dodirnite za potvrdu vraćanja na zadano</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, na stranici <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Pošaljite audiopodatke o svojem glasu Braveu da biste omogućili diktiranje za bilo koje tekstno polje.</translation>
-<translation id="3098826269712097986">Podaci za prijavu pohranit će se u Braveu nakon što izađete iz anonimnog načina. Na taj ćete način kasnije opet moći koristiti Touch ID s ovom web-lokacijom.</translation>
 <translation id="7681095912841365527">Web-lokacija može upotrebljavati Bluetooth</translation>
 <translation id="7683373461016844951">Za nastavak kliknite U redu, a zatim kliknite Dodaj osobu da biste izradili novi profil za svoju <ph name="DOMAIN"/> e-adresu.</translation>
 <translation id="7684212569183643648">Instalirao vaš administrator</translation>
@@ -5445,7 +5442,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8259239505248583312">Započnimo</translation>
 <translation id="8260126382462817229">Ponovo se pokušajte prijaviti</translation>
 <translation id="8260864402787962391">Miš</translation>
-<translation id="8261378640211443080">To proširenje nije navedeno u trgovini <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i možda je dodano bez vašeg znanja.</translation>
 <translation id="8261506727792406068">Izbriši</translation>
 <translation id="8263336784344783289">Postavite naziv grupe</translation>
 <translation id="8263744495942430914">Stranica <ph name="FULLSCREEN_ORIGIN"/> onemogućila je pokazivač miša.</translation>
@@ -6007,7 +6003,6 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="8983632908660087688">Web-lokacija <ph name="ORIGIN"/> može uređivati datoteku <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Aktivan prije <ph name="DEVICE_LAST_ACTIVATED_TIME"/> dana</translation>
 <translation id="8986362086234534611">Zaboravi</translation>
-<translation id="9079153198295609735">Automatski šalji Braveu statistiku o upotrebi i izvješća o padu programa</translation>
 <translation id="8987927404178983737">Mjesec</translation>
 <translation id="8991520179165052608">Web-lokacija može upotrebljavati vaš mikrofon</translation>
 <translation id="899403249577094719">Osnovni URL Netscape certifikata</translation>
@@ -6226,6 +6221,38 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Uspostavljanje sigurne veze...</translation>
 <translation id="998747458861718449">P&amp;rovjeri</translation>
+<translation id="658539216370629794">Otvori vezu u anonimnom prozoru</translation>
+<translation id="1432267168815937878">Otvori vezu u anoni&amp;mnom prozoru</translation>
+<translation id="6516243500644829484">&amp;Novi anonimni prozor</translation>
+<translation id="7973394300052703468">&amp;Novi anoniman prozor</translation>
+<translation id="6395403722585816044">Preuzeto u anonimnom načinu</translation>
+<translation id="203837651858678035">Želite li svejedno zatvoriti anonimni način?</translation>
+<translation id="7376221878517288144">Želite li svejedno zatvoriti anonimni način?</translation>
+<translation id="871606814707918245">Većina korisnika blokira obavijesti s te web-lokacije</translation>
+<translation id="5053701565089446556">Anonimno proširenje: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Anonimna aplikacija: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Anonimna kartica: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Anonimni podokvir: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal u anonimnom načinu: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave web-trgovina</translation>
+<translation id="8261378640211443080">To proširenje nije navedeno u trgovini <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i možda je dodano bez vašeg znanja.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Anonimno)</translation>
+<translation id="4369414322596874629">Možete pregledavati privatno u anonimnom prozoru</translation>
+<translation id="3772947852642271642">Pomoću anonimnog prozora surfajte na webu bez spremanja povijesti pregledavanja</translation>
+<translation id="3871738366246972820">Upotrebljavate dijeljeno računalo? Preporučujemo vam da radite u anonimnom prozoru.</translation>
+<translation id="5808622652939943719">Da biste pregledavali privatno, kliknite ikonu izbornika s točkama kako biste otvorili anoniman prozor</translation>
+<translation id="9079153198295609735">Automatski šalji Braveu statistiku o upotrebi i izvješća o padu programa</translation>
+<translation id="8839398440242019256">Nije iz web-trgovine Brave.</translation>
+<translation id="6945695820322143954">To proširenje krši pravila Brave web-trgovine.</translation>
+<translation id="1676595396635191120">&amp;Novi anoniman prozor</translation>
+<translation id="5094764494104066239">Uvijek prikaži traku oznake</translation>
+<translation id="4471385409549756595">Novi anonimni prozor</translation>
+<translation id="4540437243849625078">Ova će web-lokacija dijeliti podatke s aplikacijom izvan anonimnog načina.</translation>
+<translation id="1227836882233136433">Želite li napustiti anonimno?</translation>
+<translation id="7618452966706304788">Želite li koristiti Touch ID s aplikacijom <ph name="APP_NAME"/> anonimno?</translation>
+<translation id="3098826269712097986">Podaci za prijavu pohranit će se u Braveu nakon što izađete iz anonimnog načina. Na taj ćete način kasnije opet moći koristiti Touch ID s ovom web-lokacijom.</translation>
+<translation id="5186185447130319458">Anonimno</translation>
+<translation id="2579188629646253712">Zatvori anonimnu upotrebu</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Otvori sve u &amp;anonimnom prozoru}=1{Otvori u &amp;anonimnom prozoru}one{Otvori sve (#) u &amp;anonimnom prozoru}few{Otvori sve (#) u &amp;anonimnom prozoru}other{Otvori sve (#) u &amp;anonimnom prozoru}}</translation>
 <translation id="2431625704210501303">Otvaranje u &amp;anonimnom prozoru</translation>
 <translation id="4620367155626060530">&amp;Prikaži traku oznake</translation>
@@ -6275,10 +6302,8 @@ Mislim da ta web-lokacija ne bi trebala biti blokirana!</translation>
 <translation id="3860292630623580294">(Anonimno)</translation>
 <translation id="4854477725773269949">Dopusti u anonimnom načinu</translation>
 <translation id="6436164536244065364">Prikaz u Brave web-trgovini</translation>
-<translation id="8808478386290700967">Brave web-trgovina</translation>
 <translation id="38046578254905003">Pronađite proširenja i teme u <ph name="BEGIN_LINK"/>Brave web-trgovini<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nova anonimna kartica</translation>
 <translation id="6610147964972079463">Zatvori anonimne kartice</translation>
-<translation id="5186185447130319458">Anonimno</translation>
 <translation id="4933782374919065856">Imate li pitanja? Obratite se osobi koja nadzire vaš profil.</translation>
 </translationbundle>

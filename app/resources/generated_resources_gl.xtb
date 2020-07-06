@@ -2123,7 +2123,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="3771294271822695279">Ficheiros de vídeo</translation>
 <translation id="3775432569830822555">Certificado do servidor SSL</translation>
 <translation id="3775705724665058594">Enviar contido aos teus dispositivos</translation>
-<translation id="6945695820322143954">Esta extensión infrinxe a política de Brave Web Store.</translation>
 <translation id="3777483481409781352">Non se puido activar o dispositivo móbil</translation>
 <translation id="3777806571986431400">Extensión activada</translation>
 <translation id="3778152852029592020">Cancelouse a descarga.</translation>
@@ -2905,7 +2904,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="48704129375571883">Engadir funcións adicionais</translation>
 <translation id="4870758487381879312">Introduce o contrasinal indicado polo administrador para obter información de configuración</translation>
 <translation id="4870903493621965035">Non hai dispositivos sincronizados</translation>
-<translation id="8839398440242019256">Non procede de Brave Web Store.</translation>
 <translation id="4871322859485617074">O PIN contén caracteres non válidos</translation>
 <translation id="4871370605780490696">Engadir marcador</translation>
 <translation id="4871719318659334896">Pechar grupo</translation>
@@ -4966,7 +4964,6 @@ Instala a aplicación Family Link no teu dispositivo e poderás xestionar a conf
 <translation id="767127784612208024">Toca a chave para confirmar o seu restablecemento</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, en <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Envía a túa voz a Brave para utilizar o ditado en calquera campo de texto.</translation>
-<translation id="3098826269712097986">Os datos de inicio de sesión almacenaranse en Brave cando saias do modo de incógnito. Desta forma poderás volver utilizar Touch ID con este sitio web máis tarde.</translation>
 <translation id="7681095912841365527">O sitio pode usar o Bluetooth</translation>
 <translation id="7683373461016844951">Para continuar, fai clic en Aceptar e, despois, en Engadir persoa se queres crear un perfil para o teu enderezo de correo electrónico de <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Extensión instalada polo administrador</translation>
@@ -5443,7 +5440,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8259239505248583312">Vamos aló</translation>
 <translation id="8260126382462817229">Proba a volver iniciar sesión</translation>
 <translation id="8260864402787962391">Rato</translation>
-<translation id="8261378640211443080">Esta extensión non figura en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e é posible que se engadise sen o teu coñecemento.</translation>
 <translation id="8261506727792406068">Eliminar</translation>
 <translation id="8263336784344783289">Ponlle un nome a este grupo</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> desactivou o cursor do rato.</translation>
@@ -6005,7 +6001,6 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="8983632908660087688"><ph name="ORIGIN"/> pode editar <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Dispositivo activo hai <ph name="DEVICE_LAST_ACTIVATED_TIME"/> día</translation>
 <translation id="8986362086234534611">Borrar</translation>
-<translation id="9079153198295609735">Enviar estatísticas de uso e informes de erros a Brave automaticamente</translation>
 <translation id="8987927404178983737">Mes</translation>
 <translation id="8991520179165052608">O sitio pode usar o teu micrófono</translation>
 <translation id="899403249577094719">URL de base de certificado de Netscape</translation>
@@ -6224,6 +6219,38 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Establecendo conexión segura...</translation>
 <translation id="998747458861718449">I&amp;nspeccionar</translation>
+<translation id="658539216370629794">Abrir ligazón na ventá do modo de incó&amp;gnito</translation>
+<translation id="1432267168815937878">Abrir ligazón na ventá de incó&amp;gnito</translation>
+<translation id="6516243500644829484">Nova ventá do modo de &amp;incógnito</translation>
+<translation id="7973394300052703468">Nova ventá de &amp;incógnito</translation>
+<translation id="6395403722585816044">Descargouse no modo de incógnito</translation>
+<translation id="203837651858678035">Queres saír do modo de incógnito de todas formas?</translation>
+<translation id="7376221878517288144">Queres saír do modo de incógnito de todas formas?</translation>
+<translation id="871606814707918245">A maioría de usuarios bloquean as notificacións deste sitio</translation>
+<translation id="5053701565089446556">Extensión do modo de incógnito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplicación de incógnito: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Pestana de incógnito: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Submarco de incógnito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal do modo de incógnito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Esta extensión non figura en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e é posible que se engadise sen o teu coñecemento.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (incógnito)</translation>
+<translation id="4369414322596874629">Podes navegar de forma privada usando unha ventá do modo de incógnito</translation>
+<translation id="3772947852642271642">Utiliza a web sen gardar o teu historial de navegación cunha ventá do modo de incógnito</translation>
+<translation id="3871738366246972820">Estás usando un ordenador compartido? Proba a abrir unha ventá do modo de incógnito.</translation>
+<translation id="5808622652939943719">Se queres navegar de forma privada, fai clic no menú coa icona dos puntos para abrir unha ventá do modo de incógnito</translation>
+<translation id="9079153198295609735">Enviar estatísticas de uso e informes de erros a Brave automaticamente</translation>
+<translation id="8839398440242019256">Non procede de Brave Web Store.</translation>
+<translation id="6945695820322143954">Esta extensión infrinxe a política de Brave Web Store.</translation>
+<translation id="1676595396635191120">Nova ventá de incógnito</translation>
+<translation id="5094764494104066239">Mostrar sempre a barra de marcadores</translation>
+<translation id="4471385409549756595">Nova ventá do modo de incógnito</translation>
+<translation id="4540437243849625078">Neste sitio estase a piques de compartir información cunha aplicación fóra do modo de incógnito.</translation>
+<translation id="1227836882233136433">Saír do modo de incógnito?</translation>
+<translation id="7618452966706304788">Queres utilizar Touch ID con <ph name="APP_NAME"/> no modo de incógnito?</translation>
+<translation id="3098826269712097986">Os datos de inicio de sesión almacenaranse en Brave cando saias do modo de incógnito. Desta forma poderás volver utilizar Touch ID con este sitio web máis tarde.</translation>
+<translation id="5186185447130319458">Modo de incógnito</translation>
+<translation id="2579188629646253712">Saír do modo de incógnito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Abrir todos os marcadores nunha ventá do modo de &amp;incógnito}=1{Abrir nunha ventá do modo de &amp;incógnito}other{Abrir todos marcadores (#) nunha ventá do modo de &amp;incógnito}}</translation>
 <translation id="2431625704210501303">Abrir nunha ventá de &amp;incógnito</translation>
 <translation id="4620367155626060530">&amp;Mostrar a barra de marcadores</translation>
@@ -6273,10 +6300,8 @@ Mantén o ficheiro de clave nun lugar seguro, xa que o precisarás para crear no
 <translation id="3860292630623580294">(Incógnito)</translation>
 <translation id="4854477725773269949">Permitir en modo de incógnito</translation>
 <translation id="6436164536244065364">Ver en Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Busca extensións e temas en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Pestana nova de incógnito</translation>
 <translation id="6610147964972079463">Pechar pestanas incógnito</translation>
-<translation id="5186185447130319458">Modo de incógnito</translation>
 <translation id="4933782374919065856">Tes preguntas? Contacta coa persoa que supervisa o teu perfil.</translation>
 </translationbundle>

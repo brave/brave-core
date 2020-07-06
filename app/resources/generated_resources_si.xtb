@@ -2121,7 +2121,6 @@
 <translation id="3771294271822695279">වීඩියෝ ගොනු</translation>
 <translation id="3775432569830822555">SSL සේවාදායක සහතිකය</translation>
 <translation id="3775705724665058594">ඔබේ උපාංග වෙත යවන්න</translation>
-<translation id="6945695820322143954">දිගුව විසින් Brave Web Store ප්‍රතිපත්තිය උල්ලංගනය කරයි.</translation>
 <translation id="3777483481409781352">සෙලියුලර් උපාංගය ක්‍රියාත්මක කළ නොහැකි විය</translation>
 <translation id="3777806571986431400">දිගුව සක්‍රීයයි</translation>
 <translation id="3778152852029592020">බාගැනීම අවලංගු විය</translation>
@@ -2904,7 +2903,6 @@ Linux ස්ථාපනය කිරීම දත්තවලින් <ph name
 <translation id="48704129375571883">අතිරේක විශේෂාංග එක් කරන්න</translation>
 <translation id="4870758487381879312">වින්‍යාස තොරතුරු ලබා ගැනීමට පරිපාලකයා ලබා දුන් මුරපදය ඇතුළත් කරන්න</translation>
 <translation id="4870903493621965035">යුගල කළ උපාංග නැත</translation>
-<translation id="8839398440242019256">Brave Web Store වෙතින් නොවේ.</translation>
 <translation id="4871322859485617074">රහස් අංකයේ අවලංගු අනුලකුණු අඩංගු ය</translation>
 <translation id="4871370605780490696">පිටු සලකුණ එක් කරන්න</translation>
 <translation id="4871719318659334896">කණ්ඩායම වසන්න</translation>
@@ -4964,7 +4962,6 @@ Linux ස්ථාපනය කිරීම දත්තවලින් <ph name
 <translation id="767127784612208024">යළි සැකසීම තහවුරු කිරීමට තට්ටු කරන්න</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, <ph name="PAGE_TITLE"/> තුළ.</translation>
 <translation id="1800308196794859773">ඕනෑම පෙළ ක්ෂේත්‍රයක හඬ ටයිප් කිරීමට ඉඩ දීමට, අනුලේඛනය විසින් ඔබගේ හඬ Brave වෙත යවන්න.</translation>
-<translation id="3098826269712097986">ඔබ අප්‍රසිද්ධ ප්‍රකාරයෙන් පිට වූ පසු පුරන දත්ත Brave තුළ ගබඩා කරනු ලැබේ. මෙය ඔබට පසුව මෙම වෙබ් අඩවිය සමඟ නැවතත් ස්පර්ශ හැඳුනුම භාවිත කිරීමට ඉඩ සලසයි.</translation>
 <translation id="7681095912841365527">අඩවියට බ්ලූටූත් භාවිත කළ හැකිය</translation>
 <translation id="7683373461016844951">ඉදිරියට යාමට, හරි ක්ලික් කරන්න, අනතුරුව ඔබේ <ph name="DOMAIN"/> ඊ-තැපැල් ලිපිනය සඳහා නව පැතිකඩක් සෑදීමට පුද්ගලයා එක් කරන්න ක්ලික් කරන්න.</translation>
 <translation id="7684212569183643648">ඔබේ පරිපාලක විසින් ස්ථාපනය කරන ලදී</translation>
@@ -5440,7 +5437,6 @@ Linux ස්ථාපනය කිරීම දත්තවලින් <ph name
 <translation id="8259239505248583312">අරඹමු</translation>
 <translation id="8260126382462817229">නැවත පිරීම උත්සාහ කරන්න</translation>
 <translation id="8260864402787962391">මවුසය</translation>
-<translation id="8261378640211443080">දිගුව <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> තුළ ලියාපදිංචි කර නැති අතර එය ඔබට නොදැනී එක් කර තිබේ.</translation>
 <translation id="8261506727792406068">මකන්න</translation>
 <translation id="8263336784344783289">මෙම සමූහය නම් කරන්න</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> ඔබේ මූසික කර්සරය අබල කර ඇත.</translation>
@@ -6002,7 +5998,6 @@ Linux ස්ථාපනය කිරීම දත්තවලින් <ph name
 <translation id="8983632908660087688"><ph name="ORIGIN"/> හට <ph name="FILENAME"/> සංස්කරණ කළ හැක</translation>
 <translation id="8985264973231822211"><ph name="DEVICE_LAST_ACTIVATED_TIME"/> දිනකට පෙර ක්‍රියාත්මකයි</translation>
 <translation id="8986362086234534611">අමතක</translation>
-<translation id="9079153198295609735">ස්වයංක්‍රීයව භාවිත සංඛ්‍යා ලේඛන සහ කඩිනම් වාර්තා Brave වෙත යවන්න</translation>
 <translation id="8987927404178983737">මාසය</translation>
 <translation id="8991520179165052608">අඩවියට ඔබේ මයික්‍රෆෝනය භාවිත කළ හැකිය</translation>
 <translation id="899403249577094719">Netscape සහතික මත පදනම් වූ URL</translation>
@@ -6221,6 +6216,38 @@ Linux ස්ථාපනය කිරීම දත්තවලින් <ph name
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">ආරක්ෂිත සබඳතාවක් ස්ථාපිත කරමින්...</translation>
 <translation id="998747458861718449">පරීක්ෂා කරන්න</translation>
+<translation id="658539216370629794">inco&amp;gnito කවුළුව තුළ සබැඳිය විවෘත කරන්න</translation>
+<translation id="1432267168815937878">Incognito කවුළුව තුළ සබැඳිය විවෘත කරන්න</translation>
+<translation id="6516243500644829484">නව &amp;අප්‍රසිද්ධ කවුළුව</translation>
+<translation id="7973394300052703468">නව &amp;Incognito කවුළුව</translation>
+<translation id="6395403722585816044">අප්‍රකටව බාගන්නා ලදී</translation>
+<translation id="203837651858678035">කෙසේ වුවත් අප්‍රසිද්ධ ආකාරයෙන් ඉවත් වන්න ද?</translation>
+<translation id="7376221878517288144">කෙසේ වුවත් අප්‍රසිද්ධ ආකාරයෙන් ඉවත් වන්න ද?</translation>
+<translation id="871606814707918245">බොහෝ අය මෙම වෙබ් අඩවියෙන් එන දැනුම් දීම් අවහිර කරති</translation>
+<translation id="5053701565089446556">Incognito දිගුව: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ඉන්කග්නිටෝ යෙදු: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Incognito ටැබය: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">අප්‍රකට උපරාමුව: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">අප්‍රසිද්ධ ද්වාරය: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave ජාල වෙලඳසැල</translation>
+<translation id="8261378640211443080">දිගුව <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> තුළ ලියාපදිංචි කර නැති අතර එය ඔබට නොදැනී එක් කර තිබේ.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="4369414322596874629">ඔබට අප්‍රසිද්ධ කවුළුවක් භාවිතයෙන් රහසිගතව බ්‍රවුස් කළ හැක</translation>
+<translation id="3772947852642271642">අප්‍රසිද්ධ කවුළුවක් සමඟින් ඔබේ බ්‍රවුස් කිරීමේ ඉතිහාසය සුරැකීමෙන් තොරව වෙබය භාවිතා කරන්න</translation>
+<translation id="3871738366246972820">හවුල් පරිගණකයක් භාවිතා කරනවා ද? අප්‍රසිද්ධ කවුළුවක් විවෘත කිරීමට උත්සාහ කරන්න.</translation>
+<translation id="5808622652939943719">රහසිගතව බ්‍රවුස් කිරීම සඳහා, අප්‍රසිද්ධ කවුළුවක් විවෘත කිරීම සඳහා තිත් නිරූපක මෙනුව ක්ලික් කරන්න</translation>
+<translation id="9079153198295609735">ස්වයංක්‍රීයව භාවිත සංඛ්‍යා ලේඛන සහ කඩිනම් වාර්තා Brave වෙත යවන්න</translation>
+<translation id="8839398440242019256">Brave Web Store වෙතින් නොවේ.</translation>
+<translation id="6945695820322143954">දිගුව විසින් Brave Web Store ප්‍රතිපත්තිය උල්ලංගනය කරයි.</translation>
+<translation id="1676595396635191120">නව අප්‍රසිද්ධ කවුළුව</translation>
+<translation id="5094764494104066239">හැමවිට පිටුසලකුණු බාර් එක පෙන්වන්න</translation>
+<translation id="4471385409549756595">නව Incognito කවුළුව</translation>
+<translation id="4540437243849625078">මෙම අඩවිය අප්‍රසිද්ධ ප්‍රකාරෙයන් පිටත යෙදුමක් සමග තොරතුරු බෙදා ගැනීමට සූදානම්ය.</translation>
+<translation id="1227836882233136433">අප්‍රසිද්ධ ප්‍රකාරය හැර යන්නද?</translation>
+<translation id="7618452966706304788">ඔබට අප්‍රසිද්ධ ප්‍රකාරය තුළ <ph name="APP_NAME"/> සමඟ ස්පර්ශ හැඳුනුම භාවිත කිරීමට අවශ්‍යද?</translation>
+<translation id="3098826269712097986">ඔබ අප්‍රසිද්ධ ප්‍රකාරයෙන් පිට වූ පසු පුරන දත්ත Brave තුළ ගබඩා කරනු ලැබේ. මෙය ඔබට පසුව මෙම වෙබ් අඩවිය සමඟ නැවතත් ස්පර්ශ හැඳුනුම භාවිත කිරීමට ඉඩ සලසයි.</translation>
+<translation id="5186185447130319458">අප්‍රකට</translation>
+<translation id="2579188629646253712">අප්‍රසිද්ධයෙන් පිටවන්න</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{සියල්ල &amp;අප්‍රසිද්ධ කවුළුවක විවෘත කරන්න}=1{&amp;අප්‍රසිද්ධ කවුළුවක විවෘත කරන්න}one{සියල්ල (#) &amp;අප්‍රසිද්ධ කවුළුවක විවෘත කරන්න}other{සියල්ල (#) &amp;අප්‍රසිද්ධ කවුළුවක විවෘත කරන්න}}</translation>
 <translation id="2431625704210501303">&amp;අප්‍රකට කවුළුවක විවෘත කරන්න</translation>
 <translation id="4620367155626060530">පිටු සලකුණු තීරුව &amp;පෙන්වන්න</translation>
@@ -6270,10 +6297,8 @@ Linux ස්ථාපනය කිරීම දත්තවලින් <ph name
 <translation id="3860292630623580294">(අප්‍රකට)</translation>
 <translation id="4854477725773269949">අප්‍රකටව ඉඩ දෙන්න</translation>
 <translation id="6436164536244065364">Brave Web Store තුළ බලන්න</translation>
-<translation id="8808478386290700967">Brave ජාල වෙලඳසැල</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> තුළ දිගු සහ තේමාවන් සොයා ගන්න</translation>
 <translation id="6336451774241870485">නව අප්‍රසිද්ධ පටිත්ත</translation>
 <translation id="6610147964972079463">අප්‍රකට පටිති වසන්න</translation>
-<translation id="5186185447130319458">අප්‍රකට</translation>
 <translation id="4933782374919065856">ප්‍රශ්න තිබේද? ඔබගේ පැතිකඩ අධීක්ෂණය කරන පුද්ගලයා අමතන්න.</translation>
 </translationbundle>

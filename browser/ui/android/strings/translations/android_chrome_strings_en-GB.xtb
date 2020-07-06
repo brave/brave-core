@@ -659,7 +659,7 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5736731321935944068">Brave may use your history to personalise Search, ads and other Brave services</translation>
 <translation id="5804241973901381774">Permissions</translation>
 <translation id="5809361687334836369">{HOURS,plural, =1{# hour ago}other{# hours ago}}</translation>
-<translation id="1983958230764387108">Copyright © <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
+<translation id="1983958230764387108">Copyright © © <ph name="YEAR"/> The Brave Authors. All rights reserved.</translation>
 <translation id="5817918615728894473">Pair</translation>
 <translation id="583281660410589416">Unknown</translation>
 <translation id="5833984609253377421">Share link</translation>
