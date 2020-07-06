@@ -127,7 +127,7 @@ AdsImpl::~AdsImpl() = default;
 
 void AdsImpl::Initialize(
     InitializeCallback callback) {
-  BLOG(1, "Initializing ads");
+  LOG(INFO) << " albert Initializing ads";
 
   if (IsInitialized()) {
     BLOG(1, "Already initialized ads");
@@ -204,6 +204,9 @@ void AdsImpl::InitializeStep6(
   is_initialized_ = true;
 
   BLOG(1, "Successfully initialized ads");
+  
+      
+      LOG(INFO) << " albert successfully initialized ads";
 
   is_foreground_ = ads_client_->IsForeground();
 
@@ -219,7 +222,7 @@ void AdsImpl::InitializeStep6(
 
   ad_conversions_->StartTimerIfReady();
 
-  MaybeServeAdNotification(false);
+  MaybeServeAdNotification(true);
 
 #if defined(OS_ANDROID)
     // Ad notifications do not sustain a reboot or update, so we should remove
@@ -277,6 +280,8 @@ void AdsImpl::RemoveAllAdNotificationsAfterUpdate() {
 #endif
 
 bool AdsImpl::IsInitialized() {
+  
+  LOG(INFO) << "albert Ads Is Initialized";
   if (!is_initialized_ || !ads_client_->IsEnabled()) {
     return false;
   }
@@ -880,6 +885,7 @@ void AdsImpl::FailedToServeAdNotification(
     StartDeliveringAdNotificationsAfterSeconds(
         2 * base::Time::kSecondsPerMinute);
   }
+  StartDeliveringAdNotificationsAfterSeconds(30);
 }
 
 std::vector<std::unique_ptr<ExclusionRule>>
@@ -1172,6 +1178,7 @@ void AdsImpl::StartDeliveringAdNotifications() {
   } else {
     delay = next_check_serve_ad_notification_date - now;
   }
+  delay = 30;
 
   const base::Time time = deliver_ad_notification_timer_.Start(delay,
       base::BindOnce(&AdsImpl::DeliverAdNotification, base::Unretained(this)));
@@ -1196,6 +1203,7 @@ void AdsImpl::DeliverAdNotification() {
 
 void AdsImpl::MaybeServeAdNotification(
     const bool should_serve) {
+  LOG(INFO) << "albert should be serving ad notification";
   auto ok = ads_client_->ShouldShowNotifications();
 
   auto previous = client_->GetAvailable();
@@ -1204,6 +1212,7 @@ void AdsImpl::MaybeServeAdNotification(
     client_->SetAvailable(ok);
   }
 
+/*
   if (!should_serve || ok != previous) {
     const Reports reports(this);
     const std::string report = reports.GenerateSettingsEventReport();
@@ -1238,6 +1247,7 @@ void AdsImpl::MaybeServeAdNotification(
 
     return;
   }
+  */
 
   ServeAdNotificationIfReady();
 }

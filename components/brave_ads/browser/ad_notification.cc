@@ -8,22 +8,15 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "ui/message_center/public/cpp/notification.h"
-#include "ui/message_center/public/cpp/notification_types.h"
-#include "ui/message_center/public/cpp/notifier_id.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
 
 namespace brave_ads {
 
-namespace {
-
-const char kNotifierId[] = "service.ads_service";
-
-}  // namespace
-
 // static
-std::unique_ptr<message_center::Notification> CreateAdNotification(
+brave_custom_notification::Notification* CreateAdNotification(
     const ads::AdNotificationInfo& info) {
-  message_center::RichNotificationData notification_data;
+  brave_custom_notification::RichNotificationData notification_data;
 
   base::string16 title;
   if (base::IsStringUTF8(info.title)) {
@@ -38,12 +31,9 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
   notification_data.context_message = base::ASCIIToUTF16(" ");
-  auto notification = std::make_unique<message_center::Notification>(
-      message_center::NOTIFICATION_TYPE_SIMPLE, info.uuid, title, body,
-      gfx::Image(), base::string16(), GURL(kBraveAdsUrlPrefix + info.uuid),
-      message_center::NotifierId(message_center::NotifierType::SYSTEM_COMPONENT,
-                                 kNotifierId),
-      notification_data, nullptr);
+  brave_custom_notification::Notification* notification = new brave_custom_notification::Notification(
+      brave_custom_notification::NOTIFICATION_TYPE_SIMPLE, info.uuid, title, body,
+      base::string16(), GURL(), notification_data, nullptr);
 
 #if !defined(OS_MACOSX) || defined(OFFICIAL_BUILD)
   // set_never_timeout uses an XPC service which requires signing

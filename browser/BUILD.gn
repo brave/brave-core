@@ -182,6 +182,8 @@ source_set("browser_process") {
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/widevine/cdm:buildflags",
     "//ui/base",
+    "//brave/ui/brave_custom_notification",
+    "//brave/ui/brave_custom_notification/public/cpp",
   ]
 
   if (enable_tor) {

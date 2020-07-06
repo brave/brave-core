@@ -1,0 +1,97 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//build/config/features.gni")
+import("//build/config/jumbo.gni")
+import("//build/config/ui.gni")
+# import("//components/vector_icons/vector_icons.gni")
+import("//testing/test.gni")
+import("//ui/base/ui_features.gni")
+
+#aggregate_vector_icons("brave_custom_notification_vector_icons") {
+#  icon_directory = "vector_icons"
+#
+#  icons = [
+#    "b_notification_close_button.icon",
+##    "b_notification_expand_less.icon",
+##    "b_notification_expand_more.icon",
+##    "b_notification_inline_reply.icon",
+##    "b_notification_settings_button.icon",
+##   "b_notification_snooze_button.icon",
+#    "b_product.icon",
+#  ]
+#}
+
+source_set("brave_custom_notification") {
+  deps = [
+    "//base",
+    "//ui/base",
+    "//ui/strings",
+    "//url",
+  ]
+
+  # public_deps = [ "//brave/ui/brave_custom_notification/public/cpp" ]
+  deps += [
+#    ":brave_vector_icons",
+    # ":message_center_vector_icons",
+     "//brave/ui/brave_custom_notification/public/cpp" ,
+    "//brave/app/vector_icons",
+    "//base:i18n",
+    "//base/third_party/dynamic_annotations",
+    "//components/url_formatter",
+    "//skia",
+    "//ui/accessibility",
+    "//ui/display",
+    "//ui/events",
+    "//ui/events:gesture_detection",
+    "//ui/gfx",
+    "//ui/gfx/geometry",
+    "//ui/native_theme",
+    "//ui/resources",
+  ]
+
+  # configs += [ "//build/config:precompiled_headers" ]
+
+
+  if (is_win) {
+    deps += [
+      "//ui/aura",
+      "//ui/wm/public",
+    ]
+  }
+
+  sources = [
+    "message_popup_view.cc",
+    "message_popup_view.h",
+    "message_view.cc",
+    "message_view.h",
+    "message_view_factory.cc",
+    "message_view_factory.h",
+    "notification_background_painter.cc",
+    "notification_background_painter.h",
+    "notification_control_buttons_view.cc",
+    "notification_control_buttons_view.h",
+    "notification_header_view.cc",
+    "notification_header_view.h",
+    "notification_view_md.cc",
+    "notification_view_md.h",
+    "padded_button.cc",
+    "padded_button.h",
+    "proportional_image_view.cc",
+    "proportional_image_view.h",
+  ]
+    # "views/brave_message_view.h",
+    # "views/brave_message_view.cc",
+    #"views/brave_notification_header_view.h",
+    #"views/brave_notification_header_view.cc",
+#  sources += get_target_outputs(":brave_custom_notification_vector_icons")
+  deps += [
+    "//ui/compositor",
+    "//ui/events",
+    "//ui/views",
+  ]
+  if (is_mac) {
+    libs = [ "Foundation.framework" ]
+  }
+}

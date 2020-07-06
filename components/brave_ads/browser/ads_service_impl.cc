@@ -54,7 +54,9 @@
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
+#include "brave/browser/notifications/notification_platform_bridge_brave_custom_notification.h"
 #if !defined(OS_ANDROID)
+#include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #endif
@@ -214,6 +216,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
     rewards_service_(brave_rewards::RewardsServiceFactory::GetForProfile(
         profile_)),
     bat_ads_client_receiver_(new bat_ads::AdsClientMojoBridge(this)) {
+       
+  LOG(INFO) << " albert Initializing AdsServiceImpl";
   DCHECK(!profile_->IsOffTheRecord());
 
   MigratePrefs();
@@ -515,11 +519,13 @@ bool AdsServiceImpl::ShouldAllowAdConversionTracking() const {
 }
 
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  return GetUint64Pref(prefs::kAdsPerHour);
+  return 120;
+  // return GetUint64Pref(prefs::kAdsPerHour);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerDay() const {
-  return GetUint64Pref(prefs::kAdsPerDay);
+  return 120;
+  // return GetUint64Pref(prefs::kAdsPerDay);
 }
 
 bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
@@ -651,6 +657,8 @@ void AdsServiceImpl::OnCreate() {
 void AdsServiceImpl::OnInitialize(
     const int32_t result) {
   if (result != ads::Result::SUCCESS) {
+    
+    LOG(INFO) << " albert failed to init adsserviceimpl";
     VLOG(0) << "Failed to initialize ads";
 
     is_initialized_ = false;
@@ -711,6 +719,9 @@ bool AdsServiceImpl::StartService() {
 
     bat_ads_service_.set_disconnect_handler(
         base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
+        
+      
+    LOG(INFO) << " albert adsserviceimpl not bound";
   }
 
   SetEnvironment();
@@ -722,23 +733,31 @@ bool AdsServiceImpl::StartService() {
 
 void AdsServiceImpl::MaybeStart(
     const bool should_restart) {
+      
+    LOG(INFO) << " albert adsserviceimpl maybe start";
   if (!IsSupportedLocale()) {
+    
+    LOG(INFO) << " albert Not supported Locale";
     VLOG(1) << GetLocale() << " locale does not support ads";
     Shutdown();
     return;
   }
 
   if (!IsEnabled()) {
+    
+    LOG(INFO) << " albert Not Enabled Ads";
     Stop();
     return;
   }
 
   if (should_restart) {
     VLOG(1) << "Restarting ads service";
+    LOG(INFO) << " albert restarting ads service";
     Shutdown();
   }
 
   if (!StartService()) {
+    LOG(INFO) << " albert failed to start ads service";
     VLOG(0) << "Failed to start ads service";
     return;
   }
@@ -825,12 +844,15 @@ void AdsServiceImpl::EnsureBaseDirectoryExists() {
 void AdsServiceImpl::OnEnsureBaseDirectoryExists(
     const bool success) {
   if (!success) {
+    
+  LOG(INFO) << " albert failed onesurebasedirectoryexists";
     VLOG(0) << "Failed to create base directory";
     return;
   }
 
   BackgroundHelper::GetInstance()->AddObserver(this);
 
+  LOG(INFO) << " albert OnEnsureBaseDirectoryExists";
   bat_ads_service_->Create(
       bat_ads_client_receiver_.BindNewEndpointAndPassRemote(),
       bat_ads_.BindNewEndpointAndPassReceiver(),
@@ -1137,7 +1159,8 @@ void AdsServiceImpl::OnURLRequestComplete(
 }
 
 bool AdsServiceImpl::CanShowBackgroundNotifications() const {
-  return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
+  LOG(INFO) << "albert AdsServiceImpl::CanShowBackgroundNotifications";
+  return true;
 }
 
 void AdsServiceImpl::OnGetAdsHistory(
@@ -1780,9 +1803,11 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
     return;
   }
 
+/*
   if (!NotificationHelper::GetInstance()->ShowMyFirstAdNotification()) {
     return;
   }
+  */
 
   SetBooleanPref(prefs::kShouldShowMyFirstAdNotification, false);
 }
@@ -2010,11 +2035,15 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 
 void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
-  auto notification = CreateAdNotification(*info);
+  LOG(INFO) << "albert AdsServiceImpl::ShowNotification";
+  brave_custom_notification::Notification* notification = (brave_custom_notification::Notification*) CreateAdNotification(*info);
 
-  display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
-      *notification, /*metadata=*/nullptr);
-
+  // Call NotificationPlatformBridgeBraveCustomNotification
+  NotificationPlatformBridgeBraveCustomNotification* platform_bridge = new NotificationPlatformBridgeBraveCustomNotification(profile_);
+  platform_bridge->Display(NotificationHandler::Type::BRAVE_ADS, profile_, *notification, /*metadata=*/nullptr);
+  //
+  // display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification, /*metadata=*/nullptr);
+  // brave_custom_notification::MessagePopupView::Show(*notification);
   StartNotificationTimeoutTimer(info->uuid);
 }
 
@@ -2049,6 +2078,9 @@ bool AdsServiceImpl::StopNotificationTimeoutTimer(
 }
 
 bool AdsServiceImpl::ShouldShowNotifications() {
+  #ifdef OS_WIN
+    return true;
+  #endif
   return NotificationHelper::GetInstance()->ShouldShowNotifications();
 }
 
