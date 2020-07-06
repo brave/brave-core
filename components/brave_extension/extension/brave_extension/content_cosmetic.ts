@@ -540,6 +540,8 @@ const scheduleQueuePump = (hide1pContent: boolean, generichide: boolean) => {
   }, { timeout: maxTimeMSBeforeStart })
 }
 
+const vettedSearchEngines = ['duckduckgo', 'qwant', 'bing', 'startpage', 'yahoo', 'onesearch', 'google', 'yandex']
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
@@ -554,7 +556,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const { selectors } = msg
       let nextIndex = cosmeticStyleSheet.rules.length
       for (const selector of selectors) {
-        if (selector === '.ads-ad' && _parsedCurrentDomain.type === ParseResultType.Listed && _parsedCurrentDomain.icann.domain === 'google') {
+        if (_parsedCurrentDomain.type === ParseResultType.Listed && vettedSearchEngines.includes(_parsedCurrentDomain.icann.domain)) {
           continue
         }
         if (allSelectorsToRules.has(selector)) {
