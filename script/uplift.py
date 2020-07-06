@@ -415,7 +415,8 @@ def get_milestone_for_branch(channel_branch):
     if not config.milestones:
         config.milestones = get_milestones(config.github_token, BRAVE_CORE_REPO)
     for milestone in config.milestones:
-        if milestone['title'].startswith(channel_branch + ' - '):
+        if (milestone['title'].startswith(channel_branch + ' - ') or
+           milestone['title'].startswith('Android ' + channel_branch + ' - ')):
             return milestone['number']
     return None
 
@@ -426,7 +427,7 @@ def submit_pr(channel, top_level_base, remote_base, local_branch, issues_fixed):
     try:
         milestone_number = get_milestone_for_branch(remote_base)
         if milestone_number is None:
-            print('milestone for "' + remote_base + '"" was not found!')
+            print('milestone for "' + remote_base + '" was not found!')
             return 0
 
         print('(' + channel + ') creating pull request')
