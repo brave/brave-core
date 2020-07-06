@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="da">
+<translation id="6134859571175647580">Advarsel! Brave kan ikke forhindre udvidelser i at registrere din browserhistorik. Fjern markeringen i afkrydsningsfeltet for at deaktivere denne udvidelse i inkognitotilstand.</translation>
+<translation id="1448049584457347995">For at gøre Brave sikrere har vi slået nogle udvidelser fra, som ikke er anført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og muligvis er blevet tilføjet, uden at du vidste det.</translation>
+<translation id="8848045066928358658">For at gøre Brave mere sikker har vi deaktiveret følgende udvidelser, som ikke er anført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og muligvis er blevet tilføjet, uden at du vidste det.</translation>
+<translation id="669092380621816981">Brugerens browserdata slettes fra denne enhed. Log ind på Brave som <ph name="USER_EMAIL"/> for at gendanne dataene.</translation>
+<translation id="4624945300945265642">Åbn linket i et Brave-inko&amp;gnitovindue</translation>
+<translation id="6554952862405000915">Åbn linket i et Brave-inko&amp;gnitovindue</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{Der er en ny Brave-opdatering, som anvendes, så snart du genstarter.}=1{Der er en ny Brave-opdatering, som anvendes, så snart du genstarter. Dit inkognitovindue åbnes ikke igen.}one{Der er en ny Brave-opdatering, som anvendes, så snart du genstarter. # inkognitovindue åbnes ikke igen.}other{Der er en ny Brave-opdatering, som anvendes, så snart du genstarter. Dine # inkognitovinduer åbnes ikke igen.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering}=1{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. Dit inkognitovindue åbnes ikke igen.}one{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. # inkognitovindue åbnes ikke igen.}other{Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering. Dine # inkognitovinduer åbnes ikke igen.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Din administrator kræver, at du genstarter Brave for at anvende en opdatering}=1{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. Dit inkognitovindue åbnes ikke igen.}one{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. # inkognitovindue åbnes ikke igen.}other{Din administrator kræver, at du genstarter Brave for at anvende en opdatering. Dine # inkognitovinduer åbnes ikke igen.}}</translation>
+</translationbundle>

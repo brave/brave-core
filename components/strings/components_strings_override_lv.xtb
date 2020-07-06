@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="lv">
+<translation id="8820817407110198400">Grāmatzīmju josla</translation>
+<translation id="8362995731815961365">Persona, kura iestatīja šo datoru, izvēlējās bloķēt šo vietni.</translation>
+<translation id="4075123085690634698">Atvērt lapu jaunā inkognito režīma logā (⇧⌘N)</translation>
+<translation id="2388886110302389394">Atvērt lapu jaunā inkognito režīma logā (Ctrl+Shift+N)</translation>
+<translation id="6957624206566198865">Atvērt lapu jaunā inkognito režīma cilnē</translation>
+<translation id="2378238891085281592">Jūs esat atvēris inkognito režīmu</translation>
+<translation id="3774752171665127360">Lapas, ko skatāt inkognito režīma cilnēs, nebūs redzamas pārlūka vēsturē, sīkfailu krātuvē vai meklēšanas vēsturē, kad aizvērsiet visas inkognito režīma cilnes. Tomēr tiks saglabāti visi lejupielādētie faili un izveidotās grāmatzīmes.</translation>
+<translation id="9177896974490719854">Tomēr jūs neesat neredzams. Pārlūkojot inkognito režīmā, jūsu pārlūkošanas darbības netiek slēptas no jūsu darba devēja, interneta pakalpojumu sniedzēja vai apmeklētajām vietnēm.</translation>
+<translation id="2227116904818538760">Jūs esat atvēris inkognito režīmu</translation>
+<translation id="2007417459975034427">Tagad varat privāti pārlūkot saturu, un citas personas, kas izmanto šo ierīci, nevarēs redzēt jūsu darbības. Tomēr lejupielādes un grāmatzīmes tiks saglabātas.</translation>
+<translation id="2586968635953373425">Atvērt inkognito režīma logu</translation>
+<translation id="3489858312836205593">Atveriet jaunu Brave inkognito režīma logu</translation>
+<translation id="6984479912851154518">Ja maksāšanai tiks izmantota ārēja lietojumprogramma, tiks aizvērts inkognito režīms. Vai turpināt?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;1. darbība. Pierakstīšanās portālā&lt;/h4&gt;
+    &lt;p&gt;Wi-Fi tīklos tādās vietās kā kafejnīcas un lidostas ir jāveic pierakstīšanās. Lai atvērtu pierakstīšanās lapu, apmeklējiet lapu, kurā tiek izmantots &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Pārejiet uz jebkuru vietni, kuras adrese sākas ar &lt;code&gt;http://&lt;/code&gt;, piemēram, &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Atvērtajā pierakstīšanās lapā pierakstieties, lai izmantotu internetu.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;2. darbība. Lapas atvēršana inkognito režīmā (tikai datorā)&lt;/h4&gt;
+    &lt;p&gt;Atveriet apmeklēto lapu inkognito režīma logā.&lt;/p&gt;
+    &lt;p&gt;Ja lapa tiek atvērta, Brave paplašinājums nedarbojas pareizi. Lai novērstu kļūdu, izslēdziet paplašinājumu.&lt;/p&gt;
+    &lt;h4&gt;3. darbība. Operētājsistēmas atjaunināšana&lt;/h4&gt;
+    &lt;p&gt;Ierīcē ir jābūt instalētai jaunākajai operētājsistēmas versijai.&lt;/p&gt;
+    &lt;h4&gt;4. darbība. Pretvīrusu programmas īslaicīga izslēgšana&lt;/h4&gt;
+    &lt;p&gt;Šis kļūdas ziņojums tiek rādīts, ja pretvīrusu programmatūra ietver HTTPS aizsardzību vai HTTPS skenēšanu. Šī pretvīrusa programmatūra novērš Brave drošības funkciju darbību.&lt;/p&gt;
+    &lt;p&gt;Lai novērstu šo problēmu, izslēdziet pretvīrusu programmatūru. Ja pēc programmatūras izslēgšanas lapa darbojas, izslēdziet šo programmatūru, kad apmeklējat drošas vietnes.&lt;/p&gt;
+    &lt;p&gt;Pēc darba beigšanas noteikti atkal ieslēdziet pretvīrusu programmatūru.&lt;/p&gt;
+    &lt;h4&gt;5. darbība. Papildu palīdzības saņemšana&lt;/h4&gt;
+    &lt;p&gt;Ja kļūda joprojām tiek rādīta, sazinieties ar vietnes īpašnieku.&lt;/p&gt;</translation>
+</translationbundle>

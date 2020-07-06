@@ -91,16 +91,16 @@
     "message": "Pinapayagan ang lahat ng cookies",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Na-block ang cross-site na pag-fingerprint",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Na-block ang mga pagsubok na mag-fingerprint",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Pinapayagan ang lahat ng pagsubok na mag-fingerprint",
+  "allowAllFingerprinting": {
+    "message": "Payagan ang lahat ng fingerprinting",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

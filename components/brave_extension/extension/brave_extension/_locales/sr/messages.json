@@ -91,16 +91,16 @@
     "message": "Svi kolačići su omogućeni",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Blokirano je beleženje posebnih obeležja na više lokacija",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Pokušaji beleženja posebnih obeležja su blokirani",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Sva beleženja posebnih obeležja su dozvoljena",
+  "allowAllFingerprinting": {
+    "message": "Dozvoli sva beleženja posebnih obeležja",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

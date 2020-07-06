@@ -91,16 +91,16 @@
     "message": "সমস্ত কুকি অনুমোদন করা হয়েছে",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "ক্রস-সাইট আঙুলের ছাপ দেওয়ার বিষয়টা অবরুদ্ধ রয়েছে",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "আঙুলের ছাপ দেওয়ার প্রচেষ্টা অবরুদ্ধ রয়েছে",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "সমস্ত আঙুলের ছাপ দেওয়ার প্রচেষ্টা অনুমোদিত রয়েছে",
+  "allowAllFingerprinting": {
+    "message": "সমস্ত ফিঙ্গারপ্রিন্টিং এর অনুমতি দিন ",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

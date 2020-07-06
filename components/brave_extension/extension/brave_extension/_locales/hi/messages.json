@@ -91,16 +91,16 @@
     "message": "सभी कुकीज़ स्वीकार की गईं",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "क्रॉस-साइट फ़िंगरप्रिंटिंग ब्लॉक है",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "फ़िंगरप्रिंटिंग के प्रयास ब्लॉक हो गए हैं",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "फ़िंगरप्रिंटिंग के सभी प्रयासों की अनुमति है",
+  "allowAllFingerprinting": {
+    "message": "सभी फिंगरप्रिंटिंग की अनुमति दें",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

@@ -64,7 +64,7 @@
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Zezwól na skrypty śledzące i reklamy",
+    "message": "Zezwalaj na skrypty śledzące i reklamy",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -91,15 +91,15 @@
     "message": "Wszystkie pliki cookie dozwolone",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Zablokuj rozpoznawanie urządzenia przez strony trzecie",
+  "standardFingerprinting": {
+    "message": "Zablokowane rozpoznawanie urządzenia (standardowe)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Zablokuj rozpoznawanie urządzenia",
+  "strictFingerprinting": {
+    "message": "Zablokowane rozpoznawanie urządzenia (ścisłe, strona może nie działać)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
+  "allowAllFingerprinting": {
     "message": "Zezwalaj na rozpoznawanie urządzenia",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
@@ -140,11 +140,11 @@
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Zezwól tylko teraz",
+    "message": "Zezwalaj tylko teraz",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Zezwól na skrypty tylko teraz",
+    "message": "Zezwalaj na skrypty tylko teraz",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {

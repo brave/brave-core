@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="gl">
+<translation id="6134859571175647580">Advertencia: Brave non pode evitar que as extensións rexistren o teu historial de navegación. Para desactivar esta extensión no modo de incógnito, anula a selección desta opción.</translation>
+<translation id="1448049584457347995">Para conseguir que Brave resulte máis seguro, desactivamos algunhas extensións que non aparecen en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e que é posible que se engadisen sen o teu coñecemento.</translation>
+<translation id="8848045066928358658">Para conseguir que Brave resulte máis seguro, desactivamos a seguinte extensión que non aparece en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e que quizais se engadise sen o teu coñecemento.</translation>
+<translation id="669092380621816981">Os datos de navegación desta persoa eliminaranse deste dispositivo. Para recuperalos, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
+<translation id="4624945300945265642">Abrir ligazón nunha ventá do modo de incó&amp;gnito de Brave</translation>
+<translation id="6554952862405000915">Abrir ligazón nunha ventá do modo de incó&amp;gnito de Brave</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{Hai dispoñible unha actualización nova para Brave e aplicarase en canto o reinicies.}=1{Hai dispoñible unha actualización nova para Brave e aplicarase en canto o reinicies. A ventá do modo de incógnito non se volverá abrir.}other{Hai dispoñible unha actualización nova para Brave e aplicarase en canto o reinicies. As # ventás do modo de incógnito non se volverán abrir.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{O teu administrador pídeche que reinicies Brave para aplicar esta actualización}=1{O teu administrador pídeche que reinicies Brave para aplicar esta actualización. A ventá do modo de incógnito non se volverá abrir.}other{O teu administrador pídeche que reinicies Brave para aplicar esta actualización. As # ventás do modo de incógnito non se volverán abrir.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{O teu administrador require que reinicies Brave para aplicar unha actualización}=1{O teu administrador require que reinicies Brave para aplicar unha actualización. A ventá do modo de incógnito non se volverá abrir.}other{O teu administrador require que reinicies Brave para aplicar unha actualización. As # ventás do modo de incógnito non se volverán abrir.}}</translation>
+</translationbundle>

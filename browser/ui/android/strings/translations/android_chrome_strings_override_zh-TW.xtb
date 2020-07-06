@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zh-TW">
+<translation id="5186185447130319458">隱私</translation>
+<translation id="9063160602596686558">自動將使用統計資料和當機報告傳送給 Brave Software</translation>
+<translation id="1438581767753657407">啟用精簡模式後，Brave 會使用 Brave 伺服器來加快頁面載入速度。在精簡模式下，載入緩慢的頁面會被重寫，改為只載入基本內容。精簡模式不適用於隱私分頁。</translation>
+<translation id="2633278372998075009">隱私分頁</translation>
+<translation id="6099151465289169210">已切換至隱私分頁</translation>
+<translation id="4243710787042215766">用隱私分頁開啟</translation>
+<translation id="3110967157686007724">隱私分頁</translation>
+<translation id="4526803704855831732">隱私分頁</translation>
+<translation id="7465104139234185284">關閉所有隱私分頁</translation>
+<translation id="6336451774241870485">新隱私分頁</translation>
+<translation id="3234355010754616171">新隱私分頁</translation>
+<translation id="6610147964972079463">關閉隱私分頁</translation>
+<translation id="4968908871398201967">隱私模式</translation>
+<translation id="9080642952018487277">進入隱私模式</translation>
+<translation id="4883379392681899581">離開隱私模式</translation>
+<translation id="3377025655491224618">隱私分頁</translation>
+<translation id="584427517463557805">已選隱私分頁</translation>
+<translation id="2280910239864711607">在隱私模式下開啟新分頁</translation>
+<translation id="8628973420740315031">如要與附近的使用者分享，請讓對方掃描這個 QR 圖碼</translation>
+</translationbundle>

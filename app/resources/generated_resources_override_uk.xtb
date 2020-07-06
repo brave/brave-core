@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="uk">
+<translation id="6744651634043798597">{COUNT,plural, =0{Відкрити всі в &amp;анонімному вікні}=1{Відкрити в &amp;анонімному вікні}one{Відкрити всі (#) в &amp;анонімному вікні}few{Відкрити всі (#) в &amp;анонімному вікні}many{Відкрити всі (#) в &amp;анонімному вікні}other{Відкрити всі (#) в &amp;анонімному вікні}}</translation>
+<translation id="2431625704210501303">Відкрити в &amp;анонімному вікні</translation>
+<translation id="4620367155626060530">&amp;Показати панель закладок</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Відкрити всі в &amp;анонімному вікні}=1{Відкрити в &amp;анонімному вікні}one{Відкрити всі (#) в &amp;анонімному вікні}few{Відкрити всі (#) в &amp;анонімному вікні}many{Відкрити всі (#) в &amp;анонімному вікні}other{Відкрити всі (#) в &amp;анонімному вікні}}</translation>
+<translation id="1985165269306590797">Відкрити в &amp;анонімному вікні</translation>
+<translation id="4680518314108745448">&amp;Показати панель закладок</translation>
+<translation id="642436385689435488">Відкривати все у вікні в режимі анонімного перегляду</translation>
+<translation id="5463021359602611602">Відкрити в анонімному вікні</translation>
+<translation id="1850357845349976573">{0,plural, =1{Режим анонімного перегляду}one{У режимі анонімного перегляду відкрито # вікно}few{У режимі анонімного перегляду відкрито # вікна}many{У режимі анонімного перегляду відкрито # вікон}other{У режимі анонімного перегляду відкрито # вікна}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Режим анонімного перегляду}one{Режим анонімного перегляду (#)}few{Режим анонімного перегляду (#)}many{Режим анонімного перегляду (#)}other{Режим анонімного перегляду (#)}}</translation>
+<translation id="5070556616376997776">Це режим анонімного перегляду</translation>
+<translation id="5832813618714645810">Користувачі</translation>
+<translation id="7171000599584840888">Додати користувача…</translation>
+<translation id="2005199804247617997">Інші люди</translation>
+<translation id="2935225303485967257">Керувати користувачами</translation>
+<translation id="8966809848145604011">Інші люди</translation>
+<translation id="688280436658139163">Керувати користувачами</translation>
+<translation id="4133080584509825342">Редагувати користувача <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Редагувати користувача <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Особа <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Додати користувача…</translation>
+<translation id="2254158488150713536">Натисніть OK і виберіть "Додати користувача", щоб створити новий профіль для своєї електронної адреси.</translation>
+<translation id="1725743343613175327">Натисніть OK і виберіть "Додати користувача", щоб створити новий профіль для своєї електронної адреси <ph name="DOMAIN"/>.</translation>
+<translation id="6921634551681321094">Додати користувача</translation>
+<translation id="4904061654709986277">Додати користувача</translation>
+<translation id="6114945161119872228">Видалити цього користувача</translation>
+<translation id="769308100792069196">Додати контрольованого користувача</translation>
+<translation id="8006143138282906848">Вилучити цього користувача</translation>
+<translation id="6912187023601892621">Додати контрольованого користувача</translation>
+<translation id="8086119151297127544">Перш ніж видалити особу, розблокуйте свій профіль.</translation>
+<translation id="7805701378418968629">Перш ніж додати особу, розблокуйте свій профіль.</translation>
+<translation id="6315812488257290136">Люди</translation>
+<translation id="3707212204259470604">Керувати іншими користувачами</translation>
+<translation id="5840822070878669614">Відкрити Веб-магазин Brave</translation>
+<translation id="383007806262310953">Показати панель закладок</translation>
+<translation id="2890280714162339872">Зміна за поточний сеанс анонімного перегляду: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Зміни за поточний сеанс анонімного перегляду: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Зміни за поточний сеанс анонімного перегляду: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Зміни за поточний сеанс анонімного перегляду: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> та інші</translation>
+<translation id="8648684608605749476">Блокувати файли cookie третіх сторін в анонімному режимі</translation>
+<translation id="2199515977216775204">В анонімному режимі сайти не можуть використовувати файли cookie для перегляду ваших дій у веб-переглядачі, зокрема, щоб персоналізувати рекламу. Функції на деяких сайтах можуть не працювати.</translation>
+<translation id="6105125042109106861">Файли cookie третіх сторін блокуються в режимі анонімного перегляду</translation>
+<translation id="1281501490173223206">Лише поточний сеанс анонімного перегляду</translation>
+<translation id="5566692924079383101">Це розширення буде автоматично видалено після завершення поточного сеансу в режимі анонімного перегляду</translation>
+<translation id="6906406176003824042">Змінити користувача</translation>
+<translation id="9063160602596686558">Автоматично надсилає статистику використання та звіти про аварійне завершення роботи в Brave</translation>
+<translation id="3860292630623580294">(Анонімний перегляд)</translation>
+<translation id="4854477725773269949">Дозволити в режимі анонімного перегляду</translation>
+<translation id="6436164536244065364">Переглянути у Веб-магазині Brave</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003">Шукайте розширення й теми у <ph name="BEGIN_LINK"/>Веб-магазині Brave <ph name="END_LINK"/></translation>
+<translation id="6336451774241870485">Нова анонімна вкладка</translation>
+<translation id="6610147964972079463">Закрити анонімні вкладки</translation>
+<translation id="5186185447130319458">Анонімний перегляд</translation>
+<translation id="4933782374919065856">Маєте запитання? Зв’яжіться з особою, яка контролює ваш профіль.</translation>
+</translationbundle>

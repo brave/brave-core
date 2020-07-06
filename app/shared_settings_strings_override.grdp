@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Settings-specific strings shared by Browser and Chrome OS settings -->
+<grit-part>
+  <message name="IDS_SETTINGS_ENABLE_LOGGING_PREF_DESC" desc="The description of the checkbox to enable/disable crash and user metrics logging">
+    Automatically sends crash reports to Brave
+  </message>
+  <if expr="chromeos">
+    </if>
+  <if expr="not chromeos">
+      </if>
+</grit-part>

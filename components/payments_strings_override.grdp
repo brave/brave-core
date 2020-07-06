@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+
+  <if expr="not use_titlecase">
+    </if>  <if expr="use_titlecase">
+    </if>  <if expr="not use_titlecase">
+    </if>  <if expr="use_titlecase">
+    </if>  <if expr="not use_titlecase">
+    </if>  <if expr="use_titlecase">
+    </if>  <if expr="not use_titlecase">
+    </if>  <if expr="use_titlecase">
+    </if>  <if expr="not use_titlecase">
+    </if>  <if expr="use_titlecase">
+    </if>  <if expr="is_android">
+    </if>
+  <if expr="not is_android">
+    </if>
+  <if expr="is_ios">
+    </if>
+
+  <if expr="is_ios">
+    </if>
+
+  <if expr="not use_titlecase">
+    </if>  <if expr="use_titlecase">
+    </if>  <if expr="is_android">
+    <message name="IDS_EXTERNAL_PAYMENT_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user that private mode does not continue into external payment apps." formatter_data="android_java">
+      Leaving private mode to pay via an external application. Continue?
+    </message>
+  </if>
+
+  <if expr="not is_android">
+    </if>
+
+  </grit-part>

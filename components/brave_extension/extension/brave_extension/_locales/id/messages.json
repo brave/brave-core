@@ -91,16 +91,16 @@
     "message": "Semua kuki diizinkan",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Identifikasi pengguna (fingerprinting) lintas situs diblokir",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Usaha identifikasi pengguna diblokir",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Semua upaya identifikasi pengguna (fingerprinting) diperbolehkan",
+  "allowAllFingerprinting": {
+    "message": "Izinkan semua pemindaian sidik jari",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

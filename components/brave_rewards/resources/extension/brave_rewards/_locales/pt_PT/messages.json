@@ -32,7 +32,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "Demos uma grande atualização ao Brave Rewards",
+    "message": "Nós demos uma grande atualização a «Recompensas Brave»",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -88,7 +88,7 @@
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Ativar Sugestões",
+    "message": "Ativar Gratificações",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -194,7 +194,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Agora já pode ganhar ao visualizar publicidade.",
+    "message": "Agora já pode ganhar ao ver anúncios.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
@@ -240,7 +240,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "A sua conta Brave Rewards está à espera de um depósito.",
+    "message": "A sua conta de «Recompensas Brave» está à espera de um depósito.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -360,7 +360,7 @@
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
-    "message": "Configurações de Recompensas",
+    "message": "Definições das Recompensas",
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
@@ -380,7 +380,7 @@
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
-    "message": "Habilite as Recompensas Brave.",
+    "message": "Ativar Recompensas Brave",
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
@@ -388,7 +388,7 @@
     "description": "Privacy Policy"
   },
   "serviceText": {
-    "message": "Ao clicar em \"Habilitar Brave Rewards\", está a indicar que leu e concorda com os",
+    "message": "Ao clicar em \"Ativar Recompensas Brave\", está a indicar que leu e concorda com os",
     "description": "Terms of service main text"
   },
   "termsOfService": {
@@ -396,7 +396,7 @@
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Bem-vindo de volta!",
+    "message": "Seja bem-vindo!",
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
@@ -496,7 +496,7 @@
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "A recompensa está a caminho da sua carteira Brave Rewards.",
+    "message": "A sua «Recompensa» está a caminho da sua carteira «Recompensas Brave».",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
@@ -524,7 +524,7 @@
     "description": "CTA to open uphold account"
   },
   "walletDisconnect":  {
-    "message": "Desconectar-se do Brave Rewards",
+    "message": "Desligar de «Recompensas Brave»",
     "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerified":  {

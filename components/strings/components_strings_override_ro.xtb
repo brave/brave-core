@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="ro">
+<translation id="8820817407110198400">Bara de marcaje</translation>
+<translation id="8362995731815961365">Persoana care a configurat computerul a ales să blocheze acest site.</translation>
+<translation id="4075123085690634698">Deschide pagina într-o fereastră incognito nouă (⇧⌘N)</translation>
+<translation id="2388886110302389394">Deschide pagina într-o fereastră incognito nouă (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Deschide pagina într-o filă incognito nouă</translation>
+<translation id="2378238891085281592">Ai trecut în modul incognito</translation>
+<translation id="3774752171665127360">Paginile pe care le accesezi în filele incognito nu vor fi înregistrate în istoricul browserului, nu vor stoca cookie-uri și nu vor rămâne în istoricul de căutare după ce închizi toate filele incognito. Fișierele descărcate și marcajele create vor fi păstrate.</translation>
+<translation id="9177896974490719854">Cu toate acestea, nu ești invizibil(ă). Trecerea în modul incognito nu ascunde activitatea de navigare față de angajator, față de furnizorul de servicii de internet sau față de site-urile pe care le accesezi.</translation>
+<translation id="2227116904818538760">Ai trecut în modul incognito</translation>
+<translation id="2007417459975034427">Acum poți naviga în mod privat, iar celelalte persoane care folosesc acest dispozitiv nu îți vor vedea activitatea. Totuși, descărcările și marcajele vor fi salvate.</translation>
+<translation id="2586968635953373425">Deschide o fereastră incognito</translation>
+<translation id="3489858312836205593">Deschide o nouă fereastră incognito în Brave</translation>
+<translation id="6984479912851154518">Vei părăsi modul incognito pentru a plăti folosind o aplicație externă. Continui?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Pasul 1: conectează-te la portal&lt;/h4&gt;
+    &lt;p&gt;Pentru rețelele Wi-Fi din locuri precum cafenele sau aeroporturi este necesar să te conectezi. Pentru a vedea pagina de conectare, accesează o pagină care folosește &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Accesează orice site care începe cu &lt;code&gt;http://&lt;/code&gt;, cum ar fi &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Pe pagina de conectare care se deschide, conectează-te pentru a avea acces la internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Pasul 2: deschide pagina în modul incognito (numai pe computer)&lt;/h4&gt;
+    &lt;p&gt;Deschide pagina accesată într-o fereastră incognito.&lt;/p&gt;
+    &lt;p&gt;Dacă pagina se deschide, o extensie Brave nu funcționează corespunzător. Pentru a remedia eroarea, dezactivează extensia.&lt;/p&gt;
+    &lt;h4&gt;Pasul 3: actualizează-ți sistemul de operare&lt;/h4&gt;
+    &lt;p&gt;Asigură-te că dispozitivul este actualizat.&lt;/p&gt;
+    &lt;h4&gt;Pasul 4: dezactivează temporar software-ul antivirus&lt;/h4&gt;
+    &lt;p&gt;Această eroare se va afișa dacă ai un software antivirus care oferă „protecție HTTPS” sau „scanare HTTPS”. Antivirusul împiedică browserul Brave să ofere securitate.&lt;/p&gt;
+    &lt;p&gt;Pentru a remedia problema, dezactivează software-ul antivirus. Dacă pagina funcționează după ce dezactivezi software-ul, dezactivează software-ul respectiv când folosești site-uri securizate.&lt;/p&gt;
+    &lt;p&gt;Nu uita să activezi din nou programul antivirus după ce ai terminat.&lt;/p&gt;
+    &lt;h4&gt;Pasul 5: primește ajutor suplimentar&lt;/h4&gt;
+    &lt;p&gt;Dacă eroarea apare în continuare, contactează proprietarul site-ului.&lt;/p&gt;</translation>
+</translationbundle>

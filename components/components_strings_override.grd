@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+  <translations>
+    <file path="strings/components_strings_override_af.xtb" lang="af" />
+    <file path="strings/components_strings_override_am.xtb" lang="am" />
+    <file path="strings/components_strings_override_ar.xtb" lang="ar" />
+    <file path="strings/components_strings_override_as.xtb" lang="as" />
+    <file path="strings/components_strings_override_az.xtb" lang="az" />
+    <file path="strings/components_strings_override_be.xtb" lang="be" />
+    <file path="strings/components_strings_override_bg.xtb" lang="bg" />
+    <file path="strings/components_strings_override_bn.xtb" lang="bn" />
+    <file path="strings/components_strings_override_bs.xtb" lang="bs" />
+    <file path="strings/components_strings_override_ca.xtb" lang="ca" />
+    <file path="strings/components_strings_override_cs.xtb" lang="cs" />
+    <file path="strings/components_strings_override_da.xtb" lang="da" />
+    <file path="strings/components_strings_override_de.xtb" lang="de" />
+    <file path="strings/components_strings_override_el.xtb" lang="el" />
+    <file path="strings/components_strings_override_en-GB.xtb" lang="en-GB" />
+    <file path="strings/components_strings_override_es.xtb" lang="es" />
+    <file path="strings/components_strings_override_es-419.xtb" lang="es-419" />
+    <file path="strings/components_strings_override_et.xtb" lang="et" />
+    <file path="strings/components_strings_override_eu.xtb" lang="eu" />
+    <file path="strings/components_strings_override_fa.xtb" lang="fa" />
+    <file path="strings/components_strings_override_fi.xtb" lang="fi" />
+    <file path="strings/components_strings_override_fil.xtb" lang="fil" />
+    <file path="strings/components_strings_override_fr.xtb" lang="fr" />
+    <file path="strings/components_strings_override_fr-CA.xtb" lang="fr-CA" />
+    <file path="strings/components_strings_override_gl.xtb" lang="gl" />
+    <file path="strings/components_strings_override_gu.xtb" lang="gu" />
+    <file path="strings/components_strings_override_hi.xtb" lang="hi" />
+    <file path="strings/components_strings_override_hr.xtb" lang="hr" />
+    <file path="strings/components_strings_override_hu.xtb" lang="hu" />
+    <file path="strings/components_strings_override_hy.xtb" lang="hy" />
+    <file path="strings/components_strings_override_id.xtb" lang="id" />
+    <file path="strings/components_strings_override_is.xtb" lang="is" />
+    <file path="strings/components_strings_override_it.xtb" lang="it" />
+    <file path="strings/components_strings_override_iw.xtb" lang="he" />
+    <file path="strings/components_strings_override_ja.xtb" lang="ja" />
+    <file path="strings/components_strings_override_ka.xtb" lang="ka" />
+    <file path="strings/components_strings_override_kk.xtb" lang="kk" />
+    <file path="strings/components_strings_override_km.xtb" lang="km" />
+    <file path="strings/components_strings_override_kn.xtb" lang="kn" />
+    <file path="strings/components_strings_override_ko.xtb" lang="ko" />
+    <file path="strings/components_strings_override_ky.xtb" lang="ky" />
+    <file path="strings/components_strings_override_lo.xtb" lang="lo" />
+    <file path="strings/components_strings_override_lt.xtb" lang="lt" />
+    <file path="strings/components_strings_override_lv.xtb" lang="lv" />
+    <file path="strings/components_strings_override_mk.xtb" lang="mk" />
+    <file path="strings/components_strings_override_ml.xtb" lang="ml" />
+    <file path="strings/components_strings_override_mn.xtb" lang="mn" />
+    <file path="strings/components_strings_override_mr.xtb" lang="mr" />
+    <file path="strings/components_strings_override_ms.xtb" lang="ms" />
+    <file path="strings/components_strings_override_my.xtb" lang="my" />
+    <file path="strings/components_strings_override_ne.xtb" lang="ne" />
+    <file path="strings/components_strings_override_nl.xtb" lang="nl" />
+    <file path="strings/components_strings_override_no.xtb" lang="no" />
+    <file path="strings/components_strings_override_or.xtb" lang="or" />
+    <file path="strings/components_strings_override_pa.xtb" lang="pa" />
+    <file path="strings/components_strings_override_pl.xtb" lang="pl" />
+    <file path="strings/components_strings_override_pt-BR.xtb" lang="pt-BR" />
+    <file path="strings/components_strings_override_pt-PT.xtb" lang="pt-PT" />
+    <file path="strings/components_strings_override_ro.xtb" lang="ro" />
+    <file path="strings/components_strings_override_ru.xtb" lang="ru" />
+    <file path="strings/components_strings_override_si.xtb" lang="si" />
+    <file path="strings/components_strings_override_sk.xtb" lang="sk" />
+    <file path="strings/components_strings_override_sl.xtb" lang="sl" />
+    <file path="strings/components_strings_override_sq.xtb" lang="sq" />
+    <file path="strings/components_strings_override_sr.xtb" lang="sr" />
+    <file path="strings/components_strings_override_sr-Latn.xtb" lang="sr-Latn" />
+    <file path="strings/components_strings_override_sv.xtb" lang="sv" />
+    <file path="strings/components_strings_override_sw.xtb" lang="sw" />
+    <file path="strings/components_strings_override_ta.xtb" lang="ta" />
+    <file path="strings/components_strings_override_te.xtb" lang="te" />
+    <file path="strings/components_strings_override_th.xtb" lang="th" />
+    <file path="strings/components_strings_override_tr.xtb" lang="tr" />
+    <file path="strings/components_strings_override_uk.xtb" lang="uk" />
+    <file path="strings/components_strings_override_ur.xtb" lang="ur" />
+    <file path="strings/components_strings_override_uz.xtb" lang="uz" />
+    <file path="strings/components_strings_override_vi.xtb" lang="vi" />
+    <file path="strings/components_strings_override_zh-CN.xtb" lang="zh-CN" />
+    <file path="strings/components_strings_override_zh-HK.xtb" lang="zh-HK" />
+    <file path="strings/components_strings_override_zh-TW.xtb" lang="zh-TW" />
+    <file path="strings/components_strings_override_zu.xtb" lang="zu" />
+  </translations>
+  <release seq="1" allow_pseudo="false">
+    <messages fallback_to_english="true">
+      <part file="bookmark_bar_strings_override.grdp" />
+      <part file="error_page_strings_override.grdp" />
+      <part file="new_or_sad_tab_strings_override.grdp" />
+      <part file="omnibox_strings_override.grdp" />
+      <part file="payments_strings_override.grdp" />
+      <part file="security_interstitials_strings_override.grdp" />
+      <if expr="not is_android and not is_ios">
+        </if>
+      <if expr="is_android">
+        </if>
+
+      <if expr="is_android">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+      </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      </messages>
+  </release>
+</grit>

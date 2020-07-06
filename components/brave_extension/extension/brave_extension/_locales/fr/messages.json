@@ -91,16 +91,16 @@
     "message": "Accepter tous les cookies",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Collecte de l'empreinte digitale intersite bloquée",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Tentatives de collecte de l'empreinte digitale d'appareil bloquées",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Toutes les tentatives de collecte de l'empreinte digitale d'appareil sont autorisées.",
+  "allowAllFingerprinting": {
+    "message": "Autoriser toutes les empreintes digitales",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

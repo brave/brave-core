@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="af">
+<translation id="6134859571175647580">Waarskuwing: Brave kan nie verhoed dat uitbreidings rekord hou van jou blaaigeskiedenis nie. Om hierdie uitbreiding in incognitomodus te deaktiveer, moet jy hierdie opsie ontmerk.</translation>
+<translation id="1448049584457347995">Om Brave veiliger te maak, het ons sekere uitbreidings wat nie in die <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> gelys is nie, gedeaktiveer en kon dit sonder jou medewete bygevoeg gewees het.</translation>
+<translation id="8848045066928358658">Om Brave veiliger te maak, het ons die volgende uitbreiding, wat nie in die <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> gelys word nie en wat dalk sonder jou medewete bygevoeg is, gedeaktiveer.</translation>
+<translation id="669092380621816981">Hierdie persoon se blaaierdata sal van hierdie toestel af uitgevee word. Meld as <ph name="USER_EMAIL"/> by Brave aan om die data te herwin.</translation>
+<translation id="4624945300945265642">Maak skakel in 'n incognitovenster in Brave oop</translation>
+<translation id="6554952862405000915">Maak skakel in 'n incognitovenster in Brave oop</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin.}=1{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin. Jou incognitovenster sal nie weer oopgemaak word nie.}other{'n Nuwe opdatering vir Brave is beskikbaar en sal toegepas word sodra jy herbegin. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas}=1{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas. Jou incognitovenster sal nie weer oopgemaak word nie.}other{Jou administrateur vra dat jy Brave herbegin om hierdie opdatering toe te pas. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas}=1{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas. Jou incognitovenster sal nie weer oopgemaak word nie.}other{Jou administrateur vereis dat jy Brave herbegin om 'n opdatering toe te pas. Jou # incognitovensters sal nie weer oopgemaak word nie.}}</translation>
+</translationbundle>

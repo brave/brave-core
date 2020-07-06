@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Profiles specific strings (included from generated_resources.grd). -->
+<grit-part>
+  <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in private mode. The message also shows the number of open private windows if they are more than one. [ICU Syntax]">
+      {0, plural,
+        =1 {Private}
+        other {# open private windows}
+      }
+  </message>
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in private mode and the number of open private windows if there are more than one private window open. [ICU Syntax]" meaning="This window is browsing in private mode and there are more than one private windows open. The counter is not shown when there is only one private window open.">
+    {0, plural,
+      =1 {Private}
+      other {Private (#)}
+    }
+  </message>
+  <message name="IDS_AVATAR_BUTTON_INCOGNITO_TOOLTIP" desc="Tooltip for the inactive avatar button when the user is in private mode.">
+    This is a private window
+  </message>
+  <message name="IDS_PROFILES_OPTIONS_GROUP_NAME" desc="The name of the sync group in the options dialog when using the new Profiles UI.">
+    Profiles
+  </message>
+  <if expr="is_macosx">
+    <message name="IDS_PROFILES_CREATE_NEW_PROFILE_OPTION" desc="In Title Case. Create new profile menu item and button title.">
+      Add Profile...
+    </message>
+  </if>
+  <if expr="not use_titlecase">
+    <message name="IDS_PROFILES_OTHER_PROFILES_TITLE" desc="Title in the profile menu of the 'other profiles' section.">
+      Other profiles
+    </message>
+    <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
+      Manage profiles
+    </message>
+  </if>
+  <if expr="use_titlecase">
+    <message name="IDS_PROFILES_OTHER_PROFILES_TITLE" desc="Title in the profile menu of the 'other profiles' section.">
+      Other Profiles
+    </message>
+    <message name="IDS_PROFILES_MANAGE_USERS_BUTTON" desc="Button in the avatar menu bubble view for launching the user manager.">
+      Manage Profiles
+    </message>
+  </if>
+  <message name="IDS_PROFILES_EDIT_PROFILE_ACCESSIBLE_NAME" desc="Description of the Edit Profile button. This is used for accessibility.">
+    Edit profile, <ph name="PROFILE_NAME">$1<ex>Jane Doe</ex></ph>
+  </message>
+  <message name="IDS_PROFILES_EDIT_SIGNED_IN_PROFILE_ACCESSIBLE_NAME" desc="Description of the Edit Profile button for a signed-in profile. This is used for accessibility.">
+    Edit profile, <ph name="PROFILE_NAME">$1<ex>Jane Doe</ex></ph>, <ph name="USERNAME">$2<ex>jane.doe@gmail.com</ex></ph>
+  </message>
+  <message name="IDS_NEW_NUMBERED_PROFILE_NAME" desc="The name given to a newly created profile. Displayed in wrench menu and settings UI using the --new-profile-management flag.">
+    Profile <ph name="VALUE">$1<ex>1</ex></ph>
+  </message>
+  <message name="IDS_PROFILES_CREATE_BUTTON_LABEL" desc="The label that appears on the profile create button in the options dialog to allow a user to create a new profile.">
+    Add profile...
+  </message>
+  <message name="IDS_OLD_PROFILES_DISABLED_ADD_PERSON_SUGGESTION" desc="The suggestion that tells the user to create a new profile when the user tries to use an old profile that is disabled by policy">
+    To continue, click OK, then click Add Profile to create a new profile for your email address.
+  </message>
+  <message name="IDS_OLD_PROFILES_DISABLED_ADD_PERSON_SUGGESTION_WITH_DOMAIN" desc="The suggestion that tells the user to create a new profile with the domain when the user tries to use an old profile that is disabled by policy">
+    To continue, click OK, then click Add Profile to create a new profile for your <ph name="DOMAIN">$1<ex>example.com</ex></ph> email address.
+  </message>
+  <if expr="is_android">
+    </if>
+  <if expr="not is_android">
+    </if>
+
+  <if expr="not is_android">
+    <message name="IDS_PROFILES_CREATE_TITLE" desc="Title of the create profile dialog">
+      Add profile
+    </message>
+    </if>
+
+  <if expr="not is_android">
+    <if expr="use_titlecase">
+      <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
+        Add Profile
+      </message>
+      <if expr="not chromeos">
+        <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
+          Remove This Profile
+        </message>
+        <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
+          Add Supervised Profile
+        </message>
+      </if>
+      <if expr="chromeos">
+        </if>
+      </if>
+    <if expr="not use_titlecase">
+      <message name="IDS_ADD_USER_BUTTON" desc="Text shown on an add user button on login/locker screen">
+        Add profile
+      </message>
+      <if expr="not chromeos">
+        <message name="IDS_LOGIN_POD_USER_REMOVE_WARNING_BUTTON" desc="Text shown on a button that confirms removal of a user.">
+          Remove this profile
+        </message>
+        <message name="IDS_CREATE_LEGACY_SUPERVISED_USER_MENU_LABEL" desc="Text shown on a menu option that creates a legacy supervised user.">
+          Add supervised profile
+        </message>
+      </if>
+      <if expr="chromeos">
+        </if>
+      </if>
+    <if expr="chromeos">
+      </if>
+    <if expr="chromeos">
+      </if>
+    <if expr="not chromeos">
+      <message name="IDS_USER_MANAGER_REMOVE_PROFILE_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to remove a profile while all profiles are locked.">
+        Please unlock your profile before removing a profile.
+      </message>
+      <message name="IDS_USER_MANAGER_ADD_PROFILE_PROFILES_LOCKED_ERROR" desc="Error message displayed when trying to add a profile while all profiles are locked.">
+        Please unlock your profile before adding a profile.
+      </message>
+      </if>
+
+    </if>
+</grit-part>

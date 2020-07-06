@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="hu">
+<translation id="6744651634043798597">{COUNT,plural, =0{Összes megnyitása &amp;inkognitóablakban}=1{Megnyitás &amp;inkognitóablakban}other{Összes (#) megnyitása &amp;inkognitóablakban}}</translation>
+<translation id="2431625704210501303">Megnyitás &amp;inkognitóablakban</translation>
+<translation id="4620367155626060530">&amp;Könyvjelzősáv megjelenítése</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Összes megnyitása &amp;inkognitóablakban}=1{Megnyitás &amp;inkognitóablakban}other{Összes (#) megnyitása &amp;inkognitóablakban}}</translation>
+<translation id="1985165269306590797">Megnyitás &amp;inkognitóablakban</translation>
+<translation id="4680518314108745448">&amp;Könyvjelzősáv megjelenítése</translation>
+<translation id="642436385689435488">Összes megnyitása inkognitóablakban</translation>
+<translation id="5463021359602611602">Megnyitás inkognitóablakban</translation>
+<translation id="1850357845349976573">{0,plural, =1{Inkognitó}other{# megnyitott inkognitóablak}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Inkognitó}other{Inkognitó (#)}}</translation>
+<translation id="5070556616376997776">Inkognitómódban van</translation>
+<translation id="5832813618714645810">Személy</translation>
+<translation id="7171000599584840888">Személy hozzáadása…</translation>
+<translation id="2005199804247617997">További személyek</translation>
+<translation id="2935225303485967257">Személyek kezelése</translation>
+<translation id="8966809848145604011">További személyek</translation>
+<translation id="688280436658139163">Személyek kezelése</translation>
+<translation id="4133080584509825342">Személy szerkesztése, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Személy szerkesztése, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Személy: <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Személy hozzáadása…</translation>
+<translation id="2254158488150713536">A folytatáshoz kattintson az OK gombra, majd a Személy hozzáadása lehetőségre. Ekkor létrehozhatja az e-mail-címéhez tartozó új profilt.</translation>
+<translation id="1725743343613175327">A folytatáshoz kattintson az OK gombra, majd a Személy hozzáadása lehetőségre. Ekkor létrehozhatja az e-mail-címéhez (<ph name="DOMAIN"/>) tartozó új profilt.</translation>
+<translation id="6921634551681321094">Személy hozzáadása</translation>
+<translation id="4904061654709986277">Személy hozzáadása</translation>
+<translation id="6114945161119872228">Személy eltávolítása</translation>
+<translation id="769308100792069196">Felügyelt személy hozzáadása</translation>
+<translation id="8006143138282906848">Felhasználó eltávolítása</translation>
+<translation id="6912187023601892621">Felügyelt felhasználók hozzáadása</translation>
+<translation id="8086119151297127544">Mielőtt eltávolítana valakit, oldja fel profilját.</translation>
+<translation id="7805701378418968629">Mielőtt hozzáadna valakit, oldja fel profilját.</translation>
+<translation id="6315812488257290136">Személyek</translation>
+<translation id="3707212204259470604">Más személyek kezelése</translation>
+<translation id="5840822070878669614">A Brave Internetes áruház megnyitása</translation>
+<translation id="383007806262310953">Könyvjelzősáv megjelenítése</translation>
+<translation id="2890280714162339872">Jelenlegi munkamenet inkognitómódban: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Jelenlegi munkamenet inkognitómódban: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/> és <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Jelenlegi munkamenet inkognitómódban: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/> és <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Jelenlegi munkamenet inkognitómódban: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> stb.</translation>
+<translation id="8648684608605749476">Harmadik felektől származó cookie-k letiltása Inkognitómódban</translation>
+<translation id="2199515977216775204">Inkognitómódban a webhelyek nem használhatják fel az Ön cookie-jait arra, hogy lássák a különböző webhelyeken végzett böngészési tevékenységeit például annak érdekében, hogy a hirdetéseket személyre szabják. Előfordulhat, hogy bizonyos webhelyek funkciói nem működnek majd megfelelően.</translation>
+<translation id="6105125042109106861">A harmadik felektől származó cookie-k le vannak tiltva Inkognitómódban</translation>
+<translation id="1281501490173223206">Csak a jelenlegi inkognitó munkamenet</translation>
+<translation id="5566692924079383101">Ezt a kivételt automatikusan eltávolítja a rendszer, miután Ön kilép a jelenlegi inkognitómódú munkamenetből</translation>
+<translation id="6906406176003824042">Személy adatainak szerkesztése</translation>
+<translation id="9063160602596686558">Automatikusan elküldi a használati statisztikákat és hibajelentéseket a Brave-nak</translation>
+<translation id="3860292630623580294">(Inkognitómód)</translation>
+<translation id="4854477725773269949">Engedélyezés inkognitó módban</translation>
+<translation id="6436164536244065364">Megtekintés a Brave Internetes áruházban</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003">Bővítményeket és témákat a <ph name="BEGIN_LINK"/>Brave Internetes áruházban<ph name="END_LINK"/> kereshet</translation>
+<translation id="6336451774241870485">Új inkognitólap</translation>
+<translation id="6610147964972079463">Inkognitólapok bezárása</translation>
+<translation id="5186185447130319458">Inkognitómód</translation>
+<translation id="4933782374919065856">Kérdése van? Vegye fel a kapcsolatot a fiókját felügyelő személlyel.</translation>
+</translationbundle>

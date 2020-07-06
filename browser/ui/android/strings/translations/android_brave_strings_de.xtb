@@ -26,7 +26,6 @@
 <translation id="5787084571334399599">Verhindert, dass der Browser einen Fingerabdruck erstellt</translation>
 <translation id="7459000603787995422">Registerkarten beim Beenden schließen</translation>
 <translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
-<translation id="4339730410920731698">Anzeigen und Tracker blockiert</translation>
 <translation id="6761596877474675418">Daten gespeichert</translation>
 <translation id="3034562645284925177">In etwa gesparte Zeit</translation>
 <translation id="6572660632052512096">Desktop-Modus</translation>
@@ -55,26 +54,21 @@
 <translation id="8281886186245836920">Überspringen</translation>
 <translation id="316832010181763471">Onboarding für Suchmaschinen</translation>
 <translation id="986879628471635371">Fehlerbehebung im Onboarding</translation>
-<translation id="1078265935778232285">Willkommen beim Brave Browser</translation>
-<translation id="8867511707771147258">Wählen Sie Ihre Standardsuchmaschine aus</translation>
+<translation id="4428458837269935199">Probieren Sie für eine vertraulichere Sucherfahrung DuckDuckGo aus.</translation>
+<translation id="5317780077021120954">Speichern</translation>
 <translation id="7053983685419859001">Blockieren</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
 <translation id="2880356288762235261">Anzeigen und Tracker, die in die Privatsphäre eindringen, so dass Sie im Internet surfen können, ohne dabei verfolgt zu werden.</translation>
 <translation id="8537217141725709400">Verdienen Sie <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="1789842587755069541">durch das Ansehen von Werbung, die Ihre Privatsphäre respektiert. Verwenden Sie sie, um Ihre liebsten Websites und Content Creators zu unterstützen.</translation>
 <translation id="821707262661492716">durch das Ansehen von Werbung, die Ihre Privatsphäre respektiert.</translation>
-<translation id="7396091471805549630">Die Aktivierung von Rewards bestätigt Ihre Zustimmung zu den</translation>
 <translation id="4281844954008187215">Nutzungsbedingungen</translation>
 <translation id="6871397658902960384">Surfen Sie los</translation>
 <translation id="454386012157232640">Ich habe keine Werbung gesehen</translation>
 <translation id="1448877943847791441">Brave zeigt Ihre erste Werbung in</translation>
-<translation id="7414844564462429821">Um Werbeanzeigen von Brave Rewards zu sehen, stellen Sie sicher, dass Brave Ihnen Benachrichtigungen anzeigen darf.</translation>
 <translation id="6511854390690723657">Dies ist Ihre erste Brave-Anzeige. Tippen Sie, um mehr zu erfahren.</translation>
 <translation id="4930714375720679147">Aktivieren</translation>
 <translation id="2453860139492968684">Fertig</translation>
-<translation id="8906569594072556752">Willkommenstour</translation>
-<translation id="7808431604191267817">Der Neustart der Willkommenstour wirkt sich nicht auf bestehende Einstellungen aus.</translation>
 <translation id="2359808026110333948">Weiter</translation>
 <translation id="7658239707568436148">Abbrechen</translation>
 <translation id="3570367516044491911">Als Standardbrowser setzen</translation>
@@ -174,33 +168,29 @@ um das nächste Internet zu erleben.</translation>
 <translation id="3492491948683276944">monatliche Spende einrichten</translation>
 <translation id="4162066325465825185">Es tut uns leid, aber es sieht so aus, als wäre Brave Rewards für Ihr Gerät nicht verfügbar</translation>
 <translation id="8038539967102225446">Brave Ads sind da!</translation>
-<translation id="230829157901335313">Die Uhr Ihres Computers ist möglicherweise auf die falsche Zeit oder auf die falsche Zeitzone eingestellt. Überprüfen Sie Ihre Uhreinstellungen</translation>
 <translation id="8985635554450124959">Synchronisierung konnte nicht eingerichtet werden</translation>
 <translation id="222883304157347087">(dieses Gerät)</translation>
 <translation id="8193724030871339658">ANDERE GERÄTE IN DER KETTE</translation>
 <translation id="279635009973773843">LÄDT GERÄTE ...</translation>
 <translation id="2569646144216067185">Anzahl der Wörter: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Falsche Anzahl der Wörter</translation>
-<translation id="6779408765480516895">Es ist ein Fehler aufgetreten. Es sieht so aus, als sei Ihre Anfrage abgelaufen.</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Mit Brave Sync können Sie Lesezeichendaten privat zwischen Ihren Brave-Browsern auf Ihren verschiedenen Geräten synchronisieren.</translation>
 <translation id="3735228155296883311">Scannen Sie einfach den Code aus Ihrer Synchronisierungskette, die Sie auf einem anderen Gerät erstellt haben. Oder starten Sie eine neue Synchronisierungskette.</translation>
-<translation id="4690880825349994619">Verwenden Sie ein bereits synchronisiertes Gerät, öffnen Sie die Brave-Einstellungen und gehen Sie zu Einstellungen &gt; Sync. Wählen Sie „Gerät hinzufügen" und scannen Sie den QR-Code auf dem Bildschirm.</translation>
+<translation id="4690880825349994619">Verwenden Sie ein bereits synchronisiertes Gerät, öffnen Sie die Brave-Einstellungen und gehen Sie zu Einstellungen &amp;gt; Sync. Wählen Sie „Gerät hinzufügen" und scannen Sie den QR-Code auf dem Bildschirm.</translation>
 <translation id="5241263629636958324">In die Zwischenablage kopiert</translation>
 <translation id="5817918615728894473">Koppeln</translation>
-<translation id="9154490620151093733">Löschanforderung wurde gesendet. Gerät wird in Kürze entfernt.</translation>
 <translation id="2004365171440701679">Dieses Gerät entfernen</translation>
 <translation id="1178128181015923849">Sind Sie sicher, dass Sie das Gerät '<ph name="DEVICE_NAME"/>' entfernen möchten?</translation>
 <translation id="7745082336226088126">Geben Sie einen Sychronisierungscode ein oder scannen Sie ihn</translation>
 <translation id="1602067095281698985">Eine neue Sync-Kette beginnen</translation>
 <translation id="1475223680121592371">Mobilgerät hinzufügen</translation>
 <translation id="2965377893636908578">Computer hinzufügen</translation>
-<translation id="6604289897677913048">Gehen Sie auf einen zweiten Telefon oder Tablet zu den Brave-Einstellungen &gt; Sync &gt; Scan.</translation>
+<translation id="6604289897677913048">Gehen Sie auf einen zweiten Telefon oder Tablet zu den Brave-Einstellungen &amp;gt; Sync &amp;gt; Scan.</translation>
 <translation id="8508856434435157945">Navigieren Sie auf Ihrem Mobilgerät im Einstellungsbereich zu Brave Sync und klicken Sie auf die Schaltfläche "Synchronisierungscode scannen". Verwenden Sie Ihre Kamera, um den folgenden QR-Code zu scannen.</translation>
-<translation id="2590683710114839102">Gehen Sie auf Ihrem Computer zu Einstellungen &gt; Sync. Wählen Sie „Einen Synchronisierungskettencode eingeben".</translation>
+<translation id="2590683710114839102">Gehen Sie auf Ihrem Computer zu Einstellungen &amp;gt; Sync. Wählen Sie „Einen Synchronisierungskettencode eingeben".</translation>
 <translation id="65315202420929965">Scannen Sie diesen Synchronisierungscode</translation>
 <translation id="6764016175302339802">Behandeln Sie diesen Code wie ein Passwort. Sollte jemand darauf Zugriff erhalten, kann diese Person Ihre synchronisierten Daten lesen und bearbeiten.</translation>
-<translation id="544873101641618162">Lädt Daten ...</translation>
 <translation id="6707003343517029414">Navigieren Sie auf Ihrem Zielcomputer in den Einstellungen zu Brave Sync und klicken Sie auf die Schaltfläche „Ich habe einen Synchronisierungscode". \nGeben Sie die unten gezeigten Codewörter der Synchronisierungskette ein.</translation>
 <translation id="2731921493694251495">Geben Sie den Synchronisierungskettencode ein</translation>
 <translation id="2175927920773552910">QR-Code</translation>
@@ -211,13 +201,10 @@ um das nächste Internet zu erleben.</translation>
 <translation id="6776430845975754238">Die Änderung von Einstellungen wirkt sich nur auf Daten aus, die dieses Gerät für andere Benutzer freigibt.</translation>
 <translation id="6450924769151530465">Ein weiteres Gerät hinzufügen</translation>
 <translation id="7539985410310934287">Codewörter eingeben</translation>
-<translation id="6270614677029463366">Verwenden Sie ein bereits synchronisiertes Gerät, öffnen Sie die Brave-Einstellungen und gehen Sie zu Einstellungen &gt; Sync. Wählen Sie „Gerät hinzufügen" und dann „Stattdessen Codeworte anzeigen".</translation>
+<translation id="6270614677029463366">Verwenden Sie ein bereits synchronisiertes Gerät, öffnen Sie die Brave-Einstellungen und gehen Sie zu Einstellungen &amp;gt; Sync. Wählen Sie „Gerät hinzufügen" und dann „Stattdessen Codeworte anzeigen".</translation>
 <translation id="8131740175452115882">Bestätigen</translation>
 <translation id="4973653569293835178">Ich verwende meine Kamera ...</translation>
-<translation id="3998827900918661986">Android-Gerät</translation>
 <translation id="326454632686131209">Gerät synchronisieren</translation>
-<translation id="3082265116777145081">Gerätebezeichnung hinzufügen</translation>
-<translation id="9024091168371687561">Geben Sie einen optionalen Namen für dieses Gerät ein</translation>
 <translation id="327726072512457161">Einstellungen verlassen</translation>
 <translation id="8050847734948770789">Brave Rewards aktivieren</translation>
 <translation id="9187185473011056079">Ich bin dabei!</translation>
@@ -333,6 +320,4 @@ um das nächste Internet zu erleben.</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
 <translation id="7182293319417450928">Ein Minimumguthaben von 25 BAT ist für die Verifizierung erforderlich.</translation>
-<translation id="5370478469168390143">Daten online speichern</translation>
-<translation id="1118508688433541158">Schneller surfen und Anzeigen blockieren mit Brave</translation>
 </translationbundle>
