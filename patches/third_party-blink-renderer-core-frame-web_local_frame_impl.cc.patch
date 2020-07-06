@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-index 2660078b0ed37bc3313e645f59e38cd306b1fdca..f34c21e4ce3bc5503133b4b596b340746a86eece 100644
+index 2660078b0ed37bc3313e645f59e38cd306b1fdca..55408bb029b2a3d71d8b17fb2b50c02b12ca1d44 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 @@ -260,6 +260,11 @@
@@ -21,7 +21,7 @@ index 2660078b0ed37bc3313e645f59e38cd306b1fdca..f34c21e4ce3bc5503133b4b596b34074
 +  const HeapVector<ScriptSourceCode> sources(
 +      CreateSourcesVector(sources_in, num_sources));
 +
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    Document* document = GetFrame()->GetDocument();
 +    if (document != nullptr) {
