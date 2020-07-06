@@ -160,6 +160,37 @@ export const addNewStackWidget = (state: NewTab.State) => {
   return state
 }
 
+// Replaces any stack widgets that were improperly removed
+// as a result of https://github.com/brave/brave-browser/issues/10067
+export const replaceStackWidgets = (state: NewTab.State) => {
+  const {
+    binanceState,
+    showBinance,
+    showRewards,
+    showTogether,
+    togetherSupported
+  } = state
+  const displayLookup = {
+    'rewards': {
+      display: showRewards
+    },
+    'binance': {
+      display: binanceState.binanceSupported && showBinance
+    },
+    'together': {
+      display: togetherSupported && showTogether
+    }
+  }
+  for (const key in displayLookup) {
+    const widget = key as NewTab.StackWidget
+    if (!state.widgetStackOrder.includes(widget) &&
+        displayLookup[widget].display) {
+      state.widgetStackOrder.unshift(widget)
+    }
+  }
+  return state
+}
+
 const cleanData = (state: NewTab.State) => {
   // We need to disable linter as we defined in d.ts that this values are number,
   // but we need this check to covert from old version to a new one
