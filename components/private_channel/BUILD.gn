@@ -19,6 +19,7 @@ source_set("private_channel") {
 
   deps = [
     "//brave/components/resources",
+    "//brave/components/private_channel/browser",
     "//brave/components/private_channel:buildflags",
     "//brave/components/private_channel/rust/ffi:private_channel_ffi",
     "//services/network/public/cpp",

@@ -114,7 +114,7 @@ void LedgerImpl::OnWalletInitializedInternal(
     bat_contribution_->Initialize();
     bat_promotion_->Initialize();
     bat_api_->Initialize();
-    bat_private_channel_->Initialize(true);
+    //bat_private_channel_->Initialize(true);
 
     SetConfirmationsWalletInfo();
   } else {
@@ -772,7 +772,7 @@ void LedgerImpl::OneTimeTip(
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
-  bat_private_channel_->OnTimer(timer_id);
+  //bat_private_channel_->OnTimer(timer_id);
   bat_contribution_->OnTimer(timer_id);
   bat_publisher_->OnTimer(timer_id);
   bat_promotion_->OnTimer(timer_id);

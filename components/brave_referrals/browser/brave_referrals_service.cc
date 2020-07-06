@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#include "brave/components/private_channel/browser/private_channel_service.h"
 
 #include <memory>
 #include <utility>
@@ -62,6 +63,8 @@ const int kMaxReferralServerResponseSizeBytes = 1024 * 1024;
 // Default promo code, used when no promoCode file exists on first
 // run.
 const char kDefaultPromoCode[] = "BRV001";
+
+using namespace brave_private_channel; //  NOLINT 
 
 namespace {
 
@@ -126,6 +129,10 @@ void BraveReferralsService::Start() {
 
   // Retrieve first run time.
   GetFirstRunTime();
+
+  // TODO(gpestana): check better connection point
+  PrivateChannel* pc = new PrivateChannel();
+  pc->PerformReferralAttestation();
 
   // Periodically perform finalization checks.
   DCHECK(!finalization_checks_timer_);
