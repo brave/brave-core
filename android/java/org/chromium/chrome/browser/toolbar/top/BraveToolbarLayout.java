@@ -70,6 +70,7 @@ import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
+import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 
 import java.net.URL;
 import java.util.List;
@@ -84,6 +85,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   BraveRewardsNativeWorker.PublisherObserver {
   public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
   private static final short MILLISECONDS_PER_ITEM = 50;
+
+  private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
   private ImageButton mBraveShieldsButton;
   private ImageButton mBraveRewardsButton;
@@ -183,16 +186,22 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     mBraveShieldsContentSettingsObserver = new BraveShieldsContentSettingsObserver() {
       @Override
       public void blockEvent(int tabId, String block_type, String subresource) {
-        Tab currentTab = getToolbarDataProvider().getTab();
-        if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_DATA_SAVED)) {
-          tabId = currentTab.getId();
-        }
-        Log.e("NTP", "Id : "+tabId);
         mBraveShieldsHandler.addStat(tabId, block_type, subresource);
+        Tab currentTab = getToolbarDataProvider().getTab();
         if (currentTab == null || currentTab.getId() != tabId) {
           return;
         }
         mBraveShieldsHandler.updateValues(tabId);
+        if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
+            || block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
+          addStatsToDb(block_type, subresource, currentTab.getUrlString());
+        }
+      }
+
+      @Override
+      public void savedBandwidth(long savings) {
+        Log.e("NTP", "Savings : " + savings);
+        addSavedBandwidthToDb(savings);
       }
     };
     // Initially show shields off image. Shields button state will be updated when tab is
@@ -249,6 +258,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           updateBraveShieldsButtonState(tab);
         }
         mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
+        // for (BraveStatsTable braveStatsTable : mDatabaseHelper.getAllStats()) {
+        //   Log.e("NTP", braveStatsTable.getUrl() + " : stat type = " + braveStatsTable.getStatType());
+        // }
       }
 
       @Override
@@ -269,7 +281,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               }
             });
           }
-          addStatsToDb(tab, url);
         }
       }
 
@@ -299,19 +310,17 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     };
   }
 
-  private void addStatsToDb(Tab tab, String url) {
-    final DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
+  private void addSavedBandwidthToDb(long savings) {
     new AsyncTask<Void>() {
       @Override
       protected Void doInBackground() {
         try {
-          int adsTrackersBlockedCount = mBraveShieldsHandler.getAdsTackersBlockedCount(tab.getId());
-          long dataSaved = mBraveShieldsHandler.getDataSaved(tab.getId());
           DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm", Locale.getDefault());
           String timestamp = df.format(Calendar.getInstance().getTime());
-          URL urlObject = new URL(url);
-          BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), timestamp, adsTrackersBlockedCount, dataSaved, adsTrackersBlockedCount * MILLISECONDS_PER_ITEM);
-          mDatabaseHelper.insertStats(braveStatsTable);
+          SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(savings, timestamp);
+          long rowId = mDatabaseHelper.insertSavedBandwidth(savedBandwidthTable);
+          // Log.e("NTP", braveStatsTable.getUrl() + " : stat type = " + braveStatsTable.getStatType());
+          Log.e("NTP", "SavedBandwidthTable RowId : " + rowId);
         } catch (Exception e) {
           // Do nothing if url is invalid.
           // Just return w/o showing shields popup.
@@ -323,10 +332,34 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       protected void onPostExecute(Void result) {
         assert ThreadUtils.runningOnUiThread();
         if (isCancelled()) return;
+      }
+    } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+  }
 
-        for (BraveStatsTable braveStatsTable : mDatabaseHelper.getAllStats()) {
-          Log.e("NTP", braveStatsTable.getUrl() + " : data saved = " + braveStatsTable.getDataSaved() + " adsTrackersBlockedCount = "+ braveStatsTable.getAdsBlockedTrackersBlocked());
+  private void addStatsToDb(String statType, String statSite, String url) {
+    new AsyncTask<Void>() {
+      @Override
+      protected Void doInBackground() {
+        try {
+          DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm", Locale.getDefault());
+          String timestamp = df.format(Calendar.getInstance().getTime());
+          URL urlObject = new URL(url);
+          URL siteObject = new URL(statSite);
+          BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), statType, siteObject.getHost(), timestamp);
+          long rowId = mDatabaseHelper.insertStats(braveStatsTable);
+          // Log.e("NTP", braveStatsTable.getUrl() + " : stat type = " + braveStatsTable.getStatType());
+          Log.e("NTP", "BraveStatsTable RowId : " + rowId);
+        } catch (Exception e) {
+          // Do nothing if url is invalid.
+          // Just return w/o showing shields popup.
+          return null;
         }
+        return null;
+      }
+      @Override
+      protected void onPostExecute(Void result) {
+        assert ThreadUtils.runningOnUiThread();
+        if (isCancelled()) return;
       }
     } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
   }

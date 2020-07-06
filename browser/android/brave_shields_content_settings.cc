@@ -57,6 +57,19 @@ void BraveShieldsContentSettings::DispatchBlockedEventToJava(int tab_id,
       base::android::ConvertUTF8ToJavaString(env, subresource));
 }
 
+void BraveShieldsContentSettings::DispatchSavedBandwidthToJava(uint64_t savings) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveShieldsContentSettings_savedBandwidth(env, jobj_, savings);
+}
+
+void BraveShieldsContentSettings::DispatchSavedBandwidth(uint64_t savings) {
+  DCHECK(g_brave_shields_content_settings);
+  if (!g_brave_shields_content_settings) {
+    return;
+  }
+  g_brave_shields_content_settings->DispatchSavedBandwidthToJava(savings);
+}
+
 // static
 void BraveShieldsContentSettings::DispatchBlockedEvent(int tab_id,
   const std::string& block_type, const std::string& subresource) {
