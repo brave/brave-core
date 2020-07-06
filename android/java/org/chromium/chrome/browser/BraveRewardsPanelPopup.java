@@ -137,7 +137,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private String currentNotificationId;
     private TextView tvPublisherNotVerified;
     private TextView tvPublisherNotVerifiedSummary;
-    private boolean walletInitialized;          //flag: wallet is initialized
     private boolean walletDetailsReceived;      //flag: wallet details received
     private boolean showRewardsSummary;        //flag: we don't want OnGetCurrentBalanceReport always opens up Rewards Summary window
     private AnimationDrawable wallet_init_animation;
@@ -1092,7 +1091,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnWalletInitialized(int error_code) {
         if (BraveRewardsNativeWorker.WALLET_CREATED == error_code) {
-            walletInitialized = true;
             BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
             ShowWebSiteView(false);
         } else if (BraveRewardsNativeWorker.SAFETYNET_ATTESTATION_FAILED == error_code) {
@@ -1416,7 +1414,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnIsWalletCreated(boolean created) {
         if (created) {
-            walletInitialized = true;
             ShowWebSiteView(false);
             mBraveRewardsNativeWorker.FetchGrants();
         } else {
