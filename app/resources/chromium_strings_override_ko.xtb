@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="ko">
+<translation id="6134859571175647580">경고: Brave은 확장 프로그램이 인터넷 방문 기록을 저장하지 못하도록 할 수 없습니다. 시크릿 모드에서 이 확장 프로그램을 사용 중지하려면 옵션을 선택 취소하세요.</translation>
+<translation id="1448049584457347995">Brave Software에서는 Brave의 보안을 강화하기 위해 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>에 표시되지 않고 사용자 모르게 추가되었을 수 있는 일부 확장 프로그램의 사용을 중지했습니다.</translation>
+<translation id="8848045066928358658">Brave Software에서는 Brave의 보안을 강화하기 위해 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>에 표시되지 않고 사용자가 모르게 추가되었을 수 있는 다음 확장 프로그램의 사용을 중지했습니다.</translation>
+<translation id="669092380621816981">선택한 사용자의 인터넷 사용 기록이 이 기기에서 삭제됩니다. 데이터를 복구하려면 <ph name="USER_EMAIL"/>(으)로 Brave에 로그인하세요.</translation>
+<translation id="4624945300945265642">Brave 시크릿 창에서 링크 열기(&amp;G)</translation>
+<translation id="6554952862405000915">Brave 시크릿 창에서 링크 열기(&amp;G)</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다.}=1{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다. 시크릿 창이 다시 열리지 않습니다.}other{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다.}=1{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다. 시크릿 창이 다시 열리지 않습니다.}other{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다.}=1{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다. 시크릿 창이 다시 열리지 않습니다.}other{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
+</translationbundle>

@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="mr">
+<translation id="6744651634043798597">{COUNT,plural, =0{सर्व गुप्त विंडोमध्ये उघडा}=1{सर्व गुप्त विंडोमध्ये उघडा}other{सर्व (#) गुप्त विंडोमध्ये उघडा}}</translation>
+<translation id="2431625704210501303">&amp;गुप्त विंडोमध्ये उघडा</translation>
+<translation id="4620367155626060530">बुकमार्क बार &amp;दर्शवा</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{सर्व गुप्त विंडोमध्ये उघडा}=1{गुप्त विंडोमध्ये उघडा}other{सर्व (#) गुप्त विंडोमध्ये उघडा}}</translation>
+<translation id="1985165269306590797">&amp;गुप्त विंडोमध्ये उघडा</translation>
+<translation id="4680518314108745448">बुकमार्क बार &amp;दर्शवा</translation>
+<translation id="642436385689435488">सर्व गुप्त विंडोमध्ये उघडा</translation>
+<translation id="5463021359602611602">गुप्त विंडोमध्ये उघडा</translation>
+<translation id="1850357845349976573">{0,plural, =1{गुप्त}other{# गुप्त विंडो उघडा}}</translation>
+<translation id="37784332082579802">{0,plural, =1{गुप्त}other{गुप्त (#)}}</translation>
+<translation id="5070556616376997776">तुम्‍ही गुप्‍त मोड वर आहात</translation>
+<translation id="5832813618714645810">लोक</translation>
+<translation id="7171000599584840888">व्यक्ती जोडा...</translation>
+<translation id="2005199804247617997">इतर लोक</translation>
+<translation id="2935225303485967257">लोकांना व्यवस्थापित करा</translation>
+<translation id="8966809848145604011">इतर लोक</translation>
+<translation id="688280436658139163">लोकांना व्यवस्थापित करा</translation>
+<translation id="4133080584509825342">व्यक्ती संपादित करा, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">व्यक्ती संपादित करा, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">व्यक्ती <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">व्यक्ती जोडा...</translation>
+<translation id="2254158488150713536">पुढे सुरू ठेवण्यासाठी ठीक आहे वर क्लिक करा, नंतर तुम्हाला ईमेल ॲड्रेससाठी नवीन प्रोफाइल तयार करण्याकरता व्यक्तीला जोडावर क्लिक करा.</translation>
+<translation id="1725743343613175327">पुढे सुरू ठेवण्यासाठी, ठीक आहे वर क्लिक करा, नंतर तुम्हाला <ph name="DOMAIN"/> ईमेल पत्त्यासाठी नवीन प्रोफाइल तयार करण्याकरता व्यक्तीला जोडावर क्लिक करा.</translation>
+<translation id="6921634551681321094">व्यक्ती जोडा</translation>
+<translation id="4904061654709986277">व्यक्ती जोडा</translation>
+<translation id="6114945161119872228">या व्यक्तीस काढून टाका</translation>
+<translation id="769308100792069196">पर्यवेक्षी व्यक्ती जोडा</translation>
+<translation id="8006143138282906848">हा वापरकर्ता काढून टाका</translation>
+<translation id="6912187023601892621">पर्यवेक्षित वापरकर्ता जोडा</translation>
+<translation id="8086119151297127544">कृपया एखाद्या व्यक्तीस काढण्यापूर्वी तुमचे प्रोफाईल अनलॉक करा.</translation>
+<translation id="7805701378418968629">कृपया एखाद्या व्यक्तीस जोडण्यापूर्वी तुमचे प्रोफाईल अनलॉक करा.</translation>
+<translation id="6315812488257290136">लोक</translation>
+<translation id="3707212204259470604">इतर लोक व्यवस्थापित करा</translation>
+<translation id="5840822070878669614">Brave वेब स्टोअर उघडा</translation>
+<translation id="383007806262310953">बुकमार्क बार दर्शवा</translation>
+<translation id="2890280714162339872">सध्याचे गुप्त सेशन: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">सध्याचे गुप्त सेशन: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">सध्याचे गुप्त सेशन: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">सध्याचे गुप्त सेशन: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> आणि बरेच काही</translation>
+<translation id="8648684608605749476">तृतीय पक्ष कुकी गुप्त मोडमध्ये ब्लॉक करा</translation>
+<translation id="2199515977216775204">गुप्त मोडमध्ये असताना वेगवेगळ्या साइटवरील तुमची ब्राउझिंग अ‍ॅक्टिव्हिटी पाहण्यासाठी साइट तुमच्या कुकी वापरू शकत नाहीत. उदाहरणार्थ, जाहिराती पर्सनलाइझ करण्यासाठी. काही साइटवरील वैशिष्ट्यांमध्ये खंड पडू शकतो.</translation>
+<translation id="6105125042109106861">गुप्त मोडमध्ये तृतीय पक्ष कुकी ब्लॉक केल्या जातात</translation>
+<translation id="1281501490173223206">केवळ वर्तमान गुप्त सेशन</translation>
+<translation id="5566692924079383101">तुम्ही सध्याच्या गुप्त सेशनमधून बाहेर पडल्यानंतर हे एक्सेप्शन आपोआप काढून टाकले जाईल</translation>
+<translation id="6906406176003824042">व्यक्ती संपादित करा</translation>
+<translation id="9063160602596686558">Brave ला वापर आकडेवारी आणि क्रॅश अहवाल आपोआप पाठवते</translation>
+<translation id="3860292630623580294">(गुप्त)</translation>
+<translation id="4854477725773269949">गुप्तमध्ये परवानगी द्या</translation>
+<translation id="6436164536244065364">Brave वेब स्टोअरमध्ये पहा</translation>
+<translation id="8808478386290700967">Brave वेब बाजार</translation>
+<translation id="38046578254905003">विस्तार आणि थीम <ph name="BEGIN_LINK"/>Brave वेब स्टोअर<ph name="END_LINK"/> मध्ये शोधा</translation>
+<translation id="6336451774241870485">नवीन गुप्त टॅब</translation>
+<translation id="6610147964972079463">गुप्त टॅब बंद करा</translation>
+<translation id="5186185447130319458">गुप्त</translation>
+<translation id="4933782374919065856">प्रश्न आहेत? तुमच्या प्रोफाइलचे निरीक्षण करणाऱ्या व्यक्तीशी संपर्क साधा.</translation>
+</translationbundle>

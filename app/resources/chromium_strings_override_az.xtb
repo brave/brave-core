@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="az">
+<translation id="6134859571175647580">Xəbərdarlıq: Brave artırmanın axtarış tarixçəsini qeyd etməsinin qarşısını ala bilməz. Bu artırmanı gizli rejimdə deaktiv etmək üçün bu seçimi silin.</translation>
+<translation id="1448049584457347995">Brave'u güvənli etmək üçün,  <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> siyahısında olmayan və xəbəriniz olmadan əlavə edilən bəzi artırmaları deaktiv etdik.</translation>
+<translation id="8848045066928358658">Brave'u təhlükəsiz etmək üçün, <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> siyahısında olmayan və xəbəriniz olmadan əlavə edilən artırmanı deaktiv etdik.</translation>
+<translation id="669092380621816981">Bu şəxsin axtarış datası bu cihazdan silinəcək. Datanı bərpa etmək üçün Brave'a <ph name="USER_EMAIL"/> olaraq daxil olun.</translation>
+<translation id="4624945300945265642">Linki gizli Brave pəncərəsində açın</translation>
+<translation id="6554952862405000915">Linki Gizli Brave Pəncərəsində açın</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək.}=1{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək. Anonim pəncərəniz yenidən açılmayacaq.}other{Brave üçün yeni güncəlləmə əlçatandır. Brave yenidən işə başladıqdan sonra tətbiq ediləcək. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir}=1{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. Anonim pəncərəniz yenidən açılmayacaq.}other{Administrator bu güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir}=1{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. Anonim pəncərəniz yenidən açılmayacaq.}other{Administrator güncəlləməni tətbiq etmək üçün Brave'u yenidən başlatmanızı tələb edir. # Anonim pəncərəniz yenidən açılmayacaq.}}</translation>
+</translationbundle>

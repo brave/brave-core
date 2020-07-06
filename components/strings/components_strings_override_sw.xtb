@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="sw">
+<translation id="8820817407110198400">Sehemu ya Alamisho</translation>
+<translation id="8362995731815961365">Mtu ambaye aliweka mipangilio ya kompyuta hii ameamua kuzuia tovuti hii.</translation>
+<translation id="4075123085690634698">Fungua ukurasa kwenye dirisha fiche jipya (⇧⌘N)</translation>
+<translation id="2388886110302389394">Fungua ukurasa kwenye dirisha fiche jipya (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Fungua ukurasa kwenye kichupo fiche kipya</translation>
+<translation id="2378238891085281592">Unavinjari katika hali fiche</translation>
+<translation id="3774752171665127360">Kurasa unazoziangalia katika vichupo fiche hazitaendelea kuwepo katika historia ya kivinjari, hifadhi ya vidakuzi, au historia yako ya utafutaji ukishafunga vichupo vyako vyote fiche. Faili zozote unazopakua au alamisho unazounda hazitafutwa.</translation>
+<translation id="9177896974490719854">Hata hivyo, huonekani. Kuvinjari katika hali fiche hakufichi kuvinjari kwako kusionekane na mwajiri, mtoaji huduma wako wa intaneti, au tovuti unazotembelea.</translation>
+<translation id="2227116904818538760">Unavinjari katika hali fiche</translation>
+<translation id="2007417459975034427">Sasa unaweza kuvinjari kwa faragha na watu wengine wanaotumia kifaa hiki hawataona shughuli zako. Hata hivyo, vipakuliwa na alamisho zitahifadhiwa.</translation>
+<translation id="2586968635953373425">Fungua Dirisha Fiche</translation>
+<translation id="3489858312836205593">Fungua dirisha fiche jipya katika Brave</translation>
+<translation id="6984479912851154518">Inaacha hali fiche ili kulipa kupitia programu ya nje. Je, ungependa kuendelea?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Hatua ya 1: Ingia katika akaunti ya tovuti&lt;/h4&gt;
+    &lt;p&gt;Unatakiwa uingie katika akaunti ikiwa unatumia mitandao ya Wi-Fi katika maeneo kama vile mikahawa au viwanja vya ndege. Ili uangalie ukurasa wa kuingia katika akaunti, tembelea ukurasa ambao unatumia &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Nenda kwenye tovuti yoyote inayoanza kwa &lt;code&gt;http://&lt;/code&gt;, kama vile &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Ingia katika akaunti ili utumie intaneti kupitia ukurasa unaofunguka wa kuingia katika akaunti.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Hatua ya 2: Fungua ukurasa katika Hali fiche (kwenye kompyuta pekee)&lt;/h4&gt;
+    &lt;p&gt;Fungua ukurasa uliokuwa ukitembelea katika Dirisha Fiche.&lt;/p&gt;
+    &lt;p&gt;Ukurasa ukifunguka, itamaanisha kuwa kiendelezi cha Brave hakifanyi kazi vizuri. Zima kiendelezi ili urekebishe hitilafu hii.&lt;/p&gt;
+    &lt;h4&gt;Hatua ya 3: Sasisha mfumo wako wa uendeshaji&lt;/h4&gt;
+    &lt;p&gt;Hakikisha kuwa kifaa chako kinatumia toleo jipya.&lt;/p&gt;
+    &lt;h4&gt;Hatua ya 4: Zima kingavirusi yako kwa muda&lt;/h4&gt;
+    &lt;p&gt;Utaona hitilafu hii kama una programu ya kingavirusi ambayo inatoa "ulinzi wa HTTPS" au "ukaguzi wa HTTPS." Kingavirusi huzuia Brave isidumishe usalama.&lt;/p&gt;
+    &lt;p&gt;Zima programu yako ya kingavirusi ili urekebishe tatizo hili. Kama ukurasa utafanya kazi baada ya kuzima programu, zima programu hii wakati utatumia tovuti salama.&lt;/p&gt;
+    &lt;p&gt;Kumbuka kuwasha tena programu yako ya kingavirusi unapomaliza.&lt;/p&gt;
+    &lt;h4&gt;Hatua ya 5: Pata usaidizi wa ziada&lt;/h4&gt;
+    &lt;p&gt;Kama bado unaona hitilafu, wasiliana na mmiliki wa tovuti.&lt;/p&gt;</translation>
+</translationbundle>

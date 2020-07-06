@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="fi">
+<translation id="6744651634043798597">{COUNT,plural, =0{Avaa kaikki incognito-ikkunassa}=1{Avaa incognito-ikkunassa}other{Avaa kaikki # incognito-ikkunassa}}</translation>
+<translation id="2431625704210501303">Avaa incognito-ikkunassa</translation>
+<translation id="4620367155626060530">Näytä kirjanmerkkipalkki</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Avaa kaikki incognito-ikkunassa}=1{Avaa incognito-ikkunassa}other{Avaa kaikki # incognito-ikkunassa}}</translation>
+<translation id="1985165269306590797">Avaa incognito-ikkunassa</translation>
+<translation id="4680518314108745448">Näytä kirjanmerkkipalkki</translation>
+<translation id="642436385689435488">Avaa kaikki incognito-ikkunassa</translation>
+<translation id="5463021359602611602">Avaa incognito-ikkunassa</translation>
+<translation id="1850357845349976573">{0,plural, =1{Incognito}other{# avointa incognito-ikkunaa}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Incognito}other{Incognito (#)}}</translation>
+<translation id="5070556616376997776">Olet incognito-tilassa</translation>
+<translation id="5832813618714645810">Henkilöt</translation>
+<translation id="7171000599584840888">Lisää henkilö…</translation>
+<translation id="2005199804247617997">Muut ihmiset</translation>
+<translation id="2935225303485967257">Hallinnoi käyttäjiä</translation>
+<translation id="8966809848145604011">Muut ihmiset</translation>
+<translation id="688280436658139163">Hallinnoi käyttäjiä</translation>
+<translation id="4133080584509825342">Muokkaa henkilöä <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Muokkaa henkilöä <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Henkilö <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Lisää henkilö…</translation>
+<translation id="2254158488150713536">Jos haluat jatkaa, valitse OK, Lisää henkilö ja luo sähköpostiosoitteellasi uusi profiili.</translation>
+<translation id="1725743343613175327">Jos haluat jatkaa, valitse OK, Lisää henkilö ja luo sähköpostiosoitteellasi (<ph name="DOMAIN"/>) uusi profiili.</translation>
+<translation id="6921634551681321094">Lisää käyttäjä</translation>
+<translation id="4904061654709986277">Lisää henkilö</translation>
+<translation id="6114945161119872228">Poista tämä henkilö</translation>
+<translation id="769308100792069196">Lisää valvottu käyttäjä</translation>
+<translation id="8006143138282906848">Poista tämä käyttäjä</translation>
+<translation id="6912187023601892621">Lisää valvottu käyttäjä</translation>
+<translation id="8086119151297127544">Avaa profiilisi lukitus ennen henkilön poistamista.</translation>
+<translation id="7805701378418968629">Avaa profiilisi lukitus ennen henkilön lisäämistä.</translation>
+<translation id="6315812488257290136">Ihmiset</translation>
+<translation id="3707212204259470604">Hallitse muita ihmisiä</translation>
+<translation id="5840822070878669614">Avaa Brave Web Store</translation>
+<translation id="383007806262310953">Näytä kirjanmerkkipalkki</translation>
+<translation id="2890280714162339872">Nykyinen incognito-istunto: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Nykyinen incognito-istunto: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Nykyinen incognito-istunto: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Nykyinen incognito-istunto: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> ja muita</translation>
+<translation id="8648684608605749476">Kolmannen osapuolen evästeiden estäminen incognito-tilassa</translation>
+<translation id="2199515977216775204">Kun olet incognito-tilassa, sivustot eivät näe selaustoimintaasi eri sivustoilla evästeiden kautta esim. personoidakseen mainoksia. Joidenkin sivustojen ominaisuudet saattavat lakata toimimasta.</translation>
+<translation id="6105125042109106861">Kolmannen osapuolen evästeet estetään incognito-tilassa</translation>
+<translation id="1281501490173223206">Vain nykyinen incognito-istunto</translation>
+<translation id="5566692924079383101">Tämä poikkeus poistetaan automaattisesti, kun poistut nykyisestä incognito-käyttökerrasta</translation>
+<translation id="6906406176003824042">Muokkaa henkilöä</translation>
+<translation id="9063160602596686558">Lähettää automaattisesti käyttötilastoja ja virheraportteja Bravelle</translation>
+<translation id="3860292630623580294">(Incognito)</translation>
+<translation id="4854477725773269949">Salli incognito-tilassa</translation>
+<translation id="6436164536244065364">Näytä Brave Web Storessa</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003">Löydät laajennuksia ja teemoja <ph name="BEGIN_LINK"/>Brave Web Storesta<ph name="END_LINK"/>.</translation>
+<translation id="6336451774241870485">Uusi incognito-välilehti</translation>
+<translation id="6610147964972079463">Sulje incognito-välilehdet</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="4933782374919065856">Onko sinulla kysyttävää? Ota yhteyttä profiiliasi valvovaan henkilöön.</translation>
+</translationbundle>

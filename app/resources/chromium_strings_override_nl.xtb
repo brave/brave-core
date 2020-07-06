@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="nl">
+<translation id="6134859571175647580">Waarschuwing: Brave kan niet voorkomen dat extensies je browsergeschiedenis vastleggen. Als je deze extensie in de incognitomodus wilt uitschakelen, verwijder je het vinkje bij deze optie.</translation>
+<translation id="1448049584457347995">Om Brave veiliger te maken, hebben we een aantal extensies uitgeschakeld die niet worden vermeld in de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> en mogelijk zonder je medeweten zijn geïnstalleerd.</translation>
+<translation id="8848045066928358658">We hebben de volgende extensie uitgeschakeld die niet wordt vermeld in de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> en mogelijk zonder je medeweten is toegevoegd. We doen dit om Brave veiliger te maken.</translation>
+<translation id="669092380621816981">De browsergegevens van deze persoon worden verwijderd van dit apparaat. Als je de gegevens wilt herstellen, log je in bij Brave als <ph name="USER_EMAIL"/>.</translation>
+<translation id="4624945300945265642">Link openen in een Brave-inco&amp;gnitovenster</translation>
+<translation id="6554952862405000915">Link openen in een Brave-inco&amp;gnitovenster</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{Er is een nieuwe update voor Brave beschikbaar die wordt uitgevoerd zodra je het programma opnieuw start.}=1{Er is een nieuwe update voor Brave beschikbaar die wordt uitgevoerd zodra je het programma opnieuw start. Je incognitovenster kan niet opnieuw worden geopend.}other{Er is een nieuwe update voor Brave beschikbaar die wordt uitgevoerd zodra je het programma opnieuw start. Je # incognitovensters kunnen niet opnieuw worden geopend.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Je beheerder vraagt je Brave opnieuw te starten om deze update uit te voeren.}=1{Je beheerder vraagt je Brave opnieuw te starten om deze update uit te voeren. Je incognitovenster kan niet opnieuw worden geopend.}other{Je beheerder vraagt je Brave opnieuw te starten om deze update uit te voeren. Je # incognitovensters kunnen niet opnieuw worden geopend.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Je beheerder vereist dat je Brave opnieuw start om een update uit te voeren.}=1{Je beheerder vereist dat je Brave opnieuw start om een update uit te voeren. Je incognitovenster kan niet opnieuw worden geopend.}other{Je beheerder vereist dat je Brave opnieuw start om een update uit te voeren. Je # incognitovensters kunnen niet opnieuw worden geopend.}}</translation>
+</translationbundle>

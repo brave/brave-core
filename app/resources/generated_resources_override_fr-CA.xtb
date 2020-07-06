@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="fr-CA">
+<translation id="6744651634043798597">{COUNT,plural, =0{Tout ouvrir dans une fenêtre de &amp;navigation privée}=1{Ouvrir dans une fenêtre de &amp;navigation privée}one{Tout ouvrir (#) dans une fenêtre de &amp;navigation privée}other{Tout ouvrir (#) dans une fenêtre de &amp;navigation privée}}</translation>
+<translation id="2431625704210501303">Ouvrir dans une fenêtre de &amp;navigation privée</translation>
+<translation id="4620367155626060530">&amp;Afficher la barre des favoris</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Tout ouvrir dans une fenêtre de &amp;navigation privée}=1{Ouvrir dans une fenêtre de &amp;navigation privée}one{Tout ouvrir (#) dans une fenêtre de &amp;navigation privée}other{Tout ouvrir (#) dans une fenêtre de &amp;navigation privée}}</translation>
+<translation id="1985165269306590797">Ouvrir dans une fenêtre de &amp;navigation privée</translation>
+<translation id="4680518314108745448">&amp;Afficher la barre des favoris</translation>
+<translation id="642436385689435488">Tout ouvrir dans une fenêtre de navigation privée</translation>
+<translation id="5463021359602611602">Ouvrir dans une fenêtre de navigation privée</translation>
+<translation id="1850357845349976573">{0,plural, =1{Navigation privée}one{# fenêtre de navigation privée ouverte}other{# fenêtres de navigation privée ouvertes}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Navigation privée}one{Navigation privée (#)}other{Navigation privée (#)}}</translation>
+<translation id="5070556616376997776">Vous êtes en mode de navigation privée</translation>
+<translation id="5832813618714645810">Personnes</translation>
+<translation id="7171000599584840888">Ajouter un personne...</translation>
+<translation id="2005199804247617997">Autres personnes</translation>
+<translation id="2935225303485967257">Gérer les personnes</translation>
+<translation id="8966809848145604011">Autres personnes</translation>
+<translation id="688280436658139163">Gérer les personnes</translation>
+<translation id="4133080584509825342">Modifier la personne, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Modifier la personne, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Personne <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Ajouter une personne...</translation>
+<translation id="2254158488150713536">Pour continuer, cliquez sur OK, puis sur Ajouter une personne pour créer un nouveau profil pour votre adresse de courriel.</translation>
+<translation id="1725743343613175327">Pour continuer, cliquez sur OK, puis sur Ajouter une personne pour créer un nouveau profil pour votre adresse de courriel <ph name="DOMAIN"/>.</translation>
+<translation id="6921634551681321094">Ajouter une personne</translation>
+<translation id="4904061654709986277">Ajouter une personne</translation>
+<translation id="6114945161119872228">Supprimer cette personne</translation>
+<translation id="769308100792069196">Ajouter une personne supervisée</translation>
+<translation id="8006143138282906848">Supprimer cet utilisateur</translation>
+<translation id="6912187023601892621">Ajouter un utilisateur supervisé</translation>
+<translation id="8086119151297127544">Veuillez déverrouiller votre profil avant de supprimer une personne.</translation>
+<translation id="7805701378418968629">Veuillez déverrouiller votre profil avant d'ajouter une personne.</translation>
+<translation id="6315812488257290136">Personnes</translation>
+<translation id="3707212204259470604">Gérer d'autres personnes</translation>
+<translation id="5840822070878669614">Ouvrir la boutique en ligne Brave Web Store</translation>
+<translation id="383007806262310953">Afficher la barre de favoris</translation>
+<translation id="2890280714162339872">Session de navigation privée actuelle : <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Session de navigation privée actuelle : <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Session de navigation privée actuelle : <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Séance de navigation privée actuelle : <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> et plus</translation>
+<translation id="8648684608605749476">Bloquer les témoins tiers en navigation privée</translation>
+<translation id="2199515977216775204">Lorsque vous êtes en mode de navigation privée, les sites ne peuvent pas utiliser vos témoins pour voir votre activité de navigation sur différents sites (par exemple, pour personnaliser les annonces). Les fonctionnalités pourraient ne pas fonctionner sur certains sites.</translation>
+<translation id="6105125042109106861">Les témoins tiers sont bloqués en mode de navigation privée</translation>
+<translation id="1281501490173223206">Session de navigation privée active uniquement</translation>
+<translation id="5566692924079383101">Cette exception sera automatiquement supprimée lorsque vous aurez quitté la session de navigation privée en cours</translation>
+<translation id="6906406176003824042">Modifier la personne</translation>
+<translation id="9063160602596686558">Envoie automatiquement des statistiques d'utilisation et des rapports d'erreur à Brave</translation>
+<translation id="3860292630623580294">(Mode privé)</translation>
+<translation id="4854477725773269949">Autoriser en mode de navigation privée</translation>
+<translation id="6436164536244065364">Afficher dans la boutique en ligne Brave Web Store</translation>
+<translation id="8808478386290700967">Boutique en ligne Brave Web Store</translation>
+<translation id="38046578254905003">Trouvez des extensions et des thèmes dans la boutique en ligne <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
+<translation id="6610147964972079463">Fermer les onglets de navigation privée</translation>
+<translation id="5186185447130319458">Navigation privée</translation>
+<translation id="4933782374919065856">Des questions? Communiquez avec la personne qui supervise votre profil.</translation>
+</translationbundle>

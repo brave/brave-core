@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="it">
+<translation id="8820817407110198400">Barra dei Preferiti</translation>
+<translation id="8362995731815961365">La persona che ha configurato il computer ha deciso di bloccare questo sito.</translation>
+<translation id="4075123085690634698">Apri la pagina in un'altra finestra di navigazione in incognito (⇧⌘N)</translation>
+<translation id="2388886110302389394">Apri la pagina in un'altra finestra di navigazione in incognito (CTRL-MAIUSC-N)</translation>
+<translation id="6957624206566198865">Apri la pagina in una nuova scheda di navigazione in incognito</translation>
+<translation id="2378238891085281592">Sei passato alla navigazione in incognito</translation>
+<translation id="3774752171665127360">Le pagine visualizzate nelle schede in incognito non vengono memorizzate nella cronologia del browser, nell'archivio di cookie o nella cronologia delle ricerche dopo avere chiuso tutte le schede in incognito. I file scaricati o i preferiti creati verranno conservati.</translation>
+<translation id="9177896974490719854">Non sei completamente invisibile: se navighi in incognito, la tua navigazione non viene nascosta al tuo datore di lavoro, al provider di servizi Internet o ai siti web che visiti.</translation>
+<translation id="2227116904818538760">Hai attivato la navigazione in incognito</translation>
+<translation id="2007417459975034427">Ora puoi navigare in privato. Le altre persone che usano questo dispositivo non vedranno le tue attività, ma i download e i preferiti verranno salvati.</translation>
+<translation id="2586968635953373425">Apri finestra di navigazione in incognito</translation>
+<translation id="3489858312836205593">Apri una nuova finestra di navigazione in incognito di Brave</translation>
+<translation id="6984479912851154518">Per procedere al pagamento tramite un'applicazione esterna, uscirai dalla modalità di navigazione in incognito. Continuare?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Passaggio 1: accedi al portale&lt;/h4&gt;
+    &lt;p&gt;Per le reti Wi-Fi di luoghi come gli aeroporti o i bar, è necessario eseguire l'accesso. Per visualizzare la pagina di accesso, visita una pagina che inizia con &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Visita un sito web qualsiasi che inizi con &lt;code&gt;http://&lt;/code&gt;, ad esempio &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Nella pagina di accesso che si apre, accedi per utilizzare Internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Passaggio 2: apri la pagina in modalità di navigazione in incognito (solo da computer)&lt;/h4&gt;
+    &lt;p&gt;Apri la pagina che stavi visitando in una finestra di navigazione in incognito.&lt;/p&gt;
+    &lt;p&gt;Se la pagina si apre significa che c'è un'estensione di Brave che non funziona correttamente. Per correggere l'errore, disattiva l'estensione.&lt;/p&gt;
+    &lt;h4&gt;Passaggio 3: aggiorna il sistema operativo&lt;/h4&gt;
+    &lt;p&gt;Assicurati che il tuo dispositivo sia aggiornato.&lt;/p&gt;
+    &lt;h4&gt;Passaggio 4: disattiva temporaneamente il software antivirus&lt;/h4&gt;
+    &lt;p&gt;Vedrai questo errore se hai un software antivirus che fornisce "protezione HTTPS" o "scansione HTTPS" e impedisce a Brave di offrire sicurezza.&lt;/p&gt;
+    &lt;p&gt;Per risolvere il problema, disattiva il software antivirus. Se la pagina funziona dopo questo passaggio, disattiva l'antivirus quando visiti siti protetti.&lt;/p&gt;
+    &lt;p&gt;Terminata l'operazione, ricordati di riattivare il programma antivirus.&lt;/p&gt;
+    &lt;h4&gt;Passaggio 5: richiedi ulteriore assistenza&lt;/h4&gt;
+    &lt;p&gt;Se l'errore persiste, contatta il proprietario del sito web.&lt;/p&gt;</translation>
+</translationbundle>

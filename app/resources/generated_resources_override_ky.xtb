@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="ky">
+<translation id="6744651634043798597">{COUNT,plural, =0{Баарын жашыруун терезеде ачуу}=1{Жашыруун терезеде ачуу}other{Баарын (#) жашыруун терезеде ачуу}}</translation>
+<translation id="2431625704210501303">&amp;Жашыруун терезеде ачуу</translation>
+<translation id="4620367155626060530">Кыстармалар тилкесин &amp;көрсөтүү</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Баарын Жашыруун терезеде ачуу}=1{Жашыруун терезеде ачуу}other{Баарын (#) Жашыруун терезеде ачуу}}</translation>
+<translation id="1985165269306590797">Жашыруун терезеде &amp;ачуу</translation>
+<translation id="4680518314108745448">Кыстармалар тилкесин &amp;көрсөтүү</translation>
+<translation id="642436385689435488">Баарын жашыруун терезеде ачуу</translation>
+<translation id="5463021359602611602">Жашыруун терезеде ачуу</translation>
+<translation id="1850357845349976573">{0,plural, =1{Жашыруун}other{# жашыруун терезе ачык}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Жашыруун}other{Жашыруун (#)}}</translation>
+<translation id="5070556616376997776">Жашыруун режиминдесиз</translation>
+<translation id="5832813618714645810">Адамдар</translation>
+<translation id="7171000599584840888">Адам кошуу…</translation>
+<translation id="2005199804247617997">Башка кишилер</translation>
+<translation id="2935225303485967257">Байланыштарды башкаруу</translation>
+<translation id="8966809848145604011">Башка кишилер</translation>
+<translation id="688280436658139163">Байланыштарды башкаруу</translation>
+<translation id="4133080584509825342">Колдонуучуну алмаштыруу, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Колдонуучуну алмаштыруу, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Адам <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Адам кошуу…</translation>
+<translation id="2254158488150713536">Улантуу үчүн "Макул" дегенге тийиңиз да, "Адам кошуу" баскычын чыкылдатып, электрондук почта дарегиңиз үчүн жаңы профиль түзүп алыңыз.</translation>
+<translation id="1725743343613175327">Улантуу үчүн "Макул" дегенге тийиңиз да, "Адам кошуу" баскычын чыкылдатып, <ph name="DOMAIN"/> электрондук почта дарегиңиз үчүн жаңы профиль түзүп алыңыз.</translation>
+<translation id="6921634551681321094">Адам кошуу</translation>
+<translation id="4904061654709986277">Адам кошуу</translation>
+<translation id="6114945161119872228">Бул адамды алып салуу</translation>
+<translation id="769308100792069196">Көзөмөлдөнгөн адам кошуу</translation>
+<translation id="8006143138282906848">Бул колдонуучуну алып салуу</translation>
+<translation id="6912187023601892621">Көзөмөлдөнгөн колдонуучу кошуу</translation>
+<translation id="8086119151297127544">Адамды алып салаардан мурун, профилиңиздин кулпусун ачыңыз.</translation>
+<translation id="7805701378418968629">Адамды кошоордон мурун, профилиңиздин кулпусун ачыңыз.</translation>
+<translation id="6315812488257290136">Адамдар</translation>
+<translation id="3707212204259470604">Башка адамдарды башкаруу</translation>
+<translation id="5840822070878669614">Brave Интернет дүкөнүн ачуу</translation>
+<translation id="383007806262310953">Кыстармалар тилкеси көрсөтүлсүн</translation>
+<translation id="2890280714162339872">Учурдагы жашыруун режимдеги сеанс: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Учурдагы жашыруун режимдеги сеанс: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Учурдагы жашыруун режимдеги сеанс: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Учурдагы жашыруун режимдеги сеанс: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> жана башкалар</translation>
+<translation id="8648684608605749476">Жашыруун режимде үчүнчү тараптын cookie файлдарын бөгөттөө</translation>
+<translation id="2199515977216775204">Жашыруун режимде сайттар жарнамаларды жекелештирүү максатында башка сайттардагы серептөө аракеттериңизди көрүү үчүн cookie файлдарын колдоно алышпайт. Функциялар айрым сайттарда туура иштебеши мүмкүн.</translation>
+<translation id="6105125042109106861">Жашыруун режимде үчүнчү тараптын cookie файлдары бөгөттөлөт</translation>
+<translation id="1281501490173223206">Учурдагы жашыруун режимдеги сеанс гана</translation>
+<translation id="5566692924079383101">Бул өзгөчө учур азыркы Жашыруун сеанстан чыкканыңызда автоматтык түрдө өчүрүлөт</translation>
+<translation id="6906406176003824042">Колдонуучуну алмаштыруу</translation>
+<translation id="9063160602596686558">Колдонуу статистикасын жана каталар жөнүндө кабарларды Brave'га автоматтык түрдө жөнөтүп турат</translation>
+<translation id="3860292630623580294">(Жашыруун)</translation>
+<translation id="4854477725773269949">Жашыруун шартта уруксат берүү</translation>
+<translation id="6436164536244065364">Brave Интернет дүкөнүндө көрүү</translation>
+<translation id="8808478386290700967">Brave Желе дүкөнү</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Интернет дүкөнүнөн<ph name="END_LINK"/> кеңейтүүлөрдү жана темаларды таап алыңыз</translation>
+<translation id="6336451774241870485">Жаңы жашыруун өтмөк</translation>
+<translation id="6610147964972079463">Жашыруун кыстармаларды жабуу</translation>
+<translation id="5186185447130319458">Жашыруун</translation>
+<translation id="4933782374919065856">Суроолоруңуз барбы? Профилиңизди башкарган киши менен байланышыңыз.</translation>
+</translationbundle>

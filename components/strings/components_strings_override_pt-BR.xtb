@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="pt-BR">
+<translation id="8820817407110198400">Barra de favoritos</translation>
+<translation id="8362995731815961365">A pessoa que configurou este computador optou por bloquear esse site.</translation>
+<translation id="4075123085690634698">Abrir página em uma nova janela anônima (⇧⌘N)</translation>
+<translation id="2388886110302389394">Abrir página em uma nova janela anônima (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Abrir página em uma nova guia anônima</translation>
+<translation id="2378238891085281592">Você está navegando sem deixar rastros</translation>
+<translation id="3774752171665127360">Quando você está no modo invisível, as páginas que você visita não aparecem no seu histórico de navegação e de pesquisa, nem armazenam arquivos "cookies". Mas os downloads e os favoritos continuam funcionando normalmente.</translation>
+<translation id="9177896974490719854">O modo invisível NÃO oculta seus dados de navegação. Seu empregador, seu provedor de Internet e os websites visitados continuam tendo acesso a essas informações.</translation>
+<translation id="2227116904818538760">Você entrou no modo de navegação anônima</translation>
+<translation id="2007417459975034427">Agora você pode navegar com privacidade. Outras pessoas que usarem este dispositivo não verão sua atividade, mas os downloads e favoritos serão salvos.</translation>
+<translation id="2586968635953373425">Abrir janela anônima</translation>
+<translation id="3489858312836205593">Abra uma nova janela anônima do Brave</translation>
+<translation id="6984479912851154518">Saindo do modo de navegação anônima para pagar usando um aplicativo externo. Continuar?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Etapa 1: fazer login no portal&lt;/h4&gt;
+    &lt;p&gt;Redes Wi-Fi em lugares como cafés ou aeroportos exigem que você faça login. Para ver a página de login, visite uma página que use &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Acesse qualquer site que comece com &lt;code&gt;http://&lt;/code&gt;, como &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Na página de login que for aberta, faça login para usar a Internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Etapa 2: abrir a página no modo de navegação anônima (somente no computador)&lt;/h4&gt;
+    &lt;p&gt;Abra a página que você estava visitando em uma janela anônima.&lt;/p&gt;
+    &lt;p&gt;Se a página for aberta, isso significa que uma extensão do Brave não está funcionando corretamente. Para corrigir o erro, desative a extensão.&lt;/p&gt;
+    &lt;h4&gt;Etapa 3: atualizar o sistema operacional&lt;/h4&gt;
+    &lt;p&gt;Verifique se seu dispositivo está atualizado.&lt;/p&gt;
+    &lt;h4&gt;Etapa 4: desativar temporariamente o antivírus&lt;/h4&gt;
+    &lt;p&gt;Você verá esse erro se tiver um software antivírus que oferece "proteção de HTTPS" ou "verificação de HTTPS". O antivírus está impedindo que o Brave forneça segurança.&lt;/p&gt;
+    &lt;p&gt;Para corrigir o problema, desative o software antivírus. Se a página funcionar após a desativação do software, desative-o ao usar sites seguros.&lt;/p&gt;
+    &lt;p&gt;Lembre-se de reativar o programa antivírus quando terminar.&lt;/p&gt;
+    &lt;h4&gt;Etapa 5: conseguir ajuda extra&lt;/h4&gt;
+    &lt;p&gt;Se o erro persistir, entre em contato com o proprietário do site.&lt;/p&gt;</translation>
+</translationbundle>

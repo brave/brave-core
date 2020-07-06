@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="ru">
+<translation id="5186185447130319458">Приватное</translation>
+<translation id="9063160602596686558">Автоматически отправлять в Brave Software статистику использования и отчеты о сбоях</translation>
+<translation id="1438581767753657407">Когда включен Облегченный режим, Brave использует серверы Brave для ускорения загрузки страниц. Облегченный режим перезаписывает очень медленные страницы для загрузки только существенного содержимого. Облегченный режим не применяется к Приватным вкладкам.</translation>
+<translation id="2633278372998075009">Личные вкладки</translation>
+<translation id="6099151465289169210">Перейти к личным вкладкам</translation>
+<translation id="4243710787042215766">Открыть в личной вкладке</translation>
+<translation id="3110967157686007724">Личная вкладка</translation>
+<translation id="4526803704855831732">Личные вкладки</translation>
+<translation id="7465104139234185284">Закройте все личные вкладки</translation>
+<translation id="6336451774241870485">Новая личная вкладка</translation>
+<translation id="3234355010754616171">Новая личная вкладка</translation>
+<translation id="6610147964972079463">Закрыть личные вкладки</translation>
+<translation id="4968908871398201967">Приватный режим</translation>
+<translation id="9080642952018487277">Войдите в приватный режим</translation>
+<translation id="4883379392681899581">Выйти из частного режима</translation>
+<translation id="3377025655491224618">Приватная вкладка</translation>
+<translation id="584427517463557805">Выбранная личная вкладка</translation>
+<translation id="2280910239864711607">Открыть новую вкладку в приватном режиме</translation>
+<translation id="8628973420740315031">Чтобы предоставить доступ пользователю поблизости, попросите его отсканировать этот QR-код.</translation>
+</translationbundle>

@@ -91,16 +91,16 @@
     "message": "همه کوکی‌ها مجاز هستند",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "تشخیص اثر انگشت بین سایتی مسدود شد",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "تلاش‌های تشخیص اثر انگشت مسدود شدند",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "همه تلاش‌های تشخیص اثر انگشت مجاز شدند",
+  "allowAllFingerprinting": {
+    "message": "مجاز بودن انواع انگشت‌نگاری",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

@@ -91,16 +91,16 @@
     "message": "ሁሉም ኩኪዎች ተፈቅደዋል ",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "ድረ ገጽ ተሻጋሪ የጣት አሻራ መውሰድ ታግዷል",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "የጣት አሻራ የመውሰድ ሙከራዎች ታግደዋል",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "ሁሉም የጣት አሻራ የመውሰድ ሙከራዎች ተፈቅደዋል",
+  "allowAllFingerprinting": {
+    "message": "ሁሉም የጣት አሻራ መውሰድን ፍቀድ",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

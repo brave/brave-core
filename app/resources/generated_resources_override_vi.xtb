@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="vi">
+<translation id="6744651634043798597">{COUNT,plural, =0{Mở tất cả trong &amp;cửa sổ ẩn danh}=1{Mở trong &amp;cửa sổ ẩn danh}other{Mở tất cả (#) trong &amp;cửa sổ ẩn danh}}</translation>
+<translation id="2431625704210501303">Mở trong cửa sổ ẩ&amp;n danh</translation>
+<translation id="4620367155626060530">&amp;Hiển thị thanh dấu trang</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Mở tất cả trong &amp;cửa sổ ẩn danh}=1{Mở trong &amp;cửa sổ ẩn danh}other{Mở tất cả (#) trong cửa sổ ẩn danh}}</translation>
+<translation id="1985165269306590797">Mở trong &amp;Cửa sổ ẩn danh</translation>
+<translation id="4680518314108745448">&amp;Hiển thị thanh dấu trang</translation>
+<translation id="642436385689435488">Mở tất cả trong cửa sổ ẩn danh</translation>
+<translation id="5463021359602611602">Mở trong cửa sổ ẩn danh</translation>
+<translation id="1850357845349976573">{0,plural, =1{Ẩn danh}other{# cửa sổ ẩn danh đang mở}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Ẩn danh}other{Ẩn danh (#)}}</translation>
+<translation id="5070556616376997776">Bạn đang ở chế độ ẩn danh</translation>
+<translation id="5832813618714645810">Mọi người</translation>
+<translation id="7171000599584840888">Thêm người...</translation>
+<translation id="2005199804247617997">Người khác</translation>
+<translation id="2935225303485967257">Quản lý mọi người</translation>
+<translation id="8966809848145604011">Người khác</translation>
+<translation id="688280436658139163">Quản lý mọi người</translation>
+<translation id="4133080584509825342">Chỉnh sửa người, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Chỉnh sửa người, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Cá nhân <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Thêm người...</translation>
+<translation id="2254158488150713536">Để tiếp tục, hãy nhấp vào OK, sau đó nhấp vào Thêm người để tạo hồ sơ mới cho địa chỉ email của bạn.</translation>
+<translation id="1725743343613175327">Để tiếp tục, hãy nhấp vào OK, sau đó nhấp vào Thêm người để tạo hồ sơ mới cho địa chỉ email <ph name="DOMAIN"/> của bạn.</translation>
+<translation id="6921634551681321094">Thêm người</translation>
+<translation id="4904061654709986277">Thêm người</translation>
+<translation id="6114945161119872228">Xóa người này</translation>
+<translation id="769308100792069196">Thêm người được giám sát</translation>
+<translation id="8006143138282906848">Xóa người dùng này</translation>
+<translation id="6912187023601892621">Thêm người dùng được giám sát</translation>
+<translation id="8086119151297127544">Vui lòng mở khóa hồ sơ của bạn trước khi xóa một người.</translation>
+<translation id="7805701378418968629">Vui lòng mở khóa hồ sơ của bạn trước khi thêm một người.</translation>
+<translation id="6315812488257290136">Mọi người</translation>
+<translation id="3707212204259470604">Quản lý những người khác</translation>
+<translation id="5840822070878669614">Mở cửa hàng Brave trực tuyến</translation>
+<translation id="383007806262310953">Hiển thị thanh dấu trang</translation>
+<translation id="2890280714162339872">Phiên truy cập ẩn danh hiện tại: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Phiên truy cập ẩn danh hiện tại: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Phiên truy cập ẩn danh hiện tại: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Phiên truy cập ẩn danh hiện tại: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> và phiên khác</translation>
+<translation id="8648684608605749476">Chặn các cookie của bên thứ ba trong chế độ Ẩn danh</translation>
+<translation id="2199515977216775204">Ở chế độ ẩn danh, các trang web không thể dùng cookie giám sát hoạt động duyệt web của bạn trên nhiều trang web để điều chỉnh quảng cáo cho phù hợp với bạn chẳng hạn. Do đó, các tính năng trên một số trang web có thể hoạt động không đúng cách.</translation>
+<translation id="6105125042109106861">Đã chặn các cookie bên thứ ba ở Chế độ ẩn danh</translation>
+<translation id="1281501490173223206">Chỉ phiên ẩn danh hiện tại</translation>
+<translation id="5566692924079383101">Hệ thống sẽ tự động xóa ngoại lệ này sau khi bạn thoát khỏi phiên Ẩn danh hiện tại</translation>
+<translation id="6906406176003824042">Chỉnh sửa người</translation>
+<translation id="9063160602596686558">Tự động gửi số liệu thống kê sử dụng và báo cáo sự cố cho Brave</translation>
+<translation id="3860292630623580294">(Ẩn danh)</translation>
+<translation id="4854477725773269949">Cho phép ở chế độ ẩn danh</translation>
+<translation id="6436164536244065364">Xem trong Cửa hàng Brave trực tuyến</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003">Tìm tiện ích và chủ đề trong <ph name="BEGIN_LINK"/>Cửa hàng Brave trực tuyến<ph name="END_LINK"/></translation>
+<translation id="6336451774241870485">Tab ẩn danh mới</translation>
+<translation id="6610147964972079463">Đóng tab ẩn danh</translation>
+<translation id="5186185447130319458">Ẩn danh</translation>
+<translation id="4933782374919065856">Bạn có câu hỏi? Hãy liên hệ với người giám sát hồ sơ của bạn.</translation>
+</translationbundle>

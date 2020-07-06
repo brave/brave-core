@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="is">
+<translation id="6744651634043798597">{COUNT,plural, =0{Opna allt í &amp;huliðsglugga}=1{Opna í &amp;huliðsglugga}one{Opna allt (#) í &amp;huliðsglugga}other{Opna allt (#) í &amp;huliðsglugga}}</translation>
+<translation id="2431625704210501303">Opna í hul&amp;iðsglugga</translation>
+<translation id="4620367155626060530">&amp;Sýna bókamerkjastiku</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Opna allt í &amp;huliðsglugga}=1{Opna í &amp;huliðsglugga}one{Opna allt (#) í &amp;huliðsglugga}other{Opna allt (#) í &amp;huliðsglugga}}</translation>
+<translation id="1985165269306590797">Opna í hul&amp;iðsglugga</translation>
+<translation id="4680518314108745448">&amp;Sýna bókamerkjastiku</translation>
+<translation id="642436385689435488">Opna allt í huliðsglugga</translation>
+<translation id="5463021359602611602">Opna í huliðsglugga</translation>
+<translation id="1850357845349976573">{0,plural, =1{Í huliðsstillingu}one{# opinn huliðsgluggi}other{# opnir huliðsgluggar}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Í huliðsstillingu}one{Í huliðsstillingu (#)}other{Í huliðsstillingu (#)}}</translation>
+<translation id="5070556616376997776">Huliðsstilling er virk</translation>
+<translation id="5832813618714645810">Fólk</translation>
+<translation id="7171000599584840888">Bæta notanda við...</translation>
+<translation id="2005199804247617997">Annað fólk</translation>
+<translation id="2935225303485967257">Vinna með einstaklinga</translation>
+<translation id="8966809848145604011">Annað fólk</translation>
+<translation id="688280436658139163">Vinna með einstaklinga</translation>
+<translation id="4133080584509825342">Breyta einstaklingi, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Breyta einstaklingi, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Aðili <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Bæta notanda við...</translation>
+<translation id="2254158488150713536">Smelltu á Í lagi til að halda áfram og smelltu svo á Bæta notanda við til að búa til nýjan prófíl fyrir netfangið þitt.</translation>
+<translation id="1725743343613175327">Ýttu á Í lagi til að halda áfram og ýttu á Bæta notanda við til að búa til nýjan prófíl fyrir netfangið þitt hjá <ph name="DOMAIN"/>.</translation>
+<translation id="6921634551681321094">Bæta notanda við</translation>
+<translation id="4904061654709986277">Bæta notanda við</translation>
+<translation id="6114945161119872228">Fjarlægja þennan notanda</translation>
+<translation id="769308100792069196">Bæta stýrðum notanda við</translation>
+<translation id="8006143138282906848">Fjarlægja þennan notanda</translation>
+<translation id="6912187023601892621">Bæta stýrðum notanda við</translation>
+<translation id="8086119151297127544">Opnaðu prófílinn þinn áður en aðili er fjarlægður.</translation>
+<translation id="7805701378418968629">Opnaðu prófílinn þinn áður en aðila er bætt við.</translation>
+<translation id="6315812488257290136">Fólk</translation>
+<translation id="3707212204259470604">Stjórna öðrum notendum</translation>
+<translation id="5840822070878669614">Opna vefverslun Brave</translation>
+<translation id="383007806262310953">Sýna bókamerkjastiku</translation>
+<translation id="2890280714162339872">Yfirstandandi huliðslota: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Yfirstandandi huliðslota: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Yfirstandandi huliðslota: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Yfirstandandi huliðslota: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> og fleira</translation>
+<translation id="8648684608605749476">Loka á fótspor þriðju aðila í huliðsstillingu</translation>
+<translation id="2199515977216775204">Þegar huliðsstilling er notuð geta vefsvæði ekki notað fótspor til að sjá vafranotkun þína á vefsvæðum, til dæmis til að sérsníða auglýsingar. Ekki er víst að allir eiginleikar á öllum vefsvæðum virki.</translation>
+<translation id="6105125042109106861">Lokað er á fótspor frá þriðja aðila í huliðsstillingu</translation>
+<translation id="1281501490173223206">Aðeins yfirstandandi huliðslota</translation>
+<translation id="5566692924079383101">Undanþágan fellur sjálfkrafa niður við lok þessarar huliðslotu</translation>
+<translation id="6906406176003824042">Breyta aðila</translation>
+<translation id="9063160602596686558">Sendir sjálfkrafa talnagögn um notkun og tilkynningar um hrun til Brave</translation>
+<translation id="3860292630623580294">(Huliðsstilling)</translation>
+<translation id="4854477725773269949">Leyfa í huliðsstillingu</translation>
+<translation id="6436164536244065364">Skoða í vefverslun Brave</translation>
+<translation id="8808478386290700967">Vefverslun Brave</translation>
+<translation id="38046578254905003">Þú finnur viðbætur og þemu í <ph name="BEGIN_LINK"/>vefverslun Brave<ph name="END_LINK"/></translation>
+<translation id="6336451774241870485">Nýr huliðsflipi</translation>
+<translation id="6610147964972079463">Loka huliðsflipum</translation>
+<translation id="5186185447130319458">Fara huldu höfðu</translation>
+<translation id="4933782374919065856">Spurningar? Hafðu samband við manneskjuna sem hefur umsjón með reikningnum þínum.</translation>
+</translationbundle>

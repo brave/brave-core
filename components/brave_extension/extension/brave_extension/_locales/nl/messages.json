@@ -91,16 +91,16 @@
     "message": "Alle cookies zijn toegestaan.",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Vingerafdruk tussen sites geblokkeerd",
+  "standardFingerprinting": {
+    "message": "Vingerafdrukken geblokkeerd (standaard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Vingerafdrukpogingen geblokkeerd",
+  "strictFingerprinting": {
+    "message": "Vingerafdrukken geblokkeerd (strikt, kan websites doen stukgaan)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Alle vingerafdrukpogingen zijn toegestaan",
+  "allowAllFingerprinting": {
+    "message": "Sta alle vingerafdrukken toe",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

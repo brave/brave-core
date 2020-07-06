@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="zu">
+<translation id="8820817407110198400">Ibha yamabhukhimakhi</translation>
+<translation id="8362995731815961365">Umuntu osethe le khompuyutha ukhethe ukuvimbela leli sayithi.</translation>
+<translation id="4075123085690634698">Vula ikhasi kuwindi elisha le-incognito (⇧⌘N)</translation>
+<translation id="2388886110302389394">Vula ikhasi kuwindi elisha le-incognito (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Vula ikhasi kuthebhu entsha ye-incognito</translation>
+<translation id="2378238891085281592">Usuye ku-incognito</translation>
+<translation id="3774752171665127360">Amakhasi owabukayo kumathebhu we-incognito ngeke ahlale akhona kumlando wesiphequluli sakho, amakhukhi, noma umlando wokubuka ngemuva uvale wonke amathebhu we-incognito. Noma yimaphi amafayela owalandayo noma amabhukhimakhi owadalayo azogcinwa.</translation>
+<translation id="9177896974490719854">Kodwa, akusho ukuthi awubonakali. Ukuya ku-incognito akufihli ukuphequlula kwakho kusukela kumqashi wakho, umhlinzeki wesevisi yakho ye-inthanethi, noma amawebhusayithi owavakashelayo.</translation>
+<translation id="2227116904818538760">Usuye ku-incognito</translation>
+<translation id="2007417459975034427">Manje ungaphequlula ngasese, futhi abanye abantu abasebenzisa le divayisi ngeke bakwazi ukubona umsebenzi wakho. Kodwa, ukulandwa namabhukhimakhi kuzolondolozwa.</translation>
+<translation id="2586968635953373425">Vula iwindi le-Incognito</translation>
+<translation id="3489858312836205593">Vula inwindi le-incognito le-Brave elisha</translation>
+<translation id="6984479912851154518">Ushiya imodi ye-incognito ukuze udlale ngohlelo lokusebenza lwangaphandle. Qhubeka?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Isinyathelo 1: Ngena ngemvume kuphothali&lt;/h4&gt;
+    &lt;p&gt;Amanethiwekhi e-Wi-Fi endaweni efana namakhefi noma izikhumulo zezindiza adinga ukuthi ungene ngemvume. Ukuze ubone ikhasi lokungena ngemvume, vakashela ikhasi elisebenzisa &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Iya kunoma iyiphi iwebhusayithi eqala ngokuthi &lt;code&gt;http://&lt;/code&gt;, njenge &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Ekhasini lokungena ngemvume elivulayo, ngena ngemvume ukuze usebenzise i-inthanethi.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Isinyathelo 2: Vula ikhasi kumodi ye-Incognito (ikhompyutha kuphela)&lt;/h4&gt;
+    &lt;p&gt;Vula ikhasi olivakashelayo kuwindi le-Incognito.&lt;/p&gt;
+    &lt;p&gt;Uma ikhasi livula, isandiso se-Brave asisebenzi kahle. Ukuze ulungise iphutha, vala isandiso.&lt;/p&gt;
+    &lt;h4&gt;Isinyathelo 3: Buyekeza isistimu yakho yokusebebza&lt;/h4&gt;
+    &lt;p&gt;Qiniseka ukuthi idivayisi yakho isesikhathini samanje.&lt;/p&gt;
+    &lt;h4&gt;Isinyathelo 4: Vala okwesikhashana i-antivirus yakho&lt;/h4&gt;
+    &lt;p&gt;Uzobona leli phutha uma unesofthiwe ye-antivirus enikezela nge-"HTTPS protection" noma i-"HTTPS scanning." I-antivirus igwema i-Brave ekunikezeleni ngokuphepha.&lt;/p&gt;
+    &lt;p&gt;Ukuze ulungise inkinga, vala isofthiwe yakho ye-antivirus. Uma ikhasi lisebenza ngemuva kokuvala isofthiwe, vala isofthiwe uma ubona amasayithi aphephile.&lt;/p&gt;
+    &lt;p&gt;Khumbula ukubuya uvule uhlelo lwakho lwe-antivirus uma usuqedile.&lt;/p&gt;
+    &lt;h4&gt;Isinyathelo 5: Thola usizo olungeziwe&lt;/h4&gt;
+    &lt;p&gt;Uma usabona leli phutha, xhumana nomnikazi wewebhusayithi.&lt;/p&gt;</translation>
+</translationbundle>

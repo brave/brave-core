@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="es">
+<translation id="6134859571175647580">Advertencia: Brave no puede evitar que las extensiones registren el historial de navegación. Para inhabilitar esta extensión en Modo Privado, desactiva esta opción.</translation>
+<translation id="1448049584457347995">Para aumentar la seguridad de Brave, hemos inhabilitado algunas extensiones que no figuran en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y que se podrían haber añadido sin tu conocimiento.</translation>
+<translation id="8848045066928358658">Para aumentar la seguridad de Brave, hemos inhabilitado la siguiente extensión que no figura en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y que puede haberse añadido sin tu conocimiento.</translation>
+<translation id="669092380621816981">Los datos de navegación de este usuario se eliminarán del dispositivo. Para recuperar tus datos, inicia sesión en Brave como <ph name="USER_EMAIL"/>.</translation>
+<translation id="4624945300945265642">Abrir enlace en una ventana privada de Brave</translation>
+<translation id="6554952862405000915">Abrir Enlace en una Ventana privada de Brave</translation>
+<translation id="8274659559228306809">{COUNT, plural,
+          =0 {Hay una nueva actualización disponible para Brave y será aplicada cuando reinicies el dispositivo.}
+          =1 {Hay una nueva actualización disponible para Brave y será aplicada cuando reinicies el dispositivo. Tu ventana privada no volverá a abrirse.}
+          other {Hay una nueva actualización disponible para Brave y será aplicada cuando reinicies el dispositivo. Tus # ventanas privadas no volverán a abrirsen.}}</translation>
+<translation id="3829358914761176693">{COUNT, plural,
+              =0 {Tu administrador pide que reinicies Brave para aplicar esta actualización}
+              =1 {Tu administrador pide que reinicies Brave para aplicar esta actualización. Tu ventana privada no volverá a abrirse.}
+              other {Tu administrador pide que reinicies Brave para aplicar esta actualización. Tus # ventanas privadas no volverán a abrirse.}}</translation>
+<translation id="552349673358711446">{COUNT, plural,
+              =0 {Tu administrador requiere que reinicies Brave para aplicar una actualización}
+              =1 {Tu administrador requiere que reinicies Brave para aplicar una actualización. Tu ventana privada no volverá a abrirse.}
+              other {Tu administrador requiere que reinicies Brave para aplicar una actualización. Tus # ventanas privadas no volverán a abrirse.}}</translation>
+</translationbundle>

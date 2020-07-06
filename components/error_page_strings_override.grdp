@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+
+  <if expr="is_android">
+    </if>
+
+  <if expr="not is_ios">
+    </if>
+  <if expr="not is_ios or not is_android">
+    </if>
+  <if expr="chromeos">
+    </if>
+  <if expr="is_android or is_ios">
+    </if>
+  <if expr="not is_android and not is_ios">
+    </if>
+  <message name="IDS_ERRORPAGES_SUMMARY_BLOCKED_BY_ADMINISTRATOR" desc="Summary in the error page when an administrator policy blocks a request.">
+    The profile who set up this computer has chosen to block this site.
+  </message>
+
+  <if expr="is_android">
+    </if>
+  <if expr="not is_ios or not is_android">
+    </if>
+  <if expr="is_ios or is_android">
+    </if>
+  <if expr="is_macosx">
+    </if>
+  <if expr="is_win">
+    </if>
+  <if expr="chromeos">
+    </if>
+
+</grit-part>

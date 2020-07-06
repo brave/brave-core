@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="pt-PT">
+<translation id="8820817407110198400">Barra de marcadores</translation>
+<translation id="8362995731815961365">A pessoa que configurou este computador optou por bloquear este site.</translation>
+<translation id="4075123085690634698">Abrir a página numa nova janela de navegação anónima (⇧⌘N)</translation>
+<translation id="2388886110302389394">Abrir a página numa nova janela de navegação anónima (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Abrir página num novo separador anónimo</translation>
+<translation id="2378238891085281592">Está anónimo</translation>
+<translation id="3774752171665127360">As páginas que visualizar em separadores de navegação anónima não são memorizadas no histórico do navegador, no armazenamento de cookies ou no histórico de pesquisas depois de fechar todos os separadores de navegação anónima. Todos os ficheiros transferidos ou os marcadores criados são guardados.</translation>
+<translation id="9177896974490719854">No entanto, a navegação não é invisível. Passar para o modo de navegação anónima não oculta a navegação do empregador ou do fornecedor de serviços de Internet, nem dos Sites que visitar.</translation>
+<translation id="2227116904818538760">Está no Modo de navegação anónima</translation>
+<translation id="2007417459975034427">Agora, pode navegar em privado e as outras pessoas que utilizarem este dispositivo não veem a sua atividade. No entanto, as transferências e os marcadores são guardados.</translation>
+<translation id="2586968635953373425">Abrir janela de navegação anónima</translation>
+<translation id="3489858312836205593">Abrir nova janela de navegação anónima do Brave</translation>
+<translation id="6984479912851154518">Está a sair do modo de navegação anónima para pagar através de uma aplicação externa. Pretende continuar?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Passo 1: inicie sessão no portal&lt;/h4&gt;
+    &lt;p&gt;As redes Wi-Fi em locais como cafés ou aeroportos necessitam que inicie sessão. Para ver a página de início de sessão, aceda a uma página cujo endereço contenha o código &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Aceda a qualquer Website que comece por &lt;code&gt;http://&lt;/code&gt;, como &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Na página de início de sessão apresentada, inicie sessão para utilizar a Internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Passo 2: abra a página no modo de navegação anónima (apenas no computador)&lt;/h4&gt;
+    &lt;p&gt;Abra a página que estava a visitar numa janela de navegação anónima.&lt;/p&gt;
+    &lt;p&gt;Se conseguir abrir a página, significa que uma extensão do Brave não está a funcionar corretamente. Para corrigir o erro, desative a extensão.&lt;/p&gt;
+    &lt;h4&gt;Passo 3: atualize o sistema operativo&lt;/h4&gt;
+    &lt;p&gt;Certifique-se de que o seu dispositivo está atualizado.&lt;/p&gt;
+    &lt;h4&gt;Passo 4: desative temporariamente o antivírus&lt;/h4&gt;
+    &lt;p&gt;Este erro é apresentado se tiver um software antivírus que forneça "Proteção HTTPS" ou "Análise de HTTPS". O antivírus impede o Brave de fornecer segurança.&lt;/p&gt;
+    &lt;p&gt;Para resolver o problema, desative o software antivírus. Se a página funcionar depois de desativar o software, desative-o sempre que utilizar sites seguros.&lt;/p&gt;
+    &lt;p&gt;Lembre-se de ativar novamente o programa antivírus quando terminar.&lt;/p&gt;
+    &lt;h4&gt;Passo 5: obtenha ajuda adicional&lt;/h4&gt;
+    &lt;p&gt;Se o erro persistir, contacte o proprietário do Website.&lt;/p&gt;</translation>
+</translationbundle>

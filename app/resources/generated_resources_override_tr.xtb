@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="tr">
+<translation id="6744651634043798597">{COUNT,plural, =0{Tümünü &amp;gizli pencerede aç}=1{&amp;Gizli pencerede aç}other{Tümünü (#) &amp;gizli pencerede aç}}</translation>
+<translation id="2431625704210501303">&amp;Gizli pencerede aç</translation>
+<translation id="4620367155626060530">Yer işaretleri ç&amp;ubuğunu göster</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Tümünü &amp;Gizli Pencerede Aç}=1{&amp;Gizli Pencerede Aç}other{Tümünü (#) &amp;Gizli Pencerede Aç}}</translation>
+<translation id="1985165269306590797">&amp;Gizli Pencerede Aç</translation>
+<translation id="4680518314108745448">Yer İşaretleri Ç&amp;ubuğunu Göster</translation>
+<translation id="642436385689435488">Tümünü gizli pencerede aç</translation>
+<translation id="5463021359602611602">Gizli pencerede aç</translation>
+<translation id="1850357845349976573">{0,plural, =1{Gizli mod}other{Açık # gizli pencere}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Gizli mod}other{Gizli mod (#)}}</translation>
+<translation id="5070556616376997776">Gizli moddasınız</translation>
+<translation id="5832813618714645810">Kişi</translation>
+<translation id="7171000599584840888">Kişi Ekle...</translation>
+<translation id="2005199804247617997">Diğer kişiler</translation>
+<translation id="2935225303485967257">Kişileri yönet</translation>
+<translation id="8966809848145604011">Diğer Kişiler</translation>
+<translation id="688280436658139163">Kişileri Yönet</translation>
+<translation id="4133080584509825342"><ph name="PROFILE_NAME"/> kişisini düzenleyin</translation>
+<translation id="4848862725510532982"><ph name="PROFILE_NAME"/>, <ph name="USERNAME"/> kişisini düzenleyin</translation>
+<translation id="4536111748245793305">Kişi <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Kişi ekle...</translation>
+<translation id="2254158488150713536">Devam etmek için Tamam'ı tıklayın, ardından Kişi Ekle'yi tıklayıp e-posta adresiniz için yeni profil oluşturun.</translation>
+<translation id="1725743343613175327">Devam etmek için Tamam'ı tıklayın, ardından <ph name="DOMAIN"/> e-posta adresiniz için yeni profil oluşturmak üzere Kişi Ekle'yi tıklayın.</translation>
+<translation id="6921634551681321094">Kişi ekle</translation>
+<translation id="4904061654709986277">Kişi Ekle</translation>
+<translation id="6114945161119872228">Bu kişiyi kaldır</translation>
+<translation id="769308100792069196">Denetlenen Kişi Ekle</translation>
+<translation id="8006143138282906848">Bu Kullanıcıyı Kaldır</translation>
+<translation id="6912187023601892621">Denetlenen Kullanıcı Ekle</translation>
+<translation id="8086119151297127544">Lütfen bir kişiyi kaldırmadan önce profilinizin kilidini açın.</translation>
+<translation id="7805701378418968629">Lütfen bir kişiyi eklemeden önce profilinizin kilidini açın.</translation>
+<translation id="6315812488257290136">Kişiler</translation>
+<translation id="3707212204259470604">Diğer kişileri yönet</translation>
+<translation id="5840822070878669614">Brave Web Mağazası'nı açın</translation>
+<translation id="383007806262310953">Yer işaretleri çubuğunu göster</translation>
+<translation id="2890280714162339872">Geçerli gizli oturum: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Geçerli gizli oturum: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Geçerli gizli oturum: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Mevcut gizli oturum: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> ve diğerleri</translation>
+<translation id="8648684608605749476">Gizli modda üçüncü taraf çerezleri engelle</translation>
+<translation id="2199515977216775204">Gizli moddayken siteler, örneğin reklamları kişiselleştirmek amacıyla farklı sitelerde tarama etkinliğinizi görmek için çerezlerinizi kullanamaz. Bazı sitelerdeki özellikler bozulabilir.</translation>
+<translation id="6105125042109106861">Gizli modda üçüncü taraf çerezler engellenir</translation>
+<translation id="1281501490173223206">Yalnızca geçerli gizli oturum</translation>
+<translation id="5566692924079383101">Bu istisna, mevcut Gizli oturumdan çıktığınızda otomatik olarak kaldırılacak</translation>
+<translation id="6906406176003824042">Kişiyi düzenleyin</translation>
+<translation id="9063160602596686558">Kullanım istatistiklerini ve kilitlenme raporlarını Brave'a otomatik olarak gönderir</translation>
+<translation id="3860292630623580294">(Gizli mod)</translation>
+<translation id="4854477725773269949">Gizli modda izin ver</translation>
+<translation id="6436164536244065364">Brave Web Mağazası'nda göster</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Mağazası<ph name="END_LINK"/>'nda uzantılar ve temalar bulun</translation>
+<translation id="6336451774241870485">Yeni gizli sekme</translation>
+<translation id="6610147964972079463">Gizli sekmeleri kapat</translation>
+<translation id="5186185447130319458">Gizli mod</translation>
+<translation id="4933782374919065856">Sorularınız mı var? Profilinizi denetleyen kişiyle iletişime geçin.</translation>
+</translationbundle>

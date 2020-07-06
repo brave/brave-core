@@ -56,11 +56,11 @@
     "description": "Message for the scripts blocked row label"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Spårare och annonser blockade (aggressivt)",
+    "message": "Spårare och annonser blockerade (aggressivt)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Spårare och annonser blockade (standard)",
+    "message": "Spårare och annonser blockerade (standard)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
@@ -91,16 +91,16 @@
     "message": "Alla kakor tillåts",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Sajtkorsande försök att ta fingeravtryck spärras",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Försök att ta fingeravtryck hindrade",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Alla försök att ta fingeravtryck tillåts",
+  "allowAllFingerprinting": {
+    "message": "Tillåt att alla fingeravtryck tas",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="or">
+<translation id="6744651634043798597">{COUNT,plural, =0{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ସବୁ ଖୋଲନ୍ତୁ}=1{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}other{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ସବୁ (#) ଖୋଲନ୍ତୁ}}</translation>
+<translation id="2431625704210501303">&amp;ଇନ୍‌କଗ୍‌ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ</translation>
+<translation id="4620367155626060530">&amp;ବୁକ୍‌ମାର୍କ ବାର୍ ଦେଖାନ୍ତୁ</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{ସବୁ &amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}=1{&amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}other{ସବୁ (#) &amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}}</translation>
+<translation id="1985165269306590797">&amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ</translation>
+<translation id="4680518314108745448">&amp;ବୁକ୍‌ମାର୍କ ବାର୍ ଦେଖାନ୍ତୁ</translation>
+<translation id="642436385689435488">ସବୁ ଇନ୍‌କଗ୍‌ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ</translation>
+<translation id="5463021359602611602">ଗୁପ୍ତ ୱ୍ଵିଣ୍ଡୋରେ ଖୋଲିଛି</translation>
+<translation id="1850357845349976573">{0,plural, =1{ଇନ୍‌କଗ୍ନିଟୋ}other{# ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋଗୁଡ଼ିକ ଖୋଲନ୍ତୁ}}</translation>
+<translation id="37784332082579802">{0,plural, =1{ଇନ୍‌କଗ୍ନିଟୋ}other{ଇନ୍‌କଗ୍ନିଟୋ (#)}}</translation>
+<translation id="5070556616376997776">ଆପଣ ଇନ୍‍କଗ୍ନିଟୋ ମୋଡ୍‌ରେ ଅଛନ୍ତି</translation>
+<translation id="5832813618714645810">ଲୋକମାନେ</translation>
+<translation id="7171000599584840888">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ...</translation>
+<translation id="2005199804247617997">ଅନ୍ୟ ବ୍ୟକ୍ତି</translation>
+<translation id="2935225303485967257">ଲୋକମାନଙ୍କୁ ପରିଚାଳନା କରନ୍ତୁ</translation>
+<translation id="8966809848145604011">ଅନ୍ୟ ବ୍ୟକ୍ତି</translation>
+<translation id="688280436658139163">ଲୋକମାନଙ୍କୁ ପରିଚାଳନା କରନ୍ତୁ</translation>
+<translation id="4133080584509825342">ବ୍ୟକ୍ତିଙ୍କର, <ph name="PROFILE_NAME"/> ଏଡିଟ୍‍ କରନ୍ତୁ</translation>
+<translation id="4848862725510532982">ବ୍ୟକ୍ତିର, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/> ଏଡ଼ିଟ୍‍ କରନ୍ତୁ</translation>
+<translation id="4536111748245793305">ବ୍ୟକ୍ତି <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ...</translation>
+<translation id="2254158488150713536">ଜାରି ରଖିବାକୁ 'OK'ରେ କ୍ଲିକ୍ କରନ୍ତୁ ତା'ପରେ ଆପଣଙ୍କର ଇମେଲ୍ ଠିକଣା ପାଇଁ ଏକ ନୂତନ ପ୍ରୋଫାଇଲ୍ ତିଆରି କରିବା ନିମନ୍ତେ 'ବ୍ୟକ୍ତି ଯୋଗ କରନ୍ତୁ'ରେ କ୍ଲିକ୍ କରନ୍ତୁ।</translation>
+<translation id="1725743343613175327">ଜାରି ରଖିବାକୁ 'OK'ରେ କ୍ଲିକ୍ କରନ୍ତୁ ତା'ପରେ ଆପଣଙ୍କର <ph name="DOMAIN"/> ଇମେଲ୍ ଠିକଣା ପାଇଁ ଏକ ନୂତନ ପ୍ରୋଫାଇଲ୍ ତିଆରି କରିବା ନିମନ୍ତେ 'ବ୍ୟକ୍ତି ଯୋଗ କରନ୍ତୁ'ରେ କ୍ଲିକ୍ କରନ୍ତୁ</translation>
+<translation id="6921634551681321094">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
+<translation id="4904061654709986277">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
+<translation id="6114945161119872228">ଏହି ବ୍ୟକ୍ତିଙ୍କୁ କାଢ଼ନ୍ତୁ</translation>
+<translation id="769308100792069196">ପର୍ଯ୍ୟବେକ୍ଷିତ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
+<translation id="8006143138282906848">ଏହି ଉପଯୋଗକର୍ତ୍ତାଙ୍କୁ କାଢ଼ନ୍ତୁ</translation>
+<translation id="6912187023601892621">ପର୍ଯ୍ୟବେକ୍ଷିତ ଉପଯୋଗକର୍ତ୍ତା ଯୋଗ କରନ୍ତୁ</translation>
+<translation id="8086119151297127544">ଜଣେ ବ୍ୟକ୍ତିଙ୍କୁ କାଢ଼ି ଦେବା ପୂର୍ବରୁ ଦୟାକରି ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍‍କୁ ଅନ୍‌ଲକ୍‍ କରନ୍ତୁ।</translation>
+<translation id="7805701378418968629">ଜଣେ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଗ କରିବା ପୂର୍ବରୁ ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍‌ ଅନ୍‌ଲକ୍‌ କରନ୍ତୁ।</translation>
+<translation id="6315812488257290136">ଲୋକମାନେ</translation>
+<translation id="3707212204259470604">ଅନ୍ୟ ଲୋକମାନଙ୍କୁ ପରିଚାଳନା କରନ୍ତୁ</translation>
+<translation id="5840822070878669614">Brave ୱେବ୍ ଷ୍ଟୋର୍ ଖୋଲନ୍ତୁ</translation>
+<translation id="383007806262310953">ବୁକ୍‌ମାର୍କଗୁଡ଼ିକର ବାର୍‌ ଦେଖାନ୍ତୁ</translation>
+<translation id="2890280714162339872">ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧି: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧି: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧି: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧି: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> ଏବଂ ଆହୁରି ଅନେକ କିଛି</translation>
+<translation id="8648684608605749476">ଇନକଗ୍ନିଟୋ ମୋଡରେ ତୃତୀୟ-ପକ୍ଷ କୁକୀଗୁଡ଼ିକୁ ବ୍ଲକ୍ କରନ୍ତୁ</translation>
+<translation id="2199515977216775204">ଇନକଗ୍ନିଟୋ ମୋଡରେ ଥିବା ସମୟରେ, ବିଜ୍ଞାପନଗୁଡ଼ିକୁ ବ୍ୟକ୍ତିଗତକୃତ କରିବା ପରି ବିଭିନ୍ନ ସାଇଟରେ ଆପଣଙ୍କ ବ୍ରାଉଜିଂ କାର୍ଯ୍ୟକଳାପକୁ ଦେଖିବା ନିମନ୍ତେ ସାଇଟଗୁଡ଼ିକ କୁକୀଗୁଡ଼ିକୁ ବ୍ୟବହାର କରିପାରିବ ନାହିଁ। କିଛି ସାଇଟରେ ଫିଚରଗୁଡ଼ିକ ଠିକ୍ ଭାବେ କାମ କରିନପାରେ।</translation>
+<translation id="6105125042109106861">ଇନକଗ୍ନିଟୋ ମୋଡରେ ତୃତୀୟ-ପକ୍ଷ କୁକୀଗୁଡ଼ିକ ବ୍ଲକ୍ କରାଯାଇଛି</translation>
+<translation id="1281501490173223206">କେବଳ ବର୍ତ୍ତମାନର ଇନ୍‌କଗ୍ନିଟୋ ସମୟ ଅବଧି</translation>
+<translation id="5566692924079383101">ଆପଣ ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧିରୁ ବାହାରିବା ପରେ ଏହି ବ୍ୟତିକ୍ରମକୁ ସ୍ୱଚାଳିତ ଭାବେ କାଢ଼ି ଦିଆଯିବ</translation>
+<translation id="6906406176003824042">ବ୍ୟକ୍ତିଙ୍କର ସୂଚନା ଏଡିଟ୍‍ କରନ୍ତୁ</translation>
+<translation id="9063160602596686558">ସ୍ୱଚାଳିତରୂପେ Braveକୁ ବ୍ୟବହାରର ପରିସଂଖ୍ୟାନ ଏବଂ କ୍ରାସ୍ ରିପୋର୍ଟ ପଠାଏ</translation>
+<translation id="3860292630623580294">(ଇନ୍‌କଗ୍ନିଟୋ)</translation>
+<translation id="4854477725773269949">ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ରେ ରହିବାକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
+<translation id="6436164536244065364">Brave ୱେବ୍‌ ଷ୍ଟୋର୍‌ରେ ଦେଖନ୍ତୁ</translation>
+<translation id="8808478386290700967">Brave ୱେବ୍ ଷ୍ଟୋର୍</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave ୱେବ୍ ଷ୍ଟୋର୍‌<ph name="END_LINK"/>ରେ ଏକ୍ସଟେନ୍‌ସନ୍ ଏବଂ ଥିମ୍ ଖୋଜନ୍ତୁ</translation>
+<translation id="6336451774241870485">ନୂଆ ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍</translation>
+<translation id="6610147964972079463">ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍ସ ବନ୍ଦ କରନ୍ତୁ</translation>
+<translation id="5186185447130319458">ଇନ୍‌କଗ୍ନିଟୋ</translation>
+<translation id="4933782374919065856">ପ୍ରଶ୍ନ ଅଛି? ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍ ପର୍ଯ୍ୟବେକ୍ଷଣ କରୁଥିବା ବ୍ୟକ୍ତିଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ</translation>
+</translationbundle>

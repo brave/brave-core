@@ -26,7 +26,6 @@
 <translation id="5787084571334399599">防止浏览器使用指纹识别</translation>
 <translation id="7459000603787995422">退出时关闭标签页</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
-<translation id="4339730410920731698">广告和追踪器已拦截</translation>
 <translation id="6761596877474675418">数据已保存</translation>
 <translation id="3034562645284925177">预计节省时间</translation>
 <translation id="6572660632052512096">桌面模式</translation>
@@ -55,25 +54,20 @@
 <translation id="8281886186245836920">跳过</translation>
 <translation id="316832010181763471">搜索引擎启动过程</translation>
 <translation id="986879628471635371">对启动过程进行故障排除</translation>
-<translation id="1078265935778232285">欢迎使用 Brave 浏览器</translation>
-<translation id="8867511707771147258">选择您的默认搜索引擎</translation>
+<translation id="4428458837269935199">要获得更私密的搜索体验，请尝试 DuckDuckGo。</translation>
+<translation id="5317780077021120954">保存</translation>
 <translation id="7053983685419859001">拦截</translation>
 <translation id="5806601733251372221">Brave 屏蔽</translation>
 <translation id="2880356288762235261">侵犯隐私的广告和跟踪器，因此您无需被关注即可浏览。</translation>
 <translation id="3333887201479867589">Brave 奖励</translation>
-<translation id="1789842587755069541">以查看尊重隐私的广告。用它们来支持您喜欢的网站和创建者。</translation>
 <translation id="821707262661492716">以查看尊重隐私的广告。</translation>
-<translation id="7396091471805549630">启用"Rewards"，即表示您同意</translation>
 <translation id="4281844954008187215">服务条款</translation>
 <translation id="6871397658902960384">开始浏览</translation>
 <translation id="454386012157232640">我没看到广告</translation>
 <translation id="1448877943847791441">Brave 会在以下月份展示您的第一个广告：</translation>
-<translation id="7414844564462429821">要查看“Brave 奖励”的广告，请确保允许 Brave 向您显示通知。</translation>
 <translation id="6511854390690723657">这是您的第一个 Brave 广告。点按以了解更多信息。</translation>
 <translation id="4930714375720679147">开启</translation>
 <translation id="2453860139492968684">完成</translation>
-<translation id="8906569594072556752">欢迎参观</translation>
-<translation id="7808431604191267817">重新启动“Welcome Tour”不会影响任何现有设置。</translation>
 <translation id="2359808026110333948">继续</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="3570367516044491911">设置为默认浏览器</translation>
@@ -171,21 +165,18 @@
 <translation id="3492491948683276944">设定每月酬谢费</translation>
 <translation id="4162066325465825185">抱歉，目前好象无法在您的设备上使用 Brave Rewards 功能。</translation>
 <translation id="8038539967102225446">Brave 的广告在这里！</translation>
-<translation id="230829157901335313">您的计算机上的时钟上设置的时间或时区可能不正确。请检查您的时钟设置。</translation>
 <translation id="8985635554450124959">无法设置同步</translation>
 <translation id="222883304157347087">（此设备）</translation>
 <translation id="8193724030871339658">链上的其他设备</translation>
 <translation id="279635009973773843">加载设备...</translation>
 <translation id="2569646144216067185">字数：<ph name="WORD_COUNT">和 %1$d</ph></translation>
 <translation id="4282642752844565114">字数不正确</translation>
-<translation id="6779408765480516895">出问题了，看来您的请求已超时。</translation>
 <translation id="3149880132460839085">Brave 同步</translation>
 <translation id="3680755684186855422">Brave 同步使您能够在您的各种设备上的 Brave 浏览器之间私密同步书签数据。</translation>
 <translation id="3735228155296883311">只需扫描您在另一台设备上创建的同步链中的代码即可。或开始一个新的同步链。</translation>
 <translation id="4690880825349994619">在使用同步设备时，打开 Brave 设置并转到设备和同步。选择“添加设备”并扫描屏幕上显示的 QR 码。</translation>
 <translation id="5241263629636958324">已复制到剪贴板</translation>
 <translation id="5817918615728894473">配对</translation>
-<translation id="9154490620151093733">删除请求已发送。设备很快会被移除。</translation>
 <translation id="2004365171440701679">移除此设备</translation>
 <translation id="1178128181015923849">确定要删除设备 '<ph name="DEVICE_NAME">和%1$s</ph>'？</translation>
 <translation id="7745082336226088126">扫描或输入同步码</translation>
@@ -197,7 +188,6 @@
 <translation id="2590683710114839102">在您的电脑上转到 Brave 设置、同步。选择“输入同步链代码”。</translation>
 <translation id="65315202420929965">扫描此同步代码</translation>
 <translation id="6764016175302339802">将该代码用作密码。如果他人获取了该信息，那他们就可以读取和修改您已同步的数据。</translation>
-<translation id="544873101641618162">正在加载数据...</translation>
 <translation id="6707003343517029414">在目标计算机上，导航至设置中的“Brave Sync”然后单击“我有一个同步代码”按钮。\n输入下方显示的同步链码字。</translation>
 <translation id="2731921493694251495">输入同步链代码</translation>
 <translation id="2175927920773552910">二维码</translation>
@@ -211,10 +201,7 @@
 <translation id="6270614677029463366">在使用同步设备时，打开 Brave 设置并转到设备和同步。选择“添加设备”，然后选择“改为显示码字”。</translation>
 <translation id="8131740175452115882">确认</translation>
 <translation id="4973653569293835178">我会用我的摄像头...</translation>
-<translation id="3998827900918661986">Android 设备</translation>
 <translation id="326454632686131209">同步设备</translation>
-<translation id="3082265116777145081">添加设备名称</translation>
-<translation id="9024091168371687561">输入此设备的可选名称</translation>
 <translation id="327726072512457161">设置退出</translation>
 <translation id="8050847734948770789">启用 Brave 奖励</translation>
 <translation id="9187185473011056079">算我一个！</translation>

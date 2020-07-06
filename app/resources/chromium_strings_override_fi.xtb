@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="fi">
+<translation id="6134859571175647580">Varoitus: Brave ei voi estää laajennuksia tallentamasta selaushistoriaasi. Poista tämä valinta, jos haluat poistaa tämän laajennuksen käytöstä incognito-tilassa.</translation>
+<translation id="1448049584457347995">Paransimme Bravein turvallisuutta poistamalla käytöstä sovelluksia, joita ei löydy kohteesta <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja jotka on voitu lisätä ilman lupaasi.</translation>
+<translation id="8848045066928358658">Paransimme Bravein turvallisuutta poistamalla käytöstä sovelluksia, joita <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ei tarjoa ja jotka on voitu lisätä ilman lupaasi.</translation>
+<translation id="669092380621816981">Käyttäjän selaustiedot poistetaan tältä laitteelta. Jos haluat palauttaa tiedot myöhemmin, kirjaudu Braveiin käyttäjänä <ph name="USER_EMAIL"/>.</translation>
+<translation id="4624945300945265642">Avaa linkki Bravein inco&amp;gnito-ikkunassa</translation>
+<translation id="6554952862405000915">Avaa linkki Bravein inco&amp;gnito-ikkunassa</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen.}=1{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen. Incognito-ikkunaasi ei avata uudelleen.}other{Uusi Brave-päivitys on saatavilla, ja se otetaan käyttöön uudelleenkäynnistyksen jälkeen. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön.}=1{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. Incognito-ikkunaasi ei avata uudelleen.}other{Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön. # incognito-ikkunaasi ei avata uudelleen.}}</translation>
+</translationbundle>

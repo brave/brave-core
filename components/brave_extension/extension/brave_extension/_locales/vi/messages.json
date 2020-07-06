@@ -91,16 +91,16 @@
     "message": "Đã cho phép toàn bộ cookie",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Đã chặn theo dõi dấu vân tay trên toàn website",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Đã chặn các ý định theo dõi dấu vân tay",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Đã cho phép mọi ý định theo dõi dấu vân tay",
+  "allowAllFingerprinting": {
+    "message": "Cho phép tất cả vân tay",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

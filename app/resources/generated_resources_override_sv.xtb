@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="sv">
+<translation id="6744651634043798597">{COUNT,plural, =0{Öppna alla i ett &amp;inkognitofönster}=1{Öppna i ett &amp;inkognitofönster}other{Öppna alla (#) i ett &amp;inkognitofönster}}</translation>
+<translation id="2431625704210501303">Öppna i &amp;inkognitofönster</translation>
+<translation id="4620367155626060530">&amp;Visa bokmärkesfältet</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Öppna alla i ett &amp;inkognitofönster}=1{Öppna i ett &amp;inkognitofönster}other{Öppna alla (#) i ett &amp;inkognitofönster}}</translation>
+<translation id="1985165269306590797">Öppna i &amp;inkognitofönster</translation>
+<translation id="4680518314108745448">&amp;Visa bokmärkesfältet</translation>
+<translation id="642436385689435488">Öppna alla i ett inkognitofönster</translation>
+<translation id="5463021359602611602">Öppna i inkognitofönster</translation>
+<translation id="1850357845349976573">{0,plural, =1{Inkognito}other{# öppna inkognitofönster}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Inkognito}other{Inkognito (#)}}</translation>
+<translation id="5070556616376997776">Du använder inkognitoläget</translation>
+<translation id="5832813618714645810">Personer</translation>
+<translation id="7171000599584840888">Lägg till person …</translation>
+<translation id="2005199804247617997">Andra personer</translation>
+<translation id="2935225303485967257">Hantera personer</translation>
+<translation id="8966809848145604011">Andra personer</translation>
+<translation id="688280436658139163">Hantera personer</translation>
+<translation id="4133080584509825342">Redigera personen <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Redigera personen <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Person <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Lägg till person …</translation>
+<translation id="2254158488150713536">Fortsätt genom att klicka på OK. Skapa sedan en ny profil för din e-postadress genom att klicka på Lägg till person.</translation>
+<translation id="1725743343613175327">Fortsätt genom att klicka på OK. Skapa sedan en ny profil för e-postadressen på <ph name="DOMAIN"/> genom att klicka på Lägg till person.</translation>
+<translation id="6921634551681321094">Lägg till person</translation>
+<translation id="4904061654709986277">Lägg till person</translation>
+<translation id="6114945161119872228">Ta bort personen</translation>
+<translation id="769308100792069196">Lägg till kontrollerad person</translation>
+<translation id="8006143138282906848">Ta bort denna användare</translation>
+<translation id="6912187023601892621">Lägg till kontrollerad användare</translation>
+<translation id="8086119151297127544">Du måste låsa upp din profil innan du kan ta bort en person.</translation>
+<translation id="7805701378418968629">Du måste låsa upp din profil innan du kan lägga till en person.</translation>
+<translation id="6315812488257290136">Personer</translation>
+<translation id="3707212204259470604">Hantera andra personer</translation>
+<translation id="5840822070878669614">Öppna Brave Web Store</translation>
+<translation id="383007806262310953">Visa bokmärkesfältet</translation>
+<translation id="2890280714162339872">Nuvarande inkognitosession: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Nuvarande inkognitosession: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Nuvarande inkognitosession: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Nuvarande inkognitosession: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> med flera ändringar</translation>
+<translation id="8648684608605749476">Blockera cookies från tredje part med inkognitoläget</translation>
+<translation id="2199515977216775204">I inkognitoläget får inte webbplatser se din webbaktivitet på olika webbplatser med hjälp av cookies och till exempel anpassa annonser. Funktioner på vissa webbplatser kan sluta fungera.</translation>
+<translation id="6105125042109106861">Cookies från tredje part blockeras i inkognitoläge</translation>
+<translation id="1281501490173223206">Endast nuvarande inkognitosession</translation>
+<translation id="5566692924079383101">Detta undantag tas bort automatiskt när du stänger den aktuella inkognitosessionen</translation>
+<translation id="6906406176003824042">Redigera person</translation>
+<translation id="9063160602596686558">Skickar användningsstatistik och felrapporter till Brave automatiskt</translation>
+<translation id="3860292630623580294">(Inkognito)</translation>
+<translation id="4854477725773269949">Tillåt i inkognito</translation>
+<translation id="6436164536244065364">Visa i Brave Web Store</translation>
+<translation id="8808478386290700967">Brave webbshop</translation>
+<translation id="38046578254905003">Hitta tillägg och teman i <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
+<translation id="6336451774241870485">Ny inkognitoflik</translation>
+<translation id="6610147964972079463">Stäng inkognitoflikar</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="4933782374919065856">Frågor? Kontakta den som kontrollerar profilen.</translation>
+</translationbundle>

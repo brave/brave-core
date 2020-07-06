@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+
+  <if expr="use_titlecase">
+    </if>
+  <if expr="not use_titlecase">
+    </if>
+  <if expr="use_titlecase">
+    <then>
+      </then>
+    <else>
+      </else>
+  </if>
+  <if expr="is_ios">
+    </if>
+  <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="The button text contents to suggest pedal action, launch private.">
+    Open Private Window
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, launch private.">
+    Open new Brave private window
+  </message>
+
+  </grit-part>

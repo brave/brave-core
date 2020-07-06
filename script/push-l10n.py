@@ -7,7 +7,9 @@ from lib.transifex import (check_for_chromium_upgrade,
                            upload_source_strings_desc,
                            check_missing_source_grd_strings_to_transifex,
                            upload_missing_json_translations_to_transifex,
-                           upload_source_files_to_transifex)
+                           upload_source_files_to_transifex,
+                           should_use_transifex)
+from lib.grd_string_replacements import get_override_file_path
 
 
 BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -37,6 +39,19 @@ def main():
     source_string_path = os.path.join(BRAVE_SOURCE_ROOT,
                                       args.source_string_path[0])
     filename = os.path.basename(source_string_path).split('.')[0]
+    if not should_use_transifex(source_string_path, filename):
+        source_string_path = get_override_file_path(source_string_path)
+        filename = os.path.basename(source_string_path).split('.')[0]
+        # This check is needed because some files that we process have no replacements needed
+        # so in that case we don't even put an override file in Transifex.
+        if not os.path.exists(source_string_path):
+            print'Skipping locally handled because not present: ', source_string_path, 'filename: ', filename
+            return
+        print'Handled locally, sending only overrides to Transifex: ', source_string_path, 'filename: ', filename
+        upload_source_files_to_transifex(source_string_path, filename)
+        return
+
+    print '[transifex]: ', source_string_path
     upload_source_files_to_transifex(source_string_path, filename)
     ext = os.path.splitext(source_string_path)[1]
     if ext == '.grd':
