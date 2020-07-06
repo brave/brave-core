@@ -238,7 +238,11 @@
     <div slot="body">
       <div class="qr-viewer">
         <template is="dom-if" if="[[qrCodeImageUrl_]]">
-            <img class="qr-image" src="[[qrCodeImageUrl_]]">
+            <img
+              class="qr-image"
+              src="[[qrCodeImageUrl_]]"
+              alt="$i18n{braveSyncQRCodeAlt}"
+            >
         </template>
         <template is="dom-if" if="[[!qrCodeImageUrl_]]">
           <p>

@@ -514,6 +514,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_BRAVE_SYNC_COPIED_TEXT" desc="The success state telling the user that a secret code was copied to the clipboard">
         Copied!
       </message>
+      <message name="IDS_SETTINGS_BRAVE_SYNC_QR_IMAGE_ALT" desc="The description of the QR image, for accessibility and screen readers.">
+        A QR code to be scanned with a mobile device in order to transmit your sync code
+      </message>
       <message name="IDS_SETTINGS_BRAVE_SYNC_QR_ERROR" desc="The message to be displayed when there is an error generating a QR code of the sync password">
         There was an error displaying the QR code, please refresh and try again.
       </message>
