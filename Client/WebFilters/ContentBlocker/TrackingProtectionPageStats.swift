@@ -53,7 +53,7 @@ enum TPStatsResourceType: String {
 
 class TPStatsBlocklistChecker {
     static let shared = TPStatsBlocklistChecker()
-    private let adblockSerialQueue = DispatchQueue(label: "com.brave.adblock-dispatch-queue")
+    private let adblockSerialQueue = AdBlockStats.adblockSerialQueue
 
     func isBlocked(request: URLRequest, domain: Domain, resourceType: TPStatsResourceType? = nil) -> Deferred<BlocklistName?> {
         let deferred = Deferred<BlocklistName?>()
