@@ -29,8 +29,7 @@ constexpr uint32_t kReadBufferSize = 32768;
 std::string GetDistilledPageResources() {
   return "<style id=\"brave_speedreader_style\">" +
          ui::ResourceBundle::GetSharedInstance()
-             .GetRawDataResource(IDR_SPEEDREADER_STYLE_DESKTOP)
-             .as_string() +
+             .LoadDataResourceString(IDR_SPEEDREADER_STYLE_DESKTOP) +
          "</style>";
 }
 
