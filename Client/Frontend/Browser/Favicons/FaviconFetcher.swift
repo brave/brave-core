@@ -258,7 +258,7 @@ class FaviconFetcher {
                 downloadIcon(url: url, addingToDatabase: false) { [weak self] image in
                     guard let self = self else { return }
                     if let image = image {
-                        self.isIconBackgroundTransparentAroundEdges(image) { isTransparent in
+                        Self.isIconBackgroundTransparentAroundEdges(image) { isTransparent in
                             completion(self.url, FaviconAttributes(image: image, includePadding: isTransparent))
                         }
                     } else {
@@ -410,12 +410,21 @@ class FaviconFetcher {
     
     /// Determines if the downloaded image should be padded because its edges
     /// are for the most part transparent
-    private func isIconBackgroundTransparentAroundEdges(_ icon: UIImage, completion: @escaping (_ isTransparent: Bool) -> Void) {
+    static func isIconBackgroundTransparentAroundEdges(_ icon: UIImage, completion: @escaping (_ isTransparent: Bool) -> Void) {
+        if icon.size.width.isZero || icon.size.height.isZero {
+            DispatchQueue.main.async {
+                completion(false)
+            }
+            return
+        }
         DispatchQueue.global(qos: .utility).async {
             guard let cgImage = icon.createScaled(CGSize(width: 48, height: 48)).cgImage else {
-                completion(false)
+                DispatchQueue.main.async {
+                    completion(false)
+                }
                 return
             }
+            let iconSize = CGSize(width: cgImage.width, height: cgImage.height)
             let alphaInfo = cgImage.alphaInfo
             let hasAlphaChannel = alphaInfo == .first || alphaInfo == .last ||
                 alphaInfo == .premultipliedFirst || alphaInfo == .premultipliedLast
@@ -429,7 +438,7 @@ class FaviconFetcher {
                     // are transparent and the image should be padded slightly
                     var score: Int = 0
                     func updateScore(x: Int, y: Int) {
-                        let location = ((Int(icon.size.width) * y) + x) * 4
+                        let location = ((Int(iconSize.width) * y) + x) * 4
                         guard location + 3 < length else { return }
                         let alpha = data[location + 3]
                         if alpha == 255 {
@@ -438,24 +447,28 @@ class FaviconFetcher {
                             score += 1
                         }
                     }
-                    for x in 0..<Int(icon.size.width) {
+                    for x in 0..<Int(iconSize.width) {
                         updateScore(x: x, y: 0)
                     }
-                    for x in 0..<Int(icon.size.width) {
-                        updateScore(x: x, y: Int(icon.size.height))
+                    for x in 0..<Int(iconSize.width) {
+                        updateScore(x: x, y: Int(iconSize.height))
                     }
                     // We've already scanned the first and last pixel during
                     // top/bottom pass
-                    for y in 1..<Int(icon.size.height)-1 {
+                    for y in 1..<Int(iconSize.height)-1 {
                         updateScore(x: 0, y: y)
                     }
-                    for y in 1..<Int(icon.size.height)-1 {
-                        updateScore(x: Int(icon.size.width), y: y)
+                    for y in 1..<Int(iconSize.height)-1 {
+                        updateScore(x: Int(iconSize.width), y: y)
                     }
-                    completion(score > 0)
+                    DispatchQueue.main.async {
+                        completion(score > 0)
+                    }
                 }
             } else {
-                completion(false)
+                DispatchQueue.main.async {
+                    completion(false)
+                }
             }
         }
     }
