@@ -106,14 +106,7 @@ void PerfPredictorTabHelper::RecordSavings() {
 
       if (bandwidth_tracker_) {
         bandwidth_tracker_->RecordSavings(savings);
-        int tabId = 0;
-        TabAndroid* tab = TabAndroid::FromWebContents(web_contents());
-        DCHECK(tab);
-        if (tab) {
-          tabId = tab->GetAndroidId();
-        }
-        // LOG(ERROR) << "NTP" << "Tab id : " << tabId;
-        chrome::android::BraveShieldsContentSettings::DispatchBlockedEvent(tabId, "data_saved", std::to_string(savings));
+        chrome::android::BraveShieldsContentSettings::DispatchSavedBandwidth(savings);
       }
     }
   }
