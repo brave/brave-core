@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.18](https://github.com/brave/brave-ios/releases/tag/v1.18)
+
+ - Implemented enhancments to new tab page and favourites overlay. ([#2578](https://github.com/brave/brave-ios/issues/2578))
+ - Implemented enhancments to favorites to use fallback monogram letters instead of low-resoltuion icons. ([#2579](https://github.com/brave/brave-ios/issues/2579))
+ - Fixed an issue where favorites icon mismatch when they are reordered. ([#2099](https://github.com/brave/brave-ios/issues/2099))
+ - Fixed new tab page from loading new images when swithcing between tabs. ([#2071](https://github.com/brave/brave-ios/issues/2071))
+ - Fixed fuzzy/low resolution favicons for favorites. ([#528](https://github.com/brave/brave-ios/issues/528)) 
+
 ## [1.17](https://github.com/brave/brave-ios/releases/tag/v1.17)
 
  - Implemented super referral improvements. ([#2539](https://github.com/brave/brave-ios/issues/2539))
