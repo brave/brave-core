@@ -57,6 +57,10 @@ Polymer({
       type: Boolean,
       value: false
     },
+    qrCodeImageUrl_: {
+      type: String,
+      value: null
+    },
   },
 
   observers: [
@@ -115,9 +119,11 @@ Polymer({
     if (!this.syncCode || this.codeType !== 'qr') {
       return
     }
-    const data = await this.syncBrowserProxy_.getQRCode(this.syncCode)
-    this.$$('#qrCode').innerText = data
-    // TODO(petemill): generate a canvas / image
+    try {
+      this.qrCodeImageUrl_ = await this.syncBrowserProxy_.getQRCode(this.syncCode)
+    } catch (e) {
+      console.error('getQRCode failed', e)
+    }
   },
 
 });

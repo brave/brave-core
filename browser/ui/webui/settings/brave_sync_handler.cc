@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/bind.h"
-#include "base/containers/span.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
@@ -23,23 +22,10 @@
 #include "components/sync_device_info/device_info_tracker.h"
 #include "components/sync_device_info/local_device_info_provider.h"
 #include "content/public/browser/web_ui.h"
-
-namespace {
-
-std::string StrFromUint8Array(const std::vector<uint8_t>& arr) {
-  std::string result;
-  for (size_t i = 0; i < arr.size(); ++i) {
-    result += base::NumberToString(static_cast<unsigned char>(arr.at(i)));
-    if (i != arr.size() - 1) {
-      result += ", ";
-    }
-  }
-  return result;
-}
-
-}  // namespace
+#include "ui/base/webui/web_ui_util.h"
 
 BraveSyncHandler::BraveSyncHandler() : weak_ptr_factory_(this) {}
+
 BraveSyncHandler::~BraveSyncHandler() {}
 
 void BraveSyncHandler::RegisterMessages() {
@@ -117,25 +103,41 @@ void BraveSyncHandler::HandleGetQRCode(const base::ListValue* args) {
 
   std::vector<uint8_t> seed;
   if (!brave_sync::crypto::PassphraseToBytes32(sync_code->GetString(), &seed)) {
-    LOG(ERROR) << "invalid sync code";
-    ResolveJavascriptCallback(*callback_id, base::Value(false));
+    LOG(ERROR) << "invalid sync code when generating qr code";
+    RejectJavascriptCallback(*callback_id, base::Value("invalid sync code"));
     return;
   }
 
-  std::string seed_serialized = StrFromUint8Array(seed);
+  // QR code version 3 can only carry 84 bytes so we hex encode 32 bytes
+  // seed then we will have 64 bytes input data
+  const std::string sync_code_hex = base::HexEncode(seed.data(), seed.size());
 
-  // TODO(petemill): Use QRCodeGenerator
-  // const char* input_data_string = sync_code.c_str();
-  // auto input_data = base::span<const uint8_t>(
-  //         reinterpret_cast<const uint8_t*>(input_data_string),
-  //             strlen(input_data_string));
-  // // Generate QR code data
-  // uint8_t qr_data_buf[QRCode::kInputBytes];
-  // QRCodeGenerator generator;
-  // base::span<const uint8_t, QRCodeGenerator::kTotalSize> code =
-  //     generator.Generate(input_data);
-  ResolveJavascriptCallback(*callback_id, base::Value(seed_serialized));
-  // ResolveJavascriptCallback(*callback_id, base::Value(false));
+  base::Value callback_id_disconnect(callback_id->Clone());
+  base::Value callback_id_arg(callback_id->Clone());
+
+  qr_code_service_remote_ = qrcode_generator::LaunchQRCodeGeneratorService();
+  qr_code_service_remote_.set_disconnect_handler(
+      base::BindOnce(&BraveSyncHandler::OnCodeGeneratorResponse,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback_id_disconnect), nullptr));
+  qrcode_generator::mojom::QRCodeGeneratorService* generator =
+      qr_code_service_remote_.get();
+
+  qrcode_generator::mojom::GenerateQRCodeRequestPtr request =
+      qrcode_generator::mojom::GenerateQRCodeRequest::New();
+  request->data = sync_code_hex;
+  request->should_render = true;
+  request->render_dino = false;
+  request->render_module_style =
+      qrcode_generator::mojom::ModuleStyle::DEFAULT_SQUARES;
+  request->render_locator_style =
+      qrcode_generator::mojom::LocatorStyle::DEFAULT_SQUARE;
+
+  generator->GenerateQRCode(
+      std::move(request),
+      base::BindOnce(&BraveSyncHandler::OnCodeGeneratorResponse,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(callback_id_arg)));
 }
 
 void BraveSyncHandler::HandleSetSyncCode(const base::ListValue* args) {
@@ -240,4 +242,21 @@ base::Value BraveSyncHandler::GetSyncDeviceList() {
     device_list.Append(std::move(device_value));
   }
   return device_list;
+}
+
+void BraveSyncHandler::OnCodeGeneratorResponse(
+    base::Value callback_id,
+    const qrcode_generator::mojom::GenerateQRCodeResponsePtr response) {
+  if (!response || response->error_code !=
+                       qrcode_generator::mojom::QRCodeGeneratorError::NONE) {
+    VLOG(1) << "QR code generator failure: " << response->error_code;
+    ResolveJavascriptCallback(callback_id, base::Value(false));
+    return;
+  }
+
+  const std::string data_url = webui::GetBitmapDataUrl(response->bitmap);
+  VLOG(1) << "QR code data url: " << data_url;
+
+  qr_code_service_remote_.reset();
+  ResolveJavascriptCallback(callback_id, base::Value(data_url));
 }
