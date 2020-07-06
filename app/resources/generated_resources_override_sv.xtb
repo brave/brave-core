@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
+<translation id="658539216370629794">Öppna länk i inko&amp;gnitofönster</translation>
+<translation id="1432267168815937878">Öppna länk i inko&amp;gnitofönster</translation>
+<translation id="6516243500644829484">Nytt &amp;inkognitofönster</translation>
+<translation id="7973394300052703468">Nytt &amp;inkognitofönster</translation>
+<translation id="6395403722585816044">Laddades ned i inkognitoläge</translation>
+<translation id="203837651858678035">Vill du stänga inkognitoläget ändå?</translation>
+<translation id="7376221878517288144">Vill du avsluta inkognitoläget ändå?</translation>
+<translation id="871606814707918245">De flesta användarna blockerar aviseringar från den här webbplatsen</translation>
+<translation id="5053701565089446556">Inkognitotilläggsprogram: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Inkognitoprogram: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Fliken Inkognito: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Underram i inkognitoläge: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Inkognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave webbshop</translation>
+<translation id="8261378640211443080">Det här tillägget finns inte i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> och kan ha lagts till utan att du vet om det.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="4369414322596874629">Du kan surfa privat med ett inkognitofönster</translation>
+<translation id="3772947852642271642">Surfa utan att någon webbhistorik sparas med ett inkognitofönster</translation>
+<translation id="3871738366246972820">Delar du datorn med andra? Testa att öppna ett inkognitofönster.</translation>
+<translation id="5808622652939943719">Öppna ett inkognitofönster genom att klicka på menyn med tre punkter om du vill surfa privat</translation>
+<translation id="9079153198295609735">Skicka användningsstatistik och kraschrapporter till Brave automatiskt</translation>
+<translation id="8839398440242019256">Inte från Brave Web Store.</translation>
+<translation id="6945695820322143954">Det här tillägget bryter mot policyn för Brave Web Store.</translation>
+<translation id="1676595396635191120">Nytt inkognitofönster</translation>
+<translation id="5094764494104066239">Visa alltid bokmärkesfältet</translation>
+<translation id="4471385409549756595">Nytt inkognitofönster</translation>
+<translation id="4540437243849625078">Data på den här webbplatsen delas med en app utanför inkognitoläget.</translation>
+<translation id="1227836882233136433">Inaktivera inkognitoläget?</translation>
+<translation id="7618452966706304788">Vill du använda Touch ID med <ph name="APP_NAME"/> i inkognitoläget?</translation>
+<translation id="3098826269712097986">Inloggningsuppgifter sparas i Brave när du har avslutat inkognitoläget. Då kan du använda Touch ID på den här webbplatsen igen senare.</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="2579188629646253712">Avsluta inkognitoläget</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Öppna alla i ett &amp;inkognitofönster}=1{Öppna i ett &amp;inkognitofönster}other{Öppna alla (#) i ett &amp;inkognitofönster}}</translation>
 <translation id="2431625704210501303">Öppna i &amp;inkognitofönster</translation>
 <translation id="4620367155626060530">&amp;Visa bokmärkesfältet</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="4854477725773269949">Tillåt i inkognito</translation>
 <translation id="6436164536244065364">Visa i Brave Web Store</translation>
-<translation id="8808478386290700967">Brave webbshop</translation>
 <translation id="38046578254905003">Hitta tillägg och teman i <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Ny inkognitoflik</translation>
 <translation id="6610147964972079463">Stäng inkognitoflikar</translation>
-<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4933782374919065856">Frågor? Kontakta den som kontrollerar profilen.</translation>
 </translationbundle>

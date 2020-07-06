@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="kn">
+<translation id="658539216370629794">ಲಿಂಕ್‌ ಅನ್ನು ಅಜ್ಞಾ&amp;ತ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
+<translation id="1432267168815937878">ಅಜ್ಞಾ&amp;ತ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
+<translation id="6516243500644829484">ಹೊಸ &amp;ಅಜ್ಞಾತ ವಿಂಡೋ</translation>
+<translation id="7973394300052703468">ಹೊಸ &amp;ಅಜ್ಞಾತ ವಿಂಡೋ</translation>
+<translation id="6395403722585816044">ಅಜ್ಞಾತದಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="203837651858678035">ಹೇಗಾದರೂ ಅಜ್ಞಾತ ಮೋಡ್‌ ಅನ್ನು ಮುಚ್ಚುವುದೇ?</translation>
+<translation id="7376221878517288144">ಹೇಗಾದರೂ ಅಜ್ಞಾತ ಮೋಡ್‌ ಅನ್ನು ತ್ಯಜಿಸುವುದೇ?</translation>
+<translation id="871606814707918245">ಬಹುತೇಕ ಜನರು ಈ ಸೈಟ್‌ನ ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತಾರೆ</translation>
+<translation id="5053701565089446556">ಅದೃಶ್ಯ ವಿಸ್ತರಣೆ: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ಅದೃಶ್ಯ ಅಪ್ಲಿಕೇಶನ್: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">ಅದೃಶ್ಯ ಟ್ಯಾಬ್: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ಅದೃಶ್ಯ ಉಪಫ್ರೇಮ್: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ಅಜ್ಞಾತ ಪೋರ್ಟಲ್: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave ವೆಬ್‌ ಸ್ಟೋರ್</translation>
+<translation id="8261378640211443080">ಈ ವಿಸ್ತರಣೆಯನ್ನು <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ನಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡಲಾಗಿಲ್ಲ ಮತ್ತು ಇದು ನಿಮಗೆ ಅರಿವಿಲ್ಲದಂತೆ ಸೇರಿಸಿರಬಹುದು.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ಅದೃಶ್ಯ)</translation>
+<translation id="4369414322596874629">ಅದೃಶ್ಯ ವಿಂಡೋವನ್ನು ಬಳಸುವ ಮೂಲಕ ನೀವು ಖಾಸಗಿಯಾಗಿ ಬ್ರೌಸ್ ಮಾಡಬಹುದು</translation>
+<translation id="3772947852642271642">ಅದೃಶ್ಯ ವಿಂಡೋ ಮೂಲಕ ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸವನ್ನು ಉಳಿಸದೆಯೇ ವೆಬ್ ಬಳಸಿ</translation>
+<translation id="3871738366246972820">ಹಂಚಿದ ಕಂಪ್ಯೂಟರ್‌ ಬಳಸಲಾಗುತ್ತಿದೆಯೇ? ಅದೃಶ್ಯ ವಿಂಡೋವನ್ನು ತೆರೆಯಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="5808622652939943719">ಖಾಸಗಿಯಾಗಿ ಬ್ರೌಸ್ ಮಾಡಲು, ಅದೃಶ್ಯ ವಿಂಡೋವನ್ನು ತೆರೆಯಲು ಚುಕ್ಕೆಗಳ ಐಕಾನ್ ಮೆನು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
+<translation id="9079153198295609735">ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳನ್ನು ಮತ್ತು ಕ್ರಾಶ್ ವರದಿಗಳನ್ನು Brave ಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರವಾನಿಸು</translation>
+<translation id="8839398440242019256">Brave ವೆಬ್ ಸ್ಟೋರ್‌ನಿಂದ ಅಲ್ಲ.</translation>
+<translation id="6945695820322143954">ಈ ವಿಸ್ತರಣೆಯು Brave ವೆಬ್‌ ಸ್ಟೋರ್‌ನ ನೀತಿಯನ್ನು ಉಲ್ಲಂಘಿಸುತ್ತದೆ.</translation>
+<translation id="1676595396635191120">ಹೊಸ ಅದೃಶ್ಯ ವಿಂಡೋ</translation>
+<translation id="5094764494104066239">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್‌ ಪಟ್ಟಿ ತೋರಿಸು</translation>
+<translation id="4471385409549756595">ಹೊಸ &amp;ಅಜ್ಞಾತ ವಿಂಡೋ</translation>
+<translation id="4540437243849625078">ಈ ಸೈಟ್, ಅಜ್ಞಾತ ಮೋಡ್‌ಗೆ ಹೊರತಾಗಿರುವ ಅಪ್ಲಿಕೇಶನ್‌ನೊಂದಿಗೆ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳಲಿದೆ.</translation>
+<translation id="1227836882233136433">ಅದೃಶ್ಯ ಮೋಡ್‌‌ ತೊರೆಯುವುದೇ?</translation>
+<translation id="7618452966706304788">ನೀವು ಅಜ್ಞಾತ ಮೋಡ್‌ನಲ್ಲಿ <ph name="APP_NAME"/> ಜೊತೆಗೆ ಸ್ಪರ್ಶ ಐಡಿ ಅನ್ನು ಬಳಸಲು ಬಯಸುತ್ತೀರಾ?</translation>
+<translation id="3098826269712097986">ನೀವು ಅಜ್ಞಾತ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿದ ಬಳಿಕ, ಸೈನ್ ಇನ್ ಡೇಟಾವನ್ನು Brave ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ. ಇದು ನಂತರದಲ್ಲಿ ಈ ವೆಬ್‌ಸೈಟ್‌ನೊಂದಿಗೆ ಸ್ಪರ್ಶ ಐಡಿ ಅನ್ನು ಮತ್ತೊಮ್ಮೆ ಬಳಸಲು ನಿಮಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡುತ್ತದೆ.</translation>
+<translation id="5186185447130319458">ಅದೃಶ್ಯ</translation>
+<translation id="2579188629646253712">ಅದೃಶ್ಯ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ಎಲ್ಲವನ್ನು ತೆರೆಯಿರಿ}=1{&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}one{&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ಎಲ್ಲಾ (#) ಅನ್ನು ತೆರೆಯಿರಿ}other{&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ಎಲ್ಲಾ (#) ಅನ್ನು ತೆರೆಯಿರಿ}}</translation>
 <translation id="2431625704210501303">&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="4620367155626060530">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು &amp;ತೋರಿಸಿ</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(ಅದೃಶ್ಯ)</translation>
 <translation id="4854477725773269949">ಅಜ್ಞಾತವಾಗಿ ಅನುಮತಿಸಿ</translation>
 <translation id="6436164536244065364">Brave ವೆಬ್‌ ಸ್ಟೋರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
-<translation id="8808478386290700967">Brave ವೆಬ್‌ ಸ್ಟೋರ್</translation>
 <translation id="38046578254905003">ವಿಸ್ತರಣೆಗಳು ಮತ್ತು ಥೀಮ್‌ಗಳನ್ನು <ph name="BEGIN_LINK"/>Brave ವೆಬ್ ಸ್ಟೋರ್‌ನಲ್ಲಿ<ph name="END_LINK"/> ಹುಡುಕಿ</translation>
 <translation id="6336451774241870485">ಹೊಸ ಅದೃಶ್ಯ ವಿಂಡೋ</translation>
 <translation id="6610147964972079463">ಅದೃಶ್ಯ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
-<translation id="5186185447130319458">ಅದೃಶ್ಯ</translation>
 <translation id="4933782374919065856">ಪ್ರಶ್ನೆಗಳಿವೆಯೇ? ನಿಮ್ಮ ಪ್ರೊಫೈಲ್‌ ಮೇಲ್ವಿಚಾರಣೆ ಮಾಡುವ ವ್ಯಕ್ತಿಯನ್ನು ಸಂಪರ್ಕಸಿ.</translation>
 </translationbundle>

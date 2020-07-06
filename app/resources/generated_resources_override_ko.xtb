@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ko">
+<translation id="658539216370629794">시크릿 창에서 링크 열기(&amp;G)</translation>
+<translation id="1432267168815937878">시크릿 창에서 링크 열기(&amp;G)</translation>
+<translation id="6516243500644829484">새 시크릿 창(&amp;I)</translation>
+<translation id="7973394300052703468">새 시크릿 창(&amp;I)</translation>
+<translation id="6395403722585816044">시크릿 모드에서 다운로드됨</translation>
+<translation id="203837651858678035">시크릿 모드를 종료하시겠습니까?</translation>
+<translation id="7376221878517288144">시크릿 모드를 종료하시겠습니까?</translation>
+<translation id="871606814707918245">대부분의 사용자가 이 사이트의 알림을 차단합니다.</translation>
+<translation id="5053701565089446556">시크릿 모드 확장 프로그램: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">시크릿 모드 애플리케이션:<ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">시크릿 탭: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">시크릿 모드 서브프레임: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">시크릿 모드 포털: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">이 확장 프로그램은 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>에 표시되지 않으며 사용자 모르게 추가되었을 수 있습니다.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (시크릿 모드)</translation>
+<translation id="4369414322596874629">시크릿 창을 사용하면 비공개로 탐색할 수 있습니다.</translation>
+<translation id="3772947852642271642">시크릿 창에서는 인터넷 사용 기록을 저장하지 않고 웹을 사용할 수 있습니다.</translation>
+<translation id="3871738366246972820">공유 컴퓨터를 사용 중이신가요? 시크릿 창에서 열어보세요.</translation>
+<translation id="5808622652939943719">비공개로 탐색하려면 점 아이콘 메뉴를 클릭하여 시크릿 창을 여세요.</translation>
+<translation id="9079153198295609735">사용 통계 및 비정상 종료 보고서를 Brave에 자동으로 전송합니다.</translation>
+<translation id="8839398440242019256">Brave 웹 스토어에서 설치되지 않았습니다.</translation>
+<translation id="6945695820322143954">이 확장 프로그램은 Brave 웹 스토어 정책을 위반합니다.</translation>
+<translation id="1676595396635191120">새 시크릿 창</translation>
+<translation id="5094764494104066239">북마크바 항상 표시</translation>
+<translation id="4471385409549756595">새 시크릿 창</translation>
+<translation id="4540437243849625078">이 사이트에서 시크릿 모드 외부의 앱을 사용하여 정보를 공유하려고 합니다.</translation>
+<translation id="1227836882233136433">시크릿 모드를 종료할까요?</translation>
+<translation id="7618452966706304788">시크릿 모드에서 <ph name="APP_NAME"/>에 Touch ID를 사용하시겠습니까?</translation>
+<translation id="3098826269712097986">시크릿 모드를 종료하면 Brave에 로그인 데이터가 저장됩니다. 이 데이터를 통해 나중에 이 웹사이트에서 Touch ID를 사용할 수 있습니다.</translation>
+<translation id="5186185447130319458">시크릿</translation>
+<translation id="2579188629646253712">시크릿 모드 종료</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{시크릿 창에서 모두 열기(I)}=1{시크릿 창에서 열기(I)}other{시크릿 창에서 #개 모두 열기(I)}}</translation>
 <translation id="2431625704210501303">시크릿 창에서 열기(&amp;I)</translation>
 <translation id="4620367155626060530">북마크바 표시(&amp;S)</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(시크릿 모드)</translation>
 <translation id="4854477725773269949">시크릿 모드에서 허용</translation>
 <translation id="6436164536244065364">Brave 웹 스토어에서 보기</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave 웹 스토어<ph name="END_LINK"/>에서 확장 프로그램과 테마를 찾아보세요</translation>
 <translation id="6336451774241870485">새 시크릿 탭</translation>
 <translation id="6610147964972079463">시크릿 탭 닫기</translation>
-<translation id="5186185447130319458">시크릿</translation>
 <translation id="4933782374919065856">질문이 있으신가요? 프로필 관리자에게 문의하세요.</translation>
 </translationbundle>

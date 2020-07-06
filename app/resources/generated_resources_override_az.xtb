@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="az">
+<translation id="658539216370629794">Linki inkoqnito pəncərəsində açın</translation>
+<translation id="1432267168815937878">Linki gizli pəncərədə açın</translation>
+<translation id="6516243500644829484">Yeni inkoqnito pəncərə</translation>
+<translation id="7973394300052703468">Yeni Anonim Pəncərə</translation>
+<translation id="6395403722585816044">Gizli paneldə endirildi</translation>
+<translation id="203837651858678035">İstənilən halda gizli rejimdən çıxılsın?</translation>
+<translation id="7376221878517288144">İstənilən halda gizli rejimdən çıxılsın?</translation>
+<translation id="871606814707918245">Bir çox insan bu saytdan gələn bildirişləri bloklayır</translation>
+<translation id="5053701565089446556">İnkoqnito rejimi Artırması: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Gizli tətbiq: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">İnkoqnito rejimi paneli: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Gizli Altkadr: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Anonim Portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Veb Market</translation>
+<translation id="8261378640211443080">Bu artırma <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> siyahısında yoxdur və xəbəriniz olmadan əlavə edilmiş ola bilər.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkoqnito)</translation>
+<translation id="4369414322596874629">Gizli pəncərə ilə məxfi axtarış edə bilərsiniz</translation>
+<translation id="3772947852642271642">Axtarış tarixçənizi gizli pəncərədə saxlamadan vebdən istifadə edin</translation>
+<translation id="3871738366246972820">Paylaşılmış kompüter istifadə edirsiniz? Gizli pəncərə açmağa çalışın.</translation>
+<translation id="5808622652939943719">Məxfi axtarış etmək üçün menyudakı 3 nöqtə işarəsinə klikləyin və gizli pəncərəni açın.</translation>
+<translation id="9079153198295609735">Brave'a istifadəçi statistikalarını və qəza raportlarını avtomatik göndərin</translation>
+<translation id="8839398440242019256">Brave Veb Marketdən olmasın.</translation>
+<translation id="6945695820322143954">Bu artırma Brave Veb Market qaydalarını pozur.</translation>
+<translation id="1676595396635191120">Yeni Anonim Pəncərə</translation>
+<translation id="5094764494104066239">Həmişə Əlfəcin Panelini Göstərin</translation>
+<translation id="4471385409549756595">Yeni gizli pəncərə</translation>
+<translation id="4540437243849625078">Bu sayt gizli rejimdə olmayan tətbiqlə məlumat paylaşmaq üzrədir.</translation>
+<translation id="1227836882233136433">Gizli rejimdən çıxılsın?</translation>
+<translation id="7618452966706304788">Anonim rejimdə <ph name="APP_NAME"/> ilə Toxunuş ID-si istifadə etmək istəyirsiniz?</translation>
+<translation id="3098826269712097986">Anonim rejimdən çıxdıqdan sonra giriş datası Brave'da saxlanılacaq. Bu, sonradan bu veb sayt üçün Touch ID istifadə etməyə imkan verəcək.</translation>
+<translation id="5186185447130319458">Gizli Rejim</translation>
+<translation id="2579188629646253712">Gizli Rejimdən Çıxın</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Hamısını &amp;gizli pəncərədə açın}=1{&amp;Gizli pəncərədə açın}other{Hamısını (#) &amp;gizli pəncərədə açın}}</translation>
 <translation id="2431625704210501303">İnkoqnito pəncərəsində açın</translation>
 <translation id="4620367155626060530">Əlfəcin panelini göstərin</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(İnkoqnito)</translation>
 <translation id="4854477725773269949">Gizli paneldə icazə verin</translation>
 <translation id="6436164536244065364">Brave Veb Mağazada baxın</translation>
-<translation id="8808478386290700967">Brave Veb Market</translation>
 <translation id="38046578254905003">Artırma və temalara <ph name="BEGIN_LINK"/>Brave Veb Mağazada<ph name="END_LINK"/> baxın</translation>
 <translation id="6336451774241870485">Yeni gizli panel</translation>
 <translation id="6610147964972079463">Gizli panelləri bağlayın</translation>
-<translation id="5186185447130319458">Gizli Rejim</translation>
 <translation id="4933782374919065856">Sualınız var? Profilinizə nəzarət edən şəxslə əlaqə saxlayın.</translation>
 </translationbundle>

@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="it">
+<translation id="658539216370629794">Apri link in finestra di navigazione in inco&amp;gnito</translation>
+<translation id="1432267168815937878">Apri link in finestra di navigazione in inco&amp;gnito</translation>
+<translation id="6516243500644829484">Nuova f&amp;inestra di navigazione in incognito</translation>
+<translation id="7973394300052703468">Nuova finestra di navigazione in &amp;incognito</translation>
+<translation id="6395403722585816044">Scaricato in modalità in incognito</translation>
+<translation id="203837651858678035">Vuoi uscire comunque dalla modalità di navigazione in incognito?</translation>
+<translation id="7376221878517288144">Vuoi uscire comunque dalla modalità di navigazione in incognito?</translation>
+<translation id="871606814707918245">La maggior parte degli utenti blocca le notifiche da questo sito</translation>
+<translation id="5053701565089446556">Estensione in incognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Applicazione in incognito: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Scheda di navigazione in incognito: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Frame secondario modalità di navigazione in incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portale in modalità di navigazione in incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Questa estensione non è elencata nel <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e potrebbe essere stata aggiunta a tua insaputa.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (In incognito)</translation>
+<translation id="4369414322596874629">Puoi navigare in privato usando una finestra di navigazione in incognito</translation>
+<translation id="3772947852642271642">Apri una finestra di navigazione in incognito per esplorare il Web senza salvare la tua cronologia di navigazione</translation>
+<translation id="3871738366246972820">Condividi il computer con altre persone? Prova ad aprire una finestra di navigazione in incognito.</translation>
+<translation id="5808622652939943719">Per navigare in privato, fai clic sul menu con un'icona con tre puntini per aprire una finestra di navigazione in incognito</translation>
+<translation id="9079153198295609735">Invia automaticamente a Brave statistiche sull'utilizzo e rapporti sugli arresti anomali</translation>
+<translation id="8839398440242019256">Non dal Brave Web Store.</translation>
+<translation id="6945695820322143954">Questa estensione vìola le norme del Brave Web Store.</translation>
+<translation id="1676595396635191120">Nuova finestra di navigazione in incognito</translation>
+<translation id="5094764494104066239">Mostra sempre barra dei Preferiti</translation>
+<translation id="4471385409549756595">Nuova finestra di navigazione in incognito</translation>
+<translation id="4540437243849625078">Questo sito sta per condividere informazioni con un'app esterna alla modalità di navigazione in incognito.</translation>
+<translation id="1227836882233136433">Uscire da modalità in incognito?</translation>
+<translation id="7618452966706304788">Vuoi usare Touch ID con <ph name="APP_NAME"/> in modalità di navigazione in incognito?</translation>
+<translation id="3098826269712097986">I dati di accesso verranno memorizzati in Brave quando uscirai dalla modalità di navigazione in incognito. In questo modo potrai usare di nuovo Touch ID con questo sito web in un secondo momento.</translation>
+<translation id="5186185447130319458">In incognito</translation>
+<translation id="2579188629646253712">Esci dalla modalità in incognito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Apri tutti in finestra di navigazione in &amp;incognito}=1{Apri in finestra di navigazione in &amp;incognito}other{Apri tutti (#) in finestra di navigazione in &amp;incognito}}</translation>
 <translation id="2431625704210501303">Apri in finestra di navigazione in &amp;incognito</translation>
 <translation id="4620367155626060530">&amp;Mostra barra dei Preferiti</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(In incognito)</translation>
 <translation id="4854477725773269949">Consenti modalità in incognito</translation>
 <translation id="6436164536244065364">Visualizza nel Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Trova estensioni e temi nel <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nuova scheda in incognito</translation>
 <translation id="6610147964972079463">Chiudi schede in incognito</translation>
-<translation id="5186185447130319458">In incognito</translation>
 <translation id="4933782374919065856">Domande? Contatta il supervisore del tuo profilo.</translation>
 </translationbundle>

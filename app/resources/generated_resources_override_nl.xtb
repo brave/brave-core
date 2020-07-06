@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
+<translation id="658539216370629794">Link openen in inco&amp;gnitovenster</translation>
+<translation id="1432267168815937878">Link openen in inco&amp;gnitovenster</translation>
+<translation id="6516243500644829484">Nieuw &amp;incognitovenster</translation>
+<translation id="7973394300052703468">Nieuw &amp;incognitovenster</translation>
+<translation id="6395403722585816044">Gedownload in incognitomodus</translation>
+<translation id="203837651858678035">Incognitomodus toch afsluiten?</translation>
+<translation id="7376221878517288144">Incognitomodus toch afsluiten?</translation>
+<translation id="871606814707918245">De meeste mensen blokkeren meldingen van deze site</translation>
+<translation id="5053701565089446556">Incognito-extensie: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Incognitotoepassing: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Incognitotabblad: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Incognito-subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Incognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Deze extensie wordt niet vermeld in de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> en is mogelijk zonder je medeweten toegevoegd.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="4369414322596874629">Je kunt privé browsen in een incognitovenster</translation>
+<translation id="3772947852642271642">Gebruik een incognitovenster om te internetten zonder dat je browsegeschiedenis wordt opgeslagen</translation>
+<translation id="3871738366246972820">Gebruik je een gedeelde computer? Open een incognitovenster.</translation>
+<translation id="5808622652939943719">Als je privé wilt browsen, klik je op het menupictogram met de stippen om een incognitovenster te openen</translation>
+<translation id="9079153198295609735">Automatisch gebruiksstatistieken en crashrapporten naar Brave verzenden</translation>
+<translation id="8839398440242019256">Niet via de Brave Web Store.</translation>
+<translation id="6945695820322143954">Deze extensie schendt het beleid voor de Brave Web Store.</translation>
+<translation id="1676595396635191120">Nieuw incognitovenster</translation>
+<translation id="5094764494104066239">Bladwijzerbalk altijd weergeven</translation>
+<translation id="4471385409549756595">Nieuw incognitovenster</translation>
+<translation id="4540437243849625078">Deze site staat op het punt buiten de incognitomodus informatie met een app te delen.</translation>
+<translation id="1227836882233136433">Incognitomodus verlaten?</translation>
+<translation id="7618452966706304788">Wil je in incognitomodus Touch ID gebruiken met <ph name="APP_NAME"/>?</translation>
+<translation id="3098826269712097986">Inloggegevens worden in Brave opgeslagen nadat je de incognitomodus hebt afgesloten. Hierdoor kun je Touch ID later opnieuw gebruiken voor deze website.</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="2579188629646253712">Incognitomodus sluiten</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Alles openen in &amp;incognitovenster}=1{Openen in &amp;incognitovenster}other{Alles (#) openen in &amp;incognitovenster}}</translation>
 <translation id="2431625704210501303">Openen in &amp;incognitovenster</translation>
 <translation id="4620367155626060530">&amp;Bladwijzerbalk weergeven</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Incognito)</translation>
 <translation id="4854477725773269949">Toestaan in incognitomodus</translation>
 <translation id="6436164536244065364">Bekijken in de Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Zoek extensies en thema's in de <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nieuw incognitotabblad</translation>
 <translation id="6610147964972079463">Incognitotabbladen sluiten</translation>
-<translation id="5186185447130319458">Incognito</translation>
 <translation id="4933782374919065856">Vragen? Neem contact op met de persoon die je profiel beheert.</translation>
 </translationbundle>

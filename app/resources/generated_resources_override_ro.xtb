@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
+<translation id="658539216370629794">Deschide linkul într-o fereastră inco&amp;gnito</translation>
+<translation id="1432267168815937878">Deschide linkul într-o fereastră inco&amp;gnito</translation>
+<translation id="6516243500644829484">Fereastră nouă &amp;incognito</translation>
+<translation id="7973394300052703468">Fereastră nouă &amp;incognito</translation>
+<translation id="6395403722585816044">Descărcat în modul incognito</translation>
+<translation id="203837651858678035">Ieși oricum din modul incognito?</translation>
+<translation id="7376221878517288144">Ieși oricum din modul incognito?</translation>
+<translation id="871606814707918245">Majoritatea utilizatorilor blochează notificările de la acest site</translation>
+<translation id="5053701565089446556">Extensie incognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplicație incognito: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Fila Incognito: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Subcadru incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal incognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Magazinul web Brave</translation>
+<translation id="8261378640211443080">Această extensie nu este inclusă în <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> și este posibil să fi fost adăugată fără știrea dvs.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="4369414322596874629">Poți naviga privat folosind o fereastră incognito</translation>
+<translation id="3772947852642271642">Folosește internetul fără a salva istoricul de navigare, într-o fereastră incognito</translation>
+<translation id="3871738366246972820">Folosești un computer comun? Încearcă să deschizi o fereastră incognito.</translation>
+<translation id="5808622652939943719">Pentru a naviga privat, dă clic pe meniul pictogramei cu puncte pentru a deschide o fereastră incognito</translation>
+<translation id="9079153198295609735">Trimite automat la Brave statistici de utilizare și rapoarte de blocare</translation>
+<translation id="8839398440242019256">Nu este din Magazinul web Brave.</translation>
+<translation id="6945695820322143954">Această extensie încalcă politica Magazinului web Brave.</translation>
+<translation id="1676595396635191120">Fereastră &amp;incognito nouă</translation>
+<translation id="5094764494104066239">Afișează mereu bara de marcaje</translation>
+<translation id="4471385409549756595">Fereastră incognito nouă</translation>
+<translation id="4540437243849625078">Site-ul este pe cale să permită accesul la informații unei aplicații în afara modului incognito.</translation>
+<translation id="1227836882233136433">Ieși din modul incognito?</translation>
+<translation id="7618452966706304788">Vrei să folosești Touch ID cu <ph name="APP_NAME"/> în modul incognito?</translation>
+<translation id="3098826269712097986">Datele de conectare sunt stocate în Brave după ce ieși din modul incognito. Vei putea să folosești din nou Touch ID cu acest site mai târziu.</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="2579188629646253712">Ieși din modul incognito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Deschide-le pe toate într-o fereastră &amp;incognito}=1{Deschide într-o fereastră &amp;incognito}few{Deschide-le pe toate (#) într-o fereastră &amp;incognito}other{Deschide-le pe toate (#) într-o fereastră &amp;incognito}}</translation>
 <translation id="2431625704210501303">Deschideți într-o &amp;fereastră incognito</translation>
 <translation id="4620367155626060530">&amp;Afișați bara de marcaje</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Incognito)</translation>
 <translation id="4854477725773269949">Permite în incognito</translation>
 <translation id="6436164536244065364">Vezi în Magazinul web Brave</translation>
-<translation id="8808478386290700967">Magazinul web Brave</translation>
 <translation id="38046578254905003">Găsește extensii și teme în <ph name="BEGIN_LINK"/>Magazinul web Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Filă incognito nouă</translation>
 <translation id="6610147964972079463">Închide filele incognito</translation>
-<translation id="5186185447130319458">Incognito</translation>
 <translation id="4933782374919065856">Întrebări? Contactează persoana care îți monitorizează profilul.</translation>
 </translationbundle>

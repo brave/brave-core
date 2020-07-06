@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
+<translation id="658539216370629794">Открыть ссылку в окне в режиме &amp;инкогнито</translation>
+<translation id="1432267168815937878">Открыть ссылку в режиме инкогнито</translation>
+<translation id="6516243500644829484">Новое окно в режиме &amp;инкогнито</translation>
+<translation id="7973394300052703468">Новое окно в режиме инкогнито</translation>
+<translation id="6395403722585816044">Скачано в режиме инкогнито</translation>
+<translation id="203837651858678035">Вы действительно хотите выйти из режима инкогнито?</translation>
+<translation id="7376221878517288144">Вы действительно хотите выйти из режима инкогнито?</translation>
+<translation id="871606814707918245">Большинство пользователей блокируют уведомления с этого сайта.</translation>
+<translation id="5053701565089446556">Расширение в режиме инкогнито: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Приложение в режиме инкогнито: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Вкладка в режиме инкогнито: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Субфрейм в режиме инкогнито: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Портал в режиме инкогнито: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080"><ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> не содержит сведений об этом расширении, то есть оно могло быть установлено без вашего ведома.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (инкогнито)</translation>
+<translation id="4369414322596874629">В режиме инкогнито можно просматривать сайты анонимно</translation>
+<translation id="3772947852642271642">Не хотите, чтобы сохранялась история просмотров? Используйте режим инкогнито.</translation>
+<translation id="3871738366246972820">Компьютером пользуются несколько человек? Откройте окно в режиме инкогнито.</translation>
+<translation id="5808622652939943719">Чтобы просматривать сайты анонимно, нажмите на значок с тремя точками и выберите "Новое окно в режиме инкогнито"</translation>
+<translation id="9079153198295609735">Автоматически отправлять в Brave статистику использования и отчеты о сбоях</translation>
+<translation id="8839398440242019256">Не из Интернет-магазина Brave.</translation>
+<translation id="6945695820322143954">Это расширение нарушает правила Интернет-магазина Brave.</translation>
+<translation id="1676595396635191120">Новое окно в режиме инкогнито</translation>
+<translation id="5094764494104066239">Всегда показывать панель закладок</translation>
+<translation id="4471385409549756595">Новое окно в режиме инкогнито</translation>
+<translation id="4540437243849625078">Этот сайт передает информацию стороннему приложению, пока вы в режиме инкогнито.</translation>
+<translation id="1227836882233136433">Выйти из режима инкогнито?</translation>
+<translation id="7618452966706304788">Хотите использовать Touch ID для входа на сайт <ph name="APP_NAME"/> в режиме инкогнито?</translation>
+<translation id="3098826269712097986">Данные для входа сохранятся в Brave после выхода из режима инкогнито. Это означает, что вы снова сможете использовать Touch ID при следующем посещении сайта.</translation>
+<translation id="5186185447130319458">Инкогнито</translation>
+<translation id="2579188629646253712">Выйти из режима инкогнито</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Открыть все в режиме &amp;инкогнито}=1{Открыть в режиме &amp;инкогнито}one{Открыть все (#) в режиме &amp;инкогнито}few{Открыть все (#) в режиме &amp;инкогнито}many{Открыть все (#) в режиме &amp;инкогнито}other{Открыть все (#) в режиме &amp;инкогнито}}</translation>
 <translation id="2431625704210501303">Открыть в режиме &amp;инкогнито</translation>
 <translation id="4620367155626060530">Показывать панель &amp;закладок</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(инкогнито)</translation>
 <translation id="4854477725773269949">Разрешить использование в режиме инкогнито</translation>
 <translation id="6436164536244065364">Перейти в Интернет-магазин Brave</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Найдите полезные расширения и приложения в <ph name="BEGIN_LINK"/>Интернет-магазине Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Новая вкладка инкогнито</translation>
 <translation id="6610147964972079463">Закрыть вкладки инкогнито</translation>
-<translation id="5186185447130319458">Инкогнито</translation>
 <translation id="4933782374919065856">Есть вопросы? Обратитесь к человеку, который контролирует ваш профиль.</translation>
 </translationbundle>

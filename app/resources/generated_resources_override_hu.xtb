@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
+<translation id="658539216370629794">Link megnyitása inko&amp;gnitóablakban</translation>
+<translation id="1432267168815937878">Link megnyitása inko&amp;gnitóablakban</translation>
+<translation id="6516243500644829484">Új &amp;inkognitóablak</translation>
+<translation id="7973394300052703468">Új &amp;inkognitóablak</translation>
+<translation id="6395403722585816044">Letöltve inkognitó módban</translation>
+<translation id="203837651858678035">Mindenképp bezárja az inkognitómódot?</translation>
+<translation id="7376221878517288144">Mindenképp kilép az inkognitómódból?</translation>
+<translation id="871606814707918245">A legtöbb felhasználó letiltja az értesítéseket ezen a webhelyen</translation>
+<translation id="5053701565089446556">Inkognitómód bővítmény: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Inkognitómódú alkalmazás: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Inkognitólap: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Inkognitó subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portál inkognitómódban: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">A bővítmény nem a(z) <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> szolgáltatásból származik, és előfordulhat, hogy az Ön tudta nélkül lett telepítve.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognitómód)</translation>
+<translation id="4369414322596874629">Privát módban böngészhet, ha inkognitóablakot használ</translation>
+<translation id="3772947852642271642">Internetezzen a böngészési előzmények mentése nélkül inkognitóablakban</translation>
+<translation id="3871738366246972820">Közös használatú számítógépet használ? Nyisson inkognitóablakot.</translation>
+<translation id="5808622652939943719">Privát böngészéshez kattintson a három pontból álló („Továbbiak”) ikonra, és nyisson inkognitóablakot.</translation>
+<translation id="9079153198295609735">Használati statisztikák és hibajelentések automatikus küldése a Brave-nak</translation>
+<translation id="8839398440242019256">Nem a Brave Internetes áruházból származik.</translation>
+<translation id="6945695820322143954">A bővítmény sérti a Brave Internetes áruház irányelvét.</translation>
+<translation id="1676595396635191120">Új &amp;inkognitóablak</translation>
+<translation id="5094764494104066239">A könyvjelzők eszköztára mindig látható</translation>
+<translation id="4471385409549756595">Új inkognitóablak</translation>
+<translation id="4540437243849625078">A webhely adatokat kíván megosztani az inkognitómódon kívüli alkalmazással.</translation>
+<translation id="1227836882233136433">Kilép az inkognitómódból?</translation>
+<translation id="7618452966706304788">Szeretné használni inkognitómódban a Touch ID funkciót a következővel: <ph name="APP_NAME"/>?</translation>
+<translation id="3098826269712097986">A Brave az inkognitómód elhagyása után tárolja a bejelentkezési adatokat. Így később ismét használhatja a Touch ID funkciót ezen a webhelyen.</translation>
+<translation id="5186185447130319458">Inkognitómód</translation>
+<translation id="2579188629646253712">Kilépés az inkognitómódból</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Összes megnyitása &amp;inkognitóablakban}=1{Megnyitás &amp;inkognitóablakban}other{Összes (#) megnyitása &amp;inkognitóablakban}}</translation>
 <translation id="2431625704210501303">Megnyitás &amp;inkognitóablakban</translation>
 <translation id="4620367155626060530">&amp;Könyvjelzősáv megjelenítése</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Inkognitómód)</translation>
 <translation id="4854477725773269949">Engedélyezés inkognitó módban</translation>
 <translation id="6436164536244065364">Megtekintés a Brave Internetes áruházban</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Bővítményeket és témákat a <ph name="BEGIN_LINK"/>Brave Internetes áruházban<ph name="END_LINK"/> kereshet</translation>
 <translation id="6336451774241870485">Új inkognitólap</translation>
 <translation id="6610147964972079463">Inkognitólapok bezárása</translation>
-<translation id="5186185447130319458">Inkognitómód</translation>
 <translation id="4933782374919065856">Kérdése van? Vegye fel a kapcsolatot a fiókját felügyelő személlyel.</translation>
 </translationbundle>

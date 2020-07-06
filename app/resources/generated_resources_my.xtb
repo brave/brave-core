@@ -2125,7 +2125,6 @@
 <translation id="3771294271822695279">ဗီဒီယို ဖိုင်များ</translation>
 <translation id="3775432569830822555">SSL ဆာဗာ လက်မှတ်</translation>
 <translation id="3775705724665058594">သင့်ကိရိယာများသို့ ပို့ပါ</translation>
-<translation id="6945695820322143954">ဤအိတ်စတန်းရှင်းသည် Brave ဝဘ်စတိုး ပေါ်လစီအား ချိုးဖောက်သည်။</translation>
 <translation id="3777483481409781352">ဆယ်လူလာ ကိရိယာကို စတင်၍ မရပါ</translation>
 <translation id="3777806571986431400">အိတ်စတန်းရှင်း ဖွင့်ထားပါသည်</translation>
 <translation id="3778152852029592020">ဒေါင်းလုပ်အား ပယ်ဖျက်ခဲ့သည်။</translation>
@@ -2906,7 +2905,6 @@
 <translation id="48704129375571883">နောက်ထပ်ဝန်ဆောင်မှုများ ထည့်ပါ</translation>
 <translation id="4870758487381879312">စီစဉ်သတ်မှတ်ရေး အချက်အလက် ရယူရန် စီမံခန့်ခွဲသူ ပေးထားသော စကားဝှက် ထည့်ပါ</translation>
 <translation id="4870903493621965035">တွဲချိတ်ထားသည့် စက်ပစ္စည်းမရှိပါ</translation>
-<translation id="8839398440242019256">Brave ဝဘ် စတိုးမှ မဟုတ်ပါ။</translation>
 <translation id="4871322859485617074">ပင်နံပါတ်တွင် မမှန်ကန်သော အက္ခရာများပါဝင်သည်</translation>
 <translation id="4871370605780490696">စာညှပ် ထည့်ပေးရန်</translation>
 <translation id="4871719318659334896">အုပ်စုကို ပိတ်ရန်</translation>
@@ -4965,7 +4963,6 @@
 <translation id="767127784612208024">ပြင်ဆင်သတ်မှတ်မှု အတည်ပြုရန် ထိပါ</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>၊ <ph name="PAGE_TITLE"/> အတွင်း။</translation>
 <translation id="1800308196794859773">စာရိုက်ရန်အကွက်များသို့ နှုတ်တိုက်ပြော၍ စာရိုက်ခွင့်ပြုရန် သင့်အသံကို Brave သို့ ပို့ပါ။</translation>
-<translation id="3098826269712097986">'ရုပ်ဖျက် မုဒ်' မှထွက်ပြီးသောအခါ လက်မှတ်ထိုးဝင်သည့် ဒေတာများကို Brave တွင် သိမ်းထားပါမည်။ ဤသို့ပြုလုပ်ခြင်းဖြင့် နောင်အခါ ဤဝဘ်ဆိုက်တွင် 'တို့ထိ ID' အသုံးပြုနိုင်မည်။</translation>
 <translation id="7681095912841365527">ဝဘ်ဆိုက်က ဘလူးတုသ်ကို အသုံးပြုနိုင်သည်</translation>
 <translation id="7683373461016844951">ရှေ့ဆက်ရန်အတွက် OK ကို နှိပ်ပါ။ ၎င်းနောက် 'လူထည့်ရန်' ကို နှိပ်ပြီး သင်၏ <ph name="DOMAIN"/> အီးမေးလ်လိပ်စာအတွက် ပရိုဖိုင်အသစ် ပြုလုပ်ပါ။</translation>
 <translation id="7684212569183643648">သင့်ကြီးကြပ်သူမှ ထည့်သွင်းခဲ့သည်</translation>
@@ -5442,7 +5439,6 @@
 <translation id="8259239505248583312">စကြစို့</translation>
 <translation id="8260126382462817229">ထပ်မံ၍ လက်မှတ်ထိုးဝင်ကြည့်ပါ</translation>
 <translation id="8260864402787962391">မောက်စ်</translation>
-<translation id="8261378640211443080">တိုးချဲ့မှုကို <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>ထဲ စာရင်း လုပ်မထားပါ၊ သင် မသိဘဲနှင့် ထည့်ပေးခဲ့တာ ဖြစ်နိုင်သည်။</translation>
 <translation id="8261506727792406068">ဖျက်ရန်</translation>
 <translation id="8263336784344783289">ဤအဖွဲ့ကို အမည်ပေးပါ</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> သည်သင့် မောက်စ်ကို ပိတ်လိုက်သည်။</translation>
@@ -6004,7 +6000,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> က <ph name="FILENAME"/> ကို တည်းဖြတ်နိုင်သည်</translation>
 <translation id="8985264973231822211">ပြီးခဲ့သော <ph name="DEVICE_LAST_ACTIVATED_TIME"/> ရက်က အသုံးပြုထားသည်</translation>
 <translation id="8986362086234534611">မေ့ပစ်လိုက်ပါ</translation>
-<translation id="9079153198295609735">Brave ထံသို့ သုံးစွဲမှု စာရင်းအင်းများ နှင့် ပျက်စီးမှု အစီရင်ခံစာများကို အလိုအလျောက် ပို့ပေးရန်</translation>
 <translation id="8987927404178983737">လ</translation>
 <translation id="8991520179165052608">ဝဘ်ဆိုက်က သင့်မိုက်ခရိုဖုန်းကို အသုံးပြုနိုင်သည်</translation>
 <translation id="899403249577094719">Netscape လက်မှတ် အခြေခံ URL</translation>
@@ -6223,6 +6218,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">လုံခြုံသည့် ချိတ်ဆက်မှုကို ထူထောင်နေ...</translation>
 <translation id="998747458861718449">စုံ&amp;စမ်းပါ</translation>
+<translation id="658539216370629794">လင့်ကို ရုပ်ဖျက် &amp;ဝင်ဒိုး အသစ်ထဲ ဖွင့်ရန်</translation>
+<translation id="1432267168815937878">ရုပ်&amp;ဖျက် ဝင်ဒိုး ထဲမှာ လင့်ကို ဖွင့်ရန်</translation>
+<translation id="6516243500644829484">ရုပ်ဖျက် &amp;ဝင်ဒိုး အသစ်</translation>
+<translation id="7973394300052703468">ရုပ်ဖျက် &amp;ဝင်ဒိုး အသစ်</translation>
+<translation id="6395403722585816044">ရုပ်ဖျက်လက် ဒေါင်းလုဒ် လုပ်ခဲ့သည်</translation>
+<translation id="203837651858678035">မည်သို့ပင်ဖြစ်စေ ရုပ်ဖျက်မုဒ်မှ ထွက်လိုပါသလား။</translation>
+<translation id="7376221878517288144">မည်သို့ပင်ဖြစ်စေ ရုပ်ဖျက်မုဒ်မှ ထွက်လိုပါသလား။</translation>
+<translation id="871606814707918245">လူအများစုသည် ဤဝဘ်ဆိုက်မှ အကြောင်းကြားချက်များကို ပိတ်ကြသည်</translation>
+<translation id="5053701565089446556">Incognito အိတ်စတန်းရှင်း: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ရုပ်ဖျက် အက်ပ်: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Incognito တဲပ်: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ရုပ်ဖျက် ဘောင်ငယ် : <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ရုပ်ဖျက်ဌာန-: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave ဝဘ် စတိုး</translation>
+<translation id="8261378640211443080">တိုးချဲ့မှုကို <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>ထဲ စာရင်း လုပ်မထားပါ၊ သင် မသိဘဲနှင့် ထည့်ပေးခဲ့တာ ဖြစ်နိုင်သည်။</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ရုပ်ဖျက်)</translation>
+<translation id="4369414322596874629">ရုပ်ဖျက်ဝင်းဒိုးသုံးပြီး သီးသန့်ကြည့်ရှုနိုင်ပါသည်</translation>
+<translation id="3772947852642271642">ရုပ်ဖျက်ဝင်းဒိုးသုံးပြီး သင့်ကြည့်ရှုမှုမှတ်တမ်းကို သိမ်းဆည်းခြင်းမရှိဘဲ ဝဘ်ကို အသုံးပြုပါ</translation>
+<translation id="3871738366246972820">မျှဝေထားသည့် ကွန်ပျူတာကို သုံးနေပါသလား။ ရုပ်ဖျက်ဝင်းဒိုးကို ဖွင့်ပြီးစမ်းကြည့်ပါ။</translation>
+<translation id="5808622652939943719">သီးသန့်ကြည့်ရှုရန် အစက်သင်္ကေတ မီနူးကိုနှိပ်ပြီး ရုပ်ဖျက်ဝင်းဒိုးတစ်ခု ဖွင့်ပါ</translation>
+<translation id="9079153198295609735">Brave ထံသို့ သုံးစွဲမှု စာရင်းအင်းများ နှင့် ပျက်စီးမှု အစီရင်ခံစာများကို အလိုအလျောက် ပို့ပေးရန်</translation>
+<translation id="8839398440242019256">Brave ဝဘ် စတိုးမှ မဟုတ်ပါ။</translation>
+<translation id="6945695820322143954">ဤအိတ်စတန်းရှင်းသည် Brave ဝဘ်စတိုး ပေါ်လစီအား ချိုးဖောက်သည်။</translation>
+<translation id="1676595396635191120">ရုပ်ဖျက် ဝင်ဒိုး အသစ်</translation>
+<translation id="5094764494104066239">စာညှပ် ဘားကို အမြဲတမ်း ပြရန်</translation>
+<translation id="4471385409549756595">ရုပ်ဖျက် ဝင်းဒိုးအသစ်</translation>
+<translation id="4540437243849625078">ဤဝဘ်ဆိုက်သည် အချက်အလက်များကို ရုပ်ဖျက်မုဒ်ပြင်ပရှိ အက်ပ်တစ်ခုနှင့် မျှဝေပါတော့မည်။</translation>
+<translation id="1227836882233136433">ရုပ်ဖျက်မုဒ်မှ ထွက်လိုပါသလား။</translation>
+<translation id="7618452966706304788">ရုပ်ဖျက်မုဒ်တွင် 'တို့ထိ ID' ကို <ph name="APP_NAME"/> နှင့် အသုံးပြုလိုသလား။</translation>
+<translation id="3098826269712097986">'ရုပ်ဖျက် မုဒ်' မှထွက်ပြီးသောအခါ လက်မှတ်ထိုးဝင်သည့် ဒေတာများကို Brave တွင် သိမ်းထားပါမည်။ ဤသို့ပြုလုပ်ခြင်းဖြင့် နောင်အခါ ဤဝဘ်ဆိုက်တွင် 'တို့ထိ ID' အသုံးပြုနိုင်မည်။</translation>
+<translation id="5186185447130319458">ရုပ်ဖျက်</translation>
+<translation id="2579188629646253712">ရုပ်ဖျက်မုဒ်မှ ထွက်ရန်</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{အားလုံးကို ရုပ်ဖျက်ဝင်းဒိုးတွင် ဖွင့်ရန်}=1{ရုပ်ဖျက်ဝင်းဒိုးတွင် ဖွင့်ရန်}other{(#) ခုလုံးကို ရုပ်ဖျက်ဝင်းဒိုးတွင် ဖွင့်ရန်}}</translation>
 <translation id="2431625704210501303">ရုပ်ဖျက် ဝင်ဒိုး &amp;ထဲမှာ ဖွင့်ရန်</translation>
 <translation id="4620367155626060530">&amp;စာညှပ်များ ဘားကို ပြရန်</translation>
@@ -6272,10 +6299,8 @@
 <translation id="3860292630623580294">(ရုပ်ဖျက်)</translation>
 <translation id="4854477725773269949">ရုပ်ဖျက် ခွင့်ပြုရန်</translation>
 <translation id="6436164536244065364">Brave ဝဘ် စတိုးတွင် ကြည့်ရန်</translation>
-<translation id="8808478386290700967">Brave ဝဘ် စတိုး</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave ဝဘ် စတိုး<ph name="END_LINK"/> တွင် နောက်ဆက်တွဲနှင့် အပြင်အဆင်များ ရှာရန်</translation>
 <translation id="6336451774241870485">ကိုယ်ပျောက် တဘ်အသစ်</translation>
 <translation id="6610147964972079463">လျှို့ဝှက်သုံးတဘ်များပိတ်ပါ</translation>
-<translation id="5186185447130319458">ရုပ်ဖျက်</translation>
 <translation id="4933782374919065856">မေးစရာများ ရှိပါသလား။ သင်၏ ပရိုဖိုင်ကို ကြီးကြပ်သူထံ ဆက်သွယ်ပါ။</translation>
 </translationbundle>

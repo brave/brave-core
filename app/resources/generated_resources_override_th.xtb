@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="th">
+<translation id="658539216370629794">เปิดลิงก์ในหน้าต่างที่ไม่ระบุตัวตน (&amp;G)</translation>
+<translation id="1432267168815937878">เปิดลิงก์ในหน้าต่าง&amp;ที่ไม่ระบุตัวตน</translation>
+<translation id="6516243500644829484">หน้าต่างใหม่และไม่ระบุตัวตน</translation>
+<translation id="7973394300052703468">หน้าต่างใหม่&amp;ที่ไม่ระบุตัวตน</translation>
+<translation id="6395403722585816044">ดาวน์โหลดในโหมดไม่ระบุตัวตนแล้ว</translation>
+<translation id="203837651858678035">ต้องการออกจากโหมดไม่ระบุตัวตนไหม</translation>
+<translation id="7376221878517288144">ต้องการออกจากโหมดไม่ระบุตัวตนไหม</translation>
+<translation id="871606814707918245">คนส่วนใหญ่บล็อกการแจ้งเตือนจากเว็บไซต์นี้</translation>
+<translation id="5053701565089446556">ส่วนขยายแบบไม่ระบุตัวตน: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">แอปพลิเคชันที่ไม่ระบุตัวตน: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">แท็บไม่ระบุตัวตน: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">เฟรมย่อยแบบไม่ระบุตัวตน: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">พอร์ทัลที่ไม่ระบุตัวตน: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">ส่วนขยายนี้ไม่ได้ระบุไว้ใน <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> และอาจถูกเพิ่มเข้ามาโดยที่คุณไม่รู้ตัว</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (โหมดไม่ระบุตัวตน)</translation>
+<translation id="4369414322596874629">คุณจะท่องเว็บแบบส่วนตัวได้โดยใช้หน้าต่างที่ไม่ระบุตัวตน</translation>
+<translation id="3772947852642271642">ใช้เว็บโดยไม่บันทึกประวัติการท่องเว็บด้วยหน้าต่างที่ไม่ระบุตัวตน</translation>
+<translation id="3871738366246972820">หากมีการใช้คอมพิวเตอร์ร่วมกัน ให้ลองเปิดหน้าต่างที่ไม่ระบุตัวตน</translation>
+<translation id="5808622652939943719">หากต้องการท่องเว็บแบบส่วนตัว ให้คลิกเมนูไอคอนรูปจุดเพื่อเปิดหน้าต่างที่ไม่ระบุตัวตน</translation>
+<translation id="9079153198295609735">ส่งสถิติการใช้งานและรายงานข้อขัดข้องไปยัง Brave โดยอัตโนมัติ</translation>
+<translation id="8839398440242019256">ไม่ได้มาจาก Brave เว็บสโตร์</translation>
+<translation id="6945695820322143954">ส่วนขยายนี้ละเมิดนโยบาย Brave เว็บสโตร์</translation>
+<translation id="1676595396635191120">หน้าต่างใหม่ที่ไม่ระบุตัวตน</translation>
+<translation id="5094764494104066239">แสดงแถบบุ๊กมาร์กเสมอ</translation>
+<translation id="4471385409549756595">หน้าต่างที่ไม่ระบุตัวตนใหม่</translation>
+<translation id="4540437243849625078">ไซต์นี้กำลังจะแชร์ข้อมูลกับแอปนอกโหมดไม่ระบุตัวตน</translation>
+<translation id="1227836882233136433">ออกจากโหมดไม่ระบุตัวตนไหม</translation>
+<translation id="7618452966706304788">คุณต้องการใช้ Touch ID กับ <ph name="APP_NAME"/> ในโหมดไม่ระบุตัวตนไหม</translation>
+<translation id="3098826269712097986">ข้อมูลการลงชื่อเข้าใช้จะจัดเก็บอยู่ใน Brave หลังจากที่คุณออกจากโหมดไม่ระบุตัวตน การดำเนินการนี้จะทำให้คุณใช้ Touch ID กับเว็บไซต์นี้ได้อีกในภายหลัง</translation>
+<translation id="5186185447130319458">โหมดไม่ระบุตัวตน</translation>
+<translation id="2579188629646253712">ออกจากโหมดไม่ระบุตัวตน</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{เปิดทั้งหมดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}=1{เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}other{เปิดทั้งหมด (#) ใน&amp;หน้าต่างที่ไม่ระบุตัวตน}}</translation>
 <translation id="2431625704210501303">เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="4620367155626060530">&amp;แสดงแถบบุ๊กมาร์ก</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(โหมดไม่ระบุตัวตน)</translation>
 <translation id="4854477725773269949">อนุญาตให้ใช้โหมดไม่ระบุตัวตน</translation>
 <translation id="6436164536244065364">ดูใน Brave เว็บสโตร์</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">ค้นหาส่วนขยายและธีมต่างๆ ได้ใน <ph name="BEGIN_LINK"/>Brave เว็บสโตร์<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">แท็บใหม่ที่ไม่ระบุตัวตน</translation>
 <translation id="6610147964972079463">ปิดแท็บที่ไม่ระบุตัวตน</translation>
-<translation id="5186185447130319458">โหมดไม่ระบุตัวตน</translation>
 <translation id="4933782374919065856">โปรดติดต่อผู้ที่ดูแลโปรไฟล์ของคุณหากมีคำถาม</translation>
 </translationbundle>

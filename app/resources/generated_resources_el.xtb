@@ -2124,7 +2124,6 @@
 <translation id="3771294271822695279">Αρχεία βίντεο </translation>
 <translation id="3775432569830822555">Πιστοποιητικό διακομιστή SSL</translation>
 <translation id="3775705724665058594">Αποστολή στις συσκευές σας</translation>
-<translation id="6945695820322143954">Αυτή η επέκταση παραβαίνει την πολιτική του Brave Web Store.</translation>
 <translation id="3777483481409781352">Δεν ήταν δυνατή η ενεργοποίηση της συσκευής κινητής τηλεφωνίας</translation>
 <translation id="3777806571986431400">Η επέκταση έχει ενεργοποιηθεί</translation>
 <translation id="3778152852029592020">Η λήψη έχει ακυρωθεί.</translation>
@@ -2906,7 +2905,6 @@
 <translation id="48704129375571883">Προσθήκη επιπλέον λειτουργιών</translation>
 <translation id="4870758487381879312">Καταχωρίστε τον κωδικό πρόσβασης που παρασχέθηκε από τον διαχειριστή, για να λάβετε πληροφορίες διαμόρφωσης</translation>
 <translation id="4870903493621965035">Δεν υπάρχουν συσκευές σε σύζευξη</translation>
-<translation id="8839398440242019256">Όχι από το Brave Web Store.</translation>
 <translation id="4871322859485617074">Το PIN περιέχει μη έγκυρους χαρακτήρες</translation>
 <translation id="4871370605780490696">Προσθήκη σελιδοδείκτη</translation>
 <translation id="4871719318659334896">Κλείσιμο ομάδας</translation>
@@ -4968,7 +4966,6 @@
 <translation id="767127784612208024">Αγγίξτε για να επιβεβαιώσετε την επαναφορά</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/> στη σελίδα <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Αποστολή της φωνής σας στην Brave, ώστε να επιτρέπεται η υπαγόρευση σε οποιοδήποτε πεδίο κειμένου.</translation>
-<translation id="3098826269712097986">Τα δεδομένα σύνδεσης θα αποθηκευτούν στο Brave αφού εξέλθετε από την κατάσταση ανώνυμης περιήγησης. Αυτό θα σας επιτρέψει να χρησιμοποιήσετε ξανά το Touch ID με αυτόν τον ιστότοπο αργότερα.</translation>
 <translation id="7681095912841365527">Ο ιστότοπος μπορεί να χρησιμοποιεί bluetooth</translation>
 <translation id="7683373461016844951">Για να συνεχίσετε, κάντε κλικ στο κουμπί OK και, στη συνέχεια, κάντε κλικ στην επιλογή "Προσθήκη ατόμου" για να δημιουργήσετε ένα νέο προφίλ για τη διεύθυνση ηλεκτρονικού ταχυδρομείου <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Εγκαταστάθηκε από το διαχειριστή σας</translation>
@@ -5446,7 +5443,6 @@
 <translation id="8259239505248583312">Ας ξεκινήσουμε</translation>
 <translation id="8260126382462817229">Δοκιμάστε να συνδεθείτε ξανά</translation>
 <translation id="8260864402787962391">Ποντίκι</translation>
-<translation id="8261378640211443080">Αυτή η επέκταση δεν αναφέρεται στο <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> και ενδέχεται να έχει προστεθεί εν αγνοία σας.</translation>
 <translation id="8261506727792406068">Διαγραφή</translation>
 <translation id="8263336784344783289">Ονομάστε αυτή την ομάδα</translation>
 <translation id="8263744495942430914">Το <ph name="FULLSCREEN_ORIGIN"/> έχει απενεργοποιήσει τον δείκτη του ποντικιού σας.</translation>
@@ -6006,7 +6002,6 @@
 <translation id="8983632908660087688">Ο ιστότοπος <ph name="ORIGIN"/> μπορεί να επεξεργαστεί το αρχείο <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Ενεργή πριν από <ph name="DEVICE_LAST_ACTIVATED_TIME"/> ημέρα</translation>
 <translation id="8986362086234534611">Διαγραφή από τη μνήμη</translation>
-<translation id="9079153198295609735">Αυτόματη αποστολή στατιστικών στοιχείων χρήσης και αναφορών σφαλμάτων στην Brave</translation>
 <translation id="8987927404178983737">Μήνας</translation>
 <translation id="8991520179165052608">Ο ιστότοπος μπορεί να χρησιμοποιήσει το μικρόφωνό σας</translation>
 <translation id="899403249577094719">Βασική διεύθυνση URL πιστοποιητικού Netscape</translation>
@@ -6225,6 +6220,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Δημιουργία ασφαλούς σύνδεσης...</translation>
 <translation id="998747458861718449">Έ&amp;λεγχος</translation>
+<translation id="658539216370629794">Άνοιγμα συνδέσμου σε παράθυρο inco&amp;gnito</translation>
+<translation id="1432267168815937878">Άνοιγμα Συνδέσμου σε Παράθυρο Ανών&amp;υμης Περιήγησης</translation>
+<translation id="6516243500644829484">Νέο &amp;παράθυρο ανώνυμης περιήγησης</translation>
+<translation id="7973394300052703468">Νέο &amp;παράθυρο ανώνυμης περιήγηση</translation>
+<translation id="6395403722585816044">Έγινε λήψη στην ανώνυμη περιήγηση</translation>
+<translation id="203837651858678035">Θέλετε να εξέλθετε από την κατάσταση ανώνυμης περιήγησης;</translation>
+<translation id="7376221878517288144">Θέλετε να εξέλθετε από την κατάσταση ανώνυμης περιήγησης;</translation>
+<translation id="871606814707918245">Οι περισσότεροι χρήστες αποκλείουν τις ειδοποιήσεις από αυτόν τον ιστότοπο.</translation>
+<translation id="5053701565089446556">Επέκταση ανώνυμης περιήγησης: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Εφαρμογή ανώνυμης περιήγησης: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Καρτέλα ανώνυμης περιήγησης: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Υποπλαίσιο ανώνυμης περιήγησης: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Πύλη ανώνυμης περιήγησης: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Αυτή η επέκταση δεν αναφέρεται στο <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> και ενδέχεται να έχει προστεθεί εν αγνοία σας.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Ανώνυμη περιήγηση)</translation>
+<translation id="4369414322596874629">Μπορείτε να περιηγηθείτε ιδιωτικά χρησιμοποιώντας ένα παράθυρο για ανώνυμη περιήγηση</translation>
+<translation id="3772947852642271642">Χρησιμοποιήστε τον ιστό χωρίς να αποθηκεύσετε το ιστορικό περιήγησής σας με ένα παράθυρο για ανώνυμη περιήγηση</translation>
+<translation id="3871738366246972820">Χρησιμοποιείτε έναν κοινόχρηστο υπολογιστή; Δοκιμάστε να ανοίξετε ένα παράθυρο για ανώνυμη περιήγηση.</translation>
+<translation id="5808622652939943719">Για να περιηγηθείτε ιδιωτικά, κάντε κλικ στο μενού με τα εικονίδια κουκίδων για να ανοίξετε ένα παράθυρο για ανώνυμη περιήγηση</translation>
+<translation id="9079153198295609735">Αυτόματη αποστολή στατιστικών στοιχείων χρήσης και αναφορών σφαλμάτων στην Brave</translation>
+<translation id="8839398440242019256">Όχι από το Brave Web Store.</translation>
+<translation id="6945695820322143954">Αυτή η επέκταση παραβαίνει την πολιτική του Brave Web Store.</translation>
+<translation id="1676595396635191120">Νέο παράθυρο ανώνυμης περιήγησης</translation>
+<translation id="5094764494104066239">Διαρκής εμφάνιση γραμμής σελιδοδεικτών</translation>
+<translation id="4471385409549756595">Νέο παράθυρο ανώνυμης περιήγησης</translation>
+<translation id="4540437243849625078">Αυτός ο ιστότοπος πρόκειται να κοινοποιήσει πληροφορίες με μια εφαρμογή εκτός της κατάστασης ανώνυμης περιήγησης.</translation>
+<translation id="1227836882233136433">Έξοδος από την κατάσταση ανώνυμης περιήγησης;</translation>
+<translation id="7618452966706304788">Θέλετε να χρησιμοποιήσετε το Touch ID με την εφαρμογή <ph name="APP_NAME"/> στην κατάσταση ανώνυμης περιήγησης;</translation>
+<translation id="3098826269712097986">Τα δεδομένα σύνδεσης θα αποθηκευτούν στο Brave αφού εξέλθετε από την κατάσταση ανώνυμης περιήγησης. Αυτό θα σας επιτρέψει να χρησιμοποιήσετε ξανά το Touch ID με αυτόν τον ιστότοπο αργότερα.</translation>
+<translation id="5186185447130319458">Ανώνυμη περιήγηση</translation>
+<translation id="2579188629646253712">Έξοδος από ανώνυμη περιήγηση</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Άνοιγμα όλων σε παράθυρο για &amp;ανώνυμη περιήγηση}=1{Άνοιγμα σε παράθυρο για &amp;ανώνυμη περιήγηση}other{Άνοιγμα όλων (#) σε παράθυρο για &amp;ανώνυμη περιήγηση}}</translation>
 <translation id="2431625704210501303">Άνοιγμα σε παράθυρο για ανών&amp;υμη περιήγηση</translation>
 <translation id="4620367155626060530">&amp;Εμφάνιση γραμμής σελιδοδεικτών</translation>
@@ -6274,10 +6301,8 @@
 <translation id="3860292630623580294">(Ανώνυμη περιήγηση)</translation>
 <translation id="4854477725773269949">Να επιτρέπονται στην ανώνυμη περιήγηση</translation>
 <translation id="6436164536244065364">Προβολή στο Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Βρείτε επεκτάσεις και θέματα στο <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Νέα καρτέλα ανώνυμης περιήγησης</translation>
 <translation id="6610147964972079463">Κλείσιμο καρτ.ανών.περιήγ.</translation>
-<translation id="5186185447130319458">Ανώνυμη περιήγηση</translation>
 <translation id="4933782374919065856">Έχετε ερωτήσεις; Επικοινωνήστε με το άτομο που επιβλέπει το προφίλ σας.</translation>
 </translationbundle>

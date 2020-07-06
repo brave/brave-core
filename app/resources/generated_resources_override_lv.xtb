@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lv">
+<translation id="658539216370629794">Atvērt saiti inkognito logā</translation>
+<translation id="1432267168815937878">Atvērt saiti inko&amp;gnito režīma logā</translation>
+<translation id="6516243500644829484">Jauns &amp;inkognito logs</translation>
+<translation id="7973394300052703468">Jauns &amp;inkognito režīma logs</translation>
+<translation id="6395403722585816044">Lejupielādēts inkognito režīmā</translation>
+<translation id="203837651858678035">Vai tik un tā iziet no inkognito režīma?</translation>
+<translation id="7376221878517288144">Vai tik un tā iziet no inkognito režīma?</translation>
+<translation id="871606814707918245">Vairums cilvēku bloķē visus paziņojumus no šīs vietnes</translation>
+<translation id="5053701565089446556">Inkognito paplašinājums: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Inkognito lietojumprogramma: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Inkognito režīma cilne: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Inkognito apakšrāmis: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Inkognito režīma portāls: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Šis paplašinājums nav norādīts vietnē <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> un, iespējams, tika pievienots, jums nezinot.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito režīms)</translation>
+<translation id="4369414322596874629">Varat pārlūkot tīmekli privāti inkognito režīma logā.</translation>
+<translation id="3772947852642271642">Pārlūkojiet tīmekli inkognito režīma logā, nesaglabājot pārlūkošanas vēsturi.</translation>
+<translation id="3871738366246972820">Vai izmantojat koplietotu datoru? Atveriet inkognito režīma logu.</translation>
+<translation id="5808622652939943719">Lai pārlūkotu tīmekli privāti, atveriet inkognito režīma logu, noklikšķinot uz punktu ikonas izvēlnes.</translation>
+<translation id="9079153198295609735">Automātiski sūtīt lietošanas statistiku un avāriju pārskatus uzņēmumam Brave</translation>
+<translation id="8839398440242019256">Nav iegūts no Brave interneta veikala.</translation>
+<translation id="6945695820322143954">Šis paplašinājums pārkāpj Brave interneta veikala politiku.</translation>
+<translation id="1676595396635191120">Jauns inkognito režīma logs</translation>
+<translation id="5094764494104066239">Vienmēr rādīt grāmatzīmju joslu</translation>
+<translation id="4471385409549756595">Jauns inkognito logs</translation>
+<translation id="4540437243849625078">Šī vietne kopīgos informāciju ar lietotni, kas nav inkognito režīmā.</translation>
+<translation id="1227836882233136433">Vai iziet no inkognito režīma?</translation>
+<translation id="7618452966706304788">Vai vēlaties izmantot Touch ID ar lietotni <ph name="APP_NAME"/> inkognito režīmā?</translation>
+<translation id="3098826269712097986">Pierakstīšanās dati tiks glabāti pārlūkprogrammā Brave pēc tam, kad iziesiet no inkognito režīma. Tādējādi varēsiet vēlāk atkārtoti izmantot Touch ID ar šo vietni.</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="2579188629646253712">Iziet no inkognito režīma</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Atvērt visas inkognito režīma logā}=1{Atvērt inkognito režīma logā}zero{Atvērt visas (#) inkognito režīma logā}one{Atvērt visas (#) inkognito režīma logā}other{Atvērt visas (#) inkognito režīma logā}}</translation>
 <translation id="2431625704210501303">Atvērt &amp;inkognito režīma logā</translation>
 <translation id="4620367155626060530">&amp;Rādīt grāmatzīmju joslu</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="4854477725773269949">Atļaut inkognito režīmā</translation>
 <translation id="6436164536244065364">Skatīt Brave interneta veikalā</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Atrodiet paplašinājumus un motīvus <ph name="BEGIN_LINK"/>Brave interneta veikalā<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Jauna inkognito cilne</translation>
 <translation id="6610147964972079463">Aizvērt inkognito cilnes</translation>
-<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4933782374919065856">Vai radušies jautājumi? Sazinieties ar personu, kas uzrauga jūsu profilu.</translation>
 </translationbundle>

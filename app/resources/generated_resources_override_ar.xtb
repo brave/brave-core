@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ar">
+<translation id="658539216370629794">فتح الرّابط في نافذة للتصفّح المتخ&amp;فّي</translation>
+<translation id="1432267168815937878">ف&amp;تح رابط في نافذة التصفح المتخفي</translation>
+<translation id="6516243500644829484">نافذة &amp; جديدة للتصفح المتخفي</translation>
+<translation id="7973394300052703468">&amp;نافذة جديدة للتصفح المتخفي</translation>
+<translation id="6395403722585816044">تم التحميل في وضع التصفح المتخفي</translation>
+<translation id="203837651858678035">هل تريد الخروج من وضع التصفح المتخفي على أي حال؟</translation>
+<translation id="7376221878517288144">هل تريد الخروج من وضع التصفح المتخفي على أي حال؟</translation>
+<translation id="871606814707918245">يحظر معظم المستخدمين الإشعارات من هذا الموقع الإلكتروني.</translation>
+<translation id="5053701565089446556">إضافة وضع التصفح المتخفي: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">تطبيق وضع التصفح المتخفي: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">علامة تبويب التصفح المتخفي: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">الإطار الفرعي للتصفح المتخفي: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">بوابة التصفّح المتخفي: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">هذه الإضافة غير مدرجة في <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> وربما تمت إضافتها بدون علمك.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (التصفح المتخفي)</translation>
+<translation id="4369414322596874629">يمكنك التصفّح بخصوصية تامّة باستخدام نافذة للتصفُّح المتخفي</translation>
+<translation id="3772947852642271642">استخدِم الويب بدون حفظ سجلّ التصفُّح باستخدام نافذة تصفُّح متخفٍ</translation>
+<translation id="3871738366246972820">هل تستخدم جهاز كمبيوتر مشتركًا؟ جرِّب فتح نافذة للتصفُّح المتخفي.</translation>
+<translation id="5808622652939943719">للتصفُّح بخصوصية تامّة، انقر على القائمة المشار إليها برمز النقاط لفتح نافذة للتصفُّح المتخفي</translation>
+<translation id="9079153198295609735">‏إرسال إحصاءات الاستخدام وتقارير الأعطال إلى Brave تلقائيًا</translation>
+<translation id="8839398440242019256">‏لم يتم التثبيت من سوق Brave الإلكتروني</translation>
+<translation id="6945695820322143954">‏هذه الإضافة تنتهك سياسة سوق Brave الإلكتروني.</translation>
+<translation id="1676595396635191120">نافذة جديدة للتصفح المتخفي</translation>
+<translation id="5094764494104066239">عرض شريط الإشارات المرجعية دائمًا</translation>
+<translation id="4471385409549756595">نافذة جديدة للتصفح المتخفي</translation>
+<translation id="4540437243849625078">موقع الويب هذا على وشك مشاركة معلومات مع أحد التطبيقات خارج وضع التصفح المتخفي.</translation>
+<translation id="1227836882233136433">أتريد مغادرة وضع التصفح المتخفي؟</translation>
+<translation id="7618452966706304788">هل تريد استخدام رقم التعريف باللمس مع <ph name="APP_NAME"/> في "وضع التصفّح المتخفي"؟</translation>
+<translation id="3098826269712097986">‏سيتم تخزين بيانات تسجيل الدخول في Brave بعد الخروج من "وضع التصفّح المتخفي". سيسمح لك ذلك باستخدام رقم التعريف باللمس على هذا الموقع الإلكتروني في المرة المقبلة.</translation>
+<translation id="5186185447130319458">التصفح المتخفي</translation>
+<translation id="2579188629646253712">الخروج من وضع التصفّح المتخفّي</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{فتح الكل في &amp;نافذة التصفح المتخفي}=1{فتح في &amp;نافذة التصفح المتخفي}two{فتح كلا العنوانين (#) في &amp;نافذة التصفح المتخفي}few{فتح كل الـ (#) عناوين في &amp;نافذة التصفح المتخفي}many{فتح كل الـ (#) عنوانًا في &amp;نافذة التصفح المتخفي}other{فتح كل الـ (#) عنوان في &amp;نافذة التصفح المتخفي}}</translation>
 <translation id="2431625704210501303">فتح في نافذة &amp;التصفح المتخفي</translation>
 <translation id="4620367155626060530">&amp;عرض شريط الإشارات</translation>
@@ -51,10 +83,8 @@
 <translation id="3860292630623580294">(التصفح المتخفي)</translation>
 <translation id="4854477725773269949">السماح بالتشغيل في وضع التصفح المتخفي</translation>
 <translation id="6436164536244065364">‏العرض في سوق Brave الإلكتروني</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">‏يمكنك العثور على الإضافات والمظاهر في <ph name="BEGIN_LINK"/>سوق Brave الإلكتروني<ph name="END_LINK"/>.</translation>
 <translation id="6336451774241870485">علامة تبويب جديدة للتصفح المتخفي</translation>
 <translation id="6610147964972079463">إغلاق علامات تبويب التصفح المتخفي</translation>
-<translation id="5186185447130319458">التصفح المتخفي</translation>
 <translation id="4933782374919065856">هل هناك أي أسئلة؟ اتصل بالشخص الذي يشرف على ملفك الشخصي.</translation>
 </translationbundle>

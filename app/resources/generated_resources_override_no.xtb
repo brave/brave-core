@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
+<translation id="658539216370629794">Åpne linken i inko&amp;gnitovindu</translation>
+<translation id="1432267168815937878">Åpne linken i inko&amp;gnitovindu</translation>
+<translation id="6516243500644829484">Nytt &amp;inkognitovindu</translation>
+<translation id="7973394300052703468">Nytt &amp;inkognitovindu</translation>
+<translation id="6395403722585816044">Lastet ned i inkognitomodus</translation>
+<translation id="203837651858678035">Vil du avslutte inkognitomodus likevel?</translation>
+<translation id="7376221878517288144">Vil du avslutte inkognitomodus likevel?</translation>
+<translation id="871606814707918245">De fleste blokkerer varsler fra dette nettstedet</translation>
+<translation id="5053701565089446556">Inkognitoutvidelse: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Inkognitoprogram: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Inkognitofane: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Inkognito-underramme: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Inkognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Nettmarked</translation>
+<translation id="8261378640211443080">Denne utvidelsen er ikke oppført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, og kan ha blitt lagt uten at du har vært klar over det.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="4369414322596874629">Med et inkognitovindu kan du besøke nettsteder anonymt</translation>
+<translation id="3772947852642271642">Med et inkognitovindu kan du bruke nettet uten at nettlesingsloggen lagres</translation>
+<translation id="3871738366246972820">Bruker du en delt datamaskin? Prøv å åpne et inkognitovindu.</translation>
+<translation id="5808622652939943719">Hvis du vil besøke nettsteder privat, klikker du på menyen med de tre prikkene og åpner et inkognitovindu</translation>
+<translation id="9079153198295609735">Send bruksstatistikk og programstopprapporter automatisk til Brave</translation>
+<translation id="8839398440242019256">Ikke fra Brave Nettmarked.</translation>
+<translation id="6945695820322143954">Denne utvidelsen strider med retningslinjene for Brave Nettmarked.</translation>
+<translation id="1676595396635191120">Nytt inkognitovindu</translation>
+<translation id="5094764494104066239">Vis alltid bokmerkerad</translation>
+<translation id="4471385409549756595">Nytt inkognitovindu</translation>
+<translation id="4540437243849625078">Dette nettstedet er i ferd med å dele informasjon med en app utenfor inkognitomodus.</translation>
+<translation id="1227836882233136433">Vil du avslutte inkognitomodus?</translation>
+<translation id="7618452966706304788">Vil du bruke Touch ID med <ph name="APP_NAME"/> i inkognitomodus?</translation>
+<translation id="3098826269712097986">Påloggingsdata lagres i Brave når du går ut av inkognitomodus. Det betyr at du kan bruke Touch ID på dette nettstedet igjen senere.</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="2579188629646253712">Avslutt inkognitomodus</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Åpne alle i &amp;inkognitovinduer}=1{Åpne i et &amp;inkognitovindu}other{Åpne alle (#) i &amp;inkognitovinduer}}</translation>
 <translation id="2431625704210501303">Åpne i &amp;inkognitovindu</translation>
 <translation id="4620367155626060530">&amp;Vis bokmerkerad</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="4854477725773269949">Tillat i inkognitomodus</translation>
 <translation id="6436164536244065364">Se i Brave Nettmarked</translation>
-<translation id="8808478386290700967">Brave Nettmarked</translation>
 <translation id="38046578254905003">Finn utvidelser og temaer i <ph name="BEGIN_LINK"/>Brave Nettmarked<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Ny inkognitofane</translation>
 <translation id="6610147964972079463">Lukk inkognitofaner</translation>
-<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4933782374919065856">Har du spørsmål? Kontakt personen som administrer profilen din.</translation>
 </translationbundle>

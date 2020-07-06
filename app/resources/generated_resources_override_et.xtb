@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="et">
+<translation id="658539216370629794">Ava link inko&amp;gnito aknas</translation>
+<translation id="1432267168815937878">Ava link inko&amp;gnito aknas</translation>
+<translation id="6516243500644829484">Uus &amp;inkognito aken</translation>
+<translation id="7973394300052703468">Uus &amp;inkognito aken</translation>
+<translation id="6395403722585816044">Alla laaditud inkognito režiimis</translation>
+<translation id="203837651858678035">Kas väljuda ikka inkognito režiimist?</translation>
+<translation id="7376221878517288144">Kas sulgeda ikka inkognito režiim?</translation>
+<translation id="871606814707918245">Enamik inimesi blokeerib selle saidi märguanded</translation>
+<translation id="5053701565089446556">Inkognito laiendus: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Inkognito rakendus: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Inkognito vaheleht: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Inkognito alamraam: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Inkognito portaal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Seda laiendust ei leidu veebipoes <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja te ei pruugi selle lisamisest teadlik olla.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="4369414322596874629">Inkognito aknas saab privaatselt sirvida</translation>
+<translation id="3772947852642271642">Inkognito aknas kasutate veebi ilma sirvimisajalugu salvestamata</translation>
+<translation id="3871738366246972820">Kas kasutate jagatud arvutit? Proovige avada inkognito aken.</translation>
+<translation id="5808622652939943719">Privaatselt sirvimiseks klõpsake punktidega menüüikoonil, et avada inkognito aken</translation>
+<translation id="9079153198295609735">Saada kasutusstatistika ja krahhiaruanded automaatselt Brave'ile</translation>
+<translation id="8839398440242019256">See ei pärine Brave'i veebipoest.</translation>
+<translation id="6945695820322143954">See laiendus rikub Brave'i veebipoe eeskirju.</translation>
+<translation id="1676595396635191120">Uus inkognito aken</translation>
+<translation id="5094764494104066239">Kuva alati järjehoidjariba</translation>
+<translation id="4471385409549756595">Uus inkognitoaken</translation>
+<translation id="4540437243849625078">See sait jagab teavet väljaspool inkognito režiimi oleva rakendusega.</translation>
+<translation id="1227836882233136433">Kas lahkuda inkognito režiimist?</translation>
+<translation id="7618452966706304788">Kas soovite inkognito režiimis rakendusega <ph name="APP_NAME"/> kasutada Touch ID-d?</translation>
+<translation id="3098826269712097986">Sisselogimisandmed salvestatakse Brave'i pärast inkognito režiimist väljumist. See võimaldab teil Touch ID-d sellel veebisaidil hiljem uuesti kasutada.</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="2579188629646253712">Välju inkognito režiimist</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Ava kõik &amp;inkognito aknas}=1{Ava &amp;inkognito aknas}other{Ava kõik (#) &amp;inkognito aknas}}</translation>
 <translation id="2431625704210501303">Ava &amp;inkognito aknas</translation>
 <translation id="4620367155626060530">&amp;Näita järjehoidjariba</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="4854477725773269949">Luba inkognito-režiimis</translation>
 <translation id="6436164536244065364">Kuva Brave'i veebipoes</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Otsige <ph name="BEGIN_LINK"/>Brave'i veebipoest<ph name="END_LINK"/> laiendusi ja teemasid</translation>
 <translation id="6336451774241870485">Uus inkognito vaheleht</translation>
 <translation id="6610147964972079463">Inkognito vahelehtede sulgemine</translation>
-<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4933782374919065856">Kas teil on küsimusi? Võtke ühendust profiili operaatoriga.</translation>
 </translationbundle>

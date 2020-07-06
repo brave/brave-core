@@ -2124,7 +2124,6 @@
 <translation id="3771294271822695279">Տեսաֆայլեր</translation>
 <translation id="3775432569830822555">SSL սերվերի վկայագիր</translation>
 <translation id="3775705724665058594">Ուղարկել սարքերին</translation>
-<translation id="6945695820322143954">Այս ընդլայնումը խախտում է Brave Web Store-ի քաղաքականությունը:</translation>
 <translation id="3777483481409781352">Չհաջողվեց ակտիվացնել բջջային սարքը</translation>
 <translation id="3777806571986431400">Ընդլայնումը միացված է</translation>
 <translation id="3778152852029592020">Ներբեռնումը չեղարկված է:</translation>
@@ -2906,7 +2905,6 @@
 <translation id="48704129375571883">Ավելացնել լրացուցիչ գործառույթներ</translation>
 <translation id="4870758487381879312">Մուտքագրեք ադմինիստրատորի տրամադրած գաղտնաբառը՝ կազմաձևման մասին տեղեկությունները տեսնելու համար</translation>
 <translation id="4870903493621965035">Զուգակցված սարքեր չկան</translation>
-<translation id="8839398440242019256">Brave Web Store-ից չէ:</translation>
 <translation id="4871322859485617074">PIN կոդում անվավեր նիշեր կան</translation>
 <translation id="4871370605780490696">Ավելացնել էջանիշ</translation>
 <translation id="4871719318659334896">Փակել խումբը</translation>
@@ -4970,7 +4968,6 @@
 <translation id="767127784612208024">Հպեք՝ զրոյացումը հաստատելու համար</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, <ph name="PAGE_TITLE"/>-ում։</translation>
 <translation id="1800308196794859773">Ուղարկեք ձեր ձայնը Brave-ին, որպեսզի կարողանաք թելադրելով լրացնել տեքստային դաշտերը։</translation>
-<translation id="3098826269712097986">Մուտքի տվյալները կպահվեն Brave-ում, երբ դուք դուրս գաք ինկոգնիտո ռեժիմից։ Սա նշատակում է, որ դուք նորից կարող եք օգտագործել Touch ID-ն հաջորդ անգամ այս կայքն այցելելիս։</translation>
 <translation id="7681095912841365527">Կայքը կարող է օգտագործել Bluetooth-ը</translation>
 <translation id="7683373461016844951">Շարունակելու համար սեղմեք «OK», այնուհետև «Ավելացնել օգտատեր»՝ <ph name="DOMAIN"/> հասցեով նոր պրոֆիլ ստեղծելու համար:</translation>
 <translation id="7684212569183643648">Տեղադրվել է ձեր ադմինիստրատորի կողմից</translation>
@@ -5446,7 +5443,6 @@
 <translation id="8259239505248583312">Սկսել</translation>
 <translation id="8260126382462817229">Փորձեք նորից մուտք գործել</translation>
 <translation id="8260864402787962391">Մկնիկ</translation>
-<translation id="8261378640211443080">Այս ընդլայնումը նշված չէ <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>-ում և կարող է ավելացվել առանց ձեր իմացության:</translation>
 <translation id="8261506727792406068">Ջնջել</translation>
 <translation id="8263336784344783289">Անվանեք այս խումբը</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/>-ն անջատել է մկնիկի նշորդը:</translation>
@@ -6008,7 +6004,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> կայքը կարող է փոփոխել <ph name="FILENAME"/> ֆայլը</translation>
 <translation id="8985264973231822211">Ակտիվ է եղել <ph name="DEVICE_LAST_ACTIVATED_TIME"/> օր առաջ</translation>
 <translation id="8986362086234534611">Հեռացնել</translation>
-<translation id="9079153198295609735">Ավտոմատ Brave-ին ուղարկել օգտագործման վիճակագրությունները և խափանումների մասին հաշվետվությունները</translation>
 <translation id="8987927404178983737">Ամիս</translation>
 <translation id="8991520179165052608">Կայքը կարող է օգտագործել ձեր խոսափողը</translation>
 <translation id="899403249577094719">Netscape-ի վկայագրերի բազայի URL</translation>
@@ -6227,6 +6222,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Ապահով կապակցում…</translation>
 <translation id="998747458861718449">Ստուգել</translation>
+<translation id="658539216370629794">Բացել հղումը ինկ&amp;ոգնիտո պատուհանով</translation>
+<translation id="1432267168815937878">Բացել հղումը ինկոգ&amp;նիտո պատուհանով</translation>
+<translation id="6516243500644829484">Նոր &amp;ինկոգնիտո պատուհան</translation>
+<translation id="7973394300052703468">Նոր &amp;ինկոգնիտո պատուհան</translation>
+<translation id="6395403722585816044">Ներբեռնվել է ինկոգնիտո ռեժիմում</translation>
+<translation id="203837651858678035">Փակե՞լ ինկոգնիտո ռեժիմը։</translation>
+<translation id="7376221878517288144">Փակե՞լ ինկոգնիտո պատուհանը</translation>
+<translation id="871606814707918245">Մարդկանց մեծամասնությունն արգելափակում է այս կայքի ծանուցումները</translation>
+<translation id="5053701565089446556">Ինկոգնիտո ընդլայնում` <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Ինկոգնիտո հավելված՝ <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Ինկոգնիտո ներդիր` <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Ինկոգնիտո ռեժիմի ենթաշրջանակ՝ <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Ինկոգնիտո պորտալ՝ <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Այս ընդլայնումը նշված չէ <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>-ում և կարող է ավելացվել առանց ձեր իմացության:</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ինկոգնիտո)</translation>
+<translation id="4369414322596874629">Գաղտնի դիտարկման համար օգտագործեք ինկոգնիտո պատուհան:</translation>
+<translation id="3772947852642271642">Եթե չեք ուզում, որ ձեր այցելությունների պատմությունը պահվի, բացեք ինկոգնիտո պատուհան:</translation>
+<translation id="3871738366246972820">Եթե ընդհանուր համակարգիչ եք օգտագործում, բացեք ինկոգնիտո պատուհան։</translation>
+<translation id="5808622652939943719">Գաղտնի դիտարկման համար սեղմեք երեք կետով պատկերակին՝ ինկոգնիտո պատուհան բացելու համար:</translation>
+<translation id="9079153198295609735">Ավտոմատ Brave-ին ուղարկել օգտագործման վիճակագրությունները և խափանումների մասին հաշվետվությունները</translation>
+<translation id="8839398440242019256">Brave Web Store-ից չէ:</translation>
+<translation id="6945695820322143954">Այս ընդլայնումը խախտում է Brave Web Store-ի քաղաքականությունը:</translation>
+<translation id="1676595396635191120">New Incognito Window</translation>
+<translation id="5094764494104066239">Always Show Bookmarks Bar</translation>
+<translation id="4471385409549756595">Նոր ինկոգնիտո պատուհան</translation>
+<translation id="4540437243849625078">Այս կայքը պատրաստվում է ուղարկել տվյալները մի հավելվածի, որն ինկոգնիտո ռեժիմից դուրս է գտնվում։</translation>
+<translation id="1227836882233136433">Դուրս գա՞լ ինկոգնիտո ռեժիմից</translation>
+<translation id="7618452966706304788">Ուզո՞ւմ եք օգտագործել Touch ID-ն՝ ինկոգնիտո ռեժիմում <ph name="APP_NAME"/> հավելված մտնելու համար</translation>
+<translation id="3098826269712097986">Մուտքի տվյալները կպահվեն Brave-ում, երբ դուք դուրս գաք ինկոգնիտո ռեժիմից։ Սա նշատակում է, որ դուք նորից կարող եք օգտագործել Touch ID-ն հաջորդ անգամ այս կայքն այցելելիս։</translation>
+<translation id="5186185447130319458">Ինկոգնիտո</translation>
+<translation id="2579188629646253712">Դուրս գալ ինկոգնիտո ռեժիմից</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Բացել բոլորը &amp;ինկոգնիտո պատուհանում}=1{Բացել &amp;ինկոգնիտո պատուհանում}one{Open all (#) in &amp;incognito window}other{Բացել բոլորը (#) &amp;ինկոգնիտո պատուհանում}}</translation>
 <translation id="2431625704210501303">Բացել &amp;ինկոգնիտո պատուհանում</translation>
 <translation id="4620367155626060530">&amp;Ցուցադրել էջանիշների գոտին</translation>
@@ -6276,10 +6303,8 @@
 <translation id="3860292630623580294">(Ինկոգնիտո)</translation>
 <translation id="4854477725773269949">Թույլ տալ ինկոգնիտո ռեժիմում</translation>
 <translation id="6436164536244065364">Դիտել Brave Web Store-ում</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Գտեք ընդլայնումներ և թեմաներ <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>-ում</translation>
 <translation id="6336451774241870485">Նոր ինկոգնիտո ներդիր</translation>
 <translation id="6610147964972079463">Փակել ինկոգնիտո ներդիրները</translation>
-<translation id="5186185447130319458">Ինկոգնիտո</translation>
 <translation id="4933782374919065856">Հարցերի դեպքում կապվեք ձեր պրոֆիլը վերահսկող անձի հետ:</translation>
 </translationbundle>

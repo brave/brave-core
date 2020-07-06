@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="as">
+<translation id="658539216370629794">লিংকটো ইনক’&amp;গনিট’ ৱিণ্ড'ত খোলক</translation>
+<translation id="1432267168815937878">লিংকটো ইনক’&amp;গনিট’ ৱিণ্ড'ত খোলক</translation>
+<translation id="6516243500644829484">নতুন &amp;ইনক'গনিট' ৱিণ্ড'</translation>
+<translation id="7973394300052703468">নতুন &amp;ইনক'গনিট' ৱিণ্ড'</translation>
+<translation id="6395403722585816044">ইনক’গনিট’ ম’ডত ডাউনল’ড কৰা হৈছে</translation>
+<translation id="203837651858678035">যিকোনো প্ৰকাৰে ইনক’গনিট’ ম’ডৰ পৰা বাহিৰ হ’বনে?</translation>
+<translation id="7376221878517288144">যিয়েই কি নহ’লেও ইনক’গনিট’ ম’ডৰ বন্ধ কৰিবনে?</translation>
+<translation id="871606814707918245">অধিকাংশ লোকে এই ছাইটটোৰ জাননীসমূহ অৱৰোধ কৰে</translation>
+<translation id="5053701565089446556">ইনক’গনিট’ এক্সটেনশ্বন: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ইনক’গনিট’ এপ্: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">ইনক'গনিট' টেব: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ইনক’গনিট’ ছাবফ্ৰেম: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ইনক’গনিট’ পর্টেল: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">এই এক্সটেনশ্বনটো <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>ত সূচীবদ্ধ কৰা হোৱা নাই আৰু আপুনি নজনাকৈয়ে ইয়াক যোগ কৰা হ’ব পাৰে।</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ইনক’গনিট’)</translation>
+<translation id="4369414322596874629">আপুনি এখন ইনকগনিট‘ ৱিণ্ড‘ ব্যৱহাৰ কৰি ব্যক্তিগতভাৱে ব্ৰাউজ কৰিব পাৰে</translation>
+<translation id="3772947852642271642">আপোনাৰ ব্ৰাউজিঙৰ ইতিহাস ছেভ নকৰাকৈ কোনো ইনক’গনিট’ ৱিণ্ড’ৰ জৰিয়তে ৱেব ব্যৱহাৰ কৰক</translation>
+<translation id="3871738366246972820">কোনো শ্বেয়াৰ কৰা কম্পিউটাৰৰ জৰিয়তে? এটা ইনক’গনিট’ ৱিণ্ড’ত খুলি চাওক।</translation>
+<translation id="5808622652939943719">ব্যক্তিগতভাৱে ব্ৰাউজ কৰিবলৈ বিন্দু আইকন মেনুত ক্লিক কৰি এখন ইনক'গনিট' ৱিণ্ড' খোলক</translation>
+<translation id="9079153198295609735">স্বয়ংক্ৰিয়ভাৱে Braveলৈ ব্যৱহাৰৰ পৰিসংখ্যা আৰু ক্ৰেশ্ব ৰিপ’ৰ্ট পঠিয়াওক</translation>
+<translation id="8839398440242019256">Brave ৱেব ষ্ট’ৰৰ নহয়৷</translation>
+<translation id="6945695820322143954">এই এক্সটেনশ্বনে Braveৰ Brave Web Storeৰ নীতি উলংঘা কৰে।</translation>
+<translation id="1676595396635191120">নতুন ইনক’গনিট’ ৱিণ্ড’</translation>
+<translation id="5094764494104066239">বুকমাৰ্কৰ বাৰ সদায়েই দেখুৱাওক</translation>
+<translation id="4471385409549756595">নতুন ইনক’গনিট’ ৱিণ্ড’</translation>
+<translation id="4540437243849625078">এই ছাইটটোৱে ইনক'গনিট' ম'ডৰ বাহিৰৰ এটা এপৰ সৈতে তথ্য শ্বেয়াৰ কৰিব ওলাইছে।</translation>
+<translation id="1227836882233136433">ইনক’গনিট’ ম’ডৰ পৰা বাহিৰ হ’বনে?</translation>
+<translation id="7618452966706304788">আপুনি ইনক'গনিট' ম'ডত <ph name="APP_NAME"/>ৰ সৈতে স্পৰ্শ আইডিটো ব্যৱহাৰ কৰিবলৈ বিচাৰেনে?</translation>
+<translation id="3098826269712097986">আপুনি ইনক'গনিট' ম'ডৰ পৰা বাহিৰ ওলালে ছাইন ইনৰ লগত জড়িত ডেটা Braveত ষ্ট'ৰ কৰা হ'ব। এই কাৰ্যটোৱে আপোনাক এই ৱেবছাইটটোৰ সৈতে পাছত পুনৰ স্পৰ্শ আইডি ব্যৱহাৰ কৰিবলৈ দিব।</translation>
+<translation id="5186185447130319458">ইনক’গনিট’</translation>
+<translation id="2579188629646253712">ইনক’গনিট’ৰ পৰা বাহিৰ হওক</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{সকলো &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}=1{ই&amp;নক’গনিট’ ৱিণ্ড’ত খোলক}one{সকলো (#) &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}other{সকলো (#) &amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক}}</translation>
 <translation id="2431625704210501303">&amp;ইনক’গনিট’ ৱিণ্ড’ত খোলক</translation>
 <translation id="4620367155626060530">বুকমার্ক বাৰ &amp;দেখুৱাওক</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(ইনক’গনিট’)</translation>
 <translation id="4854477725773269949">ইনক’গনিট’ ম'ডত সক্ষম কৰিবলৈ অনুমতি দিয়ক</translation>
 <translation id="6436164536244065364">Brave Web Storeত চাওক</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/>ত এক্সটেনশ্বন আৰু থীমসমূহ পাওক</translation>
 <translation id="6336451774241870485">নতুন ইনকগনিট’ টেব</translation>
 <translation id="6610147964972079463">ইনক’গনিট’ টেবসমূহ বন্ধ কৰক</translation>
-<translation id="5186185447130319458">ইনক’গনিট’</translation>
 <translation id="4933782374919065856">প্ৰশ্ন সুধিব লগা আছে নেকি? আপোনাৰ প্ৰ’ফাইল তদাৰক কৰা লোকৰ সৈতে যোগাযোগ কৰক।</translation>
 </translationbundle>

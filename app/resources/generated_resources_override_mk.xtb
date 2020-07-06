@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mk">
+<translation id="658539216370629794">Отвори ја врската во инко&amp;гнито прозорец</translation>
+<translation id="1432267168815937878">Отвори ја врската во инко&amp;гнито прозорец</translation>
+<translation id="6516243500644829484">Нов &amp;инкогнито прозорец</translation>
+<translation id="7973394300052703468">Нов &amp;инкогнито прозорец</translation>
+<translation id="6395403722585816044">Преземено во Инкогнито</translation>
+<translation id="203837651858678035">Сепак да се излезе од режим „Инкогнито“?</translation>
+<translation id="7376221878517288144">Сепак да се напушти режим „Инкогнито“?</translation>
+<translation id="871606814707918245">Повеќето луѓе ги блокираат известувањата од сајтов</translation>
+<translation id="5053701565089446556">Наставка на таен идентитет: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Инкогнито апликација: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Инкогнито картичка: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Инкогнито подрамка: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Инкогнито портал: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave веб-продавница</translation>
+<translation id="8261378640211443080">Оваа наставка не е наведена во <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> и можеби е додадена без ваше знаење.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Инкогнито)</translation>
+<translation id="4369414322596874629">Може да прелистувате приватно со инкогнито прозорец</translation>
+<translation id="3772947852642271642">Користете интернет без да ја зачувате историјата на прелистување со инкогнито прозорец</translation>
+<translation id="3871738366246972820">Користите заеднички компјутер? Обидете се со отворање инкогнито прозорец.</translation>
+<translation id="5808622652939943719">За да прелистувате приватно, кликнете на менито со икона со точки за да отворите инкогнито прозорец</translation>
+<translation id="9079153198295609735">Автоматски испрати статистика за користење и извештаи за падови до Brave</translation>
+<translation id="8839398440242019256">Не од Веб-продавницата на Brave.</translation>
+<translation id="6945695820322143954">Наставката ја прекршува политиката на Веб-продавницата на Brave.</translation>
+<translation id="1676595396635191120">Нов инкогнито прозорец</translation>
+<translation id="5094764494104066239">Секогаш прикажувај ја лентата со обележувачи</translation>
+<translation id="4471385409549756595">Нов инкогнито прозорец</translation>
+<translation id="4540437243849625078">Сајтов ќе сподели информации со една апликација надвор од режимот „Инкогнито“.</translation>
+<translation id="1227836882233136433">Да се напушти режимот „Инкогнито“?</translation>
+<translation id="7618452966706304788">Дали сакате да користите „ID на допир“ со <ph name="APP_NAME"/> во режимот „Инкогнито“?</translation>
+<translation id="3098826269712097986">Податоците за најавување ќе се складираат во Brave откако ќе излезете од режимот „Инкогнито“. Ова ќе ви овозможи во иднина повторно да користите „ID на допир“ на овој веб-сајт.</translation>
+<translation id="5186185447130319458">Инкогнито</translation>
+<translation id="2579188629646253712">Излези од инкогнито</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Отвори ги сите во &amp;инкогнито прозорец}=1{Отвори во &amp;инкогнито прозорец}one{Отвори ги сите (#) во &amp;инкогнито прозорец}other{Отвори ги сите (#) во &amp;инкогнито прозорец}}</translation>
 <translation id="2431625704210501303">Отвори во &amp;инкогнито прозорец</translation>
 <translation id="4620367155626060530">&amp;Покажи лента со обележувачи</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Инкогнито)</translation>
 <translation id="4854477725773269949">Овозможи во инкогнито</translation>
 <translation id="6436164536244065364">Прикажи во веб-продавницата на Brave</translation>
-<translation id="8808478386290700967">Brave веб-продавница</translation>
 <translation id="38046578254905003">Најдете екстензии и теми во <ph name="BEGIN_LINK"/>Веб-продавницата на Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Нова картичка „Инкогнито“</translation>
 <translation id="6610147964972079463">Затвори инкогнито-картички</translation>
-<translation id="5186185447130319458">Инкогнито</translation>
 <translation id="4933782374919065856">Имате прашања? Контактирајте со лицето што го надгледува вашиот профил.</translation>
 </translationbundle>

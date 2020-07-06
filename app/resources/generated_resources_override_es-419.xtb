@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="es-419">
+<translation id="658539216370629794">Abrir el enlace en una ventana de navegación de incó&amp;gnito</translation>
+<translation id="1432267168815937878">Abrir el vínculo en una ventana de incó&amp;gnito</translation>
+<translation id="6516243500644829484">Nueva ventana de &amp;incógnito</translation>
+<translation id="7973394300052703468">Nueva ventana de &amp;incógnito</translation>
+<translation id="6395403722585816044">Descargado en el modo de navegación de incógnito</translation>
+<translation id="203837651858678035">¿Deseas salir del modo de navegación incógnito de todas formas?</translation>
+<translation id="7376221878517288144">¿Deseas salir del modo de navegación incógnito de todas formas?</translation>
+<translation id="871606814707918245">La mayoría de las personas bloquean las notificaciones de este sitio</translation>
+<translation id="5053701565089446556">Extensión de incógnito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplicación de incógnito: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Pestaña de incógnito: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Submarco incógnito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal en modo incógnito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Tienda virtual de Brave</translation>
+<translation id="8261378640211443080">Esta extensión no figura en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y es posible que se haya agregado sin tu conocimiento.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incógnito)</translation>
+<translation id="4369414322596874629">Puedes navegar de forma privada con una ventana de incógnito</translation>
+<translation id="3772947852642271642">Con una ventana de incógnito, podrás usar la Web sin que se guarde tu historial de navegación</translation>
+<translation id="3871738366246972820">¿Usas una computadora compartida? Intenta abrir una ventana de incógnito.</translation>
+<translation id="5808622652939943719">Haz clic en el menú con el ícono de puntos para abrir una ventana de incógnito y navegar de forma privada</translation>
+<translation id="9079153198295609735">Enviar automáticamente estadísticas de uso e informes sobre fallos a Brave</translation>
+<translation id="8839398440242019256">No se obtuvo en Brave Web Store.</translation>
+<translation id="6945695820322143954">Esta extensión infringe la política de Brave Web Store.</translation>
+<translation id="1676595396635191120">Nueva ventana de incógnito</translation>
+<translation id="5094764494104066239">Mostrar siempre la barra de favoritos</translation>
+<translation id="4471385409549756595">Nueva ventana de incógnito</translation>
+<translation id="4540437243849625078">Este sitio está a punto de compartir información con una app fuera del modo de navegación incógnito.</translation>
+<translation id="1227836882233136433">¿Deseas salir del modo de navegación incógnito?</translation>
+<translation id="7618452966706304788">¿Quieres usar Touch ID con <ph name="APP_NAME"/> en el modo de navegación incógnito?</translation>
+<translation id="3098826269712097986">Los datos de acceso se almacenarán en Brave cuando salgas del modo de navegación incógnito. De esa manera, podrás usar Touch ID con este sitio web más adelante.</translation>
+<translation id="5186185447130319458">Incógnito</translation>
+<translation id="2579188629646253712">Salir del modo incógnito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Abrir todo en una ventana de &amp;incógnito}=1{Abrir en una ventana de &amp;incógnito}other{Abrir todo (#) en una ventana de &amp;incógnito}}</translation>
 <translation id="2431625704210501303">Abrir en una ventana de &amp;incógnito</translation>
 <translation id="4620367155626060530">Mo&amp;strar la barra de favoritos</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Incógnito)</translation>
 <translation id="4854477725773269949">Permitir modo incógnito</translation>
 <translation id="6436164536244065364">Ver en Brave Web Store</translation>
-<translation id="8808478386290700967">Tienda virtual de Brave</translation>
 <translation id="38046578254905003">Encuentra extensiones y temas en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nueva pestaña de incógnito</translation>
 <translation id="6610147964972079463">Cerrar pest. de incógnito</translation>
-<translation id="5186185447130319458">Incógnito</translation>
 <translation id="4933782374919065856">¿Tienes preguntas? Comunícate con la persona que supervisa tu perfil.</translation>
 </translationbundle>

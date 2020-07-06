@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bs">
+<translation id="658539216370629794">Otvori link u anonimnom prozoru</translation>
+<translation id="1432267168815937878">Otvori link u anonimnom prozoru</translation>
+<translation id="6516243500644829484">Novi &amp;anonimni prozor</translation>
+<translation id="7973394300052703468">Novi &amp;anonimni prozor</translation>
+<translation id="6395403722585816044">Preuzeto u anonimnom načinu rada</translation>
+<translation id="203837651858678035">Svejedno izaći iz anonimnog načina rada?</translation>
+<translation id="7376221878517288144">Ipak napustiti anonimni način rada?</translation>
+<translation id="871606814707918245">Većina osoba blokira obavještenja s ove web lokacije</translation>
+<translation id="5053701565089446556">Anonimna ekstenzija: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Anonimna aplikacija: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Anonimna kartica: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Podokvir anonimnog načina: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal u anonimnom načinu rada: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web trgovina</translation>
+<translation id="8261378640211443080">To proširenje nije navedeno u trgovini <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i možda je dodano bez vašeg znanja.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (anonimno)</translation>
+<translation id="4369414322596874629">Možete pregledati privatno koristeći anonimni prozor</translation>
+<translation id="3772947852642271642">Pomoću anonimnog prozora, koristite internet tako da se vaša historija pregledanja ne pamti</translation>
+<translation id="3871738366246972820">Koristite dijeljeni računar? Pokušajte otvoriti u anonimnom prozoru.</translation>
+<translation id="5808622652939943719">Da biste imali privatnost pri pregledanju, kliknite na ikonu menija s tačkicama da otvorite anonimni prozor.</translation>
+<translation id="9079153198295609735">Automatski šaljite statistiku korištenja i izvještaje o padovima aplikacije Braveu</translation>
+<translation id="8839398440242019256">Nije iz Brave Web trgovine.</translation>
+<translation id="6945695820322143954">Ova ekstenzija krši pravila Brave Web trgovine.</translation>
+<translation id="1676595396635191120">&amp;Novi anoniman prozor</translation>
+<translation id="5094764494104066239">Uvijek prikaži traku oznaka</translation>
+<translation id="4471385409549756595">Novi anonimni prozor</translation>
+<translation id="4540437243849625078">Ova stranica će podijeliti informacije s aplikacijom izvan anonimnog načina rada.</translation>
+<translation id="1227836882233136433">Izaći iz anonimnog načina rada?</translation>
+<translation id="7618452966706304788">Želite li koristiti Touch ID s aplikacijom <ph name="APP_NAME"/> u anonimnom načinu rada?</translation>
+<translation id="3098826269712097986">Podaci za prijavu će se sačuvati u Braveu nakon što izađete iz anonimnog načina rada. Na taj način ćete moći kasnije koristiti Touch ID na ovoj web lokaciji.</translation>
+<translation id="5186185447130319458">Anonimno</translation>
+<translation id="2579188629646253712">Izađi iz anonimnog načina rada</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Otvori sve u &amp;anonimnom prozoru}=1{Otvori u &amp;anonimnom prozoru}one{Otvori sve (#) u &amp;anonimnom prozoru}few{Otvori sve (#) u &amp;anonimnom prozoru}other{Otvori sve (#) u &amp;anonimnom prozoru}}</translation>
 <translation id="2431625704210501303">Otvaranje u &amp;anonimnom prozoru</translation>
 <translation id="4620367155626060530">&amp;Prikaži traku oznaka</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Anonimno)</translation>
 <translation id="4854477725773269949">Dopusti u anonimnom načinu</translation>
 <translation id="6436164536244065364">Prikaži u Brave Web trgovini</translation>
-<translation id="8808478386290700967">Brave Web trgovina</translation>
 <translation id="38046578254905003">Pronađite ekstenzije i teme u <ph name="BEGIN_LINK"/>Brave Web trgovini<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nova anonimna kartica</translation>
 <translation id="6610147964972079463">Zatvori anonimne kartice</translation>
-<translation id="5186185447130319458">Anonimno</translation>
 <translation id="4933782374919065856">Pitanja? Kontaktirajte osobu koja nadzire vaš profil.</translation>
 </translationbundle>

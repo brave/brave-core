@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="kk">
+<translation id="658539216370629794">Сілтемені инкогнито терезесінде ашу</translation>
+<translation id="1432267168815937878">Сілтемені Инко&amp;гнито терезесінде ашу</translation>
+<translation id="6516243500644829484">Жаңа &amp;инкогнито терезесі</translation>
+<translation id="7973394300052703468">Жаңа &amp;инкогнито терезесі</translation>
+<translation id="6395403722585816044">Инкогнито режимінде жүктелген</translation>
+<translation id="203837651858678035">Инкогнито режимінен бәрібір шығасыз ба?</translation>
+<translation id="7376221878517288144">Инкогнито режимінен бәрібір шығасыз ба?</translation>
+<translation id="871606814707918245">Көптеген адамдар осы сайттың хабарландыруларына тыйым салады.</translation>
+<translation id="5053701565089446556">Инкогнито кеңейтімі: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Жасырын қолданба: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Инкогнито қойындысы: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Инкогнито режиміндегі ішкі жақтау: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Инкогнито порталы: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Бұл кеңейтім <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ішінде көрсетілмеген және сізге білдірмей қосылған болуы мүмкін.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Инкогнито)</translation>
+<translation id="4369414322596874629">Инкогнито терезесі арқылы интернетті оңаша шолуыңызға болады</translation>
+<translation id="3772947852642271642">Интернетті инкогнито терезесі арқылы пайдалансаңыз, браузер тарихы сақталмайды</translation>
+<translation id="3871738366246972820">Ортақ компьютерді пайдаланып жатсыз ба? Инкогнито терезесін ашып көріңіз.</translation>
+<translation id="5808622652939943719">Интернетті құпия шолғыңыз келсе, инкогнито терезесін ашуға болады. Ол үшін нүктелер белгішесінің мәзірін басыңыз</translation>
+<translation id="9079153198295609735">Қолданыс статистикасы мен жаңылыс туралы есептерді Brave компаниясына автоматты түрде жіберу</translation>
+<translation id="8839398440242019256">Brave Web Store дүкенінен емес.</translation>
+<translation id="6945695820322143954">Бұл кеңейтім Brave Web Store саясатын бұзады.</translation>
+<translation id="1676595396635191120">Жаңа жасырын терезе</translation>
+<translation id="5094764494104066239">Әрқашан бетбелгілер жолағын көрсету</translation>
+<translation id="4471385409549756595">Жаңа жасырын терезе</translation>
+<translation id="4540437243849625078">Бұл сайт инкогнито режимінен тыс қолданбамен ақпаратты бөліскелі тұр.</translation>
+<translation id="1227836882233136433">Инкогнито режимінен шығасыз ба?</translation>
+<translation id="7618452966706304788">Инкогнито режимінде <ph name="APP_NAME"/> қолданбасымен Touch ID мүмкіндігін пайдаланғыңыз келе ме?</translation>
+<translation id="3098826269712097986">Сіз инкогнито режимінен шыққаннан кейін де, есептік жазбаға кіру деректері Brave браузерінде сақталады. Сайтқа қайта кіргенде, Touch ID мүмкіндігін пайдалана аласыз.</translation>
+<translation id="5186185447130319458">Инкогнито</translation>
+<translation id="2579188629646253712">Инкогнито режимінен шығу</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Барлығын &amp;инкогнито терезесінде ашу}=1{Барлығын &amp;инкогнито терезесінде ашу}other{Барлығын (#) &amp;инкогнито терезесінде ашу}}</translation>
 <translation id="2431625704210501303">&amp;Инкогнито терезесінде ашу</translation>
 <translation id="4620367155626060530">Бетбелгілер жолағын &amp;көрсету</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Инкогнито)</translation>
 <translation id="4854477725773269949">Инкогнито режимінде рұқсат беру</translation>
 <translation id="6436164536244065364">Brave Web Store дүкенінен көру</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> дүкенінен кеңейтімдер мен тақырыптар табу</translation>
 <translation id="6336451774241870485">Жаңа жасырын қойынды</translation>
 <translation id="6610147964972079463">Жасырын қойындыларды жабу</translation>
-<translation id="5186185447130319458">Инкогнито</translation>
 <translation id="4933782374919065856">Егер сұрақтарыңыз болса, профиліңізді басқаратын адаммен хабарласыңыз.</translation>
 </translationbundle>

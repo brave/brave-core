@@ -6,10 +6,10 @@
 <translation id="1015730422737071372">Veita frekari upplýsingar</translation>
 <translation id="1019413721762100891">Slökkt</translation>
 <translation id="1021110881106174305">Gild greiðslukort</translation>
-<translation id="3898257577441589237">Þetta vandamál tengist vottorði sem þú eða einhver annar setti upp í tækinu þínu. Vitað er að þetta vottorð er notað til að fylgjast með og grípa inn í netkerfi og Brave treystir því ekki. Þrátt fyrir að notkun þess geti í einhverjum tilvikum átt rétt á sér, svo sem á skóla- eða fyrirtækjaneti, vill Brave tryggja að þú vitir af því, þótt þú getir ekki komið í veg fyrir notkun þess. Eftirlit getur átt sér stað í öllum vöfrum eða forritum sem nota vefinn.</translation>
 <translation id="1030706264415084469"><ph name="URL"/> vill fá að geyma mikið magn gagna varanlega í tækinu þínu</translation>
 <translation id="1032854598605920125">Snúa réttsælis</translation>
 <translation id="1036348656032585052">Slökkva</translation>
+<translation id="1038106730571050514">Sýna tillögur</translation>
 <translation id="1038842779957582377">óþekkt heiti</translation>
 <translation id="1041998700806130099">Skilaboð vinnslublaðs</translation>
 <translation id="1050038467049342496">Lokaðu öðrum forritum</translation>
@@ -29,7 +29,6 @@
 <translation id="1920681928837417101">Stjórna aðgangsorðum í stillingum Brave</translation>
 <translation id="1101672080107056897">Villuaðgerð</translation>
 <translation id="1103523840287552314">Þýða alltaf <ph name="LANGUAGE"/></translation>
-<translation id="5047769237368272183">Ef hakað er við þetta mun Brave geyma afrit af kortinu þínu í þessu tæki til að flýta fyrir útfyllingu eyðublaða.</translation>
 <translation id="1110994991967754504">Velja heimild fyrir <ph name="PERMISSION_NAME"/></translation>
 <translation id="1113869188872983271">Aft&amp;urkalla nýja röðun</translation>
 <translation id="1125573121925420732">Viðvaranir geta verið tíðar á meðan vefsvæði uppfæra öryggisvarnir sínar. Þetta ætti að lagast fljótlega.</translation>
@@ -160,6 +159,7 @@
 <translation id="161042844686301425">Blár (cyan)</translation>
 <translation id="1620510694547887537">Myndavél</translation>
 <translation id="1623104350909869708">Koma í veg fyrir að þessi síða búi til fleiri glugga.</translation>
+<translation id="1623253368136559158">Hreyfing myndavélar</translation>
 <translation id="16338877384480380">Architecture-B</translation>
 <translation id="1638780421120290329">Ekki er hægt að vista kort</translation>
 <translation id="1639239467298939599">Hleður</translation>
@@ -174,8 +174,6 @@
 <translation id="1662550410081243962">Vista og fylla út greiðslumáta</translation>
 <translation id="1838576226863399477">Spjöld og heimilisföng eru úr Brave. Þú getur haft umsjón með þeim í <ph name="BEGIN_LINK"/>stillingunum<ph name="END_LINK"/>.</translation>
 <translation id="1671391448414634642">Síður á tungumálinu „<ph name="SOURCE_LANGUAGE"/>“ verða héðan í frá þýddar yfir á eftirfarandi tungumál: <ph name="TARGET_LANGUAGE"/>.</translation>
-<translation id="6373940988468425649"><ph name="SITE"/> notast yfirleitt við dulkóðun til að vernda upplýsingarnar þínar. Þegar Brave reyndi að tengjast <ph name="SITE"/> í þetta skiptið sendi vefsvæðið óvenjuleg
-og röng skilríki til baka. Þetta getur gerst þegar tölvuþrjótur reynir að þykjast vera <ph name="SITE"/> eða innskráningarskjár fyrir Wi-Fi hefur truflað tenginguna. Upplýsingarnar þínar eru enn öruggar vegna þess að Brave sleit tengingunni áður en skipst var á gögnum.</translation>
 <translation id="1682696192498422849">Skammhlið fyrst</translation>
 <translation id="168841957122794586">Vottorð netþjónsins inniheldur ótraustan dulmálslykil.</translation>
 <translation id="1697532407822776718">Nú er allt tilbúið!</translation>
@@ -196,7 +194,6 @@ og röng skilríki til baka. Þetta getur gerst þegar tölvuþrjótur reynir a�
 <translation id="1736420071277903564">Tölva</translation>
 <translation id="1740951997222943430">Færðu inn gildan lokamánuð</translation>
 <translation id="1741613555002899862">Verður að vera tilgreint og gildur strengur þegar DnsOverHttpsMode er <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
-<translation id="8425351843056705489">Til að greiða hraðar næst geturðu vistað kortið og nafn og heimilisfang greiðanda á Brave reikningnum og í þessu tæki.</translation>
 <translation id="1743570585616704562">Þekktist ekki</translation>
 <translation id="1745880797583122200">Vafranum þínum er stjórnað</translation>
 <translation id="1746113442205726301">Y-færsla myndar</translation>
@@ -219,6 +216,7 @@ og röng skilríki til baka. Þetta getur gerst þegar tölvuþrjótur reynir a�
 <translation id="1838374766361614909">Hreinsa leit</translation>
 <translation id="1839551713262164453">Prófun á reglugildum mistókst og skilaði villum</translation>
 <translation id="1842969606798536927">Greiða</translation>
+<translation id="359494141189433808">Nota Brave reikninginn þinn til að fá tillögu um traust aðgangsorð</translation>
 <translation id="1871208020102129563">Proxy er stillt á að nota fasta proxy-þjóna en ekki vefslóð á .pac-skriftu.</translation>
 <translation id="1871284979644508959">Nauðsynlegur reitur</translation>
 <translation id="85321348617848915">Brave eyðublöð</translation>
@@ -235,7 +233,6 @@ og röng skilríki til baka. Þetta getur gerst þegar tölvuþrjótur reynir a�
 <translation id="1919367280705858090">Fáðu aðstoð varðandi einstök villuskilaboð</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Ekkert}=1{Eitt vefsvæði}one{# vefsvæði}other{# vefsvæði}}</translation>
 <translation id="194030505837763158">Fara á <ph name="LINK"/></translation>
-<translation id="8515152881111950319">Þú gætir misst aðgang að fyrirtækisreikningnum eða orðið fyrir auðkennisstuldi. Brave mælir með því að þú skiptir um aðgangsorð núna.</translation>
 <translation id="1947454675006758438">Hefti efst til hægri</translation>
 <translation id="1962204205936693436">Bókamerki frá <ph name="DOMAIN"/></translation>
 <translation id="1973335181906896915">Röðunarvilla</translation>
@@ -269,6 +266,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2094505752054353250">Misræmi í léni</translation>
 <translation id="2096368010154057602">Deild</translation>
 <translation id="2099652385553570808">Þrjú hefti vinstra megin</translation>
+<translation id="2101225219012730419">Útgáfa:</translation>
 <translation id="2102134110707549001">Tillaga að traustu aðgangsorði…</translation>
 <translation id="2107021941795971877">Prentstuðningur</translation>
 <translation id="2108755909498034140">Endurræstu tölvuna</translation>
@@ -347,7 +345,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2410754574180102685">Government-Legal</translation>
 <translation id="2413528052993050574">Þessi þjónn gat ekki sannað að hann væri <ph name="DOMAIN"/>; öryggisvottorð hans gæti hafa verið afturkallað. Þetta kann að orsakast af vanstillingu eða tölvuþrjóti sem komist hefur inn í tenginguna.</translation>
 <translation id="2438874542388153331">Fjögur göt hægra megin</translation>
-<translation id="9018981925326888629">Þú varst að slá aðgangsorðið þitt inn á villandi vefsvæði. Brave mælir með því að þú skiptir um aðgangsorð núna.</translation>
 <translation id="2463193859425327265">Breyta heimasíðu</translation>
 <translation id="2463739503403862330">Fylla út</translation>
 <translation id="2465402087343596252">Architecture-E</translation>
@@ -401,11 +398,13 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2666092431469916601">Efst</translation>
 <translation id="2666117266261740852">Lokaðu öðrum flipum eða forritum</translation>
 <translation id="2674170444375937751">Ertu viss um að þú viljir eyða þessum síðum úr ferlinum?</translation>
+<translation id="2674804415323431591">Fela tillögur</translation>
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">Yfirgefa</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Kjörstærð</translation>
 <translation id="2691924980723297736">Öryggisviðvörun</translation>
+<translation id="7246459936780600154">Nota aðgangsorð sem eru vistuð á Brave reikningnum</translation>
 <translation id="2699302886720511147">Greiðslukort sem tekið er við</translation>
 <translation id="2701514975700770343">Snýr niður</translation>
 <translation id="2702801445560668637">Leslisti</translation>
@@ -443,6 +442,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2856444702002559011">Tölvuþrjótar gætu verið að reyna að stela upplýsingum þínum frá <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (til dæmis aðgangsorðum, skilaboðum eða kreditkortum). <ph name="BEGIN_LEARN_MORE_LINK"/>Frekari upplýsingar<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Veggspjaldabrot</translation>
 <translation id="2878424575911748999">A1</translation>
+<translation id="2880660355386638022">Gluggastaðsetning</translation>
 <translation id="2881276955470682203">Vista kort?</translation>
 <translation id="2882949212241984732">Innábrot (bæklingabrot)</translation>
 <translation id="2903493209154104877">Heimilisföng</translation>
@@ -453,6 +453,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2915068235268646559">Hrun frá <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Lokaðu öðrum forritum</translation>
 <translation id="2922350208395188000">Ekki er hægt að kanna vottorð þjónsins.</translation>
+<translation id="6005097315762840167">Skráðu þig inn til að nota aðgangsorð sem eru vistuð á Brave reikningnum</translation>
 <translation id="2925673989565098301">Afhendingarmáti</translation>
 <translation id="2928905813689894207">Heimilisfang greiðanda</translation>
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}one{<ph name="SHIPPING_ADDRESS_PREVIEW"/> og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> og <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> í viðbót}}</translation>
@@ -464,11 +465,9 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="2951588413176968965">Pósthólfið mitt</translation>
 <translation id="295526156371527179">Viðvörun: Þessi regla var ekki sameinuð sem safn eins og tilgreint er í reglu vegna þess að hún er ekki safn.</translation>
 <translation id="2955913368246107853">Loka leitarstiku</translation>
-<translation id="6326805297893828864">Klukkan þarf að vera rétt til að hægt sé að koma á öruggri nettengingu. Þetta er vegna þess að vottorðin sem vefsvæði nota til að auðkenna sig eru aðeins gild í tiltekinn tíma. Brave getur ekki kannað vottorðin þar sem klukka tækisins er röng.</translation>
 <translation id="2972581237482394796">Endurge&amp;ra</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, valin. <ph name="ROW_CONTENT"/></translation>
 <translation id="2982481275546140226">Hreinsa gögn</translation>
-<translation id="3676215163710610678">Ef kveikt er á þessu mun Brave geyma afrit af kortinu þínu í þessu tæki til að flýta fyrir útfyllingu eyðublaða.</translation>
 <translation id="2985398929374701810">Færðu inn gilt heimilisfang</translation>
 <translation id="2986368408720340940">Þessi afhendingarmáti er ekki í boði. Prófaðu að velja annan valkost.</translation>
 <translation id="2987034854559945715">Engir samsvarandi eiginleikar</translation>
@@ -566,7 +565,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3423742043356668186">Tilgreint af kerfi</translation>
 <translation id="3427092606871434483">Leyfa (sjálfgefið)</translation>
 <translation id="3427342743765426898">Endu&amp;rtaka breytingu</translation>
-<translation id="3006790309890592320">Brave mælir með því að þú endurstillir aðgangsorðið þitt ef þú notaðir það einnig á öðrum síðum.</translation>
 <translation id="3428151540071562330">Eitt eða fleiri af URI sniðmátum netþjóns DnsOverHttpsTemplates eru ógild og verða ekki notuð.</translation>
 <translation id="3431636764301398940">Vista kortið á þessu tæki</translation>
 <translation id="3432601291244612633">Loka síðu</translation>
@@ -582,7 +580,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3467763166455606212">Nafn korthafa er nauðsynlegt</translation>
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, opinn, ýttu á flipann og færslulykilinn til að skipta yfir í opinn flipa</translation>
 <translation id="3479552764303398839">Ekki núna</translation>
-<translation id="1096085967892725815">Þú gætir glatað aðganginum að Brave reikningnum þínum. Brave mælir með því að þú skiptir um aðgangsorð núna. Þú verður beðin(n) um að skrá þig inn.</translation>
 <translation id="3487845404393360112">Bakki 4</translation>
 <translation id="3495081129428749620">Finna á síðunni
     <ph name="PAGE_TITLE"/></translation>
@@ -642,8 +639,8 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Athuga staðgengilsþjóninn, eldvegginn og DNS-stillingarnar<ph name="END_LINK"/></translation>
 <translation id="372429172604983730">Forrit sem geta valdið þessari villu eru meðal annars vírusvarnir, eldveggir og hugbúnaður fyrir netsíur eða staðgengilsþjóna.</translation>
 <translation id="373042150751172459">B4 (umslag)</translation>
+<translation id="3731873414101415120">Vefsvæði sem þú heimsækir og efni síðna sem ekki eru öruggar</translation>
 <translation id="3736520371357197498">Ef þú skilur öryggisáhættuna sem það hefur í för með sér geturðu <ph name="BEGIN_LINK"/>heimsótt þetta óörugga vefsvæði<ph name="END_LINK"/> áður en skaðlegu forritin hafa verið fjarlægð.</translation>
-<translation id="8896585555528145662">Þú getur ekki heimsótt <ph name="SITE"/> í augnablikinu vegna þess að vefsvæðið sendi dulkóðuð skilríki sem Brave getur ekki unnið úr. Netkerfisvillur og árásir ganga yfirleitt fljótt yfir svo síðan mun líklega virka aftur síðar.</translation>
 <translation id="7375171421124325498">Greiðslukortaupplýsingum af reikningnum þínum á Brave verður deilt með þessu vefsvæði eftir að þú hefur staðfest.</translation>
 <translation id="3748148204939282805">Þrjótar á <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> gætu reynt að gabba þig til að gera eitthvað varasamt eins og að setja upp hugbúnað eða gefa upp persónuupplýsingar (til dæmis aðgangsorð, símanúmer eða kreditkortanúmer). <ph name="BEGIN_LEARN_MORE_LINK"/>Frekari upplýsingar<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="375403751935624634">Þýðingin mistókst vegna villu á þjóni.</translation>
@@ -799,11 +796,9 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6116812392674177288">Tölvunni virðist ekki vera stýrt af fyrirtæki og því getur reglan aðeins sett sjálfkrafa upp viðbætur sem hýstar eru í vefverslun Brave. Uppfærsluvefslóð vefverslunar Brave er „<ph name="CWS_UPDATE_URL"/>“.</translation>
 <translation id="4346197816712207223">Kreditkort sem tekið er við</translation>
 <translation id="4346833872170306413">Roc-16K</translation>
-<translation id="846000886289004690">Þú varst að slá aðgangsorðið þitt inn á villandi vefsvæði. Brave mælir með því að þú farir á <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, og önnur vefsvæði þar sem þú notar þetta aðgangsorð og breytir því núna.</translation>
 <translation id="4356973930735388585">Tölvuþrjótar á þessu vefsvæði kunna að reyna að setja hættuleg forrit upp í tölvunni þinni, sem ætlað er að stela eða eyða upplýsingunum þínum (t.d. myndum, aðgangsorðum, skilaboðum og kreditkortum).</translation>
 <translation id="4358059973562876591">Hugsanlega er ekki hægt að nota sniðmátin sem þú tilgreindir vegna villu með regluna DnsOverHttpsMode.</translation>
 <translation id="4358461427845829800">Stjórna greiðslumátum...</translation>
-<translation id="5442778523450464826">Þú varst að slá aðgangsorðið þitt inn á villandi vefsvæði. Brave getur aðstoðað. Smelltu á „Vernda reikning“ til að breyta lykilorðinu þínu og láta Brave vita að reikningurinn þinn sé hugsanlega í hættu.</translation>
 <translation id="4367563149485757821">Number-12 (umslag)</translation>
 <translation id="437058704415269440">Reikningsstaða</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -813,9 +808,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4390472908992056574">Brún</translation>
 <translation id="4406896451731180161">leitarniðurstöður</translation>
 <translation id="4408413947728134509">Fótspor <ph name="NUM_COOKIES"/></translation>
-<translation id="8539546768943490744">Þú gafst upp aðgangsorðið þitt á svindlsíðu. Brave mælir með því að þú farir á <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> og önnur vefsvæði þar sem þú notar þetta aðgangsorð og breytir því núna.</translation>
 <translation id="4415426530740016218">Heimilisfang afhendingar</translation>
-<translation id="4906192414477726331">Þessi þjónn gat ekki sannað að hann væri <ph name="DOMAIN"/>; Brave treystir ekki öryggisvottorðinu hans. Þetta kann að orsakast af vanstillingu eða tölvuþrjóti sem komist hefur inn í tenginguna.</translation>
 <translation id="443121186588148776">Raðtengi</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> samþykkti ekki innskráningarvottorðið þitt eða það var ekki gefið upp.</translation>
 <translation id="4434045419905280838">Sprettigluggar og framsendingar</translation>
@@ -846,7 +839,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="457875822857220463">Sending</translation>
 <translation id="4579056131138995126">Personal (umslag)</translation>
 <translation id="4582204425268416675">Fjarlægja kort</translation>
-<translation id="8385639954311581596">Fjarlægja netfang úr Brave?</translation>
 <translation id="4592951414987517459">Tengingin við <ph name="DOMAIN"/> er dulkóðuð með nýrri gerð dulkóðunarsafns.</translation>
 <translation id="4594403342090139922">Aft&amp;urkalla eyðingu</translation>
 <translation id="4597348597567598915">Stærð 8</translation>
@@ -863,7 +855,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="467662567472608290">Þessi þjónn gat ekki sannað að hann sé <ph name="DOMAIN"/>; öryggisvottorð hans inniheldur villur. Þetta kann að orsakast af vanstillingu eða tölvuþrjóti sem komist hefur inn í tenginguna.</translation>
 <translation id="4677585247300749148"><ph name="URL"/> vill svara aðgengisatburðum</translation>
 <translation id="8197094463444457125">Brave skyggnur</translation>
-<translation id="3619365259205518877">Þú gafst upp aðgangsorðið þitt á svindlsíðu. Brave mælir með því að þú athugir vistuðu aðgangsorðin þín fyrir <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> og önnur vefsvæði þar sem þú notar þetta aðgangsorð núna.</translation>
 <translation id="4690462567478992370">Hætta að nota ógilt vottorð</translation>
 <translation id="4691835149146451662">Architecture-A (umslag)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
@@ -873,9 +864,9 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Keyrir Windows-netgreiningu<ph name="END_LINK"/></translation>
 <translation id="4726672564094551039">Endurhlaða reglur</translation>
 <translation id="4728558894243024398">Kerfi</translation>
+<translation id="4731638775147756694">Kerfisstjóri hefur lokað á þetta forrit</translation>
 <translation id="4731967714531604179">Prc2 (umslag)</translation>
 <translation id="4733082559415072992"><ph name="URL"/> vill nota staðsetningu tækisins</translation>
-<translation id="3960299545138990065">Endurræsa Brave</translation>
 <translation id="4880298864945336181">Kerfisstjórinn þinn hefur virkjað Brave Enterprise Connectors í vafranum þínum. Þessi tengi hafa aðgang að sumum af gögnunum þínum.</translation>
 <translation id="473775607612524610">Uppfæra</translation>
 <translation id="4738601419177586157"><ph name="TEXT"/> leitartillaga</translation>
@@ -908,6 +899,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="4877083676943085827">{COUNT,plural, =0{Ekkert}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}one{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831"><ph name="TEXT"/>-leit</translation>
 <translation id="4879491255372875719">Sjálfvirkt (sjálfgildi)</translation>
+<translation id="4879725228911483934">Opna og setja glugga á skjáinn</translation>
 <translation id="4880827082731008257">Leitarferill</translation>
 <translation id="4881695831933465202">Opna</translation>
 <translation id="4892518386797173871">Aftari</translation>
@@ -1074,6 +1066,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5523118979700054094">Heiti reglu</translation>
 <translation id="55293785478302737">Saumur</translation>
 <translation id="553484882784876924">Prc6 (umslag)</translation>
+<translation id="5536214594743852365">Sýna hlutann „<ph name="SECTION"/>“</translation>
 <translation id="5539243836947087108">Undirstaða</translation>
 <translation id="5540224163453853">Umbeðin grein fannst ekki.</translation>
 <translation id="5541086400771735334">Pósthólf 7</translation>
@@ -1217,7 +1210,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6116338172782435947">Sjá texta og myndir sem þú afritar á klippiborðið</translation>
 <translation id="6120179357481664955">Muna eftir UPI-auðkenni?</translation>
 <translation id="5972135347314259717">Brave Enterprise Connectors</translation>
-<translation id="1504280350970284172">Notaðu Brave reikninginn þinn til að búa til traust aðgangsorð</translation>
 <translation id="6146055958333702838">Kannaðu allar snúrur og endurræstu beina, mótöld og önnur
     nettæki sem þú kannt að vera að nota.</translation>
 <translation id="614940544461990577">Prófaðu að:</translation>
@@ -1243,6 +1235,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6263376278284652872"><ph name="DOMAIN"/> bókamerki</translation>
 <translation id="6264485186158353794">Aftur í öruggt skjól</translation>
 <translation id="6266934640124581640">Ljósgrænblár</translation>
+<translation id="9136010393039243713">Brave uppfærslur</translation>
 <translation id="6276112860590028508">Síður úr leslistanum þínum birtast hér</translation>
 <translation id="4491702030396251550">Til að greiða hraðar næst geturðu vistað kortið og heimilisfang greiðanda á Brave reikningnum.</translation>
 <translation id="293801390522973485">Brave <ph name="BEGIN_EMPHASIS"/>vistar ekki<ph name="END_EMPHASIS"/> eftirfarandi upplýsingar:
@@ -1263,7 +1256,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6328639280570009161">Prófaðu að slökkva á netspá</translation>
 <translation id="6328784461820205019">„Tengingin þín er ekki lokuð“ eða „span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;“ eða „&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;“ eða „&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;“ eða „&lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt;“ eða „Villa í SSL-vottorði“</translation>
 <translation id="6328786501058569169">Þetta vefsvæði villir á sér heimildir</translation>
-<translation id="2679184024759659109">Nota aðgangsorð sem eru vistuð í Brave reikningnum þínum</translation>
 <translation id="6337133576188860026">Losar minna en <ph name="SIZE"/>. Lengri tíma gæti tekið að sækja sum vefsvæði þegar þú heimsækir þau næst.</translation>
 <translation id="6337534724793800597">Sía reglur eftir heiti</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Ekkert}=1{1 aðgangsorð (fyrir <ph name="DOMAIN_LIST"/>, samstillt)}=2{2 aðgangsorð fyrir (<ph name="DOMAIN_LIST"/>, samstillt)}one{# aðgangsorð (fyrir <ph name="DOMAIN_LIST"/>, samstillt)}other{# aðgangsorð (fyrir <ph name="DOMAIN_LIST"/>, samstillt)}}</translation>
@@ -1275,7 +1267,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Hugsanleg gjöld framundan.</translation>
 <translation id="6386120369904791316">{COUNT,plural, =1{ein tillaga í viðbót}one{# tillaga í viðbót}other{# tillögur í viðbót}}</translation>
-<translation id="2374115610089464099">Til að greiða hraðar næst geturðu vistað kortið og heimilisfang greiðanda á Brave reikningnum og í þessu tæki.</translation>
 <translation id="6389470377220713856">Nafn á korti</translation>
 <translation id="6390200185239044127">Z-brot í miðju</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
@@ -1284,7 +1275,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6406765186087300643">C0 (umslag)</translation>
 <translation id="9018981925326888629">Þú varst að slá aðgangsorðið þitt inn á villandi vefsvæði. Brave mælir með því að þú skiptir um aðgangsorð núna.</translation>
 <translation id="6410264514553301377">Sláðu inn gildistímann og CVC-númerið fyrir <ph name="CREDIT_CARD"/></translation>
-<translation id="7435155322279654755">Brave getur hjálpað þér að vernda Brave reikninginn þinn og breyta aðgangsorðinu.</translation>
 <translation id="6423385022588644828">Staðfestu kortin þín hraðar með því að nota Touch ID héðan í frá</translation>
 <translation id="6425092077175753609">Nýja útlitshönnunin</translation>
 <translation id="6427730057873428458">Bæklingabrot</translation>
@@ -1339,7 +1329,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="6657585470893396449">Aðgangsorð</translation>
 <translation id="6665553082534466207">Þrjú göt hægra megin</translation>
 <translation id="6670613747977017428">Aftur í öruggt skjól.</translation>
-<translation id="4670564340385807132">Fjarlægja eyðublaðstillögu úr Brave?</translation>
 <translation id="6685834062052613830">Skráðu þig út og ljúktu við uppsetninguna</translation>
 <translation id="6687335167692595844">Beðið um leturstærð</translation>
 <translation id="6689249931105087298">Háð með þjöppun svartra punkta</translation>
@@ -1411,6 +1400,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7050187094878475250">Þú reyndir að ná sambandi við <ph name="DOMAIN"/> en þjónninn framvísaði vottorði sem er með of langan gildistíma til að hægt sé að treysta því.</translation>
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Ekki er hægt að vista þetta kort núna}one{Ekki er hægt að vista þessi kort núna}other{Ekki er hægt að vista þessi kort núna}}</translation>
 <translation id="7053983685419859001">Setja á bannlista</translation>
+<translation id="7058163556978339998"><ph name="BROWSER"/> staðfesti að <ph name="ISSUER"/> gaf út vottorð þessa vefsvæðis.</translation>
 <translation id="7062635574500127092">Grænblár</translation>
 <translation id="7064851114919012435">Samskiptaupplýsingar</translation>
 <translation id="70705239631109039">Tengingin er ekki alveg örugg</translation>
@@ -1474,6 +1464,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7313965965371928911">Viðvaranir um <ph name="BEGIN_LINK"/>örugga vefnotkun<ph name="END_LINK"/></translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Tengingarhjálp</translation>
+<translation id="7323804146520582233">Fela hlutann „<ph name="SECTION"/>“</translation>
 <translation id="733354035281974745">Hnekking staðbundins reiknings í tæki</translation>
 <translation id="8539546768943490744">Þú gafst upp aðgangsorðið þitt á svindlsíðu. Brave mælir með því að þú farir á <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> og önnur vefsvæði þar sem þú notar þetta aðgangsorð og breytir því núna.</translation>
 <translation id="7334320624316649418">Endu&amp;rtaka nýja röðun</translation>
@@ -1520,7 +1511,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7485870689360869515">Engin gögn fundust.</translation>
 <translation id="3692186536781145635">Öryggisbrot á vefsvæði eða í forriti afhjúpaði aðgangsorðið þitt. Brave mælir með því að þú athugir vistuð aðgangsorð og breytir aðgangsorðinu þínu fyrir <ph name="ORIGIN"/> núna.</translation>
 <translation id="7498234416455752244">Halda áfram að breyta</translation>
-<translation id="1012292338579042608">Þú gafst upp aðgangsorðið þitt á svindlsíðu. Brave mælir með því að þú athugir vistuðu aðgangsorðin þín fyrir <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> og önnur vefsvæði þar sem þú notar þetta aðgangsorð núna.</translation>
 <translation id="7508255263130623398">Tækisauðkenni stefnu sem skilað var er autt eða stemmir ekki við núverandi tækisauðkenni</translation>
 <translation id="7508870219247277067">Lárperugrænn</translation>
 <translation id="7511955381719512146">Wi-Fi netið sem þú notar kann að fara fram á að þú farir á <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
@@ -1539,9 +1529,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="5474381306981932386">Notandanafn tækisins og notandanafn í Brave</translation>
 <translation id="7552846755917812628">Prófaðu eftirfarandi:</translation>
 <translation id="7554791636758816595">Nýr flipi</translation>
-<translation id="5304100303568917877">Þú gætir glatað aðganginum að <ph name="ORG_NAME"/> reikningnum þínum eða orðið fyrir auðkennisstuldi. Brave mælir með því að þú skiptir um aðgangsorð núna.</translation>
 <translation id="7567204685887185387">Þessi þjónn gat ekki sannað að hann væri <ph name="DOMAIN"/>; öryggisvottorð hans gæti hafa verið gefið út með sviksamlegum hætti. Þetta kann að orsakast af vanstillingu eða tölvuþrjóti sem komist hefur inn í tenginguna.</translation>
-<translation id="6386821459680628976">Fjarlægja kreditkort úr Brave?</translation>
 <translation id="7569983096843329377">Svartur</translation>
 <translation id="7575207903026901870">Hnappur til að fjarlægja tillögu, ýttu á færslulykilinn til að fjarlægja þessa tillögu</translation>
 <translation id="405970181812690156">Borgaðu með hraði á vefsvæðum og forritum úr öllum tækjum með því að nota greiðslukort sem þú hefur vistað hjá Brave.</translation>
@@ -1598,7 +1586,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7763386264682878361">Þáttari upplýsingaskráa greiðslna</translation>
 <translation id="7764225426217299476">Bæta við heimilisfangi</translation>
 <translation id="7766518757692125295">Kantur</translation>
-<translation id="7767271804335921384">Kerfisstjóri hefur lokað á forritið</translation>
 <translation id="7770259615151589601">Designated-Long</translation>
 <translation id="7773005668374414287">Sama röð, snýr upp</translation>
 <translation id="777702478322588152">Hérað</translation>
@@ -1627,6 +1614,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="7887885240995164102">Skoða mynd í mynd</translation>
 <translation id="7888575728750733395">Tilgangur myndsetningar</translation>
 <translation id="7904208859782148177">C3 (umslag)</translation>
+<translation id="7923775243649974918">Færðu myndavélina</translation>
 <translation id="7932579305932748336">Kápa</translation>
 <translation id="79338296614623784">Færðu inn gilt símanúmer</translation>
 <translation id="7934052535022478634">Greiðslu lokið</translation>
@@ -1666,6 +1654,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8074253406171541171">10x13 (umslag)</translation>
 <translation id="8078141288243656252">Ekki er hægt að skrifa skýringu þegar skjalinu hefur verið snúið</translation>
 <translation id="8079031581361219619">Viltu endurhlaða vefsvæðið?</translation>
+<translation id="939305735877869636">Brave</translation>
 <translation id="8086971161893892807">Drög</translation>
 <translation id="8088680233425245692">Mistókst að skoða grein.</translation>
 <translation id="808894953321890993">Breyta aðgangsorði</translation>
@@ -1679,7 +1668,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8105368624971345109">Slökkva</translation>
 <translation id="8118489163946903409">Greiðslumáti</translation>
 <translation id="8127301229239896662">„<ph name="SOFTWARE_NAME"/>“ var ekki sett upp rétt í tölvunni eða netkerfinu. Biddu kerfisstjórann þinn um að lagfæra þetta.</translation>
-<translation id="3272614036080146686">Þú varst að slá aðgangsorðið þitt inn á villandi vefsvæði. Brave mælir með því að þú farir á <ph name="WEBSITE_1"/> og önnur vefsvæði þar sem þú notar þetta aðgangsorð og breytir því núna.</translation>
 <translation id="8131740175452115882">Staðfesta</translation>
 <translation id="8149426793427495338">Tölvan þín fór að sofa.</translation>
 <translation id="8150722005171944719">Skráin á <ph name="URL"/> er ekki læsileg. Hún kann að hafa verið fjarlægð, færð eða skrárheimildir gætu hindrað aðgang að henni.</translation>
@@ -1758,7 +1746,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8474910779563686872">Sýna upplýsingar forritara</translation>
 <translation id="8479754468255770962">Hefti neðst til vinstri</translation>
 <translation id="503686638841780887">Skráðu þig inn í Brave til að nota spjöld frá Brave reikningnum þínum</translation>
-<translation id="565908431635579039">Þú gafst upp aðgangsorðið þitt á svindlsíðu. Brave mælir með því að þú athugir vistuðu aðgangsorðin þín fyrir <ph name="WEBSITE_1"/> og önnur vefsvæði þar sem þú notar þetta aðgangsorð núna.</translation>
 <translation id="8488350697529856933">Gildir um</translation>
 <translation id="8490137692873530638">Staflari 10</translation>
 <translation id="8498891568109133222">Það tók <ph name="HOST_NAME"/> of langan tíma að svara.</translation>
@@ -1773,7 +1760,6 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8557066899867184262">CVC-númer er aftan á kortinu.</translation>
 <translation id="8559762987265718583">Ekki er hægt að koma á lokaðri tengingu við <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> vegna þess að dag- og tímasetning tækisins (<ph name="DATE_AND_TIME"/>) er röng.</translation>
 <translation id="8564182942834072828">Aðskilin skjöl / ekki samröðuð eintök</translation>
-<translation id="4764754838347156633">Brave mælir með því að þú endurstillir aðgangsorðið fyrir <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> ef þú notaðir það einnig á öðrum síðum.</translation>
 <translation id="8571890674111243710">Þýðir síðu yfir á <ph name="LANGUAGE"/>...</translation>
 <translation id="8574899947864779331">Notaðu Touch ID til að staðfesta kort hraðar</translation>
 <translation id="858637041960032120">Bæta við símanúmeri</translation>
@@ -1782,6 +1768,7 @@ Ef þú gerir það ekki loka persónuverndarstillingar þínar á þennan aðga
 <translation id="8606726445206553943">Nota MIDI-tækin þín</translation>
 <translation id="861775596732816396">Stærð 4</translation>
 <translation id="8622948367223941507">Legal-Extra</translation>
+<translation id="8623885649813806493">Engin samsvarandi aðgangsorð. Sýna öll vistuð aðgangsorð.</translation>
 <translation id="8625384913736129811">Vista þetta kort í þessu tæki</translation>
 <translation id="8663226718884576429">Yfirlit pöntunar, <ph name="TOTAL_LABEL"/>, frekari upplýsingar</translation>
 <translation id="867224526087042813">Undirskrift</translation>

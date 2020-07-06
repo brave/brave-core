@@ -2124,7 +2124,6 @@
 <translation id="3771294271822695279">ವೀಡಿಯೊ ಫೈಲ್‌ಗಳು</translation>
 <translation id="3775432569830822555">SSL ಸರ್ವರ್ ಪ್ರಮಾಣಪತ್ರ</translation>
 <translation id="3775705724665058594">ನಿಮ್ಮ ಸಾಧನಗಳಿಗೆ ಕಳುಹಿಸಿ</translation>
-<translation id="6945695820322143954">ಈ ವಿಸ್ತರಣೆಯು Brave ವೆಬ್‌ ಸ್ಟೋರ್‌ನ ನೀತಿಯನ್ನು ಉಲ್ಲಂಘಿಸುತ್ತದೆ.</translation>
 <translation id="3777483481409781352">ಸೆಲ್ಯುಲಾರ್ ಸಾಧನವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
 <translation id="3777806571986431400">ವಿಸ್ತರಣೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="3778152852029592020">ಡೌನ್‌ಲೋಡ್ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ.</translation>
@@ -2907,7 +2906,6 @@
 <translation id="48704129375571883">ಹೆಚ್ಚುವರಿ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸೇರಿಸಿ</translation>
 <translation id="4870758487381879312">ಕಾನ್ಫಿಗರೇಶನ್ ಮಾಹಿತಿಯನ್ನು ಪಡೆಯಲು ನಿರ್ವಾಹಕರು ನೀಡಿದ ಪಾಸ್‌ವರ್ಡ್ ನಮೂದಿಸಿ</translation>
 <translation id="4870903493621965035">ಯಾವುದೇ ಜೋಡಿಸಲಾದ ಸಾಧನಗಳಿಲ್ಲ</translation>
-<translation id="8839398440242019256">Brave ವೆಬ್ ಸ್ಟೋರ್‌ನಿಂದ ಅಲ್ಲ.</translation>
 <translation id="4871322859485617074">ಪಿನ್ ಅಮಾನ್ಯ ಅಕ್ಷರಗಳನ್ನು ಒಳಗೊಂಡಿದೆ</translation>
 <translation id="4871370605780490696">ಬುಕ್‌ಮಾರ್ಕ್ ಸೇರಿಸು</translation>
 <translation id="4871719318659334896">ಗುಂಪನ್ನು ಮುಚ್ಚಿರಿ</translation>
@@ -4970,7 +4968,6 @@
 <translation id="767127784612208024">ಮರುಹೊಂದಿಸುವಿಕೆಯನ್ನು ಖಚಿತಪಡಿಸಲು ಸ್ಪರ್ಶಿಸಿ</translation>
 <translation id="7672520070349703697"><ph name="PAGE_TITLE"/> ನಲ್ಲಿ <ph name="HUNG_IFRAME_URL"/></translation>
 <translation id="1800308196794859773">ಯಾವುದೇ ಪಠ್ಯ ಫೀಲ್ಡ್‌ನಲ್ಲಿ ಡಿಕ್ಟೇಷನ್ ಅನ್ನು ಅನುಮತಿಸಲು ನಿಮ್ಮ ಧ್ವನಿಯನ್ನು Brave ಗೆ ಕಳುಹಿಸಿ.</translation>
-<translation id="3098826269712097986">ನೀವು ಅಜ್ಞಾತ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿದ ಬಳಿಕ, ಸೈನ್ ಇನ್ ಡೇಟಾವನ್ನು Brave ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ. ಇದು ನಂತರದಲ್ಲಿ ಈ ವೆಬ್‌ಸೈಟ್‌ನೊಂದಿಗೆ ಸ್ಪರ್ಶ ಐಡಿ ಅನ್ನು ಮತ್ತೊಮ್ಮೆ ಬಳಸಲು ನಿಮಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡುತ್ತದೆ.</translation>
 <translation id="7681095912841365527">ಸೈಟ್‌ ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸಬಹುದು</translation>
 <translation id="7683373461016844951">ಮುಂದುವರಿಸಲು, ಸರಿ ಎಂಬುದನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ. ಆಮೇಲೆ, ನಿಮ್ಮ <ph name="DOMAIN"/> ಇಮೇಲ್ ವಿಳಾಸಕ್ಕಾಗಿ ಹೊಸ ಪ್ರೊಫೈಲ್ ಅನ್ನು ರಚಿಸಲು, ವ್ಯಕ್ತಿಯನ್ನು ಸೇರಿಸಿ ಎಂಬುದನ್ನು ಕ್ಲಿಕ್ ಮಾಡಿ.</translation>
 <translation id="7684212569183643648">ನಿಮ್ಮ ನಿರ್ವಾಹಕರು ಸ್ಥಾಪಿಸಿದ್ದಾರೆ</translation>
@@ -5444,7 +5441,6 @@
 <translation id="8259239505248583312">ಪ್ರಾರಂಭಿಸೋಣ</translation>
 <translation id="8260126382462817229">ಮತ್ತೊಮ್ಮೆ ಸೈನ್ ಇನ್ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="8260864402787962391">ಮೌಸ್</translation>
-<translation id="8261378640211443080">ಈ ವಿಸ್ತರಣೆಯನ್ನು <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ನಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡಲಾಗಿಲ್ಲ ಮತ್ತು ಇದು ನಿಮಗೆ ಅರಿವಿಲ್ಲದಂತೆ ಸೇರಿಸಿರಬಹುದು.</translation>
 <translation id="8261506727792406068">ಅಳಿಸಿ</translation>
 <translation id="8263336784344783289">ಈ ಗುಂಪನ್ನು ಹೆಸರಿಸಿ</translation>
 <translation id="8263744495942430914">ನಿಮ್ಮ ಮೌಸ್ ಕರ್ಸರ್ ಅನ್ನು <ph name="FULLSCREEN_ORIGIN"/> ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದೆ.</translation>
@@ -6008,7 +6004,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/>ವೆಬ್‌ಸೈಟ್ <ph name="FILENAME"/> ಅನ್ನು ಎಡಿಟ್ ಮಾಡಬಹುದು</translation>
 <translation id="8985264973231822211"><ph name="DEVICE_LAST_ACTIVATED_TIME"/> ದಿನದ ಹಿಂದೆ ಸಕ್ರಿಯ</translation>
 <translation id="8986362086234534611">ಮರೆತುಹೋಗು</translation>
-<translation id="9079153198295609735">ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳನ್ನು ಮತ್ತು ಕ್ರಾಶ್ ವರದಿಗಳನ್ನು Brave ಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರವಾನಿಸು</translation>
 <translation id="8987927404178983737">ತಿಂಗಳು</translation>
 <translation id="8991520179165052608">ನಿಮ್ಮ ಮೈಕ್ರೊಫೋನ್ ಅನ್ನು ಸೈಟ್‌ ಬಳಸಿಕೊಳ್ಳಬಹುದು</translation>
 <translation id="899403249577094719">Netscape ಪ್ರಮಾಣಪತ್ರ ಆಧಾರ URL</translation>
@@ -6228,6 +6223,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">ಸುರಕ್ಷಿತ ಸಂಪರ್ಕವನ್ನು ಸ್ಥಾಪಿಸಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="998747458861718449">ಪ&amp;ರಿಶೀಲಿಸಿ</translation>
+<translation id="658539216370629794">ಲಿಂಕ್‌ ಅನ್ನು ಅಜ್ಞಾ&amp;ತ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
+<translation id="1432267168815937878">ಅಜ್ಞಾ&amp;ತ ವಿಂಡೋದಲ್ಲಿ ಲಿಂಕ್ ತೆರೆಯಿರಿ</translation>
+<translation id="6516243500644829484">ಹೊಸ &amp;ಅಜ್ಞಾತ ವಿಂಡೋ</translation>
+<translation id="7973394300052703468">ಹೊಸ &amp;ಅಜ್ಞಾತ ವಿಂಡೋ</translation>
+<translation id="6395403722585816044">ಅಜ್ಞಾತದಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="203837651858678035">ಹೇಗಾದರೂ ಅಜ್ಞಾತ ಮೋಡ್‌ ಅನ್ನು ಮುಚ್ಚುವುದೇ?</translation>
+<translation id="7376221878517288144">ಹೇಗಾದರೂ ಅಜ್ಞಾತ ಮೋಡ್‌ ಅನ್ನು ತ್ಯಜಿಸುವುದೇ?</translation>
+<translation id="871606814707918245">ಬಹುತೇಕ ಜನರು ಈ ಸೈಟ್‌ನ ಅಧಿಸೂಚನೆಗಳನ್ನು ನಿರ್ಬಂಧಿಸುತ್ತಾರೆ</translation>
+<translation id="5053701565089446556">ಅದೃಶ್ಯ ವಿಸ್ತರಣೆ: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ಅದೃಶ್ಯ ಅಪ್ಲಿಕೇಶನ್: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">ಅದೃಶ್ಯ ಟ್ಯಾಬ್: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ಅದೃಶ್ಯ ಉಪಫ್ರೇಮ್: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ಅಜ್ಞಾತ ಪೋರ್ಟಲ್: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave ವೆಬ್‌ ಸ್ಟೋರ್</translation>
+<translation id="8261378640211443080">ಈ ವಿಸ್ತರಣೆಯನ್ನು <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ನಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡಲಾಗಿಲ್ಲ ಮತ್ತು ಇದು ನಿಮಗೆ ಅರಿವಿಲ್ಲದಂತೆ ಸೇರಿಸಿರಬಹುದು.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ಅದೃಶ್ಯ)</translation>
+<translation id="4369414322596874629">ಅದೃಶ್ಯ ವಿಂಡೋವನ್ನು ಬಳಸುವ ಮೂಲಕ ನೀವು ಖಾಸಗಿಯಾಗಿ ಬ್ರೌಸ್ ಮಾಡಬಹುದು</translation>
+<translation id="3772947852642271642">ಅದೃಶ್ಯ ವಿಂಡೋ ಮೂಲಕ ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಇತಿಹಾಸವನ್ನು ಉಳಿಸದೆಯೇ ವೆಬ್ ಬಳಸಿ</translation>
+<translation id="3871738366246972820">ಹಂಚಿದ ಕಂಪ್ಯೂಟರ್‌ ಬಳಸಲಾಗುತ್ತಿದೆಯೇ? ಅದೃಶ್ಯ ವಿಂಡೋವನ್ನು ತೆರೆಯಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="5808622652939943719">ಖಾಸಗಿಯಾಗಿ ಬ್ರೌಸ್ ಮಾಡಲು, ಅದೃಶ್ಯ ವಿಂಡೋವನ್ನು ತೆರೆಯಲು ಚುಕ್ಕೆಗಳ ಐಕಾನ್ ಮೆನು ಕ್ಲಿಕ್ ಮಾಡಿ</translation>
+<translation id="9079153198295609735">ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳನ್ನು ಮತ್ತು ಕ್ರಾಶ್ ವರದಿಗಳನ್ನು Brave ಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರವಾನಿಸು</translation>
+<translation id="8839398440242019256">Brave ವೆಬ್ ಸ್ಟೋರ್‌ನಿಂದ ಅಲ್ಲ.</translation>
+<translation id="6945695820322143954">ಈ ವಿಸ್ತರಣೆಯು Brave ವೆಬ್‌ ಸ್ಟೋರ್‌ನ ನೀತಿಯನ್ನು ಉಲ್ಲಂಘಿಸುತ್ತದೆ.</translation>
+<translation id="1676595396635191120">ಹೊಸ ಅದೃಶ್ಯ ವಿಂಡೋ</translation>
+<translation id="5094764494104066239">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್‌ ಪಟ್ಟಿ ತೋರಿಸು</translation>
+<translation id="4471385409549756595">ಹೊಸ &amp;ಅಜ್ಞಾತ ವಿಂಡೋ</translation>
+<translation id="4540437243849625078">ಈ ಸೈಟ್, ಅಜ್ಞಾತ ಮೋಡ್‌ಗೆ ಹೊರತಾಗಿರುವ ಅಪ್ಲಿಕೇಶನ್‌ನೊಂದಿಗೆ ಮಾಹಿತಿಯನ್ನು ಹಂಚಿಕೊಳ್ಳಲಿದೆ.</translation>
+<translation id="1227836882233136433">ಅದೃಶ್ಯ ಮೋಡ್‌‌ ತೊರೆಯುವುದೇ?</translation>
+<translation id="7618452966706304788">ನೀವು ಅಜ್ಞಾತ ಮೋಡ್‌ನಲ್ಲಿ <ph name="APP_NAME"/> ಜೊತೆಗೆ ಸ್ಪರ್ಶ ಐಡಿ ಅನ್ನು ಬಳಸಲು ಬಯಸುತ್ತೀರಾ?</translation>
+<translation id="3098826269712097986">ನೀವು ಅಜ್ಞಾತ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿದ ಬಳಿಕ, ಸೈನ್ ಇನ್ ಡೇಟಾವನ್ನು Brave ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ. ಇದು ನಂತರದಲ್ಲಿ ಈ ವೆಬ್‌ಸೈಟ್‌ನೊಂದಿಗೆ ಸ್ಪರ್ಶ ಐಡಿ ಅನ್ನು ಮತ್ತೊಮ್ಮೆ ಬಳಸಲು ನಿಮಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡುತ್ತದೆ.</translation>
+<translation id="5186185447130319458">ಅದೃಶ್ಯ</translation>
+<translation id="2579188629646253712">ಅದೃಶ್ಯ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ಎಲ್ಲವನ್ನು ತೆರೆಯಿರಿ}=1{&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ}one{&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ಎಲ್ಲಾ (#) ಅನ್ನು ತೆರೆಯಿರಿ}other{&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ಎಲ್ಲಾ (#) ಅನ್ನು ತೆರೆಯಿರಿ}}</translation>
 <translation id="2431625704210501303">&amp;ಅಜ್ಞಾತ ವಿಂಡೋದಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="4620367155626060530">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯನ್ನು &amp;ತೋರಿಸಿ</translation>
@@ -6277,10 +6304,8 @@
 <translation id="3860292630623580294">(ಅದೃಶ್ಯ)</translation>
 <translation id="4854477725773269949">ಅಜ್ಞಾತವಾಗಿ ಅನುಮತಿಸಿ</translation>
 <translation id="6436164536244065364">Brave ವೆಬ್‌ ಸ್ಟೋರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
-<translation id="8808478386290700967">Brave ವೆಬ್‌ ಸ್ಟೋರ್</translation>
 <translation id="38046578254905003">ವಿಸ್ತರಣೆಗಳು ಮತ್ತು ಥೀಮ್‌ಗಳನ್ನು <ph name="BEGIN_LINK"/>Brave ವೆಬ್ ಸ್ಟೋರ್‌ನಲ್ಲಿ<ph name="END_LINK"/> ಹುಡುಕಿ</translation>
 <translation id="6336451774241870485">ಹೊಸ ಅದೃಶ್ಯ ವಿಂಡೋ</translation>
 <translation id="6610147964972079463">ಅದೃಶ್ಯ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಮುಚ್ಚಿ</translation>
-<translation id="5186185447130319458">ಅದೃಶ್ಯ</translation>
 <translation id="4933782374919065856">ಪ್ರಶ್ನೆಗಳಿವೆಯೇ? ನಿಮ್ಮ ಪ್ರೊಫೈಲ್‌ ಮೇಲ್ವಿಚಾರಣೆ ಮಾಡುವ ವ್ಯಕ್ತಿಯನ್ನು ಸಂಪರ್ಕಸಿ.</translation>
 </translationbundle>

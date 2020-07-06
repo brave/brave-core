@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mr">
+<translation id="658539216370629794">लिंक गुप्त विंडो मध्ये उघडा</translation>
+<translation id="1432267168815937878">गुप्त विंडोमध्ये लिंक उघडा</translation>
+<translation id="6516243500644829484">नवीन &amp;गुप्त विंडो</translation>
+<translation id="7973394300052703468">नवीन &amp;गुप्त विंडो</translation>
+<translation id="6395403722585816044">गुप्त मध्ये डाउनलोड केले</translation>
+<translation id="203837651858678035">गुप्त मोडमधून कसेही बाहेर पडायचे?</translation>
+<translation id="7376221878517288144">गुप्त मोड कसाही बंद करायचा?</translation>
+<translation id="871606814707918245">बहुतेक लोक या साइटवरून येणार्‍या सूचना ब्लॉक करतात</translation>
+<translation id="5053701565089446556">गुप्त एक्स्टेंशन: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">गुप्त ॲप्लिकेशन: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">गुप्त टॅब: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">गुप्त सबफ्रेम: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">गुप्त पोर्टल: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave वेब बाजार</translation>
+<translation id="8261378640211443080"><ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> मध्ये हे एक्स्टेंशन सूचीबद्ध केले नाही आणि कदाचित तुमच्या माहिती शिवाय जोडले गेले आहे.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (गुप्त)</translation>
+<translation id="4369414322596874629">तुम्ही गुप्त विंडो वापरून खाजगीरीत्या ब्राउझ करू शकता</translation>
+<translation id="3772947852642271642">गुप्त विंडोसह तुमचा ब्राउझ करण्याचा इतिहास सेव्ह न करता वेब वापरा</translation>
+<translation id="3871738366246972820">शेअर केलेला काँप्युटर वापरत आहात का? गुप्त विंडो उघडण्याचा प्रयत्न करा.</translation>
+<translation id="5808622652939943719">खाजगीरीत्या ब्राउझ करण्यासाठी, गुप्त विंडो उघडण्याकरता डॉट्स आयकन मेन्यूवर क्लिक करा</translation>
+<translation id="9079153198295609735">Brave ला वापर आकडेवारी आणि क्रॅश अहवाल आपोआप पाठवा</translation>
+<translation id="8839398440242019256">Brave वेब स्टोअरमधून नाही.</translation>
+<translation id="6945695820322143954">हे एक्स्टेंशन Brave वेब स्टोअर धोरणाचे उल्लंघन करते.</translation>
+<translation id="1676595396635191120">नवीन गुप्त विंडो</translation>
+<translation id="5094764494104066239">नेहमी बुकमार्क बार दर्शवा</translation>
+<translation id="4471385409549756595">नवीन गुप्त विंडो</translation>
+<translation id="4540437243849625078">ही साइट गुप्त मोडच्या बाहेरील एखाद्या अ‍ॅपबरोबर ही माहिती शेअर करणार आहे.</translation>
+<translation id="1227836882233136433">गुप्त मोड सोडायचा?</translation>
+<translation id="7618452966706304788">तुम्ही गुप्त मोडमध्ये <ph name="APP_NAME"/> सह टच आयडी वापरू इच्छिता का?</translation>
+<translation id="3098826269712097986">गुप्त मोडमधून बाहेर आल्यावर साइन इन डेटा Brave मध्ये स्टोअर केला जाईल. हे तुम्हाला पुन्हा या वेबसाइटसह टच आयडीचा वापर करू देईल.</translation>
+<translation id="5186185447130319458">गुप्त</translation>
+<translation id="2579188629646253712">गुप्‍त मोडमधून बाहेर पडा</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{सर्व गुप्त विंडोमध्ये उघडा}=1{सर्व गुप्त विंडोमध्ये उघडा}other{सर्व (#) गुप्त विंडोमध्ये उघडा}}</translation>
 <translation id="2431625704210501303">&amp;गुप्त विंडोमध्ये उघडा</translation>
 <translation id="4620367155626060530">बुकमार्क बार &amp;दर्शवा</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(गुप्त)</translation>
 <translation id="4854477725773269949">गुप्तमध्ये परवानगी द्या</translation>
 <translation id="6436164536244065364">Brave वेब स्टोअरमध्ये पहा</translation>
-<translation id="8808478386290700967">Brave वेब बाजार</translation>
 <translation id="38046578254905003">विस्तार आणि थीम <ph name="BEGIN_LINK"/>Brave वेब स्टोअर<ph name="END_LINK"/> मध्ये शोधा</translation>
 <translation id="6336451774241870485">नवीन गुप्त टॅब</translation>
 <translation id="6610147964972079463">गुप्त टॅब बंद करा</translation>
-<translation id="5186185447130319458">गुप्त</translation>
 <translation id="4933782374919065856">प्रश्न आहेत? तुमच्या प्रोफाइलचे निरीक्षण करणाऱ्या व्यक्तीशी संपर्क साधा.</translation>
 </translationbundle>

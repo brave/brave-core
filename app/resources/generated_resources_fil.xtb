@@ -2124,7 +2124,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="3771294271822695279">Mga Video File</translation>
 <translation id="3775432569830822555">SSL Server Certificate</translation>
 <translation id="3775705724665058594">Ipadala sa iyong mga device</translation>
-<translation id="6945695820322143954">Lumalabag ang extension na ito sa patakaran ng Brave Web Store.</translation>
 <translation id="3777483481409781352">Hindi ma-activate ang cellular device</translation>
 <translation id="3777806571986431400">Pinagana na ang Extension</translation>
 <translation id="3778152852029592020">Kinansela ang pag-download.</translation>
@@ -2906,7 +2905,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="48704129375571883">Magdagdag ng mga karagdagang feature</translation>
 <translation id="4870758487381879312">Ilagay ang password na ibinigay ng admin para makuha ang impormasyon sa pag-configure</translation>
 <translation id="4870903493621965035">Walang nakapares na device</translation>
-<translation id="8839398440242019256">Hindi mula sa Brave Web Store.</translation>
 <translation id="4871322859485617074">Naglalaman ang PIN ng mga invalid na character</translation>
 <translation id="4871370605780490696">Magdagdag ng bookmark</translation>
 <translation id="4871719318659334896">Isara ang grupo</translation>
@@ -4967,7 +4965,6 @@ Puwede mong pamahalaan ang mga setting ng account na ito sa pamamagitan ng pag-i
 <translation id="767127784612208024">Pindutin para kumpirmahin ang pag-reset</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/>, sa <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Ipinapadala ang iyong boses sa Brave para mabigyang-daan ang dictation sa anumang field ng text.</translation>
-<translation id="3098826269712097986">Iso-store ang data ng pag-sign in sa Brave pagkatapos mong lumabas sa Incognito mode. Nagbibigay-daan ito sa iyong gamitin ulit ang Touch ID sa website na ito sa ibang pagkakataon.</translation>
 <translation id="7681095912841365527">Maaaring gumamit ng bluetooth ang site</translation>
 <translation id="7683373461016844951">Upang magpatuloy, i-click ang OK, pagkatapos ay i-click ang Magdagdag ng Tao upang gumawa ng bagong profile para sa iyong email address sa <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Na-install ng Iyong Administrator</translation>
@@ -5445,7 +5442,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8259239505248583312">Tara na</translation>
 <translation id="8260126382462817229">Subukang mag-sign in muli</translation>
 <translation id="8260864402787962391">Mouse</translation>
-<translation id="8261378640211443080">Hindi nakalista ang extension na ito sa <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> at maaaring naidagdag nang hindi mo nalalaman.</translation>
 <translation id="8261506727792406068">I-delete</translation>
 <translation id="8263336784344783289">Pangalanan ang Grupong Ito</translation>
 <translation id="8263744495942430914">Hindi pinagana ng <ph name="FULLSCREEN_ORIGIN"/> ang cursor ng iyong mouse.</translation>
@@ -6009,7 +6005,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8983632908660087688">Puwedeng i-edit ng <ph name="ORIGIN"/> ang <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Aktibo <ph name="DEVICE_LAST_ACTIVATED_TIME"/> araw ang nakalipas</translation>
 <translation id="8986362086234534611">Kalimutan</translation>
-<translation id="9079153198295609735">Awtomatikong ipadala ang mga istatistika ng paggamit at mga ulat ng pag-crash sa Brave</translation>
 <translation id="8987927404178983737">Buwan</translation>
 <translation id="8991520179165052608">Maaaring gamitin ng site ang iyong mikropono</translation>
 <translation id="899403249577094719">URL ng Netscape Certificate Base</translation>
@@ -6228,6 +6223,38 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Itinataguyod ang secure na koneksyon...</translation>
 <translation id="998747458861718449">Surii&amp;n</translation>
+<translation id="658539216370629794">Buksan ang link sa inco&amp;gnito window</translation>
+<translation id="1432267168815937878">Buksan ang link sa Inco&amp;gnito Window</translation>
+<translation id="6516243500644829484">Bagong &amp;incognito window</translation>
+<translation id="7973394300052703468">Bagong &amp;Incognito Window</translation>
+<translation id="6395403722585816044">Na-download sa Incognito</translation>
+<translation id="203837651858678035">Umalis pa rin sa incognito mode?</translation>
+<translation id="7376221878517288144">Umalis pa rin sa incognito mode?</translation>
+<translation id="871606814707918245">Bina-block ng karamihan ng mga tao ang mga notification mula sa site na ito</translation>
+<translation id="5053701565089446556">Extension ng Incognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Incognito App: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Tab na Incognito: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Incognito na Subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Incognito na Portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Hindi nakalista ang extension na ito sa <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> at maaaring naidagdag nang hindi mo nalalaman.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="4369414322596874629">Maaari kang mag-browse nang pribado gamit ang isang incognito window</translation>
+<translation id="3772947852642271642">Gamitin ang web nang hindi nase-save ang iyong history ng pag-browse gamit ang isang incognito window</translation>
+<translation id="3871738366246972820">Gumagamit ng nakabahaging computer? Subukang magbukas ng incognito window.</translation>
+<translation id="5808622652939943719">Upang mag-browse nang pribado, i-click ang menu ng icon na mga tuldok upang magbukas ng incognito window</translation>
+<translation id="9079153198295609735">Awtomatikong ipadala ang mga istatistika ng paggamit at mga ulat ng pag-crash sa Brave</translation>
+<translation id="8839398440242019256">Hindi mula sa Brave Web Store.</translation>
+<translation id="6945695820322143954">Lumalabag ang extension na ito sa patakaran ng Brave Web Store.</translation>
+<translation id="1676595396635191120">New Incognito Window</translation>
+<translation id="5094764494104066239">Palaging Ipakita ang Bookmarks Bar</translation>
+<translation id="4471385409549756595">Bagong window ng incognito</translation>
+<translation id="4540437243849625078">Magbabahagi ang site na ito ng impormasyon sa isang app sa labas ng incognito mode.</translation>
+<translation id="1227836882233136433">Umalis sa incognito mode?</translation>
+<translation id="7618452966706304788">Gusto mo bang gamitin ang Touch ID sa <ph name="APP_NAME"/> gamit ang Incognito mode?</translation>
+<translation id="3098826269712097986">Iso-store ang data ng pag-sign in sa Brave pagkatapos mong lumabas sa Incognito mode. Nagbibigay-daan ito sa iyong gamitin ulit ang Touch ID sa website na ito sa ibang pagkakataon.</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="2579188629646253712">Lumabas sa Incognito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Buksan lahat sa &amp;incognito window}=1{Buksan lahat sa &amp;incognito window}one{Buksan lahat (#) sa &amp;incognito window}other{Buksan lahat (#) sa &amp;incognito window}}</translation>
 <translation id="2431625704210501303">Buksan sa &amp;incognito window</translation>
 <translation id="4620367155626060530">&amp;Ipakita ang bookmarks bar</translation>
@@ -6277,10 +6304,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3860292630623580294">(Incognito)</translation>
 <translation id="4854477725773269949">Payagan sa incognito</translation>
 <translation id="6436164536244065364">Tingnan sa Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Maghanap ng mga extension at tema sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Bagong tab na incognito</translation>
 <translation id="6610147964972079463">Isara ang mga tab na incognito</translation>
-<translation id="5186185447130319458">Incognito</translation>
 <translation id="4933782374919065856">May mga tanong? Makipag-ugnayan sa taong nangangasiwa sa iyong profile.</translation>
 </translationbundle>

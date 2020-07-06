@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="te">
+<translation id="658539216370629794">అ&amp;జ్ఞాత విండోలో లింక్‌ను తెరువు</translation>
+<translation id="1432267168815937878">అజ్ఞా&amp;త విండోలో లింక్‌ను తెరువు</translation>
+<translation id="6516243500644829484">కొత్త &amp;అజ్ఞాత విండో</translation>
+<translation id="7973394300052703468">కొత్త &amp;అజ్ఞాత విండో</translation>
+<translation id="6395403722585816044">అజ్ఞాతంలో డౌన్‌లోడ్ చేయబడింది</translation>
+<translation id="203837651858678035">ఏదేమైనా అజ్ఞాత మోడ్ నుండి నిష్క్రమించాలా?</translation>
+<translation id="7376221878517288144">ఏదేమైనా అజ్ఞాత మోడ్ నుండి నిష్క్రమించాలా?</translation>
+<translation id="871606814707918245">చాలా మంది వ్యక్తులు ఈ సైట్ నుండి నోటిఫికేషన్‌లను బ్లాక్ చేస్తారు</translation>
+<translation id="5053701565089446556">అజ్ఞాత ఎక్స్‌టెన్‌షన్: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">అజ్ఞాత యాప్: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">అజ్ఞాత ట్యాబ్: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">అజ్ఞాత సబ్‌ఫ్రేమ్: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">అజ్ఞాత పోర్టల్: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave వెబ్ స్టోర్</translation>
+<translation id="8261378640211443080">ఈ పొడిగింపు <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>లో జాబితా చేయబడలేదు మరియు మీకు తెలియకుండానే జోడించబడి ఉండవచ్చు.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (అజ్ఞాతంగా)</translation>
+<translation id="4369414322596874629">అజ్ఞాత విండోను ఉపయోగించి మీరు ప్రైవేట్‌గా బ్రౌజ్ చేయవచ్చు</translation>
+<translation id="3772947852642271642">అజ్ఞాత విండోలో మీ బ్రౌజింగ్ చరిత్రను సేవ్ చేయకుండానే వెబ్‌ను ఉపయోగించండి</translation>
+<translation id="3871738366246972820">షేర్డ్ కంప్యూటర్‌ను ఉపయోగిస్తున్నారా? అజ్ఞాత విండోలో తెరవండి.</translation>
+<translation id="5808622652939943719">ప్రైవేట్‌గా బ్రౌజ్ చేయ‌డానికి, అజ్ఞాత విండోను తెరవడం కోసం చుక్కల చిహ్నం మెనూను క్లిక్ చేయండి.</translation>
+<translation id="9079153198295609735">Braveకు ఆటోమేటిక్‌గా వినియోగ‌ గణాంకాలను, క్రాష్ నివేదికలను పంపు</translation>
+<translation id="8839398440242019256">Brave వెబ్ స్టోర్ నుండి కాదు.</translation>
+<translation id="6945695820322143954">ఈ ఎక్స్‌టెన్ష‌న్‌ Brave వెబ్ స్టోర్ విధానాన్ని ఉల్లంఘిస్తోంది.</translation>
+<translation id="1676595396635191120">కొత్త అజ్ఞాత విండో</translation>
+<translation id="5094764494104066239">ఎల్లప్పుడూ బుక్‌మార్క్‌ల బార్‌ను చూపు</translation>
+<translation id="4471385409549756595">కొత్త అజ్ఞాత విండో</translation>
+<translation id="4540437243849625078">ఈ సైట్ అజ్ఞాత మోడ్ వెలుపల ఉన్న ఒక యాప్‌తో సమాచారాన్ని షేర్ చేయబోతోంది.</translation>
+<translation id="1227836882233136433">అజ్ఞాత మోడ్ నుండి నిష్క్రమించాలా?</translation>
+<translation id="7618452966706304788">మీరు <ph name="APP_NAME"/>తో అజ్ఞాత మోడ్‌లో టచ్ IDని ఉపయోగించాలనుకుంటున్నారా?</translation>
+<translation id="3098826269712097986">మీరు అజ్ఞాత మోడ్ నుండి వెళ్లిపోయిన తర్వాత కూడా సైన్-ఇన్ డేటా Braveలో నిల్వ చేయబడుతుంది. కనుక, మీరు ఈ వెబ్‌సైట్‌తో టచ్ IDని తర్వాత మళ్లీ ఉపయోగించగలుగుతారు.</translation>
+<translation id="5186185447130319458">అజ్ఞాత మోడ్</translation>
+<translation id="2579188629646253712">అజ్ఞాత మోడ్‌ని విడిచిపెట్టు</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{అన్నింటినీ &amp;అజ్ఞాత విండోలో తెరవండి}=1{&amp;అజ్ఞాత విండోలో తెరవండి}other{అన్నింటినీ (#) &amp;అజ్ఞాత విండోలో తెరవండి}}</translation>
 <translation id="2431625704210501303">&amp;ఒక అజ్ఞాత విండోలో తెరువు</translation>
 <translation id="4620367155626060530">&amp;బుక్‌మార్క్‌ల బార్‌ను చూపు</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(అజ్ఞాతంగా)</translation>
 <translation id="4854477725773269949">అజ్ఞాతంలో అనుమతించు</translation>
 <translation id="6436164536244065364">Brave వెబ్ స్టోర్‌లో చూడండి</translation>
-<translation id="8808478386290700967">Brave వెబ్ స్టోర్</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave వెబ్ స్టోర్‌లో<ph name="END_LINK"/> ఎక్స్‌టెన్ష‌న్‌లు మరియు థీమ్‌లను కనుగొనండి</translation>
 <translation id="6336451774241870485">కొత్త అజ్ఞాత ట్యాబ్</translation>
 <translation id="6610147964972079463">అజ్ఞాత ట్యాబ్‌లను మూసివేయి</translation>
-<translation id="5186185447130319458">అజ్ఞాత మోడ్</translation>
 <translation id="4933782374919065856">ప్రశ్నలు ఏమైనా ఉన్నాయా? మీ ప్రొఫైల్‌ను పర్యవేక్షించే వ్యక్తిని సంప్రదించండి.</translation>
 </translationbundle>

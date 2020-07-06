@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
+<translation id="658539216370629794">在隐身窗口中打开链接(&amp;G)</translation>
+<translation id="1432267168815937878">在隐身窗口中打开链接(&amp;G)</translation>
+<translation id="6516243500644829484">打开新的无痕窗口(&amp;I)</translation>
+<translation id="7973394300052703468">打开新的无痕窗口(&amp;I)</translation>
+<translation id="6395403722585816044">已在隐身模式下进行下载</translation>
+<translation id="203837651858678035">仍要退出无痕模式？</translation>
+<translation id="7376221878517288144">仍要退出无痕模式？</translation>
+<translation id="871606814707918245">多数人会屏蔽来自此网站的通知</translation>
+<translation id="5053701565089446556">隐身模式下使用的应用...<ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">隐身模式下使用的应用...<ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">隐身标签页：<ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">隐身辅助框架：<ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">无痕式门户网站：<ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave 网上应用店</translation>
+<translation id="8261378640211443080">该扩展程序未列在 <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>中，并可能是在您不知情的情况下添加的。</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/>（无痕）</translation>
+<translation id="4369414322596874629">无痕式窗口可让您私密地浏览</translation>
+<translation id="3772947852642271642">如果您使用无痕式窗口浏览网页，系统便不会保存您的浏览记录</translation>
+<translation id="3871738366246972820">使用的是共用计算机？请尝试打开一个无痕式窗口。</translation>
+<translation id="5808622652939943719">要想私密地浏览，请点击三点状图标菜单以打开一个无痕式窗口</translation>
+<translation id="9079153198295609735">将使用情况统计信息和崩溃报告自动发送给 Brave</translation>
+<translation id="8839398440242019256">并非来自 Brave 网上应用店。</translation>
+<translation id="6945695820322143954">此扩展程序违反了 Brave 网上应用店政策。</translation>
+<translation id="1676595396635191120">打开新的无痕式窗口</translation>
+<translation id="5094764494104066239">总是显示书签栏</translation>
+<translation id="4471385409549756595">打开新的无痕式窗口</translation>
+<translation id="4540437243849625078">该网站即将与某个并非处于隐身模式下的应用共享信息。</translation>
+<translation id="1227836882233136433">退出隐身模式？</translation>
+<translation id="7618452966706304788">要在无痕模式下使用 Touch ID 登录 <ph name="APP_NAME"/> 吗？</translation>
+<translation id="3098826269712097986">在您退出无痕模式后，登录数据会存储在 Brave 中。这样，当您以后再次访问该网站时，就可以使用 Touch ID 登录了。</translation>
+<translation id="5186185447130319458">无痕</translation>
+<translation id="2579188629646253712">退出无痕模式</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{在隐身窗口中打开全部网址(&amp;I)}=1{在隐身窗口中打开 1 个网址(&amp;I)}other{在隐身窗口中打开全部（# 个）网址(&amp;I)}}</translation>
 <translation id="2431625704210501303">在隐身窗口中打开(&amp;I)</translation>
 <translation id="4620367155626060530">显示书签栏(&amp;S)</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">（无痕）</translation>
 <translation id="4854477725773269949">在无痕模式下启用</translation>
 <translation id="6436164536244065364">在 Brave 网上应用店中查看详情</translation>
-<translation id="8808478386290700967">Brave 网上应用店</translation>
 <translation id="38046578254905003">在 <ph name="BEGIN_LINK"/>Brave 网上应用店<ph name="END_LINK"/>中查找扩展程序和主题背景</translation>
 <translation id="6336451774241870485">打开新的无痕式标签页</translation>
 <translation id="6610147964972079463">关闭隐身标签页</translation>
-<translation id="5186185447130319458">无痕</translation>
 <translation id="4933782374919065856">有问题？请与负责监管您的个人资料的人员联系。</translation>
 </translationbundle>

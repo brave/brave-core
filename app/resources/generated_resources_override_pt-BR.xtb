@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-BR">
+<translation id="658539216370629794">Abrir link em janela &amp;anônima</translation>
+<translation id="1432267168815937878">Abrir link na janela &amp;anônima</translation>
+<translation id="6516243500644829484">Nova janela &amp;anônima</translation>
+<translation id="7973394300052703468">Nova janela &amp;anônima</translation>
+<translation id="6395403722585816044">Download feito no modo anônimo</translation>
+<translation id="203837651858678035">Sair do modo de navegação anônima mesmo assim?</translation>
+<translation id="7376221878517288144">Sair do modo de navegação anônima mesmo assim?</translation>
+<translation id="871606814707918245">A maior parte das pessoas bloqueia as notificações deste site</translation>
+<translation id="5053701565089446556">Extensão anônima: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplicativo anônimo: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Guia anônima: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Subquadro anônimo: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal de navegação anônima: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Esta extensão não está listada na <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e pode ter sido adicionada sem seu conhecimento.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Modo anônimo)</translation>
+<translation id="4369414322596874629">Você pode navegar com privacidade usando uma janela anônima</translation>
+<translation id="3772947852642271642">Use a Web sem salvar seu histórico de navegação com uma janela anônima</translation>
+<translation id="3871738366246972820">Está usando um computador compartilhado? Tente abrir uma janela anônima.</translation>
+<translation id="5808622652939943719">Para navegar com privacidade, clique no menu de ícone de pontos para abrir uma janela anônima</translation>
+<translation id="9079153198295609735">Envia estatísticas de uso e relatórios de erros ao Brave automaticamente</translation>
+<translation id="8839398440242019256">Não foi feita a partir da Brave Web Store.</translation>
+<translation id="6945695820322143954">Esta extensão viola a política da Brave Web Store.</translation>
+<translation id="1676595396635191120">Nova janela anônima</translation>
+<translation id="5094764494104066239">Sempre mostrar a barra de favoritos</translation>
+<translation id="4471385409549756595">Nova janela anônima</translation>
+<translation id="4540437243849625078">Este site está prestes a compartilhar informações com um app fora do modo de navegação anônima.</translation>
+<translation id="1227836882233136433">Sair do modo de navegação anônima?</translation>
+<translation id="7618452966706304788">Quer usar o Touch ID com <ph name="APP_NAME"/> no modo de navegação anônima?</translation>
+<translation id="3098826269712097986">Os dados de login serão armazenados no Brave depois que você sair do modo de navegação anônima. Isso permitirá utilizar o Touch ID nesse site novamente.</translation>
+<translation id="5186185447130319458">Modo anônimo</translation>
+<translation id="2579188629646253712">Sair do modo de navegação anônima</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Abrir tudo em &amp;janela anônima}=1{Abrir em &amp;janela anônima}one{Abrir tudo (#) em &amp;janela anônima}other{Abrir tudo (#) em &amp;janela anônima}}</translation>
 <translation id="2431625704210501303">Abrir em &amp;janela anônima</translation>
 <translation id="4620367155626060530">&amp;Exibir barra de favoritos</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Modo anônimo)</translation>
 <translation id="4854477725773269949">Permitir em modo anônimo</translation>
 <translation id="6436164536244065364">Ver na Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Encontre extensões e temas na <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nova guia anônima</translation>
 <translation id="6610147964972079463">Fechar guias anônimas</translation>
-<translation id="5186185447130319458">Modo anônimo</translation>
 <translation id="4933782374919065856">Dúvidas? Entre em contato com a pessoa que supervisiona seu perfil.</translation>
 </translationbundle>

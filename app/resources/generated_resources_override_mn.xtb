@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="mn">
+<translation id="658539216370629794">Incognito цонхонд холбоосыг нээх</translation>
+<translation id="1432267168815937878">Холбоосыг нууцлалтай цонхонд нээх</translation>
+<translation id="6516243500644829484">Шинэ incognito цонх</translation>
+<translation id="7973394300052703468">Шинэ &amp; Нууцлалтай цонх</translation>
+<translation id="6395403722585816044">Нууцлалын горимд татсан</translation>
+<translation id="203837651858678035">Нууцлалын горимоос гарах уу?</translation>
+<translation id="7376221878517288144">Нууцлалын горимоос гарах уу?</translation>
+<translation id="871606814707918245">Ихэнх хүн энэ сайтын мэдэгдлийг хориглодог</translation>
+<translation id="5053701565089446556">Нууцлалтай өргөтгөл: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Incognito апп: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Нууцлалтай цонх: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Нууцлалтай дэд хүрээ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Нууцлалтай портал: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave вэб дэлгүүр</translation>
+<translation id="8261378640211443080">Энэ өргөтгөл нь <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>-ийн нь жагсаалтад ороогүй байгаа бөгөөд танд мэдэгдэхгүйгээр нэмэгдсэн байж болно.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Нууцлал)</translation>
+<translation id="4369414322596874629">Та нууцлалтай цонх ашиглан хувийн хайлт хийх боломжтой</translation>
+<translation id="3772947852642271642">Хайлтын түүхээ хадгалалгүйгээр нууцлалтай цонхоор вэб ашиглах</translation>
+<translation id="3871738366246972820">Хуваалцсан компьютер ашиглаж байна уу? Нууцлалтай цонх нээж үзнэ үү.</translation>
+<translation id="5808622652939943719">Хувийн хайлт хийх бол цэсийн цэгэн дүрс тэмдгийг дарж нууцлалтай цонх нээнэ үү</translation>
+<translation id="9079153198295609735">Brave рүү хэрэглээний статистик мэдээ болон алдаа ослын тайланг автоматаар илгээ</translation>
+<translation id="8839398440242019256">Brave Web Store-оос биш</translation>
+<translation id="6945695820322143954">Энэ өргөтгөл нь Brave Web Store-ын бодлогыг зөрчиж байна.</translation>
+<translation id="1676595396635191120">Шинэ нууцлалтай цонх</translation>
+<translation id="5094764494104066239">Хавчуургын мөрийг байнга харуулах</translation>
+<translation id="4471385409549756595">Шинэ нууцлалтай цонх</translation>
+<translation id="4540437243849625078">Энэ сайт нууцлалын горимоос гадуурх апп-тай мэдээлэл хуваалцах гэж байна.</translation>
+<translation id="1227836882233136433">Нууцлалын горимоос гарах уу?</translation>
+<translation id="7618452966706304788">Та Нууцлалын горимд байх үедээ Хүрэлтийн ID-г <ph name="APP_NAME"/>-д ашиглах хүсэлтэй байна уу?</translation>
+<translation id="3098826269712097986">Таныг Нууцлалын горимоос гарсны дараа нэвтрэх өгөгдлийг Brave-д хадгална. Ингэснээр та энэ вэб сайтад дараагийн удаа зочлохдоо Хүрэх ID-г ашиглах боломжтой болно.</translation>
+<translation id="5186185447130319458">Нууцлал</translation>
+<translation id="2579188629646253712">Нууцлалын цонхыг хаах</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Бүгдийг &amp;нууцлалтай цонхонд нээх}=1{&amp;Нууцлалтай цонхонд нээх}other{Бүх (#)-г &amp;нууцлалтай цонхонд нээх}}</translation>
 <translation id="2431625704210501303">Нууцлалтай цонхонд нээх</translation>
 <translation id="4620367155626060530">&amp; Хадгалагдсан хуудсуудыг харуулах</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Нэрээ нууцлах)</translation>
 <translation id="4854477725773269949">Нууцлалыг зөвшөөрөх</translation>
 <translation id="6436164536244065364">Brave Вэб Дэлгүүрт харах</translation>
-<translation id="8808478386290700967">Brave вэб дэлгүүр</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Вэб Дэлгүүрээс<ph name="END_LINK"/> өргөтгөл, загвар олох</translation>
 <translation id="6336451774241870485">Нууцлал бүхий шинэ цонх</translation>
 <translation id="6610147964972079463">Нууцлал бүхий цонхыг хаах</translation>
-<translation id="5186185447130319458">Нууцлал</translation>
 <translation id="4933782374919065856">Асуух зүйл байвал профайлынхаа хянагчтай холбогдоно уу.</translation>
 </translationbundle>

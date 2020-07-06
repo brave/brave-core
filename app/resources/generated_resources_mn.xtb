@@ -2119,7 +2119,6 @@
 <translation id="3771294271822695279">Видео файлууд</translation>
 <translation id="3775432569830822555">SSL серверийн сертификат</translation>
 <translation id="3775705724665058594">Төхөөрөмжүүддээ илгээх</translation>
-<translation id="6945695820322143954">Энэ өргөтгөл нь Brave Web Store-ын бодлогыг зөрчиж байна.</translation>
 <translation id="3777483481409781352">Үүрэн холбооны төхөөрөмжийг идэвхжүүлж чадсангүй</translation>
 <translation id="3777806571986431400">Өргөтгөлийг идэвхжүүлсэн.</translation>
 <translation id="3778152852029592020">Татаж авах ажиллагаа цуцлагдсан байна.</translation>
@@ -2900,7 +2899,6 @@
 <translation id="48704129375571883">Нэмэлт онцлог нэмэх</translation>
 <translation id="4870758487381879312">Тохируулгын мэдээллийг авахын тулд админы өгсөн нууц үгийг оруулна уу</translation>
 <translation id="4870903493621965035">Холбосон төхөөрөмж алга</translation>
-<translation id="8839398440242019256">Brave Web Store-оос биш</translation>
 <translation id="4871322859485617074">ПИН хүчингүй тэмдэгт агуулж байна</translation>
 <translation id="4871370605780490696">Хадгалагдсан холбоос нэмэх</translation>
 <translation id="4871719318659334896">Бүлгийг хаах</translation>
@@ -4961,7 +4959,6 @@
 <translation id="767127784612208024">Шинэчлэлтийг баталгаажуулахын тулд хүрнэ үү</translation>
 <translation id="7672520070349703697"><ph name="PAGE_TITLE"/>-н <ph name="HUNG_IFRAME_URL"/>.</translation>
 <translation id="1800308196794859773">Диктафоныг текстийн дурын талбарт зөвшөөрөхийн тулд дуу хоолойгоо Brave-д илгээнэ үү.</translation>
-<translation id="3098826269712097986">Таныг Нууцлалын горимоос гарсны дараа нэвтрэх өгөгдлийг Brave-д хадгална. Ингэснээр та энэ вэб сайтад дараагийн удаа зочлохдоо Хүрэх ID-г ашиглах боломжтой болно.</translation>
 <translation id="7681095912841365527">Сайт bluetooth-г ашиглах боломжтой</translation>
 <translation id="7683373461016844951">Үргэлжлүүлэхийн тулд OK сонголтыг товшоод <ph name="DOMAIN"/> имэйл хаягаараа шинэ профайл үүсгэхийн тулд Хүн нэмэх гэсэн сонголтыг дарна уу.</translation>
 <translation id="7684212569183643648">Таны админ суулгасан</translation>
@@ -5435,7 +5432,6 @@
 <translation id="8259239505248583312">Эхэлцгээе</translation>
 <translation id="8260126382462817229">Дахин нэвтрэхээр оролдоно уу.</translation>
 <translation id="8260864402787962391">Хулгана</translation>
-<translation id="8261378640211443080">Энэ өргөтгөл нь <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>-ийн нь жагсаалтад ороогүй байгаа бөгөөд танд мэдэгдэхгүйгээр нэмэгдсэн байж болно.</translation>
 <translation id="8261506727792406068">Устгах</translation>
 <translation id="8263336784344783289">Энэ бүлгийг нэрлэнэ үү</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> нь таны хулганын заагчийг идэвхгүй болгосон байна.</translation>
@@ -5995,7 +5991,6 @@
 <translation id="8983632908660087688"><ph name="ORIGIN"/> нь <ph name="FILENAME"/>-г засах боломжтой</translation>
 <translation id="8985264973231822211"><ph name="DEVICE_LAST_ACTIVATED_TIME"/> өдрийн өмнө идэвхтэй</translation>
 <translation id="8986362086234534611">Мартах</translation>
-<translation id="9079153198295609735">Brave рүү хэрэглээний статистик мэдээ болон алдаа ослын тайланг автоматаар илгээ</translation>
 <translation id="8987927404178983737">Сар</translation>
 <translation id="8991520179165052608">Сайт таны микрофоныг ашиглах боломжтой</translation>
 <translation id="899403249577094719">Нетскейп гэрчилгээнд суурилсан холбоос</translation>
@@ -6214,6 +6209,38 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Аюулгүй холболт хийж байна...</translation>
 <translation id="998747458861718449">Шалгах</translation>
+<translation id="658539216370629794">Incognito цонхонд холбоосыг нээх</translation>
+<translation id="1432267168815937878">Холбоосыг нууцлалтай цонхонд нээх</translation>
+<translation id="6516243500644829484">Шинэ incognito цонх</translation>
+<translation id="7973394300052703468">Шинэ &amp; Нууцлалтай цонх</translation>
+<translation id="6395403722585816044">Нууцлалын горимд татсан</translation>
+<translation id="203837651858678035">Нууцлалын горимоос гарах уу?</translation>
+<translation id="7376221878517288144">Нууцлалын горимоос гарах уу?</translation>
+<translation id="871606814707918245">Ихэнх хүн энэ сайтын мэдэгдлийг хориглодог</translation>
+<translation id="5053701565089446556">Нууцлалтай өргөтгөл: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Incognito апп: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Нууцлалтай цонх: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Нууцлалтай дэд хүрээ: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Нууцлалтай портал: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave вэб дэлгүүр</translation>
+<translation id="8261378640211443080">Энэ өргөтгөл нь <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>-ийн нь жагсаалтад ороогүй байгаа бөгөөд танд мэдэгдэхгүйгээр нэмэгдсэн байж болно.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Нууцлал)</translation>
+<translation id="4369414322596874629">Та нууцлалтай цонх ашиглан хувийн хайлт хийх боломжтой</translation>
+<translation id="3772947852642271642">Хайлтын түүхээ хадгалалгүйгээр нууцлалтай цонхоор вэб ашиглах</translation>
+<translation id="3871738366246972820">Хуваалцсан компьютер ашиглаж байна уу? Нууцлалтай цонх нээж үзнэ үү.</translation>
+<translation id="5808622652939943719">Хувийн хайлт хийх бол цэсийн цэгэн дүрс тэмдгийг дарж нууцлалтай цонх нээнэ үү</translation>
+<translation id="9079153198295609735">Brave рүү хэрэглээний статистик мэдээ болон алдаа ослын тайланг автоматаар илгээ</translation>
+<translation id="8839398440242019256">Brave Web Store-оос биш</translation>
+<translation id="6945695820322143954">Энэ өргөтгөл нь Brave Web Store-ын бодлогыг зөрчиж байна.</translation>
+<translation id="1676595396635191120">Шинэ нууцлалтай цонх</translation>
+<translation id="5094764494104066239">Хавчуургын мөрийг байнга харуулах</translation>
+<translation id="4471385409549756595">Шинэ нууцлалтай цонх</translation>
+<translation id="4540437243849625078">Энэ сайт нууцлалын горимоос гадуурх апп-тай мэдээлэл хуваалцах гэж байна.</translation>
+<translation id="1227836882233136433">Нууцлалын горимоос гарах уу?</translation>
+<translation id="7618452966706304788">Та Нууцлалын горимд байх үедээ Хүрэлтийн ID-г <ph name="APP_NAME"/>-д ашиглах хүсэлтэй байна уу?</translation>
+<translation id="3098826269712097986">Таныг Нууцлалын горимоос гарсны дараа нэвтрэх өгөгдлийг Brave-д хадгална. Ингэснээр та энэ вэб сайтад дараагийн удаа зочлохдоо Хүрэх ID-г ашиглах боломжтой болно.</translation>
+<translation id="5186185447130319458">Нууцлал</translation>
+<translation id="2579188629646253712">Нууцлалын цонхыг хаах</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Бүгдийг &amp;нууцлалтай цонхонд нээх}=1{&amp;Нууцлалтай цонхонд нээх}other{Бүх (#)-г &amp;нууцлалтай цонхонд нээх}}</translation>
 <translation id="2431625704210501303">Нууцлалтай цонхонд нээх</translation>
 <translation id="4620367155626060530">&amp; Хадгалагдсан хуудсуудыг харуулах</translation>
@@ -6263,10 +6290,8 @@
 <translation id="3860292630623580294">(Нэрээ нууцлах)</translation>
 <translation id="4854477725773269949">Нууцлалыг зөвшөөрөх</translation>
 <translation id="6436164536244065364">Brave Вэб Дэлгүүрт харах</translation>
-<translation id="8808478386290700967">Brave вэб дэлгүүр</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Вэб Дэлгүүрээс<ph name="END_LINK"/> өргөтгөл, загвар олох</translation>
 <translation id="6336451774241870485">Нууцлал бүхий шинэ цонх</translation>
 <translation id="6610147964972079463">Нууцлал бүхий цонхыг хаах</translation>
-<translation id="5186185447130319458">Нууцлал</translation>
 <translation id="4933782374919065856">Асуух зүйл байвал профайлынхаа хянагчтай холбогдоно уу.</translation>
 </translationbundle>

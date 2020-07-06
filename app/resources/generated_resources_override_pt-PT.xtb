@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="pt-PT">
+<translation id="658539216370629794">Abrir link numa janela sem re&amp;gisto</translation>
+<translation id="1432267168815937878">Abrir Link numa Janela de Nave&amp;gação Anónima</translation>
+<translation id="6516243500644829484">&amp;Nova janela sem registo</translation>
+<translation id="7973394300052703468">Nova Janela de Navegação Anón&amp;ima</translation>
+<translation id="6395403722585816044">Transferido em modo de navegação anónima</translation>
+<translation id="203837651858678035">Pretende sair do modo de navegação anónima mesmo assim?</translation>
+<translation id="7376221878517288144">Pretende sair do modo de navegação anónima mesmo assim?</translation>
+<translation id="871606814707918245">A maioria das pessoas bloqueia as notificações deste site.</translation>
+<translation id="5053701565089446556">Extensão da navegação anónima: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplicação em navegação anónima: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Separador de navegação anónima: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Subestrutura da navegação anónima: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal de Navegação anónima: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Esta extensão não está listada no <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e é possível que tenha sido adicionada sem o seu conhecimento.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navegação anónima)</translation>
+<translation id="4369414322596874629">Pode navegar em privado com uma janela de navegação anónima</translation>
+<translation id="3772947852642271642">Navegue na Web sem guardar o seu histórico de navegação com uma janela de navegação anónima</translation>
+<translation id="3871738366246972820">Está a utilizar um computador partilhado? Experimente abrir uma janela de navegação anónima.</translation>
+<translation id="5808622652939943719">Para navegar em privado, clique no menu dos três pontos de forma a abrir uma janela de navegação anónima</translation>
+<translation id="9079153198295609735">Enviar automaticamente estatísticas de utilização e relatórios de falhas para a Brave</translation>
+<translation id="8839398440242019256">Não é da Brave Web Store</translation>
+<translation id="6945695820322143954">Esta extensão viola a política da Brave Web Store.</translation>
+<translation id="1676595396635191120">Nova janela de navegação anónima</translation>
+<translation id="5094764494104066239">Mostrar Sempre a Barra de Marcadores</translation>
+<translation id="4471385409549756595">Nova janela de navegação anónima</translation>
+<translation id="4540437243849625078">Este site está prestes a partilhar informações com uma aplicação fora do modo de navegação anónima.</translation>
+<translation id="1227836882233136433">Sair da navegação anónima?</translation>
+<translation id="7618452966706304788">Pretende utilizar o Touch ID com a aplicação <ph name="APP_NAME"/> no modo de navegação anónima?</translation>
+<translation id="3098826269712097986">Os dados de início de sessão são armazenados no Brave depois de sair do modo de navegação anónima. Isto permite-lhe utilizar novamente o Touch ID neste Website mais tarde.</translation>
+<translation id="5186185447130319458">Navegação anónima</translation>
+<translation id="2579188629646253712">Sair do modo de navegação anónima</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Abrir todos numa &amp;janela de navegação anónima}=1{Abrir numa &amp;janela de navegação anónima}other{Abrir todos (#) numa &amp;janela de navegação anónima}}</translation>
 <translation id="2431625704210501303">Abrir na janela de &amp;navegação anónima</translation>
 <translation id="4620367155626060530">&amp;Mostrar barra de marcadores</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Navegação anónima)</translation>
 <translation id="4854477725773269949">Permitir em modo de navegação anónima</translation>
 <translation id="6436164536244065364">Ver na Web Store do Brave</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Encontre extensões e temas na <ph name="BEGIN_LINK"/>Web Store do Brave<ph name="END_LINK"/>.</translation>
 <translation id="6336451774241870485">Novo separador anónimo</translation>
 <translation id="6610147964972079463">Fechar sep. de naveg. anón.</translation>
-<translation id="5186185447130319458">Navegação anónima</translation>
 <translation id="4933782374919065856">Tem dúvidas? Contacte a pessoa que supervisiona o seu perfil.</translation>
 </translationbundle>

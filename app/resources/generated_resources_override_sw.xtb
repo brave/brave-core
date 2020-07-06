@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sw">
+<translation id="658539216370629794">Fungua kiungo katika dirisha fiche</translation>
+<translation id="1432267168815937878">Fungua Kiungo katika Dirisha &amp;Fiche</translation>
+<translation id="6516243500644829484">Dirisha &amp;fiche jipya</translation>
+<translation id="7973394300052703468">Dirisha &amp;Fiche Jipya</translation>
+<translation id="6395403722585816044">Ilipakuliwa katika Hali Fiche</translation>
+<translation id="203837651858678035">Ungependa kufunga hali fiche?</translation>
+<translation id="7376221878517288144">Ungependa kufunga hali fiche?</translation>
+<translation id="871606814707918245">Watu wengi huzuia arifa kutoka tovuti hii</translation>
+<translation id="5053701565089446556">Kiendelezi kilicho katika hali fiche: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Programu iliyo katika hali fiche: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Kichupo Fiche: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Fremu ndogo ya Hali Fiche: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Tovuti katika Hali Fiche: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Kiendelezi hiki hakijaorodheshwa katika <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> na huenda kiliongezwa pasipo ridhaa yako.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Hali fiche)</translation>
+<translation id="4369414322596874629">Unaweza kuvinjari kwa faragha ukitumia dirisha fiche</translation>
+<translation id="3772947852642271642">Tumia wavuti bila kuhifadhi historia yako ya kuvinjari kwa kutumia dirisha fiche</translation>
+<translation id="3871738366246972820">Je, unatumia kompyuta na wengine? Jaribu kufungua dirisha fiche.</translation>
+<translation id="5808622652939943719">Ili kuvinjari kwa faragha, bofya menyu ya aikoni ya vitone ili ufungue dirisha fiche</translation>
+<translation id="9079153198295609735">Tumia Brave takwimu za matumizi na ripoti za mara ambazo kivinjari kinaacha kufanya kazi, moja kwa moja</translation>
+<translation id="8839398440242019256">Haijatoka kwenye Duka la Wavutini la Brave.</translation>
+<translation id="6945695820322143954">Kiendelezi hiki kinakiuka sera ya Duka la Wavuti ya Brave.</translation>
+<translation id="1676595396635191120">Dirisha Fiche Jipya</translation>
+<translation id="5094764494104066239">Onyesha Upau wa Alamisho Kila Wakati</translation>
+<translation id="4471385409549756595">Dirisha fiche jipya</translation>
+<translation id="4540437243849625078">Tovuti hii inakaribia kushiriki maelezo na programu nyingine isiyo katika hali fiche.</translation>
+<translation id="1227836882233136433">Ungependa kuondoka kwenye hali fiche?</translation>
+<translation id="7618452966706304788">Ungependa kutumia Touch ID kwenye <ph name="APP_NAME"/> katika Hali Fiche?</translation>
+<translation id="3098826269712097986">Data ya kuingia katika akaunti itahifadhiwa kwenye Brave baada ya kufunga Hali Fiche. Hali hii itakuruhusu utumie tena Touch ID kwenye tovuti hii baadaye.</translation>
+<translation id="5186185447130319458">Kichupo fiche</translation>
+<translation id="2579188629646253712">Funga Hali Fiche</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Fungua zote &amp;katika dirisha fiche}=1{Fungua &amp;katika dirisha fiche}other{Fungua zote (#) &amp;katika dirisha fiche}}</translation>
 <translation id="2431625704210501303">Fungua kwenye dirisha &amp;chini kwa chini</translation>
 <translation id="4620367155626060530">&amp;Onyesha upau alamisho</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Hali fiche)</translation>
 <translation id="4854477725773269949">Ruhusu katika hali fiche</translation>
 <translation id="6436164536244065364">Angalia katika Duka la Brave kwenye Wavuti</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Pata viendelezi na mandhari katika <ph name="BEGIN_LINK"/>Duka la Brave kwenye Wavuti<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Kichupo fiche kipya</translation>
 <translation id="6610147964972079463">Funga vichupo fiche</translation>
-<translation id="5186185447130319458">Kichupo fiche</translation>
 <translation id="4933782374919065856">Je, una maswali? Wasiliana na msimamizi wa wasifu wako.</translation>
 </translationbundle>

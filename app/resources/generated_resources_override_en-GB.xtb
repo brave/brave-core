@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="en-GB">
+<translation id="658539216370629794">Open link in inco&amp;gnito window</translation>
+<translation id="1432267168815937878">Open Link in Inco&amp;gnito Window</translation>
+<translation id="6516243500644829484">New &amp;incognito window</translation>
+<translation id="7973394300052703468">New &amp;Incognito Window</translation>
+<translation id="6395403722585816044">Downloaded in Incognito</translation>
+<translation id="203837651858678035">Exit incognito mode anyway?</translation>
+<translation id="7376221878517288144">Quit incognito mode anyway?</translation>
+<translation id="871606814707918245">Most people block notifications from this site</translation>
+<translation id="5053701565089446556">Incognito Extension: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Incognito App: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Incognito Tab: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Incognito Subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Incognito portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> and may have been added without your knowledge.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="4369414322596874629">You can browse privately using an incognito window</translation>
+<translation id="3772947852642271642">Use the web without saving your browsing history with an incognito window</translation>
+<translation id="3871738366246972820">Using a shared computer? Try opening an incognito window.</translation>
+<translation id="5808622652939943719">To browse privately, click the dots icon menu to open an incognito window</translation>
+<translation id="9079153198295609735">Automatically send usage statistics and crash reports to Brave</translation>
+<translation id="8839398440242019256">Not from Brave Web Store.</translation>
+<translation id="6945695820322143954">This extension violates the Brave Web Store policy.</translation>
+<translation id="1676595396635191120">New Incognito Window</translation>
+<translation id="5094764494104066239">Always Show Bookmarks Bar</translation>
+<translation id="4471385409549756595">New incognito window</translation>
+<translation id="4540437243849625078">This site is about to share information with an app outside of incognito mode.</translation>
+<translation id="1227836882233136433">Leave incognito mode?</translation>
+<translation id="7618452966706304788">Do you want to use Touch ID with <ph name="APP_NAME"/> in Incognito mode?</translation>
+<translation id="3098826269712097986">Sign-in data will be stored in Brave after you exit Incognito mode. This will let you use Touch ID with this website again later.</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="2579188629646253712">Exit incognito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Open all in &amp;incognito window}=1{Open in &amp;incognito window}other{Open all (#) in &amp;incognito window}}</translation>
 <translation id="2431625704210501303">Open in &amp;Incognito window</translation>
 <translation id="4620367155626060530">&amp;Show bookmarks bar</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Incognito)</translation>
 <translation id="4854477725773269949">Allow in incognito</translation>
 <translation id="6436164536244065364">View in Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Find extensions and themes in the <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">New incognito tab</translation>
 <translation id="6610147964972079463">Close incognito tabs</translation>
-<translation id="5186185447130319458">Incognito</translation>
 <translation id="4933782374919065856">Questions? Contact the person who supervises your profile.</translation>
 </translationbundle>

@@ -6,10 +6,10 @@
 <translation id="1015730422737071372">Ange ytterligare information</translation>
 <translation id="1019413721762100891">Av</translation>
 <translation id="1021110881106174305">Godkända kort</translation>
-<translation id="3898257577441589237">Det här problemet uppstår på grund av ett certifikat som du eller någon annan har installerat på enheten. Certifikatet är känt för att användas för att övervaka och fånga upp nätverkstrafik och är inte betrott i Brave. Även om det kan vara berättigat med övervakning i vissa fall, t.ex. i ett skol- eller företagsnätverk, vill vi göra dig medveten om vad som pågår även om du inte kan göra något åt det. Alla webbläsare och appar som använder internet omfattas av övervakningen.</translation>
 <translation id="1030706264415084469"><ph name="URL"/> vill lagra stora mängder data permanent på din enhet</translation>
 <translation id="1032854598605920125">Rotera medurs</translation>
 <translation id="1036348656032585052">Inaktivera</translation>
+<translation id="1038106730571050514">Visa förslag</translation>
 <translation id="1038842779957582377">okänt namn</translation>
 <translation id="1041998700806130099">Meddelande på arbetsorder</translation>
 <translation id="1050038467049342496">Stäng andra appar</translation>
@@ -160,6 +160,7 @@
 <translation id="161042844686301425">Cyanblå</translation>
 <translation id="1620510694547887537">Kamera</translation>
 <translation id="1623104350909869708">Hindra sidan från att skapa fler dialogrutor</translation>
+<translation id="1623253368136559158">Kamerarörelse</translation>
 <translation id="16338877384480380">Architecture-B</translation>
 <translation id="1638780421120290329">Det gick inte att spara kortet</translation>
 <translation id="1639239467298939599">Läser in</translation>
@@ -174,7 +175,6 @@
 <translation id="1662550410081243962">Spara och fyll i betalningsmetoder</translation>
 <translation id="1838576226863399477">Kort och adresser har hämtats från Brave. Du hanterar dessa under <ph name="BEGIN_LINK"/>Inställningar<ph name="END_LINK"/>.</translation>
 <translation id="1671391448414634642">Sidor på <ph name="SOURCE_LANGUAGE"/> översätts till <ph name="TARGET_LANGUAGE"/> från och med nu.</translation>
-<translation id="6373940988468425649">På <ph name="SITE"/> används vanligtvis kryptering (SSL) för att skydda din information. När Brave försökte ansluta till <ph name="SITE"/> den här gången skickade webbplatsen tillbaka ovanliga och felaktiga uppgifter. Sådant kan hända när en angripare utger sig för att vara <ph name="SITE"/> eller när anslutningen har avbrutits av en Wi-Fi-inloggningsskärm. Din information är fortfarande säker eftersom Brave avbröt anslutningen innan någon data utbyttes.</translation>
 <translation id="1682696192498422849">Kortsidan först</translation>
 <translation id="168841957122794586">Servercertifikatet innehåller en svag kryptografisk nyckel.</translation>
 <translation id="1697532407822776718">Färdigt!</translation>
@@ -195,7 +195,6 @@
 <translation id="1736420071277903564">Dator</translation>
 <translation id="1740951997222943430">Ange en giltig utgångsmånad</translation>
 <translation id="1741613555002899862">Måste anges och vara en giltig sträng när DnsOverHttpsMode är <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
-<translation id="8425351843056705489">Spara kortet, faktureringsadressen och namnet i Brave-kontot och på enheten så går det snabbare att betala nästa gång.</translation>
 <translation id="1743570585616704562">Identifierades inte</translation>
 <translation id="1745880797583122200">Din webbläsare hanteras</translation>
 <translation id="1746113442205726301">Bild Y – byte</translation>
@@ -218,6 +217,7 @@
 <translation id="1838374766361614909">Rensa sökning</translation>
 <translation id="1839551713262164453">Valideringen av principvärdena har misslyckats med fel</translation>
 <translation id="1842969606798536927">Betala</translation>
+<translation id="359494141189433808">Använd Brave-kontot till att generera ett starkt lösenord</translation>
 <translation id="1871208020102129563">Proxyn är inställd på att använda fasta proxyservrar, inte en webbadress med PAC-skript.</translation>
 <translation id="1871284979644508959">Obligatoriskt fält</translation>
 <translation id="85321348617848915">Brave Formulär</translation>
@@ -268,6 +268,7 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="2094505752054353250">Domänen matchar inte</translation>
 <translation id="2096368010154057602">Departement</translation>
 <translation id="2099652385553570808">Tre häftklamrar till vänster</translation>
+<translation id="2101225219012730419">Version:</translation>
 <translation id="2102134110707549001">Föreslå ett starkt lösenord …</translation>
 <translation id="2107021941795971877">Skriva ut underlag</translation>
 <translation id="2108755909498034140">Starta om datorn</translation>
@@ -346,7 +347,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="2410754574180102685">Government-Legal</translation>
 <translation id="2413528052993050574">Servern kunde inte bevisa att den är <ph name="DOMAIN"/> eftersom dess säkerhetscertifikat kan ha återkallats. Detta kan orsakas av en felaktig konfigurering eller att någon spärrar anslutningen.</translation>
 <translation id="2438874542388153331">Fyra hål till höger</translation>
-<translation id="9018981925326888629">Du angav just ditt lösenord på en bedräglig webbplats. Du rekommenderas i Brave att ändra lösenordet nu.</translation>
 <translation id="2463193859425327265">Ändra startsida</translation>
 <translation id="2463739503403862330">Fyll i</translation>
 <translation id="2465402087343596252">Architecture-E</translation>
@@ -400,11 +400,13 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="2666092431469916601">Överst</translation>
 <translation id="2666117266261740852">Stäng andra flikar eller appar</translation>
 <translation id="2674170444375937751">Vill du ta bort de här sidorna från historiken?</translation>
+<translation id="2674804415323431591">Dölj förslag</translation>
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">Lämna</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Bästa passning</translation>
 <translation id="2691924980723297736">Säkerhetsvarning</translation>
+<translation id="7246459936780600154">Använd lösenord som har sparats i Brave-kontot</translation>
 <translation id="2699302886720511147">Godkända kort</translation>
 <translation id="2701514975700770343">Framsidan nedåt</translation>
 <translation id="2702801445560668637">Läslista</translation>
@@ -442,6 +444,7 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="2856444702002559011">En angripare kan försöka stjäla dina uppgifter från <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (t.ex. lösenord, meddelanden eller kreditkortsuppgifter). <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Korsfalsning</translation>
 <translation id="2878424575911748999">A1</translation>
+<translation id="2880660355386638022">Fönsterplacering</translation>
 <translation id="2881276955470682203">Vill du spara kortet?</translation>
 <translation id="2882949212241984732">Altarskåpsfalsning</translation>
 <translation id="2903493209154104877">Adresser</translation>
@@ -452,6 +455,7 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="2915068235268646559">Krasch från <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Stäng andra program</translation>
 <translation id="2922350208395188000">Servercertifikatet kan inte kontrolleras.</translation>
+<translation id="6005097315762840167">Logga in om du vill använda lösenord som har sparats i Brave-kontot</translation>
 <translation id="2925673989565098301">Leveranssätt</translation>
 <translation id="2928905813689894207">Faktureringsadress</translation>
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> och <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> till}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> och <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> till}}</translation>
@@ -463,11 +467,9 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="2951588413176968965">Mitt postfack</translation>
 <translation id="295526156371527179">Varning: Den här principen kombinerades inte som en ordbok enligt principen eftersom den inte är en ordbok.</translation>
 <translation id="2955913368246107853">Stäng sökfältet</translation>
-<translation id="6326805297893828864">Om du vill upprätta en säker anslutning måste klockan vara rätt inställd. Det beror på att certifikaten som webbplatserna använder för att identifiera sig har en bestämd giltighetstid. Brave kan inte verifiera certifikaten eftersom klockan på enheten inte går rätt.</translation>
 <translation id="2972581237482394796">&amp;Upprepa</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/> är markerad just nu. <ph name="ROW_CONTENT"/></translation>
 <translation id="2982481275546140226">Rensa data</translation>
-<translation id="3676215163710610678">Om alternativet är aktiverat sparar Brave en kopia av kortet på enheten så att det går snabbare att fylla i formulär.</translation>
 <translation id="2985398929374701810">Ange en giltig adress</translation>
 <translation id="2986368408720340940">Det här alternativet för utlämning är inte tillgängligt. Testa ett annat alternativ.</translation>
 <translation id="2987034854559945715">Det finns inga matchande funktioner</translation>
@@ -581,7 +583,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="3467763166455606212">Kortinnehavarens namn måste anges</translation>
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, öppen nu, tryck på Tabb och sedan Retur för att byta till den öppna fliken</translation>
 <translation id="3479552764303398839">Inte nu</translation>
-<translation id="1096085967892725815">Du kan förlora tillgången till Brave-kontot. Du rekommenderas att ändra lösenordet nu. Du blir uppmanad att logga in.</translation>
 <translation id="3487845404393360112">Fack 4</translation>
 <translation id="3495081129428749620">Hitta på sidan
     <ph name="PAGE_TITLE"/></translation>
@@ -641,8 +642,8 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>kontrollera proxyn, brandväggen och DNS-konfigureringen<ph name="END_LINK"/></translation>
 <translation id="372429172604983730">Det här problemet kan orsakas av bland annat antivirusprogram, brandväggar, webbfiltrerings- och proxyprogram.</translation>
 <translation id="373042150751172459">B4 (kuvert)</translation>
+<translation id="3731873414101415120">De webbplatser du besöker och innehåll på sidor som inte är säkra</translation>
 <translation id="3736520371357197498">Om du är medveten om säkerhetsriskerna kan du <ph name="BEGIN_LINK"/>besöka den här osäkra webbplatsen<ph name="END_LINK"/> innan de skadliga programmen har tagits bort.</translation>
-<translation id="8896585555528145662">Du kan inte besöka <ph name="SITE"/> just nu eftersom webbplatsen skickade krypterade användaruppgifter som Brave inte kan bearbeta. Nätverksfel och attacker är ofta tillfälliga, så sidan kommer förmodligen fungera senare.</translation>
 <translation id="7375171421124325498">När du bekräftar delas kortuppgifter från ditt Brave-konto med webbplatsen.</translation>
 <translation id="3748148204939282805">Angripare på <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> kan försöka lura dig att göra något riskfyllt, som att installera programvara eller avslöja personliga uppgifter (t.ex. lösenord, telefonnummer eller kreditkortsuppgifter). <ph name="BEGIN_LEARN_MORE_LINK"/>Läs mer<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="375403751935624634">Det gick inte att översätta på grund av ett serverfel.</translation>
@@ -785,7 +786,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="4356973930735388585">Det kan hända att angripare på den här webbplatsen försöker installera skadliga program på datorn som stjäl eller raderar dina uppgifter (t.ex. foton, lösenord, meddelanden och kreditkort).</translation>
 <translation id="4358059973562876591">Det gick inte att tillämpa de angivna mallarna på grund av ett fel i principen DnsOverHttpsMode.</translation>
 <translation id="4358461427845829800">Hantera betalningsmetoder …</translation>
-<translation id="5442778523450464826">Du angav just ditt lösenord på en bedräglig webbplats. Du kan få hjälp i Brave. Klicka på Skydda kontot för att ändra ditt lösenord och meddela Brave om att kontot kan vara utsatt för fara.</translation>
 <translation id="4367563149485757821">Number-12 (kuvert)</translation>
 <translation id="437058704415269440">Kontosaldo</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -797,7 +797,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="4408413947728134509">Cookies <ph name="NUM_COOKIES"/></translation>
 <translation id="4414290883293381923">Du angav just ditt lösenord på en bedräglig webbplats. Vi rekommenderar att du besöker <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> och andra webbplatser där du använder lösenordet och ändrar det nu.</translation>
 <translation id="4415426530740016218">Hämtningsadress</translation>
-<translation id="4906192414477726331">Servern kunde inte bevisa att den är <ph name="DOMAIN"/> eftersom Brave inte litar på dess säkerhetscertifikat. Detta kan orsakas av en felaktig konfigurering eller att någon spärrar anslutningen.</translation>
 <translation id="443121186588148776">Serieport</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> godkände inte inloggningscertifikatet eller så har inget inloggningscertifikat angetts.</translation>
 <translation id="4434045419905280838">Popup och omdirigeringar</translation>
@@ -828,7 +827,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="457875822857220463">Leverans</translation>
 <translation id="4579056131138995126">Personal (kuvert)</translation>
 <translation id="4582204425268416675">Ta bort kort</translation>
-<translation id="8385639954311581596">Vill du ta bort adressen från Brave?</translation>
 <translation id="4592951414987517459">Anslutningen till <ph name="DOMAIN"/> är krypterad med en modern krypteringssvit.</translation>
 <translation id="4594403342090139922">&amp;Ångra Ta bort</translation>
 <translation id="4597348597567598915">Storlek 8</translation>
@@ -845,7 +843,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="467662567472608290">Servern kunde inte bevisa att den är <ph name="DOMAIN"/> eftersom dess säkerhetscertifikat innehåller fel. Detta kan orsakas av en felaktig konfigurering eller att någon spärrar anslutningen.</translation>
 <translation id="4677585247300749148"><ph name="URL"/> vill svara på tillgänglighetshändelser</translation>
 <translation id="8197094463444457125">Brave Presentationer</translation>
-<translation id="3619365259205518877">Du angav just ditt lösenord på en bedräglig webbplats. Brave rekommenderar att du kontrollerar dina sparade lösenord för <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> och andra webbplatser där du använder lösenordet nu.</translation>
 <translation id="4690462567478992370">Sluta använda ett ogiltigt certifikat</translation>
 <translation id="4691835149146451662">Architecture-A (kuvert)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
@@ -855,9 +852,9 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/> köra nätverksdiagnostik för Windows<ph name="END_LINK"/></translation>
 <translation id="4726672564094551039">Läs in policyer på nytt</translation>
 <translation id="4728558894243024398">Plattform</translation>
+<translation id="4731638775147756694">Den här appen har blockerats av administratören</translation>
 <translation id="4731967714531604179">Prc2 (kuvert)</translation>
 <translation id="4733082559415072992"><ph name="URL"/> vill använda enhetens plats</translation>
-<translation id="3960299545138990065">Starta om Brave</translation>
 <translation id="4880298864945336181">Administratören har aktiverat Brave Enterprise Connectors i din webbläsare. Dessa funktioner har åtkomst till en del av din data.</translation>
 <translation id="473775607612524610">Uppdatera</translation>
 <translation id="4738601419177586157">Sökförslag för <ph name="TEXT"/></translation>
@@ -890,6 +887,7 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="4877083676943085827">{COUNT,plural, =0{Inga}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>, <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">Sök på <ph name="TEXT"/></translation>
 <translation id="4879491255372875719">Automatiskt (standard)</translation>
+<translation id="4879725228911483934">Öppna fönster och placera ut dem på skärmen</translation>
 <translation id="4880827082731008257">Sök i historiken</translation>
 <translation id="4881695831933465202">Öppna</translation>
 <translation id="4892518386797173871">Bakre</translation>
@@ -1056,6 +1054,7 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="5523118979700054094">Policynamn</translation>
 <translation id="55293785478302737">Kanthäftning</translation>
 <translation id="553484882784876924">Prc6 (kuvert)</translation>
+<translation id="5536214594743852365">Visa avsnittet <ph name="SECTION"/></translation>
 <translation id="5539243836947087108">Raft</translation>
 <translation id="5540224163453853">Det gick inte att hitta den önskade artikeln.</translation>
 <translation id="5541086400771735334">Postfack 7</translation>
@@ -1199,7 +1198,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="6116338172782435947">Tillgång till text och bilder som kopierats till Urklipp</translation>
 <translation id="6120179357481664955">Vill du spara UPI-id?</translation>
 <translation id="5972135347314259717">Brave Enterprise Connectors</translation>
-<translation id="1504280350970284172">Använd Brave-kontot till att generera ett starkt lösenord</translation>
 <translation id="6146055958333702838">Kontrollera kablar och starta om routrar, modem och andra nätverksenheter
     som används.</translation>
 <translation id="614940544461990577">Testa att</translation>
@@ -1225,6 +1223,7 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="6263376278284652872">Bokmärken för <ph name="DOMAIN"/></translation>
 <translation id="6264485186158353794">Tillbaka till säker webbplats</translation>
 <translation id="6266934640124581640">Ljust blågrön</translation>
+<translation id="9136010393039243713">Brave Update</translation>
 <translation id="6276112860590028508">Sidor från läslistan visas här</translation>
 <translation id="4491702030396251550">Spara kortet och faktureringsadressen i Brave-kontot så går det snabbare att betala nästa gång.</translation>
 <translation id="293801390522973485">Följande information sparas <ph name="BEGIN_EMPHASIS"/>inte<ph name="END_EMPHASIS"/> i Brave:
@@ -1245,7 +1244,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="6328639280570009161">Prova att inaktivera nätverksförslag</translation>
 <translation id="6328784461820205019">Anslutningen är inte privat eller &lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt; eller &lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt; eller &lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt; eller &lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt;eller SSL-certifikatfel</translation>
 <translation id="6328786501058569169">Den här webbplatsen är bedräglig</translation>
-<translation id="2679184024759659109">Använd lösenord som har sparats i Brave-kontot</translation>
 <translation id="6337133576188860026">Frigör mindre än <ph name="SIZE"/>. Vissa webbplatser kan läsas in långsammare nästa gång du besöker dem.</translation>
 <translation id="6337534724793800597">Filtrera princip efter namn</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Inga}=1{1 lösenord (för <ph name="DOMAIN_LIST"/>, synkroniseras)}=2{2 lösenord (för <ph name="DOMAIN_LIST"/>, synkroniseras)}other{# lösenord (för <ph name="DOMAIN_LIST"/>, synkroniseras)}}</translation>
@@ -1257,7 +1255,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Du kan komma att debiteras.</translation>
 <translation id="6386120369904791316">{COUNT,plural, =1{1 annat förslag}other{# andra förslag}}</translation>
-<translation id="2374115610089464099">Spara kortet och faktureringsadressen i Brave-kontot och på enheten så går det snabbare att betala nästa gång.</translation>
 <translation id="6389470377220713856">Namn på kort</translation>
 <translation id="6390200185239044127">Halv Z-falsning</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
@@ -1266,7 +1263,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="6406765186087300643">C0 (kuvert)</translation>
 <translation id="9018981925326888629">Du angav just ditt lösenord på en bedräglig webbplats. Du rekommenderas i Brave att ändra lösenordet nu.</translation>
 <translation id="6410264514553301377">Ange utgångsdatum och CVC-kod för <ph name="CREDIT_CARD"/></translation>
-<translation id="7435155322279654755">Du kan skydda Brave-kontot genom att byta lösenord.</translation>
 <translation id="6423385022588644828">Verifiera kreditkort snabbare genom att använda Touch ID från och med nu</translation>
 <translation id="6425092077175753609">Material</translation>
 <translation id="6427730057873428458">Fönsterfalsning</translation>
@@ -1321,7 +1317,6 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="6657585470893396449">Lösenord</translation>
 <translation id="6665553082534466207">Tre hål till höger</translation>
 <translation id="6670613747977017428">Tillbaka till säker webbplats.</translation>
-<translation id="4670564340385807132">Vill du ta bort formulärförslaget från Brave?</translation>
 <translation id="6685834062052613830">Logga ut och slutför konfigureringen</translation>
 <translation id="6687335167692595844">Teckenstorlek begärd</translation>
 <translation id="6689249931105087298">Relativ med svartpunktskomprimering</translation>
@@ -1393,6 +1388,7 @@ Annars blockeras detta av sekretessinställningarna. Om du tillåter detta kan i
 <translation id="7050187094878475250">Du försökte nå <ph name="DOMAIN"/>, men servern svarade med ett certifikat vars giltighetstid är för lång för att det ska vara trovärdigt.</translation>
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Det går inte att lägga till det här kortet just nu}other{Det går inte att lägga till de här korten just nu}}</translation>
 <translation id="7053983685419859001">Blockera</translation>
+<translation id="7058163556978339998"><ph name="BROWSER"/> har verifierat att <ph name="ISSUER"/> har utfärdat webbplatsens certifikat.</translation>
 <translation id="7062635574500127092">Blågrön</translation>
 <translation id="7064851114919012435">Kontaktuppgifter</translation>
 <translation id="70705239631109039">Anslutningen är inte helt säker</translation>
@@ -1456,6 +1452,7 @@ Mer information.
 <translation id="7313965965371928911">Varningar från <ph name="BEGIN_LINK"/>Säker webbsökning<ph name="END_LINK"/></translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Anslutningshjälp</translation>
+<translation id="7323804146520582233">Dölj avsnittet <ph name="SECTION"/></translation>
 <translation id="733354035281974745">Åsidosätt enhetens lokala konto</translation>
 <translation id="7333654844024768166">Du angav just ditt lösenord på en bedräglig webbplats. Vi rekommenderar att du besöker <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> och andra webbplatser där du använder lösenordet och ändrar det nu.</translation>
 <translation id="7334320624316649418">&amp;Gör om Ändra ordning</translation>
@@ -1502,7 +1499,6 @@ Mer information.
 <translation id="7485870689360869515">Ingen data hittades.</translation>
 <translation id="7495290002932347110">Ditt lösenord har läckt ut efter ett dataintrång på en webbplats eller i en app. Om du har återanvänt lösenordet på andra webbplatser rekommenderas du att återställa lösenordet på <ph name="ORIGIN"/> nu.</translation>
 <translation id="7498234416455752244">Fortsätt redigera</translation>
-<translation id="1012292338579042608">Du angav just ditt lösenord på en bedräglig webbplats. Brave rekommenderar att du kontrollerar dina sparade lösenord för <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> och andra webbplatser där du använder lösenordet nu.</translation>
 <translation id="7508255263130623398">Enhets-id för returnerad princip är tomt eller matchar inte nuvarande enhets-id</translation>
 <translation id="7508870219247277067">Avokadogrön</translation>
 <translation id="7511955381719512146">Wi-Fi-nätverket du använder kanske kräver att du besöker <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/>.</translation>
@@ -1523,7 +1519,6 @@ Mer information.
 <translation id="7554791636758816595">Ny flik</translation>
 <translation id="7564049878696755256">Du kan förlora åtkomsten till kontot på <ph name="ORG_NAME"/> eller bli utsatt för identitetsstöld. Du rekommenderas att ändra lösenordet nu.</translation>
 <translation id="7567204685887185387">Servern kunde inte bevisa att den är <ph name="DOMAIN"/> eftersom dess säkerhetscertifikat kan ha utfärdats utan behörighet. Detta kan orsakas av en felaktig konfigurering eller att någon spärrar anslutningen.</translation>
-<translation id="6386821459680628976">Vill du ta bort kreditkortet från Brave?</translation>
 <translation id="7569983096843329377">Svart</translation>
 <translation id="7575207903026901870">Knappen Ta bort förslag, tryck på retur om du vill ta bort förslaget</translation>
 <translation id="405970181812690156">Betala snabbt på webbplatser och i appar på olika enheter med kort som du har sparat hos Brave.</translation>
@@ -1580,7 +1575,6 @@ Mer information.
 <translation id="7763386264682878361">Textanalysator för manifest för betalning</translation>
 <translation id="7764225426217299476">Lägg till adress</translation>
 <translation id="7766518757692125295">Skirt</translation>
-<translation id="7767271804335921384">Appen har blockerats av administratören</translation>
 <translation id="7770259615151589601">Designated-Long</translation>
 <translation id="7773005668374414287">Samma ordning – framsidan uppåt</translation>
 <translation id="777702478322588152">Prefektur</translation>
@@ -1609,6 +1603,7 @@ Mer information.
 <translation id="7887885240995164102">Öppna bild-i-bild-läge</translation>
 <translation id="7888575728750733395">Renderingsmetod för utskrifter</translation>
 <translation id="7904208859782148177">C3 (kuvert)</translation>
+<translation id="7923775243649974918">Röra på kameran</translation>
 <translation id="7932579305932748336">Beläggning</translation>
 <translation id="79338296614623784">Ange ett giltigt telefonnummer</translation>
 <translation id="7934052535022478634">Betalningen är slutförd</translation>
@@ -1648,6 +1643,7 @@ Mer information.
 <translation id="8074253406171541171">10x13 (kuvert)</translation>
 <translation id="8078141288243656252">Det går inte att annotera när dokumentet har roterats</translation>
 <translation id="8079031581361219619">Vill du läsa in webbplatsen igen?</translation>
+<translation id="939305735877869636">Brave</translation>
 <translation id="8086971161893892807">Utkast</translation>
 <translation id="8088680233425245692">Det gick inte att visa artikeln.</translation>
 <translation id="808894953321890993">Ändra lösenord</translation>
@@ -1661,7 +1657,6 @@ Mer information.
 <translation id="8105368624971345109">Inaktivera</translation>
 <translation id="8118489163946903409">Betalningsmetod</translation>
 <translation id="8127301229239896662"><ph name="SOFTWARE_NAME"/> har inte installerats korrekt på datorn eller nätverket. Be IT-administratören om hjälp med problemet.</translation>
-<translation id="3272614036080146686">Du angav just ditt lösenord på en bedräglig webbplats. Brave rekommenderar att du besöker <ph name="WEBSITE_1"/> och andra sidor där du använder lösenordet och ändrar det nu.</translation>
 <translation id="8131740175452115882">Bekräfta</translation>
 <translation id="8149426793427495338">Datorn gick i viloläge.</translation>
 <translation id="8150722005171944719">Det går inte att läsa filen på <ph name="URL"/>. Den kan ha tagits bort eller flyttats, eller så krävs behörighet för att få åtkomst till den.</translation>
@@ -1740,7 +1735,6 @@ Mer information:
 <translation id="8474910779563686872">Visa information om utvecklare</translation>
 <translation id="8479754468255770962">Häfta nere till vänster</translation>
 <translation id="503686638841780887">Logga in i Brave om du vill använda kort i Brave-kontot</translation>
-<translation id="565908431635579039">Du angav just ditt lösenord på en bedräglig webbplats. Brave rekommenderar att du kontrollerar dina sparade lösenord för <ph name="WEBSITE_1"/> och andra webbplatser där du använder lösenordet nu.</translation>
 <translation id="8488350697529856933">Gäller för</translation>
 <translation id="8490137692873530638">Utmatningsfack 10</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/> tog för lång tid på sig att svara.</translation>
@@ -1765,6 +1759,7 @@ Mer information:
 <translation id="8606726445206553943">Använda MIDI-enheter</translation>
 <translation id="861775596732816396">Storlek 4</translation>
 <translation id="8622948367223941507">Legal-Extra</translation>
+<translation id="8623885649813806493">Inga matchande lösenord. Visa alla sparade lösenord.</translation>
 <translation id="8625384913736129811">Spara kortet på enheten</translation>
 <translation id="8663226718884576429">Beställningsöversikt, <ph name="TOTAL_LABEL"/>, mer information</translation>
 <translation id="867224526087042813">Signatur</translation>

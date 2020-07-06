@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="da">
+<translation id="658539216370629794">Åbn link i inkognitovindue</translation>
+<translation id="1432267168815937878">Åbn link i inko&amp;gnitovindue</translation>
+<translation id="6516243500644829484">Nyt &amp;inkognito-vindue</translation>
+<translation id="7973394300052703468">Nyt &amp;inkognitovindue</translation>
+<translation id="6395403722585816044">Downloadet i inkognitotilstand</translation>
+<translation id="203837651858678035">Vil du afslutte inkognitotilstand alligevel?</translation>
+<translation id="7376221878517288144">Vil du afslutte inkognitotilstand alligevel?</translation>
+<translation id="871606814707918245">Folk blokerer som regel notifikationer fra dette website</translation>
+<translation id="5053701565089446556">Inkognitoudvidelse: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Inkognitoprogram: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Inkognitofane: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Underramme for inkognitotilstand: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Inkognitoportal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Webshop</translation>
+<translation id="8261378640211443080">Denne udvidelse er ikke anført i <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> og er muligvis blevet tilføjet, uden at du vidste det.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="4369414322596874629">Du kan bruge nettet privat ved hjælp af et inkognitovindue</translation>
+<translation id="3772947852642271642">Brug internettet uden at gemme din browserhistorik ved hjælp af et inkognitovindue</translation>
+<translation id="3871738366246972820">Bruger du en delt computer? Prøv at åbne et inkognitovindue.</translation>
+<translation id="5808622652939943719">Hvis du vil bruge nettet privat, skal du klikke på prikmenuen for at åbne et inkognitovindue</translation>
+<translation id="9079153198295609735">Send automatisk brugsstatistikker og nedbrudsrapporter til Brave</translation>
+<translation id="8839398440242019256">Den er ikke fra Brave Webshop.</translation>
+<translation id="6945695820322143954">Denne udvidelse krænker politikken for Brave Webshop.</translation>
+<translation id="1676595396635191120">Nyt inkognitovindue</translation>
+<translation id="5094764494104066239">Vis altid bogmærkelinjen</translation>
+<translation id="4471385409549756595">Nyt inkognitovindue</translation>
+<translation id="4540437243849625078">Dette website skal til at dele oplysninger med en app uden for inkognitotilstand.</translation>
+<translation id="1227836882233136433">Afslut inkognitotilstand?</translation>
+<translation id="7618452966706304788">Vil du bruge Touch ID til <ph name="APP_NAME"/> i inkognitotilstand?</translation>
+<translation id="3098826269712097986">Logindata gemmes i Brave, efter du har afsluttet inkognitotilstand. Dermed kan du bruge Touch ID til dette website igen på et senere tidspunkt.</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="2579188629646253712">Afslut inkognito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Åbn alle i &amp;inkognitovindue}=1{Åbn i &amp;inkognitovindue}one{Åbn (#) i &amp;inkognitovindue}other{Åbn alle (#) i &amp;inkognitovindue}}</translation>
 <translation id="2431625704210501303">Åbn i &amp;inkognitovindue</translation>
 <translation id="4620367155626060530">&amp;Vis bogmærkelinjen</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="4854477725773269949">Tillad i inkognito</translation>
 <translation id="6436164536244065364">Se i Brave Webshop</translation>
-<translation id="8808478386290700967">Brave Webshop</translation>
 <translation id="38046578254905003">Find udvidelser og temaer i <ph name="BEGIN_LINK"/>Brave Webshop<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Ny inkognitofane</translation>
 <translation id="6610147964972079463">Luk inkognitofaner</translation>
-<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4933782374919065856">Har du spørgsmål? Kontakt din profiladministrator.</translation>
 </translationbundle>

@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bn">
+<translation id="658539216370629794">লিঙ্কটি ছদ্মবেশী উইন্ডোতে খুলুন</translation>
+<translation id="1432267168815937878">লিঙ্কটি ছদ্মবেশী উইন্ডোতে খুলুন</translation>
+<translation id="6516243500644829484">নতুন &amp;ছদ্মবেশ উইন্ডো</translation>
+<translation id="7973394300052703468">নতুন &amp;ছদ্মবেশী উইন্ডো</translation>
+<translation id="6395403722585816044">ছদ্মবেশী ভাবে ডাউনলোড হয়েছে</translation>
+<translation id="203837651858678035">ছদ্মবেশী মোড থেকে বেরিয়ে আসতে চান?</translation>
+<translation id="7376221878517288144">যেকোনও প্রকারে ছদ্মবেশী মোড থেকে বেরিয়ে আসতে চান?</translation>
+<translation id="871606814707918245">অধিকাংশ ব্যক্তি এই সাইটের বিজ্ঞপ্তি ব্লক করে দেন</translation>
+<translation id="5053701565089446556">ছদ্মবেশী এক্সটেনশন: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ছদ্মবেশী অ্যাপ্লিকেশান: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">ছদ্মবেশী ট্যাব: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ছদ্মবেশী সাবফ্রেম: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ছদ্মবেশী পোর্টাল: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave ওয়েব স্টোর</translation>
+<translation id="8261378640211443080">এই এক্সটেনশনটি <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>-এ তালিকাভুক্ত নেই এবং হয়ত আপনাকে না জানিয়ে যোগ করা হয়েছে৷</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/>(ছদ্মবেশী)</translation>
+<translation id="4369414322596874629">আপনি ছদ্মবেশী উইন্ডো ব্যবহার করে গোপনে ব্রাউজ করতে পারেন</translation>
+<translation id="3772947852642271642">ব্রাউজিং-এর ইতিহাস সেভ না করে ওয়েব ব্রাউজ করার জন্য ছদ্মবেশী উইন্ডো ব্যবহার করুন</translation>
+<translation id="3871738366246972820">শেয়ার করা কম্পিউটার ব্যবহার করছেন? তাহলে ছদ্মবেশী উইন্ডো ব্যবহার করুন।</translation>
+<translation id="5808622652939943719">গোপনে ব্রাউজ করার জন্য ছদ্মবেশী উইন্ডো খুলতে ডট আইকন মেনুতে ক্লিক করুন</translation>
+<translation id="9079153198295609735">ব্যবহারের পরিসংখ্যান এবং ক্র্যাশ প্রতিবেদনগুলি স্বয়ংক্রিয়ভাবে Brave-এ পাঠান</translation>
+<translation id="8839398440242019256">Brave ওয়েব স্টোর থেকে নয়।</translation>
+<translation id="6945695820322143954">এই এক্সটেনশনটি 'Brave ওয়েব স্টোরে'র নীতি লঙ্ঘন করে৷</translation>
+<translation id="1676595396635191120">নতুন ছদ্মবেশী উইন্ডো</translation>
+<translation id="5094764494104066239">সবসময় বুকমার্কস বার দেখান</translation>
+<translation id="4471385409549756595">নতুন ছদ্মবেশী উইন্ডো</translation>
+<translation id="4540437243849625078">এই সাইটটি ছদ্মবেশী মোডের বাইরের একটি অ্যাপের সাথে তথ্য শেয়ার করতে চলেছে।</translation>
+<translation id="1227836882233136433">ছদ্মবেশী মোড ছেড়ে বেরোবেন?</translation>
+<translation id="7618452966706304788">আপনি কি ছদ্মবেশী মোডে <ph name="APP_NAME"/> অ্যাপের সাথে টাচ আইডি ব্যবহার করতে চান?</translation>
+<translation id="3098826269712097986">আপনি ছদ্মবেশী মোড থেকে বেরিয়ে আসার পরে সাইন-ইন ডেটা Brave-এ স্টোর হবে। এটি আপনাকে পরে আবার এই ওয়েবসাইটে টাচ আইডি ব্যবহার করতে দেবে।</translation>
+<translation id="5186185447130319458">ছদ্মবেশী</translation>
+<translation id="2579188629646253712">ছদ্মবেশী মোড থেকে বেরিয়ে আসুন</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{সবগুলি &amp;ছদ্মবেশী উইন্ডোতে খুলুন}=1{&amp;ছদ্মবেশী উইন্ডোতে খুলুন}one{সবগুলিকে (#টি) &amp;ছদ্মবেশী উইন্ডোতে খুলুন}other{সবগুলিকে (#টি) &amp;ছদ্মবেশী উইন্ডোতে খুলুন}}</translation>
 <translation id="2431625704210501303">ছদ্মবেশী উইন্ডোতে খুলু&amp;ন</translation>
 <translation id="4620367155626060530">ও বুকমার্ক বার দেখান</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(ছদ্মবেশী)</translation>
 <translation id="4854477725773269949">ছদ্মবেশে মঞ্জুর করুন</translation>
 <translation id="6436164536244065364">Brave ওয়েব স্টোরে দেখুন</translation>
-<translation id="8808478386290700967">Brave ওয়েব স্টোর</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave ওয়েব স্টোর<ph name="END_LINK"/>-এ এক্সটেনশন এবং থিম খুঁজুন</translation>
 <translation id="6336451774241870485">নতুন ছদ্মবেশী ট্যাব</translation>
 <translation id="6610147964972079463">ছদ্মবেশী ট্যাবগুলি বন্ধ করুন</translation>
-<translation id="5186185447130319458">ছদ্মবেশী</translation>
 <translation id="4933782374919065856">প্রশ্ন? আপনার প্রোফাইল যে তত্ত্বাবধান করে তার সাথে যোগাযোগ করুন।</translation>
 </translationbundle>

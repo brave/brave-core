@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="uz">
+<translation id="658539216370629794">Havolani &amp;inkognito rejimi oynasida ochish</translation>
+<translation id="1432267168815937878">Havolani &amp;inkognito rejimida ochish</translation>
+<translation id="6516243500644829484">Yangi &amp;inkognito oynasi</translation>
+<translation id="7973394300052703468">Yangi &amp;inkognito oynasi</translation>
+<translation id="6395403722585816044">Inkognito rejimida yuklab olindi</translation>
+<translation id="203837651858678035">Inkognito rejimidan baribir chiqilsinmi?</translation>
+<translation id="7376221878517288144">Inkognito rejimidan baribir chiqilsinmi?</translation>
+<translation id="871606814707918245">Aksariyat foydalanuvchilar bu saytdagi bildirishnomalarni bloklaydi</translation>
+<translation id="5053701565089446556">Inkognito rejimidagi kengaytma: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Inkognito rejimidagi Ilova: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Inkognito tab: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Inkognito rejimidagi quyi freym: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Inkognito rejimidagi portal: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave internet-do‘koni</translation>
+<translation id="8261378640211443080"><ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>‘da bu kengaytma haqida ma’lumotlar yo‘q, kengaytma ruxsatingizsiz o‘rnatilgan bo‘lishi mumkin.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="4369414322596874629">Inkognito oynada internetni yashirin kezishingiz mumkin</translation>
+<translation id="3772947852642271642">Inkognito oynada internetni brauzer tarixi qaydlarisiz kezing</translation>
+<translation id="3871738366246972820">Birovning kompyuteridamisiz? Inkognito oynadan foydalanib ko‘ring.</translation>
+<translation id="5808622652939943719">Yashirin kezish uchun menyudagi nuqtalar ikonkasini bosib inkognito oyna oching</translation>
+<translation id="9079153198295609735">Foydalanish statistikasi va ishdan chiqishlar hisobotini avtomatik ravishda Brave‘ga jo‘natish</translation>
+<translation id="8839398440242019256">Brave internet-do‘konidan emas.</translation>
+<translation id="6945695820322143954">Bu kengaytma Brave internet-do'koni siyosatini buzmoqda.</translation>
+<translation id="1676595396635191120">Yangi inkognito oyna</translation>
+<translation id="5094764494104066239">Xatcho‘plar panelini har doim ko‘rsatish</translation>
+<translation id="4471385409549756595">Yangi inkognito oynasi</translation>
+<translation id="4540437243849625078">Bu sayt inkognito oynasidan tashqaridagi ilova bilan axborot ulashmoqchi.</translation>
+<translation id="1227836882233136433">Inkognito rejimi tark etilsinmi?</translation>
+<translation id="7618452966706304788">Inkognito rejimida <ph name="APP_NAME"/> saytiga Touch ID orqali kirmoqchimisiz?</translation>
+<translation id="3098826269712097986">Brave barmoq izlaringizni Inkognito rejimidan chiqilgandan keyin saqlaydi. Bu bilan keyingi safar ushbu saytga Touch ID orqali kirish mumkin.</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="2579188629646253712">Inkognito rejimidan chiqish</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Barchasini &amp;inkognito oynasida ochish}=1{&amp;Inkognito oynasida ochish}other{Barchasini (#) &amp;inkognito oynasida ochish}}</translation>
 <translation id="2431625704210501303">&amp;Inkognito rejimida ochish</translation>
 <translation id="4620367155626060530">&amp;Xatcho‘plar panelini ko‘rsatish</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(inkognito)</translation>
 <translation id="4854477725773269949">Inkognito rejimidan foydalanishga ruxsat berish</translation>
 <translation id="6436164536244065364">Brave internet-do‘konida ochish</translation>
-<translation id="8808478386290700967">Brave internet-do‘koni</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave internet-do‘konidan<ph name="END_LINK"/> kengaytma va mavzularni topish</translation>
 <translation id="6336451774241870485">Yangi inkognito varaq</translation>
 <translation id="6610147964972079463">Inkognito oynalarini yopish</translation>
-<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4933782374919065856">Savollar bormi? Profilingizni nazorat qiladigan shaxsga murojaat qiling.</translation>
 </translationbundle>

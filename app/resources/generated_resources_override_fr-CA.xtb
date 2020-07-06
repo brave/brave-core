@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr-CA">
+<translation id="658539216370629794">Ouvrir le lien dans une fenêtre de navi&amp;gation privée</translation>
+<translation id="1432267168815937878">Ouvrir le lien dans une fenêtre de navi&amp;gation privée</translation>
+<translation id="6516243500644829484">Nouvelle fenêtre de navigation pr&amp;ivée</translation>
+<translation id="7973394300052703468">Nouvelle fenêtre de navigation pr&amp;ivée</translation>
+<translation id="6395403722585816044">Téléchargé en mode Navigation privée</translation>
+<translation id="203837651858678035">Quitter le mode de navigation privée malgré tout?</translation>
+<translation id="7376221878517288144">Quitter le mode de navigation privée malgré tout?</translation>
+<translation id="871606814707918245">La plupart des gens bloquent les notifications provenant de ce site</translation>
+<translation id="5053701565089446556">Extension en mode de navigation privée : <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Application en mode de navigation privée : <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Onglet de navigation privée : <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Sous-cadre de navigation privée : <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portail de navigation privée : <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Boutique en ligne Brave Web Store</translation>
+<translation id="8261378640211443080">Cette extension ne figure pas dans la boutique <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> et peut avoir été ajoutée à votre insu.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Navigation privée)</translation>
+<translation id="4369414322596874629">Vous pouvez naviguer de manière anonyme à l'aide d'une fenêtre de navigation privée</translation>
+<translation id="3772947852642271642">Utilisez le Web sans enregistrer votre historique de navigation avec une fenêtre de navigation privée</translation>
+<translation id="3871738366246972820">Vous utilisez un ordinateur partagé? Essayez d'ouvrir une fenêtre de navigation privée.</translation>
+<translation id="5808622652939943719">Pour naviguer de manière anonyme, cliquez sur le menu de l'icône en forme de points pour ouvrir une fenêtre de navigation privée</translation>
+<translation id="9079153198295609735">Envoyer automatiquement les statistiques d'utilisation et les rapports d'erreur à Brave</translation>
+<translation id="8839398440242019256">Pas de la boutique Brave Web Store</translation>
+<translation id="6945695820322143954">Cette extension ne respecte pas les règles de la boutique Brave Web Store.</translation>
+<translation id="1676595396635191120">Nouvelle fenêtre de navigation privée</translation>
+<translation id="5094764494104066239">Toujours afficher la barre des favoris</translation>
+<translation id="4471385409549756595">Nouvelle fenêtre de navigation privée</translation>
+<translation id="4540437243849625078">Ce site est sur le point de partager des renseignements avec une application à l'extérieur du mode de navigation privée.</translation>
+<translation id="1227836882233136433">Désactiver mode de nav. privée?</translation>
+<translation id="7618452966706304788">Voulez-vous utiliser Touch ID avec l'application <ph name="APP_NAME"/> en mode de navigation privée?</translation>
+<translation id="3098826269712097986">Les données de connexion seront stockées dans Brave lorsque vous quitterez le mode de navigation privée. Cela vous permettra d'utiliser Touch ID avec ce site Web à nouveau plus tard.</translation>
+<translation id="5186185447130319458">Navigation privée</translation>
+<translation id="2579188629646253712">Quitter les fenêtres de navigation privée</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Tout ouvrir dans une fenêtre de &amp;navigation privée}=1{Ouvrir dans une fenêtre de &amp;navigation privée}one{Tout ouvrir (#) dans une fenêtre de &amp;navigation privée}other{Tout ouvrir (#) dans une fenêtre de &amp;navigation privée}}</translation>
 <translation id="2431625704210501303">Ouvrir dans une fenêtre de &amp;navigation privée</translation>
 <translation id="4620367155626060530">&amp;Afficher la barre des favoris</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Mode privé)</translation>
 <translation id="4854477725773269949">Autoriser en mode de navigation privée</translation>
 <translation id="6436164536244065364">Afficher dans la boutique en ligne Brave Web Store</translation>
-<translation id="8808478386290700967">Boutique en ligne Brave Web Store</translation>
 <translation id="38046578254905003">Trouvez des extensions et des thèmes dans la boutique en ligne <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
 <translation id="6610147964972079463">Fermer les onglets de navigation privée</translation>
-<translation id="5186185447130319458">Navigation privée</translation>
 <translation id="4933782374919065856">Des questions? Communiquez avec la personne qui supervise votre profil.</translation>
 </translationbundle>

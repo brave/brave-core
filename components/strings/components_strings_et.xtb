@@ -6,10 +6,10 @@
 <translation id="1015730422737071372">Esitage lisateavet</translation>
 <translation id="1019413721762100891">Väljas</translation>
 <translation id="1021110881106174305">Aktsepteeritud kaardid</translation>
-<translation id="3898257577441589237">Selle probleemi põhjuseks on teie või kellegi teise installitud sertifikaat. Seda sertifikaati kasutatakse võrkude jälgimiseks ja ühenduste katkestamiseks ning Brave ei usalda seda. Kuigi mõnel puhul on jälgimine seaduslik (nt kooli või ettevõtte võrgus), soovib Brave tagada, et oleksite sellest teadlik ka juhul, kui te ei saa seda peatada. Jälgimine võib toimuda veebiühendusega brauseris või rakenduses.</translation>
 <translation id="1030706264415084469"><ph name="URL"/> soovib suure koguse andmeid alaliselt teie seadmesse salvestada</translation>
 <translation id="1032854598605920125">Pööra päripäeva</translation>
 <translation id="1036348656032585052">Lülita välja</translation>
+<translation id="1038106730571050514">Kuva soovitused</translation>
 <translation id="1038842779957582377">tundmatu nimi</translation>
 <translation id="1041998700806130099">Töölehe sõnum</translation>
 <translation id="1050038467049342496">Sulgege muud rakendused</translation>
@@ -29,7 +29,6 @@
 <translation id="1920681928837417101">Hallake paroole Brave'i seadetes</translation>
 <translation id="1101672080107056897">Veatoiming</translation>
 <translation id="1103523840287552314">Tõlgi alati: <ph name="LANGUAGE"/></translation>
-<translation id="5047769237368272183">Kui see on märgitud, salvestab Brave teie kaardi koopia sellesse seadmesse, et vormi kiiremini täita.</translation>
 <translation id="1110994991967754504">Valige luba üksuse <ph name="PERMISSION_NAME"/> jaoks</translation>
 <translation id="1113869188872983271">&amp;Võta korrastamine tagasi</translation>
 <translation id="1125573121925420732">Sel ajal kui veebisaidid värskendavad turvafunktsioone, võite sageli hoiatusi näha. See olukord peaks varsti lahenema.</translation>
@@ -160,6 +159,7 @@
 <translation id="161042844686301425">Tsüaan</translation>
 <translation id="1620510694547887537">Kaamera</translation>
 <translation id="1623104350909869708">Keela sellel lehel lisadialoogide loomine</translation>
+<translation id="1623253368136559158">Kaamera liikumine</translation>
 <translation id="16338877384480380">Architecture-B</translation>
 <translation id="1638780421120290329">Kaarti ei saa salvestada</translation>
 <translation id="1639239467298939599">Laadimine</translation>
@@ -174,7 +174,6 @@
 <translation id="1662550410081243962">Salvesta ja sisesta makseviisid</translation>
 <translation id="1838576226863399477">Kaardid ja aadressid pärinevad Brave'ist. Neid saate hallata menüüs <ph name="BEGIN_LINK"/>Seaded<ph name="END_LINK"/>.</translation>
 <translation id="1671391448414634642">Lehed keeles <ph name="SOURCE_LANGUAGE"/> tõlgitakse nüüd keelde <ph name="TARGET_LANGUAGE"/>.</translation>
-<translation id="6373940988468425649">Sait <ph name="SITE"/> kasutab teie teabe kaitsmiseks tavaliselt krüpteerimist. Kui Brave püüdis seekord saidiga <ph name="SITE"/> ühendust luua, tagastas veebisait ebatavalised ja valed mandaadid. See võib juhtuda siis, kui ründaja proovib teeselda, et on sait <ph name="SITE"/>, või WiFi sisselogimisekraan on ühenduse katkestanud. Teie teave on endiselt kaitstud, sest Brave peatas ühenduse enne andmevahetust.</translation>
 <translation id="1682696192498422849">Lühem serv enne</translation>
 <translation id="168841957122794586">Serveri sertifikaat sisaldab nõrka krüptograafilist võtit.</translation>
 <translation id="1697532407822776718">Kõik on valmis!</translation>
@@ -195,7 +194,6 @@
 <translation id="1736420071277903564">Arvuti</translation>
 <translation id="1740951997222943430">Sisestage kehtiv aegumiskuu</translation>
 <translation id="1741613555002899862">Peab olema määratud ja kehtiv string, kui reegli DnsOverHttpsMode väärtus on <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
-<translation id="8425351843056705489">Kui soovite järgmisel korral kiiremini maksta, salvestage kaart, nimi ja arveldusaadress oma Brave'i kontole ja sellesse seadmesse.</translation>
 <translation id="1743570585616704562">Ei tuvastatud</translation>
 <translation id="1745880797583122200">Teie brauserit hallatakse</translation>
 <translation id="1746113442205726301">Pildi nihe Y-teljel</translation>
@@ -218,6 +216,7 @@
 <translation id="1838374766361614909">Otsingu kustutamine</translation>
 <translation id="1839551713262164453">Reegli väärtuste valideerimine nurjus ja selle käigus ilmnesid vead</translation>
 <translation id="1842969606798536927">Maksmine</translation>
+<translation id="359494141189433808">Kasutage tugeva parooli soovitamiseks oma Brave'i kontot</translation>
 <translation id="1871208020102129563">Puhverserver on seatud kasutama fikseeritud puhverservereid, mitte pac-skripti URL-i.</translation>
 <translation id="1871284979644508959">Kohustuslik väli</translation>
 <translation id="85321348617848915">Brave'i vormid</translation>
@@ -234,7 +233,6 @@
 <translation id="1919367280705858090">Konkreetse veateate puhul abi hankimine</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Ühtegi}=1{1 sait}other{# saiti}}</translation>
 <translation id="194030505837763158">Avage <ph name="LINK"/></translation>
-<translation id="8515152881111950319">Võite kaotada juurdepääsu oma organisatsiooni kontole või teie identiteet võidakse varastada. Brave soovitab teil kohe oma parooli muuta.</translation>
 <translation id="1947454675006758438">Kirjaklamber paremal ülal</translation>
 <translation id="1962204205936693436">Domeeni <ph name="DOMAIN"/> järjehoidjad</translation>
 <translation id="1973335181906896915">Viga jadaks teisendamisel</translation>
@@ -268,6 +266,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="2094505752054353250">Domeeni vastuolu</translation>
 <translation id="2096368010154057602">Osakond</translation>
 <translation id="2099652385553570808">Kolm kirjaklambrit vasakul</translation>
+<translation id="2101225219012730419">Versioon:</translation>
 <translation id="2102134110707549001">Soovita tugevat parooli …</translation>
 <translation id="2107021941795971877">Prinditeenuste toed</translation>
 <translation id="2108755909498034140">Taaskäivitage oma arvuti</translation>
@@ -346,7 +345,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="2410754574180102685">Government-Legal</translation>
 <translation id="2413528052993050574">Server ei suutnud tõestada, et see on domeen <ph name="DOMAIN"/>, selle turvasertifikaat võib olla tühistatud. Selle põhjuseks võib olla vale seadistus või ründaja, kes on sekkunud teie ühendusse.</translation>
 <translation id="2438874542388153331">Neli auku paremal</translation>
-<translation id="9018981925326888629">Sisestasite äsja oma parooli kahtlasele saidile. Brave soovitab teil kohe oma parooli muuta.</translation>
 <translation id="2463193859425327265">Muuda avalehte</translation>
 <translation id="2463739503403862330">Täida</translation>
 <translation id="2465402087343596252">Architecture-E</translation>
@@ -400,11 +398,13 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="2666092431469916601">Üles</translation>
 <translation id="2666117266261740852">Sulgege muud vahelehed või rakendused</translation>
 <translation id="2674170444375937751">Olete kindel, et soovite need leheküljed oma ajaloost kustutada?</translation>
+<translation id="2674804415323431591">Peida soovitused</translation>
 <translation id="2676271551327853224">Roc-8K</translation>
 <translation id="2677748264148917807">Lahku</translation>
 <translation id="2684561033061424857">11x12</translation>
 <translation id="2687555958734450033">Parim sobivus</translation>
 <translation id="2691924980723297736">Ohutusalane hoiatus</translation>
+<translation id="7246459936780600154">Kasutage oma Brave'i kontole salvestatud paroole</translation>
 <translation id="2699302886720511147">Aktsepteeritavad kaardid</translation>
 <translation id="2701514975700770343">Esikülg allapoole</translation>
 <translation id="2702801445560668637">Lugemisloend</translation>
@@ -442,6 +442,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="2856444702002559011">Ründajad võivad üritada varastada teie teavet (nt paroole, sõnumeid või krediitkaarditeavet) saidilt <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>. <ph name="BEGIN_LEARN_MORE_LINK"/>Lisateave<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Plakatikujuliselt volditud</translation>
 <translation id="2878424575911748999">A1</translation>
+<translation id="2880660355386638022">Akende paigutus</translation>
 <translation id="2881276955470682203">Kas salvestada kaart?</translation>
 <translation id="2882949212241984732">Väravakujuliselt kaks korda volditud</translation>
 <translation id="2903493209154104877">Aadressid</translation>
@@ -452,6 +453,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="2915068235268646559">Kokkujooksmine – <ph name="CRASH_TIME"/></translation>
 <translation id="2916038427272391327">Sulgege muud programmid</translation>
 <translation id="2922350208395188000">Serveri sertifikaati ei saa kontrollida.</translation>
+<translation id="6005097315762840167">Logige sisse, et kasutada oma Brave'i kontole salvestatud paroole</translation>
 <translation id="2925673989565098301">Kohaletoimetamisviis</translation>
 <translation id="2928905813689894207">Arveldusaadress</translation>
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> ja veel <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> ja veel <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}}</translation>
@@ -463,11 +465,9 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="2951588413176968965">Minu postkast</translation>
 <translation id="295526156371527179">Hoiatus! Seda reeglit ei liidetud reeglis määratud sõnastikuna, kuna see ei ole sõnastik.</translation>
 <translation id="2955913368246107853">Sule leiuriba</translation>
-<translation id="6326805297893828864">Turvalise ühenduse loomiseks peab kell olema õigesti seadistatud, kuna sertifikaadid, mida veebisaidid kasutavad enda tuvastamiseks, kehtivad ainult teatud perioodi jooksul. Kuna teie seadme kell on vale, ei saa Brave neid sertifikaate kinnitada.</translation>
 <translation id="2972581237482394796">&amp;Tee uuesti</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, praegu valitud. <ph name="ROW_CONTENT"/></translation>
 <translation id="2982481275546140226">Kustuta andmed</translation>
-<translation id="3676215163710610678">Kui see on lubatud, salvestab Brave teie kaardi koopia vormide kiiremaks täitmiseks sellesse seadmesse.</translation>
 <translation id="2985398929374701810">Sisestage kehtiv aadress</translation>
 <translation id="2986368408720340940">See kättesaamisviis pole saadaval. Proovige mõnda teist kättesaamisviisi.</translation>
 <translation id="2987034854559945715">Sobivaid funktsioone ei leitud</translation>
@@ -565,7 +565,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="3423742043356668186">Süsteemi määratud</translation>
 <translation id="3427092606871434483">Luba (vaikimisi)</translation>
 <translation id="3427342743765426898">&amp;Muuda uuesti</translation>
-<translation id="3006790309890592320">Brave soovitab teil parooli lähtestada, kui kasutasite seda ka muudel saitidel.</translation>
 <translation id="3428151540071562330">Vähemalt üks reegli DnsOverHttpsTemplates serveri malli URI on kehtetu ja seda ei kasutata.</translation>
 <translation id="3431636764301398940">Salvesta kaart sellesse seadmesse</translation>
 <translation id="3432601291244612633">Sule leht</translation>
@@ -581,7 +580,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="3467763166455606212">Kaardiomaniku nimi on kohustuslik</translation>
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, praegu avatud, vajutage avatud vahelehe aktiveerimiseks tabeldusklahvi ja seejärel sisestusklahvi</translation>
 <translation id="3479552764303398839">Mitte praegu</translation>
-<translation id="1096085967892725815">Võite kaotada juurdepääsu oma Brave'i kontole. Brave soovitab teil kohe oma parooli muuta. Teil palutakse sisse logida.</translation>
 <translation id="3487845404393360112">Salv 4</translation>
 <translation id="3495081129428749620">Lehelt otsimine
     <ph name="PAGE_TITLE"/></translation>
@@ -641,8 +639,8 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="3717027428350673159"><ph name="BEGIN_LINK"/>Kontrollige puhverserveri, tulemüüri ja DNS-i seadistust<ph name="END_LINK"/></translation>
 <translation id="372429172604983730">Selle vea võib põhjustada näiteks viirusetõrjetarkvara, tulemüür või veebi filtreerimise või puhverserveritarkvara.</translation>
 <translation id="373042150751172459">B4 (ümbrik)</translation>
+<translation id="3731873414101415120">Teie külastatavad veebisaidid ja ebaturvaliste lehtede sisu</translation>
 <translation id="3736520371357197498">Kui mõistate, kuidas teie turvalisust ohustatakse, siis võite <ph name="BEGIN_LINK"/>seda ebaturvalist saiti külastada<ph name="END_LINK"/> enne, kui ohtlikud programmid on eemaldatud.</translation>
-<translation id="8896585555528145662">Te ei saa saiti <ph name="SITE"/> praegu külastada, sest veebisait saatis tagasi arusaamatud mandaadid, mida Brave ei saa töödelda. Võrguvead ja -rünnakud on tavaliselt ajutised, nii et leht tõenäoliselt hiljem töötab.</translation>
 <translation id="7375171421124325498">Pärast kinnitamist jagatakse teie Brave'i kontol olevaid kaardi üksikasju selle saidiga.</translation>
 <translation id="3748148204939282805">Saidil <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> asuvad ründajad võivad teid meelitada ohtlikele tegevustele, nagu tarkvara installimine või isiklike andmete (nt paroolid, telefoninumbrid või krediitkaarditeave) avaldamine. <ph name="BEGIN_LEARN_MORE_LINK"/>Lisateave<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="375403751935624634">Tõlkimine ebaõnnestus serverivea tõttu.</translation>
@@ -781,11 +779,9 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6116812392674177288">Tuvastati, et tegemist ei ole ettevõtte hallatava arvutiga, seega saab reegel installida ainult Brave'i veebipoes hostitavaid laiendusi. Brave'i veebipoe värskenduse URL on „<ph name="CWS_UPDATE_URL"/>”.</translation>
 <translation id="4346197816712207223">Aktsepteeritavad krediitkaardid</translation>
 <translation id="4346833872170306413">Roc-16K</translation>
-<translation id="846000886289004690">Sisestasite äsja oma parooli kahtlasele saidile. Brave soovitab teil minna veebisaitidele <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> ja muudele saitidele, kus seda parooli kasutate, ning kohe oma parooli muuta.</translation>
 <translation id="4356973930735388585">Saidil olevad ründajad võivad proovida installida teie arvutisse ohtlikke programme, mis varastavad teie teavet või kustutavad selle (nt fotod, paroolid, sõnumid ja krediitkaardiandmed).</translation>
 <translation id="4358059973562876591">Teie määratud malle ei pruugita rakendada, kuna reeglis DnsOverHttpsMode on viga.</translation>
 <translation id="4358461427845829800">Halda makseviise …</translation>
-<translation id="5442778523450464826">Sisestasite äsja oma parooli petturlikule saidile. Brave saab teid aidata. Oma parooli muutmiseks ja Brave'i teavitamiseks sellest, et teie konto võib olla ohus, klõpsake valikul Konto kaitsmine.</translation>
 <translation id="4367563149485757821">Number-12 (ümbrik)</translation>
 <translation id="437058704415269440">Konto saldo</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -795,9 +791,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="4390472908992056574">Serv</translation>
 <translation id="4406896451731180161">otsingutulemused</translation>
 <translation id="4408413947728134509">Küpsisefailid: <ph name="NUM_COOKIES"/></translation>
-<translation id="8539546768943490744">Sisestasite äsja oma parooli kahtlasele saidile. Brave soovitab teil minna veebisaitidele <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> ja muudele saitidele, kus seda parooli kasutate, ning kohe oma parooli muuta.</translation>
 <translation id="4415426530740016218">Kättesaamisaadress</translation>
-<translation id="4906192414477726331">Server ei suutnud tõestada, et see on domeen <ph name="DOMAIN"/>, Brave ei usalda selle turvasertifikaati. Selle põhjuseks võib olla vale seadistus või ründaja, kes on sekkunud teie ühendusse.</translation>
 <translation id="443121186588148776">Jadaport</translation>
 <translation id="4432688616882109544">Host <ph name="HOST_NAME"/> ei aktsepteerinud teie sisselogimise sertifikaati või te ei esitanud seda.</translation>
 <translation id="4434045419905280838">Hüpikaknad ja ümbersuunamised</translation>
@@ -828,7 +822,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="457875822857220463">Kohaletoimetamine</translation>
 <translation id="4579056131138995126">Personal (ümbrik)</translation>
 <translation id="4582204425268416675">Kaardi eemaldamine</translation>
-<translation id="8385639954311581596">Kas eemaldada Brave'ist aadress?</translation>
 <translation id="4592951414987517459">Teie ühendus domeeniga <ph name="DOMAIN"/> on krüpteeritud tänapäevase šifreerimiskomplektiga.</translation>
 <translation id="4594403342090139922">&amp;Võta kustutamine tagasi</translation>
 <translation id="4597348597567598915">Suurus 8</translation>
@@ -845,7 +838,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="467662567472608290">Server ei suutnud tõestada, et see on domeen <ph name="DOMAIN"/>, selle turvasertifikaat sisaldab vigu. Selle põhjuseks võib olla vale seadistus või ründaja, kes on sekkunud teie ühendusse.</translation>
 <translation id="4677585247300749148"><ph name="URL"/> soovib vastata juurdepääsetavuse sündmustele</translation>
 <translation id="8197094463444457125">Brave Slides</translation>
-<translation id="3619365259205518877">Sisestasite äsja oma parooli kahtlasele saidile. Brave soovitab teil salvestatud paroole kontrollida saitide <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> ja muude saitide puhul, kus praegu seda parooli kasutate.</translation>
 <translation id="4690462567478992370">Lõpeta kehtetu sertifikaadi kasutamine</translation>
 <translation id="4691835149146451662">Architecture-A (ümbrik)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
@@ -855,9 +847,9 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>Windowsi võrgudiagnostika käitamine<ph name="END_LINK"/></translation>
 <translation id="4726672564094551039">Laadi reeglid uuesti</translation>
 <translation id="4728558894243024398">Platvorm</translation>
+<translation id="4731638775147756694">Administraator blokeeris selle rakenduse</translation>
 <translation id="4731967714531604179">Prc2 (ümbrik)</translation>
 <translation id="4733082559415072992"><ph name="URL"/> soovib kasutada teie seadme asukohta</translation>
-<translation id="3960299545138990065">Taaskäivitage Brave</translation>
 <translation id="4880298864945336181">Administraator lubas teie brauseris Brave Enterprise'i liidesed. Nendel liidestel on juurdepääs osadele teie andmetele.</translation>
 <translation id="473775607612524610">Värskenda</translation>
 <translation id="4738601419177586157">Otsingusoovitus: <ph name="TEXT"/></translation>
@@ -890,6 +882,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="4877083676943085827">{COUNT,plural, =0{Puudub}=1{<ph name="EXAMPLE_DOMAIN_1"/>}=2{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/>}other{<ph name="EXAMPLE_DOMAIN_1"/>, <ph name="EXAMPLE_DOMAIN_2"/> <ph name="AND_MORE"/>}}</translation>
 <translation id="4877422487531841831">Otsing <ph name="TEXT"/></translation>
 <translation id="4879491255372875719">Automaatne (vaikimisi)</translation>
+<translation id="4879725228911483934">Avada ja paigutada aknaid teie ekraanikuvadel</translation>
 <translation id="4880827082731008257">Otsi ajaloost</translation>
 <translation id="4881695831933465202">Ava</translation>
 <translation id="4892518386797173871">Tagumine</translation>
@@ -1055,6 +1048,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="5523118979700054094">Reegli nimi</translation>
 <translation id="55293785478302737">Servaõmblus</translation>
 <translation id="553484882784876924">Prc6 (ümbrik)</translation>
+<translation id="5536214594743852365">Kuva jaotis „<ph name="SECTION"/>”</translation>
 <translation id="5539243836947087108">Alus</translation>
 <translation id="5540224163453853">Taotletud artiklit ei õnnestunud leida.</translation>
 <translation id="5541086400771735334">Postkast 7</translation>
@@ -1198,7 +1192,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6116338172782435947">näha lõikelauale kopeeritud teksti ja kujutisi</translation>
 <translation id="6120179357481664955">Kas jätta teie UPI ID meelde?</translation>
 <translation id="5972135347314259717">Brave Enterprise'i liidesed</translation>
-<translation id="1504280350970284172">Kasutage tugeva parooli loomiseks oma Brave'i kontot</translation>
 <translation id="6146055958333702838">Kontrollige kaableid ning taaskäivitage kõik ruuterid, modemid ja muud
     kasutuses olevad võrguseadmed.</translation>
 <translation id="614940544461990577">Proovige järgmist.</translation>
@@ -1224,6 +1217,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6263376278284652872">Domeeni <ph name="DOMAIN"/> järjehoidjad</translation>
 <translation id="6264485186158353794">Tagasi turvalisusse</translation>
 <translation id="6266934640124581640">Helesinakasroheline</translation>
+<translation id="9136010393039243713">Brave Update</translation>
 <translation id="6276112860590028508">Siin kuvatakse teie lugemisloendis olevad lehed</translation>
 <translation id="4491702030396251550">Kui soovite järgmisel korral kiiremini maksta, salvestage kaart ja arveldusaadress oma Brave'i kontole.</translation>
 <translation id="293801390522973485">Brave <ph name="BEGIN_EMPHASIS"/>ei salvesta<ph name="END_EMPHASIS"/> järgmist teavet:
@@ -1244,7 +1238,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6328639280570009161">Proovige keelata võrguprognoos</translation>
 <translation id="6328784461820205019">„Teie ühendus ei ole privaatne” või „&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;” või „&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;” või „&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;” või „&lt;span class="error-code"&gt;ERR_CERT_SYMANTEC_LEGACY&lt;/span&gt;” või „SSL-i sertifikaadi viga”</translation>
 <translation id="6328786501058569169">See sait on petturlik</translation>
-<translation id="2679184024759659109">Kasutage oma Brave'i kontole salvestatud paroole</translation>
 <translation id="6337133576188860026">Vabastab alla <ph name="SIZE"/>. Mõne saidi laadimine võib järgmisel külastusel rohkem aega võtta.</translation>
 <translation id="6337534724793800597">Reeglite filtreerimine nime järgi</translation>
 <translation id="6353505687280762741">{COUNT,plural, =0{Puudub}=1{1 parool (loendile <ph name="DOMAIN_LIST"/>, sünkroonitud)}=2{2 parooli (loendile <ph name="DOMAIN_LIST"/>, sünkroonitud)}other{# parooli (loendile <ph name="DOMAIN_LIST"/>, sünkroonitud)}}</translation>
@@ -1256,7 +1249,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6380497234672085559">A0</translation>
 <translation id="6383221683286411806">Jätkamisega võivad kaasneda tasud.</translation>
 <translation id="6386120369904791316">{COUNT,plural, =1{veel 1 soovitus}other{veel # soovitust}}</translation>
-<translation id="2374115610089464099">Kui soovite järgmisel korral kiiremini maksta, salvestage kaart ja arveldusaadress oma Brave'i kontole ja sellesse seadmesse.</translation>
 <translation id="6389470377220713856">Nimi kaardil</translation>
 <translation id="6390200185239044127">Z-kujuliselt volditud poolleht</translation>
 <translation id="6390662030813198813">Engineering-E</translation>
@@ -1265,7 +1257,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6406765186087300643">C0 (ümbrik)</translation>
 <translation id="9018981925326888629">Sisestasite äsja oma parooli kahtlasele saidile. Brave soovitab teil kohe oma parooli muuta.</translation>
 <translation id="6410264514553301377">Sisestage krediitkaardi <ph name="CREDIT_CARD"/> aegumiskuupäev ja CVC</translation>
-<translation id="7435155322279654755">Brave aitab teil oma Brave'i kontot kaitsta ja parooli muuta.</translation>
 <translation id="6423385022588644828">Kinnitage oma kaardid kiiremini, kasutades edaspidi funktsiooni Touch ID</translation>
 <translation id="6425092077175753609">Materiaalne</translation>
 <translation id="6427730057873428458">Väravakujuliselt volditud</translation>
@@ -1320,7 +1311,6 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="6657585470893396449">Parool</translation>
 <translation id="6665553082534466207">Kolm auku paremal</translation>
 <translation id="6670613747977017428">Tagasi turvalisusse.</translation>
-<translation id="4670564340385807132">Kas eemaldada Braveist vormi soovitus?</translation>
 <translation id="6685834062052613830">Logige välja ja viige seadistus lõpule</translation>
 <translation id="6687335167692595844">Fondi taotletud suurus</translation>
 <translation id="6689249931105087298">Suhteline, musta punkti tihendamisega</translation>
@@ -1392,6 +1382,7 @@ Vastasel korral blokeeritakse see teie privaatsusseadetes. See võimaldab teie k
 <translation id="7050187094878475250">Üritasite jõuda domeenile <ph name="DOMAIN"/>, kuid server esitas sertifikaadi, mille kehtivusaeg on liiga pikk, et olla usaldusväärne.</translation>
 <translation id="705310974202322020">{NUM_CARDS,plural, =1{Seda kaarti ei saa praegu salvestada}other{Neid kaarte ei saa praegu salvestada}}</translation>
 <translation id="7053983685419859001">Blokeeri</translation>
+<translation id="7058163556978339998"><ph name="BROWSER"/> kinnitas, et selle veebisaidi sertifikaadi andis välja <ph name="ISSUER"/>.</translation>
 <translation id="7062635574500127092">Sinakasroheline</translation>
 <translation id="7064851114919012435">Kontaktteave</translation>
 <translation id="70705239631109039">Teie ühendus ei ole täielikult turvaline</translation>
@@ -1455,6 +1446,7 @@ Lisateave:
 <translation id="7313965965371928911"><ph name="BEGIN_LINK"/>Ohutu sirvimise<ph name="END_LINK"/> hoiatused</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Ühendamise abi</translation>
+<translation id="7323804146520582233">Peida jaotis „<ph name="SECTION"/>”</translation>
 <translation id="733354035281974745">Seadme kohaliku konto alistamine</translation>
 <translation id="8539546768943490744">Sisestasite äsja oma parooli kahtlasele saidile. Brave soovitab teil minna veebisaitidele <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> ja muudele saitidele, kus seda parooli kasutate, ning kohe oma parooli muuta.</translation>
 <translation id="7334320624316649418">&amp;Korrasta uuesti</translation>
@@ -1501,7 +1493,6 @@ Lisateave:
 <translation id="7485870689360869515">Andmeid ei leitud.</translation>
 <translation id="3692186536781145635">Mõnel saidil või rakenduses esines andmetega seotud rikkumine, mille käigus avalikustati teie parool. Brave soovitab teil salvestatud paroole kontrollida ja teenuse <ph name="ORIGIN"/> parooli kohe muuta.</translation>
 <translation id="7498234416455752244">Jätka muutmist</translation>
-<translation id="1012292338579042608">Sisestasite äsja oma parooli kahtlasele saidile. Brave soovitab teil salvestatud paroole kontrollida saitide <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> ja muude saitide puhul, kus praegu seda parooli kasutate.</translation>
 <translation id="7508255263130623398">Tagastatud reegli seadme-ID on tühi või ei kattu praeguse seadme-ID-ga</translation>
 <translation id="7508870219247277067">Avokaadoroheline</translation>
 <translation id="7511955381719512146">WiFi-võrk, mida kasutate, võib nõuda veebilehe <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> külastamist.</translation>
@@ -1520,9 +1511,7 @@ Lisateave:
 <translation id="5474381306981932386">Teie seadme kasutajanimi ja Brave'i kasutajanimi</translation>
 <translation id="7552846755917812628">Proovige järgmiseid nõuandeid.</translation>
 <translation id="7554791636758816595">Uus vaheleht</translation>
-<translation id="5304100303568917877">Võite kaotada juurdepääsu oma teenuse <ph name="ORG_NAME"/> kontole või teie identiteet võidakse varastada. Brave soovitab teil kohe oma parooli muuta.</translation>
 <translation id="7567204685887185387">Server ei suutnud tõestada, et see on domeen <ph name="DOMAIN"/>, selle turvasertifikaat võib olla väljastatud pettuse teel. Selle põhjuseks võib olla vale seadistus või ründaja, kes on sekkunud teie ühendusse.</translation>
-<translation id="6386821459680628976">Kas eemaldada Brave'ist krediitkaart?</translation>
 <translation id="7569983096843329377">Must</translation>
 <translation id="7575207903026901870">Soovituse eemaldamise nupp, vajutage selle soovituse eemaldamiseks sisestusklahvi</translation>
 <translation id="405970181812690156">Brave'i salvestatud kaartide abil saate eri seadmetes saitidel ja rakendustes kiirelt maksta.</translation>
@@ -1579,7 +1568,6 @@ Lisateave:
 <translation id="7763386264682878361">Makse manifesti parser</translation>
 <translation id="7764225426217299476">Lisage aadress</translation>
 <translation id="7766518757692125295">Ümbris</translation>
-<translation id="7767271804335921384">Administraator blokeeris selle rakenduse</translation>
 <translation id="7770259615151589601">Designated-Long</translation>
 <translation id="7773005668374414287">Sama järjestus, esikülg ülespoole</translation>
 <translation id="777702478322588152">Prefektuur</translation>
@@ -1608,6 +1596,7 @@ Lisateave:
 <translation id="7887885240995164102">Aktiveeri režiim Pilt pildis</translation>
 <translation id="7888575728750733395">Prindirenderduse kavatsus</translation>
 <translation id="7904208859782148177">C3 (ümbrik)</translation>
+<translation id="7923775243649974918">Kaamera liigutamine</translation>
 <translation id="7932579305932748336">Kate</translation>
 <translation id="79338296614623784">Sisestage kehtiv telefoninumber</translation>
 <translation id="7934052535022478634">Makse on töödeldud</translation>
@@ -1647,6 +1636,7 @@ Lisateave:
 <translation id="8074253406171541171">10x13 (ümbrik)</translation>
 <translation id="8078141288243656252">Pööramisel ei saa märkusi lisada</translation>
 <translation id="8079031581361219619">Kas laadida sait uuesti?</translation>
+<translation id="939305735877869636">Brave</translation>
 <translation id="8086971161893892807">Mustand</translation>
 <translation id="8088680233425245692">Artikli kuvamine ebaõnnestus.</translation>
 <translation id="808894953321890993">Muuda parooli</translation>
@@ -1660,7 +1650,6 @@ Lisateave:
 <translation id="8105368624971345109">Lülita välja</translation>
 <translation id="8118489163946903409">Makseviis</translation>
 <translation id="8127301229239896662">Tarkvara „<ph name="SOFTWARE_NAME"/>” ei installitud teie arvutisse või võrku korralikult. Paluge IT-administraatoril see probleem lahendada.</translation>
-<translation id="3272614036080146686">Sisestasite äsja oma parooli petturlikule saidile. Brave soovitab teil minna veebisaidile <ph name="WEBSITE_1"/> ja muudele saitidele, kus seda parooli kasutate, ning kohe oma parooli muuta.</translation>
 <translation id="8131740175452115882">Kinnita</translation>
 <translation id="8149426793427495338">Teie arvuti lülitus unerežiimile.</translation>
 <translation id="8150722005171944719">Fail <ph name="URL"/> ei ole loetav. Võimalik, et see on eemaldatud, teisaldatud või faili load takistavad juurdepääsu.</translation>
@@ -1739,7 +1728,6 @@ Lisateave:
 <translation id="8474910779563686872">Kuva arendaja üksikasjad</translation>
 <translation id="8479754468255770962">Kirjaklamber vasakul all</translation>
 <translation id="503686638841780887">Brave'i konto kaartide kasutamiseks logige sisse Brave'i</translation>
-<translation id="565908431635579039">Sisestasite äsja oma parooli kahtlasele saidile. Brave soovitab teil salvestatud paroole kontrollida saidi <ph name="WEBSITE_1"/> ja muude saitide puhul, kus praegu seda parooli kasutate.</translation>
 <translation id="8488350697529856933">Kehtib:</translation>
 <translation id="8490137692873530638">Virnastaja 10</translation>
 <translation id="8498891568109133222">Hostil <ph name="HOST_NAME"/> kulus vastamiseks liiga kaua aega.</translation>
@@ -1754,7 +1742,6 @@ Lisateave:
 <translation id="8557066899867184262">CVC asub kaardi tagaküljel.</translation>
 <translation id="8559762987265718583">Privaatset ühendust ei saa domeeniga <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> luua, kuna seadme kuupäev ja kellaaeg (<ph name="DATE_AND_TIME"/>) on valed.</translation>
 <translation id="8564182942834072828">Eraldi dokumendid / järjestamata koopiad</translation>
-<translation id="4764754838347156633">Brave soovitab teil organisatsiooni <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> parooli lähtestada, kui kasutasite seda ka muudel saitidel.</translation>
 <translation id="8571890674111243710">Lehe tõlkimine <ph name="LANGUAGE"/> keelde...</translation>
 <translation id="8574899947864779331">Kasutage kaartide kiiremaks kinnitamiseks Touch ID-d</translation>
 <translation id="858637041960032120">Lisage telefoninumber</translation>
@@ -1763,6 +1750,7 @@ Lisateave:
 <translation id="8606726445206553943">Kasutada MIDI-seadmeid</translation>
 <translation id="861775596732816396">Suurus 4</translation>
 <translation id="8622948367223941507">Legal-Extra</translation>
+<translation id="8623885649813806493">Ühtivaid paroole ei ole. Vaadake kõiki salvestatud paroole.</translation>
 <translation id="8625384913736129811">Salvesta kaart sellesse seadmesse</translation>
 <translation id="8663226718884576429">Tellimuse kokkuvõte, <ph name="TOTAL_LABEL"/>, rohkem üksikasju</translation>
 <translation id="867224526087042813">Allkiri</translation>

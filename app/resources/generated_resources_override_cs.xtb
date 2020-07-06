@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="cs">
+<translation id="658539216370629794">Otevřít odkaz v &amp;anonymním okně</translation>
+<translation id="1432267168815937878">Otevřít odkaz v &amp;anonymním okně</translation>
+<translation id="6516243500644829484">Nové &amp;anonymní okno</translation>
+<translation id="7973394300052703468">Nové &amp;anonymní okno</translation>
+<translation id="6395403722585816044">Staženo v anonymním režimu</translation>
+<translation id="203837651858678035">Přesto anonymní režim ukončit?</translation>
+<translation id="7376221878517288144">Přesto anonymní režim ukončit?</translation>
+<translation id="871606814707918245">Většina lidí oznámení z tohoto webu blokuje</translation>
+<translation id="5053701565089446556">Anonymní rozšíření: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Anonymní aplikace: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Anonymní karta: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Anonymní podrámec: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Anonymní portál: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Internetový obchod Brave</translation>
+<translation id="8261378640211443080">Toto rozšíření není uvedeno na webu <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> a mohlo být přidáno bez vašeho vědomí.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Anonymní režim)</translation>
+<translation id="4369414322596874629">V anonymním okně můžete web procházet v soukromí.</translation>
+<translation id="3772947852642271642">Pomocí anonymního okna můžete web používat bez ukládání historie procházení</translation>
+<translation id="3871738366246972820">Používáte sdílený počítač? Zkuste si otevřít anonymní okno.</translation>
+<translation id="5808622652939943719">Chcete-li web procházet v soukromí, klikněte na ikonu se třemi tečkami a otevřete anonymní okno.</translation>
+<translation id="9079153198295609735">Automaticky posílat společnosti Brave statistiky používání a zprávy o selhání</translation>
+<translation id="8839398440242019256">Nepochází z Internetového obchodu Brave.</translation>
+<translation id="6945695820322143954">Toto rozšíření porušuje zásady Internetového obchodu Brave.</translation>
+<translation id="1676595396635191120">Nové anonymní okno</translation>
+<translation id="5094764494104066239">&amp;Vždy zobrazovat lištu záložek</translation>
+<translation id="4471385409549756595">Nové anonymní okno</translation>
+<translation id="4540437243849625078">Tento web chce sdílet informace s aplikací mimo anonymní režim.</translation>
+<translation id="1227836882233136433">Ukončit anonymní režim?</translation>
+<translation id="7618452966706304788">Chcete s webem <ph name="APP_NAME"/> v anonymním režimu použít Touch ID?</translation>
+<translation id="3098826269712097986">Přihlašovací údaje zůstanou v Chromu uložené i po ukončení anonymního režimu. Touch ID tak s tímto webem budete moci znovu použít později.</translation>
+<translation id="5186185447130319458">Anonymní režim</translation>
+<translation id="2579188629646253712">Ukončit anonymní režim</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Otevřít vše v &amp;anonymním okně}=1{Otevřít v &amp;anonymním okně}few{Otevřít vše (#) v &amp;anonymním okně}many{Otevřít vše (#) v &amp;anonymním okně}other{Otevřít vše (#) v &amp;anonymním okně}}</translation>
 <translation id="2431625704210501303">Otevřít v &amp;anonymním okně</translation>
 <translation id="4620367155626060530">&amp;Zobrazit lištu záložek</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Anonymní režim)</translation>
 <translation id="4854477725773269949">Povolit v anonymním režimu</translation>
 <translation id="6436164536244065364">Zobrazit v Internetovém obchodu Brave</translation>
-<translation id="8808478386290700967">Internetový obchod Brave</translation>
 <translation id="38046578254905003">Rozšíření a motivy najdete v <ph name="BEGIN_LINK"/>Internetovém obchodě Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Nová anonymní karta</translation>
 <translation id="6610147964972079463">Zavřít anonymní karty</translation>
-<translation id="5186185447130319458">Anonymní režim</translation>
 <translation id="4933782374919065856">Máte nějaké dotazy? Kontaktujte osobu, která dohlíží na váš profil.</translation>
 </translationbundle>

@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fi">
+<translation id="658539216370629794">Avaa linkki inco&amp;gnito-ikkunassa</translation>
+<translation id="1432267168815937878">Avaa linkki inco&amp;gnito-ikkunassa</translation>
+<translation id="6516243500644829484">Uusi &amp;incognito-ikkuna</translation>
+<translation id="7973394300052703468">Uusi &amp;incognito-ikkuna</translation>
+<translation id="6395403722585816044">Ladattiin incognito-tilassa</translation>
+<translation id="203837651858678035">Haluatko silti poistua incognito-tilasta?</translation>
+<translation id="7376221878517288144">Haluatko silti poistua incognito-tilasta?</translation>
+<translation id="871606814707918245">Useimmat ihmiset estävät tämän sovelluksen ilmoitukset</translation>
+<translation id="5053701565089446556">Incognito-laajennus: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Incognito-sovellus: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Incognito-välilehti: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Incognito-alakehys: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Incognito-portaali: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Tätä laajennusta ei löydy kohteesta <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>, ja se on voitu lisätä ilman lupaasi.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
+<translation id="4369414322596874629">Voit selata verkkoa yksityisesti incognito-ikkunan avulla.</translation>
+<translation id="3772947852642271642">Avaa incognito-ikkuna, jos haluat selata verkkoa ilman tietojen tallentumista selaushistoriaan.</translation>
+<translation id="3871738366246972820">Onko tietokoneellasi muitakin käyttäjiä? Selaa verkkoa incognito-ikkunassa.</translation>
+<translation id="5808622652939943719">Jos haluat selata verkkoa yksityisesti, avaa valikko klikkaamalla pistekuvaketta ja siirry incognito-ikkunaan.</translation>
+<translation id="9079153198295609735">Lähetä Bravelle käyttötilastoja ja virheraportteja automaattisesti</translation>
+<translation id="8839398440242019256">Ei peräisin Brave Web Storesta.</translation>
+<translation id="6945695820322143954">Tämä laajennus loukkaa Brave Web Storen käytäntöä.</translation>
+<translation id="1676595396635191120">Uusi incognito-ikkuna</translation>
+<translation id="5094764494104066239">Näytä kirjanmerkkipalkki aina</translation>
+<translation id="4471385409549756595">Uusi incognito-ikkuna</translation>
+<translation id="4540437243849625078">Tämä sivusto aikoo jakaa tietoja sovellukselle incognito-tilan ulkopuolella.</translation>
+<translation id="1227836882233136433">Poistutaanko incognito-tilasta?</translation>
+<translation id="7618452966706304788">Haluatko käyttää Touch ID:tä sovelluksella <ph name="APP_NAME"/> incognito-tilassa?</translation>
+<translation id="3098826269712097986">Kirjautumisdata tallennetaan Braveen, kun poistut incognito-tilasta. Tämän avulla voit käyttää Touch ID:tä tällä sivustolla uudelleen myöhemmin.</translation>
+<translation id="5186185447130319458">Incognito</translation>
+<translation id="2579188629646253712">Poistu incognito-tilasta</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Avaa kaikki incognito-ikkunassa}=1{Avaa incognito-ikkunassa}other{Avaa kaikki # incognito-ikkunassa}}</translation>
 <translation id="2431625704210501303">Avaa incognito-ikkunassa</translation>
 <translation id="4620367155626060530">Näytä kirjanmerkkipalkki</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Incognito)</translation>
 <translation id="4854477725773269949">Salli incognito-tilassa</translation>
 <translation id="6436164536244065364">Näytä Brave Web Storessa</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Löydät laajennuksia ja teemoja <ph name="BEGIN_LINK"/>Brave Web Storesta<ph name="END_LINK"/>.</translation>
 <translation id="6336451774241870485">Uusi incognito-välilehti</translation>
 <translation id="6610147964972079463">Sulje incognito-välilehdet</translation>
-<translation id="5186185447130319458">Incognito</translation>
 <translation id="4933782374919065856">Onko sinulla kysyttävää? Ota yhteyttä profiiliasi valvovaan henkilöön.</translation>
 </translationbundle>

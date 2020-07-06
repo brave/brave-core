@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="or">
+<translation id="658539216370629794">ଗୁପ୍ତ ୱିଣ୍ଡୋରେ ଲିଙ୍କ୍ ଖୋଲନ୍ତୁ</translation>
+<translation id="1432267168815937878">ଇନ୍‍କ&amp;ଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଲିଙ୍କ ଖୋଲନ୍ତୁ</translation>
+<translation id="6516243500644829484">&amp;ନୂତନ ଗୁପ୍ତ ୱିଣ୍ଡୋ</translation>
+<translation id="7973394300052703468">ନୂଆ &amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋ</translation>
+<translation id="6395403722585816044">ଇନ୍‌କଗ୍ନିଟୋରେ ଡାଉନ୍‌ଲୋଡ୍‌ କରନ୍ତୁ</translation>
+<translation id="203837651858678035">ଯେକୌଣସି ମତେ ଇନ୍‌କଗ୍‌ନିଟୋ ମୋଡ୍‌ରୁ ବାହାରିବେ କି?</translation>
+<translation id="7376221878517288144">ଯେକୌଣସି ମତେ ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ ଛାଡିବେ?</translation>
+<translation id="871606814707918245">ଏହି ସାଇଟ୍‌ର ବିଜ୍ଞପ୍ତିଗୁଡ଼ିକୁ ଅଧିକାଂଶ ଲୋକ ବ୍ଲକ୍ କରିଥାନ୍ତି</translation>
+<translation id="5053701565089446556">ଇନ୍‌କଗ୍‌ନିଟୋ ଏକ୍ସଟେନ୍‌ସନ୍: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">ଇନ୍‌କଗ୍ନିଟୋ ଆପ୍: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍‍: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">ଇନ୍‌କଗ୍ନିଟୋ ସବଫ୍ରେମ୍: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">ଇନକଗ୍ନିଟୋ ପୋର୍ଟାଲ୍: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave ୱେବ୍ ଷ୍ଟୋର୍</translation>
+<translation id="8261378640211443080">ଏହି ଏକ୍ସଟେନ୍‌ସନ୍, <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>ରେ ତାଲିକାଭୁକ୍ତ ନାହିଁ ଏବଂ ଆପଣଙ୍କର ଅଜାଣତରେ ହୁଏତ ଏହା ଯୋଗ କରାଯାଇଥାଇପାରେ।</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ଇନ୍‌କଗ୍ନିଟୋ)</translation>
+<translation id="4369414322596874629">ଆପଣ ଏକ ଇନ୍‍କଗ୍ନିଟୋ ୱିଣ୍ଡୋ ବ୍ୟବହାର କରି ବ୍ୟକ୍ତିଗତ ଭାବେ ବ୍ରାଉଜ୍ କରିପାରିବେ</translation>
+<translation id="3772947852642271642">ଇନ୍‌କଗ୍‌ନିଟୋ window ମାଧ୍ୟମରେ ଆପଣଙ୍କର ବ୍ରାଉଜିଂ ଇତିବୃତିକୁ ସେଭ୍ ନକରି ୱେବ୍‌ର ବ୍ୟବହାର କରନ୍ତୁ</translation>
+<translation id="3871738366246972820">ଏକ ସେୟାର୍ ହୋ‍ଇଥିବା କମ୍ପ୍ୟୁଟର୍‌ ବ୍ୟବହାର କରୁଛନ୍ତି କି? ଏକ ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋ ଖୋଲିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
+<translation id="5808622652939943719">ବ୍ୟକ୍ତିଗତ ଭାବେ ବ୍ରାଉଜ୍‌ କରିବାକୁ, ଡଟ୍‍ ଆଇକନ୍‍ ମେନୁରେ କ୍ଲିକ୍‍ କରି ଏକ ଇନ୍‍କଗ୍ନିଟୋ ୱିଣ୍ଡୋ ଖୋଲନ୍ତୁ</translation>
+<translation id="9079153198295609735">ସ୍ୱଚାଳିତରୂପେ Braveକୁ ବ୍ୟବହାରର ପରିସଂଖ୍ୟାନ ଏବଂ କ୍ରାସ୍ ରିପୋର୍ଟ ପଠାନ୍ତୁ</translation>
+<translation id="8839398440242019256">Brave ୱେବ୍ ଷ୍ଟୋର୍‌ରୁ ନୁହେଁ।</translation>
+<translation id="6945695820322143954">ଏହି ଏକ୍ସଟେନ୍‌ସନ୍ Brave ୱେବ୍ ଷ୍ଟୋର୍ ନୀତିକୁ ଉଲ୍ଲଂଘନ କରେ।</translation>
+<translation id="1676595396635191120">&amp;ନୂଆ ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋ</translation>
+<translation id="5094764494104066239">ସର୍ବଦା ବୁକମାର୍କ ବାର୍‍ ଦେଖାନ୍ତୁ</translation>
+<translation id="4471385409549756595">ନୂଆ ଇନ୍‌କଗ୍‌ନିଟୋ ୱିଣ୍ଡୋ</translation>
+<translation id="4540437243849625078">ଏହି ସାଇଟ୍ ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‍‍ରେ ବାହାରର କୌଣସି ଆପ୍ ସହ ସୂଚନା ସେୟାର୍ କରିବାକୁ ଯାଉଛି।</translation>
+<translation id="1227836882233136433">ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍ ଛାଡ଼ିବେ?</translation>
+<translation id="7618452966706304788">ଆପଣ କ’ଣ ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ରେ ସ୍ପର୍ଶ ID <ph name="APP_NAME"/> ସହିତ ସ୍ପର୍ଶ ID ବ୍ୟବହାର କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</translation>
+<translation id="3098826269712097986">ଆପଣ ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ରୁ ବାହାରିବା ପରେ, Braveରେ ସାଇନ୍-ଇନ୍ ଡାଟା ଷ୍ଟୋର୍ ହେବ। ଏହି ୱେବସାଇଟ୍ ସହିତ ଏହା ପରେ ପୁଣି ଆପଣଙ୍କୁ ସ୍ପର୍ଶ ID ବ୍ୟବହାର କରିବାକୁ ଦେବ।</translation>
+<translation id="5186185447130319458">ଇନ୍‌କଗ୍ନିଟୋ</translation>
+<translation id="2579188629646253712">ଇନକଗ୍ନିଟୋରୁ ପ୍ରସ୍ଥାନ କରନ୍ତୁ</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ସବୁ ଖୋଲନ୍ତୁ}=1{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}other{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ସବୁ (#) ଖୋଲନ୍ତୁ}}</translation>
 <translation id="2431625704210501303">&amp;ଇନ୍‌କଗ୍‌ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ</translation>
 <translation id="4620367155626060530">&amp;ବୁକ୍‌ମାର୍କ ବାର୍ ଦେଖାନ୍ତୁ</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(ଇନ୍‌କଗ୍ନିଟୋ)</translation>
 <translation id="4854477725773269949">ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ରେ ରହିବାକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
 <translation id="6436164536244065364">Brave ୱେବ୍‌ ଷ୍ଟୋର୍‌ରେ ଦେଖନ୍ତୁ</translation>
-<translation id="8808478386290700967">Brave ୱେବ୍ ଷ୍ଟୋର୍</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave ୱେବ୍ ଷ୍ଟୋର୍‌<ph name="END_LINK"/>ରେ ଏକ୍ସଟେନ୍‌ସନ୍ ଏବଂ ଥିମ୍ ଖୋଜନ୍ତୁ</translation>
 <translation id="6336451774241870485">ନୂଆ ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍</translation>
 <translation id="6610147964972079463">ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍ସ ବନ୍ଦ କରନ୍ତୁ</translation>
-<translation id="5186185447130319458">ଇନ୍‌କଗ୍ନିଟୋ</translation>
 <translation id="4933782374919065856">ପ୍ରଶ୍ନ ଅଛି? ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍ ପର୍ଯ୍ୟବେକ୍ଷଣ କରୁଥିବା ବ୍ୟକ୍ତିଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ</translation>
 </translationbundle>

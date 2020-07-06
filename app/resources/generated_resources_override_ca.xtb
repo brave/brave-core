@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ca">
+<translation id="658539216370629794">Obre l'enllaç en una finestra d'incò&amp;gnit</translation>
+<translation id="1432267168815937878">Obre l'enllaç en una finestra d'incò&amp;gnit</translation>
+<translation id="6516243500644829484">Finestra d'incògnit nova</translation>
+<translation id="7973394300052703468">F&amp;inestra d'incògnit nova</translation>
+<translation id="6395403722585816044">S'ha baixat en mode d'incògnit</translation>
+<translation id="203837651858678035">Vols sortir del mode d'incògnit de totes maneres?</translation>
+<translation id="7376221878517288144">Vols sortir del mode d'incògnit de totes maneres?</translation>
+<translation id="871606814707918245">La majoria d'usuaris bloquegen les notificacions d'aquest lloc web</translation>
+<translation id="5053701565089446556">Extensió d'incògnit: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplicació d'incògnit: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Pestanya d'incògnit: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Submarc d'incògnit: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal d'incògnit: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8261378640211443080">Aquesta extensió no apareix a <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> i és possible que s'hagi afegit sense que ho sapigueu.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incògnit)</translation>
+<translation id="4369414322596874629">Pots navegar de manera privada utilitzant una finestra d'incògnit</translation>
+<translation id="3772947852642271642">Utilitza el web sense desar l'historial de navegació amb una finestra d'incògnit</translation>
+<translation id="3871738366246972820">Utilitzes un ordinador compartit? Prova d'obrir una finestra d'incògnit.</translation>
+<translation id="5808622652939943719">Per navegar de manera privada, fes clic a la icona dels tres punts per obrir una finestra d'incògnit</translation>
+<translation id="9079153198295609735">Envia automàticament estadístiques d'ús i informes d'error a Brave</translation>
+<translation id="8839398440242019256">No des de Brave Web Store.</translation>
+<translation id="6945695820322143954">Aquesta extensió incompleix la política de Brave Web Store.</translation>
+<translation id="1676595396635191120">Finestra d'incògnit nova</translation>
+<translation id="5094764494104066239">Mostra la barra d'adreces d'interès</translation>
+<translation id="4471385409549756595">Finestra d'incògnit nova</translation>
+<translation id="4540437243849625078">Aquest lloc està a punt de compartir informació amb una aplicació fora del mode d'incògnit.</translation>
+<translation id="1227836882233136433">Vols sortir del mode d'incògnit?</translation>
+<translation id="7618452966706304788">Vols utilitzar Touch ID amb <ph name="APP_NAME"/> en mode d'incògnit?</translation>
+<translation id="3098826269712097986">Les dades d'inici de sessió s'emmagatzemaran a Brave quan surtis del mode d'incògnit. D'aquesta manera, podràs tornar a fer servir Touch ID amb aquest lloc web més endavant.</translation>
+<translation id="5186185447130319458">Incògnit</translation>
+<translation id="2579188629646253712">Surt del mode d'incògnit</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Obre-les totes en una &amp;finestra d'incògnit}=1{Obre en una &amp;finestra d'incògnit}other{Obre-les totes (#) en una &amp;finestra d'incògnit}}</translation>
 <translation id="2431625704210501303">Obre-ho en una &amp;finestra d'incògnit</translation>
 <translation id="4620367155626060530">&amp;Mostra la Barra d'adreces d'interès</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Incògnit)</translation>
 <translation id="4854477725773269949">Permet en mode d'incògnit</translation>
 <translation id="6436164536244065364">Mostra a Brave Web Store</translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
 <translation id="38046578254905003">Cerca extensions i temes a <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Pestanya d'incògnit nova</translation>
 <translation id="6610147964972079463">Tanca pestanyes d'incògnit</translation>
-<translation id="5186185447130319458">Incògnit</translation>
 <translation id="4933782374919065856">Tens preguntes? Contacta amb la persona que et supervisa el perfil.</translation>
 </translationbundle>

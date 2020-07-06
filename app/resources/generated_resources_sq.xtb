@@ -2121,7 +2121,6 @@ Cilësimet e kësaj llogarie mund t'i menaxhosh duke instaluar aplikacionin Fami
 <translation id="3771294271822695279">Skedarët video</translation>
 <translation id="3775432569830822555">Certifikata e serverit SSL</translation>
 <translation id="3775705724665058594">Dërgo te pajisjet e tua</translation>
-<translation id="6945695820322143954">Kjo shtesë shkel politikën e Dyqanit të uebit të Brave.</translation>
 <translation id="3777483481409781352">Pajisja celulare nuk mund të aktivizohej</translation>
 <translation id="3777806571986431400">Shtesa u aktivizua</translation>
 <translation id="3778152852029592020">Shkarkimi u anulua.</translation>
@@ -2903,7 +2902,6 @@ Cilësimet e kësaj llogarie mund t'i menaxhosh duke instaluar aplikacionin Fami
 <translation id="48704129375571883">Shto funksione të tjera</translation>
 <translation id="4870758487381879312">Fut fjalëkalimin e dhënë nga administratori për të marrë informacionin e konfigurimit</translation>
 <translation id="4870903493621965035">Nuk ka pajisje të çiftuara</translation>
-<translation id="8839398440242019256">Nuk është nga "Dyqani i uebit i Brave"</translation>
 <translation id="4871322859485617074">Kodi PIN përmban karaktere të pavlefshme</translation>
 <translation id="4871370605780490696">Shto faqeshënues</translation>
 <translation id="4871719318659334896">Mbyll grupin</translation>
@@ -4964,7 +4962,6 @@ Cilësimet e kësaj llogarie mund t'i menaxhosh duke instaluar aplikacionin Fami
 <translation id="767127784612208024">Prek për të konfirmuar rivendosjen</translation>
 <translation id="7672520070349703697"><ph name="HUNG_IFRAME_URL"/> në <ph name="PAGE_TITLE"/>.</translation>
 <translation id="1800308196794859773">Dërgoja zërin Brave për të lejuar diktimin në çfarëdo fushe teksti.</translation>
-<translation id="3098826269712097986">Të dhënat e identifikimit do të ruhen në Brave pasi të dalësh nga modaliteti "I fshehtë". Kjo do të të lejojë të përdorësh Touch ID me këtë sajt uebi përsëri më vonë.</translation>
 <translation id="7681095912841365527">Sajti mund të përdorë Bluetooth-in</translation>
 <translation id="7683373461016844951">Për të vazhduar, kliko te "Në rregull" dhe më pas kliko te "Shto person" për të krijuar një profil të ri për adresën tënd të email-it të <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Instaluar nga administratori yt</translation>
@@ -5440,7 +5437,6 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="8259239505248583312">Fillojmë</translation>
 <translation id="8260126382462817229">Provo të identifikohesh përsëri</translation>
 <translation id="8260864402787962391">Miu</translation>
-<translation id="8261378640211443080">Kjo shtesë nuk është e listuar në <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dhe mund të jetë shtuar pa dijeninë tënde.</translation>
 <translation id="8261506727792406068">Fshi</translation>
 <translation id="8263336784344783289">Emërtoje këtë grup</translation>
 <translation id="8263744495942430914"><ph name="FULLSCREEN_ORIGIN"/> ka çaktivizuar kursorin e miut.</translation>
@@ -6002,7 +5998,6 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="8983632908660087688"><ph name="ORIGIN"/> mund të modifikojë <ph name="FILENAME"/></translation>
 <translation id="8985264973231822211">Aktiv <ph name="DEVICE_LAST_ACTIVATED_TIME"/> ditë më parë</translation>
 <translation id="8986362086234534611">Harro</translation>
-<translation id="9079153198295609735">Dërgo automatikisht te Brave statistikat e përdorimit dhe raportet e ndërprerjeve aksidentale</translation>
 <translation id="8987927404178983737">Muaji</translation>
 <translation id="8991520179165052608">Sajti mund të përdorë mikrofonin tënd</translation>
 <translation id="899403249577094719">URL-ja e bazës së certifikatës së Netscape</translation>
@@ -6221,6 +6216,38 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Po vendos një lidhje të sigurt...</translation>
 <translation id="998747458861718449">I&amp;nspekto</translation>
+<translation id="658539216370629794">Hape lidhjen në një dritare të fshe&amp;hur</translation>
+<translation id="1432267168815937878">Hape lidhjen në një dritare të fshe&amp;htë</translation>
+<translation id="6516243500644829484">Dritare e re e &amp;fshehtë</translation>
+<translation id="7973394300052703468">Dritare e re "e fshehtë"</translation>
+<translation id="6395403722585816044">Shkarko në modalitetin "i fshehtë"</translation>
+<translation id="203837651858678035">Dëshiron të dalësh gjithsesi nga modaliteti "i fshehtë"?</translation>
+<translation id="7376221878517288144">Dëshiron ta mbyllësh gjithsesi modalitetin "e fshehtë"?</translation>
+<translation id="871606814707918245">Shumica e personave i bllokojnë njoftimet nga ky sajt</translation>
+<translation id="5053701565089446556">Shtesë e fshehtë: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Aplikacioni "i fshehur": <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Skedë "e fshehtë": <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Nënkorniza "e fshehtë": <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal i fshehtë: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Dyqani i uebit i Brave</translation>
+<translation id="8261378640211443080">Kjo shtesë nuk është e listuar në <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dhe mund të jetë shtuar pa dijeninë tënde.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (e fshehtë)</translation>
+<translation id="4369414322596874629">Mund të shfletosh në mënyrë private duke përdorur një dritare "të fshehtë"</translation>
+<translation id="3772947852642271642">Përdor uebin pa ruajtur historikun tënd të shfletimit me një dritare "të fshehtë"</translation>
+<translation id="3871738366246972820">Po përdor një kompjuter të ndarë? Provo të hapësh një dritare "të fshehtë".</translation>
+<translation id="5808622652939943719">Për të shfletuar në mënyrë private, kliko menynë e ikonës me pika për të hapur një dritare "të fshehtë"</translation>
+<translation id="9079153198295609735">Dërgo automatikisht te Brave statistikat e përdorimit dhe raportet e ndërprerjeve aksidentale</translation>
+<translation id="8839398440242019256">Nuk është nga "Dyqani i uebit i Brave"</translation>
+<translation id="6945695820322143954">Kjo shtesë shkel politikën e Dyqanit të uebit të Brave.</translation>
+<translation id="1676595396635191120">Dritare e re "e fshehtë"</translation>
+<translation id="5094764494104066239">Shfaq gjithmonë shiritin e faqeshënuesve</translation>
+<translation id="4471385409549756595">Dritare e re e fshehtë</translation>
+<translation id="4540437243849625078">Ky sajt është gati për të ndarë informacione me një aplikacion jashtë modalitetit "të fshehtë".</translation>
+<translation id="1227836882233136433">Dëshiron të dalësh nga modaliteti "i fshehtë"?</translation>
+<translation id="7618452966706304788">Dëshiron të përdorësh Touch ID me <ph name="APP_NAME"/> në modalitetin "I fshehtë"?</translation>
+<translation id="3098826269712097986">Të dhënat e identifikimit do të ruhen në Brave pasi të dalësh nga modaliteti "I fshehtë". Kjo do të të lejojë të përdorësh Touch ID me këtë sajt uebi përsëri më vonë.</translation>
+<translation id="5186185447130319458">I fshehtë</translation>
+<translation id="2579188629646253712">Dil nga modaliteti i fshehtë</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Hap të gjitha në &amp;dritare "të fshehtë"}=1{Hap në &amp;dritare "të fshehtë"}other{Hap të gjitha (#) në &amp;dritare "të fshehtë"}}</translation>
 <translation id="2431625704210501303">Hape në &amp;dritare "të fshehtë"</translation>
 <translation id="4620367155626060530">&amp;Shfaq shiritin e faqeshënuesve</translation>
@@ -6270,10 +6297,8 @@ Mbaje skedarin e çelësit tënd në një vend të sigurt. Do të të duhet për
 <translation id="3860292630623580294">(I fshehtë)</translation>
 <translation id="4854477725773269949">Lejo në modalitetin "i fshehtë"</translation>
 <translation id="6436164536244065364">Shikoje në "Dyqanin e uebit" të Brave</translation>
-<translation id="8808478386290700967">Dyqani i uebit i Brave</translation>
 <translation id="38046578254905003">Gjej shtesa dhe tema në <ph name="BEGIN_LINK"/>Dyqanin e uebit të Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Skedë e re e fshehtë</translation>
 <translation id="6610147964972079463">Mbyll skedat e fshehta</translation>
-<translation id="5186185447130319458">I fshehtë</translation>
 <translation id="4933782374919065856">Ke pyetje? Kontakto me personin që mbikëqyrë profilin tënd.</translation>
 </translationbundle>

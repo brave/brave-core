@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ne">
+<translation id="658539216370629794">लिङ्कलाई इन्को&amp;ग्निटो विन्डोमा खोल्नुहोस्</translation>
+<translation id="1432267168815937878">लिङ्कलाई इन्क&amp;ग्निटो सन्झ्यालमा खोल्नुहोस्</translation>
+<translation id="6516243500644829484">नयाँ &amp;इन्कोग्निटो विन्डो</translation>
+<translation id="7973394300052703468">नयाँ &amp;इन्कग्निटो सन्झ्याल</translation>
+<translation id="6395403722585816044">इन्कग्निटोमा डाउनलोड गरियो</translation>
+<translation id="203837651858678035">जे भए पनि इन्कोग्निटो मोडबाट बाहिर निस्कने हो?</translation>
+<translation id="7376221878517288144">जे भए पनि इन्कोग्निटो मोड छाडेर बाहिरिने हो?</translation>
+<translation id="871606814707918245">धेरैजसो मान्छेहरू यो साइटका सूचनाहरूमाथि रोक लगाउँछन्</translation>
+<translation id="5053701565089446556">इंकोग्निटो एक्स्टेन्शन: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">इन्कोग्निटो एप: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">इन्कग्निटो ट्याब: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">इनकगनिटो सबफ्रेम: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">इन्कोग्निटो पोर्टल: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Brave वेब स्टोर</translation>
+<translation id="8261378640211443080">तपाइँको विस्तार <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> मा सूची गरिएको छैन र तपाइँलाई जानकार नगरीकन त्यो थपिएको हुन सक्छ।</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (गुप्त)</translation>
+<translation id="4369414322596874629">तपाईं कुनै इन्कोग्निटो विन्डो प्रयोग गरी निजी रूपमा ब्राउज गर्न सक्नुहुन्छ</translation>
+<translation id="3772947852642271642">इन्कोग्निटो विन्डोको सहायताले आफ्नो ब्राउजिङसम्बन्धी इतिहास सुरक्षित नगरिकनै वेबको प्रयोग गर्नुहोस्</translation>
+<translation id="3871738366246972820">कुनै साझा कम्प्युटर प्रयोग गर्दै हुनुहुन्छ? इन्कोग्निटो विन्डो खोली हेर्नुहोस्।</translation>
+<translation id="5808622652939943719">निजी रूपमा ब्राउज गर्नका लाग‍ि कुनै इन्कोग्निटो विन्डो खोल्न डट आइकन भएको मेनुमा क्लिक गर्नुहोस्‌</translation>
+<translation id="9079153198295609735">Brave लाई स्वचालित रूपमा उपयोगको तथ्याङ्कहरू र क्र्यास रिपोर्ट पठाउनुहोस्</translation>
+<translation id="8839398440242019256">Brave वेब भण्डारबाट होइन।</translation>
+<translation id="6945695820322143954">यो विस्तारले Brave वेव भण्डारण नीति उल्लङ्घन गर्छ ।</translation>
+<translation id="1676595396635191120">नयँ इन्कग्निटो सन्झ्याल</translation>
+<translation id="5094764494104066239">बुकमार्कहरू पट्टी सँधै देखाउनुहोस्</translation>
+<translation id="4471385409549756595">नयाँ गुप्त विण्डो</translation>
+<translation id="4540437243849625078">यो साइटले इन्कोग्निटो मोड बाहिरको अनुप्रयोगसँग जानकारी आदान प्रदान गर्न लाग्दैछ।</translation>
+<translation id="1227836882233136433">इन्कोग्निटो मोड छोड्ने हो?</translation>
+<translation id="7618452966706304788">तपाईं <ph name="APP_NAME"/> मार्फत इन्कोग्निटो मोडमा Touch ID प्रयोग गर्न चाहनुहुन्छ?</translation>
+<translation id="3098826269712097986">तपाईं इन्कोग्निटो मोडबाट बाहिरिएपछि साइन इनसम्बन्धी डेटा Brave मा भण्डारण गरिने छ। यसले तपाईंलाई पछि फेरि यस वेबसाइटमार्फत Touch ID प्रयोग गर्न दिने छ।</translation>
+<translation id="5186185447130319458">इन्कोग्निटो</translation>
+<translation id="2579188629646253712">इन्कोग्निटो मोडबाट बाहिर निस्कनुहोस्</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{सबैलाई &amp;इन्कोग्निटो विन्डोमा खोल्नुहोस्}=1{&amp;इन्कोग्निटो विन्डोमा खोल्नुहोस्}other{सबै (#) लाई &amp;इन्कोग्निटो विन्डोमा खोल्नुहोस्}}</translation>
 <translation id="2431625704210501303">&amp;इनकगनिटो विण्डोमा खोल्नुहोस्</translation>
 <translation id="4620367155626060530">बुकमार्क पट्टी देखाउनुहोस्</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(इन्कगनिटो)</translation>
 <translation id="4854477725773269949">इनकग्निटोमा अनुमति दिनुहोस्</translation>
 <translation id="6436164536244065364">Brave वेब स्टोरमा हेर्नुहोस्</translation>
-<translation id="8808478386290700967">Brave वेब स्टोर</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave वेब स्टोर<ph name="END_LINK"/> मा विस्तार तथा विषयवस्तुहरू फेला पार्नुहोस्</translation>
 <translation id="6336451774241870485">नयाँ इनकगनिटो ट्याब</translation>
 <translation id="6610147964972079463">इनकगनिटो ट्याबहरू बन्द गर्नुहोस्</translation>
-<translation id="5186185447130319458">इन्कोग्निटो</translation>
 <translation id="4933782374919065856">कुनै प्रश्न छन्? आफ्नो प्रोफाइल सञ्चालन गर्ने व्यक्तिलाई सम्पर्क गर्नुहोस्।</translation>
 </translationbundle>

@@ -1,6 +1,38 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ms">
+<translation id="658539216370629794">Buka pautan dalam tetingkap inko&amp;gnito</translation>
+<translation id="1432267168815937878">Buka Pautan dalam Tetingkap Inko&amp;gnito</translation>
+<translation id="6516243500644829484">Tetingkap &amp;inkognito baharu</translation>
+<translation id="7973394300052703468">Tetingkap &amp;Inkognito Baharu</translation>
+<translation id="6395403722585816044">Dimuat turun dalam Inkognito</translation>
+<translation id="203837651858678035">Keluar daripada mod inkognito juga?</translation>
+<translation id="7376221878517288144">Keluar daripada mod inkognito juga?</translation>
+<translation id="871606814707918245">Kebanyakan orang menyekat pemberitahuan daripada tapak ini</translation>
+<translation id="5053701565089446556">Sambungan Inkognito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Apl Inkognito: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Tab Inkognito: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Subbingkai Inkognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal Inkognito: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Kedai Web Brave</translation>
+<translation id="8261378640211443080">Sambungan ini tidak disenaraikan dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa pengetahuan anda.</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito)</translation>
+<translation id="4369414322596874629">Anda boleh menyemak imbas secara tertutup menggunakan tetingkap inkognito</translation>
+<translation id="3772947852642271642">Gunakan web tanpa menyimpan sejarah penyemakan imbas anda menggunakan tetingkap inkognito</translation>
+<translation id="3871738366246972820">Menggunakan komputer yang dikongsi? Cuba buka tetingkap inkognito.</translation>
+<translation id="5808622652939943719">Untuk menyemak imbas secara tertutup, klik menu ikon titik untuk membuka tetingkap inkognito</translation>
+<translation id="9079153198295609735">Hantar statistik penggunaan dan laporan nahas kepada Brave secara automatik</translation>
+<translation id="8839398440242019256">Bukan dari Kedai Web Brave.</translation>
+<translation id="6945695820322143954">Sambungan ini melanggar dasar Kedai Web Brave.</translation>
+<translation id="1676595396635191120">Tetingkap Inkognito Baharu</translation>
+<translation id="5094764494104066239">Sentiasa Paparkan Bar Penanda Halaman</translation>
+<translation id="4471385409549756595">Tetingkap incognito baharu</translation>
+<translation id="4540437243849625078">Tapak ini akan berkongsi maklumat dengan apl di luar daripada mod inkognito.</translation>
+<translation id="1227836882233136433">Tinggalkan mod inkognito?</translation>
+<translation id="7618452966706304788">Adakah anda ingin menggunakan Touch ID pada <ph name="APP_NAME"/> dalam mod Inkognito?</translation>
+<translation id="3098826269712097986">Data log masuk akan disimpan dalam Brave selepas anda keluar daripada mod Inkognito. Ini akan membolehkan anda menggunakan Touch ID pada tapak web ini lagi nanti.</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="2579188629646253712">Keluar daripada tetingkap Inkognito</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Buka semua dalam tetingkap &amp;inkognito}=1{Buka dalam tetingkap &amp;inkognito}other{Buka semua (#) dalam tetingkap &amp;inkognito}}</translation>
 <translation id="2431625704210501303">Buka dalam tetingkap &amp;inkognito</translation>
 <translation id="4620367155626060530">&amp;Tunjukkan bar penanda halaman</translation>
@@ -50,10 +82,8 @@
 <translation id="3860292630623580294">(Inkognito)</translation>
 <translation id="4854477725773269949">Benarkan dalam inkognito</translation>
 <translation id="6436164536244065364">Lihat di Gedung Web Brave</translation>
-<translation id="8808478386290700967">Kedai Web Brave</translation>
 <translation id="38046578254905003">Cari sambungan dan tema di <ph name="BEGIN_LINK"/>Gedung Web Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Tab inkognito baharu</translation>
 <translation id="6610147964972079463">Tutup tab inkognito</translation>
-<translation id="5186185447130319458">Inkognito</translation>
 <translation id="4933782374919065856">Ada soalan? Hubungi orang yang menyelia profil anda.</translation>
 </translationbundle>
