@@ -1,17 +1,17 @@
 diff --git a/third_party/blink/renderer/core/frame/screen.cc b/third_party/blink/renderer/core/frame/screen.cc
-index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c739814dbf 100644
+index 835eb382387c35704fd60c876d8d3b1eb54f92a3..652a2959157cfe4ae8ed1f1f0779932d7875257c 100644
 --- a/third_party/blink/renderer/core/frame/screen.cc
 +++ b/third_party/blink/renderer/core/frame/screen.cc
 @@ -36,6 +36,10 @@
  #include "third_party/blink/renderer/core/page/page.h"
  #include "third_party/blink/renderer/core/probe/core_probes.h"
-
+ 
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +// #endif
 +
  namespace blink {
-
+ 
  namespace {
 @@ -49,48 +53,106 @@ WebScreenInfo GetScreenInfo(LocalFrame& frame) {
  Screen::Screen(LocalFrame* frame) : ExecutionContextClient(frame) {}
@@ -62,7 +62,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +
 +  return result;
  }
-
+ 
  int Screen::width() const {
 +  int result = 0;
 +
@@ -108,7 +108,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +
 +  return result;
  }
-
+ 
  unsigned Screen::colorDepth() const {
 +  unsigned result = 0;
 +
@@ -143,11 +143,11 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +
 +  return result;
  }
-
+ 
  unsigned Screen::pixelDepth() const {
-@@ -98,71 +160,153 @@ unsigned Screen::pixelDepth() const {
+@@ -98,71 +160,152 @@ unsigned Screen::pixelDepth() const {
  }
-
+ 
  int Screen::availLeft() const {
 +  int result = 0;
 +
@@ -194,7 +194,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +
 +  return result;
  }
-
+ 
  int Screen::availTop() const {
 +  int result = 0;
 +
@@ -241,7 +241,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +
 +  return result;
  }
-
+ 
  int Screen::availHeight() const {
 +  int result = 0;
 +
@@ -289,7 +289,7 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +
 +  return result;
  }
-
+ 
  int Screen::availWidth() const {
 +  int result = 0;
 +
@@ -336,5 +336,5 @@ index 835eb382387c35704fd60c876d8d3b1eb54f92a3..df2bba61e9c0e843e4cee457b7f754c7
 +
 +  return result;
  }
-
+ 
  void Screen::Trace(Visitor* visitor) {
