@@ -1,23 +1,23 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-index 2660078b0ed37bc3313e645f59e38cd306b1fdca..bd52c9620f4a4cb5ab590668208ce87bd7a0ec33 100644
+index 2660078b0ed37bc3313e645f59e38cd306b1fdca..f34c21e4ce3bc5503133b4b596b340746a86eece 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 @@ -260,6 +260,11 @@
  #include "third_party/blink/renderer/platform/weborigin/security_policy.h"
  #include "third_party/blink/renderer/platform/wtf/hash_map.h"
-
+ 
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +// #endif
 +
  namespace blink {
-
+ 
  static int g_frame_count = 0;
-@@ -883,11 +889,29 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
+@@ -883,11 +888,29 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
    CHECK_GT(world_id, DOMWrapperWorld::kMainWorldId);
    CHECK_LT(world_id, DOMWrapperWorld::kDOMWrapperWorldEmbedderWorldIdLimit);
-
+ 
 +  const HeapVector<ScriptSourceCode> sources(
 +      CreateSourcesVector(sources_in, num_sources));
 +
