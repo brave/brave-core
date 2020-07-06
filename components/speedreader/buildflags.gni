@@ -5,4 +5,6 @@ declare_args() {
   enable_speedreader = !is_android
   enable_speedreader_feature = brave_channel == "nightly"
     || brave_channel == "development"
+    || brave_channel == "dev"
+    || brave_channel == "beta"
 }
