@@ -62,6 +62,9 @@
         <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_88" file="common/avatars/avatar_bonbon_royal.png" />
         <structure type="chrome_scaled_image" name="IDR_PROFILE_AVATAR_89" file="common/avatars/avatar_bonbon_ninja.png" />
       </if>
+      <structure type="chrome_scaled_image" name="IDR_REWARDS_LOGO_32" file="brave/bat-32.png" />
+      <structure type="chrome_scaled_image" name="IDR_REWARDS_LOGO_48" file="brave/bat-48.png" />
+      <structure type="chrome_scaled_image" name="IDR_REWARDS_LOGO_64" file="brave/bat-64.png" />
     </structures>
   </release>
 </grit>

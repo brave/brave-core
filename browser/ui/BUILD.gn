@@ -48,6 +48,7 @@ source_set("ui") {
       "brave_browser_command_controller.h",
       "brave_browser_content_setting_bubble_model_delegate.cc",
       "brave_browser_content_setting_bubble_model_delegate.h",
+      "brave_browser_dialogs.h",
       "brave_layout_constants.cc",
       "brave_layout_constants.h",
       "brave_pages.cc",
@@ -110,6 +111,9 @@ source_set("ui") {
 
   if (toolkit_views) {
     sources += [
+      "views/ads_notification_view.cc",
+      "views/ads_notification_view.h",
+      "views/brave_browser_dialogs_views.cc",
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
       "views/brave_layout_provider.cc",
@@ -192,6 +196,8 @@ source_set("ui") {
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/brave_ads/browser",
+    "//brave/ui/brave_custom_notification",
+    "//brave/ui/brave_custom_notification/public/cpp",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/browser",

@@ -50,6 +50,7 @@
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #if !defined(OS_ANDROID)
+#include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #endif
@@ -1880,9 +1881,8 @@ void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
   auto notification = CreateAdNotification(*info);
 
-  display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
-      *notification, /*metadata=*/nullptr);
-
+ //  display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification, /*metadata=*/nullptr);
+  brave_custom_notification::MessagePopupView::Show(notification);
   StartNotificationTimeoutTimer(info->uuid);
 }
 

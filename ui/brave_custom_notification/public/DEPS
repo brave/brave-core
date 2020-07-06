@@ -1,0 +1,4 @@
+include_rules = [
+  "-brave/ui/brave_custom_notification",
+  "+brave/ui/brave_custom_notification/public",
+]
