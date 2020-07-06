@@ -47,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // create notes table
         db.execSQL(TopSiteTable.CREATE_TABLE);
         db.execSQL(BraveStatsTable.CREATE_TABLE);
+        db.execSQL(SavedBandwidthTable.CREATE_TABLE);
     }
 
     // Upgrading database
@@ -134,20 +135,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // db.close();
     }
 
-    public void insertStats(BraveStatsTable braveStat) {
+    public long insertStats(BraveStatsTable braveStat) {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(BraveStatsTable.COLUMN_URL, braveStat.getUrl());
         values.put(BraveStatsTable.COLUMN_DOMAIN, braveStat.getDomain());
+        values.put(BraveStatsTable.COLUMN_STAT_TYPE, braveStat.getStatType());
+        values.put(BraveStatsTable.COLUMN_STAT_SITE, braveStat.getStatSite());
         values.put(BraveStatsTable.COLUMN_TIMESTAMP, braveStat.getTimestamp());
-        values.put(BraveStatsTable.COLUMN_ADS_BLOCKED_TRACKERS_BLOCKED, braveStat.getAdsBlockedTrackersBlocked());
-        values.put(BraveStatsTable.COLUMN_DATA_SAVED, braveStat.getDataSaved());
-        values.put(BraveStatsTable.COLUMN_TIME_SAVED, braveStat.getTimeSaved());
 
         // insert row
-        db.insert(BraveStatsTable.TABLE_NAME, null, values);
+        return db.insert(BraveStatsTable.TABLE_NAME, null, values);
 
         // close db connection
         // db.close();
@@ -168,10 +168,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 BraveStatsTable braveStat = new BraveStatsTable(
                     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
                     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)),
-                    cursor.getInt(cursor.getColumnIndex(BraveStatsTable.COLUMN_ADS_BLOCKED_TRACKERS_BLOCKED)),
-                    cursor.getInt(cursor.getColumnIndex(BraveStatsTable.COLUMN_DATA_SAVED)),
-                    cursor.getDouble(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIME_SAVED)));
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
 
                 braveStats.add(braveStat);
             } while (cursor.moveToNext());
@@ -181,5 +180,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // db.close();
 
         return braveStats;
+    }
+
+    public long insertSavedBandwidth(SavedBandwidthTable savedBandwidthTable) {
+        // get writable database as we want to write data
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH, savedBandwidthTable.getSavedBandwidth());
+        values.put(SavedBandwidthTable.COLUMN_TIMESTAMP, savedBandwidthTable.getTimestamp());
+
+        // insert row
+        return db.insert(SavedBandwidthTable.TABLE_NAME, null, values);
+
+        // close db connection
+        // db.close();
+    }
+
+    public List<SavedBandwidthTable> getAllSavedBandwidth() {
+        List<SavedBandwidthTable> savedBandwidths = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + SavedBandwidthTable.TABLE_NAME;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(
+                    cursor.getLong(cursor.getColumnIndex(SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH)),
+                    cursor.getString(cursor.getColumnIndex(SavedBandwidthTable.COLUMN_TIMESTAMP)));
+
+                savedBandwidths.add(savedBandwidthTable);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        // db.close();
+
+        return savedBandwidths;
     }
 }
