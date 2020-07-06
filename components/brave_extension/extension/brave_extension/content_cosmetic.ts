@@ -545,6 +545,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const { selectors } = msg
       let nextIndex = cosmeticStyleSheet.rules.length
       for (const selector of selectors) {
+        if (_parsedCurrentDomain.domain === 'google' && selector === '.ads-ad') {
+          continue
+        }
         if (allSelectorsToRules.has(selector)) {
           continue
         }
