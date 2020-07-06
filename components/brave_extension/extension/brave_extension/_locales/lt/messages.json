@@ -91,16 +91,16 @@
     "message": "Leidžiami visi slapukai",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Kontrolinių kodų tarp kelių svetainių kūrimo funkcija užblokuota",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Kontrolinių kodų kūrimo bandymai užblokuoti",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Visi kontrolinių kodų kūrimo bandymai leidžiami",
+  "allowAllFingerprinting": {
+    "message": "Leisti visus kontrolinius kodus",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

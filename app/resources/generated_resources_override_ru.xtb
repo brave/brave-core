@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="ru">
+<translation id="6744651634043798597">{COUNT,plural, =0{Открыть все в режиме &amp;инкогнито}=1{Открыть в режиме &amp;инкогнито}one{Открыть все (#) в режиме &amp;инкогнито}few{Открыть все (#) в режиме &amp;инкогнито}many{Открыть все (#) в режиме &amp;инкогнито}other{Открыть все (#) в режиме &amp;инкогнито}}</translation>
+<translation id="2431625704210501303">Открыть в режиме &amp;инкогнито</translation>
+<translation id="4620367155626060530">Показывать панель &amp;закладок</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Открыть все в &amp;режиме инкогнито}=1{Открыть в &amp;режиме инкогнито}one{Открыть все (#) в &amp;режиме инкогнито}few{Открыть все (#) в &amp;режиме инкогнито}many{Открыть все (#) в &amp;режиме инкогнито}other{Открыть все (#) в &amp;режиме инкогнито}}</translation>
+<translation id="1985165269306590797">Открыть в режиме &amp;инкогнито</translation>
+<translation id="4680518314108745448">Показывать панель &amp;закладок</translation>
+<translation id="642436385689435488">Открыть все в режиме инкогнито</translation>
+<translation id="5463021359602611602">Открыть в режиме инкогнито</translation>
+<translation id="1850357845349976573">{0,plural, =1{Инкогнито}one{# окно в режиме инкогнито}few{# окна в режиме инкогнито}many{# окон в режиме инкогнито}other{# окна в режиме инкогнито}}</translation>
+<translation id="37784332082579802">{0,plural, =1{1 вкладка инкогнито}one{# вкладка инкогнито}few{# вкладки инкогнито}many{# вкладок инкогнито}other{# вкладки инкогнито}}</translation>
+<translation id="5070556616376997776">Режим инкогнито</translation>
+<translation id="5832813618714645810">Пользователи</translation>
+<translation id="7171000599584840888">Добавить пользователя</translation>
+<translation id="2005199804247617997">Другие пользователи</translation>
+<translation id="2935225303485967257">Управлять пользователями</translation>
+<translation id="8966809848145604011">Другие пользователи</translation>
+<translation id="688280436658139163">Управлять пользователями</translation>
+<translation id="4133080584509825342">Изменить профиль пользователя <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Изменить профиль пользователя <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Пользователь <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Добавить пользователя</translation>
+<translation id="2254158488150713536">Чтобы продолжить, нажмите "OK". Затем создайте другой профиль для своего адреса электронной почты, выбрав "Добавить пользователя".</translation>
+<translation id="1725743343613175327">Чтобы продолжить, нажмите "OK". Затем создайте другой профиль для своего электронного адреса в домене <ph name="DOMAIN"/>, выбрав "Добавить пользователя".</translation>
+<translation id="6921634551681321094">Добавить пользователя</translation>
+<translation id="4904061654709986277">Добавить пользователя</translation>
+<translation id="6114945161119872228">Удалить пользователя</translation>
+<translation id="769308100792069196">Добавить управляемый профиль</translation>
+<translation id="8006143138282906848">Удалить профиль</translation>
+<translation id="6912187023601892621">Создать контролируемый профиль</translation>
+<translation id="8086119151297127544">Разблокируйте свой профиль, прежде чем удалять другой.</translation>
+<translation id="7805701378418968629">Разблокируйте свой профиль, прежде чем добавлять ещё один.</translation>
+<translation id="6315812488257290136">Пользователи</translation>
+<translation id="3707212204259470604">Другие пользователи</translation>
+<translation id="5840822070878669614">Открыть Интернет-магазин Brave</translation>
+<translation id="383007806262310953">Показывать панель закладок</translation>
+<translation id="2890280714162339872">Текущий сеанс в режиме инкогнито: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>.</translation>
+<translation id="4207277598811881727">Текущий сеанс в режиме инкогнито: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>.</translation>
+<translation id="4470052247371020791">Текущий сеанс в режиме инкогнито: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>.</translation>
+<translation id="4332019753717105077">Текущий сеанс в режиме инкогнито: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>, а также внесены другие изменения.</translation>
+<translation id="8648684608605749476">Блокировать файлы cookie сторонних сайтов в режиме инкогнито</translation>
+<translation id="2199515977216775204">В режиме инкогнито сайты не могут использовать файлы cookie, чтобы видеть ваши действия в браузере, например, для показа персонализированной рекламы. Из-за этого некоторые функции на сайтах могут работать некорректно.</translation>
+<translation id="6105125042109106861">Сторонние файлы cookie заблокированы в режиме инкогнито.</translation>
+<translation id="1281501490173223206">Только на время текущего сеанса в режиме инкогнито</translation>
+<translation id="5566692924079383101">Это исключение будет автоматически удалено, после того как вы завершите текущий сеанс в режиме инкогнито</translation>
+<translation id="6906406176003824042">Сменить пользователя</translation>
+<translation id="9063160602596686558">Автоматически отправлять в Brave статистику использования и отчеты о сбоях</translation>
+<translation id="3860292630623580294">(инкогнито)</translation>
+<translation id="4854477725773269949">Разрешить использование в режиме инкогнито</translation>
+<translation id="6436164536244065364">Перейти в Интернет-магазин Brave</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003">Найдите полезные расширения и приложения в <ph name="BEGIN_LINK"/>Интернет-магазине Brave<ph name="END_LINK"/></translation>
+<translation id="6336451774241870485">Новая вкладка инкогнито</translation>
+<translation id="6610147964972079463">Закрыть вкладки инкогнито</translation>
+<translation id="5186185447130319458">Инкогнито</translation>
+<translation id="4933782374919065856">Есть вопросы? Обратитесь к человеку, который контролирует ваш профиль.</translation>
+</translationbundle>

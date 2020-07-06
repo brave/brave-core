@@ -91,16 +91,16 @@
     "message": "ಎಲ್ಲಾ ಕುಕೀಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "ಕ್ರಾಸ್-ಸೈಟ್ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮಾಡುವಿಕೆಯನ್ನು ನಿರ್ಬಂಧಿಸಿ",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮಾಡುವ ಪ್ರಯತ್ನಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "ಎಲ್ಲಾ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಮಾಡುವ ಪ್ರಯತ್ನಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
+  "allowAllFingerprinting": {
+    "message": "ಎಲ್ಲಾ ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್‌ ಅನುಮತಿಸಿ",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

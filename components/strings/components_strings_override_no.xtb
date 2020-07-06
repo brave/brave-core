@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="no">
+<translation id="8820817407110198400">Bokmerkerad</translation>
+<translation id="8362995731815961365">Personen som konfigurerte denne datamaskinen, har valgt å blokkere dette nettstedet.</translation>
+<translation id="4075123085690634698">Åpne siden i et nytt inkognitovindu (⇧ + ⌘ + N)</translation>
+<translation id="2388886110302389394">Åpne siden i et nytt inkognitovindu (Ctrl + Shift + N)</translation>
+<translation id="6957624206566198865">Åpne siden i et nytt inkognitovindu</translation>
+<translation id="2378238891085281592">Du er nå i inkognitomodus</translation>
+<translation id="3774752171665127360">Sider du går til i inkognitofaner, blir ikke værende i nettleserloggen, lageret for informasjonskapsler eller søkeloggen etter at du har lukket alle inkognitofanene. Filer du laster ned eller bokmerker du oppretter, blir lagret.</translation>
+<translation id="9177896974490719854">Du er imidlertid ikke usynlig. Inkognitomodus skjuler ikke surfingen din for arbeidsgiveren din, Internett-leverandøren eller nettstedene du besøker.</translation>
+<translation id="2227116904818538760">Nå er du inkognito</translation>
+<translation id="2007417459975034427">Nå kan du surfe privat. Andre som bruker denne enheten, ser ikke aktiviteten din, men nedlastinger og bokmerker blir lagret.</translation>
+<translation id="2586968635953373425">Åpne et inkognitovindu</translation>
+<translation id="3489858312836205593">Åpne et nytt inkognitovindu i Brave</translation>
+<translation id="6984479912851154518">Går ut av inkognitomodus for å betale via en ekstern app. Vil du fortsette?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Trinn 1: Logg på portalen&lt;/h4&gt;
+    &lt;p&gt;Wi-Fi-nettverk på steder som kaféer eller flyplasser krever at du logger på. For å se påloggingssiden, åpne en side som bruker &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Gå til et nettsted som begynner på &lt;code&gt;http://&lt;/code&gt;, for eksempel &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Logg på via påloggingssiden som åpnes, for å bruke Internett.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Trinn 2: Åpne siden i inkognitomodus (bare på datamaskiner)&lt;/h4&gt;
+    &lt;p&gt;Åpne siden du besøkte, i et inkognitovindu.&lt;/p&gt;
+    &lt;p&gt;Hvis siden åpnes, har du en Brave-utvidelse som ikke fungerer som den skal. For å fikse feilen, slå av utvidelsen.&lt;/p&gt;
+    &lt;h4&gt;Trinn 3: Oppdater operativsystemet&lt;/h4&gt;
+    &lt;p&gt;Sørg for at enheten din er oppdatert.&lt;/p&gt;
+    &lt;h4&gt;Trinn 4: Slå av antivirusprogramvaren midlertidig&lt;/h4&gt;
+    &lt;p&gt;Du ser denne feilmeldingen hvis du har antivirusprogramvare som tilbyr «HTTPS-beskyttelse» eller «HTTPS-skanning», noe som gjør at sikkerhetsfunksjonene i Brave ikke fungerer.&lt;/p&gt;
+    &lt;p&gt;For å fikse dette problemet, slå av antivirusprogramvaren. Hvis siden fungerer når du har slått av programvaren, bør du slå den av når du bruker sikre nettsteder.&lt;/p&gt;
+    &lt;p&gt;Husk å slå på antivirusprogramvaren igjen når du er ferdig.&lt;/p&gt;
+    &lt;h4&gt;Trinn 5: Få mer hjelp&lt;/h4&gt;
+    &lt;p&gt;Hvis du fortsatt får feilmeldingen, bør du kontakte eieren av nettstedet.&lt;/p&gt;</translation>
+</translationbundle>

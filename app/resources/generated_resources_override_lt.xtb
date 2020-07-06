@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="lt">
+<translation id="6744651634043798597">{COUNT,plural, =0{Atidaryti viską &amp;inkognito lange}=1{Atidaryti &amp;inkognito lange}one{Atidaryti viską (#) &amp;inkognito lange}few{Atidaryti viską (#) &amp;inkognito lange}many{Atidaryti viską (#) &amp;inkognito lange}other{Atidaryti viską (#) &amp;inkognito lange}}</translation>
+<translation id="2431625704210501303">Atidaryti &amp;inkognito lange</translation>
+<translation id="4620367155626060530">&amp;Rodyti žymių juostą</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Atidaryti viską &amp;inkognito lange}=1{Atidaryti &amp;inkognito lange}one{Atidaryti viską (#) &amp;inkognito lange}few{Atidaryti viską (#) &amp;inkognito lange}many{Atidaryti viską (#) &amp;inkognito lange}other{Atidaryti viską (#) &amp;inkognito lange}}</translation>
+<translation id="1985165269306590797">Atidaryti inkognito lange</translation>
+<translation id="4680518314108745448">&amp;Rodyti žymių juostą</translation>
+<translation id="642436385689435488">Atidaryti viską inkognito lange</translation>
+<translation id="5463021359602611602">Atidaryti nežinomame lange</translation>
+<translation id="1850357845349976573">{0,plural, =1{Inkognito}one{# atidarytas inkognito langas}few{# atidaryti inkognito langai}many{# atidaryto inkognito lango}other{# atidarytų inkognito langų}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Inkognito}one{Inkognito (#)}few{Inkognito (#)}many{Inkognito (#)}other{Inkognito (#)}}</translation>
+<translation id="5070556616376997776">Veikia inkognito režimas</translation>
+<translation id="5832813618714645810">Žmonės</translation>
+<translation id="7171000599584840888">Pridėti asmenį...</translation>
+<translation id="2005199804247617997">Kiti žmonės</translation>
+<translation id="2935225303485967257">Tvarkyti žmones</translation>
+<translation id="8966809848145604011">Kiti žmonės</translation>
+<translation id="688280436658139163">Tvarkyti žmones</translation>
+<translation id="4133080584509825342">Redaguoti asmens informaciją, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Redaguoti asmens informaciją, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Asmuo <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Pridėti asmenį...</translation>
+<translation id="2254158488150713536">Jei norite tęsti, spustelėkite „Gerai“, tada – „Pridėti asmenį“, kad sukurtumėte naują profilį naudodami savo el. pašto adresą.</translation>
+<translation id="1725743343613175327">Jei norite tęsti, spustelėkite „Gerai“, tada – „Pridėti asmenį“, kad sukurtumėte naują profilį naudodami savo <ph name="DOMAIN"/> el. pašto adresą.</translation>
+<translation id="6921634551681321094">Pridėti asmenį</translation>
+<translation id="4904061654709986277">Pridėti asmenį</translation>
+<translation id="6114945161119872228">Pašalinti šį asmenį</translation>
+<translation id="769308100792069196">Pridėti prižiūrimą asmenį</translation>
+<translation id="8006143138282906848">Pašalinti šį naudotoją</translation>
+<translation id="6912187023601892621">Pridėti prižiūrimą naudotoją</translation>
+<translation id="8086119151297127544">Prieš pašalindami asmenį atrakinkite savo profilį.</translation>
+<translation id="7805701378418968629">Prieš pridėdami asmenį atrakinkite savo profilį.</translation>
+<translation id="6315812488257290136">Žmonės</translation>
+<translation id="3707212204259470604">Tvarkyti kitus žmones</translation>
+<translation id="5840822070878669614">Atidarykite „Brave“ internetinę parduotuvę</translation>
+<translation id="383007806262310953">Rodyti žymių juostą</translation>
+<translation id="2890280714162339872">Dabartinis inkognito režimo seansas: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Dabartinis inkognito režimo seansas: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Dabartinis inkognito režimo seansas: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Dabartinis inkognito režimo seansas: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>ir daugiau</translation>
+<translation id="8648684608605749476">Blokuoti trečiųjų šalių slapukus inkognito režimu</translation>
+<translation id="2199515977216775204">Kai įjungtas inkognito režimas, svetainės negali naudoti slapukų, siekdamos sužinoti apie naršymo veiklą skirtingose svetainėse, pavyzdžiui, kad galėtų suasmeninti skelbimus. Funkcijos gali neveikti tam tikrose svetainėse.</translation>
+<translation id="6105125042109106861">Trečiosios šalies slapukai užblokuoti inkognito režimu</translation>
+<translation id="1281501490173223206">Tik dabartinė inkognito režimo sesija</translation>
+<translation id="5566692924079383101">Ši išimtis bus automatiškai pašalinta, kai išeisite iš dabartinės inkognito režimu veikiančios sesijos</translation>
+<translation id="6906406176003824042">Asmens informacijos redagavimas</translation>
+<translation id="9063160602596686558">Automatiškai siunčia naudojimo statistiką ir strigčių ataskaitas „Brave“</translation>
+<translation id="3860292630623580294">(Inkognito)</translation>
+<translation id="4854477725773269949">Leisti „inkognito“ režimą</translation>
+<translation id="6436164536244065364">Žr. „Brave“ internetinėje parduotuvėje</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003">Raskite plėtinių ir temų <ph name="BEGIN_LINK"/>„Brave“ internetinėje parduotuvėje<ph name="END_LINK"/></translation>
+<translation id="6336451774241870485">Naujas inkognito skirtukas</translation>
+<translation id="6610147964972079463">Užd. inkognito skirt. lapus</translation>
+<translation id="5186185447130319458">Inkognito</translation>
+<translation id="4933782374919065856">Turite klausimų? Susisiekite su jūsų profilį prižiūrinčiu asmeniu.</translation>
+</translationbundle>

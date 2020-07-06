@@ -91,16 +91,16 @@
     "message": "Totes les galetes permeses",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "S'ha bloquejat l'identificador d'empremta dactilar creuada",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Intents d'identificació per empremta dactilar bloquejats",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Es permeten tots els intents d'identificació per empremta dactilar",
+  "allowAllFingerprinting": {
+    "message": "Permet totes les empremtes dactilars",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

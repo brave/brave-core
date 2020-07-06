@@ -8,11 +8,11 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "вгору",
+    "message": "увімкнено",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "вниз",
+    "message": "вимкнено",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
@@ -91,16 +91,16 @@
     "message": "Всі кукіз дозволені",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Міжсайтове розпізнавання відбитків пальців блоковане",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Блоковані спроби зчитування відбитків пальців",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Всі спроби зчитування відбитків пальців дозволені",
+  "allowAllFingerprinting": {
+    "message": "Дозволити усі цифрові відбитки",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

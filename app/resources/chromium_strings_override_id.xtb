@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="id">
+<translation id="6134859571175647580">Peringatan: Brave tidak dapat mencegah ekstensi merekam histori browsing Anda. Untuk menonaktifkan ekstensi ini dalam mode penyamaran, jangan pilih opsi ini.</translation>
+<translation id="1448049584457347995">Agar Brave lebih aman, kami menonaktifkan beberapa ekstensi yang tidak tercantum dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa sepengetahuan Anda.</translation>
+<translation id="8848045066928358658">Agar Brave lebih aman, kami menonaktifkan ekstensi berikut yang tidak tercantum dalam <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa sepengetahuan Anda.</translation>
+<translation id="669092380621816981">Data browsing pengguna ini akan dihapus dari perangkat ini. Untuk memulihkan data, login ke Brave sebagai <ph name="USER_EMAIL"/>.</translation>
+<translation id="4624945300945265642">Buka link di jendela sa&amp;maran Brave</translation>
+<translation id="6554952862405000915">Buka Link di Jendela Sa&amp;maran Brave</translation>
+<translation id="8274659559228306809">{COUNT,plural, =0{Update baru untuk Brave telah tersedia dan akan diterapkan segera setelah diluncurkan kembali.}=1{Update baru untuk Brave telah tersedia dan akan diterapkan segera setelah diluncurkan kembali. Jendela samaran Anda tidak akan dibuka kembali.}other{Update baru untuk Brave telah tersedia dan akan diterapkan segera setelah diluncurkan kembali. # jendela samaran Anda tidak akan dibuka kembali.}}</translation>
+<translation id="3829358914761176693">{COUNT,plural, =0{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini}=1{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini. Jendela samaran Anda tidak akan dibuka kembali.}other{Administrator meminta Anda meluncurkan kembali Brave untuk menerapkan update ini. # jendela samaran Anda tidak akan dibuka kembali.}}</translation>
+<translation id="552349673358711446">{COUNT,plural, =0{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update}=1{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update. Jendela samaran Anda tidak akan dibuka kembali.}other{Administrator mewajibkan Anda meluncurkan kembali Brave untuk menerapkan update. # jendela samaran Anda tidak akan dibuka kembali.}}</translation>
+</translationbundle>

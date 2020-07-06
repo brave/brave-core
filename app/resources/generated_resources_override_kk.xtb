@@ -1,0 +1,59 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="kk">
+<translation id="6744651634043798597">{COUNT,plural, =0{Барлығын &amp;инкогнито терезесінде ашу}=1{Барлығын &amp;инкогнито терезесінде ашу}other{Барлығын (#) &amp;инкогнито терезесінде ашу}}</translation>
+<translation id="2431625704210501303">&amp;Инкогнито терезесінде ашу</translation>
+<translation id="4620367155626060530">Бетбелгілер жолағын &amp;көрсету</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Барлығын &amp;инкогнито терезесінде ашу}=1{&amp;Инкогнито терезесінде ашу}other{Барлығын (#) &amp;инкогнито терезесінде ашу}}</translation>
+<translation id="1985165269306590797">&amp;Инкогнито терезесінде ашу</translation>
+<translation id="4680518314108745448">&amp;Бетбелгілер жолағын көрсету</translation>
+<translation id="642436385689435488">Барлығын инкогнито терезесінде ашу</translation>
+<translation id="5463021359602611602">Инкогнито терезесінде ашу</translation>
+<translation id="1850357845349976573">{0,plural, =1{Инкогнито}other{# инкогнито терезесі ашық}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Инкогнито}other{Инкогнито (#)}}</translation>
+<translation id="5070556616376997776">Инкогнито режиміндесіз</translation>
+<translation id="5832813618714645810">Байланыстар</translation>
+<translation id="7171000599584840888">Адам қосу…</translation>
+<translation id="2005199804247617997">Басқа адамдар</translation>
+<translation id="2935225303485967257">Адамдарды басқару</translation>
+<translation id="8966809848145604011">Басқа адамдар</translation>
+<translation id="688280436658139163">Адамдарды басқару</translation>
+<translation id="4133080584509825342">Адамды, <ph name="PROFILE_NAME"/> атын өңдеу</translation>
+<translation id="4848862725510532982">Адамды, <ph name="PROFILE_NAME"/> және <ph name="USERNAME"/> атын өзгерту</translation>
+<translation id="4536111748245793305">Адам <ph name="VALUE"/></translation>
+<translation id="5828545842856466741">Адам қосу…</translation>
+<translation id="2254158488150713536">Жалғастыру үшін "Жарайды" түймесін түртіп, электрондық пошта мекенжайыңызбен байланысты жаңа профиль жасау үшін "Адамды қосу" тармағын түртіңіз.</translation>
+<translation id="1725743343613175327">Жалғастыру үшін "Жарайды" түймесін түртіп, <ph name="DOMAIN"/> электрондық пошта мекенжайыңыздың жаңа профилін жасау үшін "Адамды қосу" түймесін түртіңіз.</translation>
+<translation id="6921634551681321094">Адам қосу</translation>
+<translation id="4904061654709986277">Адам қосу</translation>
+<translation id="6114945161119872228">Бұл тұлғаны өшіру</translation>
+<translation id="769308100792069196">Бақылаудағы адамды қосу</translation>
+<translation id="8006143138282906848">Бұл пайдаланушыны жою</translation>
+<translation id="6912187023601892621">Бақылаудағы пайдаланушыны қосу</translation>
+<translation id="8086119151297127544">Адам суретін алып тастау үшін профиліңіздің құлпын ашыңыз.</translation>
+<translation id="7805701378418968629">Адам суретін қосу үшін профиліңіздің құлпын ашыңыз.</translation>
+<translation id="6315812488257290136">Адамдар</translation>
+<translation id="3707212204259470604">Басқа пайдаланушыларды басқару</translation>
+<translation id="5840822070878669614">Brave Web Store қызметін ашу</translation>
+<translation id="383007806262310953">Бетбелгілер жолағын көрсету</translation>
+<translation id="2890280714162339872">Ағымдағы инкогнито сеансы: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
+<translation id="4207277598811881727">Ағымдағы инкогнито сеансы: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Ағымдағы инкогнито сеансы: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Ағымдағы инкогнито сеансы: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> және тағы басқа.</translation>
+<translation id="8648684608605749476">Инкогнито режимінде үшінші тарап cookie файлдарын бөгеу</translation>
+<translation id="2199515977216775204">Инкогнито режимінде болғанда, сайттар түрлі сайттардағы браузерді қолдану мәліметін көру үшін (мысалы, жарнамаларды жеке қажеттіліктерге бейімдеу мақсатында) cookie файлдарын пайдалана алмайды. Кейбір сайттарда функциялар дұрыс жұмыс істемеуі мүмкін.</translation>
+<translation id="6105125042109106861">Үшінші тараптың cookie файлдары инкогнито режимінде бөгелген.</translation>
+<translation id="1281501490173223206">Тек ағымдағы инкогнито сеансы</translation>
+<translation id="5566692924079383101">Инкогнито режиміндегі қазіргі сеанстан шыққаннан кейін, бұл ерекше жағдай автоматты түрде өшіріледі.</translation>
+<translation id="6906406176003824042">Пайдаланушы мәліметтерін өзгерту</translation>
+<translation id="9063160602596686558">Қолданыс статистикасын және жаңылыс туралы есептерді Brave жүйесіне автоматты түрде жібереді</translation>
+<translation id="3860292630623580294">(Инкогнито)</translation>
+<translation id="4854477725773269949">Инкогнито режимінде рұқсат беру</translation>
+<translation id="6436164536244065364">Brave Web Store дүкенінен көру</translation>
+<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> дүкенінен кеңейтімдер мен тақырыптар табу</translation>
+<translation id="6336451774241870485">Жаңа жасырын қойынды</translation>
+<translation id="6610147964972079463">Жасырын қойындыларды жабу</translation>
+<translation id="5186185447130319458">Инкогнито</translation>
+<translation id="4933782374919065856">Егер сұрақтарыңыз болса, профиліңізді басқаратын адаммен хабарласыңыз.</translation>
+</translationbundle>

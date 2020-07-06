@@ -91,16 +91,16 @@
     "message": "אפשר את כל קבצי העוגיות",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "טביעות אצבע חוצי אתרים נחסמו",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "ניסיונות טביעת אצבע נחסמו",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "כל ניסיונות טביעת האצבע מותרים",
+  "allowAllFingerprinting": {
+    "message": "אפשר כל לקיחת טביעות אצבע",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

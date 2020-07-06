@@ -1,0 +1,6 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+      <message name="IDS_BLOCK_INTERSTITIAL_MESSAGE_SUPERVISED_USERS_DEPRECATED" desc="Message to be shown to a supervised user directing them to the supervisor.">
+        Questions? Contact the profile who supervises your profile.
+      </message>
+      </grit-part>

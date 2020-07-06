@@ -91,16 +91,16 @@
     "message": "Vidakuzi vyote vimeruhusiwa",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Majaribio ya kuchukua alama za vidole katika tovuti yamezuiwa",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Majaribio ya kuchukua alama za vidole yamezuiwa",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Majaribio yote ya kuchukua alama za vidole yamekubaliwa",
+  "allowAllFingerprinting": {
+    "message": "Ruhusu uchapishaji wote wa alama za vidole",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

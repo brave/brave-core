@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<grit-part>
+  <if expr="not is_android and not is_ios">
+    </if>
+  <if expr="is_android">
+    </if>
+  <if expr="is_ios">
+    </if>
+  <if expr="_google_chrome">
+    </if>
+  <if expr="not _google_chrome">
+    </if>
+
+  <if expr="_google_chrome">
+    </if>
+  <if expr="not _google_chrome">
+    </if>
+
+  <if expr="is_android">
+    </if>
+  <if expr="not is_android">
+    </if>
+
+  <if expr="is_android">
+    </if>
+  <if expr="is_macosx">
+    </if>
+  <if expr="not is_android and not is_macosx">
+    </if>
+  <if expr="is_android">
+    </if>
+  <if expr="not is_android">
+    </if>
+
+  <message name="IDS_CONNECTION_HELP_CONNECTION_NOT_PRIVATE_DETAILS" desc="Details for your connection is not private section in chrome://connection-help. Matches the fourth section in https://support.google.com/chrome/answer/6098869">
+    &lt;h4&gt;Step 1: Sign in to the portal&lt;/h4&gt;
+    &lt;p&gt;Wi-Fi networks at places like cafes or airports need you to sign in. To see the sign-in page, visit a page that uses &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Go to any website starting with &lt;code&gt;http://&lt;/code&gt;, like &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;On the sign-in page that opens, sign in to use the internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;Step 2: Open the page in Private mode (computer only)&lt;/h4&gt;
+    &lt;p&gt;Open the page you were visiting in a Private window.&lt;/p&gt;
+    &lt;p&gt;If the page opens, a Brave extension isn't working right. To fix the error, turn off the extension.&lt;/p&gt;
+    &lt;h4&gt;Step 3: Update your operating system&lt;/h4&gt;
+    &lt;p&gt;Make sure your device is up-to-date.&lt;/p&gt;
+    &lt;h4&gt;Step 4: Temporarily turn off your antivirus&lt;/h4&gt;
+    &lt;p&gt;You'll see this error if you have antivirus software that provides "HTTPS protection" or "HTTPS scanning." The antivirus is preventing Brave from providing security.&lt;/p&gt;
+    &lt;p&gt;To fix the problem, turn off your antivirus software. If the page works after turning off the software, turn off this software when you use secure sites.&lt;/p&gt;
+    &lt;p&gt;Remember to turn your antivirus program back on when you're done.&lt;/p&gt;
+    &lt;h4&gt;Step 5: Get extra help&lt;/h4&gt;
+    &lt;p&gt;If you still see the error, contact the website owner.&lt;/p&gt;
+  </message>
+  <if expr="is_win">
+    </if>
+
+  <if expr="not is_ios">
+    <if expr="_google_chrome">
+      </if>
+    <if expr="not _google_chrome">
+      </if>
+
+    </if>
+
+  </grit-part>

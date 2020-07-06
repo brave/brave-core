@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<!DOCTYPE translationbundle>
+<translationbundle lang="tr">
+<translation id="8820817407110198400">Yer işaretleri çubuğu</translation>
+<translation id="8362995731815961365">Bu bilgisayarı kuran kişi bu siteyi engellemeyi seçmiş.</translation>
+<translation id="4075123085690634698">Sayfayı yeni Gizli pencerede açın (⇧⌘N)</translation>
+<translation id="2388886110302389394">Sayfayı yeni Gizli pencerede açın (Ctrl-Üst Karakter-N)</translation>
+<translation id="6957624206566198865">Sayfayı yeni bir Gizli sekmede aç</translation>
+<translation id="2378238891085281592">Gizli moda geçtiniz</translation>
+<translation id="3774752171665127360">Gizli sekmelerde görüntülediğiniz sayfalar, açık olan tüm gizli sekmeler kapatıldıktan sonra tarayıcınızın geçmişinden, çerez deposundan veya arama geçmişinden silinecektir. İndirdiğiniz dosyalar veya oluşturduğunuz yer işaretleri kalacaktır.</translation>
+<translation id="9177896974490719854">Ancak görünmez olmazsınız. Gizli moda geçmek göz atma etkinliğinizi işvereninizden, İnternet servis sağlayıcınızdan veya ziyaret ettiğiniz web sitelerinden gizlemez.</translation>
+<translation id="2227116904818538760">Gizli sekme açtınız</translation>
+<translation id="2007417459975034427">Artık gizli olarak göz atabilirsiniz. Bu cihazı kullanan diğer kişiler etkinliğinizi görmez. Yine de indirdikleriniz ve yer işaretleri kaydedilir.</translation>
+<translation id="2586968635953373425">Gizli Pencereyi Aç</translation>
+<translation id="3489858312836205593">Yeni Brave gizli penceresi açın</translation>
+<translation id="6984479912851154518">Harici bir uygulama üzerinden ödeme gerçekleştirmek için gizli moddan çıkılacak. Devam edilsin mi?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;1. Adım: Portalda oturum açın&lt;/h4&gt;
+    &lt;p&gt;Kafe veya havaalanı gibi yerlerdeki kablosuz ağlar sizden oturum açmanızı ister. Oturum açma sayfasını görmek için &lt;code&gt;http://&lt;/code&gt; kullanan bir sayfayı ziyaret edin.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;&lt;code&gt;http://&lt;/code&gt; ile başlayan herhangi bir web sitesine (örneğin, &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;) gidin.&lt;/li&gt;
+    &lt;li&gt;Karşınıza gelen oturum açma sayfasında oturum açarak interneti kullanmaya başlayın.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;2. Adım: Sayfayı Gizli modda açın (sadece bilgisayar)&lt;/h4&gt;
+    &lt;p&gt;Ziyaret etmekte olduğunuz sayfayı Gizli pencerede açın.&lt;/p&gt;
+    &lt;p&gt;Sayfa açılırsa Brave uzantılarından biri düzgün çalışmıyor demektir. Hatayı düzeltmek için uzantıyı kapatın.&lt;/p&gt;
+    &lt;h4&gt;3. Adım: İşletim sisteminizi güncelleyin&lt;/h4&gt;
+    &lt;p&gt;Cihazınızın güncel olduğundan emin olun.&lt;/p&gt;
+    &lt;h4&gt;4. Adım: Virüsten koruma yazılımınızı geçici olarak kapatın&lt;/h4&gt;
+    &lt;p&gt;"HTTPS koruması" veya "HTTPS taraması" sağlayan bir virüsten koruma yazılımı kullanıyorsanız bu hatayı görürsünüz. Virüsten koruma yazılımı, Brave'un güvenlik işlevini engeller.&lt;/p&gt;
+    &lt;p&gt;Sorunu çözmek için virüsten koruma yazılımınızı kapatın. Yazılım kapandıktan sonra sayfa çalışıyorsa, güvenli siteleri kullanacağınız zaman bu yazılımı kapatın.&lt;/p&gt;
+    &lt;p&gt;İşiniz bittiğinde virüsten koruma programınızı tekrar açmayı unutmayın.&lt;/p&gt;
+    &lt;h4&gt;5. Adım: Daha fazla yardım alın&lt;/h4&gt;
+    &lt;p&gt;Hatayı görmeye devam ederseniz web sitesinin sahibiyle iletişime geçin.&lt;/p&gt;</translation>
+</translationbundle>
