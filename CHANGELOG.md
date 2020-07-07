@@ -2,10 +2,10 @@
 
 ## [1.18](https://github.com/brave/brave-ios/releases/tag/v1.18)
 
- - Implemented enhancements to new tab page and favorites overlay. ([#2578](https://github.com/brave/brave-ios/issues/2578))
- - Implemented enhancements to favorites to use fallback monogram letters instead of low-resoltuion icons. ([#2579](https://github.com/brave/brave-ios/issues/2579))
+ - Implemented enhancements to New Tab Page and favorites overlay. ([#2578](https://github.com/brave/brave-ios/issues/2578))
+ - Implemented enhancements to favorites to use fallback monogram letters instead of low-resolution icons. ([#2579](https://github.com/brave/brave-ios/issues/2579))
  - Fixed an issue where favorites icon mismatch when they are reordered. ([#2099](https://github.com/brave/brave-ios/issues/2099))
- - Fixed New Tab Page from loading new images when swithcing between tabs. ([#2071](https://github.com/brave/brave-ios/issues/2071))
+ - Fixed New Tab Page from loading new images when switching between tabs. ([#2071](https://github.com/brave/brave-ios/issues/2071))
  - Fixed fuzzy/low-resolution favicons for favorites. ([#528](https://github.com/brave/brave-ios/issues/528)) 
 
 ## [1.17](https://github.com/brave/brave-ios/releases/tag/v1.17)
