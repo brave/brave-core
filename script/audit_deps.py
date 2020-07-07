@@ -9,6 +9,10 @@ import json
 import argparse
 import subprocess
 
+whitelisted_advisories = [
+    1523,  # Remove when https://github.com/brave/brave-browser/issues/10584 is resolved
+]
+
 
 def main():
     args = parse_args()
@@ -31,25 +35,31 @@ def audit_deps(args):
     output, error_data = audit_process.communicate()
 
     try:
+        # results from audit
         result = json.loads(str(output))
     except ValueError:
         # This can happen in the case of an NPM network error
         print('Audit failed to return valid json')
         return 1
 
-    resolutions, non_dev_exceptions = extract_resolutions(result)
+    # remove the results which match the exceptions
+    for i, val in enumerate(result['actions']):
+        result['actions'][i]['resolves'] = \
+            [d for d in result['actions'][i]['resolves'] if
+                d['id'] not in whitelisted_advisories]
 
-    # Show response output
-    print output
+    resolutions, non_dev_exceptions = extract_resolutions(result)
 
     # Trigger a failure if there are non-dev exceptions
     if non_dev_exceptions:
         print('Result: Audit finished, vulnerabilities found')
+        print(json.dumps(non_dev_exceptions, indent=4))
         return 1
 
     # Still pass if there are dev exceptions, but let the user know about them
     if resolutions:
         print('Result: Audit finished, there are dev package warnings')
+        print(json.dumps(resolutions, indent=4))
     else:
         print('Result: Audit finished, no vulnerabilities found')
     return 0
