@@ -29,7 +29,7 @@ class BraveTodayFeedItemMOTests: CoreDataTestCase {
         backgroundSaveAndWaitForExpectation(inverted: true) {
             BraveTodayFeedItemMO
                 .insertInternal(category: "test", publishTime: dateFrom(string: "2020-07-01 23:59:59"),
-                                url: nil, domain: nil, imageURL: nil, title: "title",
+                                url: nil, imageURL: nil, title: "title",
                                 itemDescription: "itemDescription", contentType: "contentType",
                                 publisherID: "publisherID", publisherName: "publisherName",
                                 publisherLogo: nil, urlHash: UUID().uuidString)
@@ -45,7 +45,6 @@ class BraveTodayFeedItemMOTests: CoreDataTestCase {
     private func createAndWait(category: String = "test",
                                publishTimeString: String = "2020-07-01 23:59:59",
                                url: String? = nil,
-                               domain: String? = nil,
                                imageURL: String? = nil,
                                title: String = "Brave title",
                                itemDescription: String = "Description",
@@ -59,7 +58,7 @@ class BraveTodayFeedItemMOTests: CoreDataTestCase {
         
         backgroundSaveAndWaitForExpectation {
             BraveTodayFeedItemMO
-                .insertInternal(category: category, publishTime: publishTime, url: url, domain: domain,
+                .insertInternal(category: category, publishTime: publishTime, url: url,
                                 imageURL: imageURL, title: title, itemDescription: itemDescription,
                                 contentType: contentType, publisherID: publisherID,
                                 publisherName: publisherName, publisherLogo: publisherLogo,

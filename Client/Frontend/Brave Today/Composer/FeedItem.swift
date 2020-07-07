@@ -49,7 +49,6 @@ extension FeedItem {
         var category: String
         var publishTime: Date
         @URLString var url: URL?
-        var domain: String?
         @URLString var imageURL: URL?
         var title: String
         var description: String
@@ -62,7 +61,6 @@ extension FeedItem {
             case category
             case publishTime = "publish_time"
             case url
-            case domain
             case imageURL = "padded_img"
             case title
             case description

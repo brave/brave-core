@@ -167,20 +167,25 @@ extension FeedItemView {
         if #available(iOS 13, *) {
             dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.content.publishTime, relativeTo: Date())
         }
-        thumbnailImageView.sd_setImage(with: feedItem.content.imageURL, placeholderImage: nil, options: .avoidAutoSetImage, completed: { (image, _, cacheType, _) in
-            if cacheType == .none {
-                UIView.transition(
-                    with: self.thumbnailImageView,
-                    duration: 0.35,
-                    options: [.transitionCrossDissolve, .curveEaseInOut],
-                    animations: {
-                        self.thumbnailImageView.image = image
+        if feedItem.content.imageURL == nil {
+            thumbnailImageView.isHidden = true
+        } else {
+            thumbnailImageView.isHidden = false
+            thumbnailImageView.sd_setImage(with: feedItem.content.imageURL, placeholderImage: nil, options: .avoidAutoSetImage, completed: { (image, _, cacheType, _) in
+                if cacheType == .none {
+                    UIView.transition(
+                        with: self.thumbnailImageView,
+                        duration: 0.35,
+                        options: [.transitionCrossDissolve, .curveEaseInOut],
+                        animations: {
+                            self.thumbnailImageView.image = image
                     }
-                )
-            } else {
-                self.thumbnailImageView.image = image
-            }
-        })
+                    )
+                } else {
+                    self.thumbnailImageView.image = image
+                }
+            })
+        }
         brandLabelView.text = nil
         brandImageView.image = nil
         switch brandVisibility {
