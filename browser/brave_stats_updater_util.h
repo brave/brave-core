@@ -10,16 +10,21 @@
 
 #include "base/time/time.h"
 #include "base/system/sys_info.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave {
 
 std::string GetDateAsYMD(const base::Time& time);
+
+base::Time GetFirstRunTime(PrefService *pref_service);
 
 std::string GetPlatformIdentifier();
 
 int GetIsoWeekNumber(const base::Time& time);
 
 base::Time GetYMDAsDate(const base::StringPiece& ymd);
+
+std::string GetAPIKey();
 
 }  // namespace brave
 

@@ -4,6 +4,7 @@ import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
@@ -15,8 +16,12 @@ import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//extensions/buildflags/buildflags.gni")
-import("//third_party/widevine/cdm/widevine.gni")
 import("//third_party/protobuf/proto_library.gni")
+import("//third_party/widevine/cdm/widevine.gni")
+
+declare_args() {
+  brave_stats_api_key = ""
+}
 
 source_set("browser_process") {
   visibility = [
@@ -27,6 +32,8 @@ source_set("browser_process") {
     "//brave/components/brave_rewards/test:*",
     "//brave/test:*",
   ]
+
+  defines = [ "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"" ]
 
   sources = [
     "autocomplete/brave_autocomplete_provider_client.cc",
@@ -283,6 +290,14 @@ source_set("browser_process") {
 
   if (enable_extensions) {
     deps += [ "extensions" ]
+  }
+
+  if (enable_brave_referrals) {
+    sources += [
+      "brave_referrals/brave_referrals_service_factory.cc",
+      "brave_referrals/brave_referrals_service_factory.h",
+    ]
+    deps += [ "//brave/components/brave_referrals/browser" ]
   }
 
   if (brave_ads_enabled) {

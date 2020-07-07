@@ -4,13 +4,17 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <ctime>
+#include <memory>
 
 #include "brave/browser/brave_stats_updater_util.h"
 
+#include "base/environment.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_piece.h"
 #include "base/strings/string_split.h"
 #include "base/strings/stringprintf.h"
+#include "brave/common/pref_names.h"
+#include "chrome/browser/first_run/first_run.h"
 
 namespace brave {
 
@@ -19,6 +23,28 @@ std::string GetDateAsYMD(const base::Time& time) {
   time.LocalExplode(&exploded);
   return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
                             exploded.day_of_month);
+}
+
+base::Time GetFirstRunTime(PrefService *pref_service) {
+#if defined(OS_ANDROID)
+  // Android doesn't use a sentinel to track first run, so we use a
+  // preference instead. kReferralAndroidFirstRunTimestamp is used because
+  // previously only referrals needed to know the first run value.
+  base::Time first_run_timestamp =
+      pref_service->GetTime(kReferralAndroidFirstRunTimestamp);
+  if (first_run_timestamp.is_null()) {
+    first_run_timestamp = base::Time::Now();
+    pref_service->SetTime(kReferralAndroidFirstRunTimestamp,
+                           first_run_timestamp);
+  }
+  return first_run_timestamp;
+#else
+  (void)pref_service;  // suppress unused warning
+
+  // Note that CreateSentinelIfNeeded() is called in chrome_browser_main.cc,
+  // so this will be a non-blocking read of the cached sentinel value.
+  return first_run::GetFirstRunSentinelCreationTime();
+#endif  // #defined(OS_ANDROID)
 }
 
 std::string GetPlatformIdentifier() {
@@ -73,5 +99,13 @@ base::Time GetYMDAsDate(const base::StringPiece& ymd) {
   return result;
 }
 
+std::string GetAPIKey() {
+  std::string api_key = BRAVE_STATS_API_KEY;
+  std::unique_ptr<base::Environment> env(base::Environment::Create());
+  if (env->HasVar("BRAVE_STATS_API_KEY"))
+    env->GetVar("BRAVE_STATS_API_KEY", &api_key);
+
+  return api_key;
+}
 
 }  // namespace brave

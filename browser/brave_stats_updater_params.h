@@ -9,13 +9,11 @@
 #include <string>
 
 #include "base/macros.h"
+#include "base/time/time.h"
 
+class BraveStatsUpdaterBrowserTest;
 class BraveStatsUpdaterTest;
 class PrefService;
-
-namespace base {
-class Time;
-}
 
 namespace brave {
 
@@ -33,11 +31,13 @@ class BraveStatsUpdaterParams {
   std::string GetMonthlyParam() const;
   std::string GetFirstCheckMadeParam() const;
   std::string GetWeekOfInstallationParam() const;
+  std::string GetDateOfInstallationParam() const;
   std::string GetReferralCodeParam() const;
 
   void SavePrefs();
 
  private:
+  friend class ::BraveStatsUpdaterBrowserTest;
   friend class ::BraveStatsUpdaterTest;
   PrefService* pref_service_;
   std::string ymd_;
@@ -48,8 +48,10 @@ class BraveStatsUpdaterParams {
   int last_check_month_;
   bool first_check_made_;
   std::string week_of_installation_;
+  base::Time date_of_installation_;
   std::string referral_promo_code_;
   static base::Time g_current_time;
+  static bool g_force_first_run;
 
   void LoadPrefs();
 
@@ -61,8 +63,10 @@ class BraveStatsUpdaterParams {
   int GetCurrentMonth() const;
   int GetCurrentISOWeekNumber() const;
   base::Time GetCurrentTimeNow() const;
+  bool ShouldForceFirstRun() const;
 
   static void SetCurrentTimeForTest(const base::Time& current_time);
+  static void SetFirstRunForTest(bool first_run);
 
   DISALLOW_COPY_AND_ASSIGN(BraveStatsUpdaterParams);
 };

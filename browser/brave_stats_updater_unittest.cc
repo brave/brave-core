@@ -36,6 +36,7 @@ class BraveStatsUpdaterTest: public testing::Test {
     brave::RegisterPrefsForBraveStatsUpdater(testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
+    brave::BraveStatsUpdaterParams::SetFirstRunForTest(true);
   }
 
   PrefService* GetLocalState() { return &testing_local_state_; }
@@ -146,6 +147,82 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedNextMonth) {
   brave_stats_updater_params.SavePrefs();
 
   ASSERT_EQ(GetLocalState()->GetInteger(kLastCheckMonth), kThisMonth);
+}
+
+TEST_F(BraveStatsUpdaterTest, HasDateOfInstallationFirstRun) {
+  base::Time::Exploded exploded;
+  base::Time current_time;
+
+  // Set date to 2018-11-04 (ISO week #44)
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+  exploded.day_of_week = 0;
+  exploded.year = 2018;
+  exploded.month = 11;
+  exploded.day_of_month = 4;
+
+  ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+  SetCurrentTimeForTest(current_time);
+
+  brave::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), kToday, kThisWeek, kThisMonth);
+  ASSERT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(),
+            "2018-11-04");
+}
+
+TEST_F(BraveStatsUpdaterTest, HasDailyRetention) {
+  base::Time::Exploded exploded;
+  base::Time current_time, dtoi_time;
+
+  // Set date to 2018-11-04
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+  exploded.day_of_week = 0;
+  exploded.year = 2018;
+  exploded.month = 11;
+  exploded.day_of_month = 4;
+
+  ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &dtoi_time));
+  // Make first run date 6 days earlier (still within 14 day window)
+  exploded.day_of_month = 10;
+  ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+
+  SetCurrentTimeForTest(dtoi_time);
+  brave::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), kToday, kThisWeek, kThisMonth);
+  SetCurrentTimeForTest(current_time);
+  ASSERT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(),
+            "2018-11-04");
+}
+
+TEST_F(BraveStatsUpdaterTest, HasDailyRetentionExpiration) {
+  base::Time::Exploded exploded;
+  base::Time current_time, dtoi_time;
+
+  // Set date to 2018-11-04
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+  exploded.day_of_week = 0;
+  exploded.year = 2018;
+  exploded.month = 11;
+  exploded.day_of_month = 4;
+
+  ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &dtoi_time));
+  // Make first run date 14 days earlier (outside 14 day window)
+  exploded.day_of_month = 18;
+  ASSERT_TRUE(base::Time::FromLocalExploded(exploded, &current_time));
+
+  SetCurrentTimeForTest(dtoi_time);
+  brave::BraveStatsUpdaterParams brave_stats_updater_params(
+      GetLocalState(), kToday, kThisWeek, kThisMonth);
+  SetCurrentTimeForTest(current_time);
+  ASSERT_EQ(brave_stats_updater_params.GetDateOfInstallationParam(), "null");
 }
 
 // This test ensures that our weekly stats cut over on Monday
