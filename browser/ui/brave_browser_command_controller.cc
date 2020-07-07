@@ -14,6 +14,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,6 +22,10 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "components/sync/driver/sync_driver_switches.h"
+#endif
 
 namespace {
 
@@ -97,7 +102,7 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
 }
 
 void BraveBrowserCommandController::InitBraveCommandState() {
-  // Rewards pages doesn't work on tor(guest) session.
+  // Sync & Rewards pages doesn't work on tor(guest) session.
   // They also doesn't work on private window but they are redirected
   // to normal window in this case.
   const bool is_guest_session = browser_->profile()->IsGuestSession();
@@ -107,6 +112,10 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
     UpdateCommandForBraveWallet();
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+    if (switches::IsSyncAllowedByFlag())
+      UpdateCommandForBraveSync();
 #endif
   }
   UpdateCommandForBraveAdblock();
@@ -140,6 +149,10 @@ void BraveBrowserCommandController::UpdateCommandForTor() {
                        !brave::IsTorDisabledForProfile(browser_->profile()));
 }
 #endif
+
+void BraveBrowserCommandController::UpdateCommandForBraveSync() {
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_SYNC, true);
+}
 
 void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
@@ -186,6 +199,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_NEW_TOR_CONNECTION_FOR_SITE:
       brave::NewTorConnectionForSite(browser_);
+      break;
+    case IDC_SHOW_BRAVE_SYNC:
+      brave::ShowSync(browser_);
       break;
     case IDC_SHOW_BRAVE_WALLET:
       brave::ShowBraveWallet(browser_);
