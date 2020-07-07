@@ -29,10 +29,10 @@
 
 using brave_shields::ControlType;
 
-const char kEmbeddedTestServerDirectory[] = "webgl";
-const char kTitleScript[] = "domAutomationController.send(document.title);";
+const char kPluginsLengthScript[] =
+    "domAutomationController.send(navigator.plugins.length);";
 
-class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
+class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -48,14 +48,12 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    test_data_dir = test_data_dir.AppendASCII(kEmbeddedTestServerDirectory);
     embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
     ASSERT_TRUE(embedded_test_server()->Start());
 
     top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
-    get_parameter_url_ =
-        embedded_test_server()->GetURL("a.com", "/getParameter.html");
+    farbling_url_ = embedded_test_server()->GetURL("a.com", "/simple.html");
   }
 
   void TearDown() override {
@@ -63,7 +61,7 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
     content_client_.reset();
   }
 
-  const GURL& get_parameter_url() { return get_parameter_url_; }
+  const GURL& farbling_url() { return farbling_url_; }
 
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
@@ -85,6 +83,13 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   template <typename T>
+  int ExecScriptGetInt(const std::string& script, T* frame) {
+    int value;
+    EXPECT_TRUE(ExecuteScriptAndExtractInt(frame, script, &value));
+    return value;
+  }
+
+  template <typename T>
   std::string ExecScriptGetStr(const std::string& script, T* frame) {
     std::string value;
     EXPECT_TRUE(ExecuteScriptAndExtractString(frame, script, &value));
@@ -102,39 +107,65 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
 
  private:
   GURL top_level_page_url_;
-  GURL get_parameter_url_;
+  GURL farbling_url_;
   std::unique_ptr<ChromeContentClient> content_client_;
   std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveWebGLFarblingBrowserTest, FarbleGetParameter) {
-  const std::string kExpectedRandomString = "UKlSpUqV,TJEix48e";
-  // Farbling level: maximum
-  // WebGL getParameter of restricted values: pseudo-random data with no
-  // relation to original data
-  BlockFingerprinting();
-  NavigateToURLUntilLoadStop(get_parameter_url());
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), kExpectedRandomString);
-  // second time, same as the first (tests that results are consistent for the
-  // lifetime of a session, and that the PRNG properly resets itself at the
-  // beginning of each calculation)
-  NavigateToURLUntilLoadStop(get_parameter_url());
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), kExpectedRandomString);
-
-  std::string actual;
-  // Farbling level: balanced (default)
-  // WebGL getParameter of restricted values: original data
-  SetFingerprintingDefault();
-  NavigateToURLUntilLoadStop(get_parameter_url());
-  actual = ExecScriptGetStr(kTitleScript, contents());
-
+// Tests results of farbling known values
+IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
+                       FarbleNavigatorPlugins) {
   // Farbling level: off
-  // WebGL getParameter of restricted values: original data
+  // get real length of navigator.plugins
   AllowFingerprinting();
-  NavigateToURLUntilLoadStop(get_parameter_url());
-  // Since this value depends on the underlying hardware, we just test that the
-  // results for "off" are the same as the results for "balanced", and that
-  // they're different than the results for "maximum".
-  EXPECT_EQ(ExecScriptGetStr(kTitleScript, contents()), actual);
-  EXPECT_NE(kExpectedRandomString, actual);
+  NavigateToURLUntilLoadStop(farbling_url());
+  int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+
+  // Farbling level: balanced (default)
+  // navigator.plugins should contain all real plugins + 2 fake ones
+  SetFingerprintingDefault();
+  NavigateToURLUntilLoadStop(farbling_url());
+  int balanced_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+  EXPECT_EQ(balanced_length, off_length + 2);
+
+  // Farbling level: maximum
+  // navigator.plugins should contain no real plugins, only 2 fake ones
+  BlockFingerprinting();
+  NavigateToURLUntilLoadStop(farbling_url());
+  int maximum_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+  EXPECT_EQ(maximum_length, 2);
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[0].name);",
+                contents()),
+            "Xr1at27");
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[0].filename);",
+                contents()),
+            "SJEChw48ev3bNGD");
+  EXPECT_EQ(
+      ExecScriptGetStr(
+          "domAutomationController.send(navigator.plugins[0].description);",
+          contents()),
+      "rVqVqVqVqVKlSpUqVqVKlSJEChQIECh");
+  EXPECT_EQ(ExecScriptGetInt(
+                "domAutomationController.send(navigator.plugins[0].length);",
+                contents()),
+            0);
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[1].name);",
+                contents()),
+            "8.fPHDhw");
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[1].filename);",
+                contents()),
+            "06du37du3bt2bNmT");
+  EXPECT_EQ(
+      ExecScriptGetStr(
+          "domAutomationController.send(navigator.plugins[1].description);",
+          contents()),
+      "BgwYMmTpUq1aNmTJky5cOnTp069ePnTp");
+  EXPECT_EQ(ExecScriptGetInt(
+                "domAutomationController.send(navigator.plugins[1].length);",
+                contents()),
+            0);
 }

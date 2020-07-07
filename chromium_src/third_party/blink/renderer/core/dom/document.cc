@@ -226,8 +226,8 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
                                                     wtf_size_t length) {
   uint8_t key[32];
   crypto::HMAC h(crypto::HMAC::SHA256);
-  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
-               sizeof session_key_));
+  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&domain_key_),
+               sizeof domain_key_));
   CHECK(h.Sign(seed, key, sizeof key));
   // initial PRNG seed based on session key and passed-in seed string
   uint64_t v = *reinterpret_cast<uint64_t*>(key);
@@ -239,6 +239,11 @@ WTF::String BraveSessionCache::GenerateRandomString(std::string seed,
     v = lfsr_next(v);
   }
   return value;
+}
+
+std::mt19937_64 BraveSessionCache::MakePseudoRandomGenerator() {
+  uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
+  return std::mt19937_64(seed);
 }
 
 }  // namespace brave
