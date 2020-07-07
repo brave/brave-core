@@ -44,9 +44,14 @@ std::string UrlRequestToString(
 std::string UrlResponseToString(
     const char* func,
     const ledger::UrlResponse& response) {
-  const std::string result =
-      response.status_code >= 200 && response.status_code < 300
-          ? "Success" : "Failure";
+  std::string result;
+  if (!response.error.empty()) {
+    result = "Error (" + response.error + ")";
+  } else if (response.status_code >= 200 && response.status_code < 300) {
+    result = "Success";
+  } else {
+    result = "Failure";
+  }
 
   std::string formatted_headers;
   for (const auto& header : response.headers) {
