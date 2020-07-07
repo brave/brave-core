@@ -302,10 +302,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                     textView.setText(currentDevice);
                                 }
                                 // mRemoveDeviceButton is always visible, we can leave the chain
-                                // in any time with sync v2
-                                if (null != mRemoveDeviceButton) {
-                                    mRemoveDeviceButton.setTag(device);
-                                }
+                                // in any time with sync v2 (except we are now doing reset)
                             }
                             insertPoint.addView(separator, index++);
                             insertPoint.addView(listItemView, index++);
@@ -683,11 +680,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 });
             }
         } else if (mRemoveDeviceButton == v) {
-            BraveSyncDevices.SyncDeviceInfo deviceToDelete =
-                    (BraveSyncDevices.SyncDeviceInfo) v.getTag();
-            assert deviceToDelete.mIsCurrentDevice;
-            assert mDeviceName.equals(deviceToDelete.mName);
-            deleteDeviceDialog(deviceToDelete, v);
+            deleteDeviceDialog(mDeviceName);
         } else if (mShowCategoriesButton == v) {
             SettingsLauncher settingsLauncher = new SettingsLauncherImpl();
             settingsLauncher.launchSettingsActivity(getContext(), BraveManageSyncSettings.class);
@@ -952,11 +945,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         alertDialog.show();
     }
 
-    private void deleteDeviceDialog(BraveSyncDevices.SyncDeviceInfo deviceToDelete, View v) {
-        assert deviceToDelete != null;
-        assert !deviceToDelete.mName.isEmpty();
-        assert deviceToDelete.mIsCurrentDevice;
-        Log.v(TAG, "deleteDeviceDialog deviceToDelete.mName=" + deviceToDelete.mName);
+    private void deleteDeviceDialog(String deviceName) {
+        Log.v(TAG, "deleteDeviceDialog deviceName=" + deviceName);
         AlertDialog.Builder alert = new AlertDialog.Builder(getActivity(), R.style.Theme_Chromium_AlertDialog);
         if (null == alert) {
             return;
@@ -989,8 +979,8 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 }
             }
         };
-        String deviceNameToDisplay = deviceToDelete.mName + " " +
-                getResources().getString(R.string.brave_sync_this_device_text);
+        String deviceNameToDisplay =
+                deviceName + " " + getResources().getString(R.string.brave_sync_this_device_text);
         AlertDialog alertDialog =
                 alert.setTitle(getResources().getString(R.string.brave_sync_remove_device_text))
                         .setMessage(
