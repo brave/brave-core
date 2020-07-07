@@ -229,6 +229,7 @@ void Contribution::OnTimer(uint32_t timer_id) {
     auto callback = std::bind(&Contribution::SetRetryCounter,
         this,
         _1);
+
     ledger_->GetContributionInfo(contribution_id, callback);
     return;
   }

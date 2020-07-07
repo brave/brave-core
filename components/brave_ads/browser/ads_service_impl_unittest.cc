@@ -193,8 +193,6 @@ class MockRewardsService : public RewardsService {
       void(RewardsServicePrivateObserver* observer));
   MOCK_METHOD1(RemovePrivateObserver,
       void(RewardsServicePrivateObserver* observer));
-  MOCK_METHOD1(ResetTheWholeState,
-      void(const base::Callback<void(bool)>& callback));
 
   MOCK_METHOD1(GetAnonWalletStatus,
       void(brave_rewards::GetAnonWalletStatusCallback callback));
@@ -230,6 +228,8 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(ClearDiagnosticLog, void(
       brave_rewards::ClearDiagnosticLogCallback callback));
+
+  MOCK_METHOD1(CompleteReset, void(brave_rewards::SuccessCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

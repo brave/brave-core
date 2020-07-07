@@ -19,7 +19,7 @@ export interface Props {
   testId?: string
   type?: Type
   tabIndexSelected?: number
-  onChange?: (event: React.MouseEvent<HTMLDivElement>) => void
+  onChange?: (newTabId: number) => void
 }
 
 export default class Tab extends React.PureComponent<Props, {}> {
@@ -33,8 +33,8 @@ export default class Tab extends React.PureComponent<Props, {}> {
     const tabs: React.ReactNode[] = tabTitles.map((title: string, i: number) => {
       return (
         <StyledTab
-          left={i === 0}
           key={`tab-${i}`}
+          data-test-id={`${this.props.testId}-${i}`}
           onClick={this.onSwitchChange.bind(this, i)}
         >
           <StyledText
@@ -49,13 +49,13 @@ export default class Tab extends React.PureComponent<Props, {}> {
     return tabs
   }
 
-  onSwitchChange = (index: number, event: React.MouseEvent<HTMLDivElement>) => {
+  onSwitchChange = (index: number) => {
     if (index === this.props.tabIndexSelected) {
       return
     }
 
     if (this.props.onChange) {
-      this.props.onChange(event)
+      this.props.onChange(index)
     }
   }
 
@@ -66,8 +66,7 @@ export default class Tab extends React.PureComponent<Props, {}> {
       tabIndexSelected
     } = this.props
 
-    if (!tabTitles || tabTitles.length !== 2) {
-      console.warn('Rewards Tab currently supports 2 tab titles')
+    if (!tabTitles) {
       return null
     }
 
@@ -77,7 +76,7 @@ export default class Tab extends React.PureComponent<Props, {}> {
           <StyledSlider data-test-id={testId}>
             {this.getTabs(tabTitles)}
           </StyledSlider>
-          <StyledBullet tabIndexSelected={tabIndexSelected} />
+          <StyledBullet size={tabTitles.length} tabIndexSelected={tabIndexSelected} />
         </StyledSwitch>
       </RewardsTabWrapper>
     )

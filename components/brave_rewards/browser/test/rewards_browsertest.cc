@@ -409,4 +409,47 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, BackupRestoreModalHasNoNotice) {
       "#backup-recovery-key");
 }
 
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
+  rewards_browsertest_helper::EnableRewards(browser());
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='settingsButton']");
+
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents(),
+      "#modal");
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='settings-modal-tabs-2']");
+
+  rewards_browsertest_util::WaitForElementToContain(
+      contents(),
+      "[data-test-id='reset-text']",
+      "Your Rewards data will");
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
+  rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='settingsButton']");
+
+  rewards_browsertest_util::WaitForElementToAppear(
+      contents(),
+      "#modal");
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "[data-test-id='settings-modal-tabs-2']");
+
+  rewards_browsertest_util::WaitForElementToContain(
+      contents(),
+      "[data-test-id='reset-text']",
+      "Your 30 BATs and other Rewards");
+}
+
 }  // namespace rewards_browsertest

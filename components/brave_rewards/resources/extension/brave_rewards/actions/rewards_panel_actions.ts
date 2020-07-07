@@ -149,3 +149,7 @@ export const onAnonWalletStatus = (result: RewardsExtension.Result) => action(ty
 })
 
 export const onAllNotificationsDeleted = () => action(types.ON_ALL_NOTIFICATIONS_DELETED)
+
+export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
+  success
+})

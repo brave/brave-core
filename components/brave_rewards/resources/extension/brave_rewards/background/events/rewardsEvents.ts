@@ -114,6 +114,10 @@ chrome.braveRewards.onPromotionFinish.addListener((result: RewardsExtension.Resu
   })
 })
 
+chrome.braveRewards.onCompleteReset.addListener((properties: { success: boolean }) => {
+  rewardsPanelActions.onCompleteReset(properties.success)
+})
+
 // Fetch initial data required to refresh state, keeping in mind
 // that the extension process be restarted at any time.
 // TODO(petemill): Move to initializer function or single 'init' action.

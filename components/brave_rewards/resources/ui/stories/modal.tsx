@@ -57,6 +57,8 @@ storiesOf('Rewards/Modal', module)
           onPrint={doNothing}
           onSaveFile={doNothing}
           onRestore={doNothing}
+          onReset={doNothing}
+          internalFunds={0}
         />
       </div>
     )

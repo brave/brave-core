@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { types } from '../../constants/rewards_panel_types'
-import * as storage from '../storage'
+import { Reducer } from 'redux'
 
 const getPromotion = (id: string, promotions?: RewardsExtension.Promotion[]) => {
   if (!promotions) {
@@ -34,10 +34,7 @@ const updatePromotion = (newPromotion: RewardsExtension.Promotion, promotions: R
   return Object.assign(oldPromotion[0], newPromotion)
 }
 
-export const promotionPanelReducer = (state: RewardsExtension.State | undefined, action: any) => {
-  if (state === undefined) {
-    state = storage.load()
-  }
+export const promotionPanelReducer: Reducer<RewardsExtension.State | undefined> = (state: RewardsExtension.State, action: any) => {
   const payload = action.payload
   switch (action.type) {
     case types.FETCH_PROMOTIONS: {

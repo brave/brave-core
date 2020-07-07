@@ -54,6 +54,15 @@ export class App extends React.Component<Props, State> {
         creating: false
       })
     }
+
+    if (
+      !prevProps.rewardsData.walletCreated &&
+      this.props.rewardsData.walletCreated
+    ) {
+      this.setState({
+        creating: false
+      })
+    }
   }
 
   onCreateWalletClicked = () => {

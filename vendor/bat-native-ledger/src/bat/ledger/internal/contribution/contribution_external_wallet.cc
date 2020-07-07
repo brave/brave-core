@@ -56,7 +56,6 @@ void ContributionExternalWallet::Process(
       _1,
       *wallet,
       callback);
-
   ledger_->GetContributionInfo(contribution_id, get_callback);
 }
 

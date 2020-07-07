@@ -434,6 +434,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
+    case types.COMPLETE_RESET: {
+      chrome.send('brave_rewards.completeReset')
+      break
+    }
+    case types.ON_COMPLETE_RESET: {
+      if (action.payload.success) {
+        return undefined
+      }
+      break
+    }
   }
 
   return state

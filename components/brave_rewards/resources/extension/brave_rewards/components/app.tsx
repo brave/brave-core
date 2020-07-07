@@ -63,8 +63,6 @@ export class RewardsPanel extends React.Component<Props, State> {
       this.props.actions.onAllNotifications(list)
     })
 
-    this.handleGrantNotification()
-
     const { externalWallet, walletCreated } = this.props.rewardsPanelData
 
     if (walletCreated) {
@@ -73,10 +71,22 @@ export class RewardsPanel extends React.Component<Props, State> {
       chrome.braveRewards.getRewardsParameters((parameters: RewardsExtension.RewardsParameters) => {
         rewardsPanelActions.onRewardsParameters(parameters)
       })
+
+      chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
+        this.props.actions.onAllNotifications(list)
+      })
+
+      chrome.windows.getCurrent({}, this.onWindowCallback)
+
+      this.handleGrantNotification()
     }
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
+    if (!this.props.rewardsPanelData.walletCreated) {
+      return
+    }
+
     if (
       !prevProps.rewardsPanelData.walletCreated &&
       this.props.rewardsPanelData.walletCreated

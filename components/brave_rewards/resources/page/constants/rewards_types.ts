@@ -97,5 +97,7 @@ export const enum types {
   GET_COUNTRY_CODE = '@@rewards/GET_COUNTRY_CODE',
   ON_COUNTRY_CODE = '@@rewards/ON_COUNTRY_CODE',
   TOGGLE_ENABLE_MAIN = '@@rewards/TOGGLE_ENABLE_MAIN',
-  ON_INITIALIZED = '@@rewards/ON_INITIALIZED'
+  ON_INITIALIZED = '@@rewards/ON_INITIALIZED',
+  COMPLETE_RESET = '@@rewards/COMPLETE_RESET',
+  ON_COMPLETE_RESET = '@@rewards/ON_COMPLETE_RESET'
 }

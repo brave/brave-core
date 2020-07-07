@@ -203,6 +203,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetRewardsParameters(
       std::unique_ptr<brave_rewards::RewardsParameters> parameters);
 
+  void CompleteReset(const base::ListValue* args);
+
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                        int32_t result) override;
@@ -278,6 +280,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
     brave_rewards::RewardsService* rewards_service) override;
 
   void ReconcileStampReset() override;
+
+  void OnCompleteReset(const bool success) override;
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -479,6 +483,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getCountryCode",
       base::BindRepeating(&RewardsDOMHandler::GetCountryCode,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.completeReset",
+      base::BindRepeating(&RewardsDOMHandler::CompleteReset,
       base::Unretained(this)));
 }
 
@@ -1917,6 +1924,22 @@ void RewardsDOMHandler::GetCountryCode(const base::ListValue* args) {
       "brave_rewards.countryCode", base::Value(country_code));
 }
 
+void RewardsDOMHandler::CompleteReset(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->CompleteReset(base::DoNothing());
+}
+
+void RewardsDOMHandler::OnCompleteReset(const bool success) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.completeReset", base::Value(success));
+}
 
 }  // namespace
 

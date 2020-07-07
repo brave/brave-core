@@ -283,6 +283,8 @@ class PageWallet extends React.Component<Props, State> {
               onPrint={doNothing}
               onSaveFile={doNothing}
               onRestore={doNothing}
+              onReset={doNothing}
+              internalFunds={0}
             />
             : null
         }

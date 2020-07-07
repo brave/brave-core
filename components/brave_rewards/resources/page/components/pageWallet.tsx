@@ -31,7 +31,6 @@ const clipboardCopy = require('clipboard-copy')
 
 interface State {
   activeTabId: number
-  modalBackup: boolean
   modalActivity: boolean
   modalPendingContribution: boolean
   modalVerify: boolean
@@ -45,7 +44,6 @@ class PageWallet extends React.Component<Props, State> {
     super(props)
     this.state = {
       activeTabId: 0,
-      modalBackup: false,
       modalActivity: false,
       modalPendingContribution: false,
       modalVerify: false
@@ -68,7 +66,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   onModalBackupClose = () => {
-    if (this.urlHashIs('#backup-restore')) {
+    if (this.urlHashIs('#manage-wallet')) {
       window.location.hash = ''
     }
     this.actions.onModalBackupClose()
@@ -86,8 +84,7 @@ class PageWallet extends React.Component<Props, State> {
     return this.state.activeTabId === 0 && !this.hasUserFunds()
   }
 
-  onModalBackupTabChange = () => {
-    const newTabId = this.state.activeTabId === 0 ? 1 : 0
+  onModalBackupTabChange = (newTabId: number) => {
     this.setState({
       activeTabId: newTabId
     })
@@ -136,6 +133,11 @@ class PageWallet extends React.Component<Props, State> {
       key = this.pullRecoveryKeyFromFile(key)
       this.actions.recoverWallet(key)
     }
+  }
+
+  onModalBackupOnReset = () => {
+    this.actions.onModalBackupClose()
+    this.actions.completeReset()
   }
 
   pullRecoveryKeyFromFile = (key: string) => {
@@ -210,7 +212,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   isBackupUrl = () => {
-    if (this.urlHashIs('#backup-restore')) {
+    if (this.urlHashIs('#manage-wallet')) {
       this.onModalBackupOpen()
     }
   }
@@ -745,6 +747,15 @@ class PageWallet extends React.Component<Props, State> {
     )
   }
 
+  getInternalFunds = () => {
+    const { balance } = this.props.rewardsData
+    if (!balance.wallets) {
+      return 0
+    }
+
+    return (balance.wallets['anonymous'] || 0) + (balance.wallets['blinded'] || 0)
+  }
+
   render () {
     const {
       recoveryKey,
@@ -810,6 +821,8 @@ class PageWallet extends React.Component<Props, State> {
               onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
               onVerify={this.onVerifyClick.bind(this, true)}
+              onReset={this.onModalBackupOnReset}
+              internalFunds={this.getInternalFunds()}
               error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
             />
             : null

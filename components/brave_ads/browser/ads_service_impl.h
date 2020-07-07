@@ -182,7 +182,7 @@ class AdsServiceImpl : public AdsService,
   void Start();
   void Stop();
 
-  void ResetAllState();
+  void ResetAllState() override;
   void OnResetAllState(
       const bool success);
 
@@ -218,7 +218,6 @@ class AdsServiceImpl : public AdsService,
       const std::string& json);
   void RetryViewingAdNotification(
       const std::string& uuid);
-  void ResetTheWholeState(const base::Callback<void(bool)>& callback) override;
 
   void SetAdsServiceForNotificationHandler();
   void ClearAdsServiceForNotificationHandler();
@@ -279,9 +278,6 @@ class AdsServiceImpl : public AdsService,
   void OnReset(
       const ads::ResultCallback& callback,
       const bool success);
-
-  void OnResetTheWholeState(base::Callback<void(bool)> callback,
-                                 bool success);
 
   void OnRunDBTransaction(
       ads::RunDBTransactionCallback callback,

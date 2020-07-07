@@ -182,9 +182,7 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                        const base::android::JavaParamRef<jobject>& obj,
                        const base::android::JavaParamRef<jstring>& pass_phrase);
 
-    void OnAdsResetTheWholeState(bool sucess);
-
-    void OnResetTheWholeState(bool sucess);
+    void OnResetTheWholeState(const bool success);
 
     void OnGetGetReconcileStamp(uint64_t timestamp);
 

@@ -87,6 +87,8 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnAdsEnabled(RewardsService* rewards_service,
                             bool ads_enabled) override;
 
+  void OnCompleteReset(const bool success) override;
+
  private:
   Profile* profile_;
 
