@@ -763,7 +763,7 @@ def combine_override_xtb_into_original(source_string_path):
         for translation in xtb_tree.xpath('//translation'):
             if translation.attrib['id'] in override_translation_fps:
                 translation.getparent().remove(translation)
-            if translation_fps.count(translation.attrib['id']) > 1:
+            elif translation_fps.count(translation.attrib['id']) > 1:
                 translation.getparent().remove(translation)
                 translation_fps.remove(translation.attrib['id'])
 
