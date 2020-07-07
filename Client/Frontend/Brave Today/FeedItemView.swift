@@ -238,7 +238,7 @@ extension FeedItemView {
         static let basic = Layout(
             root: .init(
                 axis: .vertical,
-                spacing: 10,
+                spacing: 6,
                 children: [
                     .title(2),
                     .date

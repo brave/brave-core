@@ -79,18 +79,18 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         switch card {
         case .sponsor(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SponsorCardView>
-            cell.content.feedView.setupWithItem(item, showingBrand: true)
+            cell.content.feedView.setupWithItem(item, brandVisibility: .none)
             cell.content.actionHandler = handler(for: item)
             return cell
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>
-            cell.content.feedView.setupWithItem(item, showingBrand: true)
+            cell.content.feedView.setupWithItem(item, brandVisibility: .logo)
             cell.content.actionHandler = handler(for: item)
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
-            cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.0, showingBrand: true)
-            cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.1, showingBrand: true)
+            cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.0, brandVisibility: .logo)
+            cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.1, brandVisibility: .logo)
             cell.content.actionHandler = handler(from: { $0 == 0 ? pair.0 : pair.1 })
             return cell
         case .group(let items, let title, let direction, let displayBrand):
@@ -111,11 +111,32 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             }
             groupView.titleLabel.text = title
             groupView.titleLabel.isHidden = title.isEmpty
+            
+            let isItemsAllSameSource = Set(items.map(\.content.publisherID)).count == 1
+            
             zip(groupView.feedViews, items).forEach { (view, item) in
-                view.setupWithItem(item, showingBrand: false)
+                view.setupWithItem(
+                    item,
+                    brandVisibility: (isItemsAllSameSource && displayBrand) ? .none : .name
+                )
             }
             if displayBrand {
-                groupView.groupBrandImageView.sd_setImage(with: nil)
+                if let logo = items.first?.source.logo {
+                    groupView.groupBrandImageView.sd_setImage(with: logo, placeholderImage: nil, options: .avoidAutoSetImage) { (image, _, cacheType, _) in
+                        if cacheType == .none {
+                            UIView.transition(
+                                with: groupView.groupBrandImageView,
+                                duration: 0.35,
+                                options: [.transitionCrossDissolve, .curveEaseInOut],
+                                animations: {
+                                    groupView.groupBrandImageView.image = image
+                            }
+                            )
+                        } else {
+                            groupView.groupBrandImageView.image = image
+                        }
+                    }
+                }
             } else {
                 groupView.groupBrandImageView.image = nil
             }
@@ -126,7 +147,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<NumberedFeedGroupView>
             cell.content.titleLabel.text = title
             zip(cell.content.feedViews, items).forEach { (view, item) in
-                view.setupWithItem(item, showingBrand: false)
+                view.setupWithItem(item, brandVisibility: .none)
             }
             cell.content.actionHandler = handler(from: { items[$0] })
             return cell
@@ -135,7 +156,13 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
 }
 
 extension FeedItemView {
-    func setupWithItem(_ feedItem: FeedItem, showingBrand: Bool) {
+    enum BrandVisibility {
+        case none
+        case name
+        case logo
+    }
+    
+    func setupWithItem(_ feedItem: FeedItem, brandVisibility: BrandVisibility = .none) {
         titleLabel.text = feedItem.content.title
         if #available(iOS 13, *) {
             dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.content.publishTime, relativeTo: Date())
@@ -154,23 +181,30 @@ extension FeedItemView {
                 self.thumbnailImageView.image = image
             }
         })
-        if showingBrand, let logo = feedItem.source.logo {
-            brandImageView.sd_setImage(with: logo, placeholderImage: nil, options: .avoidAutoSetImage) { (image, _, cacheType, _) in
-                if cacheType == .none {
-                    UIView.transition(
-                        with: self.thumbnailImageView,
-                        duration: 0.35,
-                        options: [.transitionCrossDissolve, .curveEaseInOut],
-                        animations: {
-                            self.thumbnailImageView.image = image
+        brandLabelView.text = nil
+        brandImageView.image = nil
+        switch brandVisibility {
+        case .none:
+            break
+        case .name:
+            brandLabelView.text = feedItem.content.publisherName
+        case .logo:
+            if let logo = feedItem.source.logo {
+                brandImageView.sd_setImage(with: logo, placeholderImage: nil, options: .avoidAutoSetImage) { (image, _, cacheType, _) in
+                    if cacheType == .none {
+                        UIView.transition(
+                            with: self.brandImageView,
+                            duration: 0.35,
+                            options: [.transitionCrossDissolve, .curveEaseInOut],
+                            animations: {
+                                self.brandImageView.image = image
+                            }
+                        )
+                    } else {
+                        self.brandImageView.image = image
                     }
-                    )
-                } else {
-                    self.thumbnailImageView.image = image
                 }
             }
-        } else {
-            brandImageView.image = nil
         }
     }
 }
