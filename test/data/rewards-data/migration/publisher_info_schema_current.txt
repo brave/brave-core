@@ -13,7 +13,6 @@ index|promotion_promotion_id_index|promotion|CREATE INDEX promotion_promotion_id
 index|recurring_donation_publisher_id_index|recurring_donation|CREATE INDEX recurring_donation_publisher_id_index ON recurring_donation (publisher_id)
 index|server_publisher_amounts_publisher_key_index|server_publisher_amounts|CREATE INDEX server_publisher_amounts_publisher_key_index ON server_publisher_amounts (publisher_key)
 index|server_publisher_banner_publisher_key_index|server_publisher_banner|CREATE INDEX server_publisher_banner_publisher_key_index ON server_publisher_banner (publisher_key)
-index|server_publisher_info_publisher_key_index|server_publisher_info|CREATE INDEX server_publisher_info_publisher_key_index ON server_publisher_info (publisher_key)
 index|server_publisher_links_publisher_key_index|server_publisher_links|CREATE INDEX server_publisher_links_publisher_key_index ON server_publisher_links (publisher_key)
 index|sku_order_items_order_id_index|sku_order_items|CREATE INDEX sku_order_items_order_id_index ON sku_order_items (order_id)
 index|sku_order_items_order_item_id_index|sku_order_items|CREATE INDEX sku_order_items_order_item_id_index ON sku_order_items (order_item_id)
@@ -30,6 +29,7 @@ index|sqlite_autoindex_meta_1|meta|
 index|sqlite_autoindex_processed_publisher_1|processed_publisher|
 index|sqlite_autoindex_promotion_1|promotion|
 index|sqlite_autoindex_publisher_info_1|publisher_info|
+index|sqlite_autoindex_publisher_prefix_list_1|publisher_prefix_list|
 index|sqlite_autoindex_recurring_donation_1|recurring_donation|
 index|sqlite_autoindex_server_publisher_amounts_1|server_publisher_amounts|
 index|sqlite_autoindex_server_publisher_banner_1|server_publisher_banner|
@@ -54,10 +54,11 @@ table|pending_contribution|pending_contribution|CREATE TABLE pending_contributio
 table|processed_publisher|processed_publisher|CREATE TABLE processed_publisher (publisher_key TEXT PRIMARY KEY NOT NULL,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP)
 table|promotion|promotion|CREATE TABLE promotion (promotion_id TEXT NOT NULL,version INTEGER NOT NULL,type INTEGER NOT NULL,public_keys TEXT NOT NULL,suggestions INTEGER NOT NULL DEFAULT 0,approximate_value DOUBLE NOT NULL DEFAULT 0,status INTEGER NOT NULL DEFAULT 0,expires_at TIMESTAMP NOT NULL,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, claimed_at TIMESTAMP, claim_id TEXT, legacy BOOLEAN DEFAULT 0 NOT NULL,PRIMARY KEY (promotion_id))
 table|publisher_info|publisher_info|CREATE TABLE publisher_info(publisher_id LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,excluded INTEGER DEFAULT 0 NOT NULL,name TEXT NOT NULL,favIcon TEXT NOT NULL,url TEXT NOT NULL,provider TEXT NOT NULL)
+table|publisher_prefix_list|publisher_prefix_list|CREATE TABLE publisher_prefix_list (hash_prefix BLOB PRIMARY KEY NOT NULL)
 table|recurring_donation|recurring_donation|CREATE TABLE recurring_donation (publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE,amount DOUBLE DEFAULT 0 NOT NULL,added_date INTEGER DEFAULT 0 NOT NULL)
 table|server_publisher_amounts|server_publisher_amounts|CREATE TABLE server_publisher_amounts (publisher_key LONGVARCHAR NOT NULL,amount DOUBLE DEFAULT 0 NOT NULL,CONSTRAINT server_publisher_amounts_unique     UNIQUE (publisher_key, amount))
 table|server_publisher_banner|server_publisher_banner|CREATE TABLE server_publisher_banner (publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,title TEXT,description TEXT,background TEXT,logo TEXT)
-table|server_publisher_info|server_publisher_info|CREATE TABLE server_publisher_info (publisher_key LONGVARCHAR PRIMARY KEY NOT NULL UNIQUE,status INTEGER DEFAULT 0 NOT NULL,excluded INTEGER DEFAULT 0 NOT NULL,address TEXT NOT NULL)
+table|server_publisher_info|server_publisher_info|CREATE TABLE server_publisher_info (publisher_key LONGVARCHAR PRIMARY KEY NOT NULL,status INTEGER DEFAULT 0 NOT NULL,address TEXT NOT NULL,updated_at TIMESTAMP NOT NULL)
 table|server_publisher_links|server_publisher_links|CREATE TABLE server_publisher_links (publisher_key LONGVARCHAR NOT NULL,provider TEXT,link TEXT,CONSTRAINT server_publisher_links_unique     UNIQUE (publisher_key, provider))
 table|sku_order|sku_order|CREATE TABLE sku_order (order_id TEXT NOT NULL,total_amount DOUBLE,merchant_id TEXT,location TEXT,status INTEGER NOT NULL DEFAULT 0,contribution_id TEXT,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,PRIMARY KEY (order_id))
 table|sku_order_items|sku_order_items|CREATE TABLE sku_order_items (order_item_id TEXT NOT NULL,order_id TEXT NOT NULL,sku TEXT,quantity INTEGER,price DOUBLE,name TEXT,description TEXT,type INTEGER,expires_at TIMESTAMP,created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,CONSTRAINT sku_order_items_unique     UNIQUE (order_item_id, order_id))

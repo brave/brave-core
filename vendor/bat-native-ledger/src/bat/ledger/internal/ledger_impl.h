@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
+#include "base/time/time.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
@@ -36,6 +37,7 @@ class Media;
 }
 
 namespace braveledger_publisher {
+class PrefixListReader;
 class Publisher;
 }
 
@@ -413,19 +415,28 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& publisher_key,
       ledger::ResultCallback callback);
 
-  void ClearServerPublisherList(ledger::ResultCallback callback);
+  bool ShouldFetchServerPublisherInfo(
+      ledger::ServerPublisherInfo* server_info);
 
-  void InsertServerPublisherList(
-      const std::vector<ledger::ServerPublisherPartial>& list,
+  void SearchPublisherPrefixList(
+      const std::string& publisher_key,
+      ledger::SearchPublisherPrefixListCallback callback);
+
+  void ResetPublisherPrefixList(
+      std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
       ledger::ResultCallback callback);
 
-  void InsertPublisherBannerList(
-      const std::vector<ledger::PublisherBanner>& list,
+  void InsertServerPublisherInfo(
+      const ledger::ServerPublisherInfo& server_info,
       ledger::ResultCallback callback);
 
   void GetServerPublisherInfo(
-    const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback);
+      const std::string& publisher_key,
+      ledger::GetServerPublisherInfoCallback callback);
+
+  void DeleteExpiredServerPublisherInfo(
+      const int64_t max_age_seconds,
+      ledger::ResultCallback callback);
 
   bool IsPublisherConnectedOrVerified(const ledger::PublisherStatus status);
 
@@ -792,10 +803,12 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  void RefreshPromotions(bool retryAfterError);
+  void OnServerPublisherInfoLoaded(
+      ledger::ServerPublisherInfoPtr server_info,
+      const std::string& publisher_key,
+      ledger::GetServerPublisherInfoCallback callback);
 
-  void DownloadPublisherList(
-      ledger::LoadURLCallback callback);
+  void RefreshPromotions(bool retryAfterError);
 
   void OnRefreshPublisher(
       const ledger::UrlResponse& response,

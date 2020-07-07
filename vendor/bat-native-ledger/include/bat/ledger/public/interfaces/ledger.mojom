@@ -57,6 +57,7 @@ struct PublisherInfo {
   int32 category;
   uint64 reconcile_stamp;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;
+  uint64 status_updated_at;
   string name;
   string url;
   string provider;
@@ -89,6 +90,7 @@ struct PendingContributionInfo {
   string publisher_key;
   RewardsType type;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;
+  uint64 status_updated_at;
   string name;
   string url;
   string provider;
@@ -257,18 +259,9 @@ enum PublisherStatus {
 struct ServerPublisherInfo {
   string publisher_key;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;
-  bool excluded = false;
   string address;
+  uint64 updated_at;
   PublisherBanner? banner;
-};
-
-// This is used so that we don't have copy lock as we will handle
-// banner in a separate save call
-struct ServerPublisherPartial {
-  string publisher_key;
-  PublisherStatus status = PublisherStatus.NOT_VERIFIED;
-  bool excluded = false;
-  string address;
 };
 
 struct TransferFee {

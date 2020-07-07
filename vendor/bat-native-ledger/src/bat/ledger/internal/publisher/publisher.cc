@@ -13,8 +13,10 @@
 #include "base/guid.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/publisher/publisher.h"
-#include "bat/ledger/internal/publisher/publisher_server_list.h"
+#include "bat/ledger/internal/publisher/publisher_prefix_list_updater.h"
+#include "bat/ledger/internal/publisher/server_publisher_fetcher.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/internal/state/state_util.h"
 
@@ -24,63 +26,56 @@ using std::placeholders::_2;
 namespace braveledger_publisher {
 
 Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
-  ledger_(ledger),
-  server_list_(std::make_unique<PublisherServerList>(ledger)) {
+    ledger_(ledger),
+    prefix_list_updater_(
+        std::make_unique<PublisherPrefixListUpdater>(ledger)),
+    server_publisher_fetcher_(
+        std::make_unique<ServerPublisherFetcher>(ledger)) {
 }
 
 Publisher::~Publisher() {
 }
 
-void Publisher::OnTimer(uint32_t timer_id) {
-  server_list_->OnTimer(timer_id);
+bool Publisher::ShouldFetchServerPublisherInfo(
+    ledger::ServerPublisherInfo* server_info) {
+  return server_publisher_fetcher_->IsExpired(server_info);
+}
+
+void Publisher::FetchServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  return server_publisher_fetcher_->Fetch(publisher_key, callback);
 }
 
 void Publisher::RefreshPublisher(
-      const std::string& publisher_key,
-      ledger::OnRefreshPublisherCallback callback) {
-  server_list_->Start(std::bind(&Publisher::OnRefreshPublisher,
-          this,
-          _1,
-          publisher_key,
-          callback));
-}
-
-void Publisher::OnRefreshPublisher(
-    const ledger::Result result,
     const std::string& publisher_key,
     ledger::OnRefreshPublisherCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Publisher list was not successfully refreshed");
-    callback(ledger::PublisherStatus::NOT_VERIFIED);
-    return;
-  }
+  // Bypass cache and unconditionally fetch the latest info
+  // for the specified publisher.
+  server_publisher_fetcher_->Fetch(publisher_key,
+      [this, callback](auto server_info) {
+        auto status = server_info
+            ? server_info->status
+            : ledger::PublisherStatus::NOT_VERIFIED;
 
-  const auto server_callback =
-    std::bind(&Publisher::OnRefreshPublisherServerPublisher,
-              this,
-              _1,
-              callback);
+        // If, after refresh, the publisher is now verified
+        // attempt to process any pending contributions for
+        // unverified publishers.
+        if (status == ledger::PublisherStatus::VERIFIED) {
+          ledger_->ContributeUnverifiedPublishers();
+        }
 
-  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
-}
-
-void Publisher::OnRefreshPublisherServerPublisher(
-    ledger::ServerPublisherInfoPtr info,
-    ledger::OnRefreshPublisherCallback callback) {
-  auto status = ledger::PublisherStatus::NOT_VERIFIED;
-  if (info) {
-    status = info->status;
-  }
-  callback(status);
+        callback(status);
+      });
 }
 
 void Publisher::SetPublisherServerListTimer(const bool rewards_enabled) {
-  if (!rewards_enabled) {
-    server_list_->ClearTimer();
-    return;
+  if (rewards_enabled) {
+    prefix_list_updater_->StartAutoUpdate(
+        std::bind(&Publisher::OnPublisherPrefixListUpdated, this));
+  } else {
+    prefix_list_updater_->StopAutoUpdate();
   }
-
-  server_list_->SetTimer(false);
 }
 
 void Publisher::CalcScoreConsts(const int min_duration_seconds) {
@@ -140,17 +135,18 @@ void Publisher::SaveVisit(
     return;
   }
 
-  auto server_callback =
-      std::bind(&Publisher::OnSaveVisitServerPublisher,
-                this,
-                _1,
-                publisher_key,
-                visit_data,
-                duration,
-                window_id,
-                callback);
+  auto on_server_info = std::bind(&Publisher::OnSaveVisitServerPublisher,
+      this, _1, publisher_key, visit_data, duration, window_id, callback);
 
-  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
+  ledger_->SearchPublisherPrefixList(
+      publisher_key,
+      [this, publisher_key, on_server_info](bool publisher_exists) {
+        if (publisher_exists) {
+          ledger_->GetServerPublisherInfo(publisher_key, on_server_info);
+        } else {
+          on_server_info(nullptr);
+        }
+      });
 }
 
 ledger::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
@@ -196,13 +192,10 @@ void Publisher::OnSaveVisitServerPublisher(
     status = server_info->status;
   }
 
-  bool server_excluded = server_info && server_info->excluded;
-
   ledger::PublisherInfoCallback callbackGetPublishers =
       std::bind(&Publisher::SaveVisitInternal,
           this,
           status,
-          server_excluded,
           publisher_key,
           visit_data,
           duration,
@@ -216,7 +209,6 @@ void Publisher::OnSaveVisitServerPublisher(
 
 void Publisher::SaveVisitInternal(
     const ledger::PublisherStatus status,
-    bool server_excluded,
     const std::string& publisher_key,
     const ledger::VisitData& visit_data,
     uint64_t duration,
@@ -264,20 +256,14 @@ void Publisher::SaveVisitInternal(
   publisher_info->url = visit_data.url;
   publisher_info->status = status;
 
-  bool excluded = IsExcluded(
-      publisher_info->id,
-      server_excluded,
-      static_cast<ledger::PublisherExclude>(publisher_info->excluded));
+  bool excluded =
+      publisher_info->excluded == ledger::PublisherExclude::EXCLUDED;
   bool ignore_time = ignoreMinTime(publisher_key);
   if (duration == 0) {
     ignore_time = false;
   }
 
   ledger::PublisherInfoPtr panel_info = nullptr;
-
-  if (excluded) {
-    publisher_info->excluded = ledger::PublisherExclude::EXCLUDED;
-  }
 
   uint64_t min_visit_time = static_cast<uint64_t>(
       braveledger_state::GetPublisherMinVisitTime(ledger_));
@@ -561,22 +547,6 @@ bool Publisher::IsConnectedOrVerified(const ledger::PublisherStatus status) {
          status == ledger::PublisherStatus::VERIFIED;
 }
 
-bool Publisher::IsExcluded(
-    const std::string& publisher_id,
-    const bool server_exclude,
-    const ledger::PublisherExclude& excluded) {
-  // If exclude is set to 1, we should avoid further computation and return true
-  if (excluded == ledger::PublisherExclude::EXCLUDED) {
-    return true;
-  }
-
-  if (excluded == ledger::PublisherExclude::INCLUDED) {
-    return false;
-  }
-
-  return server_exclude;
-}
-
 void Publisher::getPublisherActivityFromUrl(
     uint64_t windowId,
     const ledger::VisitData& visit_data,
@@ -680,6 +650,13 @@ void Publisher::GetPublisherBanner(
                 publisher_key,
                 callback);
 
+  // NOTE: We do not attempt to search the prefix list before getting
+  // the publisher data because if the prefix list was not properly
+  // loaded then the user would not see the correct banner information
+  // for a verified publisher. Assuming that the user has explicitly
+  // requested this information by interacting with the UI, we should
+  // make a best effort to return correct and updated information even
+  // if the prefix list is incorrect.
   ledger_->GetServerPublisherInfo(publisher_key, banner_callback);
 }
 
@@ -731,6 +708,15 @@ void Publisher::OnGetPublisherBannerPublisher(
   }
 
   callback(std::move(new_banner));
+}
+
+void Publisher::OnPublisherPrefixListUpdated() {
+  // Attempt to reprocess any contributions for previously
+  // unverified publishers that are now verified.
+  ledger_->ContributeUnverifiedPublishers();
+
+  // Remove stale server publisher records to recover space.
+  server_publisher_fetcher_->PurgeExpiredRecords();
 }
 
 }  // namespace braveledger_publisher

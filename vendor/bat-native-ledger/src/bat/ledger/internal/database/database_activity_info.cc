@@ -623,7 +623,7 @@ void DatabaseActivityInfo::GetRecordsList(
 
   std::string query = base::StringPrintf(
     "SELECT ai.publisher_id, ai.duration, ai.score, "
-    "ai.percent, ai.weight, spi.status, pi.excluded, "
+    "ai.percent, ai.weight, spi.status, spi.updated_at, pi.excluded, "
     "pi.name, pi.url, pi.provider, "
     "pi.favIcon, ai.reconcile_stamp, ai.visits "
     "FROM %s AS ai "
@@ -649,6 +649,7 @@ void DatabaseActivityInfo::GetRecordsList(
       ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
@@ -689,14 +690,15 @@ void DatabaseActivityInfo::OnGetRecordsList(
     info->weight = GetDoubleColumn(record_pointer, 4);
     info->status = static_cast<ledger::mojom::PublisherStatus>(
         GetIntColumn(record_pointer, 5));
+    info->status_updated_at = GetInt64Column(record_pointer, 6);
     info->excluded = static_cast<ledger::PublisherExclude>(
-        GetIntColumn(record_pointer, 6));
-    info->name = GetStringColumn(record_pointer, 7);
-    info->url = GetStringColumn(record_pointer, 8);
-    info->provider = GetStringColumn(record_pointer, 9);
-    info->favicon_url = GetStringColumn(record_pointer, 10);
-    info->reconcile_stamp = GetInt64Column(record_pointer, 11);
-    info->visits = GetIntColumn(record_pointer, 12);
+        GetIntColumn(record_pointer, 7));
+    info->name = GetStringColumn(record_pointer, 8);
+    info->url = GetStringColumn(record_pointer, 9);
+    info->provider = GetStringColumn(record_pointer, 10);
+    info->favicon_url = GetStringColumn(record_pointer, 11);
+    info->reconcile_stamp = GetInt64Column(record_pointer, 12);
+    info->visits = GetIntColumn(record_pointer, 13);
 
     list.push_back(std::move(info));
   }

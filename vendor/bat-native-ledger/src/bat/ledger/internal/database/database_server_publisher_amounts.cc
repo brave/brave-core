@@ -103,6 +103,9 @@ bool DatabaseServerPublisherAmounts::Migrate(
     case 15: {
       return MigrateToV15(transaction);
     }
+    case 28: {
+      return MigrateToV28(transaction);
+    }
     default: {
       return true;
     }
@@ -179,57 +182,62 @@ bool DatabaseServerPublisherAmounts::MigrateToV15(
   return true;
 }
 
-void DatabaseServerPublisherAmounts::InsertOrUpdateList(
-    ledger::DBTransaction* transaction,
-    const std::vector<ledger::PublisherBanner>& list) {
+bool DatabaseServerPublisherAmounts::MigrateToV28(
+    ledger::DBTransaction* transaction) {
   DCHECK(transaction);
-
-  if (list.empty()) {
-    BLOG(1, "List is empty");
-    return;
-  }
-
-  const std::string base_query = base::StringPrintf(
-      "INSERT OR REPLACE INTO %s VALUES ",
-      kTableName);
-
-  size_t i = 0;
-  std::string query;
-  for (const auto& info : list) {
-    // It's ok if amounts are empty
-    if (info.amounts.empty()) {
-      continue;
-    }
-
-    if (i == 0) {
-      query += base_query;
-    }
-
-    for (const auto& amount : info.amounts) {
-      if (i == kBatchLimit) {
-        query += base_query;
-        i = 0;
-      }
-
-      query += base::StringPrintf(
-        R"(("%s",%g))",
-        info.publisher_key.c_str(),
-        amount);
-      query += (i == kBatchLimit - 1) ? ";" : ",";
-      i++;
-    }
-  }
-
-  if (query.empty()) {
-    BLOG(1, "Query is empty");
-    return;
-  }
-
-  query.pop_back();
-
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = query;
+  command->command = base::StringPrintf("DELETE FROM %s", kTableName);
+  transaction->commands.push_back(std::move(command));
+  return true;
+}
+
+void DatabaseServerPublisherAmounts::InsertOrUpdate(
+    ledger::DBTransaction* transaction,
+    const ledger::ServerPublisherInfo& server_info) {
+  DCHECK(transaction && !server_info.publisher_key.empty());
+  if (!server_info.banner || server_info.banner->amounts.empty()) {
+    return;
+  }
+
+  std::string value_list;
+  for (const auto& amount : server_info.banner->amounts) {
+    value_list += base::StringPrintf(
+        R"(("%s",%g),)",
+        server_info.publisher_key.c_str(),
+        amount);
+  }
+
+  DCHECK(!value_list.empty());
+
+  // Remove trailing comma
+  value_list.pop_back();
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = base::StringPrintf(
+      "INSERT OR REPLACE INTO %s VALUES %s",
+      kTableName,
+      value_list.c_str());
+
+  transaction->commands.push_back(std::move(command));
+}
+
+void DatabaseServerPublisherAmounts::DeleteRecords(
+    ledger::DBTransaction* transaction,
+    const std::string& publisher_key_list) {
+  DCHECK(transaction);
+  if (publisher_key_list.empty()) {
+    return;
+  }
+
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::RUN;
+  command->command = base::StringPrintf(
+      "DELETE FROM %s WHERE publisher_key IN (%s)",
+      kTableName,
+      publisher_key_list.c_str());
+
   transaction->commands.push_back(std::move(command));
 }
 

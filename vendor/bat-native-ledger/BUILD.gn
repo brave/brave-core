@@ -92,7 +92,8 @@ source_set("headers") {
 
 proto_library("publishers_proto") {
   sources = [
-    "src/bat/ledger/internal/publisher/publisher_list.proto",
+    "src/bat/ledger/internal/publisher/protos/channel_response.proto",
+    "src/bat/ledger/internal/publisher/protos/publisher_prefix_list.proto",
   ]
 }
 
@@ -125,6 +126,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/legacy/bat_state.h",
     "src/bat/ledger/internal/common/bind_util.cc",
     "src/bat/ledger/internal/common/bind_util.h",
+    "src/bat/ledger/internal/common/brotli_helpers.h",
+    "src/bat/ledger/internal/common/brotli_helpers.cc",
     "src/bat/ledger/internal/common/security_helper.cc",
     "src/bat/ledger/internal/common/security_helper.h",
     "src/bat/ledger/internal/common/time_util.cc",
@@ -200,6 +203,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/database_promotion_creds.h",
     "src/bat/ledger/internal/database/database_publisher_info.cc",
     "src/bat/ledger/internal/database/database_publisher_info.h",
+    "src/bat/ledger/internal/database/database_publisher_prefix_list.cc",
+    "src/bat/ledger/internal/database/database_publisher_prefix_list.h",
     "src/bat/ledger/internal/database/database_recurring_tip.cc",
     "src/bat/ledger/internal/database/database_recurring_tip.h",
     "src/bat/ledger/internal/database/database_server_publisher_amounts.cc",
@@ -258,14 +263,18 @@ source_set("ledger") {
     "src/bat/ledger/internal/legacy/unsigned_tx_properties.h",
     "src/bat/ledger/internal/legacy/wallet_info_properties.cc",
     "src/bat/ledger/internal/legacy/wallet_info_properties.h",
+    "src/bat/ledger/internal/publisher/prefix_list_reader.cc",
+    "src/bat/ledger/internal/publisher/prefix_list_reader.h",
     "src/bat/ledger/internal/publisher/prefix_util.h",
     "src/bat/ledger/internal/publisher/prefix_util.cc",
     "src/bat/ledger/internal/publisher/publisher.cc",
     "src/bat/ledger/internal/publisher/publisher.h",
-    "src/bat/ledger/internal/publisher/publisher_list_reader.cc",
-    "src/bat/ledger/internal/publisher/publisher_list_reader.h",
-    "src/bat/ledger/internal/publisher/publisher_server_list.cc",
-    "src/bat/ledger/internal/publisher/publisher_server_list.h",
+    "src/bat/ledger/internal/publisher/publisher_prefix_list_updater.cc",
+    "src/bat/ledger/internal/publisher/publisher_prefix_list_updater.h",
+    "src/bat/ledger/internal/publisher/publisher_status_helper.cc",
+    "src/bat/ledger/internal/publisher/publisher_status_helper.h",
+    "src/bat/ledger/internal/publisher/server_publisher_fetcher.cc",
+    "src/bat/ledger/internal/publisher/server_publisher_fetcher.h",
     "src/bat/ledger/internal/recovery/recovery.cc",
     "src/bat/ledger/internal/recovery/recovery.h",
     "src/bat/ledger/internal/recovery/recovery_empty_balance.cc",
@@ -358,8 +367,10 @@ source_set("ledger") {
   deps = [
     ":publishers_proto",
     "//base",
+    "//brave/components/brave_private_cdn",
     "//crypto",
     "//third_party/boringssl",
+    "//third_party/brotli:dec",
     "//third_party/protobuf:protobuf_lite",
     "//third_party/re2",
     "//url",

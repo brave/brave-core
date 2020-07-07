@@ -24,9 +24,13 @@ class DatabaseServerPublisherBanner: public DatabaseTable {
 
   bool Migrate(ledger::DBTransaction* transaction, const int target) override;
 
-  void InsertOrUpdateList(
-      const std::vector<ledger::PublisherBanner>& list,
-      ledger::ResultCallback callback);
+  void InsertOrUpdate(
+      ledger::DBTransaction* transaction,
+      const ledger::ServerPublisherInfo& server_info);
+
+  void DeleteRecords(
+      ledger::DBTransaction* transaction,
+      const std::string& publisher_key_list);
 
   void GetRecord(
       const std::string& publisher_key,
@@ -44,6 +48,8 @@ class DatabaseServerPublisherBanner: public DatabaseTable {
   bool MigrateToV7(ledger::DBTransaction* transaction);
 
   bool MigrateToV15(ledger::DBTransaction* transaction);
+
+  bool MigrateToV28(ledger::DBTransaction* transaction);
 
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,

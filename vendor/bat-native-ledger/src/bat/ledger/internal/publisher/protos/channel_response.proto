@@ -1,0 +1,61 @@
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package publishers_pb;
+
+message SocialLinks {
+  string youtube = 1;
+  string twitter = 2;
+  string twitch = 3;
+}
+
+message SiteBannerDetails {
+  string title = 1;
+  string description = 2;
+  string background_url = 3;
+  string logo_url = 4;
+  repeated double donation_amounts = 5;
+  SocialLinks social_links = 6;
+}
+
+enum UpholdWalletState {
+  UPHOLD_ACCOUNT_NO_KYC = 0;
+  UPHOLD_ACCOUNT_KYC = 1;
+}
+
+message UpholdWallet {
+  UpholdWalletState wallet_state = 1;
+  string address = 2;
+}
+
+enum PaypalWalletState {
+  PAYPAL_ACCOUNT_NO_KYC = 0;
+  PAYPAL_ACCOUNT_KYC = 1;
+}
+
+message PaypalWallet {
+  PaypalWalletState wallet_state = 1;
+}
+
+message Wallet {
+  oneof provider {
+    UpholdWallet uphold_wallet = 1;
+    PaypalWallet paypal_wallet = 2;
+  }
+}
+
+message ChannelResponse {
+  string channel_identifier = 1;
+  repeated Wallet wallets = 2;
+  SiteBannerDetails site_banner_details = 3;
+}
+
+message ChannelResponseList {
+  repeated ChannelResponse channel_responses = 1;
+}

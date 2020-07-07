@@ -204,7 +204,7 @@ void DatabaseMediaPublisherInfo::GetRecord(
 
   const std::string query = base::StringPrintf(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "pi.provider, spi.status, pi.excluded "
+      "pi.provider, spi.status, spi.updated_at, pi.excluded "
       "FROM %s as mpi "
       "INNER JOIN publisher_info AS pi ON mpi.publisher_id = pi.publisher_id "
       "LEFT JOIN server_publisher_info AS spi "
@@ -225,6 +225,7 @@ void DatabaseMediaPublisherInfo::GetRecord(
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::STRING_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE,
+      ledger::DBCommand::RecordBindingType::INT64_TYPE,
       ledger::DBCommand::RecordBindingType::INT_TYPE
   };
 
@@ -266,8 +267,9 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   info->provider = GetStringColumn(record, 4);
   info->status =
       static_cast<ledger::mojom::PublisherStatus>(GetIntColumn(record, 5));
+  info->status_updated_at = GetInt64Column(record, 6);
   info->excluded =
-      static_cast<ledger::PublisherExclude>(GetIntColumn(record, 6));
+      static_cast<ledger::PublisherExclude>(GetIntColumn(record, 7));
 
   callback(ledger::Result::LEDGER_OK, std::move(info));
 }

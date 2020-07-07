@@ -3,19 +3,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/internal/request/request_publisher.h"
 #include "bat/ledger/internal/request/request_util.h"
 
 namespace braveledger_request_util {
 
-std::string GetPublisherListUrl(const uint32_t page) {
-  const std::string path = base::StringPrintf(
-      "/api/v3/public/channels?page=%d",
-      page);
+std::string GetPublisherPrefixListUrl() {
+  return BuildUrl(
+      "/publishers/prefix-list",
+      "",
+      ServerTypes::kPublisher);
+}
 
-  return BuildUrl(path, "", ServerTypes::kPublisher);
+std::string GetPublisherInfoUrl(const std::string& hash_prefix) {
+  // The endpoint is case-sensitive, so convert the hash prefix to
+  // lower case.
+  const std::string prefix = base::ToLowerASCII(hash_prefix);
+  return BuildUrl(
+      base::StringPrintf("/publishers/prefixes/%s", prefix.c_str()),
+      "",
+      ServerTypes::kPrivateCDN);
 }
 
 }  // namespace braveledger_request_util

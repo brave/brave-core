@@ -94,7 +94,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
 
   const std::string query =
       "SELECT ai.publisher_id, ai.duration, ai.score, "
-      "ai.percent, ai.weight, spi.status, pi.excluded, "
+      "ai.percent, ai.weight, spi.status, spi.updated_at, pi.excluded, "
       "pi.name, pi.url, pi.provider, "
       "pi.favIcon, ai.reconcile_stamp, ai.visits "
       "FROM activity_info AS ai "
@@ -115,7 +115,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
               transaction->commands[0]->type,
               ledger::DBCommand::Type::READ);
           ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 13u);
+          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 1u);
         }));
 
@@ -133,7 +133,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
 
   const std::string query =
       "SELECT ai.publisher_id, ai.duration, ai.score, "
-      "ai.percent, ai.weight, spi.status, pi.excluded, "
+      "ai.percent, ai.weight, spi.status, spi.updated_at, pi.excluded, "
       "pi.name, pi.url, pi.provider, "
       "pi.favIcon, ai.reconcile_stamp, ai.visits "
       "FROM activity_info AS ai "
@@ -154,7 +154,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
               transaction->commands[0]->type,
               ledger::DBCommand::Type::READ);
           ASSERT_EQ(transaction->commands[0]->command, query);
-          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 13u);
+          ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 14u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 2u);
         }));
 

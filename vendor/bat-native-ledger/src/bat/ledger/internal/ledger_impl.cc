@@ -19,7 +19,9 @@
 #include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/common/time_util.h"
+#include "bat/ledger/internal/publisher/prefix_list_reader.h"
 #include "bat/ledger/internal/publisher/publisher.h"
+#include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/legacy/bat_state.h"
 #include "bat/ledger/internal/promotion/promotion.h"
@@ -783,7 +785,6 @@ void LedgerImpl::OneTimeTip(
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
   bat_contribution_->OnTimer(timer_id);
-  bat_publisher_->OnTimer(timer_id);
   bat_promotion_->OnTimer(timer_id);
   bat_api_->OnTimer(timer_id);
 }
@@ -797,7 +798,15 @@ void LedgerImpl::SaveRecurringTip(
 }
 
 void LedgerImpl::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
-  bat_database_->GetRecurringTips(callback);
+  bat_database_->GetRecurringTips([this, callback](
+      ledger::PublisherInfoList list) {
+    // The publisher status field may be expired. Attempt to refresh
+    // expired publisher status values before executing callback.
+    braveledger_publisher::RefreshPublisherStatus(
+        this,
+        std::move(list),
+        callback);
+  });
 }
 
 void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
@@ -1072,7 +1081,15 @@ std::string LedgerImpl::GetShareURL(
 
 void LedgerImpl::GetPendingContributions(
     ledger::PendingContributionInfoListCallback callback) {
-  bat_database_->GetPendingContributions(callback);
+  bat_database_->GetPendingContributions([this, callback](
+      ledger::PendingContributionInfoList list) {
+    // The publisher status field may be expired. Attempt to refresh
+    // expired publisher status values before executing callback.
+    braveledger_publisher::RefreshPublisherStatus(
+        this,
+        std::move(list),
+        callback);
+  });
 }
 
 void LedgerImpl::RemovePendingContribution(
@@ -1164,26 +1181,54 @@ void LedgerImpl::DeleteActivityInfo(
   bat_database_->DeleteActivityInfo(publisher_key, callback);
 }
 
-void LedgerImpl::ClearServerPublisherList(ledger::ResultCallback callback) {
-  bat_database_->ClearServerPublisherList(callback);
+bool LedgerImpl::ShouldFetchServerPublisherInfo(
+    ledger::ServerPublisherInfo* server_info) {
+  return bat_publisher_->ShouldFetchServerPublisherInfo(server_info);
 }
 
-void LedgerImpl::InsertServerPublisherList(
-    const std::vector<ledger::ServerPublisherPartial>& list,
-    ledger::ResultCallback callback) {
-  bat_database_->InsertServerPublisherList(list, callback);
+void LedgerImpl::SearchPublisherPrefixList(
+    const std::string& publisher_key,
+    ledger::SearchPublisherPrefixListCallback callback) {
+  bat_database_->SearchPublisherPrefixList(publisher_key, callback);
 }
 
-void LedgerImpl::InsertPublisherBannerList(
-    const std::vector<ledger::PublisherBanner>& list,
+void LedgerImpl::ResetPublisherPrefixList(
+    std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
     ledger::ResultCallback callback) {
-  bat_database_->InsertPublisherBannerList(list, callback);
+  bat_database_->ResetPublisherPrefixList(std::move(reader), callback);
+}
+
+void LedgerImpl::InsertServerPublisherInfo(
+    const ledger::ServerPublisherInfo& server_info,
+    ledger::ResultCallback callback) {
+  bat_database_->InsertServerPublisherInfo(server_info, callback);
 }
 
 void LedgerImpl::GetServerPublisherInfo(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
-  bat_database_->GetServerPublisherInfo(publisher_key, callback);
+  bat_database_->GetServerPublisherInfo(
+      publisher_key,
+      std::bind(&LedgerImpl::OnServerPublisherInfoLoaded,
+          this, _1, publisher_key, callback));
+}
+
+void LedgerImpl::OnServerPublisherInfoLoaded(
+    ledger::ServerPublisherInfoPtr server_info,
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  if (ShouldFetchServerPublisherInfo(server_info.get())) {
+    BLOG(1, "Server publisher info  is expired for " << publisher_key);
+    bat_publisher_->FetchServerPublisherInfo(publisher_key, callback);
+  } else {
+    callback(std::move(server_info));
+  }
+}
+
+void LedgerImpl::DeleteExpiredServerPublisherInfo(
+    const int64_t max_age_seconds,
+    ledger::ResultCallback callback) {
+  bat_database_->DeleteExpiredServerPublisherInfo(max_age_seconds, callback);
 }
 
 bool LedgerImpl::IsPublisherConnectedOrVerified(
