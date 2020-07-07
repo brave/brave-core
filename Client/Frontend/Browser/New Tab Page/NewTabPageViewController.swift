@@ -150,11 +150,20 @@ class NewTabPageViewController: UIViewController, Themeable {
         fatalError()
     }
     
+    private let braveTodayHeaderView = BraveTodaySectionHeaderView().then {
+        $0.alpha = 0.0
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.addSubview(backgroundView)
         view.addSubview(collectionView)
+        view.addSubview(braveTodayHeaderView)
+        
+        braveTodayHeaderView.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(collectionView.frameLayoutGuide)
+        }
         
         collectionView.backgroundView = backgroundButtonsView
         
@@ -508,6 +517,8 @@ extension NewTabPageViewController {
         if isBraveTodayVisible {
             // Hide the buttons as BraveToday feeds appear
             backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
+            // Show the header as BraveToday feeds appear
+            braveTodayHeaderView.alpha = max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top - 64) / (collectionView.frame.height - 64)))
         }
     }
 }

@@ -114,7 +114,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
         var offset = proposedContentOffset
         let flicked = abs(velocity.y) > 0.3
         if (offset.y > item.frame.minY / 2 && offset.y < item.frame.minY) || (flicked && velocity.y > 0 && offset.y < item.frame.minY) {
-            offset.y = item.frame.minY - 44 // FIXME: Use size of header + padding
+            offset.y = item.frame.minY - 56 // FIXME: Use size of header + padding
         } else if offset.y < item.frame.minY {
             offset.y = 0
         }
