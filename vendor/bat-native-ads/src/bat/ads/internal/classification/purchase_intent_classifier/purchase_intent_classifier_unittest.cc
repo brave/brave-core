@@ -120,8 +120,28 @@ const std::vector<TestTriplets> kTestSearchQueries = {
     "https://www.google.com/search?source=hp&ei=y2eDXsWuI6fIrgThwZuQDw&q=audi+a4",  // NOLINT
     kAudiA4Segments,
     1
+  },
+  {
+    "https://www.google.co.jp/search?ei=YsgBX4DBJbvCmwWbsaHwBw&q=育毛剤+ランキング",  // NOLINT
+    {"jp trial 4-search related word"},
+    1
+  },
+  {
+    "https://search.yahoo.co.jp/search?p=育毛剤+ランキング",
+    {"jp trial 4-search related word"},
+    1
+  },
+  {
+    "https://www.lion.co.jp/en/products/category/kitchen/35",
+    {"cpg purchase intent"},
+    1
   }
 };
+
+const uint16_t kTestPurchaseIntentSignalLevel = 1;
+const uint16_t kTestPurchaseIntentClassificationThreshold = 10;
+const uint64_t kTestPurchaseIntentSignalDecayTimeWindow =
+    base::Time::kSecondsPerHour * base::Time::kHoursPerDay * 7;
 
 }  // namespace
 
@@ -129,9 +149,9 @@ class BatAdsPurchaseIntentClassifierTest : public ::testing::Test {
  protected:
   BatAdsPurchaseIntentClassifierTest()
       : purchase_intent_classifier_(std::make_unique<
-            PurchaseIntentClassifier>(kPurchaseIntentSignalLevel,
-                kPurchaseIntentClassificationThreshold,
-                    kPurchaseIntentSignalDecayTimeWindow)) {
+            PurchaseIntentClassifier>(kTestPurchaseIntentSignalLevel,
+                kTestPurchaseIntentClassificationThreshold,
+                    kTestPurchaseIntentSignalDecayTimeWindow)) {
     // You can do set-up work for each test here
   }
 
