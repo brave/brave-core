@@ -204,6 +204,16 @@
       <message name="IDS_BRAVE_NEW_TAB_REWARDS" desc="Brave Rewards Title">Brave Rewards</message>
       <message name="IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE" desc="Background image title">Background Image</message>
 
+      <message name="IDS_BRAVE_NEW_TAB_STATS_TAB" desc="Brave Stats title">Brave Stats</message>
+      <message name="IDS_BRAVE_NEW_TAB_CLOCK_TAB" desc="Clock title">Clock</message>
+      <message name="IDS_BRAVE_NEW_TAB_TOP_SITES_TAB" desc="Top Sites title">Top Sites</message>
+      <message name="IDS_BRAVE_NEW_TAB_BACKGROUND_IMG_TAB" desc="Background image title">Background Image</message>
+      <message name="IDS_BRAVE_NEW_TAB_WIDGET_ADD" desc="Add Widget Text">Add</message>
+      <message name="IDS_BRAVE_NEW_TAB_WIDGET_HIDE" desc="Hide Widget Text">Hide</message>
+      <message name="IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC" desc="Rewards widget description">Earn tokens for watching privacy-respecting ads.</message>
+      <message name="IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC" desc="Binance widget description">Trade Crypto on Binance directly in your browser.</message>
+
       <!-- WebUI private tab resources -->
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_DONE" desc="">Done</message>
@@ -823,6 +833,7 @@
       >
         Hide sponsored images
       </message>
+      <message name="IDS_ADD_CARD_WIDGET_TITLE" desc="">Add Card</message>
       <message name="IDS_TOGETHER_WIDGET_TITLE" desc="">Brave Together</message>
       <message name="IDS_TOGETHER_WIDGET_WELCOME_TITLE" desc="">Start a private video call with your friends and colleagues.</message>
       <message name="IDS_TOGETHER_WIDGET_START_BUTTON" desc="">Start video call</message>

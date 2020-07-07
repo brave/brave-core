@@ -17,6 +17,7 @@ export type Preferences = {
   showClock: boolean
   showTopSites: boolean
   showRewards: boolean
+  showAddCard: boolean
   isBrandedWallpaperNotificationDismissed: boolean
 }
 
@@ -56,6 +57,10 @@ export function saveShowTogether (value: boolean): void {
 
 export function saveShowBinance (value: boolean): void {
   sendSavePref('showBinance', value)
+}
+
+export function saveShowAddCard (value: boolean): void {
+  sendSavePref('showAddCard', value)
 }
 
 export function saveBrandedWallpaperOptIn (value: boolean): void {

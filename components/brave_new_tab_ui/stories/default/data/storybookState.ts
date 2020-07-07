@@ -71,6 +71,7 @@ export const getNewTabData = (state: NewTab.State = defaultState) => ({
   showTogether: boolean('Show together?', true),
   togetherSupported: boolean('Together supported?', true),
   showBinance: boolean('Show Binance?', true),
+  showAddCard: true,
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),
   stats: {
     ...state.stats,

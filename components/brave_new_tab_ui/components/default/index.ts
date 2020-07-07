@@ -11,6 +11,7 @@ import { ClockWidget } from './clock'
 import { RewardsWidget } from './rewards'
 import { BinanceWidget } from './binance'
 import { TogetherWidget } from './together'
+import { AddCardWidget } from './addCard'
 import createWidget from './widget'
 
 export * from './page'
@@ -30,5 +31,6 @@ export {
   RewardsWidget,
   BinanceWidget,
   TogetherWidget,
+  AddCardWidget,
   createWidget
 }

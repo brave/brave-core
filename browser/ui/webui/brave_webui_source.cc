@@ -167,8 +167,12 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "topSitesTitle", IDS_BRAVE_NEW_TAB_TOP_SITES },
         { "statsTitle", IDS_BRAVE_NEW_TAB_STATS },
         { "clockTitle", IDS_BRAVE_NEW_TAB_CLOCK },
-        { "rewardsTitle", IDS_BRAVE_NEW_TAB_REWARDS },
         { "backgroundImageTitle", IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE },
+        { "addWidget", IDS_BRAVE_NEW_TAB_WIDGET_ADD },
+        { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },
+        { "rewardsWidgetDesc", IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC },
+        { "binanceWidgetDesc", IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC },
+        { "braveRewardsTitle", IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE },
         // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
         { "done", IDS_BRAVE_PRIVATE_NEW_TAB_DONE },
@@ -232,6 +236,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsWidgetBrandedNotificationTitle", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_TITLE },      // NOLINT
         { "rewardsWidgetBrandedNotificationDescription", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_DESCRIPTION }, // NOLINT
         { "rewardsWidgetBrandedNotificationHideAction", IDS_REWARDS_WIDGET_BRANDED_NOTIFICATION_HIDE_ACTION }, // NOLINT
+        { "addCardWidgetTitle", IDS_ADD_CARD_WIDGET_TITLE },
         // Together Widget
         { "togetherWidgetTitle", IDS_TOGETHER_WIDGET_TITLE },
         { "togetherWidgetWelcomeTitle", IDS_TOGETHER_WIDGET_WELCOME_TITLE },

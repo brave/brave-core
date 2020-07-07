@@ -47,6 +47,7 @@ class DefaultPage extends React.Component<Props, {}> {
           saveShowRewards={PreferencesAPI.saveShowRewards}
           saveShowTogether={PreferencesAPI.saveShowTogether}
           saveShowBinance={PreferencesAPI.saveShowBinance}
+          saveShowAddCard={PreferencesAPI.saveShowAddCard}
           saveBrandedWallpaperOptIn={PreferencesAPI.saveBrandedWallpaperOptIn}
         />
       )
