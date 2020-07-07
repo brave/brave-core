@@ -5,6 +5,7 @@
 #include "brave/ios/browser/prefs/browser_prefs.h"
 #include "brave/ios/browser/first_run/first_run.h"
 
+#include "brave/ios/browser/pref_names.h"
 //#include "components/autofill/core/common/autofill_prefs.h"
 #include "components/browsing_data/core/pref_names.h"
 //#include "components/content_settings/core/browser/host_content_settings_map.h"
