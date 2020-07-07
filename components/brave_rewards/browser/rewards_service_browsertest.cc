@@ -711,11 +711,11 @@ class BraveRewardsBrowserTest
 
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("creds_tokens_sku_resp.json"),
-        &creds_tokens_sku_));
+        &brave_test_resp::creds_tokens_sku_));
 
     ASSERT_TRUE(base::ReadFileToString(
         path.AppendASCII("creds_tokens_sku_prod_resp.json"),
-        &creds_tokens_sku_prod_));
+        &brave_test_resp::creds_tokens_sku_prod_));
 
     ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("parameters_resp.json"),
                                &brave_test_resp::parameters_));
