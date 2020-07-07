@@ -29,6 +29,7 @@
 #include "base/values.h"
 #include "brave_base/random.h"
 #include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -125,8 +126,7 @@ void RedeemUnblindedToken::CreateConfirmation(
 
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code =
-      brave_l10n::LocaleHelper::GetCountryCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   auto confirmation_request_dto = request.CreateConfirmationRequestDTO(
       confirmation, build_channel, platform, country_code);
@@ -460,8 +460,7 @@ ConfirmationInfo RedeemUnblindedToken::CreateConfirmationInfo(
 
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code =
-      brave_l10n::LocaleHelper::GetCountryCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   CreateConfirmationRequest request(confirmations_);
   auto payload = request.CreateConfirmationRequestDTO(confirmation,
@@ -504,8 +503,7 @@ bool RedeemUnblindedToken::Verify(
 
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code =
-      brave_l10n::LocaleHelper::GetCountryCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   CreateConfirmationRequest request(confirmations_);
   auto payload = request.CreateConfirmationRequestDTO(confirmation,

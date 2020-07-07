@@ -89,9 +89,6 @@ NS_SWIFT_NAME(BraveAds)
 /// Automatically detected ads subdivision targeting code
 @property (nonatomic, copy) NSString * automaticallyDetectedSubdivisionTargetingCode;
 
-/// The user model locales Brave Ads supports currently
-@property (nonatomic, readonly) NSArray<NSString *> *userModelLanguages;
-
 /// Remove all cached history (should be called when the user clears their browser history)
 - (void)removeAllHistory:(void (^)(BOOL))completion;
 

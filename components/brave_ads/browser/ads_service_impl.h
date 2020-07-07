@@ -25,6 +25,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
+#include "brave/components/brave_user_model/browser/user_model_file_service.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/notifications/notification_handler.h"
@@ -37,6 +38,7 @@
 #include "ui/base/idle/idle.h"
 
 using brave_rewards::RewardsNotificationService;
+using brave_user_model::UserModelFileService;
 
 class NotificationDisplayService;
 class Profile;
@@ -61,6 +63,7 @@ class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
                        public history::HistoryServiceObserver,
                        BackgroundHelper::Observer,
+                       public brave_user_model::Observer,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
  public:
   // AdsService implementation
@@ -159,6 +162,10 @@ class AdsServiceImpl : public AdsService,
   void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 
+  // BraveUserModelInstaller::Observer implementation
+  void OnUserModelUpdated(
+      const std::string& id) override;
+
   // KeyedService implementation
   void Shutdown() override;
 
@@ -227,6 +234,9 @@ class AdsServiceImpl : public AdsService,
 
   void NotificationTimedOut(
       const std::string& uuid);
+
+  void RegisterUserModelComponentsForLocale(
+      const std::string& locale);
 
   void OnURLRequestStarted(
       const GURL& final_url,
@@ -299,12 +309,12 @@ class AdsServiceImpl : public AdsService,
   bool IsUpgradingFromPreBraveAdsBuild();
 
   void DisableAdsIfUpgradingFromPreBraveAdsBuild();
-  void DisableAdsForUnsupportedRegions(
-      const std::string& region,
-      const std::vector<std::string>& regions);
-  void MayBeShowOnboardingForSupportedRegion(
-      const std::string& region,
-      const std::vector<std::string>& regions);
+  void DisableAdsForUnsupportedCountryCodes(
+      const std::string& country_code,
+      const std::vector<std::string>& country_codes);
+  void MayBeShowOnboardingForSupportedCountryCode(
+      const std::string& country_code,
+      const std::vector<std::string>& country_codes);
   uint64_t MigrateTimestampToDoubleT(
       const uint64_t timestamp_in_seconds) const;
 
@@ -372,11 +382,6 @@ class AdsServiceImpl : public AdsService,
 
   bool IsForeground() const override;
 
-  std::vector<std::string> GetUserModelLanguages() const override;
-  void LoadUserModelForLanguage(
-      const std::string& language,
-      ads::LoadCallback callback) const override;
-
   void ShowNotification(
       std::unique_ptr<ads::AdNotificationInfo> info) override;
   bool ShouldShowNotifications() override;
@@ -413,6 +418,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& name,
       const std::string& value,
       ads::ResultCallback callback) override;
+  void LoadUserModelForId(
+      const std::string& id,
+      ads::LoadCallback callback) override;
   void Load(
       const std::string& name,
       ads::LoadCallback callback) override;

@@ -10,6 +10,7 @@
 
 #include "base/memory/ref_counted.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -62,6 +63,10 @@ namespace speedreader {
 class SpeedreaderWhitelist;
 }
 
+namespace brave_user_model {
+class UserModelFileService;
+}
+
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
   explicit BraveBrowserProcessImpl(StartupData* startup_data);
@@ -100,6 +105,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       ntp_background_images_service();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   speedreader::SpeedreaderWhitelist* speedreader_whitelist();
+#endif
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  brave_user_model::UserModelFileService* user_model_file_service();
 #endif
 
  private:
@@ -160,6 +168,11 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   std::unique_ptr<speedreader::SpeedreaderWhitelist> speedreader_whitelist_;
+#endif
+
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  std::unique_ptr<brave_user_model::UserModelFileService>
+      user_model_file_service_;
 #endif
 
   SEQUENCE_CHECKER(sequence_checker_);

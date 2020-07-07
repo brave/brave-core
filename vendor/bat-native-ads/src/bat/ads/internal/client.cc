@@ -416,28 +416,6 @@ bool Client::GetAvailable() const {
   return client_state_->available;
 }
 
-void Client::SetUserModelLanguage(
-    const std::string& language) {
-  client_state_->user_model_language = language;
-
-  SaveState();
-}
-
-std::string Client::GetUserModelLanguage() {
-  return client_state_->user_model_language;
-}
-
-void Client::SetUserModelLanguages(
-    const std::vector<std::string>& languages) {
-  client_state_->user_model_languages = languages;
-
-  SaveState();
-}
-
-const std::vector<std::string>& Client::GetUserModelLanguages() {
-  return client_state_->user_model_languages;
-}
-
 void Client::AppendPageProbabilitiesToHistory(
     const classification::PageProbabilitiesMap& page_probabilities) {
   client_state_->page_probabilities_history.push_front(page_probabilities);

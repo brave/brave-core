@@ -99,15 +99,16 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
   // Campaigns
   for (const auto& campaign : catalog.GetCampaigns()) {
     // Geo Targets
-    std::vector<std::string> regions;
+    std::vector<std::string> geo_targets;
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 
-      if (std::find(regions.begin(), regions.end(), code) != regions.end()) {
+      if (std::find(geo_targets.begin(), geo_targets.end(), code)
+          != geo_targets.end()) {
         continue;
       }
 
-      regions.push_back(code);
+      geo_targets.push_back(code);
     }
 
     // Creative Sets
@@ -159,7 +160,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
             creative_set.ad_conversions.size() != 0 ? true : false;
         info.per_day = creative_set.per_day;
         info.total_max = creative_set.total_max;
-        info.geo_targets = regions;
+        info.geo_targets = geo_targets;
         info.title = creative.payload.title;
         info.body = creative.payload.body;
         info.target_url = creative.payload.target_url;

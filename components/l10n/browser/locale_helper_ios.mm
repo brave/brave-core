@@ -15,7 +15,7 @@ LocaleHelperIos::~LocaleHelperIos() = default;
 
 std::string LocaleHelperIos::GetLocale() const {
   NSString *locale = [[NSLocale preferredLanguages] firstObject];
-  return std::string([locale UTF8String]);
+  return locale.UTF8String;
 }
 
 LocaleHelperIos* LocaleHelperIos::GetInstanceImpl() {

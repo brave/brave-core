@@ -26,20 +26,20 @@ TEST(BatAdsLocaleTest,
 }
 
 TEST(BatAdsLocaleTest,
-    RegionCodeForEnglish) {
+    CountryCodeForEnglish) {
   // Arrange
   const std::string locale = "en";
 
   // Act
-  const std::string region_code = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   // Assert
-  const std::string expected_region_code = "US";
-  EXPECT_EQ(expected_region_code, region_code);
+  const std::string expected_country_code = "US";
+  EXPECT_EQ(expected_country_code, country_code);
 }
 
 TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeDashRegionCode) {
+    LanguageCodeForLanguageCodeDashCountryCode) {
   // Arrange
   const std::string locale = "en-US";
 
@@ -52,16 +52,16 @@ TEST(BatAdsLocaleTest,
 }
 
 TEST(BatAdsLocaleTest,
-    RegionCodeForLanguageCodeDashRegionCode) {
+    CountryCodeForLanguageCodeDashCountryCode) {
   // Arrange
   const std::string locale = "en-US";
 
   // Act
-  const std::string region_code = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   // Assert
-  const std::string expected_region_code = "US";
-  EXPECT_EQ(expected_region_code, region_code);
+  const std::string expected_country_code = "US";
+  EXPECT_EQ(expected_country_code, country_code);
 }
 
 TEST(BatAdsLocaleTest,
@@ -78,20 +78,20 @@ TEST(BatAdsLocaleTest,
 }
 
 TEST(BatAdsLocaleTest,
-    RegionCodeForLanguageCodeDashWorld) {
+    CountryCodeForLanguageCodeDashWorld) {
   // Arrange
   const std::string locale = "en-101";
 
   // Act
-  const std::string region_code = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   // Assert
-  const std::string expected_region_code = "101";
-  EXPECT_EQ(expected_region_code, region_code);
+  const std::string expected_country_code = "101";
+  EXPECT_EQ(expected_country_code, country_code);
 }
 
 TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeDashRegionCodeDotEncoding) {
+    LanguageCodeForLanguageCodeDashCountryCodeCodeDotEncoding) {
   // Arrange
   const std::string locale = "en-US.UTF-8";
 
@@ -104,20 +104,20 @@ TEST(BatAdsLocaleTest,
 }
 
 TEST(BatAdsLocaleTest,
-    RegionCodeForLanguageCodeDashRegionCodeDotEncoding) {
+    CountryCodeCodeForLanguageCodeDashCountryCodeCodeDotEncoding) {
   // Arrange
   const std::string locale = "en-US.UTF-8";
 
   // Act
-  const std::string region_code = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   // Assert
-  const std::string expected_region_code = "US";
-  EXPECT_EQ(expected_region_code, region_code);
+  const std::string expected_country_code = "US";
+  EXPECT_EQ(expected_country_code, country_code);
 }
 
 TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeDashScriptDashRegionCode) {
+    LanguageCodeForLanguageCodeDashScriptDashCountryCodeCode) {
   // Arrange
   const std::string locale = "az-Latn-AZ";
 
@@ -130,20 +130,20 @@ TEST(BatAdsLocaleTest,
 }
 
 TEST(BatAdsLocaleTest,
-    RegionCodeForLanguageCodeDashScriptDashRegionCode) {
+    CountryCodeCodeForLanguageCodeDashScriptDashCountryCodeCode) {
   // Arrange
   const std::string locale = "az-Latn-AZ";
 
   // Act
-  const std::string region_code = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   // Assert
-  const std::string expected_region_code = "AZ";
-  EXPECT_EQ(expected_region_code, region_code);
+  const std::string expected_country_code = "AZ";
+  EXPECT_EQ(expected_country_code, country_code);
 }
 
 TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeUnderscoreRegionCode) {
+    LanguageCodeForLanguageCodeUnderscoreCountryCodeCode) {
   // Arrange
   const std::string locale = "en_US";
 
@@ -156,20 +156,20 @@ TEST(BatAdsLocaleTest,
 }
 
 TEST(BatAdsLocaleTest,
-    RegionCodeForLanguageCodeUnderscoreRegionCode) {
+    CountryCodeCodeForLanguageCodeUnderscoreCountryCodeCode) {
   // Arrange
   const std::string locale = "en_US";
 
   // Act
-  const std::string region_code = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   // Assert
-  const std::string expected_region_code = "US";
-  EXPECT_EQ(expected_region_code, region_code);
+  const std::string expected_country_code = "US";
+  EXPECT_EQ(expected_country_code, country_code);
 }
 
 TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeUnderscoreRegionCodeDotEncoding) {
+    LanguageCodeForLanguageCodeUnderscoreCountryCodeCodeDotEncoding) {
   // Arrange
   const std::string locale = "en_US.UTF-8";
 
@@ -182,20 +182,20 @@ TEST(BatAdsLocaleTest,
 }
 
 TEST(BatAdsLocaleTest,
-    RegionCodeForLanguageCodeUnderscoreRegionCodeDotEncoding) {
+    CountryCodeCodeForLanguageCodeUnderscoreCountryCodeCodeDotEncoding) {
   // Arrange
   const std::string locale = "en_US.UTF-8";
 
   // Act
-  const std::string region_code = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   // Assert
-  const std::string expected_region_code = "US";
-  EXPECT_EQ(expected_region_code, region_code);
+  const std::string expected_country_code = "US";
+  EXPECT_EQ(expected_country_code, country_code);
 }
 
 TEST(BatAdsLocaleTest,
-    LanguageCodeForLanguageCodeUnderscoreScriptUnderscoreRegionCode) {
+    LanguageCodeForLanguageCodeUnderscoreScriptUnderscoreCountryCodeCode) {
   // Arrange
   const std::string locale = "az_Latn_AZ";
 
@@ -208,16 +208,16 @@ TEST(BatAdsLocaleTest,
 }
 
 TEST(BatAdsLocaleTest,
-    RegionCodeForLanguageCodeUnderscoreScriptUnderscoreRegionCode) {
+    CountryCodeCodeForLanguageCodeUnderscoreScriptUnderscoreCountryCodeCode) {
   // Arrange
   const std::string locale = "az_Latn_AZ";
 
   // Act
-  const std::string region_code = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   // Assert
-  const std::string expected_region_code = "AZ";
-  EXPECT_EQ(expected_region_code, region_code);
+  const std::string expected_country_code = "AZ";
+  EXPECT_EQ(expected_country_code, country_code);
 }
 
 }  // namespace ads

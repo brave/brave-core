@@ -25,7 +25,7 @@ PageClassifier::PageClassifier(
 
 PageClassifier::~PageClassifier() = default;
 
-bool PageClassifier::IsInitialized() {
+bool PageClassifier::IsInitialized() const {
   return user_model_ && user_model_->IsInitialized();
 }
 
@@ -36,10 +36,7 @@ bool PageClassifier::Initialize(
 }
 
 bool PageClassifier::ShouldClassifyPages() const {
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-
-  return ShouldClassifyPagesForLocale(locale);
+  return IsInitialized();
 }
 
 std::string PageClassifier::ClassifyPage(
@@ -96,23 +93,6 @@ PageClassifier::get_page_probabilities_cache() const {
 }
 
 //////////////////////////////////////////////////////////////////////////////
-
-bool PageClassifier::ShouldClassifyPagesForLocale(
-    const std::string& locale) const {
-  const std::string language_code = brave_l10n::GetLanguageCode(locale);
-
-  const std::vector<std::string> user_model_languages =
-      ads_->get_ads_client()->GetUserModelLanguages();
-
-  const auto iter = std::find(user_model_languages.begin(),
-      user_model_languages.end(), language_code);
-
-  if (iter == user_model_languages.end()) {
-    return false;
-  }
-
-  return true;
-}
 
 std::string PageClassifier::GetPageClassification(
     const PageProbabilitiesMap& page_probabilities) const {

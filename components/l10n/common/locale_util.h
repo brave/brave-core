@@ -10,13 +10,10 @@
 
 namespace brave_l10n {
 
-const char kDefaultLanguage[] = "en";
-const char kDefaultRegion[] = "US";
-
 std::string GetLanguageCode(
     const std::string& locale);
 
-std::string GetRegionCode(
+std::string GetCountryCode(
     const std::string& locale);
 
 }  // namespace brave_l10n

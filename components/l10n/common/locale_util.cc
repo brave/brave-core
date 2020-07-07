@@ -13,13 +13,20 @@
 
 namespace brave_l10n {
 
+namespace {
+
+const char kDefaultLanguageCode[] = "en";
+const char kDefaultCountryCode[] = "US";
+
+}  // namespace
+
 std::string GetLanguageCode(
     const std::string& locale) {
   const std::vector<std::string> locale_components = base::SplitString(locale,
       ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (locale_components.empty()) {
-    return kDefaultLanguage;
+    return kDefaultLanguageCode;
   }
 
   std::string normalized_locale = locale_components.front();
@@ -29,7 +36,7 @@ std::string GetLanguageCode(
       normalized_locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
   if (components.empty()) {
-    return kDefaultLanguage;
+    return kDefaultLanguageCode;
   }
 
   const std::string language_code = components.front();
@@ -37,13 +44,13 @@ std::string GetLanguageCode(
   return base::ToLowerASCII(language_code);
 }
 
-std::string GetRegionCode(
+std::string GetCountryCode(
     const std::string& locale) {
   const std::vector<std::string> locale_components = base::SplitString(locale,
       ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (locale_components.empty()) {
-    return kDefaultRegion;
+    return kDefaultCountryCode;
   }
 
   std::string normalized_locale = locale_components.front();
@@ -53,12 +60,12 @@ std::string GetRegionCode(
       normalized_locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
 
   if (components.size() <= 1) {
-    return kDefaultRegion;
+    return kDefaultCountryCode;
   }
 
-  const std::string region_code = components.back();
+  const std::string country_code = components.back();
 
-  return base::ToUpperASCII(region_code);
+  return base::ToUpperASCII(country_code);
 }
 
 }  // namespace brave_l10n

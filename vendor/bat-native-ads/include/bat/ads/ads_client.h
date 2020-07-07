@@ -90,28 +90,6 @@ class ADS_EXPORT AdsClient {
   virtual void GetClientInfo(
       ClientInfo* info) const = 0;
 
-  // Should return an array of supported User Model languages
-  virtual std::vector<std::string> GetUserModelLanguages() const = 0;
-
-  // Should load the User Model for the specified language, user models are a
-  // dependency of the application and should be bundled accordingly, the
-  // following file structure should be used:
-  //
-  //   resources/
-  //   ├── languages/
-  //   ├──── de/
-  //   │     ├── user_model.json
-  //   ├──── en/
-  //   │     ├── user_model.json
-  //   ├──── fr/
-  //   │     └── user_model.json
-  //
-  // For information on |user_model.json| and the BAT Native User Model see
-  // https://github.com/brave-intl/bat-native-usermodel/blob/master/README.md
-  virtual void LoadUserModelForLanguage(
-      const std::string& language,
-      LoadCallback callback) const = 0;
-
   // Should return |true| if the browser is active in the foreground; otherwise,
   // should return |false|
   virtual bool IsForeground() const = 0;
@@ -169,6 +147,12 @@ class ADS_EXPORT AdsClient {
       const std::string& name,
       const std::string& value,
       ResultCallback callback) = 0;
+
+  // Should load user model for id from persistent storage. The callback takes 2
+  // arguments — |Result| should be set to |SUCCESS| if successful; otherwise,
+  // should be set to |FAILED|. |value| should contain the user model
+  virtual void LoadUserModelForId(
+      const std::string& name, LoadCallback callback) = 0;
 
   // Should load a value from persistent storage. The callback takes 2 arguments
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be

@@ -40,13 +40,13 @@ bool SubdivisionTargeting::ShouldAllowAdsSubdivisionTargeting(
     return false;
   }
 
-  const std::string region = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   const std::string subdivision_targeting_code =
       GetAdsSubdivisionTargetingCode();
 
   const SubdivisionTargetingCodesSet subdivision_targeting_codes =
-      kSubdivisionTargetingCodes.at(region);
+      kSubdivisionTargetingCodes.at(country_code);
   if (subdivision_targeting_codes.find(subdivision_targeting_code) ==
       subdivision_targeting_codes.end()) {
     return false;
@@ -96,6 +96,13 @@ void SubdivisionTargeting::MaybeFetch(
   Fetch();
 }
 
+void SubdivisionTargeting::MaybeFetchForCurrentLocale() {
+  const std::string locale =
+      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+
+  MaybeFetch(locale);
+}
+
 std::string SubdivisionTargeting::GetAdsSubdivisionTargetingCode() const {
   if (ShouldAutomaticallyDetect()) {
     return ads_->get_ads_client()->
@@ -109,9 +116,9 @@ std::string SubdivisionTargeting::GetAdsSubdivisionTargetingCode() const {
 
 bool SubdivisionTargeting::IsSupportedLocale(
     const std::string& locale) const {
-  const std::string region = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
-  const auto iter = kSubdivisionTargetingCodes.find(region);
+  const auto iter = kSubdivisionTargetingCodes.find(country_code);
   if (iter == kSubdivisionTargetingCodes.end()) {
     return false;
   }

@@ -308,7 +308,7 @@ TEST_F(BatAdsAdConversionsDatabaseTableTest,
       .WillByDefault(Return("en-US"));
 
   MockLoad(ads_client_mock_);
-  MockLoadUserModelForLanguage(ads_client_mock_);
+  MockLoadUserModelForId(ads_client_mock_);
   MockLoadJsonSchema(ads_client_mock_);
   MockSave(ads_client_mock_);
 

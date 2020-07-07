@@ -14,8 +14,7 @@
 
 namespace brave_l10n {
 
-extern const char kDefaultCountryCode[];
-extern const char kDefaultLocale[];
+const char kDefaultLocale[] = "en-US";
 
 class LocaleHelper {
  public:
@@ -27,11 +26,8 @@ class LocaleHelper {
   void set_for_testing(
       LocaleHelper* locale_helper);
 
-  // Should return the language based upon the tagging conventions of RFC 4646
+  // Should return the locale based upon the tagging conventions of RFC 4646
   virtual std::string GetLocale() const;
-
-  static std::string GetCountryCode(
-      const std::string& locale);
 
  protected:
   friend struct base::DefaultSingletonTraits<LocaleHelper>;

@@ -192,36 +192,6 @@ void BatAdsClientMojoBridge::GetClientInfo(
   info->FromJson(client_info);
 }
 
-std::vector<std::string> BatAdsClientMojoBridge::GetUserModelLanguages() const {
-  std::vector<std::string> languages;
-
-  if (!connected()) {
-    return languages;
-  }
-
-  bat_ads_client_->GetUserModelLanguages(&languages);
-  return languages;
-}
-
-void OnLoadUserModelForLanguage(
-    const ads::LoadCallback& callback,
-    const int32_t result,
-    const std::string& value) {
-  callback(ToAdsResult(result), value);
-}
-
-void BatAdsClientMojoBridge::LoadUserModelForLanguage(
-    const std::string& language,
-    ads::LoadCallback callback) const {
-  if (!connected()) {
-    callback(ads::Result::FAILED, "");
-    return;
-  }
-
-  bat_ads_client_->LoadUserModelForLanguage(language,
-      base::BindOnce(&OnLoadUserModelForLanguage, std::move(callback)));
-}
-
 bool BatAdsClientMojoBridge::IsForeground() const {
   if (!connected()) {
     return false;
@@ -333,6 +303,25 @@ void BatAdsClientMojoBridge::Save(
 
   bat_ads_client_->Save(name, value, base::BindOnce(&OnSave,
       std::move(callback)));
+}
+
+void OnLoadUserModelForId(
+    const ads::LoadCallback& callback,
+    const int32_t result,
+    const std::string& value) {
+  callback(ToAdsResult(result), value);
+}
+
+void BatAdsClientMojoBridge::LoadUserModelForId(
+    const std::string& id,
+    ads::LoadCallback callback) {
+  if (!connected()) {
+    callback(ads::Result::FAILED, "");
+    return;
+  }
+
+  bat_ads_client_->LoadUserModelForId(id,
+      base::BindOnce(&OnLoadUserModelForId, std::move(callback)));
 }
 
 void OnLoad(

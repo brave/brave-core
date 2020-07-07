@@ -11,10 +11,10 @@
 #include <string>
 #include <utility>
 
-#include "bat/ads/ads.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
-#include "base/memory/weak_ptr.h"
+#include "bat/ads/ads.h"
 
 namespace ads {
 class Ads;
@@ -115,6 +115,9 @@ class BatAdsImpl :
       const std::string& creative_set_id,
       const bool flagged,
       ToggleFlagAdCallback callback) override;
+
+  void OnUserModelUpdated(
+      const std::string& id) override;
 
  private:
   // Workaround to pass base::OnceCallback into std::bind

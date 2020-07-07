@@ -9,7 +9,7 @@
 #include "bat/ads/ads.h"
 
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/supported_regions.h"
+#include "bat/ads/internal/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
@@ -23,12 +23,13 @@ const char _client_resource_name[] = "client.json";
 
 bool IsSupportedLocale(
     const std::string& locale) {
-  const std::string region = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
-  for (const auto& schema : kSupportedRegions) {
-    const std::set<std::string> regions = schema.second;
-    const auto iter = std::find(regions.begin(), regions.end(), region);
-    if (iter != regions.end()) {
+  for (const auto& schema : kSupportedCountryCodes) {
+    const std::set<std::string> country_codes = schema.second;
+    const auto iter =
+        std::find(country_codes.begin(), country_codes.end(), country_code);
+    if (iter != country_codes.end()) {
       return true;
     }
   }
@@ -39,27 +40,23 @@ bool IsSupportedLocale(
 bool IsNewlySupportedLocale(
     const std::string& locale,
     const int last_schema_version) {
-  const std::string region = brave_l10n::GetRegionCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
-  for (const auto& schema : kSupportedRegions) {
+  for (const auto& schema : kSupportedCountryCodes) {
     const int schema_version = schema.first;
     if (schema_version < last_schema_version) {
       continue;
     }
 
-    const std::set<std::string> regions = schema.second;
-    const auto iter = std::find(regions.begin(), regions.end(), region);
-    if (iter != regions.end()) {
+    const std::set<std::string> country_codes = schema.second;
+    const auto iter =
+        std::find(country_codes.begin(), country_codes.end(), country_code);
+    if (iter != country_codes.end()) {
       return true;
     }
   }
 
   return false;
-}
-
-std::string GetRegionCode(
-    const std::string& locale) {
-  return brave_l10n::GetRegionCode(locale);
 }
 
 // static

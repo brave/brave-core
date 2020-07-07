@@ -73,10 +73,11 @@ void AdsServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterIntegerPref(prefs::kVersion, prefs::kCurrentVersionNumber);
 
-  registry->RegisterIntegerPref(prefs::kSupportedRegionsLastSchemaVersion, 0);
+  registry->RegisterIntegerPref(
+      prefs::kSupportedCountryCodesLastSchemaVersion, 0);
 
-  registry->RegisterIntegerPref(prefs::kSupportedRegionsSchemaVersion,
-      prefs::kSupportedRegionsSchemaVersionNumber);
+  registry->RegisterIntegerPref(prefs::kSupportedCountryCodesSchemaVersion,
+      prefs::kSupportedCountryCodesSchemaVersionNumber);
 
   registry->RegisterBooleanPref(prefs::kEnabled, false);
 

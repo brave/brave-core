@@ -29,6 +29,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
@@ -1918,8 +1919,7 @@ void RewardsDOMHandler::GetCountryCode(const base::ListValue* args) {
 
   const std::string locale =
       brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-  const std::string country_code =
-      brave_l10n::LocaleHelper::GetInstance()->GetCountryCode(locale);
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards.countryCode", base::Value(country_code));

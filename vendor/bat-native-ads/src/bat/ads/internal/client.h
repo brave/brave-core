@@ -85,12 +85,6 @@ class Client {
       const bool available);
 
   bool GetAvailable() const;
-  void SetUserModelLanguage(
-      const std::string& language);
-  std::string GetUserModelLanguage();
-  void SetUserModelLanguages(
-      const std::vector<std::string>& languages);
-  const std::vector<std::string>& GetUserModelLanguages();
   void AppendPageProbabilitiesToHistory(
       const classification::PageProbabilitiesMap& page_probabilities);
   const classification::PageProbabilitiesList& GetPageProbabilitiesHistory();

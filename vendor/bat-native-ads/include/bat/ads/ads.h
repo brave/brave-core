@@ -54,11 +54,6 @@ bool IsNewlySupportedLocale(
     const std::string& locale,
     const int last_schema_version);
 
-// Returns the region code for the specified |locale|. If the locale cannot be
-// parsed return |ads::kDefaultRegion|
-std::string GetRegionCode(
-    const std::string& locale);
-
 class ADS_EXPORT Ads {
  public:
   Ads() = default;
@@ -217,6 +212,11 @@ class ADS_EXPORT Ads {
       const std::string& creative_instance_id,
       const std::string& creative_set_id,
       const bool flagged) = 0;
+
+  // Should be called when user model has been updated in the
+  // |BraveUserModelInstaller| component
+  virtual void OnUserModelUpdated(
+      const std::string& id) = 0;
 
  private:
   // Not copyable, not assignable

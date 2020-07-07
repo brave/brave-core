@@ -61,11 +61,6 @@ class BatAdsClientMojoBridge
 
   bool IsForeground() const override;
 
-  std::vector<std::string> GetUserModelLanguages() const override;
-  void LoadUserModelForLanguage(
-      const std::string& language,
-      ads::LoadCallback callback) const override;
-
   void ShowNotification(
       std::unique_ptr<ads::AdNotificationInfo> info) override;
   bool ShouldShowNotifications() override;
@@ -95,6 +90,9 @@ class BatAdsClientMojoBridge
       const std::string& name,
       const std::string& value,
       ads::ResultCallback callback) override;
+  void LoadUserModelForId(
+      const std::string& id,
+      ads::LoadCallback callback) override;
   void Load(
       const std::string& name,
       ads::LoadCallback callback) override;
