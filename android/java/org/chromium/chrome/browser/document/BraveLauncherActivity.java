@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.preferences.SharedPreferencesManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 
 /**
@@ -18,6 +19,9 @@ public class BraveLauncherActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Disable key checker to avoid asserts on Brave keys in debug
+        SharedPreferencesManager.getInstance().disableKeyCheckerForTesting();
 
         BottomToolbarConfiguration.isBottomToolbarEnabled();
         BraveHelper.DisableFREDRP();
