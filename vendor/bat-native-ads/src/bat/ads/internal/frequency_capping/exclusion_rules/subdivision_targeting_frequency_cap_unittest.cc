@@ -194,7 +194,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    AllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
+    DoNotAllowAdIfSubdivisionTargetingIsNotSupportedForSubdivisionGeoTarget) {
   // Arrange
   ON_CALL(*locale_helper_mock_, GetLocale())
       .WillByDefault(Return("en-GB"));
@@ -207,7 +207,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_TRUE(should_exclude);
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
@@ -228,7 +228,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
-    AllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
+    DoNotAllowAdIfSubdivisionTargetingIsDisabledForSubdivisionGeoTarget) {
   // Arrange
   ON_CALL(*ads_client_mock_, GetAdsSubdivisionTargetingCode())
       .WillByDefault(Return("DISABLED"));
@@ -241,7 +241,7 @@ TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_FALSE(should_exclude);
+  EXPECT_TRUE(should_exclude);
 }
 
 TEST_F(BatAdsSubdivisionTargetingFrequencyCapTest,

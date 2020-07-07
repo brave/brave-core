@@ -126,7 +126,8 @@
                 "totalMax",
                 "segments",
                 "creatives",
-                "oses"
+                "oses",
+                "channels"
               ],
               "properties": {
                 "creativeSetId": {
@@ -163,6 +164,7 @@
                 },
                 "segments": {
                   "type": "array",
+                  "minItems": 1,
                   "items": {
                     "type": "object",
                     "additionalProperties": false,
@@ -200,6 +202,12 @@
                         "type": "string"
                       }
                     }
+                  }
+                },
+                "channels": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
                   }
                 },
                 "creatives": {
@@ -242,23 +250,36 @@
                       },
                       "payload": {
                         "type": "object",
-                        "additionalProperties": false,
-                        "required": [
-                          "targetUrl",
-                          "body",
-                          "title"
-                        ],
-                        "properties": {
-                          "targetUrl": {
-                            "type": "string"
+                        "oneOf": [
+                          {
+                            "properties": {
+                              "targetUrl": {
+                                "type": "string"
+                              },
+                              "body": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
                           },
-                          "body": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
+                          {
+                            "properties": {
+                              "creativeUrl": {
+                                "type": "string"
+                              },
+                              "size": {
+                                "type": "string"
+                              },
+                              "targetUrl": {
+                                "type": "string"
+                              }
+                            },
+                            "additionalProperties": false
                           }
-                        }
+                        ]
                       }
                     }
                   }
