@@ -15,7 +15,6 @@ public struct BraveTodayFeedItemBridge {
     let category: String
     let publishTime: Date
     let url: String?
-    let domain: String?
     let imageURL: String?
     let title: String
     let itemDescription: String
@@ -31,7 +30,6 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     @NSManaged var category: String
     @NSManaged var publishTime: Date
     @NSManaged var url: String?
-    @NSManaged var domain: String?
     @NSManaged var imageURL: String?
     @NSManaged var title: String
     @NSManaged var itemDescription: String
@@ -51,7 +49,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     
     public class func insert(item: BraveTodayFeedItemBridge) {
         insertInternal(category: item.category, publishTime: item.publishTime, url: item.url,
-                       domain: item.domain, imageURL: item.imageURL, title: item.title,
+                       imageURL: item.imageURL, title: item.title,
                        itemDescription: item.itemDescription, contentType: item.contentType,
                        publisherID: item.publisherID, publisherName: item.publisherName,
                        publisherLogo: item.publisherLogo, urlHash: item.urlHash)
@@ -62,7 +60,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
         DataController.perform { context in
             list.forEach {
                 insertInternal(category: $0.category, publishTime: $0.publishTime, url: $0.url,
-                               domain: $0.domain, imageURL: $0.imageURL, title: $0.title,
+                               imageURL: $0.imageURL, title: $0.title,
                                itemDescription: $0.itemDescription, contentType: $0.contentType,
                                publisherID: $0.publisherID, publisherName: $0.publisherName,
                                publisherLogo: $0.publisherLogo, urlHash: $0.urlHash,
@@ -153,7 +151,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     
     // MARK: Internal implementations
     
-    class func insertInternal(category: String, publishTime: Date, url: String?, domain: String?,
+    class func insertInternal(category: String, publishTime: Date, url: String?, 
                               imageURL: String?, title: String, itemDescription: String, contentType: String,
                               publisherID: String, publisherName: String, publisherLogo: String?,
                               urlHash: String, context: WriteContext = .new(inMemory: false)) {
@@ -173,7 +171,6 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
             item.category = category
             item.publishTime = publishTime
             item.url = url
-            item.domain = domain
             item.imageURL = imageURL
             item.title = title
             item.itemDescription = itemDescription

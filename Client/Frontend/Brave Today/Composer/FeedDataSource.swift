@@ -113,7 +113,6 @@ class FeedDataSource {
     }
     
     private func generateCards() {
-        var cards: [FeedCard] = []
         /**
          Beginning of new session:
             Sponsor card
@@ -154,6 +153,7 @@ class FeedDataSource {
                 deals.removeFirst(min(3, items.count))
                 return [.group(items, title: "Deals", direction: .horizontal, displayBrand: false)]
             case .headline(let paired):
+                // FIXME: Don't pull items with no images
                 if articles.isEmpty { return nil }
                 if paired {
                     if articles.count < 2 { return nil }
