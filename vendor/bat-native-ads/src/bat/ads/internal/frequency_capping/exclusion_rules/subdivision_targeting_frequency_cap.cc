@@ -49,11 +49,11 @@ bool SubdivisionTargetingFrequencyCap::DoesRespectCap(
 
   if (!ads_->get_subdivision_targeting()->ShouldAllowAdsSubdivisionTargeting(
       locale)) {
-    return true;
+    return !DoesAdTargetSubdivision(ad);
   }
 
   if (ads_->get_subdivision_targeting()->IsDisabled()) {
-    return true;
+    return !DoesAdTargetSubdivision(ad);
   }
 
   const std::string subdivision_targeting_code =
@@ -71,6 +71,23 @@ bool SubdivisionTargetingFrequencyCap::DoesAdSupportSubdivisionTargetingCode(
       [&](const std::string& geo_target) {
     return geo_target == subdivision_targeting_code ||
         geo_target == country_code;
+  });
+
+  if (iter == ad.geo_targets.end()) {
+    return false;
+  }
+
+  return true;
+}
+
+bool SubdivisionTargetingFrequencyCap::DoesAdTargetSubdivision(
+    const CreativeAdInfo& ad) const {
+  const auto iter = std::find_if(ad.geo_targets.begin(), ad.geo_targets.end(),
+      [&](const std::string& geo_target) {
+    const std::vector<std::string> components = base::SplitString(
+        geo_target, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+
+    return components.size() == 2;
   });
 
   if (iter == ad.geo_targets.end()) {

@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 3,
   "issuers": [
     {
       "name": "confirmation",
@@ -60,12 +60,15 @@
               "type": "postview"
             }
           ],
+          "channels": [
+          ],
           "creativeSetId": "340c927f-696e-4060-9933-3eafc56c3f31",
           "perDay": 5,
           "totalMax": 100
         }
       ],
-      "dayParts": [],
+      "dayParts": [
+      ],
       "geoTargets": [
         {
           "code": "US",
@@ -113,12 +116,15 @@
               "type": "postclick"
             }
           ],
+          "channels": [
+          ],
           "creativeSetId": "3e2e503a-dd38-42d1-9e26-1e5dbb66aada",
           "perDay": 5,
           "totalMax": 100
         }
       ],
-      "dayParts": [],
+      "dayParts": [
+      ],
       "geoTargets": [
         {
           "code": "US",

@@ -44,6 +44,9 @@ class SubdivisionTargetingFrequencyCap : public ExclusionRule {
       const CreativeAdInfo& ad,
       const std::string& subdivision_targeting_code) const;
 
+  bool DoesAdTargetSubdivision(
+      const CreativeAdInfo& ad) const;
+
   std::string GetCountryCode(
       const std::string& subdivision_targeting_code) const;
 };
