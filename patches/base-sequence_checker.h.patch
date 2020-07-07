@@ -1,0 +1,13 @@
+diff --git a/base/sequence_checker.h b/base/sequence_checker.h
+index 9b910eb72ae820d8f0ffa45dd9d4ee450a9a9439..9173b95bce8d86b358e4b324d55a2bafa516de5d 100644
+--- a/base/sequence_checker.h
++++ b/base/sequence_checker.h
+@@ -112,7 +112,7 @@ class LOCKABLE SequenceCheckerDoNothing {
+   DISALLOW_COPY_AND_ASSIGN(SequenceCheckerDoNothing);
+ };
+ 
+-#if DCHECK_IS_ON()
++#if DCHECK_IS_ON() && !defined(OS_IOS)
+ class SequenceChecker : public SequenceCheckerImpl {
+ };
+ #else
