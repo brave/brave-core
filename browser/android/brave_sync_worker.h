@@ -16,6 +16,11 @@
 
 class Profile;
 
+namespace syncer {
+class DeviceInfoTracker;
+class LocalDeviceInfoProvider;
+}  // namespace syncer
+
 namespace chrome {
 namespace android {
 
@@ -46,15 +51,19 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& jcaller);
 
-  void ResetSync(JNIEnv* env,
+  bool ResetSync(JNIEnv* env,
                  const base::android::JavaParamRef<jobject>& jcaller);
 
  private:
   syncer::SyncService* GetSyncService() const;
+  syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
+  syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;
   void MarkFirstSetupComplete();
 
   // syncer::SyncServiceObserver implementation.
   void OnStateChanged(syncer::SyncService* sync) override;
+
+  void OnSelfDeleted();
 
   JavaObjectWeakGlobalRef weak_java_brave_sync_worker_;
   Profile* profile_ = nullptr;
@@ -63,6 +72,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
+  base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };

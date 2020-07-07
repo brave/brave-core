@@ -146,8 +146,8 @@ public class BraveSyncWorker {
         nativeFinalizeSyncSetup(mNativeBraveSyncWorker);
     }
 
-    public void ResetSync() {
-        nativeResetSync(mNativeBraveSyncWorker);
+    public boolean ResetSync() {
+        return nativeResetSync(mNativeBraveSyncWorker);
     }
 
     private native void nativeInit();
@@ -167,5 +167,5 @@ public class BraveSyncWorker {
 
     private native boolean nativeIsFirstSetupComplete(long nativeBraveSyncWorker);
 
-    private native void nativeResetSync(long nativeBraveSyncWorker);
+    private native boolean nativeResetSync(long nativeBraveSyncWorker);
 }

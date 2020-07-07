@@ -20,10 +20,15 @@
 
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
 
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
+#include "components/sync_device_info/device_info.h"
+#include "components/sync_device_info/device_info_sync_service.h"
+#include "components/sync_device_info/device_info_tracker.h"
+#include "components/sync_device_info/local_device_info_provider.h"
 #include "components/unified_consent/unified_consent_metrics.h"
 
 #include "content/public/browser/browser_thread.h"
@@ -131,6 +136,19 @@ syncer::SyncService* BraveSyncWorker::GetSyncService() const {
              : nullptr;
 }
 
+syncer::DeviceInfoTracker* BraveSyncWorker::GetDeviceInfoTracker() const {
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  return device_info_sync_service->GetDeviceInfoTracker();
+}
+
+syncer::LocalDeviceInfoProvider* BraveSyncWorker::GetLocalDeviceInfoProvider()
+    const {
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  return device_info_sync_service->GetLocalDeviceInfoProvider();
+}
+
 // Most of methods below were taken from by PeopleHandler class to
 // bring logic of enablind / disabling sync from deskop to Android
 
@@ -189,16 +207,43 @@ bool BraveSyncWorker::IsFirstSetupComplete(
          sync_service->GetUserSettings()->IsFirstSetupComplete();
 }
 
-void BraveSyncWorker::ResetSync(
+bool BraveSyncWorker::ResetSync(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
+  syncer::SyncService* sync_service = GetSyncService();
+
+  if (!sync_service ||
+      !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
+    VLOG(1) << __func__
+            << " sync service is not available or first setup isn't complete, "
+               "cannot reset sync now";
+    return false;
+  }
+
+  syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
+  DCHECK(tracker);
+  const syncer::DeviceInfo* local_device_info =
+      GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
+  if (!local_device_info) {
+    // May happens when we reset the chain immediately after connection
+    VLOG(1) << __func__ << " no local device info, cannot reset sync now";
+    return false;
+  }
+
+  tracker->DeleteDeviceInfo(local_device_info->guid(),
+                            base::BindOnce(&BraveSyncWorker::OnSelfDeleted,
+                                           weak_ptr_factory_.GetWeakPtr()));
+
+  return true;
+}
+
+void BraveSyncWorker::OnSelfDeleted() {
   syncer::SyncService* sync_service = GetSyncService();
   if (sync_service) {
     if (sync_service_observer_.IsObserving(sync_service)) {
       sync_service_observer_.Remove(sync_service);
     }
 
-    sync_service->GetUserSettings()->SetSyncRequested(false);
     sync_service->StopAndClear();
   }
   brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
