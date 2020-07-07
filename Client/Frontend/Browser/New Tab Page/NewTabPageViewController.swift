@@ -518,7 +518,9 @@ extension NewTabPageViewController {
             // Hide the buttons as BraveToday feeds appear
             backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
             // Show the header as BraveToday feeds appear
-            braveTodayHeaderView.alpha = max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top - 64) / (collectionView.frame.height - 64)))
+            braveTodayHeaderView.alpha = max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / (collectionView.frame.height - braveTodayHeaderView.bounds.height - 32)))
+            let inset = braveTodayHeaderView.alpha * braveTodayHeaderView.bounds.height
+            collectionView.verticalScrollIndicatorInsets = UIEdgeInsets(top: inset, left: 0, bottom: 0, right: 0)
         }
     }
 }

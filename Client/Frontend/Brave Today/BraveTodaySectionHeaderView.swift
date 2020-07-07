@@ -14,7 +14,7 @@ class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusa
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
     }
     let settingsButton = UIButton(type: .system).then {
-        $0.setImage(UIImage(imageLiteralResourceName: "brave-today-settings"), for: .normal)
+        $0.setImage(UIImage(imageLiteralResourceName: "brave-today-settings").withRenderingMode(.alwaysOriginal), for: .normal)
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
     
