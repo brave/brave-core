@@ -25,6 +25,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
@@ -84,6 +85,7 @@ constexpr const char* kCollectedHistograms[] = {
 
     // P2A
     "Brave.P2A.Test",
+    "Brave.P2A.ViewConfirmationCount",
 };
 
 bool IsSuspendedMetric(base::StringPiece metric_name,
@@ -360,7 +362,9 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
     const size_t bucket_count = vector->bucket_ranges()->bucket_count() - 1;
     VLOG(2) << "P2A metric " << histogram_name << " has bucket count "
             << bucket_count;
-    // TODO: Perturb the bucket.
+
+    // Perturb the bucket.
+    bucket = DirectEncodingProtocol::Perturb(bucket_count, bucket);
   }
 
   base::PostTask(FROM_HERE, {content::BrowserThread::UI},

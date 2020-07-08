@@ -82,7 +82,7 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
                                  const std::string& upload_type) {
   auto resource_request = std::make_unique<network::ResourceRequest>();
   if (upload_type == "p2a") {
-    resource_request->url = p3a_endpoint_;
+    resource_request->url = p2a_endpoint_;
     resource_request->headers.SetHeader("X-Brave-P2A", "?1");
   } else if (upload_type == "p3a") {
     resource_request->url = p3a_endpoint_;
