@@ -121,10 +121,9 @@
     const auto strongSelf = weakSelf;
 
     const auto response = (NSHTTPURLResponse *)urlResponse;
-    std::string json;
-    if (data) {
-      // Might be no reason to convert to an NSString back to a UTF8 pointer...
-      json = std::string([[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding].UTF8String);
+    std::string body;
+    if (data && data.length > 0) {
+      body = std::string(static_cast<const char*>(data.bytes), data.length);
     }
     // For some reason I couldn't just do `std::map<std::string, std::string> responseHeaders;` due to std::map's
     // non-const key insertion
@@ -140,7 +139,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
       if (!weakSelf2) { return; }
       [weakSelf2.runningTasks removeObject:task];
-      callback((int)response.statusCode, json, copiedHeaders);
+      callback((int)response.statusCode, body, copiedHeaders);
     });
     delete responseHeaders;
   }];
