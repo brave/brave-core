@@ -57,7 +57,6 @@ class HTTPSEverywhereService : public BaseBraveShieldsService,
 
  protected:
   bool Init() override;
-  void Cleanup() override;
   void OnComponentReady(const std::string& component_id,
       const base::FilePath& install_dir,
       const std::string& manifest) override;
