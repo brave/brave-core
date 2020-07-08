@@ -14,7 +14,7 @@ chrome.runtime.sendMessage({
   location: window.location
 })
 
-const parseDomain = require('parse-domain')
+const { parseDomain, ParseResultType } = require('parse-domain')
 
 // Start looking for things to unhide before at most this long after
 // the backend script is up and connected (eg backgroundReady = true),
@@ -183,17 +183,24 @@ const isFirstPartyUrl = (url: string): boolean => {
   }
 
   const parsedTargetDomain = getParsedDomain(url)
-  if (!parsedTargetDomain) {
-    // If we cannot determine the party-ness of the resource,
-    // consider it first-party.
-    console.debug(`Cosmetic filtering: Unable to determine party-ness of "${url}"`)
+
+  if (parsedTargetDomain.type !== _parsedCurrentDomain.type) {
     return false
   }
 
-  return (
-    _parsedCurrentDomain.tld === parsedTargetDomain.tld &&
-    _parsedCurrentDomain.domain === parsedTargetDomain.domain
-  )
+  if (parsedTargetDomain.type === ParseResultType.Listed) {
+    const isSameEtldP1 = (_parsedCurrentDomain.icann.topLevelDomains === parsedTargetDomain.icann.topLevelDomains &&
+                          _parsedCurrentDomain.icann.domain === parsedTargetDomain.icann.domain)
+    return isSameEtldP1
+  }
+
+  const looksLikePrivateOrigin =
+      [ParseResultType.NotListed, ParseResultType.Ip, ParseResultType.Reserved].includes(parsedTargetDomain.type)
+  if (looksLikePrivateOrigin) {
+    return _parsedCurrentDomain.hostname === parsedTargetDomain.hostname
+  }
+
+  return false
 }
 
 const isAdText = (text: string): boolean => {
@@ -531,6 +538,8 @@ const scheduleQueuePump = (hide1pContent: boolean) => {
   }, { timeout: maxTimeMSBeforeStart })
 }
 
+const vettedSearchEngines = ['duckduckgo', 'qwant', 'bing', 'startpage', 'yahoo', 'onesearch', 'google', 'yandex']
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
@@ -545,6 +554,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const { selectors } = msg
       let nextIndex = cosmeticStyleSheet.rules.length
       for (const selector of selectors) {
+        if (_parsedCurrentDomain.type === ParseResultType.Listed && vettedSearchEngines.includes(_parsedCurrentDomain.icann.domain)) {
+          continue
+        }
         if (allSelectorsToRules.has(selector)) {
           continue
         }
