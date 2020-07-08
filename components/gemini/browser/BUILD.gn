@@ -23,3 +23,10 @@ source_set("browser") {
     "//url",
   ]
 }
+
+config("gemini_config") {
+  defines = [
+    "GEMINI_CLIENT_ID=\"$gemini_client_id\"",
+    "GEMINI_CLIENT_SECRET=\"$gemini_client_secret\""
+  ]
+}

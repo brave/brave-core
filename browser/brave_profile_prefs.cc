@@ -10,6 +10,7 @@
 #include "brave/common/brave_wallet_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
+#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -216,6 +217,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
   registry->RegisterBooleanPref(kNewTabPageShowTogether, true);
   registry->RegisterBooleanPref(kNewTabPageShowAddCard, true);
+  registry->RegisterBooleanPref(kNewTabPageShowGemini, true);
 
   // Brave Wallet
   registry->RegisterIntegerPref(kBraveWalletPrefVersion, 0);
@@ -230,6 +232,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(BINANCE_ENABLED)
   registry->RegisterStringPref(kBinanceAccessToken, "");
   registry->RegisterStringPref(kBinanceRefreshToken, "");
+#endif
+
+  // Gemini widget
+#if BUILDFLAG(GEMINI_ENABLED)
+  registry->RegisterStringPref(kGeminiAccessToken, "");
+  registry->RegisterStringPref(kGeminiRefreshToken, "");
 #endif
 
   // Autocomplete in address bar
