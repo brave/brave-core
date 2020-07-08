@@ -504,21 +504,35 @@ void LedgerImpl::SaveMediaPublisherInfo(
   bat_database_->SaveMediaPublisherInfo(media_key, publisher_key, callback);
 }
 
-void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
-                                const ledger::VisitData& visit_data,
-                                const uint64_t& duration,
-                                const uint64_t window_id,
-                                const ledger::PublisherInfoCallback callback) {
-  uint64_t new_duration = duration;
-  if (!braveledger_state::GetPublisherAllowVideos(this)) {
-    new_duration = 0;
-  }
+void LedgerImpl::SaveVisit(
+    const std::string& publisher_id,
+    const ledger::VisitData& visit_data,
+    uint64_t duration,
+    uint64_t window_id,
+    ledger::PublisherInfoCallback callback) {
+  bat_publisher_->SaveVisit(
+      publisher_id,
+      visit_data,
+      duration,
+      window_id,
+      callback);
+}
 
-  bat_publisher_->SaveVisit(publisher_id,
-                             visit_data,
-                             new_duration,
-                             window_id,
-                             callback);
+void LedgerImpl::SaveVideoVisit(
+    const std::string& publisher_id,
+    const ledger::VisitData& visit_data,
+    uint64_t duration,
+    uint64_t window_id,
+    ledger::PublisherInfoCallback callback) {
+  if (!braveledger_state::GetPublisherAllowVideos(this)) {
+    duration = 0;
+  }
+  SaveVisit(
+      publisher_id,
+      visit_data,
+      duration,
+      window_id,
+      callback);
 }
 
 void LedgerImpl::SetPublisherExclude(

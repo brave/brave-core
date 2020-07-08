@@ -165,12 +165,19 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(URIEncode, std::string(const std::string&));
 
-  MOCK_METHOD5(SaveMediaVisit,
+  MOCK_METHOD5(SaveVisit,
       void(const std::string&,
           const ledger::VisitData&,
-          const uint64_t&,
-          const uint64_t,
-          const ledger::PublisherInfoCallback));
+          uint64_t,
+          uint64_t,
+          ledger::PublisherInfoCallback));
+
+  MOCK_METHOD5(SaveVideoVisit,
+      void(const std::string&,
+          const ledger::VisitData&,
+          uint64_t,
+          uint64_t,
+          ledger::PublisherInfoCallback));
 
   MOCK_METHOD3(SetPublisherExclude,
       void(const std::string&,

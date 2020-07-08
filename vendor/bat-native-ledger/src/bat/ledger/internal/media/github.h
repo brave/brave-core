@@ -59,10 +59,6 @@ class GitHub {
       const ledger::VisitData& visit_data,
       const ledger::UrlResponse& response);
 
-  void OnSaveMediaVisit(
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
-
   void SavePublisherInfo(
       const uint64_t duration,
       const std::string& user_id,

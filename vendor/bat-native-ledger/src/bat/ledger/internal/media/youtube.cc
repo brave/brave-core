@@ -396,12 +396,6 @@ void YouTube::ProcessActivityFromUrl(
   OnMediaActivityError(visit_data, window_id);
 }
 
-void YouTube::OnSaveMediaVisit(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  // TODO(nejczdovc): handle if needed
-}
-
 void YouTube::OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
@@ -441,16 +435,12 @@ void YouTube::OnMediaPublisherInfo(
     new_visit_data.favicon_url = publisher_info->favicon_url;
     std::string id = publisher_info->id;
 
-    auto callback = std::bind(&YouTube::OnSaveMediaVisit,
-                              this,
-                              _1,
-                              _2);
-
-    ledger_->SaveMediaVisit(id,
-                            new_visit_data,
-                            duration,
-                            window_id,
-                            callback);
+    ledger_->SaveVideoVisit(
+        id,
+        new_visit_data,
+        duration,
+        window_id,
+        [](ledger::Result, ledger::PublisherInfoPtr) {});
   }
 }
 
@@ -571,21 +561,18 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   new_visit_data.name = publisher_name;
   new_visit_data.url = url;
 
-  auto callback = std::bind(&YouTube::OnSaveMediaVisit,
-                            this,
-                            _1,
-                            _2);
+  ledger_->SaveVideoVisit(
+      publisher_id,
+      new_visit_data,
+      duration,
+      window_id,
+      [](ledger::Result, ledger::PublisherInfoPtr) {});
 
-  ledger_->SaveMediaVisit(publisher_id,
-                          new_visit_data,
-                          duration,
-                          window_id,
-                          callback);
   if (!media_key.empty()) {
     ledger_->SaveMediaPublisherInfo(
         media_key,
         publisher_id,
-        [](const ledger::Result _){});
+        [](const ledger::Result) {});
   }
 }
 
@@ -807,7 +794,7 @@ void YouTube::OnChannelIdForUser(
     ledger_->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
-        [](const ledger::Result _){});
+        [](const ledger::Result) {});
 
     ledger::VisitData new_visit_data;
     new_visit_data.path = path;

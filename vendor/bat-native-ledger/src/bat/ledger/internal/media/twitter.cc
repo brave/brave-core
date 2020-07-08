@@ -381,23 +381,19 @@ void Twitter::SavePublisherInfo(
   visit_data->favicon_url = favicon_url;
   visit_data->name = publisher_name;
 
-  ledger_->SaveMediaVisit(publisher_key,
-                          *visit_data,
-                          duration,
-                          window_id,
-                          callback);
+  ledger_->SaveVisit(
+      publisher_key,
+      *visit_data,
+      duration,
+      window_id,
+      callback);
 
   if (!media_key.empty()) {
     ledger_->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
-        [](const ledger::Result _){});
+        [](const ledger::Result) {});
   }
-}
-
-void Twitter::OnSaveMediaVisit(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
 }
 
 void Twitter::FetchDataFromUrl(
@@ -543,17 +539,13 @@ void Twitter::OnUserPage(
     publisher_name = user_name;
   }
 
-  auto callback = std::bind(&Twitter::OnSaveMediaVisit,
-                            this,
-                            _1,
-                            _2);
-
-  SavePublisherInfo(0,
-                    user_id,
-                    user_name,
-                    publisher_name,
-                    window_id,
-                    callback);
+  SavePublisherInfo(
+      0,
+      user_id,
+      user_name,
+      publisher_name,
+      window_id,
+      [](ledger::Result, ledger::PublisherInfoPtr) {});
 }
 
 }  // namespace braveledger_media

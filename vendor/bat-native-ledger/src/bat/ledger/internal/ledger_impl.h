@@ -231,11 +231,19 @@ class LedgerImpl : public ledger::Ledger {
 
   std::string URIEncode(const std::string& value) override;
 
-  void SaveMediaVisit(const std::string& publisher_id,
-                      const ledger::VisitData& visit_data,
-                      const uint64_t& duration,
-                      const uint64_t window_id,
-                      const ledger::PublisherInfoCallback callback);
+  void SaveVisit(
+      const std::string& publisher_id,
+      const ledger::VisitData& visit_data,
+      uint64_t duration,
+      uint64_t window_id,
+      ledger::PublisherInfoCallback callback);
+
+  void SaveVideoVisit(
+      const std::string& publisher_id,
+      const ledger::VisitData& visit_data,
+      uint64_t duration,
+      uint64_t window_id,
+      ledger::PublisherInfoCallback callback);
 
   void SetPublisherExclude(
       const std::string& publisher_id,

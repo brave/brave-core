@@ -117,10 +117,6 @@ class Vimeo {
     ledger::MediaEventInfo event_info,
     const ledger::UrlResponse& response);
 
-  void OnSaveMediaVisit(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info);
-
   void SavePublisherInfo(
     const std::string& media_key,
     const uint64_t duration,
