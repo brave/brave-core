@@ -164,6 +164,8 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "SystemConfiguration.framework",
     "Network.framework"
   ]
+
+  bundle_deps = [ "//ios/chrome/app/resources" ]
 }
 
 bundle_data("resources") {

@@ -32,7 +32,7 @@ source_set("browser_state") {
 
   deps = [
     ":chromium_sources",
-    "//brave/ios/browser/prefs",
+    # "//brave/ios/browser/prefs",
     "//base",
     "//components/keyed_service/ios",
     "//components/prefs",

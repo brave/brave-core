@@ -9,8 +9,6 @@
 #include "brave/vendor/brave-ios/components/bookmarks/bookmark_model_factory.h"
 #include "brave/vendor/brave-ios/components/browser_state/bookmark_model_loaded_observer.h"
 #include "components/bookmarks/browser/bookmark_model.h"
-#include "brave/ios/browser/prefs/browser_prefs.h"
-#include "brave/ios/browser/application_context.h"
 
 #include "base/files/file_util.h"
 #include "base/mac/foundation_util.h"
@@ -97,7 +95,7 @@ ChromeBrowserState::ChromeBrowserState(const base::FilePath& name)
 
   bool directories_created = EnsureBrowserStateDirectoriesCreated(state_path_);
   DCHECK(directories_created);
-          
+
   //TODO: BRANDON
   /*// Bring up the policy system before creating |prefs_|.
   if (IsEnterprisePolicyEnabled()) {
@@ -110,7 +108,7 @@ ChromeBrowserState::ChromeBrowserState(const base::FilePath& name)
         policy_schema_registry_.get(), connector);
   }*/
 
-  RegisterBrowserStatePrefs(pref_registry_.get());
+  // RegisterBrowserStatePrefs(pref_registry_.get());
   BrowserStateDependencyManager::GetInstance()
       ->RegisterBrowserStatePrefsForServices(pref_registry_.get());
   prefs_ = CreateBrowserStatePrefs(state_path_,
@@ -124,10 +122,10 @@ ChromeBrowserState::ChromeBrowserState(const base::FilePath& name)
   user_prefs::UserPrefs::Set(this, prefs_.get());
 
   // Migrate obsolete prefs.
-  PrefService* local_state = GetApplicationContext()->GetLocalState();
-  MigrateObsoleteLocalStatePrefs(local_state);
-  MigrateObsoleteBrowserStatePrefs(prefs_.get());
-          
+  // PrefService* local_state = GetApplicationContext()->GetLocalState();
+  // MigrateObsoleteLocalStatePrefs(local_state);
+  // MigrateObsoleteBrowserStatePrefs(prefs_.get());
+
   BrowserStateDependencyManager::GetInstance()->CreateBrowserStateServices(
       this);
 

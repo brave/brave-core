@@ -1,7 +1,9 @@
 #include "brave/vendor/brave-ios/components/BraveCoreShared.h"
-#include "brave/ios/web/brave_webmain.h"
 
 #include "base/files/file_path.h"
+#include "base/mac/bundle_locations.h"
+#include "base/base_paths.h"
+#include "base/path_service.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/app/brave_main_delegate.h"
@@ -18,8 +20,7 @@
 @interface BraveCoreShared()
 {
     std::unique_ptr<BraveMainDelegate> delegate_;
-    std::unique_ptr<web::BraveWebMain> web_main_;
-    std::unique_ptr<ChromeBrowserState> browser_state_;
+    std::unique_ptr<web::WebMain> web_main_;
 }
 @end
 
@@ -36,32 +37,25 @@
 
 - (instancetype)init {
     if ((self = [super init])) {
-        
-        const auto pathToICUDTL = [[NSBundle bundleForClass:NSClassFromString(@"BATBraveLedger")] pathForResource:@"icudtl" ofType:@"dat"];
-        base::ios::OverridePathOfEmbeddedICU(pathToICUDTL.UTF8String);
-        if (!base::i18n::InitializeICU()) {
-          //BLOG(0, @"Failed to initialize ICU data");
-        }
-        
+
+        base::FilePath path;
+        base::PathService::Get(base::DIR_MODULE, &path);
+        base::mac::SetOverrideFrameworkBundlePath(path);
+
         delegate_.reset(new BraveMainDelegate());
 
         web::WebMainParams params(delegate_.get());
-        params.register_exit_manager = false;
-        
-        web_main_ = std::make_unique<web::BraveWebMain>(std::move(params));
-        
+
+        web_main_ = std::make_unique<web::WebMain>(std::move(params));
+
         /*web::ShellWebClient* client =
             static_cast<web::ShellWebClient*>(web::GetWebClient());
         web::BrowserState* browserState = client->browser_state();*/
-
-        browser_state_ = std::make_unique<ChromeBrowserState>(
-            base::FilePath(kIOSChromeInitialBrowserState));
     }
     return self;
 }
 
 - (void)dealloc {
-    browser_state_.reset();
     web_main_.reset();
     delegate_.reset();
 }

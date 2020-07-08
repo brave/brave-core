@@ -1,10 +1,8 @@
 #include "brave/vendor/brave-ios/components/Bookmarks.h"
-#include "brave/ios/web/brave_webmain.h"
 
 #include "base/files/file_path.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/ios/app/brave_main_delegate.h"
 #include "brave/vendor/brave-ios/components/bookmarks/bookmarks_api.h"
 #include "brave/vendor/brave-ios/components/brave_sync/brave_sync_service.h"
 #include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
@@ -41,9 +39,6 @@
 
 @interface BookmarksService()
 {
-  std::unique_ptr<BraveMainDelegate> delegate_;
-  std::unique_ptr<web::BraveWebMain> web_main_;
-  std::unique_ptr<ChromeBrowserState> browser_state_;
   std::unique_ptr<BraveSyncService> sync_service_;
 }
 @end
@@ -62,9 +57,6 @@
 
 - (void)dealloc {
     sync_service_.reset();
-    browser_state_.reset();
-    web_main_.reset();
-    delegate_.reset();
 }
 
 - (BookmarksAPI *)create {

@@ -9,11 +9,11 @@
 #include <memory>
 
 #include "base/compiler_specific.h"
-#include "ios/web/public/init/web_main_delegate.h"
+#include "ios/chrome/app/startup/ios_chrome_main_delegate.h"
 
 class BraveWebClient;
 
-class BraveMainDelegate : public web::WebMainDelegate {
+class BraveMainDelegate : public IOSChromeMainDelegate {
  public:
   BraveMainDelegate();
   ~BraveMainDelegate() override;

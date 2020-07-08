@@ -13,11 +13,9 @@ source_set("app") {
   ]
 
   deps = [
-    "//brave/ios/browser",
-    "//brave/ios/web",
     "//base",
-    "//components/component_updater",
-    "//ios/web/public/init",
+    "//ios/chrome/app/startup:startup_basic",
+    "//brave/ios/browser",
   ]
 
   configs += [ "//build/config/compiler:enable_arc" ]
