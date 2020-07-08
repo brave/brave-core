@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.18.1](https://github.com/brave/brave-ios/releases/tag/v1.18.1)
+
+ - Fixed pre-roll ads being shown on YouTube videos. ([#511](https://github.com/brave/brave-ios/issues/511))
+ - Fixed crash when loading favicons for bookmarks in certain cases. ([#2697](https://github.com/brave/brave-ios/issues/2697))
+ - Fixed crash in certain cases when Ad-block list is updated. ([#2699](https://github.com/brave/brave-ios/issues/2699))
+
 ## [1.18](https://github.com/brave/brave-ios/releases/tag/v1.18)
 
  - Implemented enhancements to New Tab Page and favorites overlay. ([#2578](https://github.com/brave/brave-ios/issues/2578))
