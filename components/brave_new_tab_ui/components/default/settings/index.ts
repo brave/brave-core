@@ -112,6 +112,7 @@ export const SettingsSidebarButtonText = styled<{ isActive: boolean }, 'span'>('
   position: relative;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-transform: capitalize;
 
   transition: opacity var(--sidebar-button-transition-timing) ease-in-out,
               color var(--sidebar-button-transition-timing) ease-in-out;
