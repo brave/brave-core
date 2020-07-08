@@ -192,7 +192,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             this.window.setElevation(20);
         }
         thisObject = this;
-        mIconFetcher = new BraveRewardsHelper();
+        mIconFetcher = new BraveRewardsHelper(BraveRewardsHelper.currentActiveChromeTabbedActivityTab());
 
         this.window.setTouchInterceptor(new View.OnTouchListener() {
             @Override
@@ -656,7 +656,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             ((LinearLayout)this.root.findViewById(R.id.website_summary)).setVisibility(View.VISIBLE);
             ((LinearLayout)this.root.findViewById(R.id.rewards_welcome_back)).setVisibility(View.GONE);
             ShowRewardsSummary();
-            Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
+            Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
             if (currentActiveTab != null && !currentActiveTab.isIncognito()) {
                 String url = currentActiveTab.getUrlString();
                 if (URLUtil.isValidUrl(url)) {
@@ -1207,7 +1207,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         }
 
         String publisherFavIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(currentTabId);
-        Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
+        Tab currentActiveTab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
         String url = currentActiveTab.getUrlString();
         final String favicon_url = (publisherFavIconURL.isEmpty()) ? url : publisherFavIconURL;
 

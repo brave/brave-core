@@ -183,16 +183,16 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         mMenuObserver = menuObserver;
     }
 
-    public void show(View anchorView, String host, String title, int tabId,
-                     Profile profile) {
+    public void show(View anchorView, Tab tab) {
         if (mHardwareButtonMenuAnchor == null) return;
-        mHost = host;
-        mTitle = title;
-        mTabId = tabId;
-        mProfile = profile;
+
+        mHost = tab.getUrlString();
+        mTitle = tab.getUrl().getHost();
+        mTabId = tab.getId();
+        mProfile = Profile.fromWebContents(tab.getWebContents());
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mIconFetcher = new BraveRewardsHelper();
+        mIconFetcher = new BraveRewardsHelper(tab);
 
         int rotation = ((Activity)mContext).getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
@@ -349,7 +349,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
 
     private void setUpMainLayout() {
         String favIconURL = mBraveRewardsNativeWorker.GetPublisherFavIconURL(mTabId);
-        Tab currentActiveTab = BraveRewardsHelper.currentActiveTab();
+        Tab currentActiveTab = mIconFetcher.getTab();
         String url = currentActiveTab.getUrlString();
         final String favicon_url = (favIconURL.isEmpty()) ? url : favIconURL;
         mIconFetcher.retrieveLargeIcon(favicon_url, this);
