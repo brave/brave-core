@@ -176,6 +176,7 @@ if (enable_brave_sync) {
     "../../brave/android/java/org/chromium/chrome/browser/BraveSyncInformers.java",
     "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
     "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
+    "../../brave/android/java/org/chromium/chrome/browser/sync/BraveAndroidSyncSettings.java",
     "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   ]
 }
