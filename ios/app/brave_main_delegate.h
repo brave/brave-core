@@ -6,8 +6,7 @@
 #ifndef BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_
 #define BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_
 
-#include <memory>
-
+#include "base/macros.h"
 #include "base/compiler_specific.h"
 #include "ios/chrome/app/startup/ios_chrome_main_delegate.h"
 
@@ -18,10 +17,8 @@ class BraveMainDelegate : public IOSChromeMainDelegate {
   BraveMainDelegate();
   ~BraveMainDelegate() override;
 
-  void BasicStartupComplete() override;
-
  private:
-  std::unique_ptr<BraveWebClient> web_client_;
+  DISALLOW_COPY_AND_ASSIGN(BraveMainDelegate);
 };
 
 #endif  // BRAVE_IOS_APP_BRAVE_MAIN_DELEGATE_H_

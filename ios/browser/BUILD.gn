@@ -18,7 +18,8 @@ source_set("browser") {
 
   deps = [
     "//base",
-    "//brave/vendor/brave-ios/components/browser_state",
+    "//brave/ios/browser/browser_state",
+    "//brave/ios/browser/browser_state:browser_state_impl",
     "//components/content_settings/core/common",
     "//ios/chrome/browser:chrome_paths",
     "//ios/web/public",

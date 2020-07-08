@@ -5,43 +5,20 @@
 
 import("//build/config/ios/rules.gni")
 
-config("internal_config") {
-  cflags = [
-    "-fobjc-abi-version=2",
-    "-fobjc-legacy-dispatch",
-    "-Wno-objc-property-synthesis",
-    "-Wno-sign-compare",
-  ]
-}
 
 source_set("bookmarks") {
-  configs += [ ":internal_config" ]
-  configs += [ "//build/config/compiler:enable_arc" ]
   configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   sources = [
     "bookmarks_api.cc",
     "bookmarks_api.h",
-    "bookmark_model_factory.cc",
-    "bookmark_model_factory.h",
-    "brave_bookmark_client.cc",
-    "brave_bookmark_client.h",
-    "startup_task_runner_service_factory.cc",
-    "startup_task_runner_service_factory.h",
   ]
 
   deps = [
     "//base",
-    "//brave/vendor/brave-ios/components/bookmark_sync_service",
-    "//brave/vendor/brave-ios/components/browser_state",
+    "//brave/ios/browser/bookmarks",
     "//components/bookmarks/browser",
-    "//components/favicon_base",
-    "//components/keyed_service/core",
-    "//components/keyed_service/ios",
-    "//components/prefs",
-    "//components/sync_bookmarks",
     "//components/undo",
-    "//ios/web/public",
     "//url",
   ]
 }

@@ -5,7 +5,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/vendor/brave-ios/components/bookmarks/bookmarks_api.h"
 #include "brave/vendor/brave-ios/components/brave_sync/brave_sync_service.h"
-#include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/web/public/init/web_main.h"
 
 @interface BookmarksAPI()

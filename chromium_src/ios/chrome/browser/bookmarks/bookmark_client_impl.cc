@@ -3,36 +3,42 @@
  * License, v. 3.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/vendor/brave-ios/components/bookmarks/brave_bookmark_client.h"
-#include "brave/vendor/brave-ios/components/bookmarks/bookmark_model_factory.h"
-#include "components/bookmarks/browser/base_bookmark_model_observer.h"
+#include "ios/chrome/browser/bookmarks/bookmark_client_impl.h"
 
 #include "base/logging.h"
 #include "base/metrics/user_metrics.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "components/bookmarks/browser/base_bookmark_model_observer.h"
 #include "components/bookmarks/browser/bookmark_node.h"
 #include "components/bookmarks/browser/bookmark_storage.h"
+#include "components/bookmarks/managed/managed_bookmark_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/sync_bookmarks/bookmark_sync_service.h"
 #include "url/gurl.h"
 
-namespace brave {
-BraveBookmarkClient::BraveBookmarkClient(
+BookmarkClientImpl::BookmarkClientImpl(
+    ChromeBrowserState* browser_state,
+    bookmarks::ManagedBookmarkService* managed_bookmark_service,
     sync_bookmarks::BookmarkSyncService* bookmark_sync_service)
-    : bookmark_sync_service_(bookmark_sync_service) {}
+    : browser_state_(browser_state),
+      managed_bookmark_service_(managed_bookmark_service),
+      bookmark_sync_service_(bookmark_sync_service) {
+  // workaround for unsued variables browser_state_ and  managed_bookmark_service_
+  DCHECK(browser_state_ || managed_bookmark_service_ || bookmark_sync_service_);
+}
 
-BraveBookmarkClient::~BraveBookmarkClient() {}
+BookmarkClientImpl::~BookmarkClientImpl() {}
 
-void BraveBookmarkClient::Init(bookmarks::BookmarkModel* model) {
+void BookmarkClientImpl::Init(bookmarks::BookmarkModel* model) {
   model_ = model;
 }
 
-bool BraveBookmarkClient::PreferTouchIcon() {
+bool BookmarkClientImpl::PreferTouchIcon() {
   return true;
 }
 
 base::CancelableTaskTracker::TaskId
-BraveBookmarkClient::GetFaviconImageForPageURL(
+BookmarkClientImpl::GetFaviconImageForPageURL(
     const GURL& page_url,
     favicon_base::IconType type,
     favicon_base::FaviconImageCallback callback,
@@ -40,49 +46,48 @@ BraveBookmarkClient::GetFaviconImageForPageURL(
   return base::CancelableTaskTracker::kBadTaskId;
 }
 
-bool BraveBookmarkClient::SupportsTypedCountForUrls() {
+bool BookmarkClientImpl::SupportsTypedCountForUrls() {
   return true;
 }
 
-void BraveBookmarkClient::GetTypedCountForUrls(
+void BookmarkClientImpl::GetTypedCountForUrls(
     UrlTypedCountMap* url_typed_count_map) {
 }
 
-bool BraveBookmarkClient::IsPermanentNodeVisibleWhenEmpty(bookmarks::BookmarkNode::Type type) {
+bool BookmarkClientImpl::IsPermanentNodeVisibleWhenEmpty(bookmarks::BookmarkNode::Type type) {
   return type == bookmarks::BookmarkNode::MOBILE;
 }
 
-void BraveBookmarkClient::RecordAction(const base::UserMetricsAction& action) {
+void BookmarkClientImpl::RecordAction(const base::UserMetricsAction& action) {
   base::RecordAction(action);
 }
 
 bookmarks::LoadManagedNodeCallback
-BraveBookmarkClient::GetLoadManagedNodeCallback() {
+BookmarkClientImpl::GetLoadManagedNodeCallback() {
   return bookmarks::LoadManagedNodeCallback();
 }
 
-bool BraveBookmarkClient::CanSetPermanentNodeTitle(
+bool BookmarkClientImpl::CanSetPermanentNodeTitle(
     const bookmarks::BookmarkNode* permanent_node) {
   return true;
 }
 
-bool BraveBookmarkClient::CanSyncNode(const bookmarks::BookmarkNode* node) {
+bool BookmarkClientImpl::CanSyncNode(const bookmarks::BookmarkNode* node) {
   return true;
 }
 
-bool BraveBookmarkClient::CanBeEditedByUser(
+bool BookmarkClientImpl::CanBeEditedByUser(
     const bookmarks::BookmarkNode* node) {
   return true;
 }
 
-std::string BraveBookmarkClient::EncodeBookmarkSyncMetadata() {
+std::string BookmarkClientImpl::EncodeBookmarkSyncMetadata() {
   return bookmark_sync_service_->EncodeBookmarkSyncMetadata();
 }
 
-void BraveBookmarkClient::DecodeBookmarkSyncMetadata(
+void BookmarkClientImpl::DecodeBookmarkSyncMetadata(
     const std::string& metadata_str,
     const base::RepeatingClosure& schedule_save_closure) {
   bookmark_sync_service_->DecodeBookmarkSyncMetadata(
       metadata_str, schedule_save_closure, model_);
-}
 }

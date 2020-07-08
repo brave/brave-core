@@ -1,0 +1,91 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+
+config("internal_config") {
+  cflags = [
+    "-fobjc-abi-version=2",
+    "-fobjc-legacy-dispatch",
+    "-Wno-objc-property-synthesis",
+    "-Wno-sign-compare",
+  ]
+}
+
+source_set("browser_state") {
+  sources = [
+    "browser_state_manager.h",
+  ]
+
+  deps = [
+    ":chromium_sources",
+    "//base",
+    "//components/keyed_service/ios",
+    "//components/prefs",
+    "//components/pref_registry",
+    "//components/sync_preferences",
+    "//components/user_prefs",
+    "//net",
+  ]
+
+  public_deps = [
+    "//ios/chrome/browser/browser_state",
+  ]
+}
+
+source_set("browser_state_impl") {
+  configs += [ ":internal_config" ]
+  configs += [ "//build/config/compiler:enable_arc" ]
+  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+
+  sources = [
+    "browser_state_keyed_service_factories.h",
+    "browser_state_keyed_service_factories.mm",
+    "browser_state_manager.mm",
+    "//ios/chrome/browser/browser_state/chrome_browser_state_impl.cc",
+    "//ios/chrome/browser/browser_state/chrome_browser_state_impl.h",
+    "//ios/chrome/browser/browser_state/bookmark_model_loaded_observer.cc",
+    "//ios/chrome/browser/browser_state/bookmark_model_loaded_observer.h",
+  ]
+
+  deps = [
+    ":chromium_sources",
+    "//base",
+    "//brave/ios/browser/bookmarks",
+    "//brave/ios/browser/history",
+    "//brave/ios/browser/prefs",
+    "//brave/ios/browser/signin",
+    "//brave/ios/browser/sync",
+    "//components/bookmarks/browser",
+    "//components/keyed_service/ios",
+    "//components/pref_registry",
+    "//components/signin/public/base",
+    "//components/sync_preferences",
+    "//components/user_prefs",
+    "//ios/chrome/browser/undo",
+    "//services/network/public/cpp",
+
+    # ShellURLRequestContextGetter
+    "//ios/web/public",
+    "//ios/web/shell",
+  ]
+
+  public_deps = [
+    ":browser_state",
+  ]
+}
+
+source_set("chromium_sources") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  sources = [
+    "//ios/chrome/browser/chrome_constants.cc",
+    "//ios/chrome/browser/chrome_constants.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}

@@ -1,0 +1,22 @@
+source_set("signin") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+  sources = [
+    "//ios/chrome/browser/signin/authentication_service_factory.h",
+    "//ios/chrome/browser/signin/authentication_service_factory.mm",
+    "//ios/chrome/browser/signin/identity_manager_factory.cc",
+    "//ios/chrome/browser/signin/identity_manager_factory.h",
+    "//components/signin/public/identity_manager/ios/fake_device_accounts_provider.mm",
+    "//components/signin/public/identity_manager/ios/fake_device_accounts_provider.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/ios/browser/browser_state",
+    "//components/image_fetcher/ios",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios",
+    "//components/pref_registry",
+    "//components/signin/public/base",
+    "//brave/ios/browser/browser_state",
+  ]
+}

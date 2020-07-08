@@ -6,9 +6,9 @@
 #include "brave/vendor/brave-ios/components/brave_sync/brave_sync_service.h"
 
 #include "brave/vendor/brave-ios/components/bookmarks/bookmarks_api.h"
-#include "brave/vendor/brave-ios/components/bookmarks/bookmark_model_factory.h"
-#include "brave/vendor/brave-ios/components/bookmark_sync_service/bookmark_undo_service_factory.h"
-#include "brave/vendor/brave-ios/components/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
 
 using ios::BookmarkModelFactory;
 using ios::BookmarkUndoServiceFactory;

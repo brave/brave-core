@@ -28,12 +28,16 @@ source_set("components") {
   ]
 
   deps = [
-    "//base",
-    "//brave/ios/app",
+    ":channel_info",
     "bookmarks",
     "brave_sync",
-    "browser_state",
-    ":channel_info",
+    "//base",
+    "//brave/ios/app",
+    "//brave/ios/browser",
+    "//brave/ios/browser/browser_state",
+    "//components/bookmarks/browser",
+    "//ios/chrome/browser/providers:provider_factory",
+    "//ios/public/provider/chrome/browser",
     "//ios/web/public/init",
   ]
 }

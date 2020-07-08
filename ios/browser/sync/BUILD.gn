@@ -1,0 +1,67 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+
+source_set("sync") {
+  configs += [ "//build/config/compiler:enable_arc" ]
+  sources = [
+    "//ios/chrome/browser/sync/device_info_sync_service_factory.h",
+    "//ios/chrome/browser/sync/device_info_sync_service_factory.mm",
+    "//ios/chrome/browser/sync/profile_sync_service_factory.cc",
+    "//ios/chrome/browser/sync/profile_sync_service_factory.h",
+    "//ios/chrome/browser/sync/ios_chrome_sync_client.h",
+    "//ios/chrome/browser/sync/ios_chrome_sync_client.mm",
+    "//ios/chrome/browser/sync/model_type_store_service_factory.cc",
+    "//ios/chrome/browser/sync/model_type_store_service_factory.h",
+    "//ios/chrome/browser/sync/send_tab_to_self_sync_service_factory.h",
+    "//ios/chrome/browser/sync/send_tab_to_self_sync_service_factory.mm",
+    "//ios/chrome/browser/sync/sync_setup_service_factory.cc",
+    "//ios/chrome/browser/sync/sync_setup_service_factory.h",
+    "//ios/chrome/browser/sync/sync_setup_service.cc",
+    "//ios/chrome/browser/sync/sync_setup_service.h",
+    "//ios/chrome/browser/sync/ios_trusted_vault_client.h",
+    "//ios/chrome/browser/sync/ios_trusted_vault_client.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/ios/browser/bookmarks",
+    "//brave/ios/browser/browser_state",
+    "//brave/ios/browser/history",
+    "//brave/ios/browser/signin",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios",
+    "//components/network_time",
+    "//components/sync",
+    "//components/sync/base",
+    "//components/sync/driver",
+    "//ios/web/public",
+    "//services/network/public/cpp",
+    "//url",
+
+    # ios_chrome_sync_client
+    "//components/autofill/core/browser",
+    "//components/autofill/core/common",
+    "//components/browser_sync",
+    "//components/consent_auditor",
+    "//components/dom_distiller/core",
+    "//components/history/core/browser",
+    "//components/history/core/browser",
+    "//components/password_manager/core/browser",
+    "//components/reading_list/core",
+    "//components/sync_preferences",
+    "//components/sync_sessions",
+    "//components/sync_user_events",
+
+    #ios_trusted_vault_client
+    "//components/signin/public/base",
+    "//ios/public/provider/chrome/browser",
+
+    # device_info_sync_service_factory
+    "//components/send_tab_to_self",
+    "//components/sync_device_info",
+  ]
+}
