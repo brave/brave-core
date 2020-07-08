@@ -12,6 +12,7 @@
 #include "third_party/blink/renderer/modules/plugins/dom_plugin.h"
 #include "third_party/blink/renderer/modules/plugins/dom_plugin_array.h"
 #include "third_party/blink/renderer/platform/heap/heap.h"
+#include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 #include "third_party/blink/renderer/platform/wtf/vector.h"
 
 using blink::DOMPlugin;
@@ -22,8 +23,30 @@ using blink::MakeGarbageCollected;
 using blink::Member;
 using blink::MimeClassInfo;
 using blink::PluginInfo;
+using WTF::String;
+using WTF::StringBuilder;
 
 namespace brave {
+
+String PluginReplacementName(std::mt19937_64* prng) {
+  std::vector<String> chrome{"Chrome ", "Chromium ",   "Brave ",
+                             "Web ",    "Browser ",    "OpenSource ",
+                             "Online ", "JavaScript ", ""};
+  std::vector<String> pdf{"PDF ",
+                          "Portable Document Format ",
+                          "portable-document-format ",
+                          "document ",
+                          "doc ",
+                          "PDF and PS ",
+                          "com.adobe.pdf "};
+  std::vector<String> viewer{"Viewer",  "Renderer", "Display",   "Plugin",
+                             "plug-in", "plug in",  "extension", ""};
+  StringBuilder result;
+  result.Append(chrome[(*prng)() % chrome.size()]);
+  result.Append(pdf[(*prng)() % pdf.size()]);
+  result.Append(viewer[(*prng)() % viewer.size()]);
+  return result.ToString();
+}
 
 void FarblePlugins(DOMPluginArray* owner,
                    HeapVector<Member<DOMPlugin>>* dom_plugins) {
@@ -41,6 +64,8 @@ void FarblePlugins(DOMPluginArray* owner,
       U_FALLTHROUGH;
     }
     case BraveFarblingLevel::BALANCED: {
+      std::mt19937_64 prng = BraveSessionCache::From(*(frame->GetDocument()))
+                                 .MakePseudoRandomGenerator();
       // The item() method will populate plugin info if any item of
       // |dom_plugins_| is null, but when it tries, it assumes the
       // length of |dom_plugins_| == the length of the underlying
@@ -50,7 +75,16 @@ void FarblePlugins(DOMPluginArray* owner,
       // ensure that the cache is fully populated now while the assumptions
       // still hold, so the problematic code is never executed later.
       for (unsigned index = 0; index < dom_plugins->size(); index++) {
-        (*dom_plugins)[index] = owner->item(index);
+        auto plugin = frame->GetPluginData()->Plugins()[index];
+        String name = plugin->Name();
+        // Built-in plugins get their names and descriptions farbled as well.
+        if ((name == "Chrome PDF Plugin") || (name == "Chrome PDF Viewer")) {
+          plugin->SetName(PluginReplacementName(&prng));
+          plugin->SetFilename(
+              BraveSessionCache::From(*(frame->GetDocument()))
+                  .GenerateRandomString(plugin->Filename().Ascii(), 32));
+        }
+        (*dom_plugins)[index] = MakeGarbageCollected<DOMPlugin>(frame, *plugin);
       }
       // Add fake plugin #1.
       auto* fake_plugin_info_1 = MakeGarbageCollected<PluginInfo>(
@@ -89,8 +123,6 @@ void FarblePlugins(DOMPluginArray* owner,
           MakeGarbageCollected<DOMPlugin>(frame, *fake_plugin_info_2);
       dom_plugins->push_back(fake_dom_plugin_2);
       // Shuffle the list of plugins pseudo-randomly, based on the domain key.
-      std::mt19937_64 prng = BraveSessionCache::From(*(frame->GetDocument()))
-                                 .MakePseudoRandomGenerator();
       std::shuffle(dom_plugins->begin(), dom_plugins->end(), prng);
       break;
     }
