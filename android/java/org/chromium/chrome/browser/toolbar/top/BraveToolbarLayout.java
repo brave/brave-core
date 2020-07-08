@@ -326,8 +326,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       if (!isValidProtocolForShields(url.getProtocol())) {
         return;
       }
-      mBraveShieldsHandler.show(mBraveShieldsButton, currentTab.getUrlString(),
-                                url.getHost(), currentTab.getId(), Profile.fromWebContents(((TabImpl)currentTab).getWebContents()));
+      mBraveShieldsHandler.show(mBraveShieldsButton, currentTab);
     } catch (Exception e) {
       // Do nothing if url is invalid.
       // Just return w/o showing shields popup.

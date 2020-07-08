@@ -152,7 +152,7 @@ public class BraveRewardsNativeWorker {
         mHandler.post(new Runnable() {
             @Override
             public void run() {
-                Tab tab = BraveRewardsHelper.currentActiveTab();
+                Tab tab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
                 if (tab != null && !tab.isIncognito()) {
                     OnNotifyFrontTabUrlChanged(tab.getId(), tab.getUrlString());
                 }
