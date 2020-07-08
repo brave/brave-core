@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <string>
+#include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/time/time.h"
@@ -96,13 +97,24 @@ void APIParameters::Initialize() {
 
 void APIParameters::OnTimer(const uint32_t timer_id) {
   if (timer_id == refresh_timer_id_) {
-    refresh_timer_id_ = 0;
     Fetch();
-    return;
   }
 }
 
 void APIParameters::Fetch() {
+  Fetch([](ledger::RewardsParametersPtr) {});
+}
+
+void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
+  bool first_request = callbacks_.empty();
+  callbacks_.push_back(callback);
+  if (!first_request) {
+    BLOG(1, "API parameters fetch in progress");
+    return;
+  }
+
+  refresh_timer_id_ = 0;
+
   auto url_callback = std::bind(&APIParameters::OnFetch,
       this,
       _1);
@@ -115,6 +127,7 @@ void APIParameters::OnFetch(const ledger::UrlResponse& response) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
   if (response.status_code != net::HTTP_OK) {
+    RunCallbacks();
     SetRefreshTimer(brave_base::random::Geometric(90));
     return;
   }
@@ -123,13 +136,28 @@ void APIParameters::OnFetch(const ledger::UrlResponse& response) {
   auto result = ParseFetchResponse(response.body, &parameters);
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(1, "Couldn't parse response");
+    RunCallbacks();
     SetRefreshTimer(
         brave_base::random::Geometric(10 * base::Time::kSecondsPerMinute));
     return;
   }
 
   braveledger_state::SetRewardsParameters(ledger_, parameters);
+  RunCallbacks();
   SetRefreshTimer();
+}
+
+void APIParameters::RunCallbacks() {
+  // Execute callbacks with the current parameters stored in state.
+  // If the last fetch failed, callbacks will be run with the last
+  // successfully fetched parameters or a default set of parameters.
+  auto parameters = braveledger_state::GetRewardsParameters(ledger_);
+  DCHECK(parameters);
+
+  auto callbacks = std::move(callbacks_);
+  for (auto& callback : callbacks) {
+    callback(parameters->Clone());
+  }
 }
 
 void APIParameters::SetRefreshTimer(const int delay) {
