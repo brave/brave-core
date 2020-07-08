@@ -242,9 +242,9 @@ export const StyledAlertClose = styled<{}, 'button'>('button')`
   top: 11px;
   right: 11px;
   cursor: pointer;
-  width: 15px;
-  height: 15px;
-  color: #B8B9C4;
+  width: 20px;
+  height: 20px;
+  color: #9E9FAB;
 `
 
 export const StyledBAT = styled<{}, 'div'>('div')`
