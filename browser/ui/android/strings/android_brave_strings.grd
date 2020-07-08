@@ -671,6 +671,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_SYNC_LOADING_DEVICES_TITLE" desc="Text for Brave Sync loading devices title.">
 	LOADING DEVICES...
       </message>
+      <message name="IDS_BRAVE_SYNC_LEAVING_SYNC_CHAIN_TITLE" desc="Text for Brave Sync leaving sync chain (doing reset) title.">
+  LEAVING THE SYNC CHAIN...
+      </message>
+      <message name="IDS_BRAVE_SYNC_TRY_RESET_LATER_TEXT" desc="Text to display when trying to reset sync, but it's setup is in progress.">
+  Sync setup is in progress, try to reset it later
+      </message>
       <message name="IDS_BRAVE_SYNC_WORD_COUNT_TEXT" desc="Text for Brave Sync word count message.">
 	Word count: <ph name="WORD_COUNT">%1$d</ph>
       </message>

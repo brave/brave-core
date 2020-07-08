@@ -20,7 +20,7 @@ public class BraveSyncWorkerHolder {
     private static String TAG = "SYNC";
 
     public static Object get() {
-        ThreadUtils.assertOnUiThread();
+        // May be invoked in non-UI thread when we do validation for camera QR in callback
         if (!sInitialized) {
             if (BraveConfig.SYNC_ENABLED) {
                 try {
