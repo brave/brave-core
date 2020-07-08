@@ -3,8 +3,8 @@
 <translationbundle lang="de">
 <translation id="5288293905681750318">Tracker &amp; Werbung blockiert</translation>
 <translation id="2313532038420432247">HTTPS Aufwertungen</translation>
-<translation id="788493840831967104">Zeit gespeichert</translation>
-<translation id="2318592590318590295">Bandbreite gespeichert</translation>
+<translation id="788493840831967104">Zeit gespart</translation>
+<translation id="2318592590318590295">Bandbreite gespart</translation>
 <translation id="5206618227023752085">Vorschau entfernt.</translation>
 <translation id="2079545284768500474">Rückgängig machen</translation>
 <translation id="6040143037577758943">Schließen</translation>
@@ -370,6 +370,7 @@
 <translation id="1797334173232638045">Ihre angehefteten Seiten wurden verschoben in</translation>
 <translation id="5717619667204259673">Bewahren Sie diesen Wiederherstellungsschlüssel sicher auf.</translation>
 <translation id="4699702339303280827">Sie können diesen Schlüssel jederzeit verwenden, um Ihre Wallet zurückzuerhalten, falls Ihrem Browser oder Computer etwas zustößt. Doch sorgen Sie dafür, dass er geschützt ist — jeder, der diesen Schlüssel erlangt, könnte Ihre Wallet stehlen. Am sichersten ist es wohl, ihn auf einem Stück Papier aufzuschreiben oder wo immer Sie sonst wichtige Informationen aufbewahren.</translation>
+<translation id="8979401359137062629">Notiz:</translation>
 <translation id="7354412786785889047">Sie können diesen Urheber von Inhalten unterstützen, indem Sie ein Trinkgeld senden. Es’ist eine Möglichkeit, ihm für die Erstellung seiner großartigen Inhalte zu danken. Verifizierte Urheber werden im Lauf der ersten Woche in jedem Kalendermonat für ihre Trinkgelder bezahlt.</translation>
 <translation id="972846019534552366">Sie können im Brave-Rewards-Tab auch einen Beitrag festlegen, der jeden Monat ausgezahlt wird.</translation>
 <translation id="121079855621707240">Sie können diesen Inhaltsurheber unterstützen, indem Sie eine monatliche Spende festlegen. Auf diese Weise können Sie ihm auf permanenter Basis dafür danken, dass er großartige Inhalte erstellt. Verifizierte Urheber werden in der ersten Woche jedes Kalendermonats für ihre Beiträge bezahlt.</translation>
