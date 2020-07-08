@@ -1,6 +1,7 @@
 import("//brave/build/config.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
@@ -133,6 +134,7 @@ source_set("browser_process") {
     "//brave/common:pref_names",
     "//brave/components/brave_ads/browser",
     "//brave/components/binance/browser/buildflags",
+    "//brave/components/gemini/browser/buildflags",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_drm",
     "//brave/components/brave_together/browser",
@@ -275,6 +277,19 @@ source_set("browser_process") {
     deps += [
       "//brave/components/binance/browser",
       "//components/country_codes",
+    ]
+  }
+
+  if (gemini_enabled) {
+    sources += [
+      "gemini/gemini_service_factory.cc",
+      "gemini/gemini_service_factory.h",
+      "gemini/gemini_protocol_handler.cc",
+      "gemini/gemini_protocol_handler.h",
+    ]
+
+    deps += [
+      "//brave/components/binance/browser",
     ]
   }
 

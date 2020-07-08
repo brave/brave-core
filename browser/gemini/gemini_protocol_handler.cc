@@ -30,7 +30,38 @@ void LoadNewTabURL(
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin) {
-  // TODO(ryanml)
+  content::WebContents* web_contents = std::move(web_contents_getter).Run();
+  if (!web_contents) {
+    return;
+  }
+
+  const auto ref_url = web_contents->GetURL();
+  if (!ref_url.is_valid()) {
+    return;
+  }
+
+  GURL allowed_origin("https://exchange.qa001.aurora7.net");
+  if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin ||
+      !initiating_origin.has_value() ||
+      initiating_origin.value().GetURL() != allowed_origin) {
+    return;
+  }
+
+  std::map<std::string, std::string> parts;
+  for (net::QueryIterator it(url); !it.IsAtEnd(); it.Advance()) {
+    parts[it.GetKey()] = it.GetUnescapedValue();
+  }
+  if (parts.find("code") != parts.end()) {
+    std::string auth_token = parts["code"];
+    Profile* profile =
+        Profile::FromBrowserContext(web_contents->GetBrowserContext());
+    GeminiServiceFactory::GetInstance()
+      ->GetForProfile(profile)
+      ->SetAuthToken(auth_token);
+  }
+
+  web_contents->GetController().LoadURL(GURL("chrome://newtab?geminiAuth=1"),
+      content::Referrer(), page_transition, std::string());
 }
 
 }  // namespace
@@ -42,11 +73,15 @@ void HandleGeminiProtocol(const GURL& url,
                            ui::PageTransition page_transition,
                            bool has_user_gesture,
                            const base::Optional<url::Origin>& initiator) {
-  // TODO(ryanml)
+  DCHECK(IsGeminiProtocol(url));
+  base::PostTask(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&LoadNewTabURL, url, std::move(web_contents_getter),
+                     page_transition, has_user_gesture, initiator));
 }
 
 bool IsGeminiProtocol(const GURL& url) {
-  // TODO(ryanml)
+  return url.SchemeIs(kGeminiScheme);
 }
 
 }  // namespace gemini

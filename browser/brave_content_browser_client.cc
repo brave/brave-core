@@ -22,6 +22,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
+#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
@@ -103,6 +104,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(BINANCE_ENABLED)
 #include "brave/browser/binance/binance_protocol_handler.h"
+#endif
+
+#if BUILDFLAG(GEMINI_ENABLED)
+#include "brave/browser/gemini/gemini_protocol_handler.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -197,6 +202,15 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 #if BUILDFLAG(BINANCE_ENABLED)
   if (binance::IsBinanceProtocol(url)) {
     binance::HandleBinanceProtocol(url, std::move(web_contents_getter),
+                                   page_transition, has_user_gesture,
+                                   initiating_origin);
+    return true;
+  }
+#endif
+
+#if BUILDFLAG(GEMINI_ENABLED)
+  if (gemini::IsGeminiProtocol(url)) {
+    gemini::HandleGeminiProtocol(url, std::move(web_contents_getter),
                                    page_transition, has_user_gesture,
                                    initiating_origin);
     return true;
