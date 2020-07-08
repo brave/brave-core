@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/js/web_ui_listener_behavior.js b/ui/webui/resources/js/web_ui_listener_behavior.js
+index e5c09b9d6447c1c73e80598a536bfd93b0022ac3..40c65879185afe7495e61bafcd2f2f865b990947 100644
+--- a/ui/webui/resources/js/web_ui_listener_behavior.js
++++ b/ui/webui/resources/js/web_ui_listener_behavior.js
+@@ -8,6 +8,7 @@
+  */
+ 
+ // #import {WebUIListener, addWebUIListener, removeWebUIListener} from './cr.m.js';
++// #import 'chrome://brave-resources/polymer_overriding.js';
+ 
+ /** @polymerBehavior */
+ // eslint-disable-next-line no-var

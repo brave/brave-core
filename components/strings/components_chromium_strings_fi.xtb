@@ -1,28 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fi">
-<translation id="4068928808254189629">Avaa
-        Brave-valikko &gt;
-       <ph name="SETTINGS_TITLE"/>
-        &gt;
-       <ph name="ADVANCED_TITLE"/>
-        ja poista valinta kohdasta <ph name="NO_PREFETCH_DESCRIPTION"/>.
-        Jos ongelma ei ratkea, valitse tämä vaihtoehto
-        uudelleen suorituskyvyn parantamiseksi.</translation>
-<translation id="2017237562285586622">Myönnä Braveille verkon käyttöoikeus palomuurin tai virustorjuntaohjelmiston
-          asetuksissa</translation>
+<translation id="130631256467250065">Muutokset tulevat voimaan, kun käynnistät laitteen seuraavan kerran.</translation>
+<translation id="7999989146447764333">Virheraportit eivät ole käytettävissä Braveissa.</translation>
+<translation id="1953231710324290369">Tämä on suojattu Brave-sivu</translation>
 <translation id="4010643444566880169">Brave-käyttöjärjestelmä ei ole suorittanut alkuasetuksia.</translation>
-<translation id="8187289872471304532">Avaa
-          Sovellukset &gt; Järjestelmäasetukset &gt; Verkko &gt; Lisäasetukset &gt; Välityspalvelimet
-          ja poista valinta kaikkien valittujen välityspalvelimien kohdalta.</translation>
-<translation id="8619622797841001082">Avaa
-          Brave-valikko &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          ja varmista, että asetus on "ei välityspalvelinta" tai "suora".</translation>
+<translation id="7932149101545999102">Bravein ovat tehneet mahdolliseksi <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>-projekti ja muut <ph name="BEGIN_LINK_OSS"/>avoimen lähdekoodin ohjelmistot<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Avaa
           Brave-valikko &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -33,11 +16,27 @@
           &gt;
           Lähiverkon asetukset
           ja poista valinta kohdasta Käytä välityspalvelinta lähiverkossa.</translation>
-<translation id="9156965752763025780">Muutokset tulevat voimaan kun käynnistät Braven seuraavan kerran.</translation>
-<translation id="130631256467250065">Muutokset tulevat voimaan, kun käynnistät laitteen seuraavan kerran.</translation>
-<translation id="7999989146447764333">Virheraportit eivät ole käytettävissä Bravessa.</translation>
-<translation id="7932149101545999102">Braven ovat tehneet mahdolliseksi <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>-projekti ja muut <ph name="BEGIN_LINK_OSS"/>avoimen lähdekoodin ohjelmistot<ph name="END_LINK_OSS"/>.</translation>
-<translation id="1953231710324290369">Tämä on suojattu Brave-sivu</translation>
-<translation id="2305018990464327944">Brave vahvisti, että <ph name="ISSUER"/> on myöntänyt tämän sivuston varmenteen.</translation>
-<translation id="88187049159266777">Bravea ei suljettu oikein.</translation>
+<translation id="2017237562285586622">Myönnä Braveille verkon käyttöoikeus palomuurin tai virustorjuntaohjelmiston
+          asetuksissa</translation>
+<translation id="8619622797841001082">Avaa
+          Brave-valikko &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          ja varmista, että asetus on "ei välityspalvelinta" tai "suora".</translation>
+<translation id="9156965752763025780">Muutokset tulevat voimaan, kun käynnistät Bravein seuraavan kerran.</translation>
+<translation id="4068928808254189629">Avaa
+        Brave-valikko &gt;
+       <ph name="SETTINGS_TITLE"/>
+        &gt;
+       <ph name="ADVANCED_TITLE"/>
+        ja poista valinta kohdasta <ph name="NO_PREFETCH_DESCRIPTION"/>.
+        Jos ongelma ei ratkea, valitse tämä vaihtoehto
+        uudelleen suorituskyvyn parantamiseksi.</translation>
+<translation id="8187289872471304532">Avaa
+          Sovellukset &gt; Järjestelmäasetukset &gt; Verkko &gt; Lisäasetukset &gt; Välityspalvelimet
+          ja poista valinta kaikkien valittujen välityspalvelimien kohdalta.</translation>
+<translation id="88187049159266777">Braveia ei suljettu oikein.</translation>
 </translationbundle>

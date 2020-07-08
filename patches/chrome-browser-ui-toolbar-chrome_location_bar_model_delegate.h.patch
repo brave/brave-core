@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
-index 285bab9e40b4d3c6899d7e5d8074cd9facf5b762..21e5a4534cd06be5cb08a2018b128bacd87c95a5 100644
+index d03e982e0e32689a5a78ea75dbd304a8eec56439..12210d53f733531c494169e05e2358640c5cc128 100644
 --- a/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
 +++ b/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h
-@@ -59,6 +59,7 @@ class ChromeLocationBarModelDelegate : public LocationBarModelDelegate {
+@@ -57,6 +57,7 @@ class ChromeLocationBarModelDelegate : public LocationBarModelDelegate {
+ 
+   // Helper method to get the navigation entry from the navigation controller.
    content::NavigationEntry* GetNavigationEntry() const;
++  BRAVE_CHROME_LOCATION_BAR_MODEL_DELEGATE_H_
  
   private:
-+  friend class BraveLocationBarModelDelegate;
-   // Returns the navigation controller used to retrieve the navigation entry
-   // from which the states are retrieved. If this returns null, default values
-   // are used.
+   // The state of URL elision in the omnibox.

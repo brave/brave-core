@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarColors.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarColors.java
-index 37b5d7f0f0d1005024aa7e31e1c0bde65218e767..86183ab88d3d82c40a257715afab37dd7f7be468 100644
+index c4fa5be5f84343008040b584597238e4ddf5f382..568d1bd438a070ac5d676fcc59e980dcb6edb2e9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarColors.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/ToolbarColors.java
-@@ -65,6 +65,7 @@ public class ToolbarColors {
+@@ -66,6 +66,7 @@ public class ToolbarColors {
              Resources res, int color, boolean isIncognito) {
          // Text box color on default toolbar background in incognito mode is a pre-defined
          // color. We calculate the equivalent opaque color from the pre-defined translucent color.

@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/renderer/content_settings_agent_impl.h b/components/content_settings/renderer/content_settings_agent_impl.h
+index 2522fdb1971a70c7685de606aa490deacc8bab72..b75659e76c0f76bc61412a2fb0ce80acd7674c8f 100644
+--- a/components/content_settings/renderer/content_settings_agent_impl.h
++++ b/components/content_settings/renderer/content_settings_agent_impl.h
+@@ -125,6 +125,7 @@ class ContentSettingsAgentImpl
+       const blink::WebFrame* frame,
+       const blink::WebURL& secondary_url);
+ 
++  BRAVE_CONTENT_SETTINGS_AGENT_IMPL_H_
+  protected:
+   // Allow this to be overridden by tests.
+   virtual void BindContentSettingsManager(

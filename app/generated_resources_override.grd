@@ -1,0 +1,867 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+This file contains definitions of resources that will be translated for each
+locale.  The variables is_win, is_macosx, is_linux, and is_posix are available
+for making strings OS specific.  Other platform defines such as use_titlecase
+are declared in tools/grit/grit_rule.gni.
+-->
+<grit base_dir="." latest_public_release="0" current_release="1" output_all_resource_defines="false" source_lang_id="en" enc_check="möl">
+  <translations>
+    <file path="resources/generated_resources_override_af.xtb" lang="af" />
+    <file path="resources/generated_resources_override_am.xtb" lang="am" />
+    <file path="resources/generated_resources_override_ar.xtb" lang="ar" />
+    <file path="resources/generated_resources_override_as.xtb" lang="as" />
+    <file path="resources/generated_resources_override_az.xtb" lang="az" />
+    <file path="resources/generated_resources_override_be.xtb" lang="be" />
+    <file path="resources/generated_resources_override_bg.xtb" lang="bg" />
+    <file path="resources/generated_resources_override_bn.xtb" lang="bn" />
+    <file path="resources/generated_resources_override_bs.xtb" lang="bs" />
+    <file path="resources/generated_resources_override_ca.xtb" lang="ca" />
+    <file path="resources/generated_resources_override_cs.xtb" lang="cs" />
+    <file path="resources/generated_resources_override_da.xtb" lang="da" />
+    <file path="resources/generated_resources_override_de.xtb" lang="de" />
+    <file path="resources/generated_resources_override_el.xtb" lang="el" />
+    <file path="resources/generated_resources_override_en-GB.xtb" lang="en-GB" />
+    <file path="resources/generated_resources_override_es.xtb" lang="es" />
+    <file path="resources/generated_resources_override_es-419.xtb" lang="es-419" />
+    <file path="resources/generated_resources_override_et.xtb" lang="et" />
+    <file path="resources/generated_resources_override_eu.xtb" lang="eu" />
+    <file path="resources/generated_resources_override_fa.xtb" lang="fa" />
+    <file path="resources/generated_resources_override_fi.xtb" lang="fi" />
+    <file path="resources/generated_resources_override_fil.xtb" lang="fil" />
+    <file path="resources/generated_resources_override_fr.xtb" lang="fr" />
+    <file path="resources/generated_resources_override_fr-CA.xtb" lang="fr-CA" />
+    <file path="resources/generated_resources_override_gl.xtb" lang="gl" />
+    <file path="resources/generated_resources_override_gu.xtb" lang="gu" />
+    <file path="resources/generated_resources_override_hi.xtb" lang="hi" />
+    <file path="resources/generated_resources_override_hr.xtb" lang="hr" />
+    <file path="resources/generated_resources_override_hu.xtb" lang="hu" />
+    <file path="resources/generated_resources_override_hy.xtb" lang="hy" />
+    <file path="resources/generated_resources_override_id.xtb" lang="id" />
+    <file path="resources/generated_resources_override_is.xtb" lang="is" />
+    <file path="resources/generated_resources_override_it.xtb" lang="it" />
+    <file path="resources/generated_resources_override_iw.xtb" lang="he" />
+    <file path="resources/generated_resources_override_ja.xtb" lang="ja" />
+    <file path="resources/generated_resources_override_ka.xtb" lang="ka" />
+    <file path="resources/generated_resources_override_kk.xtb" lang="kk" />
+    <file path="resources/generated_resources_override_km.xtb" lang="km" />
+    <file path="resources/generated_resources_override_kn.xtb" lang="kn" />
+    <file path="resources/generated_resources_override_ko.xtb" lang="ko" />
+    <file path="resources/generated_resources_override_ky.xtb" lang="ky" />
+    <file path="resources/generated_resources_override_lo.xtb" lang="lo" />
+    <file path="resources/generated_resources_override_lt.xtb" lang="lt" />
+    <file path="resources/generated_resources_override_lv.xtb" lang="lv" />
+    <file path="resources/generated_resources_override_mk.xtb" lang="mk" />
+    <file path="resources/generated_resources_override_ml.xtb" lang="ml" />
+    <file path="resources/generated_resources_override_mn.xtb" lang="mn" />
+    <file path="resources/generated_resources_override_mr.xtb" lang="mr" />
+    <file path="resources/generated_resources_override_ms.xtb" lang="ms" />
+    <file path="resources/generated_resources_override_my.xtb" lang="my" />
+    <file path="resources/generated_resources_override_ne.xtb" lang="ne" />
+    <file path="resources/generated_resources_override_nl.xtb" lang="nl" />
+    <file path="resources/generated_resources_override_no.xtb" lang="no" />
+    <file path="resources/generated_resources_override_or.xtb" lang="or" />
+    <file path="resources/generated_resources_override_pa.xtb" lang="pa" />
+    <file path="resources/generated_resources_override_pl.xtb" lang="pl" />
+    <file path="resources/generated_resources_override_pt-BR.xtb" lang="pt-BR" />
+    <file path="resources/generated_resources_override_pt-PT.xtb" lang="pt-PT" />
+    <file path="resources/generated_resources_override_ro.xtb" lang="ro" />
+    <file path="resources/generated_resources_override_ru.xtb" lang="ru" />
+    <file path="resources/generated_resources_override_si.xtb" lang="si" />
+    <file path="resources/generated_resources_override_sk.xtb" lang="sk" />
+    <file path="resources/generated_resources_override_sl.xtb" lang="sl" />
+    <file path="resources/generated_resources_override_sq.xtb" lang="sq" />
+    <file path="resources/generated_resources_override_sr.xtb" lang="sr" />
+    <file path="resources/generated_resources_override_sr-Latn.xtb" lang="sr-Latn" />
+    <file path="resources/generated_resources_override_sv.xtb" lang="sv" />
+    <file path="resources/generated_resources_override_sw.xtb" lang="sw" />
+    <file path="resources/generated_resources_override_ta.xtb" lang="ta" />
+    <file path="resources/generated_resources_override_te.xtb" lang="te" />
+    <file path="resources/generated_resources_override_th.xtb" lang="th" />
+    <file path="resources/generated_resources_override_tr.xtb" lang="tr" />
+    <file path="resources/generated_resources_override_uk.xtb" lang="uk" />
+    <file path="resources/generated_resources_override_ur.xtb" lang="ur" />
+    <file path="resources/generated_resources_override_uz.xtb" lang="uz" />
+    <file path="resources/generated_resources_override_vi.xtb" lang="vi" />
+    <file path="resources/generated_resources_override_zh-CN.xtb" lang="zh-CN" />
+    <file path="resources/generated_resources_override_zh-HK.xtb" lang="zh-HK" />
+    <file path="resources/generated_resources_override_zh-TW.xtb" lang="zh-TW" />
+    <file path="resources/generated_resources_override_zu.xtb" lang="zu" />
+  </translations>
+  <release seq="1" allow_pseudo="false">
+    <messages fallback_to_english="true">
+      <part file="bookmarks_strings_override.grdp" />
+
+      <part file="profiles_strings_override.grdp" />
+
+      <if expr="chromeos">
+        <part file="os_settings_strings_override.grdp" />
+        <part file="os_settings_search_tag_strings_override.grdp" />
+      </if>
+
+      <if expr="not is_android">
+        <part file="settings_strings_override.grdp" />
+        <part file="shared_settings_strings_override.grdp" />
+      </if>
+
+      <if expr="enable_extensions">
+        <part file="extensions_strings_override.grdp" />
+      </if>
+
+      <if expr="not chromeos and not is_android">
+        </if>
+
+      <if expr="enable_printing">
+        </if>
+
+      <if expr="enable_vr">
+        <part file="vr_strings_override.grdp" />
+        <if expr="not is_android">
+          </if>
+      </if>
+
+      <if expr="enable_supervised_users">
+        <part file="supervised_user_error_page_strings_override.grdp" />
+      </if>
+
+      <if expr="chromeos">
+        </if>
+
+      <if expr="is_win">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="not is_android">
+        </if>
+
+       <if expr="not is_android">
+        <if expr="not use_titlecase">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in private window command">
+            Open link in &amp;private window
+          </message>
+          <if expr="is_macosx">
+            </if>
+          <if expr="not is_macosx">
+            </if>
+          </if>
+        <if expr="use_titlecase">
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="In Title Case: The name of the open a link in private window command">
+            Open Link in &amp;Private Window
+          </message>
+          <if expr="is_macosx">
+            </if>
+          <if expr="not is_macosx">
+            </if>
+
+          <if expr="is_macosx">
+            </if>
+          <if expr="not is_macosx">
+            </if>
+          </if>
+      </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="not use_titlecase">
+          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="The text label of a menu item for opening a new private window">
+            New &amp;private window
+          </message>
+          </if>
+        <if expr="use_titlecase">
+          <message name="IDS_NEW_INCOGNITO_WINDOW" desc="In Title Case: The text label of a menu item for opening a new private window">
+            New &amp;Private Window
+          </message>
+          </if>
+      </if>
+
+      <if expr="chromeos">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+      <if expr="is_posix and not is_macosx">
+        </if>
+
+      <if expr="chromeos">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="chromeos">
+        </if>
+      <if expr="is_android">
+        </if>
+      <if expr="not is_android">
+        </if>
+      <if expr="chromeos">
+        </if>
+
+      <if expr="chromeos">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="chromeos">
+      </if>
+      <message name="IDS_DOWNLOAD_IN_INCOGNITO" desc="Indicates a download was started in Private mode.">
+        Downloaded in Private
+      </message>
+      <if expr="is_macosx">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
+      <if expr="is_macosx">
+        <then>
+          </then>
+        <else>
+          </else>
+      </if>
+
+      <if expr="not is_android">
+        <if expr="not use_titlecase">
+          <if expr="is_macosx">
+            </if>
+          <if expr="not is_macosx">
+            </if>
+          </if>
+        <if expr="use_titlecase">
+           <if expr="is_macosx">
+            </if>
+           <if expr="not is_macosx">
+            </if>
+          </if>  <if expr="is_win">
+          </if>
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not is_macosx">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Windows, Chrome OS, and Linux, which all use 'Exit' to refer to closing a browser.">
+          Exit private mode anyway?
+        </message>
+        </if>
+      <if expr="is_macosx">
+        <message name="IDS_ABANDON_DOWNLOAD_DIALOG_INCOGNITO_MESSAGE" desc="Message on a dialog shown when the user closes the last private window while one or more downloads are in progress. This string is shown on Mac OSX only, which uses 'Quit' to refer to closing a browser.">
+          Quit private mode anyway?
+        </message>
+        </if>
+
+      <if expr="is_android">
+        </if>
+
+      <if expr="not is_android">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        <if expr="is_macosx">
+          </if>
+        <if expr="not is_macosx">
+          </if>
+      </if>
+      <if expr="not is_macosx">
+        </if>
+      <if expr="is_win">
+        </if>
+
+      <message name="IDS_NOTIFICATIONS_QUIET_PERMISSION_BUBBLE_CROWD_DENY_DESCRIPTION" desc="Description for the notifications status bubble, which is triggered when a user clicks on the blocked notifications icon in the omnibox, shown when a site's notifications permission request is automatically blocked by Brave, as this permission prompt is often denied by other users for this site.">
+        Most profiles block notifications from this site
+      </message>
+      <if expr="toolkit_views">
+        </if>
+
+      <if expr="not is_android">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+        <message name="IDS_TASK_MANAGER_EXTENSION_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private extension row (may not be visible if private is not open)">
+          Private Extension: <ph name="EXTENSION_NAME">$1<ex>Sample Extension</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_APP_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private app row (may not be visible if the app is not open in private)">
+          Private App: <ph name="APP_NAME">$1<ex>Sample App</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_TAB_INCOGNITO_PREFIX" desc="The prefix for a Task Manager private Tab row (may not be visible if private is not open)">
+          Private Tab: <ph name="TAB_NAME">$1<ex>Brave</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_SUBFRAME_INCOGNITO_PREFIX" desc="The prefix for a Private out-of-process-iframe process row in the Task Manager (these processes are created when site isolation is enabled, in private mode)">
+          Private Subframe: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+        </message>
+        <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in private mode)">
+          Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
+        </message>
+        </if>
+
+      <if expr="chromeos">
+        </if>
+      <if expr="not is_android">
+        </if>
+      <if expr="is_win">
+        </if>
+      <if expr="enable_extensions">
+        </if>
+      <if expr="enable_extensions or is_android">
+        </if>
+      <if expr="enable_extensions">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="enable_extensions">
+        </if>
+
+      <if expr="chromeos">
+        </if>
+      <if expr="chromeos">
+        </if>
+
+      <if expr="enable_extensions">
+        <if expr="is_macosx">
+          </if>
+        <if expr="not chromeos and not is_macosx">
+          </if>
+        <if expr="chromeos">
+          </if>
+        <if expr="is_macosx">
+          </if>
+        </if>
+
+      <if expr="enable_extensions">
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+      </if>
+
+      <message name="IDS_EXTENSION_WEB_STORE_TITLE" desc="Text for the Web Store">
+        Web Store
+      </message>
+      <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
+        This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
+      </message>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="enable_plugins">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+      <if expr="chromeos">
+        </if>
+      <if expr="enable_plugins">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="not is_android">
+        </if>
+
+      <if expr="is_win or is_macosx or (is_linux and not chromeos)">
+        </if>
+
+      <if expr="is_win">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="is_android or enable_vr">
+        </if>
+      <if expr="is_android">
+      </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="is_android">
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_android">
+        </if>
+
+      <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a private window">
+        <ph name="WINDOW_TITLE">$1</ph> (Private)
+      </message>
+      <message name="IDS_INCOGNITOWINDOW_PROMO_0" desc="Variations option 1. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
+        You can browse privately using a private window
+      </message>
+      <message name="IDS_INCOGNITOWINDOW_PROMO_1" desc="Variations option 2. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
+        Use the web without saving your browsing history with a private window
+      </message>
+      <message name="IDS_INCOGNITOWINDOW_PROMO_2" desc="Variations option 3. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
+        Using a shared computer? Try opening a private window.
+      </message>
+      <message name="IDS_INCOGNITOWINDOW_PROMO_3" desc="Variations option 4. Text shown on promotional UI appearing next to the App Menu button, which encourages users to use it.">
+        To browse privately, click the dots icon menu to open a private window
+      </message>
+      <if expr="is_win">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+        </if>
+      <if expr="is_android">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="is_win">
+          </if>
+        <if expr="is_macosx">
+          </if> </if> <if expr="is_macosx">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="enable_extensions">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="not chromeos">
+          </if>
+        <if expr="chromeos">
+          </if>
+        </if>
+
+      <if expr="is_android">
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+
+      <if expr="is_win or is_macosx">
+        </if>
+      <if expr="is_win or chromeos">
+        </if>
+      <if expr="is_win">
+        </if>
+      <if expr="is_win">
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="enable_webui_tab_strip">
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+      </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="is_macosx">
+        </if>
+
+      <message name="IDS_FR_ENABLE_LOGGING" desc="The label of the checkbox to enable/disable crash and user metrics logging">
+        Automatically send crash reports to Brave
+      </message>
+
+      <if expr="is_macosx">
+        </if>
+
+      <if expr="chromeos">
+        </if>
+      <if expr="is_win">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="not chromeos and use_titlecase">
+          </if>
+        <if expr="not chromeos and not use_titlecase">
+          </if>
+        <if expr="chromeos and use_titlecase">
+          </if>
+        <if expr="chromeos and not use_titlecase">
+          </if>
+      </if> <if expr="chromeos">
+        </if> <if expr="not is_android">
+        <if expr="not chromeos">
+          </if>
+
+        <message name="IDS_EXTENSIONS_INSTALL_LOCATION_UNKNOWN" desc="The text explaining the the installation location is unknown.">
+          Not from Web Store.
+        </message>
+        <message name="IDS_EXTENSIONS_BLACKLISTED_CWS_POLICY_VIOLATION" desc="The text explaining the reason for disabling extension or app. The extension in question violates Web Store policy.">
+          This extension violates the Web Store policy.
+        </message>
+        </if>
+
+      <if expr="is_android">
+        </if>
+
+      <if expr="is_linux and not chromeos">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not is_android">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="toolkit_views">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="chromeos">
+          </if>
+        </if>
+
+      <if expr="not is_android">
+        <if expr="chromeos">
+          </if>
+        <if expr="not chromeos">
+          </if>
+        </if>
+
+      <if expr="not use_titlecase">
+        <if expr="chromeos">
+          </if>
+      </if>
+
+      <if expr="use_titlecase">
+        <if expr="is_macosx">
+          </if>
+        <if expr="not is_macosx">
+          </if>
+        <if expr="chromeos">
+          </if>
+      </if>
+
+      <if expr="is_win">
+        </if>
+      <if expr="not chromeos">
+        </if>
+      <if expr="chromeos">
+        </if>
+
+      <if expr="is_win">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="is_macosx or chromeos">
+        </if>
+
+      <if expr="is_linux and not chromeos">
+        </if>
+
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="not use_titlecase">
+        <if expr="chromeos">
+          </if>
+        <if expr="not chromeos">
+          </if>
+      </if>
+      <if expr="use_titlecase">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="not chromeos">
+          </if>
+        <if expr="not chromeos">
+          </if>
+        <if expr="chromeos">
+          </if>
+        <if expr="not chromeos">
+          </if>
+        <if expr="chromeos">
+          </if>
+        <if expr="chromeos">
+          </if>
+
+        <if expr="not chromeos">
+          </if>
+      </if>
+
+      <if expr="toolkit_views">
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+        </if>
+
+      <if expr="is_android">
+        </if>
+
+      <if expr="is_macosx">
+        </if> <if expr="is_macosx">
+        <message name="IDS_NEW_INCOGNITO_WINDOW_MAC" desc="The Mac menu item for opening a new private window in the file menu.">
+          New Private Window
+        </message>
+        <message name="IDS_BOOKMARK_BAR_ALWAYS_SHOW_MAC" desc="The Mac menu item for having bookmark bar always visible in the view menu.">
+          Always Show Bookmarks
+        </message>
+        </if> <if expr="is_posix and not is_macosx">
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+
+      <if expr="is_android">
+        </if>
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+
+      <if expr="is_macosx">
+        </if>
+
+      <if expr="is_android">
+        </if>
+      <if expr="not is_android">
+        </if>
+
+      <if expr="is_posix and not is_macosx">
+        </if>
+
+      <if expr="chromeos">
+        </if>
+
+      <if expr="not is_android">
+        <if expr="use_titlecase">
+          </if>
+        <if expr="not use_titlecase">
+          </if>
+        </if>
+
+      <if expr="chromeos">
+        <message name="IDS_APP_LIST_NEW_INCOGNITO_WINDOW" desc="The text label of the New private window menu item">
+          New private window
+        </message>
+        </if>
+
+      <if expr="enable_service_discovery">
+        <if expr="not chromeos">
+          </if>
+        </if>
+      <if expr="chromeos">
+        </if>
+
+      <if expr="is_android or chromeos">
+        <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user (who is currently in private mode) that the site they are currently using is going to share data with an external application." formatter_data="android_java">
+          This site is about to share information with an app outside of private mode.
+        </message>
+        <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING_TITLE" desc="Title for dialog asking if the user wants to leave private mode. [CHAR-LIMIT=32]" formatter_data="android_java">
+          Leave private mode?
+        </message>
+        </if>
+
+    <if expr="chromeos">
+      </if>
+
+    <if expr="is_win">
+      </if>
+
+    <if expr="not is_android">
+      </if>
+    <if expr="not is_android">
+      </if>
+
+    <if expr="not is_android">
+      </if>
+
+    <if expr="is_win">
+      </if>
+
+    <if expr="not is_android">
+      </if>
+
+    <if expr="is_win">
+      </if>
+
+    <if expr="is_android">
+        </if>
+
+    <if expr="is_android">
+      </if>
+
+    <if expr="not is_android">
+      </if>
+
+    <if expr="not is_android">
+      <if expr="not chromeos">
+        </if>
+      <if expr="chromeos">
+        </if>
+      </if>
+
+    <if expr="is_win or is_macosx or desktop_linux or chromeos">
+      </if>
+   <if expr="is_macosx">
+     <message name="IDS_WEBAUTHN_TOUCH_ID_INCOGNITO_BUMP_TITLE" desc="Title of the dialog shown when the user attempts to set up sign-in with Touch ID on a website in private mode." meaning="'Touch ID' is the fingerprint recognition feature in macOS. Try to refer Apple support documentation in the target language for the appropriate product name translation.">
+       Do you want to use Touch ID with <ph name="APP_NAME">$1<ex>example.com</ex></ph> in Private mode?
+     </message>
+     <message name="IDS_WEBAUTHN_TOUCH_ID_INCOGNITO_BUMP_DESCRIPTION" desc="Description of the dialog shown when the user attempts to set up sign-in with Touch ID on a website in private mode." meaning="'Touch ID' is the fingerprint recognition feature in macOS. Try to refer Apple support documentation in the target language for the appropriate product name translation.">
+       Sign-in data will be stored in Brave after you exit Private mode. This will let you use Touch ID with this website again later.
+     </message>
+     </if>
+
+   <message name="IDS_INCOGNITO_PROFILE_MENU_TITLE" desc="The title of the private version of profile menu.">
+      Private
+    </message>
+    <message name="IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON" desc="The text of the button offering to close all private windows.">
+      Exit Private
+    </message>
+
+    <if expr="not is_android">
+      <if expr="use_titlecase">
+        </if>
+      <if expr="not use_titlecase">
+        </if>
+      </if>
+    <if expr="not is_android">
+      </if>
+  </messages>
+</release>
+</grit>

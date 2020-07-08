@@ -20,7 +20,7 @@
     return r.brave_shields_rules;                                              \
   }
 
-#include "../../../../../components/content_settings/core/common/content_settings_mojom_traits.h"  // NOLINT
+#include "../../../../../../components/content_settings/core/common/content_settings_mojom_traits.h"
 
 #undef BRAVE_CONTENT_SETTINGS_MOJOM_TRAITS_H
 

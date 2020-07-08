@@ -1,21 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ru">
-<translation id="4068928808254189629">Откройте меню Brave, нажмите "<ph name="SETTINGS_TITLE"/>" &gt; "<ph name="ADVANCED_TITLE"/>" и снимите флажок "<ph name="NO_PREFETCH_DESCRIPTION"/>". Если устранить проблему не удалось, снова установите флажок, чтобы страницы загружались быстрее.</translation>
-<translation id="2017237562285586622">Разрешите доступ к сети для Brave
-          в настройках брандмауэра или антивируса.</translation>
+<translation id="130631256467250065">Изменения вступят в силу после перезагрузки устройства.</translation>
+<translation id="7999989146447764333">В Brave отсутствует функция отчета об ошибках.</translation>
+<translation id="1953231710324290369">Вы просматриваете безопасную страницу Brave</translation>
 <translation id="4010643444566880169">Первоначальная настройка Brave OS не завершена.</translation>
-<translation id="8187289872471304532">Выберите
-          Программы &gt; Системные настройки &gt; Сеть &gt; Дополнительно &gt; Прокси
-          и снимите флажки напротив всех прокси-серверов.</translation>
-<translation id="8619622797841001082">Выберите
-          меню Brave &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          и убедитесь, что в конфигурации отключено использование прокси-сервера или выбрано непосредственное подключение.</translation>
+<translation id="7932149101545999102">Brave обязан своим появлением проекту с открытым исходным кодом <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> и другому <ph name="BEGIN_LINK_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Выберите
           меню Brave &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -26,11 +16,20 @@
           &gt;
           Настройка сети
           и снимите флажок "Использовать прокси-сервер для локальных подключений".</translation>
+<translation id="2017237562285586622">Разрешите доступ к сети для Brave
+          в настройках брандмауэра или антивируса.</translation>
+<translation id="8619622797841001082">Выберите
+          меню Brave &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          и убедитесь, что в конфигурации отключено использование прокси-сервера или выбрано непосредственное подключение.</translation>
 <translation id="9156965752763025780">Изменения вступят в силу при следующем входе в Brave.</translation>
-<translation id="130631256467250065">Изменения вступят в силу после перезагрузки устройства.</translation>
-<translation id="7999989146447764333">В Brave отсутствует функция отчета об ошибках.</translation>
-<translation id="7932149101545999102">Brave обязан своим появлением проекту с открытым исходным кодом <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> и другому <ph name="BEGIN_LINK_OSS"/>программному обеспечению с открытым исходным кодом<ph name="END_LINK_OSS"/>.</translation>
-<translation id="1953231710324290369">Вы просматриваете безопасную страницу Brave</translation>
-<translation id="2305018990464327944">Данные Brave подтверждают, что сертификат сайта выпущен компанией <ph name="ISSUER"/>.</translation>
+<translation id="4068928808254189629">Откройте меню Brave, нажмите "<ph name="SETTINGS_TITLE"/>" &gt; "<ph name="ADVANCED_TITLE"/>" и снимите флажок "<ph name="NO_PREFETCH_DESCRIPTION"/>". Если устранить проблему не удалось, снова установите флажок, чтобы страницы загружались быстрее.</translation>
+<translation id="8187289872471304532">Выберите
+          Программы &gt; Системные настройки &gt; Сеть &gt; Дополнительно &gt; Прокси
+          и снимите флажки напротив всех прокси-серверов.</translation>
 <translation id="88187049159266777">Работа Brave была завершена некорректно.</translation>
 </translationbundle>

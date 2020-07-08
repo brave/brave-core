@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -15,7 +16,8 @@
 
 namespace extensions {
 
-const Extension* ExtensionFunctionalTest::InstallExtensionSilently(
+scoped_refptr<const Extension>
+ExtensionFunctionalTest::InstallExtensionSilently(
     ExtensionService* service,
     const base::FilePath& path) {
   ExtensionRegistry* registry = ExtensionRegistry::Get(profile());
@@ -38,7 +40,8 @@ const Extension* ExtensionFunctionalTest::InstallExtensionSilently(
   size_t num_after = registry->enabled_extensions().size();
   EXPECT_EQ(num_before + 1, num_after);
 
-  const Extension* extension = registry_observer.WaitForExtensionReady();
+  scoped_refptr<const Extension> extension =
+      registry_observer.WaitForExtensionReady();
   EXPECT_TRUE(extension);
   return extension;
 }

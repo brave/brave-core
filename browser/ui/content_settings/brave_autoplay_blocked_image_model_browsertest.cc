@@ -10,6 +10,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "content/public/test/browser_test.h"
 
 using content::WebContents;
 using ImageType = ContentSettingImageModel::ImageType;
@@ -19,8 +20,9 @@ typedef InProcessBrowserTest BraveAutoplayBlockedImageModelTest;
 IN_PROC_BROWSER_TEST_F(BraveAutoplayBlockedImageModelTest, CreateBubbleModel) {
   WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
-  TabSpecificContentSettings* content_settings =
-      TabSpecificContentSettings::FromWebContents(web_contents);
+  content_settings::TabSpecificContentSettings* content_settings =
+      content_settings::TabSpecificContentSettings::FromWebContents(
+          web_contents);
   content_settings->BlockAllContentForTesting();
 
   auto model = std::make_unique<BraveAutoplayBlockedImageModel>();

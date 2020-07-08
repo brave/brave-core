@@ -56,15 +56,15 @@
     "description": "Message for the scripts blocked row label"
   },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Träkkerid ja reklaamid blokeeritud (põhjalik)",
+    "message": "Jälgijad ja reklaamid blokeeritud (põhjalik)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Träkkerid ja reklaamid blokeeritud (tavaline)",
+    "message": "Jälgijad ja reklaamid blokeeritud (tavaline)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
-    "message": "Luba kõik träkkerid ja reklaamid",
+    "message": "Luba kõik jälgijad ja reklaamid",
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
@@ -91,16 +91,16 @@
     "message": "Kõik lubatud küpsisefailid",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Saitideülene seadmetuvastus blokeeritud",
+  "standardFingerprinting": {
+    "message": "Fingerprinting blocked (standard)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Seadmetuvastuse katsed blokeeritud",
+  "strictFingerprinting": {
+    "message": "Fingerprinting blocked (strict, may break sites)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Kõik seadmetuvastuse katsed lubatud",
+  "allowAllFingerprinting": {
+    "message": "Luba sõrmejälje lugemine igal pool",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

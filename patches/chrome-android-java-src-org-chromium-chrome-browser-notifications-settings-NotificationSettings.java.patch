@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
-index bdb3f61b7aca3a8f11969c2bb64b96e509f9c3ed..4b3a49b3d48de244dc3f790186710e77c6457c20 100644
+index f96759fee495d61a4f22db081f17c067cc4001a4..b27a006de4bf07b7f719ff56a99f2444c00f0cc8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/settings/NotificationSettings.java
-@@ -27,7 +27,7 @@ import org.chromium.components.content_settings.ContentSettingsType;
+@@ -28,7 +28,7 @@ import org.chromium.components.content_settings.ContentSettingsType;
   * notification channels at the top level and links to website specific notifications. This is only
   * used on pre-O devices, devices on Android O+ will link to the Android notification settings.
   */

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/views/translate/brave_translate_bubble_view.h"
-
 #include "chrome/test/views/chrome_views_test_base.h"
 #include "ui/events/keycodes/dom/dom_code.h"
 #include "ui/views/controls/button/label_button.h"
@@ -68,9 +68,15 @@ class MockTranslateBubbleModel : public TranslateBubbleModel {
 
   void DeclineTranslation() override { translation_declined_ = true; }
 
+  bool ShouldNeverTranslateLanguage() override {
+    return never_translate_language_;
+  }
+
   void SetNeverTranslateLanguage(bool value) override {
     never_translate_language_ = value;
   }
+
+  bool ShouldNeverTranslateSite() override { return never_translate_site_; }
 
   void SetNeverTranslateSite(bool value) override {
     never_translate_site_ = value;
@@ -161,7 +167,10 @@ class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
 
 class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
  public:
-  BraveTranslateBubbleViewTest() {}
+  BraveTranslateBubbleViewTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+      language::kUseButtonTranslateBubbleUi);
+  }
 
  protected:
   void SetUp() override {
@@ -209,6 +218,7 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
   std::unique_ptr<views::Widget> anchor_widget_;
   MockTranslateBubbleModel* mock_model_;
   MockBraveTranslateBubbleView* bubble_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 TEST_F(BraveTranslateBubbleViewTest, BraveBeforeTranslateView) {

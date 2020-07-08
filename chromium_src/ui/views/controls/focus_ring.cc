@@ -46,5 +46,5 @@ FocusRingTheme* GetFocusRingTheme() {
 }  // namespace
 
 #define GetNativeTheme GetFocusRingTheme
-#include "../../../../ui/views/controls/focus_ring.cc"
+#include "../../../../../ui/views/controls/focus_ring.cc"
 #undef GetNativeTheme

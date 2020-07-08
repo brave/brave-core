@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/shell_integration_linux.cc b/chrome/browser/shell_integration_linux.cc
-index 8f8f6b822137c6e77155487a49bda2dd1e4aa6ea..6879107a1d2a1c63100a146d882311d1d0433dae 100644
+index 45de05f8760a54ab0eb849df66ad252711e62e51..3c1146e6ec46b58fd269ef5866efb60524b61ff7 100644
 --- a/chrome/browser/shell_integration_linux.cc
 +++ b/chrome/browser/shell_integration_linux.cc
 @@ -413,7 +413,7 @@ std::string GetIconName() {

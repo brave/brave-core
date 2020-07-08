@@ -1,28 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="es">
-<translation id="4068928808254189629">Accede al
-          menú de Brave &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          y desactiva la opción "<ph name="NO_PREFETCH_DESCRIPTION"/>".
-          Si esto no soluciona el problema, te recomendamos que vuelvas a seleccionar esta opción
-          para conseguir un mejor rendimiento.</translation>
-<translation id="2017237562285586622">Configura tu cortafuegos o tu antivirus para permitir el acceso de Brave
-          a la red.</translation>
-<translation id="4010643444566880169">No se ha completado la configuración inicial de Brave OS.</translation>
-<translation id="8187289872471304532">Accede a
-          Aplicaciones &gt; Preferencias del Sistema &gt; Red &gt; Configuración avanzada &gt; Proxies
-          y desactiva las casillas de verificación de los proxies seleccionados.</translation>
-<translation id="8619622797841001082">Accede al
-          menú de Brave, haz clic en
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          y asegúrate de que esté seleccionada la opción de configuración sin proxy o directa.</translation>
+<translation id="130631256467250065">Los cambios se aplicarán la próxima vez que reinicies el dispositivo.</translation>
+<translation id="7999989146447764333">Los informes de errores no se encuentran disponibles en Brave.</translation>
+<translation id="1953231710324290369">Estás viendo una página de Brave segura</translation>
+<translation id="4010643444566880169">No se ha completado la configuración inicial de Chrome OS.</translation>
+<translation id="7932149101545999102">Brave se ha creado gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> y a otro <ph name="BEGIN_LINK_OSS"/>software libre<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Accede al
           menú de Brave, haz clic en
           <ph name="SETTINGS_TITLE"/>
@@ -33,11 +16,27 @@
           &gt;
           Configuración de LAN
           y desactiva la casilla de verificación Usar un servidor proxy para la LAN.</translation>
+<translation id="2017237562285586622">Configura tu cortafuegos o tu antivirus para permitir el acceso de Brave
+          a la red.</translation>
+<translation id="8619622797841001082">Accede al
+          menú de Brave, haz clic en
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          y asegúrate de que esté seleccionada la opción de configuración sin proxy o directa.</translation>
 <translation id="9156965752763025780">Los cambios se aplicarán la próxima vez que reinicies Brave.</translation>
-<translation id="130631256467250065">Los cambios se aplicarán la próxima vez que reinicies el dispositivo.</translation>
-<translation id="7999989146447764333">Los informes de errores no se encuentran disponibles en Brave.</translation>
-<translation id="7932149101545999102">Brave se ha creado gracias al proyecto de software libre <ph name="BEGIN_LINK_CHROMIUM">&lt;a target="_blank" href="$1"&gt;</ph>Brave<ph name="END_LINK_CHROMIUM">&lt;/a&gt;</ph> y a otro <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>software libre<ph name="END_LINK_OSS">&lt;/a&gt;</ph>.</translation>
-<translation id="1953231710324290369">Estás viendo una página segura de Brave</translation>
-<translation id="2305018990464327944">Brave ha verificado que <ph name="ISSUER"/> emitió el certificado de este sitio web.</translation>
-<translation id="88187049159266777">Brave no se cerró correctamente.</translation>
+<translation id="4068928808254189629">Accede al
+          menú de Brave &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          y desactiva la opción "<ph name="NO_PREFETCH_DESCRIPTION"/>".
+          Si esto no soluciona el problema, te recomendamos que vuelvas a seleccionar esta opción
+          para conseguir un mejor rendimiento.</translation>
+<translation id="8187289872471304532">Accede a
+          Aplicaciones &gt; Preferencias del Sistema &gt; Red &gt; Configuración avanzada &gt; Proxies
+          y desactiva las casillas de verificación de los proxies seleccionados.</translation>
+<translation id="88187049159266777">Brave no se ha cerrado correctamente.</translation>
 </translationbundle>

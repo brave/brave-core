@@ -6,14 +6,13 @@
 import("//third_party/closure_compiler/compile_js.gni")
 import("//tools/polymer/polymer.gni")
 import("//ui/webui/resources/tools/js_modulizer.gni")
-import("//chrome/browser/resources/settings/settings.gni")
+import("../settings.gni")
 
 # ES Module conversion from HTML Imports code
 
-group("polymer3_elements") {
+group("web_modules") {
   public_deps = [
     ":social_blocking_page_module",
-    ":social_blocking_browser_proxy_module",
   ]
 }
 
@@ -21,16 +20,6 @@ polymer_modulizer("social_blocking_page") {
   js_file = "social_blocking_page.js"
   html_file = "social_blocking_page.html"
   html_type = "dom-module"
-  auto_imports = settings_auto_imports + [
-                   "chrome/browser/resources/settings/social_blocking_page/social_blocking_browser_proxy.html|SocialBlockingBrowserProxy, SocialBlockingBrowserProxyImpl",
-                 ]
+  auto_imports = settings_auto_imports
   namespace_rewrites = settings_namespace_rewrites
 }
-
-js_modulizer("social_blocking_browser_proxy_module") {
-  input_files = [
-    "social_blocking_browser_proxy.js",
-  ]
-  namespace_rewrites = settings_namespace_rewrites
-}
-

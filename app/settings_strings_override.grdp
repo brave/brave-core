@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Settings-specific strings (included from generated_resources.grd). -->
+<grit-part>
+  <if expr="not chromeos">
+    </if>
+  <if expr="_google_chrome">
+    </if>
+  <if expr="is_macosx">
+    </if>
+
+  <message name="IDS_SETTINGS_ACCESSIBILITY_WEB_STORE" desc="Text for an external link explaining that additional accessibility features are found on the Web Store.">
+    Open Web Store
+  </message>
+  <if expr="chromeos">
+    </if>
+  <if expr="not chromeos">
+    </if>
+  <if expr="is_linux and not chromeos">
+    </if>
+  <if expr="not is_linux or chromeos">
+    </if>
+  <message name="IDS_SETTINGS_SHOW_BOOKMARKS_BAR" desc="Label for the checkbox which enables or disables showing the bookmarks bar in the toolbar.">
+    Show bookmarks
+  </message>
+  <message name="IDS_SETTINGS_WEB_STORE" desc="Sub-label about choosing something from the Web Store.">
+    Open Web Store
+  </message>
+  <if expr="is_macosx">
+    </if>
+  <if expr="not chromeos">
+    </if>
+  <if expr="chromeos">
+    </if>
+  <if expr="not chromeos">
+    </if>
+
+  <if expr="use_nss_certs">
+    <if expr="chromeos">
+      </if>
+  </if>
+
+  <if expr="not chromeos">
+    </if>
+  <if expr="chromeos">
+    </if>
+  <if expr="not chromeos">
+    </if>
+  <if expr="chromeos">
+    </if>
+  <if expr="not is_macosx">
+    </if>
+
+  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_ONE_ITEM_INCOGNITO" desc="A list containing a single permission which has recently changed in the users private session">
+    Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_TWO_ITEMS_INCOGNITO" desc="A list containing two permissions which have recently changed in the users private session">
+    Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_1">$2<ex>blocked Location</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_THREE_ITEMS_INCOGNITO" desc="A list containing three permissions which have recently changed in the users private session">
+    Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_1">$2<ex>blocked Location</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_2">$3<ex>allowed Camera</ex></ph>
+  </message>
+  <message name="IDS_SETTINGS_RECENT_PERMISSIONS_OVER_THREE_ITEMS_INCOGNITO" desc="A list containing three permissions that have recently changed, but indicating that more have also changed recently">
+    Current private session: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START">$1<ex>automatically blocked Notifications</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_1">$2<ex>blocked Location</ex></ph>, <ph name="RECENT_PERMISSIONS_CHANGE_2">$3<ex>allowed Camera</ex></ph>, and more
+  </message>
+
+  <if expr="is_win and _google_chrome">
+    </if>
+
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="Label for block third party cookies in private radio toggle">
+    Block third-party cookies in Private
+  </message>
+  <message name="IDS_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO_BULLET_TWO" desc="Description for the first bullet of block third party cookies in private radio toggle">
+    While in private, sites can't use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+  </message>
+  <if expr="chromeos or is_win">
+    </if>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_COOKIES_BLOCK_THIRD_PARTY_INCOGNITO" desc="The sub-label for links to manage cookies when the current cookie setting is to block third party cookies in private.">
+    Third-party cookies are blocked in Private mode
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_ONLY" desc="A label for the checkbox to make the rule apply to the current private session only.">
+    Current private session only
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INCOGNITO_SITE_EXCEPTION_DESC" desc="The text displayed in order to explain to a user that a content setting only applies to the current private session.">
+    This exception will be automatically removed after you exit the current Private session
+  </message>
+  <if expr="chromeos">
+    </if>
+
+  <message name="IDS_SETTINGS_EDIT_PERSON" desc="Title of the edit profile subpage. This is a subpage to edit the name and icon of a Brave Profile.">
+    Edit profile
+  </message>
+  <if expr="not chromeos">
+    </if>
+
+  <if expr="not chromeos">
+    </if>
+
+  <if expr="not chromeos">
+    </if>
+
+  <if expr="is_win and _google_chrome">
+    </if>
+
+  <if expr="is_win and _google_chrome">
+    </if>
+
+  </grit-part>

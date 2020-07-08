@@ -2,9 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// clang-format off
+// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
+// clang-format on
+
 cr.define('settings', function() {
   /** @interface */
-  class BraveAppearanceBrowserProxy {
+  /* #export */ class BraveAppearanceBrowserProxy {
     /**
      * @return {!Promise<Array>}
      */
@@ -22,7 +26,7 @@ cr.define('settings', function() {
   /**
    * @implements {settings.BraveAppearanceBrowserProxy}
    */
-  class BraveAppearanceBrowserProxyImpl {
+  /* #export */ class BraveAppearanceBrowserProxyImpl {
     /** @override */
     getBraveThemeList() {
       return new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))

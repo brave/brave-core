@@ -1,10 +1,13 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ja">
-<translation id="5288293905681750318">トラッカー&amp;広告をブロックしました</translation>
+<translation id="5288293905681750318">ブロック済の
+広告・トラッカー数</translation>
 <translation id="2313532038420432247">HTTPSアップグレード</translation>
-<translation id="788493840831967104">時間を節約しました</translation>
-<translation id="2318592590318590295">帯域を節約しました</translation>
+<translation id="788493840831967104">節約できた
+読み込み時間</translation>
+<translation id="2318592590318590295">節約できた
+データ使用量</translation>
 <translation id="5206618227023752085">トップサイトが削除されました</translation>
 <translation id="2079545284768500474">取り消す</translation>
 <translation id="6040143037577758943">閉じる</translation>
@@ -27,7 +30,7 @@
 <translation id="7606029853066610626">ブックマークの表示と管理</translation>
 <translation id="5550994254534676787">あなたのサイト閲覧履歴を表示する</translation>
 <translation id="985862351129593673">ダッシュボードをカスタマイズする</translation>
-<translation id="7180865173735832675">カスタマイズ</translation>
+<translation id="7180865173735832675">設定</translation>
 <translation id="5783793537552649286">背景画像を表示</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>
 <translation id="6836061097810262923">時計を表示</translation>
@@ -39,10 +42,10 @@
 <translation id="3870475560794762985">スポンサー画像を表示する</translation>
 <translation id="2875302873837723333">トップサイト</translation>
 <translation id="8173998484743827990">Brave統計データ</translation>
-<translation id="383680190590774040">クロック</translation>
+<translation id="383680190590774040">時刻表示</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8730621377337864115">完了</translation>
-<translation id="6248988683584659830">検索の設定</translation>
+<translation id="6248988683584659830">設定の検索</translation>
 <translation id="730042046912793465">これは</translation>
 <translation id="2055363275850890030">プライベートウィンドウ</translation>
 <translation id="9133213713928851646">Braveはあなたがプライベートウィンドウで行ったことを記録しません。匿名通信システムTorにより、インターネットサービスプロバイダや雇用者が、あなたのサイト閲覧履歴を見ることができなくなります。同時に訪問中のサイトにあなたのIPアドレスを晒すことなくブラウジングすることができます。</translation>
@@ -98,7 +101,7 @@
 <translation id="1919345977826869612">広告</translation>
 <translation id="2128226640852355533">Brave広告を表示することによって、{{currency}}を稼げます。表示される広告は、閲覧行動から推測されるように、あなたの興味に基づいています。個人データや閲覧履歴がブラウザーから離れることはありません。</translation>
 <translation id="6112368337882254910">自動支援</translation>
-<translation id="3742599705619405136">パブリッシャーとコンテンツ制作者を自動的に支援する方法。月々支払いを設定して通常通りに閲覧してください。あなたが訪問するBrave検証済みサイトは、Braveが測定するあなたのアテンションに基づき、あなたからの寄付を自動で受け取ることになります。</translation>
+<translation id="3742599705619405136">パブリッシャーやコンテンツ制作者を自動的に支援する方法です。毎月支援する金額を設定し、通常通りブラウジングをしましょう。あなたが訪問したサイトがBraveの認証済みサイトだった場合、あなたのアテンションに基づいて自動的に支援を行います。</translation>
 <translation id="20281847067919078">保留中の推定報酬額</translation>
 <translation id="8593551638387217772">次回支払日</translation>
 <translation id="319209088187794725">今月受け取った広告通知</translation>
@@ -112,6 +115,12 @@
 <translation id="2232753742630178222">1 時間に 3 件の広告</translation>
 <translation id="905529390827000221">1 時間に 4 件の広告</translation>
 <translation id="7694167481321619202">1 時間に 5 件の広告</translation>
+<translation id="8576106690599421723">州/都道府県レベルの広告ターゲティング</translation>
+<translation id="4775297407519948063">Braveがあなたの居住地域に合わせた広告を表示できるようになります</translation>
+<translation id="8446884382197647889">詳しく知る</translation>
+<translation id="2993213131912234648">自動的に{{adsSubdivisionTarget}}と認識されました</translation>
+<translation id="4394049700291259645">無効にする</translation>
+<translation id="4176463684765177261">無効</translation>
 <translation id="8845154268466251503">BAP</translation>
 <translation id="6160106411363856968">BAP</translation>
 <translation id="1081826981536899387">BATポイント</translation>
@@ -181,6 +190,11 @@
 <translation id="7422678632904904341">金額：</translation>
 <translation id="5025866799968038247">残高情報</translation>
 <translation id="1642443162274867084">ウォレット作成</translation>
+<translation id="6643016212128521049">削除</translation>
+<translation id="6325525973963619867">失敗</translation>
+<translation id="583281660410589416">不明</translation>
+<translation id="8654112359048700618">準備する</translation>
+<translation id="7375125077091615385">タイプ:</translation>
 <translation id="5457113250005438886">無効</translation>
 <translation id="7687511348932340294">キー情報シード：</translation>
 <translation id="758790787422117549">パーソナID</translation>
@@ -203,6 +217,9 @@
 <translation id="3798449238516105146">バージョン</translation>
 <translation id="7180611975245234373">更新</translation>
 <translation id="5771119664738037159">Brave Rewardsは有効になっていません。以下から有効にすることができます。</translation>
+<translation id="2927922949538312364">１回限りのチップ</translation>
+<translation id="3164105678355419142">定期的に支払うチップ</translation>
+<translation id="4309915981827077375">一般情報</translation>
 <translation id="6672180611914406778">合計金額</translation>
 <translation id="2223892939866251845">ユーザーID</translation>
 <translation id="4235360514405112390">有効</translation>
@@ -290,7 +307,6 @@
 <translation id="2291686779354188838">こんにちは、{{name}}！</translation>
 <translation id="1389143276807887637">インポート</translation>
 <translation id="7335371657242627509">自動支援の対象にする</translation>
-<translation id="8446884382197647889">詳しく知る</translation>
 <translation id="3250511771491660127">毎月行う</translation>
 <translation id="6028954173739504682">ウォレットを管理</translation>
 <translation id="7886389832052393750">4月</translation>
@@ -333,7 +349,7 @@
 <translation id="6104680658798556671">未払いです。</translation>
 <translation id="3138528956349114724">固定されたサイトは現在</translation>
 <translation id="2337632028350283479">毎月の支援の仕組み：</translation>
-<translation id="6457273203091513039">毎月の支援は「Auto-Contribute (自動支援)」支払いから出るものではありません。これらは別々のものです。</translation>
+<translation id="6457273203091513039">毎月自動支払いと自動支援は別です。それぞれに設定した金額が支払われます。</translation>
 <translation id="9099396904827413228">サイトごとに毎月固定額が支払われます。</translation>
 <translation id="5051110132941857169">月々の支援は毎月一度に支払われます。「Auto-Contribute (自動支援)」を用いている場合、チップはあなたの毎月の自動支援の支払いと同時に送られます。</translation>
 <translation id="3374483782662414143">チップパネル内から毎月の支援を受け取るサイトを削除することができます。</translation>
@@ -358,7 +374,6 @@
 <translation id="8759753423332885148">詳細を見る</translation>
 <translation id="3157931365184549694">復元</translation>
 <translation id="1797334173232638045">固定されたサイトはこちらに移動しました</translation>
-<translation id="3626186271103896082">ウォレットをバックアップしましょう</translation>
 <translation id="5717619667204259673">この回復キーは安全な場所に保管してください。</translation>
 <translation id="4699702339303280827">あなたのブラウザやコンピューターに問題が発生した場合、いつでもこのキーを使用して、ウォレットを元に戻すことができます。しかし、このキーを持っていれば誰でもあなたのウォレットを手に入れることができるため、しっかりと保管しておいてください。紙に書き写すか、普段大切な情報を保管する場所にしまっておくのが一番安全かもしれません。</translation>
 <translation id="7354412786785889047">素晴らしいコンテンツを作成してくれた感謝を込めて、チップを贈ることでこのサイトを支援できます。認証されたコンテンツクリエイターは、毎月第1週目にチップを受け取ります。</translation>
@@ -432,7 +447,7 @@
 <translation id="4452279058754488731">今すぐ広告閲覧報酬を獲得しましょう！</translation>
 <translation id="5595664624688492034">Rewardsに参加する</translation>
 <translation id="3315406658665721926">あなたはプライバシーを尊重する広告を見ることでポイントを得られるようになりました。</translation>
-<translation id="8787500234852052352">広告表示に対する支払いを受け取り、先払いでお気に入りコンテンツのクリエイターを支援しましょう。</translation>
+<translation id="8787500234852052352">広告表示に対する報酬を受け取り、先払いでお気に入りコンテンツのクリエイターを支援しましょう。</translation>
 <translation id="4282161221635140902">あなたはプライバシーを尊重する広告を見ることでポイントを得られるようになりました。</translation>
 <translation id="318487899513214296">改善点をチェック</translation>
 <translation id="4083384190339959182">Brave Paymentsを大幅アップグレードしました。</translation>
@@ -446,7 +461,6 @@
 <translation id="7461596279975181413">このBrave認定クリエーターは、Braveユーザーからの寄付を受け取るためのアカウント設定を完了していません。Braveは、アカウント設定が完了するか、90日が経過するまで寄付を試みます。</translation>
 <translation id="4292832015778676417">広告からの収入</translation>
 <translation id="3197752845651180812">未承認の支援支払い</translation>
-<translation id="2927922949538312364">１回限りのチップ</translation>
 <translation id="6964891561514920613">すべての未承認の支援支払いを表示</translation>
 <translation id="4346944508027912677">未処理案件と期限</translation>
 <translation id="7410549756000115387">未承認の支援支払いはありません...</translation>
@@ -495,10 +509,10 @@
 <translation id="7307847920988946894">Rewardsを有効にする</translation>
 <translation id="662631138774963814">今気前がいい気分ですか？</translation>
 <translation id="3264975266761862670">報酬を受け取る準備はできましたか？</translation>
-<translation id="8092889639392847252">このスポンサー背景画像を見て、支払いを受けましょう。</translation>
+<translation id="8092889639392847252">スポンサー背景画像を見て、報酬を受け取りましょう</translation>
 <translation id="2542495049135486284">もう一度Brave Rewardsを試してみませんか？獲得したポイントで誰かを応援しましょう。</translation>
 <translation id="53513464591392992">Brave Rewardsをオンにし、プライバシーを尊重する広告を見て報酬を受け取りましょう。</translation>
-<translation id="8463996294416161140">あなたの取り分を獲得するには、<ph name="PRODUCT_NAME"/>をオンにします。<ph name="LINK_BEGIN"/>「スポンサー付き画像を非表示」<ph name="LINK_END"/>を選択することもできます。</translation>
+<translation id="8463996294416161140"><ph name="PRODUCT_NAME"/>をオンにして報酬を受け取りましょう。<ph name="LINK_BEGIN"/>「スポンサー付き画像を非表示」<ph name="LINK_END"/>を選択することもできます。</translation>
 <translation id="8568666589217601917">おめでとうございます！</translation>
 <translation id="764235488372037377">Adsから得た報酬はこちらです！</translation>
 <translation id="7091215606170476659">UGPからポイントが付与されました。</translation>
@@ -550,73 +564,12 @@
 <translation id="2956070106555335453">要約</translation>
 <translation id="439104575421522802">セッションが期限切れになりました</translation>
 <translation id="8558560988211507902">あなたのBinanceのアクセストークンが期限切れになりました。ウィジェットを使い続けるには、再接続してください。</translation>
-<translation id="1181037720776840403">削除</translation>
-<translation id="7885157704277298658">コピーしました！</translation>
-<translation id="5379640681913450928">語数:</translation>
-<translation id="2740531572673183784">OK</translation>
-<translation id="1880258206282877288">新たなデバイスの接続を確認するため、同期待機中です。このウィンドウを閉じると、同期チェーンはリセットされ、もう一度やり直すことになります。</translation>
-<translation id="5351846961038505462">構わず閉じる</translation>
-<translation id="1555452132857939218">この同期チェーンから</translation>
-<translation id="610118613261910287">コードワードを見る</translation>
-<translation id="8588535459744752615">デバイスを探しています</translation>
-<translation id="6406506848690869874">同期</translation>
-<translation id="28332161031213248">以下のデバイスリストは、あなたの同期チェーンにある全てのデバイスを表示しています。それぞれのデバイスは、他のデバイスから管理することができます。</translation>
-<translation id="8153617760825732120">デバイス名</translation>
-<translation id="4241512165288542484">(このデバイス)</translation>
-<translation id="1415578175043962034">日付が追加されました</translation>
-<translation id="1061533051865606843">新たなデバイスを追加</translation>
-<translation id="8780295742023331191">同期コードを見る</translation>
-<translation id="1755198127524719638">設定の同期</translation>
-<translation id="7558480201297099157">デバイス間でどのような情報を同期したいのかを管理してください。
-この設定はこのデバイスのみに有効です。</translation>
-<translation id="8820817407110198400">ブックマーク</translation>
-<translation id="5591129654353352557">保存済みのサイト設定</translation>
-<translation id="7859704718976024901">閲覧履歴</translation>
-<translation id="2339730291919608488">同期チェーンから離れる</translation>
-<translation id="4332558599726753990">同期設定</translation>
-<translation id="298546024891487702">始めるためには、同期予定の全てのデバイスに Brave をインストールする必要があります。それらを一つに繋ぐには、安全にあなたのデバイス全てをリンクさせる、同期チェーンを開始してください。</translation>
-<translation id="6200528822592747640">新たな同期チェーンを開始する</translation>
-<translation id="5184726904895809379">同期コードを持っています</translation>
-<translation id="8584803368494775413">同期コードを確認</translation>
-<translation id="5373825572723282843">同期コードを入力</translation>
-<translation id="5734745018569675530">与えられた同期チェーンコードワードを以下のフォームに入力してください。</translation>
-<translation id="8348871245305371520">すべてのデバイス上のローカルデバイスデータはそのまま残ります。この同期チェーンの他のデバイスの同期は維持されます。</translation>
-<translation id="6388211659394268749">もう一度同期チェーンに参加するには、「同期コードを入力」を選んでください。</translation>
-<translation id="6500099041876719317">注: このデバイスをこの同期チェーンから削除しても、以前に同期されたデータはデバイスから消去されません。</translation>
-<translation id="6647265259633328698">警告！</translation>
-<translation id="7226983081288498250">を削除すると、</translation>
-<translation id="1810742624536999850">この同期チェーンが削除されます。</translation>
-<translation id="3263262632668102801">このデバイスのローカルデータは保持されますが、Brave の Sync キャッシュ内のデータはすべて削除されます。</translation>
-<translation id="9209629396585743369">新しい同期チェーンを始めるか、同期チェーンコードを入力して新しいデバイスと同期することができます。</translation>
-<translation id="8258002508340330928">よろしいですか？</translation>
-<translation id="3407602902101449803">チェーン QR コードの同期</translation>
-<translation id="8369686073965491869">モバイルデバイスで、設定画面からBrave 同期に行き、ボタンをクリックして下さい</translation>
-<translation id="6527776448555649991">「同期コードをスキャンする」</translation>
-<translation id="1400862780574843709">カメラで以下の QR コードをスキャンしてください。</translation>
-<translation id="5086223971958279691">チェーンコードの同期</translation>
-<translation id="2899261497479389619">目的のコンピューターで、設定からBrave 同期に行き、ボタンをクリックして下さい</translation>
-<translation id="4827439149833241990">「同期コードを持っています。」</translation>
-<translation id="24067401253841795">下の同期チェーンコードワードを入力してください。このコードはパスワードと同様に扱ってください。他人がコードを入手した場合、あなたの同期済みのデータが読まれたり改ざんされたりする恐れがあります。</translation>
-<translation id="8914601399214979966">代わりに自分のカメラを使う</translation>
-<translation id="3034163433136515805">QR コードを見る</translation>
-<translation id="5093410893656857925">デバイスの種類を選んでください</translation>
-<translation id="7900569862982389597">同期したいデバイスの種類を選んでください。</translation>
-<translation id="9017050385815017931">スマホ/タブレット</translation>
-<translation id="1736420071277903564">コンピューター</translation>
-<translation id="1258250624898033822">同期コードが無効です。</translation>
-<translation id="3259723213051400722">もう一度お試しください。</translation>
-<translation id="5257281382608458806">デバイス名は必須です。</translation>
-<translation id="8349682220522608879">同期コードを追加してください。</translation>
-<translation id="1468095392829989299">Sync サーバーに接続できませんでした。</translation>
-<translation id="1399673826422570698">ネットワークか Sync サーバーに問題が発生している可能性があります。</translation>
-<translation id="5286379413446391050">同期サーバーに接続できませんでした</translation>
-<translation id="2410472020237369473">コンピューターの時刻設定が間違っているかタイムゾーンの設定に誤りがあります。時刻の設定を確認してください。</translation>
 <translation id="5655621391922317800">仮想通貨ウォレット</translation>
 <translation id="616639131065447379">Brave クリプトウォレットへようこそ</translation>
 <translation id="1740464057879304704">クリプトウォレットでは仮想通貨や関連する資産を Brave内で取り扱いできます。クリプトウォレットはETHやBATなどのイーサリアムのトークンやコレクティブに対応しており、Ðのアプリやその他のスマートコントラクトにも対応しています。これらは全てイーサリアムやその他のブロックチェーンシステム—を良くご存知の方や、これから学びたい方向けの機能です。</translation>
 <translation id="4855440621031541830">この使用に関連するすべてのリスクの責任はあなた自身にあり、Brave Softwareがこの使用の結果として被る可能性のある偶発的、または結果的損失を含むいかなる損失についても責任または義務を負わないことを受け入れる場合にのみ、クリプトウォレットを使用してください。</translation>
 <translation id="3187473319809074178">これは全て別です</translation>
-<translation id="8327818101454798856">あなたのお気に入りのサイトをサポートしたいと思っていたら、代わりにそのサイトに向かってください。</translation>
+<translation id="8327818101454798856">あなたのお気に入りのサイトをサポートしたい場合は、ぜひそのために使ってください。</translation>
 <translation id="4894106830958548828">了解しました</translation>
 <translation id="453977518730680921">メディアの自動再生</translation>
 <translation id="7701466644604753106">Speedreaderをオンにする</translation>

@@ -1,28 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="bg">
-<translation id="4068928808254189629">Отворете
-менюто на Brave &gt;
-„<ph name="SETTINGS_TITLE"/>“
-&gt;
-„<ph name="ADVANCED_TITLE"/>“
-и премахнете отметката от „<ph name="NO_PREFETCH_DESCRIPTION"/>“.
-Ако това не реши проблема, препоръчваме ви да изберете отново тази опция,
-за да подобрите ефективността.</translation>
-<translation id="2017237562285586622">Разрешете достъпа на Brave до мрежата от настройките на защитната стена
-или антивирусния си софтуер.</translation>
-<translation id="4010643444566880169">Първоначалното настройване на Brave OS не е завършено.</translation>
-<translation id="8187289872471304532">Отворете
-„Applications“ &gt; „System Preferences“ &gt; „Network“ &gt; „Advanced“ &gt; „Proxies“
-и премахнете отметките от избраните прокси сървъри.</translation>
-<translation id="8619622797841001082">Отворете
-менюто на Brave &gt;
-<ph name="SETTINGS_TITLE"/>
-&gt;
-<ph name="ADVANCED_TITLE"/>
-&gt;
-<ph name="PROXIES_TITLE"/>
-и се уверете, че за конфигурацията ви е зададено „no proxy“ или „direct“.</translation>
+<translation id="130631256467250065">Промените ви ще влязат в сила следващия път, когато рестартирате устройството си.</translation>
+<translation id="7999989146447764333">Подаването на сигнали за сривове не е налице в Brave.</translation>
+<translation id="1953231710324290369">Преглеждате защитена страница в Brave.</translation>
+<translation id="4010643444566880169">Първоначалното настройване на Chrome OS не е завършено.</translation>
+<translation id="7932149101545999102">Brave е възможен благодарение на проекта с отворен код <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> и на друг <ph name="BEGIN_LINK_OSS"/>софтуер с отворен код<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Отворете
 менюто на Brave &gt;
 <ph name="SETTINGS_TITLE"/>
@@ -33,11 +16,27 @@
 &gt;
 „LAN настройки“
 и премахнете отметката от квадратчето „Използвайте прокси сървър за вашата локална мрежа“.</translation>
+<translation id="2017237562285586622">Разрешете достъпа на Brave до мрежата от настройките на защитната стена
+или антивирусния си софтуер.</translation>
+<translation id="8619622797841001082">Отворете
+менюто на Brave &gt;
+<ph name="SETTINGS_TITLE"/>
+&gt;
+<ph name="ADVANCED_TITLE"/>
+&gt;
+<ph name="PROXIES_TITLE"/>
+и се уверете, че за конфигурацията ви е зададено „no proxy“ или „direct“.</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
-<translation id="130631256467250065">Промените ви ще влязат в сила следващия път, когато рестартирате устройството си.</translation>
-<translation id="7999989146447764333">Подаването на сигнали за сривове не е налице в Brave.</translation>
-<translation id="7932149101545999102">Brave е възможен благодарение на проекта с отворен код <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> и на друг <ph name="BEGIN_LINK_OSS"/>софтуер с отворен код<ph name="END_LINK_OSS"/>.</translation>
-<translation id="1953231710324290369">Преглеждате защитена страница в Brave.</translation>
-<translation id="2305018990464327944">Brave потвърди, че сертификатът на този уебсайт е издаден от <ph name="ISSUER"/>.</translation>
+<translation id="4068928808254189629">Отворете
+менюто на Brave &gt;
+„<ph name="SETTINGS_TITLE"/>“
+&gt;
+„<ph name="ADVANCED_TITLE"/>“
+и премахнете отметката от „<ph name="NO_PREFETCH_DESCRIPTION"/>“.
+Ако това не реши проблема, препоръчваме ви да изберете отново тази опция,
+за да подобрите ефективността.</translation>
+<translation id="8187289872471304532">Отворете
+„Applications“ &gt; „System Preferences“ &gt; „Network“ &gt; „Advanced“ &gt; „Proxies“
+и премахнете отметките от избраните прокси сървъри.</translation>
 <translation id="88187049159266777">Brave не се затвори правилно.</translation>
 </translationbundle>

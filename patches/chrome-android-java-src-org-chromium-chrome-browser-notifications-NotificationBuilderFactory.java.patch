@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationBuilderFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationBuilderFactory.java
-index 815ac904b36127df58dbe8312642b6011c2c6543..90b2b18756ec375edf15d4db3e6fb947dfea3043 100644
+index 2ccf25a562a7ffb11b6bca6975d6c9bcc4c64c91..5935c716d00cfba4bbc7c9941753ea82715d287b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationBuilderFactory.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationBuilderFactory.java
-@@ -67,7 +67,7 @@ public class NotificationBuilderFactory {
+@@ -71,7 +71,7 @@ public class NotificationBuilderFactory {
          }
  
          NotificationManagerProxyImpl notificationManagerProxy =
 -                new NotificationManagerProxyImpl(context);
 +                new BraveNotificationManagerProxyImpl(context);
  
-         ChannelsInitializer channelsInitializer =
-                 new ChannelsInitializer(notificationManagerProxy, context.getResources());
+         ChannelsInitializer channelsInitializer = new ChannelsInitializer(notificationManagerProxy,
+                 ChromeChannelDefinitions.getInstance(), context.getResources());

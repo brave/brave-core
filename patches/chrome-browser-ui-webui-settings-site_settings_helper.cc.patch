@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
+index 5dfef5ee030bc988e8f56ed577bc02900d2017f3..2d0a093bddc5007ac2eebfefc7052010645e71fc 100644
+--- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
++++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
+@@ -376,6 +376,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+ }
+ 
+ ContentSettingsType ContentSettingsTypeFromGroupName(const std::string& name) {
++  BRAVE_SITE_SETTINGS_HELPER_CONTENT_SETTINGS_TYPE_FROM_GROUP_NAME
+   for (size_t i = 0; i < base::size(kContentSettingsTypeGroupNames); ++i) {
+     if (name == kContentSettingsTypeGroupNames[i].name)
+       return kContentSettingsTypeGroupNames[i].type;

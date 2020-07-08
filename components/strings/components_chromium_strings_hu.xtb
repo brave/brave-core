@@ -1,25 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="hu">
-<translation id="4068928808254189629">Lépjen ide:
-        Brave menü &gt;
-        <ph name="SETTINGS_TITLE"/>
-        &gt;
-        <ph name="ADVANCED_TITLE"/>,
-        és törölje a jelet a(z) „<ph name="NO_PREFETCH_DESCRIPTION"/>” jelölőnégyzetből.
-        Ha ettől nem szűnik meg a probléma, javasoljuk, hogy jelölje be ismét ezt a lehetőséget a jobb teljesítmény érdekében.</translation>
-<translation id="2017237562285586622">A hálózat elérésének engedélyezése a Brave számára a tűzfal-
-          vagy vírusirtó-beállításokban.</translation>
-<translation id="4010643444566880169">A Brave OS nem fejezte be a kezdeti beállítását.</translation>
-<translation id="8187289872471304532">Az Applications &gt; System Preferences &gt; Network &gt; Advanced &gt; Proxies (Alkalmazások &gt; Rendszerbeállítások &gt; Hálózat &gt; Speciális &gt; Proxyk) menüpont alatt törölje a jelet minden kijelölt proxy mellől.</translation>
-<translation id="8619622797841001082">Lépjen ide:
-          Brave menü &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>,
-          és gondoskodjon róla, hogy a konfiguráció beállítása „nincs proxy” vagy „közvetlen” legyen.</translation>
+<translation id="130631256467250065">A módosítások az eszköz következő újraindításakor lépnek életbe.</translation>
+<translation id="7999989146447764333">A hibajelentések nem állnak rendelkezésre a Braveban.</translation>
+<translation id="1953231710324290369">Jelenleg biztonságos Brave-oldalt tekint meg</translation>
+<translation id="4010643444566880169">A Chrome OS nem fejezte be a kezdeti beállítását.</translation>
+<translation id="7932149101545999102">A Brave a <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> nyílt forráskódú projektnek és további <ph name="BEGIN_LINK_OSS"/>nyílt forráskódú szoftvereknek<ph name="END_LINK_OSS"/> köszönhetően jött létre.</translation>
 <translation id="8746410156982274638">Lépjen ide:
           Brave menü &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -30,11 +16,24 @@
           &gt;
           A helyi hálózat (LAN) beállításai,
           majd törölje a jelet a „Proxykiszolgáló használata a helyi hálózaton” jelölőnégyzetből.</translation>
+<translation id="2017237562285586622">A hálózat elérésének engedélyezése a Brave számára a tűzfal-
+          vagy vírusirtó-beállításokban.</translation>
+<translation id="8619622797841001082">Lépjen ide:
+          Brave menü &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>,
+          és gondoskodjon róla, hogy a konfiguráció beállítása „nincs proxy” vagy „közvetlen” legyen.</translation>
 <translation id="9156965752763025780">Módosításai a Brave újraindítása után lépnek érvénybe.</translation>
-<translation id="130631256467250065">A módosítások az eszköz következő újraindításakor lépnek életbe.</translation>
-<translation id="7999989146447764333">A hibajelentések nem állnak rendelkezésre a Braveban.</translation>
-<translation id="7932149101545999102">A Brave a <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> nyílt forráskódú projektnek és további <ph name="BEGIN_LINK_OSS"/>nyílt forráskódú szoftvereknek<ph name="END_LINK_OSS"/> köszönhetően jött létre.</translation>
-<translation id="1953231710324290369">Jelenleg biztonságos Brave-oldalt tekint meg</translation>
-<translation id="2305018990464327944">A Brave ellenőrizte, hogy a(z) <ph name="ISSUER"/> adta ki ezt a webhelytanúsítványt.</translation>
+<translation id="4068928808254189629">Lépjen ide:
+        Brave menü &gt;
+        <ph name="SETTINGS_TITLE"/>
+        &gt;
+        <ph name="ADVANCED_TITLE"/>,
+        és törölje a jelet a(z) „<ph name="NO_PREFETCH_DESCRIPTION"/>” jelölőnégyzetből.
+        Ha ettől nem szűnik meg a probléma, javasoljuk, hogy jelölje be ismét ezt a lehetőséget a jobb teljesítmény érdekében.</translation>
+<translation id="8187289872471304532">Az Applications &gt; System Preferences &gt; Network &gt; Advanced &gt; Proxies (Alkalmazások &gt; Rendszerbeállítások &gt; Hálózat &gt; Speciális &gt; Proxyk) menüpont alatt törölje a jelet minden kijelölt proxy mellől.</translation>
 <translation id="88187049159266777">A Brave nem záródott be megfelelően.</translation>
 </translationbundle>

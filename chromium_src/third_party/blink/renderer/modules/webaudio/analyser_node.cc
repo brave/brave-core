@@ -5,14 +5,16 @@
 
 #include "third_party/blink/renderer/modules/webaudio/analyser_node.h"
 
-#include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
 
-#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                      \
-  ExecutionContext* context = node.GetExecutionContext();      \
-  analyser_.audio_farbling_callback_ =                         \
-      brave::BraveSessionCache::From(*Document::From(context)) \
-          .GetAudioFarblingCallback(Document::From(context)->GetFrame());
+#define BRAVE_ANALYSERHANDLER_CONSTRUCTOR                 \
+  ExecutionContext* context = node.GetExecutionContext(); \
+  analyser_.audio_farbling_callback_ =                    \
+      brave::BraveSessionCache::From(                     \
+          *(To<LocalDOMWindow>(context)->document()))     \
+          .GetAudioFarblingCallback(                      \
+              To<LocalDOMWindow>(context)->document()->GetFrame());
 
-#include "../../../../../../third_party/blink/renderer/modules/webaudio/analyser_node.cc"
+#include "../../../../../../../third_party/blink/renderer/modules/webaudio/analyser_node.cc"
 
 #undef BRAVE_ANALYSERNODE_CONSTRUCTOR

@@ -1,5 +1,5 @@
 diff --git a/services/preferences/tracked/device_id_win.cc b/services/preferences/tracked/device_id_win.cc
-index ff7fbb620de3f2da7dd2e5525dc36f3b59c01ce6..8791808613bfc5f1ff28e3558cad45e7fe2220e7 100644
+index b6d37f81c281ad202a94f021a14ad6c5f92ae95f..5fa3202f69896c76739956f9f314e84e074ba325 100644
 --- a/services/preferences/tracked/device_id_win.cc
 +++ b/services/preferences/tracked/device_id_win.cc
 @@ -15,6 +15,7 @@

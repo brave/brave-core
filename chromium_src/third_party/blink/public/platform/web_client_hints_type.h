@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CLIENT_HINTS_TYPE_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_PUBLIC_PLATFORM_WEB_CLIENT_HINTS_TYPE_H_
 
-#include "third_party/blink/public/mojom/web_client_hints/web_client_hints_types.mojom-shared.h"
+#include "services/network/public/mojom/web_client_hints_types.mojom-shared.h"
 
 namespace blink {
 
@@ -15,13 +15,16 @@ namespace blink {
 struct WebEnabledClientHints {
   WebEnabledClientHints() = default;
 
-  bool IsEnabled(mojom::WebClientHintsType type) const { return false; }
+  bool IsEnabled(network::mojom::WebClientHintsType type) const {
+    return false;
+  }
 
-  void SetIsEnabled(mojom::WebClientHintsType type, bool should_send) {
+  void SetIsEnabled(network::mojom::WebClientHintsType type, bool should_send) {
     enabled_types_[static_cast<int>(type)] = false;
   }
 
-  bool enabled_types_[static_cast<int>(mojom::WebClientHintsType::kMaxValue) +
+  bool enabled_types_[static_cast<int>(
+                          network::mojom::WebClientHintsType::kMaxValue) +
                       1] = {};
 };
 

@@ -63,6 +63,7 @@
 #endif
 
 #if defined(OS_ANDROID)
+#include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
 #endif
 
@@ -144,6 +145,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // clear default popular sites
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
       base::Value(base::Value::Type::LIST));
+  // Disable NTP suggestions
+  registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
+                                base::Value(false));
+  registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
+                                base::Value(false));
 #endif
 
   // Hangouts

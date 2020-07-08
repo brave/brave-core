@@ -1,26 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sr-Latn">
-<translation id="4068928808254189629">Otvorite
-          Brave meni &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          i opozovite izbor opcije „<ph name="NO_PREFETCH_DESCRIPTION"/>“.
-          Ako vam to ne reši problem, preporučujemo da ponovo izaberete
-          ovu opciju radi boljih performansi.</translation>
-<translation id="2017237562285586622">Dozvolite Brave-u da pristupa mreži u zaštitnom zidu ili antivirusnim
-          podešavanjima.</translation>
-<translation id="4010643444566880169">Brave OS nije dovršio početno podešavanje.</translation>
-<translation id="8187289872471304532">Idite na Applications (Aplikacije) &gt; System Preferences (Podešavanja sistema) &gt; Network (Mreža) &gt; Advanced (Više opcija) &gt; Proxies (Proksiji) i opozovite izbor svih proksija koji su izabrani.</translation>
-<translation id="8619622797841001082">Idite u
-          Brave meni &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          i proverite da li je konfiguracija podešena na „no proxy“ (bez proksija) ili „direct“ (direktno).</translation>
+<translation id="130631256467250065">Promene će stupiti na snagu kada sledeći put ponovo pokrenete uređaj.</translation>
+<translation id="7999989146447764333">Izveštavanje o otkazivanjima nije dostupno u Brave-u.</translation>
+<translation id="1953231710324290369">Gledate bezbednu Brave stranicu.</translation>
+<translation id="4010643444566880169">Chrome OS nije dovršio početno podešavanje.</translation>
+<translation id="7932149101545999102">Brave omogućavaju <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> projekat otvorenog koda i drugi <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Idite u
           Brave meni &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -31,11 +16,25 @@
           &gt;
           LAN Settings (Podešavanja lokalne mreže)
           i opozovite izbor u polju za potvrdu „Use a proxy server for your LAN“ (Koristi proksi server za lokalnu mrežu).</translation>
+<translation id="2017237562285586622">Dozvolite Brave-u da pristupa mreži u zaštitnom zidu ili antivirusnim
+          podešavanjima.</translation>
+<translation id="8619622797841001082">Idite u
+          Brave meni &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          i proverite da li je konfiguracija podešena na „no proxy“ (bez proksija) ili „direct“ (direktno).</translation>
 <translation id="9156965752763025780">Promene će stupiti na snagu kada sledeći put ponovo pokrenete Brave.</translation>
-<translation id="130631256467250065">Promene će stupiti na snagu kada sledeći put ponovo pokrenete uređaj.</translation>
-<translation id="7999989146447764333">Izveštavanje o otkazivanjima nije dostupno u Brave-u.</translation>
-<translation id="7932149101545999102">Brave omogućavaju <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> projekat otvorenog koda i drugi <ph name="BEGIN_LINK_OSS"/>softver otvorenog koda<ph name="END_LINK_OSS"/>.</translation>
-<translation id="1953231710324290369">Gledate bezbednu Brave stranicu.</translation>
-<translation id="2305018990464327944">Brave je potvrdio da je <ph name="ISSUER"/> izdao sertifikat ovog veb-sajta.</translation>
+<translation id="4068928808254189629">Otvorite
+          Brave meni &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          i opozovite izbor opcije „<ph name="NO_PREFETCH_DESCRIPTION"/>“.
+          Ako vam to ne reši problem, preporučujemo da ponovo izaberete
+          ovu opciju radi boljih performansi.</translation>
+<translation id="8187289872471304532">Idite na Applications (Aplikacije) &gt; System Preferences (Podešavanja sistema) &gt; Network (Mreža) &gt; Advanced (Više opcija) &gt; Proxies (Proksiji) i opozovite izbor svih proksija koji su izabrani.</translation>
 <translation id="88187049159266777">Brave se nije ispravno zatvorio.</translation>
 </translationbundle>

@@ -1,14 +1,21 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #define AddProfilesExtraParts AddProfilesExtraParts_ChromiumImpl
-#include "../../../../chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc"
+#include "../../../../../chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc"
 #undef AddProfilesExtraParts
 
 #include "brave/browser/browser_context_keyed_service_factories.h"
 
 namespace {
 
-class BraveBrowserMainExtraPartsProfiles : public ChromeBrowserMainExtraPartsProfiles {
+class BraveBrowserMainExtraPartsProfiles
+    : public ChromeBrowserMainExtraPartsProfiles {
  public:
-  BraveBrowserMainExtraPartsProfiles() : ChromeBrowserMainExtraPartsProfiles() {}
+  BraveBrowserMainExtraPartsProfiles()
+      : ChromeBrowserMainExtraPartsProfiles() {}
 
   void PreProfileInit() override {
     ChromeBrowserMainExtraPartsProfiles::PreProfileInit();

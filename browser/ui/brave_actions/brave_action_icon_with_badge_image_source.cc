@@ -1,13 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 
+#include <algorithm>
+
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/brave_actions/constants.h"
 #include "cc/paint/paint_flags.h"
-#include "chrome/browser/extensions/extension_action.h"
 #include "chrome/browser/ui/toolbar/toolbar_actions_bar.h"
 #include "chrome/grit/theme_resources.h"
 #include "third_party/skia/include/core/SkColor.h"
@@ -20,22 +22,23 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/skia_paint_util.h"
 
-using namespace brave_actions;
+using namespace brave_actions;  // NOLINT
 
-base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {
+base::Optional<int>
+BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {
   return kBraveActionGraphicSize;
 }
 
-base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicXOffset() {
+base::Optional<int>
+BraveActionIconWithBadgeImageSource::GetCustomGraphicXOffset() {
   return std::floor(
-    (size().width() - kBraveActionRightMargin - kBraveActionGraphicSize) / 2.0
-  );
+      (size().width() - kBraveActionRightMargin - kBraveActionGraphicSize) /
+      2.0);
 }
 
-base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicYOffset() {
-  return std::floor(
-    (size().height() - kBraveActionGraphicSize) / 2.0
-  );
+base::Optional<int>
+BraveActionIconWithBadgeImageSource::GetCustomGraphicYOffset() {
+  return std::floor((size().height() - kBraveActionGraphicSize) / 2.0);
 }
 
 void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
@@ -46,7 +49,8 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
                            ? SK_ColorWHITE
                            : badge_->text_color;
 
-  SkColor background_color = SkColorSetA(badge_->background_color, SK_AlphaOPAQUE);
+  SkColor background_color =
+      SkColorSetA(badge_->background_color, SK_AlphaOPAQUE);
 
   // Always use same height to avoid jumping up and down with different
   // characters which will differ slightly,
@@ -81,19 +85,20 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
     // Too wide
     // Reduce the padding
     h_padding -= 1;
-    text_max_width += 2; // 2 * padding delta
+    text_max_width += 2;  // 2 * padding delta
     // If still cannot squeeze it in, reduce font size
     if (text_width > text_max_width) {
       // Reduce font size until we find the first one that fits within the width
-      // TODO: Consider adding minimum font-size and adjusting
-      //  |max_decrement_attempts| accordingly
+      // TODO(petermill): Consider adding minimum font-size and adjusting
+      // |max_decrement_attempts| accordingly
       int max_decrement_attempts = base_font.GetFontSize() - 1;
       for (int i = 0; i < max_decrement_attempts; ++i) {
         base_font =
             base_font.Derive(-1, 0, gfx::Font::Weight::NORMAL);
-        gfx::Canvas::SizeStringInt(utf16_text, base_font, &text_width, &text_height, 0,
-                                  gfx::Canvas::NO_ELLIPSIS);
-        // LOG(ERROR) << "reducing to font size - w:" << text_width << " h:" << text_height;
+        gfx::Canvas::SizeStringInt(utf16_text, base_font, &text_width,
+                                   &text_height, 0, gfx::Canvas::NO_ELLIPSIS);
+        // LOG(ERROR) << "reducing to font size - w:" << text_width << " h:" <<
+        // text_height;
         if (text_width <= text_max_width)
           break;
       }

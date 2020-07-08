@@ -5,4 +5,4 @@
 
 #include "brave/common/url_constants.h"
 
-#include "../../../../../../chrome/browser/profiles/profile_io_data.cc"
+#include "../../../../../chrome/browser/profiles/profile_io_data.cc"

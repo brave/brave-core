@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index 37a1650dfa295c7bf25acf8fa4146c2475105bf1..f83f4980d524c6e84c63e5312c2eef354d5a2215 100644
+index e587ec83a4728a02eb01ce58339e2cfad5a0c24d..3334dd95d7eb033a2d2ec360f0a3bd18606b2882 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 @@ -189,6 +189,7 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
@@ -40,7 +40,7 @@ index 37a1650dfa295c7bf25acf8fa4146c2475105bf1..f83f4980d524c6e84c63e5312c2eef35
 @@ -255,6 +259,7 @@ void AudioBuffer::copyFromChannel(NotShared<DOMFloat32Array> destination,
    DCHECK_LE(buffer_offset + count, data_length);
  
-   memcpy(dst, src + buffer_offset, count * sizeof(*src));
+   memmove(dst, src + buffer_offset, count * sizeof(*src));
 +  BRAVE_AUDIOBUFFER_COPYFROMCHANNEL
  }
  

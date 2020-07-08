@@ -91,16 +91,16 @@
     "message": "Všechny soubory cookies povoleny ",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
-  "thirdPartyFingerprintingBlocked": {
-    "message": "Zablokováno získávání otisku napříč weby",
+  "standardFingerprinting": {
+    "message": "Získání otisku blokováno (standardně)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
-  "allFingerprintingBlocked": {
-    "message": "Pokusy o získání otisku blokovány",
+  "strictFingerprinting": {
+    "message": "Získání otisku blokováno (přísně, může poškozovat stránky)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
-  "allFingerprintingAllowed": {
-    "message": "Všechny pokusy o získání otisku povoleny",
+  "allowAllFingerprinting": {
+    "message": "Povolit všechna získávání otisku",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {

@@ -1,24 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
-<translation id="4068928808254189629">Brave menüsü &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/> öğesine gidin
-          ve "<ph name="NO_PREFETCH_DESCRIPTION"/>" seçeneğinin işaretini kaldırın.
-          Bu işlem sorunu çözmezse performansın iyileşmesi için bu seçeneği tekrar işaretlemenizi öneririz.</translation>
-<translation id="2017237562285586622">Güvenlik duvarınızın veya virüsten korunma programınızın ayarlarından,
-        Brave'un ağa erişmesine izin verin.</translation>
-<translation id="4010643444566880169">Brave OS ilk kurulumunu tamamlayamadı.</translation>
-<translation id="8187289872471304532">Uygulamalar &gt; Sistem Tercihleri &gt; Ağ &gt; Gelişmiş &gt; Proxy'ler
-          öğesine gidin ve seçilmiş olabilecek proxy'lerin seçimini kaldırın.</translation>
-<translation id="8619622797841001082">Brave menüsü &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-           öğesine gidin ve yapılandırmanızın "proxy yok" veya "doğrudan" olarak ayarlandığından emin olun.</translation>
+<translation id="130631256467250065">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
+<translation id="7999989146447764333">Brave'da kilitlenmeyi raporlama özelliği yoktur.</translation>
+<translation id="1953231710324290369">Güvenli bir Brave sayfasını görüntülüyorsunuz</translation>
+<translation id="4010643444566880169">Chrome OS ilk kurulumunu tamamlayamadı.</translation>
+<translation id="7932149101545999102">Brave, <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> açık kaynak projesi ve diğer <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılımlar<ph name="END_LINK_OSS"/> ile hazırlanmıştır.</translation>
 <translation id="8746410156982274638">Brave menüsü &gt;
           <ph name="SETTINGS_TITLE"/>
           &gt;
@@ -28,11 +15,23 @@
           &gt;
           LAN Ayarları
           öğesine gidin ve "LAN için proxy sunucusu kullan" onay kutusunun seçimini kaldırın.</translation>
+<translation id="2017237562285586622">Güvenlik duvarınızın veya virüsten korunma programınızın ayarlarından,
+        Brave'un ağa erişmesine izin verin.</translation>
+<translation id="8619622797841001082">Brave menüsü &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+           öğesine gidin ve yapılandırmanızın "proxy yok" veya "doğrudan" olarak ayarlandığından emin olun.</translation>
 <translation id="9156965752763025780">Değişiklikleriniz, Brave tekrar başlatıldığında geçerli olacak.</translation>
-<translation id="130631256467250065">Yaptığınız değişiklikler cihazı yeniden başlattığınızda etkinleşecektir.</translation>
-<translation id="7999989146447764333">Brave'da kilitlenmeyi raporlama özelliği yoktur.</translation>
-<translation id="7932149101545999102">Brave, <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> açık kaynak projesi ve diğer <ph name="BEGIN_LINK_OSS"/>açık kaynak yazılımlar<ph name="END_LINK_OSS"/> ile hazırlanmıştır.</translation>
-<translation id="1953231710324290369">Güvenli bir Brave sayfasını görüntülüyorsunuz</translation>
-<translation id="2305018990464327944">Brave, bu web sitesi sertifikasının <ph name="ISSUER"/> tarafından yayınlandığını doğruladı.</translation>
+<translation id="4068928808254189629">Brave menüsü &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/> öğesine gidin
+          ve "<ph name="NO_PREFETCH_DESCRIPTION"/>" seçeneğinin işaretini kaldırın.
+          Bu işlem sorunu çözmezse performansın iyileşmesi için bu seçeneği tekrar işaretlemenizi öneririz.</translation>
+<translation id="8187289872471304532">Uygulamalar &gt; Sistem Tercihleri &gt; Ağ &gt; Gelişmiş &gt; Proxy'ler
+          öğesine gidin ve seçilmiş olabilecek proxy'lerin seçimini kaldırın.</translation>
 <translation id="88187049159266777">Brave düzgün bir şekilde kapatılmadı.</translation>
 </translationbundle>

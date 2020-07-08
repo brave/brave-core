@@ -56,9 +56,17 @@ BraveSettingsUI::~BraveSettingsUI() {
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
                                    Profile* profile) {
+  constexpr char generated_prefix[] =
+      "@out_folder@/gen/brave/browser/resources/settings/";
+  const auto generated_prefix_len = strlen(generated_prefix);
   for (size_t i = 0; i < kBraveSettingsResourcesSize; ++i) {
-    html_source->AddResourcePath(kBraveSettingsResources[i].name,
-                                 kBraveSettingsResources[i].value);
+    // Rewrite path for any generated entries
+    std::string path(kBraveSettingsResources[i].name);
+    size_t pos = path.find(generated_prefix);
+    if (pos != std::string::npos) {
+      path.erase(pos, generated_prefix_len);
+    }
+    html_source->AddResourcePath(path, kBraveSettingsResources[i].value);
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)

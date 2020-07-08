@@ -2,7 +2,6 @@
 
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
-<link rel="import" href="social_blocking_browser_proxy.html">
 <link rel="import" href="../settings_shared_css.html">
 <link rel="import" href="../settings_vars_css.html">
 
@@ -11,18 +10,22 @@
     <style include="settings-shared md-select iron-flex">
     </style>
     <settings-toggle-button id="googleLoginControlType"
+        class="cr-row"
         pref="{{prefs.brave.google_login_default}}"
         label="$i18n{googleLoginControlLabel}">
     </settings-toggle-button>
     <settings-toggle-button id="fbEmbedControlType"
+        class="cr-row"
         pref="{{prefs.brave.fb_embed_default}}"
         label="$i18n{fbEmbedControlLabel}">
     </settings-toggle-button>
     <settings-toggle-button id="twitterEmbedControlType"
+        class="cr-row"
         pref="{{prefs.brave.twitter_embed_default}}"
         label="$i18n{twitterEmbedControlLabel}">
     </settings-toggle-button>
     <settings-toggle-button id="linkedInEmbedControlType"
+        class="cr-row"
         pref="{{prefs.brave.linkedin_embed_default}}"
         label="$i18n{linkedInEmbedControlLabel}">
     </settings-toggle-button>

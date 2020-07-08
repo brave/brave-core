@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/settings/BUILD.gn b/chrome/browser/resources/settings/BUILD.gn
-index e05a2589a3ee6dfaac01e41ed1f5f9df31b6cbe2..3d6d80548cf0171b1439483bae753e8cb8ed037d 100644
+index 4250f4fa750953d67ab4d6555c4792139e435e09..f52954ab5264d7afda7810e12ede7bd5e27e07c9 100644
 --- a/chrome/browser/resources/settings/BUILD.gn
 +++ b/chrome/browser/resources/settings/BUILD.gn
-@@ -34,6 +34,7 @@ if (optimize_webui) {
-     excludes = [ "chrome://resources/mojo/chromeos/services/network_config/public/mojom/cros_network_config.mojom.html" ]
- 
-     deps = [ ":unpak" ]
-+    deps += [ "//brave/browser/resources/settings:unpak" ]
-   }
- 
-   optimize_webui("build_polymer3") {
-@@ -51,6 +52,7 @@ if (optimize_webui) {
+@@ -31,6 +31,7 @@ if (optimize_webui) {
  
      deps = [
        ":unpak",

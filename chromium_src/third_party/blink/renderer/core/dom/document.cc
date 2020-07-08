@@ -218,4 +218,4 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbMax(
 
 }  // namespace brave
 
-#include "../../../../../../third_party/blink/renderer/core/dom/document.cc"
+#include "../../../../../../../third_party/blink/renderer/core/dom/document.cc"

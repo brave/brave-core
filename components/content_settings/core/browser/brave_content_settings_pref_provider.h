@@ -30,19 +30,20 @@ class BravePrefProvider : public PrefProvider,
  public:
   BravePrefProvider(PrefService* prefs,
                     bool off_the_record,
-                    bool store_last_modified);
+                    bool store_last_modified,
+                    bool restore_session);
   ~BravePrefProvider() override;
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
   // content_settings::PrefProvider overrides:
   void ShutdownOnUIThread() override;
-  bool SetWebsiteSetting(
-      const ContentSettingsPattern& primary_pattern,
-      const ContentSettingsPattern& secondary_pattern,
-      ContentSettingsType content_type,
-      const ResourceIdentifier& resource_identifier,
-      std::unique_ptr<base::Value>&& value) override;
+  bool SetWebsiteSetting(const ContentSettingsPattern& primary_pattern,
+                         const ContentSettingsPattern& secondary_pattern,
+                         ContentSettingsType content_type,
+                         const ResourceIdentifier& resource_identifier,
+                         std::unique_ptr<base::Value>&& value,
+                         const ContentSettingConstraints& constraints) override;
   std::unique_ptr<RuleIterator> GetRuleIterator(
       ContentSettingsType content_type,
       const ResourceIdentifier& resource_identifier,

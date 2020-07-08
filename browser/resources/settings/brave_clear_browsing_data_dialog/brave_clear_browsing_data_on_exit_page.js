@@ -1,13 +1,20 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
-(function() {
-'use strict';
+import 'chrome://resources/cr_elements/shared_vars_css.m.js';
+import '../settings_shared_css.m.js';
+import '../settings_vars_css.m.js';
+import '../controls/settings_checkbox.js';
+
+import {Polymer, html} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
+import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js';
 
 Polymer({
   is: 'settings-brave-clear-browsing-data-on-exit-page',
+
+  _template: html`{__html_template__}`,
 
   properties: {
     prefs: {
@@ -70,4 +77,3 @@ Polymer({
     }
   },
 });
-})();

@@ -1,9 +1,18 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# you can obtain one at http://mozilla.org/MPL/2.0/.
+
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/build/config.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
+import("//third_party/closure_compiler/compile_js.gni")
 import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
+import("//ui/webui/resources/tools/js_modulizer.gni")
+import("//tools/polymer/html_to_js.gni")
+import("//tools/polymer/polymer.gni")
 
 grit("resources") {
   source = "settings_resources.grd"
@@ -13,7 +22,7 @@ grit("resources") {
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
   ]
 
-  deps = [ ":polymer3_elements" ]
+  deps = [ ":web_modules" ]
   defines = [
     "is_release_channel=$is_release_channel",
     "enable_tor=$enable_tor",
@@ -67,15 +76,26 @@ if (optimize_webui) {
   }
 }
 
-group("polymer3_elements") {
+group("web_modules") {
   public_deps = [
     # Sub-folder targets
-    "brave_appearance_page:polymer3_elements",
-    "brave_privacy_page:polymer3_elements",
-    "default_brave_shields_page:polymer3_elements",
-    "social_blocking_page:polymer3_elements",
-    # TODO(petemill): Add Local targets (e.g. brave_settings_overrides)
-    # when settings is rendered fully with ES Modules / polymer3, e.g.:
-    # ":modulize",
+    "brave_appearance_page:web_modules",
+    "brave_clear_browsing_data_dialog:web_modules",
+    "brave_default_extensions_page:web_modules",
+    "brave_help_tips_page:web_modules",
+    "brave_new_tab_page:web_modules",
+    "brave_privacy_page:web_modules",
+    "brave_sync_page:web_modules",
+    "default_brave_shields_page:web_modules",
+    "getting_started_page:web_modules",
+    "social_blocking_page:web_modules",
+    # local targets
+    ":icons_module",
   ]
+}
+
+polymer_modulizer("icons") {
+  js_file = "brave_icons.m.js"
+  html_file = "brave_icons.html"
+  html_type = "iron-iconset"
 }

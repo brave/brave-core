@@ -97,6 +97,7 @@ CHAR-LIMIT guidelines:
     <output filename="values-sl/android_chrome_strings.xml" lang="sl" type="android" />
     <output filename="values-sq/android_chrome_strings.xml" lang="sq" type="android" />
     <output filename="values-sr/android_chrome_strings.xml" lang="sr" type="android" />
+    <output filename="values-b+sr+Latn/android_chrome_strings.xml" lang="sr-Latn" type="android" />
     <output filename="values-sv/android_chrome_strings.xml" lang="sv" type="android" />
     <output filename="values-sw/android_chrome_strings.xml" lang="sw" type="android" />
     <output filename="values-ta/android_chrome_strings.xml" lang="ta" type="android" />
@@ -202,9 +203,6 @@ CHAR-LIMIT guidelines:
       <message name="IDS_SETTINGS" desc="Title for Brave's Settings.">
         Settings
       </message>
-      <message name="IDS_MENU_HELP" desc="Menu item for opening the help page. [CHAR-LIMIT=27]">
-        Help &amp; feedback
-      </message>
       <message name="IDS_PREFS_SECTION_BASICS" desc="Title of &quot;Basics&quot; section of preferences. [CHAR-LIMIT=32]">
         Basics
       </message>
@@ -214,17 +212,16 @@ CHAR-LIMIT guidelines:
       <message name="IDS_ENTER_VR" desc="Menu item for entering VR. [CHAR-LIMIT=27]">
         Enter VR
       </message>
+
+      <!-- Notification channels -->
       <message name="IDS_NOTIFICATION_CATEGORY_GROUP_GENERAL" desc="Subheading for &quot;General&quot; section of a list of notification categories. [CHAR-LIMIT=32]">
         General
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_GROUP_SITES" desc="Subheading for &quot;Sites&quot; section of a list of notification categories. [CHAR-LIMIT=32]">
+        Sites
+      </message>
       <message name="IDS_NOTIFICATION_CATEGORY_INCOGNITO" desc="Label for notification that indicates private mode is active, within a list of notification categories. [CHAR-LIMIT=32]">
         Private
-      </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_MEDIA" desc="Label for notifications shown when media is playing or recording, within a list of notification categories. [CHAR-LIMIT=32]">
-        Media
-      </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_DOWNLOADS" desc="Label for notifications shown when something is downloading, within a list of notification categories. [CHAR-LIMIT=32]">
-        Downloads
       </message>
       <message name="IDS_NOTIFICATION_CATEGORY_SHARING" desc="Label for sharing-related notifications, within a list of notification categories. [CHAR-LIMIT=32]">
         Sharing
@@ -248,14 +245,19 @@ CHAR-LIMIT guidelines:
         Virtual Reality
       </message>
       <message name="IDS_NOTIFICATION_CATEGORY_UPDATES" desc="Label for update notifications, within a list of notification categories. [CHAR-LIMIT=32]">
-       Updates
+        Updates
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_COMPLETED_DOWNLOADS" desc="Label for completed download notifications, within a list of notification categories. [CHAR-LIMIT=32]">
-       Completed downloads
+      <message name="IDS_NOTIFICATION_CATEGORY_ANNOUNCEMENT" desc="Label for announcements notifications, within a list of notification categories. [CHAR-LIMIT=32]">
+        Announcements
       </message>
+      <message name="IDS_NOTIFICATION_CATEGORY_MEDIA_PLAYBACK" desc="Label for media playback notifications, within a list of notification categories. [CHAR-LIMIT=32]">
+        Playing media
+      </message>
+
       <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR-LIMIT=32]">
        Permission requests
       </message>
+
       <message name="IDS_UNSUPPORTED" desc="Message displayed to the user when an attempted action is not supported.">
         Unsupported
       </message>
@@ -309,6 +311,9 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_SERVICES_CATEGORY_TITLE" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave Account.">
         Other Brave services
+      </message>
+      <message name="IDS_PREFS_GOOGLE_SERVICES" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave Account. [CHAR-LIMIT=40]">
+        Brave services
       </message>
       <message name="IDS_AUTOCOMPLETE_SEARCHES_AND_URLS_TITLE" desc="Title for a checkbox in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
         Autocomplete searches and URLs
@@ -557,7 +562,7 @@ CHAR-LIMIT guidelines:
         Export passwords stored with Brave
       </message>
       <message name="IDS_SETTINGS_PASSWORDS_EXPORT_DESCRIPTION" desc="Text shown to the user who initiated exporting passwords, as a warning before any passwords have been exported.">
-        Your passwords will be visible to anyone who can see the exported file.
+        Your passwords will be exported and downloaded as a text file. They will be visible to anyone and any app with access to the destination folder.
       </message>
       <message name="IDS_SETTINGS_PASSWORDS_PREPARING_EXPORT" desc="Text shown to the user above a progress bar, informing the user that passwords are being prepared for export.">
         Preparing passwords…
@@ -605,6 +610,27 @@ CHAR-LIMIT guidelines:
       <message name="IDS_OPTIONS_HOMEPAGE_CHROME_HOMEPAGE" desc="The option that allows user to set Brave's new tab page as the homepage.">
         Brave’s homepage
       </message>
+
+      <!-- Homepage Promo card -->
+      <message name="IDS_HOMEPAGE_PROMO_TITLE" desc="The title displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage.">
+        Get here quicker
+      </message>
+      <message name="IDS_HOMEPAGE_PROMO_TITLE_SLIM" desc="The title displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage. Used for the one liner variation.">
+        Make this page your homepage
+      </message>
+      <message name="IDS_HOMEPAGE_PROMO_DESCRIPTION" desc="The description displayed on homepage promo card, which guide user set chrome's new tab page as their new homepage.">
+        See your top sites and recent stories whenever you tap the Home button
+      </message>
+      <message name="IDS_HOMEPAGE_PROMO_PRIMARY_BUTTON" desc="The text displayed on homepage promo card's primary button compat, which will change the user's homepage to new tab page when they tab.">
+        Change homepage
+      </message>
+      <message name="IDS_HOMEPAGE_PROMO_PRIMARY_BUTTON_SLIM" desc="The text displayed on homepage promo card's primary button compat, which will change the user's homepage to new tab page when they tab. Used for the slim variation that has a smaller space for the button.">
+        Change
+      </message>
+      <message name="IDS_HOMEPAGE_PROMO_SNACKBAR_MESSAGE" desc="The text displayed on the snackbar that appears after setting homepage by click on homepage promo card's primary button, which will change the user's homepage to new tab page.">
+        Homepage changed
+      </message>
+
 
       <!-- Notifications preferences -->
       <message name="IDS_PREFS_NOTIFICATIONS" desc="Title for Notification preferences.">
@@ -763,8 +789,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_CLEAR_BROWSING_DATA_TAB_PERIOD_EVERYTHING" desc="The option to delete browsing data from the beginning of time.">
         All time
       </message>
+      <message name="IDS_IMPORTANT_SITES_TITLE" desc="Title of clear storage dialogs used in a couple different places to confirm clearing site storage data. [CHAR-LIMIT=24]">
+        Also clear data from these sites?
+      </message>
+      <message name="IDS_IMPORTANT_SITES_TITLE_WITH_APP" desc="Title of clear storage dialogs used in a couple different places to confirm clearing site storage data (when there are also apps involved). [CHAR-LIMIT=24]">
+        Also clear data from these sites &amp; apps?
+      </message>
       <message name="IDS_CLEAR_BROWSING_DATA_IMPORTANT_DIALOG_TEXT" desc="The text of the dialog presenting the user with 'important' sites that they can exclude from clearing.">
-        This will clear data for all sites, including:
+        These sites seem important to you:
+      </message>
+      <message name="IDS_CLEAR_BROWSING_DATA_IMPORTANT_DIALOG_TEXT_WITH_APP" desc="The text of the dialog presenting the user with 'important' sites that they can exclude from clearing, and a site on the list is related to an installed app.">
+        These sites and apps seem important to you:
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_IMPORTANT_DIALOG_BUTTON" desc="The text of the button to perform the clear action in the dialog presenting the user with 'important' sites that they can exclude from clearing.">
         Clear
@@ -817,341 +852,6 @@ Your Brave account may have other forms of browsing history like searches and ac
         Captions
       </message>
 
-      <!-- Site settings -->
-      <message name="IDS_PREFS_SITE_SETTINGS" desc="Title of the Website Settings screen. [CHAR-LIMIT=32]">
-        Site settings
-      </message>
-      <message name="IDS_ALL_SITES" desc="Title of the &quot;All sites&quot; settings screen that allows the user to see permissions for all websites. [CHAR-LIMIT=32]">
-        All sites
-      </message>
-      <message name="IDS_INTRUSIVE_ADS_INFORMATION" desc="The extra information at the top of the Site Details page when the site tends to show intrusive ads">
-        This site shows intrusive or misleading ads
-      </message>
-      <message name="IDS_ADS_PERMISSION_TITLE" desc="Title for the ads permission [CHAR-LIMIT=32]">
-         Ads
-      </message>
-      <message name="IDS_AR_PERMISSION_TITLE" desc="Title of the permission to use Augmented Reality [CHAR-LIMIT=32]">
-        Augmented reality
-      </message>
-      <message name="IDS_COOKIES_TITLE" desc="Title for the Cookies settings screen [CHAR-LIMIT=32]">
-        Cookies
-      </message>
-      <message name="IDS_BLOCK_THIRD_PARTY_COOKIES_TITLE" desc="Title for Block Third Party Cookies preference">
-        Block third-party cookies
-      </message>
-      <message name="IDS_BLOCK_THIRD_PARTY_COOKIES_SUMMARY" desc="Summary text for Block Third Party Cookies preference">
-        Prevent third-party websites from saving and reading cookie data
-      </message>
-      <message name="IDS_JAVASCRIPT_PERMISSION_TITLE" desc="Title of the permission to run javascript [CHAR-LIMIT=32]">
-        JavaScript
-      </message>
-      <message name="IDS_POPUP_PERMISSION_TITLE" desc="Title of the permission to display pop-up windows and redirects [CHAR-LIMIT=32]">
-        Pop-ups and redirects
-      </message>
-      <message name="IDS_NFC_PERMISSION_TITLE" desc="Title of the permission to use NFC [CHAR-LIMIT=32]">
-        NFC devices
-      </message>
-      <message name="IDS_PUSH_NOTIFICATIONS_PERMISSION_TITLE" desc="Title for the permission for showing push notifications [CHAR-LIMIT=32]">
-        Notifications
-      </message>
-      <message name="IDS_SENSORS_PERMISSION_TITLE" desc="Title of the permission to use device's sensors [CHAR-LIMIT=32]">
-        Motion or light sensors
-      </message>
-      <message name="IDS_MOTION_SENSORS_PERMISSION_TITLE" desc="Title of the permission to use device's motion sensors (accelerometer, gyroscope, magnetometer) [CHAR-LIMIT=32]">
-        Motion sensors
-      </message>
-      <message name="IDS_SOUND_PERMISSION_TITLE" desc="Title of the permission to play sound [CHAR-LIMIT=32]">
-        Sound
-      </message>
-      <message name="IDS_CLIPBOARD_PERMISSION_TITLE" desc="Title of the permission to read from clipboard [CHAR-LIMIT=32]">
-        Clipboard
-      </message>
-      <message name="IDS_VR_PERMISSION_TITLE" desc="Title of the permission to use Virtual Reality [CHAR-LIMIT=32]">
-        Virtual reality
-      </message>
-      <message name="IDS_ENABLE_NOTIFICATIONS_VIBRATE_TITLE" desc="Title for the preference to enable vibration for notifications">
-        Vibrate
-      </message>
-      <message name="IDS_ENABLE_NOTIFICATIONS_VIBRATE_SUMMARY" desc="Summary for the preference to enable vibration for notifications">
-        Notifications may vibrate the device
-      </message>
-      <message name="IDS_MIDI_SYSEX_PERMISSION_TITLE" desc="Title of the permission that allows a website to get full control of MIDI devices [CHAR-LIMIT=32]">
-        Allow full control of MIDI devices
-      </message>
-      <message name="IDS_BACKGROUND_SYNC_PERMISSION_TITLE" desc="Title of the permission that allows websites to queue an operation for the next time the device is online[CHAR-LIMIT=32]">
-        Background sync
-      </message>
-      <message name="IDS_AUTOMATIC_DOWNLOADS_PERMISSION_TITLE" desc="Title of the permission that allows websites to download multiple files automatically.">
-        Automatic downloads
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE" desc="The label for the button to add a new website to the exception list.">
-        Add site exception
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DIALOG_TITLE" desc="The title of the dialog to add a website to a list.">
-        Add site
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_ADD_BUTTON" desc="The label for the button to add a website to a list.">
-        Add
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_TOAST" desc="The toast shown when a new site has been added to the whitelist.">
-        Site <ph name="SITE_NAME">%1$s<ex>google.com</ex></ph> added
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_JAVASCRIPT_ALLOW" desc="The description for the allow Javascript for website dialog.">
-        Allow JavaScript for a specific site.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_JAVASCRIPT_BLOCK" desc="The description for the block Javascript for website dialog.">
-        Block JavaScript for a specific site.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_BACKGROUND_SYNC" desc="The description for the allow Background Sync for website dialog.">
-        Allow Background Sync for a specific site.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_AUTOMATIC_DOWNLOADS" desc="The description for the allow Automatic Downloads for website dialog.">
-        Allow a site to download multiple files automatically.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_COOKIES_ALLOW" desc="The description for the allow Cookies for website dialog.">
-        Allow cookies for a specific site.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_COOKIES_BLOCK" desc="The description for the block Cookies for website dialog.">
-       Block cookies for a specific site.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_THIRD_PARTY_COOKIES_EXCEPTION_LABEL" desc="The label for site exceptions that affect third party cookies.">
-       All cookies, on this site only
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_SOUND_ALLOW" desc="The description for the allow sound for website dialog.">
-        Allow sound for a specific site.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_DESCRIPTION_SOUND_BLOCK" desc="The description for the mute sound for website dialog.">
-        Mute sound for a specific site.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_COOKIE_INFO" desc="Text describing cookie and third-party cookie settings.">
-        Cookies are files created by websites you visit. Sites use them to remember your preferences. Third-party cookies are created by other sites. These sites own some of the content, like ads or images, that you see on the webpage you visit.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ADD_SITE_SITE_URL" desc="The label for the input field where the user can type a website URL.">
-        Site URL
-      </message>
-      <message name="IDS_EXAMPLE_URL" desc="The hint for a website url field, showing an example url.">
-        www.example.com
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_SITE_CATEGORY" desc="The headline above the website name on the website details page.">
-        Site
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_USAGE_CATEGORY" desc="The headline above the usage stats (how much storage the site is using) on the website details page.">
-        Usage
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_CATEGORY" desc="The headline above all the permissions on the website details page.">
-        Permissions
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_ALLOWED" desc="Summary text explaining that a permission is allowed, e.g. JavaScript: allowed.">
-        Allowed
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_BLOCKED" desc="Summary text explaining that a permission is blocked, e.g. JavaScript: blocked.">
-        Blocked
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_ALLOWED_EXCEPT_THIRD_PARTY" desc="Summary text for when only third-party cookies are blocked.">
-        Allowed, except third-party
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_ASK" desc="Summary text explaining that Brave will ask the user before allowing a site to use a certain permission, e.g. JavaScript: ask first.">
-        Ask first
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_BLOCKED_GROUP_HEADING" desc="The heading for a list of websites that have been blocked from using a particular permission, e.g. blocked from accessing the user's location.">
-        Blocked
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_BLOCKED_GROUP_HEADING_SOUND" desc="The heading for a list of websites that have been muted.">
-        Muted
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_MANAGED_GROUP_HEADING" desc="The heading for a list of websites that are managed by an external app.">
-        Managed by app
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_ALLOWED_GROUP_HEADING" desc="The heading for a list of websites that have been allowed to use a particular permission, e.g. allowed to access a user's location.">
-        Allowed
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_EXCEPTIONS_GROUP_HEADING" desc="The heading for a list of websites that have been granted an exception to access a particular permission, e.g. to access the user's location.">
-        Exceptions
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_ALLOWED_RECOMMENDED" desc="Summary text explaining that a permission is allowed, which is the recommended setting.">
-        Allowed (recommended)
-      </message>
-
-      <!-- Cookie settings strings. -->
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_ALLOWED" desc="Summary text explaining that sites are allowed to use cookies and that it is the recommended setting.">
-        Allow sites to save and read cookie data (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_ALLOW_TITLE" desc="Text used to explain the allow cookies option in settings">
-        Allow cookies
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_INCOGNITO_TITLE" desc="Text used to explain the block third-party cookies in private option in settings">
-        Block third-party cookies in Private
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_TITLE" desc="Text used to explain the block third-party cookies option in settings">
-        Block third-party cookies
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_TITLE" desc="Text used to explain the block cookies option in settings">
-        Block all cookies (not recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_ALLOW_ADDITION" desc="Additional text used to explain the allow cookies option in settings">
-        Sites will work normally
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_THIRD_PARTY_ADDITION" desc="Additional text used to explain the block third-party cookies option in settings">
-        Features on some sites may break
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_COOKIE_BLOCK_ADDITION" desc="Additional text used to explain the block cookies option in settings">
-        Features on many sites may break
-      </message>
-
-
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_JAVASCRIPT_ALLOWED" desc="Summary text explaining that sites are allowed to run Javascript and that it is the recommended setting.">
-        Allow sites to run JavaScript (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_CLIPBOARD_ASK" desc="Summary text explaining that sites need to ask for permission before reading from the clipboard and that it is the recommended setting.">
-        Ask before allowing sites to read text and images from the clipboard (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_CLIPBOARD_BLOCKED" desc="Summary text explaining that sites are currently blocked from reading from the clipboard.">
-        Block sites from reading text and images from the clipboard
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_CLIPBOARD_BLOCKED_LIST" desc="Summary text explaining that the clipboard permission is set to block read access on some sites. To be shown in the list of permission categories.">
-        Blocked from reading clipboard
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PROTECTED_CONTENT_ALLOWED_RECOMMENDED" desc="Summary text explaining that sites are allowed to play protected content and that it is the recommended setting.">
-        Allow sites to play protected content (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PROTECTED_CONTENT_ALLOWED" desc="Summary text explaining that sites are allowed to play protected content.">
-        Allow sites to play protected content
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PROTECTED_CONTENT_ASK_RECOMMENDED" desc="Summary text explaining that sites need to ask for permission before playing protected content and that it is the recommended setting.">
-        Ask before allowing sites to play protected content (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PROTECTED_CONTENT_ASK" desc="Summary text explaining that sites need to ask for permission before playing protected content.">
-        Ask before allowing sites to play protected content
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_PROTECTED_CONTENT_BLOCKED" desc="Summary text explaining that sites are blocked from playing protected content.">
-        Block sites from playing protected content
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AR_ASK" desc="Summary text explaining that sites need to ask for permission before using AR and that it is the recommended setting.">
-        Ask before allowing sites to create a 3D map of your surroundings or track camera position (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_AR_BLOCKED" desc="Summary text explaining that sites are blocked from using AR.">
-        Block sites from creating a 3D map of your surroundings or tracking camera position
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NFC_ASK" desc="Summary text explaining that sites need to ask for permission before using NFC and that it is the recommended setting.">
-        Ask before allowing sites to send and receive info when you tap NFC devices (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NFC_BLOCKED" desc="Summary text explaining that sites are blocked from using NFC.">
-        Block sites from sending and receiving info when you tap NFC devices
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_VR_ASK" desc="Summary text explaining that sites need to ask for permission before using VR and that it is the recommended setting.">
-        Ask before allowing sites to use your virtual reality device and data (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_VR_BLOCKED" desc="Summary text explaining that sites are blocked from using VR.">
-        Block sites from using your virtual reality device and data
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_SENSORS_ALLOWED" desc="Summary text explaining that sites are allowed to use device's sensors and that it is the recommended setting.">
-        Allow sites to access sensors (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_MOTION_SENSORS_ALLOWED" desc="Label text shown in settings; explaining that the current toggle state will allow websites to access the device's motion sensors (accelerometer, gyroscope, magnetometer).">
-        Allow sites to access motion sensors (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_SENSORS_BLOCKED" desc="Summary text explaining that access to sensors is being blocked on some sites.">
-        Block sites from accessing sensors
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_MOTION_SENSORS_BLOCKED" desc="Label text shown in settings; explaining that the current toggle state will prevent websites from accessing the device's motion sensors (accelerometer, gyroscope, magnetometer).">
-        Block sites from accessing motion sensors
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_SOUND_ALLOWED" desc="Summary text explaining that sites are allowed to play sound and that it is the recommended setting.">
-        Allow sites to play sound (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_SOUND_BLOCKED" desc="Summary text explaining that sound is being muted on some sites.">
-        Mute sites that play sound
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_SOUND_BLOCKED_LIST" desc="Summary text explaining that the sound permission is set to mute sound on some sites. To be shown in the list of permission categories.">
-        Muted
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_USB_ASK" desc="Summary text explaining that the USB permission is set to ask the user for permission to access individual devices. To be shown in the list of permission categories.">
-        Ask before allowing sites to connect to a device (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_USB_BLOCKED" desc="Summary text explaining that the USB permission is set to block all requests for access to devices. To be shown in the list of permission categories.">
-        Block sites from connecting to devices
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_POPUPS_REDIRECTS_BLOCKED" desc="Summary text explaining that sites are blocked from showing popups/redirects and that it is the recommended setting.">
-        Block sites from showing pop-ups and redirects (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_ADS_BLOCKED" desc="A setting that, if turned on, will block intrusive or misleading ads on sites that have a history of showing such ads.">
-        Block ads on sites that show intrusive or misleading ads
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_ADS_BLOCKED_LIST" desc="Summary text explaining that the Ads permission is set to block ads on some sites. To be shown in the list of permission categories.">
-        Blocked on some sites
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_ADS_BLOCK" desc="The Blocked string for the ads permission on Site Details">
-         Block if site shows intrusive or misleading ads (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_LOCATION_ASK" desc="Summary text explaining that sites need to ask for permission before knowing location and that it is the recommended setting.">
-        Ask before allowing sites to know your location (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_ASK" desc="Summary text explaining that sites need to ask for permission before sending notifications.">
-        Sites can ask to send notifications
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_BLOCK" desc="Summary text explaining that sites will not be able to send notifications.">
-        Sites can't ask to send notifications
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_NOTIFICATIONS_QUIET" desc="A setting that, if turned on will enable a quieter permission prompt for notifications.">
-        Use quieter messaging (blocks notification prompts from interrupting you)
-      </message>
-      <message name="IDS_NOTIFICATIONS_IPH" desc="A message that explains to the users that notification permission requests will appear as an infobar from now on because the user repeatedly denied the notification permission in the past.">
-        You usually block notifications. To allow, tap Details.
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_CAMERA_ASK" desc="Summary text explaining that sites need to ask for permission before accessing the camera and that it is the recommended setting.">
-        Ask first before allowing sites to use your camera (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_MIC_ASK" desc="Summary text explaining that sites need to ask for permission before accessing the microphone and that it is the recommended setting.">
-        Ask first before allowing sites to use your microphone (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_CATEGORY_BLUETOOTH_SCANNING_ASK" desc="Summary text explaining that the Bluetooth scanning permission is set to ask the user for permission to do Bluetooth scanning. To be shown in the list of permission categories.">
-        Ask when a site wants to discover nearby Bluetooth devices (recommended)
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_ALLOW" desc="Summary text explaining that Brave will allow a website to access some permission, e.g. JavaScript: allow.">
-        Allow
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_BLOCK" desc="Summary text explaining that Brave will block a website from accessing some permission, e.g. JavaScript: block.">
-        Block
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_ALLOW_DSE" desc="Summary text explaining that Brave will allow the default search engine to access the user's location, both when performed from the address bar and from search result pages. e.g. Location access: Allow for current search engine">
-        Allow for current search engine
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_PERMISSIONS_BLOCK_DSE" desc="Summary text explaining that Brave will block the default search engine from accessing the user's location, both when performed from the address bar and from search result pages. e.g. Location access: Block for current search engine">
-        Block for current search engine
-      </message>
-      <message name="IDS_WEBSITE_RESET" desc="The label for the button allowing users to clear all data and reset the permissions for a website.">
-        Clear &amp; reset
-      </message>
-      <message name="IDS_WEBSITE_RESET_CONFIRMATION" desc="The confirmation text asking if the user is sure about clearing all data and reset the permissions for a site.">
-        Are you sure you want to clear all local data, including cookies, and reset all permissions for this website?
-      </message>
-      <message name="IDS_CHOSEN_OBJECT_WEBSITE_RESET_CONFIRMATION_FOR" desc="The confirmation asking if the user is sure about clearing all site permissions for the chosen object">
-        Are you sure you want to reset all site permissions for <ph name="CHOSEN_OBJECT_NAME">%1$s<ex>Weblight</ex></ph>?
-      </message>
-      <message name="IDS_WEBSTORAGE_CLEAR_DATA_DIALOG_TITLE" desc="Title of the confirmation dialog when the user ask to clear all data for an origin">
-        Clear stored data
-      </message>
-      <message name="IDS_WEBSTORAGE_CLEAR_DATA_DIALOG_MESSAGE" desc="Text of the confirmation dialog when the user ask to clear all data for an origin">
-        All local data stored by this website, including cookies, will be deleted.
-      </message>
-      <message name="IDS_WEBSTORAGE_CLEAR_DATA_DIALOG_OK_BUTTON" desc="Button confirming site data cleanup [CHAR-LIMIT=20]">
-        Clear all
-      </message>
-      <message name="IDS_WEBSITE_NOTIFICATION_MANAGED_BY_APP" desc="String used to indicate that notifications are managed by an installed app">
-        Managed by <ph name="APP_NAME">%1$s<ex>Notification App Name</ex></ph>
-      </message>
-      <message name="IDS_WEBSITE_NOTIFICATION_SETTINGS" desc="Accessibility string for the notification settings">
-        Open notification settings
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_EMBEDDED_ON" desc="String used to indicate the embedder origin of a site">
-        Embedded on <ph name="WEBSITE_URL">%1$s<ex>google.com</ex></ph>
-      </message>
-
-      <!-- Single site settings -->
-      <message name="IDS_NO_SAVED_WEBSITE_SETTINGS" desc="Text to display when there are no saved website settings.">
-        Files saved by websites appear here
-      </message>
-
       <!-- Language Settings -->
       <message name="IDS_LANGUAGE_SETTINGS" desc="Title for the Languages settings screen that allows users to manage their languages preferences. [CHAR-LIMIT=32]">
         Languages
@@ -1170,81 +870,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_LANGUAGES_EXPLICIT_ASK_TITLE" desc="Title of the dialog that explicitly asks the user which languages they can read.">
         What languages do you read?
-      </message>
-
-      <!-- Location preferences -->
-      <message name="IDS_WEBSITE_SETTINGS_DEVICE_LOCATION" desc="Title for Location settings, which control which websites can access your location." meaning="Geolocation">
-        Location
-      </message>
-      <message name="IDS_GEOLOCATION_PERMISSION_TITLE" desc="Title for the permission of accessing the current location of a device [CHAR-LIMIT=32]">
-        Location access
-      </message>
-      <message name="IDS_ANDROID_PERMISSION_OFF_PLURAL" desc="Text at the top of the Website list, explaining to the user that multiple permissions, such as the location service, are turned off. Contains a link to the settings menu to change it.">
-        Turn on permissions for Brave in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_ANDROID_PERMISSION_OFF" desc="Text at the top of the Website list, explaining to the user that a permission, such as the location service, is turned off. Contains a link to the settings menu to change it.">
-        Turn on permission for Brave in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_ANDROID_LOCATION_PERMISSION_OFF" desc="The message to show when the location permission needs to be turned on not just in Brave, but also in Android settings.">
-        To let Brave access your location, also turn on location in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_ANDROID_CAMERA_PERMISSION_OFF" desc="The message to show when the camera permission needs to be turned on not just in Brave, but also in Android settings.">
-        To let Brave access your camera, also turn on camera in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_ANDROID_NOTIFICATIONS_PERMISSION_OFF" desc="The message to show when the notifications permission needs to be turned on not just in Brave, but also in Android settings.">
-        To let Brave send you notifications, also turn on notifications in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_ANDROID_MICROPHONE_PERMISSION_OFF" desc="The message to show when the microphone permission needs to be turned on not just in Brave, but also in Android settings.">
-        To let Brave access your microphone, also turn on microphone in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_ANDROID_LOCATION_OFF_GLOBALLY" desc="The message to show when Location has been turned off globally in Android. Contains a link to the settings menu to enable location.">
-        Location access is off for this device. Turn it on in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_ANDROID_LOCATION_ALSO_OFF_GLOBALLY" desc="The additional message to show when Location has not just been turned off for Brave but also globally in Android. Contains a link to the settings menu to enable location.">
-        Location access is also off for this device. Turn it on in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-
-      <!-- Camera and microphone preferences -->
-      <message name="IDS_WEBSITE_SETTINGS_USE_CAMERA" desc="The category filter 'Camera' for site settings.">
-        Camera
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_USE_MIC" desc="The category filter 'Mic' for site settings.">
-        Microphone
-      </message>
-      <message name="IDS_CAMERA_PERMISSION_TITLE" desc="Title text to be shown when the user has allowed/denied video access for the website [CHAR-LIMIT=32]">
-        Access your camera
-      </message>
-      <message name="IDS_MIC_PERMISSION_TITLE" desc="Title text to be shown when the user has allowed/denied voice access for the website [CHAR-LIMIT=32]">
-        Access your microphone
-      </message>
-
-      <!-- Protected content preferences -->
-      <message name="IDS_PROTECTED_CONTENT" desc="Title for link to protected content settings [CHAR-LIMIT=32]">
-        Protected content
-      </message>
-
-      <!-- Storage preferences -->
-      <message name="IDS_WEBSITE_SETTINGS_STORAGE" desc="Title for Storage settings which show how much data websites are storing on the user's device. [CHAR-LIMIT=32]">
-        Storage
-      </message>
-      <message name="IDS_ORIGIN_SETTINGS_STORAGE_USAGE_BRIEF" desc="Explanation of how much local storage a website is using">
-        <ph name="STORAGE_AMOUNT">%1$s<ex>2 MB</ex></ph> stored data
-      </message>
-
-      <!-- USB preferences -->
-      <message name="IDS_WEBSITE_SETTINGS_USB" desc="Title for USB settings, which control which of the user's USB devices can be accessed from websites.">
-        USB
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_REVOKE_DEVICE_PERMISSION" desc="Content description for revoking a website's permission to access a device.">
-        Revoke device permission
-      </message>
-      <message name="IDS_WEBSITE_SETTINGS_REVOKE_ALL_PERMISSIONS_FOR_DEVICE" desc="Content description for revoking all of the website permissions for a device.">
-        Revoke all permissions for device
-      </message>
-
-      <!-- Bluetooth scanning preferences -->
-      <message name="IDS_WEBSITE_SETTINGS_BLUETOOTH_SCANNING" desc="Title for Bluetooth scanning settings, which control whether websites can do Bluetooth scanning.">
-        Bluetooth scanning
       </message>
 
       <!-- Lite Mode-->
@@ -2187,36 +1812,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Page info popup -->
-      <message name="IDS_PAGE_INFO_SITE_SETTINGS_BUTTON" desc="Text in the button that opens a website's Site Settings from the Page Info dialog.">
-        Site settings
-      </message>
-      <message name="IDS_PAGE_INFO_PERMISSIONS_TITLE" desc="Label used in the Page Info dialog above the permissions list.">
-        Permissions
-      </message>
-      <message name="IDS_PAGE_INFO_INSTANT_APP_BUTTON" desc="Text in the button that opens an Android Instant app that is associated with the website's URL.">
-        Open Instant App
-      </message>
-      <message name="IDS_PAGE_INFO_DSE_PERMISSION_ALLOWED" desc="The label used in the Page Info dialog to describe an allowed location permission for the current search engine. Eg: Location - Allowed for current search engine">
-        Allowed for current search engine
-      </message>
-      <message name="IDS_PAGE_INFO_DSE_PERMISSION_BLOCKED" desc="The label used in the Page Info dialog to describe a blocked location permission for the current search engine. Eg: Location - Blocked for current search engine">
-        Blocked for current search engine
-      </message>
-      <message name="IDS_PAGE_INFO_PERMISSION_ALLOWED" desc="The label used in the Page Info dialog to describe an allowed permission. Eg: Location - Allowed">
-        Allowed
-      </message>
-      <message name="IDS_PAGE_INFO_PERMISSION_BLOCKED" desc="The label used in the Page Info dialog to describe a blocked permission. Eg: Location - Blocked">
-        Blocked
-      </message>
-      <message name="IDS_PAGE_INFO_ANDROID_PERMISSION_BLOCKED" desc="The label used in the Page Info dialog to indicate a permission has been blocked within Android settings">
-        Turned off in Android settings
-      </message>
-      <message name="IDS_PAGE_INFO_ANDROID_LOCATION_BLOCKED" desc="The label used in the Page Info dialog to indicate that location has been been disabled for the device in Android settings">
-        Turned off for this device
-      </message>
-      <message name="IDS_PAGE_INFO_ANDROID_NFC_UNSUPPORTED" desc="The label used in the Page Info dialog to indicate NFC is not supported by this device">
-        This device can't read NFC
-      </message>
       <message name="IDS_PAGE_INFO_CONNECTION_OFFLINE" desc="Message to display in the page info bubble when viewing and offline page.">
         You are viewing an offline copy of this page from <ph name="CREATION_TIME">%1$s<ex>Feb 9, 2016</ex></ph>
       </message>
@@ -2225,15 +1820,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PAGE_INFO_OFFLINE_PAGE_NOT_TRUSTED_WITHOUT_DATE" desc="Additional message to be shown in the page info bubble, when the offline page shown is not trusted. The offline page creation date will not be displayed.">
         This page may differ from the online version.
-      </message>
-      <message name="IDS_PAGE_INFO_DOMAIN_HIDDEN" desc="Message to display in the page info bubble when the domain is hidden.">
-        This content is from <ph name="DOMAIN_NAME">%1$s<ex>google.com</ex></ph>, delivered by Brave.
-      </message>
-      <message name="IDS_PAGE_INFO_OPEN_ONLINE_BUTTON" desc="Text in the button that attempts to open an online version of the offline website displayed in the tab.">
-        Open Online
-      </message>
-      <message name="IDS_PAGE_INFO_PREVIEW_MESSAGE" desc="This text is displayed in the page info bubble when the currently viewed page has been modified by Brave to be a lighter and faster version of the original page. The word 'Lite' should match the translation in TC ID 1019734090540434451">
-        Lite page provided by Brave
       </message>
       <message name="IDS_PAGE_INFO_PREVIEW_LOAD_ORIGINAL" desc="This text, when clicked, loads the original page from its origin without any treatments. This text is shown in the page info bubble when the currently viewed page has been modified to be a lighter and faster version of the original page.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Load original page<ph name="END_LINK">&lt;/link&gt;</ph> from <ph name="DOMAIN_NAME">%1$s<ex>google.com</ex></ph>
@@ -2264,20 +1850,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Download UI -->
-      <message name="IDS_DOWNLOAD_NOTIFICATION_CANCEL_BUTTON" desc="Text on the button that cancels a download.">
-        Cancel
-      </message>
       <message name="IDS_DOWNLOAD_NOTIFICATION_COMPLETED" desc="Download notification to be displayed when a download completes.">
         Download complete
-      </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_COMPLETED_WITH_SIZE" desc="Download notification to be displayed when a download completes, includes the size of the download as well after a separator character.">
-        Download complete <ph name="SEPARATOR">•</ph> <ph name="BYTES_DOWNLOADED">%1$s<ex>4.3 MB</ex></ph>
-      </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_FAILED" desc="Download notification to be displayed when a download fails.">
-        Download failed
-      </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_PAUSED" desc="Download notification to be displayed when a download pauses.">
-        Download paused
       </message>
       <message name="IDS_DOWNLOAD_NOTIFICATION_PENDING" desc="Download notification to be displayed when a download has been scheduled but has not started being fetched from the network.">
         Download pending…
@@ -2293,12 +1867,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DOWNLOAD_CANT_OPEN_FILE" desc="Toast that appears when a downloaded file can't be opened.">
         Can’t open file
-      </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_PAUSE_BUTTON" desc="Text on the button that pauses a download.">
-        Pause
-      </message>
-      <message name="IDS_DOWNLOAD_NOTIFICATION_RESUME_BUTTON" desc="Text on the button that resumes a paused download.">
-        Resume
       </message>
       <message name="IDS_DOWNLOAD_FAILED_REASON_FILE_ALREADY_EXISTS" desc="Message to explain that the download failed because file already exists.">
         <ph name="FILE_NAME">%1$s<ex>http://abc.com/test.pdf</ex></ph> download prevented because file already exists.
@@ -2323,30 +1891,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DOWNLOAD_STARTED" desc="Message to show when download has started [CHAR LIMIT=30]">
         Downloading…
-      </message>
-      <message name="IDS_DOWNLOAD_UI_KB" desc="String indicating the size of a downloaded file (in progress or complete), in kilobytes.">
-        <ph name="kilobytes">%1$3.2f<ex>12.5</ex></ph> KB
-      </message>
-      <message name="IDS_DOWNLOAD_UI_MB" desc="String indicating the size of a downloaded file (in progress or complete), in megabytes.">
-        <ph name="megabytes">%1$3.2f<ex>12.5</ex></ph> MB
-      </message>
-      <message name="IDS_DOWNLOAD_UI_GB" desc="String indicating the size of a downloaded file (in progress or complete), in gigabytes.">
-        <ph name="gigabytes">%1$3.2f<ex>12.5</ex></ph> GB
-      </message>
-      <message name="IDS_DOWNLOAD_UI_INDETERMINATE_BYTES" desc="Appears in a notification when a user starts downloading a file. Indicates the number of bytes downloaded out of an unknown total file size. E.g. 3/? MB [downloaded]. As appropriate for your language, use '/' or 'of'; and change word order as needed.">
-        <ph name="BYTES_DOWNLOADED_WITH_UNITS">%1$s<ex>12.2 MB</ex></ph> / ?
-      </message>
-      <message name="IDS_DOWNLOAD_UI_DETERMINATE_BYTES" desc="Appears in a notification when a user starts downloading a file. Indicates the number of bytes downloaded out of the total file size. E.g. 3/7 MB [downloaded]. As appropriate for your language, use '/' or 'of'; and change word order as needed.">
-        <ph name="BYTES_DOWNLOADED_WITH_UNITS">%1$s<ex>12.2 MB</ex></ph> / <ph name="FILE_SIZE_WITH_UNITS">%2$s<ex>20.3 GB</ex></ph>
-      </message>
-      <message name="IDS_FILE_SIZE_DOWNLOADED_KB" desc="Notification message showing how many KBs have been downloaded.">
-        Downloaded <ph name="KBS">%1$.1f<ex>10.1</ex></ph> KB
-      </message>
-      <message name="IDS_FILE_SIZE_DOWNLOADED_MB" desc="Notification message showing how many MBs have been downloaded.">
-        Downloaded <ph name="MBS">%1$.1f<ex>10.1</ex></ph> MB
-      </message>
-      <message name="IDS_FILE_SIZE_DOWNLOADED_GB" desc="Notification message showing how many GBs have been downloaded.">
-        Downloaded <ph name="GBS">%1$.1f<ex>10.1</ex></ph> GB
       </message>
       <message name="IDS_ONE_FILE_LEFT" desc="Message showing 1 file left">
         1 file left
@@ -2652,9 +2196,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_PAUSE" desc="The pause button that pauses playing the media.">
         Pause
       </message>
-      <message name="IDS_ACCESSIBILITY_STOP" desc="The stop button that stops playing the media.">
-        Stop
-      </message>
       <message name="IDS_ACCESSIBILITY_PREVIOUS_TRACK" desc="The previous track button that switches media to the previous track.">
         Previous track
       </message>
@@ -2732,9 +2273,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_NTP_OFFLINE_BADGE" desc="Content description for the badge that indicates offline availability of a most visited item or content suggestion on the new tab page.">
         Available offline
       </message>
-      <message name="IDS_ACCESSIBILITY_SUGGESTION_WITH_VIDEO_BADGE" desc="Content description for the badge that indicates a content suggestion on the new tab page has a video.">
-        With video
-      </message>
       <message name="IDS_NTP_LEARN_MORE_ABOUT_SUGGESTED_CONTENT" desc="Text in the footer of the New Tab Page. Part of the text is a link to a help center page where the user can learn more about suggested content.">
         <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph> about suggested content
       </message>
@@ -2743,6 +2281,39 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_NTP_SUGGESTIONS_FETCH_NO_NEW_SUGGESTIONS" desc="Snackbar text shown when the user presses the More button to get more suggestions, the fetch succeeds but provides no new suggestions.">
         No new suggestions
+      </message>
+      <message name="IDS_NTP_MANAGE_MY_ACTIVITY" desc="Content description to manage my activity from the feed header overflow menu.">
+        Manage activity
+      </message>
+      <message name="IDS_NTP_MANAGE_INTERESTS" desc="Content description to manage settings from the feed header overflow menu.">
+        Manage interests
+      </message>
+      <message name="IDS_NTP_TURN_OFF_FEED" desc="Content description to turn off the feed from the feed header overflow menu.">
+        Turn off
+      </message>
+      <message name="IDS_NTP_TURN_ON_FEED" desc="Content description to turn on the feed from the feed header overflow menu.">
+        Turn on
+      </message>
+      <message name="IDS_NTP_DISCOVER_ON" desc="Title in the feed header when the feed is turned on. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+        Discover
+      </message>
+      <message name="IDS_NTP_DISCOVER_ON_BRANDED" desc="Title in the feed header when the feed is turned on and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+        Discover by Brave
+      </message>
+      <message name="IDS_NTP_DISCOVER_OFF" desc="Title in the feed header when the feed is turned off. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+        Discover - off
+      </message>
+      <message name="IDS_NTP_DISCOVER_OFF_BRANDED" desc="Title in the feed header when the feed is turned off and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+        Discover by Brave - off
+      </message>
+      <message name="IDS_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
+        Control your stories and activity here
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_BUTTON" desc="Content description for the feed header menu button. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+        Options for Discover
+      </message>
+      <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
+        Control your stories from the Options for Discover button
       </message>
 
       <!-- Explore sites strings -->
@@ -3178,31 +2749,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Tap to collapse
       </message>
 
-      <message name="IDS_ANNOUNCEMENT_NOTIFICATION_CHANNEL_NAME" desc="The channel name for announcement notification, will show on the Android notification setting UI as a channel category.">
-        Announcements
-      </message>
-
       <message name="IDS_TAB_SWITCHER_BUTTON_LABEL" desc="Label for tab switcher button">
         Tabs
       </message>
 
-      <message name="IDS_MEDIA_NOTIFICATION_LINK_TEXT" desc="Url of the current tab. The notification will display this text for the user to identify the tab to return to.">
-        Touch to return to <ph name="URL_OF_THE_CURRENT_TAB">%1$s<ex>https://apprtc.appspot.com</ex></ph>
-      </message>
-      <message name="IDS_MEDIA_NOTIFICATION_LINK_TEXT_INCOGNITO" desc="The notification will display this text for the user to return to the private tab which has created the notification.">
-        Tap to go to site
-      </message>
-      <message name="IDS_MEDIA_NOTIFICATION_INCOGNITO" desc="Text used as a placeholder for media notifications content, when notification is shown from private tab.">
+      <message name="IDS_MEDIA_NOTIFICATION_INCOGNITO" desc="Text used as a placeholder for a media notification about playing media, when notification is shown from private tab.">
         A site is playing media
-      </message>
-      <message name="IDS_NOTIFICATION_INCOGNITO_TAB" desc="Text used as notifications source when the notification is from private tabs.">
-        Private tab
-      </message>
-      <message name="IDS_SCREEN_CAPTURE_NOTIFICATION_TEXT" desc="Text to be shown as a notification when screen capture is in progress.">
-        <ph name="URL_OF_THE_CURRENT_TAB">%1$s<ex>https://apprtc.appspot.com</ex></ph> is sharing your screen
-      </message>
-      <message name="IDS_SCREEN_CAPTURE_INCOGNITO_NOTIFICATION_TEXT" desc="Text to be shown as a notification when screen capture is in progress in private mode.">
-        A site is sharing your screen
       </message>
 
       <!-- Contextual Search -->
@@ -3286,14 +2838,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Unsupported number of Brave instances.
       </message>
 
-      <!-- Override URL -->
-      <message name="IDS_BLOCKED_NAVIGATION_WARNING" desc="Warning message added to dev tools console when navigation to a given URL is blocked.">
-        Navigation is blocked: <ph name="URL">%1$s<ex>intent://abcd</ex></ph>
-      </message>
-      <message name="IDS_UNREACHABLE_NAVIGATION_WARNING" desc="Warning message added to dev tools console when navigation to a given URL is unreachable.">
-        Navigation is unreachable: <ph name="URL">%1$s<ex>intent://abcd</ex></ph>
-      </message>
-
       <message name="IDS_CLOSE_TAB" desc="Context menu option that allows the user to close the selected tab.">
         Close tab
       </message>
@@ -3336,9 +2880,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_STORAGE_MANAGEMENT_ACTIVITY_LABEL" desc="Title for Brave's Manage Space Activity.">
          Brave <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> storage
       </message>
-      <message name="IDS_STORAGE_CLEAR_SITE_STORAGE_TITLE" desc="Title of clear storage dialogs used in a couple different places to confirm clearing site storage data. [CHAR-LIMIT=24]">
-        Clear site storage?
-      </message>
       <message name="IDS_STORAGE_MANAGEMENT_UNIMPORTANT_SITE_DATA_DESCRIPTION" desc="Text to describe the data stored by unimportant or infrequent sites.">
         Site storage Brave doesn't think is important (e.g. sites with no saved settings or that you don't visit often)
       </message>
@@ -3377,16 +2918,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_RESET_APP_DIALOG_TEXT" desc="Text of the reset app dialoag in the storage UI.">
         All Brave’s app data will be deleted permanently. This includes all files, settings, accounts, databases, etc.
-      </message>
-
-      <message name="IDS_STORAGE_CLEAR_BUTTON_TITLE" desc="Title of a button in the storage UI used to clear all storage data. [CHAR-LIMIT=24]">
-        Clear site storage
-      </message>
-      <message name="IDS_STORAGE_CLEAR_DIALOG_TEXT" desc="Text of the clear storage dialog which give the user a choice to reset the app or delete site storage data.">
-        This will clear all <ph name="SIZE_IN_KB">%1$s<ex>101kb</ex></ph> of website storage.
-      </message>
-      <message name="IDS_STORAGE_CLEAR_DIALOG_CLEAR_STORAGE_OPTION" desc="Text of the button that will clear website storage.">
-        Clear
       </message>
 
       <!-- Client certificate selection failure strings. -->
@@ -3455,6 +2986,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DECODER_DESCRIPTION" desc="The title for the image decoder utility service.">
         Image decoder
       </message>
+      <message name="IDS_FAST_FORWARD_HINT" desc="The hint string shown when a user drags the tumb in the video seeker (reminding them of an easier way to skip ahead/go back).">
+        Double tap video left or right to skip 10s
+      </message>
       <message name="IDS_ACCESSIBILITY_PLAY_VIDEO" desc="The accessibility string for the play video button.">
         Play video
       </message>
@@ -3502,6 +3036,18 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_TWA_RUNNING_IN_CHROME" desc="Message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
         Running in Brave
+      </message>
+      <message name="IDS_TWA_RUNNING_IN_CHROME_V2" desc="Updated message on a snackbar indicating that the current Activity may use Brave data (the rest of the app may not be).">
+        You'll see your <ph name="SITE_NAME">%1$s<ex>www.youtube.com</ex></ph> sign-in status, browsing data, and site data in Brave.
+      </message>
+      <message name="IDS_GOT_IT" desc="Button for the user to accept a disclosure/message">
+        Got it
+      </message>
+      <message name="IDS_TWA_RUNNING_IN_CHROME_CHANNEL_NAME_INITIAL" desc="Notification channel name for the initial, urgent priority notification telling the user a TWA is running in Brave.">
+        Web apps
+      </message>
+      <message name="IDS_TWA_RUNNING_IN_CHROME_CHANNEL_NAME_SUBSEQUENT" desc="Notification channel name for follow up notifications telling the user a TWA is running in Brave.">
+        Web apps (quiet)
       </message>
       <message name="IDS_TWA_CLEAR_DATA_DIALOG_TITLE" desc="Title of the clear data dialog showing after user uninstalls or clears data of an app hosting a Trusted Web Activity">
         <ph name="APP_NAME">%1$s<ex>YouTube</ex></ph> also has data in Brave
@@ -3978,6 +3524,10 @@ Only you can see what your camera is looking at. The site can't see your camera'
         Extra ICU
       </message>
 
+      <message name="IDS_CABLEV2_AUTHENTICATOR_MODULE_TITLE" desc="Text shown when the caBLEv2 module (i.e. for Phone as a Security Key) is               referenced in install start, success, and failure UI (e.g. in               IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Phone as a               Security Key Support for Brave…'). A security key is usually a physical piece of               hardware used for authentication and this feature is about using a mobile               phone in place of one.">
+        Phone as a Security Key Support
+      </message>
+
       <!-- QR Code -->
       <message name="IDS_QR_CODE_SHARE_ICON_LABEL" desc="Icon label for sharing with QR Code activity.">
         QR Code
@@ -4021,7 +3571,7 @@ Only you can see what your camera is looking at. The site can't see your camera'
       </message>
 
       <message name="IDS_QR_CODE_PERMISSION_DESCRIPTION" desc="Text on QR code sharing tab indicating that permissions need to be given.">
-        Please enable your camera to scan a QR code
+        To scan a QR code, let Brave use your camera
       </message>
 
       <message name="IDS_QR_CODE_OPEN_SETTINGS_DESCRIPTION" desc="Text on QR code sharing tab indicating that user needs to open settings to give camera permission.">
@@ -4060,6 +3610,21 @@ Only you can see what your camera is looking at. The site can't see your camera'
         chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
       </message>
 
+      <message name="IDS_QR_CODE_SUCCESSFUL_DOWNLOAD_TITLE" desc="Notification title for successful QR code download.">
+        QR code downloaded
+      </message>
+
+      <message name="IDS_QR_CODE_SUCCESSFUL_DOWNLOAD_TEXT" desc="Notification text for successful QR code download.">
+        Tap to open QR code
+      </message>
+
+      <message name="IDS_QR_CODE_FAILED_DOWNLOAD_TITLE" desc="Notification title for failed QR code download.">
+        Can't download QR code
+      </message>
+
+      <message name="IDS_QR_CODE_FAILED_DOWNLOAD_TEXT" desc="Notification text for failed QR code download.">
+        Something went wrong
+      </message>
       <!-- Chime DFM module strings -->
       <message name="IDS_CHIME_MODULE_TITLE" desc="Text shown when the chime module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Brave Notifications Platform for Brave…').">
         Brave Notifications Platform
@@ -4068,14 +3633,6 @@ Only you can see what your camera is looking at. The site can't see your camera'
       <!-- Image Editor DFM module strings -->
       <message name="IDS_IMAGE_EDITOR_MODULE_TITLE" desc="Text shown when the image editor module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Image Editor for Brave…').">
         Image Editor
-      </message>
-
-      <!-- NFC prompt -->
-      <message name="IDS_ANDROID_NFC_OFF_GLOBALLY" desc="The message to show when NFC has been turned off globally in Android. Contains a link to the settings menu to enable NFC.">
-        NFC is off for this device. Turn it on in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Android Settings<ph name="END_LINK">&lt;/link&gt;</ph>.
-      </message>
-      <message name="IDS_ANDROID_NFC_UNSUPPORTED" desc="The message to show when NFC is not supported globally in Android">
-        This device can't read NFC
       </message>
 
       <!-- Paint Preview Demo -->

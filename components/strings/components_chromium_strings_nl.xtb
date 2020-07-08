@@ -1,25 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
-<translation id="4068928808254189629">Ga naar
-          het Brave-menu &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          en verwijder het vinkje bij '<ph name="NO_PREFETCH_DESCRIPTION"/>'.
-          Als het probleem aanhoudt, adviseren we deze optie weer aan te
-          vinken voor betere prestaties.</translation>
-<translation id="2017237562285586622">Sta Brave toe via je firewall- of antivirusinstellingen het netwerk te gebruiken.</translation>
-<translation id="4010643444566880169">De eerste configuratie van Brave OS is niet voltooid.</translation>
-<translation id="8187289872471304532">Ga naar 'Applicaties &gt; Systeemvoorkeuren &gt; Netwerk &gt; Geavanceerd &gt; Proxy's' en verwijder de vinkjes bij proxyservers die zijn aangevinkt.</translation>
-<translation id="8619622797841001082">Ga naar
-          het menu 'Brave' &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          en zorg ervoor dat de configuratie is ingesteld op 'geen proxy' of 'direct'.</translation>
+<translation id="130631256467250065">Je wijzigingen worden doorgevoerd wanneer je het apparaat opnieuw opstart.</translation>
+<translation id="7999989146447764333">Crashrapportage is niet beschikbaar in Brave.</translation>
+<translation id="1953231710324290369">Je bekijkt een beveiligde Brave-pagina</translation>
+<translation id="4010643444566880169">De eerste configuratie van Chrome OS is niet voltooid.</translation>
+<translation id="7932149101545999102">Brave wordt mogelijk gemaakt door het <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> open-sourceproject en andere <ph name="BEGIN_LINK_OSS"/>open-sourcesoftware<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Ga naar
           het menu 'Brave' &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -30,11 +16,24 @@
           &gt;
           LAN-instellingen
           en verwijder het vinkje uit het selectievakje bij 'Een proxyserver voor het LAN-netwerk gebruiken'.</translation>
+<translation id="2017237562285586622">Sta Brave toe via je firewall- of antivirusinstellingen het netwerk te gebruiken.</translation>
+<translation id="8619622797841001082">Ga naar
+          het menu 'Brave' &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          en zorg ervoor dat de configuratie is ingesteld op 'geen proxy' of 'direct'.</translation>
 <translation id="9156965752763025780">Je wijzigingen worden toegepast wanneer je Brave opnieuw start.</translation>
-<translation id="130631256467250065">Je wijzigingen worden doorgevoerd wanneer je het apparaat opnieuw opstart.</translation>
-<translation id="7999989146447764333">Crashrapportage is niet beschikbaar in Brave.</translation>
-<translation id="7932149101545999102">Brave wordt mogelijk gemaakt door het <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> open-sourceproject en andere <ph name="BEGIN_LINK_OSS"/>open-sourcesoftware<ph name="END_LINK_OSS"/>.</translation>
-<translation id="1953231710324290369">Je bekijkt een beveiligde Brave-pagina</translation>
-<translation id="2305018990464327944">Brave heeft bevestigd dat <ph name="ISSUER"/> het certificaat voor deze website heeft verstrekt.</translation>
+<translation id="4068928808254189629">Ga naar
+          het Brave-menu &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          en verwijder het vinkje bij '<ph name="NO_PREFETCH_DESCRIPTION"/>'.
+          Als het probleem aanhoudt, adviseren we deze optie weer aan te
+          vinken voor betere prestaties.</translation>
+<translation id="8187289872471304532">Ga naar 'Applicaties &gt; Systeemvoorkeuren &gt; Netwerk &gt; Geavanceerd &gt; Proxy's' en verwijder de vinkjes bij proxyservers die zijn aangevinkt.</translation>
 <translation id="88187049159266777">Brave is niet goed afgesloten.</translation>
 </translationbundle>

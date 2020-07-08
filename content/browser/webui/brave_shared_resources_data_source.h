@@ -30,8 +30,6 @@ class BraveSharedResourcesDataSource : public content::URLDataSource {
   bool AllowCaching() override;
   std::string GetMimeType(const std::string& path) override;
   bool ShouldServeMimeTypeAsContentTypeHeader() override;
-  scoped_refptr<base::SingleThreadTaskRunner> TaskRunnerForRequestPath(
-      const std::string& path) override;
   std::string GetAccessControlAllowOriginForOrigin(
       const std::string& origin) override;
 

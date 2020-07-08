@@ -1,14 +1,12 @@
 diff --git a/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc b/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc
-index e4b71e783c2e46c5cff30fadc862315c952f6719..57a0d3e72e039cfa110bd6c7d7e8dd2178287d0a 100644
+index abbfe697430ca6fb4f7d67449e8828764e1b5e52..eb678770b470c4c021a6b34bec5272fde5d58e90 100644
 --- a/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc
 +++ b/third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc
-@@ -176,6 +176,9 @@ ScriptPromise NavigatorRequestMediaKeySystemAccess::requestMediaKeySystemAccess(
+@@ -174,6 +174,7 @@ ScriptPromise NavigatorRequestMediaKeySystemAccess::requestMediaKeySystemAccess(
+       controller->EncryptedMediaClient(window);
    media_client->RequestMediaKeySystemAccess(
        WebEncryptedMediaRequest(initializer));
++  BRAVE_NAVIGATOR_REQUEST_MEDIA_KEY_SYSTEM_ACCESS
  
-+  // Notify Brave about the widevine availability request.
-+  MaybeOnWidevineRequest(initializer, document->GetFrame());
-+
    // 7. Return promise.
    return promise;
- }

@@ -669,7 +669,6 @@ brave_java_resources = [
   "java/res/layout/fragment_rate_dialog.xml",
   "java/res/layout/brave_ads_new_user_dialog_layout.xml",
   "java/res/layout/brave_shields_text_item.xml",
-  "java/res/layout/new_tab_page_view.xml",
   "java/res/layout/fragment_brave_ads_onboarding.xml",
   "java/res/layout/brave_rewards_reset_tab_content.xml",
   "java/res/layout/brave_bookmark_toolbar.xml",
@@ -716,7 +715,10 @@ brave_java_resources = [
   "java/res/xml/brave_rewards_preferences.xml",
   "java/res/xml/closing_all_tabs_closes_brave_preference.xml",
   "java/res/xml/clear_browsing_data_preferences_tab.xml",
-  "java/res/xml/brave_site_settings_preferences.xml",
   "java/res/xml/brave_privacy_preferences.xml",
   "java/res/xml/appearance_preferences.xml",
+]
+
+brave_components_browser_ui_site_settings_android_java_resources = [
+  "//brave/components/browser_ui/site_settings/android/java/res/xml/brave_site_settings_preferences.xml",
 ]

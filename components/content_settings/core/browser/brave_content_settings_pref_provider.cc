@@ -50,9 +50,8 @@ Rule CloneRule(const Rule& rule, bool reverse_patterns = false) {
     }
   }
 
-  return Rule(primary_pattern,
-              secondary_pattern,
-              rule.value.Clone());
+  return Rule(primary_pattern, secondary_pattern, rule.value.Clone(),
+              rule.expiration, rule.session_model);
 }
 
 class BraveShieldsRuleIterator : public RuleIterator {
@@ -108,8 +107,9 @@ bool IsActive(const Rule& cookie_rule,
 
 BravePrefProvider::BravePrefProvider(PrefService* prefs,
                                      bool off_the_record,
-                                     bool store_last_modified)
-    : PrefProvider(prefs, off_the_record, store_last_modified),
+                                     bool store_last_modified,
+                                     bool restore_session)
+    : PrefProvider(prefs, off_the_record, store_last_modified, restore_session),
       weak_factory_(this) {
   brave_pref_change_registrar_.Init(prefs_);
   brave_pref_change_registrar_.Add(
@@ -126,7 +126,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
           info->type(),
           std::make_unique<ContentSettingsPref>(
               info->type(), prefs_, &brave_pref_change_registrar_,
-              info->pref_name(), off_the_record_,
+              info->pref_name(), off_the_record_, restore_session,
               base::Bind(&PrefProvider::Notify, base::Unretained(this)))));
       break;
     }
@@ -202,7 +202,7 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
       new_rules.emplace_back(
           new_primary_pattern.value_or(rule.primary_pattern),
           new_secondary_pattern.value_or(rule.secondary_pattern),
-          rule.value.Clone());
+          rule.value.Clone(), rule.expiration, rule.session_model);
     }
   }
   rule_iterator.reset();
@@ -213,12 +213,13 @@ void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
     // Remove current setting.
     PrefProvider::SetWebsiteSetting(
         old_rules[i].first, old_rules[i].second, content_type, resource_id,
-        ContentSettingToValue(CONTENT_SETTING_DEFAULT));
+        ContentSettingToValue(CONTENT_SETTING_DEFAULT), {});
     // Add new setting.
     PrefProvider::SetWebsiteSetting(
         new_rules[i].primary_pattern, new_rules[i].secondary_pattern,
         content_type, resource_id,
-        ContentSettingToValue(ValueToContentSetting(&(new_rules[i].value))));
+        ContentSettingToValue(ValueToContentSetting(&(new_rules[i].value))),
+        {new_rules[i].expiration, new_rules[i].session_model});
   }
 }
 
@@ -227,7 +228,8 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
     const ResourceIdentifier& resource_identifier,
-    std::unique_ptr<base::Value>&& in_value) {
+    std::unique_ptr<base::Value>&& in_value,
+    const ContentSettingConstraints& constraints) {
   // Flash's setting shouldn't be reached here.
   // Its content type is plugin and id is empty string.
   // One excpetion is default setting. It can be persisted.
@@ -260,17 +262,16 @@ bool BravePrefProvider::SetWebsiteSetting(
       }
 
       // change to type PLUGINS
-      return PrefProvider::SetWebsiteSetting(plugin_primary_pattern,
-                                             plugin_secondary_pattern,
-                                             ContentSettingsType::PLUGINS,
-                                             brave_shields::kCookies,
-                                             std::move(in_value));
+      return PrefProvider::SetWebsiteSetting(
+          plugin_primary_pattern, plugin_secondary_pattern,
+          ContentSettingsType::PLUGINS, brave_shields::kCookies,
+          std::move(in_value), constraints);
     }
   }
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
                                          content_type, resource_identifier,
-                                         std::move(in_value));
+                                         std::move(in_value), constraints);
 }
 
 std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
@@ -315,7 +316,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       auto rule = Rule(ContentSettingsPattern::FromString(kGoogleOAuthPattern),
                        ContentSettingsPattern::Wildcard(),
                        base::Value::FromUniquePtrValue(
-                           ContentSettingToValue(CONTENT_SETTING_ALLOW)));
+                           ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+                       base::Time(), SessionModel::Durable);
       rules.emplace_back(CloneRule(rule));
       brave_cookie_rules_[incognito].emplace_back(CloneRule(rule));
   }
@@ -372,12 +374,14 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
           Rule(ContentSettingsPattern::Wildcard(),
                shield_rule.primary_pattern,
                base::Value::FromUniquePtrValue(
-                   ContentSettingToValue(CONTENT_SETTING_ALLOW))));
+                   ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+               base::Time(), SessionModel::Durable));
       brave_cookie_rules_[incognito].emplace_back(
           Rule(ContentSettingsPattern::Wildcard(),
                shield_rule.primary_pattern,
                base::Value::FromUniquePtrValue(
-                   ContentSettingToValue(CONTENT_SETTING_ALLOW))));
+                   ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+               base::Time(), SessionModel::Durable));
     }
   }
 
@@ -413,9 +417,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
         });
     if (match == brave_cookie_rules_[incognito].end()) {
       brave_cookie_updates.emplace_back(
-          Rule(old_rule.primary_pattern,
-               old_rule.secondary_pattern,
-               base::Value()));
+          Rule(old_rule.primary_pattern, old_rule.secondary_pattern,
+               base::Value(), old_rule.expiration, old_rule.session_model));
     }
   }
 

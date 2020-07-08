@@ -26,6 +26,31 @@ grit("resources") {
   ]
 }
 
+copy("rollup_resources") {
+  visibility = [ ":*" ]
+
+  sources = [
+    "polymer_overriding.js",
+  ]
+
+  outputs = [
+    "$root_gen_dir/brave/ui/webui/resources/{{source_file_part}}",
+  ]
+}
+
+copy("override_resources") {
+  visibility = [ ":*" ]
+
+  sources = [
+    "overrides/cr_button.js",
+    "overrides/cr_toggle.js",
+  ]
+
+  outputs = [
+    "$root_gen_dir/brave/ui/webui/resources/overrides/{{source_file_part}}",
+  ]
+}
+
 copy("rollup_overrides") {
   visibility = [ ":*" ]
 
@@ -40,6 +65,8 @@ copy("rollup_overrides") {
 
 group("modulize") {
   deps = [
+    ":rollup_resources",
+    ":override_resources",
     ":rollup_overrides",
     "br_elements:polymer3_elements",
     "page_specific:polymer3_elements",

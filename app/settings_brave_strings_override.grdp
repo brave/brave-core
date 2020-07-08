@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Settings-specific Brave strings (included from chromium_strings.grd). -->
+<grit-part>
+  <if expr="not chromeos">
+    <message name="IDS_SETTINGS_UPGRADE_SUCCESSFUL_RELAUNCH" desc="Status label: Successfully updated Brave">
+      Nearly up to date! Relaunch Brave to finish updating. Private windows won't reopen.
+    </message>
+    </if>
+  <if expr="chromeos">
+    </if>
+
+  <if expr="not chromeos">
+    </if>
+
+  <if expr="chromeos">
+    </if>
+
+  <if expr="not chromeos">
+  </if>
+  <if expr="not chromeos">
+    </if>
+
+  <if expr="not chromeos">
+    </if>
+
+  </grit-part>

@@ -4,10 +4,11 @@ from os import walk
 import sys
 import xml.etree.ElementTree
 from lib.config import get_env_var
-from lib.transifex import pull_source_files_from_transifex
+from lib.transifex import (pull_source_files_from_transifex, should_use_transifex,
+                           pull_xtb_without_transifex, combine_override_xtb_into_original)
+from lib.grd_string_replacements import get_override_file_path
 
-
-SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
 def parse_args():
@@ -28,13 +29,22 @@ def check_args():
 def main():
     args = parse_args()
     check_args()
-    source_string_path = os.path.join(SOURCE_ROOT, args.source_string_path[0])
+    source_string_path = os.path.join(BRAVE_SOURCE_ROOT, args.source_string_path[0])
     filename = os.path.basename(source_string_path).split('.')[0]
-
-    print '-----------'
-    print 'Source string file:', source_string_path
-    print 'Transifex resource slug: ', filename
-    pull_source_files_from_transifex(source_string_path, filename)
+    if should_use_transifex(source_string_path, filename):
+        print('Transifex: ', source_string_path)
+        pull_source_files_from_transifex(source_string_path, filename)
+    else:
+        print('Local: ', source_string_path)
+        override_path = get_override_file_path(source_string_path)
+        print('Transifex override: ', override_path)
+        override_filename = os.path.basename(override_path).split('.')[0]
+        override_exists = os.path.exists(override_path)
+        if override_exists:
+            pull_source_files_from_transifex(override_path, override_filename)
+        pull_xtb_without_transifex(source_string_path, BRAVE_SOURCE_ROOT)
+        if override_exists:
+            combine_override_xtb_into_original(source_string_path)
 
 
 if __name__ == '__main__':

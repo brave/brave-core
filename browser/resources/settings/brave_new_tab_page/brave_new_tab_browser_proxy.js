@@ -2,9 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
- cr.define('settings', function() {
+// clang-format off
+// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
+// clang-format on
+
+cr.define('settings', function() {
   /** @interface */
-  class BraveNewTabBrowserProxy {
+  /* #export */ class BraveNewTabBrowserProxy {
     /**
      * @return {!Promise<Boolean>}
      */
@@ -24,7 +28,7 @@
   /**
    * @implements {settings.BraveNewTabBrowserProxy}
    */
-  class BraveNewTabBrowserProxyImpl {
+  /* #export */ class BraveNewTabBrowserProxyImpl {
     /** @override */
     getIsSuperReferralActive() {
       return cr.sendWithPromise('getIsSuperReferralActive');
@@ -43,6 +47,7 @@
 
   cr.addSingletonGetter(BraveNewTabBrowserProxyImpl);
 
+  // #cr_define_end
   return {
     BraveNewTabBrowserProxy,
     BraveNewTabBrowserProxyImpl

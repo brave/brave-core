@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index b71429377b2068f103656834068a079fded3822d..2072bb06f5cf782664d31a610b901c5ee57a6156 100644
+index c4421329cba5b5f90c5ca5b63053ee7c038c31e1..d32289a0e8cbcfeb8a6dcc100733921d63cefc39 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -521,6 +521,7 @@ class ProfileSyncService : public SyncService,
+@@ -516,6 +516,7 @@ class ProfileSyncService : public SyncService,
  
    base::WeakPtrFactory<ProfileSyncService> weak_factory_{this};
  

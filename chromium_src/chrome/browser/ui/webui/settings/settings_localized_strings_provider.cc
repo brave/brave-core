@@ -4,9 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "chrome/browser/ui/webui/settings/settings_localized_strings_provider.h"
-#include "chrome/browser/ui/webui/webui_util.h"
+
 #include "base/stl_util.h"
+#include "base/strings/string16.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
+#include "brave/browser/version_info.h"
+#include "chrome/browser/ui/webui/webui_util.h"
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -22,8 +26,10 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 #define IDS_SETTINGS_EDIT_PERSON IDS_SETTINGS_BRAVE_EDIT_PROFILE
 #undef IDS_SETTINGS_PROFILE_NAME_AND_PICTURE
 #define IDS_SETTINGS_PROFILE_NAME_AND_PICTURE IDS_SETTINGS_BRAVE_EDIT_PROFILE
+#define GetVersionNumber GetBraveVersionNumberForDisplay
 
-#include "../../../../../../chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"  // NOLINT
+#include "../../../../../../../chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"
+#undef GetVersionNumber
 
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 namespace settings {
@@ -31,6 +37,11 @@ namespace settings {
 const char kWebRTCLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017989132-How-do-I-change-my-Privacy-Settings-#webrtc";
+const char kBraveBuildInstructionsUrl[] =
+    "https://github.com/brave/brave-browser/wiki";
+const char kBraveLicenseUrl[] = "https://mozilla.org/MPL/2.0/";
+const char kBraveReleaseTagPrefix[] =
+    "https://github.com/brave/brave-browser/releases/tag/v";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -56,21 +67,21 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"appearanceSettingsLocationBarIsWide",
       IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE},
     {"appearanceSettingsHideBraveRewardsButtonLabel",
-       IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_LABEL},
+      IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_LABEL},
     {"appearanceSettingsHideBraveRewardsButtonDesc",
-       IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_DESC},
+      IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_DESC},
     {"appearanceSettingsAlwaysShowBookmarkBarOnNTP",
-       IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP},
+      IDS_SETTINGS_ALWAYS_SHOW_BOOKMARK_BAR_ON_NTP},
     {"appearanceSettingsShowAutocompleteInAddressBar",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR},
+      IDS_SETTINGS_APPEARANCE_SETTINGS_SHOW_AUTOCOMPLETE_IN_ADDRESS_BAR},
     {"appearanceSettingsUseTopSiteSuggestions",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES},
+      IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_TOP_SITES},
     {"appearanceSettingsUseBraveSuggestedSiteSuggestions",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES},
+      IDS_SETTINGS_APPEARANCE_SETTINGS_USE_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES},
     {"appearanceSettingsGetMoreThemes",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_GET_MORE_THEMES},
+      IDS_SETTINGS_APPEARANCE_SETTINGS_GET_MORE_THEMES},
     {"appearanceBraveDefaultImagesOptionLabel",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL},
+      IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_DEFAULT_IMAGES_OPTION_LABEL},
     {"braveShieldsTitle",
       IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
     {"braveShieldsDefaultsSectionTitle",
@@ -222,10 +233,23 @@ void BraveAddResources(content::WebUIDataSource* html_source,
   BraveSettingsUI::AddResources(html_source, profile);
 }
 
+void BraveAddAboutStrings(content::WebUIDataSource* html_source,
+                          Profile* profile) {
+  base::string16 license = l10n_util::GetStringFUTF16(
+      IDS_BRAVE_VERSION_UI_LICENSE, base::ASCIIToUTF16(kBraveLicenseUrl),
+      base::ASCIIToUTF16(chrome::kChromeUICreditsURL),
+      base::ASCIIToUTF16(kBraveBuildInstructionsUrl),
+      base::ASCIIToUTF16(kBraveReleaseTagPrefix) +
+          base::UTF8ToUTF16(
+              version_info::GetBraveVersionWithoutChromiumMajorVersion()));
+  html_source->AddString("aboutProductLicense", license);
+}
+
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
                               Profile* profile) {
   BraveAddCommonStrings(html_source, profile);
   BraveAddResources(html_source, profile);
+  BraveAddAboutStrings(html_source, profile);
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
 }
 

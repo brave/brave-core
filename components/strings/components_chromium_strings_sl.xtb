@@ -1,28 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sl">
-<translation id="4068928808254189629">Odprite
-        meni Bravea &gt;
-        <ph name="SETTINGS_TITLE"/>
-        &gt;
-        <ph name="ADVANCED_TITLE"/>
-        in počistite polje »<ph name="NO_PREFETCH_DESCRIPTION"/>«.
-        Če s tem težave ne odpravite, priporočamo, da to možnost
-        zaradi izboljšanja delovanja znova izberete.</translation>
-<translation id="2017237562285586622">V nastavitvah požarnega zidu ali protivirusnega programa omogočite Braveu dostop do
-        omrežja.</translation>
+<translation id="130631256467250065">Spremembe bodo uveljavljene pri naslednjem vnovičnem zagonu naprave.</translation>
+<translation id="7999989146447764333">Poročanje o zrušitvah ni na voljo v Braveu.</translation>
+<translation id="1953231710324290369">Ogledujete si varno stran Bravea</translation>
 <translation id="4010643444566880169">OS Brave ni dokončal začetne nastavitve.</translation>
-<translation id="8187289872471304532">Odprite
-          Aplikacije &gt; Sistemske nastavitve &gt; Omrežje &gt; Dodatno &gt; Namestniški strežniki
-          in počistite polja z označenimi namestniškimi strežniki.</translation>
-<translation id="8619622797841001082">Odprite
-          meni Bravea &gt;
-          <ph name="SETTINGS_TITLE"/>
-          &gt;
-          <ph name="ADVANCED_TITLE"/>
-          &gt;
-          <ph name="PROXIES_TITLE"/>
-          in poskrbite, da je konfiguracija nastavljena na »brez namestniškega strežnika« ali »neposredno«.</translation>
+<translation id="7932149101545999102">Brave omogočata odprtokodni projekt <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> in druga <ph name="BEGIN_LINK_OSS"/>odprtokodna programska oprema<ph name="END_LINK_OSS"/>.</translation>
 <translation id="8746410156982274638">Odprite
           meni Bravea &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -33,11 +16,27 @@
           &gt;
           Nastavitve lokalnega omrežja
           in počistite potrditveno polje »Uporabi namestniški strežnik za lokalno omrežje«.</translation>
+<translation id="2017237562285586622">V nastavitvah požarnega zidu ali protivirusnega programa omogočite Braveu dostop do
+        omrežja.</translation>
+<translation id="8619622797841001082">Odprite
+          meni Bravea &gt;
+          <ph name="SETTINGS_TITLE"/>
+          &gt;
+          <ph name="ADVANCED_TITLE"/>
+          &gt;
+          <ph name="PROXIES_TITLE"/>
+          in poskrbite, da je konfiguracija nastavljena na »brez namestniškega strežnika« ali »neposredno«.</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
-<translation id="130631256467250065">Spremembe bodo uveljavljene pri naslednjem vnovičnem zagonu naprave.</translation>
-<translation id="7999989146447764333">Poročanje o zrušitvah ni na voljo v Braveu.</translation>
-<translation id="7932149101545999102">Brave omogočata odprtokodni projekt <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/> in druga <ph name="BEGIN_LINK_OSS"/>odprtokodna programska oprema<ph name="END_LINK_OSS"/>.</translation>
-<translation id="1953231710324290369">Ogledujete si varno stran Bravea</translation>
-<translation id="2305018990464327944">Brave je preveril, ali je izdajatelj <ph name="ISSUER"/> izdal potrdilo tega spletnega mesta.</translation>
+<translation id="4068928808254189629">Odprite
+        meni Bravea &gt;
+        <ph name="SETTINGS_TITLE"/>
+        &gt;
+        <ph name="ADVANCED_TITLE"/>
+        in počistite polje »<ph name="NO_PREFETCH_DESCRIPTION"/>«.
+        Če s tem težave ne odpravite, priporočamo, da to možnost
+        zaradi izboljšanja delovanja znova izberete.</translation>
+<translation id="8187289872471304532">Odprite
+          Aplikacije &gt; Sistemske nastavitve &gt; Omrežje &gt; Dodatno &gt; Namestniški strežniki
+          in počistite polja z označenimi namestniškimi strežniki.</translation>
 <translation id="88187049159266777">Brave se ni pravilno zaustavil.</translation>
 </translationbundle>
