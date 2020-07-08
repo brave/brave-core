@@ -177,13 +177,13 @@ public class OnboardingPrefManager {
     public boolean showOnboardingForSkip() {
         boolean shouldShow = !hasOnboardingShownForSkip()
                              && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
-                             && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+                             && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
                              && (getNextOnboardingDate() > 0 && System.currentTimeMillis() > getNextOnboardingDate());
         return shouldShow;
     }
 
     public boolean isAdsAvailable() {
-        return BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedProfile());
+        return BraveAdsNativeHelper.nativeIsSupportedLocale(Profile.getLastUsedRegularProfile());
     }
 
     public void showOnboarding(Context context) {

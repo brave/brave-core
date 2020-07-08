@@ -206,7 +206,7 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
     }
 
     private void turnOnAds() {
-        BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+        BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
     }
 
     private void reloadTab() {

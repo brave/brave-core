@@ -47,7 +47,7 @@ public class BraveAdsSignupDialog {
         boolean shouldShow =
           shouldShowOnboardingDialog()
           && PackageUtils.isFirstInstall(context)
-          && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+          && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
           && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
           && hasElapsed24Hours(context)
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
@@ -62,7 +62,7 @@ public class BraveAdsSignupDialog {
         boolean shouldShow =
           shouldShowOnboardingDialog()
           && !PackageUtils.isFirstInstall(context)
-          && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+          && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
           && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
@@ -76,9 +76,9 @@ public class BraveAdsSignupDialog {
         boolean shouldShow =
           shouldShowOnboardingDialog()
           && !PackageUtils.isFirstInstall(context)
-          && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
+          && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
           && BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
-          && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())
+          && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedRegularProfile())
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
@@ -125,7 +125,7 @@ public class BraveAdsSignupDialog {
                 braveRewardsNativeWorker.CreateWallet();
 
                 // Enable ads
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
             }
         }).create();
         alertDialog.show();
@@ -148,7 +148,7 @@ public class BraveAdsSignupDialog {
                 // Enable ads
                 neverShowOnboardingDialogAgain();
 
-                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+                BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
             }
         }).create();
         alertDialog.show();

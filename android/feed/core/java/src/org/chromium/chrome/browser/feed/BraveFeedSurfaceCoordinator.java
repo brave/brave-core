@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.feed.R;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.ui.UiUtils;
 
 public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
@@ -37,10 +38,11 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             @Nullable SnapScrollHelper snapScrollHelper, @Nullable View ntpHeader,
             @Nullable SectionHeaderView sectionHeaderView, ActionApi actionApi,
             boolean showDarkBackground, FeedSurfaceDelegate delegate,
-            @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile) {
+            @Nullable NativePageNavigationDelegate pageNavigationDelegate, Profile profile,
+            boolean isPlaceholderShown, BottomSheetController bottomSheetController) {
         super(activity, snackbarManager, tabModelSelector, tabProvider, snapScrollHelper, ntpHeader,
                 sectionHeaderView, actionApi, showDarkBackground, delegate, pageNavigationDelegate,
-                profile);
+                profile, isPlaceholderShown, bottomSheetController);
     }
 
     @Override

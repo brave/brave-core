@@ -401,7 +401,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
       Context context = getContext();
       if ((PackageUtils.isFirstInstall(context)
-           || (!PackageUtils.isFirstInstall(context) && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())))
+           || (!PackageUtils.isFirstInstall(context) && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())))
           && !OnboardingPrefManager.getInstance().isOnboardingShown()) {
         OnboardingPrefManager.getInstance().showOnboarding(context);
       } else {

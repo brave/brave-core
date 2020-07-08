@@ -47,10 +47,13 @@ public class BraveBottomToolbarCoordinator
 
     BraveBottomToolbarCoordinator(ViewStub stub, ActivityTabProvider tabProvider,
             OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
-            ObservableSupplier<ShareDelegate> shareDelegateSupplier, Supplier<Boolean> showStartSurfaceCallable,
-            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction) {
-        super(stub, tabProvider, tabsSwitcherLongClickListner, themeColorProvider, shareDelegateSupplier,
-                showStartSurfaceCallable, openHomepageAction, setUrlBarFocusAction);
+            ObservableSupplier<ShareDelegate> shareDelegateSupplier,
+            Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
+            Callback<Integer> setUrlBarFocusAction,
+            ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier) {
+        super(stub, tabProvider, tabsSwitcherLongClickListner, themeColorProvider,
+                shareDelegateSupplier, showStartSurfaceCallable, openHomepageAction,
+                setUrlBarFocusAction, overviewModeBehaviorSupplier);
         mBraveTabProvider = tabProvider;
         mOriginalHomeButtonRunnable = openHomepageAction;
     }
@@ -82,11 +85,11 @@ public class BraveBottomToolbarCoordinator
     }
 
     @Override
-    void initializeWithNative(OnClickListener tabSwitcherListener, OnClickListener newTabClickListener,
-            AppMenuButtonHelper menuButtonHelper, OverviewModeBehavior overviewModeBehavior,
-            TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider, ViewGroup topToolbarRoot,
-            Runnable closeAllTabsAction) {
-        super.initializeWithNative(tabSwitcherListener, newTabClickListener, menuButtonHelper, overviewModeBehavior,
+    void initializeWithNative(OnClickListener tabSwitcherListener,
+            OnClickListener newTabClickListener, AppMenuButtonHelper menuButtonHelper,
+            TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
+            ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
+        super.initializeWithNative(tabSwitcherListener, newTabClickListener, menuButtonHelper,
                 tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
 
         View root = (View) topToolbarRoot.getParent();

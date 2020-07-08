@@ -50,6 +50,6 @@ public class BraveTabCreator extends ChromeTabCreator {
     }
 
     private void registerPageView() {
-        NTPBackgroundImagesBridge.getInstance(Profile.getLastUsedProfile()).registerPageView();
+        NTPBackgroundImagesBridge.getInstance(Profile.getLastUsedRegularProfile()).registerPageView();
     }
 }

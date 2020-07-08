@@ -72,7 +72,7 @@ public class NTPUtil {
         new HashMap<String, SoftReference<Bitmap>>();
 
     public static void turnOnAds() {
-        BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+        BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
     }
 
     public static void updateOrientedUI(Context context, ViewGroup view) {
@@ -151,11 +151,11 @@ public class NTPUtil {
 
         if (sponsoredTab.shouldShowBanner()) {
             if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)) {
-                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())) {
+                if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                     if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_ON;
                     }
-                } else if (BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())) {
+                } else if (BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedRegularProfile())) {
                     if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_OFF ;
                     } else {
@@ -451,7 +451,7 @@ public class NTPUtil {
     }
 
     public static boolean isReferralEnabled() {
-        Profile mProfile = Profile.getLastUsedProfile();
+        Profile mProfile = Profile.getLastUsedRegularProfile();
         NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         boolean isReferralEnabled = BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
         return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;

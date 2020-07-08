@@ -1085,7 +1085,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     @Override
     public void OnWalletInitialized(int error_code) {
         if (BraveRewardsNativeWorker.WALLET_CREATED == error_code) {
-            BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+            BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
             ShowWebSiteView(false);
         } else if (BraveRewardsNativeWorker.SAFETYNET_ATTESTATION_FAILED == error_code) {
             dismiss();
