@@ -75,8 +75,7 @@ class FeedDataSource {
                         let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem.Content>].self, from: data).compactMap { $0.wrappedValue }
                         DispatchQueue.main.async {
                             self.feeds = self.scored(feeds: decodedFeeds, sources: decodedSources).sorted(by: <)
-                            self.generateCards()
-                            completion()
+                            self.generateCards(completion)
                         }
                     } catch {
                         logger.error(error)
@@ -112,7 +111,7 @@ class FeedDataSource {
         }
     }
     
-    private func generateCards() {
+    private func generateCards(_ completion: @escaping () -> Void) {
         /**
          Beginning of new session:
             Sponsor card
@@ -153,15 +152,26 @@ class FeedDataSource {
                 deals.removeFirst(min(3, items.count))
                 return [.group(items, title: "Deals", direction: .horizontal, displayBrand: false)]
             case .headline(let paired):
-                // FIXME: Don't pull items with no images
                 if articles.isEmpty { return nil }
+                let imageExists = { (item: FeedItem) -> Bool in
+                    item.content.imageURL != nil
+                }
                 if paired {
-                    if articles.count < 2 { return nil }
-                    let item1 = articles.removeFirst()
-                    let item2 = articles.removeFirst()
+                    guard let firstIndex = articles.firstIndex(where: imageExists),
+                        let secondIndex = articles[(firstIndex+1)...].firstIndex(where: imageExists) else {
+                        return nil
+                    }
+                    let item1 = articles[firstIndex]
+                    articles.remove(at: firstIndex)
+                    let item2 = articles[secondIndex]
+                    articles.remove(at: secondIndex)
                     return [.headlinePair((item1, item2))]
                 } else {
-                    let item = articles.removeFirst()
+                    guard let index = articles.firstIndex(where: imageExists) else {
+                        return nil
+                    }
+                    let item = articles[index]
+                    articles.remove(at: index)
                     return [.headline(item)]
                 }
             case .categoryGroup:
@@ -188,23 +198,34 @@ class FeedDataSource {
                 var index = 0
                 var cards: [FeedCard] = []
                 repeat {
+                    var repeatedCards: [FeedCard] = []
                     for element in elements {
                         if let elementCards = _cards(for: element) {
-                            cards.append(contentsOf: elementCards)
+                            repeatedCards.append(contentsOf: elementCards)
                         }
                     }
+                    if repeatedCards.isEmpty {
+                        // Couldn't fill any of the cards so no reason to continue
+                        break
+                    }
+                    cards.append(contentsOf: repeatedCards)
                     index += 1
                 } while !articles.isEmpty && index < times
                 return cards
             }
         }
         
-        var generatedCards: [FeedCard] = []
-        for rule in rules {
-            if let elementCards = _cards(for: rule) {
-                generatedCards.append(contentsOf: elementCards)
+        DispatchQueue.global(qos: .default).async {
+            var generatedCards: [FeedCard] = []
+            for rule in rules {
+                if let elementCards = _cards(for: rule) {
+                    generatedCards.append(contentsOf: elementCards)
+                }
+            }
+            DispatchQueue.main.async {
+                self.cards = generatedCards
+                completion()
             }
         }
-        self.cards = generatedCards
     }
 }
