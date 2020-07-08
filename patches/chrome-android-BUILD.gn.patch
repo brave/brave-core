@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 09dadfdd96e8aa627c92f795a26cf7f7cced2e97..0ea320aee43ff2d0912e047c9b6f3caec2a6632f 100644
+index 09dadfdd96e8aa627c92f795a26cf7f7cced2e97..cb7fbb6da29ecfa833124f67998335c276a1d7d1 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -232,6 +232,7 @@ android_resources("chrome_app_java_resources") {
@@ -14,7 +14,7 @@ index 09dadfdd96e8aa627c92f795a26cf7f7cced2e97..0ea320aee43ff2d0912e047c9b6f3cae
    ]
  
    deps += feed_deps
-+  deps += brave_chrome_java_deps enable_bytecode_rewriter = true
++  deps += brave_chrome_java_deps
  
    srcjar_deps = [
      ":chrome_android_java_enums_srcjar",
