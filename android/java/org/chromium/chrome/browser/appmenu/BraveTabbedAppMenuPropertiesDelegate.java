@@ -24,6 +24,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.multiwindow.MultiWindowModeStateDispatcher;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabbed_mode.TabbedAppMenuPropertiesDelegate;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
@@ -80,6 +81,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             shareItem.setTitle(mContext.getString(R.string.share));
             shareItem.setIcon(AppCompatResources.getDrawable(mContext, R.drawable.share_icon));
         }
+
+        // By this we forcibly initialize mBookmarkBridge
+        MenuItem bookmarkItem = menu.findItem(R.id.bookmark_this_page_id);
+        Tab currentTab = mActivityTabProvider.get();
+        if (bookmarkItem != null && currentTab != null) {
+            updateBookmarkMenuItem(bookmarkItem, currentTab);
+        }
     }
 
     @Override
@@ -93,6 +101,15 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
 
     @Override
     public void onFooterViewInflated(AppMenuHandler appMenuHandler, View view) {
+        // If it's still null, just hide the whole view
+        if (mBookmarkBridge == null) {
+            if (view != null) {
+                view.setVisibility(View.GONE);
+            }
+            // Normally it should not happen
+            assert false;
+            return;
+        }
         super.onFooterViewInflated(appMenuHandler, view);
 
         // Hide bookmark button if bottom toolbar is enabled
