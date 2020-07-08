@@ -6,6 +6,7 @@
   "scripts": {
     "sync": "npm --prefix ../../ run sync --",
     "build": "npm --prefix ../../ run build --",
+    "start": "npm --prefix ../../ run start --",
     "test": "npm --prefix ../../ run test --",
     "lint": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
     "pep8": "pycodestyle --max-line-length 120 -r script",
