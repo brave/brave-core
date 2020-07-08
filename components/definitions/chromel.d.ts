@@ -167,6 +167,11 @@ declare namespace chrome.binance {
   const revokeToken: (callback: (success: boolean) => void) => {}
 }
 
+declare namespace chrome.gemini {
+  const getClientUrl: (callback: (clientUrl: string) => void) => {}
+  const getAccessToken: (callback: (success: boolean) => void) => {}
+}
+
 declare namespace chrome.braveTogether {
   const isSupported: (callback: (supported: boolean) => void) => {}
 }

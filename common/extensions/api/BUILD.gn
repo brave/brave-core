@@ -21,6 +21,10 @@ json_features("api_features") {
     sources += [ "_binance_api_features.json" ]
   }
 
+  if (gemini_enabled) {
+    sources += [ "_gemini_api_features.json" ]
+  }
+
   if (brave_together_enabled) {
     sources += [ "_brave_together_api_features.json" ]
   }
