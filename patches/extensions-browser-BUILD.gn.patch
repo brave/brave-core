@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/BUILD.gn b/extensions/browser/BUILD.gn
-index 6cac8701bd87ab4a4572f42d58671c3b33861cbd..0ddff030f91e5cc7d66f519432b081ec1d6d7ff5 100644
+index 42ddb608b355cf1b276fd12a04bded01658fdc11..3dea3733ee9814c947d24e6928a95779d1544119 100644
 --- a/extensions/browser/BUILD.gn
 +++ b/extensions/browser/BUILD.gn
-@@ -407,6 +407,7 @@ jumbo_source_set("browser_sources") {
+@@ -409,6 +409,7 @@ jumbo_source_set("browser_sources") {
      "//third_party/blink/public/mojom/frame",
      "//ui/display",
    ]

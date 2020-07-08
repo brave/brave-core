@@ -1,8 +1,8 @@
 diff --git a/components/sync/android/BUILD.gn b/components/sync/android/BUILD.gn
-index 4575d881584549f4de1afd09d226002428149ca9..dd92c3f10fc3759629706ae1269d4590cf7a25df 100644
+index a3eca7269ded67725940e681e1320faa92489d50..1242c9d0851b13ca2770774afcc851e0bd84579d 100644
 --- a/components/sync/android/BUILD.gn
 +++ b/components/sync/android/BUILD.gn
-@@ -32,6 +32,7 @@ android_library("sync_java") {
+@@ -31,6 +31,7 @@ android_library("sync_java") {
      "java/src/org/chromium/components/sync/notifier/InvalidationPreferences.java",
      "java/src/org/chromium/components/sync/notifier/RandomizedInvalidationClientNameGenerator.java",
    ]

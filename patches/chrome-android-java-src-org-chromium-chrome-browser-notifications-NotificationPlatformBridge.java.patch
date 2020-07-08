@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index db4e0f89d83bb8bcb03a3ad5b7a4bc7deff264a7..64352d3811a45d80111fac757eae1b678031cba9 100644
+index c0a8efd91af8e2c18451dd1bf7b003b879b21369..78fba373662020947483a9b7c08e02a5574186d7 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 @@ -79,7 +79,7 @@ public class NotificationPlatformBridge {

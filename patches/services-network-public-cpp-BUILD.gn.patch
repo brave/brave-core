@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/BUILD.gn b/services/network/public/cpp/BUILD.gn
-index daa89215eeefce655f20c65b7a90e6dd4deef2da..e711bbfd2b64a72e78e760c19d527c6cc59253ff 100644
+index 09432749be238c40c129d0e19319e069deb23a02..c2ba5c1af39728064166b8867f3877c02dde2475 100644
 --- a/services/network/public/cpp/BUILD.gn
 +++ b/services/network/public/cpp/BUILD.gn
 @@ -131,6 +131,7 @@ jumbo_component("cpp") {

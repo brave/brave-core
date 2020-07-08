@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index ef7f40229c82ec2e05eac07b1fb6130558c623ac..341c4efa69c3229debb02c088131d5747379f111 100644
+index d32433c43e8c2a104b0d194f47f7fbedae83b439..a865d4ac349484bc46f5b73ee6c528f331f6d986 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
 @@ -355,6 +355,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {

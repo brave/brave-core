@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index a754ed78a325cddfd51c33f3cf3bd8c20e76ee15..8cfccdc14aa3d31885d9e5fc6a8df7035c18c410 100644
+index 0bfc2e08d39bceb436b23abfe17319809f9f742a..38c6aea6e70fd9b6c00dac6e365418a2311c35a4 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
-@@ -105,6 +105,7 @@ class DownloadItemView : public views::View,
+@@ -107,6 +107,7 @@ class DownloadItemView : public views::View,
    gfx::Size CalculatePreferredSize() const override;
    void OnPaint(gfx::Canvas* canvas) override;
    void OnThemeChanged() override;

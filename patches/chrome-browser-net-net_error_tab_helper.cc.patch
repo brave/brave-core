@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/net/net_error_tab_helper.cc b/chrome/browser/net/net_error_tab_helper.cc
-index 1cd8d615afa78d35887e0e6e5e7d1c789e250a9d..b5a8687228cbb1025f27e1ce41d13f8b91602fc7 100644
+index 3477bb6fbeceb2ab3d9a00332bc0146f22793450..faf701cc8342ed7eed0679a6da93c136e2e6cfb6 100644
 --- a/chrome/browser/net/net_error_tab_helper.cc
 +++ b/chrome/browser/net/net_error_tab_helper.cc
-@@ -221,6 +221,9 @@ void NetErrorTabHelper::InitializePref(WebContents* contents) {
+@@ -201,6 +201,9 @@ void NetErrorTabHelper::InitializePref(WebContents* contents) {
  }
  
  bool NetErrorTabHelper::ProbesAllowed() const {

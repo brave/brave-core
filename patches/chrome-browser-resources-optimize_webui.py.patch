@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/optimize_webui.py b/chrome/browser/resources/optimize_webui.py
-index e9f0476cc9b3b0d48101a172e8255ed8de7ffb31..97e58af47b660e368184d02f12f183b8b9406164 100755
+index 30ffbf7f343b67c294a1ce1dce8cc34f915d6e3e..66b5f756d208c38c9b88cc933b11965a481a5cdf 100755
 --- a/chrome/browser/resources/optimize_webui.py
 +++ b/chrome/browser/resources/optimize_webui.py
 @@ -56,8 +56,12 @@ _POLYMER_PATH = os.path.join(

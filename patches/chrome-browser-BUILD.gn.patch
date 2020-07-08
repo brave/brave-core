@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 5d7ff1a26faf83c8f82a58787e17d8923f7b9ea1..22b832f7bb84195a48cd256168f51d4521bb3907 100644
+index 5e69beac0bf4202b17ab1102423f0a051a8497f5..7d93894f89134349d4fce3ec68f079c93ff52f9d 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2138,6 +2138,7 @@ static_library("browser") {
+@@ -2144,6 +2144,7 @@ static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
