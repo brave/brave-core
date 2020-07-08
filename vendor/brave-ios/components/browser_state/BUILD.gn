@@ -22,6 +22,8 @@ source_set("browser_state") {
   sources = [
     "chrome_browser_state.h",
     "chrome_browser_state.mm",
+    "browser_state_manager.h",
+    "browser_state_manager.mm",
     "browser_state_otr_helper.cc",
     "browser_state_otr_helper.h",
     "bookmark_model_loaded_observer.cc",

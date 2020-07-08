@@ -24,7 +24,7 @@ class BraveWebMainParts : public web::WebMainParts {
   void PreCreateThreads() override;
   void PreMainMessageLoopRun() override;
 
-  std::unique_ptr<ChromeBrowserState> browser_state_;
+  ChromeBrowserState* browser_state_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveWebMainParts);
 };
