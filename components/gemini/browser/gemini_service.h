@@ -49,11 +49,33 @@ class GeminiService : public KeyedService {
   explicit GeminiService(content::BrowserContext* context);
   ~GeminiService() override;
 
+  // Callbacks
+  using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
+
+  std::string GetOAuthClientUrl();
+  void SetAuthToken();
+  bool GetAccessToken(GetAccessTokenCallback callback);
+
  private:
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
   bool LoadTokensFromPrefs();
+  bool SetAccessTokens(const std::string& access_token,
+                       const std::string& refresh_token);
+  void ResetAccessTokens();
+
+  void OnGetAccessToken(GetAccessTokenCallback callback,
+                           const int status, const std::string& body,
+                           const std::map<std::string, std::string>& headers);
+
+  bool OAuthRequest(const GURL& url, const std::string& method,
+      const std::string& post_data, URLRequestCallback callback,
+      bool auto_retry_on_network_change);
+  void OnURLLoaderComplete(
+      SimpleURLLoaderList::iterator iter,
+      URLRequestCallback callback,
+      const std::unique_ptr<std::string> response_body);
 
   scoped_refptr<base::SequencedTaskRunner> io_task_runner_;
 

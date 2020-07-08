@@ -9,7 +9,9 @@ source_set("browser") {
   ]
   sources = [
     "gemini_service.cc",
-    "gemini_service.h"
+    "gemini_service.h",
+    "gemini_json_parser.cc",
+    "gemini_json_parser.h",
   ]
 
   deps = [
