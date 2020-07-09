@@ -34,6 +34,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor"));
     }
 
     @Test
@@ -68,6 +70,9 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mRootView"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mNewTabPageLayout"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/ntp/NewTabPage", "mFeedSurfaceProvider"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
+                "mHasClearedOmniboxForFocus"));
     }
 
     private boolean classExists(String className) {
