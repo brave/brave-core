@@ -247,7 +247,7 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
         }
 
         //Specify the length and width through constants
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int width = (int)((mContext.getResources().getDisplayMetrics().widthPixels) * 0.75);
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
 
         //Make Inactive Items Outside Of PopupWindow
