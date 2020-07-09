@@ -718,8 +718,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<std::string>& list,
       ledger::ResultCallback callback);
 
-  void FetchParameters();
-
   void Shutdown(ledger::ResultCallback callback) override;
 
   void GetCredsBatchesByTriggers(
