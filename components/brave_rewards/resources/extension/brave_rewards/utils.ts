@@ -147,9 +147,19 @@ export const getGreetings = (externalWallet?: RewardsExtension.ExternalWallet) =
   return getMessage('greetingsVerified', [externalWallet.userName])
 }
 
-export const handleUpholdLink = (link: string, externalWallet?: RewardsExtension.ExternalWallet) => {
+export const handleUpholdLink = (balance: RewardsExtension.Balance, externalWallet?: RewardsExtension.ExternalWallet) => {
+  if (!externalWallet) {
+    return
+  }
+
+  let link = externalWallet.verifyUrl
+
   if (!externalWallet || (externalWallet && externalWallet.status === 0)) {
     link = 'brave://rewards/#verify'
+  }
+
+  if (balance.total < 25) {
+    link = externalWallet.loginUrl
   }
 
   chrome.tabs.create({
@@ -157,29 +167,16 @@ export const handleUpholdLink = (link: string, externalWallet?: RewardsExtension
   })
 }
 
-export const getExternalWallet = (actions: any, externalWallet?: RewardsExtension.ExternalWallet, open: boolean = false) => {
+export const getExternalWallet = (actions: any, externalWallet?: RewardsExtension.ExternalWallet) => {
   chrome.braveRewards.getExternalWallet('uphold', (result: number, wallet: RewardsExtension.ExternalWallet) => {
     // EXPIRED TOKEN
     if (result === 24) {
-      getExternalWallet(actions, externalWallet, open)
+      getExternalWallet(actions, externalWallet)
       return
     }
 
     actions.onExternalWallet(wallet)
-
-    if (open && wallet.verifyUrl) {
-      handleUpholdLink(wallet.verifyUrl)
-    }
   })
-}
-
-export const onVerifyClick = (actions: any, externalWallet?: RewardsExtension.ExternalWallet) => {
-  if (!externalWallet || externalWallet.verifyUrl) {
-    getExternalWallet(actions, externalWallet, true)
-    return
-  }
-
-  handleUpholdLink(externalWallet.verifyUrl)
 }
 
 export const getClaimedPromotions = (promotions: RewardsExtension.Promotion[]) => {

@@ -56,9 +56,9 @@ std::string GetACAddress() {
       : kACAddressStaging;
 }
 
-std::string GetVerifyUrl(const std::string& state) {
+std::string GetAuthorizeUrl(const std::string& state, const bool kyc_flow) {
   const std::string id = GetClientId();
-
+  const std::string intention = kyc_flow ? "kyc" : "login";
   const std::string url = GetUrl();
 
   return base::StringPrintf(
@@ -73,10 +73,11 @@ std::string GetVerifyUrl(const std::string& state) {
       "transactions:read "
       "transactions:transfer:application "
       "transactions:transfer:others"
-      "&intention=kyc&"
+      "&intention=%s&"
       "state=%s",
       url.c_str(),
       id.c_str(),
+      intention.c_str(),
       state.c_str());
 }
 
@@ -203,6 +204,7 @@ ledger::ExternalWalletPtr GenerateLinks(ledger::ExternalWalletPtr wallet) {
 
   wallet->verify_url = GenerateVerifyLink(wallet->Clone());
   wallet->account_url = GetAccountUrl();
+  wallet->login_url = GetAuthorizeUrl(wallet->one_time_string, false);
 
   return wallet;
 }
@@ -225,7 +227,7 @@ std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet) {
     case ledger::WalletStatus::NOT_CONNECTED:
     case ledger::WalletStatus::DISCONNECTED_VERIFIED:
     case ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED: {
-      url = GetVerifyUrl(wallet->one_time_string);
+      url = GetAuthorizeUrl(wallet->one_time_string, true);
       break;
     }
   }

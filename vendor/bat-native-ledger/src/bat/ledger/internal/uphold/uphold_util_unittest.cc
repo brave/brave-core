@@ -71,10 +71,11 @@ TEST(UpholdUtilTest, GetFeeAddress) {
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
-TEST(UpholdUtilTest, GetVerifyUrl) {
+TEST(UpholdUtilTest, GetAuthorizeUrl) {
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
-  std::string result = braveledger_uphold::GetVerifyUrl("rdfdsfsdfsdf");
+  std::string result =
+      braveledger_uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
   ASSERT_EQ(result,
       "https://uphold.com/authorize/"
       "6d8d9473ed20be627f71ed46e207f40c004c5b1a?scope=accounts:read "
@@ -85,7 +86,7 @@ TEST(UpholdUtilTest, GetVerifyUrl) {
 
   // staging
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetVerifyUrl("rdfdsfsdfsdf");
+  result = braveledger_uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/authorize/"
       "4c2b665ca060d912fec5c735c734859a06118cc8?scope=accounts:read "
@@ -93,6 +94,28 @@ TEST(UpholdUtilTest, GetVerifyUrl) {
       "transactions:deposit transactions:read "
       "transactions:transfer:application transactions:transfer:others"
       "&intention=kyc&state=rdfdsfsdfsdf");
+  // production
+  ledger::_environment = ledger::Environment::PRODUCTION;
+  result =
+      braveledger_uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
+  ASSERT_EQ(result,
+      "https://uphold.com/authorize/"
+      "6d8d9473ed20be627f71ed46e207f40c004c5b1a?scope=accounts:read "
+      "accounts:write cards:read cards:write user:read "
+      "transactions:deposit transactions:read "
+      "transactions:transfer:application transactions:transfer:others"
+      "&intention=login&state=rdfdsfsdfsdf");
+
+  // staging
+  ledger::_environment = ledger::Environment::STAGING;
+  result = braveledger_uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
+  ASSERT_EQ(result,
+      "https://sandbox.uphold.com/authorize/"
+      "4c2b665ca060d912fec5c735c734859a06118cc8?scope=accounts:read "
+      "accounts:write cards:read cards:write user:read "
+      "transactions:deposit transactions:read "
+      "transactions:transfer:application transactions:transfer:others"
+      "&intention=login&state=rdfdsfsdfsdf");
 }
 
 TEST(UpholdUtilTest, GetAddUrl) {

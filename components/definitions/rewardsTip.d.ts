@@ -115,5 +115,6 @@ declare namespace RewardsTip {
     withdrawUrl: string
     userName: string
     accountUrl: string
+    loginUrl: string
   }
 }

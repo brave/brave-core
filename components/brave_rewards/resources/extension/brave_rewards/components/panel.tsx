@@ -253,7 +253,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   onAddFunds = (notificationId?: string) => {
-    const { externalWallet } = this.props.rewardsPanelData
+    const { externalWallet, balance } = this.props.rewardsPanelData
 
     if (notificationId) {
       this.actions.deleteNotification(notificationId)
@@ -270,10 +270,7 @@ export class Panel extends React.Component<Props, State> {
       return
     }
 
-    if (externalWallet.verifyUrl) {
-      utils.handleUpholdLink(externalWallet.verifyUrl, externalWallet)
-      return
-    }
+    utils.handleUpholdLink(balance, externalWallet)
   }
 
   showTipSiteDetail = (monthly: boolean) => {
@@ -720,7 +717,7 @@ export class Panel extends React.Component<Props, State> {
     let onVerifyClick = undefined
     if (!this.props.onlyAnonWallet) {
       walletStatus = utils.getWalletStatus(externalWallet)
-      onVerifyClick = utils.onVerifyClick.bind(this, this.actions)
+      onVerifyClick = utils.handleUpholdLink.bind(this, balance, externalWallet)
     }
 
     return (
@@ -745,6 +742,7 @@ export class Panel extends React.Component<Props, State> {
         goToUphold={this.goToUphold}
         greetings={utils.getGreetings(externalWallet)}
         onlyAnonWallet={this.props.onlyAnonWallet}
+        showLoginMessage={balance.total < 25}
         {...notification}
       >
         <WalletSummarySlider

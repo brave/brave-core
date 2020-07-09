@@ -360,15 +360,24 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.removeAllPendingContribution()
   }
 
-  handleUpholdLink = (link: string) => {
-    const { ui, externalWallet } = this.props.rewardsData
-    if (!ui.onBoardingDisplayed &&
-        (!externalWallet || (externalWallet && externalWallet.status === 0))) {
+  handleUpholdLink = () => {
+    const { ui, externalWallet, balance } = this.props.rewardsData
+
+    if (!externalWallet) {
+      return
+    }
+
+    if (balance.total < 25) {
+      window.open(externalWallet.loginUrl, '_self')
+      return
+    }
+
+    if (!ui.onBoardingDisplayed && externalWallet.status === 0) {
       this.toggleVerifyModal()
       return
     }
 
-    window.open(link, '_self')
+    window.open(externalWallet.verifyUrl, '_self')
   }
 
   onVerifyClick = (hideVerify: boolean) => {
@@ -383,7 +392,7 @@ class PageWallet extends React.Component<Props, State> {
       this.actions.onOnBoardingDisplayed()
     }
 
-    this.handleUpholdLink(externalWallet.verifyUrl)
+    this.handleUpholdLink()
   }
 
   getWalletStatus = (): WalletState | undefined => {
@@ -436,7 +445,7 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     if (externalWallet.verifyUrl) {
-      this.handleUpholdLink(externalWallet.verifyUrl)
+      this.handleUpholdLink()
       return
     }
   }
@@ -793,6 +802,7 @@ class PageWallet extends React.Component<Props, State> {
           goToUphold={this.goToUphold}
           greetings={this.getGreetings()}
           onlyAnonWallet={onlyAnonWallet}
+          showLoginMessage={balance.total < 25}
         >
           {
             enabledMain

@@ -240,6 +240,8 @@ IN_PROC_BROWSER_TEST_F(
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
   rewards_browsertest_helper::EnableRewards(browser());
+  contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
+  contribution_->IsBalanceCorrect();
 
   // Click on verify button
   rewards_browsertest_util::WaitForElementThenClick(
@@ -450,6 +452,34 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewardsWithBAT) {
       contents(),
       "[data-test-id='reset-text']",
       "Your 30 BATs and other Rewards");
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, UpholdLimitNoBAT) {
+  rewards_browsertest_helper::EnableRewards(browser());
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "#verify-wallet-button");
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "#cancel-login-button");
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "#verify-wallet-button");
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "#login-button");
+
+  // Check if we are redirected to uphold
+  {
+    const GURL current_url = contents()->GetURL();
+
+    auto found = current_url.spec().find("intention=login");
+    ASSERT_TRUE(found != std::string::npos);
+  }
 }
 
 }  // namespace rewards_browsertest

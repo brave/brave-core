@@ -38,12 +38,24 @@ void UpholdAuthorization::Authorize(
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
-
   const auto current_one_time = wallet->one_time_string;
 
   // we need to generate new string as soon as authorization is triggered
   wallet->one_time_string = GenerateRandomString(ledger::is_testing);
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
+
+  auto it = args.find("error_description");
+  if (it != args.end()) {
+    const std::string message = args.at("error_description");
+    BLOG(1, message);
+    if (message == "User does not meet minimum requirements") {
+      callback(ledger::Result::NOT_FOUND, {});
+      return;
+    }
+
+    callback(ledger::Result::LEDGER_ERROR, {});
+    return;
+  }
 
   if (args.empty()) {
     BLOG(0, "Arguments are empty");
@@ -52,7 +64,7 @@ void UpholdAuthorization::Authorize(
   }
 
   std::string code;
-  auto it = args.find("code");
+  it = args.find("code");
   if (it != args.end()) {
     code = args.at("code");
   }
