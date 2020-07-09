@@ -29,6 +29,18 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
         fatalError()
     }
     
+    private var gapLength: CGFloat = 0.0
+    
+    override func prepare() {
+        super.prepare()
+        if let braveTodaySection = braveTodaySection,
+            let collectionView = collectionView,
+            let attribute = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) {
+            let diff = collectionView.frame.height - attribute.frame.minY
+            gapLength = diff - 32
+        }
+    }
+    
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         guard let attribute = super.layoutAttributesForItem(at: indexPath)?.copy() as? UICollectionViewLayoutAttributes,
             let collectionView = collectionView else {
@@ -71,13 +83,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
         }
         
         if let braveTodaySection = braveTodaySection, indexPath.section == braveTodaySection {
-            if indexPath.item == 0 {
-                let diff = collectionView.bounds.height - attribute.frame.minY
-                attribute.frame.origin.y += diff - 32
-            } else if let item = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) {
-                let diff = collectionView.bounds.height - item.frame.minY
-                attribute.frame.origin.y += diff - 32
-            }
+            attribute.frame.origin.y += gapLength
         }
 
         return attribute
@@ -97,11 +103,8 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     
     override var collectionViewContentSize: CGSize {
         var size = super.collectionViewContentSize
-        guard let collectionView = collectionView else { return size }
-        if let braveTodaySection = braveTodaySection,
-            let item = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) {
-            let diff = collectionView.bounds.height - item.frame.minY
-            size.height += diff - 32
+        if braveTodaySection != nil {
+            size.height += gapLength
         }
         return size
     }
