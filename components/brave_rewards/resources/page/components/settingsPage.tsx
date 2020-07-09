@@ -88,8 +88,11 @@ class SettingsPage extends React.Component<Props, State> {
   componentDidUpdate (prevProps: Props, prevState: State) {
     if (
       this.props.rewardsData.enabledMain &&
-      prevProps.rewardsData.initializing &&
-      !this.props.rewardsData.initializing
+      (
+        !prevProps.rewardsData.enabledMain ||
+          prevProps.rewardsData.initializing &&
+          !this.props.rewardsData.initializing
+      )
     ) {
       this.startRewards()
     }

@@ -63,7 +63,7 @@ interface BatLedger {
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
   GetWalletPassphrase() => (string wallet_passphrase);
   RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
-  
+
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(int32 duration_in_seconds);
   SetPublisherMinVisits(int32 visits);
@@ -76,7 +76,7 @@ interface BatLedger {
   OnTimer(uint32 timer_id);
 
   GetBalanceReport(ledger.mojom.ActivityMonth month, int32 year) =>
-      (ledger.mojom.Result result, ledger.mojom.BalanceReportInfo report);
+      (ledger.mojom.Result result, ledger.mojom.BalanceReportInfo? report);
 
   IsWalletCreated() => (bool wallet_created);
 
