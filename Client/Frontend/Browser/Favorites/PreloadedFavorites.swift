@@ -2,6 +2,7 @@
 
 import Foundation
 import Shared
+import BraveShared
 
 private let log = Logger.browserLogger
 
@@ -33,8 +34,8 @@ struct PreloadedFavorites {
                 list.append(FavoriteSite(url: url, title: "Reddit"))
             }
             
-            if let url = URL(string: "https://coinmarketcap.com/") {
-                list.append(FavoriteSite(url: url, title: "CoinMarketCap"))
+            if let url = URL(string: "https://brave.com/msupport/") {
+                list.append(FavoriteSite(url: url, title: Strings.NTP.braveSupportFavoriteTitle))
             }
 
             return list
