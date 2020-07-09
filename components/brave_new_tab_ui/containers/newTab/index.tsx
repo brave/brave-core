@@ -441,9 +441,9 @@ class NewTabPage extends React.Component<Props, State> {
       const currencies = this.getCurrencyList()
       for (let ticker in networks) {
         if (currencies.includes(ticker)) {
-          chrome.binance.getDepositInfo(ticker, networks[ticker], (address: string, tag: string) => {
+          chrome.binance.getDepositInfo(ticker, networks[ticker], async (address: string, tag: string) => {
             this.setAssetDepositInfo(ticker, address, tag)
-            generateQRData((tag || address), ticker, this.setAssetDepositQRCodeSrc)
+            await generateQRData((tag || address), ticker, this.setAssetDepositQRCodeSrc)
           })
         }
       }

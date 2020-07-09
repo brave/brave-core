@@ -98,4 +98,6 @@
   <include name="IDR_BRAVE_COMMON_FONTS_POPPINS_POPPINS_900_NORMAL_78F97281F840D609AA7D345CAEF392C5_LATIN_EXT_V5_WOFF2" file="fonts/third_party/poppins/Poppins_900_normal_78f97281f840d609aa7d345caef392c5_latin-ext_v5.woff2" type="BINDATA" />
   <include name="IDR_BRAVE_COMMON_FONTS_POPPINS_POPPINS_900_NORMAL_BFA3A4D70CC392EA9C1260963BAAE6ED_LATIN_V5_WOFF2" file="fonts/third_party/poppins/Poppins_900_normal_bfa3a4d70cc392ea9c1260963baae6ed_latin_v5.woff2" type="BINDATA" />
   <include name="IDR_BRAVE_COMMON_FONTS_POPPINS_CSS" file="fonts/poppins.css" type="BINDATA" compress="gzip" />
+  <include name="IDR_BRAVE_COMMON_FONTS_CRYPTO_CSS" file="fonts/crypto_fonts.css" type="BINDATA" compress="gzip" />
+  <include name="IDR_BRAVE_COMMON_FONTS_CRYPTO_COINS_TTF" file="fonts/third_party/crypto/coins.ttf" type="BINDATA" />
 </grit-part>
