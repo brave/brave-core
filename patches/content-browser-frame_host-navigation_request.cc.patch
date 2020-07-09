@@ -1,5 +1,5 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index 711e4b02b7e0b401deb25380af453a332fb5c4e3..090220f49b7e154946bafffa550cb28f372f90a0 100644
+index baf19ee3bae8aba96965ddcf42858094df578722..614a681faac5833fa0c04cace96179c8616ff006 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
 @@ -2533,6 +2533,7 @@ void NavigationRequest::OnStartChecksComplete(
