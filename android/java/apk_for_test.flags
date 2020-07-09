@@ -52,3 +52,7 @@
     *** mNewTabPageLayout;
     *** mFeedSurfaceProvider;
 }
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
+    *** mHasClearedOmniboxForFocus;
+}
