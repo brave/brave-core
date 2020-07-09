@@ -34,7 +34,6 @@
     <color name="onboarding_indicator_default_color">#C2C4CF</color>
 
     <color name="brave_shield_bg_color">@color/default_primary_color</color>
-    <color name="brave_state_time_count_color">#222326</color>
 
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@color/modern_grey_50</color>
@@ -96,5 +95,12 @@
     <color name="shield_thank_you_icon_color">#212529</color>
 
     <color name="brave_stats_ads_color">#FB542B</color>
-    <color name="brave_stats_data_saved_color">#A0A5EB</color>
+    <color name="brave_stats_data_saved_color">#4C54D2</color>
+    <color name="brave_state_time_count_color">#212529</color>
+
+    <color name="brave_stats_title_color">#868E96</color>
+    <color name="brave_stats_text_color">#212529</color>
+
+    <color name="brave_stats_bg_color">#FFFFFF</color>
+    <color name="brave_stats_close_button_color">#495057</color>
 </resources>

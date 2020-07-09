@@ -10,9 +10,8 @@
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/onboarding_bg_color"
-    android:maxWidth="400dp"
-    android:padding="16dp">
+    android:background="@color/brave_stats_bg_color"
+    android:maxWidth="400dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,12 +22,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
             android:layout_gravity="center"
             android:text="@string/brave_stats"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="@color/onboarding_text_color"/>
+            android:textColor="@color/brave_stats_text_color"/>
 
         <com.google.android.material.tabs.TabLayout
             android:layout_width="match_parent"
@@ -39,11 +37,11 @@
             app:tabMode="fixed"
             app:tabIndicatorColor="@color/brave_theme_color"
             android:minHeight="?attr/actionBarSize"
-            android:background="@color/onboarding_bg_color"
-            app:tabTextColor="@color/onboarding_text_color"
+            android:background="@color/brave_stats_bg_color"
+            app:tabTextColor="@color/brave_stats_text_color"
             android:textSize="14sp"/>
 
-        <androidx.viewpager.widget.ViewPager
+        <org.chromium.chrome.browser.onboarding.NonSwipeableViewPager
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/viewpager"/>
@@ -57,6 +55,7 @@
             android:contentDescription="@null"
             android:layout_gravity="end|top"
             android:tint="@color/onboarding_text_color"
+            android:padding="16dp"
             android:src="@drawable/btn_close"/>
 
 </FrameLayout>

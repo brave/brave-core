@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.PopupWindow;
+import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -74,17 +75,14 @@ import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 
 import java.net.URL;
 import java.util.List;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
+import java.util.Date;
 
 public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClickListener,
   View.OnLongClickListener,
   BraveRewardsObserver,
   BraveRewardsNativeWorker.PublisherObserver {
   public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
-  private static final short MILLISECONDS_PER_ITEM = 50;
 
   private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
@@ -200,7 +198,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
       @Override
       public void savedBandwidth(long savings) {
-        Log.e("NTP", "Savings : " + savings);
+        // Log.e("NTP", "Savings : " + savings);
         addSavedBandwidthToDb(savings);
       }
     };
@@ -315,12 +313,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       @Override
       protected Void doInBackground() {
         try {
-          DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm", Locale.getDefault());
-          String timestamp = df.format(Calendar.getInstance().getTime());
+          Calendar calender = Calendar.getInstance();
+          calender.setTime(new Date());
+          long timestamp = calender.getTimeInMillis();
           SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(savings, timestamp);
           long rowId = mDatabaseHelper.insertSavedBandwidth(savedBandwidthTable);
           // Log.e("NTP", braveStatsTable.getUrl() + " : stat type = " + braveStatsTable.getStatType());
-          Log.e("NTP", "SavedBandwidthTable RowId : " + rowId);
+          // Log.e("NTP", "SavedBandwidthTable RowId : " + rowId);
         } catch (Exception e) {
           // Do nothing if url is invalid.
           // Just return w/o showing shields popup.
@@ -341,14 +340,15 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       @Override
       protected Void doInBackground() {
         try {
-          DateFormat df = new SimpleDateFormat("dd MM yyyy, HH:mm", Locale.getDefault());
-          String timestamp = df.format(Calendar.getInstance().getTime());
+          Calendar calender = Calendar.getInstance();
+          calender.setTime(new Date());
+          long timestamp = calender.getTimeInMillis();
           URL urlObject = new URL(url);
           URL siteObject = new URL(statSite);
           BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), statType, siteObject.getHost(), timestamp);
           long rowId = mDatabaseHelper.insertStats(braveStatsTable);
           // Log.e("NTP", braveStatsTable.getUrl() + " : stat type = " + braveStatsTable.getStatType());
-          Log.e("NTP", "BraveStatsTable RowId : " + rowId);
+          // Log.e("NTP", "BraveStatsTable RowId : " + rowId);
         } catch (Exception e) {
           // Do nothing if url is invalid.
           // Just return w/o showing shields popup.
@@ -397,6 +397,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   }
 
   private void showShieldsMenu(View mBraveShieldsButton) {
+    // for (Pair<String,Integer> statPair : mDatabaseHelper.getStatsWithDate()) {
+    //   Log.e("NTP", statPair.first + " : count = " + statPair.second);
+    // }
+
     Tab currentTab = getToolbarDataProvider().getTab();
     if (currentTab == null) {
       return;
@@ -438,10 +442,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                                      int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP,
                                      List<Animator> animators) {
     Context context = getContext();
-    if (PackageUtils.isFirstInstall(context) && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
-      Intent searchActivityIntent = new Intent(context, SearchActivity.class);
-      context.startActivity(searchActivityIntent);
-    } else {
+    // if (PackageUtils.isFirstInstall(context) && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
+    //   Intent searchActivityIntent = new Intent(context, SearchActivity.class);
+    //   context.startActivity(searchActivityIntent);
+    // } else {
       if (mBraveShieldsButton != null) {
         Animator animator;
         if (hasFocus) {
@@ -473,7 +477,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           animators.add(animator);
         }
       }
-    }
+    // }
   }
 
   protected void updateModernLocationBarColor(int color) {

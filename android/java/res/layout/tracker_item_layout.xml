@@ -12,43 +12,32 @@
     android:layout_margin="16dp"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/website_icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:visibility="gone"
-        android:contentDescription="@null"/>
-
     <TextView
         android:id="@+id/tracker_count_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="13"
+        android:ellipsize="end"
+        android:maxLines = "1"
         android:textSize="16sp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif"
         android:visibility="gone"
-        android:textColor="@color/onboarding_text_color"/>
+        android:textColor="@color/brave_stats_text_color"/>
 
     <TextView
+        android:id="@+id/site_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Trackers 1"
         android:textSize="16sp"
+        android:ellipsize="end"
+        android:maxLines = "1"
+        android:layout_marginEnd="16dp"
         android:layout_gravity="center_vertical"
         android:fontFamily="sans-serif"
-        android:textColor="@color/onboarding_text_color"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="80"
-        android:textSize="16sp"
-        android:layout_gravity="center_vertical"
-        android:fontFamily="sans-serif"
-        android:textColor="@color/onboarding_text_color"/>
+        android:textColor="@color/brave_stats_text_color"/>
 
 </LinearLayout>
