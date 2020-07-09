@@ -76,16 +76,16 @@ export const generateGridSiteProperties = (
   }
 }
 
-export const getGridSitesWhitelist = (
+export const getTopSitesWhitelist = (
   topSites: chrome.topSites.MostVisitedURL[]
   ): chrome.topSites.MostVisitedURL[] => {
   const defaultChromeWebStoreUrl: string = 'https://chrome.google.com/webstore'
-  const filteredGridSites: chrome.topSites.MostVisitedURL[] = topSites
+  const filteredTopSites: chrome.topSites.MostVisitedURL[] = topSites
     .filter(site => {
       // See https://github.com/brave/brave-browser/issues/5376
       return !site.url.startsWith(defaultChromeWebStoreUrl)
     })
-  return filteredGridSites
+  return filteredTopSites
 }
 
 export const generateGridSitesFromLegacyEntries = (

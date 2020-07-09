@@ -196,18 +196,18 @@ describe('new tab util files tests', () => {
       })
     })
   })
-  describe('getGridSitesWhitelist', () => {
+  describe('getTopSitesWhitelist', () => {
     it('excludes https://chrome.google.com/webstore from list', () => {
       const topSites: chrome.topSites.MostVisitedURL[] = [
         { url: 'https://chrome.google.com/webstore', title: 'store' }
       ]
-      expect(newTabUtils.getGridSitesWhitelist(topSites)).toHaveLength(0)
+      expect(newTabUtils.getTopSitesWhitelist(topSites)).toHaveLength(0)
     })
     it('does not exclude an arbritary site from list', () => {
       const topSites: chrome.topSites.MostVisitedURL[] = [
         { url: 'https://tmz.com', title: 'tmz' }
       ]
-      expect(newTabUtils.getGridSitesWhitelist(topSites)).toHaveLength(1)
+      expect(newTabUtils.getTopSitesWhitelist(topSites)).toHaveLength(1)
     })
   })
   describe('filterFromExcludedSites', () => {
