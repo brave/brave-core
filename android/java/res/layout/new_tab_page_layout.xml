@@ -23,6 +23,8 @@
         android:id="@+id/badge_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="-32dp"
+        android:layout_marginTop="-32dp"
         android:layout_gravity="top|end">
 
         <com.airbnb.lottie.LottieAnimationView

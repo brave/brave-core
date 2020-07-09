@@ -75,6 +75,14 @@ public class OnboardingBottomSheetViewPagerAdapter extends PagerAdapter {
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.onboarding_pager_layout,
                            container, false);
 
+        if (mOnboardingType == OnboardingPrefManager.ONBOARDING_ADS
+                || mOnboardingType == OnboardingPrefManager.ONBOARDING_DATA_SAVED
+                || mOnboardingType == OnboardingPrefManager.ONBOARDING_TIME) {
+            if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                layout.findViewById(R.id.btn_turn_on_privacy_stats).setVisibility(View.GONE);
+            }
+        }
+
         switch (mOnboardingType) {
         case OnboardingPrefManager.ONBOARDING_ADS:
             position = 0;
