@@ -706,8 +706,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<std::string>& list,
       ledger::ResultCallback callback);
 
-  void FetchParameters();
-
   void GetCredsBatchesByTriggers(
       const std::vector<std::string>& trigger_ids,
       ledger::GetCredsBatchListCallback callback);
