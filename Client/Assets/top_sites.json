@@ -1382,10 +1382,10 @@
     "domain": "zillow.com"
   },
   {
-    "title": "coinmarketcap",
-    "url": "https://coinmarketcap.com/",
-    "image_url": "coinmarketcap.png",
-    "background_color": "#F7F8F9",
-    "domain": "coinmarketcap.com"
+    "title": "brave-support",
+    "url": "https://brave.com/msupport/",
+    "image_url": "brave-support.png",
+    "background_color": "#495057",
+    "domain": "brave.com"
   }
 ]

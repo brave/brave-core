@@ -748,6 +748,13 @@ extension Strings {
                     value: "Learn more about sponsored images",
                     comment: "")
         
+        public static let braveSupportFavoriteTitle =
+            NSLocalizedString("ntp.braveSupportFavoriteTitle",
+                              tableName: "BraveShared",
+                              bundle: .braveShared,
+                              value: "Brave Support",
+                              comment: "Bookmark title for Brave Support")
+        
         public static let settingsTitle = NSLocalizedString("ntp.settingsTitle", tableName: "BraveShared", bundle: Bundle.braveShared, value: "New Tab Page", comment: "Title on settings page to adjust the primary home screen functionality.")
         public static let settingsBackgroundImages = NSLocalizedString("ntp.settingsBackgroundImages", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Show Background Images", comment: "A setting to enable or disable background images on the main screen.")
         public static let settingsBackgroundImageSubMenu = NSLocalizedString("ntp.settingsBackgroundImageSubMenu", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Background Images", comment: "A button that leads to a 'more' menu, letting users configure additional settings.")
