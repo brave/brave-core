@@ -12,6 +12,7 @@
 
 
 typedef NS_ENUM(NSInteger, BATContributionStep) {
+  BATContributionStepStepRetryCount = -7,
   BATContributionStepStepAcOff = -6,
   BATContributionStepStepRewardsOff = -5,
   BATContributionStepStepAcTableEmpty = -4,
@@ -259,7 +260,7 @@ typedef NS_ENUM(NSInteger, BATInlineTipsPlatforms) {
 
 
 
-@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATRewardsParameters, BATBalance, BATAutoContributeProperties, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATRewardsInternalsInfo, BATServerPublisherInfo, BATServerPublisherPartial, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch, BATSKUOrder, BATSKUOrderItem, BATSKUTransaction, BATUrlResponse;
+@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATRewardsParameters, BATBalance, BATAutoContributeProperties, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATRewardsInternalsInfo, BATServerPublisherInfo, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch, BATSKUOrder, BATSKUOrderItem, BATSKUTransaction, BATUrlResponse;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -295,6 +296,7 @@ NS_SWIFT_NAME(PublisherInfo)
 @property (nonatomic) int32_t category;
 @property (nonatomic) uint64_t reconcileStamp;
 @property (nonatomic) BATPublisherStatus status;
+@property (nonatomic) uint64_t statusUpdatedAt;
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * url;
 @property (nonatomic, copy) NSString * provider;
@@ -330,6 +332,7 @@ NS_SWIFT_NAME(PendingContributionInfo)
 @property (nonatomic, copy) NSString * publisherKey;
 @property (nonatomic) BATRewardsType type;
 @property (nonatomic) BATPublisherStatus status;
+@property (nonatomic) uint64_t statusUpdatedAt;
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, copy) NSString * url;
 @property (nonatomic, copy) NSString * provider;
@@ -439,17 +442,9 @@ NS_SWIFT_NAME(ServerPublisherInfo)
 @interface BATServerPublisherInfo : NSObject <NSCopying>
 @property (nonatomic, copy) NSString * publisherKey;
 @property (nonatomic) BATPublisherStatus status;
-@property (nonatomic) bool excluded;
 @property (nonatomic, copy) NSString * address;
+@property (nonatomic) uint64_t updatedAt;
 @property (nonatomic, copy, nullable) BATPublisherBanner * banner;
-@end
-
-NS_SWIFT_NAME(ServerPublisherPartial)
-@interface BATServerPublisherPartial : NSObject <NSCopying>
-@property (nonatomic, copy) NSString * publisherKey;
-@property (nonatomic) BATPublisherStatus status;
-@property (nonatomic) bool excluded;
-@property (nonatomic, copy) NSString * address;
 @end
 
 NS_SWIFT_NAME(TransferFee)
