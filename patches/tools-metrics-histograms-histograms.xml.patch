@@ -1,8 +1,8 @@
 diff --git a/tools/metrics/histograms/histograms.xml b/tools/metrics/histograms/histograms.xml
-index 1c73e36e78edb7d358c09917518fec0355bb6757..90058c4ffcd8340a9161f320163d5b5e73451a2c 100644
+index befef0d7b454548647ce793e46292d2e77cc8ec9..c15dcdb6ac22c5aaf493ad10ca6793383d487f27 100644
 --- a/tools/metrics/histograms/histograms.xml
 +++ b/tools/metrics/histograms/histograms.xml
-@@ -201970,6 +201970,7 @@ regressions. -->
+@@ -201990,6 +201990,7 @@ regressions. -->
    <suffix name="ProtectedMedia" label="Protected media permission"/>
    <suffix name="PushMessaging" label="Push messaging permission"/>
    <suffix name="Quota" label="Quota permission"/>
