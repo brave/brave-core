@@ -15,7 +15,11 @@ namespace ads {
 
 // TODO(Moritz Haller): Move out of ads namespace, move to impl file and
 // retrieve via getter
-static const std::vector<std::string>& _funnel_site_segments = {
+static const std::vector<std::string>& _cpg_segments = {
+  "cpg purchase intent"
+};
+
+static const std::vector<std::string>& _automotive_segments = {
   "automotive purchase intent by category-compact pickup",
   "automotive purchase intent by category-compact suv",
   "automotive purchase intent by category-compact van",
@@ -73,1737 +77,1741 @@ static const std::vector<std::string>& _funnel_site_segments = {
 
 static const std::vector<FunnelSiteInfo> _automotive_funnel_sites = {
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autotrader.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carmax.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://car.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autobytel.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dealerrater.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://eastwood.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://buyatoyota.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hertzcarsales.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://andysautosport.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://legendarymotorcar.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://streetsideclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carchex.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hybrid-racing.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://sportcompactwarehouse.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://australianmusclecarsales.com.au",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://optionsauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://genracer.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://endurancewarranty.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://fswerks.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://kingmotorsports.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://brotherstrucks.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hymanltd.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://7ent.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://passwordjdm.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://xcceleration.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://billetspecialties.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://thewestcoastclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://stainlessworks.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://lkperformance.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cimotorsports.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://oldbug.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://countryclassiccars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://steelerubber.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://westcoastautosport.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://chevsofthe40s.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://goldenclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rksport.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://springrates.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mershons.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://paragonmotorclub.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://troy-ford-extended-warranty.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://continentalwarranty.org",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vvncc.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vintagespeedsters.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://evolutionimport.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classicinvest.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://xcaliberart.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://valenticlassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://lombardfordwarrantys.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://holden.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dantesparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://airheadparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dsmparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://motorchrome.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://americanclassic.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://northshoresportscars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rywire.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://proteamcorvette.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rallyarmor.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://turbotechracing.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://belairautoparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://snydersantiqueauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://halibrand.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://warrantyheadquarters.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vintagemotorssarasota.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://bobdrake.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cooperclassiccars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classiccarautoparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://chryslerwarrantys.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://contes.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://proformanceunlimited.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://wilsonmotorco.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://aaautowarranty.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://beangarage.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://kstech.biz",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://oldmoparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://yogisinc.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jshmotors.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://pdm-racing.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://turninconcepts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://convertibleparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://eaglegb.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://collectorsautosupply.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://supracarparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://aston.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cashfortrucks.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://pjsautoworld.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://morrisminorspares.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carsinc.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://amkproducts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://certifiedautoappraisers.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dealer.autobytel.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://steam-car-dev.karoo.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://accuratevalue.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://advancedautodealers.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://affordableclassicsinc.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://aktivperformanceparts.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://acscorp.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://anamericanclassic.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://americanstreetrod.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://acautos.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://antiqueautomobileradio.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://apexperformance.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoappraisalsbyalan.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://armoredcars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoappraisalnetwork.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://theautoappraiser.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autobound.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoinstruments.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autopi.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoservicewarranty.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoadvisor.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://the-autoline.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://automall.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://automobileinspections.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autosearcher.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autosource-online.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autovantage.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://avantiparts.biz",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://avrecovery.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://bwautoparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://bcautos.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://benzamotors.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://blackmountainprecision.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://boomslang.us",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://buyavette.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://buyerservicesinternational.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://calimerswheelshop.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carbroker.com.au",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carcarepeople.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cascadeclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://certifiedcarcare.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://martinpacker.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://aerokits.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://chicagovintage.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://chuckstrucksllc.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://brassauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classicbuicks.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classiccarinspections.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://s219981800.onlinehome.us",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classiccarmall.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classiccarprojects.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classicsteeringwheels.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cobrarestorers.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://coiloversdirect.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://grilleteeth.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cruisinclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://curryacuracare.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://customclassic.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cygnusperformance.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://factoryservicecontracts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hotrodproducts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://daytonaparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://officialhyundaiwarranty.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://deucesteel.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dewittracing.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://doubledparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dragers.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://earlyford.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://eatmyflames.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://ecklersautomotive.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://endlessendeavors.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://europerformance.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://europeancollectibles.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://expertautoappraisals.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://manheimglobaltrader.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://extended-warranty-pro.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://funkypower.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://geneshotrodparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://glasermotors.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://goodsamesp.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://gotboostinc.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://greaterdakotaclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://handhantique.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hardtopstands.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://eharwood.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://heidts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://thehotrodgirl.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hotrodssuperstore.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hotrods2die4.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hptmotorsports.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://importperformance.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://oldradman.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classic-carstore.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://i-van.org",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://islandmotorsports.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jaycorptech.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jbmotors.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jefflilly.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://woodwheels.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classic-new.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jscspeed.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://key-men.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://kfxperformance.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://klasse356.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://kmbritishcars.ca",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://landefabrication.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://landlproducts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://lanocharacing.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://larryscarsparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://littledearborn.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://lostnthe50sclassiccars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://luzzago.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://maidstonesportscars.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vintageandclassiccars.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://maxmerrittauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://britbits.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://memorylaneclassiccars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://englishwheels.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://metrommp.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mgcity.com.au",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://moderncapriparts.biz",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mooneyes.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://themotorcompany.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mustangdreams.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mycarinspections.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://nationalmoparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classicmustang.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://newcarslowestprice.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://newtoncomm.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://capecodmustang.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://northernclassictrucks.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classicmusclecars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://option1garage.com.au",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://pagparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://parrautomotive.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://partsfromthepast.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://peakesclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://performancedepot.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://perrysprojectcars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://peter-byrne.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://musclecardecals.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoappraisers.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://prestigecarnet.com.au",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rrclassiccars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://racinggreencars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://store.racinglab.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://radersrelics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://ratsglassbodies.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rdfabs.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://reds-headers.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rtcc.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://ezboyinteriors.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rollingart.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rpmvt.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://ruckusrods.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://runnymedemotorcompany.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://sandersreproglass.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://satingloss.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://scottssupertrucks.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://securecarcare.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://selectmotors.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://shafersclassic.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://shiftworks.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://show-cars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://sidchaverscompany.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://sleemansclassiccars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://slidegood.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://villageservice.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://stencilsandstripes.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://stonebridgecars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://streetrodgarage.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://streetrodglass.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://srbymichael.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://rodsforsale.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://highspeedmotors.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://studebakerparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://sunsetclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://texasclassiccarsofdallas.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://tfbdesigns.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://then-now-auto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://thunderbirdsouthwest.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://tolesautomotive.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://totallyautoinc.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://tr-classic.de",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://turborevs.org.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://twmperformance.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jagxk.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://ultramaticdynamics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://usaautoappraisers.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://usedeclipseparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://usedcarinspections.org",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vintagerodcomponents.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vintagecarradiatorcompany.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vintagemotorgarage.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vipclassics.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vsoc.nl",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://wwmotorcars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://warrantydirect.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://warrantywarehouse.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://watsons-streetworks.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://weatherstripspecial.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://wescottsauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://willysreplacementparts.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://wirthscustomauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://fordwood.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://woodiesusa.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://gearheadcity.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://woolcockantiqueauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://wow-products.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://xatracing.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://yearwood.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carfax.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://cargurus.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://truecar.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://kbb.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://edmunds.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://caranddriver.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://motortrend.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carsforsale.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://thecarconnection.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoblog.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jdpower.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autolist.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://auto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carsdirect.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carvana.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://toyota.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://nadaguides.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://roadandtrack.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://chevrolet.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://fueleconomy.gov",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://ford.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://iseecars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://usnews.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://awadserver.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://consumerreports.org",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoguide.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://nissanusa.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jalopnik.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://honda.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://motor1.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mbusa.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://jeep.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://lexus.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mazdausa.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://subaru.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://driving.ca",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://audiusa.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autotrader.ca",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://enterprisecarsales.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://gmc.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://greencarreports.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoweb.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://acura.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autowise.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://bmwusa.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://newcars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoweek.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hyundaiusa.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hemmings.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://realtor.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://repairpal.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vw.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://classiccars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://auto123.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://craigslist.org",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autonews.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://fuelly.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://nerdwallet.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://topspeed.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://whatcar.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carbuzz.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://creditkarma.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://bankrate.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://capitalone.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://imotors.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vroom.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carsguide.com.au",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://bbb.org",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dodge.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hotcars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vehiclehistory.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://automotivetouchup.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://thetruthaboutcars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://zillow.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carsgenius.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hagerty.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://homedepot.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://buyerlink.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carfaxonline.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://yelp.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://lowes.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://redfin.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://att.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autonation.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://bankofamerica.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carcomplaints.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://costco.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vinurl.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carwow.co.uk",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://7passengervehicleszone.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carophile.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://getauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://usedcars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autotempest.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://choosenissan.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dealer.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://leasehackr.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mate1.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://mysearches.net",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://paintscratch.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://badvin.org",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carsoup.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://manheim.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://surecritic.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://torquenews.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://gmfleet.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://instamotor.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://agirlsguidetocars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://autoconsumerinfo.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://best8seatersuv.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://faqtoids.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://germaincars.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://gtcarlot.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carwise.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://buick.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://nada.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://alamo.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://carvillesautomart.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://leasetrader.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://motominer.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://quicklane.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://westernslopeauto.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://airportvanrental.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://confused.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://dealerrater.ca",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://hireology.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://nationalcar.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://snap21.com",
       1),
   FunnelSiteInfo(
-      _funnel_site_segments,
+      _automotive_segments,
       "http://vwserviceandparts.com",
-      1)
+      1),
+  FunnelSiteInfo(
+      _cpg_segments,
+      "https://www.lion.co.jp",
+      10)
 };
 
 class FunnelSites {
