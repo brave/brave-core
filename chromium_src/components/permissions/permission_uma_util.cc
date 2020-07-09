@@ -13,7 +13,6 @@ namespace {
 
 std::string GetPermissionRequestString_ChromiumImpl(PermissionRequestType type);
 void BraveRecordPermissionAction(ContentSettingsType permission,
-                                 bool secure_origin,
                                  PermissionAction action);
 
 std::string GetPermissionRequestString(PermissionRequestType type) {
@@ -29,10 +28,10 @@ std::string GetPermissionRequestString(PermissionRequestType type) {
 }  // namespace
 }  // namespace permissions
 
-#define BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION              \
-  case ContentSettingsType::AUTOPLAY:                               \
-    BraveRecordPermissionAction(permission, secure_origin, action); \
-    break; \
+#define BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION \
+  case ContentSettingsType::AUTOPLAY:                  \
+    BraveRecordPermissionAction(permission, action);   \
+    break;
 
 #include "../../../../components/permissions/permission_uma_util.cc"
 #undef BRAVE_PERMISSIONUMAUTIL_RECORDPERMISSIONACTION
@@ -41,14 +40,11 @@ namespace permissions {
 namespace {
 
 void BraveRecordPermissionAction(ContentSettingsType permission,
-                                 bool secure_origin,
                                  PermissionAction action) {
   switch (permission) {
     case ContentSettingsType::AUTOPLAY:
-      PERMISSION_ACTION_UMA(secure_origin, "Permissions.Action.Autoplay",
-                            "Permissions.Action.SecureOrigin.Autoplay",
-                            "Permissions.Action.InsecureOrigin.Autoplay",
-                            action);
+      base::UmaHistogramEnumeration("Permissions.Action.Autoplay", action,
+                                    PermissionAction::NUM);
       break;
     default:
       break;
