@@ -144,6 +144,25 @@ export default class Settings extends React.PureComponent<Props, State> {
     return <SettingsSidebarSVGContent isActive={isActiveTab} src={srcUrl} />
   }
 
+  getTabKey = (tab: ActiveTabType) => {
+    switch (tab) {
+      case 'BackgroundImage':
+        return 'backgroundImageTitle'
+      case 'BraveStats':
+        return 'statsTitle'
+      case 'Rewards':
+        return 'rewardsTitle'
+      case 'TopSites':
+        return 'topSitesTitle'
+      case 'Clock':
+        return 'clockTitle'
+      case 'moreCards':
+        return 'moreCards'
+      default:
+        return ''
+    }
+  }
+
   render () {
     const {
       textDirection,
@@ -187,7 +206,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                 <SettingsSidebarActiveButtonSlider translateTo={activeTab} />
                 {
                   this.activeTabOptions.map((tabName, index) => {
-                    const name = index === (this.activeTabOptions.length - 1) ? tabName : `show${tabName}`
+                    const name = this.getTabKey(tabName)
                     if (index === 0 && !allowSponsoredWallpaperUI) {
                       return <div key={`sidebar-button=${index}`} />
                     }

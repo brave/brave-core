@@ -167,6 +167,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "topSitesTitle", IDS_BRAVE_NEW_TAB_TOP_SITES },
         { "statsTitle", IDS_BRAVE_NEW_TAB_STATS },
         { "clockTitle", IDS_BRAVE_NEW_TAB_CLOCK },
+        { "rewardsTitle", IDS_BRAVE_NEW_TAB_REWARDS },
+        { "backgroundImageTitle", IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE },
         // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
         { "done", IDS_BRAVE_PRIVATE_NEW_TAB_DONE },
