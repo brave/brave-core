@@ -33,6 +33,8 @@ extension Preferences {
         // We need to translate that to use the new `firstPingParam` preference.
         static let firstPingParam: Option<Bool> =
             Option<Bool>(key: "dau.first-ping", default: Preferences.DAU.lastLaunchInfo.value == nil)
+        /// Date of installation, this preference is removed after 14 days of usage.
+        public static let installationDate = Option<Date?>(key: "dau.installation-date", default: nil)
     }
     public final class URP {
         static let nextCheckDate = Option<TimeInterval?>(key: "urp.next-check-date", default: nil)
