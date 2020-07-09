@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+const clipboardCopy = require('clipboard-copy')
 
 import createWidget from '../widget/index'
 import { StyledTitleTab } from '../widgetTitleTab'
@@ -27,12 +28,29 @@ import {
   ListLabel,
   AssetIconWrapper,
   AssetIcon,
-  SearchInput
+  SearchInput,
+  DetailIcons,
+  AssetTicker,
+  AssetLabel,
+  AssetQR,
+  DetailArea,
+  MemoArea,
+  MemoInfo,
+  SmallNoticeWrapper,
+  QRImage,
+  DetailLabel,
+  DetailInfo,
+  CopyButton,
+  BackArrow,
+  GenButton,
+  DetailIconWrapper
 } from './style'
 import {
-  SearchIcon
+  SearchIcon,
+  QRIcon
 } from '../exchangeWidget/shared-assets'
 import GeminiLogo from './assets/gemini-logo'
+import { CaratLeftIcon } from 'brave-ui/components/icons'
 
 // Utils
 import geminiData from './data'
@@ -42,6 +60,7 @@ import { getLocale } from '../../../../common/locale'
 interface State {
   currentDepositSearch: string
   currentDepositAsset: string
+  currentQRAsset: string
 }
 
 interface Props {
@@ -50,6 +69,8 @@ interface Props {
   authInProgress: boolean
   geminiClientUrl: string
   selectedView: string
+  assetAddresses: Record<string, string>
+  assetAddressQRCodes: Record<string, string>
   onShowContent: () => void
   onDisableWidget: () => void
   onValidAuthCode: () => void
@@ -66,7 +87,8 @@ class Gemini extends React.PureComponent<Props, State> {
     super(props)
     this.state = {
       currentDepositSearch: '',
-      currentDepositAsset: ''
+      currentDepositAsset: '',
+      currentQRAsset: ''
     }
   }
 
@@ -136,6 +158,12 @@ class Gemini extends React.PureComponent<Props, State> {
   }
 
   renderIndexView () {
+    const { currentQRAsset } = this.state
+
+    if (currentQRAsset) {
+      this.renderQRView()
+    }
+
     return false
   }
 
@@ -159,6 +187,26 @@ class Gemini extends React.PureComponent<Props, State> {
         currentDepositSearch: ''
       })
     }
+  }
+
+  copyToClipboard = async (address: string) => {
+    try {
+      await clipboardCopy(address)
+    } catch (e) {
+      console.log(`Could not copy address ${e.toString()}`)
+    }
+  }
+
+  setQR = (asset: string) => {
+    this.setState({
+      currentQRAsset: asset
+    })
+  }
+
+  cancelQR = () => {
+    this.setState({
+      currentQRAsset: ''
+    })
   }
 
   renderIconAsset = (key: string, isDetail: boolean = false) => {
@@ -223,12 +271,94 @@ class Gemini extends React.PureComponent<Props, State> {
     }
   }
 
+  renderQRView () {
+    const { assetAddressQRCodes } = this.props
+    const imageSrc = assetAddressQRCodes[this.state.currentQRAsset]
+
+    return (
+      <SmallNoticeWrapper>
+        <QRImage src={imageSrc} />
+        <GenButton onClick={this.cancelQR}>
+          {getLocale('binanceWidgetDone')}
+        </GenButton>
+      </SmallNoticeWrapper>
+    )
+  }
+
+  renderCurrentDepositAsset = () => {
+    const { currentDepositAsset } = this.state
+    const { assetAddresses } = this.props
+    const currentDepositAddress = assetAddresses[currentDepositAsset] || ''
+
+    return (
+      <>
+        <ListItem>
+          <DetailIcons>
+            <BackArrow>
+              <CaratLeftIcon
+                onClick={this.setCurrentDepositAsset.bind(this, '')}
+              />
+            </BackArrow>
+            <DetailIconWrapper>
+              {this.renderIconAsset(currentDepositAsset.toLowerCase(), true)}
+            </DetailIconWrapper>
+          </DetailIcons>
+          <AssetTicker>
+            {currentDepositAsset}
+          </AssetTicker>
+          <AssetLabel>
+            {geminiData.currencies[currentDepositAsset]}
+          </AssetLabel>
+          {
+            currentDepositAddress
+            ? <AssetQR onClick={this.setQR.bind(this, currentDepositAsset)}>
+                <img style={{ width: '25px', marginRight: '5px' }} src={QRIcon} />
+              </AssetQR>
+            : null
+          }
+        </ListItem>
+        <DetailArea>
+          {
+            !currentDepositAddress
+            ? <MemoArea>
+                <MemoInfo>
+                  <DetailLabel>
+                    {`${currentDepositAsset}`}
+                  </DetailLabel>
+                  <DetailInfo>
+                    {getLocale('binanceWidgetAddressUnavailable')}
+                  </DetailInfo>
+                </MemoInfo>
+              </MemoArea>
+            : null
+          }
+          {
+            currentDepositAddress
+            ? <MemoArea>
+                <MemoInfo>
+                  <DetailLabel>
+                    {`${currentDepositAsset} ${getLocale('binanceWidgetDepositAddress')}`}
+                  </DetailLabel>
+                  <DetailInfo>
+                    {currentDepositAddress}
+                  </DetailInfo>
+                </MemoInfo>
+                <CopyButton onClick={this.copyToClipboard.bind(this, currentDepositAddress)}>
+                  {getLocale('binanceWidgetCopy')}
+                </CopyButton>
+              </MemoArea>
+            : null
+          }
+        </DetailArea>
+      </>
+    )
+  }
+
   renderDepositView () {
     const { currentDepositSearch, currentDepositAsset } = this.state
 
     if (currentDepositAsset) {
-      return null
-      // return this.renderCurrentDepositAsset()
+      return this.renderCurrentDepositAsset()
     }
 
     return (

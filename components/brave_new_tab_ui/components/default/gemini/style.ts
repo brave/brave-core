@@ -178,3 +178,107 @@ export const SearchInput = styled<{}, 'input'>('input')`
     outline: 0;
   }
 `
+
+export const DetailIcons = styled<{}, 'div'>('div')`
+  float: left;
+  margin-top: -3px;
+  margin-right: 10px;
+`
+
+export const AssetTicker = styled<{}, 'span'>('span')`
+  color: #fff;
+  font-weight: bold;
+  margin-right: 3px;
+  font-size: 15px;
+`
+
+export const AssetQR = styled<{}, 'div'>('div')`
+  float: right;
+  margin-top: -3px;
+  cursor: pointer;
+`
+
+export const DetailArea = styled<{}, 'div'>('div')`
+  padding: 5px;
+  font-weight: bold;
+`
+
+export const AssetLabel = styled<{}, 'span'>('span')`
+  color: rgb(70, 70, 70);
+  display: inline-block;
+  font-weight: bold;
+  font-size: 15px;
+  min-width: 80px;
+`
+
+export const MemoArea = styled<{}, 'div'>('div')`
+  padding: 5px;
+`
+
+export const MemoInfo = styled<{}, 'div'>('div')`
+  float: left;
+  max-width: 160px;
+`
+
+export const GenButton = styled<{}, 'button'>('button')`
+  font-size: 13px;
+  font-weight: bold;
+  border-radius: 20px;
+  border: 0;
+  padding: 5px 10px;
+  cursor: pointer;
+  background: #2C2C2B;
+  color: rgba(255, 255, 255, 0.7);
+`
+
+export const CopyButton = styled(GenButton)`
+  float: right;
+`
+
+export const DetailInfo = styled<{}, 'span'>('span')`
+  color: #fff;
+  font-weight: bold;
+  display: block;
+  font-size: 15px;
+  margin-bottom: 10px;
+  width: 180px;
+  word-wrap: break-word;
+`
+
+export const BackArrow = styled<{}, 'div'>('div')`
+  width: 20px;
+  float: left;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: 3px;
+`
+
+export const NoticeWrapper = styled<{}, 'div'>('div')`
+  padding-top: 75px;
+  min-height: 250px;
+  text-align: center;
+  max-width: 240px;
+`
+
+export const SmallNoticeWrapper = styled(NoticeWrapper)`
+  min-width: 244px;
+`
+
+export const QRImage = styled<{}, 'img'>('img')`
+  width: 150px;
+  height: 150px;
+  display: block;
+  margin: 0 auto 20px auto;
+`
+
+export const DetailLabel = styled<{}, 'span'>('span')`
+  color: #7d7d7d;
+  font-weight: bold;
+  display: block;
+  font-size: 15px;
+  margin-bottom: 5px;
+`
+
+export const DetailIconWrapper = styled<{}, 'div'>('div')`
+  float: right;
+`
