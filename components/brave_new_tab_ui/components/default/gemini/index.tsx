@@ -37,23 +37,57 @@ interface Props {
   onDisableWidget: () => void
   onValidAuthCode: () => void
   onConnectGemini: () => void
+  onUpdateActions: () => void
   onGeminiClientUrl: (url: string) => void
 }
 
 class Gemini extends React.PureComponent<Props, State> {
+  private refreshInterval: any
 
   constructor (props: Props) {
     super(props)
   }
 
   componentDidMount () {
-    const { authInProgress } = this.props
+    const { userAuthed, authInProgress } = this.props
+
+    if (userAuthed) {
+      this.props.onUpdateActions()
+    }
 
     if (authInProgress) {
       this.checkForOauthCode()
     }
 
     this.getClientURL()
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    if (!prevProps.userAuthed && this.props.userAuthed) {
+      this.props.onUpdateActions()
+      this.checkSetRefreshInterval()
+    }
+
+    if (prevProps.userAuthed && !this.props.userAuthed) {
+      this.getClientURL()
+      this.clearIntervals()
+    }
+  }
+
+  componentWillUnmount () {
+    clearInterval(this.refreshInterval)
+  }
+
+  checkSetRefreshInterval = () => {
+    if (!this.refreshInterval) {
+      this.refreshInterval = setInterval(() => {
+        this.props.onUpdateActions()
+      }, 30000)
+    }
+  }
+
+  clearIntervals = () => {
+    clearInterval(this.refreshInterval)
   }
 
   getClientURL = () => {

@@ -39,6 +39,18 @@ class GeminiGetAccessTokenFunction :
   ResponseAction Run() override;
 };
 
+class GeminiGetTickerPriceFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("gemini.getTickerPrice", UNKNOWN)
+
+ protected:
+  ~GeminiGetTickerPriceFunction() override {}
+  void OnPriceResult(const std::string& price);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

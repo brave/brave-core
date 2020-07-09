@@ -13,3 +13,8 @@ export const onGeminiClientUrl = (clientUrl: string) => action(types.ON_GEMINI_C
 export const onValidGeminiAuthCode = () => action(types.ON_VALID_GEMINI_AUTH_CODE)
 
 export const connectToGemini = () => action(types.CONNECT_TO_GEMINI)
+
+export const setGeminiTickerPrice = (asset: string, price: string) => action(types.SET_GEMINI_TICKER_PRICE, {
+  asset,
+  price
+})

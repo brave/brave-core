@@ -13,6 +13,7 @@
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
 
+#include "brave/common/extensions/api/gemini.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
@@ -76,6 +77,35 @@ GeminiGetAccessTokenFunction::Run() {
 
 void GeminiGetAccessTokenFunction::OnCodeResult(bool success) {
   Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
+GeminiGetTickerPriceFunction::Run() {
+  if (!IsGeminiAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  std::unique_ptr<gemini::GetTickerPrice::Params> params(
+      gemini::GetTickerPrice::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetGeminiService(browser_context());
+  bool price_request = service->GetTickerPrice(
+      params->asset,
+      base::BindOnce(
+          &GeminiGetTickerPriceFunction::OnPriceResult, this));
+
+  if (!price_request) {
+    return RespondNow(
+        Error("Could not make request for price"));
+  }
+
+  return RespondLater();
+}
+
+void GeminiGetTickerPriceFunction::OnPriceResult(
+    const std::string& price) {
+  Respond(OneArgument(std::make_unique<base::Value>(price)));
 }
 
 }  // namespace api

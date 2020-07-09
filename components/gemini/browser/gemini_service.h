@@ -43,6 +43,7 @@ const char api_path_account_balances[] = "/v1/balances";
 const char api_path_account_addresses[] = "v1/addresses/";
 const char api_path_get_quote[] = "/v1/instant/quote";
 const char api_path_execute_quote[] = "/v1/instant/execute";
+const char api_path_ticker_price[] = "/v1/pubticker";
 
 class GeminiService : public KeyedService {
  public:
@@ -51,6 +52,7 @@ class GeminiService : public KeyedService {
 
   // Callbacks
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
+  using GetTickerPriceCallback = base::OnceCallback<void(const std::string&)>;
   using URLRequestCallback =
       base::OnceCallback<void(const int, const std::string&,
                               const std::map<std::string, std::string>&)>;
@@ -58,6 +60,8 @@ class GeminiService : public KeyedService {
   std::string GetOAuthClientUrl();
   void SetAuthToken(const std::string& auth_token);
   bool GetAccessToken(GetAccessTokenCallback callback);
+  bool GetTickerPrice(const std::string& asset,
+                      GetTickerPriceCallback callback);
 
  private:
   base::SequencedTaskRunner* io_task_runner();
@@ -71,8 +75,11 @@ class GeminiService : public KeyedService {
   void ResetAccessTokens();
 
   void OnGetAccessToken(GetAccessTokenCallback callback,
-                           const int status, const std::string& body,
-                           const std::map<std::string, std::string>& headers);
+                        const int status, const std::string& body,
+                        const std::map<std::string, std::string>& headers);
+  void OnTickerPrice(GetTickerPriceCallback callback,
+                     const int status, const std::string& body,
+                     const std::map<std::string, std::string>& headers);
 
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback,

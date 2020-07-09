@@ -48,3 +48,27 @@ bool GeminiJSONParser::GetTokensFromJSON(
 
   return true;
 }
+
+bool GeminiJSONParser::GetTickerPriceFromJSON(
+    const std::string& json, std::string* price) {
+  if (!price) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* bid = records_v->FindKey("bid");
+
+  if (bid && bid->is_string()) {
+    *price = bid->GetString();
+  }
+
+  return true;
+}

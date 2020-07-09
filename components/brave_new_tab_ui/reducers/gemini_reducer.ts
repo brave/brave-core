@@ -22,9 +22,14 @@ const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, a
 
     case types.ON_GEMINI_CLIENT_URL:
       const { clientUrl } = payload
-
       state = { ...state }
       state.geminiState.geminiClientUrl = clientUrl
+      break
+
+    case types.SET_GEMINI_TICKER_PRICE:
+      const { asset, price } = payload
+      state = { ...state }
+      state.geminiState.tickerPrices[asset] = price
       break
 
     default:

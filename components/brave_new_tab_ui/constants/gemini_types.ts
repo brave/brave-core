@@ -4,7 +4,8 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 export const enum types {
-  ON_GEMINI_CLIENT_URL = '@@binance/ON_GEMINI_CLIENT_URL',
-  ON_VALID_GEMINI_AUTH_CODE = '@@binance/ON_VALID_GEMINI_AUTH_CODE',
-  CONNECT_TO_GEMINI = '@@binance/CONNECT_TO_GEMINI'
+  ON_GEMINI_CLIENT_URL = '@@gemini/ON_GEMINI_CLIENT_URL',
+  ON_VALID_GEMINI_AUTH_CODE = '@@gemini/ON_VALID_GEMINI_AUTH_CODE',
+  CONNECT_TO_GEMINI = '@@gemini/CONNECT_TO_GEMINI',
+  SET_GEMINI_TICKER_PRICE = '@@gemini/SET_GEMINI_TICKER_PRICE'
 }

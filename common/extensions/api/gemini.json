@@ -46,6 +46,27 @@
               ]
             }
           ]
+        },
+        {
+          "name": "getTickerPrice",
+          "type": "function",
+          "description": "Retrieves ticker price for a given asset",
+          "parameters": [
+            {
+              "type": "string",
+              "name": "asset"
+            },
+            {
+              "type": "function",
+              "name": "callback",
+              "parameters": [
+                {
+                  "name": "price",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
         }
       ],
       "types": [

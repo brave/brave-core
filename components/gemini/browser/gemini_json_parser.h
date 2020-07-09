@@ -13,8 +13,10 @@
 class GeminiJSONParser {
  public:
   static bool GetTokensFromJSON(const std::string& json,
-                                std::string *access_token,
+                                std::string* access_token,
                                 std::string* refresh_token);
+  static bool GetTickerPriceFromJSON(const std::string& json,
+                                     std::string* price);
 };
 
 #endif  // BRAVE_COMPONENTS_GEMINI_BROWSER_GEMINI_JSON_PARSER_H_

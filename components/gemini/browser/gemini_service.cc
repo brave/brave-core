@@ -33,7 +33,8 @@
 
 namespace {
   const char oauth_host[] = "exchange.qa001.aurora7.net";
-  // const char api_host[] = "api.qa001.aurora7.net";
+  const char api_host[] = "api.gemini.com";
+  // const char oauth_api_host[] = "api.qa001.aurora7.net";
   const char oauth_callback[] = "com.brave.gemini://authorization";
   const char oauth_scope[] = "trader";
   const char oauth_url[] = "https://exchange.qa001.aurora7.net/auth";
@@ -109,6 +110,27 @@ bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
   auth_token_.clear();
   return OAuthRequest(
       base_url, "POST", url.query(), std::move(internal_callback), true);
+}
+
+bool GeminiService::GetTickerPrice(const std::string& asset,
+                                   GetTickerPriceCallback callback) {
+  auto internal_callback = base::BindOnce(&GeminiService::OnTickerPrice,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host,
+    std::string(api_path_ticker_price) + "/" + asset);
+  return OAuthRequest(
+      url, "GET", "", std::move(internal_callback), true);  
+}
+
+void GeminiService::OnTickerPrice(
+  GetTickerPriceCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  std::string price;
+  if (status >= 200 && status <= 299) {
+    GeminiJSONParser::GetTickerPriceFromJSON(body, &price);
+  }
+  std::move(callback).Run(price);
 }
 
 void GeminiService::OnGetAccessToken(
