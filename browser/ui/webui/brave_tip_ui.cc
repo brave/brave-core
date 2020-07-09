@@ -463,6 +463,7 @@ void RewardsTipDOMHandler::OnExternalWallet(
     data.SetString("withdrawUrl", wallet->withdraw_url);
     data.SetString("userName", wallet->user_name);
     data.SetString("accountUrl", wallet->account_url);
+    data.SetString("loginUrl", wallet->login_url);
     data.SetInteger("status", static_cast<int>(wallet->status));
   }
 

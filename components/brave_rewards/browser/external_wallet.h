@@ -25,6 +25,7 @@ struct ExternalWallet {
   std::string withdraw_url;
   std::string user_name;
   std::string account_url;
+  std::string login_url;
 };
 
 }  // namespace brave_rewards
