@@ -250,9 +250,6 @@ CHAR-LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_ANNOUNCEMENT" desc="Label for announcements notifications, within a list of notification categories. [CHAR-LIMIT=32]">
         Announcements
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_MEDIA_PLAYBACK" desc="Label for media playback notifications, within a list of notification categories. [CHAR-LIMIT=32]">
-        Playing media
-      </message>
 
       <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR-LIMIT=32]">
        Permission requests
@@ -727,6 +724,45 @@ For example, some websites may respond to this request by showing you ads that a
       <message name="IDS_CAN_MAKE_PAYMENT_TITLE" desc="Title for preference to allow websites to know whether you have payment methods available through PaymentRequest.CanMakePayment interface">
         Access payment methods
       </message>
+      <message name="IDS_SETTINGS_CUSTOM" desc="Label for a custom option in a dropdown menu.">
+        Custom
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_TITLE" desc="Title of the Secure DNS settings option">
+        Use secure DNS
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
+        Determines how to connect to websites over a secure connection
+      </message>
+      <message name="IDS_SETTINGS_AUTOMATIC_MODE_LABEL" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
+        Use your current service provider
+      </message>
+      <message name="IDS_SETTINGS_AUTOMATIC_MODE_DESCRIPTION" desc="Descriptive text that appears below IDS_SETTINGS_AUTOMATIC_MODE_LABEL.">
+        Secure DNS may not be available all the time
+      </message>
+      <message name="IDS_SETTINGS_AUTOMATIC_MODE_SUMMARY" desc="Short description of automatic mode">
+        Automatic
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DROPDOWN_MODE_DESCRIPTION" desc="Text of the radio button that allows a secure resolver to be selected from a dropdown menu">
+        Choose another provider:
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DROPDOWN_MODE_PRIVACY_POLICY" desc="Text that displays a link to the privacy policy of the resolver selected from a dropdown menu">
+        See this provider's <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>privacy policy<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_FOR_MANAGED_ENVIRONMENT" desc="Substring of the secure DNS setting when secure DNS is disabled due to detection of a managed environment">
+        This setting is disabled on managed browsers
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_FOR_PARENTAL_CONTROL" desc="Substring of the secure DNS setting when secure DNS is disabled due to detection of OS-level parental controls">
+        This setting is disabled because parental controls are on
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_PLACEHOLDER" desc="Placeholder text for a textbox where users can enter a custom secure DNS provider">
+        Provider URL
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_FORMAT_ERROR" desc="Error text for an incorrectly formatted entry for the custom secure DNS provider">
+        Enter a correctly formatted URL
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_CONNECTION_ERROR" desc="Error text for a custom secure DNS provider entry to which a probe connection fails">
+        Please verify that this is a valid provider or try again later
+      </message>
       <message name="IDS_CLEAR_BROWSING_DATA_TITLE" desc="Title of the Clear Browsing Data screen. [CHAR-LIMIT=32]">
         Clear browsing data
       </message>
@@ -1059,6 +1095,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_DOWNLOAD_LATER_DOWNLOAD_NOW_TEXT" desc="The text for the radio button to trigger the download now in download later dialog.">
         Now
       </message>
+      <message name="IDS_DOWNLOAD_LATER_EDIT_LOCATION" desc="The text in the download later dialog that can be clicked to edit download location.">
+        Your file will be saved to <ph name="BEGIN_BOLD">&lt;b&gt;</ph><ph name="DIRECTORY">%1$s<ex>Downloads</ex></ph><ph name="END_BOLD">&lt;/b&gt;</ph>. <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Edit<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
+      </message>
       <message name="IDS_DOWNLOAD_DATE_TIME_PICKER_NEXT_TEXT" desc="The text for the positive button of the download date time picker dialog.">
         Next
       </message>
@@ -1067,6 +1106,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_DOWNLOAD_LATER_PICK_TIME_TEXT" desc="The text for the radio button to select the download time in download later dialog.">
         Pick date &amp; time
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_PROMPT_ENABLED_TITLE" desc="A setting text to ask whether to show a dialog about when to download.">
+        Ask when to save files
       </message>
 
       <!-- Downloads location -->
@@ -1083,7 +1125,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Ask where to save files
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_DIALOG_TITLE" desc="Title for the dialog that asks where the user wants to save the download file before the download begins.">
-        Download file
+        Choose where to download
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_DIALOG_CHECKBOX" desc="Label for the checkbox that allows the user to indicate if they do not want the download location selection dialog to appear every time they initiate a download.">
         Don‘t show again
@@ -1613,11 +1655,22 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
           =1 {1 download pending.}
           other {# downloads pending.}}
       </message>
+      <message name="IDS_MULTIPLE_DOWNLOAD_SCHEDULED" desc="Label describing that one or more downloads are scheduled">
+        {FILE_COUNT, plural,
+          =1 {1 download scheduled.}
+          other {# downloads scheduled.}}
+      </message>
       <message name="IDS_DOWNLOAD_INFOBAR_FILENAME" desc="Label showing the file name that just finished downloading">
          <ph name="FILE_NAME">%1$s<ex>abc.png</ex></ph>.
       </message>
       <message name="IDS_DOWNLOAD_INFOBAR_ACCESSIBILITY_MESSAGE_WITH_LINK" desc="InfoBar accessibility text describing the link on the download progress infobar">
         <ph name="MESSAGE">%1$s<ex>Downloading file (200 MB)</ex></ph> <ph name="LINK_NAME">%2$s<ex>Details</ex></ph> button
+      </message>
+      <message name="IDS_DOWNLOAD_SCHEDULED_ON_WIFI" desc="Label describing that the download was scheduled to start on Wi-Fi.">
+        Download will start on Wi-Fi.
+      </message>
+      <message name="IDS_DOWNLOAD_SCHEDULED_ON_DATE" desc="Label describing that the download was scheduled to start at a later date or time.">
+        Download will start on <ph name="date">%1$s<ex>Feb 28</ex></ph>.
       </message>
 
       <!-- Inline Update Infobar -->
@@ -3316,6 +3369,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_IPH_DOWNLOAD_HOME_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open download home after a restart.">
         Find your files and pages in Downloads from the More Options button
       </message>
+      <message name="IDS_IPH_DOWNLOAD_INDICATOR_TEXT" desc="The in-product-help message to open download home, which is shown alongside the offline indicator when the device goes offline.">
+        See your offline files
+      </message>
       <message name="IDS_IPH_DATA_SAVER_DETAIL_TEXT" desc="The in-product-help message to open lite mode.">
         See how much data you've saved
       </message>
@@ -3752,7 +3808,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DESC" desc="Description in the default browser promo dialog, which is concatenated with one of the following steps strings">
         <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> has the smarts and speed you need to safely do, create, and explore online
       </message>
-      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DISAMBIGUATION_SHEET_STEPS" desc="Description of the steps to set the default browser throught disambiguation sheet. 'Always' should match TC ID 4089537686339013930.">
+      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DISAMBIGUATION_SHEET_STEPS" desc="Description of the steps to set the default browser throught disambiguation sheet. 'Always' should match TC ID 5575222334666843269.">
         1. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>\n2. Tap “Always”
       </message>
       <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_SYSTEM_SETTINGS_STEPS" desc="Description of the steps to set the default browser throught system settings.         'Go to Settings' should match TC ID 4431460803004659888. 'Browser App' should match TC ID 6222206565850006894.">

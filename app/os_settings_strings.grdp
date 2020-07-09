@@ -156,7 +156,7 @@
     This device stopped getting automatic software and security updates in <ph name="MONTH_AND_YEAR">$1<ex>September 2020</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_LAST_UPDATE_MESSAGE" desc="Message shown on the top level about page to inform the user that this device will no longer receive latest software updates.">
-    This is the last automatic software and security update for this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. To get future updates, upgrade to a newer model. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more&lt;/a&gt;
+    This is the last automatic software and security update for this <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. To get future updates, upgrade to a newer model. &lt;a target="_blank" href="<ph name="URL">$2<ex>https://google.com/</ex></ph>"&gt;Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Profiles (OS settings) -->
@@ -283,10 +283,10 @@
     Personal information suggestions
   </message>
   <message name="IDS_SETTINGS_SMART_INPUTS_PERSONAL_INFO_DESCRIPTION" desc="The description for personal information suggestion section.">
-    Personal information suggestions help you write faster by suggesting your name, address or phone number when you type some specific words. Only you see your own private, personalized suggestions for your account.
+    Personal information suggestions help you write faster with suggestions such as your name, address or phone number. Only you see your own private, personalized suggestions for your account.
   </message>
   <message name="IDS_SETTINGS_SMART_INPUTS_SHOW_PERSONAL_INFO" desc="The label for the toggle button controlling showing personal information suggestions.">
-    Show input personal information suggestions
+    Show personal information suggestions
   </message>
   <message name="IDS_SETTINGS_SMART_INPUTS_MANAGE_PERSONAL_INFO" desc="The label for opening Brave's browser settings page for managing personal addresses">
     Manage personal information
@@ -294,8 +294,85 @@
   <message name="IDS_SETTINGS_SMART_INPUTS_EMOJI_SUGGESTION_TITLE" desc="The label for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
     Emoji suggestions
   </message>
+  <message name="IDS_SETTINGS_SMART_INPUTS_EMOJI_SUGGESTION_DESCRIPTION" desc="The description for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
+    Get emoji suggestions based on what you are typing
+  </message>
   <message name="IDS_SETTINGS_SMART_INPUTS_SHOW_EMOJI_SUGGESTION" desc="The label for the toggle button controlling showing emoji suggestions (when an user types a word, some emojis might be suggested for the user to insert after).">
     Show emoji suggestions
+  </message>
+
+  <!-- Input Method Options Section -->
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_BASIC" desc="The label for the section in input method options page containing basic options.">
+    Basics
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ADVANCED" desc="The label for the section in input method options page containing advanced options.">
+    Advanced
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PHYSICAL_KEYBOARD" desc="The label for the section in input method options page containing physical keyboard options.">
+    Physical keyboard
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_VIRTUAL_KEYBOARD" desc="The label for the section in input method options page containing the virtual keyboard options.">
+    On-screen keyboard
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ENABLE_DOUBLE_SPACE_PERIOD" desc="The label for the input method option to enable double-space to type period (when an user types two consecutive space, it outputs a period).">
+    Double-space to type period
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ENABLE_GESTURE_TYPING" desc="The label for the input method option to enable gesture typing.">
+    Enable glide typing
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ENABLE_PREDICTION" desc="The label for the input method option to enable next-word prediction.">
+    Enable next-word prediction
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ENABLE_SOUND_ON_KEYPRESS" desc="The label for the input method option to enable sound on keypress.">
+    Sound on keypress
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_ENABLE_CAPITALIZATION" desc="The label for the input method option to enable auto-capitalization.">
+    Auto-capitalization
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_AUTO_CORRECTION" desc="The label for the input method option to enable auto correction.">
+    Auto-correction
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_XKB_LAYOUT" desc="The label for the input method option to let the users choose their keyboard layout.">
+    Keyboard layout
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_EDIT_USER_DICT" desc="The label for the input method option to let the users edit their personal dictionary.">
+    Edit dictionary entries
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_CHINESE_PUNCTUATION" desc="The label for the pinyin input method option for whether to output full-width or half-with punctuation.">
+    Initial punctuation width is Full
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_DEFAULT_CHINESE" desc="The label for the pinyin input method option for whether to use Chinese or English as the default input language.">
+    Initial input language is Chinese
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_ENABLE_FUZZY" desc="The label for the pinyin input method option to enable fuzzy-pinyin.">
+    Enable Fuzzy-Pinyin mode
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_ENABLE_LOWER_PAGING" desc="The label for the pinyin input method option for whether to use , and . for paging candidates.">
+    Use <ph name="COMMA">,</ph> and <ph name="PERIOD">.</ph> keys to page a candidate list
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_ENABLE_UPPER_PAGING" desc="The label for the pinyin input method option for whether to use - and = for paging candidates.">
+    Use <ph name="MINUS">-</ph> and <ph name="EQUAL">=</ph> keys to page a candidate list
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_PINYIN_FULL_WIDTH_CHARACTER" desc="The label for the pinyin input method option for whether to output latin letters and numbers as full-width or half-width character.">
+    Initial character width is Full
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_AUTO_CORRECTION_OFF" desc="The label for the choice to disable auto correction.">
+    Off
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_AUTO_CORRECTION_MODEST" desc="The label for the choice to use modest auto correction.">
+    Modest
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_AUTO_CORRECTION_AGGRESSIVE" desc="The label for the choice to use aggressive auto correction.">
+    Aggressive
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KEYBOARD_US" desc="The label for the choice to use US keyboard.">
+    US
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KEYBOARD_DVORAK" desc="The label for the choice to use Dvorak keyboard.">
+    Dvorak
+  </message>
+  <message name="IDS_SETTINGS_INPUT_METHOD_OPTIONS_KEYBOARD_COLEMAK" desc="The label for the choice to use Colemak keyboard.">
+    Colemak
   </message>
 
   <!-- Device Page (OS Settings) -->
@@ -1013,9 +1090,6 @@
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_PORT_NUMBER_LABEL" desc="Label for the text input of the port number in the add port dialog. This dialog is for when a user wants to add a new port that network traffic should be redirected by into Crostini.">
     Port number
-  </message>
-  <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_PORT_NUMBER_PLACEHOLDER" desc="Placeholder text for the port number text input in the add port dialog. This dialog is for when a user wants to add a new port that network traffic should be redirected by into Crostini.">
-    1024-65535
   </message>
   <message name="IDS_SETTINGS_CROSTINI_PORT_FORWARDING_ADD_PORT_DIALOG_LABEL_LABEL" desc="Label for the text input of an optional label to attach to the port in the add port dialog. This dialog is for when a user wants to add a new port that network traffic should be redirected by into Crostini.">
     Label (optional)
@@ -2722,23 +2796,23 @@
     App details
   </message>
 
-  <!-- Apps > Manage your apps > Plugin VM > Shared folders -->
-  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS" desc="Label for managing shared folders for Plugin VM.">
+  <!-- Apps > Manage your apps > Parallels > Shared folders -->
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS" desc="Label for managing shared folders for Parallels.">
     Manage shared folders
   </message>
   <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_LIST_HEADING" desc="Label for list of shared folders.">
     Shared folders
   </message>
-  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Plugin VM.">
-    To share, right-click on a folder in Files app, then select "Share with Plugin VM".
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_ADD" desc="Instructions for how to add shared folders in Parallels.">
+    To share, right-click on a folder in Files app, then select "Share with Parallels Desktop".
   </message>
-  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_REMOVE" desc="Instructions for removing shared folders in Plugin VM.">
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_INSTRUCTIONS_REMOVE" desc="Instructions for removing shared folders in Parallels.">
     Removing folders will stop sharing but will not delete files.
   </message>
-  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_REMOVE_SHARING" desc="Tooltip to show when hovering on the remove icon for a Plugin VM shared folder.">
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_REMOVE_SHARING" desc="Tooltip to show when hovering on the remove icon for a Parallels shared folder.">
     Stop sharing
   </message>
-  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_LIST_EMPTY_MESSAGE" desc="Message shown when the user has not yet shared any folders in Plugin VM.">
+  <message name="IDS_SETTINGS_APPS_PLUGIN_VM_SHARED_PATHS_LIST_EMPTY_MESSAGE" desc="Message shown when the user has not yet shared any folders in Parallels.">
     Shared folders will appear here
   </message>
 
