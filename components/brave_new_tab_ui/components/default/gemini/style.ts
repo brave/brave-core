@@ -38,8 +38,8 @@ export const StyledTitle = styled<{}, 'div'>('div')`
 export const GeminiIcon = styled<{}, 'div'>('div')`
   width: 27px;
   height: 27px;
-  margin-right: 11px;
-  margin-left: -2px;
+  margin-right: 7px;
+  margin-left: 2px;
 `
 
 export const StyledTitleText = styled<{}, 'div'>('div')`

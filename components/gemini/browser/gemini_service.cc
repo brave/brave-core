@@ -84,7 +84,7 @@ GeminiService::~GeminiService() {
 
 std::string GeminiService::GetOAuthClientUrl() {
   GURL url(oauth_url);
-  url = net::AppendQueryParameter(url, "response_type", "token");
+  url = net::AppendQueryParameter(url, "response_type", "code");
   url = net::AppendQueryParameter(url, "client_id", client_id_);
   url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
   url = net::AppendQueryParameter(url, "scope", oauth_scope);
@@ -200,14 +200,16 @@ bool GeminiService::OAuthRequest(const GURL &url,
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_BYPASS_CACHE |
-                        net::LOAD_DISABLE_CACHE;
+                        net::LOAD_DISABLE_CACHE |
+                        net::LOAD_DO_NOT_SEND_COOKIES |
+                        net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = method;
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   if (!post_data.empty()) {
     url_loader->AttachStringForUpload(post_data,
-        "application/json");
+        "application/x-www-form-urlencoded");
   }
   url_loader->SetRetryOptions(
       kRetriesCountOnNetworkChange,
