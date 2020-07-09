@@ -28,6 +28,14 @@ public class DAU {
         return DAU.calendar.dateComponents([.day, .month, .year, .weekday], from: today)
     }
     
+    /// Date formatted used for passing date strings to the DAU server.
+    static let dateFormatter = { () -> DateFormatter in
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.calendar = Calendar(identifier: .gregorian)
+        return formatter
+    }()
+    
     private static let apiKeyPlistKey = "API_KEY"
     private let apiKey: String?
     
@@ -144,6 +152,16 @@ public class DAU {
             // Must be after setting up the preferences
             weekOfInstallationParam()
         ]
+        
+        // Installation date for `dtoi` param has a limited lifetime.
+        // After that we clear the install date from the app and always send null `dtoi` param.
+        if let installationDate = Preferences.DAU.installationDate.value,
+            retentionMeasureDatePassed(since: installationDate) {
+            Preferences.DAU.installationDate.value = nil
+        }
+        
+        // Depending on previous check, this will either send proper install date or null.
+        params.append(dtoiParam())
 
         if let referralCode = UserReferralProgram.getReferralCode() {
             params.append(URLQueryItem(name: "ref", value: referralCode))
@@ -159,6 +177,20 @@ public class DAU {
         }
         
         return ParamsAndPrefs(queryParams: params, headers: headers, lastLaunchInfoPreference: lastPingTimestamp)
+    }
+    
+    private func retentionMeasureDatePassed(since date: Date) -> Bool {
+        guard let referenceDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: date),
+            let currentDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: today) else {
+                assertionFailure()
+                // This should never happen but we fallback to true here to avoid sending `dtoi` param
+                // to the server indefinitely.
+                return true
+        }
+        
+        let daysThatMustPassToSkipDtoi = AppConstants.buildChannel == .enterprise ? 2 : 14
+        
+        return (currentDateOrdinal - referenceDateOrdinal) > daysThatMustPassToSkipDtoi
     }
     
     func channelParam(for channel: AppBuildChannel = AppConstants.buildChannel) -> URLQueryItem {
@@ -201,6 +233,16 @@ public class DAU {
             log.error("woi, is nil, using default: \(woi ?? "")")
         }
         return URLQueryItem(name: "woi", value: woi)
+    }
+    
+    func dtoiParam() -> URLQueryItem {
+        let paramName = "dtoi"
+        
+        guard let installationDate = Preferences.DAU.installationDate.value else {
+            return URLQueryItem(name: paramName, value: "null")
+        }
+        
+        return URLQueryItem(name: paramName, value: DAU.dateFormatter.string(from: installationDate))
     }
     
     private enum PingType: CaseIterable {
@@ -291,10 +333,7 @@ extension Date {
         // That's why backward search may sound counter intuitive.
         guard let monday = self.next(.monday, direction: .backward, considerSelf: true) else { return nil }
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.calendar = Calendar(identifier: .gregorian)
-        return dateFormatter.string(from: monday)
+        return DAU.dateFormatter.string(from: monday)
     }
     
     private func next(_ weekday: Weekday, direction: Calendar.SearchDirection = .forward, considerSelf: Bool = false) -> Date? {

@@ -14,6 +14,7 @@ class DAUTests: XCTestCase {
         Preferences.DAU.weekOfInstallation.reset()
         Preferences.DAU.lastLaunchInfo.reset()
         Preferences.DAU.firstPingParam.reset()
+        Preferences.DAU.installationDate.reset()
     }
     
     // 7-7-07 at 12noon GMT
@@ -73,6 +74,49 @@ class DAUTests: XCTestCase {
         XCTAssertEqual(dau.weekOfInstallationParam(for: "2012-12-12"), expected)
     }
     
+    func testDtoiParamNewUser() {
+        let dateString = "2017-11-10"
+        let date = dateFrom(string: dateString)
+        // Normally the install date is set in AppDelegate at launch, doing it manually here.
+        Preferences.DAU.installationDate.value = date
+        
+        // First ping
+        pingWithDateAndCompare(dateString: dateString, daily: true, weekly: true,
+                               monthly: true, first: true, dtoi: dateString)
+        
+        // Subsequent pings should use the same dtoi date
+        pingWithDateAndCompare(dateString: "2017-11-11", daily: true, weekly: false,
+                               monthly: false, dtoi: dateString)
+        
+        pingWithDateAndCompare(dateString: "2017-11-20", daily: true, weekly: true,
+                               monthly: false, dtoi: dateString)
+        
+        // Exact 14 days after install date
+        pingWithDateAndCompare(dateString: "2017-11-24", daily: true, weekly: false,
+                               monthly: false, dtoi: dateString)
+        
+        XCTAssertNotNil(Preferences.DAU.installationDate.value)
+        
+        pingWithDateAndCompare(dateString: "2017-11-25", daily: true, weekly: false,
+                               monthly: false, dtoi: "null")
+        
+        // After 14 days installation date pref should be removed.
+        XCTAssertNil(Preferences.DAU.installationDate.value)
+        
+        pingWithDateAndCompare(dateString: "2017-12-20", daily: true, weekly: true,
+                               monthly: true, dtoi: "null")
+    }
+    
+    func testDtoiParamExistingUser() {
+        // Existing user doesn't have `Preferences.DAU.installationDate` set
+        
+        pingWithDateAndCompare(dateString: "2017-11-10", daily: true, weekly: true,
+                               monthly: true, first: true, dtoi: "null")
+        
+        pingWithDateAndCompare(dateString: "2017-12-11", daily: true, weekly: true,
+                               monthly: true, dtoi: "null")
+    }
+    
     func testStatParamsInvalidInputs() {
         XCTAssertNil(dau.dauStatParams(nil, firstPing: false, channel: .beta))
         XCTAssertNil(dau.dauStatParams(nil, firstPing: false, channel: .release))
@@ -84,13 +128,21 @@ class DAUTests: XCTestCase {
         XCTAssertNil(Preferences.DAU.weekOfInstallation.value)
         XCTAssert(Preferences.DAU.firstPingParam.value)
         
-        let firstLaunch = pingWithDateAndCompare(daily: true, weekly: true, monthly: true, first: true,
-                                                 woi: "2017-11-20")
+        let dateString = "2017-11-21"
+        let date = dateFrom(string: dateString)
+        // Normally the install date is set in AppDelegate at launch, doing it manually here.
+        Preferences.DAU.installationDate.value = date
+        
+        let firstLaunch = pingWithDateAndCompare(
+            dateString: dateString, daily: true, weekly: true,
+            monthly: true, first: true, woi: "2017-11-20", dtoi: dateString)
 
         XCTAssertNotNil(firstLaunch)
         XCTAssertNotNil(Preferences.DAU.lastLaunchInfo.value)
         XCTAssertNotNil(Preferences.DAU.weekOfInstallation.value)
         XCTAssertFalse(Preferences.DAU.firstPingParam.value)
+        
+        XCTAssertFalse(firstLaunch!.queryParams.contains(URLQueryItem(name: "dtoi", value: "null")))
     }
     
     func testFirstLaunchUnsuccesfulPing() {
@@ -282,7 +334,8 @@ class DAUTests: XCTestCase {
     @discardableResult
     private func pingWithDateAndCompare(dateString: String = "2017-11-20", daily: Bool, weekly: Bool,
                                         monthly: Bool, first: Bool = false, woi: String? = nil,
-                                        firstPingPref: Bool = false, dateFormat: String? = nil) -> DAU.ParamsAndPrefs? {
+                                        firstPingPref: Bool = false, dtoi: String? = nil,
+                                        dateFormat: String? = nil) -> DAU.ParamsAndPrefs? {
         
         let date = dateFrom(string: dateString, format: dateFormat)
         let dau = DAU(date: date)
@@ -301,6 +354,10 @@ class DAUTests: XCTestCase {
         
         if let woi = woi {
             XCTAssert(params!.queryParams.contains(URLQueryItem(name: "woi", value: woi)))
+        }
+        
+        if let dtoi = dtoi {
+            XCTAssert(params!.queryParams.contains(URLQueryItem(name: "dtoi", value: dtoi)))
         }
         
         simulatePing(firstPing: firstPingPref, params: params!)

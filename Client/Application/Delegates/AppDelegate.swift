@@ -41,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var authenticator: AppAuthenticator?
     
     /// Object used to handle server pings
-    let dau = DAU()
+    private let dau = DAU()
 
     @discardableResult func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         //
@@ -257,6 +257,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         
         if isFirstLaunch {
             profile?.searchEngines.regionalSearchEngineSetup()
+            Preferences.DAU.installationDate.value = Date()
         }
         
         if let urp = UserReferralProgram.shared {
