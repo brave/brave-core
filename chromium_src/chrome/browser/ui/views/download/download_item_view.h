@@ -10,8 +10,9 @@
  private:                                    \
   friend class BraveDownloadItemView;        \
                                              \
- public:
-// BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_
+ public:                                     \
+ protected:                                  \
+  bool IsShowingWarningDialog() const;
 
 #define GetYForFilenameText virtual GetYForFilenameText
 #define UpdateAccessibleName virtual UpdateAccessibleName
