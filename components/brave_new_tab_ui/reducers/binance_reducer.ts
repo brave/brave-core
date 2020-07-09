@@ -82,7 +82,7 @@ const binanceReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
       state.binanceState.hideBalance = payload.hide
       break
 
-    case types.ON_VALID_AUTH_CODE:
+    case types.ON_VALID_BINANCE_AUTH_CODE:
       state = { ...state }
       state.binanceState.userAuthed = true
       state.binanceState.authInProgress = false

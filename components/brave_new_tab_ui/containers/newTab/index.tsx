@@ -15,7 +15,8 @@ import {
   RewardsWidget as Rewards,
   TogetherWidget as Together,
   BinanceWidget as Binance,
-  AddCardWidget as AddCard
+  AddCardWidget as AddCard,
+  GeminiWidget as Gemini
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
@@ -31,6 +32,7 @@ import { SortEnd } from 'react-sortable-hoc'
 import * as newTabActions from '../../actions/new_tab_actions'
 import * as gridSitesActions from '../../actions/grid_sites_actions'
 import * as binanceActions from '../../actions/binance_actions'
+import * as geminiActions from '../../actions/gemini_actions'
 import * as rewardsActions from '../../actions/rewards_actions'
 import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
@@ -41,7 +43,7 @@ import Settings from './settings'
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
-  actions: typeof newTabActions & typeof gridSitesActions & typeof binanceActions & typeof rewardsActions
+  actions: typeof newTabActions & typeof gridSitesActions & typeof binanceActions & typeof rewardsActions & typeof geminiActions
   saveShowBackgroundImage: (value: boolean) => void
   saveShowClock: (value: boolean) => void
   saveShowTopSites: (value: boolean) => void
@@ -50,6 +52,7 @@ interface Props {
   saveShowTogether: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
   saveShowAddCard: (value: boolean) => void
+  saveShowGemini: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
 }
 
@@ -138,7 +141,8 @@ class NewTabPage extends React.Component<Props, State> {
     const oldShowRewards = prevProps.newTabData.showRewards
     const oldShowBinance = prevProps.newTabData.showBinance
     const oldShowTogether = prevProps.newTabData.showTogether
-    const { showRewards, showBinance, showTogether } = this.props.newTabData
+    const oldShowGemini = prevProps.newTabData.showGemini
+    const { showRewards, showBinance, showTogether, showGemini } = this.props.newTabData
 
     if (!oldShowRewards && showRewards) {
       this.props.actions.setForegroundStackWidget('rewards')
@@ -152,6 +156,10 @@ class NewTabPage extends React.Component<Props, State> {
       this.props.actions.removeStackWidget('binance')
     } else if (oldShowTogether && !showTogether) {
       this.props.actions.removeStackWidget('together')
+    } else if (oldShowGemini && !showGemini) {
+      this.props.actions.removeStackWidget('gemini')
+    } else if (!oldShowGemini && showGemini) {
+      this.props.actions.setForegroundStackWidget('gemini')
     }
   }
 
@@ -274,12 +282,32 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.saveShowAddCard(false)
   }
 
+  toggleShowGemini = () => {
+    const { showGemini } = this.props.newTabData
+
+    if (showGemini) {
+      this.removeStackWidget('gemini')
+    } else {
+      this.setForegroundStackWidget('gemini')
+    }
+
+    this.props.saveShowGemini(!showGemini)
+  }
+
   onBinanceClientUrl = (clientUrl: string) => {
     this.props.actions.onBinanceClientUrl(clientUrl)
   }
 
-  onValidAuthCode = () => {
-    this.props.actions.onValidAuthCode()
+  onGeminiClientUrl = (clientUrl: string) => {
+    this.props.actions.onGeminiClientUrl(clientUrl)
+  }
+
+  onValidBinanceAuthCode = () => {
+    this.props.actions.onValidBinanceAuthCode()
+  }
+
+  onValidGeminiAuthCode = () => {
+    this.props.actions.onValidGeminiAuthCode()
   }
 
   setHideBalance = (hide: boolean) => {
@@ -300,6 +328,10 @@ class NewTabPage extends React.Component<Props, State> {
 
   connectBinance = () => {
     this.props.actions.connectToBinance()
+  }
+
+  connectGemini = () => {
+    this.props.actions.connectToGemini()
   }
 
   buyCrypto = (coin: string, amount: string, fiat: string) => {
@@ -498,7 +530,8 @@ class NewTabPage extends React.Component<Props, State> {
       togetherSupported,
       showRewards,
       showBinance,
-      showTogether
+      showTogether,
+      showGemini
     } = this.props.newTabData
     const lookup = {
       'rewards': {
@@ -512,6 +545,10 @@ class NewTabPage extends React.Component<Props, State> {
       'together': {
         display: togetherSupported && showTogether,
         render: this.renderTogetherWidget.bind(this)
+      },
+      'gemini': {
+        display: showGemini,
+        render: this.renderGeminiWidget.bind(this)
       }
     }
 
@@ -668,7 +705,7 @@ class NewTabPage extends React.Component<Props, State> {
         onConnectBinance={this.connectBinance}
         onDisconnectBinance={this.disconnectBinance}
         onCancelDisconnect={this.cancelDisconnect}
-        onValidAuthCode={this.onValidAuthCode}
+        onValidAuthCode={this.onValidBinanceAuthCode}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
         onShowContent={this.setForegroundStackWidget.bind(this, 'binance')}
@@ -680,6 +717,34 @@ class NewTabPage extends React.Component<Props, State> {
         onDismissAuthInvalid={this.dismissAuthInvalid}
         onSetSelectedView={this.setSelectedView}
         getCurrencyList={this.getCurrencyList}
+      />
+    )
+  }
+
+  renderGeminiWidget (showContent: boolean) {
+    const { newTabData } = this.props
+    const { geminiState, showGemini, textDirection } = newTabData
+
+    if (!showGemini) {
+      return null
+    }
+
+    return (
+      <Gemini
+        {...geminiState}
+        isCrypto={true}
+        isCryptoTab={!showContent}
+        menuPosition={'left'}
+        widgetTitle={'Gemini'}
+        textDirection={textDirection}
+        preventFocus={false}
+        hideWidget={this.toggleShowGemini}
+        showContent={showContent}
+        onShowContent={this.setForegroundStackWidget.bind(this, 'gemini')}
+        onDisableWidget={this.toggleShowGemini}
+        onValidAuthCode={this.onValidGeminiAuthCode}
+        onConnectGemini={this.connectGemini}
+        onGeminiClientUrl={this.onGeminiClientUrl}
       />
     )
   }

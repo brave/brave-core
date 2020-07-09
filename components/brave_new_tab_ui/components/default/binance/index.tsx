@@ -74,16 +74,16 @@ import {
 } from './style'
 import {
   ShowIcon,
-  HideIcon
-} from './assets/icons'
+  HideIcon,
+  PartyIcon,
+  QRIcon,
+  SearchIcon
+} from '../exchangeWidget/shared-assets'
 import { StyledTitleTab } from '../widgetTitleTab'
 import currencyData from './data'
 import BinanceLogo from './assets/binance-logo'
 import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
-import searchIcon from './assets/search-icon.png'
-import partyIcon from './assets/party.png'
-import qrIcon from './assets/qr.png'
 
 interface State {
   fiatShowing: boolean
@@ -663,7 +663,7 @@ class Binance extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <StyledEmoji>
-          <img src={partyIcon} />
+          <img src={PartyIcon} />
         </StyledEmoji>
         <InvalidTitle>
           {`${getLocale('binanceWidgetConverted')} ${currentConvertAmount} ${currentConvertFrom} to ${currentConvertTransAmount} ${currentConvertTo}!`}
@@ -762,7 +762,7 @@ class Binance extends React.PureComponent<Props, State> {
           {
             depositData
             ? <AssetQR onClick={this.setQR.bind(this, currentDepositAsset)}>
-                <img style={{ width: '25px', marginRight: '5px' }} src={qrIcon} />
+                <img style={{ width: '25px', marginRight: '5px' }} src={QRIcon} />
               </AssetQR>
             : null
           }
@@ -834,7 +834,7 @@ class Binance extends React.PureComponent<Props, State> {
       <>
         <ListItem>
           <ListIcon>
-            <ListImg src={searchIcon} />
+            <ListImg src={SearchIcon} />
           </ListIcon>
           <SearchInput
             type={'text'}

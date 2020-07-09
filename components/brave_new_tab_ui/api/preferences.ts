@@ -71,6 +71,10 @@ export function saveIsBrandedWallpaperNotificationDismissed (value: boolean): vo
   sendSavePref('isBrandedWallpaperNotificationDismissed', value)
 }
 
+export function saveShowGemini (value: boolean): void {
+  sendSavePref('showGemini', value)
+}
+
 export function addChangeListener (listener: PreferencesUpdatedHandler): void {
   window.cr.addWebUIListener('preferences-changed', listener)
 }

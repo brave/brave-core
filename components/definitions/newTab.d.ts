@@ -71,7 +71,7 @@ declare namespace NewTab {
     url: string
   }
 
-  export type StackWidget = 'rewards' | 'binance' | 'together' | ''
+  export type StackWidget = 'rewards' | 'binance' | 'together' | 'gemini' | ''
 
   export interface LegacyState {
     pinnedTopSites: Site[]
@@ -101,6 +101,7 @@ declare namespace NewTab {
     removedStackWidgets: StackWidget[]
     widgetStackOrder: StackWidget[]
     binanceState: BinanceWidgetState
+    geminiState: GeminiWidgetState
   }
 
   export interface EphemeralState {
@@ -122,6 +123,7 @@ declare namespace NewTab {
     showTogether: boolean
     showBinance: boolean
     showAddCard: boolean
+    showGemini: boolean
     brandedWallpaperOptIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
     stats: Stats,
@@ -171,6 +173,12 @@ declare namespace NewTab {
     disconnectInProgress: boolean
     authInvalid: boolean
     selectedView: string
+  }
+
+  export interface GeminiWidgetState {
+    geminiClientUrl: string
+    userAuthed: boolean
+    authInProgress: boolean
   }
 
   export type BinanceTLD = 'us' | 'com'
