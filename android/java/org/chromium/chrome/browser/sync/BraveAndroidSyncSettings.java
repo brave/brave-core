@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.sync;
 
+import org.chromium.components.sync.SyncContentResolverDelegate;
+
 // see org.brave.bytecode.BraveAndroidSyncSettingsAdapter
 public class BraveAndroidSyncSettings extends AndroidSyncSettings {
     private boolean mMasterSyncEnabled;
