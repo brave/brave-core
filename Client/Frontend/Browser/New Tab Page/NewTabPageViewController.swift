@@ -179,7 +179,7 @@ class NewTabPageViewController: UIViewController, Themeable {
         view.addSubview(braveTodayHeaderView)
         
         braveTodayHeaderView.snp.makeConstraints {
-            $0.top.leading.trailing.equalTo(collectionView.frameLayoutGuide)
+            $0.top.leading.trailing.equalToSuperview()
         }
         
         collectionView.backgroundView = backgroundButtonsView
