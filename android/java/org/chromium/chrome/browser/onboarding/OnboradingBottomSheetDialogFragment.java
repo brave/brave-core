@@ -29,6 +29,8 @@ import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.chrome.browser.ntp_background_images.util.NewTabPageListener;
 import org.chromium.chrome.browser.onboarding.OnboardingBottomSheetViewPagerAdapter;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
@@ -131,6 +133,8 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
                 dismiss();
             }
         });
+
+        OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
     }
 
     private OnboradingBottomSheetListener mOnboradingBottomSheetListener = new OnboradingBottomSheetListener() {
@@ -138,7 +142,13 @@ public class OnboradingBottomSheetDialogFragment extends BottomSheetDialogFragme
         public void goToNextPage() {
             if (mViewPager != null) {
                 int currentPage = mViewPager.getCurrentItem();
-                mViewPager.setCurrentItem(currentPage + 1);
+                if (currentPage == mViewPager.getAdapter().getCount() - 1
+                        && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    dismiss();
+                    BraveStatsUtil.showBraveStats();
+                } else{
+                    mViewPager.setCurrentItem(currentPage + 1);
+                }
             }
         }
     };

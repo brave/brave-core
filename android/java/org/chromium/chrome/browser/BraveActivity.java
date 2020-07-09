@@ -71,8 +71,6 @@ import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import java.util.Calendar;
 import java.util.Date;
 
-import java.util.Calendar;
-
 /**
  * Brave's extension for ChromeActivity
  */

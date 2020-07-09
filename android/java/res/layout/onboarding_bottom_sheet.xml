@@ -10,13 +10,13 @@
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/onboarding_bg_color"
-    android:maxWidth="400dp"
-    android:padding="16dp">
+    android:background="@color/brave_stats_bg_color"
+    android:maxWidth="400dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
         <androidx.viewpager.widget.ViewPager
@@ -34,6 +34,8 @@
         android:layout_height="wrap_content"
         android:contentDescription="@null"
         android:layout_gravity="end|top"
-        android:src="@drawable/btn_close"/>
+        android:padding="16dp"
+        android:src="@drawable/btn_close"
+        android:tint="@color/onboarding_text_color"/>
 
 </FrameLayout>

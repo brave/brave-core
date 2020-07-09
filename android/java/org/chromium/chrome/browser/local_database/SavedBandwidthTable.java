@@ -14,16 +14,16 @@ public class SavedBandwidthTable {
     public static final String CREATE_TABLE =
         "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
         + COLUMN_SAVED_BANDWIDTH + " INTEGER,"
-        + COLUMN_TIMESTAMP + " DATETIME"
+        + COLUMN_TIMESTAMP + " INTEGER"
         + ")";
 
     public SavedBandwidthTable() {
     }
 
     private long mSavedBandwidth;
-    private String mTimestamp;
+    private long mTimestamp;
 
-    public SavedBandwidthTable(long savedBandwidth, String timestamp) {
+    public SavedBandwidthTable(long savedBandwidth, long timestamp) {
         mSavedBandwidth = savedBandwidth;
         mTimestamp = timestamp;
     }
@@ -32,7 +32,7 @@ public class SavedBandwidthTable {
         return mSavedBandwidth;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return mTimestamp;
     }
 }

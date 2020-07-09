@@ -20,7 +20,7 @@ public class BraveStatsTable {
         + COLUMN_DOMAIN + " TEXT,"
         + COLUMN_STAT_TYPE + " TEXT,"
         + COLUMN_STAT_SITE + " TEXT,"
-        + COLUMN_TIMESTAMP + " DATETIME"
+        + COLUMN_TIMESTAMP + " INTEGER"
         + ")";
 
     public BraveStatsTable() {
@@ -30,9 +30,9 @@ public class BraveStatsTable {
     private String mDomain;
     private String mStatType;
     private String mStatSite;
-    private String mTimestamp;
+    private long mTimestamp;
 
-    public BraveStatsTable(String url, String domain, String statType, String statSite, String timestamp) {
+    public BraveStatsTable(String url, String domain, String statType, String statSite, long timestamp) {
         mUrl = url;
         mDomain = domain;
         mStatType = statType;
@@ -56,7 +56,7 @@ public class BraveStatsTable {
         return mStatSite;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return mTimestamp;
     }
 }

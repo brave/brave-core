@@ -1211,6 +1211,21 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_STATS" desc="Brave stats title">
         Brave Stats
       </message>
+      <message name="IDS_TRACKERS_AND_ADS" desc="Brave stats title">
+        Trackers &amp; Ads Blocked
+      </message>
+      <message name="IDS_NO_DATA_TEXT" desc="Brave stats title">
+        No data to show yet
+      </message>
+      <message name="IDS_ADS_TRACKERS_TEXT" desc="Brave stats text">
+        Trackers &amp; Ads\nBlocked
+      </message>
+      <message name="IDS_DATA_SAVED_TEXT" desc="Brave stats text">
+        Data Saved\n(<ph name="DATA_SAVED">%1$s</ph>)
+      </message>
+      <message name="IDS_TIME_SAVED_TEXT" desc="Brave stats text">
+        <ph name="TIME_SAVED">%1$s</ph>\nSaved
+      </message>
     </messages>
   </release>
 </grit>

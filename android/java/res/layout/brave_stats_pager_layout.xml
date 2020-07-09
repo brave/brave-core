@@ -3,183 +3,216 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
-
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:orientation="vertical">
+    android:background="@color/brave_stats_bg_color">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="3.0"
-        android:layout_margin="16dp"
-        android:orientation="horizontal">
+        android:padding="16dp"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:layout_weight="1.0"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/brave_stats_rounded_bg"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="181"
-                android:textSize="40sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif" 
-                android:textColor="@color/brave_stats_ads_color"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Trackers &amp; Ads\nBlocked"
-                android:textSize="12sp"
-                android:layout_margin="16dp"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/onboarding_text_color"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:layout_weight="1.0"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/brave_stats_rounded_bg"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="18"
-                android:textSize="40sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif" 
-                android:textColor="@color/brave_stats_data_saved_color"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Data Saved\n(mb)"
-                android:textSize="12sp"
-                android:layout_margin="16dp"
-                android:fontFamily="sans-serif" 
-                android:textColor="@color/onboarding_text_color"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:layout_weight="1.0"
-            android:background="@drawable/brave_stats_rounded_bg"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="21"
-                android:textSize="40sp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:fontFamily="sans-serif" 
-                android:textColor="@color/brave_state_time_count_color"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Minutes\nSaved"
-                android:textSize="12sp"
-                android:layout_margin="16dp"
-                android:fontFamily="sans-serif" 
-                android:textColor="@color/onboarding_text_color"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/brave_stats_rounded_bg"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp">
-
-        <RadioGroup
-            android:id="@+id/radio_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:background="@drawable/brave_stats_radio_group_bg"
-            android:layout_margin="16dp"
-            android:padding="2dp"
+            android:weightSum="3.0"
             android:orientation="horizontal">
 
-            <RadioButton
-                android:id="@+id/radio1"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:background="@drawable/brave_stats_radio_button_selector"
-                android:gravity="center"
-                android:textColor="@color/onboarding_text_color"
-                android:button="@null"
-                android:checked="true"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="Websites" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_weight="1.0"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/brave_stats_rounded_bg"
+                android:orientation="vertical">
 
-            <RadioButton
-                android:id="@+id/radio2"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:button="@null"
-                android:layout_height="wrap_content"
-                android:background="@drawable/brave_stats_radio_button_selector"
-                android:gravity="center"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:textColor="@color/onboarding_text_color"
-                android:text="Trackers" />
+                <TextView
+                    android:id="@+id/ads_trackers_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="181"
+                    android:textSize="40sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="sans-serif" 
+                    android:textColor="@color/brave_stats_ads_color"/>
 
-        </RadioGroup>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ads_trackers_text"
+                    android:textSize="12sp"
+                    android:layout_margin="16dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/brave_stats_title_color"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trackers &amp; Ads Blocked"
-            android:textSize="12sp"
-            android:layout_margin="16dp"
-            android:fontFamily="sans-serif"
-            android:textColor="@color/onboarding_text_color"/>
+            </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_weight="1.0"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/brave_stats_rounded_bg"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/data_saved_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="18"
+                    android:textSize="40sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="sans-serif" 
+                    android:textColor="@color/brave_stats_data_saved_color"/>
+
+                <TextView
+                    android:id="@+id/data_saved_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_margin="16dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/brave_stats_title_color"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:layout_weight="1.0"
+                android:background="@drawable/brave_stats_rounded_bg"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/time_saved_count_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="21"
+                    android:textSize="40sp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/brave_stats_text_color"/>
+
+                <TextView
+                    android:id="@+id/time_saved_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_margin="16dp"
+                    android:fontFamily="sans-serif" 
+                    android:textColor="@color/brave_stats_title_color"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:background="@drawable/brave_stats_rounded_bg"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:padding="24dp">
+
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/brave_stats_radio_group_bg"
+                android:padding="2dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/websites_radio"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/brave_stats_radio_button_selector"
+                    android:gravity="center"
+                    android:textColor="@color/brave_stats_text_color"
+                    android:button="@null"
+                    android:checked="true"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="Websites" />
+
+                <RadioButton
+                    android:id="@+id/trackers_radio"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/brave_stats_radio_button_selector"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/brave_stats_text_color"
+                    android:text="Trackers" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/trackers_and_ads"
+                android:ellipsize="end"
+                android:maxLines = "1"
+                android:textAllCaps="true"
+                android:textSize="12sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/brave_stats_text_color"/>
+
+            <TextView
+                android:id="@+id/empty_data_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/no_data_text"
+                android:ellipsize="end"
+                android:maxLines = "1"
+                android:textSize="12sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="sans-serif"
+                android:visibility="gone"
+                android:textColor="@color/brave_stats_text_color"/>
+
+            <LinearLayout
+                android:id="@+id/wesites_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+            <LinearLayout
+                android:id="@+id/trackers_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

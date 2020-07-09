@@ -8,12 +8,14 @@ package org.chromium.chrome.browser.local_database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Pair;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.chromium.base.Log;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.ntp_background_images.model.TopSite;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
@@ -93,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TopSiteTable.TABLE_NAME;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -123,7 +125,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int count = cursor.getCount();
         cursor.close();
 
-
         // return count
         return count;
     }
@@ -144,7 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(BraveStatsTable.COLUMN_DOMAIN, braveStat.getDomain());
         values.put(BraveStatsTable.COLUMN_STAT_TYPE, braveStat.getStatType());
         values.put(BraveStatsTable.COLUMN_STAT_SITE, braveStat.getStatSite());
-        values.put(BraveStatsTable.COLUMN_TIMESTAMP, braveStat.getTimestamp());
+        values.put(BraveStatsTable.COLUMN_TIMESTAMP, " datetime('now') ");
 
         // insert row
         return db.insert(BraveStatsTable.TABLE_NAME, null, values);
@@ -159,7 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + BraveStatsTable.TABLE_NAME;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -170,9 +171,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
                     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
                     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
-                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
+                    cursor.getLong(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
 
                 braveStats.add(braveStat);
+            } while (cursor.moveToNext());
+        }
+
+        // close db connection
+        // db.close();
+
+        return braveStats;
+    }
+
+    public List<Pair<String, Integer>> getStatsWithDate(int days) {
+        List<Pair<String, Integer>> braveStats = new ArrayList<>();
+        String selectQuery = "SELECT  " + BraveStatsTable.COLUMN_DOMAIN + ", COUNT(*) as stat_count FROM "
+                             + BraveStatsTable.TABLE_NAME 
+                             // + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP 
+                             // + " BETWEEN '2020-07-06' AND '2020-07-10'"
+                             + " GROUP BY " + BraveStatsTable.COLUMN_DOMAIN 
+                             + " ORDER BY stat_count DESC";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Pair<String, Integer> statPair = new Pair<>(cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)), cursor.getInt(cursor.getColumnIndex("stat_count")));
+                braveStats.add(statPair);
+            } while (cursor.moveToNext());
+        }
+
+        return braveStats;
+    }
+
+    public List<Pair<String, Integer>> getSitesWithDate() {
+        List<Pair<String, Integer>> braveStats = new ArrayList<>();
+        // Select All Query
+        String selectQuery = "SELECT  " + BraveStatsTable.COLUMN_STAT_SITE + ", COUNT(*) as site_count FROM " + BraveStatsTable.TABLE_NAME + " GROUP BY " + BraveStatsTable.COLUMN_STAT_SITE + " ORDER BY site_count DESC";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                Pair<String, Integer> statPair = new Pair<>(cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)), cursor.getInt(cursor.getColumnIndex("site_count")));
+                braveStats.add(statPair);
             } while (cursor.moveToNext());
         }
 
@@ -203,7 +248,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT  * FROM " + SavedBandwidthTable.TABLE_NAME;
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
@@ -211,7 +256,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(
                     cursor.getLong(cursor.getColumnIndex(SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH)),
-                    cursor.getString(cursor.getColumnIndex(SavedBandwidthTable.COLUMN_TIMESTAMP)));
+                    cursor.getLong(cursor.getColumnIndex(SavedBandwidthTable.COLUMN_TIMESTAMP)));
 
                 savedBandwidths.add(savedBandwidthTable);
             } while (cursor.moveToNext());
@@ -221,5 +266,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // db.close();
 
         return savedBandwidths;
+    }
+
+    public long getTotalSavedBandwidth() {
+        int sum=0;
+        String selectQuery = "SELECT  SUM("+ SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH +") as Total FROM " + SavedBandwidthTable.TABLE_NAME;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if(cursor.moveToFirst())
+            sum= cursor.getInt(cursor.getColumnIndex("Total"));
+
+        return sum;
     }
 }
