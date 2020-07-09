@@ -174,7 +174,7 @@ month ...</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.</translation>
 <translation id="3735228155296883311">Simply scan the code from your sync chain that you created on another device, or start a new sync chain.</translation>
-<translation id="4690880825349994619">Using existing synced device, open Brave Settings and navigate to Settings &amp;gt; Sync. Choose "Add Device" and scan the QR code displayed on the screen.</translation>
+<translation id="4690880825349994619">Using existing synced device, open Brave Settings and navigate to Settings &gt; Sync. Choose "Add Device" and scan the QR code displayed on the screen.</translation>
 <translation id="5241263629636958324">Copied to Clipboard</translation>
 <translation id="5817918615728894473">Pair</translation>
 <translation id="2004365171440701679">Remove this device</translation>
@@ -183,9 +183,9 @@ month ...</translation>
 <translation id="1602067095281698985">Start a new sync chain</translation>
 <translation id="1475223680121592371">Add a mobile device</translation>
 <translation id="2965377893636908578">Add a computer</translation>
-<translation id="6604289897677913048">Using a second phone or tablet, navigate to Brave Settings &amp;gt; Sync &amp;gt; Scan.</translation>
+<translation id="6604289897677913048">Using a second phone or tablet, navigate to Brave Settings &gt; Sync &gt; Scan.</translation>
 <translation id="8508856434435157945">On your mobile device, navigate to Brave Sync in the Settings panel and click the button "Scan Sync Code". Use your camera to scan the QR code below.</translation>
-<translation id="2590683710114839102">On your computer, navigate to Brave Settings &amp;gt; Sync. Choose "Enter a Sync Chain Code".</translation>
+<translation id="2590683710114839102">On your computer, navigate to Brave Settings &gt; Sync. Choose "Enter a Sync Chain Code".</translation>
 <translation id="65315202420929965">Scan this sync code</translation>
 <translation id="6764016175302339802">Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.</translation>
 <translation id="6707003343517029414">On your target computer, navigate to Brave Sync in settings and click the button "I have a Sync Code".\nEnter the sync chain code words shown below.</translation>
@@ -198,7 +198,7 @@ month ...</translation>
 <translation id="6776430845975754238">Changing settings will only affect data that this device shares with others.</translation>
 <translation id="6450924769151530465">Add another device</translation>
 <translation id="7539985410310934287">Enter code words</translation>
-<translation id="6270614677029463366">Using existing synced device, open Brave Settings and navigate to Settings &amp;gt; Sync. Choose "Add Device" then "Display code words instead".</translation>
+<translation id="6270614677029463366">Using existing synced device, open Brave Settings and navigate to Settings &gt; Sync. Choose "Add Device" then "Display code words instead".</translation>
 <translation id="8131740175452115882">Confirm</translation>
 <translation id="4973653569293835178">I'll use my camera ...</translation>
 <translation id="326454632686131209">Sync device</translation>

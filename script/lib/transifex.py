@@ -148,7 +148,7 @@ def get_strings_dict_from_xml_content(xml_content):
     """Obtains a dictionary mapping the string name to text from Android xml
     content"""
     strings = lxml.etree.fromstring(xml_content).findall('string')
-    return {string_tag.get('name'): textify(string_tag)
+    return {string_tag.get('name'): textify_from_transifex(string_tag)
             for string_tag in strings}
 
 
@@ -221,6 +221,16 @@ def textify(t):
     val = lxml.etree.tostring(t, method='xml', encoding='unicode')
     val = val[val.index('>')+1:val.rindex('<')]
     val = clean_triple_quoted_string(val)
+    return val
+
+
+def textify_from_transifex(t):
+    """Returns the text of a node from Transifex which also fixes up common problems that localizers do"""
+    val = textify(t)
+    val = (val.replace('&amp;lt;', '&lt;')
+              .replace('&amp;gt;', '&gt;')
+              .replace('&amp;&amp;', '&amp;'))
+    # TODO(bbondy) we should also do fixups for ph tags here that localizers often mess up
     return val
 
 
@@ -763,7 +773,7 @@ def combine_override_xtb_into_original(source_string_path):
         for translation in xtb_tree.xpath('//translation'):
             if translation.attrib['id'] in override_translation_fps:
                 translation.getparent().remove(translation)
-            if translation_fps.count(translation.attrib['id']) > 1:
+            elif translation_fps.count(translation.attrib['id']) > 1:
                 translation.getparent().remove(translation)
                 translation_fps.remove(translation.attrib['id'])
 
