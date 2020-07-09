@@ -6,6 +6,12 @@ import styled from 'styled-components'
 
 interface StyleProps {
   userAuthed?: boolean
+  isActive?: boolean
+  isLast?: boolean
+  hideOverflow?: boolean
+  isDeposit?: boolean
+  clickable?: boolean
+  isDetail?: boolean
 }
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
@@ -87,6 +93,87 @@ export const ConnectButton = styled<{}, 'a'>('a')`
   color: #fff;
   margin-bottom: 10px;
   text-decoration: none;
+  &:focus {
+    outline: 0;
+  }
+`
+
+export const NavigationBar = styled<{}, 'div'>('div')`
+  height: 30px;
+  margin-top: 15px;
+  &:first-child {
+    margin-right: 3px;
+  }
+`
+
+export const NavigationItem = styled<StyleProps, 'button'>('button')`
+  float: left;
+  width: 25%;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  background: inherit;
+  border: none;
+  color: ${p => p.isActive ? '#EEEEEE' : '#8F8F8F'};
+  margin-right: ${p => p.isLast ? 12 : 0}px
+  margin-left: 0px;
+  &:focus {
+    outline: 0;
+  }
+`
+
+export const SelectedView = styled<StyleProps, 'div'>('div')`
+  border: 1px solid rgb(70, 70, 70);
+  overflow-y: ${p => p.hideOverflow ? 'hidden' : 'scroll'};
+  height: 260px;
+  width: 240px;
+  margin-left: 4px;
+`
+
+export const ListItem = styled<{}, 'div'>('div')`
+  border-bottom: 1px solid rgb(70, 70, 70);
+  padding: 6px 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+`
+
+export const ListIcon = styled<{}, 'div'>('div')`
+  margin-left: 5px;
+  width: 28px;
+  margin-top: 6px;
+  float: left;
+  margin-right: 10px;
+`
+
+export const ListImg = styled<{}, 'img'>('img')`
+  width: 20px;
+  margin-top: -6px;
+`
+
+export const ListLabel = styled<StyleProps, 'div'>('div')`
+  color: #fff;
+  cursor: ${p => p.clickable ? 'pointer' : 'initial'};
+  margin-top: 10px;
+  font-weight: 600;
+`
+
+export const AssetIconWrapper = styled<StyleProps, 'div'>('div')`
+  height: 25px;
+  width: 25px;
+  border-radius: 100px;
+`
+
+export const AssetIcon = styled<StyleProps, 'span'>('span')`
+  margin-top: 6px;
+  margin-left: 6px;
+`
+
+export const SearchInput = styled<{}, 'input'>('input')`
+  border: none;
+  color: #fff;
+  background: inherit;
+  font-size: 15px;
   &:focus {
     outline: 0;
   }

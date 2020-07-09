@@ -18,3 +18,7 @@ export const setGeminiTickerPrice = (asset: string, price: string) => action(typ
   asset,
   price
 })
+
+export const setGeminiSelectedView = (view: string) => action(types.SET_SELECTED_VIEW, {
+  view
+})

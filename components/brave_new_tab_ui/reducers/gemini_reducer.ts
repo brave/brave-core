@@ -32,6 +32,15 @@ const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, a
       state.geminiState.tickerPrices[asset] = price
       break
 
+    case types.SET_SELECTED_VIEW:
+      const { view } = payload
+      state = { ...state }
+      state.geminiState = {
+        ...state.geminiState,
+        selectedView: view
+      }
+      break
+
     default:
       break
   }

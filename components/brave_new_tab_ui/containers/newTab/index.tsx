@@ -36,7 +36,7 @@ import * as geminiActions from '../../actions/gemini_actions'
 import * as rewardsActions from '../../actions/rewards_actions'
 import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
-import geminiCurrencies from '../../components/default/gemini/data'
+import geminiData from '../../components/default/gemini/data'
 
 // NTP features
 import Settings from './settings'
@@ -449,8 +449,12 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onConvertableAssets(asset, assets)
   }
 
-  setSelectedView = (view: string) => {
-    this.props.actions.setSelectedView(view)
+  setBinanceSelectedView = (view: string) => {
+    this.props.actions.setBinanceSelectedView(view)
+  }
+
+  setGeminiSelectedView = (view: string) => {
+    this.props.actions.setGeminiSelectedView(view)
   }
 
   binanceUpdateActions = () => {
@@ -463,7 +467,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   fetchGeminiTickerPrices = () => {
-    geminiCurrencies.map((asset: string) => {
+    geminiData.currencies.map((asset: string) => {
       chrome.gemini.getTickerPrice(`${asset}usd`, (price: string) => {
         this.props.actions.setGeminiTickerPrice(asset, price)
       })
@@ -728,7 +732,7 @@ class NewTabPage extends React.Component<Props, State> {
         onSetUserTLDAutoSet={this.setUserTLDAutoSet}
         onUpdateActions={this.binanceUpdateActions}
         onDismissAuthInvalid={this.dismissAuthInvalid}
-        onSetSelectedView={this.setSelectedView}
+        onSetSelectedView={this.setBinanceSelectedView}
         getCurrencyList={this.getCurrencyList}
       />
     )
@@ -759,6 +763,7 @@ class NewTabPage extends React.Component<Props, State> {
         onConnectGemini={this.connectGemini}
         onGeminiClientUrl={this.onGeminiClientUrl}
         onUpdateActions={this.geminiUpdateActions}
+        onSetSelectedView={this.setGeminiSelectedView}
       />
     )
   }

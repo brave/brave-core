@@ -70,6 +70,6 @@ export const setAuthInvalid = (authInvalid: boolean) => action(types.SET_AUTH_IN
   authInvalid
 })
 
-export const setSelectedView = (view: string) => action(types.SET_SELECTED_VIEW, {
+export const setBinanceSelectedView = (view: string) => action(types.SET_SELECTED_VIEW, {
   view
 })

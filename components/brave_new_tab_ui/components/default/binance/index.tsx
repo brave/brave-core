@@ -84,6 +84,7 @@ import currencyData from './data'
 import BinanceLogo from './assets/binance-logo'
 import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
 import { getLocale } from '../../../../common/locale'
+import cryptoColors from '../exchangeWidget/colors'
 
 interface State {
   fiatShowing: boolean
@@ -158,7 +159,6 @@ interface Props {
 class Binance extends React.PureComponent<Props, State> {
   private fiatList: string[]
   private currencyNames: Record<string, string>
-  private cryptoColors: Record<string, string>
   private convertTimer: any
   private refreshInterval: any
 
@@ -190,7 +190,6 @@ class Binance extends React.PureComponent<Props, State> {
       convertToShowing: false,
       currentConvertExpiryTime: 30
     }
-    this.cryptoColors = currencyData.cryptoColors
     this.fiatList = currencyData.fiatList
     this.currencyNames = {
       'BAT': 'Basic Attent...',
@@ -579,7 +578,7 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderIconAsset = (key: string, isDetail: boolean = false) => {
-    const iconColor = this.cryptoColors[key] || '#fff'
+    const iconColor = cryptoColors[key] || '#fff'
 
     return (
       <AssetIcon

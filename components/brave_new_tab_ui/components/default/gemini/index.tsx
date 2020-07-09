@@ -17,15 +17,31 @@ import {
   Header,
   StyledTitle,
   GeminiIcon,
-  StyledTitleText
+  StyledTitleText,
+  NavigationBar,
+  NavigationItem,
+  SelectedView,
+  ListItem,
+  ListIcon,
+  ListImg,
+  ListLabel,
+  AssetIconWrapper,
+  AssetIcon,
+  SearchInput
 } from './style'
+import {
+  SearchIcon
+} from '../exchangeWidget/shared-assets'
 import GeminiLogo from './assets/gemini-logo'
 
 // Utils
+import geminiData from './data'
+import cryptoColors from '../exchangeWidget/colors'
 import { getLocale } from '../../../../common/locale'
 
 interface State {
-
+  currentDepositSearch: string
+  currentDepositAsset: string
 }
 
 interface Props {
@@ -33,11 +49,13 @@ interface Props {
   userAuthed: boolean
   authInProgress: boolean
   geminiClientUrl: string
+  selectedView: string
   onShowContent: () => void
   onDisableWidget: () => void
   onValidAuthCode: () => void
   onConnectGemini: () => void
   onUpdateActions: () => void
+  onSetSelectedView: (view: string) => void
   onGeminiClientUrl: (url: string) => void
 }
 
@@ -46,6 +64,10 @@ class Gemini extends React.PureComponent<Props, State> {
 
   constructor (props: Props) {
     super(props)
+    this.state = {
+      currentDepositSearch: '',
+      currentDepositAsset: ''
+    }
   }
 
   componentDidMount () {
@@ -103,9 +125,7 @@ class Gemini extends React.PureComponent<Props, State> {
 
     if (geminiAuth) {
       chrome.gemini.getAccessToken((success: boolean) => {
-        if (success) {
-          this.props.onValidAuthCode()
-        }
+        this.props.onValidAuthCode()
       })
     }
   }
@@ -117,6 +137,48 @@ class Gemini extends React.PureComponent<Props, State> {
 
   renderIndexView () {
     return false
+  }
+
+  setSelectedView (view: string) {
+    this.props.onSetSelectedView(view)
+  }
+
+  setCurrentDepositSearch = ({ target }: any) => {
+    this.setState({
+      currentDepositSearch: target.value
+    })
+  }
+
+  setCurrentDepositAsset (asset: string) {
+    this.setState({
+      currentDepositAsset: asset
+    })
+
+    if (!asset) {
+      this.setState({
+        currentDepositSearch: ''
+      })
+    }
+  }
+
+  renderIconAsset = (key: string, isDetail: boolean = false) => {
+    const iconColor = cryptoColors[key] || '#fff'
+    const styles = { color: '#000' }
+
+    if (this.props.selectedView === 'balance') {
+      styles['marginTop'] = '5px'
+      styles['marginLeft'] = '5px'
+    }
+
+    return (
+      <AssetIconWrapper style={{ background: iconColor }}>
+        <AssetIcon
+          isDetail={isDetail}
+          style={styles}
+          className={`crypto-icon icon-${key}`}
+        />
+      </AssetIconWrapper>
+    )
   }
 
   renderAuthView () {
@@ -146,11 +208,118 @@ class Gemini extends React.PureComponent<Props, State> {
     )
   }
 
+  renderSelectedView () {
+    const { selectedView } = this.props
+
+    switch (selectedView) {
+      case 'deposit':
+        return this.renderDepositView()
+      case 'balance':
+        return null
+      case 'trade':
+        return null
+      default:
+        return null
+    }
+  }
+
+  renderDepositView () {
+    const { currentDepositSearch, currentDepositAsset } = this.state
+
+    if (currentDepositAsset) {
+      return null
+      // return this.renderCurrentDepositAsset()
+    }
+
+    return (
+      <>
+        <ListItem>
+          <ListIcon>
+            <ListImg src={SearchIcon} />
+          </ListIcon>
+          <SearchInput
+            type={'text'}
+            placeholder={getLocale('binanceWidgetSearch')}
+            onChange={this.setCurrentDepositSearch}
+          />
+        </ListItem>
+        {geminiData.currencies.map((asset: string) => {
+          const cleanName = geminiData.currencyNames[asset]
+          const lowerAsset = asset.toLowerCase()
+          const lowerName = cleanName.toLowerCase()
+          const lowerSearch = currentDepositSearch.toLowerCase()
+
+          if (lowerAsset.indexOf(lowerSearch) < 0 &&
+              lowerName.indexOf(lowerSearch) < 0 && currentDepositSearch) {
+            return null
+          }
+
+          return (
+            <ListItem
+              key={`list-${asset}`}
+              onClick={this.setCurrentDepositAsset.bind(this, asset)}
+            >
+              <ListIcon>
+                {this.renderIconAsset(asset.toLowerCase())}
+              </ListIcon>
+              <ListLabel clickable={true}>
+                {`${asset} (${cleanName})`}
+              </ListLabel>
+            </ListItem>
+          )
+        })}
+      </>
+    )
+  }
+
+  renderAccountView () {
+    const { selectedView } = this.props
+    const { currentDepositAsset } = this.state
+    const isBalanceView = !selectedView || selectedView === 'balance'
+    const hideOverflow = currentDepositAsset && selectedView === 'deposit'
+
+    return (
+      <>
+        <NavigationBar>
+            <NavigationItem
+              tabIndex={0}
+              isActive={selectedView === 'deposit'}
+              onClick={this.setSelectedView.bind(this, 'deposit')}
+            >
+              {getLocale('binanceWidgetDepositLabel')}
+            </NavigationItem>
+            <NavigationItem
+              tabIndex={0}
+              isActive={selectedView === 'trade'}
+              onClick={this.setSelectedView.bind(this, 'trade')}
+            >
+              {'Trade'}
+            </NavigationItem>
+            <NavigationItem
+              tabIndex={0}
+              isLast={true}
+              isActive={isBalanceView}
+              onClick={this.setSelectedView.bind(this, 'balance')}
+            >
+              {'Balance'}
+            </NavigationItem>
+        </NavigationBar>
+        {
+          selectedView === 'trade'
+          ? this.renderSelectedView()
+          : <SelectedView hideOverflow={!!hideOverflow}>
+              {this.renderSelectedView()}
+            </SelectedView>
+        }
+      </>
+    )
+  }
+
   renderRoutes () {
     const { userAuthed } = this.props
 
     if (userAuthed) {
-      return (<p>You're logged in champ</p>)
+      return this.renderAccountView()
     }
 
     return this.renderAuthView()
