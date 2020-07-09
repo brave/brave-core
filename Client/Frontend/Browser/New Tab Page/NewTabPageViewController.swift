@@ -129,9 +129,10 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         if !PrivateBrowsingManager.shared.isPrivateBrowsing {
             sections.append(
-                BraveTodaySectionProvider(dataSource: feedDataSource, actionHandler: {
-                    print("Feed \($0) actioned: \(String(describing: $1))")
-                })
+                BraveTodaySectionProvider(
+                    dataSource: feedDataSource,
+                    actionHandler: handleBraveTodayAction
+                )
             )
             layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
         }
@@ -152,6 +153,22 @@ class NewTabPageViewController: UIViewController, Themeable {
     
     private let braveTodayHeaderView = BraveTodaySectionHeaderView().then {
         $0.alpha = 0.0
+    }
+    
+    private func handleBraveTodayAction(_ item: FeedItem, _ action: FeedItemAction) {
+        switch action {
+        case .opened(let inNewTab, let switchingToPrivateMode):
+            guard let url = item.content.url else { return }
+            delegate?.navigateToInput(
+                url.absoluteString,
+                inNewTab: inNewTab,
+                switchingToPrivateMode: switchingToPrivateMode
+            )
+        case .hide:
+            break
+        case .blockSource:
+            break
+        }
     }
     
     override func viewDidLoad() {
