@@ -134,8 +134,8 @@ void BraveTextButton::UpdateColors() {
   }
   const ui::NativeTheme* theme = GetNativeTheme();
   // Override different text hover color
-  if (theme->GetHighContrastColorScheme() !=
-      ui::NativeTheme::HighContrastColorScheme::kDark) {
+  if (theme->GetPlatformHighContrastColorScheme() !=
+      ui::NativeTheme::PlatformHighContrastColorScheme::kDark) {
     SetTextColor(ButtonState::STATE_HOVERED, kBraveBrandColor);
     SetTextColor(ButtonState::STATE_PRESSED, kBraveBrandColor);
   }
