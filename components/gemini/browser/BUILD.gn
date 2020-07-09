@@ -3,6 +3,11 @@ import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 
 assert(gemini_enabled)
 
+declare_args() {
+  gemini_client_id = ""
+  gemini_client_secret = ""
+}
+
 source_set("browser") {
   public_deps = [
     "buildflags"
@@ -24,6 +29,8 @@ source_set("browser") {
     "//services/network/public/cpp",
     "//url",
   ]
+
+  configs += [ ":gemini_config" ]
 }
 
 config("gemini_config") {

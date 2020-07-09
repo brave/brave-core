@@ -33,7 +33,7 @@
 
 namespace {
   const char oauth_host[] = "exchange.qa001.aurora7.net";
-  const char api_host[] = "api.qa001.aurora7.net";
+  // const char api_host[] = "api.qa001.aurora7.net";
   const char oauth_callback[] = "com.brave.gemini://authorization";
   const char oauth_scope[] = "trader";
   const char oauth_url[] = "https://exchange.qa001.aurora7.net/auth";
@@ -65,7 +65,8 @@ namespace {
   GURL GetURLWithPath(const std::string& host, const std::string& path) {
     return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
   }
-}
+
+}  // namespace
 
 GeminiService::GeminiService(content::BrowserContext* context)
     : client_id_(GEMINI_CLIENT_ID),
@@ -98,7 +99,7 @@ void GeminiService::SetAuthToken(const std::string& auth_token) {
 bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
-  GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
+  GURL base_url = GetURLWithPath(oauth_host, oauth_path_access_token);
   GURL url = base_url;
   url = net::AppendQueryParameter(url, "client_id", client_id_);
   url = net::AppendQueryParameter(url, "client_secret", client_secret_);
@@ -182,7 +183,7 @@ bool GeminiService::LoadTokensFromPrefs() {
   return true;
 }
 
-void BinanceService::ResetAccessTokens() {
+void GeminiService::ResetAccessTokens() {
   access_token_ = "";
   refresh_token_ = "";
 

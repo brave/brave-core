@@ -39,10 +39,10 @@ class SimpleURLLoader;
 class Profile;
 
 const char oauth_path_access_token[] = "/auth/token";
-const char api_path_account_balances = "/v1/balances";
-const char api_path_account_addresses = "v1/addresses/";
-const char api_path_get_quote = "/v1/instant/quote";
-const char api_path_execute_quote = "/v1/instant/execute";
+const char api_path_account_balances[] = "/v1/balances";
+const char api_path_account_addresses[] = "v1/addresses/";
+const char api_path_get_quote[] = "/v1/instant/quote";
+const char api_path_execute_quote[] = "/v1/instant/execute";
 
 class GeminiService : public KeyedService {
  public:
@@ -51,12 +51,17 @@ class GeminiService : public KeyedService {
 
   // Callbacks
   using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
+  using URLRequestCallback =
+      base::OnceCallback<void(const int, const std::string&,
+                              const std::map<std::string, std::string>&)>;
 
   std::string GetOAuthClientUrl();
-  void SetAuthToken();
+  void SetAuthToken(const std::string& auth_token);
   bool GetAccessToken(GetAccessTokenCallback callback);
 
  private:
+  base::SequencedTaskRunner* io_task_runner();
+
   using SimpleURLLoaderList =
       std::list<std::unique_ptr<network::SimpleURLLoader>>;
 
@@ -88,7 +93,7 @@ class GeminiService : public KeyedService {
   content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
-  base::WeakPtrFactory<BinanceService> weak_factory_;
+  base::WeakPtrFactory<GeminiService> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(GeminiService);
 };

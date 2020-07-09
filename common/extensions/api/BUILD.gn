@@ -1,4 +1,5 @@
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
@@ -71,6 +72,10 @@ if (brave_wallet_enabled) {
 
 if (binance_enabled) {
   brave_extensions_api_schema_sources += [ "binance.json" ]
+}
+
+if (gemini_enabled) {
+  brave_extensions_api_schema_sources += [ "gemini.json" ]
 }
 
 if (brave_together_enabled) {

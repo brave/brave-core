@@ -13,7 +13,6 @@
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
 
-#include "brave/common/extensions/api/gemini.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/gemini/gemini_service_factory.h"

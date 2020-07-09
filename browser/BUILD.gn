@@ -289,7 +289,7 @@ source_set("browser_process") {
     ]
 
     deps += [
-      "//brave/components/binance/browser",
+      "//brave/components/gemini/browser",
     ]
   }
 
