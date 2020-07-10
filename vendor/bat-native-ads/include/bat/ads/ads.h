@@ -37,13 +37,7 @@ extern Environment _environment;
 extern bool _is_debug;
 
 // Catalog schema resource name
-extern const char _catalog_schema_resource_name[];
-
-// Catalog resource name
-extern const char _catalog_resource_name[];
-
-// Client resource name
-extern const char _client_resource_name[];
+extern const char _catalog_schema_resource_id[];
 
 // Returns |true| if the locale is supported; otherwise returns |false|
 bool IsSupportedLocale(

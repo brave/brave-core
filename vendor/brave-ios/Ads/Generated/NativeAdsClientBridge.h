@@ -23,7 +23,7 @@
 - (bool)shouldShowNotifications;
 - (void)loadUserModelForId:(const std::string &)id callback:(ads::LoadCallback)callback;
 - (void)load:(const std::string &)name callback:(ads::LoadCallback)callback;
-- (std::string)loadJsonSchema:(const std::string &)name;
+- (std::string)loadResourceForId:(const std::string &)id;
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)reset:(const std::string &)name callback:(ads::ResultCallback)callback;
 - (void)save:(const std::string &)name value:(const std::string &)value callback:(ads::ResultCallback)callback;

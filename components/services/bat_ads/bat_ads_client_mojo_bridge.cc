@@ -359,16 +359,16 @@ void BatAdsClientMojoBridge::Reset(
   bat_ads_client_->Reset(name, base::BindOnce(&OnReset, std::move(callback)));
 }
 
-std::string BatAdsClientMojoBridge::LoadJsonSchema(
-    const std::string& name) {
-  std::string json;
+std::string BatAdsClientMojoBridge::LoadResourceForId(
+    const std::string& id) {
+  std::string value;
 
   if (!connected()) {
-    return json;
+    return value;
   }
 
-  bat_ads_client_->LoadJsonSchema(name, &json);
-  return json;
+  bat_ads_client_->LoadResourceForId(id, &value);
+  return value;
 }
 
 void OnRunDBTransaction(

@@ -70,7 +70,7 @@ source_set("brave_ads_unit_tests") {
       "//content/test:test_support",
     ]
 
-    data = [ "//brave/vendor/bat-native-ads/data/" ]
+    data = [ "//brave/vendor/bat-native-ads/data/test/" ]
 
     configs += [ "//brave/vendor/bat-native-ads:internal_config" ]
 

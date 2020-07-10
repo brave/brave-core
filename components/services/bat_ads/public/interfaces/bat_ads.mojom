@@ -35,7 +35,7 @@ interface BatAdsClient {
   [Sync]
   ShouldShowNotifications() => (bool should_show);
   [Sync]
-  LoadJsonSchema(string name) => (string json);
+  LoadResourceForId(string id) => (string value);
   [Sync]
   CanShowBackgroundNotifications() => (bool can_show);
   [Sync]

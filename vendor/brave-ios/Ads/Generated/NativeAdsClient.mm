@@ -95,8 +95,8 @@ void NativeAdsClient::Reset(const std::string & name, ads::ResultCallback callba
   [bridge_ reset:name callback:callback];
 }
 
-std::string NativeAdsClient::LoadJsonSchema(const std::string & name) {
-  return [bridge_ loadJsonSchema:name];
+std::string NativeAdsClient::LoadResourceForId(const std::string & id) {
+  return [bridge_ loadResourceForId:id];
 }
 
 void NativeAdsClient::Log(const char * file, const int line, const int verbose_level, const std::string & message) {
