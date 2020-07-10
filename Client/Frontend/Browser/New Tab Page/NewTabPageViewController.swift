@@ -238,12 +238,6 @@ class NewTabPageViewController: UIViewController, Themeable {
         collectionView.reloadData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        collectionView.reloadData()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -635,6 +629,8 @@ extension NewTabPageViewController {
             showsHorizontalScrollIndicator = false
             // Needed for some reason, as its not setting safe area insets while in landscape
             contentInsetAdjustmentBehavior = .always
+            // Even on light mode we use a darker background now
+            indicatorStyle = .white
         }
         @available(*, unavailable)
         required init(coder: NSCoder) {
