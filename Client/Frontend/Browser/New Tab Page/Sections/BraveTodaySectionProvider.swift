@@ -45,7 +45,13 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        if indexPath.item == 0 {
+            size.height = 300
+        } else if let card = dataSource.cards[safe: indexPath.item - 1] {
+            size.height = card.estimatedHeight(for: size.width)
+        }
+        return size
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

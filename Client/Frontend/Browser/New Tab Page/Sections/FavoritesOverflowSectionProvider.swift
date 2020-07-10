@@ -96,7 +96,9 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        size.height = 24
+        return size
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

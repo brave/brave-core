@@ -16,6 +16,19 @@ enum FeedCard {
     case headlinePair(_ feeds: (FeedItem, FeedItem))
     case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
     case numbered(_ feeds: [FeedItem], title: String)
+    
+    func estimatedHeight(for width: CGFloat) -> CGFloat {
+        switch self {
+        case .sponsor:
+            return FeedItemView.Layout.bannerThumbnail.estimatedHeight(for: width)
+        case .headline:
+            return FeedItemView.Layout.brandedHeadline.estimatedHeight(for: width)
+        case .headlinePair:
+            return 250
+        case .group, .numbered:
+            return 350
+        }
+    }
 }
 
 // TODO: Move this to its own file along with `URLString`

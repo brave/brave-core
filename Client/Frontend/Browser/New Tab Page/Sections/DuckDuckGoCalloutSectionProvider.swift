@@ -9,6 +9,11 @@ import Shared
 import BraveShared
 
 private class DuckDuckGoCalloutButton: SpringButton, Themeable {
+    fileprivate struct UX {
+        static let logoSize = CGSize(width: 38, height: 38)
+        static let padding = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20)
+    }
+    
     private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .dark)).then {
         $0.clipsToBounds = true
         $0.isUserInteractionEnabled = false
@@ -40,10 +45,10 @@ private class DuckDuckGoCalloutButton: SpringButton, Themeable {
             $0.edges.equalToSuperview()
         }
         logoImageView.snp.makeConstraints {
-            $0.size.equalTo(38)
+            $0.size.equalTo(UX.logoSize)
         }
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 20))
+            $0.edges.equalToSuperview().inset(UX.padding)
         }
     }
     
@@ -113,7 +118,11 @@ class DuckDuckGoCalloutSectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
+        size.height = DuckDuckGoCalloutButton.UX.logoSize.height +
+            DuckDuckGoCalloutButton.UX.padding.top +
+            DuckDuckGoCalloutButton.UX.padding.bottom
+        return size
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
