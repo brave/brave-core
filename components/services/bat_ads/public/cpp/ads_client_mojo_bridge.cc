@@ -218,18 +218,6 @@ void AdsClientMojoBridge::LoadJsonSchema(
   std::move(callback).Run(ads_client_->LoadJsonSchema(name));
 }
 
-bool AdsClientMojoBridge::GetUserModelLanguages(
-    std::vector<std::string>* out_languages) {
-  DCHECK(out_languages);
-  *out_languages = ads_client_->GetUserModelLanguages();
-  return true;
-}
-
-void AdsClientMojoBridge::GetUserModelLanguages(
-    GetUserModelLanguagesCallback callback) {
-  std::move(callback).Run(ads_client_->GetUserModelLanguages());
-}
-
 void AdsClientMojoBridge::SetIdleThreshold(
     const int32_t threshold) {
   ads_client_->SetIdleThreshold(threshold);
@@ -261,6 +249,30 @@ void AdsClientMojoBridge::Log(
     const int32_t verbose_level,
     const std::string& message) {
   ads_client_->Log(file.c_str(), line, verbose_level, message);
+}
+
+// static
+void AdsClientMojoBridge::OnLoadUserModelForId(
+    CallbackHolder<LoadCallback>* holder,
+    const ads::Result result,
+    const std::string& value) {
+  DCHECK(holder);
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result), std::move(value));
+  }
+
+  delete holder;
+}
+
+void AdsClientMojoBridge::LoadUserModelForId(
+    const std::string& id,
+    LoadCallback callback) {
+  // this gets deleted in OnLoad
+  auto* holder =
+      new CallbackHolder<LoadCallback>(AsWeakPtr(), std::move(callback));
+  ads_client_->LoadUserModelForId(
+      id, std::bind(AdsClientMojoBridge::OnLoadUserModelForId, holder, _1, _2));
 }
 
 // static
@@ -331,31 +343,6 @@ void AdsClientMojoBridge::Reset(
   auto* holder =
       new CallbackHolder<ResetCallback>(AsWeakPtr(), std::move(callback));
   ads_client_->Reset(name, std::bind(AdsClientMojoBridge::OnReset, holder, _1));
-}
-
-// static
-void AdsClientMojoBridge::OnLoadUserModelForLanguage(
-    CallbackHolder<LoadUserModelForLanguageCallback>* holder,
-    const ads::Result result,
-    const std::string& value) {
-  DCHECK(holder);
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result), std::move(value));
-  }
-
-  delete holder;
-}
-
-void AdsClientMojoBridge::LoadUserModelForLanguage(
-    const std::string& language,
-    LoadUserModelForLanguageCallback callback) {
-  // this gets deleted in OnLoadUserModelForLanguage
-  auto* holder = new CallbackHolder<LoadUserModelForLanguageCallback>(
-      AsWeakPtr(), std::move(callback));
-  ads_client_->LoadUserModelForLanguage(language,
-      std::bind(AdsClientMojoBridge::OnLoadUserModelForLanguage,
-          holder, _1, _2));
 }
 
 // static

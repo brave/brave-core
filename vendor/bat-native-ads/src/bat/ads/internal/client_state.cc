@@ -117,16 +117,6 @@ Result ClientState::FromJson(
     available = client["available"].GetBool();
   }
 
-  if (client.HasMember("userModelLanguage")) {
-    user_model_language = client["userModelLanguage"].GetString();
-  }
-
-  if (client.HasMember("userModelLanguages")) {
-    for (const auto& language : client["userModelLanguages"].GetArray()) {
-      user_model_languages.push_back(language.GetString());
-    }
-  }
-
   if (client.HasMember("pageProbabilitiesHistory")) {
     for (const auto& page_probabilities :
         client["pageProbabilitiesHistory"].GetArray()) {
@@ -248,16 +238,6 @@ void SaveToJson(JsonWriter* writer, const ClientState& state) {
 
   writer->String("available");
   writer->Bool(state.available);
-
-  writer->String("userModelLanguage");
-  writer->String(state.user_model_language.c_str());
-
-  writer->String("userModelLanguages");
-  writer->StartArray();
-  for (const auto& language : state.user_model_languages) {
-    writer->String(language.c_str());
-  }
-  writer->EndArray();
 
   writer->String("pageProbabilitiesHistory");
   writer->StartArray();

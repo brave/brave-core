@@ -134,6 +134,9 @@ class AdsService : public KeyedService {
       OnToggleFlagAdCallback callback) = 0;
 
   virtual void ResetAllState() = 0;
+
+  virtual void OnUserModelUpdated(
+      const std::string& id) = 0;
 };
 
 }  // namespace brave_ads

@@ -10,7 +10,10 @@
 
 #include "base/bind.h"
 #include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/path_service.h"
+#include "chrome/common/chrome_paths.h"
 #include "base/files/important_file_writer.h"
 #include "base/guid.h"
 #include "base/logging.h"
@@ -35,12 +38,14 @@
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/l10n/browser/locale_helper.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "chrome/browser/browser_process.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -98,24 +103,6 @@ int GetSchemaResourceId(
     const std::string& name) {
   if (g_schema_resource_ids.find(name) != g_schema_resource_ids.end()) {
     return g_schema_resource_ids[name];
-  }
-
-  NOTREACHED();
-
-  return 0;
-}
-
-static std::map<std::string, int> g_user_model_resource_ids = {
-  {"en", IDR_ADS_USER_MODEL_EN},
-  {"de", IDR_ADS_USER_MODEL_EN},
-  {"fr", IDR_ADS_USER_MODEL_EN},
-};
-
-int GetUserModelResourceId(
-    const std::string& locale) {
-  if (g_user_model_resource_ids.find(locale) !=
-      g_user_model_resource_ids.end()) {
-    return g_user_model_resource_ids[locale];
   }
 
   NOTREACHED();
@@ -243,11 +230,23 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
   MaybeShowOnboarding();
 #endif
 
+  g_brave_browser_process->user_model_file_service()->AddObserver(this);
+
   MaybeStart(false);
 }
 
 AdsServiceImpl::~AdsServiceImpl() {
   file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
+  g_brave_browser_process->user_model_file_service()->RemoveObserver(this);
+}
+
+void AdsServiceImpl::OnUserModelUpdated(
+    const std::string& id) {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnUserModelUpdated(id);
 }
 
 bool AdsServiceImpl::IsSupportedLocale() const {
@@ -261,16 +260,17 @@ bool AdsServiceImpl::IsNewlySupportedLocale() {
   }
 
   const int schema_version =
-      GetIntegerPref(prefs::kSupportedRegionsSchemaVersion);
-  if (schema_version != prefs::kSupportedRegionsSchemaVersionNumber) {
-    SetIntegerPref(prefs::kSupportedRegionsLastSchemaVersion, schema_version);
+      GetIntegerPref(prefs::kSupportedCountryCodesSchemaVersion);
+  if (schema_version != prefs::kSupportedCountryCodesSchemaVersionNumber) {
+    SetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion,
+        schema_version);
 
-    SetIntegerPref(prefs::kSupportedRegionsSchemaVersion,
-        prefs::kSupportedRegionsSchemaVersionNumber);
+    SetIntegerPref(prefs::kSupportedCountryCodesSchemaVersion,
+        prefs::kSupportedCountryCodesSchemaVersionNumber);
   }
 
   const int last_schema_version =
-      GetIntegerPref(prefs::kSupportedRegionsLastSchemaVersion);
+      GetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion);
 
   const std::string locale = GetLocale();
   return ads::IsNewlySupportedLocale(locale, last_schema_version);
@@ -335,6 +335,8 @@ void AdsServiceImpl::ChangeLocale(
   if (!connected()) {
     return;
   }
+
+  RegisterUserModelComponentsForLocale(locale);
 
   bat_ads_->ChangeLocale(locale);
 }
@@ -672,6 +674,9 @@ void AdsServiceImpl::OnEnsureBaseDirectoryExists(
       bat_ads_.BindNewEndpointAndPassReceiver(),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
 
+  const std::string locale = GetLocale();
+  RegisterUserModelComponentsForLocale(locale);
+
   MaybeShowMyFirstAdNotification();
 }
 
@@ -885,6 +890,12 @@ void AdsServiceImpl::NotificationTimedOut(
   CloseNotification(uuid);
 
   OnClose(profile_, GURL(), uuid, false, base::OnceClosure());
+}
+
+void AdsServiceImpl::RegisterUserModelComponentsForLocale(
+    const std::string& locale) {
+  g_brave_browser_process->user_model_file_service()->
+      RegisterComponentsForLocale(locale);
 }
 
 void AdsServiceImpl::OnURLRequestStarted(
@@ -1202,15 +1213,15 @@ void AdsServiceImpl::MigratePrefsVersion1To2() {
 
 void AdsServiceImpl::MigratePrefsVersion2To3() {
   const auto locale = GetLocale();
-  const auto region = ads::GetRegionCode(locale);
+  const auto country_code = brave_l10n::GetCountryCode(locale);
 
   // Disable ads if upgrading from a pre brave ads build due to a bug where ads
   // were always enabled
   DisableAdsIfUpgradingFromPreBraveAdsBuild();
 
-  // Disable ads for unsupported legacy regions due to a bug where ads were
-  // enabled even if the users region was not supported
-  const std::vector<std::string> legacy_regions = {
+  // Disable ads for unsupported legacy country_codes due to a bug where ads
+  // were enabled even if the users country code was not supported
+  const std::vector<std::string> legacy_country_codes = {
     "US",  // United States of America
     "CA",  // Canada
     "GB",  // United Kingdom (Great Britain and Northern Ireland)
@@ -1218,25 +1229,25 @@ void AdsServiceImpl::MigratePrefsVersion2To3() {
     "FR"   // France
   };
 
-  DisableAdsForUnsupportedRegions(region, legacy_regions);
+  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
 
-  // On-board users for newly supported regions
-  const std::vector<std::string> new_regions = {
+  // On-board users for newly supported country_codes
+  const std::vector<std::string> new_country_codes = {
     "AU",  // Australia
     "NZ",  // New Zealand
     "IE"   // Ireland
   };
 
-  MayBeShowOnboardingForSupportedRegion(region, new_regions);
+  MayBeShowOnboardingForSupportedCountryCode(country_code, new_country_codes);
 }
 
 void AdsServiceImpl::MigratePrefsVersion3To4() {
   const auto locale = GetLocale();
-  const auto region = ads::GetRegionCode(locale);
+  const auto country_code = brave_l10n::GetCountryCode(locale);
 
-  // Disable ads for unsupported legacy regions due to a bug where ads were
-  // enabled even if the users region was not supported
-  const std::vector<std::string> legacy_regions = {
+  // Disable ads for unsupported legacy country codes due to a bug where ads
+  // were enabled even if the users country code was not supported
+  const std::vector<std::string> legacy_country_codes = {
     "US",  // United States of America
     "CA",  // Canada
     "GB",  // United Kingdom (Great Britain and Northern Ireland)
@@ -1247,10 +1258,10 @@ void AdsServiceImpl::MigratePrefsVersion3To4() {
     "IE"   // Ireland
   };
 
-  DisableAdsForUnsupportedRegions(region, legacy_regions);
+  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
 
-  // On-board users for newly supported regions
-  const std::vector<std::string> new_regions = {
+  // On-board users for newly supported country codes
+  const std::vector<std::string> new_country_codes = {
     "AR",  // Argentina
     "AT",  // Austria
     "BR",  // Brazil
@@ -1275,16 +1286,16 @@ void AdsServiceImpl::MigratePrefsVersion3To4() {
     "ZA"   // South Africa
   };
 
-  MayBeShowOnboardingForSupportedRegion(region, new_regions);
+  MayBeShowOnboardingForSupportedCountryCode(country_code, new_country_codes);
 }
 
 void AdsServiceImpl::MigratePrefsVersion4To5() {
   const auto locale = GetLocale();
-  const auto region = ads::GetRegionCode(locale);
+  const auto country_code = brave_l10n::GetCountryCode(locale);
 
-  // Disable ads for unsupported legacy regions due to a bug where ads were
-  // enabled even if the users region was not supported
-  const std::vector<std::string> legacy_regions = {
+  // Disable ads for unsupported legacy country codes due to a bug where ads
+  // were enabled even if the users country code was not supported
+  const std::vector<std::string> legacy_country_codes = {
     "US",  // United States of America
     "CA",  // Canada
     "GB",  // United Kingdom (Great Britain and Northern Ireland)
@@ -1317,14 +1328,14 @@ void AdsServiceImpl::MigratePrefsVersion4To5() {
     "ZA"   // South Africa
   };
 
-  DisableAdsForUnsupportedRegions(region, legacy_regions);
+  DisableAdsForUnsupportedCountryCodes(country_code, legacy_country_codes);
 
-  // On-board users for newly supported regions
-  const std::vector<std::string> new_regions = {
+  // On-board users for newly supported country codes
+  const std::vector<std::string> new_country_codes = {
     "KY"   // Cayman Islands
   };
 
-  MayBeShowOnboardingForSupportedRegion(region, new_regions);
+  MayBeShowOnboardingForSupportedCountryCode(country_code, new_country_codes);
 }
 
 void AdsServiceImpl::MigratePrefsVersion5To6() {
@@ -1335,13 +1346,13 @@ void AdsServiceImpl::MigratePrefsVersion5To6() {
 }
 
 void AdsServiceImpl::MigratePrefsVersion6To7() {
-  // Disable ads for newly supported regions due to a bug where ads were enabled
-  // even if the users region was not supported
+  // Disable ads for newly supported country codes due to a bug where ads were
+  // enabled even if the users country code was not supported
 
   const auto locale = GetLocale();
-  const auto region = ads::GetRegionCode(locale);
+  const auto country_code = brave_l10n::GetCountryCode(locale);
 
-  const std::vector<std::string> legacy_regions = {
+  const std::vector<std::string> legacy_country_codes = {
     "US",  // United States of America
     "CA",  // Canada
     "GB",  // United Kingdom (Great Britain and Northern Ireland)
@@ -1375,20 +1386,20 @@ void AdsServiceImpl::MigratePrefsVersion6To7() {
     "KY"   // Cayman Islands
   };
 
-  const bool is_a_legacy_region = std::find(legacy_regions.begin(),
-      legacy_regions.end(), region) != legacy_regions.end();
+  const bool is_a_legacy_country_code = std::find(legacy_country_codes.begin(),
+      legacy_country_codes.end(), country_code) != legacy_country_codes.end();
 
-  if (is_a_legacy_region) {
-    // Do not disable Brave Ads for legacy regions introduced before version
-    // 1.3.x
+  if (is_a_legacy_country_code) {
+    // Do not disable Brave Ads for legacy country codes introduced before
+    // version 1.3.x
     return;
   }
 
   const int last_schema_version =
-      GetIntegerPref(prefs::kSupportedRegionsLastSchemaVersion);
+      GetIntegerPref(prefs::kSupportedCountryCodesLastSchemaVersion);
 
   if (last_schema_version >= 4) {
-    // Do not disable Brave Ads if |prefs::kSupportedRegionsLastSchemaVersion|
+    // Do not disable Brave Ads if |kSupportedCountryCodesLastSchemaVersion|
     // is newer than or equal to schema version 4. This can occur if a user is
     // upgrading from an older version of 1.3.x or above
     return;
@@ -1432,26 +1443,26 @@ void AdsServiceImpl::DisableAdsIfUpgradingFromPreBraveAdsBuild() {
   SetEnabled(false);
 }
 
-void AdsServiceImpl::DisableAdsForUnsupportedRegions(
-    const std::string& region,
-    const std::vector<std::string>& supported_regions) {
-  if (std::find(supported_regions.begin(), supported_regions.end(), region)
-      != supported_regions.end()) {
+void AdsServiceImpl::DisableAdsForUnsupportedCountryCodes(
+    const std::string& country_code,
+    const std::vector<std::string>& supported_country_codes) {
+  if (std::find(supported_country_codes.begin(), supported_country_codes.end(),
+      country_code) != supported_country_codes.end()) {
     return;
   }
 
   SetEnabled(false);
 }
 
-void AdsServiceImpl::MayBeShowOnboardingForSupportedRegion(
-    const std::string& region,
-    const std::vector<std::string>& supported_regions) {
+void AdsServiceImpl::MayBeShowOnboardingForSupportedCountryCode(
+    const std::string& country_code,
+    const std::vector<std::string>& supported_country_codes) {
   if (IsEnabled()) {
     return;
   }
 
-  if (std::find(supported_regions.begin(), supported_regions.end(), region)
-      == supported_regions.end()) {
+  if (std::find(supported_country_codes.begin(), supported_country_codes.end(),
+      country_code) == supported_country_codes.end()) {
     return;
   }
 
@@ -1798,16 +1809,6 @@ bool AdsServiceImpl::IsForeground() const {
   return BackgroundHelper::GetInstance()->IsForeground();
 }
 
-std::vector<std::string> AdsServiceImpl::GetUserModelLanguages() const {
-  std::vector<std::string> languages;
-
-  for (const auto& user_model_resource_id : g_user_model_resource_ids) {
-    languages.push_back(user_model_resource_id.first);
-  }
-
-  return languages;
-}
-
 std::string AdsServiceImpl::GetLocale() const {
   return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
 }
@@ -1824,14 +1825,6 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
   }
 
   return data_resource;
-}
-
-void AdsServiceImpl::LoadUserModelForLanguage(
-    const std::string& language,
-    ads::LoadCallback callback) const {
-  const auto resource_id = GetUserModelResourceId(language);
-  const auto user_model = LoadDataResourceAndDecompressIfNeeded(resource_id);
-  callback(ads::Result::SUCCESS, user_model);
 }
 
 void AdsServiceImpl::ShowNotification(
@@ -1969,14 +1962,32 @@ void AdsServiceImpl::Save(
   writer.WriteNow(std::make_unique<std::string>(value));
 }
 
+void AdsServiceImpl::LoadUserModelForId(
+    const std::string& id,
+    ads::LoadCallback callback) {
+  const base::Optional<base::FilePath> path =
+      g_brave_browser_process->user_model_file_service()->GetPathForId(id);
+
+  if (!path) {
+    callback(ads::Result::FAILED, "");
+    return;
+  }
+
+  VLOG(1) << "Loading user model from " << path.value();
+
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&LoadOnFileTaskRunner, path.value()),
+      base::BindOnce(&AdsServiceImpl::OnLoaded, AsWeakPtr(),
+          std::move(callback)));
+}
+
 void AdsServiceImpl::Load(
     const std::string& name,
     ads::LoadCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
       base::BindOnce(&AdsServiceImpl::OnLoaded,
-                     AsWeakPtr(),
-                     std::move(callback)));
+          AsWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::Reset(

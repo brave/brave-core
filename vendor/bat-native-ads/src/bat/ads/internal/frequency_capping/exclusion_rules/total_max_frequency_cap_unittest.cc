@@ -75,7 +75,7 @@ class BatAdsTotalMaxFrequencyCapTest : public ::testing::Test {
         .WillByDefault(Return("en-US"));
 
     MockLoad(ads_client_mock_);
-    MockLoadUserModelForLanguage(ads_client_mock_);
+    MockLoadUserModelForId(ads_client_mock_);
     MockLoadJsonSchema(ads_client_mock_);
     MockSave(ads_client_mock_);
 

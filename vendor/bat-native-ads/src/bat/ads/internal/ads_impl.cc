@@ -49,6 +49,7 @@
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
 #include "bat/ads/internal/subdivision_targeting.h"
 #include "bat/ads/internal/url_util.h"
+#include "bat/ads/internal/user_models.h"
 
 #include "base/guid.h"
 #include "base/rand_util.h"
@@ -63,7 +64,6 @@
 #include "base/android/build_info.h"
 #endif
 
-#include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "url/gurl.h"
 
@@ -98,10 +98,8 @@ AdsImpl::AdsImpl(AdsClient* ads_client)
       ad_conversions_(std::make_unique<AdConversions>(this)),
       database_(std::make_unique<database::Initialize>(this)),
       page_classifier_(std::make_unique<classification::PageClassifier>(this)),
-      purchase_intent_classifier_(std::make_unique<
-          classification::PurchaseIntentClassifier>(kPurchaseIntentSignalLevel,
-              kPurchaseIntentClassificationThreshold,
-                  kPurchaseIntentSignalDecayTimeWindow)),
+      purchase_intent_classifier_(
+          std::make_unique<classification::PurchaseIntentClassifier>()),
       is_initialized_(false),
       is_confirmations_ready_(false),
       ad_notifications_(std::make_unique<AdNotifications>(this)),
@@ -194,13 +192,9 @@ void AdsImpl::InitializeStep5(
     return;
   }
 
-  auto user_model_languages = ads_client_->GetUserModelLanguages();
-  client_->SetUserModelLanguages(user_model_languages);
+  subdivision_targeting_->MaybeFetchForCurrentLocale();
 
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-
-  ChangeLocale(locale);
+  InitializeStep6(SUCCESS);
 }
 
 void AdsImpl::InitializeStep6(
@@ -277,11 +271,6 @@ bool AdsImpl::IsInitialized() {
     return false;
   }
 
-  if (page_classifier_->ShouldClassifyPages() &&
-      !page_classifier_->IsInitialized()) {
-    return false;
-  }
-
   return true;
 }
 
@@ -297,39 +286,6 @@ void AdsImpl::Shutdown(
   ad_notifications_->RemoveAll(true);
 
   callback(SUCCESS);
-}
-
-void AdsImpl::LoadUserModel() {
-  auto language = client_->GetUserModelLanguage();
-
-  const auto callback = std::bind(&AdsImpl::OnUserModelLoaded, this, _1, _2);
-  ads_client_->LoadUserModelForLanguage(language, callback);
-}
-
-void AdsImpl::OnUserModelLoaded(
-    const Result result,
-    const std::string& json) {
-  auto language = client_->GetUserModelLanguage();
-
-  if (result != SUCCESS) {
-    BLOG(0, "Failed to load user model for " << language << " language");
-    return;
-  }
-
-  BLOG(3, "Successfully loaded user model for " << language << " language");
-
-  if (!page_classifier_->Initialize(json)) {
-    BLOG(0, "Failed to initialize page classification user model for "
-        << language << " language");
-    return;
-  }
-
-  BLOG(1, "Successfully initialized page classification user model for "
-      << language << " language");
-
-  if (!IsInitialized()) {
-    InitializeStep6(SUCCESS);
-  }
 }
 
 bool AdsImpl::IsMobile() const {
@@ -636,24 +592,112 @@ void AdsImpl::ChangeLocale(
     const std::string& locale) {
   subdivision_targeting_->MaybeFetch(locale);
 
+  LoadPageClassificationUserModel(locale);
+  LoadPurchaseIntentUserModel(locale);
+}
+
+void AdsImpl::LoadPageClassificationUserModel(
+    const std::string& locale) {
   const std::string language_code = brave_l10n::GetLanguageCode(locale);
-  client_->SetUserModelLanguage(language_code);
 
-  if (!page_classifier_->ShouldClassifyPages()) {
-    client_->SetUserModelLanguage(language_code);
-
-    InitializeStep6(SUCCESS);
+  const auto iter = kPageClassificationLanguageCodes.find(language_code);
+  if (iter == kPageClassificationLanguageCodes.end()) {
+    BLOG(1, language_code << " does not support page classification");
     return;
   }
 
-  LoadUserModel();
+  LoadPageClassificationUserModelForId(iter->second);
+}
+
+void AdsImpl::LoadPurchaseIntentUserModel(
+    const std::string& locale) {
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
+
+  const auto iter = kPurchaseIntentCountryCodes.find(country_code);
+  if (iter == kPurchaseIntentCountryCodes.end()) {
+    BLOG(1, country_code << " does not support purchase intent");
+    return;
+  }
+
+  LoadPurchaseIntentUserModelForId(iter->second);
+}
+
+void AdsImpl::OnUserModelUpdated(
+    const std::string& id) {
+  if (kPageClassificationUserModelIds.find(id) !=
+      kPageClassificationUserModelIds.end()) {
+    LoadPageClassificationUserModelForId(id);
+  } else if (kPurchaseIntentUserModelIds.find(id) !=
+      kPurchaseIntentUserModelIds.end()) {
+    LoadPurchaseIntentUserModelForId(id);
+  } else {
+    BLOG(1, "Unknown " << id << " user model");
+  }
+}
+
+void AdsImpl::LoadPageClassificationUserModelForId(
+    const std::string& id) {
+  auto callback = std::bind(&AdsImpl::OnLoadPageClassificationUserModelForId,
+      this, id, _1, _2);
+
+  ads_client_->LoadUserModelForId(id, callback);
+}
+
+void AdsImpl::OnLoadPageClassificationUserModelForId(
+    const std::string& id,
+    const Result result,
+    const std::string& json) {
+  page_classifier_.reset(
+      new classification::PageClassifier(this));
+
+  if (result != SUCCESS) {
+    BLOG(1, "Failed to load " << id << " page classification user model");
+    return;
+  }
+
+  BLOG(1, "Successfully loaded " << id << " page classification user model");
+
+  if (!page_classifier_->Initialize(json)) {
+    BLOG(1, "Failed to initialize " << id << " page classification user model");
+    return;
+  }
+
+  BLOG(1, "Successfully initialized " << id << " page classification user "
+      "model");
+}
+
+void AdsImpl::LoadPurchaseIntentUserModelForId(
+    const std::string& id) {
+  auto callback = std::bind(&AdsImpl::OnLoadPurchaseIntentUserModelForId,
+      this, id, _1, _2);
+
+  ads_client_->LoadUserModelForId(id, callback);
+}
+
+void AdsImpl::OnLoadPurchaseIntentUserModelForId(
+    const std::string& id,
+    const Result result,
+    const std::string& json) {
+  purchase_intent_classifier_.reset(
+      new classification::PurchaseIntentClassifier());
+
+  if (result != SUCCESS) {
+    BLOG(1, "Failed to load " << id << " purchase intent user model");
+    return;
+  }
+
+  BLOG(1, "Successfully loaded " << id << " purchase intent user model");
+
+  if (!purchase_intent_classifier_->Initialize(json)) {
+    BLOG(1, "Failed to initialize " << id << " purchase intent user model");
+    return;
+  }
+
+  BLOG(1, "Successfully initialized " << id << " purchase intent user model");
 }
 
 void AdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
-  const std::string locale =
-      brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-
-  subdivision_targeting_->MaybeFetch(locale);
+  subdivision_targeting_->MaybeFetchForCurrentLocale();
 }
 
 void AdsImpl::OnPageLoaded(
@@ -662,7 +706,7 @@ void AdsImpl::OnPageLoaded(
   DCHECK(!url.empty());
 
   if (!IsInitialized()) {
-    BLOG(0, "Failed to classify page as not initialized");
+    BLOG(1, "Failed to classify page as not initialized");
     return;
   }
 

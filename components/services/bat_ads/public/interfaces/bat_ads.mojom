@@ -31,8 +31,6 @@ interface BatAdsClient {
   [Sync]
   GetClientInfo(string client_info) => (string client_info);
   [Sync]
-  GetUserModelLanguages() => (array<string> languages);
-  [Sync]
   IsForeground() => (bool is_foreground);
   [Sync]
   ShouldShowNotifications() => (bool should_show);
@@ -51,7 +49,6 @@ interface BatAdsClient {
   SetAdsSubdivisionTargetingCode(string subdivision_targeting_code);
   SetAutomaticallyDetectedAdsSubdivisionTargetingCode(string subdivision_targeting_code);
   SetIdleThreshold(int32 threshold);
-  LoadUserModelForLanguage(string language) => (int32 result, string value);
   ShowNotification(string notification_info);
   CloseNotification(string uuid);
   SetCatalogIssuers(string issuers_info);
@@ -59,6 +56,7 @@ interface BatAdsClient {
   ConfirmAction(string creative_instance_id, string creative_set_id, string confirmation_type);
   URLRequest(string url, array<string> headers, string content, string content_type, int32 method) => (int32 status_code, string content, map<string, string> headers);
   Save(string name, string value) => (int32 result);
+  LoadUserModelForId(string id) => (int32 result, string value);
   Load(string name) => (int32 result, string value);
   Reset(string name) => (int32 result);
   RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
@@ -90,4 +88,5 @@ interface BatAds {
   ToggleAdOptOutAction(string category, int32 action) => (string category, int32 action);
   ToggleSaveAd(string creative_instance_id, string creative_set_id, bool saved) => (string creative_instance_id, bool saved);
   ToggleFlagAd(string creative_instance_id, string creative_set_id, bool flagged) => (string creative_instance_id, bool flagged);
+  OnUserModelUpdated(string id);
 };

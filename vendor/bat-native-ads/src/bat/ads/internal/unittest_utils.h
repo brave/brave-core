@@ -87,7 +87,7 @@ void MockLoad(
 void MockSave(
     const std::unique_ptr<AdsClientMock>& mock);
 
-void MockLoadUserModelForLanguage(
+void MockLoadUserModelForId(
     const std::unique_ptr<AdsClientMock>& mock);
 
 void MockLoadJsonSchema(

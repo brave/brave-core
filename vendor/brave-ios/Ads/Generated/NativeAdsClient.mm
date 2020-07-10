@@ -51,14 +51,6 @@ bool NativeAdsClient::CanShowBackgroundNotifications() const {
     return [bridge_ canShowBackgroundNotifications];
 }
 
-std::vector<std::string> NativeAdsClient::GetUserModelLanguages() const {
-  return [bridge_ getUserModelLanguages];
-}
-
-void NativeAdsClient::LoadUserModelForLanguage(const std::string & language, ads::LoadCallback callback) const {
-  [bridge_ loadUserModelForLanguage:language callback:callback];
-}
-
 void NativeAdsClient::ShowNotification(std::unique_ptr<ads::AdNotificationInfo> info) {
   [bridge_ showNotification:std::move(info)];
 }
@@ -89,6 +81,10 @@ void NativeAdsClient::URLRequest(const std::string & url, const std::vector<std:
 
 void NativeAdsClient::Save(const std::string & name, const std::string & value, ads::ResultCallback callback) {
   [bridge_ save:name value:value callback:callback];
+}
+
+void NativeAdsClient::LoadUserModelForId(const std::string & id, ads::LoadCallback callback) {
+  [bridge_ loadUserModelForId:id callback:callback];
 }
 
 void NativeAdsClient::Load(const std::string & name, ads::LoadCallback callback) {

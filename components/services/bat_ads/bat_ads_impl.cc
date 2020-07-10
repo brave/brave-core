@@ -3,17 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/services/bat_ads/bat_ads_impl.h"
+
 #include <utility>
 #include <vector>
 
-#include "brave/components/services/bat_ads/bat_ads_impl.h"
+#include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "bat/ads/ad_content.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/ads_history.h"
 #include "bat/ads/category_content.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/mojom.h"
-#include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
 using std::placeholders::_1;
 
@@ -214,6 +215,11 @@ void BatAdsImpl::ToggleFlagAd(
   bool flagged_result =
       ads_->ToggleFlagAd(creative_instance_id, creative_set_id, flagged);
   std::move(callback).Run(creative_instance_id, flagged_result);
+}
+
+void BatAdsImpl::OnUserModelUpdated(
+    const std::string& id) {
+  ads_->OnUserModelUpdated(id);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

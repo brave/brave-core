@@ -38,7 +38,7 @@ class PageClassifier {
 
   ~PageClassifier();
 
-  bool IsInitialized();
+  bool IsInitialized() const;
 
   bool Initialize(
       const std::string& json);
@@ -57,9 +57,6 @@ class PageClassifier {
   const AdsImpl* const ads_;  // NOT OWNED
 
   PageProbabilitiesCacheMap page_probabilities_cache_;
-
-  bool ShouldClassifyPagesForLocale(
-      const std::string& locale) const;
 
   std::string GetPageClassification(
       const PageProbabilitiesMap& page_probabilities) const;

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_SUPPORTED_REGIONS_H_
-#define BAT_ADS_INTERNAL_SUPPORTED_REGIONS_H_
+#ifndef BAT_ADS_INTERNAL_SUPPORTED_COUNTRY_CODES_H_
+#define BAT_ADS_INTERNAL_SUPPORTED_COUNTRY_CODES_H_
 
 #include <map>
 #include <set>
@@ -12,15 +12,15 @@
 
 namespace ads {
 
-const std::map<int, std::set<std::string>> kSupportedRegions = {
-  // Append newly supported regions with a new schema version and update
-  // |kSupportedRegionsSchemaVersionNumber| to match the new version
+const std::map<int, std::set<std::string>> kSupportedCountryCodes = {
+  // Append newly supported country codes with a new schema version and update
+  // |kSupportedCountryCodesSchemaVersionNumber| to match the new version
 
   // |kLargeAnonymityCountryCodes| and |kOtherCountryCodes| in
   // |bat-native-confirmations/src/bat/confirmations/internal/country_codes.h|
-  // must be updated to reflect newly supported regions
+  // must be updated to reflect newly supported country codes
 
-  //   Format: { schema_version : { region... } }
+  //   Format: { schema_version : { country code... } }
   {
     1, {
       "US",   // United States of America
@@ -327,4 +327,4 @@ const std::map<int, std::set<std::string>> kSupportedRegions = {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_SUPPORTED_REGIONS_H_
+#endif  // BAT_ADS_INTERNAL_SUPPORTED_COUNTRY_CODES_H_

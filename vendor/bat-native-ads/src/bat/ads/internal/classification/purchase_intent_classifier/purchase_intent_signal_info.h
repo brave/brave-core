@@ -15,6 +15,8 @@
 namespace ads {
 namespace classification {
 
+using PurchaseIntentSegmentList = std::vector<std::string>;
+
 struct PurchaseIntentSignalInfo {
  public:
   PurchaseIntentSignalInfo();

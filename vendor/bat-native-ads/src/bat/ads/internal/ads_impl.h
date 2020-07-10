@@ -21,6 +21,7 @@
 #include "bat/ads/internal/ads_serve.h"
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/classification/page_classifier/page_classifier.h"
+#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/creative_ad_notification_info.h"
 #include "bat/ads/internal/database/database_initialize.h"
@@ -29,7 +30,6 @@
 #include "bat/ads/internal/ad_notification_result_type.h"
 #include "bat/ads/internal/ad_notifications.h"
 #include "bat/ads/internal/timer.h"
-#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
 
 namespace ads {
 
@@ -74,11 +74,6 @@ class AdsImpl : public Ads {
 
   void Shutdown(
       ShutdownCallback callback) override;
-
-  void LoadUserModel();
-  void OnUserModelLoaded(
-      const Result result,
-      const std::string& json);
 
   bool IsMobile() const;
   bool IsAndroid() const;
@@ -155,6 +150,25 @@ class AdsImpl : public Ads {
 
   void ChangeLocale(
       const std::string& locale) override;
+
+  void LoadPageClassificationUserModel(
+      const std::string& locale);
+  void LoadPurchaseIntentUserModel(
+      const std::string& locale);
+  void OnUserModelUpdated(
+      const std::string& id) override;
+  void LoadPageClassificationUserModelForId(
+      const std::string& id);
+  void OnLoadPageClassificationUserModelForId(
+      const std::string& id,
+      const Result result,
+      const std::string& json);
+  void LoadPurchaseIntentUserModelForId(
+      const std::string& id);
+  void OnLoadPurchaseIntentUserModelForId(
+      const std::string& id,
+      const Result result,
+      const std::string& json);
 
   void OnAdsSubdivisionTargetingCodeHasChanged() override;
 

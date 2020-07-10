@@ -43,10 +43,6 @@ class AdsClientMojoBridge
       bool* out_is_foreground) override;
   void IsForeground(
       IsForegroundCallback callback) override;
-  bool GetUserModelLanguages(
-      std::vector<std::string>* out_languages) override;
-  void GetUserModelLanguages(
-      GetUserModelLanguagesCallback callback) override;
   bool GetAdsPerHour(
       uint64_t* out_ads_per_hour) override;
   void GetAdsPerHour(
@@ -105,6 +101,9 @@ class AdsClientMojoBridge
       const std::string& message) override;
   void SetIdleThreshold(
       const int32_t threshold) override;
+  void LoadUserModelForId(
+      const std::string& id,
+      LoadCallback callback) override;
   void Load(
       const std::string& name,
       LoadCallback callback) override;
@@ -115,9 +114,6 @@ class AdsClientMojoBridge
   void Reset(
       const std::string& name,
       ResetCallback callback) override;
-  void LoadUserModelForLanguage(
-      const std::string& locale,
-      LoadUserModelForLanguageCallback callback) override;
   void URLRequest(
       const std::string& url,
       const std::vector<std::string>& headers,
@@ -168,6 +164,11 @@ class AdsClientMojoBridge
     Callback callback_;
   };
 
+  static void OnLoadUserModelForId(
+      CallbackHolder<LoadCallback>* holder,
+      const ads::Result result,
+      const std::string& value);
+
   static void OnLoad(
       CallbackHolder<LoadCallback>* holder,
       const ads::Result result,
@@ -180,11 +181,6 @@ class AdsClientMojoBridge
   static void OnReset(
       CallbackHolder<ResetCallback>* holder,
       const ads::Result result);
-
-  static void OnLoadUserModelForLanguage(
-      CallbackHolder<LoadUserModelForLanguageCallback>* holder,
-      const ads::Result result,
-      const std::string& value);
 
   static void OnURLRequest(
       CallbackHolder<URLRequestCallback>* holder,

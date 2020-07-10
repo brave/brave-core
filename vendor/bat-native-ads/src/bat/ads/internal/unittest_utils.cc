@@ -229,21 +229,15 @@ void MockSave(
       }));
 }
 
-void MockLoadUserModelForLanguage(
+void MockLoadUserModelForId(
     const std::unique_ptr<AdsClientMock>& mock) {
-  const std::vector<std::string> user_model_languages = { "en", "de", "fr" };
-  ON_CALL(*mock, GetUserModelLanguages())
-      .WillByDefault(Return(user_model_languages));
-
-  ON_CALL(*mock, LoadUserModelForLanguage(_, _))
+  ON_CALL(*mock, LoadUserModelForId(_, _))
       .WillByDefault(Invoke([](
-          const std::string& language,
+          const std::string& id,
           LoadCallback callback) {
-        base::FilePath path = GetResourcesPath();
+        base::FilePath path = GetTestPath();
         path = path.AppendASCII("user_models");
-        path = path.AppendASCII("languages");
-        path = path.AppendASCII(language);
-        path = path.AppendASCII("user_model.json");
+        path = path.AppendASCII(id);
 
         std::string value;
         if (!base::ReadFileToString(path, &value)) {

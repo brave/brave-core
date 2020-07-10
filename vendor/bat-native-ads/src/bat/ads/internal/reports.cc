@@ -376,10 +376,6 @@ std::string Reports::GenerateSettingsEventReport() const {
 
   writer.EndObject();
 
-  writer.String("userModelLanguage");
-  auto user_model_language = ads_->get_client()->GetUserModelLanguage();
-  writer.String(user_model_language.c_str());
-
   writer.String("adsPerDay");
   auto ads_per_day = ads_->get_ads_client()->GetAdsPerDay();
   writer.Uint64(ads_per_day);

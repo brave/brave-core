@@ -69,7 +69,6 @@
           timerFired(timerID);
       }];
   });
-    
   
   return timerID;
 }

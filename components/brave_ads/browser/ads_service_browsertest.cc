@@ -535,10 +535,10 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsNotSupported) {
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsNewlySupported) {
   GetPrefs()->SetInteger(
-      brave_ads::prefs::kSupportedRegionsLastSchemaVersion, 3);
+      brave_ads::prefs::kSupportedCountryCodesLastSchemaVersion, 3);
 
-  GetPrefs()->SetInteger(brave_ads::prefs::kSupportedRegionsSchemaVersion,
-      brave_ads::prefs::kSupportedRegionsSchemaVersionNumber);
+  GetPrefs()->SetInteger(brave_ads::prefs::kSupportedCountryCodesSchemaVersion,
+      brave_ads::prefs::kSupportedCountryCodesSchemaVersionNumber);
 
   EXPECT_TRUE(ads_service_->IsNewlySupportedLocale());
 }
@@ -547,23 +547,24 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
     BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion) {
   // IMPORTANT: When adding new schema versions |newly_supported_locale_| must
   // be updated in |BraveAdsBrowserTest| to reflect a locale from the latest
-  // schema version in "bat-native-ads/src/bat/ads/internal/supported_regions.h"
+  // schema in "bat-native-ads/src/bat/ads/internal/supported_country_codes.h"
 
-  GetPrefs()->SetInteger(brave_ads::prefs::kSupportedRegionsLastSchemaVersion,
-      brave_ads::prefs::kSupportedRegionsSchemaVersionNumber);
+  GetPrefs()->SetInteger(
+      brave_ads::prefs::kSupportedCountryCodesLastSchemaVersion,
+          brave_ads::prefs::kSupportedCountryCodesSchemaVersionNumber);
 
-  GetPrefs()->SetInteger(brave_ads::prefs::kSupportedRegionsSchemaVersion,
-      brave_ads::prefs::kSupportedRegionsSchemaVersionNumber);
+  GetPrefs()->SetInteger(brave_ads::prefs::kSupportedCountryCodesSchemaVersion,
+      brave_ads::prefs::kSupportedCountryCodesSchemaVersionNumber);
 
   EXPECT_TRUE(ads_service_->IsNewlySupportedLocale());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest, BraveAdsLocaleIsNotNewlySupported) {
   GetPrefs()->SetInteger(
-      brave_ads::prefs::kSupportedRegionsLastSchemaVersion, 2);
+      brave_ads::prefs::kSupportedCountryCodesLastSchemaVersion, 2);
 
-  GetPrefs()->SetInteger(brave_ads::prefs::kSupportedRegionsSchemaVersion,
-      brave_ads::prefs::kSupportedRegionsSchemaVersionNumber);
+  GetPrefs()->SetInteger(brave_ads::prefs::kSupportedCountryCodesSchemaVersion,
+      brave_ads::prefs::kSupportedCountryCodesSchemaVersionNumber);
 
   EXPECT_FALSE(ads_service_->IsNewlySupportedLocale());
 }

@@ -177,7 +177,6 @@ bundle_data("resources") {
   ledger_dir = "//brave/vendor/bat-native-ledger"
   sources = [
     "$ads_dir/data/resources/catalog-schema.json",
-    "$ads_dir/data/resources/user_models",
     "$ledger_dir/niceware/wordlist",
     "Ledger/Data/migrate.sql"
   ]

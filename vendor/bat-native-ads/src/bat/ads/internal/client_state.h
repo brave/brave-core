@@ -40,8 +40,6 @@ struct ClientState {
   std::map<std::string, uint64_t> seen_advertisers;
   uint64_t next_check_serve_ad_timestamp_in_seconds = 0;
   bool available = false;
-  std::string user_model_language = kDefaultUserModelLanguage;
-  std::vector<std::string> user_model_languages;
   classification::PageProbabilitiesList page_probabilities_history;
   std::map<std::string, std::deque<uint64_t>> creative_set_history;
   std::map<std::string, std::deque<uint64_t>> ad_conversion_history;

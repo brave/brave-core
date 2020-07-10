@@ -55,6 +55,8 @@ class BatAdsPageClassifierTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right before
     // each test)
 
+    const std::string locale = "en-US";
+
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     const base::FilePath path = temp_dir_.GetPath();
 
@@ -62,10 +64,10 @@ class BatAdsPageClassifierTest : public ::testing::Test {
         .WillByDefault(Return(true));
 
     ON_CALL(*locale_helper_mock_, GetLocale())
-        .WillByDefault(Return("en-US"));
+        .WillByDefault(Return(locale));
 
     MockLoad(ads_client_mock_);
-    MockLoadUserModelForLanguage(ads_client_mock_);
+    MockLoadUserModelForId(ads_client_mock_);
     MockLoadJsonSchema(ads_client_mock_);
     MockSave(ads_client_mock_);
 
@@ -73,6 +75,8 @@ class BatAdsPageClassifierTest : public ::testing::Test {
     MockRunDBTransaction(ads_client_mock_, database_);
 
     Initialize(ads_);
+
+    ads_->ChangeLocale(locale);
   }
 
   void TearDown() override {
@@ -95,8 +99,12 @@ class BatAdsPageClassifierTest : public ::testing::Test {
 TEST_F(BatAdsPageClassifierTest,
     ShouldClassifyPagesForUntargetedLocale) {
   // Arrange
+  const std::string locale = "ja-JP";
+
   ON_CALL(*locale_helper_mock_, GetLocale())
-      .WillByDefault(Return("ja-JP"));
+      .WillByDefault(Return(locale));
+
+  ads_->ChangeLocale(locale);
 
   // Act
   const bool should_classify_pages =

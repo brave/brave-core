@@ -31,6 +31,8 @@ class SubdivisionTargeting {
   void MaybeFetch(
       const std::string& locale);
 
+  void MaybeFetchForCurrentLocale();
+
   std::string GetAdsSubdivisionTargetingCode() const;
 
  private:
