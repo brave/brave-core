@@ -41,6 +41,11 @@ const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, a
       }
       break
 
+    case types.SET_HIDE_BALANCE:
+      state = { ...state }
+      state.geminiState.hideBalance = payload.hide
+      break
+
     default:
       break
   }

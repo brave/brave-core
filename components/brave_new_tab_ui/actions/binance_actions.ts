@@ -34,7 +34,7 @@ export const onBinanceClientUrl = (clientUrl: string) => action(types.ON_BINANCE
 
 export const onValidBinanceAuthCode = () => action(types.ON_VALID_BINANCE_AUTH_CODE)
 
-export const setHideBalance = (hide: boolean) => action(types.SET_HIDE_BALANCE, {
+export const setBinanceHideBalance = (hide: boolean) => action(types.SET_HIDE_BALANCE, {
   hide
 })
 

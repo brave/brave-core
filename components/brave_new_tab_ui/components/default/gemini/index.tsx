@@ -43,11 +43,18 @@ import {
   CopyButton,
   BackArrow,
   GenButton,
-  DetailIconWrapper
+  DetailIconWrapper,
+  AccountSummary,
+  ListInfo,
+  TradeLabel,
+  Balance,
+  BlurIcon
 } from './style'
 import {
   SearchIcon,
-  QRIcon
+  QRIcon,
+  ShowIcon,
+  HideIcon
 } from '../exchangeWidget/shared-assets'
 import GeminiLogo from './assets/gemini-logo'
 import { CaratLeftIcon } from 'brave-ui/components/icons'
@@ -64,6 +71,7 @@ interface State {
 }
 
 interface Props {
+  hideBalance: boolean
   showContent: boolean
   userAuthed: boolean
   authInProgress: boolean
@@ -71,6 +79,8 @@ interface Props {
   selectedView: string
   assetAddresses: Record<string, string>
   assetAddressQRCodes: Record<string, string>
+  accountBalances: Record<string, string>
+  tickerPrices: Record<string, string>
   onShowContent: () => void
   onDisableWidget: () => void
   onValidAuthCode: () => void
@@ -78,6 +88,7 @@ interface Props {
   onUpdateActions: () => void
   onSetSelectedView: (view: string) => void
   onGeminiClientUrl: (url: string) => void
+  onSetHideBalance: (hide: boolean) => void
 }
 
 class Gemini extends React.PureComponent<Props, State> {
@@ -209,6 +220,38 @@ class Gemini extends React.PureComponent<Props, State> {
     })
   }
 
+  onSetHideBalance = () => {
+    this.props.onSetHideBalance(
+      !this.props.hideBalance
+    )
+  }
+
+  formatCryptoBalance = (balance: string) => {
+    if (!balance) {
+      return '0'
+    }
+
+    return parseFloat(balance).toFixed(3)
+  }
+
+  getAccountUSDValue = () => {
+    const { accountBalances, tickerPrices } = this.props
+    let USDValue = 0.00
+
+    for (let ticker in tickerPrices) {
+      if (!(ticker in accountBalances)) {
+        continue
+      }
+
+      const price = parseFloat(tickerPrices[ticker])
+      const assetBalance = parseFloat(accountBalances[ticker])
+
+      USDValue += price * assetBalance
+    }
+
+    return USDValue.toFixed(2)
+  }
+
   renderIconAsset = (key: string, isDetail: boolean = false) => {
     const iconColor = cryptoColors[key] || '#fff'
     const styles = { color: '#000' }
@@ -263,7 +306,7 @@ class Gemini extends React.PureComponent<Props, State> {
       case 'deposit':
         return this.renderDepositView()
       case 'balance':
-        return null
+        return this.renderBalanceView()
       case 'trade':
         return null
       default:
@@ -282,6 +325,61 @@ class Gemini extends React.PureComponent<Props, State> {
           {getLocale('binanceWidgetDone')}
         </GenButton>
       </SmallNoticeWrapper>
+    )
+  }
+
+  renderBalanceView () {
+    const {
+      hideBalance,
+      accountBalances
+    } = this.props
+    const accountUSDValue = this.getAccountUSDValue()
+
+    return (
+      <>
+        <AccountSummary>
+          <ListInfo position={'left'}>
+            <TradeLabel>
+              <Balance isSummary={true} hideBalance={hideBalance}>
+                {`$${accountUSDValue}`}
+              </Balance>
+            </TradeLabel>
+          </ListInfo>
+          <ListInfo position={'right'} isSummary={true}>
+            <TradeLabel>
+              <BlurIcon onClick={this.onSetHideBalance}>
+                {
+                  hideBalance
+                  ? <ShowIcon />
+                  : <HideIcon />
+                }
+              </BlurIcon>
+            </TradeLabel>
+          </ListInfo>
+        </AccountSummary>
+        {geminiData.currencies.map((asset: string) => {
+          const assetAccountBalance = accountBalances[asset] || '0'
+          const assetBalance = this.formatCryptoBalance(assetAccountBalance)
+
+          return (
+            <ListItem key={`list-${asset}`}>
+              <ListInfo isAsset={true} position={'left'}>
+                <ListIcon>
+                  {this.renderIconAsset(asset.toLowerCase())}
+                </ListIcon>
+                <ListLabel>
+                  {geminiData.currencyNames[asset]}
+                </ListLabel>
+              </ListInfo>
+              <ListInfo position={'right'}>
+                <Balance isSummary={false} hideBalance={hideBalance}>
+                  {assetBalance} {asset}
+                </Balance>
+              </ListInfo>
+            </ListItem>
+          )
+        })}
+      </>
     )
   }
 

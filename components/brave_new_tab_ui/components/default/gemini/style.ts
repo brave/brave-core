@@ -12,6 +12,10 @@ interface StyleProps {
   isDeposit?: boolean
   clickable?: boolean
   isDetail?: boolean
+  isSummary?: boolean
+  isAsset?: boolean
+  position?: string
+  hideBalance?: boolean
 }
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
@@ -281,4 +285,53 @@ export const DetailLabel = styled<{}, 'span'>('span')`
 
 export const DetailIconWrapper = styled<{}, 'div'>('div')`
   float: right;
+`
+
+export const AccountSummary = styled(ListItem)`
+  padding: 5px 7px;
+`
+
+export const ListInfo = styled<StyleProps, 'div'>('div')`
+  float: ${p => `${p.position}`};
+  min-width: ${p => p.isSummary ? 60 : 83}px;
+  font-size: ${p => p.isAsset ? '16px' : 'inherit'};
+  margin-top: ${p => p.isAsset ? '9' : '0'}px;
+  ${p => {
+    if (p.position === 'right') {
+      const width = p.isSummary ? 25 : 40
+      return `
+        width: ${width}%;
+        text-align: left;
+      `
+    } else if (p.position === 'left') {
+      return `width: 120px`
+    } else {
+      return null
+    }
+  }}
+`
+
+export const TradeLabel = styled<{}, 'span'>('span')`
+  font-weight: bold;
+  font-size: 14px;
+  display: block;
+  color: rgb(70, 70, 70);
+  margin-bottom: 3px;
+`
+
+export const Balance = styled<StyleProps, 'span'>('span')`
+  display: block;
+  font-size: ${p => p.isSummary ? '25' : '14'}px;
+  margin: ${p => p.isSummary ? '5px' : '20px'} 0;
+  color: #fff;
+  text-align: ${p => p.isSummary ? 'unset' : 'right'};
+  margin-right: ${p => p.isSummary ? '0' : '7px'};
+  -webkit-filter: blur(${p => p.hideBalance ? 10 : 0}px);
+`
+
+export const BlurIcon = styled<{}, 'div'>('div')`
+  margin-left: 50%;
+  margin-top: 25%;
+  cursor: pointer;
+  color: rgb(70, 70, 70);
 `

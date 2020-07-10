@@ -183,6 +183,8 @@ declare namespace NewTab {
     selectedView: string
     assetAddresses: Record<string, string>
     assetAddressQRCodes: Record<string, string>
+    hideBalance: boolean
+    accountBalances: Record<string, string>
   }
 
   export type BinanceTLD = 'us' | 'com'
