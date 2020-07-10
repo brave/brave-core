@@ -44,7 +44,7 @@ class FeedContextMenu: NSObject, UIContextMenuInteractionDelegate {
     }
     
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
-        self.waitUntilDismissed {
+        animator.addCompletion {
             self.handler(.opened())
         }
     }
@@ -73,43 +73,29 @@ class FeedContextMenu: NSObject, UIContextMenuInteractionDelegate {
 // MARK: - Actions
 @available(iOS 13.0, *)
 extension FeedContextMenu {
-    private func waitUntilDismissed(_ task: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            task()
-        }
-    }
-    
     private var openInNewTab: UIAction {
-        .init(title: Strings.openNewTabButtonTitle) { _ in
-            self.waitUntilDismissed {
-                self.handler(.opened(inNewTab: true))
-            }
-        }
+        .init(title: Strings.openNewTabButtonTitle, handler: UIAction.deferredActionHandler { _ in
+            self.handler(.opened(inNewTab: true))
+        })
     }
     
     private var openInNewPrivateTab: UIAction {
-        .init(title: Strings.openNewPrivateTabButtonTitle) { _ in
-            self.waitUntilDismissed {
-                self.handler(.opened(inNewTab: true, switchingToPrivateMode: true))
-            }
-        }
+        .init(title: Strings.openNewPrivateTabButtonTitle, handler: UIAction.deferredActionHandler { _ in
+            self.handler(.opened(inNewTab: true, switchingToPrivateMode: true))
+        })
     }
     
     private var hideContent: UIAction {
         // FIXME: Localize, Get our own image
-        .init(title: "Hide Content", image: UIImage(systemName: "eye.slash.fill")) { _ in
-            self.waitUntilDismissed {
-                self.handler(.hide)
-            }
-        }
+        .init(title: "Hide Content", image: UIImage(systemName: "eye.slash.fill"), handler: UIAction.deferredActionHandler { _ in
+            self.handler(.hide)
+        })
     }
     
     private var blockSource: UIAction {
         // FIXME: Localize, Get our own image
-        .init(title: "Block Source", image: UIImage(systemName: "nosign"), attributes: .destructive) { _ in
-            self.waitUntilDismissed {
-                self.handler(.blockSource)
-            }
-        }
+        .init(title: "Block Source", image: UIImage(systemName: "nosign"), attributes: .destructive, handler: UIAction.deferredActionHandler { _ in
+            self.handler(.blockSource)
+        })
     }
 }
