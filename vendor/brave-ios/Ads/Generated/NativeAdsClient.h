@@ -37,7 +37,7 @@ class NativeAdsClient : public ads::AdsClient {
   void Load(const std::string & name, ads::LoadCallback callback) override;
   void LoadUserModelForId(const std::string & id, ads::LoadCallback callback) override;
   void Reset(const std::string & name, ads::ResultCallback callback) override;
-  std::string LoadJsonSchema(const std::string & name) override;
+  std::string LoadResourceForId(const std::string & id) override;
   void Log(const char * file, const int line, const int verbose_level, const std::string & message) override;
   bool ShouldAllowAdsSubdivisionTargeting() const override;
   void SetAllowAdsSubdivisionTargeting(const bool should_allow) override;

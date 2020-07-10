@@ -160,19 +160,9 @@ class ADS_EXPORT AdsClient {
   virtual void Load(
       const std::string& name, LoadCallback callback) = 0;
 
-  // Should load a JSON schema from persistent storage, schemas are a dependency
-  // of the application and should be bundled accordingly, the following file
-  // structure should be used:
-  //
-  //   resources/
-  //   ├──catalog-schema.json
-  //
-  // |catalog-schema.json| is a JSON schema used to specify the JSON-based
-  // format to define the structure of the JSON data for validation,
-  // documentation, and interaction control. It provides the contract for the
-  // JSON data and how that data can be modified
-  virtual std::string LoadJsonSchema(
-      const std::string& name) = 0;
+  // Should load a resource from persistent storage
+  virtual std::string LoadResourceForId(
+      const std::string& id) = 0;
 
   // Should reset a previously persisted value. The callback takes one argument
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be

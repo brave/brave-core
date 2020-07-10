@@ -309,7 +309,7 @@ TEST_F(BatAdsAdConversionsDatabaseTableTest,
 
   MockLoad(ads_client_mock_);
   MockLoadUserModelForId(ads_client_mock_);
-  MockLoadJsonSchema(ads_client_mock_);
+  MockLoadResourceForId(ads_client_mock_);
   MockSave(ads_client_mock_);
 
   MockGetClientInfo(ads_client_mock_, ClientInfoPlatformType::MACOS);

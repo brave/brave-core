@@ -795,10 +795,10 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   }
 }
 
-- (const std::string)loadJsonSchema:(const std::string &)name
+- (const std::string)loadResourceForId:(const std::string &)id
 {
   const auto bundle = [NSBundle bundleForClass:[BATBraveAds class]];
-  const auto path = [bundle pathForResource:[NSString stringWithUTF8String:name.c_str()] ofType:nil];
+  const auto path = [bundle pathForResource:[NSString stringWithUTF8String:id.c_str()] ofType:nil];
   if (!path || path.length == 0) {
     return "";
   }

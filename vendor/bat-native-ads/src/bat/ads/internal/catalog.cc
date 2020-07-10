@@ -14,6 +14,10 @@
 
 namespace ads {
 
+namespace {
+const char kCatalogFilename[] = "catalog.json";
+}  // namespace
+
 Catalog::Catalog(
     AdsImpl* ads)
     : ads_(ads),
@@ -24,7 +28,7 @@ Catalog::~Catalog() {}
 bool Catalog::FromJson(const std::string& json) {
   auto catalog_state = std::make_unique<CatalogState>();
   auto json_schema =
-      ads_->get_ads_client()->LoadJsonSchema(_catalog_schema_resource_name);
+      ads_->get_ads_client()->LoadResourceForId(_catalog_schema_resource_id);
   std::string error_description;
   auto result = LoadFromJson(catalog_state.get(), json, json_schema,
       &error_description);
@@ -58,11 +62,11 @@ IssuersInfo Catalog::GetIssuers() const {
 }
 
 void Catalog::Save(const std::string& json, ResultCallback callback) {
-  ads_->get_ads_client()->Save(_catalog_resource_name, json, callback);
+  ads_->get_ads_client()->Save(kCatalogFilename, json, callback);
 }
 
 void Catalog::Reset(ResultCallback callback) {
-  ads_->get_ads_client()->Reset(_catalog_resource_name, callback);
+  ads_->get_ads_client()->Reset(kCatalogFilename, callback);
 }
 
 const std::string& Catalog::get_last_message() const {

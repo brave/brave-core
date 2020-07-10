@@ -90,7 +90,7 @@ void MockSave(
 void MockLoadUserModelForId(
     const std::unique_ptr<AdsClientMock>& mock);
 
-void MockLoadJsonSchema(
+void MockLoadResourceForId(
     const std::unique_ptr<AdsClientMock>& mock);
 
 void MockURLRequest(

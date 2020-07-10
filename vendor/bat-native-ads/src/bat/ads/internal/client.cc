@@ -25,6 +25,8 @@ namespace ads {
 
 namespace {
 
+const char kClientFilename[] = "client.json";
+
 FilteredAdsList::iterator FindFilteredAd(
     const std::string& creative_instance_id,
     FilteredAdsList* filtered_ads) {
@@ -524,7 +526,7 @@ void Client::SaveState() {
 
   auto json = client_state_->ToJson();
   auto callback = std::bind(&Client::OnStateSaved, this, _1);
-  ads_->get_ads_client()->Save(_client_resource_name, json, callback);
+  ads_->get_ads_client()->Save(kClientFilename, json, callback);
 }
 
 void Client::OnStateSaved(
@@ -542,7 +544,7 @@ void Client::LoadState() {
   BLOG(3, "Loading client state");
 
   auto callback = std::bind(&Client::OnStateLoaded, this, _1, _2);
-  ads_->get_ads_client()->Load(_client_resource_name, callback);
+  ads_->get_ads_client()->Load(kClientFilename, callback);
 }
 
 void Client::OnStateLoaded(

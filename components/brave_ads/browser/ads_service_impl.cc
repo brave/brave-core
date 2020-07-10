@@ -96,7 +96,7 @@ const unsigned int kRetriesCountOnNetworkChange = 1;
 namespace {
 
 static std::map<std::string, int> g_schema_resource_ids = {
-  {ads::_catalog_schema_resource_name, IDR_ADS_CATALOG_SCHEMA}
+  {ads::_catalog_schema_resource_id, IDR_ADS_CATALOG_SCHEMA}
 };
 
 int GetSchemaResourceId(
@@ -1999,9 +1999,9 @@ void AdsServiceImpl::Reset(
           AsWeakPtr(), std::move(callback)));
 }
 
-std::string AdsServiceImpl::LoadJsonSchema(
-    const std::string& name) {
-  const auto resource_id = GetSchemaResourceId(name);
+std::string AdsServiceImpl::LoadResourceForId(
+    const std::string& id) {
+  const auto resource_id = GetSchemaResourceId(id);
   return LoadDataResourceAndDecompressIfNeeded(resource_id);
 }
 

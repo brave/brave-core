@@ -249,13 +249,13 @@ void MockLoadUserModelForId(
       }));
 }
 
-void MockLoadJsonSchema(
+void MockLoadResourceForId(
     const std::unique_ptr<AdsClientMock>& mock) {
-  ON_CALL(*mock, LoadJsonSchema(_))
+  ON_CALL(*mock, LoadResourceForId(_))
       .WillByDefault(Invoke([](
-          const std::string& name) -> std::string {
+          const std::string& id) -> std::string {
         base::FilePath path = GetResourcesPath();
-        path = path.AppendASCII(name);
+        path = path.AppendASCII(id);
 
         std::string value;
         base::ReadFileToString(path, &value);

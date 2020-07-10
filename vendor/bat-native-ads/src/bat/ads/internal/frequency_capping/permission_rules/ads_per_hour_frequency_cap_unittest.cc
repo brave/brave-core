@@ -71,7 +71,7 @@ class BatAdsAdsPerHourFrequencyCapTest : public ::testing::Test {
 
     MockLoad(ads_client_mock_);
     MockLoadUserModelForId(ads_client_mock_);
-    MockLoadJsonSchema(ads_client_mock_);
+    MockLoadResourceForId(ads_client_mock_);
     MockSave(ads_client_mock_);
 
     database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));

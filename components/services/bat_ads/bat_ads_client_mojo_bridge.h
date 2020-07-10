@@ -100,8 +100,8 @@ class BatAdsClientMojoBridge
       const std::string& name,
       ads::ResultCallback callback) override;
 
-  std::string LoadJsonSchema(
-      const std::string& name) override;
+  std::string LoadResourceForId(
+      const std::string& id) override;
 
   void RunDBTransaction(
       ads::DBTransactionPtr transaction,

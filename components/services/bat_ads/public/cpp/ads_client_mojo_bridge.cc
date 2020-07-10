@@ -204,18 +204,18 @@ void AdsClientMojoBridge::ShouldShowNotifications(
   std::move(callback).Run(ads_client_->ShouldShowNotifications());
 }
 
-bool AdsClientMojoBridge::LoadJsonSchema(
-    const std::string& name,
-    std::string* out_json) {
-  DCHECK(out_json);
-  *out_json = ads_client_->LoadJsonSchema(name);
+bool AdsClientMojoBridge::LoadResourceForId(
+    const std::string& id,
+    std::string* out_value) {
+  DCHECK(out_value);
+  *out_value = ads_client_->LoadResourceForId(id);
   return true;
 }
 
-void AdsClientMojoBridge::LoadJsonSchema(
-    const std::string& name,
-    LoadJsonSchemaCallback callback) {
-  std::move(callback).Run(ads_client_->LoadJsonSchema(name));
+void AdsClientMojoBridge::LoadResourceForId(
+    const std::string& id,
+    LoadResourceForIdCallback callback) {
+  std::move(callback).Run(ads_client_->LoadResourceForId(id));
 }
 
 void AdsClientMojoBridge::SetIdleThreshold(

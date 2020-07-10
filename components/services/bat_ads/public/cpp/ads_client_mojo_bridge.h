@@ -82,12 +82,12 @@ class AdsClientMojoBridge
       bool* out_should_show) override;
   void ShouldShowNotifications(
       ShouldShowNotificationsCallback callback) override;
-  bool LoadJsonSchema(
-      const std::string& name,
-      std::string* out_json) override;
-  void LoadJsonSchema(
-      const std::string& name,
-      LoadJsonSchemaCallback callback) override;
+  bool LoadResourceForId(
+      const std::string& id,
+      std::string* out_value) override;
+  void LoadResourceForId(
+      const std::string& id,
+      LoadResourceForIdCallback callback) override;
   bool GetClientInfo(
       const std::string& client_info,
       std::string* out_client_info) override;

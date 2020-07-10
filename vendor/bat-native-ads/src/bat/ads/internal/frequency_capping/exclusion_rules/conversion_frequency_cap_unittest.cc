@@ -75,7 +75,7 @@ class BatAdsConversionFrequencyCapTest : public ::testing::Test {
         .WillByDefault(Return("en-US"));
 
     MockLoad(ads_client_mock_);
-    MockLoadJsonSchema(ads_client_mock_);
+    MockLoadResourceForId(ads_client_mock_);
     MockSave(ads_client_mock_);
 
     database_ = std::make_unique<Database>(path.AppendASCII("database.sqlite"));
