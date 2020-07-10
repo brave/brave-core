@@ -2,7 +2,7 @@
 
 #include "base/run_loop.h"
 #include "base/test/bind_test_util.h"
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/test/task_environment.h"
 #include "mojo/core/embedder/embedder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -43,6 +43,7 @@ class ChromeMetadataSourceTest : public testing::Test {
 };
 
 TEST_F(ChromeMetadataSourceTest, NoFetch) {
+  base::test::TaskEnvironment task_environment;
   bool network_access_occurred = false;
   base::RunLoop loop;
   test_url_loader_factory_.SetInterceptor(
