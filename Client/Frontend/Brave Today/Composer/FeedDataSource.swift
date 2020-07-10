@@ -59,6 +59,9 @@ class FeedDataSource {
     }
     
     func load(_ completion: @escaping () -> Void) {
+        if !cards.isEmpty {
+            return
+        }
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(DateFormatter().then {
             $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
