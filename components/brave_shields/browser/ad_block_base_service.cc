@@ -110,10 +110,6 @@ AdBlockBaseService::AdBlockBaseService(BraveComponent::Delegate* delegate)
       weak_factory_(this) {}
 
 AdBlockBaseService::~AdBlockBaseService() {
-  Cleanup();
-}
-
-void AdBlockBaseService::Cleanup() {
   GetTaskRunner()->DeleteSoon(FROM_HERE, ad_block_client_.release());
 }
 

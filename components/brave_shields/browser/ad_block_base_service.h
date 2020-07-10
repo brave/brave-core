@@ -60,7 +60,6 @@ class AdBlockBaseService : public BaseBraveShieldsService {
  protected:
   friend class ::AdBlockServiceTest;
   bool Init() override;
-  void Cleanup() override;
 
   void GetDATFileData(const base::FilePath& dat_file_path);
   void AddKnownTagsToAdBlockInstance();

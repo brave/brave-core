@@ -116,13 +116,6 @@ bool AdBlockRegionalServiceManager::Start() {
   return true;
 }
 
-void AdBlockRegionalServiceManager::Stop() {
-  base::AutoLock lock(regional_services_lock_);
-  for (const auto& regional_service : regional_services_) {
-    regional_service.second->Stop();
-  }
-}
-
 bool AdBlockRegionalServiceManager::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
@@ -177,7 +170,6 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
           std::make_pair(uuid, std::move(regional_service)));
     } else {
       DCHECK(it != regional_services_.end());
-      it->second->Stop();
       it->second->Unregister();
       regional_services_.erase(it);
     }

@@ -49,12 +49,6 @@ bool BaseBraveShieldsService::Start() {
   return false;
 }
 
-void BaseBraveShieldsService::Stop() {
-  std::lock_guard<std::mutex> guard(initialized_mutex_);
-  Cleanup();
-  initialized_ = false;
-}
-
 bool BaseBraveShieldsService::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,

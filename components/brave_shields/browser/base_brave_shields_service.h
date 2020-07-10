@@ -30,7 +30,6 @@ class BaseBraveShieldsService : public BraveComponent {
   explicit BaseBraveShieldsService(BraveComponent::Delegate* delegate);
   ~BaseBraveShieldsService() override;
   bool Start();
-  void Stop();
   bool IsInitialized() const;
   virtual bool ShouldStartRequest(const GURL& url,
                                   blink::mojom::ResourceType resource_type,
@@ -41,7 +40,6 @@ class BaseBraveShieldsService : public BraveComponent {
 
  protected:
   virtual bool Init() = 0;
-  virtual void Cleanup() = 0;
 
  private:
   void InitShields();
