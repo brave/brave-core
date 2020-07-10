@@ -8,7 +8,11 @@ import BraveUI
 /// The background component for each card
 class FeedCardBackgroundView: UIVisualEffectView {
     init() {
-        super.init(effect: UIBlurEffect(style: .dark))
+        if #available(iOS 13.0, *) {
+            super.init(effect: UIBlurEffect(style: .systemThinMaterialDark))
+        } else {
+            super.init(effect: UIBlurEffect(style: .dark))
+        }
         
         layer.cornerRadius = 10
         if #available(iOS 13.0, *) {
@@ -16,6 +20,7 @@ class FeedCardBackgroundView: UIVisualEffectView {
         }
         clipsToBounds = true
         isUserInteractionEnabled = false
+        contentView.backgroundColor = UIColor.white.withAlphaComponent(0.17)
     }
     @available(*, unavailable)
     required init(coder: NSCoder) {
