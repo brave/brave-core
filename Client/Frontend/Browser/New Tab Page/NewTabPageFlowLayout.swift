@@ -90,7 +90,10 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        guard let attributes = super.layoutAttributesForElements(in: rect) else {
+        var adjustedRect = rect
+        adjustedRect.origin.y -= gapLength
+        adjustedRect.size.height += gapLength * 2
+        guard let attributes = super.layoutAttributesForElements(in: adjustedRect) else {
                 return nil
         }
         for attribute in attributes where attribute.representedElementCategory == .cell {
