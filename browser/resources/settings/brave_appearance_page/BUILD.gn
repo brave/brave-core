@@ -147,9 +147,6 @@ polymer_modulizer("brave_theme") {
   auto_imports = settings_auto_imports + [
                    "ui/webui/resources/html/assert.html|assert",
                    "brave/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.html|BraveAppearanceBrowserProxy, BraveAppearanceBrowserProxyImpl",
-                   "chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.html|AppearanceBrowserProxy, AppearanceBrowserProxyImpl",
-                   "chrome/browser/resources/settings/route.html|routes",
-                   "chrome/browser/resources/settings/router.html|Router",
                  ]
   namespace_rewrites = settings_namespace_rewrites
 }
@@ -162,7 +159,6 @@ polymer_modulizer("super_referral") {
   auto_imports = settings_auto_imports + [
                    "ui/webui/resources/html/assert.html|assert",
                    "brave/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.html|BraveAppearanceBrowserProxy, BraveAppearanceBrowserProxyImpl",
-                   "chrome/browser/resources/settings/appearance_page/appearance_browser_proxy.html|AppearanceBrowserProxy, AppearanceBrowserProxyImpl",
                  ]
   namespace_rewrites = settings_namespace_rewrites
 }
