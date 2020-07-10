@@ -127,9 +127,11 @@ public class BraveBottomToolbarCoordinator
             mNewTabButton.setOnLongClickListener(this);
         }
 
-        if (mOverviewModeBehavior != null && mOverviewModeObserver != null) {
-            // We create new observer here so remove previous
-            mOverviewModeBehavior.removeOverviewModeObserver(mOverviewModeObserver);
+        if (mOverviewModeObserver != null) {
+            if (mOverviewModeBehavior != null) {
+                // We create new observer here so remove previous
+                mOverviewModeBehavior.removeOverviewModeObserver(mOverviewModeObserver);
+            }
             mOverviewModeObserver = new EmptyOverviewModeObserver() {
                 @Override
                 public void onOverviewModeStartedShowing(boolean showToolbar) {
