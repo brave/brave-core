@@ -10,8 +10,8 @@ import {
   ArrowUpIcon,
   ArrowDownIcon,
   BlockedInfoRowStats,
-  BlockedInfoRowForSelectSummary,
-  BlockedInfoRowDataForSelect,
+  BlockedInfoRowSummary,
+  BlockedInfoRowData,
   BlockedListStatic,
   BlockedInfoRowText
 } from '../../../components'
@@ -68,19 +68,17 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
     const { fingerprintingBlockedResources } = this.props
     return (
       <BlockedInfoRowDetails>
-        <BlockedInfoRowForSelectSummary onClick={this.triggerOpenDeviceRecognition}>
-          <BlockedInfoRowDataForSelect disabled={this.shouldDisableResourcesRow}>
+        <BlockedInfoRowSummary onClick={this.triggerOpenDeviceRecognition}>
+          <BlockedInfoRowData disabled={this.shouldDisableResourcesRow}>
             {
               deviceRecognitionOpen
                 ? <ArrowUpIcon />
                 : <ArrowDownIcon />
             }
             <BlockedInfoRowStats>{this.totalDeviceRecognitonAttemptsDisplay}</BlockedInfoRowStats>
-            <BlockedInfoRowText>
-              <span>{getLocale('thirdPartyFingerprintingBlocked')}</span>
-            </BlockedInfoRowText>
-          </BlockedInfoRowDataForSelect>
-        </BlockedInfoRowForSelectSummary>
+            <BlockedInfoRowText>{getLocale('readOnlyFingerprinting')}</BlockedInfoRowText>
+          </BlockedInfoRowData>
+        </BlockedInfoRowSummary>
         <BlockedListStatic>
           <StaticResourcesList list={fingerprintingBlockedResources} />
         </BlockedListStatic>
