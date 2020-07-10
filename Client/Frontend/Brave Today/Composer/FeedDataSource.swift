@@ -160,14 +160,18 @@ class FeedDataSource {
                     item.content.imageURL != nil
                 }
                 if paired {
-                    guard let firstIndex = articles.firstIndex(where: imageExists),
+                    if articles.count < 2 {
+                        return nil
+                    }
+                    guard
+                        let firstIndex = articles.firstIndex(where: imageExists),
                         let secondIndex = articles[(firstIndex+1)...].firstIndex(where: imageExists) else {
                         return nil
                     }
                     let item1 = articles[firstIndex]
-                    articles.remove(at: firstIndex)
                     let item2 = articles[secondIndex]
-                    articles.remove(at: secondIndex)
+                    articles.remove(at: firstIndex)
+                    articles.remove(at: secondIndex - 1)
                     return [.headlinePair((item1, item2))]
                 } else {
                     guard let index = articles.firstIndex(where: imageExists) else {
