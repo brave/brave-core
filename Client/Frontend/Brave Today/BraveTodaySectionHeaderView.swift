@@ -7,19 +7,27 @@ import UIKit
 import BraveUI
 
 class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusable {
-    private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+    private let backgroundView: UIVisualEffectView
     private let label = UILabel().then {
         $0.text = "Brave Today" // TODO(kyle): localize
         $0.appearanceTextColor = .white
         $0.font = .systemFont(ofSize: 18, weight: .semibold)
     }
     let settingsButton = UIButton(type: .system).then {
-        $0.setImage(UIImage(imageLiteralResourceName: "brave-today-settings").withRenderingMode(.alwaysOriginal), for: .normal)
+        $0.setImage(UIImage(imageLiteralResourceName: "brave-today-settings"), for: .normal)
+        $0.tintColor = .white
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
     
     override init(frame: CGRect) {
+        if #available(iOS 13.0, *) {
+            backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterialDark))
+        } else {
+            backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        }
+        
         super.init(frame: frame)
+        backgroundView.contentView.backgroundColor = UIColor.white.withAlphaComponent(0.17)
         
         addSubview(backgroundView)
         let stackView = UIStackView(arrangedSubviews: [label, settingsButton]).then {
