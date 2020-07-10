@@ -85,6 +85,12 @@ void AdsServiceFactory::RegisterProfilePrefs(
   registry->RegisterUint64Pref(prefs::kAdsPerHour, 2);
   registry->RegisterUint64Pref(prefs::kAdsPerDay, 20);
 
+  registry->RegisterBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting,
+      false);
+  registry->RegisterStringPref(prefs::kAdsSubdivisionTargetingCode, "AUTO");
+  registry->RegisterStringPref(
+      prefs::kAutomaticallyDetectedAdsSubdivisionTargetingCode, "");
+
   registry->RegisterIntegerPref(prefs::kIdleThreshold, 15);
   registry->RegisterBooleanPref(prefs::kAdsWereDisabled, false);
   registry->RegisterBooleanPref(prefs::kHasAdsP3AState, false);

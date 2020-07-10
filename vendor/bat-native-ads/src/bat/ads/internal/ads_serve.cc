@@ -39,7 +39,7 @@ void AdsServe::DownloadCatalog() {
   }
 
   BLOG(1, "Download catalog");
-  BLOG(2, "GET /v2/catalog");
+  BLOG(2, "GET " << CATALOG_PATH);
 
   auto callback = std::bind(&AdsServe::OnCatalogDownloaded,
       this, url_, _1, _2, _3);

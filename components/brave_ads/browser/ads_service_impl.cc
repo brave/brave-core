@@ -334,6 +334,35 @@ void AdsServiceImpl::SetAdsPerHour(
   SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
 }
 
+void AdsServiceImpl::SetAllowAdsSubdivisionTargeting(
+    const bool should_allow) {
+  SetBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting, should_allow);
+}
+
+void AdsServiceImpl::SetAdsSubdivisionTargetingCode(
+    const std::string& subdivision_targeting_code) {
+  const auto last_subdivision_targeting_code = GetAdsSubdivisionTargetingCode();
+
+  SetStringPref(prefs::kAdsSubdivisionTargetingCode,
+      subdivision_targeting_code);
+
+  if (last_subdivision_targeting_code == subdivision_targeting_code) {
+    return;
+  }
+
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_->OnAdsSubdivisionTargetingCodeHasChanged();
+}
+
+void AdsServiceImpl::SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+    const std::string& subdivision_targeting_code) {
+  SetStringPref(prefs::kAutomaticallyDetectedAdsSubdivisionTargetingCode,
+      subdivision_targeting_code);
+}
+
 void AdsServiceImpl::SetConfirmationsIsReady(
     const bool is_ready) {
   if (!connected()) {
@@ -491,6 +520,20 @@ uint64_t AdsServiceImpl::GetAdsPerHour() const {
 
 uint64_t AdsServiceImpl::GetAdsPerDay() const {
   return GetUint64Pref(prefs::kAdsPerDay);
+}
+
+bool AdsServiceImpl::ShouldAllowAdsSubdivisionTargeting() const {
+  return GetBooleanPref(prefs::kShouldAllowAdsSubdivisionTargeting);
+}
+
+std::string AdsServiceImpl::GetAdsSubdivisionTargetingCode() const {
+  return GetStringPref(prefs::kAdsSubdivisionTargetingCode);
+}
+
+std::string AdsServiceImpl::
+GetAutomaticallyDetectedAdsSubdivisionTargetingCode() const {
+  return GetStringPref(
+      prefs::kAutomaticallyDetectedAdsSubdivisionTargetingCode);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1813,13 +1856,6 @@ void AdsServiceImpl::GetClientInfo(ads::ClientInfo* client_info) const {
 
 std::string AdsServiceImpl::GetLocale() const {
   return brave_l10n::LocaleHelper::GetInstance()->GetLocale();
-}
-
-const std::string AdsServiceImpl::GetCountryCode() const {
-  const std::string locale = GetLocale();
-  const std::string country_code =
-      brave_l10n::LocaleHelper::GetInstance()->GetCountryCode(locale);
-  return country_code;
 }
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() const {

@@ -47,6 +47,8 @@ class BatAdsImpl :
   void ChangeLocale(
       const std::string& locale) override;
 
+  void OnAdsSubdivisionTargetingCodeHasChanged() override;
+
   void OnPageLoaded(
       const std::string& url,
       const std::string& html) override;

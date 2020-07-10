@@ -55,6 +55,25 @@ class AdsClientMojoBridge
       uint64_t* out_ads_per_day) override;
   void GetAdsPerDay(
       GetAdsPerDayCallback callback) override;
+  bool ShouldAllowAdsSubdivisionTargeting(
+      bool* out_should_allow) override;
+  void ShouldAllowAdsSubdivisionTargeting(
+      ShouldAllowAdsSubdivisionTargetingCallback callback) override;
+  void SetAllowAdsSubdivisionTargeting(
+      const bool should_allow) override;
+  bool GetAdsSubdivisionTargetingCode(
+      std::string* out_subdivision_targeting_code) override;
+  void GetAdsSubdivisionTargetingCode(
+      GetAdsSubdivisionTargetingCodeCallback callback) override;
+  void SetAdsSubdivisionTargetingCode(
+      const std::string& subdivision_targeting_code) override;
+  bool GetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+      std::string* out_subdivision_targeting_code) override;
+  void GetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+      GetAutomaticallyDetectedAdsSubdivisionTargetingCodeCallback callback)
+          override;
+  void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+      const std::string& subdivision_targeting_code) override;
   bool IsNetworkConnectionAvailable(
       bool* out_available) override;
   bool CanShowBackgroundNotifications(
@@ -191,4 +210,4 @@ class AdsClientMojoBridge
 
 }  // namespace bat_ads
 
-#endif  // BRAVE_COMPONENTS_SERVICES_BAT_ADS_PUBLIC_CPP_ADS_CLIENT_MOJO_BRIDGE_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_BAT_ADS_PUBLIC_CPP_ADS_CLIENT_MOJO_BRIDGE_H_  // NOLINT

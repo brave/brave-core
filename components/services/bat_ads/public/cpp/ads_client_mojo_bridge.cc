@@ -125,6 +125,61 @@ void AdsClientMojoBridge::GetAdsPerDay(GetAdsPerDayCallback callback) {
   std::move(callback).Run(ads_client_->GetAdsPerDay());
 }
 
+bool AdsClientMojoBridge::ShouldAllowAdsSubdivisionTargeting(
+    bool* out_should_allow) {
+  DCHECK(out_should_allow);
+  *out_should_allow = ads_client_->ShouldAllowAdsSubdivisionTargeting();
+  return true;
+}
+
+void AdsClientMojoBridge::ShouldAllowAdsSubdivisionTargeting(
+    ShouldAllowAdsSubdivisionTargetingCallback callback) {
+  std::move(callback).Run(ads_client_->ShouldAllowAdsSubdivisionTargeting());
+}
+
+void AdsClientMojoBridge::SetAllowAdsSubdivisionTargeting(
+    const bool should_allow) {
+  ads_client_->SetAllowAdsSubdivisionTargeting(should_allow);
+}
+
+bool AdsClientMojoBridge::GetAdsSubdivisionTargetingCode(
+    std::string* out_subdivision_targeting_code) {
+  DCHECK(out_subdivision_targeting_code);
+  *out_subdivision_targeting_code =
+      ads_client_->GetAdsSubdivisionTargetingCode();
+  return true;
+}
+
+void AdsClientMojoBridge::GetAdsSubdivisionTargetingCode(
+    GetAdsSubdivisionTargetingCodeCallback callback) {
+  std::move(callback).Run(ads_client_->GetAdsSubdivisionTargetingCode());
+}
+
+void AdsClientMojoBridge::SetAdsSubdivisionTargetingCode(
+    const std::string& subdivision_targeting_code) {
+  ads_client_->SetAdsSubdivisionTargetingCode(subdivision_targeting_code);
+}
+
+bool AdsClientMojoBridge::GetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+    std::string* out_subdivision_targeting_code) {
+  DCHECK(out_subdivision_targeting_code);
+  *out_subdivision_targeting_code =
+      ads_client_->GetAutomaticallyDetectedAdsSubdivisionTargetingCode();
+  return true;
+}
+
+void AdsClientMojoBridge::GetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+    GetAutomaticallyDetectedAdsSubdivisionTargetingCodeCallback callback) {
+  std::move(callback).Run(
+      ads_client_->GetAutomaticallyDetectedAdsSubdivisionTargetingCode());
+}
+
+void AdsClientMojoBridge::SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+    const std::string& subdivision_targeting_code) {
+  ads_client_->SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
+      subdivision_targeting_code);
+}
+
 bool AdsClientMojoBridge::IsNetworkConnectionAvailable(
     bool* out_is_available) {
   DCHECK(out_is_available);

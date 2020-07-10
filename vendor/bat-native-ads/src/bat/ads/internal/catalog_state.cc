@@ -44,7 +44,7 @@ Result CatalogState::FromJson(
   new_catalog_id = catalog["catalogId"].GetString();
 
   new_version = catalog["version"].GetUint64();
-  if (new_version != 1) {
+  if (new_version != 3) {
     return SUCCESS;
   }
 
@@ -177,6 +177,9 @@ Result CatalogState::FromJson(
           }
 
           creative_set_info.creative_ad_notifications.push_back(creative_info);
+        } else if (code == "in_page_all_v1") {
+          // TODO(tmancey): https://github.com/brave/brave-browser/issues/7298
+          continue;
         } else {
           // Unknown type
           NOTREACHED();

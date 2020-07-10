@@ -73,6 +73,10 @@ void BatAdsImpl::ChangeLocale(
   ads_->ChangeLocale(locale);
 }
 
+void BatAdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
+  ads_->OnAdsSubdivisionTargetingCodeHasChanged();
+}
+
 void BatAdsImpl::OnPageLoaded(
     const std::string& url,
     const std::string& content) {

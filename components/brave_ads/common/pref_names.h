@@ -16,6 +16,11 @@ extern const char kShouldAllowAdConversionTracking[];
 
 extern const char kAdsPerHour[];
 extern const char kAdsPerDay[];
+
+extern const char kShouldAllowAdsSubdivisionTargeting[];
+extern const char kAdsSubdivisionTargetingCode[];
+extern const char kAutomaticallyDetectedAdsSubdivisionTargetingCode[];
+
 extern const char kAdsWereDisabled[];
 extern const char kHasAdsP3AState[];
 
