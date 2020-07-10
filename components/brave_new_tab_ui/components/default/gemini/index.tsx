@@ -48,7 +48,20 @@ import {
   ListInfo,
   TradeLabel,
   Balance,
-  BlurIcon
+  BlurIcon,
+  TradeWrapper,
+  InputWrapper,
+  AssetDropdown,
+  AssetItems,
+  CaratDropdown,
+  DropdownIcon,
+  AssetItem,
+  ActionButton,
+  AmountInputField,
+  Dropdown,
+  AssetDropdownLabel,
+  TradeSwitchWrapper,
+  TradeSwitch
 } from './style'
 import {
   SearchIcon,
@@ -57,7 +70,7 @@ import {
   HideIcon
 } from '../exchangeWidget/shared-assets'
 import GeminiLogo from './assets/gemini-logo'
-import { CaratLeftIcon } from 'brave-ui/components/icons'
+import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
 
 // Utils
 import geminiData from './data'
@@ -68,6 +81,10 @@ interface State {
   currentDepositSearch: string
   currentDepositAsset: string
   currentQRAsset: string
+  currentTradeMode: string
+  currentTradeQuantity: string
+  currentTradeAsset: string
+  tradeDropdownShowing: boolean
 }
 
 interface Props {
@@ -99,7 +116,11 @@ class Gemini extends React.PureComponent<Props, State> {
     this.state = {
       currentDepositSearch: '',
       currentDepositAsset: '',
-      currentQRAsset: ''
+      currentQRAsset: '',
+      currentTradeAsset: 'BAT',
+      currentTradeQuantity: '',
+      currentTradeMode: 'buy',
+      tradeDropdownShowing: false
     }
   }
 
@@ -252,6 +273,18 @@ class Gemini extends React.PureComponent<Props, State> {
     return USDValue.toFixed(2)
   }
 
+  renderSmallIconAsset = (key: string, isDetail: boolean = false) => {
+    const iconColor = cryptoColors[key] || '#fff'
+
+    return (
+      <AssetIcon
+        isDetail={isDetail}
+        style={{ color: iconColor }}
+        className={`crypto-icon icon-${key}`}
+      />
+    )
+  }
+
   renderIconAsset = (key: string, isDetail: boolean = false) => {
     const iconColor = cryptoColors[key] || '#fff'
     const styles = { color: '#000' }
@@ -308,7 +341,7 @@ class Gemini extends React.PureComponent<Props, State> {
       case 'balance':
         return this.renderBalanceView()
       case 'trade':
-        return null
+        return this.renderTradeView()
       default:
         return null
     }
@@ -379,6 +412,135 @@ class Gemini extends React.PureComponent<Props, State> {
             </ListItem>
           )
         })}
+      </>
+    )
+  }
+
+  setCurrentTradeQuantity = ({ target }: any) => {
+    this.setState({ currentTradeQuantity: target.value })
+  }
+
+  setCurrentTradeAsset (asset: string) {
+    this.setState({
+      currentTradeAsset: asset,
+      tradeDropdownShowing: false
+    })
+  }
+
+  handleTradeAssetChange = () => {
+    this.setState({
+      tradeDropdownShowing: !this.state.tradeDropdownShowing
+    })
+  }
+
+  disableTradeAssetDropdown = () => {
+    /*
+    this.setState({
+      tradeDropdownShowing: false
+    })
+    */
+  }
+
+  toggleCurrentTradeMode = () => {
+    const { currentTradeMode } = this.state
+    const newMode = currentTradeMode === 'buy' ? 'sell' : 'boy'
+    this.setState({
+      currentTradeMode: newMode
+    })
+  }
+
+  renderTradeView () {
+    const {
+      currentTradeMode,
+      currentTradeAsset,
+      currentTradeQuantity,
+      tradeDropdownShowing
+    } = this.state
+    const { accountBalances } = this.props
+    const currentAssetBalance = this.formatCryptoBalance(accountBalances[currentTradeAsset] || '0')
+
+    return (
+      <>
+        <Copy>
+          {`${getLocale('binanceWidgetAvailable')} ${currentAssetBalance} ${currentTradeAsset}`}
+        </Copy>
+        <TradeSwitchWrapper>
+          <TradeSwitch
+            onClick={this.toggleCurrentTradeMode}
+            isActive={currentTradeMode === 'buy'}
+          >
+            {'Buy'}
+          </TradeSwitch>
+          <TradeSwitch
+            onClick={this.toggleCurrentTradeMode}
+            isActive={currentTradeMode === 'sell'}
+          >
+            {'Sell'}
+          </TradeSwitch>
+        </TradeSwitchWrapper>
+        <TradeWrapper>
+          <InputWrapper>
+            <AmountInputField
+              type={'text'}
+              placeholder={`I want to ${currentTradeMode}...`}
+              value={currentTradeQuantity}
+              onChange={this.setCurrentTradeQuantity}
+            />
+            <Dropdown
+              disabled={false}
+              itemsShowing={false}
+              className={'asset-dropdown'}
+            >
+              <CaratDropdown hide={true}>
+                <CaratDownIcon />
+              </CaratDropdown>
+            </Dropdown>
+          </InputWrapper>
+          <AssetDropdown
+            itemsShowing={false}
+            className={'asset-dropdown'}
+            onClick={this.handleTradeAssetChange}
+          >
+            <AssetDropdownLabel>
+              <DropdownIcon>
+                {this.renderSmallIconAsset(currentTradeAsset.toLowerCase())}
+              </DropdownIcon>
+              {currentTradeAsset}
+            </AssetDropdownLabel>
+            <CaratDropdown>
+              <CaratDownIcon />
+            </CaratDropdown>
+          </AssetDropdown>
+          {
+            tradeDropdownShowing
+            ? <AssetItems>
+                {geminiData.currencies.map((asset: string, i: number) => {
+                  if (asset === currentTradeAsset || asset === 'OXT') {
+                    return null
+                  }
+
+                  return (
+                    <AssetItem
+                      key={`choice-${asset}`}
+                      isLast={i === geminiData.currencies.length - 1}
+                      onClick={this.setCurrentTradeAsset.bind(this, asset)}
+                    >
+                      <DropdownIcon>
+                        {this.renderSmallIconAsset(asset.toLowerCase())}
+                      </DropdownIcon>
+                      {asset}
+                    </AssetItem>
+                  )
+                })}
+              </AssetItems>
+            : null
+          }
+        </TradeWrapper>
+        <ActionsWrapper>
+          <ActionButton>
+            {'Get a quote'}
+          </ActionButton>
+        </ActionsWrapper>
       </>
     )
   }
@@ -586,7 +748,7 @@ class Gemini extends React.PureComponent<Props, State> {
     }
 
     return (
-      <WidgetWrapper tabIndex={0} userAuthed={userAuthed}>
+      <WidgetWrapper tabIndex={0} userAuthed={userAuthed} onClick={this.disableTradeAssetDropdown}>
         {
           this.renderIndexView()
           ? this.renderIndexView()
