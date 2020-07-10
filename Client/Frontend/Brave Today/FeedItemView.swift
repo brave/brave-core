@@ -159,6 +159,37 @@ extension FeedItemView {
         /// The root stack for a given layout
         var root: Stack
         
+        /// The estimated height of the given layout
+        func estimatedHeight(for width: CGFloat) -> CGFloat {
+            func _height(for component: Component) -> CGFloat {
+                switch component {
+                case .stack(let stack):
+                    return stack.children.reduce(0.0, { return $0 + _height(for: $1) }) + stack.padding.top + stack.padding.bottom
+                case .customSpace(let space):
+                    return space
+                case .flexibleSpace(let minHeight):
+                    return minHeight
+                case .thumbnail(let layout):
+                    switch layout {
+                    case .fixedSize(let size):
+                        return size.height
+                    case .aspectRatio(let ratio):
+                        return width / ratio
+                    }
+                case .title(let numberOfLines):
+                    return UIFont.systemFont(ofSize: 14.0, weight: .semibold).lineHeight * CGFloat(numberOfLines)
+                case .date:
+                    return UIFont.systemFont(ofSize: 11.0, weight: .semibold).lineHeight
+                case .brandImage:
+                    return 20.0
+                case .brandText:
+                    return UIFont.systemFont(ofSize: 13.0, weight: .semibold).lineHeight
+                }
+                
+            }
+            return _height(for: .stack(root))
+        }
+        
         /// Defines a feed item layout where the thumbnail resides on top taking up
         /// the full-width then underneath is a padded label stack with the title,
         /// date, and finally the item's brand
