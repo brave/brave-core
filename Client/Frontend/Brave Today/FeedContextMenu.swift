@@ -53,7 +53,7 @@ class FeedContextMenu: NSObject, UIContextMenuInteractionDelegate {
         guard let view = interaction.view else { return nil }
         let preview = UITargetedPreview(view: view)
         if padPreview {
-            preview.parameters.backgroundColor = UIColor(white: 0.2, alpha: 1.0)
+            preview.parameters.backgroundColor = UIColor(white: 0.3, alpha: 1.0)
             preview.parameters.visiblePath = UIBezierPath(roundedRect: view.bounds.insetBy(dx: -10, dy: -10), cornerRadius: 10)
         } else {
             preview.parameters.backgroundColor = .clear
