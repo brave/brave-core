@@ -62,7 +62,7 @@ export const onConvertableAssets = (convertAsset: string, assets: string[]) => a
   assets
 })
 
-export const setDisconnectInProgress = (inProgress: boolean) => action(types.SET_DISCONNECT_IN_PROGRESS, {
+export const setBinanceDisconnectInProgress = (inProgress: boolean) => action(types.SET_DISCONNECT_IN_PROGRESS, {
   inProgress
 })
 

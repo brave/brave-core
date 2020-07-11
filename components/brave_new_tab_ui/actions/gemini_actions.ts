@@ -14,6 +14,12 @@ export const onValidGeminiAuthCode = () => action(types.ON_VALID_GEMINI_AUTH_COD
 
 export const connectToGemini = () => action(types.CONNECT_TO_GEMINI)
 
+export const disconnectGemini = () => action(types.DISCONNECT_GEMINI)
+
+export const setGeminiDisconnectInProgress = (inProgress: boolean) => action(types.SET_DISCONNECT_IN_PROGRESS, {
+  inProgress
+})
+
 export const setGeminiTickerPrice = (asset: string, price: string) => action(types.SET_GEMINI_TICKER_PRICE, {
   asset,
   price
@@ -36,7 +42,7 @@ export const onGeminiDepositQRForAsset = (asset: string, src: string) => action(
   src
 })
 
-export const setGeminiAssetAddress = (address: string, asset: string) => action(types.SET_ASSET_ADDRESS, {
-  address,
-  asset
+export const setGeminiAssetAddress = (asset: string, address: string) => action(types.SET_ASSET_ADDRESS, {
+  asset,
+  address
 })

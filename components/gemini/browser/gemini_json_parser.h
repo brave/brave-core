@@ -21,6 +21,11 @@ class GeminiJSONParser {
       std::map<std::string, std::string>* balances);
   static bool GetDepositInfoFromJSON(const std::string& json,
                                      std::string* address);
+  static bool GetOrderQuoteInfoFromJSON(const std::string& json,
+                                        std::string *quote_id,
+                                        std::string *quantity,
+                                        std::string *fee,
+                                        std::string *price);
 };
 
 #endif  // BRAVE_COMPONENTS_GEMINI_BROWSER_GEMINI_JSON_PARSER_H_

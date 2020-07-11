@@ -61,7 +61,14 @@ import {
   Dropdown,
   AssetDropdownLabel,
   TradeSwitchWrapper,
-  TradeSwitch
+  TradeSwitch,
+  DisconnectButton,
+  DisconnectWrapper,
+  DisconnectTitle,
+  DisconnectCopy,
+  InvalidWrapper,
+  InvalidTitle,
+  InvalidCopy
 } from './style'
 import {
   SearchIcon,
@@ -85,6 +92,15 @@ interface State {
   currentTradeQuantity: string
   currentTradeAsset: string
   tradeDropdownShowing: boolean
+  insufficientFunds: boolean
+  showTradePreview: boolean
+  tradeSuccess: boolean
+  tradeFailed: boolean
+  currentTradeId: string
+  currentTradeFee: string
+  currentTradePrice: string
+  currentTradeQuantityLive: string
+  currentTradeExpiryTime: number
 }
 
 interface Props {
@@ -98,6 +114,7 @@ interface Props {
   assetAddressQRCodes: Record<string, string>
   accountBalances: Record<string, string>
   tickerPrices: Record<string, string>
+  disconnectInProgress: boolean
   onShowContent: () => void
   onDisableWidget: () => void
   onValidAuthCode: () => void
@@ -106,10 +123,13 @@ interface Props {
   onSetSelectedView: (view: string) => void
   onGeminiClientUrl: (url: string) => void
   onSetHideBalance: (hide: boolean) => void
+  onDisconnectGemini: () => void
+  onCancelDisconnect: () => void
 }
 
 class Gemini extends React.PureComponent<Props, State> {
   private refreshInterval: any
+  private tradeTimer: any
 
   constructor (props: Props) {
     super(props)
@@ -120,7 +140,16 @@ class Gemini extends React.PureComponent<Props, State> {
       currentTradeAsset: 'BAT',
       currentTradeQuantity: '',
       currentTradeMode: 'buy',
-      tradeDropdownShowing: false
+      tradeDropdownShowing: false,
+      insufficientFunds: false,
+      showTradePreview: false,
+      tradeSuccess: false,
+      tradeFailed: false,
+      currentTradeId: '',
+      currentTradeFee: '',
+      currentTradePrice: '',
+      currentTradeQuantityLive: '',
+      currentTradeExpiryTime: 60
     }
   }
 
@@ -191,11 +220,37 @@ class Gemini extends React.PureComponent<Props, State> {
     this.props.onConnectGemini()
   }
 
+  cancelDisconnect = () => {
+    this.props.onCancelDisconnect()
+  }
+
+  finishDisconnect = () => {
+    this.clearIntervals()
+    chrome.gemini.revokeToken(() => {
+      this.props.onDisconnectGemini()
+      this.cancelDisconnect()
+    })
+  }
+
   renderIndexView () {
-    const { currentQRAsset } = this.state
+    const {
+      currentQRAsset,
+      insufficientFunds,
+      tradeFailed,
+      showTradePreview
+    } = this.state
+    const { disconnectInProgress } = this.props
 
     if (currentQRAsset) {
-      this.renderQRView()
+      return this.renderQRView()
+    } else if (disconnectInProgress) {
+      return this.renderDisconnectView()
+    } else if (insufficientFunds) {
+      return this.renderInsufficientFundsView()
+    } else if (tradeFailed) {
+      return this.renderUnableToTradeView()
+    } else if (showTradePreview) {
+      return this.renderTradeConfirm()
     }
 
     return false
@@ -304,6 +359,25 @@ class Gemini extends React.PureComponent<Props, State> {
           className={`crypto-icon icon-${key}`}
         />
       </AssetIconWrapper>
+    )
+  }
+
+  renderDisconnectView = () => {
+    return (
+      <DisconnectWrapper>
+        <DisconnectTitle>
+          {getLocale('binanceWidgetDisconnectTitle')}
+        </DisconnectTitle>
+        <DisconnectCopy>
+          {getLocale('binanceWidgetDisconnectText')}
+        </DisconnectCopy>
+        <DisconnectButton onClick={this.finishDisconnect}>
+          {getLocale('binanceWidgetDisconnectButton')}
+        </DisconnectButton>
+        <DismissAction onClick={this.cancelDisconnect}>
+          {getLocale('binanceWidgetCancelText')}
+        </DismissAction>
+      </DisconnectWrapper>
     )
   }
 
@@ -445,10 +519,149 @@ class Gemini extends React.PureComponent<Props, State> {
 
   toggleCurrentTradeMode = () => {
     const { currentTradeMode } = this.state
-    const newMode = currentTradeMode === 'buy' ? 'sell' : 'boy'
+    const newMode = currentTradeMode === 'buy' ? 'sell' : 'buy'
     this.setState({
       currentTradeMode: newMode
     })
+  }
+
+  retryTrade = () => {
+    clearInterval(this.tradeTimer)
+    this.setState({
+      insufficientFunds: false,
+      showTradePreview: false,
+      tradeSuccess: false,
+      tradeFailed: false,
+      currentTradeId: '',
+      currentTradeFee: '',
+      currentTradePrice: '',
+      currentTradeQuantity: '',
+      currentTradeExpiryTime: 60
+    })
+  }
+
+  cancelTrade = () => {
+    clearInterval(this.tradeTimer)
+    this.setState({
+      insufficientFunds: false,
+      showTradePreview: false,
+      tradeSuccess: false,
+      tradeFailed: false,
+      currentTradeId: '',
+      currentTradeFee: '',
+      currentTradePrice: '',
+      currentTradeQuantity: '',
+      currentTradeExpiryTime: 60,
+      currentTradeQuantityLive: '',
+      currentTradeAsset: 'BAT'
+    })
+  }
+
+  shouldShowTradePreview () {
+    const {
+      currentTradeMode,
+      currentTradeAsset,
+      currentTradeQuantity
+    } = this.state
+    const { accountBalances } = this.props
+    const compare = currentTradeMode === 'buy'
+      ? (accountBalances['USD'] || '0')
+      : (accountBalances[currentTradeAsset] || '0')
+
+    if (parseFloat(currentTradeQuantity) >= parseFloat(compare)) {
+      this.setState({
+        insufficientFunds: true
+      })
+      return
+    }
+
+    chrome.gemini.getOrderQuote(currentTradeMode, `${currentTradeAsset}usd`, currentTradeQuantity, (quote: any) => {
+      if (!quote.id || !quote.quantity || !quote.fee || !quote.price) {
+        this.setState({
+          tradeFailed: true
+        })
+        return
+      }
+
+      this.setState({
+        currentTradeId: quote.id,
+        currentTradeFee: quote.fee,
+        currentTradePrice: quote.price,
+        currentTradeQuantityLive: quote.quantity,
+        showTradePreview: true
+      })
+
+      this.tradeTimer = setInterval(() => {
+        const { currentTradeExpiryTime } = this.state
+
+        if (currentTradeExpiryTime - 1 === 0) {
+          clearInterval(this.tradeTimer)
+          this.cancelTrade()
+          return
+        }
+
+        this.setState({
+          currentTradeExpiryTime: (currentTradeExpiryTime - 1)
+        })
+      }, 1000)
+    })
+  }
+
+  renderInsufficientFundsView = () => {
+    return (
+      <InvalidWrapper>
+        <InvalidTitle>
+          {'Unable to perform trade'}
+        </InvalidTitle>
+        <InvalidCopy>
+          {getLocale('binanceWidgetInsufficientFunds')}
+        </InvalidCopy>
+        <GenButton onClick={this.retryTrade}>
+          {getLocale('binanceWidgetRetry')}
+        </GenButton>
+      </InvalidWrapper>
+    )
+  }
+
+  renderUnableToTradeView = () => {
+    return (
+      <InvalidWrapper>
+        <InvalidTitle>
+          {'Unable to perform trade'}
+        </InvalidTitle>
+        <InvalidCopy>
+          {'Something went wrong'}
+        </InvalidCopy>
+        <GenButton onClick={this.retryTrade}>
+          {getLocale('binanceWidgetRetry')}
+        </GenButton>
+      </InvalidWrapper>
+    )
+  }
+
+  renderTradeConfirm = () => {
+    const {
+      currentTradeQuantityLive,
+      currentTradeFee,
+      currentTradeExpiryTime
+    } = this.state
+    console.log(currentTradeExpiryTime, currentTradeFee, currentTradeQuantityLive)
+
+    return (
+      <InvalidWrapper>
+        <InvalidTitle>
+          {getLocale('binanceWidgetConfirmConversion')}
+        </InvalidTitle>
+        <ActionsWrapper>
+          <ConnectButton isSmall={true}>
+            {`${getLocale('binanceWidgetConfirm')} (${currentTradeExpiryTime}s)`}
+          </ConnectButton>
+          <DismissAction onClick={this.cancelTrade}>
+            {getLocale('binanceWidgetCancel')}
+          </DismissAction>
+        </ActionsWrapper>
+      </InvalidWrapper>
+    )
   }
 
   renderTradeView () {
@@ -520,7 +733,7 @@ class Gemini extends React.PureComponent<Props, State> {
             tradeDropdownShowing
             ? <AssetItems>
                 {geminiData.currencies.map((asset: string, i: number) => {
-                  if (asset === currentTradeAsset || asset === 'OXT') {
+                  if (asset === currentTradeAsset) {
                     return null
                   }
 
@@ -542,7 +755,7 @@ class Gemini extends React.PureComponent<Props, State> {
           }
         </TradeWrapper>
         <ActionsWrapper>
-          <ActionButton>
+          <ActionButton onClick={this.shouldShowTradePreview}>
             {'Get a quote'}
           </ActionButton>
         </ActionsWrapper>

@@ -8,13 +8,14 @@ import * as newTabActions from '../../../brave_new_tab_ui/actions/new_tab_action
 import * as topSitesActions from '../../../brave_new_tab_ui/actions/grid_sites_actions'
 import * as binanceActions from '../../../brave_new_tab_ui/actions/binance_actions'
 import * as rewardsActions from '../../../brave_new_tab_ui/actions/rewards_actions'
+import * as geminiActions from '../../../brave_new_tab_ui/actions/gemini_actions'
 import { types as topSitesTypes } from '../../../brave_new_tab_ui/constants/grid_sites_types'
 
 describe('new tab data api tests', () => {
   describe('getActions', () => {
     it('returns an object with the same keys mimicking the original new tab actions', () => {
       const assertion = getActions()
-      const actions = Object.assign({}, newTabActions, topSitesActions, binanceActions, rewardsActions)
+      const actions = Object.assign({}, newTabActions, topSitesActions, binanceActions, rewardsActions, geminiActions)
       expect(Object.keys(assertion)).toEqual(Object.keys(actions))
     })
     it('can call an action from getActions', () => {

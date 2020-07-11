@@ -4,6 +4,7 @@
 
 import { Reducer } from 'redux'
 import { types } from '../constants/gemini_types'
+import * as storage from '../storage/new_tab_storage'
 
 const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, action) => {
   const payload = action.payload
@@ -60,6 +61,22 @@ const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, a
     case types.SET_ASSET_ADDRESS:
       state = { ...state }
       state.geminiState.assetAddresses[payload.asset] = payload.address
+      break
+
+    case types.DISCONNECT_GEMINI:
+      state = { ...state }
+      state.geminiState = {
+        ...storage.defaultState.geminiState
+      }
+      break
+
+    case types.SET_DISCONNECT_IN_PROGRESS:
+      const { inProgress } = payload
+      state = { ...state }
+      state.geminiState = {
+        ...state.geminiState,
+        disconnectInProgress: inProgress
+      }
       break
 
     default:

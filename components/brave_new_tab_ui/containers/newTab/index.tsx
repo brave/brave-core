@@ -293,6 +293,12 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     this.props.saveShowGemini(!showGemini)
+
+    if (showGemini) {
+      chrome.gemini.revokeToken(() => {
+        this.disconnectGemini()
+      })
+    }
   }
 
   onBinanceClientUrl = (clientUrl: string) => {
@@ -323,12 +329,24 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.disconnectBinance()
   }
 
-  setDisconnectInProgress = () => {
-    this.props.actions.setDisconnectInProgress(true)
+  setBinanceDisconnectInProgress = () => {
+    this.props.actions.setBinanceDisconnectInProgress(true)
   }
 
-  cancelDisconnect = () => {
-    this.props.actions.setDisconnectInProgress(false)
+  cancelBinanceDisconnect = () => {
+    this.props.actions.setBinanceDisconnectInProgress(false)
+  }
+
+  disconnectGemini = () => {
+    this.props.actions.disconnectGemini()
+  }
+
+  setGeminiDisconnectInProgress = () => {
+    this.props.actions.setGeminiDisconnectInProgress(true)
+  }
+
+  cancelGeminiDisconnect = () => {
+    this.props.actions.setGeminiDisconnectInProgress(false)
   }
 
   connectBinance = () => {
@@ -497,7 +515,7 @@ class NewTabPage extends React.Component<Props, State> {
         }
 
         this.props.actions.setGeminiAssetAddress(asset, address)
-        generateQRData(address, asset, this.setGeminiAssetDepositQRCodeSrc)
+        void generateQRData(address, asset, this.setGeminiAssetDepositQRCodeSrc)
       })
     })
   }
@@ -729,7 +747,7 @@ class NewTabPage extends React.Component<Props, State> {
     }
 
     if (binanceState.userAuthed) {
-      menuActions['onDisconnect'] = this.setDisconnectInProgress
+      menuActions['onDisconnect'] = this.setBinanceDisconnectInProgress
       menuActions['onRefreshData'] = this.binanceUpdateActions
     }
 
@@ -749,7 +767,7 @@ class NewTabPage extends React.Component<Props, State> {
         onBinanceClientUrl={this.onBinanceClientUrl}
         onConnectBinance={this.connectBinance}
         onDisconnectBinance={this.disconnectBinance}
-        onCancelDisconnect={this.cancelDisconnect}
+        onCancelDisconnect={this.cancelBinanceDisconnect}
         onValidAuthCode={this.onValidBinanceAuthCode}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
@@ -767,6 +785,7 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   renderGeminiWidget (showContent: boolean) {
+    const menuActions = {}
     const { newTabData } = this.props
     const { geminiState, showGemini, textDirection } = newTabData
 
@@ -774,9 +793,15 @@ class NewTabPage extends React.Component<Props, State> {
       return null
     }
 
+    if (geminiState.userAuthed) {
+      menuActions['onDisconnect'] = this.setGeminiDisconnectInProgress
+      menuActions['onRefreshData'] = this.geminiUpdateActions
+    }
+
     return (
       <Gemini
         {...geminiState}
+        {...menuActions}
         isCrypto={true}
         isCryptoTab={!showContent}
         menuPosition={'left'}
@@ -793,6 +818,8 @@ class NewTabPage extends React.Component<Props, State> {
         onUpdateActions={this.geminiUpdateActions}
         onSetSelectedView={this.setGeminiSelectedView}
         onSetHideBalance={this.setGeminiHideBalance}
+        onCancelDisconnect={this.cancelGeminiDisconnect}
+        onDisconnectGemini={this.disconnectGemini}
       />
     )
   }

@@ -185,6 +185,7 @@ declare namespace NewTab {
     assetAddressQRCodes: Record<string, string>
     hideBalance: boolean
     accountBalances: Record<string, string>
+    disconnectInProgress: boolean
   }
 
   export type BinanceTLD = 'us' | 'com'

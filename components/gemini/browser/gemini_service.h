@@ -40,10 +40,11 @@ class Profile;
 
 const char oauth_path_access_token[] = "/auth/token";
 const char api_path_account_balances[] = "/v1/balances";
-const char api_path_account_addresses[] = "v1/addresses/";
+const char api_path_account_addresses[] = "/v1/addresses";
 const char api_path_get_quote[] = "/v1/instant/quote";
 const char api_path_execute_quote[] = "/v1/instant/execute";
 const char api_path_ticker_price[] = "/v1/pubticker";
+const char api_path_revoke_token[] = "/v1/oauth/revokeByToken";
 
 class GeminiService : public KeyedService {
  public:
@@ -59,6 +60,11 @@ class GeminiService : public KeyedService {
   using GetAccountBalancesCallback = base::OnceCallback<
       void(const std::map<std::string, std::string>&)>;
   using GetDepositInfoCallback = base::OnceCallback<void(const std::string&)>;
+  using RevokeAccessTokenCallback = base::OnceCallback<void(bool)>;
+  using GetOrderQuoteCallback = base::OnceCallback<void(const std::string&,
+                                                        const std::string&,
+                                                        const std::string&,
+                                                        const std::string&)>;
 
   std::string GetOAuthClientUrl();
   void SetAuthToken(const std::string& auth_token);
@@ -68,6 +74,11 @@ class GeminiService : public KeyedService {
   bool GetAccountBalances(GetAccountBalancesCallback callback);
   bool GetDepositInfo(const std::string& asset,
                       GetDepositInfoCallback callback);
+  bool RevokeAccessToken(RevokeAccessTokenCallback callback);
+  bool GetOrderQuote(const std::string& side,
+                     const std::string& symbol,
+                     const std::string& spend,
+                     GetOrderQuoteCallback callback);
 
  private:
   base::SequencedTaskRunner* io_task_runner();
@@ -87,15 +98,22 @@ class GeminiService : public KeyedService {
                      const int status, const std::string& body,
                      const std::map<std::string, std::string>& headers);
   void OnGetAccountBalances(GetAccountBalancesCallback callback,
-                           const int status, const std::string& body,
-                           const std::map<std::string, std::string>& headers);
+                            const int status, const std::string& body,
+                            const std::map<std::string, std::string>& headers);
   void OnGetDepositInfo(GetDepositInfoCallback callback,
                         const int status, const std::string& body,
                         const std::map<std::string, std::string>& headers);
+  void OnRevokeAccessToken(RevokeAccessTokenCallback callback,
+                          const int status, const std::string& body,
+                          const std::map<std::string, std::string>& headers);
+  void OnGetOrderQuote(GetOrderQuoteCallback callback,
+                       const int status, const std::string& body,
+                       const std::map<std::string, std::string>& headers);
 
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback,
-      bool auto_retry_on_network_change, bool set_auth_header);
+      bool auto_retry_on_network_change, bool set_auth_header,
+      const std::string& payload);
   void OnURLLoaderComplete(
       SimpleURLLoaderList::iterator iter,
       URLRequestCallback callback,

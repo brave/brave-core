@@ -19,6 +19,7 @@ interface StyleProps {
   hide?: boolean
   itemsShowing?: boolean
   disabled?: boolean
+  isSmall?: boolean
 }
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
@@ -88,7 +89,7 @@ export const ActionsWrapper = styled<{}, 'div'>('div')`
   text-align: center;
 `
 
-export const ConnectButton = styled<{}, 'a'>('a')`
+export const ConnectButton = styled<StyleProps, 'a'>('a')`
   font-size: 14px;
   font-weight: bold;
   border-radius: 20px;
@@ -100,6 +101,8 @@ export const ConnectButton = styled<{}, 'a'>('a')`
   color: #fff;
   margin-bottom: 10px;
   text-decoration: none;
+  width: ${p => p.isSmall ? 50 : 100}%;
+
   &:focus {
     outline: 0;
   }
@@ -371,6 +374,7 @@ export const AmountInputField = styled(InputField)`
   padding-left: 10px;
   height: 29px;
   border-right: none;
+  border-left: none;
   border-bottom: 1px solid white;
 `
 
@@ -456,4 +460,50 @@ export const TradeSwitch = styled<StyleProps, 'div'>('div')`
   margin-left: 10px;
   cursor: pointer;
   color: ${p => p.isActive ? '#EEEEEE' : '#8F8F8F'};
+`
+
+export const DisconnectWrapper = styled<{}, 'div'>('div')`
+  padding-top: 75px;
+  min-height: 250px;
+  text-align: center;
+  max-width: 240px;
+`
+
+export const Title = styled<{}, 'span'>('span')`
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+`
+
+export const DisconnectTitle = styled(Title)`
+  font-size: 14px;
+  max-width: 245px;
+  margin: 0 auto;
+  line-height: 18px;
+`
+
+export const DisconnectCopy = styled(Copy)`
+  color: #fff;
+  max-width: 220px;
+  line-height: 17px;
+  margin: 8px auto 15px auto;
+`
+
+export const DisconnectButton = styled(GenButton)`
+  background: #AA1212;
+  color: #fff;
+  padding: 5px 20px;
+`
+
+export const InvalidTitle = styled(DisconnectTitle)`
+  max-width: unset;
+  margin-bottom: 20px;
+`
+
+export const InvalidCopy = styled(DisconnectCopy)`
+  max-width: 210px;
+`
+
+export const InvalidWrapper = styled(DisconnectWrapper)`
+  min-width: 244px;
 `

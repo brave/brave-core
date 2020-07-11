@@ -168,5 +168,62 @@ void GeminiGetDepositInfoFunction::OnGetDepositInfo(
       std::make_unique<base::Value>(deposit_address)));
 }
 
+ExtensionFunction::ResponseAction
+GeminiRevokeTokenFunction::Run() {
+  if (!IsGeminiAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  auto* service = GetGeminiService(browser_context());
+  bool request = service->RevokeAccessToken(base::BindOnce(
+          &GeminiRevokeTokenFunction::OnRevokeToken, this));
+
+  if (!request) {
+    return RespondNow(
+        Error("Could not revoke gemini access tokens"));
+  }
+
+  return RespondLater();
+}
+
+void GeminiRevokeTokenFunction::OnRevokeToken(bool success) {
+  Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
+GeminiGetOrderQuoteFunction::Run() {
+  if (!IsGeminiAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  std::unique_ptr<gemini::GetOrderQuote::Params> params(
+      gemini::GetOrderQuote::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetGeminiService(browser_context());
+  bool quote_request = service->GetOrderQuote(
+      params->side, params->symbol, params->spend,
+      base::BindOnce(
+          &GeminiGetOrderQuoteFunction::OnOrderQuoteResult, this));
+
+  if (!quote_request) {
+    return RespondNow(
+        Error("Could not make request for quote"));
+  }
+
+  return RespondLater();
+}
+
+void GeminiGetOrderQuoteFunction::OnOrderQuoteResult(
+    const std::string& quote_id, const std::string& quantity,
+    const std::string& fee, const std::string& price) {
+  auto quote = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+  quote->SetStringKey("id", quote_id);
+  quote->SetStringKey("quantity", quantity);
+  quote->SetStringKey("fee", fee);
+  quote->SetStringKey("price", price);
+  Respond(OneArgument(std::move(quote)));
+}
+
 }  // namespace api
 }  // namespace extensions

@@ -104,6 +104,70 @@
               ]
             }
           ]
+        },
+        {
+          "name": "revokeToken",
+          "type": "function",
+          "description": "Revokes the current access and refresh tokens",
+          "parameters": [
+            {
+              "type": "function",
+              "name": "callback",
+              "parameters": [
+                {
+                  "name": "success",
+                  "type": "boolean"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "getOrderQuote",
+          "type": "function",
+          "description": "Gets a quote for a given order",
+          "parameters": [
+            {
+              "type": "string",
+              "name": "side"
+            },
+            {
+              "type": "string",
+              "name": "symbol"
+            },
+            {
+              "type": "string",
+              "name": "spend"
+            },
+            {
+              "type": "function",
+              "name": "callback",
+              "parameters": [
+                {
+                  "name": "quote",
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "quote id"
+                    },
+                    "quantity": {
+                      "type": "string",
+                      "description": "order quantity"
+                    },
+                    "fee": {
+                      "type": "string",
+                      "description": "order fee"
+                    },
+                    "price": {
+                      "type": "string",
+                      "description": "order price"
+                    }
+                  }
+                }
+              ]
+            }
+          ]
         }
       ],
       "types": [

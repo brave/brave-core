@@ -73,6 +73,14 @@ namespace {
     return json;
   }
 
+  std::string GetEncodedRequestPayload(std::string payload) {
+    std::string encoded_payload;
+    std::string request_payload =
+      "{\"request\": \"" + payload + "\"}";
+    base::Base64Encode(request_payload, &encoded_payload);
+    return encoded_payload;
+  }
+
 }  // namespace
 
 GeminiService::GeminiService(content::BrowserContext* context)
@@ -119,7 +127,7 @@ bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
   auth_token_.clear();
   return OAuthRequest(
       base_url, "POST", request_body,
-      std::move(internal_callback), true, false);
+      std::move(internal_callback), true, false, "");
 }
 
 void GeminiService::OnGetAccessToken(
@@ -142,7 +150,7 @@ bool GeminiService::GetTickerPrice(const std::string& asset,
   GURL url = GetURLWithPath(api_host,
     std::string(api_path_ticker_price) + "/" + asset);
   return OAuthRequest(
-      url, "GET", "", std::move(internal_callback), true, false);
+      url, "GET", "", std::move(internal_callback), true, false, "");
 }
 
 void GeminiService::OnTickerPrice(
@@ -161,7 +169,7 @@ bool GeminiService::GetAccountBalances(GetAccountBalancesCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL url = GetURLWithPath(api_host, api_path_account_balances);
   return OAuthRequest(
-      url, "POST", "", std::move(internal_callback), true, true);
+      url, "POST", "", std::move(internal_callback), true, true, "");
 }
 
 void GeminiService::OnGetAccountBalances(
@@ -177,13 +185,15 @@ void GeminiService::OnGetAccountBalances(
 }
 
 bool GeminiService::GetDepositInfo(const std::string& asset,
-                                  GetDepositInfoCallback callback) {
+                                   GetDepositInfoCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetDepositInfo,
       base::Unretained(this), std::move(callback));
-  GURL url = GetURLWithPath(api_host,
-      std::string(api_path_account_addresses) + "/" + asset);
+  std::string endpoint =
+    std::string(api_path_account_addresses) + "/" + asset;
+  std::string payload = GetEncodedRequestPayload(endpoint);
+  GURL url = GetURLWithPath(api_host, endpoint);
   return OAuthRequest(
-      url, "POST", "", std::move(internal_callback), true, true);
+      url, "POST", "", std::move(internal_callback), true, true, payload);
 }
 
 void GeminiService::OnGetDepositInfo(
@@ -193,13 +203,63 @@ void GeminiService::OnGetDepositInfo(
   std::string deposit_address;
   if (status >= 200 && status <= 299) {
     const std::string json_body = "{\"data\": " + body + "}";
-    GeminiJSONParser::GetDepositInfoFromJSON(body, &deposit_address);
+    GeminiJSONParser::GetDepositInfoFromJSON(json_body, &deposit_address);
   }
   std::move(callback).Run(deposit_address);
 }
 
+bool GeminiService::RevokeAccessToken(RevokeAccessTokenCallback callback) {
+  auto internal_callback = base::BindOnce(&GeminiService::OnRevokeAccessToken,
+      base::Unretained(this), std::move(callback));
+  std::string payload = GetEncodedRequestPayload(api_path_revoke_token);
+  GURL url = GetURLWithPath(api_host, api_path_revoke_token);
+  return OAuthRequest(
+      url, "POST", "", std::move(internal_callback), true, true, payload);
+}
+
+void GeminiService::OnRevokeAccessToken(
+    RevokeAccessTokenCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  bool success = status >= 200 && status <= 299;
+  if (success) {
+    ResetAccessTokens();
+  }
+  std::move(callback).Run(success);
+}
+
+bool GeminiService::GetOrderQuote(const std::string& side,
+                                  const std::string& symbol,
+                                  const std::string& spend,
+                                  GetOrderQuoteCallback callback) {
+  auto internal_callback = base::BindOnce(&GeminiService::OnGetOrderQuote,
+      base::Unretained(this), std::move(callback));
+  std::string endpoint =
+    std::string(api_path_get_quote) + "/" + side + "/" + symbol;
+  std::string payload = GetEncodedRequestPayload(endpoint);
+  GURL url = GetURLWithPath(api_host, endpoint);
+  url = net::AppendQueryParameter(url, "totalSpend", spend);
+  return OAuthRequest(
+      url, "GET", "", std::move(internal_callback), true, true, payload);
+}
+
+void GeminiService::OnGetOrderQuote(GetOrderQuoteCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string fee;
+  std::string quote_id;
+  std::string quantity;
+  std::string price;
+  if (status >= 200 && status <= 299) {
+    const std::string json_body = "{\"data\": " + body + "}";
+    GeminiJSONParser::GetOrderQuoteInfoFromJSON(
+      json_body, &quote_id, &quantity, &fee, &price);
+  }
+  std::move(callback).Run(quote_id, quantity, fee, price);
+}
+
 bool GeminiService::SetAccessTokens(const std::string& access_token,
-                                     const std::string& refresh_token) {
+                                    const std::string& refresh_token) {
   access_token_ = access_token;
   refresh_token_ = refresh_token;
 
@@ -271,7 +331,8 @@ bool GeminiService::OAuthRequest(const GURL &url,
                                   const std::string& post_data,
                                   URLRequestCallback callback,
                                   bool auto_retry_on_network_change,
-                                  bool set_auth_header) {
+                                  bool set_auth_header,
+                                  const std::string& payload) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_BYPASS_CACHE |
@@ -284,6 +345,10 @@ bool GeminiService::OAuthRequest(const GURL &url,
     request->headers.SetHeader(
           net::HttpRequestHeaders::kAuthorization,
           base::StringPrintf("Bearer %s", access_token_.c_str()));
+  }
+
+  if (!payload.empty()) {
+    request->headers.SetHeader("X-GEMINI-PAYLOAD", payload);
   }
 
   auto url_loader = network::SimpleURLLoader::Create(

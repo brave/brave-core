@@ -76,6 +76,33 @@ class GeminiGetDepositInfoFunction :
   ResponseAction Run() override;
 };
 
+class GeminiRevokeTokenFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("gemini.revokeToken", UNKNOWN)
+
+ protected:
+  ~GeminiRevokeTokenFunction() override {}
+  void OnRevokeToken(bool success);
+
+  ResponseAction Run() override;
+};
+
+class GeminiGetOrderQuoteFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("gemini.getOrderQuote", UNKNOWN)
+
+ protected:
+  ~GeminiGetOrderQuoteFunction() override {}
+  void OnOrderQuoteResult(const std::string& quote_id,
+                          const std::string& quantity,
+                          const std::string& fee,
+                          const std::string& price);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

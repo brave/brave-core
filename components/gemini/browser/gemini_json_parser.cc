@@ -142,3 +142,39 @@ bool GeminiJSONParser::GetDepositInfoFromJSON(
 
   return true;
 }
+
+bool GeminiJSONParser::GetOrderQuoteInfoFromJSON(
+    const std::string& json, std::string *quote_id,
+    std::string *quantity, std::string *fee, std::string *price) {
+  if (!quote_id || !quantity || !fee || !price) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return false;
+  }
+
+  const base::DictionaryValue* data_dict;
+  if (!response_dict->GetDictionary("data", &data_dict)) {
+    return false;
+  }
+
+  if (!data_dict->GetString("quoteId", quote_id) ||
+      !data_dict->GetString("quantity", quantity) ||
+      !data_dict->GetString("fee", fee) ||
+      !data_dict->GetString("price", price)) {
+    return false;
+  }
+
+  return true;
+}
