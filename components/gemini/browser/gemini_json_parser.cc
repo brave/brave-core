@@ -22,7 +22,7 @@
 bool GeminiJSONParser::GetTokensFromJSON(
     const std::string& json, std::string *access_token,
     std::string* refresh_token) {
-  if (!access_token || refresh_token) {
+  if (!access_token || !refresh_token) {
     return false;
   }
 

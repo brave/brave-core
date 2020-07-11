@@ -30,6 +30,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "brave/components/gemini/browser/gemini_json_parser.h"
+#include "base/json/json_writer.h"
 
 namespace {
   const char oauth_host[] = "exchange.qa001.aurora7.net";
@@ -67,6 +68,12 @@ namespace {
     return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
   }
 
+  std::string CreateJSONRequestBody(const base::Value& dict) {
+    std::string json;
+    base::JSONWriter::Write(dict, &json);
+    return json;
+  }
+
 }  // namespace
 
 GeminiService::GeminiService(content::BrowserContext* context)
@@ -102,14 +109,18 @@ bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
       base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(oauth_host, oauth_path_access_token);
   GURL url = base_url;
-  url = net::AppendQueryParameter(url, "client_id", client_id_);
-  url = net::AppendQueryParameter(url, "client_secret", client_secret_);
-  url = net::AppendQueryParameter(url, "code", auth_token_);
-  url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
-  url = net::AppendQueryParameter(url, "grant_type", "authorization_code");
+
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("client_id", client_id_);
+  dict.SetStringKey("client_secret", client_secret_);
+  dict.SetStringKey("code", auth_token_);
+  dict.SetStringKey("redirect_uri", oauth_callback);
+  dict.SetStringKey("grant_type", "authorization_code");
+  std::string request_body = CreateJSONRequestBody(dict);
+
   auth_token_.clear();
   return OAuthRequest(
-      base_url, "POST", url.query(), std::move(internal_callback), true);
+      base_url, "POST", request_body, std::move(internal_callback), true);
 }
 
 bool GeminiService::GetTickerPrice(const std::string& asset,
@@ -231,7 +242,7 @@ bool GeminiService::OAuthRequest(const GURL &url,
       std::move(request), GetNetworkTrafficAnnotationTag());
   if (!post_data.empty()) {
     url_loader->AttachStringForUpload(post_data,
-        "application/x-www-form-urlencoded");
+        "application/json");
   }
   url_loader->SetRetryOptions(
       kRetriesCountOnNetworkChange,

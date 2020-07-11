@@ -179,7 +179,9 @@ class Gemini extends React.PureComponent<Props, State> {
 
     if (geminiAuth) {
       chrome.gemini.getAccessToken((success: boolean) => {
-        this.props.onValidAuthCode()
+        if (success) {
+          this.props.onValidAuthCode()
+        }
       })
     }
   }
