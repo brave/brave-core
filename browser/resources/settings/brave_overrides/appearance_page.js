@@ -8,39 +8,65 @@ import {I18nBehavior} from 'chrome://resources/js/i18n_behavior.m.js'
 import {Router} from '../router.m.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-import '../brave_appearance_page/super_referral.m.js'
+import '../brave_appearance_page/super_referral.js'
+import '../brave_appearance_page/brave_theme.js'
+import '../brave_appearance_page/toolbar.js'
 
-const stringId = 'superReferralThemeName'
+const superReferralStringId = 'superReferralThemeName'
 
 RegisterPolymerTemplateModifications({
   'settings-appearance-page': (templateContent) => {
+    const r = Router.getInstance().routes_
+    // Super-referral
     // W/o super referral, we don't need to themes link option with themes sub
     // page.
-    if (!loadTimeData.valueExists(stringId) ||
-        loadTimeData.getString(stringId) === '')
-      return
-
-    // Routes
-    const r = Router.getInstance().routes_
-    if (!r.APPEARANCE) {
-      console.error('[Brave Settings Overrides] Routes: could not find APPEARANCE page')
-      return
+    const hasSuperReferral = (
+      !loadTimeData.valueExists(superReferralStringId) ||
+      loadTimeData.getString(superReferralStringId) === ''
+    )
+    if (hasSuperReferral) {
+      // Routes
+      if (!r.APPEARANCE) {
+        console.error('[Brave Settings Overrides] Routes: could not find APPEARANCE page')
+        return
+      } else {
+        r.THEMES = r.APPEARANCE.createChild('/themes');
+        // Hide chromium's theme section. It's replaced with our themes page.
+        const theme = templateContent.getElementById('themeRow')
+        if (!theme) {
+          console.error(`[Brave Settings Overrides] Couldn't find #themeRow`)
+        } else {
+          theme.insertAdjacentHTML('beforebegin', `
+            <settings-brave-appearance-theme prefs="{{prefs}}"></settings-brave-appearance-theme>
+          `)
+          theme.remove()
+        }
+      }
     }
-    r.THEMES = r.APPEARANCE.createChild('/themes');
-    // Hide chromium's theme section. It's replaced with our themes page.
-    const theme = templateContent.getElementById('themeRow')
-    theme.setAttribute('hidden', 'true')
+    // Toolbar prefs
+    const bookmarkBarToggle = templateContent.querySelector('[pref="{{prefs.bookmark_bar.show_on_all_tabs}}"]')
+    if (!bookmarkBarToggle) {
+      console.error(`[Brave Settings Overrides] Couldn't find bookmark bar toggle`)
+    } else {
+      bookmarkBarToggle.insertAdjacentHTML('afterend', `
+        <settings-brave-appearance-toolbar prefs="{{prefs}}"></settings-brave-appearance-toolbar>
+      `)
+    }
+    // Super referral themes prefs
     const pages = templateContent.getElementById('pages')
-    const themes = document.createElement('template')
-    themes.setAttribute('is', 'dom-if')
-    themes.setAttribute('route-path', '/themes')
-    themes.innerHTML = `
-      <settings-subpage
+    if (!pages) {
+      console.error(`[Brave Settings Overrides] Couldn't find appearance_page #pages`)
+    } else {
+      pages.insertAdjacentHTML('beforeend', `
+        <template is="dom-if" route-path="/themes">
+          <settings-subpage
           associated-control="[[$$('#themes-subpage-trigger')]]"
           page-title="${I18nBehavior.i18n('themes')}">
-        <settings-brave-appearance-super-referral prefs="{{prefs}}">
-        </settings-brave-appearance-super-referral>
-      </settings-subpage> `
-    pages.appendChild(themes)
+            <settings-brave-appearance-super-referral prefs="{{prefs}}">
+            </settings-brave-appearance-super-referral>
+          </settings-subpage>
+        </template>
+      `)
+    }
   },
 })
