@@ -56,12 +56,18 @@ class GeminiService : public KeyedService {
   using URLRequestCallback =
       base::OnceCallback<void(const int, const std::string&,
                               const std::map<std::string, std::string>&)>;
+  using GetAccountBalancesCallback = base::OnceCallback<
+      void(const std::map<std::string, std::string>&)>;
+  using GetDepositInfoCallback = base::OnceCallback<void(const std::string&)>;
 
   std::string GetOAuthClientUrl();
   void SetAuthToken(const std::string& auth_token);
   bool GetAccessToken(GetAccessTokenCallback callback);
   bool GetTickerPrice(const std::string& asset,
                       GetTickerPriceCallback callback);
+  bool GetAccountBalances(GetAccountBalancesCallback callback);
+  bool GetDepositInfo(const std::string& asset,
+                      GetDepositInfoCallback callback);
 
  private:
   base::SequencedTaskRunner* io_task_runner();
@@ -80,10 +86,16 @@ class GeminiService : public KeyedService {
   void OnTickerPrice(GetTickerPriceCallback callback,
                      const int status, const std::string& body,
                      const std::map<std::string, std::string>& headers);
+  void OnGetAccountBalances(GetAccountBalancesCallback callback,
+                           const int status, const std::string& body,
+                           const std::map<std::string, std::string>& headers);
+  void OnGetDepositInfo(GetDepositInfoCallback callback,
+                        const int status, const std::string& body,
+                        const std::map<std::string, std::string>& headers);
 
   bool OAuthRequest(const GURL& url, const std::string& method,
       const std::string& post_data, URLRequestCallback callback,
-      bool auto_retry_on_network_change);
+      bool auto_retry_on_network_change, bool set_auth_header);
   void OnURLLoaderComplete(
       SimpleURLLoaderList::iterator iter,
       URLRequestCallback callback,

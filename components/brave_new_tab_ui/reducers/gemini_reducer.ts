@@ -46,6 +46,22 @@ const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, a
       state.geminiState.hideBalance = payload.hide
       break
 
+    case types.SET_ACCOUNT_BALANCES:
+      const { balances } = payload
+      state = { ...state }
+      state.geminiState.accountBalances = balances
+      break
+
+    case types.ON_DEPOSIT_QR_FOR_ASSET:
+      state = { ...state }
+      state.geminiState.assetAddressQRCodes[payload.asset] = payload.src
+      break
+
+    case types.SET_ASSET_ADDRESS:
+      state = { ...state }
+      state.geminiState.assetAddresses[payload.asset] = payload.address
+      break
+
     default:
       break
   }

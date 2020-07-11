@@ -460,11 +460,14 @@ class Gemini extends React.PureComponent<Props, State> {
     } = this.state
     const { accountBalances } = this.props
     const currentAssetBalance = this.formatCryptoBalance(accountBalances[currentTradeAsset] || '0')
+    const accountUSDBalance = accountBalances['USD'] || '0.00'
+    const availableAmount = currentTradeMode === 'buy' ? accountUSDBalance : currentAssetBalance
+    const availableLabel = currentTradeMode === 'buy' ? 'USD' : currentTradeAsset
 
     return (
       <>
         <Copy>
-          {`${getLocale('binanceWidgetAvailable')} ${currentAssetBalance} ${currentTradeAsset}`}
+          {`${getLocale('binanceWidgetAvailable')} ${availableAmount} ${availableLabel}`}
         </Copy>
         <TradeSwitchWrapper>
           <TradeSwitch

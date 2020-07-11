@@ -40,7 +40,7 @@ void LoadNewTabURL(
     return;
   }
 
-  GURL allowed_origin("https://exchange.qa001.aurora7.net");
+  GURL allowed_origin("https://exchange.gemini.com");
   if (web_contents->GetLastCommittedURL().GetOrigin() != allowed_origin ||
       !initiating_origin.has_value() ||
       initiating_origin.value().GetURL() != allowed_origin) {

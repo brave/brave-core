@@ -33,12 +33,11 @@
 #include "base/json/json_writer.h"
 
 namespace {
-  const char oauth_host[] = "exchange.qa001.aurora7.net";
+  const char oauth_host[] = "exchange.gemini.com";
   const char api_host[] = "api.gemini.com";
-  // const char oauth_api_host[] = "api.qa001.aurora7.net";
   const char oauth_callback[] = "com.brave.gemini://authorization";
   const char oauth_scope[] = "trader";
-  const char oauth_url[] = "https://exchange.qa001.aurora7.net/auth";
+  const char oauth_url[] = "https://exchange.gemini.com/auth";
   const unsigned int kRetriesCountOnNetworkChange = 1;
 
   net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -108,7 +107,6 @@ bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(oauth_host, oauth_path_access_token);
-  GURL url = base_url;
 
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("client_id", client_id_);
@@ -120,28 +118,8 @@ bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
 
   auth_token_.clear();
   return OAuthRequest(
-      base_url, "POST", request_body, std::move(internal_callback), true);
-}
-
-bool GeminiService::GetTickerPrice(const std::string& asset,
-                                   GetTickerPriceCallback callback) {
-  auto internal_callback = base::BindOnce(&GeminiService::OnTickerPrice,
-      base::Unretained(this), std::move(callback));
-  GURL url = GetURLWithPath(api_host,
-    std::string(api_path_ticker_price) + "/" + asset);
-  return OAuthRequest(
-      url, "GET", "", std::move(internal_callback), true);  
-}
-
-void GeminiService::OnTickerPrice(
-  GetTickerPriceCallback callback,
-  const int status, const std::string& body,
-  const std::map<std::string, std::string>& headers) {
-  std::string price;
-  if (status >= 200 && status <= 299) {
-    GeminiJSONParser::GetTickerPriceFromJSON(body, &price);
-  }
-  std::move(callback).Run(price);
+      base_url, "POST", request_body,
+      std::move(internal_callback), true, false);
 }
 
 void GeminiService::OnGetAccessToken(
@@ -155,6 +133,69 @@ void GeminiService::OnGetAccessToken(
     SetAccessTokens(access_token, refresh_token);
   }
   std::move(callback).Run(!access_token.empty() && !refresh_token.empty());
+}
+
+bool GeminiService::GetTickerPrice(const std::string& asset,
+                                   GetTickerPriceCallback callback) {
+  auto internal_callback = base::BindOnce(&GeminiService::OnTickerPrice,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host,
+    std::string(api_path_ticker_price) + "/" + asset);
+  return OAuthRequest(
+      url, "GET", "", std::move(internal_callback), true, false);
+}
+
+void GeminiService::OnTickerPrice(
+  GetTickerPriceCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  std::string price;
+  if (status >= 200 && status <= 299) {
+    GeminiJSONParser::GetTickerPriceFromJSON(body, &price);
+  }
+  std::move(callback).Run(price);
+}
+
+bool GeminiService::GetAccountBalances(GetAccountBalancesCallback callback) {
+  auto internal_callback = base::BindOnce(&GeminiService::OnGetAccountBalances,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host, api_path_account_balances);
+  return OAuthRequest(
+      url, "POST", "", std::move(internal_callback), true, true);
+}
+
+void GeminiService::OnGetAccountBalances(
+  GetAccountBalancesCallback callback,
+  const int status, const std::string& body,
+  const std::map<std::string, std::string>& headers) {
+  std::map<std::string, std::string> balances;
+  if (status >= 200 && status <= 299) {
+    const std::string json_body = "{\"data\": " + body + "}";
+    GeminiJSONParser::GetAccountBalancesFromJSON(json_body, &balances);
+  }
+  std::move(callback).Run(balances);
+}
+
+bool GeminiService::GetDepositInfo(const std::string& asset,
+                                  GetDepositInfoCallback callback) {
+  auto internal_callback = base::BindOnce(&GeminiService::OnGetDepositInfo,
+      base::Unretained(this), std::move(callback));
+  GURL url = GetURLWithPath(api_host,
+      std::string(api_path_account_addresses) + "/" + asset);
+  return OAuthRequest(
+      url, "POST", "", std::move(internal_callback), true, true);
+}
+
+void GeminiService::OnGetDepositInfo(
+    GetDepositInfoCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  std::string deposit_address;
+  if (status >= 200 && status <= 299) {
+    const std::string json_body = "{\"data\": " + body + "}";
+    GeminiJSONParser::GetDepositInfoFromJSON(body, &deposit_address);
+  }
+  std::move(callback).Run(deposit_address);
 }
 
 bool GeminiService::SetAccessTokens(const std::string& access_token,
@@ -229,7 +270,8 @@ bool GeminiService::OAuthRequest(const GURL &url,
                                   const std::string& method,
                                   const std::string& post_data,
                                   URLRequestCallback callback,
-                                  bool auto_retry_on_network_change) {
+                                  bool auto_retry_on_network_change,
+                                  bool set_auth_header) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = url;
   request->load_flags = net::LOAD_BYPASS_CACHE |
@@ -237,6 +279,12 @@ bool GeminiService::OAuthRequest(const GURL &url,
                         net::LOAD_DO_NOT_SEND_COOKIES |
                         net::LOAD_DO_NOT_SAVE_COOKIES;
   request->method = method;
+
+  if (set_auth_header) {
+    request->headers.SetHeader(
+          net::HttpRequestHeaders::kAuthorization,
+          base::StringPrintf("Bearer %s", access_token_.c_str()));
+  }
 
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());

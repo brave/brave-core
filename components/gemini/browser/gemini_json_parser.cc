@@ -72,3 +72,73 @@ bool GeminiJSONParser::GetTickerPriceFromJSON(
 
   return true;
 }
+
+bool GeminiJSONParser::GetAccountBalancesFromJSON(
+    const std::string& json,
+    std::map<std::string, std::string>* balances) {
+  if (!balances) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* pv_arr = records_v->FindKey("data");
+  if (!pv_arr || !pv_arr->is_list()) {
+    return false;
+  }
+
+  for (const base::Value &val : pv_arr->GetList()) {
+    const base::Value* currency = val.FindKey("currency");
+    const base::Value* available = val.FindKey("available");
+
+    bool has_currency = currency && currency->is_string();
+    bool has_available = available && available->is_string();
+
+    if (!has_currency || !has_available) {
+      continue;
+    }
+
+    balances->insert({currency->GetString(), available->GetString()});
+  }
+
+  return true;
+}
+
+bool GeminiJSONParser::GetDepositInfoFromJSON(
+    const std::string& json, std::string *address) {
+  if (!address) {
+    return false;
+  }
+
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    LOG(ERROR) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::Value* pv_arr = records_v->FindKey("data");
+  if (!pv_arr || !pv_arr->is_list() || pv_arr->GetList().size() == 0) {
+    return false;
+  }
+
+  const base::Value &val = pv_arr->GetList()[0];
+  const base::Value* asset_address = val.FindKey("address");
+
+  if (asset_address && asset_address->is_string()) {
+    *address = asset_address->GetString();
+  }
+
+  return true;
+}

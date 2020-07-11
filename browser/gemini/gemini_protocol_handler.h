@@ -13,10 +13,10 @@
 namespace gemini {
 
 void HandleGeminiProtocol(const GURL& url,
-                           content::WebContents::OnceGetter web_contents_getter,
-                           ui::PageTransition page_transition,
-                           bool has_user_gesture,
-                           const base::Optional<url::Origin>& initiator);
+                          content::WebContents::OnceGetter web_contents_getter,
+                          ui::PageTransition page_transition,
+                          bool has_user_gesture,
+                          const base::Optional<url::Origin>& initiator);
 
 bool IsGeminiProtocol(const GURL& url);
 

@@ -108,5 +108,65 @@ void GeminiGetTickerPriceFunction::OnPriceResult(
   Respond(OneArgument(std::make_unique<base::Value>(price)));
 }
 
+ExtensionFunction::ResponseAction
+GeminiGetAccountBalancesFunction::Run() {
+  if (!IsGeminiAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  auto* service = GetGeminiService(browser_context());
+  bool balance_success = service->GetAccountBalances(
+      base::BindOnce(
+          &GeminiGetAccountBalancesFunction::OnGetAccountBalances,
+          this));
+
+  if (!balance_success) {
+    return RespondNow(Error("Could not send request to get balance"));
+  }
+
+  return RespondLater();
+}
+
+void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
+    const std::map<std::string, std::string>& balances) {
+  auto result = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+
+  for (const auto& balance : balances) {
+    result->SetStringKey(balance.first, balance.second);
+  }
+
+  Respond(OneArgument(std::move(result)));
+}
+
+ExtensionFunction::ResponseAction
+GeminiGetDepositInfoFunction::Run() {
+  if (!IsGeminiAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  std::unique_ptr<gemini::GetDepositInfo::Params> params(
+      gemini::GetDepositInfo::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetGeminiService(browser_context());
+  bool info_request = service->GetDepositInfo(params->asset,
+      base::BindOnce(
+          &GeminiGetDepositInfoFunction::OnGetDepositInfo, this));
+
+  if (!info_request) {
+    return RespondNow(
+        Error("Could not make request for deposit information."));
+  }
+
+  return RespondLater();
+}
+
+void GeminiGetDepositInfoFunction::OnGetDepositInfo(
+    const std::string& deposit_address) {
+  Respond(OneArgument(
+      std::make_unique<base::Value>(deposit_address)));
+}
+
 }  // namespace api
 }  // namespace extensions

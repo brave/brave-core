@@ -67,6 +67,43 @@
               ]
             }
           ]
+        },
+        {
+          "name": "getAccountBalances",
+          "type": "function",
+          "description": "Retrieves user asset balances",
+          "parameters": [
+            {
+              "type": "function",
+              "name": "callback",
+              "parameters": [
+                {
+                  "name": "balances",
+                  "type": "any"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "getDepositInfo",
+          "type": "function",
+          "description": "Fetches user address/url given an asset",
+          "parameters": [
+            {
+              "type": "string",
+              "name": "asset"
+            }, {
+              "type": "function",
+              "name": "callback",
+              "parameters": [
+                {
+                  "name": "depositAddress",
+                  "type": "string"
+                }
+              ]
+            }
+          ]
         }
       ],
       "types": [

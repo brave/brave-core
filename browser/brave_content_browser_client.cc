@@ -211,8 +211,8 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 #if BUILDFLAG(GEMINI_ENABLED)
   if (gemini::IsGeminiProtocol(url)) {
     gemini::HandleGeminiProtocol(url, std::move(web_contents_getter),
-                                   page_transition, has_user_gesture,
-                                   initiating_origin);
+                                 page_transition, has_user_gesture,
+                                 initiating_origin);
     return true;
   }
 #endif

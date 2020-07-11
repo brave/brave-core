@@ -26,3 +26,17 @@ export const setGeminiSelectedView = (view: string) => action(types.SET_SELECTED
 export const setGeminiHideBalance = (hide: boolean) => action(types.SET_HIDE_BALANCE, {
   hide
 })
+
+export const setGeminiAccountBalances = (balances: Record<string, string>) => action(types.SET_ACCOUNT_BALANCES, {
+  balances
+})
+
+export const onGeminiDepositQRForAsset = (asset: string, src: string) => action(types.ON_DEPOSIT_QR_FOR_ASSET, {
+  asset,
+  src
+})
+
+export const setGeminiAssetAddress = (address: string, asset: string) => action(types.SET_ASSET_ADDRESS, {
+  address,
+  asset
+})

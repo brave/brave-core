@@ -51,6 +51,31 @@ class GeminiGetTickerPriceFunction :
   ResponseAction Run() override;
 };
 
+class GeminiGetAccountBalancesFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("gemini.getAccountBalances", UNKNOWN)
+
+ protected:
+  ~GeminiGetAccountBalancesFunction() override {}
+  void OnGetAccountBalances(
+    const std::map<std::string, std::string>& balances);
+
+  ResponseAction Run() override;
+};
+
+class GeminiGetDepositInfoFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("gemini.getDepositInfo", UNKNOWN)
+
+ protected:
+  ~GeminiGetDepositInfoFunction() override {}
+  void OnGetDepositInfo(const std::string& deposit_address);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 
