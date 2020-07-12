@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -23,13 +24,18 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.base.TraceEvent;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
@@ -71,6 +77,9 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.onboarding.OnboradingBottomSheetDialogFragment;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 
 import java.util.List;
 
@@ -137,6 +146,47 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mAdsBlockedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_ads);
         mDataSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_text);
         mEstTimeSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time);
+
+        LinearLayout mAdsLayout = mBraveStatsView.findViewById(R.id.brave_stats_ads);
+        mAdsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOnboarding(OnboardingPrefManager.ONBOARDING_ADS);
+            }
+        });
+
+        LinearLayout mDataSavedLayout = mBraveStatsView.findViewById(R.id.brave_stats_data_saved);
+        mDataSavedLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOnboarding(OnboardingPrefManager.ONBOARDING_DATA_SAVED);
+            }
+        });
+
+        LinearLayout mEstTimeSavedLayout = mBraveStatsView.findViewById(R.id.brave_stats_time);
+        mEstTimeSavedLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showOnboarding(OnboardingPrefManager.ONBOARDING_TIME);
+            }
+        });
+
+        FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
+        ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
+        mBadgeImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    BraveStatsUtil.showBraveStats();
+                } else {
+                    showOnboarding(OnboardingPrefManager.ONBOARDING_INVALID_OPTION);
+                }
+            }
+        });
+
+        if (OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
+            mBadgeLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     protected void insertSiteSectionView() {
@@ -182,6 +232,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
+        if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
+                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
+            showOnboarding(OnboardingPrefManager.ONBOARDING_INVALID_OPTION);
+        }
     }
 
     @Override
@@ -258,9 +312,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
         long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
 
-        mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount, false));
-        mDataSavedValueTextView.setText(getBraveStatsStringFormNumber(dataSaved, true));
-        mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+        mAdsBlockedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFormNumber(adsBlockedCount, false));
+        mDataSavedValueTextView.setText(BraveStatsUtil.getBraveStatsStringFormNumber(dataSaved, true));
+        mEstTimeSavedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
         if ((BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
                     || NTPUtil.isReferralEnabled())
@@ -277,58 +331,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
 
         TraceEvent.end(TAG + ".updateBraveStats()");
-    }
-
-    /*
-    * Gets string view of specific number for Brave stats
-    */
-    private String getBraveStatsStringFormNumber(long number, boolean isBytes) {
-        String result = "";
-        String suffix = "";
-        long base = isBytes ? 1024L : 1000L;
-        if (number >= base * base * base) {
-            result = result + (number / (base * base * base));
-            number = number % (base * base * base);
-            result = result + "." + (number / (10L * base * base));
-            suffix = isBytes ? "GB" : "B";
-        } else if (number >= (10L * base * base) && number < (base * base * base)) {
-            result = result + (number / (base * base));
-            suffix = isBytes ? "MB" : "M";
-        } else if (number >= (base * base) && number < (10L * base * base)) {
-            result = result + (number / (base * base));
-            number = number % (base * base);
-            result = result + "." + (number / (100L * base));
-            suffix = isBytes ? "MB" : "M";
-        } else if (number >= (10L * base) && number < (base * base)) {
-            result = result + (number / base);
-            suffix = isBytes ? "KB" : "K";
-        } else if (number >= base && number < (10L * base)) {
-            result = result + (number / base);
-            number = number % base;
-            result = result + "." + (number / 100L);
-            suffix = isBytes ? "KB" : "K";
-        } else {
-            result = result + number;
-        }
-        result = result + suffix;
-        return result;
-    }
-
-    /*
-    * Gets string view of specific time in seconds for Brave stats
-    */
-    private String getBraveStatsStringFromTime(long seconds) {
-        String result = "";
-        if (seconds > 24 * 60 * 60) {
-            result = result + (seconds / (24 * 60 * 60)) + "d";
-        } else if (seconds > 60 * 60) {
-            result = result + (seconds / (60 * 60)) + "h";
-        } else if (seconds > 60) {
-            result = result + (seconds / 60) + "m";
-        } else {
-            result = result + seconds + "s";
-        }
-        return result;
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -441,6 +443,17 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mNTPBackgroundImagesBridge.getTopSites();
     }
 
+    private void showOnboarding(int onboradingType) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(OnboardingPrefManager.ONBOARDING_TYPE, onboradingType);
+
+        OnboradingBottomSheetDialogFragment onboradingBottomSheetDialogFragment = OnboradingBottomSheetDialogFragment.newInstance();
+        onboradingBottomSheetDialogFragment.setArguments(bundle);
+        onboradingBottomSheetDialogFragment.setNewTabPageListener(newTabPageListener);
+        onboradingBottomSheetDialogFragment.show(((BraveActivity)mActivity).getSupportFragmentManager(), "onboarding_bottom_sheet_dialog_fragment");
+        onboradingBottomSheetDialogFragment.setCancelable(false);
+    }
+
     private NewTabPageListener newTabPageListener = new NewTabPageListener() {
         @Override
         public void updateInteractableFlag(boolean isBottomSheet) {
@@ -475,6 +488,35 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     loadTopSites(topSites);
                 }
             }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        }
+
+        @Override
+        public void selectedPage(int index) {
+            if (index == 0) {
+                LottieAnimationView mAnimatedView = findViewById(R.id.ads_animation);
+                if (mAnimatedView != null) {
+                    mAnimatedView.setVisibility(View.VISIBLE);
+                    mAnimatedView.setAnimation("onboarding_ads.json");
+                    mAnimatedView.playAnimation();
+                    mAnimatedView.loop(false);
+                }
+            } else if (index == 1) {
+                LottieAnimationView mAnimatedView = findViewById(R.id.data_animation);
+                if (mAnimatedView != null) {
+                    mAnimatedView.setVisibility(View.VISIBLE);
+                    mAnimatedView.setAnimation("onboarding_data_saved.json");
+                    mAnimatedView.playAnimation();
+                    mAnimatedView.loop(false);
+                }
+            } else if (index == 2) {
+                LottieAnimationView mAnimatedView = findViewById(R.id.time_animation);
+                if (mAnimatedView != null) {
+                    mAnimatedView.setVisibility(View.VISIBLE);
+                    mAnimatedView.setAnimation("onboarding_time_saved.json");
+                    mAnimatedView.playAnimation();
+                    mAnimatedView.loop(false);
+                }
+            }
         }
     };
 
