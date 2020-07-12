@@ -442,10 +442,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                                      int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP,
                                      List<Animator> animators) {
     Context context = getContext();
-    if (PackageUtils.isFirstInstall(context) && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
-      Intent searchActivityIntent = new Intent(context, SearchActivity.class);
-      context.startActivity(searchActivityIntent);
-    } else {
+    // if (PackageUtils.isFirstInstall(context) && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
+    //   Intent searchActivityIntent = new Intent(context, SearchActivity.class);
+    //   context.startActivity(searchActivityIntent);
+    // } else {
       if (mBraveShieldsButton != null) {
         Animator animator;
         if (hasFocus) {
@@ -477,7 +477,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           animators.add(animator);
         }
       }
-    }
+    // }
   }
 
   protected void updateModernLocationBarColor(int color) {
