@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <org.chromium.chrome.browser.onboarding.v2.HighlightView
+        android:id="@+id/highlight_view"
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
+    </org.chromium.chrome.browser.onboarding.v2.HighlightView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/brave_stats_bg_color">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"/>
+
+        <ImageView
+            android:id="@+id/onboarding_bottom_sheet_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_gravity="end|top"
+            android:padding="16dp"
+            android:src="@drawable/btn_close"
+            android:tint="@color/onboarding_text_color"/>
+
+    </FrameLayout>
+
+</LinearLayout>
