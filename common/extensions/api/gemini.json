@@ -80,6 +80,10 @@
                 {
                   "name": "balances",
                   "type": "any"
+                }, {
+                  "name": "authInvalid",
+                  "type": "boolean",
+                  "description": "Indicates whether the auth token has expired"
                 }
               ]
             }

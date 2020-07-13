@@ -171,7 +171,7 @@ declare namespace chrome.gemini {
   const getClientUrl: (callback: (clientUrl: string) => void) => {}
   const getAccessToken: (callback: (success: boolean) => void) => {}
   const getTickerPrice: (asset: string, callback: (price: string) => void) => {}
-  const getAccountBalances: (callback: (balances: Record<string, string>) => void) => {}
+  const getAccountBalances: (callback: (balances: Record<string, string>, authInvalid: boolean) => void) => {}
   const getDepositInfo: (asset: string, callback: (depositAddress: string, depositTag: string) => void) => {}
   const revokeToken: (callback: (success: boolean) => void) => {}
   const getOrderQuote: (side: string, symbol: string, spend: string, callback: (quote: any) => void) => {}

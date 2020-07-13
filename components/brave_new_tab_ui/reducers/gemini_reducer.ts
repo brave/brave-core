@@ -79,6 +79,15 @@ const geminiReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, a
       }
       break
 
+    case types.SET_AUTH_INVALID:
+      const { authInvalid } = payload
+      state = { ...state }
+      state.geminiState = {
+        ...state.geminiState,
+        authInvalid
+      }
+      break
+
     default:
       break
   }

@@ -186,6 +186,7 @@ declare namespace NewTab {
     hideBalance: boolean
     accountBalances: Record<string, string>
     disconnectInProgress: boolean
+    authInvalid: boolean
   }
 
   export type BinanceTLD = 'us' | 'com'

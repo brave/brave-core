@@ -46,3 +46,7 @@ export const setGeminiAssetAddress = (asset: string, address: string) => action(
   asset,
   address
 })
+
+export const setGeminiAuthInvalid = (authInvalid: boolean) => action(types.SET_AUTH_INVALID, {
+  authInvalid
+})

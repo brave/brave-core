@@ -115,6 +115,7 @@ interface Props {
   accountBalances: Record<string, string>
   tickerPrices: Record<string, string>
   disconnectInProgress: boolean
+  authInvalid: boolean
   onShowContent: () => void
   onDisableWidget: () => void
   onValidAuthCode: () => void
@@ -125,6 +126,7 @@ interface Props {
   onSetHideBalance: (hide: boolean) => void
   onDisconnectGemini: () => void
   onCancelDisconnect: () => void
+  onDismissAuthInvalid: () => void
 }
 
 class Gemini extends React.PureComponent<Props, State> {
@@ -239,9 +241,11 @@ class Gemini extends React.PureComponent<Props, State> {
       tradeFailed,
       showTradePreview
     } = this.state
-    const { disconnectInProgress } = this.props
+    const { authInvalid, disconnectInProgress } = this.props
 
-    if (currentQRAsset) {
+    if (authInvalid) {
+      return this.renderAuthInvalid()
+    } else if (currentQRAsset) {
       return this.renderQRView()
     } else if (disconnectInProgress) {
       return this.renderDisconnectView()
@@ -359,6 +363,24 @@ class Gemini extends React.PureComponent<Props, State> {
           className={`crypto-icon icon-${key}`}
         />
       </AssetIconWrapper>
+    )
+  }
+
+  renderAuthInvalid = () => {
+    const { onDismissAuthInvalid } = this.props
+
+    return (
+      <InvalidWrapper>
+        <InvalidTitle>
+          {getLocale('binanceWidgetAuthInvalid')}
+        </InvalidTitle>
+        <InvalidCopy>
+          {getLocale('binanceWidgetAuthInvalidCopy')}
+        </InvalidCopy>
+        <GenButton onClick={onDismissAuthInvalid}>
+          {getLocale('binanceWidgetDone')}
+        </GenButton>
+      </InvalidWrapper>
     )
   }
 

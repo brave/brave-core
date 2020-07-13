@@ -177,11 +177,12 @@ void GeminiService::OnGetAccountBalances(
   const int status, const std::string& body,
   const std::map<std::string, std::string>& headers) {
   std::map<std::string, std::string> balances;
+  bool auth_invalid = status == 401;
   if (status >= 200 && status <= 299) {
     const std::string json_body = "{\"data\": " + body + "}";
     GeminiJSONParser::GetAccountBalancesFromJSON(json_body, &balances);
   }
-  std::move(callback).Run(balances);
+  std::move(callback).Run(balances, auth_invalid);
 }
 
 bool GeminiService::GetDepositInfo(const std::string& asset,

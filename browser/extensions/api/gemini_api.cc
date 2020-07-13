@@ -128,7 +128,8 @@ GeminiGetAccountBalancesFunction::Run() {
 }
 
 void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
-    const std::map<std::string, std::string>& balances) {
+    const std::map<std::string, std::string>& balances,
+    bool auth_invalid) {
   auto result = std::make_unique<base::Value>(
       base::Value::Type::DICTIONARY);
 
@@ -136,7 +137,8 @@ void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
     result->SetStringKey(balance.first, balance.second);
   }
 
-  Respond(OneArgument(std::move(result)));
+  Respond(TwoArguments(std::move(result),
+                       std::make_unique<base::Value>(auth_invalid)));
 }
 
 ExtensionFunction::ResponseAction

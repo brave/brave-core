@@ -58,7 +58,7 @@ class GeminiService : public KeyedService {
       base::OnceCallback<void(const int, const std::string&,
                               const std::map<std::string, std::string>&)>;
   using GetAccountBalancesCallback = base::OnceCallback<
-      void(const std::map<std::string, std::string>&)>;
+      void(const std::map<std::string, std::string>&, bool)>;
   using GetDepositInfoCallback = base::OnceCallback<void(const std::string&)>;
   using RevokeAccessTokenCallback = base::OnceCallback<void(bool)>;
   using GetOrderQuoteCallback = base::OnceCallback<void(const std::string&,

@@ -59,7 +59,8 @@ class GeminiGetAccountBalancesFunction :
  protected:
   ~GeminiGetAccountBalancesFunction() override {}
   void OnGetAccountBalances(
-    const std::map<std::string, std::string>& balances);
+    const std::map<std::string, std::string>& balances,
+    bool auth_invalid);
 
   ResponseAction Run() override;
 };
