@@ -25,7 +25,8 @@ class GeminiJSONParser {
                                         std::string *quote_id,
                                         std::string *quantity,
                                         std::string *fee,
-                                        std::string *price);
+                                        std::string *price,
+                                        std::string *error);
 };
 
 #endif  // BRAVE_COMPONENTS_GEMINI_BROWSER_GEMINI_JSON_PARSER_H_

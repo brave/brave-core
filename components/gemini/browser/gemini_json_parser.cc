@@ -135,7 +135,8 @@ bool GeminiJSONParser::GetDepositInfoFromJSON(
 
 bool GeminiJSONParser::GetOrderQuoteInfoFromJSON(
     const std::string& json, std::string *quote_id,
-    std::string *quantity, std::string *fee, std::string *price) {
+    std::string *quantity, std::string *fee, std::string *price,
+    std::string *error) {
   if (!quote_id || !quantity || !fee || !price) {
     return false;
   }
@@ -161,6 +162,7 @@ bool GeminiJSONParser::GetOrderQuoteInfoFromJSON(
 
   int temp_id;
 
+  data_dict->GetString("error", error);
   if (!data_dict->GetInteger("quoteId", &temp_id) ||
       !data_dict->GetString("quantity", quantity) ||
       !data_dict->GetString("fee", fee) ||

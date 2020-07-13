@@ -218,13 +218,15 @@ GeminiGetOrderQuoteFunction::Run() {
 
 void GeminiGetOrderQuoteFunction::OnOrderQuoteResult(
     const std::string& quote_id, const std::string& quantity,
-    const std::string& fee, const std::string& price) {
+    const std::string& fee, const std::string& price,
+    const std::string& error) {
   auto quote = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
   quote->SetStringKey("id", quote_id);
   quote->SetStringKey("quantity", quantity);
   quote->SetStringKey("fee", fee);
   quote->SetStringKey("price", price);
-  Respond(OneArgument(std::move(quote)));
+  Respond(TwoArguments(
+    std::move(quote), std::make_unique<base::Value>(error)));
 }
 
 ExtensionFunction::ResponseAction

@@ -17,7 +17,7 @@ export default {
     'BCH': 'Bitcoin Cash',
     'ZEC': 'ZEC',
     'OXT': 'OXT',
-    'BAT': 'Basic Attention...',
+    'BAT': 'BAT',
     'LINK': 'Chainlink',
     'DAI': 'DAI'
   }

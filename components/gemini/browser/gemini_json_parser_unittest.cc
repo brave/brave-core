@@ -117,6 +117,7 @@ TEST_F(GeminiJSONParserTest, GetOrderQuoteInfoFromJSON) {
   std::string quote_id;
   std::string quantity;
   std::string price;
+  std::string error;
   ASSERT_TRUE(GeminiJSONParser::GetOrderQuoteInfoFromJSON(R"(
       {
         "data": {
@@ -135,7 +136,7 @@ TEST_F(GeminiJSONParserTest, GetOrderQuoteInfoFromJSON) {
           "totalSpend": "100",
           "totalSpendCurrency": "USD"
         }
-      })", &quote_id, &quantity, &fee, &price));
+      })", &quote_id, &quantity, &fee, &price, &error));
   ASSERT_EQ(quote_id, "1328");
   ASSERT_EQ(price, "6445.07");
   ASSERT_EQ(fee, "2.9900309233");

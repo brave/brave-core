@@ -535,5 +535,6 @@ export const TradeInfoItem = styled<StyleProps, 'div'>('div')`
 `
 
 export const StyledParty = styled<{}, 'div'>('div')`
+  font-size: 35px;
   margin: 10px 0px;
 `

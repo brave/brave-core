@@ -95,8 +95,8 @@ namespace {
       "\",\"quantity\": \"" + quantity +
       "\",\"price\": \"" + price +
       "\",\"fee\": \"" + fee +
-      "\",\"quoteId\": \"" + std::to_string(quote_id) +
-    "\"}";
+      "\",\"quoteId\": " + std::to_string(quote_id) +
+    "}";
     base::Base64Encode(request_payload, &encoded_payload);
     return encoded_payload;
   }
@@ -271,12 +271,13 @@ void GeminiService::OnGetOrderQuote(GetOrderQuoteCallback callback,
   std::string quote_id;
   std::string quantity;
   std::string price;
+  std::string error;
   if (status >= 200 && status <= 299) {
     const std::string json_body = "{\"data\": " + body + "}";
     GeminiJSONParser::GetOrderQuoteInfoFromJSON(
-      json_body, &quote_id, &quantity, &fee, &price);
+      json_body, &quote_id, &quantity, &fee, &price, &error);
   }
-  std::move(callback).Run(quote_id, quantity, fee, price);
+  std::move(callback).Run(quote_id, quantity, fee, price, error);
 }
 
 bool GeminiService::ExecuteOrder(const std::string& symbol,

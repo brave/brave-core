@@ -79,8 +79,7 @@ import {
   SearchIcon,
   QRIcon,
   ShowIcon,
-  HideIcon,
-  PartyIcon
+  HideIcon
 } from '../exchangeWidget/shared-assets'
 import GeminiLogo from './assets/gemini-logo'
 import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
@@ -102,6 +101,7 @@ interface State {
   showTradePreview: boolean
   tradeSuccess: boolean
   tradeFailed: boolean
+  tradeError: string
   currentTradeId: string
   currentTradeFee: string
   currentTradePrice: string
@@ -153,6 +153,7 @@ class Gemini extends React.PureComponent<Props, State> {
       showTradePreview: false,
       tradeSuccess: false,
       tradeFailed: false,
+      tradeError: '',
       currentTradeId: '',
       currentTradeFee: '',
       currentTradePrice: '',
@@ -567,6 +568,7 @@ class Gemini extends React.PureComponent<Props, State> {
       showTradePreview: false,
       tradeSuccess: false,
       tradeFailed: false,
+      tradeError: '',
       currentTradeId: '',
       currentTradeFee: '',
       currentTradePrice: '',
@@ -606,8 +608,13 @@ class Gemini extends React.PureComponent<Props, State> {
     chrome.gemini.executeOrder(symbol, side, quantity, price, fee, quoteId, (success: boolean) => {
       if (success) {
         this.setState({ tradeSuccess: true })
+        setTimeout(() => {
+          this.props.onUpdateActions()
+        }, 1000)
       } else {
-        this.setState({ tradeFailed: true })
+        this.setState({
+          tradeFailed: true
+        })
       }
     })
   }
@@ -640,11 +647,18 @@ class Gemini extends React.PureComponent<Props, State> {
       return
     }
 
-    chrome.gemini.getOrderQuote(currentTradeMode, `${currentTradeAsset}usd`, currentTradeQuantity, (quote: any) => {
+    chrome.gemini.getOrderQuote(currentTradeMode, `${currentTradeAsset}usd`, currentTradeQuantity, (quote: any, error: string) => {
       if (!quote.id || !quote.quantity || !quote.fee || !quote.price) {
-        this.setState({
-          tradeFailed: true
-        })
+        if (error) {
+          this.setState({
+            tradeFailed: true,
+            tradeError: error
+          })
+        } else {
+          this.setState({
+            tradeFailed: true
+          })
+        }
         return
       }
 
@@ -689,13 +703,16 @@ class Gemini extends React.PureComponent<Props, State> {
   }
 
   renderUnableToTradeView = () => {
+    const { tradeError } = this.state
+    const errorMessage = tradeError || getLocale('geminiWidgetError')
+
     return (
       <InvalidWrapper>
         <InvalidTitle>
           {getLocale('geminiWidgetFailedTrade')}
         </InvalidTitle>
         <InvalidCopy>
-          {getLocale('geminiWidgetError')}
+          {errorMessage}
         </InvalidCopy>
         <GenButton onClick={this.retryTrade}>
           {getLocale('geminiWidgetRetry')}
@@ -716,7 +733,7 @@ class Gemini extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <StyledParty>
-          <img src={PartyIcon} />
+          🎉
         </StyledParty>
         <InvalidTitle>
           {`${getLocale(actionLabel)} ${quantity} ${currentTradeAsset}!`}
@@ -753,7 +770,7 @@ class Gemini extends React.PureComponent<Props, State> {
           </TradeInfoItem>
           <TradeInfoItem>
             <TradeItemLabel>{getLocale('geminiWidgetPrice')}</TradeItemLabel>
-            <TradeValue>{`${currentTradePrice} USD`}</TradeValue>
+            <TradeValue>{`${currentTradePrice} USD/${currentTradeAsset}`}</TradeValue>
           </TradeInfoItem>
           <TradeInfoItem isLast={true}>
             <TradeItemLabel>{getLocale('geminiWidgetFee')}</TradeItemLabel>
@@ -817,9 +834,11 @@ class Gemini extends React.PureComponent<Props, State> {
               itemsShowing={false}
               className={'asset-dropdown'}
             >
-              <CaratDropdown hide={true}>
-                <CaratDownIcon />
-              </CaratDropdown>
+              {
+                currentTradeMode === 'buy'
+                ? 'USD'
+                : currentTradeAsset
+              }
             </Dropdown>
           </InputWrapper>
           <AssetDropdown

@@ -168,6 +168,10 @@
                       "description": "order price"
                     }
                   }
+                },
+                {
+                  "type": "string",
+                  "name": "error"
                 }
               ]
             }

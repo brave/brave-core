@@ -99,7 +99,8 @@ class GeminiGetOrderQuoteFunction :
   void OnOrderQuoteResult(const std::string& quote_id,
                           const std::string& quantity,
                           const std::string& fee,
-                          const std::string& price);
+                          const std::string& price,
+                          const std::string& error);
 
   ResponseAction Run() override;
 };
