@@ -16,13 +16,21 @@ const superReferralStringId = 'superReferralThemeName'
 
 RegisterPolymerTemplateModifications({
   'settings-appearance-page': (templateContent) => {
+    const theme = templateContent.getElementById('themeRow')
+    if (!theme) {
+      console.error(`[Brave Settings Overrides] Couldn't find #themeRow`)
+    } else {
+      theme.insertAdjacentHTML('beforebegin', `
+        <settings-brave-appearance-theme prefs="{{prefs}}"></settings-brave-appearance-theme>
+      `)
+    }
     const r = Router.getInstance().routes_
     // Super-referral
     // W/o super referral, we don't need to themes link option with themes sub
     // page.
     const hasSuperReferral = (
-      !loadTimeData.valueExists(superReferralStringId) ||
-      loadTimeData.getString(superReferralStringId) === ''
+      loadTimeData.valueExists(superReferralStringId) &&
+      loadTimeData.getString(superReferralStringId) !== ''
     )
     if (hasSuperReferral) {
       // Routes
@@ -32,13 +40,7 @@ RegisterPolymerTemplateModifications({
       } else {
         r.THEMES = r.APPEARANCE.createChild('/themes');
         // Hide chromium's theme section. It's replaced with our themes page.
-        const theme = templateContent.getElementById('themeRow')
-        if (!theme) {
-          console.error(`[Brave Settings Overrides] Couldn't find #themeRow`)
-        } else {
-          theme.insertAdjacentHTML('beforebegin', `
-            <settings-brave-appearance-theme prefs="{{prefs}}"></settings-brave-appearance-theme>
-          `)
+        if (theme) {
           theme.remove()
         }
       }
