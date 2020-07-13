@@ -46,23 +46,50 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     // MARK: Public interface
     
     public class func insert(item: BraveTodayFeedItemBridge) {
-        insertInternal(category: item.category, publishTime: item.publishTime, url: item.url,
-                       imageURL: item.imageURL, title: item.title,
-                       itemDescription: item.itemDescription, contentType: item.contentType,
-                       publisherID: item.publisherID,
-                       publisherLogo: item.publisherLogo, urlHash: item.urlHash)
+        
+        DataController.perform { context in
+            guard let source = BraveTodaySourceMO
+                    .first(where: braveTodaySourcePublisherPredicate(for: item.publisherID),
+                           context: context) else {
+                log.warning("Could not insert feed item, no publisher with id: \(item.publisherID) found.")
+                return
+            }
+            
+            insertInternal(category: item.category, publishTime: item.publishTime, url: item.url,
+                           imageURL: item.imageURL, title: item.title,
+                           itemDescription: item.itemDescription, contentType: item.contentType,
+                           publisherID: item.publisherID, publisherLogo: item.publisherLogo,
+                           urlHash: item.urlHash, sourceObjectId: source.objectID, context: .existing(context))
+        }
+    }
+    
+    private static func braveTodaySourcePublisherPredicate(for id: String) -> NSPredicate {
+        let sourcePublisherIdKeyPath = #keyPath(BraveTodaySourceMO.publisherID)
+        return NSPredicate(format: "\(sourcePublisherIdKeyPath) == %@", id)
     }
     
     public class func insert(from list: [BraveTodayFeedItemBridge]) {
-        // TODO: Use batch insert
+        // For performance reasons we group all items by their source
+        // and pass the source's managedObjectID to each feed item.
+        let feedItemsGroupedBySource = Dictionary(grouping: list, by: { $0.publisherID })
+        
         DataController.perform { context in
-            list.forEach {
-                insertInternal(category: $0.category, publishTime: $0.publishTime, url: $0.url,
-                               imageURL: $0.imageURL, title: $0.title,
-                               itemDescription: $0.itemDescription, contentType: $0.contentType,
-                               publisherID: $0.publisherID,
-                               publisherLogo: $0.publisherLogo, urlHash: $0.urlHash,
-                               context: .existing(context))
+            for sourceItems in feedItemsGroupedBySource {
+                guard let source = BraveTodaySourceMO
+                        .first(where: braveTodaySourcePublisherPredicate(for: sourceItems.key),
+                               context: context) else {
+                    log.warning("Could not insert feed item, no publisher with id: \(sourceItems.key) found.")
+                    continue
+                }
+                
+                sourceItems.value.forEach {
+                    insertInternal(category: $0.category, publishTime: $0.publishTime, url: $0.url,
+                                   imageURL: $0.imageURL, title: $0.title,
+                                   itemDescription: $0.itemDescription, contentType: $0.contentType,
+                                   publisherID: $0.publisherID,
+                                   publisherLogo: $0.publisherLogo, urlHash: $0.urlHash,
+                                   sourceObjectId: source.objectID, context: .existing(context))
+                }
             }
         }
     }
@@ -152,15 +179,13 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     class func insertInternal(category: String, publishTime: Date, url: String?, 
                               imageURL: String?, title: String, itemDescription: String, contentType: String,
                               publisherID: String, publisherLogo: String?,
-                              urlHash: String, context: WriteContext = .new(inMemory: false)) {
+                              urlHash: String, sourceObjectId: NSManagedObjectID ,
+                              context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context) { context in
-            let sourcePublisherIdKeyPath = #keyPath(BraveTodaySourceMO.publisherID)
-            let sourcePublisherIdPredicate =
-                NSPredicate(format: "\(sourcePublisherIdKeyPath) == %@", publisherID)
-            guard let source =
-                    BraveTodaySourceMO.first(where: sourcePublisherIdPredicate, context: context) else {
-                log.warning("Could not insert feed item, no publisher with id: \(publisherID) found.")
+            
+            guard let source = try? context.existingObject(with: sourceObjectId) as? BraveTodaySourceMO else {
+                log.warning("Could not find source for publisher id: \(publisherID)")
                 return
             }
             
