@@ -43,7 +43,7 @@ class UpholdCard {
 
   void CreateIfNecessary(CreateCardCallback callback);
 
-  void CreateAnonAddressIfNecessary(CreateAnonAddressCallback callback);
+  void CreateAnonAddressIfNecessary(ledger::ResultCallback callback);
 
  private:
   void OnCreateIfNecessary(
@@ -86,14 +86,14 @@ class UpholdCard {
   void OnCreateAnonAddressIfNecessary(
       ledger::Result result,
       std::map<std::string, std::string> addresses,
-      CreateAnonAddressCallback callback);
+      ledger::ResultCallback callback);
 
   void CreateAnonAddress(
-      CreateAnonAddressCallback callback);
+      ledger::ResultCallback callback);
 
   void OnCreateAnonAddress(
       const ledger::UrlResponse& response,
-      CreateAnonAddressCallback callback);
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED

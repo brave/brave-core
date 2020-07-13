@@ -380,8 +380,7 @@ void UpholdCard::OnGetCardAddresses(
   callback(ledger::Result::LEDGER_OK, result);
 }
 
-void UpholdCard::CreateAnonAddressIfNecessary(
-    CreateAnonAddressCallback callback) {
+void UpholdCard::CreateAnonAddressIfNecessary(ledger::ResultCallback callback) {
   auto address_callback = std::bind(&UpholdCard::OnCreateAnonAddressIfNecessary,
       this,
       _1,
@@ -394,11 +393,21 @@ void UpholdCard::CreateAnonAddressIfNecessary(
 void UpholdCard::OnCreateAnonAddressIfNecessary(
     ledger::Result result,
     std::map<std::string, std::string> addresses,
-    CreateAnonAddressCallback callback) {
+    ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK && addresses.size() > 0) {
     auto iter = addresses.find(kAnonID);
     if (iter != addresses.end() && !iter->second.empty()) {
-      callback(ledger::Result::LEDGER_OK, iter->second);
+      auto wallets = ledger_->GetExternalWallets();
+      auto wallet = GetWallet(std::move(wallets));
+      if (!wallet) {
+        BLOG(0, "Wallet is null");
+        callback(ledger::Result::LEDGER_ERROR);
+        return;
+      }
+
+      wallet->anon_address = iter->second;
+      ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
+      callback(ledger::Result::LEDGER_OK);
       return;
     }
   }
@@ -406,12 +415,12 @@ void UpholdCard::OnCreateAnonAddressIfNecessary(
   CreateAnonAddress(callback);
 }
 
-void UpholdCard::CreateAnonAddress(CreateAnonAddressCallback callback) {
+void UpholdCard::CreateAnonAddress(ledger::ResultCallback callback) {
   auto wallets = ledger_->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
@@ -443,42 +452,52 @@ void UpholdCard::CreateAnonAddress(CreateAnonAddressCallback callback) {
 
 void UpholdCard::OnCreateAnonAddress(
     const ledger::UrlResponse& response,
-    CreateAnonAddressCallback callback) {
+    ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
   if (response.status_code == net::HTTP_UNAUTHORIZED) {
-    callback(ledger::Result::EXPIRED_TOKEN,  "");
+    callback(ledger::Result::EXPIRED_TOKEN);
     uphold_->DisconnectWallet();
     return;
   }
 
   if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR,  "");
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   const auto* id = dictionary->FindStringKey("id");
   if (!id) {
     BLOG(0, "ID not found");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, *id);
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet = GetWallet(std::move(wallets));
+  if (!wallet) {
+    BLOG(0, "Wallet is null");
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  wallet->anon_address = *id;
+  ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
+  callback(ledger::Result::LEDGER_OK);
 }
 
 }  // namespace braveledger_uphold
