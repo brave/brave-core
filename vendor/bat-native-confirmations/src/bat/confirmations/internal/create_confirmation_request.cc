@@ -14,6 +14,7 @@
 #include "bat/confirmations/internal/country_codes.h"
 
 #include "base/base64.h"
+#include "base/base64url.h"
 #include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/values.h"
@@ -133,10 +134,11 @@ std::string CreateConfirmationRequest::CreateCredential(
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
 
-  std::vector<uint8_t> credential(json.begin(), json.end());
-  std::string credential_base64 = base::Base64Encode(credential);
+  std::string base64url_credential;
+  base::Base64UrlEncode(json, base::Base64UrlEncodePolicy::INCLUDE_PADDING,
+      &base64url_credential);
 
-  return credential_base64;
+  return base64url_credential;
 }
 
 bool CreateConfirmationRequest::IsLargeAnonymityCountryCode(
