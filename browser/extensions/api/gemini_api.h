@@ -104,6 +104,18 @@ class GeminiGetOrderQuoteFunction :
   ResponseAction Run() override;
 };
 
+class GeminiExecuteOrderFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("gemini.executeOrder", UNKNOWN)
+
+ protected:
+  ~GeminiExecuteOrderFunction() override {}
+  void OnOrderExecuted(bool success);
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

@@ -507,3 +507,33 @@ export const InvalidCopy = styled(DisconnectCopy)`
 export const InvalidWrapper = styled(DisconnectWrapper)`
   min-width: 244px;
 `
+
+export const TradeItemLabel = styled<{}, 'span'>('span')`
+  float: left;
+  width: 45%;
+  text-align: left;
+  font-size: 15px;
+`
+
+export const TradeValue = styled<{}, 'span'>('span')`
+  font-weight: bold;
+  float: right;
+  width: 55%;
+  text-align: right;
+  font-size: 15px;
+`
+
+export const TradeInfoWrapper = styled<StyleProps, 'div'>('div')`
+  margin: 20px 0;
+  overflow-y: auto;
+`
+
+export const TradeInfoItem = styled<StyleProps, 'div'>('div')`
+  margin: 5px 0;
+  overflow-y: hidden;
+  margin-top: ${p => p.isLast ? '15' : '5'}px;
+`
+
+export const StyledParty = styled<{}, 'div'>('div')`
+  margin: 10px 0px;
+`

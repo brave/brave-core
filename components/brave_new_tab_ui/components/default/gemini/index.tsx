@@ -68,13 +68,19 @@ import {
   DisconnectCopy,
   InvalidWrapper,
   InvalidTitle,
-  InvalidCopy
+  InvalidCopy,
+  TradeInfoWrapper,
+  TradeInfoItem,
+  TradeItemLabel,
+  TradeValue,
+  StyledParty
 } from './style'
 import {
   SearchIcon,
   QRIcon,
   ShowIcon,
-  HideIcon
+  HideIcon,
+  PartyIcon
 } from '../exchangeWidget/shared-assets'
 import GeminiLogo from './assets/gemini-logo'
 import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
@@ -239,7 +245,8 @@ class Gemini extends React.PureComponent<Props, State> {
       currentQRAsset,
       insufficientFunds,
       tradeFailed,
-      showTradePreview
+      showTradePreview,
+      tradeSuccess
     } = this.state
     const { authInvalid, disconnectInProgress } = this.props
 
@@ -253,6 +260,8 @@ class Gemini extends React.PureComponent<Props, State> {
       return this.renderInsufficientFundsView()
     } else if (tradeFailed) {
       return this.renderUnableToTradeView()
+    } else if (tradeSuccess) {
+      return this.renderTradeSuccess()
     } else if (showTradePreview) {
       return this.renderTradeConfirm()
     }
@@ -329,6 +338,10 @@ class Gemini extends React.PureComponent<Props, State> {
       const assetBalance = parseFloat(accountBalances[ticker])
 
       USDValue += price * assetBalance
+    }
+
+    if ('USD' in accountBalances) {
+      USDValue += parseFloat(accountBalances['USD'])
     }
 
     return USDValue.toFixed(2)
@@ -579,13 +592,43 @@ class Gemini extends React.PureComponent<Props, State> {
     })
   }
 
-  shouldShowTradePreview () {
+  processTrade = () => {
+    const {
+      currentTradeId,
+      currentTradeAsset,
+      currentTradeFee: fee,
+      currentTradePrice: price,
+      currentTradeMode: side,
+      currentTradeQuantityLive: quantity
+    } = this.state
+    const quoteId = parseInt(currentTradeId, 10)
+    const symbol = `${currentTradeAsset}usd`.toUpperCase()
+    chrome.gemini.executeOrder(symbol, side, quantity, price, fee, quoteId, (success: boolean) => {
+      if (success) {
+        this.setState({ tradeSuccess: true })
+      } else {
+        this.setState({ tradeFailed: true })
+      }
+    })
+  }
+
+  finishTrade = () => {
+    this.cancelTrade()
+    this.props.onSetSelectedView('balance')
+  }
+
+  shouldShowTradePreview = () => {
     const {
       currentTradeMode,
       currentTradeAsset,
       currentTradeQuantity
     } = this.state
     const { accountBalances } = this.props
+
+    if (!currentTradeQuantity || isNaN(parseFloat(currentTradeQuantity))) {
+      return
+    }
+
     const compare = currentTradeMode === 'buy'
       ? (accountBalances['USD'] || '0')
       : (accountBalances[currentTradeAsset] || '0')
@@ -661,21 +704,64 @@ class Gemini extends React.PureComponent<Props, State> {
     )
   }
 
+  renderTradeSuccess = () => {
+    const {
+      currentTradeAsset,
+      currentTradeQuantityLive,
+      currentTradeMode
+    } = this.state
+    const quantity = this.formatCryptoBalance(currentTradeQuantityLive)
+    const actionLabel = currentTradeMode === 'buy' ? 'geminiWidgetBought' : 'geminiWidgetSold'
+
+    return (
+      <InvalidWrapper>
+        <StyledParty>
+          <img src={PartyIcon} />
+        </StyledParty>
+        <InvalidTitle>
+          {`${getLocale(actionLabel)} ${quantity} ${currentTradeAsset}!`}
+        </InvalidTitle>
+        <ConnectButton isSmall={true} onClick={this.finishTrade}>
+          {getLocale('geminiWidgetContinue')}
+        </ConnectButton>
+      </InvalidWrapper>
+    )
+  }
+
   renderTradeConfirm = () => {
     const {
-      currentTradeQuantityLive,
       currentTradeFee,
-      currentTradeExpiryTime
+      currentTradeAsset,
+      currentTradeQuantityLive,
+      currentTradeMode,
+      currentTradeExpiryTime,
+      currentTradePrice
     } = this.state
-    console.log(currentTradeExpiryTime, currentTradeFee, currentTradeQuantityLive)
+    const tradeLabel = currentTradeMode === 'buy' ? 'geminiWidgetBuying' : 'geminiWidgetSelling'
+    const quantity = this.formatCryptoBalance(currentTradeQuantityLive)
+    const fee = this.formatCryptoBalance(currentTradeFee)
 
     return (
       <InvalidWrapper>
         <InvalidTitle>
           {getLocale('geminiWidgetConfirmTrade')}
         </InvalidTitle>
+        <TradeInfoWrapper>
+          <TradeInfoItem>
+            <TradeItemLabel>{getLocale(tradeLabel)}</TradeItemLabel>
+            <TradeValue>{`${quantity} ${currentTradeAsset}`}</TradeValue>
+          </TradeInfoItem>
+          <TradeInfoItem>
+            <TradeItemLabel>{getLocale('geminiWidgetPrice')}</TradeItemLabel>
+            <TradeValue>{`${currentTradePrice} USD`}</TradeValue>
+          </TradeInfoItem>
+          <TradeInfoItem isLast={true}>
+            <TradeItemLabel>{getLocale('geminiWidgetFee')}</TradeItemLabel>
+            <TradeValue>{`${fee} USD`}</TradeValue>
+          </TradeInfoItem>
+        </TradeInfoWrapper>
         <ActionsWrapper>
-          <ConnectButton isSmall={true}>
+          <ConnectButton isSmall={true} onClick={this.processTrade}>
             {`${getLocale('geminiWidgetConfirm')} (${currentTradeExpiryTime}s)`}
           </ConnectButton>
           <DismissAction onClick={this.cancelTrade}>

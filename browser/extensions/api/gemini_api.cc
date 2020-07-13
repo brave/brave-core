@@ -227,5 +227,34 @@ void GeminiGetOrderQuoteFunction::OnOrderQuoteResult(
   Respond(OneArgument(std::move(quote)));
 }
 
+ExtensionFunction::ResponseAction
+GeminiExecuteOrderFunction::Run() {
+  if (!IsGeminiAPIAvailable(browser_context())) {
+    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
+  }
+
+  std::unique_ptr<gemini::ExecuteOrder::Params> params(
+      gemini::ExecuteOrder::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  auto* service = GetGeminiService(browser_context());
+  bool balance_success = service->ExecuteOrder(
+      params->symbol, params->side, params->quantity,
+      params->price, params->fee, params->quote_id,
+      base::BindOnce(
+          &GeminiExecuteOrderFunction::OnOrderExecuted,
+          this));
+
+  if (!balance_success) {
+    return RespondNow(Error("Could not send request to execute order"));
+  }
+
+  return RespondLater();
+}
+
+void GeminiExecuteOrderFunction::OnOrderExecuted(bool success) {
+  Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
 }  // namespace api
 }  // namespace extensions

@@ -65,6 +65,7 @@ class GeminiService : public KeyedService {
                                                         const std::string&,
                                                         const std::string&,
                                                         const std::string&)>;
+  using ExecuteOrderCallback = base::OnceCallback<void(bool)>;
 
   std::string GetOAuthClientUrl();
   void SetAuthToken(const std::string& auth_token);
@@ -79,6 +80,13 @@ class GeminiService : public KeyedService {
                      const std::string& symbol,
                      const std::string& spend,
                      GetOrderQuoteCallback callback);
+  bool ExecuteOrder(const std::string& symbol,
+                    const std::string& side,
+                    const std::string& quantity,
+                    const std::string& price,
+                    const std::string& fee,
+                    const int quote_id,
+                    ExecuteOrderCallback callback);
 
  private:
   base::SequencedTaskRunner* io_task_runner();
@@ -107,6 +115,9 @@ class GeminiService : public KeyedService {
                           const int status, const std::string& body,
                           const std::map<std::string, std::string>& headers);
   void OnGetOrderQuote(GetOrderQuoteCallback callback,
+                       const int status, const std::string& body,
+                       const std::map<std::string, std::string>& headers);
+  void OnOrderExecuted(ExecuteOrderCallback callback,
                        const int status, const std::string& body,
                        const std::map<std::string, std::string>& headers);
 

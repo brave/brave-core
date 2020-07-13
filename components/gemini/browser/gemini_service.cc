@@ -81,6 +81,26 @@ namespace {
     return encoded_payload;
   }
 
+  std::string GetEncodedExecutePayload(std::string symbol,
+                                       std::string side,
+                                       std::string quantity,
+                                       std::string price,
+                                       std::string fee,
+                                       int quote_id) {
+    std::string encoded_payload;
+    std::string request_payload = "{\"request\": \"" +
+      std::string(api_path_execute_quote) +
+      "\",\"symbol\": \"" + symbol +
+      "\",\"side\": \"" + side +
+      "\",\"quantity\": \"" + quantity +
+      "\",\"price\": \"" + price +
+      "\",\"fee\": \"" + fee +
+      "\",\"quoteId\": \"" + std::to_string(quote_id) +
+    "\"}";
+    base::Base64Encode(request_payload, &encoded_payload);
+    return encoded_payload;
+  }
+
 }  // namespace
 
 GeminiService::GeminiService(content::BrowserContext* context)
@@ -257,6 +277,29 @@ void GeminiService::OnGetOrderQuote(GetOrderQuoteCallback callback,
       json_body, &quote_id, &quantity, &fee, &price);
   }
   std::move(callback).Run(quote_id, quantity, fee, price);
+}
+
+bool GeminiService::ExecuteOrder(const std::string& symbol,
+                                 const std::string& side,
+                                 const std::string& quantity,
+                                 const std::string& price,
+                                 const std::string& fee,
+                                 const int quote_id,
+                                 ExecuteOrderCallback callback) {
+  auto internal_callback = base::BindOnce(&GeminiService::OnOrderExecuted,
+      base::Unretained(this), std::move(callback));
+  std::string payload = GetEncodedExecutePayload(
+    symbol, side, quantity, price, fee, quote_id);
+  GURL url = GetURLWithPath(api_host, api_path_execute_quote);
+  return OAuthRequest(
+      url, "POST", "", std::move(internal_callback), true, true, payload);
+}
+
+void GeminiService::OnOrderExecuted(ExecuteOrderCallback callback,
+    const int status, const std::string& body,
+    const std::map<std::string, std::string>& headers) {
+  bool success = (status >= 200 && status <= 299);
+  std::move(callback).Run(success);
 }
 
 bool GeminiService::SetAccessTokens(const std::string& access_token,

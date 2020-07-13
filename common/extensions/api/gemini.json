@@ -172,6 +172,47 @@
               ]
             }
           ]
+        },
+        {
+          "name": "executeOrder",
+          "type": "function",
+          "description": "Gets a quote for a given order",
+          "parameters": [
+            {
+              "type": "string",
+              "name": "symbol"
+            },
+            {
+              "type": "string",
+              "name": "side"
+            },
+            {
+              "type": "string",
+              "name": "quantity"
+            },
+            {
+              "type": "string",
+              "name": "price"
+            },
+            {
+              "type": "string",
+              "name": "fee"
+            },
+            {
+              "type": "number",
+              "name": "quoteId"
+            },
+            {
+              "type": "function",
+              "name": "callback",
+              "parameters": [
+                {
+                  "type": "boolean",
+                  "name": "success"
+                }
+              ]
+            }
+          ]
         }
       ],
       "types": [
