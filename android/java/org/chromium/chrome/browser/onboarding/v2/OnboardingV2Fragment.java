@@ -1,0 +1,172 @@
+/**
+ * Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+package org.chromium.chrome.browser.onboarding.v2;
+
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Button;
+import android.widget.ImageView;
+import com.airbnb.lottie.LottieAnimationView;
+
+import org.chromium.base.ContextUtils;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+
+import org.chromium.chrome.R;
+
+import java.util.List;
+import java.util.Arrays;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class OnboardingV2Fragment extends Fragment {
+
+	private static final Context mContext = ContextUtils.getApplicationContext();
+	private static final List<String> mHeaders = Arrays.asList(
+	            mContext.getResources().getString(R.string.privacy_protection),
+	            mContext.getResources().getString(R.string.save_data_and_battery),
+	            mContext.getResources().getString(R.string.websites_load_faster),
+	            mContext.getResources().getString(R.string.get_weekly_updates)
+	        );
+	private static final List<String> mTexts = Arrays.asList(
+	            mContext.getResources().getString(R.string.privacy_protection_text),
+	            mContext.getResources().getString(R.string.save_data_and_battery_text),
+	            mContext.getResources().getString(R.string.websites_load_faster_text),
+	            mContext.getResources().getString(R.string.get_weekly_updates_text)
+	        );
+
+	private static final List<String> mAnimations = Arrays.asList(
+	            "privacy_protection.json",
+	            "save_data_and_battery.json",
+	            "website_loads_faster.json",
+	            null
+	        );
+
+	private int mPosition;
+	private int mOnboardingType;
+	private HighlightDialogListener highlightDialogListener;
+
+	private LottieAnimationView mAnimatedView;
+	private Button mAction;
+
+	public OnboardingV2Fragment() {
+		// Required empty public constructor
+	}
+
+	@Override
+	public void setUserVisibleHint(boolean isVisibleToUser) {
+		super.setUserVisibleHint(isVisibleToUser);
+		if (isVisibleToUser) {
+			if (mAction != null) {
+				if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+					mAction.setText(mContext.getResources().getString(R.string.next));
+				} else {
+					mAction.setText(mContext.getResources().getString(R.string.turn_on_privacy_stats));
+				}
+			}
+			if (mAnimatedView != null) {
+				mAnimatedView.playAnimation();
+			}
+		}
+	}
+
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	                         Bundle savedInstanceState) {
+		// Inflate the layout for this fragment
+		return inflater.inflate(R.layout.onboarding_pager_layout, container, false);
+	}
+
+	@Override
+	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		if (mOnboardingType == OnboardingPrefManager.ONBOARDING_ADS
+		        || mOnboardingType == OnboardingPrefManager.ONBOARDING_DATA_SAVED
+		        || mOnboardingType == OnboardingPrefManager.ONBOARDING_TIME) {
+			if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+				view.findViewById(R.id.btn_turn_on_privacy_stats).setVisibility(View.GONE);
+			}
+		}
+
+		switch (mOnboardingType) {
+		case OnboardingPrefManager.ONBOARDING_ADS:
+			mPosition = 0;
+			break;
+		case OnboardingPrefManager.ONBOARDING_DATA_SAVED:
+			mPosition = 1;
+			break;
+		case OnboardingPrefManager.ONBOARDING_TIME:
+			mPosition = 2;
+			break;
+		case OnboardingPrefManager.ONBOARDING_INVALID_OPTION:
+			view.findViewById(R.id.indicator_layout).setVisibility(View.VISIBLE);
+			break;
+		}
+
+		TextView mHeader = view.findViewById(R.id.onboarding_header);
+		mHeader.setText(mHeaders.get(mPosition));
+
+		TextView mText = view.findViewById(R.id.onboarding_text);
+		mText.setText(mTexts.get(mPosition));
+
+		mAction = view.findViewById(R.id.btn_turn_on_privacy_stats);
+		mAction.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+					OnboardingPrefManager.getInstance().setBraveStatsEnabled(true);
+				}
+				highlightDialogListener.onNextPage();
+			}
+		});
+
+		mAnimatedView = view.findViewById(R.id.onboarding_image);
+		if (mAnimations.get(mPosition) != null) {
+			mAnimatedView.setVisibility(View.VISIBLE);
+			mAnimatedView.setAnimation(mAnimations.get(mPosition));
+			mAnimatedView.loop(false);
+		}
+
+		switch (mPosition) {
+		case 0:
+			view.findViewById(R.id.indicator_1).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			break;
+		case 1:
+			view.findViewById(R.id.indicator_2).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			break;
+		case 2:
+			view.findViewById(R.id.indicator_3).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			break;
+		case 3:
+			view.findViewById(R.id.indicator_4).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			break;
+		}
+	}
+
+	public void setPosition(int position) {
+		this.mPosition = position;
+	}
+
+	public void setOnboardingType(int onboardingType) {
+		this.mOnboardingType = onboardingType;
+	}
+
+	public void setHighlightListener(HighlightDialogListener highlightDialogListener) {
+        this.highlightDialogListener = highlightDialogListener;
+    }
+}

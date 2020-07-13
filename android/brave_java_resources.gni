@@ -663,6 +663,7 @@ brave_java_resources = [
   "java/res/layout/brave_stats_pager_layout.xml",
   "java/res/layout/brave_stats_bottom_sheet.xml",
   "java/res/layout/brave_stats_layout.xml",
+  "java/res/layout/highlight_layout.xml",
   "java/res/layout/brave_shields_secondary_layout.xml",
   "java/res/layout/report_broken_site_layout.xml",
   "java/res/layout/brave_shields_3rd_party_cookies_blocked_switcher.xml",
