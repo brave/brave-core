@@ -3,22 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <vector>
+#include <string>
 
 #include "brave/components/gemini/browser/gemini_json_parser.h"
 
 #include "base/json/json_reader.h"
 
-// static
-// Response Format
-// {
-//   "access_token": "xxx-xxx-xxx-xxx-xxx",
-//   "refresh_token": "xxx-xxx-xxx-xxx-xxx",
-//   "scope": "Trader",
-//   "token_type": "Bearer",
-//   "expires_in": 30714
-// }
-//
 bool GeminiJSONParser::GetTokensFromJSON(
     const std::string& json, std::string *access_token,
     std::string* refresh_token) {
@@ -169,12 +159,16 @@ bool GeminiJSONParser::GetOrderQuoteInfoFromJSON(
     return false;
   }
 
-  if (!data_dict->GetString("quoteId", quote_id) ||
+  int temp_id;
+
+  if (!data_dict->GetInteger("quoteId", &temp_id) ||
       !data_dict->GetString("quantity", quantity) ||
       !data_dict->GetString("fee", fee) ||
       !data_dict->GetString("price", price)) {
     return false;
   }
+
+  *quote_id = std::to_string(temp_id);
 
   return true;
 }
