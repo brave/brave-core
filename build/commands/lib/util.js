@@ -253,6 +253,7 @@ const util = {
     // Copy chrome-logo-faded.png for replacing chrome logo of welcome page with brave's on Win8.
     fileMap.add([path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'), path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])
+    fileMap.add([path.join(braveBrowserResourcesDir, 'settings', 'images'), path.join(chromeBrowserResourcesDir, 'settings', 'images')])
     // Copy to make our ${branding_path_component}_behaviors.cc
     fileMap.add([path.join(config.braveCoreDir, 'chromium_src', 'chrome', 'installer', 'setup', 'brave_behaviors.cc'),
                  path.join(config.srcDir, 'chrome', 'installer', 'setup', 'brave_behaviors.cc')])
