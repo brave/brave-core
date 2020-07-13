@@ -155,17 +155,18 @@ class NewTabPageViewController: UIViewController, Themeable {
         $0.alpha = 0.0
     }
     
-    private func handleBraveTodayAction(_ item: FeedItem, _ action: FeedItemAction) {
+    private func handleBraveTodayAction(_ action: FeedItemAction, _ context: FeedItemActionContext) {
         switch action {
         case .opened(let inNewTab, let switchingToPrivateMode):
-            guard let url = item.content.url else { return }
+            guard let url = context.item.content.url else { return }
             delegate?.navigateToInput(
                 url.absoluteString,
                 inNewTab: inNewTab,
                 switchingToPrivateMode: switchingToPrivateMode
             )
         case .hide:
-            break
+            feedDataSource.hide(item: context.item, in: context.card)
+            collectionView.reloadItems(at: [context.indexPath])
         case .blockSource:
             break
         }

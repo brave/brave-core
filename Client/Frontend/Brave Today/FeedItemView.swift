@@ -63,6 +63,22 @@ class FeedItemView: UIView {
             $0.height.equalTo(20)
         }
     }
+    private lazy var itemHiddenOverlay = HiddenOverlayView()
+    
+    /// Whether or not the item's content has been hidden by the user
+    var isContentHidden: Bool = false {
+        didSet {
+            if isContentHidden {
+                addSubview(itemHiddenOverlay)
+                itemHiddenOverlay.snp.makeConstraints {
+                    $0.edges.equalToSuperview()
+                }
+            } else {
+                itemHiddenOverlay.removeFromSuperview()
+            }
+        }
+    }
+    
     /// Generates the view hierarchy given a layout component
     private func view(for component: Layout.Component) -> UIView {
         switch component {
@@ -76,6 +92,7 @@ class FeedItemView: UIView {
             thumbnailImageView.snp.remakeConstraints { maker in
                 switch imageLayout {
                 case .aspectRatio(let ratio):
+                    precondition(!ratio.isZero, "Invalid aspect ratio of 0 for component: \(component) in feed item layout: \(layout)")
                     maker.height.equalTo(thumbnailImageView.snp.width).multipliedBy(1.0/ratio)
                 case .fixedSize(let size):
                     maker.size.equalTo(size)
@@ -325,5 +342,50 @@ extension FeedItemView {
                 ]
             )
         )
+    }
+}
+
+extension FeedItemView {
+    
+    class HiddenOverlayView: UIView {
+        private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
+            $0.layer.cornerRadius = 4.0
+            $0.clipsToBounds = true
+            $0.contentView.backgroundColor = UIColor.black.withAlphaComponent(0.25)
+            $0.contentView.layer.cornerRadius = 4.0
+            if #available(iOS 13.0, *) {
+                $0.layer.cornerCurve = .continuous
+                $0.contentView.layer.cornerCurve = .continuous
+            }
+        }
+        private let label = UILabel().then {
+            $0.text = "Content Hidden" // TODO: Localize when copy is finalized
+            $0.font = .systemFont(ofSize: 18)
+            $0.numberOfLines = 0
+            $0.textAlignment = .center
+            $0.minimumScaleFactor = 0.5
+            $0.adjustsFontSizeToFitWidth = true
+            $0.lineBreakMode = .byWordWrapping
+            $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.5)
+        }
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            addSubview(backgroundView)
+            addSubview(label)
+            
+            backgroundView.snp.makeConstraints {
+                $0.edges.equalTo(self)
+            }
+            label.snp.makeConstraints {
+                $0.edges.equalTo(self).inset(16)
+            }
+        }
+        
+        @available(*, unavailable)
+        required init(coder: NSCoder) {
+            fatalError()
+        }
     }
 }
