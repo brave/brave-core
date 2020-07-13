@@ -64,6 +64,8 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.browser_ui.styles.ChromeColors;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
@@ -268,7 +270,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           updateBraveShieldsButtonState(tab);
           if (!NewTabPage.isNTPUrl(tab.getUrlString())
               && !OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
-              && PackageUtils.isFirstInstall(getContext())) {
+              && PackageUtils.isFirstInstall(getContext())
+              && !UrlUtilities.isInternalScheme(UrlFormatter.fixupUrl(url))
+              && (mBraveShieldsHandler.getAdsBlockedCount(tab.getId()) > 0 || mBraveShieldsHandler.getTackersBlockedCount(tab.getId()) > 0)) {
             PopupWindow mPopupWindow = mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
             OnboardingPrefManager.getInstance().setShieldsTooltipShown(true);
             mPopupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
