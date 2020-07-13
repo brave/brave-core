@@ -372,13 +372,13 @@ class Gemini extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <InvalidTitle>
-          {getLocale('binanceWidgetAuthInvalid')}
+          {getLocale('geminiWidgetAuthInvalid')}
         </InvalidTitle>
         <InvalidCopy>
-          {getLocale('binanceWidgetAuthInvalidCopy')}
+          {getLocale('geminiWidgetAuthInvalidCopy')}
         </InvalidCopy>
         <GenButton onClick={onDismissAuthInvalid}>
-          {getLocale('binanceWidgetDone')}
+          {getLocale('geminiWidgetDone')}
         </GenButton>
       </InvalidWrapper>
     )
@@ -388,16 +388,16 @@ class Gemini extends React.PureComponent<Props, State> {
     return (
       <DisconnectWrapper>
         <DisconnectTitle>
-          {getLocale('binanceWidgetDisconnectTitle')}
+          {getLocale('geminiWidgetDisconnectTitle')}
         </DisconnectTitle>
         <DisconnectCopy>
-          {getLocale('binanceWidgetDisconnectText')}
+          {getLocale('geminiWidgetDisconnectText')}
         </DisconnectCopy>
         <DisconnectButton onClick={this.finishDisconnect}>
-          {getLocale('binanceWidgetDisconnectButton')}
+          {getLocale('geminiWidgetDisconnectButton')}
         </DisconnectButton>
         <DismissAction onClick={this.cancelDisconnect}>
-          {getLocale('binanceWidgetCancelText')}
+          {getLocale('geminiWidgetCancelText')}
         </DismissAction>
       </DisconnectWrapper>
     )
@@ -409,19 +409,19 @@ class Gemini extends React.PureComponent<Props, State> {
     return (
       <>
         <IntroTitle>
-          {'Purchase and trade with Gemini'}
+          {getLocale('geminiWidgetConnectTitle')}
         </IntroTitle>
         <Copy>
-          {'Enable a Gemini connection to view your Gemini account balance and trade crypto.'}
+          {getLocale('geminiWidgetConnectCopy')}
         </Copy>
         <ActionsWrapper>
           {
             <>
               <ConnectButton onClick={this.connectGemini}>
-                {getLocale('Connect to Gemini')}
+                {getLocale('geminiWidgetConnectButton')}
               </ConnectButton>
               <DismissAction onClick={onDisableWidget}>
-                {'No thank you'}
+                {getLocale('geminiWidgetDismissText')}
               </DismissAction>
             </>
           }
@@ -453,7 +453,7 @@ class Gemini extends React.PureComponent<Props, State> {
       <SmallNoticeWrapper>
         <QRImage src={imageSrc} />
         <GenButton onClick={this.cancelQR}>
-          {getLocale('binanceWidgetDone')}
+          {getLocale('geminiWidgetDone')}
         </GenButton>
       </SmallNoticeWrapper>
     )
@@ -633,13 +633,13 @@ class Gemini extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <InvalidTitle>
-          {'Unable to perform trade'}
+          {getLocale('geminiWidgetFailedTrade')}
         </InvalidTitle>
         <InvalidCopy>
-          {getLocale('binanceWidgetInsufficientFunds')}
+          {getLocale('geminiWidgetInsufficientFunds')}
         </InvalidCopy>
         <GenButton onClick={this.retryTrade}>
-          {getLocale('binanceWidgetRetry')}
+          {getLocale('geminiWidgetRetry')}
         </GenButton>
       </InvalidWrapper>
     )
@@ -649,13 +649,13 @@ class Gemini extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <InvalidTitle>
-          {'Unable to perform trade'}
+          {getLocale('geminiWidgetFailedTrade')}
         </InvalidTitle>
         <InvalidCopy>
-          {'Something went wrong'}
+          {getLocale('geminiWidgetError')}
         </InvalidCopy>
         <GenButton onClick={this.retryTrade}>
-          {getLocale('binanceWidgetRetry')}
+          {getLocale('geminiWidgetRetry')}
         </GenButton>
       </InvalidWrapper>
     )
@@ -672,14 +672,14 @@ class Gemini extends React.PureComponent<Props, State> {
     return (
       <InvalidWrapper>
         <InvalidTitle>
-          {getLocale('binanceWidgetConfirmConversion')}
+          {getLocale('geminiWidgetConfirmTrade')}
         </InvalidTitle>
         <ActionsWrapper>
           <ConnectButton isSmall={true}>
-            {`${getLocale('binanceWidgetConfirm')} (${currentTradeExpiryTime}s)`}
+            {`${getLocale('geminiWidgetConfirm')} (${currentTradeExpiryTime}s)`}
           </ConnectButton>
           <DismissAction onClick={this.cancelTrade}>
-            {getLocale('binanceWidgetCancel')}
+            {getLocale('geminiWidgetCancel')}
           </DismissAction>
         </ActionsWrapper>
       </InvalidWrapper>
@@ -702,20 +702,20 @@ class Gemini extends React.PureComponent<Props, State> {
     return (
       <>
         <Copy>
-          {`${getLocale('binanceWidgetAvailable')} ${availableAmount} ${availableLabel}`}
+          {`${getLocale('geminiWidgetAvailable')} ${availableAmount} ${availableLabel}`}
         </Copy>
         <TradeSwitchWrapper>
           <TradeSwitch
             onClick={this.toggleCurrentTradeMode}
             isActive={currentTradeMode === 'buy'}
           >
-            {'Buy'}
+            {getLocale('geminiWidgetBuy')}
           </TradeSwitch>
           <TradeSwitch
             onClick={this.toggleCurrentTradeMode}
             isActive={currentTradeMode === 'sell'}
           >
-            {'Sell'}
+            {getLocale('geminiWidgetSell')}
           </TradeSwitch>
         </TradeSwitchWrapper>
         <TradeWrapper>
@@ -778,7 +778,7 @@ class Gemini extends React.PureComponent<Props, State> {
         </TradeWrapper>
         <ActionsWrapper>
           <ActionButton onClick={this.shouldShowTradePreview}>
-            {'Get a quote'}
+            {getLocale('geminiWidgetGetQuote')}
           </ActionButton>
         </ActionsWrapper>
       </>
@@ -826,7 +826,7 @@ class Gemini extends React.PureComponent<Props, State> {
                     {`${currentDepositAsset}`}
                   </DetailLabel>
                   <DetailInfo>
-                    {getLocale('binanceWidgetAddressUnavailable')}
+                    {getLocale('geminiWidgetUnavailable')}
                   </DetailInfo>
                 </MemoInfo>
               </MemoArea>
@@ -837,14 +837,14 @@ class Gemini extends React.PureComponent<Props, State> {
             ? <MemoArea>
                 <MemoInfo>
                   <DetailLabel>
-                    {`${currentDepositAsset} ${getLocale('binanceWidgetDepositAddress')}`}
+                    {`${currentDepositAsset} ${getLocale('geminiWidgetDepositAddress')}`}
                   </DetailLabel>
                   <DetailInfo>
                     {currentDepositAddress}
                   </DetailInfo>
                 </MemoInfo>
                 <CopyButton onClick={this.copyToClipboard.bind(this, currentDepositAddress)}>
-                  {getLocale('binanceWidgetCopy')}
+                  {getLocale('geminiWidgetCopy')}
                 </CopyButton>
               </MemoArea>
             : null
@@ -869,7 +869,7 @@ class Gemini extends React.PureComponent<Props, State> {
           </ListIcon>
           <SearchInput
             type={'text'}
-            placeholder={getLocale('binanceWidgetSearch')}
+            placeholder={getLocale('geminiWidgetSearch')}
             onChange={this.setCurrentDepositSearch}
           />
         </ListItem>
@@ -916,14 +916,14 @@ class Gemini extends React.PureComponent<Props, State> {
               isActive={selectedView === 'deposit'}
               onClick={this.setSelectedView.bind(this, 'deposit')}
             >
-              {getLocale('binanceWidgetDepositLabel')}
+              {getLocale('geminiWidgetDepositLabel')}
             </NavigationItem>
             <NavigationItem
               tabIndex={0}
               isActive={selectedView === 'trade'}
               onClick={this.setSelectedView.bind(this, 'trade')}
             >
-              {'Trade'}
+              {getLocale('geminiWidgetTradeLabel')}
             </NavigationItem>
             <NavigationItem
               tabIndex={0}
@@ -931,7 +931,7 @@ class Gemini extends React.PureComponent<Props, State> {
               isActive={isBalanceView}
               onClick={this.setSelectedView.bind(this, 'balance')}
             >
-              {'Balance'}
+              {getLocale('geminiWidgetBalanceLabel')}
             </NavigationItem>
         </NavigationBar>
         {
