@@ -11,4 +11,5 @@ brave_java_bytecode_files = [
   "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveManageSyncSettingsClassAdapter.java",
   "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveNewTabPageClassAdapter.java",
   "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveNewTabPageLayoutClassAdapter.java",
+  "../../../brave/build/android/bytecode/java/org/brave/bytecode/BraveSearchEngineAdapterClassAdapter.java",
 ]
