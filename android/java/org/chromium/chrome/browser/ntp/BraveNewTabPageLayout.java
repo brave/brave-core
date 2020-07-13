@@ -35,6 +35,7 @@ import com.airbnb.lottie.LottieAnimationView;
 
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.base.TraceEvent;
 import org.chromium.base.supplier.Supplier;
@@ -80,6 +81,7 @@ import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.OnboradingBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.onboarding.v2.HighlightManager;
 
 import java.util.List;
 
@@ -151,7 +153,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mAdsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOnboarding(OnboardingPrefManager.ONBOARDING_ADS);
+                showOnboarding(OnboardingPrefManager.ONBOARDING_ADS, 0);
             }
         });
 
@@ -159,7 +161,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mDataSavedLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOnboarding(OnboardingPrefManager.ONBOARDING_DATA_SAVED);
+                showOnboarding(OnboardingPrefManager.ONBOARDING_DATA_SAVED, 0);
             }
         });
 
@@ -167,7 +169,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mEstTimeSavedLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showOnboarding(OnboardingPrefManager.ONBOARDING_TIME);
+                showOnboarding(OnboardingPrefManager.ONBOARDING_TIME, 0);
             }
         });
 
@@ -179,7 +181,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
                     BraveStatsUtil.showBraveStats();
                 } else {
-                    showOnboarding(OnboardingPrefManager.ONBOARDING_INVALID_OPTION);
+                    Log.e("NTP", "click");
+                    showOnboarding(OnboardingPrefManager.ONBOARDING_INVALID_OPTION, 0);
                 }
             }
         });
@@ -234,7 +237,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
         if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
                 && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            showOnboarding(OnboardingPrefManager.ONBOARDING_INVALID_OPTION);
+            showOnboarding(OnboardingPrefManager.ONBOARDING_INVALID_OPTION, -1);
         }
     }
 
@@ -443,15 +446,21 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mNTPBackgroundImagesBridge.getTopSites();
     }
 
-    private void showOnboarding(int onboradingType) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(OnboardingPrefManager.ONBOARDING_TYPE, onboradingType);
+    private void showOnboarding(int onboradingType, int index) {
+        // Bundle bundle = new Bundle();
+        // bundle.putInt(OnboardingPrefManager.ONBOARDING_TYPE, onboradingType);
 
-        OnboradingBottomSheetDialogFragment onboradingBottomSheetDialogFragment = OnboradingBottomSheetDialogFragment.newInstance();
-        onboradingBottomSheetDialogFragment.setArguments(bundle);
-        onboradingBottomSheetDialogFragment.setNewTabPageListener(newTabPageListener);
-        onboradingBottomSheetDialogFragment.show(((BraveActivity)mActivity).getSupportFragmentManager(), "onboarding_bottom_sheet_dialog_fragment");
-        onboradingBottomSheetDialogFragment.setCancelable(false);
+        // OnboradingBottomSheetDialogFragment onboradingBottomSheetDialogFragment = OnboradingBottomSheetDialogFragment.newInstance();
+        // onboradingBottomSheetDialogFragment.setArguments(bundle);
+        // onboradingBottomSheetDialogFragment.setNewTabPageListener(newTabPageListener);
+        // onboradingBottomSheetDialogFragment.show(((BraveActivity)mActivity).getSupportFragmentManager(), "onboarding_bottom_sheet_dialog_fragment");
+        // onboradingBottomSheetDialogFragment.setCancelable(false);
+
+
+        int highlightedViewId = R.id.brave_stats_ads;
+
+        HighlightManager highlightManager = new HighlightManager((BraveActivity)mActivity);
+        highlightManager.showHighlight(highlightedViewId, index);
     }
 
     private NewTabPageListener newTabPageListener = new NewTabPageListener() {
