@@ -5,6 +5,8 @@
 
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include <vector>
+
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/infobars/ipfs_infobar_delegate.h"
 #include "chrome/browser/infobars/infobar_service.h"
@@ -13,6 +15,7 @@
 #include "extensions/common/url_pattern.h"
 
 namespace {
+
 bool IsIPFSURL(const GURL& gurl) {
   // Temporary to manually test the infobar
   static std::vector<URLPattern> updater_patterns({
@@ -23,7 +26,8 @@ bool IsIPFSURL(const GURL& gurl) {
       updater_patterns.begin(), updater_patterns.end(),
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
-}
+
+}  // namespace
 
 namespace ipfs {
 

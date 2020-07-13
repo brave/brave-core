@@ -25,7 +25,7 @@ class IPFSInfoBarDelegate : public ConfirmInfoBarDelegate {
   static void Create(InfoBarService* infobar_service);
 
  private:
-  explicit IPFSInfoBarDelegate();
+  IPFSInfoBarDelegate();
   ~IPFSInfoBarDelegate() override;
 
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;

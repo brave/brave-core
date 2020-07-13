@@ -22,9 +22,11 @@ using brave_component_updater::BraveComponent;
 namespace ipfs {
 
 #if defined(OS_WIN)
-const std::string kIpfsClientComponentName("Brave Ipfs Client Updater (Windows)");
-const std::string kIpfsClientComponentId("lnbclahgobmjphilkalbhebakmblnbij");
-const std::string kIpfsClientComponentBase64PublicKey =
+static const char kIpfsClientComponentName[] =
+    "Brave Ipfs Client Updater (Windows)";
+static const char kIpfsClientComponentId[] =
+    "lnbclahgobmjphilkalbhebakmblnbij";
+static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuLxVDZm1QIzpMUFMBYym"
     "zriJGzgRYWpun1n9Qgd0240h9zchyZenLnZG0d3XLk38J+tHCoObb+o5sNuSzx43"
     "f0kb3mNk8AkZd/zc8jo9bK56Ep6E1iuWHfjDkl7mCD+o+CNAmDWgdGdaaaRiBIWL"
@@ -33,9 +35,11 @@ const std::string kIpfsClientComponentBase64PublicKey =
     "/CRfYgax5nMumx0x38CmVN53GVB+5TM0mw1bhU52ASysgZjAC0++Kbl1qXeSZuWM"
     "/QIDAQAB";
 #elif defined(OS_MACOSX)
-const std::string kIpfsClientComponentName("Brave Ipfs Client Updater (Mac)");
-const std::string kIpfsClientComponentId("nljcddpbnaianmglkpkneakjaapinabi");
-const std::string kIpfsClientComponentBase64PublicKey =
+static const char kIpfsClientComponentName[] =
+    "Brave Ipfs Client Updater (Mac)";
+static const char kIpfsClientComponentId[] =
+    "nljcddpbnaianmglkpkneakjaapinabi";
+static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu4gvE67b2T0U0i5awN5Q"
     "8YTyEXkahVAIaDqZaC2GkyjqJxkfThTxNq+MfjRAfeoxdKq95XATHMQPw6bHBCRr"
     "eDokesk0Yf4/2Tm+Sx+5ndrVb44bu0Qe/TM2EprxKvwyMo55pOjoHvnyhExd3E1p"
@@ -44,9 +48,11 @@ const std::string kIpfsClientComponentBase64PublicKey =
     "59uo1UEJYwr+HQ0pvt/gEdns1ccUsGEm9PAMJRptvrGX/fauIMAASvByMRG7XC27"
     "gwIDAQAB";
 #elif defined(OS_LINUX)
-const std::string kIpfsClientComponentName("Brave Ipfs Client Updater (Linux)");
-const std::string kIpfsClientComponentId("oecghfpdmkjlhnfpmmjegjacfimiafjp");
-const std::string kIpfsClientComponentBase64PublicKey =
+static const char kIpfsClientComponentName[] =
+    "Brave Ipfs Client Updater (Linux)";
+static const char kIpfsClientComponentId[] =
+    "oecghfpdmkjlhnfpmmjegjacfimiafjp";
+static const char kIpfsClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuG1akBG8ka37Pdx0F21r"
     "J2efimrZnN8PrBlUBHYZ3sOBFLjzdw7gxpqznbOzNzx4hAAUXdLWPxBZXgOGV+rw"
     "MmCdskXr6dK5yLtJNjWqDHNVxyikQlIKRK3VKO9f6HZBC3SwF/GqLenuFuVxbg1q"

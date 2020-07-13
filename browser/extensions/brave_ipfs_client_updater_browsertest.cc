@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -15,8 +16,8 @@
 
 using extensions::ExtensionBrowserTest;
 
-const std::string kIpfsClientUpdaterComponentTestId("");
-const std::string kIpfsClientUpdaterComponentTestBase64PublicKey =
+static const char kIpfsClientUpdaterComponentTestId[] "";
+static const char kIpfsClientUpdaterComponentTestBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAncFKJWCX6RqCRYOR0t5a"
     "js7HWIVP3Ne272HZs3MqiaNvo9IikbPd4JnUMeQjLhkXTwxg6Up9Tmrgo3M8T91D"
     "dggzpAG4OlhKj3l3N5kZnj/CxQ73YVd41jHAF97lZVoD5VTCGtEelzA5eHI4N4Hd"
@@ -26,7 +27,7 @@ const std::string kIpfsClientUpdaterComponentTestBase64PublicKey =
     "QQIDAQAB";
 
 class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
-public:
+ public:
   BraveIpfsClientUpdaterTest() {}
 
   void SetUp() override {
