@@ -6,15 +6,17 @@
 -->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/onboarding_black">
 
-    <ImageView
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/bg_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/android_onboarding_3"
+        app:lottie_fileName="onboarding_ads_notification.json"
+        app:lottie_loop="false"
         android:layout_marginBottom="100dp"
         android:contentDescription="@string/brave_ads_onboarding_title"/>
 
