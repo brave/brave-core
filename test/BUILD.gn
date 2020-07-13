@@ -811,6 +811,8 @@ if (is_android) {
       "//base:base_java_test_support",
       "//chrome/android:chrome_apk_pak_assets",
       "//chrome/android:chrome_public_base_module_java_for_test",
+      "//chrome/browser/preferences:java",
+      "//chrome/browser/tab:java",
       "//chrome/test/android:chrome_java_test_support",
       "//components/search_engines/android:java",
       "//components/sync/android:sync_java",
