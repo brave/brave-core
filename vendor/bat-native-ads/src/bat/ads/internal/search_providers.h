@@ -20,6 +20,11 @@ const std::vector<SearchProviderInfo> _search_providers = {
       "https://www.amazon.com/exec/obidos/external-search/?field-keywords={searchTerms}&mode=blended",  // NOLINT
       false),
   SearchProviderInfo(
+      "Baidu",
+      "https://baidu.com",
+      "https://www.baidu.com/s?wd={searchTerms}",
+      true),
+  SearchProviderInfo(
       "Bing",
       "https://bing.com",
       "https://www.bing.com/search?q={searchTerms}",
@@ -47,6 +52,11 @@ const std::vector<SearchProviderInfo> _search_providers = {
       "https://www.google.com/search?q={searchTerms}",
       true),
   SearchProviderInfo(
+      "Google Japan",
+      "https://google.co.jp",
+      "https://www.google.co.jp/search?q={searchTerms}",
+      true),
+  SearchProviderInfo(
       "Stack Overflow",
       "https://stackoverflow.com",
       "https://stackoverflow.com/search?q={searchTerms}",
@@ -72,6 +82,11 @@ const std::vector<SearchProviderInfo> _search_providers = {
       // search providers definition doesn't match all patterns
       "https://search.yahoo.com",
       "https://search.yahoo.com/search?p={searchTerms}&fr=opensearch",
+      true),
+ SearchProviderInfo(
+      "Yahoo Japan",
+      "https://search.yahoo.co.jp",
+      "https://search.yahoo.co.jp/search?p={searchTerms}&fr=opensearch",
       true),
   SearchProviderInfo(
       "YouTube",
