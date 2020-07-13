@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.view.WindowManager;
+import android.content.pm.ActivityInfo;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.viewpager.widget.ViewPager;
@@ -111,12 +112,18 @@ public class HighlightDialogFragment extends DialogFragment{
         if (getDialog() != null && getRetainInstance()) {
             getDialog().setDismissMessage(null);
         }
+
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        
         super.onDestroyView();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Fragment locked in portrait screen orientation
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // setCancelable(false);
         // setHasOptionsMenu(false);
