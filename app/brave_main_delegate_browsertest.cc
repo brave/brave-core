@@ -16,6 +16,7 @@
 #include "components/language/core/common/language_experiments.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/safe_browsing/core/features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/web_preferences.h"
@@ -68,6 +69,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kVideoPlaybackQuality,
       &features::kLookalikeUrlNavigationSuggestionsUI,
       &features::kTabHoverCards,
+      &safe_browsing::kEnhancedProtection,
   };
 
   for (const auto* feature : disabled_features)

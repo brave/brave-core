@@ -749,6 +749,7 @@ test("brave_browser_tests") {
     "//components/embedder_support",
     "//components/language/core/common",
     "//components/prefs",
+    "//components/safe_browsing/core:features",
     "//content/test:test_support",
     "//ppapi/buildflags",
     ":brave_browser_tests_deps",
