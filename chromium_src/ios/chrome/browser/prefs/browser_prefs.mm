@@ -19,6 +19,9 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
   brave_sync::Prefs::RegisterProfilePrefs(registry);
   syncer::SyncPrefs::RegisterProfilePrefs(registry);
   registry->RegisterBooleanPref(prefs::kSavingBrowserHistoryDisabled, true);
+    
+  //Register default bookmarks folder for iOS
+  registry->RegisterInt64Pref(prefs::kIosBookmarkFolderDefault, -1);
 }
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {

@@ -44,6 +44,8 @@ class BookmarksAPI {
                             std::vector<const BookmarkNode*>* nodes);
 
   void Undo();
+    
+  const BookmarkNode* GetBookmarksMobileFolder() const;
 
  private:
   bool IsEditable(const BookmarkNode* node) const;

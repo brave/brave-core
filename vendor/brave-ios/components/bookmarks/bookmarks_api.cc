@@ -4,12 +4,18 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/vendor/brave-ios/components/bookmarks/bookmarks_api.h"
+#include "brave/ios/browser/browser_state/browser_state_manager.h"
+#include "ios/chrome/browser/browser_state/chrome_browser_state.h"
+#include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "ios/chrome/browser/pref_names.h"
 
 #include "base/time/time.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/undo/bookmark_undo_service.h"
 #include "components/undo/undo_manager.h"
+#include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_service.h"
 #include "url/gurl.h"
 
 namespace bookmarks {
@@ -46,10 +52,7 @@ void BookmarksAPI::Move(int64_t id,
                    int64_t parent_id,
                    size_t index)
 {
-    #if !TARGET_IPHONE_SIMULATOR
     //DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    #endif
-
     DCHECK(model_->loaded());
 
     const BookmarkNode* node =
@@ -78,10 +81,7 @@ void BookmarksAPI::Update(int64_t id,
 
 void BookmarksAPI::Remove(int64_t id)
 {
-    #if !TARGET_IPHONE_SIMULATOR
     //DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    #endif
-
     DCHECK(model_->loaded());
 
     const BookmarkNode* node =
@@ -97,10 +97,7 @@ void BookmarksAPI::Remove(int64_t id)
 
 void BookmarksAPI::RemoveAll()
 {
-    #if !TARGET_IPHONE_SIMULATOR
     //DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    #endif
-
     DCHECK(model_->loaded());
     model_->RemoveAllUserBookmarks();
 }
@@ -118,10 +115,7 @@ void BookmarksAPI::Search(const base::string16& search_query,
 
 void BookmarksAPI::Undo()
 {
-    #if !TARGET_IPHONE_SIMULATOR
     //DCHECK_CURRENTLY_ON(web::WebThread::UI);
-    #endif
-
     DCHECK(model_->loaded());
     UndoManager* undo_manager = bookmark_undo_service_->undo_manager();
     undo_manager->Undo();
@@ -134,7 +128,31 @@ bool BookmarksAPI::IsEditable(const BookmarkNode* node) const
       return false;
     }
 
-    return true; //TODO: Check Prefs
+    //ChromeBrowserState* browser_state_ = BrowserStateManager::GetInstance().GetBrowserState();
+    return true; //Possibly query iOS to see if editing is allowed..
+    //return browser_state_->GetPrefs()->GetBoolean(bookmarks::prefs::kEditBookmarksEnabled);
+}
+
+const BookmarkNode* BookmarksAPI::GetBookmarksMobileFolder() const {
+    const int64_t kLastUsedFolderNone = -1;
+    ChromeBrowserState* browser_state_ = BrowserStateManager::GetInstance().GetBrowserState();
+    
+    BookmarkModel* bookmarks =
+        ios::BookmarkModelFactory::GetForBrowserState(browser_state_);
+    const BookmarkNode* defaultFolder = bookmarks->mobile_node();
+
+    PrefService* prefs = browser_state_->GetPrefs();
+    int64_t node_id = prefs->GetInt64(prefs::kIosBookmarkFolderDefault);
+    if (node_id == kLastUsedFolderNone)
+      node_id = defaultFolder->id();
+    const BookmarkNode* result =
+        bookmarks::GetBookmarkNodeByID(bookmarks, node_id);
+
+    if (result)
+      return result;
+
+    return defaultFolder;
+
 }
 
 }  // namespace bookmarks
