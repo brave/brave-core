@@ -6,12 +6,24 @@
 import Foundation
 import BraveUI
 
+/// Additonal information related to an action performed on a feed item
+struct FeedItemActionContext {
+    /// The feed item actioned upon
+    var item: FeedItem
+    /// The card that this item is displayed in
+    var card: FeedCard
+    /// The index path of the card in the collection view
+    var indexPath: IndexPath
+}
+
+typealias FeedItemActionHandler = (FeedItemAction, _ context: FeedItemActionContext) -> Void
+
 class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     let dataSource: FeedDataSource
     var sectionDidChange: (() -> Void)?
-    var actionHandler: (FeedItem, FeedItemAction) -> Void
+    var actionHandler: FeedItemActionHandler
     
-    init(dataSource: FeedDataSource, actionHandler: @escaping (FeedItem, FeedItemAction) -> Void) {
+    init(dataSource: FeedDataSource, actionHandler: @escaping FeedItemActionHandler) {
         self.dataSource = dataSource
         self.actionHandler = actionHandler
         
@@ -63,17 +75,6 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        func handler(for item: FeedItem) -> (Int, FeedItemAction) -> Void {
-            return { [weak self] _, action in
-                self?.actionHandler(item, action)
-            }
-        }
-        func handler(from feedList: @escaping (Int) -> FeedItem) -> (Int, FeedItemAction) -> Void {
-            return { [weak self] index, action in
-                self?.actionHandler(feedList(index), action)
-            }
-        }
-        
         if indexPath.item == 0 {
             return collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayWelcomeView>
         }
@@ -82,6 +83,18 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             assertionFailure()
             return UICollectionViewCell()
         }
+        
+        func handler(for item: FeedItem) -> (Int, FeedItemAction) -> Void {
+            return { [weak self] _, action in
+                self?.actionHandler(action, .init(item: item, card: card, indexPath: indexPath))
+            }
+        }
+        func handler(from feedList: @escaping (Int) -> FeedItem) -> (Int, FeedItemAction) -> Void {
+            return { [weak self] index, action in
+                self?.actionHandler(action, .init(item: feedList(index), card: card, indexPath: indexPath))
+            }
+        }
+        
         switch card {
         case .sponsor(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SponsorCardView>
@@ -95,9 +108,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
-            cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.0, brandVisibility: .logo)
-            cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.1, brandVisibility: .logo)
-            cell.content.actionHandler = handler(from: { $0 == 0 ? pair.0 : pair.1 })
+            cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.first, brandVisibility: .logo)
+            cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.second, brandVisibility: .logo)
+            cell.content.actionHandler = handler(from: { $0 == 0 ? pair.first : pair.second })
             return cell
         case .group(let items, let title, let direction, let displayBrand):
             let groupView: FeedGroupView
@@ -169,6 +182,7 @@ extension FeedItemView {
     }
     
     func setupWithItem(_ feedItem: FeedItem, brandVisibility: BrandVisibility = .none) {
+        isContentHidden = feedItem.isContentHidden
         titleLabel.text = feedItem.content.title
         if #available(iOS 13, *) {
             dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.content.publishTime, relativeTo: Date())

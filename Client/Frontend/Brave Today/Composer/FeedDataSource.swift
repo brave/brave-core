@@ -10,10 +10,19 @@ import Shared
 
 private let logger = Logger.browserLogger
 
-enum FeedCard {
+struct FeedPair: Equatable {
+    var first: FeedItem
+    var second: FeedItem
+    init(_ first: FeedItem, _ second: FeedItem) {
+        self.first = first
+        self.second = second
+    }
+}
+
+enum FeedCard: Equatable {
     case sponsor(_ feed: FeedItem)
     case headline(_ feed: FeedItem)
-    case headlinePair(_ feeds: (FeedItem, FeedItem))
+    case headlinePair(_ pair: FeedPair)
     case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
     case numbered(_ feeds: [FeedItem], title: String)
     
@@ -24,9 +33,9 @@ enum FeedCard {
         case .headline:
             return FeedItemView.Layout.brandedHeadline.estimatedHeight(for: width)
         case .headlinePair:
-            return 250
+            return 300
         case .group, .numbered:
-            return 350
+            return 400
         }
     }
 }
@@ -67,6 +76,7 @@ class FeedDataSource {
     private let session = NetworkManager(session: URLSession(configuration: .ephemeral))
     private var feeds: [FeedItem] = []
     private var sources: [String: FeedItem.Source] = [:]
+    private var hiddenItems: Set<String> = []
     
     init() {
     }
@@ -109,6 +119,37 @@ class FeedDataSource {
         }
     }
     
+    /// Hide a specific feed item from a card showing in the list
+    func hide(item: FeedItem, in card: FeedCard) {
+        hiddenItems.insert(item.content.urlHash)
+        if let cardIndex = cards.firstIndex(of: card) {
+            var alteredItem = item
+            alteredItem.isContentHidden = true
+            switch card {
+            case .headline:
+                cards[cardIndex] = .headline(alteredItem)
+            case .headlinePair(let pair):
+                if pair.first == item {
+                    cards[cardIndex] = .headlinePair(.init(alteredItem, pair.second))
+                } else {
+                    cards[cardIndex] = .headlinePair(.init(pair.first, alteredItem))
+                }
+            case .sponsor:
+                cards[cardIndex] = .sponsor(alteredItem)
+            case .numbered(var feeds, let title):
+                if let matchedItemIndex = feeds.firstIndex(of: item) {
+                    feeds[matchedItemIndex] = alteredItem
+                    cards[cardIndex] = .numbered(feeds, title: title)
+                }
+            case .group(var feeds, let title, let direction, let displayBrand):
+                if let matchedItemIndex = feeds.firstIndex(of: item) {
+                    feeds[matchedItemIndex] = alteredItem
+                    cards[cardIndex] = .group(feeds, title: title, direction: direction, displayBrand: displayBrand)
+                }
+            }
+        }
+    }
+    
     private func scored(feeds: [FeedItem.Content], sources: [String: FeedItem.Source]) -> [FeedItem] {
         let lastVisitedDomains = (try? History.suffix(200)
             .lazy
@@ -123,7 +164,7 @@ class FeedDataSource {
             guard let source = sources[$0.publisherID] else {
                 return nil
             }
-            return FeedItem(score: score, content: $0, source: source)
+            return FeedItem(score: score, content: $0, source: source, isContentHidden: self.hiddenItems.contains($0.urlHash))
         }
     }
     
@@ -136,7 +177,7 @@ class FeedDataSource {
          */
         var sponsors = feeds.filter { $0.content.contentType == "brave_offers" }
         var deals = feeds.filter { $0.content.contentType == "product" }
-        var articles = feeds.filter { $0.content.contentType == "article" }
+        var articles = feeds.filter { $0.content.contentType == "article" && !$0.isContentHidden }
         
         let rules: [FeedSequenceElement] = [
             .sponsor,
@@ -185,7 +226,7 @@ class FeedDataSource {
                     let item2 = articles[secondIndex]
                     articles.remove(at: firstIndex)
                     articles.remove(at: secondIndex - 1)
-                    return [.headlinePair((item1, item2))]
+                    return [.headlinePair(.init(item1, item2))]
                 } else {
                     guard let index = articles.firstIndex(where: imageExists) else {
                         return nil

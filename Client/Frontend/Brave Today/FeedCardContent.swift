@@ -25,7 +25,7 @@ protocol FeedCardContent {
     /// such as group cards or the headline pairs, `itemIndex` will be based on
     /// the actioned upon feed item.
     var actionHandler: ((_ itemIndex: Int, _ action: FeedItemAction) -> Void)? { get set }
-    /// A required initializer for making the card
+    /// A required initializer for making the cards content
     init()
 }
 
