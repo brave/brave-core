@@ -19,6 +19,7 @@ public class BraveClassAdapter {
         chain = new BraveFeedSurfaceCoordinatorClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveEditUrlSuggestionProcessorClassAdapter(chain);
+        chain = new BraveSearchEngineAdapterClassAdapter(chain);
         return chain;
     }
 }
