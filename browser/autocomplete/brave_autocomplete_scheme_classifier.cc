@@ -9,6 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "brave/common/url_constants.h"
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -45,6 +46,14 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
     return metrics::OmniboxInputType::URL;
   }
 #endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+  if (base::IsStringASCII(scheme) &&
+      base::LowerCaseEqualsASCII(scheme, kIPFSScheme)) {
+    return metrics::OmniboxInputType::URL;
+  }
+#endif
+
 
   return ChromeAutocompleteSchemeClassifier::GetInputTypeForScheme(scheme);
 }
