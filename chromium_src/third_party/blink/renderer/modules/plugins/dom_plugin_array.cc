@@ -20,6 +20,7 @@ using blink::HeapVector;
 using blink::LocalFrame;
 using blink::MakeGarbageCollected;
 using blink::Member;
+using blink::MimeClassInfo;
 using blink::PluginInfo;
 
 namespace brave {
@@ -60,6 +61,12 @@ void FarblePlugins(DOMPluginArray* owner,
           BraveSessionCache::From(*(frame->GetDocument()))
               .GenerateRandomString("PLUGIN_1_DESCRIPTION", 32),
           0, false);
+      auto* fake_mime_info_1 = MakeGarbageCollected<MimeClassInfo>(
+          "",
+          BraveSessionCache::From(*(frame->GetDocument()))
+              .GenerateRandomString("MIME_1_DESCRIPTION", 32),
+          *fake_plugin_info_1);
+      fake_plugin_info_1->AddMimeType(fake_mime_info_1);
       auto* fake_dom_plugin_1 =
           MakeGarbageCollected<DOMPlugin>(frame, *fake_plugin_info_1);
       dom_plugins->push_back(fake_dom_plugin_1);
@@ -72,6 +79,12 @@ void FarblePlugins(DOMPluginArray* owner,
           BraveSessionCache::From(*(frame->GetDocument()))
               .GenerateRandomString("PLUGIN_2_DESCRIPTION", 31),
           0, false);
+      auto* fake_mime_info_2 = MakeGarbageCollected<MimeClassInfo>(
+          "",
+          BraveSessionCache::From(*(frame->GetDocument()))
+              .GenerateRandomString("MIME_2_DESCRIPTION", 32),
+          *fake_plugin_info_2);
+      fake_plugin_info_2->AddMimeType(fake_mime_info_2);
       auto* fake_dom_plugin_2 =
           MakeGarbageCollected<DOMPlugin>(frame, *fake_plugin_info_2);
       dom_plugins->push_back(fake_dom_plugin_2);
