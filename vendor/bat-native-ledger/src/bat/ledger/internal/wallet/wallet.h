@@ -85,14 +85,12 @@ class Wallet {
       ledger::ResultCallback callback);
 
   std::string GetClaimPayload(
-      const std::string user_funds,
-      const std::string new_address,
-      const std::string anon_address);
+      const std::string& user_funds,
+      const std::string& address,
+      const std::string& anon_address);
 
   void OnTransferAnonToExternalWalletAddress(
       ledger::Result result,
-      const std::string& anon_address,
-      const std::string& new_address,
       const std::string& user_funds,
       ledger::ResultCallback callback);
 

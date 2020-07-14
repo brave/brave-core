@@ -13,7 +13,7 @@ using std::placeholders::_1;
 
 namespace {
 
-const int kCurrentVersionNumber = 2;
+const int kCurrentVersionNumber = 3;
 
 }  // namespace
 
@@ -22,6 +22,7 @@ namespace braveledger_state {
 StateMigration::StateMigration(bat_ledger::LedgerImpl* ledger) :
     v1_(std::make_unique<StateMigrationV1>(ledger)),
     v2_(std::make_unique<StateMigrationV2>(ledger)),
+    v3_(std::make_unique<StateMigrationV3>(ledger)),
     ledger_(ledger) {
   DCHECK(v1_ && v2_);
 }
@@ -50,6 +51,10 @@ void StateMigration::Migrate(ledger::ResultCallback callback) {
     }
     case 2: {
       v2_->Migrate(migrate_callback);
+      return;
+    }
+    case 3: {
+      v3_->Migrate(migrate_callback);
       return;
     }
   }

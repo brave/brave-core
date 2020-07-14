@@ -201,15 +201,10 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
     return;
   }
 
-  const std::string anon_address =
-      ledger_->GetStringState(ledger::kStateUpholdAnonAddress);
-
-  if (!anon_address.empty()) {
+  if (!wallet_ptr->anon_address.empty()) {
     BLOG(1, "Anon address already exists");
     OnTransferAnonToExternalWalletAddress(
         ledger::Result::ALREADY_EXISTS,
-        anon_address,
-        wallet_ptr->address,
         properties->user_funds,
         callback);
     return;
@@ -219,8 +214,6 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
       std::bind(&Wallet::OnTransferAnonToExternalWalletAddress,
           this,
           _1,
-          _2,
-          wallet_ptr->address,
           properties->user_funds,
           callback);
 
@@ -228,16 +221,16 @@ void Wallet::OnTransferAnonToExternalWalletBalance(
 }
 
 std::string Wallet::GetClaimPayload(
-    const std::string user_funds,
-    const std::string new_address,
-    const std::string anon_address) {
+    const std::string& user_funds,
+    const std::string& address,
+    const std::string& anon_address) {
   ledger::UnsignedTxProperties unsigned_tx;
   unsigned_tx.amount = user_funds;
   if (unsigned_tx.amount.empty()) {
     unsigned_tx.amount = "0";
   }
   unsigned_tx.currency = "BAT";
-  unsigned_tx.destination = new_address;
+  unsigned_tx.destination = address;
   const ledger::UnsignedTxState unsigned_tx_state;
   const std::string octets = unsigned_tx_state.ToJson(unsigned_tx);
 
@@ -278,7 +271,7 @@ std::string Wallet::GetClaimPayload(
   denomination.SetStringKey("currency", unsigned_tx.currency);
 
   base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("destination", new_address);
+  body.SetStringKey("destination", address);
   body.SetKey("denomination", std::move(denomination));
   signed_tx.SetKey("body", std::move(body));
 
@@ -298,20 +291,22 @@ std::string Wallet::GetClaimPayload(
 
 void Wallet::OnTransferAnonToExternalWalletAddress(
     ledger::Result result,
-    const std::string& anon_address,
-    const std::string& new_address,
     const std::string& user_funds,
     ledger::ResultCallback callback) {
-  if ((result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::ALREADY_EXISTS)
-      || anon_address.empty()) {
-    BLOG(0, "Anon funds transfer failed");
+  auto wallets = ledger_->GetExternalWallets();
+  auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
+  if (!wallet_ptr) {
+    BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  if (result != ledger::Result::ALREADY_EXISTS) {
-    ledger_->SetStringState(ledger::kStateUpholdAnonAddress, anon_address);
+  if ((result != ledger::Result::LEDGER_OK &&
+      result != ledger::Result::ALREADY_EXISTS)
+      || wallet_ptr->anon_address.empty()) {
+    BLOG(0, "Anon funds transfer failed");
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
   }
 
   const std::string path = base::StringPrintf(
@@ -323,14 +318,14 @@ void Wallet::OnTransferAnonToExternalWalletAddress(
       PREFIX_V2);
 
   auto transfer_callback = std::bind(&Wallet::OnTransferAnonToExternalWallet,
-                          this,
-                          _1,
-                          callback);
+      this,
+      _1,
+      callback);
 
   const std::string payload = GetClaimPayload(
       user_funds,
-      new_address,
-      anon_address);
+      wallet_ptr->address,
+      wallet_ptr->anon_address);
 
   if (payload.empty()) {
     BLOG(0, "Payload is empty");

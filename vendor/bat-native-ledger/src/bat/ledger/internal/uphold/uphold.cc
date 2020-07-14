@@ -271,7 +271,7 @@ void Uphold::GetUser(GetUserCallback callback) {
   user_->Get(callback);
 }
 
-void Uphold::CreateAnonAddressIfNecessary(CreateAnonAddressCallback callback) {
+void Uphold::CreateAnonAddressIfNecessary(ledger::ResultCallback callback) {
   card_->CreateAnonAddressIfNecessary(callback);
 }
 
