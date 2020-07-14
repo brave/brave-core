@@ -85,141 +85,25 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             return UICollectionViewCell()
         }
         
-        func handler(for item: FeedItem) -> (Int, FeedItemAction) -> Void {
-            return { [weak self] _, action in
-                self?.actionHandler(action, .init(item: item, card: card, indexPath: indexPath))
-            }
-        }
-        func handler(from feedList: @escaping (Int) -> FeedItem) -> (Int, FeedItemAction) -> Void {
-            return { [weak self] index, action in
-                self?.actionHandler(action, .init(item: feedList(index), card: card, indexPath: indexPath))
-            }
-        }
-        
-        func contextMenu(from feedList: @escaping (Int) -> FeedItem) -> FeedItemMenu {
-            if #available(iOS 13.0, *) {
-                return .init { index -> UIMenu? in
-                    let item = feedList(index)
-                    let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
-                    
-                    var openInNewTab: UIAction {
-                        .init(title: Strings.openNewTabButtonTitle, handler: UIAction.deferredActionHandler { _ in
-                            self.actionHandler(.opened(inNewTab: true), context)
-                        })
-                    }
-                    
-                    var openInNewPrivateTab: UIAction {
-                        .init(title: Strings.openNewPrivateTabButtonTitle, handler: UIAction.deferredActionHandler { _ in
-                            self.actionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
-                        })
-                    }
-                    
-                    var hideContent: UIAction {
-                        // FIXME: Localize, Get our own image
-                        .init(title: "Hide Content", image: UIImage(systemName: "eye.slash.fill"), handler: UIAction.deferredActionHandler { _ in
-                            self.actionHandler(.hide, context)
-                        })
-                    }
-                    
-                    var blockSource: UIAction {
-                        // FIXME: Localize, Get our own image
-                        .init(title: "Block Source", image: UIImage(systemName: "nosign"), attributes: .destructive, handler: UIAction.deferredActionHandler { _ in
-                            self.actionHandler(.blockSource, context)
-                        })
-                    }
-                    
-                    let openActions: [UIAction] = [
-                        openInNewTab,
-                        // Brave Today is only available in normal tabs, so this isn't technically required
-                        // but good to be on the safe side
-                        !PrivateBrowsingManager.shared.isPrivateBrowsing ?
-                            openInNewPrivateTab :
-                        nil
-                        ].compactMap({ $0 })
-                    let manageActions = [
-                        hideContent,
-                        blockSource
-                    ]
-                    
-                    return UIMenu(title: item.content.title, children: [
-                        UIMenu(title: "", options: [.displayInline], children: openActions),
-                        UIMenu(title: "", options: [.displayInline], children: manageActions)
-                    ])
-                }
-            }
-            return .init { index -> FeedItemMenu.LegacyContext? in
-                let item = feedList(index)
-                let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
-                
-                var openInNewTab: UIAlertAction {
-                    .init(title: Strings.openNewTabButtonTitle, style: .default, handler: { _ in
-                        self.actionHandler(.opened(inNewTab: true), context)
-                    })
-                }
-                
-                var openInNewPrivateTab: UIAlertAction {
-                    .init(title: Strings.openNewPrivateTabButtonTitle, style: .default, handler: { _ in
-                        self.actionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
-                    })
-                }
-                
-                var hideContent: UIAlertAction {
-                    // FIXME: Localize
-                    .init(title: "Hide Content", style: .default, handler: { _ in
-                        self.actionHandler(.hide, context)
-                    })
-                }
-                
-                var blockSource: UIAlertAction {
-                    // FIXME: Localize
-                    .init(title: "Block Source", style: .destructive, handler: { _ in
-                        self.actionHandler(.blockSource, context)
-                    })
-                }
-                
-                let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
-                
-                return .init(
-                    title: item.content.title,
-                    message: nil,
-                    actions: [
-                        openInNewTab,
-                        // Brave Today is only available in normal tabs, so this isn't technically required
-                        // but good to be on the safe side
-                        !PrivateBrowsingManager.shared.isPrivateBrowsing ?
-                            openInNewPrivateTab :
-                        nil,
-                        hideContent,
-                        blockSource,
-                        cancel
-                    ].compactMap { $0 }
-                )
-            }
-        }
-        
-        func contextMenu(for item: FeedItem) -> FeedItemMenu {
-            return contextMenu(from: { _  in item })
-        }
-        
         switch card {
         case .sponsor(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SponsorCardView>
             cell.content.feedView.setupWithItem(item, brandVisibility: .none)
-            cell.content.actionHandler = handler(for: item)
-            cell.content.contextMenu = contextMenu(for: item)
+            cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
+            cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
             return cell
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>
             cell.content.feedView.setupWithItem(item, brandVisibility: .logo)
-            cell.content.actionHandler = handler(for: item)
-            cell.content.contextMenu = contextMenu(for: item)
+            cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
+            cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
             cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.first, brandVisibility: .logo)
             cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.second, brandVisibility: .logo)
-            cell.content.actionHandler = handler(from: { $0 == 0 ? pair.first : pair.second })
-            cell.content.contextMenu = contextMenu(from: { $0 == 0 ? pair.first : pair.second })
+            cell.content.actionHandler = handler(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
+            cell.content.contextMenu = contextMenu(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
             return cell
         case .group(let items, let title, let direction, let displayBrand):
             let groupView: FeedGroupView
@@ -269,8 +153,8 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 groupView.groupBrandImageView.image = nil
             }
             groupView.groupBrandImageView.isHidden = !displayBrand
-            groupView.actionHandler = handler(from: { items[$0] })
-            groupView.contextMenu = contextMenu(from: { items[$0] })
+            groupView.actionHandler = handler(from: { items[$0] }, card: card, indexPath: indexPath)
+            groupView.contextMenu = contextMenu(from: { items[$0] }, card: card, indexPath: indexPath)
             return cell
         case .numbered(let items, let title):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<NumberedFeedGroupView>
@@ -278,10 +162,136 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             zip(cell.content.feedViews, items).forEach { (view, item) in
                 view.setupWithItem(item, brandVisibility: .none)
             }
-            cell.content.actionHandler = handler(from: { items[$0] })
-            cell.content.contextMenu = contextMenu(from: { items[$0] })
+            cell.content.actionHandler = handler(from: { items[$0] }, card: card, indexPath: indexPath)
+            cell.content.contextMenu = contextMenu(from: { items[$0] }, card: card, indexPath: indexPath)
             return cell
         }
+    }
+    
+    private func handler(from feedList: @escaping (Int) -> FeedItem, card: FeedCard, indexPath: IndexPath) -> (Int, FeedItemAction) -> Void {
+        return { [weak self] index, action in
+            self?.actionHandler(action, .init(item: feedList(index), card: card, indexPath: indexPath))
+        }
+    }
+    
+    private func handler(for item: FeedItem, card: FeedCard, indexPath: IndexPath) -> (Int, FeedItemAction) -> Void {
+        return handler(from: { _ in item }, card: card, indexPath: indexPath)
+    }
+    
+    private func contextMenu(from feedList: @escaping (Int) -> FeedItem, card: FeedCard, indexPath: IndexPath) -> FeedItemMenu {
+        typealias MenuActionHandler = (_ context: FeedItemActionContext) -> Void
+        
+        let openInNewTabHandler: MenuActionHandler = { context in
+            self.actionHandler(.opened(inNewTab: true), context)
+        }
+        let openInNewPrivateTabHandler: MenuActionHandler = { context in
+            self.actionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
+        }
+        let hideHandler: MenuActionHandler = { context in
+            self.actionHandler(.hide, context)
+        }
+        let blockSourceHandler: MenuActionHandler = { context in
+            self.actionHandler(.blockSource, context)
+        }
+        
+        if #available(iOS 13.0, *) {
+            return .init { index -> UIMenu? in
+                let item = feedList(index)
+                let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
+                
+                func mapDeferredHandler(_ handler: @escaping MenuActionHandler) -> UIActionHandler {
+                    return UIAction.deferredActionHandler { _ in
+                        handler(context)
+                    }
+                }
+                
+                var openInNewTab: UIAction {
+                    .init(title: Strings.openNewTabButtonTitle, handler: mapDeferredHandler(openInNewTabHandler))
+                }
+                
+                var openInNewPrivateTab: UIAction {
+                    .init(title: Strings.openNewPrivateTabButtonTitle, handler: mapDeferredHandler(openInNewPrivateTabHandler))
+                }
+                
+                var hideContent: UIAction {
+                    // FIXME: Localize, Get our own image
+                    .init(title: "Hide Content", image: UIImage(systemName: "eye.slash.fill"), handler: mapDeferredHandler(hideHandler))
+                }
+                
+                var blockSource: UIAction {
+                    // FIXME: Localize, Get our own image
+                    .init(title: "Block Source", image: UIImage(systemName: "nosign"), attributes: .destructive, handler: mapDeferredHandler(blockSourceHandler))
+                }
+                
+                let openActions: [UIAction] = [
+                    openInNewTab,
+                    // Brave Today is only available in normal tabs, so this isn't technically required
+                    // but good to be on the safe side
+                    !PrivateBrowsingManager.shared.isPrivateBrowsing ?
+                        openInNewPrivateTab :
+                    nil
+                    ].compactMap({ $0 })
+                let manageActions = [
+                    hideContent,
+                    blockSource
+                ]
+                
+                return UIMenu(title: item.content.title, children: [
+                    UIMenu(title: "", options: [.displayInline], children: openActions),
+                    UIMenu(title: "", options: [.displayInline], children: manageActions)
+                ])
+            }
+        }
+        return .init { index -> FeedItemMenu.LegacyContext? in
+            let item = feedList(index)
+            let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
+            
+            func mapHandler(_ handler: @escaping MenuActionHandler) -> UIAlertActionCallback {
+                return { _ in
+                    handler(context)
+                }
+            }
+            
+            var openInNewTab: UIAlertAction {
+                .init(title: Strings.openNewTabButtonTitle, style: .default, handler: mapHandler(openInNewTabHandler))
+            }
+            
+            var openInNewPrivateTab: UIAlertAction {
+                .init(title: Strings.openNewPrivateTabButtonTitle, style: .default, handler: mapHandler(openInNewPrivateTabHandler))
+            }
+            
+            var hideContent: UIAlertAction {
+                // FIXME: Localize
+                .init(title: "Hide Content", style: .default, handler: mapHandler(hideHandler))
+            }
+            
+            var blockSource: UIAlertAction {
+                // FIXME: Localize
+                .init(title: "Block Source", style: .destructive, handler: mapHandler(blockSourceHandler))
+            }
+            
+            let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
+            
+            return .init(
+                title: item.content.title,
+                message: nil,
+                actions: [
+                    openInNewTab,
+                    // Brave Today is only available in normal tabs, so this isn't technically required
+                    // but good to be on the safe side
+                    !PrivateBrowsingManager.shared.isPrivateBrowsing ?
+                        openInNewPrivateTab :
+                    nil,
+                    hideContent,
+                    blockSource,
+                    cancel
+                ].compactMap { $0 }
+            )
+        }
+    }
+    
+    private func contextMenu(for item: FeedItem, card: FeedCard, indexPath: IndexPath) -> FeedItemMenu {
+        return contextMenu(from: { _  in item }, card: card, indexPath: indexPath)
     }
 }
 
