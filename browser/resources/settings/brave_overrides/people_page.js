@@ -32,6 +32,24 @@ RegisterPolymerTemplateModifications({
       console.error('[Brave Settings Overrides] People Page cannot find signin template')
       return
     }
+    const syncSetupLink = templateContent.querySelector('#sync-setup')
+    if (syncSetupLink) {
+      syncSetupLink.remove()
+    } else {
+      console.error('[Brave Settings Overrides] People Page cannot find sync-setup link')
+    }
+    const syncSetup = templateContent.querySelector('template[is=dom-if][route-path="/syncSetup"]')
+    if (syncSetup) {
+      syncSetup.remove()
+    } else {
+      console.error('[Brave Settings Overrides] People Page cannot find syncSetup template')
+    }
+    const syncSetupAdvanced = templateContent.querySelector('template[is=dom-if][route-path="/syncSetup/advanced"]')
+    if (syncSetupAdvanced) {
+      syncSetupAdvanced.remove()
+    } else {
+      console.error('[Brave Settings Overrides] People Page cannot find syncSetup/advanced template')
+    }
     // always show the template content
     signinTemplate.setAttribute('if', 'true')
     // remove the google account button
