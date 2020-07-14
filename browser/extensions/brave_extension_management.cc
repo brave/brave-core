@@ -11,6 +11,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/tor/pref_names.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
@@ -21,37 +22,30 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 namespace extensions {
 
 BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
     : ExtensionManagement(profile),
-      extension_registry_observer_(this),
-      profile_(profile) {
+      extension_registry_observer_(this) {
   extension_registry_observer_.Add(ExtensionRegistry::Get(
         static_cast<content::BrowserContext*>(profile)));
   providers_.push_back(
       std::make_unique<BraveExtensionProvider>());
-  CleanupBraveExtensions();
-  RegisterBraveExtensions();
+  local_state_pref_change_registrar_.Init(g_browser_process->local_state());
+  local_state_pref_change_registrar_.Add(
+      tor::prefs::kTorDisabled,
+      base::BindRepeating(&BraveExtensionManagement::OnTorDisabledChanged,
+                          base::Unretained(this)));
+  // BrowserPolicyConnector enforce policy earlier than this constructor so we
+  // have to manully cleanup tor executable when tor is disabled by gpo
+  OnTorDisabledChanged();
 }
 
 BraveExtensionManagement::~BraveExtensionManagement() {
-}
-
-void BraveExtensionManagement::RegisterBraveExtensions() {
-#if BUILDFLAG(ENABLE_TOR)
-  if (!profile_->AsTestingProfile())
-    g_brave_browser_process->tor_client_updater()->Register();
-#endif
-}
-
-void BraveExtensionManagement::CleanupBraveExtensions() {
-#if BUILDFLAG(ENABLE_TOR)
-  if (!profile_->AsTestingProfile())
-    g_brave_browser_process->tor_client_updater()->Cleanup();
-#endif
+  local_state_pref_change_registrar_.RemoveAll();
 }
 
 void BraveExtensionManagement::OnExtensionLoaded(
@@ -67,6 +61,13 @@ void BraveExtensionManagement::OnExtensionUnloaded(
     UnloadedExtensionReason reason) {
   if (extension->id() == ipfs_companion_extension_id)
     pref_service_->SetBoolean(kIPFSCompanionEnabled, false);
+}
+
+void BraveExtensionManagement::OnTorDisabledChanged() {
+#if BUILDFLAG(ENABLE_TOR)
+  if (tor::TorProfileService::IsTorDisabled())
+    g_brave_browser_process->tor_client_updater()->Cleanup();
+#endif
 }
 
 }  // namespace extensions

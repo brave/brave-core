@@ -52,6 +52,7 @@ class BraveTorClientUpdater : public BraveComponent {
   ~BraveTorClientUpdater() override;
 
   void Register();
+  void Unregister();
   void Cleanup();
   base::FilePath GetExecutablePath() const;
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() {

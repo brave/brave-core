@@ -38,6 +38,7 @@ class TorProfileServiceImpl : public TorProfileService,
   // TorProfileService:
   void SetNewTorCircuit(content::WebContents* web_contents) override;
   std::unique_ptr<net::ProxyConfigService> CreateProxyConfigService() override;
+  bool IsTorLaunched() override;
 
   void KillTor();
 

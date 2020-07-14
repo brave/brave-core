@@ -61,12 +61,29 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
 // static
 bool TorProfileService::IsTorDisabled() {
+  if (!g_brave_browser_process)
+    return false;
   return g_browser_process->local_state()->GetBoolean(prefs::kTorDisabled);
 }
 
 // static
 void TorProfileService::SetTorDisabled(bool disabled) {
-  g_browser_process->local_state()->SetBoolean(prefs::kTorDisabled, disabled);
+  if (g_brave_browser_process)
+    g_browser_process->local_state()->SetBoolean(prefs::kTorDisabled, disabled);
+}
+
+// static
+void TorProfileService::RegisterTorClientUpdater() {
+  if (g_brave_browser_process) {
+    g_brave_browser_process->tor_client_updater()->Register();
+  }
+}
+
+// static
+void TorProfileService::UnregisterTorClientUpdater() {
+  if (g_brave_browser_process) {
+    g_brave_browser_process->tor_client_updater()->Unregister();
+  }
 }
 
 std::string TorProfileService::GetTorProxyURI() {
