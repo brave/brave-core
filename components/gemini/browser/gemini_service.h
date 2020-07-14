@@ -89,6 +89,11 @@ class GeminiService : public KeyedService {
                     const int quote_id,
                     ExecuteOrderCallback callback);
 
+  void SetClientIdForTest(const std::string& client_id);
+  void SetClientSecretForTest(const std::string& client_secret);
+  void SetOAuthHostForTest(const std::string& oauth_host);
+  void SetApiHostForTest(const std::string& api_host);
+
  private:
   base::SequencedTaskRunner* io_task_runner();
 
@@ -138,11 +143,18 @@ class GeminiService : public KeyedService {
   std::string refresh_token_;
   std::string client_id_;
   std::string client_secret_;
+  std::string oauth_host_;
+  std::string api_host_;
 
   content::BrowserContext* context_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;
   base::WeakPtrFactory<GeminiService> weak_factory_;
+
+  FRIEND_TEST_ALL_PREFIXES(GeminiAPIBrowserTest, GetOAuthClientURL);
+  FRIEND_TEST_ALL_PREFIXES(GeminiAPIBrowserTest,
+      SetAndGetAuthTokenRevokesPref);
+  friend class GeminiAPIBrowserTest;
 
   DISALLOW_COPY_AND_ASSIGN(GeminiService);
 };

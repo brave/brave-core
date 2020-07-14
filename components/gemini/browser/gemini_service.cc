@@ -116,6 +116,8 @@ namespace {
 GeminiService::GeminiService(content::BrowserContext* context)
     : client_id_(GEMINI_CLIENT_ID),
       client_secret_(GEMINI_CLIENT_SECRET),
+      oauth_host_(oauth_host),
+      api_host_(api_host),
       context_(context),
       url_loader_factory_(
           content::BrowserContext::GetDefaultStoragePartition(context_)
@@ -144,7 +146,7 @@ void GeminiService::SetAuthToken(const std::string& auth_token) {
 bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
-  GURL base_url = GetURLWithPath(oauth_host, oauth_path_access_token);
+  GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
 
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("client_id", client_id_);
@@ -177,7 +179,7 @@ bool GeminiService::GetTickerPrice(const std::string& asset,
                                    GetTickerPriceCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnTickerPrice,
       base::Unretained(this), std::move(callback));
-  GURL url = GetURLWithPath(api_host,
+  GURL url = GetURLWithPath(api_host_,
     std::string(api_path_ticker_price) + "/" + asset);
   return OAuthRequest(
       url, "GET", "", std::move(internal_callback), true, false, "");
@@ -197,7 +199,7 @@ void GeminiService::OnTickerPrice(
 bool GeminiService::GetAccountBalances(GetAccountBalancesCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetAccountBalances,
       base::Unretained(this), std::move(callback));
-  GURL url = GetURLWithPath(api_host, api_path_account_balances);
+  GURL url = GetURLWithPath(api_host_, api_path_account_balances);
   return OAuthRequest(
       url, "POST", "", std::move(internal_callback), true, true, "");
 }
@@ -222,7 +224,7 @@ bool GeminiService::GetDepositInfo(const std::string& asset,
   std::string endpoint =
     std::string(api_path_account_addresses) + "/" + asset;
   std::string payload = GetEncodedRequestPayload(endpoint);
-  GURL url = GetURLWithPath(api_host, endpoint);
+  GURL url = GetURLWithPath(api_host_, endpoint);
   return OAuthRequest(
       url, "POST", "", std::move(internal_callback), true, true, payload);
 }
@@ -243,7 +245,7 @@ bool GeminiService::RevokeAccessToken(RevokeAccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnRevokeAccessToken,
       base::Unretained(this), std::move(callback));
   std::string payload = GetEncodedRequestPayload(api_path_revoke_token);
-  GURL url = GetURLWithPath(api_host, api_path_revoke_token);
+  GURL url = GetURLWithPath(api_host_, api_path_revoke_token);
   return OAuthRequest(
       url, "POST", "", std::move(internal_callback), true, true, payload);
 }
@@ -268,7 +270,7 @@ bool GeminiService::GetOrderQuote(const std::string& side,
   std::string endpoint =
     std::string(api_path_get_quote) + "/" + side + "/" + symbol;
   std::string payload = GetEncodedRequestPayload(endpoint);
-  GURL url = GetURLWithPath(api_host, endpoint);
+  GURL url = GetURLWithPath(api_host_, endpoint);
   url = net::AppendQueryParameter(url, "totalSpend", spend);
   return OAuthRequest(
       url, "GET", "", std::move(internal_callback), true, true, payload);
@@ -301,7 +303,7 @@ bool GeminiService::ExecuteOrder(const std::string& symbol,
       base::Unretained(this), std::move(callback));
   std::string payload = GetEncodedExecutePayload(
     symbol, side, quantity, price, fee, quote_id);
-  GURL url = GetURLWithPath(api_host, api_path_execute_quote);
+  GURL url = GetURLWithPath(api_host_, api_path_execute_quote);
   return OAuthRequest(
       url, "POST", "", std::move(internal_callback), true, true, payload);
 }
@@ -467,4 +469,20 @@ base::SequencedTaskRunner* GeminiService::io_task_runner() {
          base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   }
   return io_task_runner_.get();
+}
+
+void GeminiService::SetClientIdForTest(const std::string& client_id) {
+  client_id_ = client_id;
+}
+
+void GeminiService::SetClientSecretForTest(const std::string& client_secret) {
+  client_secret_ = client_secret;
+}
+
+void GeminiService::SetOAuthHostForTest(const std::string& oauth_host) {
+  oauth_host_ = oauth_host;
+}
+
+void GeminiService::SetApiHostForTest(const std::string& api_host) {
+  api_host_ = api_host;
 }

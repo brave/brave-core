@@ -626,6 +626,12 @@ test("brave_browser_tests") {
     ]
   }
 
+  if (gemini_enabled) {
+    sources += [
+      "//brave/components/gemini/browser/gemini_service_browsertest.cc",
+    ]
+  }
+
   if (brave_rewards_enabled) {
     sources += [
       "//brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.cc",
