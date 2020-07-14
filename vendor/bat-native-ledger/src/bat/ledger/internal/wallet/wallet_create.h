@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_WALLET_CREATE_H_
-#define BRAVELEDGER_WALLET_CREATE_H_
+#ifndef BRAVELEDGER_WALLET_WALLET_CREATE_H_
+#define BRAVELEDGER_WALLET_WALLET_CREATE_H_
 
 #include <stdint.h>
 
@@ -21,11 +21,10 @@ class LedgerImpl;
 
 namespace braveledger_wallet {
 
-class Create {
+class WalletCreate {
  public:
-  explicit Create(bat_ledger::LedgerImpl* ledger);
-
-  ~Create();
+  explicit WalletCreate(bat_ledger::LedgerImpl* ledger);
+  ~WalletCreate();
 
   void Start(ledger::ResultCallback callback);
 
@@ -45,4 +44,4 @@ class Create {
 };
 
 }  // namespace braveledger_wallet
-#endif  // BRAVELEDGER_WALLET_CREATE_H_
+#endif  // BRAVELEDGER_WALLET_WALLET_CREATE_H_

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/wallet/balance.h"
+#include "bat/ledger/internal/wallet/wallet_balance.h"
 
 #include <map>
 #include <string>
@@ -26,19 +26,19 @@ using std::placeholders::_3;
 
 namespace braveledger_wallet {
 
-Balance::Balance(bat_ledger::LedgerImpl* ledger) :
+WalletBalance::WalletBalance(bat_ledger::LedgerImpl* ledger) :
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
     ledger_(ledger) {
 }
 
-Balance::~Balance() {
+WalletBalance::~WalletBalance() {
 }
 
-void Balance::Fetch(ledger::FetchBalanceCallback callback) {
+void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   // if we don't have user funds in anon card anymore
   // we can skip balance server ping
   if (!braveledger_state::GetFetchOldBalanceEnabled(ledger_)) {
-    auto balance = ledger::Balance::New();
+    auto balance = ledger::WalletBalance::New();
     balance->user_funds = "0";
     GetUnblindedTokens(std::move(balance), callback);
     return;
@@ -53,14 +53,14 @@ void Balance::Fetch(ledger::FetchBalanceCallback callback) {
       path,
       PREFIX_V2,
       braveledger_request_util::ServerTypes::BALANCE);
-  auto load_callback = std::bind(&Balance::OnFetch,
+  auto load_callback = std::bind(&WalletBalance::OnFetch,
                             this,
                             _1,
                             callback);
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, load_callback);
 }
 
-void Balance::OnFetch(
+void WalletBalance::OnFetch(
     const ledger::UrlResponse& response,
     ledger::FetchBalanceCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
@@ -83,7 +83,7 @@ void Balance::OnFetch(
   GetUnblindedTokens(std::move(balance), callback);
 }
 
-void Balance::GetUnblindedTokens(
+void WalletBalance::GetUnblindedTokens(
     ledger::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
   if (!balance) {
@@ -92,7 +92,7 @@ void Balance::GetUnblindedTokens(
     return;
   }
 
-  auto tokens_callback = std::bind(&Balance::OnGetUnblindedTokens,
+  auto tokens_callback = std::bind(&WalletBalance::OnGetUnblindedTokens,
       this,
       *balance,
       callback,
@@ -102,11 +102,11 @@ void Balance::GetUnblindedTokens(
       tokens_callback);
 }
 
-void Balance::OnGetUnblindedTokens(
+void WalletBalance::OnGetUnblindedTokens(
     ledger::Balance info,
     ledger::FetchBalanceCallback callback,
     ledger::UnblindedTokenList list) {
-  auto info_ptr = ledger::Balance::New(info);
+  auto info_ptr = ledger::WalletBalance::New(info);
   double total = 0.0;
   for (auto & item : list) {
     total+=item->value;
@@ -116,7 +116,7 @@ void Balance::OnGetUnblindedTokens(
   ExternalWallets(std::move(info_ptr), callback);
 }
 
-void Balance::ExternalWallets(
+void WalletBalance::ExternalWallets(
     ledger::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
   if (!balance) {
@@ -132,7 +132,7 @@ void Balance::ExternalWallets(
     return;
   }
 
-  auto uphold_callback = std::bind(&Balance::OnUpholdFetchBalance,
+  auto uphold_callback = std::bind(&WalletBalance::OnUpholdFetchBalance,
                                    this,
                                    *balance,
                                    callback,
@@ -142,11 +142,11 @@ void Balance::ExternalWallets(
   uphold_->FetchBalance(uphold_callback);
 }
 
-void Balance::OnUpholdFetchBalance(ledger::Balance info,
+void WalletBalance::OnUpholdFetchBalance(ledger::Balance info,
                                    ledger::FetchBalanceCallback callback,
                                    ledger::Result result,
                                    double balance) {
-  ledger::BalancePtr info_ptr = ledger::Balance::New(info);
+  ledger::BalancePtr info_ptr = ledger::WalletBalance::New(info);
 
   if (result == ledger::Result::LEDGER_ERROR) {
     BLOG(0, "Can't get uphold balance");
@@ -160,7 +160,7 @@ void Balance::OnUpholdFetchBalance(ledger::Balance info,
 }
 
 // static
-double Balance::GetPerWalletBalance(
+double WalletBalance::GetPerWalletBalance(
     const std::string& type,
     base::flat_map<std::string, double> wallets) {
   if (type.empty() || wallets.size() == 0) {

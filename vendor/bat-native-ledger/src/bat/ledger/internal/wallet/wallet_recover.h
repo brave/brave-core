@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_WALLET_RECOVER_H_
-#define BRAVELEDGER_WALLET_RECOVER_H_
+#ifndef BRAVELEDGER_WALLET_WALLET_RECOVER_H_
+#define BRAVELEDGER_WALLET_WALLET_RECOVER_H_
 
 #include <stdint.h>
 
@@ -21,11 +21,10 @@ class LedgerImpl;
 
 namespace braveledger_wallet {
 
-class Recover {
+class WalletRecover {
  public:
-  explicit Recover(bat_ledger::LedgerImpl* ledger);
-
-  ~Recover();
+  explicit WalletRecover(bat_ledger::LedgerImpl* ledger);
+  ~WalletRecover();
 
   void Start(
       const std::string& pass_phrase,
@@ -60,4 +59,4 @@ class Recover {
 };
 
 }  // namespace braveledger_wallet
-#endif  // BRAVELEDGER_WALLET_RECOVER_H_
+#endif  // BRAVELEDGER_WALLET_WALLET_RECOVER_H_

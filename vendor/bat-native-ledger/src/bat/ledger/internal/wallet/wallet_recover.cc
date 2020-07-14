@@ -2,8 +2,7 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-#include "bat/ledger/internal/wallet/recover.h"
+#include "bat/ledger/internal/wallet/wallet_recover.h"
 
 #include <utility>
 
@@ -25,14 +24,14 @@ using std::placeholders::_3;
 
 namespace braveledger_wallet {
 
-Recover::Recover(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+WalletRecover::WalletRecover(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
   initAnonize();
 }
 
-Recover::~Recover() {
+WalletRecover::~WalletRecover() {
 }
 
-void Recover::Start(
+void WalletRecover::Start(
     const std::string& pass_phrase,
     ledger::RecoverWalletCallback callback) {
   if (pass_phrase.empty()) {
@@ -50,7 +49,7 @@ void Recover::Start(
 
   if (phrase_split.size() == 16) {
     // use niceware for legacy wallet passphrases
-    ledger_->LoadNicewareList(std::bind(&Recover::OnNicewareListLoaded,
+    ledger_->LoadNicewareList(std::bind(&WalletRecover::OnNicewareListLoaded,
         this,
         pass_phrase,
         _1,
@@ -70,7 +69,7 @@ void Recover::Start(
   ContinueRecover(result, &written, newSeed, std::move(callback));
 }
 
-void Recover::OnNicewareListLoaded(
+void WalletRecover::OnNicewareListLoaded(
     const std::string& pass_phrase,
     ledger::Result result,
     const std::string& data,
@@ -106,7 +105,7 @@ void Recover::OnNicewareListLoaded(
   return;
 }
 
-void Recover::ContinueRecover(
+void WalletRecover::ContinueRecover(
     int result,
     size_t* written,
     const std::vector<uint8_t>& newSeed,
@@ -125,7 +124,7 @@ void Recover::ContinueRecover(
                                                &newSecretKey);
   std::string publicKeyHex = braveledger_bat_helper::uint8ToHex(publicKey);
 
-  auto on_load = std::bind(&Recover::RecoverWalletPublicKeyCallback,
+  auto on_load = std::bind(&WalletRecover::RecoverWalletPublicKeyCallback,
                             this,
                             _1,
                             newSeed,
@@ -136,7 +135,7 @@ void Recover::ContinueRecover(
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, std::move(on_load));
 }
 
-void Recover::RecoverWalletPublicKeyCallback(
+void WalletRecover::RecoverWalletPublicKeyCallback(
     const ledger::UrlResponse& response,
     const std::vector<uint8_t>& new_seed,
     ledger::RecoverWalletCallback callback) {
@@ -150,7 +149,7 @@ void Recover::RecoverWalletPublicKeyCallback(
     return;
   }
 
-  auto recover_callback = std::bind(&Recover::RecoverWalletCallback,
+  auto recover_callback = std::bind(&WalletRecover::RecoverWalletCallback,
       this,
       _1,
       recovery_id,
@@ -161,7 +160,7 @@ void Recover::RecoverWalletPublicKeyCallback(
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, recover_callback);
 }
 
-void Recover::RecoverWalletCallback(
+void WalletRecover::RecoverWalletCallback(
     const ledger::UrlResponse& response,
     const std::string& recovery_id,
     const std::vector<uint8_t>& new_seed,

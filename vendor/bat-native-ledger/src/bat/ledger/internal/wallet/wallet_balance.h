@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_WALLET_BALANCE_H_
-#define BRAVELEDGER_WALLET_BALANCE_H_
+#ifndef BRAVELEDGER_WALLET_WALLET_BALANCE_H_
+#define BRAVELEDGER_WALLET_WALLET_BALANCE_H_
 
 #include <stdint.h>
 
@@ -24,11 +24,10 @@ class Uphold;
 
 namespace braveledger_wallet {
 
-class Balance {
+class WalletBalance {
  public:
-  explicit Balance(bat_ledger::LedgerImpl* ledger);
-
-  ~Balance();
+  explicit WalletBalance(bat_ledger::LedgerImpl* ledger);
+  ~WalletBalance();
 
   void Fetch(ledger::FetchBalanceCallback callback);
 
@@ -64,4 +63,4 @@ class Balance {
 };
 
 }  // namespace braveledger_wallet
-#endif  // BRAVELEDGER_WALLET_BALANCE_H_
+#endif  // BRAVELEDGER_WALLET_WALLET_BALANCE_H_

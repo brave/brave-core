@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/wallet/create.h"
+#include "bat/ledger/internal/wallet/wallet_create.h"
 
 #include <utility>
 
@@ -95,15 +95,15 @@ std::string StringifyRequestCredentials(
 
 namespace braveledger_wallet {
 
-Create::Create(bat_ledger::LedgerImpl* ledger) :
+WalletCreate::WalletCreate(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger) {
   initAnonize();
 }
 
-Create::~Create() = default;
+WalletCreate::~Create() = default;
 
-void Create::Start(ledger::ResultCallback callback) {
-  auto req_callback = std::bind(&Create::RequestCredentialsCallback,
+void WalletCreate::Start(ledger::ResultCallback callback) {
+  auto req_callback = std::bind(&WalletCreate::RequestCredentialsCallback,
       this,
       _1,
       std::move(callback));
@@ -114,7 +114,7 @@ void Create::Start(ledger::ResultCallback callback) {
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, req_callback);
 }
 
-void Create::RequestCredentialsCallback(
+void WalletCreate::RequestCredentialsCallback(
       const ledger::UrlResponse& response,
       ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
@@ -196,7 +196,7 @@ void Create::RequestCredentialsCallback(
   // We should use simple callbacks on iOS
   const std::string url = braveledger_request_util::BuildUrl(
       (std::string)REGISTER_PERSONA + "/" + user_id, PREFIX_V2);
-  auto on_register = std::bind(&Create::RegisterPersonaCallback,
+  auto on_register = std::bind(&WalletCreate::RegisterPersonaCallback,
       this,
       _1,
       user_id,
@@ -213,7 +213,7 @@ void Create::RequestCredentialsCallback(
       on_register);
 }
 
-void Create::RegisterPersonaCallback(
+void WalletCreate::RegisterPersonaCallback(
       const ledger::UrlResponse& response,
       const std::string& user_id,
       const std::string& pre_flight,

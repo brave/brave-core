@@ -95,9 +95,9 @@ class Wallet {
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<Create> create_;
-  std::unique_ptr<Recover> recover_;
-  std::unique_ptr<Balance> balance_;
+  std::unique_ptr<WalletCreate> create_;
+  std::unique_ptr<WalletRecover> recover_;
+  std::unique_ptr<WalletBalance> balance_;
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
 };
 

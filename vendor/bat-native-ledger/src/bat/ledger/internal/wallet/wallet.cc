@@ -24,9 +24,9 @@
 #include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
-#include "bat/ledger/internal/wallet/balance.h"
-#include "bat/ledger/internal/wallet/create.h"
-#include "bat/ledger/internal/wallet/recover.h"
+#include "bat/ledger/internal/wallet/wallet_balance.h"
+#include "bat/ledger/internal/wallet/wallet_create.h"
+#include "bat/ledger/internal/wallet/wallet_recover.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 
 #include "wally_bip39.h"  // NOLINT
@@ -39,9 +39,9 @@ namespace braveledger_wallet {
 
 Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
-    create_(std::make_unique<Create>(ledger)),
-    recover_(std::make_unique<Recover>(ledger)),
-    balance_(std::make_unique<Balance>(ledger)),
+    create_(std::make_unique<WalletCreate>(ledger)),
+    recover_(std::make_unique<WalletRecover>(ledger)),
+    balance_(std::make_unique<WalletBalance>(ledger)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)) {
 }
 
