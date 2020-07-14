@@ -38,6 +38,7 @@
 #include "components/translate/core/browser/translate_prefs.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
+#include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -191,6 +192,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kWebUIDarkMode.name,
       blink::features::kPrefetchPrivacyChanges.name,
       features::kReducedReferrerGranularity.name,
+#if defined(OS_WIN)
+      features::kWinrtGeolocationImplementation.name,
+#endif
   };
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
