@@ -41,7 +41,7 @@ public class DAU {
     
     public init(date: Date = Date()) {
         today = date
-        apiKey = (Bundle.main.infoDictionary?[Self.apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespaces)
+        apiKey = (Bundle.main.infoDictionary?[Self.apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
