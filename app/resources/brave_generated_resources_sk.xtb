@@ -73,6 +73,9 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="7390783310074170337">Štandardné zobrazenie</translation>
 <translation id="130615081792797568">Jednoduché zobrazenie</translation>
 <translation id="2360360976480535628">Rozšírené zobrazenie</translation>
+<translation id="2133317862976486547">Sledovania &amp;amp; blokovanie reklám</translation>
+<translation id="4385707520896576447">Blokovanie súborov Cookies</translation>
+<translation id="4978786495456601191">Blokovanie používania odtlačkov prstov</translation>
 <translation id="3570081523466826008">Inovujte pripojenia na HTTPS</translation>
 <translation id="4824468494729001999">Blokovať skripty</translation>
 <translation id="519861640102428255">Pozrieť &amp; Pocítiť</translation>
@@ -81,9 +84,12 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
+<translation id="4078738236287221428">Agresívne</translation>
 <translation id="7740996059027112821">Štandardne</translation>
 <translation id="4176463684765177261">Deaktivované</translation>
+<translation id="5770288601196774623">Iba na viacerých stránkach</translation>
 <translation id="3587482841069643663">Všetko</translation>
+<translation id="5533533363827555308">Striktne, môže prerušiť činnosť stránok</translation>
 <translation id="8942080017911802454">Zásady manipulácie WebRTC IP</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
 <translation id="8798099450830957504">Predvolené</translation>
@@ -91,12 +97,22 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="5825943197137337319">Iba štandardné verejné rozhranie</translation>
 <translation id="1689062823386843231">Deaktivovať nezastupované UDP</translation>
 <translation id="8502234992433094996">Pre push správy použite služby Google</translation>
+<translation id="5565355416171743213">Začnite používať synchronizáciu</translation>
 <translation id="4332558599726753990">Nastavenie synchronizácie</translation>
+<translation id="2187778349654214731">Na spustenie budete potrebovať nainštalovaný Brave na všetkých zariadeniach, ktoré plánujete synchronizovať. Potom ich bezpečne prepojte so synchronizačným kódom.</translation>
+<translation id="7530575064080939974">Spravujte svoje synchronizované zariadenia</translation>
+<translation id="7575156386943878014">Správca synchronizácie</translation>
 <translation id="1755198127524719638">Synchronizovať nastavenia</translation>
 <translation id="7558480201297099157">Spravujte informácie, ktoré chcete synchronizovať medzi zariadeniami. Tieto nastavenia platia iba na tomto zariadení.</translation>
+<translation id="7731928563672901833">Zoznam zariadení</translation>
 <translation id="28332161031213248">Nižšie uvedený zoznam zariadení obsahuje všetky zariadenia v synchronizačnom reťazci. Každé zariadenie môže byť spravované z akéhokoľvek iného zariadenia.</translation>
 <translation id="1313162974556054106">Názov zariadenia</translation>
+<translation id="923757506389336140">&lt;ph meno="MENO_ZARIADENIA"&gt;$1&lt;ex&gt;môj-počítač-1&lt;/ex&gt;&lt;/ph&gt; (Toto zariadenie)</translation>
+<translation id="3686835020221422649">Posledné aktívne</translation>
+<translation id="2569646144216067185">Počet slov: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Zkopírováno!</translation>
+<translation id="8802630444265810662">QR kód, ktorý sa má naskenovať pomocou mobilného zariadenia, aby sa preniesol Váš synchronizačný kód</translation>
+<translation id="6221331245829088299">Pri zobrazovaní kódu QR sa vyskytla chyba. Obnovte stránku a skúste to znova.</translation>
 <translation id="298546024891487702">Ak chcete začať, na všetkých zariadeniach, ktoré plánujete synchronizovať, si budete musieť nainštalovať Brave. Ak ich chcete spojiť, spustite reťazec synchronizácie, ktorý použijete na bezpečné prepojenie všetkých vašich zariadení.</translation>
 <translation id="6200528822592747640">Spustiť nový synchronizačný reťazec</translation>
 <translation id="5184726904895809379">Mám kód synchronizácie</translation>
@@ -116,7 +132,12 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="5734745018569675530">Do nižšie uvedeného formulára zadajte poskytnutý slovný kód pre synchronizačný reťazec.</translation>
 <translation id="1061533051865606843">Pridať nové zariadenie</translation>
 <translation id="5093410893656857925">Vybrať druh zariadenia</translation>
+<translation id="4581190919849683048">S ktorým typom zariadenia by ste chceli synchronizovať?</translation>
+<translation id="4112587618563511470">Neplatný synchronizačný kód, skontrolujte ho a skúste to znova.</translation>
 <translation id="2339730291919608488">Ukončiť synchronizačný reťazec</translation>
+<translation id="115699408012835975">Ak resetujete synchronizáciu, budete musieť znova synchronizovať kód z iného zariadenia, aby ste ho mohli synchronizovať. Naozaj chcete pokračovať?</translation>
+<translation id="3396347744975515056">Synchronizácia aplikácie Brave bola vylepšená a potrebuje inštaláciu</translation>
+<translation id="7473245612074035141">Začať inštaláciu</translation>
 <translation id="6696935187608454456">Rady a tipy</translation>
 <translation id="2775956301559569472">Zobraziť výzvu Wayback Machine na stránkach  404</translation>
 <translation id="1807246157184219062">Svetlý</translation>

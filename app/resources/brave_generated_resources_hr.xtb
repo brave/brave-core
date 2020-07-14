@@ -73,6 +73,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="7390783310074170337">Zadani prikaz</translation>
 <translation id="130615081792797568">Jednostavni prikaz</translation>
 <translation id="2360360976480535628">Napredni prikaz</translation>
+<translation id="2133317862976486547">Blokiranje elementa za praćenje i oglasa</translation>
+<translation id="4385707520896576447">Blokiranje kolačića</translation>
+<translation id="4978786495456601191">Blokiranje pritiskanja prstima</translation>
 <translation id="3570081523466826008">Nadogradi veze na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="519861640102428255">Pogledajte &amp; osjetite</translation>
@@ -81,9 +84,12 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="863171915776379000">Dopusti prijave u društvenu mrežu Facebook i ugrađene objave</translation>
 <translation id="5165042248369837294">Dopusti ugrađene objave na društvenoj mreži Twitter</translation>
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
+<translation id="4078738236287221428">Agresivno</translation>
 <translation id="7740996059027112821">Standardno</translation>
 <translation id="4176463684765177261">Onemogućeno</translation>
+<translation id="5770288601196774623">Samo na više mjesta</translation>
 <translation id="3587482841069643663">Sve</translation>
+<translation id="5533533363827555308">Striktno, mogu se rušiti mrežna mjesta</translation>
 <translation id="8942080017911802454">Pravila obrade IP-a sučelja WebRTC</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="8798099450830957504">Zadano</translation>
@@ -91,12 +97,22 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="5825943197137337319">Samo zadano javno sučelje</translation>
 <translation id="1689062823386843231">Onemogući UDP bez korištenja proxyja</translation>
 <translation id="8502234992433094996">Upotrijebi Googleove usluge za prosljeđivanje poruka</translation>
+<translation id="5565355416171743213">Započni upotrebljavati sinkronizaciju</translation>
 <translation id="4332558599726753990">Postavljanje sinkronizacije</translation>
+<translation id="2187778349654214731">Za početak preglednik Brave treba se instalirati na svim uređajima koje planirate sinkronizirati. Zatim ih sigurno povežite uporabom kôda za sinkronizaciju.</translation>
+<translation id="7530575064080939974">Upravljajte svojim sinkroniziranim uređajima</translation>
+<translation id="7575156386943878014">Upravitelj sinkronizacije</translation>
 <translation id="1755198127524719638">Postavke sinkronizacije</translation>
 <translation id="7558480201297099157">Odlučite koje informacije želite sinkronizirati među uređajima. Ove postavke se odnose samo na trenutni uređaj.</translation>
+<translation id="7731928563672901833">Popis uređaja</translation>
 <translation id="28332161031213248">Popis uređaja u nastavku uključuje sve uređaje u vašem lancu sinkronizacije. Svakim uređajem moguće je upravljati s bilo kojeg drugog uređaja.</translation>
 <translation id="1313162974556054106">Naziv uređaja</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (ovaj uređaj)</translation>
+<translation id="3686835020221422649">Zadnje aktivno</translation>
+<translation id="2569646144216067185">Broj riječi: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Kopirano!</translation>
+<translation id="8802630444265810662">Kôd QR koji se treba skenirati mobilnim uređajem radi prenošenja vašeg kôda za skeniranje</translation>
+<translation id="6221331245829088299">Došlo je do greške prilikom prikazivanja kôda QR. Osvježite i pokušajte ponovno.</translation>
 <translation id="298546024891487702">Za početak preglednik Brave treba biti instaliran na svim uređajima koje planirate sinkronizirati. Kako biste ih spojili, pokrenite lanac sinkronizacije kojim ćete na siguran način spojiti sve svoje uređaje.</translation>
 <translation id="6200528822592747640">Započnite novi lanac sinkronizacije</translation>
 <translation id="5184726904895809379">Imam šifru za sinkronizaciju</translation>
@@ -116,7 +132,12 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="5734745018569675530">Upišite svoju isporučenu šifru lanca sinkronizacije u obrazac koji se nalazi u nastavku.</translation>
 <translation id="1061533051865606843">Dodaj novi uređaj</translation>
 <translation id="5093410893656857925">Odabrati tip uređaja</translation>
+<translation id="4581190919849683048">Na koju vrstu uređaja biste željeli sinkronizirati?</translation>
+<translation id="4112587618563511470">Nevaljani kôd za sinkronizaciju. Provjerite i pokušajte ponovno.</translation>
 <translation id="2339730291919608488">Napustite lanac sinkronizacije</translation>
+<translation id="115699408012835975">Ako poništite stavku Sinkroniziranje, trebate ponovno upisati kôd za sinkronizaciju na drugom uređaju kako biste sinkronizirali s njim. Sigurno želite nastaviti?</translation>
+<translation id="3396347744975515056">Značajka Sinkronizacije preglednika Brave ažurirana je i potrebno ju je postaviti</translation>
+<translation id="7473245612074035141">Počni postavljanje</translation>
 <translation id="6696935187608454456">Savjeti za pomoć</translation>
 <translation id="2775956301559569472">Prikaži upit Wayback Machine na stranicama 404</translation>
 <translation id="1807246157184219062">Svjetlo</translation>

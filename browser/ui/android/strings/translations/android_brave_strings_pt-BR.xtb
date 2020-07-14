@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Evita que o navegador capture digitais</translation>
 <translation id="7459000603787995422">Fechar as guias ao sair</translation>
 <translation id="1680858055899097121">Não mantenha abas entre as sessões de navegação</translation>
+<translation id="453601949003770390">Rastreadores &amp;amp; anúncios bloqueados</translation>
 <translation id="6761596877474675418">Dados Salvos</translation>
 <translation id="3034562645284925177">Estimativa de Tempo Economizado</translation>
 <translation id="6572660632052512096">Modo Desktop</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Pular</translation>
 <translation id="316832010181763471">Onboarding para mecanismos de busca</translation>
 <translation id="986879628471635371">Solução de problemas para onboarding</translation>
+<translation id="5808759341041733958">Escolher motor de pesquisa padrão</translation>
 <translation id="4428458837269935199">Para uma experiência de pesquisa com maior privacidade, experimente o DuckDuckGo.</translation>
 <translation id="5317780077021120954">Salvar</translation>
 <translation id="7053983685419859001">Bloquear</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">Anúncios invasivos e rastreadores para que você possa navegar sem ser seguido pela internet.</translation>
 <translation id="8537217141725709400">Ganhe <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
+<translation id="5870330605209713397">ao visualizar anúncios que respeitam a sua privacidade e apoiar os seus sites e criadores favoritos por padrão.</translation>
 <translation id="821707262661492716">para ver anúncios que respeitam sua privacidade.</translation>
+<translation id="8267692331246948056">Ao tocar em Ganhar &amp;amp; Dar, você concorda com os</translation>
 <translation id="4281844954008187215">Termos de Serviço</translation>
 <translation id="6871397658902960384">Começar a navegar</translation>
 <translation id="454386012157232640">Eu não vejo um anúncio</translation>
 <translation id="1448877943847791441">Brave mostrará seu primeiro anúncio em</translation>
+<translation id="4410793187232041318">Agora você ganhará um token da Brave Ads.</translation>
 <translation id="6511854390690723657">Esse é o seu primeiro anúncio Brave. Toque para saber mais.</translation>
 <translation id="4930714375720679147">Ativar</translation>
 <translation id="2453860139492968684">Concluir</translation>
+<translation id="7983303953939627894">Ganhar &amp;amp; Dar</translation>
+<translation id="48520986898237073">Prosseguir para a carteira</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="3570367516044491911">Definir como navegador padrão</translation>
@@ -172,14 +179,19 @@ até que eles sejam verificados ou até que 90 dias se passem.</translation>
 <translation id="222883304157347087">(esse dispositivo)</translation>
 <translation id="8193724030871339658">OUTROS DISPOSITIVOS NA CADEIA</translation>
 <translation id="279635009973773843">CARREGANDO DISPOSITIVOS...</translation>
+<translation id="6394333525003604181">SAINDO DA CADEIA DE SINCRONIZAÇÃO...</translation>
+<translation id="1604429341565715601">A configuração de sincronização está em progresso. Tente redefini-la mais tarde</translation>
 <translation id="2569646144216067185">Quantidade de palavras: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Número de palavras incorreto</translation>
+<translation id="7507533586185621084">Código de sincronização errado</translation>
+<translation id="8284063834901328650">Código QR de sincronização errado</translation>
 <translation id="3149880132460839085">Sincronização do Brave</translation>
 <translation id="3680755684186855422">A Sincronização do Brave permite que você sincronize dados de favoritos de modo privado entre seus navegadores Brave em vários dispositivos.</translation>
 <translation id="3735228155296883311">Basta escanear o código a partir da sua cadeia de sincronização que foi criada em outro dispositivo. Ou gere uma nova cadeia de sincronização.</translation>
 <translation id="4690880825349994619">Usando um dispositivo já sincronizado, abra as configurações do Brave e navegue até Configurações &amp;gt Sincronização. Escolha "Adicionar Dispositivo" e, em seguida, escaneei o código QR exibido na tela.</translation>
 <translation id="5241263629636958324">Copiado para a área de transferência</translation>
 <translation id="5817918615728894473">Parear</translation>
+<translation id="3394474617110693560">Categorias</translation>
 <translation id="2004365171440701679">Remover esse dispositivo</translation>
 <translation id="1178128181015923849">Tem certeza de que deseja deletar o dispositivo '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Escanear ou digitar código de sincronização</translation>
@@ -320,4 +332,11 @@ até que eles sejam verificados ou até que 90 dias se passem.</translation>
 <translation id="76550953340008122">Agradecemos por informar aos desenvolvedores do Brave que há algo errado com este site. Faremos nosso melhor para corrigir isso!</translation>
 <translation id="650318023204990401">Controles avançados</translation>
 <translation id="7182293319417450928">Um saldo mínimo de 25 BAT é necessário para confirmar.</translation>
+<translation id="1275664486910646411">Mostrar melhores sites na conclusão automática</translation>
+<translation id="5516010970279932133">Exibir sites sugeridos na conclusão automática</translation>
+<translation id="5370478469168390143">Salvar dados online</translation>
+<translation id="1118508688433541158">Navegue com rapidez e bloqueie anúncios com o Brave</translation>
+<translation id="915835519491851291">Você bloqueou alguns rastreadores &amp;amp; anúncios.</translation>
+<translation id="3286927551967858325">Dê uma olhada</translation>
+<translation id="2929661208078053609">Bom!</translation>
 </translationbundle>

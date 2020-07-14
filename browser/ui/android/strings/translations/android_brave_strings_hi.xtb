@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">फिंगरप्रिंटिंग से ब्राउज़र को रोकता है</translation>
 <translation id="7459000603787995422">बाहर निकलने पर टैब को बंद करें</translation>
 <translation id="1680858055899097121">ब्राउज़िंग सत्रों के बीच टैब बनाएं न रखें</translation>
+<translation id="453601949003770390">ट्रैकर्स &amp;amp; विज्ञापन ब्लॉक किए गए हैं</translation>
 <translation id="6761596877474675418">डेटा सहेजा गया</translation>
 <translation id="3034562645284925177">अनुमानित बचाया समय</translation>
 <translation id="6572660632052512096">डेस्कटॉप मोड</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">अभी नहीं</translation>
 <translation id="316832010181763471">खोज इंजन की शुरुआत</translation>
 <translation id="986879628471635371">शुरुआत करने में समस्या निवारण</translation>
+<translation id="5808759341041733958">डिफ़ॉल्ट खोज इंजन चुनें</translation>
 <translation id="4428458837269935199">और अधिक निजी अनुभव के लिए DuckDuckGo आज़माएँ।</translation>
 <translation id="5317780077021120954">सेव करें</translation>
 <translation id="7053983685419859001">ब्लॉक करें</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">गोपनीयता-लंघनकारी विज्ञापन और ट्रैकर्स जिससे आप वेब में कहीं भी पीछा किए गए बगैर ब्राउज़ कर सकें।</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/>s अर्जित करें</translation>
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
+<translation id="5870330605209713397">गोपनीयता-सम्बंधित विज्ञापन देखकर और डिफ़ॉल्ट रूप से अपने पसंदीदा साइटों और निर्माताओं का समर्थन करें।</translation>
 <translation id="821707262661492716">गोपनीयता-सम्मान रखने वाले विज्ञापन देखने के लिए।</translation>
+<translation id="8267692331246948056">कमाएँ amp;amp; और दें पर टैप करके आप सहमत होते हैं</translation>
 <translation id="4281844954008187215">सेवा की शर्तें</translation>
 <translation id="6871397658902960384">ब्राउज़ करना शुरू करें</translation>
 <translation id="454386012157232640">मैंने कोई विज्ञापन नहीं देखा</translation>
 <translation id="1448877943847791441">में Brave आपके पहले विज्ञापन को दिखाएगा</translation>
+<translation id="4410793187232041318">अब आप Brave विज्ञापनों से टोकन अर्जित करेंगे।</translation>
 <translation id="6511854390690723657">यह आपका पहला Brave विज्ञापन है। और जानने के लिए टैप करें।</translation>
 <translation id="4930714375720679147">चालू करें</translation>
 <translation id="2453860139492968684">समाप्त करें</translation>
+<translation id="7983303953939627894">कमाएँ amp;amp; और दें</translation>
+<translation id="48520986898237073">वॉलेट में योगदान करें</translation>
 <translation id="2359808026110333948">जारी रखें</translation>
 <translation id="7658239707568436148">रद्द करें</translation>
 <translation id="3570367516044491911">डिफ़ॉल्ट ब्राउज़र के रूप में सेट करें</translation>
@@ -171,14 +178,19 @@
 <translation id="222883304157347087">(यह डिवाइस)</translation>
 <translation id="8193724030871339658">चेन पर अन्य डिवाइस</translation>
 <translation id="279635009973773843">डिवाइस लोड हो रही हैं...</translation>
+<translation id="6394333525003604181">सिंक चेन छोड़ना...</translation>
+<translation id="1604429341565715601">सिंक सेटअप जारी है, इसे बाद में रिसेट करने का प्रयास करें</translation>
 <translation id="2569646144216067185">शब्द गणना:  <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">शब्दों की गलत संख्या</translation>
+<translation id="7507533586185621084">गलत सिंक कोड</translation>
+<translation id="8284063834901328650">गलत सिंक QR कोड</translation>
 <translation id="3149880132460839085">Brave सिंक</translation>
 <translation id="3680755684186855422">Brave सिंक आपको बुकमार्क डेटा को निजी रूप से आपके Brave ब्राउज़र से आपके विभिन्न डिवाइस पर सिंक करने देता है।</translation>
 <translation id="3735228155296883311">बस अपने सिंक चेन से कोड को स्कैन करें जिसे आपने किसी अन्य डिवाइस पर बनाया था। या एक नई सिंक श्रृंखला की शुरुआत करें।</translation>
 <translation id="4690880825349994619">मौजूदा सिंक किए गए डिवाइस का उपयोग करते हुए, Brave  सेटिंग्स को खोलें और सेटिंग &gt; सिंक पर जाएं। "डिवाइस जोड़ें" को चुनें और स्क्रीन पर प्रदर्शित QR कोड को स्कैन करें।</translation>
 <translation id="5241263629636958324">क्लिपबोर्ड में कॉपी किया गया</translation>
 <translation id="5817918615728894473">युग्‍मित करें</translation>
+<translation id="3394474617110693560">श्रेणियाँ</translation>
 <translation id="2004365171440701679">इस डिवाइस को हटाएं</translation>
 <translation id="1178128181015923849">क्या आप वास्तव में डिवाइस '<ph name="DEVICE_NAME"/>' को हटाना चाहते हैं?</translation>
 <translation id="7745082336226088126">सिंक कोड को स्कैन या दर्ज करें</translation>
@@ -319,4 +331,11 @@
 <translation id="76550953340008122">इस साइट की समस्या के बारे में Brave के डेवलपर्स को बताने के लिए धन्यवाद। हम इसे ठीक करने की पूरी कोशिश करेंगे!</translation>
 <translation id="650318023204990401">उन्नत कंट्रोल</translation>
 <translation id="7182293319417450928">सत्यापित करने के लिए न्यूनतम 25 BAT होना आवश्यक है।</translation>
+<translation id="1275664486910646411">ऑटोकम्पलीट में शीर्ष साइटें दिखाएँ</translation>
+<translation id="5516010970279932133">ऑटोकम्पलीट में सुझाए गए साइट दिखाएँ</translation>
+<translation id="5370478469168390143">डेटा ऑनलाइन सेव करें</translation>
+<translation id="1118508688433541158">Brave के साथ तेजी से ब्राउज़ करें और विज्ञापन ब्लॉक करें</translation>
+<translation id="915835519491851291">आपने अभी कुछ ट्रैकर्स amp;amp; और विज्ञापनों को ब्लॉक किया है।</translation>
+<translation id="3286927551967858325">एक बार देखें</translation>
+<translation id="2929661208078053609">अच्छा है!</translation>
 </translationbundle>

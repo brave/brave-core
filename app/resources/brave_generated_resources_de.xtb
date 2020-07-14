@@ -73,6 +73,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="7390783310074170337">Standardansicht</translation>
 <translation id="130615081792797568">Einfache Ansicht</translation>
 <translation id="2360360976480535628">Erweiterte Ansicht</translation>
+<translation id="2133317862976486547">Tracker &amp;amp; Anzeigenblockierung</translation>
 <translation id="4385707520896576447">Cookie-Blockierung</translation>
 <translation id="4978786495456601191">Fingerprinting-Blockierung</translation>
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
@@ -83,9 +84,12 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
+<translation id="4078738236287221428">Aggressiv</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="4176463684765177261">Deaktiviert</translation>
+<translation id="5770288601196774623">Nur Website-übergreifend</translation>
 <translation id="3587482841069643663">Alle</translation>
+<translation id="5533533363827555308">Streng, könnte Websites kaputtmachen</translation>
 <translation id="8942080017911802454">WebRTC-IP-Handhabungs-Richtlinie</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>
@@ -93,12 +97,22 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5825943197137337319">Nur die voreingestellte öffentliche Benutzerschnittstelle</translation>
 <translation id="1689062823386843231">Nicht-proxisiertes UDP deaktivieren</translation>
 <translation id="8502234992433094996">Verwenden Sie Google Services für Push-Nachrichtenübermittlung</translation>
+<translation id="5565355416171743213">Synchronisierung starten</translation>
 <translation id="4332558599726753990">Sync-Einrichtung</translation>
+<translation id="2187778349654214731">Zunächst müssen Sie Brave auf allen Geräten installieren, die Sie synchronisieren möchten. Danach verknüpfen Sie sie sicher über einen Synchronisierungecode.</translation>
+<translation id="7530575064080939974">Verwalten Sie Ihre synchronisierten Geräte</translation>
+<translation id="7575156386943878014">Synchronisierungsmanager</translation>
 <translation id="1755198127524719638">Sync-Einstellungen</translation>
 <translation id="7558480201297099157">Hier können Sie einstellen, welche Informationen Sie zwischen Geräten synchronisieren möchten. Diese Einstellungen betreffen nur dieses Gerät.</translation>
+<translation id="7731928563672901833">Geräteliste</translation>
 <translation id="28332161031213248">Die nachfolgende Geräteliste beinhaltet alle Geräte in Ihrer Synchronisierungskette. Jedes Gerät kann von jedem anderen Gerät aus verwaltet werden.</translation>
 <translation id="1313162974556054106">Gerätename</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (dieses Gerät)</translation>
+<translation id="3686835020221422649">Zuletzt aktiv</translation>
+<translation id="2569646144216067185">Wortzahl: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Kopiert!</translation>
+<translation id="8802630444265810662">Ein QR-Code, der mit einem Mobilgerät gelesen wird, damit Ihr Snychronisierungscode übertragen werden kann</translation>
+<translation id="6221331245829088299">Bei der Anzeige des QR-Codes ist ein Fehler aufgetreten. Bitte aktualisieren Sie und versuchen Sie es erneut.</translation>
 <translation id="298546024891487702">Um zu beginnen, müssen Sie Brave auf allen Geräten installiert haben, die Sie zu synchronisieren beabsichtigen. Um sie alle zu verketten, beginnen Sie eine Synchronisierungskette, die Sie verwenden, um alle Ihre Geräte auf sichere Weise miteinander zu verknüpfen.</translation>
 <translation id="6200528822592747640">Eine neue Synchronisierungskette beginnen</translation>
 <translation id="5184726904895809379">Ich habe einen Synchronisierungscode</translation>
@@ -118,7 +132,12 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5734745018569675530">Geben Sie Ihre bereitgestellten Synchronisierungsketten-Codewörter in das nachfolgende Formular ein.</translation>
 <translation id="1061533051865606843">Neues Gerät hinzufügen</translation>
 <translation id="5093410893656857925">Geräteart wählen</translation>
+<translation id="4581190919849683048">Mit welcher Art Gerät möchten Sie synchronisieren?</translation>
+<translation id="4112587618563511470">Ungültiger Synchronisierungscode. Bitte prüfen Sie die Eingabe und versuchen Sie es erneut.</translation>
 <translation id="2339730291919608488">Sync-Kette verlassen</translation>
+<translation id="115699408012835975">Wenn Sie Sync zurücksetzen, müssen Sie, wenn Sie mit einem anderen Gerät synchronisieren möchten, erneut einen Synchronisierungscode von diesem eingeben. Sind Sie sicher, dass Sie fortfahren möchten?</translation>
+<translation id="3396347744975515056">Brave Sync wurde aufgerüstet und macht eine Einrichtung notwendig</translation>
+<translation id="7473245612074035141">Einrichtung beginnen</translation>
 <translation id="6696935187608454456">Hilfreiche Tipps</translation>
 <translation id="2775956301559569472">Wayback-Machine-Hinweis auf 404-Seiten anzeigen</translation>
 <translation id="1807246157184219062">Hell</translation>

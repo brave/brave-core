@@ -74,6 +74,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="7390783310074170337">Vista per defecte</translation>
 <translation id="130615081792797568">Vista senzilla</translation>
 <translation id="2360360976480535628">Vista avançada</translation>
+<translation id="2133317862976486547">Seguidors &amp;amp; bloquejant anuncis</translation>
+<translation id="4385707520896576447">Bloqueig de galetes</translation>
+<translation id="4978786495456601191">Bloqueig d'empremtes digitals</translation>
 <translation id="3570081523466826008">Actualitzar connexions a HTTPS</translation>
 <translation id="4824468494729001999">Bloquejar scripts</translation>
 <translation id="519861640102428255">Mireu &amp; Sentiu</translation>
@@ -82,9 +85,12 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="863171915776379000">Permet l'inici de sessió i publicacions incrustades de Facebook</translation>
 <translation id="5165042248369837294">Permet tuits incrustats de Twitter</translation>
 <translation id="958971637207126733">Permet publicacions incrustades de LinkedIn</translation>
+<translation id="4078738236287221428">Agresiu</translation>
 <translation id="7740996059027112821">Estàndard</translation>
 <translation id="4176463684765177261">Desactivat</translation>
+<translation id="5770288601196774623">Només llocs creuats</translation>
 <translation id="3587482841069643663">Tots</translation>
+<translation id="5533533363827555308">Estricte, pot ser que trenqui llocs</translation>
 <translation id="8942080017911802454">Política de gestió del WebRTC IP</translation>
 <translation id="6165508094623778733">Saber més</translation>
 <translation id="8798099450830957504">Predeterminat</translation>
@@ -92,12 +98,22 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="5825943197137337319">Només interfície pública predeterminada</translation>
 <translation id="1689062823386843231">Desactiva UDP que no sigui a través de proxy</translation>
 <translation id="8502234992433094996">Useu els Serveis de Google per a rebre Notificacions Emergents</translation>
+<translation id="5565355416171743213">Comenceu a utilitzar sincronització</translation>
 <translation id="4332558599726753990">Posada en marxa de la sincronització</translation>
+<translation id="2187778349654214731">Per començar, necessitareu instal·lar Brave a tots els dispositius que planegeu sincronitzar. Després, enllaçar-los de manera segura amb un codi de sincronització.</translation>
+<translation id="7530575064080939974">Gestioneu els dispositius sincronitzats</translation>
+<translation id="7575156386943878014">Gestor de sincronització</translation>
 <translation id="1755198127524719638">Configuració de sincronització</translation>
 <translation id="7558480201297099157">Gestiona la informació que vols sincronitzar entre els dispositius. Aquesta configuració només tindrà efecte en aquest dispositiu.</translation>
+<translation id="7731928563672901833">Llista de dispositius</translation>
 <translation id="28332161031213248">La llista següent inclou tots els dispositius que tens a la teva cadena de sincronització. Cada dispositiu pot gestionar-se des de qualsevol altre dispositiu.</translation>
 <translation id="1313162974556054106">Nom del dispositiu</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Aquest Dispositiu)</translation>
+<translation id="3686835020221422649">Últim Actiu</translation>
+<translation id="2569646144216067185">Recompte de paraules: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">S'ha copiat!</translation>
+<translation id="8802630444265810662">S'ha d'escanejar un codi QR amb el dispositiu mòbil per a poder-vos transmetre el codi de sincronització</translation>
+<translation id="6221331245829088299">Hi ha hagut un error a l'hora d'ensenyar el codi QR, si us plau, refresqueu i torneu-ho a intentar.</translation>
 <translation id="298546024891487702">Per començar, necessitaràs tenir instal·lat Brave a tots els dispositius que tens la intenció de sincronitzar. Per encadenar-los, inicia una cadena de sincronització que faràs servir per enllaçar de forma segura tots els teus dispositius.</translation>
 <translation id="6200528822592747640">Iniciar una nova cadena de sincronització</translation>
 <translation id="5184726904895809379">Tinc un codi de sincronització</translation>
@@ -117,7 +133,12 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="5734745018569675530">Escriu en el formulari de sota les paraules del codi de cadena de sincronització proporcionat.</translation>
 <translation id="1061533051865606843">Afegir nou dispositiu</translation>
 <translation id="5093410893656857925">Tria el tipus de dispositiu</translation>
+<translation id="4581190919849683048">Amb quin tipus de dispositiu us agradaria sincronitzar?</translation>
+<translation id="4112587618563511470">Codi de sincronització invàlid, si us plau comproveu-ho i torneu-ho a intentar.</translation>
 <translation id="2339730291919608488">Deixa la cadena de sincronització</translation>
+<translation id="115699408012835975">Si restabliu la sincronització, haureu de tornar a introduir un codi de sincronització d'un altre dispositiu per a poder-lo sincronitzar. Esteu segurs que voleu continuar?</translation>
+<translation id="3396347744975515056">Brave Sync s'ha actualitzat i requereix configuració</translation>
+<translation id="7473245612074035141">Comenceu la Configuració</translation>
 <translation id="6696935187608454456">Ajuda i Recomanacions</translation>
 <translation id="2775956301559569472">Mostra el missatge de la Wayback Machine a 404 pàgines</translation>
 <translation id="1807246157184219062">Clar</translation>

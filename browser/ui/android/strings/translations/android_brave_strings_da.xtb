@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Forhindrer browser i fingeraftrykning</translation>
 <translation id="7459000603787995422">Luk faner ved udgang</translation>
 <translation id="1680858055899097121">Vedhold ikke faner mellem browsingsessioner</translation>
+<translation id="453601949003770390">Trackere &amp;amp; reklamer blokeret</translation>
 <translation id="6761596877474675418">Data gemt</translation>
 <translation id="3034562645284925177">Estimeret Sparet Tid</translation>
 <translation id="6572660632052512096">Computertilstand</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Spring over</translation>
 <translation id="316832010181763471">Introduktionsservice til søgemaskiner</translation>
 <translation id="986879628471635371">Onboarding for fejlfinding</translation>
+<translation id="5808759341041733958">Vælg standard-søgemaskine</translation>
 <translation id="4428458837269935199">Prøv DuckDuckGo for en mere privat søgeoplevelse.</translation>
 <translation id="5317780077021120954">Gem</translation>
 <translation id="7053983685419859001">Bloker</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">privatlivsinvaderende annoncer og trackere, så du kan browse uden at blive fulgt på nettet.</translation>
 <translation id="8537217141725709400">Tjen <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Belønninger</translation>
+<translation id="5870330605209713397">ved at se reklamer som respekterer dit privatliv og som standard støtte dine yndlingssider og -skabere.</translation>
 <translation id="821707262661492716">til at se annoncer, der respekterer privatlivets fred.</translation>
+<translation id="8267692331246948056">Når du trykker Tjen &amp;amp; giv, erklærer du dig enig i</translation>
 <translation id="4281844954008187215">Servicevilkår</translation>
 <translation id="6871397658902960384">Begynd at browse</translation>
 <translation id="454386012157232640">Jeg så ikke en annonce</translation>
 <translation id="1448877943847791441">Brave viser din første annonce i</translation>
+<translation id="4410793187232041318">Nu vil du tjene mønter fra Brave Ads</translation>
 <translation id="6511854390690723657">Dette er din første Brave-annonce. Tryk for at lære mere.</translation>
 <translation id="4930714375720679147">Aktivér</translation>
 <translation id="2453860139492968684">Udfør</translation>
+<translation id="7983303953939627894">Tjen &amp;amp; giv</translation>
+<translation id="48520986898237073">Fortsæt til tegnebog</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="7658239707568436148">Afbryd</translation>
 <translation id="3570367516044491911">Indstil som standardbrowser</translation>
@@ -173,14 +180,19 @@ måned...</translation>
 <translation id="222883304157347087">(denne enhed)</translation>
 <translation id="8193724030871339658">ANDRE ENHEDER PÅ KÆDE</translation>
 <translation id="279635009973773843">INDLÆSER ENHEDER</translation>
+<translation id="6394333525003604181">FORLADER SYNKRONISERINGSKÆDEN...</translation>
+<translation id="1604429341565715601">Opsætning af synkronisering er i gang, prøv at nulstille senere</translation>
 <translation id="2569646144216067185">Ordtælling: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Forkert antal ord</translation>
+<translation id="7507533586185621084">Forkert synkroniseringskode</translation>
+<translation id="8284063834901328650">Forkert QR-synkroniseringskode</translation>
 <translation id="3149880132460839085">Brave-synkronisering</translation>
 <translation id="3680755684186855422">Brave-synkronisering lader dig synkronisere bogmærkedata privat mellem dine Brave-browsers på dine diverse enheder.</translation>
 <translation id="3735228155296883311">Du skal blot scanne koden fra din synkroniseringskæde, som du oprettede på en anden enhed. Eller start en ny synkroniseringskæde.</translation>
 <translation id="4690880825349994619">Ved brug af eksisterende synkroniseret enhed, Åben Brave-indstillinger og naviger til Indstillinger &gt; Sync. Vælg "Tilføj enhed", og scan QR-koden, der vises på skærmen.</translation>
 <translation id="5241263629636958324">Kopieret til udklipsholder</translation>
 <translation id="5817918615728894473">Start parring</translation>
+<translation id="3394474617110693560">Kategorier</translation>
 <translation id="2004365171440701679">Fjern denne enhed</translation>
 <translation id="1178128181015923849">Er du sikker på, at du vil slette enhed <ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Scan eller indtast synkroniseringskode</translation>
@@ -321,4 +333,11 @@ måned...</translation>
 <translation id="76550953340008122">Tak for at du har fortalt Braves udviklere om at der er fejl på siden. Vi vil gøre vores bedste for at ordne fejlen!</translation>
 <translation id="650318023204990401">Avancerede kontroller</translation>
 <translation id="7182293319417450928">En minimumsaldo på 25 BAT er påkrævet for at verificere.</translation>
+<translation id="1275664486910646411">Vis øverste sider i auto-gennemførelse</translation>
+<translation id="5516010970279932133">Vis foreslåede sider i automatisk gennemførelse</translation>
+<translation id="5370478469168390143">Gem data online</translation>
+<translation id="1118508688433541158">Browse hurtigere og blokér reklamer med Brave</translation>
+<translation id="915835519491851291">Du har lige blokeret nogle trackere &amp;amp; reklamer.</translation>
+<translation id="3286927551967858325">Tag et kig</translation>
+<translation id="2929661208078053609">Super!</translation>
 </translationbundle>

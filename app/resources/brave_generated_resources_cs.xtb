@@ -99,6 +99,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8502234992433094996">Používat služby Google pro zprávy push</translation>
 <translation id="5565355416171743213">Začít používat synchronizaci</translation>
 <translation id="4332558599726753990">Nastavení synchronizace</translation>
+<translation id="2187778349654214731">Pro začátek si budete muset nainstalovat Brave na veškerá zařízení, která si chcete synchronizovat. Poté zařízení bezpečně propojíte pomocí synchronizačního kódu.</translation>
 <translation id="7530575064080939974">Správa synchronizovaných zařízení</translation>
 <translation id="7575156386943878014">Správce synchronizace</translation>
 <translation id="1755198127524719638">Nastavení synchronizace</translation>
@@ -106,9 +107,12 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="7731928563672901833">Seznam zařízení</translation>
 <translation id="28332161031213248">Níže uvedený seznam obsahuje veškerá zařízení ve vašem synchronizačním řetězci. Každé zařízení může být spravováno z jakéhokoliv jiného zařízení.</translation>
 <translation id="1313162974556054106">Název zařízení</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (toto zařízení)</translation>
 <translation id="3686835020221422649">Naposledy aktivní</translation>
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Zkopírováno!</translation>
+<translation id="8802630444265810662">QR kód, který je třeba naskenovat mobilním zařízením za účelem přenosu vašeho synchronizačního kódu</translation>
+<translation id="6221331245829088299">Při zobrazování QR kódu se vyskytla chyba. Obnovte a zkuste to znovu.</translation>
 <translation id="298546024891487702">Pro zahájení je potřeba mít Brave instalovaný na všech zařízeních, které máte v úmyslu synchronizovat. Pro jejich propojení spusťte synchronizační řetězec, který využijete k zabezpečenému vzájemnému propojení všech vašich zařízení.</translation>
 <translation id="6200528822592747640">Spustit nový synchronizační řetězec</translation>
 <translation id="5184726904895809379">Mám synchronizační kód</translation>
@@ -131,6 +135,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4581190919849683048">S jakým typem zařízení chcete synchronizovat?</translation>
 <translation id="4112587618563511470">Nesprávný synchronizační kód, prosím zkontrolujte správnost a zkuste synchronizaci znovu.</translation>
 <translation id="2339730291919608488">Opustit synchronizační skupinu</translation>
+<translation id="115699408012835975">Pokud resetujete synchronizaci, budete muset opětovně zadat synchronizační kód z jiného zařízení, abyste s ním provedli synchronizaci. Opravdu chcete pokračovat?</translation>
 <translation id="3396347744975515056">Brave synchronizace byla aktualizována a vyžaduje nové nastavení</translation>
 <translation id="7473245612074035141">Začít nastavení</translation>
 <translation id="6696935187608454456">Tipy nápovědy</translation>

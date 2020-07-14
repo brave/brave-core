@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Naršyklei neleidžia naudoti kontrolinių kodų</translation>
 <translation id="7459000603787995422">Išeinant uždaryti skirtukus</translation>
 <translation id="1680858055899097121">Nepalikti skirtukų tarp naršymo seansų</translation>
+<translation id="453601949003770390">Sekiklių ir reklamos blokavimas</translation>
 <translation id="6761596877474675418">Duomenys įrašyti</translation>
 <translation id="3034562645284925177">Numatomas sutaupytas laikas</translation>
 <translation id="6572660632052512096">Stalinio kompiuterio režimas</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Praleisti</translation>
 <translation id="316832010181763471">Paieškos sistemos įtraukimas</translation>
 <translation id="986879628471635371">Trikčių šalinimo įtraukimas</translation>
+<translation id="5808759341041733958">Pasirinkite numatytąją paieškos sistemą</translation>
 <translation id="4428458837269935199">Norėdami privatesnės paieškos sistemos, išmėginkite „DuckDuckGo“.</translation>
 <translation id="5317780077021120954">Išsaugoti</translation>
 <translation id="7053983685419859001">Blokuoti</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">Tai jūsų pirmoji „Brave“ reklama. Bakstelėkite, jei norite sužinoti daugiau.</translation>
 <translation id="4930714375720679147">Įjungti</translation>
 <translation id="2453860139492968684">Užbaigti</translation>
+<translation id="7983303953939627894">Uždirbkite ir perduokite</translation>
+<translation id="48520986898237073">Tęsti su pinigine</translation>
 <translation id="2359808026110333948">Tęsti</translation>
 <translation id="7658239707568436148">Atšaukti</translation>
 <translation id="3570367516044491911">Nustatyti kaip numatytąją naršyklę</translation>
@@ -169,14 +173,19 @@ dar nebuvo...</translation>
 <translation id="222883304157347087">(šis įrenginys)</translation>
 <translation id="8193724030871339658">KITI GRANDINĖS ĮRENGINIAI</translation>
 <translation id="279635009973773843">ĮKELIAMI ĮRENGINIAI...</translation>
+<translation id="6394333525003604181">PALIEKAMA SINCHRONIZAVIMO GRANDINĖ...</translation>
+<translation id="1604429341565715601">Vykdoma sinchronizavimo sąranka, bandykite ją nustatyti iš naujo vėliau</translation>
 <translation id="2569646144216067185">Žodžių skaičius: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Klaidingas žodžių skaičius</translation>
+<translation id="7507533586185621084">Klaidingas sinchronizavimo kodas</translation>
+<translation id="8284063834901328650">Klaidingas sinchronizavimo QR kodas</translation>
 <translation id="3149880132460839085">„Brave Sync“</translation>
 <translation id="3680755684186855422">„Brave Sync“ skirta žymių duomenims privačiai sinchronizuoti tarp įvairiuose įrenginiuose įdiegtų „Brave“ naršyklių.</translation>
 <translation id="3735228155296883311">Tiesiog nuskaitykite kodą iš savo sinchronizavimo grandinės, kurią sukūrėte kitame įrenginyje. Taip pat galite pradėti naują sinchronizavimo grandinę.</translation>
 <translation id="4690880825349994619">Naudodami esamą sinchronizuotą įrenginį, atverkite „Brave“ nuostatas ir nueikite į „Nuostatos“ &gt; „Sinchronizavimas“. Pasirinkite „Pridėti įrenginį“ ir nuskaitykite ekrane rodomą QR kodą.</translation>
 <translation id="5241263629636958324">Nukopijuota į iškarpinę</translation>
 <translation id="5817918615728894473">Susieti</translation>
+<translation id="3394474617110693560">Kategorijos</translation>
 <translation id="2004365171440701679">Pašalinti šį įrenginį</translation>
 <translation id="1178128181015923849">Ar tikrai norite panaikinti įrenginį „<ph name="DEVICE_NAME"/>“?</translation>
 <translation id="7745082336226088126">Nuskaitykite arba įveskite sinchronizavimo kodą</translation>
@@ -316,4 +325,11 @@ dar nebuvo...</translation>
 <translation id="76550953340008122">Dėkojame, kad pranešėte „Brave“ kūrėjams, jog su šia svetaine kažkas negerai. Pasistengsime ją sutvarkyti!</translation>
 <translation id="650318023204990401">Išplėstiniai valdikliai</translation>
 <translation id="7182293319417450928">Kad būtų galima patvirtinti, reikalingas ne mažesnis nei 25 BAT likutis.</translation>
+<translation id="1275664486910646411">Rodyti populiariausias svetaines automatiškai užpildant</translation>
+<translation id="5516010970279932133">Rodyti siūlomas svetaines automatiškai užpildant</translation>
+<translation id="5370478469168390143">Įrašyti duomenis internete</translation>
+<translation id="1118508688433541158">Naršykite sparčiau ir blokuokite reklamas naudodami „Brave“</translation>
+<translation id="915835519491851291">Ką tik užblokavote keletą sekiklių ir reklamų.</translation>
+<translation id="3286927551967858325">Pasižiūrėkite</translation>
+<translation id="2929661208078053609">Puiku!</translation>
 </translationbundle>

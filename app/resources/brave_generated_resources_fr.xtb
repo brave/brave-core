@@ -73,6 +73,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7390783310074170337">Vue par défaut</translation>
 <translation id="130615081792797568">Vue simple</translation>
 <translation id="2360360976480535628">Vue avancée</translation>
+<translation id="2133317862976486547">Blocage des pisteurs et annonces</translation>
+<translation id="4385707520896576447">Blocage des cookies</translation>
+<translation id="4978786495456601191">Blocage des empreintes digitales</translation>
 <translation id="3570081523466826008">Mettre à niveau les connexions vers HTTPS</translation>
 <translation id="4824468494729001999">Bloquer les scripts</translation>
 <translation id="519861640102428255">Apparence</translation>
@@ -81,9 +84,12 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
 <translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
+<translation id="4078738236287221428">Agressif</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="4176463684765177261">Désactivé</translation>
+<translation id="5770288601196774623">Uniquement intersites</translation>
 <translation id="3587482841069643663">Tous</translation>
+<translation id="5533533363827555308">Strict, peut casser les sites</translation>
 <translation id="8942080017911802454">Politique de gestion des adresses IP WebRTC</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="8798099450830957504">Par défaut</translation>
@@ -91,12 +97,22 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5825943197137337319">Interface publique par défaut uniquement</translation>
 <translation id="1689062823386843231">Désactiver l'UDP pas en proxy</translation>
 <translation id="8502234992433094996">Utilisez les services Google pour les messages push</translation>
+<translation id="5565355416171743213">Commencer à utiliser Sync</translation>
 <translation id="4332558599726753990">Synchroniser la configuration</translation>
+<translation id="2187778349654214731">Pour commencer, vous devrez installer Brave sur tous les appareils que vous prévoyez de synchroniser. Ensuite, vous devez les relier de manière sécurisée à l'aide d'un code de synchronisation.</translation>
+<translation id="7530575064080939974">Gérez vos appareils synchronisés</translation>
+<translation id="7575156386943878014">Gestionnaire Sync</translation>
 <translation id="1755198127524719638">Paramètres de synchronisation</translation>
 <translation id="7558480201297099157">Gérez les informations que vous souhaitez synchroniser entre les appareils. Ces paramètres ne concernent que cet appareil.</translation>
+<translation id="7731928563672901833">Liste des appareils</translation>
 <translation id="28332161031213248">La liste des appareils ci-dessous comprend tous les appareils de votre chaîne de synchronisation. Chaque appareil peut être géré à partir de n'importe quel autre appareil.</translation>
 <translation id="1313162974556054106">Nom de l'Appareil</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (cet appareil)</translation>
+<translation id="3686835020221422649">Dernière activité à</translation>
+<translation id="2569646144216067185">Nombre de mots : &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Copié!</translation>
+<translation id="8802630444265810662">Un code QR à scanner avec un appareil mobile afin de recevoir votre code de synchronisation</translation>
+<translation id="6221331245829088299">Une erreur est survenue lors de l'affichage du code QR. Veuillez rafraîchir la page et réessayer.</translation>
 <translation id="298546024891487702">Pour commencer, vous aurez besoin de Brave installé sur tous les appareils que vous prévoyez de synchroniser. Pour les enchaîner, démarrez une chaîne de synchronisation que vous utiliserez pour relier tous vos appareils en toute sécurité.</translation>
 <translation id="6200528822592747640">Démarrer une nouvelle chaîne de synchronisation</translation>
 <translation id="5184726904895809379">J'ai un code de synchronisation</translation>
@@ -116,7 +132,12 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5734745018569675530">Tapez vos mots de code de chaîne de synchronisation fournis dans le formulaire ci-dessous.</translation>
 <translation id="1061533051865606843">Ajouter un nouvel appareil</translation>
 <translation id="5093410893656857925">Choisir le type d'appareil</translation>
+<translation id="4581190919849683048">Sur quel type d'appareil souhaitez-vous vous synchroniser ?</translation>
+<translation id="4112587618563511470">Code de synchronisation invalide, veuillez le vérifier et réessayer.</translation>
 <translation id="2339730291919608488">Quitter la chaîne de synchronisation</translation>
+<translation id="115699408012835975">Si vous réinitialisez Sync, vous devrez saisir à nouveau un code de synchronisation provenant d'un autre appareil afin de vous synchroniser avec celui-ci. Êtes-vous sûr(e) de vouloir continuer ?</translation>
+<translation id="3396347744975515056">Brave Sync a été mis à jour et doit être configuré</translation>
+<translation id="7473245612074035141">Commencer la configuration</translation>
 <translation id="6696935187608454456">Conseils d'utilisation</translation>
 <translation id="2775956301559569472">Afficher l'invite Wayback Machine sur les pages 404</translation>
 <translation id="1807246157184219062">Léger</translation>

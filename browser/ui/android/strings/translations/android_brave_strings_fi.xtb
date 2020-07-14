@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Estää selaimen sormenjälkitunnistamisen</translation>
 <translation id="7459000603787995422">Sulje välilehdet poistuttaessa</translation>
 <translation id="1680858055899097121">Älä säilytä välilehtiä selausistuntojen välillä</translation>
+<translation id="453601949003770390">Seuraimet &amp;amp; mainokset estetty</translation>
 <translation id="6761596877474675418">Tiedot tallennettu</translation>
 <translation id="3034562645284925177">Arvioitu ajansäästö</translation>
 <translation id="6572660632052512096">Työpöytätila</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Ohita</translation>
 <translation id="316832010181763471">Perehdytys hakukoneeseen</translation>
 <translation id="986879628471635371">Perehdytysprosessin vianetsintä</translation>
+<translation id="5808759341041733958">Valitse oletusarvoinen hakukone</translation>
 <translation id="4428458837269935199">Kokeile DuckDuckGo'ta, jos kaipaat yksityisempää hakutapaa.</translation>
 <translation id="5317780077021120954">Tallenna</translation>
 <translation id="7053983685419859001">Estä</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">yksityisyyttäsi loukkaavat mainokset ja seurantaohjelmat, jotta voit selata verkkoa ilman, että sinua seurataan.</translation>
 <translation id="8537217141725709400">Ansaitse <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">katsomalla tietosuojaa kunnioittavia mainokaisa sekä tukemalla suosikkisivujasi ja kehittäjiäsi oletusarvoisesti.</translation>
 <translation id="821707262661492716">yksityisyyttäsi kunnioittavien mainosten näkemisestä.</translation>
+<translation id="8267692331246948056">Napauttamalla "Ansaitse &amp;amp; lahjoita" -painiketta ilmaiset hyväksyväsi</translation>
 <translation id="4281844954008187215">Palveluehdot</translation>
 <translation id="6871397658902960384">Aloita selaaminen</translation>
 <translation id="454386012157232640">En nähnyt mainosta</translation>
 <translation id="1448877943847791441">Brave näyttää ensimmäisen mainoksesi</translation>
+<translation id="4410793187232041318">Voit nyt ansaita tunnuksia Braven mainoksista.</translation>
 <translation id="6511854390690723657">Tämä on ensimmäinen Brave-mainoksesi. Napauta tätä saadaksesi lisätietoja.</translation>
 <translation id="4930714375720679147">Ota käyttöön</translation>
 <translation id="2453860139492968684">Valmis</translation>
+<translation id="7983303953939627894">Ansaitse &amp;amp; lahjoita</translation>
+<translation id="48520986898237073">Jatka lompakkoon</translation>
 <translation id="2359808026110333948">Jatka</translation>
 <translation id="7658239707568436148">Peruuta</translation>
 <translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
@@ -175,14 +182,19 @@ tapahtumia…</translation>
 <translation id="222883304157347087">(tämä laite)</translation>
 <translation id="8193724030871339658">MUUT KETJUSSA OLEVAT LAITTEET</translation>
 <translation id="279635009973773843">LAITTEITA LADATAAN…</translation>
+<translation id="6394333525003604181">POISTUTAAN SYNKRONOINTIKETJUSTA...</translation>
+<translation id="1604429341565715601">Synkronoinnin asennus on käynnissä, yritä käynnistää myöhemmin uudelleen</translation>
 <translation id="2569646144216067185">Sanamäärä: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Sanojen lukumäärä on virheellinen</translation>
+<translation id="7507533586185621084">Väärä synkronointikoodi</translation>
+<translation id="8284063834901328650">Väärä synkronointiruutukoodi</translation>
 <translation id="3149880132460839085">Brave-synkronointi</translation>
 <translation id="3680755684186855422">Brave-synkronosointi mahdollistaa kirjanmerkkien synkronointidatan yksityisesti Brave-selaintesi eri laitteiden välillä.</translation>
 <translation id="3735228155296883311">Skannaa koodi synkronointiketjustasi, jonka loit toisella laitteella. Voit myös aloittaa uuden synkronointiketjun.</translation>
 <translation id="4690880825349994619">Avaa aiemmin synkronoitua laitetta käyttäen Braven asetukset ja siirry kohtaan Asetukset &gt; Synkronoi. Valitse "Lisää laite" ja lue näytölle ilmestyvä QR-koodi.</translation>
 <translation id="5241263629636958324">Kopioitu leikepöydälle</translation>
 <translation id="5817918615728894473">Muodosta laitepari</translation>
+<translation id="3394474617110693560">Kategoriat</translation>
 <translation id="2004365171440701679">Poista tämä laite</translation>
 <translation id="1178128181015923849">Haluatko varmasti poistaa laitteen "<ph name="DEVICE_NAME"/>"?</translation>
 <translation id="7745082336226088126">Lue tai syötä synkronointikoodi</translation>
@@ -323,4 +335,11 @@ tapahtumia…</translation>
 <translation id="76550953340008122">Toit Braven kehittäjien tietoon, että tällä sivustolla on jotakin vialla. Kiitos siitä! Teemme parhaamme korjataksemme asian.</translation>
 <translation id="650318023204990401">Edistyneet kontrollit</translation>
 <translation id="7182293319417450928">Vahvistaminen vaatii vähintään 25 BAT:n minimisaldon</translation>
+<translation id="1275664486910646411">Näytä pääsivustot automaattitäydennyksessä</translation>
+<translation id="5516010970279932133">Näytä ehdotetut sivut automaattitäydennyksessä</translation>
+<translation id="5370478469168390143">Tallenna tiedot verkossa</translation>
+<translation id="1118508688433541158">Selaa nopeammin ja estä mainoksia Braven avulla</translation>
+<translation id="915835519491851291">Estit juuri jotkin seuraimet &amp;amp; mainokset.</translation>
+<translation id="3286927551967858325">Käy katsomassa</translation>
+<translation id="2929661208078053609">Hienoa!</translation>
 </translationbundle>

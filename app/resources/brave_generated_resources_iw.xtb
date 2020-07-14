@@ -74,6 +74,9 @@
 <translation id="7390783310074170337">תצוגת ברירת מחדל</translation>
 <translation id="130615081792797568">תצוגה רגילה</translation>
 <translation id="2360360976480535628">תצוגה מתקדמת</translation>
+<translation id="2133317862976486547">חסימת עוקבים &amp;amp; פרסומות</translation>
+<translation id="4385707520896576447">חסימת קבצי עוגייה</translation>
+<translation id="4978786495456601191">חסימת טביעות אצבע</translation>
 <translation id="3570081523466826008">שדרג חיבורים ל-HTTPS</translation>
 <translation id="4824468494729001999">חסום סקריפטים</translation>
 <translation id="519861640102428255">מראה  &amp; תחושה</translation>
@@ -82,9 +85,12 @@
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
+<translation id="4078738236287221428">אגרסיבי</translation>
 <translation id="7740996059027112821">רגילה</translation>
 <translation id="4176463684765177261">מושבת</translation>
+<translation id="5770288601196774623">מרובה-אתרים בלבד</translation>
 <translation id="3587482841069643663">הכל</translation>
+<translation id="5533533363827555308">מחמיר, עלול לשבש פעולה תקינה של אתרים</translation>
 <translation id="8942080017911802454">WebRTC IP מדיניות תפעול</translation>
 <translation id="6165508094623778733">למדו עוד</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
@@ -92,12 +98,22 @@
 <translation id="5825943197137337319">ברירת המחדל של הממשק הציבורי בלבד</translation>
 <translation id="1689062823386843231">השבתת UDP ללא פרוקסי</translation>
 <translation id="8502234992433094996">השתמש בשירותי Google עבור הודעות דחיפה (Push)</translation>
+<translation id="5565355416171743213">התחל להשתמש בסנכרון</translation>
 <translation id="4332558599726753990">הגדרות סנכרון</translation>
+<translation id="2187778349654214731">על מנת להתחיל, עליך להתקין את Brave בכל המכשירים שהנך מתכננ/ת לסנכרן. לאחר מכן, קשר/י אותם יחד באופן מאובטח עם קוד סנכרון.</translation>
+<translation id="7530575064080939974">נהל/י את המכשירים המסונכרנים שלך</translation>
+<translation id="7575156386943878014">מנהל הסנכרון</translation>
 <translation id="1755198127524719638">הגדרות סנכרון</translation>
 <translation id="7558480201297099157">נהל/י את המידע שברצונך לסנכרן בין מכשירים. הגדרות אלה משפיעות על מכשיר זה בלבד.</translation>
+<translation id="7731928563672901833">רשימת מכשירים</translation>
 <translation id="28332161031213248">רשימת ההתקנים שלהלן כוללת את כל ההתקנים בשרשרת הסנכרון שלכם. כל מכשיר יכול להיות מנוהל מכל מכשיר אחר.</translation>
 <translation id="1313162974556054106">שם התקן</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (מכשיר זה)</translation>
+<translation id="3686835020221422649">פעיל אחרון</translation>
+<translation id="2569646144216067185">מספר מילים: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">הועתק!</translation>
+<translation id="8802630444265810662">קוד QR לסריקה באמצעות מכשיר נייד על מנת להעביר את קוד הסנכרון שלך</translation>
+<translation id="6221331245829088299">אירעה שגיאה בהצגת קוד ה-QR, נא לרענן ולנסות שוב.</translation>
 <translation id="298546024891487702">כדי להתחיל, תצטרכו להתקין את Brave בכל המכשירים שאתם מתכננים לסנכרן. כדי לחבר את המכשירים, הפעילו שרשרת סנכרון שבה תשתמשו כדי לקשר את כל המכשירים שלכם בצורה מאובטחת.</translation>
 <translation id="6200528822592747640">התחילו שרשרת סנכרון חדשה</translation>
 <translation id="5184726904895809379">יש לי קוד סנכרון</translation>
@@ -117,7 +133,12 @@
 <translation id="5734745018569675530">הקלידו את מילות הקוד של שרשרת הסנכרון שקיבלתם, בטופס שלהלן.</translation>
 <translation id="1061533051865606843">הוסף התקן חדש</translation>
 <translation id="5093410893656857925">בחרו סוג מכשיר</translation>
+<translation id="4581190919849683048">עם איזה סוג מכשיר ברצונך לסנכרן?</translation>
+<translation id="4112587618563511470">קוד סנכרון לא חוקי, נא לבדוק ולנסות שוב.</translation>
 <translation id="2339730291919608488">השאר שרשרת סנכרון</translation>
+<translation id="115699408012835975">אם תאפס/י את הסנכרון, יהיה עליך להזין מחדש קוד סנכרון ממכשיר אחר על מנת לסנכרן באמצעותו. האם הנך בטוח/ה שברצונך להמשיך?</translation>
+<translation id="3396347744975515056">Brave Sync שודרג ודורש התקנה</translation>
+<translation id="7473245612074035141">התחל התקנה</translation>
 <translation id="6696935187608454456">טיפים לעזרה</translation>
 <translation id="2775956301559569472">הצג הודעת Wayback Machine בדפי 404</translation>
 <translation id="1807246157184219062">אור</translation>

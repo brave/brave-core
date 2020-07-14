@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">Numatytasis rodinys</translation>
 <translation id="130615081792797568">Paprastas rodinys</translation>
 <translation id="2360360976480535628">Išplėstinis rodinys</translation>
+<translation id="2133317862976486547">Sekiklių ir reklamos blokavimas</translation>
+<translation id="4385707520896576447">Slapukų blokavimas</translation>
+<translation id="4978786495456601191">Kontrolinių kodų kūrimo blokavimas</translation>
 <translation id="3570081523466826008">Pakeisti ryšius į HTTPS</translation>
 <translation id="4824468494729001999">Blokuoti scenarijus</translation>
 <translation id="519861640102428255">Išvaizda ir turinys</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
+<translation id="4078738236287221428">Agresyvus</translation>
 <translation id="7740996059027112821">Standartinis</translation>
 <translation id="4176463684765177261">Pasyvinta</translation>
+<translation id="5770288601196774623">Tik kelių svetainių</translation>
 <translation id="3587482841069643663">Visi</translation>
+<translation id="5533533363827555308">Griežtai, gali neveikti svetainės</translation>
 <translation id="8942080017911802454">„WebRTC“ IP tvarkymo politika</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="8798099450830957504">Numatytasis</translation>
@@ -91,12 +97,22 @@
 <translation id="5825943197137337319">Tik numatytoji vieša sąsaja</translation>
 <translation id="1689062823386843231">Išjungti neįgaliotąjį UDP</translation>
 <translation id="8502234992433094996">Naudoti „Google“ paslaugas su „Push“ pranešimais</translation>
+<translation id="5565355416171743213">Pradėti naudotis sinchronizavimu</translation>
 <translation id="4332558599726753990">Sinchronizavimo konfigūravimas</translation>
+<translation id="2187778349654214731">Pradžiai reikės įdiegti „Brave“ į visus prietaisus, kuriuos norėsite sinchronizuoti. Tada saugiai juos susiekite naudodami sinchronizavimo kodą.</translation>
+<translation id="7530575064080939974">Tvarkykite sinchronizuotus įrenginius</translation>
+<translation id="7575156386943878014">Sinchronizavimo tvarkytuvė</translation>
 <translation id="1755198127524719638">Sinchronizavimo nustatymai</translation>
 <translation id="7558480201297099157">Parinkite, kurią prietaisų informaciją norėtumėte sinchronizuoti. Šie nustatymai taikomi tik šiam prietaisui.</translation>
+<translation id="7731928563672901833">Įrenginių sąrašas</translation>
 <translation id="28332161031213248">Prietaisų sąraše išvardinti visi prietaisai tavo sinchronizavimo grandinėje. Kiekvieną prietaisą galima valdyti iš kito prietaiso.</translation>
 <translation id="1313162974556054106">Įrenginio pavadinimas</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (šis įrenginys)</translation>
+<translation id="3686835020221422649">Vėliausiai aktyvūs</translation>
+<translation id="2569646144216067185">Žodžių skaičius: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Nukopijuota!</translation>
+<translation id="8802630444265810662">QR kodas, kurį reikės nuskaityti mobiliuoju įrenginiu, norint siųsti jūsų sinchronizavimo kodą</translation>
+<translation id="6221331245829088299">Rodant QR kodą įvyko klaida. Atnaujinkite ir bandykite dar kartą.</translation>
 <translation id="298546024891487702">Pradžiai turėsi įdiegti Brave į visus prietaisus, kuriuos norėsi sinchronizuoti. Norėdamas juos susieti, pradėk sinchronizavimo grandinę, kuria saugiai susiesi visus prietaisus.</translation>
 <translation id="6200528822592747640">Pradėk naują sinchronizavimo grandinę</translation>
 <translation id="5184726904895809379">Turiu sinchronizavimo kodą</translation>
@@ -116,7 +132,12 @@
 <translation id="5734745018569675530">Formoje suvesk sinchronizavimo grandinės žodinį kodą.</translation>
 <translation id="1061533051865606843">Pridėti naują prietaisą</translation>
 <translation id="5093410893656857925">Pasirink prietaiso tipą</translation>
+<translation id="4581190919849683048">Su kokio tipo įrenginiu norėtumėte sinchronizuoti?</translation>
+<translation id="4112587618563511470">Negaliojantis sinchronizavimo kodas; patikrinkite ir bandykite dar kartą.</translation>
 <translation id="2339730291919608488">Išeiti iš sinchronizavimo grandinės</translation>
+<translation id="115699408012835975">Jei iš naujo nustatysite „Sync“, turėsite iš naujo įvesti sinchronizavimo kodą iš kito įrenginio, kad su juo būtų sinchronizuota. Ar tikrai norite tęsti?</translation>
+<translation id="3396347744975515056">„Brave Sync“ buvo atnaujinta ir reikia atlikti sąranką</translation>
+<translation id="7473245612074035141">Pradėti sąranką</translation>
 <translation id="6696935187608454456">Žinyno patarimai</translation>
 <translation id="2775956301559569472">Rodyti „Wayback Machine“ raginimus 404 puslapiuose</translation>
 <translation id="1807246157184219062">Šviesu</translation>

@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Tarayıcının parmak izi almasını engeller</translation>
 <translation id="7459000603787995422">Çıkışta sekmeleri kapat</translation>
 <translation id="1680858055899097121">Göz atma oturumları arasında sekmeleri açık bırakmayın</translation>
+<translation id="453601949003770390">İzleyiciler &amp;amp; reklam Engellendi</translation>
 <translation id="6761596877474675418">Veri kaydedildi</translation>
 <translation id="3034562645284925177">Tahmini Tasarruf Zamanı</translation>
 <translation id="6572660632052512096">Masaüstü Modu</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Atla</translation>
 <translation id="316832010181763471">Arama motoru ekleme</translation>
 <translation id="986879628471635371">Ekleme sorunlarının giderilmesi</translation>
+<translation id="5808759341041733958">Varsayılan arama motorunu seçin</translation>
 <translation id="4428458837269935199">Daha kişisel bir arama deneyimi için, DuckDuckGo'yu deneyin.</translation>
 <translation id="5317780077021120954">Kaydet</translation>
 <translation id="7053983685419859001">Engel</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">web'de takip edilmeden gezinebilmeniz için gizlilik istilacısı reklamlar ve izleyiciler.</translation>
 <translation id="8537217141725709400"><ph name="TOKEN"/> Kazanın</translation>
 <translation id="3333887201479867589">Brave Ödülleri</translation>
+<translation id="5870330605209713397">gizliliğe duyarlı reklamları görüntüleyerek ve favori siteleriniz ile kurucularını varsayılan olarak destekleyin.</translation>
 <translation id="821707262661492716">gizliliğe saygılı reklamları görmek için.</translation>
+<translation id="8267692331246948056">Kazan &amp;amp; Ver'e dokunarak, şunları kabul etmiş olursunuz:</translation>
 <translation id="4281844954008187215">Kullanım Şartları</translation>
 <translation id="6871397658902960384">Taramaya başlayın</translation>
 <translation id="454386012157232640">Bir reklam görmedim</translation>
 <translation id="1448877943847791441">Brave ilk reklamınızı şu süre içinde gösterecek:</translation>
+<translation id="4410793187232041318">Şimdi Brave Ads'den jeton kazanacaksın.</translation>
 <translation id="6511854390690723657">Bu, ilk Brave reklamınız. Daha fazla bilgi almak için tıklayın.</translation>
 <translation id="4930714375720679147">Etkinleştir</translation>
 <translation id="2453860139492968684">Tamamlandı</translation>
+<translation id="7983303953939627894">Kazan &amp;amp; Ver</translation>
+<translation id="48520986898237073">Cüzdana devam et</translation>
 <translation id="2359808026110333948">Devam et</translation>
 <translation id="7658239707568436148">Vazgeç</translation>
 <translation id="3570367516044491911">Varsayılan tarayıcı olarak ayarla</translation>
@@ -173,14 +180,19 @@ yok...</translation>
 <translation id="222883304157347087">(bu cihaz)</translation>
 <translation id="8193724030871339658">ZİNCİRDEKİ DİĞER CİHAZLAR</translation>
 <translation id="279635009973773843">CİHAZLAR YÜKLENİYOR...</translation>
+<translation id="6394333525003604181">EŞ ZAMANLAMA ZİNCİRİNDEN AYRILIYOR...</translation>
+<translation id="1604429341565715601">Eş Zamanlama kurulumu devam ediyor, yeniden başlatmayı daha sonra deneyin</translation>
 <translation id="2569646144216067185">Sözcük sayısı: <ph name="WORD_COUNT"/> yok</translation>
 <translation id="4282642752844565114">Yanlış sözcük sayısı</translation>
+<translation id="7507533586185621084">Yanlış eşzamanlama kodu</translation>
+<translation id="8284063834901328650">Yanlış eş zamanlama QR kodu</translation>
 <translation id="3149880132460839085">Brave Senkronizasyonu</translation>
 <translation id="3680755684186855422">Brave Senkronizasyonu, yer imleri verilerini çeşitli cihazlarınızdaki Brave Tarayıcılarınız arasında özel olarak senkronize etmenize izin verir.</translation>
 <translation id="3735228155296883311">Başka bir cihazda oluşturduğunuz eşitleme zincirinizden alınan kodu taramanız yeterlidir. Ya da yeni bir eşitleme zinciri başlatın.</translation>
 <translation id="4690880825349994619">Var olan eşitlenmiş cihazı kullanarak Brave Ayarları'nı açın ve Ayarlar &gt; Eşitle'ye gidin. "Cihaz Ekle"yi seçin ve ekranda gösterilen QR Kodunu tarayın.</translation>
 <translation id="5241263629636958324">Panoya kopyalandı</translation>
 <translation id="5817918615728894473">Eşle</translation>
+<translation id="3394474617110693560">Kategoriler</translation>
 <translation id="2004365171440701679">Bu cihazı kaldır</translation>
 <translation id="1178128181015923849">'<ph name="DEVICE_NAME"/>' adlı cihazı silmek istediğinizden emin misiniz?</translation>
 <translation id="7745082336226088126">Eşitleme kodunu tarayın veya girin</translation>
@@ -321,4 +333,11 @@ yok...</translation>
 <translation id="76550953340008122">Bu sitede yanlış bir şeyler olduğunu Brave geliştiricilerine bildirdiğiniz için teşekkür ederiz. Düzeltmek için elimizden geleni yapacağız!</translation>
 <translation id="650318023204990401">Gelişmiş kontroller</translation>
 <translation id="7182293319417450928">Doğrulamak için en az 25 BAT'lik bir bakiye gerekli.</translation>
+<translation id="1275664486910646411">Otomatik tamamlamada en popüler siteleri göster</translation>
+<translation id="5516010970279932133">Önerilen siteleri otomatik tamamlamada göster</translation>
+<translation id="5370478469168390143">Çevrimiçi Verileri Kaydet</translation>
+<translation id="1118508688433541158">Brave ile daha hızlı gezinin ve reklamları engelleyin</translation>
+<translation id="915835519491851291">Bazı izleyici &amp;amp; reklamlarını az önce engellediniz.</translation>
+<translation id="3286927551967858325">Bir göz atın</translation>
+<translation id="2929661208078053609">Güzel!</translation>
 </translationbundle>

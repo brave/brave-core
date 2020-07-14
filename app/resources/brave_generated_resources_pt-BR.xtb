@@ -73,6 +73,9 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="7390783310074170337">Visualização padrão</translation>
 <translation id="130615081792797568">Visualização simples</translation>
 <translation id="2360360976480535628">Visualização avançada</translation>
+<translation id="2133317862976486547">Rastreadores &amp;amp; bloqueio de anúncios</translation>
+<translation id="4385707520896576447">Bloqueio de cookies</translation>
+<translation id="4978786495456601191">Bloqueio de biometria</translation>
 <translation id="3570081523466826008">Fazer upgrade das conexões para HTTPS</translation>
 <translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="519861640102428255">Aparência e comportamento</translation>
@@ -81,9 +84,12 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
 <translation id="5165042248369837294">Permitir tuítes incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir postagens incorporadas no LinkedIn</translation>
+<translation id="4078738236287221428">Agressivo</translation>
 <translation id="7740996059027112821">Padrão</translation>
 <translation id="4176463684765177261">Desativado</translation>
+<translation id="5770288601196774623">Somente cross-site</translation>
 <translation id="3587482841069643663">Tudo</translation>
+<translation id="5533533363827555308">Restrito, pode quebrar sites</translation>
 <translation id="8942080017911802454">Política de Tratamento de IP WebRTC</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8798099450830957504">Padrão</translation>
@@ -91,12 +97,22 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5825943197137337319">Apenas interface pública padrão</translation>
 <translation id="1689062823386843231">Desativar UDP não proxy</translation>
 <translation id="8502234992433094996">Use os serviços do Google para envio de mensagens push</translation>
+<translation id="5565355416171743213">Começar a usar a sincronização</translation>
 <translation id="4332558599726753990">Instalação do Sync</translation>
+<translation id="2187778349654214731">Para começar, você precisa ter o Brave instalado em todos os dispositivos que você planeja sincronizar. Depois, conecte-os com segurança e juntos com um código de sincronização.</translation>
+<translation id="7530575064080939974">Gerenciar os seus dispositivos sincronizados</translation>
+<translation id="7575156386943878014">Gerenciador de sincronização</translation>
 <translation id="1755198127524719638">Configurações do Sync</translation>
 <translation id="7558480201297099157">Gerencie quais informações você gostaria de sincronizar entre dispositivos. Essas configurações afetam apenas este dispositivo.</translation>
+<translation id="7731928563672901833">Lista de dispositivos</translation>
 <translation id="28332161031213248">A lista de dispositivos abaixo inclui todos os dispositivos na sua cadeia de sincronização. Cada dispositivo pode ser gerenciado de qualquer outro dispositivo.</translation>
 <translation id="1313162974556054106">Nome do Dispositivo</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Este dispositivo)</translation>
+<translation id="3686835020221422649">Ativo pela última vez</translation>
+<translation id="2569646144216067185">Contagem de palavras: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Copiado!</translation>
+<translation id="8802630444265810662">Um código QR a ser digitalizado com um dispositivo móvel para transmitir o seu código de sincronização</translation>
+<translation id="6221331245829088299">Ocorreu um erro ao exibir o código QR. Por favor, atualize a página e tente novamente.</translation>
 <translation id="298546024891487702">Para começar, você vai ter que instalar o Brave em todos os dispositivos que planeja sincronizar. Para agrupá-los, inicie uma cadeia de sincronização que você vai usar para vincular todos os seus dispositivos com segurança.</translation>
 <translation id="6200528822592747640">Iniciar uma nova Cadeia Sync</translation>
 <translation id="5184726904895809379">Eu tenho um Código Sync</translation>
@@ -116,7 +132,12 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5734745018569675530">Digite suas palavras do código da cadeia de sincronização fornecidas no formulário abaixo.</translation>
 <translation id="1061533051865606843">Adicionar um Dispositivo Novo</translation>
 <translation id="5093410893656857925">Escolha o Tipo de Dispositivo</translation>
+<translation id="4581190919849683048">Com qual tipo de dispositivo você gostaria de sincronizar?</translation>
+<translation id="4112587618563511470">Código de sincronização inválido. Por favor, verifique e tente novamente.</translation>
 <translation id="2339730291919608488">Sair da cadeia de sincronização</translation>
+<translation id="115699408012835975">Se redefinir a sincronização, você terá que digitar um código de sincronização novamente de outro dispositivo para sincronizar com ele. Tem certeza de que deseja prosseguir?</translation>
+<translation id="3396347744975515056">O Brave Sync foi atualizado e precisa de configuração</translation>
+<translation id="7473245612074035141">Iniciar configuração</translation>
 <translation id="6696935187608454456">Gorjetas de Ajuda</translation>
 <translation id="2775956301559569472">Exibir prompt do Wayback Machine em páginas com o erro 404</translation>
 <translation id="1807246157184219062">Claro</translation>

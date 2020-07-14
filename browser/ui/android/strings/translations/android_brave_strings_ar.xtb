@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">يمنع المتصفح من استخدام البصمة</translation>
 <translation id="7459000603787995422">غلق علامات التبويب عند الخروج</translation>
 <translation id="1680858055899097121">لا تواصل استخدام علامات التبويب بين جلسات التصفح</translation>
+<translation id="453601949003770390">تم حظر برامج التتبع &amp;amp; الإعلانات</translation>
 <translation id="6761596877474675418">تم حفظ البيانات</translation>
 <translation id="3034562645284925177">تم حفظ الوقت التقديري</translation>
 <translation id="6572660632052512096">نمط سطح المكتب</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">تخطّي</translation>
 <translation id="316832010181763471">محرك البحث قيد الخدمة</translation>
 <translation id="986879628471635371">استكشاف الأخطاء وإصلاحها أثناء عمل الخدمة</translation>
+<translation id="5808759341041733958">اختر محرك البحث الافتراضي</translation>
 <translation id="4428458837269935199">للحصول على تجربة بحث أكثر خصوصية، جرّب DuckDuckGo.</translation>
 <translation id="5317780077021120954">حفظ</translation>
 <translation id="7053983685419859001">حجب</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">الإعلانات المقتحمة للخصوصية والمتتبعون بحيث يمكنك التصفح بدون أن تتم متابعة أنشطتك على المواقع الإلكترونية.</translation>
 <translation id="8537217141725709400">اكسب <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">مكافآت Brave</translation>
+<translation id="5870330605209713397">من خلال عرض الإعلانات التي تحترم الخصوصية ودعم مواقعك ومنشئي المحتوى المفضلين لديك بشكل افتراضي.</translation>
 <translation id="821707262661492716">لمشاهدة الإعلانات التي تحترم الخصوصية.</translation>
+<translation id="8267692331246948056">بالنقر على اربح &amp;amp; امنح، فأنت توافق على</translation>
 <translation id="4281844954008187215">شروط الخدمة</translation>
 <translation id="6871397658902960384">ابدأ التصفح</translation>
 <translation id="454386012157232640">لم أرى إعلان</translation>
 <translation id="1448877943847791441">سيعرض Brave إعلانك الأول في</translation>
+<translation id="4410793187232041318">ستربح الآن رمزاً مميزاً من Brave Ads.</translation>
 <translation id="6511854390690723657">هذا هو إعلانك الأول من Brave. انقر للاطلاع على المزيد.</translation>
 <translation id="4930714375720679147">تفعيل</translation>
 <translation id="2453860139492968684">اكتمل</translation>
+<translation id="7983303953939627894">اربح &amp;amp; امنح</translation>
+<translation id="48520986898237073">الاستمرار إلى المحفظة</translation>
 <translation id="2359808026110333948">متابعة</translation>
 <translation id="7658239707568436148">إلغاء</translation>
 <translation id="3570367516044491911">تعيين كمتصفح افتراضي</translation>
@@ -176,14 +183,19 @@
 <translation id="222883304157347087">(هذا الجهاز)</translation>
 <translation id="8193724030871339658">الأجهزة الأخرى الموجودة في السلسلة</translation>
 <translation id="279635009973773843">جارٍ تحميل الأجهزة...</translation>
+<translation id="6394333525003604181">مغادرة سلسلة المزامنة ...</translation>
+<translation id="1604429341565715601">إعداد المزامنة قيد التقدم، حاول إعادة التعيين لاحقاً</translation>
 <translation id="2569646144216067185">عدد الكلمات:  <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">عدد غير صحيح من الكلمات</translation>
+<translation id="7507533586185621084">كود مزامنة خاطئ</translation>
+<translation id="8284063834901328650">كود QR للمزامنة غير صحيح</translation>
 <translation id="3149880132460839085">مزامنة Brave</translation>
 <translation id="3680755684186855422">تتيح لك مزامنة Brave إمكانية مزامنة بيانات الإشارات المرجعية بشكل خاص بين متصفحات Brave الخاصة بك على أجهزتك المختلفة.</translation>
 <translation id="3735228155296883311">كل ما عليك فعله هو مسح الرمز من سلسلة المزامنة التي قمت بإنشائها على جهاز آخر. أو ابدأ سلسلة مزامنة جديدة.</translation>
 <translation id="4690880825349994619">باستخدام الجهاز المتزامن القائم افتح إعدادات Brave وانتقل إلى "الإعدادات" &gt; "المزامنة". اختر "إضافة جهاز" وقم بمسح رمز الاستجابة السريعة المعروض على الشاشة.</translation>
 <translation id="5241263629636958324">تم النسخ إلى الحافظة</translation>
 <translation id="5817918615728894473">إقران</translation>
+<translation id="3394474617110693560">الفئات</translation>
 <translation id="2004365171440701679">حذف هذا الجهاز</translation>
 <translation id="1178128181015923849">هل أنت متأكد أنك تريد حذف الجهاز '<ph name="DEVICE_NAME"/>' ؟</translation>
 <translation id="7745082336226088126">مسح أو إدخال رمز المزامنة</translation>
@@ -326,4 +338,9 @@
 <translation id="7182293319417450928">مطلوب 25 BAT كحد أدنى للتحقق.</translation>
 <translation id="1275664486910646411">أظهر المواقع الأكثر تقدما بشكل إكمال تلقائي</translation>
 <translation id="5516010970279932133">أظهر المواقع المقترحة بشكل إكمال تلقائي</translation>
+<translation id="5370478469168390143">حفظ البيانات عبر الإنترنت</translation>
+<translation id="1118508688433541158">تصفّح أسرع وقم بحظر الإعلانات مع متصفح Brave</translation>
+<translation id="915835519491851291">لقد قمنا للتو بحظر بعض برامج التتبع &amp;amp; الإعلانات.</translation>
+<translation id="3286927551967858325">إلق نظرة</translation>
+<translation id="2929661208078053609">رائع!</translation>
 </translationbundle>

@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">มุมมองเริ่มต้น</translation>
 <translation id="130615081792797568">มุมมองอย่างง่าย</translation>
 <translation id="2360360976480535628">มุมมองขั้นสูง</translation>
+<translation id="2133317862976486547">การบล็อก Tracker &amp;amp; โฆษณา</translation>
+<translation id="4385707520896576447">การบล็อกคุกกี้</translation>
+<translation id="4978786495456601191">การบล็อก Fingerprinting</translation>
 <translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
 <translation id="4824468494729001999">บล็อกสคริปต์</translation>
 <translation id="519861640102428255">ดูและรู้สึก</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
+<translation id="4078738236287221428">รุนแรง</translation>
 <translation id="7740996059027112821">มาตรฐาน</translation>
 <translation id="4176463684765177261">ปิดการใช้งานแล้ว</translation>
+<translation id="5770288601196774623">เฉพาะข้ามเว็บเท่านั้น</translation>
 <translation id="3587482841069643663">ทั้งหมด</translation>
+<translation id="5533533363827555308">เข้มงวด อาจทำเว็บเสียหาย</translation>
 <translation id="8942080017911802454">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="6165508094623778733">เรียนรู้เพิ่มเติม</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
@@ -91,12 +97,22 @@
 <translation id="5825943197137337319">เฉพาะหน้าอินเตอร์เฟซสาธารณะค่าเดิมเท่านั้น</translation>
 <translation id="1689062823386843231">ปิดการใช้งาน UDP ที่ไม่ใช่พร็อกซี่</translation>
 <translation id="8502234992433094996">ใช้ Google Services เพื่อส่งข้อความแจ้ง</translation>
+<translation id="5565355416171743213">เริ่มใช้การซิงค์</translation>
 <translation id="4332558599726753990">ตั้งค่าการซิงค์</translation>
+<translation id="2187778349654214731">เพื่อเริ่มต้น คุณจำเป็นต้องติดตั้ง Brave บนทุกอุปกรณ์ที่คุณต้องการจะซิงค์ จากนั้นเชื่อมอุปกรณ์เข้าด้วยกันอย่างปลอดภัยด้วยรหัสซิงค์</translation>
+<translation id="7530575064080939974">จัดการอุปกรณ์ที่ซิงค์</translation>
+<translation id="7575156386943878014">การจัดการซิงค์</translation>
 <translation id="1755198127524719638">การตั้งค่าการซิงค์</translation>
 <translation id="7558480201297099157">จัดการข้อมูลที่ต้องการซิงก์ระหว่างอุปกรณ์ การตั้งค่าเหล่านี้จะมีผลกับอุปกรณ์นี้เท่านั้น</translation>
+<translation id="7731928563672901833">รายการอุปกรณ์</translation>
 <translation id="28332161031213248">รายการอุปกรณ์ด้านล่างแสดงอุปกรณ์ทั้งหมดในซิงค์เชนของคุณ คุณสามารถจัดการอุปกรณ์แต่ละรายการจากอุปกรณ์อื่นได้ทั้งหมด</translation>
 <translation id="1313162974556054106">ชื่ออุปกรณ์</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (อุปกรณ์นี้)</translation>
+<translation id="3686835020221422649">ใช้งานล่าสุด</translation>
+<translation id="2569646144216067185">จำนวนคำ: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">คัดลอกแล้ว!</translation>
+<translation id="8802630444265810662">รหัส QR ให้สแกนด้วยอุปกรณ์มือถือเพื่อส่งรหัสซิงค์ของคุณ</translation>
+<translation id="6221331245829088299">เกิดความผิดพลาดในการแสดงรหัส QR โปรดรีเฟรชแล้วลองอีกครั้ง</translation>
 <translation id="298546024891487702">ขั้นตอนแรก คุณจะต้องทำการติดตั้ง Brave บนอุปกรณ์ทั้งหมดที่คุณต้องการซิงค์ จากนั้นหากต้องการผูกอุปกรณ์ทั้งหมดไว้ด้วยกัน ให้เริ่มทำซิงค์เชนที่คุณต้องการใช้งานขึ้นมาเพื่อเชื่อมโยงอุปกรณ์ทั้งหมดของคุณเข้าด้วยกันอย่างปลอดภัย</translation>
 <translation id="6200528822592747640">เริ่มซิงค์เชนใหม่</translation>
 <translation id="5184726904895809379">ฉันมีซิงค์โค้ด</translation>
@@ -116,7 +132,12 @@
 <translation id="5734745018569675530">พิมพ์รหัสอักษรซิงค์เชนที่ให้ไว้ลงในแบบฟอร์มด้านล่าง</translation>
 <translation id="1061533051865606843">เพิ่มอุปกรณ์ใหม่</translation>
 <translation id="5093410893656857925">เลือกประเภทอุปกรณ์</translation>
+<translation id="4581190919849683048">อุปกรณ์ที่คุณต้องการซิงค์เป็นอุปกรณ์ชนิดใด?</translation>
+<translation id="4112587618563511470">รหัสซิงค์ไม่ถูกต้อง โปรดตรวจสอบแล้วลองอีกครั้ง</translation>
 <translation id="2339730291919608488">ออกจากกลุ่มการซิงค์</translation>
+<translation id="115699408012835975">หากคุณรีเซ็ตซิงค์ คุณจะต้องกรอกรหัสซิงค์ใหม่จากอุปกรณ์อื่นเพื่อที่จะซิงค์กับอุปกรณ์นั้น ๆ แน่ใจว่าต้องการดำเนินการต่อ?</translation>
+<translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
+<translation id="7473245612074035141">เริ่มติดตั้ง</translation>
 <translation id="6696935187608454456">เคล็ดลับความช่วยเหลือ</translation>
 <translation id="2775956301559569472">แสดงพร้อมท์ Wayback Machine ในหน้า 404</translation>
 <translation id="1807246157184219062">สว่าง</translation>

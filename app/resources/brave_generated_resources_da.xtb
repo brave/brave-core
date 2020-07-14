@@ -74,6 +74,9 @@ vindue med Tor</translation>
 <translation id="7390783310074170337">Standardvisning</translation>
 <translation id="130615081792797568">Simpel visning</translation>
 <translation id="2360360976480535628">Avanceret visning</translation>
+<translation id="2133317862976486547">Trackere &amp;amp; reklameblokering</translation>
+<translation id="4385707520896576447">Blokering af cookies</translation>
+<translation id="4978786495456601191">Blokering af fingeraftryk</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="519861640102428255">Se &amp; Føl</translation>
@@ -82,9 +85,12 @@ vindue med Tor</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
+<translation id="4078738236287221428">Aggressiv</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="4176463684765177261">Deaktiveret</translation>
+<translation id="5770288601196774623">Kun cross-site</translation>
 <translation id="3587482841069643663">Alle</translation>
+<translation id="5533533363827555308">Streng, kan ødelægge sider</translation>
 <translation id="8942080017911802454">WebRTC IP håndteringspolitik</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -92,12 +98,22 @@ vindue med Tor</translation>
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
 <translation id="1689062823386843231">Deaktiver UDP uden proxy</translation>
 <translation id="8502234992433094996">Brug Google-tjenester til Push-beskeder</translation>
+<translation id="5565355416171743213">Begynd at bruge synkronisering</translation>
 <translation id="4332558599726753990">Synkroniseringsopsætning</translation>
+<translation id="2187778349654214731">For at begynde skal Brave være installeret på alle de enheder, du planlægger at synkronisere. Derefter skal du forbinde dem sikkert til hinanden med en synkroniseringskode.</translation>
+<translation id="7530575064080939974">Administrer dine synkroniserede enheder</translation>
+<translation id="7575156386943878014">Administration af synkronisering</translation>
 <translation id="1755198127524719638">Synkroniseringsindstillinger</translation>
 <translation id="7558480201297099157">Administrer hvilke oplysninger du vil synkronisere mellem enheder. Disse indstillinger påvirker kun denne enhed.</translation>
+<translation id="7731928563672901833">Enhedsliste</translation>
 <translation id="28332161031213248">Listen over enheder herunder inkluderer alle enheder i din synkroniseringskæde. Hver enhed kan administreres fra alle andre enheder.</translation>
 <translation id="1313162974556054106">Enhedsnavn</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Denne enhed)</translation>
+<translation id="3686835020221422649">Sidst aktiv</translation>
+<translation id="2569646144216067185">Ordtælling: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Kopieret!</translation>
+<translation id="8802630444265810662">En QR-kode som skal scannes med en mobil enhed for at transmittere din synkroniseringskode</translation>
+<translation id="6221331245829088299">Der var problemer med at vise QR-koden, opdater venligst og prøv igen.</translation>
 <translation id="298546024891487702">For at begynde skal du have installeret Brave på alle de enheder du planlægger at Synkronisere. For at kæde dem sammen skal du oprette en synkroniseringskæde, som du skal bruge til at forbinde alle dine enheder sikkert.</translation>
 <translation id="6200528822592747640">Start en ny Synkroniseringskæde</translation>
 <translation id="5184726904895809379">Jeg har en Synkroniseringskode</translation>
@@ -117,7 +133,12 @@ vindue med Tor</translation>
 <translation id="5734745018569675530">Skriv din synkroniseringskædes angivne kodeord i formularen herunder.</translation>
 <translation id="1061533051865606843">Tilføj Ny Enhed</translation>
 <translation id="5093410893656857925">Vælg Enhedstype</translation>
+<translation id="4581190919849683048">Hvilken type enhed ønsker du at synkronisere til?</translation>
+<translation id="4112587618563511470">Ugyldig synkroniseringskode, kontrollér venligst og prøv igen.</translation>
 <translation id="2339730291919608488">Forlad synkroniseringskæde</translation>
+<translation id="115699408012835975">Hvis du nulstiller synkronisering, skal du skrive en synkroniseringskode fra en anden enhed igen for at synkronisere med den. Er du sikker på, at du vil fortsætte?</translation>
+<translation id="3396347744975515056">Brave Sync er blevet opgraderet og kræver opsætning</translation>
+<translation id="7473245612074035141">Begynd opsætning</translation>
 <translation id="6696935187608454456">Hjælpdonationer</translation>
 <translation id="2775956301559569472">Vis Wayback Machine-forespørgsel på 404-sider</translation>
 <translation id="1807246157184219062">Lys</translation>

@@ -73,6 +73,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="7390783310074170337">Vaikevaade</translation>
 <translation id="130615081792797568">Lihtvaade</translation>
 <translation id="2360360976480535628">Täpsem vaade</translation>
+<translation id="2133317862976486547">Blokeeritud jälgijad ja&amp;amp; reklaamid</translation>
+<translation id="4385707520896576447">Küpsisefailide blokeerimine</translation>
+<translation id="4978786495456601191">Blokeeritud sõrmejälge lugemine</translation>
 <translation id="3570081523466826008">Täienda ühendused HTTPS-ile</translation>
 <translation id="4824468494729001999">Blokeeri skriptid</translation>
 <translation id="519861640102428255">Välimus ja tunnetus</translation>
@@ -81,9 +84,12 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
 <translation id="5165042248369837294">Luba Twitteri manustatud säutsud</translation>
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
+<translation id="4078738236287221428">Agressiivne</translation>
 <translation id="7740996059027112821">Tavapärane</translation>
 <translation id="4176463684765177261">Keelatud</translation>
+<translation id="5770288601196774623">Ainult saitidevahelised</translation>
 <translation id="3587482841069643663">Kõik</translation>
+<translation id="5533533363827555308">Piiratud, võib saite lõhkuda</translation>
 <translation id="8942080017911802454">WebRTC IP lahendamise kord</translation>
 <translation id="6165508094623778733">Lisateave</translation>
 <translation id="8798099450830957504">Vaikimisi</translation>
@@ -91,12 +97,22 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="5825943197137337319">Ainult vaikimisi määratud avalik liides</translation>
 <translation id="1689062823386843231">Keela puhverserverita UDP</translation>
 <translation id="8502234992433094996">Kasuta tõukesõnumite saatmiseks Google’i teenuseid</translation>
+<translation id="5565355416171743213">Alusta sünkroonimise kasutamist</translation>
 <translation id="4332558599726753990">Sync'i seadistus</translation>
+<translation id="2187778349654214731">Alustamiseks peab Brave olema installitud kõikidele seadmetele, mida plaanid sünkroonida. Seejärel saab need turvaliselt sünkroonimiskoodiga sünkroonida.</translation>
+<translation id="7530575064080939974">Sünkroonitud seadmete haldamine</translation>
+<translation id="7575156386943878014">Sünkroonimise haldur</translation>
 <translation id="1755198127524719638">Sünkroonimise sätted</translation>
 <translation id="7558480201297099157">Seadmete vahel ajakohastavate andmete haldamine. Seaded mõjutavad ainult seda seadet.</translation>
+<translation id="7731928563672901833">Seadmete nimekiri</translation>
 <translation id="28332161031213248">Allpool on loetletud kõik teie sünkroonimisahela seadmed. Kõiki neid seadmeid saab hallata igast muust seadmest.</translation>
 <translation id="1313162974556054106">Seadme nimi</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (see seade)</translation>
+<translation id="3686835020221422649">Viimati aktiivne</translation>
+<translation id="2569646144216067185">Sõnade arv: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Kopeeritud!</translation>
+<translation id="8802630444265810662">Sünkroonimiskoodi edastamiseks skaneeritakse mobiilseadmega QR-koodi.</translation>
+<translation id="6221331245829088299">QR-sünkroonimiskoodi kuvamisel ilmnes viga. Värskenda ja proovi uuesti.</translation>
 <translation id="298546024891487702">Alustamiseks peab Brave olema installitud kõikidesse seadmetesse, mida soovite sünkroonida. Seadmete ahelaga liitmiseks käivitage sünkroonimisahel, mida kasutate kõikide oma seadmete turvaliseks linkimiseks.</translation>
 <translation id="6200528822592747640">Käivita uus sünkroonimisahel</translation>
 <translation id="5184726904895809379">Mul on sünkroonimiskood</translation>
@@ -116,7 +132,12 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="5734745018569675530">Tippige järgmisse vormi sünkroonimisahela koodisõnad.</translation>
 <translation id="1061533051865606843">Lisa uus seade</translation>
 <translation id="5093410893656857925">Valige seadmetüüp</translation>
+<translation id="4581190919849683048">Mis tüüpi seadmesse soovid sünkroonida?</translation>
+<translation id="4112587618563511470">Kehtetu sünkroonimiskood, palun kontrolli ja proovi uuesti.</translation>
 <translation id="2339730291919608488">Välju ajakohastamisahelast</translation>
+<translation id="115699408012835975">Kui lähtestad sünkroonimise, siis pead sünkroonimiskoodi uuesti teisest seadmest sisestama, et sellega sünkroonida. Kas soovid kindlasti jätkata?</translation>
+<translation id="3396347744975515056">Brave sünkroonimine on täiendatud ja vajab seadistamist</translation>
+<translation id="7473245612074035141">Alusta seadistust</translation>
 <translation id="6696935187608454456">Abi preemiad</translation>
 <translation id="2775956301559569472">Näita ajamasina viibet 404 veateatega lehtedel</translation>
 <translation id="1807246157184219062">Hele</translation>

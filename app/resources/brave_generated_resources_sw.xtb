@@ -73,6 +73,9 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="7390783310074170337">Mwonekano chaguomsingi</translation>
 <translation id="130615081792797568">Mwonekano rahisi</translation>
 <translation id="2360360976480535628">Mwonekano mahiri</translation>
+<translation id="2133317862976486547">Uzuiaji wa matangazo na vifuatiliaji</translation>
+<translation id="4385707520896576447">Uzuiaji wa vidakuzi</translation>
+<translation id="4978786495456601191">Uzuiaji wa alama ya kidole</translation>
 <translation id="3570081523466826008">Pandisha miunganisho kuwa HTTPS</translation>
 <translation id="4824468494729001999">Zuia maandishi</translation>
 <translation id="519861640102428255">Tazama &amp; Hisi</translation>
@@ -81,9 +84,12 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="863171915776379000">Ruhusu kuingia kwenye akaunti kupitia Facebook na makala zilizoshikizwa</translation>
 <translation id="5165042248369837294">Ruhusa makala za Twitter zilizoshikizwa</translation>
 <translation id="958971637207126733">Ruhusu makala za LinkedIn zilizoshikizwa</translation>
+<translation id="4078738236287221428">Chokozi</translation>
 <translation id="7740996059027112821">Wastani</translation>
 <translation id="4176463684765177261">Imezimwa</translation>
+<translation id="5770288601196774623">Tovuti zilizotekwa na wahasidi pekee</translation>
 <translation id="3587482841069643663">Zote</translation>
+<translation id="5533533363827555308">Inasisitizwa, inaweza kuathiri utendaji wa tovuti</translation>
 <translation id="8942080017911802454">Sera ya Kushughulika na WebRTC IP</translation>
 <translation id="6165508094623778733">Jifunze zaidi</translation>
 <translation id="8798099450830957504">Chaguomsingi</translation>
@@ -91,12 +97,22 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="5825943197137337319">Kiolesura cha umma chaguo-msingi pekee</translation>
 <translation id="1689062823386843231">Zima UDP zisizo na usalama</translation>
 <translation id="8502234992433094996">Tumia Huduma za Google kwa Ujumbe wa Simu</translation>
+<translation id="5565355416171743213">Anza kutumia kipengele cha usawazishaji</translation>
 <translation id="4332558599726753990">Mipangilio ya Kuoanisha</translation>
+<translation id="2187778349654214731">Ili uanze, utahitaji kusakinisha Brave kwenye vifaa vyote unavyopanga kusawazisha. Kisha, uviunganishe pamoja kwa njia salama kwa kutumia msimbo wa usawazishaji.</translation>
+<translation id="7530575064080939974">Dhibiti vifaa vyako vilivyosawazishwa</translation>
+<translation id="7575156386943878014">Kidhibiti cha Usawazishaji</translation>
 <translation id="1755198127524719638">Mipangilio ya Kuoanisha</translation>
 <translation id="7558480201297099157">Dhibiti ni taarifa gani ambayo ungependa kuoanisha baina ya vifaa. Mipangilio hii huathiri kifaa hiki tu.</translation>
+<translation id="7731928563672901833">Orodha ya Vifaa</translation>
 <translation id="28332161031213248">Orodha ya vifaa hapa chini hujumuisha vifaa vyote katika mnyororo wako wa kuoanisha. Kila kifaa kinaweza kusimamiwa kutoka katika kifaa kingine chochote.</translation>
 <translation id="1313162974556054106">Jina la Kifaa</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Kifaa Hiki)</translation>
+<translation id="3686835020221422649">Mara ya Mwisho Kutumika</translation>
+<translation id="2569646144216067185">Idadi ya maneno: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Imenakiliwa!</translation>
+<translation id="8802630444265810662">Msimbo wa QR wa kuchanganuliwa na kifaa cha mkononi ili uweze kutuma msimbo wako wa usawazishaji</translation>
+<translation id="6221331245829088299">Hitilafu imetokea wakati wa kuonyesha msimbo wa QR, tafadhali onyesha upya na ujaribu tena.</translation>
 <translation id="298546024891487702">Ili kuanza, utahitaji kusanidi Brave katika vifaa vyote unavyopanga kuoanisha. Kuviunganisha pamoja, anzisha mnyororo wa kuaoanisha, ambao utautumia kuunganisha vifaa vyako vyote kwa pamoja.</translation>
 <translation id="6200528822592747640">Anzisha Mnyororo Mpya wa Kuoanisha</translation>
 <translation id="5184726904895809379">Nina Msimbo wa Kuoanisha</translation>
@@ -116,7 +132,12 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="5734745018569675530">Andika maneno ya msimbo wa kuoanisha uliyopewa kwenye fomu hapa chini.</translation>
 <translation id="1061533051865606843">Ongeza Kifaa Kipya</translation>
 <translation id="5093410893656857925">Chagua Aina ya Kifaa</translation>
+<translation id="4581190919849683048">Ungependa kusawazisha kwenye kifaa cha aina gani?</translation>
+<translation id="4112587618563511470">Msimbo wa usawazishaji si sahihi, tafadhali angalia na ujaribu tena.</translation>
 <translation id="2339730291919608488">Ondoka katika Mnyororo wa Kuoanisha</translation>
+<translation id="115699408012835975">Ukiweka upya kipengele cha Usawazishaji, utahitaji kuweka tena msimbo wa usawazishaji kutoka kwenye kifaa kingine ili uweze kukitumia kusawazisha. Je, una uhakika kuwa ungependa kuendelea?</translation>
+<translation id="3396347744975515056">Kipengele cha Usawazishaji wa Brave kimesasishwa na kinahitaji kuwekewa mipangilio</translation>
+<translation id="7473245612074035141">Anza Kuweka Mipangilio</translation>
 <translation id="6696935187608454456">Vidokezo vya Usaidizi</translation>
 <translation id="2775956301559569472">Onyesha kidokezo cha Wayback Machine kwenye kurasa 404</translation>
 <translation id="1807246157184219062">Mwanga</translation>

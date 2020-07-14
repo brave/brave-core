@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Prevents browser from fingerprinting</translation>
 <translation id="7459000603787995422">Close tabs on exit</translation>
 <translation id="1680858055899097121">Don't persist tabs between browsing sessions</translation>
+<translation id="453601949003770390">Trackers &amp;amp; Ads Blocked</translation>
 <translation id="6761596877474675418">Data saved</translation>
 <translation id="3034562645284925177">Est. time saved</translation>
 <translation id="6572660632052512096">Desktop mode</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Skip</translation>
 <translation id="316832010181763471">Search engine onboarding</translation>
 <translation id="986879628471635371">Troubleshooting onboarding</translation>
+<translation id="5808759341041733958">Choose default search engine</translation>
 <translation id="4428458837269935199">For a more private search experience, try DuckDuckGo.</translation>
 <translation id="5317780077021120954">Save</translation>
 <translation id="7053983685419859001">Block</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">This is your first Brave ad. Tap to learn more.</translation>
 <translation id="4930714375720679147">Turn On</translation>
 <translation id="2453860139492968684">Finish</translation>
+<translation id="7983303953939627894">Earn &amp;amp; Give</translation>
+<translation id="48520986898237073">Continue to wallet</translation>
 <translation id="2359808026110333948">Continue</translation>
 <translation id="7658239707568436148">Cancel</translation>
 <translation id="3570367516044491911">Set as default browser</translation>
@@ -169,14 +173,19 @@ month ...</translation>
 <translation id="222883304157347087">(this device)</translation>
 <translation id="8193724030871339658">OTHER DEVICES ON CHAIN</translation>
 <translation id="279635009973773843">LOADING DEVICES ...</translation>
+<translation id="6394333525003604181">LEAVING THE SYNC CHAIN...</translation>
+<translation id="1604429341565715601">Sync setup is in progress, try to reset it later</translation>
 <translation id="2569646144216067185">Word count: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Incorrect number of words</translation>
+<translation id="7507533586185621084">Wrong sync code</translation>
+<translation id="8284063834901328650">Wrong sync QR code</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync allows you to sync bookmarks data privately between your Brave Browsers on your various devices.</translation>
 <translation id="3735228155296883311">Simply scan the code from your sync chain that you created on another device, or start a new sync chain.</translation>
 <translation id="4690880825349994619">Using existing synced device, open Brave Settings and navigate to Settings &gt; Sync. Choose "Add Device" and scan the QR code displayed on the screen.</translation>
 <translation id="5241263629636958324">Copied to Clipboard</translation>
 <translation id="5817918615728894473">Pair</translation>
+<translation id="3394474617110693560">Categories</translation>
 <translation id="2004365171440701679">Remove this device</translation>
 <translation id="1178128181015923849">Are you sure you want to delete device '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Scan or enter sync code</translation>
@@ -316,4 +325,11 @@ month ...</translation>
 <translation id="76550953340008122">Thanks for letting Brave's developers know that there's something wrong with this site. We'll do our best to fix it!</translation>
 <translation id="650318023204990401">Advanced controls</translation>
 <translation id="7182293319417450928">A minimum balance of 25 BAT is required to verify.</translation>
+<translation id="1275664486910646411">Show top sites in autocomplete</translation>
+<translation id="5516010970279932133">Show suggested sites in autocomplete</translation>
+<translation id="5370478469168390143">Save Data Online</translation>
+<translation id="1118508688433541158">Browse faster and block ads with Brave</translation>
+<translation id="915835519491851291">You just blocked some trackers &amp;amp; ads.</translation>
+<translation id="3286927551967858325">Take a look</translation>
+<translation id="2929661208078053609">Nice!</translation>
 </translationbundle>

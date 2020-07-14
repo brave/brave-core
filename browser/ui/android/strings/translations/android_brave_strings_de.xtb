@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Verhindert, dass der Browser einen Fingerabdruck erstellt</translation>
 <translation id="7459000603787995422">Registerkarten beim Beenden schließen</translation>
 <translation id="1680858055899097121">Registerkarten zwischen Browsersitzungen nicht beibehalten</translation>
+<translation id="453601949003770390">Blockierte Tracker &amp;amp; Anzeigen</translation>
 <translation id="6761596877474675418">Daten gespart</translation>
 <translation id="3034562645284925177">In etwa gesparte Zeit</translation>
 <translation id="6572660632052512096">Desktop-Modus</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Überspringen</translation>
 <translation id="316832010181763471">Onboarding für Suchmaschinen</translation>
 <translation id="986879628471635371">Fehlerbehebung im Onboarding</translation>
+<translation id="5808759341041733958">Standardsuchmaschine auswählen</translation>
 <translation id="4428458837269935199">Probieren Sie für eine vertraulichere Sucherfahrung DuckDuckGo aus.</translation>
 <translation id="5317780077021120954">Speichern</translation>
 <translation id="7053983685419859001">Blockieren</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">Anzeigen und Tracker, die in die Privatsphäre eindringen, so dass Sie im Internet surfen können, ohne dabei verfolgt zu werden.</translation>
 <translation id="8537217141725709400">Verdienen Sie <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">indem Sie Anzeigen ansehen, die die Privatsphäre respektieren, und so automatisch Ihre Lieblingswebsites und Creators unterstützen.</translation>
 <translation id="821707262661492716">durch das Ansehen von Werbung, die Ihre Privatsphäre respektiert.</translation>
+<translation id="8267692331246948056">Durch Ihren Klick auf Verdienen &amp;amp; Geben geben Sie Ihre Zustimmung zu den</translation>
 <translation id="4281844954008187215">Nutzungsbedingungen</translation>
 <translation id="6871397658902960384">Surfen Sie los</translation>
 <translation id="454386012157232640">Ich habe keine Werbung gesehen</translation>
 <translation id="1448877943847791441">Brave zeigt Ihre erste Werbung in</translation>
+<translation id="4410793187232041318">Jetzt verdienen Sie durch Brave Ads Token.</translation>
 <translation id="6511854390690723657">Dies ist Ihre erste Brave-Anzeige. Tippen Sie, um mehr zu erfahren.</translation>
 <translation id="4930714375720679147">Aktivieren</translation>
 <translation id="2453860139492968684">Fertig</translation>
+<translation id="7983303953939627894">Verdienen &amp;amp; Geben</translation>
+<translation id="48520986898237073">Weiter zur Wallet:</translation>
 <translation id="2359808026110333948">Weiter</translation>
 <translation id="7658239707568436148">Abbrechen</translation>
 <translation id="3570367516044491911">Als Standardbrowser setzen</translation>
@@ -172,14 +179,19 @@ um das nächste Internet zu erleben.</translation>
 <translation id="222883304157347087">(dieses Gerät)</translation>
 <translation id="8193724030871339658">ANDERE GERÄTE IN DER KETTE</translation>
 <translation id="279635009973773843">LÄDT GERÄTE ...</translation>
+<translation id="6394333525003604181">VERLASSE DIE SYNCHRONISIERUNGSKETTE ...</translation>
+<translation id="1604429341565715601">Derzeit läuft ein Synchronisierungsvorgang, versuchen Sie die Zurücksetzung später erneut</translation>
 <translation id="2569646144216067185">Anzahl der Wörter: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Falsche Anzahl der Wörter</translation>
+<translation id="7507533586185621084">Falscher Synchronisierungscode</translation>
+<translation id="8284063834901328650">Falscher Synchronisierungs-QR-Code</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Mit Brave Sync können Sie Lesezeichendaten privat zwischen Ihren Brave-Browsern auf Ihren verschiedenen Geräten synchronisieren.</translation>
 <translation id="3735228155296883311">Scannen Sie einfach den Code aus Ihrer Synchronisierungskette, die Sie auf einem anderen Gerät erstellt haben. Oder starten Sie eine neue Synchronisierungskette.</translation>
 <translation id="4690880825349994619">Verwenden Sie ein bereits synchronisiertes Gerät, öffnen Sie die Brave-Einstellungen und gehen Sie zu Einstellungen &gt; Sync. Wählen Sie „Gerät hinzufügen" und scannen Sie den QR-Code auf dem Bildschirm.</translation>
 <translation id="5241263629636958324">In die Zwischenablage kopiert</translation>
 <translation id="5817918615728894473">Koppeln</translation>
+<translation id="3394474617110693560">Kategorien</translation>
 <translation id="2004365171440701679">Dieses Gerät entfernen</translation>
 <translation id="1178128181015923849">Sind Sie sicher, dass Sie das Gerät '<ph name="DEVICE_NAME"/>' entfernen möchten?</translation>
 <translation id="7745082336226088126">Geben Sie einen Sychronisierungscode ein oder scannen Sie ihn</translation>
@@ -320,4 +332,11 @@ um das nächste Internet zu erleben.</translation>
 <translation id="76550953340008122">Vielen Dank, dass Sie Braves Entwickler darüber informiert haben, dass auf dieser Website ein Fehler auftritt. Wir werden unser Bestes tun, um ihn zu beheben!</translation>
 <translation id="650318023204990401">Fortgeschrittene Steuerung</translation>
 <translation id="7182293319417450928">Ein Minimumguthaben von 25 BAT ist für die Verifizierung erforderlich.</translation>
+<translation id="1275664486910646411">Wichtigste Websites in Autovervollständigung anzeigen</translation>
+<translation id="5516010970279932133">Vorgeschlagene Websites in der Autovervollständigung anzeigen</translation>
+<translation id="5370478469168390143">Daten online speichern</translation>
+<translation id="1118508688433541158">Browsen Sie schneller und blockieren Sie Anzeigen mit Brave</translation>
+<translation id="915835519491851291">Sie haben gerade manche Tracker &amp;amp; Anzeigen blockiert.</translation>
+<translation id="3286927551967858325">Anschauen</translation>
+<translation id="2929661208078053609">Toll!</translation>
 </translationbundle>

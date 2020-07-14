@@ -745,23 +745,6 @@ Ezt egyéb esetben letiltják az adatvédelmi beállításai. Az engedélyezéss
 <translation id="4215751373031079683">7x9 (boríték)</translation>
 <translation id="4220128509585149162">Összeomlások</translation>
 <translation id="422022731706691852">A(z) <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> webhelyen lévő támadók megpróbálhatják rávenni Önt olyan programok telepítésére, amelyek károsak a böngészési élmény szempontjából (például módosítják a kezdőlapot vagy plusz hirdetéseket jelenítenek meg a felkeresett webhelyeken). <ph name="BEGIN_LEARN_MORE_LINK"/>További információ<ph name="END_LEARN_MORE_LINK"/>.</translation>
-<translation id="1426112902089905810">&lt;h4&gt;1. lépés: Jelentkezzen be a portálra&lt;/h4&gt;
-    &lt;p&gt;Az olyan nyilvános helyek Wi-Fi-hálózatai esetében, mint a kávézók és a repterek, bejelentkezés szükséges. A bejelentkezési oldal megtekintéséhez keresse fel valamelyik olyan oldalt, amely a &lt;code&gt;http://&lt;/code&gt; előtaggal kezdődik.&lt;/p&gt;
-    &lt;ol&gt;
-    &lt;li&gt;Keresse fel valamelyik tetszőleges, &lt;code&gt;http://&lt;/code&gt; karakterlánccal kezdődő webhelyet, például a következőt: &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Jelentkezzen be a megnyíló bejelentkezési oldalon az internet használatához.&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;h4&gt;2. lépés: Nyissa meg a weboldalt inkognitómódban (csak számítógépen)&lt;/h4&gt;
-    &lt;p&gt;Nyissa meg a felkeresett weboldalt inkognitóablakban.&lt;/p&gt;
-    &lt;p&gt;Ha megnyílik az oldal, akkor valamelyik Brave-bővítmény nem működik megfelelően. A hiba kijavításához kapcsolja ki a bővítményt.&lt;/p&gt;
-    &lt;h4&gt;3. lépés: Frissítse az operációs rendszert&lt;/h4&gt;
-    &lt;p&gt;Gondoskodjon arról, hogy az eszköz operációs rendszere naprakész legyen.&lt;/p&gt;
-    &lt;h4&gt;4. tipp: Ideiglenesen kapcsolja ki a vírusirtó szoftvert&lt;/h4&gt;
-    &lt;p&gt;Ezt a hibát akkor láthatja, ha „HTTPS-védelmet” vagy „HTTPS-vizsgálatot” biztosító vírusirtó szoftvert használ, amely megakadályozza, hogy a Brave gondoskodhasson a védelemről.&lt;/p&gt;
-    &lt;p&gt;A probléma megoldásához kapcsolja ki vírusirtó szoftverét. Ha a weboldal a szoftver kikapcsolása után működik, minden alkalommal kapcsolja ki, ha biztonságos webhelyen jár.&lt;/p&gt;
-    &lt;p&gt;Ne feledje el újra bekapcsolni a vírusirtó programot, ha elkészült.&lt;/p&gt;
-    &lt;h4&gt;5. lépés: Vegyen igénybe külső segítséget&lt;/h4&gt;
-    &lt;p&gt;Ha a hiba továbbra is fennáll, lépjen kapcsolatba a webhely tulajdonosával.&lt;/p&gt;</translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Próbálkozzon a Hálózati diagnosztika futtatásával<ph name="END_LINK"/>.</translation>
 <translation id="4234495348042597185"><ph name="BEGIN_LINK"/>Tovább ide: <ph name="SITE"/><ph name="END_LINK"/></translation>
 <translation id="4235360514405112390">Érvényes</translation>
@@ -1913,6 +1896,34 @@ További részletek:
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">A Brave Payről</translation>
-<translation id="3489858312836205593">Új Brave-inkognitóablak megnyitása</translation>
 <translation id="8820817407110198400">Könyvjelzők</translation>
+<translation id="8362995731815961365">A számítógépet beállító profil az oldal blokkolása mellett döntött.</translation>
+<translation id="4075123085690634698">Nyissa meg az oldalt egy privát ablakban (⇧⌘N)</translation>
+<translation id="2388886110302389394">Indítsa az oldalt egy új privát ablakban (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Oldal megnyitása egy új privát ablakban</translation>
+<translation id="2378238891085281592">Privát módra váltott</translation>
+<translation id="3774752171665127360">A privát ablakokban nézett oldalak nem maradnak meg a böngészője előzményeiben, a sütik között, vagy a keresési előzményekben, miután bezárja az összes privát ablakot. Minden feltöltött fájl vagy létrehozott könyvjelző megmarad.</translation>
+<translation id="9177896974490719854">Ennek ellenére ön nem láthatatlan. A privát mód nem rejti el böngészését alkalmazója, internetszolgáltatója vagy a felkeresett weboladalak elől.</translation>
+<translation id="2227116904818538760">Privát módra váltott</translation>
+<translation id="2007417459975034427">Most már privátban böngészhet, és a készüléket használó többi profil nem fogja látni tevékenységét. A letöltések és könyvjelzők viszont elmentődnek.</translation>
+<translation id="2586968635953373425">Privát ablak megnyitása</translation>
+<translation id="3489858312836205593">Új Brave privát ablak megnyitása</translation>
+<translation id="6984479912851154518">Kilép a privát módból, hogy fizessen egy külső alkalmazással. Folytatja?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;1. lépés: Jelentkezzen be  a portálra&lt;/h4&gt;
+    &lt;p&gt;a kávézók és repterek wifi-hálózataiba be kell jelentkezni. A bejelentkezési oldal megtekintéséhez látogasson el egy oldalra, ami &lt;code&gt;http://&lt;/kódot használ&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Keressen fel bármilyen &lt;code&gt;http:// kezdetű weboldalra&lt;/code&gt;, például &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;A megnyíló bejelentkezési oldalon jelentkezzen be az internet használatára.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&gt;2. lépés: Nyissa meg az oldalt privát módban (csak számítógépen)&lt;/h4&gt;
+    &lt;p&gt;Nyissa meg a privát ablakban felkeresett oldalt.&lt;/p&gt;
+    &lt;p&gt;Ha az oldal elindul, egy Brave kiterjesztés nem működik megfelelően. A hiba javításához kapcsolja ki a kiterjesztést.&lt;/p&gt;
+    &lt;h4&gt;3. lépés: Frissítse operációs rendszerét&lt;/h4&gt;
+    &lt;p&gt;Győződjön meg róla, hogy készüléke naprakész.&lt;/p&gt;
+    &lt;h4&gt;4. lépés: Ideiglenesen kapcsolja ki a vírusvédelmét&lt;/h4&gt;
+    &lt;p&gt;Ezt a hibát látja, ha „HTTPS védelmet” vagy „HTTPS szkennelést” nyújtó vírusvédelme van. A vírusvédelem gátolja a Brave-et a védelem biztosításában.&lt;/p&gt;
+    &lt;p&gt;A probléma megoldásához kapcsolja ki a vírusvédelmi szoftvert. Ha szoftver kikapcsolása után az oldal működik, kapcsolja ki ezt a szoftvert, amikor biztonságos oldalakat használ.&lt;/p&gt;
+    &lt;p&gt;Ne feledje visszakapcsolni a vírusvédelmi programot, ha végzett.&lt;/p&gt;
+    &lt;h4&gt;5. lépés: Kérjen további segítséget&lt;/h4&gt;
+    &lt;p&gt;Ha továbbra is fennáll a probléma, vegye fel a kapcsolatot a weboldal tulajdonosával.&lt;/p&gt;</translation>
 </translationbundle>

@@ -73,6 +73,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="7390783310074170337">Chế độ xem mặc định</translation>
 <translation id="130615081792797568">Chế độ xem đơn giản</translation>
 <translation id="2360360976480535628">Chế độ xem nâng cao</translation>
+<translation id="2133317862976486547">Chặn trình theo dõi &amp;amp; quảng cáo</translation>
+<translation id="4385707520896576447">Chặn cookie</translation>
+<translation id="4978786495456601191">Chặn vân tay</translation>
 <translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
 <translation id="4824468494729001999">Chặn các tập lệnh script</translation>
 <translation id="519861640102428255">Giao diện</translation>
@@ -81,9 +84,12 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
+<translation id="4078738236287221428">Tích cực</translation>
 <translation id="7740996059027112821">Chuẩn</translation>
 <translation id="4176463684765177261">Đã bị vô hiệu</translation>
+<translation id="5770288601196774623">Chỉ có liên trang (cross-site)</translation>
 <translation id="3587482841069643663">Tất cả</translation>
+<translation id="5533533363827555308">Chặt chẽ, có thể khiến các website bị lỗi</translation>
 <translation id="8942080017911802454">Cơ chế Xử lý IP WebRTC</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8798099450830957504">Mặc định</translation>
@@ -91,12 +97,22 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="5825943197137337319">Chỉ giao diện công khai mặc định</translation>
 <translation id="1689062823386843231">Cho phép UDP không proxy</translation>
 <translation id="8502234992433094996">Sử dụng Google Services để gửi thông báo đẩy</translation>
+<translation id="5565355416171743213">Bắt đầu sử dụng đồng bộ hóa</translation>
 <translation id="4332558599726753990">Cài đặt Đồng bộ</translation>
+<translation id="2187778349654214731">Để bắt đầu, bạn sẽ cần cài đặt Brave trên tất cả các thiết bị bạn dự định đồng bộ hóa. Sau đó, liên kết chúng với nhau một cách bảo mật bằng mã đồng bộ hóa.</translation>
+<translation id="7530575064080939974">Quản lý thiết bị đã đồng bộ hóa của bạn</translation>
+<translation id="7575156386943878014">Trình quản lý Đồng bộ hóa</translation>
 <translation id="1755198127524719638">Cài đặt Đồng bộ</translation>
 <translation id="7558480201297099157">Quản lý các thông tin bạn muốn đồng bộ hóa trên các thiết bị. Các cài đặt này chỉ tác động đến thiết bị này.</translation>
+<translation id="7731928563672901833">Danh sách Thiết bị</translation>
 <translation id="28332161031213248">Danh sách thiết bị bên dưới bao gồm tất cả các thiết bị trong chuỗi đồng bộ của bạn. Mỗi thiết bị có thể được quản lý từ bất kỳ thiết bị nào khác.</translation>
 <translation id="1313162974556054106">Tên Thiết bị</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Thiết bị Này)</translation>
+<translation id="3686835020221422649">Hoạt động Lần cuối</translation>
+<translation id="2569646144216067185">Số từ: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Đã sao chép!</translation>
+<translation id="8802630444265810662">Mã QR phải được quét bằng thiết bị di động để truyền mã đồng bộ hóa của bạn</translation>
+<translation id="6221331245829088299">Đã xảy ra lỗi khi hiển thị mã QR, xin vui lòng làm mới và thử lại.</translation>
 <translation id="298546024891487702">Để bắt đầu, bạn sẽ cần cài đặt Brave trên tất cả các thiết bị bạn dự định đồng bộ. Để liên kết các thiết bị này lại với nhau, hãy bắt đầu chuỗi đồng bộ mà bạn sẽ sử dụng để liên kết bảo mật tất cả các thiết bị của bạn lại với nhau.</translation>
 <translation id="6200528822592747640">Bắt đầu Chuỗi Đồng bộ mới</translation>
 <translation id="5184726904895809379">Tôi có Mã Đồng bộ</translation>
@@ -116,7 +132,12 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="5734745018569675530">Nhập từ mã chuỗi đồng bộ được cung cấp của bạn vào biểu mẫu bên dưới.</translation>
 <translation id="1061533051865606843">Thêm Thiết bị Mới</translation>
 <translation id="5093410893656857925">Chọn Loại Thiết bị</translation>
+<translation id="4581190919849683048">Bạn muốn đồng bộ hóa đến loại thiết bị nào?</translation>
+<translation id="4112587618563511470">Mã đồng bộ hóa không hợp lệ, xin vui lòng kiểm tra và thử lại.</translation>
 <translation id="2339730291919608488">Rời chuỗi đồng bộ</translation>
+<translation id="115699408012835975">Nếu bạn đặt lại Đồng bộ hóa, bạn sẽ phải nhập lại mã đồng bộ hóa từ một thiết bị khác để đồng bộ hóa với thiết bị đó. Bạn có chắc muốn tiếp tục không?</translation>
+<translation id="3396347744975515056">Brave Sync đã được nâng cấp và cần phải thiết lập</translation>
+<translation id="7473245612074035141">Bắt đầu Thiết lập</translation>
 <translation id="6696935187608454456">Mẹo trợ giúp</translation>
 <translation id="2775956301559569472">Hiển thị lời nhắc Wayback Machine trên các trang 404</translation>
 <translation id="1807246157184219062">Sáng</translation>

@@ -73,6 +73,9 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7390783310074170337">Varsayılan görünün</translation>
 <translation id="130615081792797568">Basit görünüm</translation>
 <translation id="2360360976480535628">Gelişmiş görünüm</translation>
+<translation id="2133317862976486547">İzleyiciler &amp;amp; reklam engelleme</translation>
+<translation id="4385707520896576447">Çerez engelleme</translation>
+<translation id="4978786495456601191">Parmak izi engelleme</translation>
 <translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
 <translation id="4824468494729001999">Script'leri engelle</translation>
 <translation id="519861640102428255">Bak &amp; Hisset</translation>
@@ -81,9 +84,12 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
+<translation id="4078738236287221428">Agresif</translation>
 <translation id="7740996059027112821">Standart</translation>
 <translation id="4176463684765177261">Devre dışı</translation>
+<translation id="5770288601196774623">Sadece çapraz site</translation>
 <translation id="3587482841069643663">Tümü</translation>
+<translation id="5533533363827555308">Katı, siteleri kırabilir</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="8798099450830957504">Varsayılan</translation>
@@ -91,12 +97,22 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="5825943197137337319">Sadece varsayılan genel arayüz</translation>
 <translation id="1689062823386843231">Non-proxied UDP'yi devre dışı bırak</translation>
 <translation id="8502234992433094996">Anlık Mesajlaşma için Google Hizmetleri Kullan</translation>
+<translation id="5565355416171743213">Eş zamanlamayı kullanmaya başla</translation>
 <translation id="4332558599726753990">Sync Kurulumu</translation>
+<translation id="2187778349654214731">Başlamak için, Brave'i eş zamanlanmak istediğiniz tüm cihazlarda kurmuş olmanız gerekir. Sonra, bir eş zamanlama koduyla onları birbirine güvenli bir şekilde bağlayabilirsiniz.</translation>
+<translation id="7530575064080939974">Eş zamanlanan cihazları yönetin</translation>
+<translation id="7575156386943878014">Eş Zamanlama Yöneticisi</translation>
 <translation id="1755198127524719638">Senkronizasyon Ayarları</translation>
 <translation id="7558480201297099157">Cihazlar arasında hangi bilgileri eşitlemek istediğini yönet. Bu ayarlar yalnızca bu cihazı etkiler.</translation>
+<translation id="7731928563672901833">Cihaz Listesi</translation>
 <translation id="28332161031213248">Aşağıdaki cihaz listesi, senkronizasyon zincirinizdeki tüm cihazları kapsar. Her cihaz başka herhangi bir cihazdan yönetilebilir.</translation>
 <translation id="1313162974556054106">Cihaz İsmi</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Bu Cihaz)</translation>
+<translation id="3686835020221422649">Son Görülme</translation>
+<translation id="2569646144216067185">Kelime sayımı: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Kopyalandı!</translation>
+<translation id="8802630444265810662">Eş zamanlama kodunuzu aktarmak için bir mobil cihazla taranacak bir QR kodu</translation>
+<translation id="6221331245829088299">QR kodunu görüntülerken bir hata oluştu, lütfen yenileyip tekrar deneyin.</translation>
 <translation id="298546024891487702">Başlamak için, senkronize etmeyi planladığınız tüm cihazlarda Brave uygulamasının kurulu olması gerekir. Onları bir araya getirmek için, tüm cihazlarınızı birbirine güvenli bir şekilde bağlamak için kullanacağınız bir senkronizasyon zinciri başlatın.</translation>
 <translation id="6200528822592747640">Yeni bir Sync Chain başlat</translation>
 <translation id="5184726904895809379">Bir Sync Kodum var</translation>
@@ -116,7 +132,12 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="5734745018569675530">Aşağıdaki forma verilen senkronizasyon zinciri kodu kelimelerinizi yazın.</translation>
 <translation id="1061533051865606843">Yeni Cihaz Ekle</translation>
 <translation id="5093410893656857925">Cihaz Türünü Seçin</translation>
+<translation id="4581190919849683048">Ne tür bir cihazla eş zamanlanmak istersiniz?</translation>
+<translation id="4112587618563511470">Eş zamanlama kodu geçersiz, lütfen kontrol edip tekrar deneyin.</translation>
 <translation id="2339730291919608488">Senkronizasyon Zincirinden Ayrıl</translation>
+<translation id="115699408012835975">Eş Zamanlamayı sıfırlarsanız, başka bir cihaza eş zamanlamada bulunmak için o cihazdan bir eş zamanlama kodunu tekrar girmeniz gerekecek. Devam etmek istediğinize emin misiniz?</translation>
+<translation id="3396347744975515056">Brave Eş Zamanlama güncellendi ve kurulması gerekli</translation>
+<translation id="7473245612074035141">Kuruluma Başla</translation>
 <translation id="6696935187608454456">Yardım Bahşişleri</translation>
 <translation id="2775956301559569472">404 sayfalarda Wayback Machine istemini göster</translation>
 <translation id="1807246157184219062">Açık</translation>

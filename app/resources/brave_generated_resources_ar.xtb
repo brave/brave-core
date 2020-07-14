@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">العرض الافتراضي</translation>
 <translation id="130615081792797568">عرض بسيط</translation>
 <translation id="2360360976480535628">عرض متقدم</translation>
+<translation id="2133317862976486547">حظر برامج التتبع &amp;amp; الإعلانات</translation>
+<translation id="4385707520896576447">حظر ملفات تعريف الارتباط</translation>
+<translation id="4978786495456601191">حجب البصمات</translation>
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
 <translation id="4824468494729001999">حظر البرامج النصية</translation>
 <translation id="519861640102428255">المظهر والملمس</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
+<translation id="4078738236287221428">عدواني</translation>
 <translation id="7740996059027112821">قياسي</translation>
 <translation id="4176463684765177261">غير مفعّل</translation>
+<translation id="5770288601196774623">فقط عبر الموقع</translation>
 <translation id="3587482841069643663">الكل</translation>
+<translation id="5533533363827555308">صارم، قد يفصل المواقع</translation>
 <translation id="8942080017911802454">سياسة مناولة WebRTC IP</translation>
 <translation id="6165508094623778733">اكتشف المزيد</translation>
 <translation id="8798099450830957504">التلقائي</translation>
@@ -91,12 +97,22 @@
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
 <translation id="8502234992433094996">استخدم خدمات Google لخدمة المراسلة الفورية</translation>
+<translation id="5565355416171743213">البدء باستخدام المزامنة</translation>
 <translation id="4332558599726753990">تهيئة المزامنة</translation>
+<translation id="2187778349654214731">للبدء ، ستحتاج إلى تثبيت متصفح Brave على جميع الأجهزة التي تخطط لمزامنتها. بعد ذلك، اربط بينها بأمان بواسطة رمز مزامنة.</translation>
+<translation id="7530575064080939974">إدارة أجهزتك التي تمت مزامنتها</translation>
+<translation id="7575156386943878014">مدير المزامنة</translation>
 <translation id="1755198127524719638">إعدادات المزامنة</translation>
 <translation id="7558480201297099157">قم بإدارة المعلومات التي تريد مزامنتها بين الأجهزة. تؤثر هذه الإعدادات فقط على هذا الجهاز.</translation>
+<translation id="7731928563672901833">قائمة الأجهزة</translation>
 <translation id="28332161031213248">قائمة الأجهزة أدناه تحتوي على جميع الأجهزة في سلسلة المزامنة لديك. يمكن إدارة كل جهاز من الأجهزة الأخرى.</translation>
 <translation id="1313162974556054106">اسم الجهاز</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;جهاز الكمبيوتر الخاص بي-1&lt;/ex&gt;&lt;/ph&gt; (هذا الجهاز)</translation>
+<translation id="3686835020221422649">آخر نشاط</translation>
+<translation id="2569646144216067185">عدد الكلمات: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">تم النسخ.</translation>
+<translation id="8802630444265810662">يجب مسح رمز QR ضوئياً بجهاز محمول لإرسال رمز المزامنة الخاص بك</translation>
+<translation id="6221331245829088299">حدث خطأ أثناء عرض رمز الـ QR، يُرجى التحديث وإعادة المحاولة.</translation>
 <translation id="298546024891487702">للبدء، تحتاج لأن تثبت Brave على جميع الأجهزة التي تنوي مزامنتها. ولكي تربط هذه الأجهزة معًا، ابدأ سلسلة المزامنة التي ستستخدمها لربط جميع أجهزتك معًا بشكل آمن.</translation>
 <translation id="6200528822592747640">بدء سلسلة مزامنة جديدة</translation>
 <translation id="5184726904895809379">لدي رمز مزامنة</translation>
@@ -116,7 +132,12 @@
 <translation id="5734745018569675530">أدخل كلمات رمز سلسلة المزامنة التي زودت بها في النموذج أدناه.</translation>
 <translation id="1061533051865606843">إضافة جهاز جديد</translation>
 <translation id="5093410893656857925">اختر نوع الجهاز</translation>
+<translation id="4581190919849683048">ما نوع الجهاز الذي ترغب في عمل المزامنة معه؟</translation>
+<translation id="4112587618563511470">رمز مزامنة غير صالح، يُرجى التحقق والمحاولة مرة أخرى.</translation>
 <translation id="2339730291919608488">مغادرة سلسلة المزامنة</translation>
+<translation id="115699408012835975">إذا قمت بإعادة تعيين المزامنة، فسيتعين عليك إعادة إدخال رمز المزامنة من جهاز آخر من أجل المزامنة معه. هل أنت متأكد أنك تريد المتابعة؟</translation>
+<translation id="3396347744975515056">تمت ترقية Brave Sync وتتطلب الإعداد</translation>
+<translation id="7473245612074035141">بدء الإعداد</translation>
 <translation id="6696935187608454456">إرشادات للمساعدة</translation>
 <translation id="2775956301559569472">عرض تنبيه "واي باك مشين" الفوري على صفحات 404</translation>
 <translation id="1807246157184219062">فاتح</translation>

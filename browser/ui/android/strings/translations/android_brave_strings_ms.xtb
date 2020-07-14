@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Mengelakkan pelayar daripada melakukan pengecapan jari</translation>
 <translation id="7459000603787995422">Tutup tab semasa keluar</translation>
 <translation id="1680858055899097121">Jangan kekalkan tab antara sesi pelayaran</translation>
+<translation id="453601949003770390">Penjejak &amp;amp; Iklan Disekat</translation>
 <translation id="6761596877474675418">Data Disimpan</translation>
 <translation id="3034562645284925177">Masa Ditubuhkan Disimpan</translation>
 <translation id="6572660632052512096">Mod Desktop</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Langkau</translation>
 <translation id="316832010181763471">Kemasukan enjin carian</translation>
 <translation id="986879628471635371">Penyertaan pencarisilapan</translation>
+<translation id="5808759341041733958">Pilih enjin carian lalai.</translation>
 <translation id="4428458837269935199">Untuk pengalaman carian yang lebih sulit, cuba DuckDuckGo.</translation>
 <translation id="5317780077021120954">Simpan</translation>
 <translation id="7053983685419859001">Halang</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">iklan dan penjejak yang menceroboh privasi supaya anda boleh melayari Internet tanpa diikuti di seluruh web.</translation>
 <translation id="8537217141725709400">Memperoleh <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">dengan melihat iklan yang menghormati privasi dan menyokong laman kegemaran anda secara lalai.</translation>
 <translation id="821707262661492716">untuk melihat iklan yang menghormati privasi.</translation>
+<translation id="8267692331246948056">Dengan mengetik Peroleh &amp;amp; Beri, anda bersetuju dengan</translation>
 <translation id="4281844954008187215">Syarat Perkhidmatan</translation>
 <translation id="6871397658902960384">Mulakan melayari Internet</translation>
 <translation id="454386012157232640">Saya tidak nampak iklan</translation>
 <translation id="1448877943847791441">Brave akan menunjukkan iklan pertama anda dalam</translation>
+<translation id="4410793187232041318">Kini anda akan memperoleh token daripada Iklan Brave.</translation>
 <translation id="6511854390690723657">Ini iklan Brave pertama anda. Ketik untuk mengetahui lebih lanjut.</translation>
 <translation id="4930714375720679147">Hidupkan</translation>
 <translation id="2453860139492968684">Selesai</translation>
+<translation id="7983303953939627894">Peroleh &amp;amp; Beri</translation>
+<translation id="48520986898237073">Teruskan ke dompet</translation>
 <translation id="2359808026110333948">Teruskan</translation>
 <translation id="7658239707568436148">Batal</translation>
 <translation id="3570367516044491911">Tetapkan sebagai pelayar lalai</translation>
@@ -175,14 +182,19 @@ bulan ini...</translation>
 <translation id="222883304157347087">(peranti ini)</translation>
 <translation id="8193724030871339658">PERANTI LAIN DI RANTAIAN</translation>
 <translation id="279635009973773843">MEMUATKAN PERANTI...</translation>
+<translation id="6394333525003604181">MENINGGALKAN RANTAIAN PENYEGERAKAN...</translation>
+<translation id="1604429341565715601">Penetapan segerakan sedang berjalan, cuba tetapkan semula kemudian</translation>
 <translation id="2569646144216067185">Jumlah perkataan: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Bilangan perkataan tidak betul</translation>
+<translation id="7507533586185621084">Kod segerakan salah</translation>
+<translation id="8284063834901328650">Kod QR segerakan salah</translation>
 <translation id="3149880132460839085">Segerak Brave</translation>
 <translation id="3680755684186855422">Segerak Brave membolehkan anda menyegerakkan data penanda buku secara peribadi antara Pelayar Brave anda pada pelbagai peranti anda.</translation>
 <translation id="3735228155296883311">Cuma imbas kod daripada rantaian penyegerakan yang anda telah cipta di peranti lain. Atau mulakan rantaian penyegerakan baru.</translation>
 <translation id="4690880825349994619">Dengan peranti sedia ada yang telah disegerakkan, buka Tetapan Brave dan pergi ke Tetapan &gt; Penyegerakan. Pilih "Tambah Peranti" dan imbas Kod QR yang dipaparkan pada skrin.</translation>
 <translation id="5241263629636958324">Disalin ke Papan Klip</translation>
 <translation id="5817918615728894473">Gandingkan</translation>
+<translation id="3394474617110693560">Kategori</translation>
 <translation id="2004365171440701679">Buang peranti ini</translation>
 <translation id="1178128181015923849">Anda pasti anda ingin padamkan peranti '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Imbas atau masukkan kod penyegerakan</translation>
@@ -323,4 +335,11 @@ bulan ini...</translation>
 <translation id="76550953340008122">Terima kasih kerana memberitahu pembangun Brave bahawa terdapat sesuatu yang tidak kena dengan laman ini. Kami akan melakukan yang terbaik untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kawalan lanjutan</translation>
 <translation id="7182293319417450928">Baki minimum sebanyak 25 BAT diperlukan untuk menentusah.</translation>
+<translation id="1275664486910646411">Paparkan laman teratas dalam autolengkap</translation>
+<translation id="5516010970279932133">Paparkan laman dicadangkan dalam autolengkap</translation>
+<translation id="5370478469168390143">Simpan Data Dalam Talian</translation>
+<translation id="1118508688433541158">Layar dengan lebih pantas dan sekat iklan dengan Brave</translation>
+<translation id="915835519491851291">Anda baru menyekat beberapa iklan &amp;amp; penjejak.</translation>
+<translation id="3286927551967858325">Lihat</translation>
+<translation id="2929661208078053609">Hebat!</translation>
 </translationbundle>

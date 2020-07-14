@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">ነባሪ እይታ</translation>
 <translation id="130615081792797568">ቀላል እይታ</translation>
 <translation id="2360360976480535628">የላቀ እይታ</translation>
+<translation id="2133317862976486547">መከታተያ &amp; ማስታወቂያዎች እየታገዱ ናቸው</translation>
+<translation id="4385707520896576447">ኩኪ ማገድ</translation>
+<translation id="4978786495456601191">የጣት አሻራ ማገድ</translation>
 <translation id="3570081523466826008">ትስስሩን ወደ HTTPS አሳድግ</translation>
 <translation id="4824468494729001999">ስክሪፕቶችን አግድ</translation>
 <translation id="519861640102428255">ተመልከት &amp; ይሰማህ</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
 <translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
+<translation id="4078738236287221428">ጠበኛ</translation>
 <translation id="7740996059027112821">መደበኛ</translation>
 <translation id="4176463684765177261">ተሰናክሏል</translation>
+<translation id="5770288601196774623">ጣቢያ-ብቻ</translation>
 <translation id="3587482841069643663">ሁሉም</translation>
+<translation id="5533533363827555308">ጥብቅ ፣ ጣቢያዎችን ሊሰብር ይችላል</translation>
 <translation id="8942080017911802454">WebRTC IP ማስተዳደርያ ፖሊሲ</translation>
 <translation id="6165508094623778733">የበለጠ ይወቁ</translation>
 <translation id="8798099450830957504">እንደወረደ</translation>
@@ -91,12 +97,23 @@
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
 <translation id="8502234992433094996">ለተጫን የምልእክት አገልግሎት የ Google አገልግሎቶችን ተጠቀም</translation>
+<translation id="5565355416171743213">ማመሳሰል መጠቀም ይጀምሩ</translation>
 <translation id="4332558599726753990">ማዋቀርን አመሳስል</translation>
+<translation id="2187778349654214731">ለመጀመር ለማመሳሰል ባቀዱት ሁሉም መሳሪያዎች ላይ ብራቨ መጫን ያስፈልግዎታል። ከዚያ ደህንነቱ በተጠበቀ ሁኔታ ከማመሳሰል ኮድ ጋር ያገናኙዋቸው።</translation>
+<translation id="7530575064080939974">የተመሳሰሉ መሣሪያዎችዎን ያቀናብሩ</translation>
+<translation id="7575156386943878014">አስምር አስተዳዳሪ</translation>
 <translation id="1755198127524719638">የሲንክ ቅንብር</translation>
 <translation id="7558480201297099157">በመሣሪያዎች መካከል ምን ዓይነት መረጃ ማመሳሰል እንደሚፈልጉ ወስነው ያቀናብሩ፤ እነዚህ ቅንብሮች በዚህ መሣሪያ ላይ ብቻ ተጽዕኖ ይኖራቸዋል።</translation>
+<translation id="7731928563672901833">የመሣሪያ ዝርዝር</translation>
 <translation id="28332161031213248">ከዚህ በታች ያለው የመሳሪያዎች ዝርዝር ሁሉንም በሲንክ ሰንሰለት ውስጥ ያሉ መሳሪያዎችን ያካትታል። እያንዳንዱ መሳሪያ ሌላኛውን በመጠቀም ሊተዳደር ይችላል።</translation>
 <translation id="1313162974556054106">የመሣሪያ ስም</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (ይህ መሣሪያ
+ )</translation>
+<translation id="3686835020221422649">የመጨረሻው ገባሪ</translation>
+<translation id="2569646144216067185">የቃል ቆጠራ:  &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">ተቀድቷል</translation>
+<translation id="8802630444265810662">የማመሳሰያ ኮድዎን ለማስተላለፍ በተንቀሳቃሽ መሣሪያው የሚመረተው የ QR ኮድ</translation>
+<translation id="6221331245829088299">የ QR ኮድን ማሳየት ላይ አንድ ስህተት ነበር ፣ እባክዎ ያድሱ እና እንደገና ይሞክሩ።</translation>
 <translation id="298546024891487702">ለመጀመር፣ በሁሉም ሲንክ ለማድረግ የሚያቅዱት መሳሪያዎች ላይ Brave ሊጫን ያስፈልጋል። አንድ ላይ ለማስተሳሰር፣ ደህንነቱ አስማማኝ የሆነ ሁሉንም መሳሪያዎች ለማስተሳሰር የሚጠቀሙበትን ሰንሰለት ያስጀምሩ።</translation>
 <translation id="6200528822592747640">አዲስ የሲንክ ሰንሰለት ይጀምሩ</translation>
 <translation id="5184726904895809379">አሁን ያለው የማመሳሰል ኮድ አለኝ</translation>
@@ -116,7 +133,12 @@
 <translation id="5734745018569675530">የተሰጠዎትን የሲንክ ሰንሰለት ኮድ ከዚህ በታች ባለው ፎርም ላይ ያስገቡ።</translation>
 <translation id="1061533051865606843">አዲስ መሳሪያ ይጨምሩ</translation>
 <translation id="5093410893656857925">የመሳሪያውን አይነት ይምረጡ</translation>
+<translation id="4581190919849683048">ከየትኛው መሣሪያ ጋር ማመሳሰል ይፈልጋሉ?</translation>
+<translation id="4112587618563511470">ልክ ያልሆነ የማመሳሰል ኮድ ፣ እባክዎ ያረጋግጡ እና እንደገና ይሞክሩ።</translation>
 <translation id="2339730291919608488">ከማመሳሰል ሰንሰለት ይውጡ</translation>
+<translation id="115699408012835975">ማመሳሰልን ዳግም ካቀናበሩ እሱን ለማመሳሰል ከሌላ መሣሪያ ላይ የአስምር ኮድ ድጋሚ ማስገባት ይኖርብዎታል። እርግጠኛ ነዎት ለመቀጠል ይፈልጋሉ?</translation>
+<translation id="3396347744975515056">ብራቭ ማመሳሰል የተሻሻለ እና ማዋቀር ይፈልጋል</translation>
+<translation id="7473245612074035141">ማዋቀር ይጀምሩ</translation>
 <translation id="6696935187608454456">የእገዛ መረጃዎች</translation>
 <translation id="2775956301559569472">የ Wayback ማሽን ስንዱን 404 ገጾች ላይ አሳይ</translation>
 <translation id="1807246157184219062">ብርሀን</translation>
@@ -127,7 +149,7 @@
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="2356070529366658676">ጠይቅ</translation>
 <translation id="7701040980221191251">ምንም</translation>
-<translation id="1085027414516521238">MetaMask</translation>
+<translation id="1085027414516521238">ሜታ ጭንብል</translation>
 <translation id="3905324891414560921">Dapps ለመጠቀም የ Web3 አቅራቢ</translation>
 <translation id="5913089932885076110">የ Crypto ዋሌቶችን መነሻ ላይ ጫን</translation>
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
@@ -166,8 +188,8 @@
 <translation id="2183738260538789532">Avatar Paladin Ninja</translation>
 <translation id="1364533449989493534">Avatar Gleam ሽልማቶች</translation>
 <translation id="7885078296101135895">Avatar Gleam Brave</translation>
-<translation id="5569105529336093187">Avatar Gleam Ocean</translation>
-<translation id="8905105122495847950">Avatar Gleam Grass</translation>
+<translation id="5569105529336093187">አቫታር ግሌም ውቅያኖስ</translation>
+<translation id="8905105122495847950">አቫታር ግሌም ሣር</translation>
 <translation id="5118043134512650846">Avatar Gleam Corn</translation>
 <translation id="7054896317531348319">Avatar Gleam Royal</translation>
 <translation id="5493441852328628982">Avatar Gleam Ninja</translation>

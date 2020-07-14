@@ -73,6 +73,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7390783310074170337">Default na view</translation>
 <translation id="130615081792797568">Simpleng view</translation>
 <translation id="2360360976480535628">Advanced na view</translation>
+<translation id="2133317862976486547">Mga tracker at ads blocking</translation>
+<translation id="4385707520896576447">Cookie blocking</translation>
+<translation id="4978786495456601191">Fingerprinting blocking</translation>
 <translation id="3570081523466826008">I-upgrade sa HTTPS ang mga koneksyon</translation>
 <translation id="4824468494729001999">I-block ang mga script</translation>
 <translation id="519861640102428255">Hitsura at Dating</translation>
@@ -81,9 +84,12 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="863171915776379000">Payagan ang mga Facebook login at naka-embed na post</translation>
 <translation id="5165042248369837294">Payagan ang mga Twitter embedded tweet</translation>
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
+<translation id="4078738236287221428">Agresibo</translation>
 <translation id="7740996059027112821">Karaniwan</translation>
 <translation id="4176463684765177261">Hindi Pinagana</translation>
+<translation id="5770288601196774623">Cross-site lang</translation>
 <translation id="3587482841069643663">Lahat</translation>
+<translation id="5533533363827555308">Istrikto, pwedeng makasira sa mga site</translation>
 <translation id="8942080017911802454">Patakaran sa Pangangasiwa ng IP ng WebRTC</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -91,12 +97,22 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5825943197137337319">Default na pampublikong interface lang</translation>
 <translation id="1689062823386843231">I-disable ang UDP na walang proxy</translation>
 <translation id="8502234992433094996">Gumamit ng Mga Serbisyo ng Google para sa Push Messaging</translation>
+<translation id="5565355416171743213">Simulang gamitin ang sync</translation>
 <translation id="4332558599726753990">Pag-set Up ng Pag-sync</translation>
+<translation id="2187778349654214731">Para magsimula kailangang naka-install ang Brave sa lahat ng device na plano mong i-sync. Pagkatapos, secure na i-link ang mga iyon gamit ang isang sync code.</translation>
+<translation id="7530575064080939974">Pamahalaan ang iyong mga naka-sync na device</translation>
+<translation id="7575156386943878014">Sync Manager</translation>
 <translation id="1755198127524719638">Mga Setting ng Pag-sync</translation>
 <translation id="7558480201297099157">Pamahalaan ang impormasyong gusto mong i-sync sa mga device. Ang device lang na ito ang naaapektuhan ng mga setting na ito.</translation>
+<translation id="7731928563672901833">Listahan ng Device</translation>
 <translation id="28332161031213248">Kasama sa listahan ng device sa ibaba ang lahat ng device sa iyong chain ng pag-sync. Maaaring pamahalaan ang bawat device mula sa anupamang device.</translation>
 <translation id="1313162974556054106">Pangalan ng Device</translation>
+<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Ang Device na Ito)</translation>
+<translation id="3686835020221422649">Huling Aktibo</translation>
+<translation id="2569646144216067185">Bilang ng salita: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">Nakopya!</translation>
+<translation id="8802630444265810662">Isang QR code na isa-scan gamit ang isang mobile device upang i-transmit ang sync code mo</translation>
+<translation id="6221331245829088299">Nagkaroon ng error sa pagpapakita sa QR code, paki-refresh at subukan ulit.</translation>
 <translation id="298546024891487702">Upang makapagsimula, kakailanganin mong i-install ang Brave sa lahat ng device na pinaplano mong i-sync. Para maipagkabit ang mga ito, magsimula ng chain ng pag-sync na gagamitin mo upang secure na magkasamang ma-link ang lahat ng iyong device.</translation>
 <translation id="6200528822592747640">Magsimula ng bagong Chain ng Pag-sync</translation>
 <translation id="5184726904895809379">Mayroon akong Code ng Pag-sync</translation>
@@ -116,7 +132,12 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5734745018569675530">I-type sa form sa ibaba ang iyong ibinigay na mga salitang code ng chain ng pag-sync.</translation>
 <translation id="1061533051865606843">Magdagdag ng Bagong Device</translation>
 <translation id="5093410893656857925">Piliin ang Uri ng Device</translation>
+<translation id="4581190919849683048">Aling uri ng device ang gusto mong i-sync?</translation>
+<translation id="4112587618563511470">Invalid ang sync code, pakitingnan at subukan ulit.</translation>
 <translation id="2339730291919608488">Umalis sa Chain ng Pag-sync</translation>
+<translation id="115699408012835975">Kung ire-reset mo ang Sync, kakailanganin mong mag-enter ulit ng sync code mula sa ibang device upang makapag-sync dito. Sigurado ka bang gusto mong magpatuloy?</translation>
+<translation id="3396347744975515056">Ang Brave Sync ay na-upgrade at nangangailangan ng setup</translation>
+<translation id="7473245612074035141">Simulan ang Setup</translation>
 <translation id="6696935187608454456">Mga Tulong na Tip</translation>
 <translation id="2775956301559569472">Ipakita ang prompt ng Wayback Machine sa mga 404 na page</translation>
 <translation id="1807246157184219062">Light</translation>

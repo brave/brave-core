@@ -107,6 +107,9 @@ Binance
 <translation id="7390783310074170337">डिफ़ॉल्ट व्यू</translation>
 <translation id="130615081792797568">सरल व्यू</translation>
 <translation id="2360360976480535628">उन्नत व्यू</translation>
+<translation id="2133317862976486547">ट्रैकर्स &amp;amp; विज्ञापन ब्लॉक करना</translation>
+<translation id="4385707520896576447">कुकी ब्लॉकिंग</translation>
+<translation id="4978786495456601191">फ़िंगरप्रिंटिंग ब्लॉकिंग</translation>
 <translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
 <translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
 <translation id="519861640102428255">देखें और महसूस करें</translation>
@@ -115,9 +118,12 @@ Binance
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
+<translation id="4078738236287221428">एग्रेसिव</translation>
 <translation id="7740996059027112821">मानक</translation>
 <translation id="4176463684765177261">अक्षम</translation>
+<translation id="5770288601196774623">केवल क्रॉस-साइट</translation>
 <translation id="3587482841069643663">सभी</translation>
+<translation id="5533533363827555308">सख्त, साइटों को ब्रेक कर सकते हैं</translation>
 <translation id="8942080017911802454">वेबआरटीसी आईपी हैंडलिंग नीति</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8798099450830957504">सामान्य</translation>
@@ -125,12 +131,22 @@ Binance
 <translation id="5825943197137337319">केवल डिफ़ॉल्ट सार्वजनिक इंटरफ़ेस</translation>
 <translation id="1689062823386843231">गैर-प्रॉक्सी UDP अक्षम करें</translation>
 <translation id="8502234992433094996">पुश मैसेजिंग के लिए Google सेवाओं का उपयोग करें</translation>
+<translation id="5565355416171743213">सिंक का उपयोग करना शुरू करें</translation>
 <translation id="4332558599726753990">सिंक सेटअप</translation>
+<translation id="2187778349654214731">शुरू करने के लिए, आप जिन उपकरणों को सिंक करना चाहते हैं आपको उन सभी में Brave इनस्टॉल करना आवश्यक है। फ़िर, उन्हें सिंक कोड के साथ सुरक्षित रूप से लिंक करें।</translation>
+<translation id="7530575064080939974">अपने सिंक किए गए उपकरणों को प्रबंधित करें</translation>
+<translation id="7575156386943878014">सिंक प्रबंधक</translation>
 <translation id="1755198127524719638">सिंक सेटिंग</translation>
 <translation id="7558480201297099157">प्रबंधित करें कि आप किन सूचनाओं को डिवाइसों के बीच सिंक करना चाहते हैं। ये सेटिंग्स केवल इस डिवाइस को प्रभावित करती हैं।</translation>
+<translation id="7731928563672901833">उपकरण की सूची</translation>
 <translation id="28332161031213248">नीचे दी गयी डिवाइस सूची में आपकी सिंक चेन की सभी डिवाइस सम्मिलित हैं। किसी भी डिवाइस को किसी अन्य डिवाइस से प्रबन्धित किया है।</translation>
 <translation id="1313162974556054106">डिवाइस का नाम</translation>
+<translation id="923757506389336140">&lt;ph name="उपकरण_नाम"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (यह उपकरण)</translation>
+<translation id="3686835020221422649">पिछले बार सक्रीय</translation>
+<translation id="2569646144216067185">शब्दों की संख्याt: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
 <translation id="7885157704277298658">कॉपी की गई!</translation>
+<translation id="8802630444265810662">आपके सिंक कोड को प्रसारित करने के लिए मोबाइल डिवाइस के साथ स्कैन किया जाने वाला एक QR कोड</translation>
+<translation id="6221331245829088299">QR कोड दिखने में कुछ समस्या हुई, कृपया रिफ़्रेश करें और पुनः प्रयास करें।`</translation>
 <translation id="298546024891487702">शुरूआत करने के लिए, आपको उन सभी डिवाइसों पर Brave इंस्टॉल करना होगा जिन्हें आप सिंक करना चाहते हैं। उन्हें एक साथ रखने के लिए, सिंक चेन को शुरू करें जिसे आप सभी डिवाइस को सुरक्षापूर्वक जोड़ने के लिए किये प्रयोग करेंगे।</translation>
 <translation id="6200528822592747640">नयी सिंक चेन की शुरुआत करें</translation>
 <translation id="5184726904895809379">मेरे पास एक सिंक कोड है</translation>
@@ -150,7 +166,12 @@ Binance
 <translation id="5734745018569675530">नीचे दिए गए फॉर्म में आपको पहुँचाया गया सिंक चेन कोड दर्ज़ करें।</translation>
 <translation id="1061533051865606843">नए डिवाइस जोड़ें</translation>
 <translation id="5093410893656857925">डिवाइस प्रकार चुनें</translation>
+<translation id="4581190919849683048">आप किस प्रकार के उपकरण से सिंक करना चाहेंगे?</translation>
+<translation id="4112587618563511470">अमान्य सिंक कोड, कृपया जाँच करें और पुनः प्रयास करें।</translation>
 <translation id="2339730291919608488">सिंक चेन छोड़ें</translation>
+<translation id="115699408012835975">यदि आप सिंक रिसेट करते हैं, तो आपको इसके साथ सिंक करने के लिए किसी अन्य डिवाइस से सिंक कोड को फ़िर से दर्ज करना होगा। क्या आप वाकई आगे बढ़ना चाहते हैं?</translation>
+<translation id="3396347744975515056">Brave सिंक को अपग्रेड किया गया है और सेटअप की आवश्यकता है</translation>
+<translation id="7473245612074035141">सेटअप शुरू करें</translation>
 <translation id="6696935187608454456">सहायक टिप्स</translation>
 <translation id="2775956301559569472">404 पेजों पर वेबैक मशीन शीघ्र दिखाएं</translation>
 <translation id="1807246157184219062">मन्द</translation>

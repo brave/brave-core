@@ -40,6 +40,7 @@
 <translation id="2875302873837723333">populære nettsteder</translation>
 <translation id="8173998484743827990">Brave-statistikk</translation>
 <translation id="383680190590774040">klokke</translation>
+<translation id="3333887201479867589">Brave-belønninger</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="6248988683584659830">Søkeinnstillinger</translation>
@@ -245,7 +246,6 @@
 <translation id="2975780980638932742">Brave-annonser er her!</translation>
 <translation id="3361548743396744457">Støtt favorittsidene dine kun ved å surfe på nett – eller gi tips til en side når du måtte ønske.</translation>
 <translation id="718303546189503957">Bidra automatisk med {{processor}}</translation>
-<translation id="3333887201479867589">Brave-belønninger</translation>
 <translation id="4493850495402472953">og</translation>
 <translation id="8804164990146287819">Personvernerklæring</translation>
 <translation id="4281844954008187215">Brukervilkår</translation>
@@ -366,6 +366,7 @@
 <translation id="8204292894173669182">Fjern fra Lagrede</translation>
 <translation id="2160578257818656558">Du har satt av {{reservedAmount}} {{currency}} til skapere som ennå ikke har registrert seg for å motta bidrag. Nettleseren din fortsetter å prøve å bidra til vedkommende har verifisert seg, eller til det har gått 90 dager.</translation>
 <translation id="8759753423332885148">Finn ut mer.</translation>
+<translation id="5939518447894949180">Tilbakestill</translation>
 <translation id="3157931365184549694">Gjenopprett</translation>
 <translation id="1797334173232638045">De festede sidene dine er flyttet til</translation>
 <translation id="5717619667204259673">Ta godt vare på denne gjenopprettingsnøkkelen.</translation>
