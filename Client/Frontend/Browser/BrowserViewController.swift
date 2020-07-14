@@ -1892,7 +1892,7 @@ extension BrowserViewController: TopToolbarDelegate {
     }
 
     func locationActions(for topToolbar: TopToolbarView) -> [AccessibleAction] {
-        if UIPasteboard.general.string != nil {
+        if UIPasteboard.general.hasStrings || UIPasteboard.general.hasURLs {
             return [pasteGoAction, pasteAction, copyAddressAction]
         } else {
             return [copyAddressAction]

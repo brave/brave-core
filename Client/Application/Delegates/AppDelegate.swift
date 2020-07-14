@@ -273,13 +273,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             if Preferences.URP.referralLookupOutstanding.value == true {
                 var refCode: String?
                 
+                let savedRefCode: String? = ProcessInfo().operatingSystemVersion.majorVersion > 13
+                    ? nil : UIPasteboard.general.string
+                
                 if Preferences.URP.referralCode.value == nil {
                     UrpLog.log("No ref code exists on launch, attempting clipboard retrieval")
-                    refCode = UserReferralProgram.sanitize(input: UIPasteboard.general.string)
+                    refCode = UserReferralProgram.sanitize(input: savedRefCode)
                 }
                 
                 if refCode != nil {
-                    UrpLog.log("Clipboard ref code found: " + (UIPasteboard.general.string ?? "!Clipboard Empty!"))
+                    UrpLog.log("Clipboard ref code found: " + (savedRefCode ?? "!Clipboard Empty!"))
                     UrpLog.log("Clearing clipboard.")
                     UIPasteboard.general.clearPasteboard()
                 }
