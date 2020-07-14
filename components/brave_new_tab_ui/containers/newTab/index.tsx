@@ -292,6 +292,10 @@ class NewTabPage extends React.Component<Props, State> {
       this.setForegroundStackWidget('gemini')
     }
 
+    if (!showGemini) {
+      this.props.saveShowAddCard(true)
+    }
+
     this.props.saveShowGemini(!showGemini)
 
     if (showGemini) {
@@ -652,12 +656,15 @@ class NewTabPage extends React.Component<Props, State> {
       togetherSupported,
       showRewards,
       showBinance,
-      showTogether
+      showTogether,
+      geminiSupported,
+      showGemini
     } = this.props.newTabData
     return [
       showRewards,
       togetherSupported && showTogether,
-      binanceState.binanceSupported && showBinance
+      binanceState.binanceSupported && showBinance,
+      geminiSupported && showGemini
     ].every((widget: boolean) => !widget)
   }
 
@@ -967,6 +974,9 @@ class NewTabPage extends React.Component<Props, State> {
           togetherSupported={newTabData.togetherSupported}
           toggleShowTogether={this.toggleShowTogether}
           showTogether={newTabData.showTogether}
+          geminiSupported={newTabData.geminiSupported}
+          toggleShowGemini={this.toggleShowGemini}
+          showGemini={newTabData.showGemini}
           focusMoreCards={focusMoreCards}
         />
       </Page.App>
