@@ -292,6 +292,7 @@ source_set("browser_process") {
 
     deps += [
       "//brave/components/gemini/browser",
+      "//components/os_crypt",
     ]
   }
 

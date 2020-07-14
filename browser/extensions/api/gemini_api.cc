@@ -10,9 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/environment.h"
-#include "brave/browser/profiles/profile_util.h"
-
 #include "brave/common/extensions/api/gemini.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
@@ -34,13 +31,6 @@ GeminiService* GetGeminiService(content::BrowserContext* context) {
       ->GetForProfile(Profile::FromBrowserContext(context));
 }
 
-bool IsGeminiAPIAvailable(content::BrowserContext* context) {
-  Profile* profile = Profile::FromBrowserContext(context);
-  return !brave::IsTorProfile(profile) &&
-    !profile->IsIncognitoProfile() &&
-    !profile->IsGuestSession();
-}
-
 }  // namespace
 
 namespace extensions {
@@ -48,10 +38,6 @@ namespace api {
 
 ExtensionFunction::ResponseAction
 GeminiGetClientUrlFunction::Run() {
-  if (!IsGeminiAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
   auto* service = GetGeminiService(browser_context());
   const std::string client_url = service->GetOAuthClientUrl();
 
@@ -61,10 +47,6 @@ GeminiGetClientUrlFunction::Run() {
 
 ExtensionFunction::ResponseAction
 GeminiGetAccessTokenFunction::Run() {
-  if (!IsGeminiAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
   auto* service = GetGeminiService(browser_context());
   bool token_request = service->GetAccessToken(base::BindOnce(
       &GeminiGetAccessTokenFunction::OnCodeResult, this));
@@ -83,10 +65,6 @@ void GeminiGetAccessTokenFunction::OnCodeResult(bool success) {
 
 ExtensionFunction::ResponseAction
 GeminiGetTickerPriceFunction::Run() {
-  if (!IsGeminiAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
   std::unique_ptr<gemini::GetTickerPrice::Params> params(
       gemini::GetTickerPrice::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -112,10 +90,6 @@ void GeminiGetTickerPriceFunction::OnPriceResult(
 
 ExtensionFunction::ResponseAction
 GeminiGetAccountBalancesFunction::Run() {
-  if (!IsGeminiAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
   auto* service = GetGeminiService(browser_context());
   bool balance_success = service->GetAccountBalances(
       base::BindOnce(
@@ -145,10 +119,6 @@ void GeminiGetAccountBalancesFunction::OnGetAccountBalances(
 
 ExtensionFunction::ResponseAction
 GeminiGetDepositInfoFunction::Run() {
-  if (!IsGeminiAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
   std::unique_ptr<gemini::GetDepositInfo::Params> params(
       gemini::GetDepositInfo::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -174,10 +144,6 @@ void GeminiGetDepositInfoFunction::OnGetDepositInfo(
 
 ExtensionFunction::ResponseAction
 GeminiRevokeTokenFunction::Run() {
-  if (!IsGeminiAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
   auto* service = GetGeminiService(browser_context());
   bool request = service->RevokeAccessToken(base::BindOnce(
           &GeminiRevokeTokenFunction::OnRevokeToken, this));
@@ -196,10 +162,6 @@ void GeminiRevokeTokenFunction::OnRevokeToken(bool success) {
 
 ExtensionFunction::ResponseAction
 GeminiGetOrderQuoteFunction::Run() {
-  if (!IsGeminiAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
   std::unique_ptr<gemini::GetOrderQuote::Params> params(
       gemini::GetOrderQuote::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -233,10 +195,6 @@ void GeminiGetOrderQuoteFunction::OnOrderQuoteResult(
 
 ExtensionFunction::ResponseAction
 GeminiExecuteOrderFunction::Run() {
-  if (!IsGeminiAPIAvailable(browser_context())) {
-    return RespondNow(Error("Not available in Tor/incognito/guest profile"));
-  }
-
   std::unique_ptr<gemini::ExecuteOrder::Params> params(
       gemini::ExecuteOrder::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
@@ -263,11 +221,6 @@ void GeminiExecuteOrderFunction::OnOrderExecuted(bool success) {
 ExtensionFunction::ResponseAction
 GeminiIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-
-  if (brave::IsTorProfile(profile)) {
-    return RespondNow(Error("Not available in Tor profile"));
-  }
-
   bool is_supported = ::gemini::IsGeminiSupported(profile);
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));
