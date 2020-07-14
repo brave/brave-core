@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Introduce tu clave de recuperación o</translation>
 <translation id="6548189695918108191">Haga una copia de seguridad de su monedero antes de cambiarlo o perderá el fondo, {{funds}}, del actual.</translation>
 <translation id="5423214929210538027">¿Estás seguro de que quieres restablecer tu monedero de Brave Rewards?</translation>
-<translation id="9106875682287489763">Tus &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; y otros datos de Brave Rewards se perderán para siempre si restableces tu monedero. Por favor, asegúrate de que has verificado tu monedero con Uphold para que puedas conservar tus BATs.</translation>
+<translation id="9106875682287489763">Tus <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> y otros datos de Brave Rewards se perderán para siempre si restableces tu monedero. Por favor, asegúrate de que has verificado tu monedero con Uphold para que puedas conservar tus BATs.</translation>
 <translation id="2028613172174411919">Sus datos sobre recompensas se perderán permanentemente si restaura su billetera.</translation>
 <translation id="4914597931214386232">Token Reclamados</translation>
 <translation id="3494964159182650590">Resumen de Rewards</translation>

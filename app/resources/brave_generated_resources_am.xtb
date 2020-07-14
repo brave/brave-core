@@ -19,7 +19,7 @@
 <translation id="8053096063396012732">Widevineን ይጫኑ</translation>
 <translation id="4840334696217618631">Widevine ን ለማንቃት አሳሹን እንደገና ያስጀምሩ</translation>
 <translation id="8410111618231938546">Google Widevine የዲጂታል መብት አስተዳደር (DRM) አካል የሆነ ኮድ ሲሆን እኛ ብሬቭ ሶፍትዌር ባለቤትነት የሌለንና ምርመራ ማካሄድ አንችልም፡፡ Google Widevine ኮድ ከኛ ሰርቨር ሳይሆን ከ Google ሰርቨር ማግኘት ይችላሉ፡፡ የሚጀምረው ይህን አማራጭ ካበራቹህ ብቻ ነው፡፡ DRM እንዲጠቀሙ አናበረታታም፣ ቢሆንም የተጠቃሚዎቻችንን ምርጫ እናከብራለን እንዲሁም አንድ አንድ የብሬቭ ተጠቃሚዎች ይህን የሚጠይቅ አገልግሎት መጠቀም እንደሚፈልጉ እውቅና እነሰታለን፡፡
- 
+
  ይህን ቅጥያ ሲገጥሙ፣ በGoogle Widevine የአጠቃቀም ሕግ እየተስማሙ ነው፡፡ ከGoogle Widevine ሲጠቀሙ ለሚገጥሞት አደጋ ወይ የግንኙነት መቋረጥ ብሬቭ ሀላፊነት እንደማይወስድ ይስማማሉ፡፡</translation>
 <translation id="410351446219883937">አውቶፕለይ</translation>
 <translation id="2240268017737062801">ድህረ ገፁ ሚድያ አውቶ ፕለይ ማድረግ ሲፈልግ ጠይቅ</translation>
@@ -107,10 +107,9 @@
 <translation id="7731928563672901833">የመሣሪያ ዝርዝር</translation>
 <translation id="28332161031213248">ከዚህ በታች ያለው የመሳሪያዎች ዝርዝር ሁሉንም በሲንክ ሰንሰለት ውስጥ ያሉ መሳሪያዎችን ያካትታል። እያንዳንዱ መሳሪያ ሌላኛውን በመጠቀም ሊተዳደር ይችላል።</translation>
 <translation id="1313162974556054106">የመሣሪያ ስም</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (ይህ መሣሪያ
- )</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (ይህ መሣሪያ)</translation>
 <translation id="3686835020221422649">የመጨረሻው ገባሪ</translation>
-<translation id="2569646144216067185">የቃል ቆጠራ:  &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">የቃል ቆጠራ: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">ተቀድቷል</translation>
 <translation id="8802630444265810662">የማመሳሰያ ኮድዎን ለማስተላለፍ በተንቀሳቃሽ መሣሪያው የሚመረተው የ QR ኮድ</translation>
 <translation id="6221331245829088299">የ QR ኮድን ማሳየት ላይ አንድ ስህተት ነበር ፣ እባክዎ ያድሱ እና እንደገና ይሞክሩ።</translation>

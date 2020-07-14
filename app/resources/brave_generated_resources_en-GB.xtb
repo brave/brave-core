@@ -73,7 +73,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="7390783310074170337">Default view</translation>
 <translation id="130615081792797568">Simple view</translation>
 <translation id="2360360976480535628">Advanced view</translation>
-<translation id="2133317862976486547">Trackers &amp;amp; ads blocking</translation>
+<translation id="2133317862976486547">Trackers &amp; ads blocking</translation>
 <translation id="4385707520896576447">Cookie blocking</translation>
 <translation id="4978786495456601191">Fingerprinting blocking</translation>
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
@@ -107,9 +107,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="7731928563672901833">Device List</translation>
 <translation id="28332161031213248">The device list below includes all devices in your sync chain. Each device can be managed from any other device.</translation>
 <translation id="1313162974556054106">Device Name</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (This Device)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (This Device)</translation>
 <translation id="3686835020221422649">Last Active</translation>
-<translation id="2569646144216067185">Word count: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Word count: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Copied!</translation>
 <translation id="8802630444265810662">A QR code to be scanned with a mobile device in order to transmit your sync code</translation>
 <translation id="6221331245829088299">There was an error displaying the QR code, please refresh and try again.</translation>

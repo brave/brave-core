@@ -18,7 +18,7 @@
 <translation id="8762452230727230396">Tor приховує вашу IP адресу від сайтів, які ви відвідуєте.</translation>
 <translation id="8053096063396012732">Встановити Widevine</translation>
 <translation id="4840334696217618631">Перезапустіть браузер, щоб увімкнути Widevine</translation>
-<translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають. 
+<translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають.
 Встановлюючи це розширення, ви погоджуєтесь з Умовами використання Google Widevine. Ви погоджуєтесь з тим, що Brave не несе жодної відповідальності за будь-яку шкоду або збитки, що настали у зв'язку з вашим використаням Google Widevine.</translation>
 <translation id="410351446219883937">Автоматичне відтворення</translation>
 <translation id="2240268017737062801">Запитувати, коли сайт хоче автоматично програвати медіа</translation>
@@ -106,9 +106,9 @@
 <translation id="7731928563672901833">Список пристроїв</translation>
 <translation id="28332161031213248">Перелік пристроїв нижче містить всі пристрої у вашому ланцюгу синхронізації. Кожним з пристроїв можна керувати з будь-якого іншого пристрою.</translation>
 <translation id="1313162974556054106">Ім'я пристрою</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (цей пристрій)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (цей пристрій)</translation>
 <translation id="3686835020221422649">Остання активність</translation>
-<translation id="2569646144216067185">Кількість слів: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Кількість слів: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Скопійовано!</translation>
 <translation id="8802630444265810662">Щоб передати свій код синхронізації, вам слід відсканувати QR-код за допомогою мобільного пристрою</translation>
 <translation id="6221331245829088299">При відображенні QR-коду виникла помилка. Будь ласка, оновіть і спробуйте знову.</translation>
@@ -222,7 +222,7 @@
 <translation id="2609895996619941644">Бажаєте перевірити, чи є збережена версія в Архіві?</translation>
 <translation id="8053093028263274061">Вибачте, збереженої версії немає.</translation>
 <translation id="8517321676372639828">Перевірити збережену версію</translation>
-<translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Публічної Ліцензії Mozilla 2.0 <ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) та включає <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>програмне забезпечення з відкритим кодом <ph name="END_LINK_OSS">&lt;/a&gt;</ph> за умовами багатьох інших ліцензій. 
+<translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL">&lt;a target="_blank" href="$1"&gt;</ph>Публічної Ліцензії Mozilla 2.0 <ph name="END_LINK_MPL">&lt;/a&gt;</ph> (MPL) та включає <ph name="BEGIN_LINK_OSS">&lt;a target="_blank" href="$2"&gt;</ph>програмне забезпечення з відкритим кодом <ph name="END_LINK_OSS">&lt;/a&gt;</ph> за умовами багатьох інших ліцензій.
 Ви можете прочитати <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href="$3"&gt;</ph>інструкції, як завантажити та створити самостійно <ph name="END_LINK_BUILD_INSTRUCTIONS">&lt;/a&gt;</ph>конкретний <ph name="BEGIN_LINK_SOURCE_CODE">&lt;a target="_blank" href="$4"&gt;</ph>вихідний код, використаний для створення цієї копії<ph name="END_LINK_SOURCE_CODE">&lt;/a&gt;</ph>.</translation>
 <translation id="4474155171896946103">Позначити закладками всі вкладки...</translation>
 <translation id="2336228925368920074">Позначити закладками всі вкладки...</translation>

@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Enter your recovery key or</translation>
 <translation id="6548189695918108191">Backup your wallet before replacing. Or you will lose the fund, {{funds}}, in your current wallet.</translation>
 <translation id="5423214929210538027">Are you sure you want to reset your Rewards Wallet?</translation>
-<translation id="9106875682287489763">Your &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with Uphold so you can keep your BAT.</translation>
+<translation id="9106875682287489763">Your <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> and other Rewards data will be permanently lost if you reset your wallet. Please ensure you have verified your wallet with Uphold so you can keep your BAT.</translation>
 <translation id="2028613172174411919">Your Rewards data will be permanently lost if you reset your wallet.</translation>
 <translation id="4914597931214386232">Token Grants Claimed</translation>
 <translation id="3494964159182650590">Rewards Summary</translation>

@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Insira sua chave de recuperação ou</translation>
 <translation id="6548189695918108191">Faça backup da sua carteira antes de substituir ou você perderá os fundos, {{funds}}, na sua carteira atual.</translation>
 <translation id="5423214929210538027">Tem certeza de que deseja redefinir a sua Carteira de recompensas?</translation>
-<translation id="9106875682287489763">O seu &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; e outros dados de recompensa serão permanentemente perdidos se você redefinir a sua carteira. Por favor, certifique-se de já ter verificado a sua carteira com o Uphold para que você possa manter o seu BAT.</translation>
+<translation id="9106875682287489763">O seu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> e outros dados de recompensa serão permanentemente perdidos se você redefinir a sua carteira. Por favor, certifique-se de já ter verificado a sua carteira com o Uphold para que você possa manter o seu BAT.</translation>
 <translation id="2028613172174411919">Os seus dados de Recompensa serão permanentemente perdidos se você redefinir a sua carteira.</translation>
 <translation id="4914597931214386232">Auxílios Token Reivindicados</translation>
 <translation id="3494964159182650590">Resumo de Recompensas</translation>

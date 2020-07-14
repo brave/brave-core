@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Masukkan kunci pemulihan anda atau</translation>
 <translation id="6548189695918108191">Sandarkan dompet anda sebelum mengganti. Atau anda akan kehilangan dana, {{funds}}, dalam dompet semasa anda.</translation>
 <translation id="5423214929210538027">Adakah anda pasti anda ingin menetapkan semula Dompet Ganjaran anda?</translation>
-<translation id="9106875682287489763">BAT &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} andas&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; dan data Ganjaran lain akan hilang selamanya sekiranya anda menetapkan semula dompet anda. Sila pastikan bahawa anda telah menentusahkan dompet anda dengan Uphold supaya anda boleh mengekalkan BAT anda.</translation>
+<translation id="9106875682287489763">BAT <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} andas<ph name="BEGIN_END">&lt;/b&gt;</ph> dan data Ganjaran lain akan hilang selamanya sekiranya anda menetapkan semula dompet anda. Sila pastikan bahawa anda telah menentusahkan dompet anda dengan Uphold supaya anda boleh mengekalkan BAT anda.</translation>
 <translation id="2028613172174411919">Data Ganjaran anda akan hilang selamanya sekiranya anda menetapkan semula dompet anda.</translation>
 <translation id="4914597931214386232">Pemberian Token Dituntut</translation>
 <translation id="3494964159182650590">Ringkasan Ganjaran</translation>

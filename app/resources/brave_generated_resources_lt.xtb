@@ -107,9 +107,9 @@
 <translation id="7731928563672901833">Įrenginių sąrašas</translation>
 <translation id="28332161031213248">Prietaisų sąraše išvardinti visi prietaisai tavo sinchronizavimo grandinėje. Kiekvieną prietaisą galima valdyti iš kito prietaiso.</translation>
 <translation id="1313162974556054106">Įrenginio pavadinimas</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (šis įrenginys)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (šis įrenginys)</translation>
 <translation id="3686835020221422649">Vėliausiai aktyvūs</translation>
-<translation id="2569646144216067185">Žodžių skaičius: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Žodžių skaičius: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Nukopijuota!</translation>
 <translation id="8802630444265810662">QR kodas, kurį reikės nuskaityti mobiliuoju įrenginiu, norint siųsti jūsų sinchronizavimo kodą</translation>
 <translation id="6221331245829088299">Rodant QR kodą įvyko klaida. Atnaujinkite ir bandykite dar kartą.</translation>

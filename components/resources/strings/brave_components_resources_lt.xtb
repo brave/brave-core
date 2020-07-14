@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Įveskite atkūrimo kodą arba</translation>
 <translation id="6548189695918108191">Prieš pakeisdami sukurkite piniginės atsarginę kopiją. Antraip prarasite pinigus, {{funds}}, esančius dabartinėje piniginėje.</translation>
 <translation id="5423214929210538027">Ar tikrai norite iš naujo nustatyti „Rewards“ piniginę?</translation>
-<translation id="9106875682287489763">Jei iš naujo nustatysite piniginę, jūsų &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BAT&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami „Uphold“, kad neprarastumėte BAT.</translation>
+<translation id="9106875682287489763">Jei iš naujo nustatysite piniginę, jūsų <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> ir kiti „Rewards“ duomenys bus prarasti visam laikui. Patvirtinkite savo piniginę naudodami „Uphold“, kad neprarastumėte BAT.</translation>
 <translation id="2028613172174411919">Jei iš naujo nustatysite piniginę, jūsų „Rewards“ duomenys bus prarasti visam laikui.</translation>
 <translation id="4914597931214386232">Atsiimtos žetonų išmokos</translation>
 <translation id="3494964159182650590">„Rewards“ suvestinė</translation>

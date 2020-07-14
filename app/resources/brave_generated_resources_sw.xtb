@@ -107,9 +107,9 @@ Kwa kusanidi nyongeza hii, unakubali Masharti ya Matumizi ya Google Widevine. Un
 <translation id="7731928563672901833">Orodha ya Vifaa</translation>
 <translation id="28332161031213248">Orodha ya vifaa hapa chini hujumuisha vifaa vyote katika mnyororo wako wa kuoanisha. Kila kifaa kinaweza kusimamiwa kutoka katika kifaa kingine chochote.</translation>
 <translation id="1313162974556054106">Jina la Kifaa</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Kifaa Hiki)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Kifaa Hiki)</translation>
 <translation id="3686835020221422649">Mara ya Mwisho Kutumika</translation>
-<translation id="2569646144216067185">Idadi ya maneno: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Idadi ya maneno: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Imenakiliwa!</translation>
 <translation id="8802630444265810662">Msimbo wa QR wa kuchanganuliwa na kifaa cha mkononi ili uweze kutuma msimbo wako wa usawazishaji</translation>
 <translation id="6221331245829088299">Hitilafu imetokea wakati wa kuonyesha msimbo wa QR, tafadhali onyesha upya na ujaribu tena.</translation>

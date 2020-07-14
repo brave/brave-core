@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Syätö palautusavaimesi tai</translation>
 <translation id="6548189695918108191">Tee lompakostasi varmuuskopio ennen sen vaihtamista. Muutoin menetät tämänhetkisen lompakkosi {{funds}} varat.</translation>
 <translation id="5423214929210538027">Tahdotko varmasti palauttaa palkintolompakkosi alkutilaan?</translation>
-<translation id="9106875682287489763">Omat &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATisi&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; ynnä muut palkintotiedot menetetään, jos palautat lompakkosi alkutilaan. Tarkista, että olet vahvistanut lompakkosi Upholdilla, jotta et menettäisi BATejasi.</translation>
+<translation id="9106875682287489763">Omat <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATisi<ph name="BEGIN_END">&lt;/b&gt;</ph> ynnä muut palkintotiedot menetetään, jos palautat lompakkosi alkutilaan. Tarkista, että olet vahvistanut lompakkosi Upholdilla, jotta et menettäisi BATejasi.</translation>
 <translation id="2028613172174411919">Palkintotietosi menetetään pysyvästi, jos palautat lompakkosi alkutilaan.</translation>
 <translation id="4914597931214386232">Lunastetut tunnuslahjoitukset</translation>
 <translation id="3494964159182650590">Palkkioiden yhteenveto</translation>

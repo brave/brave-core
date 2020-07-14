@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Voer de herstelsleutel in of</translation>
 <translation id="6548189695918108191">Maak een back-up van uw wallet voordat u deze vervangt. Anders verliest u het geld in uw huidige wallet.</translation>
 <translation id="5423214929210538027">Weet u zeker dat u uw Rewards Wallet wilt resetten?</translation>
-<translation id="9106875682287489763">Uw &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; en andere Rewards-gegevens zullen permanent verloren gaan als u uw wallet reset. Wees er zeker van dat u uw wallet met Uphold geverifieerd hebt zodat u uw BAT kunt behouden.</translation>
+<translation id="9106875682287489763">Uw <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> en andere Rewards-gegevens zullen permanent verloren gaan als u uw wallet reset. Wees er zeker van dat u uw wallet met Uphold geverifieerd hebt zodat u uw BAT kunt behouden.</translation>
 <translation id="2028613172174411919">Uw Rewards-gegevens zullen permanent verloren gaan als u uw wallet reset.</translation>
 <translation id="4914597931214386232">Geclaimde giften</translation>
 <translation id="3494964159182650590">Overzicht van de Beloningen</translation>

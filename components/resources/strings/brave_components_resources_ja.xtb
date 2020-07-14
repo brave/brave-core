@@ -434,7 +434,7 @@
 <translation id="3267911153934785912">回復キーを入力</translation>
 <translation id="6548189695918108191">移行する前にウォレットをバックアップしてください。そうしないと現在のウォレットにある資金が失われます。</translation>
 <translation id="5423214929210538027">本当にRewards Walletをリセットしてよろしいですか？</translation>
-<translation id="9106875682287489763">ウォレットをリセットすると、あなたの &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; や報酬に関するデータが永久に失われます。BATトークンを失わないように、Upholdを使ってウォレットの内容を必ず確認してください。</translation>
+<translation id="9106875682287489763">ウォレットをリセットすると、あなたの <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> や報酬に関するデータが永久に失われます。BATトークンを失わないように、Upholdを使ってウォレットの内容を必ず確認してください。</translation>
 <translation id="2028613172174411919">ウォレットをリセットすると、あなたが受け取った報酬のデータが永久に失われます。</translation>
 <translation id="4914597931214386232">取得済のポイント付与</translation>
 <translation id="3494964159182650590">Rewardsのサマリ</translation>

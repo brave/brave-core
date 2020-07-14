@@ -73,7 +73,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7390783310074170337">Paparan lalai</translation>
 <translation id="130615081792797568">Paparan ringkas</translation>
 <translation id="2360360976480535628">Paparan lanjutan</translation>
-<translation id="2133317862976486547">Sekatan &amp;amp; penjejak</translation>
+<translation id="2133317862976486547">Sekatan &amp; penjejak</translation>
 <translation id="4385707520896576447">Kuki menyekat</translation>
 <translation id="4978786495456601191">Menyekat pengecapan jari</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
@@ -107,9 +107,9 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7731928563672901833">Senarai Peranti</translation>
 <translation id="28332161031213248">Senarai peranti di bawah menyertakan semua peranti dalam rantaian penyegerakan anda. Setiap peranti boleh diuruskan dari mana-mana peranti lain.</translation>
 <translation id="1313162974556054106">Nama peranti</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Peranti Ini)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Peranti Ini)</translation>
 <translation id="3686835020221422649">Terakhir Aktif</translation>
-<translation id="2569646144216067185">Kiraan perkataan: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Kiraan perkataan: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Disalin!</translation>
 <translation id="8802630444265810662">Sebuah kod QR untuk diimbas dengan peranti mudah alih supaya anda boleh memancarkan kod segerakan anda</translation>
 <translation id="6221331245829088299">Terdapat ralat dalam memaparkan kod QR, sila segarkan semula dan cuba lagi.</translation>

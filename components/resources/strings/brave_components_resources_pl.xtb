@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Wprowadź klucz odzyskiwania lub</translation>
 <translation id="6548189695918108191">Wykonaj backup swojego portfela przed wymianą, w przeciwnym razie stracisz środki ({{funds}} znajdujące się w bieżącym portfelu.</translation>
 <translation id="5423214929210538027">Czy na pewno chcesz zresetować swój portfel nagród?</translation>
-<translation id="9106875682287489763">Twoje &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BAT&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; i inne dane dotyczące nagród zostaną trwale utracone, jeśli zresetujesz swój portfel. Aby zachować BAT, upewnij się, że Twój portfel został zweryfikowany za pośrednictwem Uphold.</translation>
+<translation id="9106875682287489763">Twoje <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> i inne dane dotyczące nagród zostaną trwale utracone, jeśli zresetujesz swój portfel. Aby zachować BAT, upewnij się, że Twój portfel został zweryfikowany za pośrednictwem Uphold.</translation>
 <translation id="2028613172174411919">Jeśli zresetujesz swój portfel, dane dotyczące Twoich nagród zostaną trwale utracone.</translation>
 <translation id="4914597931214386232">Tokeny odebrane</translation>
 <translation id="3494964159182650590">Podsumowanie nagród</translation>

@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Ilagay ang iyong recovery key o</translation>
 <translation id="6548189695918108191">I-back up ang wallet mo bago ito palitan. Kung hindi ay mawawala mo ang pondong {{funds}} sa kasalukuyan mong wallet.</translation>
 <translation id="5423214929210538027">Sigurado ka bang gusto mong i-reset ang Rewards Wallet mo?</translation>
-<translation id="9106875682287489763">Permanenteng mawawala ang &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; mo at iba pang Rewards data kung ire-reset mo ang wallet mo. Pakitiyak na na-verify mo ang iyong wallet sa Uphold para mapanatili mo ang BAT mo.</translation>
+<translation id="9106875682287489763">Permanenteng mawawala ang <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> mo at iba pang Rewards data kung ire-reset mo ang wallet mo. Pakitiyak na na-verify mo ang iyong wallet sa Uphold para mapanatili mo ang BAT mo.</translation>
 <translation id="2028613172174411919">Permanenteng mawawala ang Rewards data mo kung ire-reset mo ang wallet mo.</translation>
 <translation id="4914597931214386232">Mga Na-claim na Grant para sa Token</translation>
 <translation id="3494964159182650590">Buod ng Mga Reward</translation>

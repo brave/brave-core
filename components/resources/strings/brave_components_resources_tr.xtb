@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Kurtarma anahtarınızı girin veya</translation>
 <translation id="6548189695918108191">Yenileme öncesi cüzdanınızı yedekleyin. Yoksa mevcut cüzdanınızdaki {{funds]] meblağını kaybedersiniz.</translation>
 <translation id="5423214929210538027">Kazanç Cüzdanını sıfırlamak istediğinize emin misiniz?</translation>
-<translation id="9106875682287489763">&lt;ph Adınız="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; ve diğer Kazanç verileriniz, cüzdanınızı sıfırlarsanız, kalıcı olarak kaybedilecektir. BAT'inizi elinizde tutmak için Uphold'daki cüzdanınızın doğrulanmış olduğundan emin olun.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> ve diğer Kazanç verileriniz, cüzdanınızı sıfırlarsanız, kalıcı olarak kaybedilecektir. BAT'inizi elinizde tutmak için Uphold'daki cüzdanınızın doğrulanmış olduğundan emin olun.</translation>
 <translation id="2028613172174411919">Cüzdanınızı sıfırlarsanız Kazanç verileriniz kalıcı olarak kaybedilecektir.</translation>
 <translation id="4914597931214386232">Token Bağışları Talep Edildi</translation>
 <translation id="3494964159182650590">Ödüller Özeti</translation>

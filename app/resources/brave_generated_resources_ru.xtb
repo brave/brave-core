@@ -107,9 +107,9 @@
 <translation id="7731928563672901833">Список устройств</translation>
 <translation id="28332161031213248">В списке отражены все устройства цепи синхронизации. С любого из этих устройств можно управлять остальными.</translation>
 <translation id="1313162974556054106">Имя устройства</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Это устройство)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Это устройство)</translation>
 <translation id="3686835020221422649">Последняя активность</translation>
-<translation id="2569646144216067185">Количество слов: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Количество слов: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Скопировано!</translation>
 <translation id="8802630444265810662">QR-код для сканирования мобильным устройством, позволяющий передать ваш код синхронизации</translation>
 <translation id="6221331245829088299">Ошибка отображения QR-кода. Обновите и попробуйте еще раз.</translation>

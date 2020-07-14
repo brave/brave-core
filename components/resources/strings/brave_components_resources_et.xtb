@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Sisestage oma taastamisvõti või</translation>
 <translation id="6548189695918108191">Varunda oma rahakott enne asendamist. Või kaotad praegusest rahakotist vahendid, {{Funds}}.</translation>
 <translation id="5423214929210538027">Oled kindel, et soovid oma Rewards rahakoti lähtestada?</translation>
-<translation id="9106875682287489763">Sinu &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; ja muud Rewards andmed lähevad rahakoti lähtestamisel jäädavalt kaduma. Veendu, et oled oma rahakoti Upholdiga kinnitanud, et saaksite oma BATi säilitada.</translation>
+<translation id="9106875682287489763">Sinu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> ja muud Rewards andmed lähevad rahakoti lähtestamisel jäädavalt kaduma. Veendu, et oled oma rahakoti Upholdiga kinnitanud, et saaksite oma BATi säilitada.</translation>
 <translation id="2028613172174411919">Sinu Rewards andmed lähevad rahakoti lähtestamisel jäädavalt kaduma.</translation>
 <translation id="4914597931214386232">Kasutatud tokenivõimalused</translation>
 <translation id="3494964159182650590">Preemiate kokkuvõte</translation>

@@ -432,7 +432,7 @@ Povolte je návštěvou</translation>
 <translation id="3267911153934785912">Zadejte klíč pro obnovení nebo</translation>
 <translation id="6548189695918108191">Před výměnou si peněženku zazálohujte. V opačném případě finance, {{funds}}, z aktuální peněženky ztratíte.</translation>
 <translation id="5423214929210538027">Opravdu si chcete resetovat peněženku s odměnami Rewadrs Wallet?</translation>
-<translation id="9106875682287489763">Vaše &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; a data ostatních Odměn se nenávratně ztratí, pokud si peněženku resetujete. Zkontrolujte si, že jste peněženku ověřili pomocí Uphold, abyste si mohli BAT ponechat.</translation>
+<translation id="9106875682287489763">Vaše <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> a data ostatních Odměn se nenávratně ztratí, pokud si peněženku resetujete. Zkontrolujte si, že jste peněženku ověřili pomocí Uphold, abyste si mohli BAT ponechat.</translation>
 <translation id="2028613172174411919">Pokud si resetujete peněženku, data vašich Odměn se nenávratně ztratí.</translation>
 <translation id="4914597931214386232">Nárokovaných grantů</translation>
 <translation id="3494964159182650590">Přehled odměn</translation>

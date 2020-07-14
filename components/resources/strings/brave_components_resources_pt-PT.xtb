@@ -432,7 +432,7 @@
 <translation id="3267911153934785912">Introduza a chave de recuperação ou</translation>
 <translation id="6548189695918108191">Proceda ao backup da sua wallet (carteira) antes de a substituir. Ou perderá os fundos. {{funds}}, na sua wallet (carteira) atual.</translation>
 <translation id="5423214929210538027">Tem a certeza que quer redefinir a sua Rewards Wallet (Carteira de Recompensas)?</translation>
-<translation id="9106875682287489763">Os seus &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; e outros dados de Recompensas perder-se-ão definitivamente caso proceda à redefinição da sua carteira (wallet), Por favor, certifique-se que procedeu à verificação da sua carteira com o Uphold para a manutenção do seu BAT.</translation>
+<translation id="9106875682287489763">Os seus <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> e outros dados de Recompensas perder-se-ão definitivamente caso proceda à redefinição da sua carteira (wallet), Por favor, certifique-se que procedeu à verificação da sua carteira com o Uphold para a manutenção do seu BAT.</translation>
 <translation id="2028613172174411919">Caso opte pela redefinição da sua carteira (wallet), os dados das suas Recompensas perder-se-ão definitivamente.</translation>
 <translation id="4914597931214386232">Doações Token Reivindicadas</translation>
 <translation id="3494964159182650590">Resumo de Recompensas</translation>

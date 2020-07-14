@@ -73,7 +73,7 @@
 <translation id="7390783310074170337">ಡೀಫಾಲ್ಟ್ ವೀಕ್ಷಣೆ</translation>
 <translation id="130615081792797568">ಸರಳ ವೀಕ್ಷಣೆ</translation>
 <translation id="2360360976480535628">ಸುಧಾರಿತ ವೀಕ್ಷಣೆ</translation>
-<translation id="2133317862976486547">ಟ್ರ್ಯಾಕರ್‌ಗಳು &amp;amp; ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
+<translation id="2133317862976486547">ಟ್ರ್ಯಾಕರ್‌ಗಳು &amp; ಜಾಹೀರಾತುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="4385707520896576447">ಕುಕೀಯನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="4978786495456601191">ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಅನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="3570081523466826008">HTTPS ಗೆ ಸಂಪರ್ಕಗಳನ್ನು ಮೇಲ್ದರ್ಜೆಗೇರಿಸಿ</translation>
@@ -107,9 +107,9 @@
 <translation id="7731928563672901833">ಸಾಧನ ಪಟ್ಟಿ</translation>
 <translation id="28332161031213248">ಕೆಳಗಿನ ಸಾಧನ ಪಟ್ಟಿಯು ನಿಮ್ಮ ಸಿಂಕ್ ಚೈನ್‌ನಲ್ಲಿರುವ ಎಲ್ಲಾ ಸಾಧನಗಳನ್ನು ಹೊಂದಿದೆ. ಇತರ ಯಾವುದೇ ಸಾಧನದಿಂದ ಪ್ರತಿಯೊಂದು ಸಾಧನವನ್ನು ನಿರ್ವಹಿಸಬಹುದು.</translation>
 <translation id="1313162974556054106">ಸಾಧನದ ಹೆಸರು</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (ಈ ಸಾಧನ)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (ಈ ಸಾಧನ)</translation>
 <translation id="3686835020221422649">ಕೊನೆಯದಾಗಿ ಸಕ್ರಿಯವಾಗಿರುವುದು</translation>
-<translation id="2569646144216067185">ಪದ ಎಣಿಕೆ: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">ಪದ ಎಣಿಕೆ: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">ನಕಲಿಸಲಾಗಿದೆ!</translation>
 <translation id="8802630444265810662">ನಿಮ್ಮ ಸಿಂಕ್ ಕೋಡ್ ಅನ್ನು ರವಾನಿಸಲು ಮೊಬೈಲ್ ಸಾಧನದೊಂದಿಗೆ ಸ್ಕ್ಯಾನ್ ಮಾಡಬೇಕಾದ QR ಕೋಡ್</translation>
 <translation id="6221331245829088299">QR ಕೋಡ್ ಪ್ರದರ್ಶಿಸುವಲ್ಲಿ ದೋಷ ಕಂಡುಬಂದಿದೆ, ದಯವಿಟ್ಟು ರಿಫ್ರೆಶ್ ಮಾಡಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>

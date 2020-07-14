@@ -107,9 +107,9 @@
 <translation id="7731928563672901833">Seznam naprav</translation>
 <translation id="28332161031213248">Spodnji seznam naprav vključuje vse naprave v vaši verigi za sinhronizacijo. Posamezno napravo lahko upravljate s poljubne druge naprave.</translation>
 <translation id="1313162974556054106">Ime naprave</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (ta naprava)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (ta naprava)</translation>
 <translation id="3686835020221422649">Zadnji aktiven</translation>
-<translation id="2569646144216067185">Število besed: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Število besed: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopirano!</translation>
 <translation id="8802630444265810662">Koda QR, ki jo je treba skenirati z mobilno napravo, da bi prenesli kodo za sinhronizacijo</translation>
 <translation id="6221331245829088299">Pri prikazu kode QR je prišlo do napake, osvežite in poskusite znova.</translation>

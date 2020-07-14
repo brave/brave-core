@@ -73,7 +73,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="7390783310074170337">Standardansicht</translation>
 <translation id="130615081792797568">Einfache Ansicht</translation>
 <translation id="2360360976480535628">Erweiterte Ansicht</translation>
-<translation id="2133317862976486547">Tracker &amp;amp; Anzeigenblockierung</translation>
+<translation id="2133317862976486547">Tracker &amp; Anzeigenblockierung</translation>
 <translation id="4385707520896576447">Cookie-Blockierung</translation>
 <translation id="4978786495456601191">Fingerprinting-Blockierung</translation>
 <translation id="3570081523466826008">Verbindungen auf HTTPS upgraden</translation>
@@ -107,9 +107,9 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="7731928563672901833">Geräteliste</translation>
 <translation id="28332161031213248">Die nachfolgende Geräteliste beinhaltet alle Geräte in Ihrer Synchronisierungskette. Jedes Gerät kann von jedem anderen Gerät aus verwaltet werden.</translation>
 <translation id="1313162974556054106">Gerätename</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (dieses Gerät)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (dieses Gerät)</translation>
 <translation id="3686835020221422649">Zuletzt aktiv</translation>
-<translation id="2569646144216067185">Wortzahl: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Wortzahl: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopiert!</translation>
 <translation id="8802630444265810662">Ein QR-Code, der mit einem Mobilgerät gelesen wird, damit Ihr Snychronisierungscode übertragen werden kann</translation>
 <translation id="6221331245829088299">Bei der Anzeige des QR-Codes ist ein Fehler aufgetreten. Bitte aktualisieren Sie und versuchen Sie es erneut.</translation>

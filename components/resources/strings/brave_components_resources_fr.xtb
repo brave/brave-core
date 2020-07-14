@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Saisissez votre code de récupération ou</translation>
 <translation id="6548189695918108191">Sauvegardez votre portefeuille avant de le remplacer. Sinon, vous perdrez les fonds, {{funds}}, de votre portefeuille actuel.</translation>
 <translation id="5423214929210538027">Êtes-vous sûr(e) de vouloir réinitialiser votre portefeuille Rewards ?</translation>
-<translation id="9106875682287489763">Votre &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; et d'autres données relatives à Rewards seront définitivement perdues si vous réinitialisez votre portefeuille. Veuillez vous assurer que vous avez bien vérifié votre portefeuille auprès de Uphold afin de pouvoir conserver vos BAT.</translation>
+<translation id="9106875682287489763">Votre <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> et d'autres données relatives à Rewards seront définitivement perdues si vous réinitialisez votre portefeuille. Veuillez vous assurer que vous avez bien vérifié votre portefeuille auprès de Uphold afin de pouvoir conserver vos BAT.</translation>
 <translation id="2028613172174411919">Vos données Rewards seront définitivement perdues si vous réinitialisez votre portefeuille.</translation>
 <translation id="4914597931214386232">Allocations de jetons réclamées</translation>
 <translation id="3494964159182650590">Résumé des récompenses</translation>

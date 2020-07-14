@@ -18,7 +18,7 @@
 <translation id="8762452230727230396">Tor amaga la vostra adreça IP dels llocs que visiteu.</translation>
 <translation id="8053096063396012732">Instal·la Widevine</translation>
 <translation id="4840334696217618631">Reinicia el navegador per activar Widevine</translation>
-<translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen. 
+<translation id="8410111618231938546">Google Widevine és una part del codi de Gestió de Drets Digitals (DRM) que a Brave Software no tenim i no podem inspeccionar. El codi de Google Widevine es carrega dels servidors de Google, no dels nostres servidors. Es carrega només quan habiliteu aquesta opció. No encoratgem la utilització del DRM, però respectem l'elecció de l'usuari i sabem que a alguns usuaris de Brave els agradaria poder utilitzar els serveis que ho requereixen.
 
 En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevine. Accepteu que Brave no es fa responsable dels danys o pèrdues relacionats amb el vostre ús de Google Widevine.</translation>
 <translation id="410351446219883937">Reproducció automàtica</translation>
@@ -74,7 +74,7 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="7390783310074170337">Vista per defecte</translation>
 <translation id="130615081792797568">Vista senzilla</translation>
 <translation id="2360360976480535628">Vista avançada</translation>
-<translation id="2133317862976486547">Seguidors &amp;amp; bloquejant anuncis</translation>
+<translation id="2133317862976486547">Seguidors &amp; bloquejant anuncis</translation>
 <translation id="4385707520896576447">Bloqueig de galetes</translation>
 <translation id="4978786495456601191">Bloqueig d'empremtes digitals</translation>
 <translation id="3570081523466826008">Actualitzar connexions a HTTPS</translation>
@@ -108,9 +108,9 @@ En instal·lar aquesta extensió, accepteu les Condicions d'ús de Google Widevi
 <translation id="7731928563672901833">Llista de dispositius</translation>
 <translation id="28332161031213248">La llista següent inclou tots els dispositius que tens a la teva cadena de sincronització. Cada dispositiu pot gestionar-se des de qualsevol altre dispositiu.</translation>
 <translation id="1313162974556054106">Nom del dispositiu</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Aquest Dispositiu)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Aquest Dispositiu)</translation>
 <translation id="3686835020221422649">Últim Actiu</translation>
-<translation id="2569646144216067185">Recompte de paraules: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Recompte de paraules: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">S'ha copiat!</translation>
 <translation id="8802630444265810662">S'ha d'escanejar un codi QR amb el dispositiu mòbil per a poder-vos transmetre el codi de sincronització</translation>
 <translation id="6221331245829088299">Hi ha hagut un error a l'hora d'ensenyar el codi QR, si us plau, refresqueu i torneu-ho a intentar.</translation>

@@ -431,8 +431,7 @@
 <translation id="3267911153934785912">Zadajte svoj kľúč na obnovenie alebo</translation>
 <translation id="6548189695918108191">Pred výmenou si zálohujte peňaženku. Inak stratíte prostriedky, {{prostriedky}}, vo svojej peňaženke.</translation>
 <translation id="5423214929210538027">Ste si istý tým, že chcete reštartovať svoju peňaženku odmien?</translation>
-<translation id="9106875682287489763">Vaše &lt;ph
-meno="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{množstvo}} BATs&lt;ph meno="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; a iné dáta Odmien budú navždy stratené ak reštartujete svoju peňaženku. Uistite sa, že ste si overili svoju peňaženku prostredníctvom Upholdu, aby ste si mohli ponechať svoje BAT.</translation>
+<translation id="9106875682287489763">Vaše <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{množstvo}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> a iné dáta Odmien budú navždy stratené ak reštartujete svoju peňaženku. Uistite sa, že ste si overili svoju peňaženku prostredníctvom Upholdu, aby ste si mohli ponechať svoje BAT.</translation>
 <translation id="2028613172174411919">Ak reštartujete svoju peňaženku, Vaše dáta Odmien budú navždy stratené.</translation>
 <translation id="4914597931214386232">Kupónové granty nárokované</translation>
 <translation id="3494964159182650590">Súhrn odmien</translation>

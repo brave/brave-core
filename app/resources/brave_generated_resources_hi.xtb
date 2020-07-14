@@ -18,7 +18,7 @@
 <translation id="8762452230727230396">Tor आपके आईपी एड्रेस को आपके द्वारा देखी जाने वाली साइटों से छुपाता है।</translation>
 <translation id="8053096063396012732">Widevine इनस्टॉल करें</translation>
 <translation id="4840334696217618631">Widevine को सक्रिय करने के लिए ब्राउज़र को पुनः आरम्भ करें</translation>
-<translation id="8410111618231938546">Google Widevine डिजिटल अधिकार प्रबंधन (DRM) कोड का हिस्सा है जिसका हम Brave Software न तो मालिकत्व रखते हैं और न ही जांच कर सकते हैं| Google Widevine के कोड Google के सर्वर से संचालित होते हैं, हमारे सर्वर से नहीं| ये तभी काम करते हैं जब आप इस विकल्प को चुनते हैं| हम DRM के प्रयोग को हतोत्साहित करते हैं, पर हम यूजर के चयन का सम्मान करते हैं और समझते हैं कि  कुछ Brave यूजर्स ऐसी सेवाओं जहाँ इसकी ज़रूरत है का प्रयोग करते हैं| 
+<translation id="8410111618231938546">Google Widevine डिजिटल अधिकार प्रबंधन (DRM) कोड का हिस्सा है जिसका हम Brave Software न तो मालिकत्व रखते हैं और न ही जांच कर सकते हैं| Google Widevine के कोड Google के सर्वर से संचालित होते हैं, हमारे सर्वर से नहीं| ये तभी काम करते हैं जब आप इस विकल्प को चुनते हैं| हम DRM के प्रयोग को हतोत्साहित करते हैं, पर हम यूजर के चयन का सम्मान करते हैं और समझते हैं कि  कुछ Brave यूजर्स ऐसी सेवाओं जहाँ इसकी ज़रूरत है का प्रयोग करते हैं|
 
 
 इस एक्सटेंशन को इन्स्टॉल करने के साथ, आप Google Wivedine के उपयोग की शर्तों से सहमत हो रहे हैं| आप सहमत हैं की Google Wivedine के प्रयोग से किसी क्षति या नुकसान के सम्बन्ध में Brave ज़िम्मेदार नहीं है|</translation>
@@ -107,7 +107,7 @@ Binance
 <translation id="7390783310074170337">डिफ़ॉल्ट व्यू</translation>
 <translation id="130615081792797568">सरल व्यू</translation>
 <translation id="2360360976480535628">उन्नत व्यू</translation>
-<translation id="2133317862976486547">ट्रैकर्स &amp;amp; विज्ञापन ब्लॉक करना</translation>
+<translation id="2133317862976486547">ट्रैकर्स &amp; विज्ञापन ब्लॉक करना</translation>
 <translation id="4385707520896576447">कुकी ब्लॉकिंग</translation>
 <translation id="4978786495456601191">फ़िंगरप्रिंटिंग ब्लॉकिंग</translation>
 <translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
@@ -141,9 +141,9 @@ Binance
 <translation id="7731928563672901833">उपकरण की सूची</translation>
 <translation id="28332161031213248">नीचे दी गयी डिवाइस सूची में आपकी सिंक चेन की सभी डिवाइस सम्मिलित हैं। किसी भी डिवाइस को किसी अन्य डिवाइस से प्रबन्धित किया है।</translation>
 <translation id="1313162974556054106">डिवाइस का नाम</translation>
-<translation id="923757506389336140">&lt;ph name="उपकरण_नाम"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (यह उपकरण)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (यह उपकरण)</translation>
 <translation id="3686835020221422649">पिछले बार सक्रीय</translation>
-<translation id="2569646144216067185">शब्दों की संख्याt: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">शब्दों की संख्याt: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">कॉपी की गई!</translation>
 <translation id="8802630444265810662">आपके सिंक कोड को प्रसारित करने के लिए मोबाइल डिवाइस के साथ स्कैन किया जाने वाला एक QR कोड</translation>
 <translation id="6221331245829088299">QR कोड दिखने में कुछ समस्या हुई, कृपया रिफ़्रेश करें और पुनः प्रयास करें।`</translation>

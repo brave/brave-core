@@ -73,7 +73,7 @@
 <translation id="7390783310074170337">العرض الافتراضي</translation>
 <translation id="130615081792797568">عرض بسيط</translation>
 <translation id="2360360976480535628">عرض متقدم</translation>
-<translation id="2133317862976486547">حظر برامج التتبع &amp;amp; الإعلانات</translation>
+<translation id="2133317862976486547">حظر برامج التتبع &amp; الإعلانات</translation>
 <translation id="4385707520896576447">حظر ملفات تعريف الارتباط</translation>
 <translation id="4978786495456601191">حجب البصمات</translation>
 <translation id="3570081523466826008">ترقية الاتصالات إلى HTTPS</translation>
@@ -107,9 +107,9 @@
 <translation id="7731928563672901833">قائمة الأجهزة</translation>
 <translation id="28332161031213248">قائمة الأجهزة أدناه تحتوي على جميع الأجهزة في سلسلة المزامنة لديك. يمكن إدارة كل جهاز من الأجهزة الأخرى.</translation>
 <translation id="1313162974556054106">اسم الجهاز</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;جهاز الكمبيوتر الخاص بي-1&lt;/ex&gt;&lt;/ph&gt; (هذا الجهاز)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (هذا الجهاز)</translation>
 <translation id="3686835020221422649">آخر نشاط</translation>
-<translation id="2569646144216067185">عدد الكلمات: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">عدد الكلمات: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">تم النسخ.</translation>
 <translation id="8802630444265810662">يجب مسح رمز QR ضوئياً بجهاز محمول لإرسال رمز المزامنة الخاص بك</translation>
 <translation id="6221331245829088299">حدث خطأ أثناء عرض رمز الـ QR، يُرجى التحديث وإعادة المحاولة.</translation>

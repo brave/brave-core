@@ -73,7 +73,7 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="7390783310074170337">Podrazumevani prikaz</translation>
 <translation id="130615081792797568">Jednostavan prikaz</translation>
 <translation id="2360360976480535628">Prikaz više opcija</translation>
-<translation id="2133317862976486547">Praćenja &amp;amp; blokiranje reklama</translation>
+<translation id="2133317862976486547">Praćenja &amp; blokiranje reklama</translation>
 <translation id="4385707520896576447">Blokiranje kolačića</translation>
 <translation id="4978786495456601191">Blokirano beleženje posebnih obeležja</translation>
 <translation id="3570081523466826008">Nadogradi veze u HTTPS</translation>
@@ -107,9 +107,9 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="7731928563672901833">Lista uređaja</translation>
 <translation id="28332161031213248">Donja lista uređaja uključuje sve uređaje u vašem lancu sinhronizacije. Svakim uređajem se može upravljati sa bilo kog drugog uređaja.</translation>
 <translation id="1313162974556054106">Ime uređaja</translation>
-<translation id="923757506389336140">&lt;ph ime="IME_UREĐAJA"&gt;$1&lt;ex&gt;moj-računar-1&lt;/ex&gt;&lt;/ph&gt; (ovaj uređaj)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (ovaj uređaj)</translation>
 <translation id="3686835020221422649">Poslednji put aktivan</translation>
-<translation id="2569646144216067185">Broj reči: &lt;ph name="BROJ_REČI"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Broj reči: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopirano!</translation>
 <translation id="8802630444265810662">QR šifra treba da se skenira mobilnim uređajem da bi se preneo vaš kod za sinhronizaciju</translation>
 <translation id="6221331245829088299">Došlo je do greške pri prikazivanu QR koda, osvežite i pokušajte ponovo.</translation>

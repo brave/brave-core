@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Ingrese su clave de recuperación o</translation>
 <translation id="6548189695918108191">Realiza una copia de seguridad de tu billetera antes de reemplazar o perderás los fondos, {{funds}}, en tu billetera actual.</translation>
 <translation id="5423214929210538027">¿Estás seguro de que deseas restablecer tu billetera de Recompensas?</translation>
-<translation id="9106875682287489763">Tu &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; y otros datos de Recompensas se perderán de forma permanente si restableces tu billetera. Asegúrate de haber verificado tu billetera con Uphold para mantener tu BAT.</translation>
+<translation id="9106875682287489763">Tu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> y otros datos de Recompensas se perderán de forma permanente si restableces tu billetera. Asegúrate de haber verificado tu billetera con Uphold para mantener tu BAT.</translation>
 <translation id="2028613172174411919">Tus datos de Recompensas se perderán de forma permanente si restableces tu billetera.</translation>
 <translation id="4914597931214386232">Donaciones de tokens reclamadas</translation>
 <translation id="3494964159182650590">Resumen de recompensas</translation>

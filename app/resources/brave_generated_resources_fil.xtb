@@ -107,9 +107,9 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7731928563672901833">Listahan ng Device</translation>
 <translation id="28332161031213248">Kasama sa listahan ng device sa ibaba ang lahat ng device sa iyong chain ng pag-sync. Maaaring pamahalaan ang bawat device mula sa anupamang device.</translation>
 <translation id="1313162974556054106">Pangalan ng Device</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Ang Device na Ito)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Ang Device na Ito)</translation>
 <translation id="3686835020221422649">Huling Aktibo</translation>
-<translation id="2569646144216067185">Bilang ng salita: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Bilang ng salita: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Nakopya!</translation>
 <translation id="8802630444265810662">Isang QR code na isa-scan gamit ang isang mobile device upang i-transmit ang sync code mo</translation>
 <translation id="6221331245829088299">Nagkaroon ng error sa pagpapakita sa QR code, paki-refresh at subukan ulit.</translation>

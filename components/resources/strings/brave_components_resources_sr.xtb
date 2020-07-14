@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Unesite ključ za osposobljavanje ili</translation>
 <translation id="6548189695918108191">Napravite rezervnu kopiju vašeg novčanika pre nego što ga zamenite. Ili ćete izgubiti sredstva, {{funds}}, u vašem sadašnjem novčaniku.</translation>
 <translation id="5423214929210538027">Da li ste sigurni da želite da ponovo postavite baš novčanik za nagrade?</translation>
-<translation id="9106875682287489763">Vaše &lt;ph ime="POČNI_PODEBLJANO"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="POČNI_KRAJ"&gt;&lt;/b&gt;&lt;/ph&gt; i drugi podaci o nagradama će biti trajno izgubljeni ako ponovo postavite vaš novčanik. Budite sigurni da ste verifikovali vaš novčanik sa Uphold, tako da možete da zadržite vaš BAT.</translation>
+<translation id="9106875682287489763">Vaše <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> i drugi podaci o nagradama će biti trajno izgubljeni ako ponovo postavite vaš novčanik. Budite sigurni da ste verifikovali vaš novčanik sa Uphold, tako da možete da zadržite vaš BAT.</translation>
 <translation id="2028613172174411919">Vaši podaci o nagradama će biti trajno izgubljeni ako ponovo postavite vaš novčanik.</translation>
 <translation id="4914597931214386232">Traženi tokeni odobrenja</translation>
 <translation id="3494964159182650590">Rezime nagrada</translation>

@@ -73,7 +73,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="7390783310074170337">Vaikevaade</translation>
 <translation id="130615081792797568">Lihtvaade</translation>
 <translation id="2360360976480535628">Täpsem vaade</translation>
-<translation id="2133317862976486547">Blokeeritud jälgijad ja&amp;amp; reklaamid</translation>
+<translation id="2133317862976486547">Blokeeritud jälgijad ja&amp; reklaamid</translation>
 <translation id="4385707520896576447">Küpsisefailide blokeerimine</translation>
 <translation id="4978786495456601191">Blokeeritud sõrmejälge lugemine</translation>
 <translation id="3570081523466826008">Täienda ühendused HTTPS-ile</translation>
@@ -107,9 +107,9 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="7731928563672901833">Seadmete nimekiri</translation>
 <translation id="28332161031213248">Allpool on loetletud kõik teie sünkroonimisahela seadmed. Kõiki neid seadmeid saab hallata igast muust seadmest.</translation>
 <translation id="1313162974556054106">Seadme nimi</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (see seade)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (see seade)</translation>
 <translation id="3686835020221422649">Viimati aktiivne</translation>
-<translation id="2569646144216067185">Sõnade arv: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Sõnade arv: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopeeritud!</translation>
 <translation id="8802630444265810662">Sünkroonimiskoodi edastamiseks skaneeritakse mobiilseadmega QR-koodi.</translation>
 <translation id="6221331245829088299">QR-sünkroonimiskoodi kuvamisel ilmnes viga. Värskenda ja proovi uuesti.</translation>

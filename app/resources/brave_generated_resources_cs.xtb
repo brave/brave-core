@@ -73,7 +73,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="7390783310074170337">Výchozí zobrazení</translation>
 <translation id="130615081792797568">Jednoduché zobrazení</translation>
 <translation id="2360360976480535628">Pokročilé zobrazení</translation>
-<translation id="2133317862976486547">Blokování sledování &amp;amp; reklam</translation>
+<translation id="2133317862976486547">Blokování sledování &amp; reklam</translation>
 <translation id="4385707520896576447">Blokování souborů cookies</translation>
 <translation id="4978786495456601191">Blokování digitálního otisku</translation>
 <translation id="3570081523466826008">Upgradovat spojení k HTTPS</translation>
@@ -107,7 +107,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="7731928563672901833">Seznam zařízení</translation>
 <translation id="28332161031213248">Níže uvedený seznam obsahuje veškerá zařízení ve vašem synchronizačním řetězci. Každé zařízení může být spravováno z jakéhokoliv jiného zařízení.</translation>
 <translation id="1313162974556054106">Název zařízení</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (toto zařízení)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (toto zařízení)</translation>
 <translation id="3686835020221422649">Naposledy aktivní</translation>
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Zkopírováno!</translation>

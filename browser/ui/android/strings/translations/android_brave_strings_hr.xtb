@@ -61,7 +61,7 @@
 <translation id="7053983685419859001">Blokiraj</translation>
 <translation id="5806601733251372221">Štitnici Brave</translation>
 <translation id="2880356288762235261">oglasi kojima se ugrožava privatnost i elementi kako biste mogli pretraživati internet, a da se ne bilježi vaše pretraživanje interneta.</translation>
-<translation id="8537217141725709400">Zaradite &lt;ph name="TOKEN"&gt;%1$s&lt;ex&gt;token&lt;/ex&gt;&lt;/ph&gt;s</translation>
+<translation id="8537217141725709400">Zaradite <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Sustav nagrada u pregledniku Brave</translation>
 <translation id="5870330605209713397">zadanim pregledavanjem oglasa kojima se poštuje privatnost i podržavanjem omiljenih mrežnih mjesta i stvaratelja.</translation>
 <translation id="821707262661492716">za pregledavanje oglasa kojima se poštuje privatnost.</translation>
@@ -117,13 +117,13 @@
 <translation id="4254029385847607686">PROSINAC</translation>
 <translation id="1916285746997567466">Pripremite se za doživljaj
 novog interneta.</translation>
-<translation id="3540580927110899945">Sada možete zaraditi &lt;ph name="TOKEN"&gt;%1$s&lt;ex&gt;token&lt;/ex&gt;&lt;/ph&gt;s
+<translation id="3540580927110899945">Sada možete zaraditi <ph name="TOKEN"/>s
 pregledavanjem oglasa kojima se poštuje privatnost .</translation>
 <translation id="1327938628925645979">PRIDRUŽITE SE OSVAJANJU NAGRADA</translation>
 <translation id="5567439033041178034">SAZNAJTE VIŠE</translation>
 <translation id="3780605330121608425">Vaš novčanik</translation>
 <translation id="8845154268466251503">BAT</translation>
-<translation id="7837083325641186736">&lt;ph name="VALUE"&gt;%1$s&lt;ex&gt;0.0&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Dodjele</translation>
 <translation id="1165667598801520610">Dodaj sredstva</translation>
@@ -136,7 +136,7 @@ u podržavanje stvaratelja sadržaja koji vam se sviđaju.</translation>
 <translation id="5148719990624240755">OMOGUĆI NAGRADE BRAVE</translation>
 <translation id="8772672608371898774">Provjereni izdavač u pregledniku Brave</translation>
 <translation id="1397683270551078781">Nije još provjereno</translation>
-<translation id="5727208111992260840">Ovaj stvaratelj nije se još prijavio za primanje doprinosa korisnika Brave. 
+<translation id="5727208111992260840">Ovaj stvaratelj nije se još prijavio za primanje doprinosa korisnika Brave.
 Bilo kakve napojnice koje pošaljete ostaju u vašem novčaniku dok se ne provjere.</translation>
 <translation id="8918760045046434238">Slanje napojnice...</translation>
 <translation id="1978261665418056203">Nema nikakvih aktivnosti ovog
@@ -153,7 +153,7 @@ mjeseca...</translation>
 <translation id="5463954686005964104">Daj mjesečnu napojnicu ovom mrežnom mjestu</translation>
 <translation id="7530570094705720669">Izrada novčanika</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4751553692764711651">Doprinijeli ste u vrijednosti od &lt;ph name="BAT_VALUE"&gt;%1$s&lt;ex&gt;50&lt;/ex&gt;&lt;/ph&gt;  &lt;ph name="BAT_TEXT"&gt;%2$s&lt;ex&gt;BAT&lt;/ex&gt;&lt;/ph&gt;.</translation>
+<translation id="4751553692764711651">Doprinijeli ste u vrijednosti od <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Nije moguće provesti zakazano mjesečno plaćanje automatskog doprinosa ili mjesečne napojnice zbog nedovoljnih sredstava. Pokušat ćemo ponovno za 30 dana.</translation>
 <translation id="5306913077198665897">Ispričavamo se, ali nastao je problem tijekom obrađivanja vaše napojnice. Pokušajte ponovo.</translation>
 <translation id="2429828319207652823">Pojavio se problem s obradom vašeg doprinosa.</translation>
@@ -172,9 +172,9 @@ mjeseca...</translation>
 <translation id="4292832015778676417">zarađeno od oglasa</translation>
 <translation id="683765328936486920">na usluzi YouTube</translation>
 <translation id="8969049974285901797">na usluzi Twitch</translation>
-<translation id="4376933248999950592">Odredili ste &lt;ph name="BAT_VALUE"&gt;%1$s&lt;ex&gt;50&lt;/ex&gt;&lt;/ph&gt;  &lt;ph name="BAT_TEXT"&gt;%2$s&lt;ex&gt;BAT&lt;/ex&gt;&lt;/ph&gt; za stvaratelje koji se još nisu
+<translation id="4376933248999950592">Odredili ste <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> za stvaratelje koji se još nisu
 registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti doprinosi dok se ne provjere ili do isteka 90 dana.</translation>
-<translation id="3101693828171454453">nema dovoljno &lt;ph name="TOKEN"&gt;%1$s&lt;ex&gt;token&lt;/ex&gt;&lt;/ph&gt;s</translation>
+<translation id="3101693828171454453">nema dovoljno <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">molimo</translation>
 <translation id="1036277985068412734">dodaj sredstva</translation>
 <translation id="3492491948683276944">postavi mjesečnu napojnicu</translation>

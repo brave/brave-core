@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Skriv in din återställningsnyckel eller</translation>
 <translation id="6548189695918108191">Säkerhetskopiera din plånbok innan du ersätter den. Annars kommer du att förlora medlen i din nuvarande plånbok.</translation>
 <translation id="5423214929210538027">Är du säker på att du vill nollställa din Rewards-plånbok?</translation>
-<translation id="9106875682287489763">Dina &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; och andra Rewards-data kommer att gå förlorade permanent om du nollställer plånboken. Se till att din plånbok är verifierad med Uphold så att du behåller dina BAT.</translation>
+<translation id="9106875682287489763">Dina <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> och andra Rewards-data kommer att gå förlorade permanent om du nollställer plånboken. Se till att din plånbok är verifierad med Uphold så att du behåller dina BAT.</translation>
 <translation id="2028613172174411919">Dina Rewards-data kommer att gå förlorade permanent om du nollställer plånboken.</translation>
 <translation id="4914597931214386232">Tilldelning av token utnyttjades</translation>
 <translation id="3494964159182650590">Sammanfattning av Rewards</translation>

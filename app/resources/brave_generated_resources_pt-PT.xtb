@@ -107,9 +107,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="7731928563672901833">Lista de Dispositivos</translation>
 <translation id="28332161031213248">A lista de dispositivos abaixo inclui todos os dispositivos na sua cadeia de sincronização. Cada dispositivo pode ser gerido a partir de qualquer outro dispositivo.</translation>
 <translation id="1313162974556054106">Nome do dispositivo</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Este Dispositivo)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Este Dispositivo)</translation>
 <translation id="3686835020221422649">Último Ativo</translation>
-<translation id="2569646144216067185">Número de palavras: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Número de palavras: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Copiado!</translation>
 <translation id="8802630444265810662">É preciso proceder à digitalização de um código QR através de um dispositivo móvel para a transmissão do seu código de sincronização</translation>
 <translation id="6221331245829088299">Ocorreu um erro ao apresentar o código QR; por favor, atualize e tente de novo.</translation>

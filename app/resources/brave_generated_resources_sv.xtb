@@ -107,9 +107,9 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="7731928563672901833">Enhetslista</translation>
 <translation id="28332161031213248">Listan över enheter nedan inkluderar alla enheter i din synkkedja. Varje enhet kan hanteras från alla andra enheter.</translation>
 <translation id="1313162974556054106">Enhetsnamn</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Denna enhet)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Denna enhet)</translation>
 <translation id="3686835020221422649">Senast aktiv</translation>
-<translation id="2569646144216067185">Antal ord: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Antal ord: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopierades!</translation>
 <translation id="8802630444265810662">En QR-kod som ska läsas av med en mobil för att överföra din synkningskod</translation>
 <translation id="6221331245829088299">QR-koden kan inte visas, ladda om och prova igen.</translation>

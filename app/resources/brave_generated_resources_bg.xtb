@@ -107,9 +107,9 @@
 <translation id="7731928563672901833">Списък с устройствата</translation>
 <translation id="28332161031213248">По-долният списък с устройства включва всички устройства във вашата верига за синхронизиране. Всяко устройство може да се управлява от което и да е друго устройство.</translation>
 <translation id="1313162974556054106">Име на устройство</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Това устройство)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Това устройство)</translation>
 <translation id="3686835020221422649">Последна активност</translation>
-<translation id="2569646144216067185">Брой думи: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Брой думи: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Копирано!</translation>
 <translation id="8802630444265810662">QR код, който трябва да се сканира с мобилно устройство, за да се предаде вашият код за синхронизиране</translation>
 <translation id="6221331245829088299">При показването на QR кода възникна грешка, моля, опреснете и опитайте отново.</translation>

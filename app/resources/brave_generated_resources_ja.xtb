@@ -108,9 +108,9 @@
 <translation id="7731928563672901833">デバイスのリスト</translation>
 <translation id="28332161031213248">以下のデバイスリストは、あなたの同期チェーンにある全てのデバイスを表示しています。それぞれのデバイスは、他のデバイスから管理することができます。</translation>
 <translation id="1313162974556054106">デバイス名</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt;（このデバイス）</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/>（このデバイス）</translation>
 <translation id="3686835020221422649">最終アクティブ時</translation>
-<translation id="2569646144216067185">文字数カウント：&lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">文字数カウント：<ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">コピー完了!</translation>
 <translation id="8802630444265810662">同期コードを送信するには、モバイルデバイスでQRコードをスキャンしなければなりません</translation>
 <translation id="6221331245829088299">QRコードを表示する際エラーが発生しましたので、リフレッシュしてもう一度やり直してください。</translation>

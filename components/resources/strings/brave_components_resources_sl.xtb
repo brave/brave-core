@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Vnesite svoj obnovitveni ključ ali</translation>
 <translation id="6548189695918108191">Pred zamenjavo varnostno kopirajte denarnico. Sicer boste izgubili sredstva, {{funds}}, v svoji trenutni denarnici.</translation>
 <translation id="5423214929210538027">Ali ste prepričani, da želite ponastaviti denarnico Rewards?</translation>
-<translation id="9106875682287489763">Vaši &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; in drugi podatki nagrad Rewards bodo trajno izgubljeni, če ponastavite denarnico. Prepričajte se, da ste denarnico preverili s programom Uphold, da boste lahko obdržali BAT.</translation>
+<translation id="9106875682287489763">Vaši <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> in drugi podatki nagrad Rewards bodo trajno izgubljeni, če ponastavite denarnico. Prepričajte se, da ste denarnico preverili s programom Uphold, da boste lahko obdržali BAT.</translation>
 <translation id="2028613172174411919">Podatki o nagradah Rewards bodo trajno izgubljeni, če ponastavite denarnico.</translation>
 <translation id="4914597931214386232">Zahteva za sredstva v obliki žetonov</translation>
 <translation id="3494964159182650590">Povzetek nagrad</translation>

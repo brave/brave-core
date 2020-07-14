@@ -107,9 +107,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="7731928563672901833">Lista dispozitivelor</translation>
 <translation id="28332161031213248">Lista de dispozitive de mai jos include toate dispozitivele din lanțul de sincronizare. Fiecare dispozitiv poate fi administrat de pe orice alt dispozitiv.</translation>
 <translation id="1313162974556054106">Nume Dispozitiv</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Acest dispozitiv)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Acest dispozitiv)</translation>
 <translation id="3686835020221422649">Ultima dată activ</translation>
-<translation id="2569646144216067185">Numărul de cuvinte: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Numărul de cuvinte: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Copiat!</translation>
 <translation id="8802630444265810662">Un cod QR care trebuie scanat cu un dispozitiv mobil pentru a putea transmite codul dvs. de sincronizare</translation>
 <translation id="6221331245829088299">A survenit o eroare la afișarea codului QR, actualizați și încercați din nou.</translation>

@@ -57,7 +57,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="4703780849509456860">Åben link i Privat Vindue med Tor</translation>
 <translation id="3488584642074079080">Åbn link i Brave privat vindue med Tor</translation>
 <translation id="6313675821927505581">Nyt privat vindue med Tor</translation>
-<translation id="2638041073279639246">Åbn link i privat 
+<translation id="2638041073279639246">Åbn link i privat
 vindue med Tor</translation>
 <translation id="3425600262621021599">Åbn link i Brave privat vindue med Tor</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
@@ -74,7 +74,7 @@ vindue med Tor</translation>
 <translation id="7390783310074170337">Standardvisning</translation>
 <translation id="130615081792797568">Simpel visning</translation>
 <translation id="2360360976480535628">Avanceret visning</translation>
-<translation id="2133317862976486547">Trackere &amp;amp; reklameblokering</translation>
+<translation id="2133317862976486547">Trackere &amp; reklameblokering</translation>
 <translation id="4385707520896576447">Blokering af cookies</translation>
 <translation id="4978786495456601191">Blokering af fingeraftryk</translation>
 <translation id="3570081523466826008">Opgrader forbindelser til HTTPS</translation>
@@ -108,9 +108,9 @@ vindue med Tor</translation>
 <translation id="7731928563672901833">Enhedsliste</translation>
 <translation id="28332161031213248">Listen over enheder herunder inkluderer alle enheder i din synkroniseringskæde. Hver enhed kan administreres fra alle andre enheder.</translation>
 <translation id="1313162974556054106">Enhedsnavn</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Denne enhed)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Denne enhed)</translation>
 <translation id="3686835020221422649">Sidst aktiv</translation>
-<translation id="2569646144216067185">Ordtælling: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Ordtælling: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopieret!</translation>
 <translation id="8802630444265810662">En QR-kode som skal scannes med en mobil enhed for at transmittere din synkroniseringskode</translation>
 <translation id="6221331245829088299">Der var problemer med at vise QR-koden, opdater venligst og prøv igen.</translation>

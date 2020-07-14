@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Introdueix la clau de recuperació o</translation>
 <translation id="6548189695918108191">Feu una còpia de seguretat de la cartera abans de reemplaçar-la. O perdreu els fons, {{funds}}, a la cartera actual.</translation>
 <translation id="5423214929210538027">Esteu segurs que voleu restablir la Cartera de Recompenses?</translation>
-<translation id="9106875682287489763">Tu &lt;ph nom="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; i altres dades de Recompenses es perdran de manera permanent si restabliu la cartera. Si us plau assegureu-vos d'haver verificat la vostra cartera amb Uphold de manera que pogueu mantenir els BAT.</translation>
+<translation id="9106875682287489763">Tu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> i altres dades de Recompenses es perdran de manera permanent si restabliu la cartera. Si us plau assegureu-vos d'haver verificat la vostra cartera amb Uphold de manera que pogueu mantenir els BAT.</translation>
 <translation id="2028613172174411919">Les dades de Recompenses es perdran permanentment si restabliu la cartera.</translation>
 <translation id="4914597931214386232">Donacions sol·licitades</translation>
 <translation id="3494964159182650590">Resum de recompenses</translation>

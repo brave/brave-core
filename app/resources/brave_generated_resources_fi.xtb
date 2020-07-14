@@ -73,7 +73,7 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7390783310074170337">Oletusnäkymä</translation>
 <translation id="130615081792797568">Yksinkertainen näkymä</translation>
 <translation id="2360360976480535628">Edistynyt näkymä</translation>
-<translation id="2133317862976486547">Seurainten &amp;amp; ads estäminen</translation>
+<translation id="2133317862976486547">Seurainten &amp; ads estäminen</translation>
 <translation id="4385707520896576447">Evästeiden estäminen</translation>
 <translation id="4978786495456601191">Sormenjälkiesto</translation>
 <translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
@@ -107,9 +107,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7731928563672901833">Laiteluettelo</translation>
 <translation id="28332161031213248">Alla oleva laiteluettelo kattaa kaikki synkronointiketjusi laitteet. Jokaista laitetta voidaan hallinnoida minkä tahansa muun laitteen kautta.</translation>
 <translation id="1313162974556054106">Laitteen nimi</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Tämä laite)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Tämä laite)</translation>
 <translation id="3686835020221422649">Viimeksi aktiivisena</translation>
-<translation id="2569646144216067185">Sanalaskuri: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Sanalaskuri: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopioitu</translation>
 <translation id="8802630444265810662">Ruutukoodi, jonka lukemalla synkronointikoodisi lähetetään</translation>
 <translation id="6221331245829088299">Kohtasimme häiriön ruutukoodin korvaamisen yhteydessä. Päivitä sivu ja yritä uudelleen.</translation>

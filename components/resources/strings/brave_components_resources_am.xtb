@@ -96,7 +96,7 @@
 <translation id="3829010735958850433">እንኳን ደህና መጣቹህ የሚለውን ጉብኝት ይዝለሉ</translation>
 <translation id="1201402288615127009">ቀጣይ</translation>
 <translation id="7954950242989581218">ደህንነቱ በተጠበቀና አስተማማኝ በሆነ መንገድ ያስሱ</translation>
-<translation id="2188651882929633653">የ Brave ጋሻ በድረ ገጽ ላይ እርስዎን ለመከታተል የሚሞክሩ አስቸጋሪ ነገሮችን ያግዳል ፤ አብዛኞችን ማስታወቂያዎች ይጨምራል። ድረ ገጹ የማይ ሰራ ከሆነ ለ “down” ጋሻ አዘጋጅ። 1&lt;a target="_blank" href="$1"&gt;1Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት ሙሉ በሙሉ ግላዊ የምርት ትንተናን ይጠቀማል።2&lt;/a&gt;2 ይህን ለማጥፋት ወደ 3&lt;a target="_blank" href="$2"&gt;3Settings4&lt;/a&gt;4 መግባት ይችላሉ።</translation>
+<translation id="2188651882929633653">የ Brave ጋሻ በድረ ገጽ ላይ እርስዎን ለመከታተል የሚሞክሩ አስቸጋሪ ነገሮችን ያግዳል ፤ አብዛኞችን ማስታወቂያዎች ይጨምራል። ድረ ገጹ የማይ ሰራ ከሆነ ለ “down” ጋሻ አዘጋጅ። <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>Brave የተወሰኑ ባህርያትን አጠቃላይ አጠቃቀም ለመገመት ሙሉ በሙሉ ግላዊ የምርት ትንተናን ይጠቀማል።<ph name="END_LINK_P3A">&lt;/a&gt;</ph> ይህን ለማጥፋት ወደ <ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph> መግባት ይችላሉ።</translation>
 <translation id="1919345977826869612">ማስታወቂያዎች</translation>
 <translation id="2128226640852355533">Brave ads በማየት {{currency}} ያግኙ። ማስታወቂያዎች በፍላጎት ከማሰሻ ባህርይዎ ጋር ተይይዘው ይቀርባሉ። የግል መረጃ ወይ የማሰስ ታሪክዎ በጭራሽ ከማሰሻዎ አይወጣም።</translation>
 <translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>

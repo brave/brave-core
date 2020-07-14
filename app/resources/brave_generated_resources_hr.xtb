@@ -107,9 +107,9 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="7731928563672901833">Popis uređaja</translation>
 <translation id="28332161031213248">Popis uređaja u nastavku uključuje sve uređaje u vašem lancu sinkronizacije. Svakim uređajem moguće je upravljati s bilo kojeg drugog uređaja.</translation>
 <translation id="1313162974556054106">Naziv uređaja</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (ovaj uređaj)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (ovaj uređaj)</translation>
 <translation id="3686835020221422649">Zadnje aktivno</translation>
-<translation id="2569646144216067185">Broj riječi: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Broj riječi: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopirano!</translation>
 <translation id="8802630444265810662">Kôd QR koji se treba skenirati mobilnim uređajem radi prenošenja vašeg kôda za skeniranje</translation>
 <translation id="6221331245829088299">Došlo je do greške prilikom prikazivanja kôda QR. Osvježite i pokušajte ponovno.</translation>

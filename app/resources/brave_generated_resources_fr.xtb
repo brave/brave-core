@@ -107,9 +107,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7731928563672901833">Liste des appareils</translation>
 <translation id="28332161031213248">La liste des appareils ci-dessous comprend tous les appareils de votre chaîne de synchronisation. Chaque appareil peut être géré à partir de n'importe quel autre appareil.</translation>
 <translation id="1313162974556054106">Nom de l'Appareil</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (cet appareil)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (cet appareil)</translation>
 <translation id="3686835020221422649">Dernière activité à</translation>
-<translation id="2569646144216067185">Nombre de mots : &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Nombre de mots : <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Copié!</translation>
 <translation id="8802630444265810662">Un code QR à scanner avec un appareil mobile afin de recevoir votre code de synchronisation</translation>
 <translation id="6221331245829088299">Une erreur est survenue lors de l'affichage du code QR. Veuillez rafraîchir la page et réessayer.</translation>

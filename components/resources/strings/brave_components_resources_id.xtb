@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Masukkan kunci pemulihan atau</translation>
 <translation id="6548189695918108191">Cadangkan dompet Anda sebelum mengganti. Atau Anda akan kehilangan dana, {{funds}}, di dompet saat ini.</translation>
 <translation id="5423214929210538027">Yakin ingin mengatur ulang Dompet Reward?</translation>
-<translation id="9106875682287489763">&lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; dan data Reward Anda lainnya akan hilang permanen jika mengatur ulang dompet. Harap pastikan Anda sudah memverifikasi dompet dengan Uphold agar BAT Anda tersimpan.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> dan data Reward Anda lainnya akan hilang permanen jika mengatur ulang dompet. Harap pastikan Anda sudah memverifikasi dompet dengan Uphold agar BAT Anda tersimpan.</translation>
 <translation id="2028613172174411919">Data Reward akan hilang permanen jika Anda mengatur ulang dompet.</translation>
 <translation id="4914597931214386232">Hibah Token Diklaim</translation>
 <translation id="3494964159182650590">Ringkasan Rewards</translation>

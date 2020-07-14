@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Introduceți cheia de recuperare sau</translation>
 <translation id="6548189695918108191">Faceți un backup al portofelului înainte de înlocuire. În caz contrar, veți pierde fondurile, {{funds}}, din portofelul dvs. curent.</translation>
 <translation id="5423214929210538027">Sigur doriți să resetați Portofelul de recompense?</translation>
-<translation id="9106875682287489763">&lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BAT-urile dvs.&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; și alte date despre recompense se vor pierde pentru totdeauna dacă vă resetați portofelul. Asigurați-vă că v-ați verificat portofelul cu Uphold, ca să vă puteți păstra BAT.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT-urile dvs.<ph name="BEGIN_END">&lt;/b&gt;</ph> și alte date despre recompense se vor pierde pentru totdeauna dacă vă resetați portofelul. Asigurați-vă că v-ați verificat portofelul cu Uphold, ca să vă puteți păstra BAT.</translation>
 <translation id="2028613172174411919">Datele dvs. pentru Recompense se vor pierde pentru totdeauna dacă resetați portofelul.</translation>
 <translation id="4914597931214386232">Granturi Token Revendicate</translation>
 <translation id="3494964159182650590">Rezumat</translation>

@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Ievadiet savu atkopšanas atslēgu vai</translation>
 <translation id="6548189695918108191">Pirms nomaiņas dublējiet savu maku. Pretējā gadījumā zaudēsiet savā makā šobrīd esošos līdzekļus – {{funds}}.</translation>
 <translation id="5423214929210538027">Vai tiešām vēlaties atiestatīt savu Rewards maku?</translation>
-<translation id="9106875682287489763">Ja atiestatīsiet maku, jūsu &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BAT&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; un citi Rewards dati tiks neatgriezeniski zaudēti. Lūdzu, pārliecinieties, ka esat verificējis savu maku ar Uphold, lai jūs saglabātu savu BAT.</translation>
+<translation id="9106875682287489763">Ja atiestatīsiet maku, jūsu <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BAT<ph name="BEGIN_END">&lt;/b&gt;</ph> un citi Rewards dati tiks neatgriezeniski zaudēti. Lūdzu, pārliecinieties, ka esat verificējis savu maku ar Uphold, lai jūs saglabātu savu BAT.</translation>
 <translation id="2028613172174411919">Ja atiestatīsiet savu maku, jūsu Rewards dati tiks neatgriezeniski zaudēti.</translation>
 <translation id="4914597931214386232">Pieprasītie marķieru piešķīrumi</translation>
 <translation id="3494964159182650590">Balvu kopsavilkums</translation>

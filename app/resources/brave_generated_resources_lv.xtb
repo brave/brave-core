@@ -107,9 +107,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="7731928563672901833">Ierīču saraksts</translation>
 <translation id="28332161031213248">Tālāk dotajā ierīču sarakstā ir ietvertas visas jūsu sinhronizācijas ķēdē esošās ierīces. Jebkuru no šīm ierīcēm var pārvaldīt no jebkuras citas ierīces.</translation>
 <translation id="1313162974556054106">Ierīces nosaukums</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Šī ierīce)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Šī ierīce)</translation>
 <translation id="3686835020221422649">Pēdējoreiz aktīvs</translation>
-<translation id="2569646144216067185">Vārdu skaits: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Vārdu skaits: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Nokopēts!</translation>
 <translation id="8802630444265810662">QR kods, kas jānoskenē ar mobilo ierīci, lai pārraidītu sinhronizācijas kodu</translation>
 <translation id="6221331245829088299">QR koda parādīšanas laikā radās kļūda, lūdzu, atsvaidziniet un mēģiniet vēlreiz.</translation>

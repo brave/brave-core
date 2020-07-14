@@ -107,9 +107,9 @@
 <translation id="7731928563672901833">ডিভাইসের তালিকা</translation>
 <translation id="28332161031213248">নীচে দেওয়া ডিভাইসের তালিকাটিতে আপনার sync শৃঙ্খলে থাকা সমস্ত ডিভাইস অন্তর্ভুক্ত রয়েছে। প্রতিটি ডিভাইস অন্য কোনও ডিভাইস থেকে চালনা করা যাবে।</translation>
 <translation id="1313162974556054106">ডিভাইসের নাম</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (এই ডিভাইসটি)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (এই ডিভাইসটি)</translation>
 <translation id="3686835020221422649">শেষ সক্রিয় ছিল</translation>
-<translation id="2569646144216067185">শব্দ সংখ্যা: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">শব্দ সংখ্যা: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">কপি করা হয়েছে!</translation>
 <translation id="8802630444265810662">আপনার সিঙ্ক কোড পাঠানোর করার জন্য একটি মোবাইল ডিভাইস দিয়ে একটি QR কোড স্ক্যান করতে হবে</translation>
 <translation id="6221331245829088299">QR কোড প্রদর্শন করানোর সময় সেখানে একটি ত্রুটি ঘটেছিল, অনুগ্রহ করে রিফ্রেশ করুন এবং আবার চেষ্টা করুন।</translation>

@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Indtast din gendannelsesnøgle eller</translation>
 <translation id="6548189695918108191">Sikkerhedskopiér din tegnebog før du erstatter den. Ellers vil du miste beløbet {{funds}} i din nuværende tegnebog.</translation>
 <translation id="5423214929210538027">Er du sikker på, at du vil nulstille din Belønnings-tegnebog?</translation>
-<translation id="9106875682287489763">Din &lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; og andre Belønnings-data mistes permanent, hvis du nulstiller din tegnebog. Sørg venligst for, at du har verificeret din tegnebog med Uphold, så du kan beholde din BAT.</translation>
+<translation id="9106875682287489763">Din <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> og andre Belønnings-data mistes permanent, hvis du nulstiller din tegnebog. Sørg venligst for, at du har verificeret din tegnebog med Uphold, så du kan beholde din BAT.</translation>
 <translation id="2028613172174411919">Dine Belønnings-data bliver mistet permanent, hvis du nulstiller din tegnebog.</translation>
 <translation id="4914597931214386232">Token-Tilskud Taget</translation>
 <translation id="3494964159182650590">Belønningsoversigt</translation>

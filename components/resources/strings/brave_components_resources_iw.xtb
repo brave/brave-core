@@ -433,7 +433,7 @@
 <translation id="3267911153934785912">הזינו את מפתח השחזור או</translation>
 <translation id="6548189695918108191">יש לגבות את הארנק לפני החלפתו. אחרת תאבד/י את הכסף, {{funds}}, בארנק הנוכחי שלך.</translation>
 <translation id="5423214929210538027">האם הנך בטוח/ה שברצונך לאפס את ארנק Rewards שלך?</translation>
-<translation id="9106875682287489763">&lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt;  שלך ונתוני Rewards אחרים יאבדו לצמיתות אם תאפס/י את הארנק שלך. נא לוודא שביצעת אימות של הארנק באמצעות Uphold כדי שתוכל/י לשמור על ה-BAT שלך.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph>  שלך ונתוני Rewards אחרים יאבדו לצמיתות אם תאפס/י את הארנק שלך. נא לוודא שביצעת אימות של הארנק באמצעות Uphold כדי שתוכל/י לשמור על ה-BAT שלך.</translation>
 <translation id="2028613172174411919">נתוני Rewards שלך יאבדו לצמיתות אם תאפס/י את הארנק שלך.</translation>
 <translation id="4914597931214386232">מענקי אסימון נתבעו</translation>
 <translation id="3494964159182650590">סיכום תגמולים</translation>

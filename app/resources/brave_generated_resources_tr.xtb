@@ -73,7 +73,7 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7390783310074170337">Varsayılan görünün</translation>
 <translation id="130615081792797568">Basit görünüm</translation>
 <translation id="2360360976480535628">Gelişmiş görünüm</translation>
-<translation id="2133317862976486547">İzleyiciler &amp;amp; reklam engelleme</translation>
+<translation id="2133317862976486547">İzleyiciler &amp; reklam engelleme</translation>
 <translation id="4385707520896576447">Çerez engelleme</translation>
 <translation id="4978786495456601191">Parmak izi engelleme</translation>
 <translation id="3570081523466826008">Bağlantıları HTTPS'e yükselt</translation>
@@ -107,9 +107,9 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="7731928563672901833">Cihaz Listesi</translation>
 <translation id="28332161031213248">Aşağıdaki cihaz listesi, senkronizasyon zincirinizdeki tüm cihazları kapsar. Her cihaz başka herhangi bir cihazdan yönetilebilir.</translation>
 <translation id="1313162974556054106">Cihaz İsmi</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Bu Cihaz)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Bu Cihaz)</translation>
 <translation id="3686835020221422649">Son Görülme</translation>
-<translation id="2569646144216067185">Kelime sayımı: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Kelime sayımı: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopyalandı!</translation>
 <translation id="8802630444265810662">Eş zamanlama kodunuzu aktarmak için bir mobil cihazla taranacak bir QR kodu</translation>
 <translation id="6221331245829088299">QR kodunu görüntülerken bir hata oluştu, lütfen yenileyip tekrar deneyin.</translation>

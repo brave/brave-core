@@ -73,7 +73,7 @@
 <translation id="7390783310074170337">มุมมองเริ่มต้น</translation>
 <translation id="130615081792797568">มุมมองอย่างง่าย</translation>
 <translation id="2360360976480535628">มุมมองขั้นสูง</translation>
-<translation id="2133317862976486547">การบล็อก Tracker &amp;amp; โฆษณา</translation>
+<translation id="2133317862976486547">การบล็อก Tracker &amp; โฆษณา</translation>
 <translation id="4385707520896576447">การบล็อกคุกกี้</translation>
 <translation id="4978786495456601191">การบล็อก Fingerprinting</translation>
 <translation id="3570081523466826008">อัปเกรดการเชื่อมต่อเป็น HTTPS</translation>
@@ -107,9 +107,9 @@
 <translation id="7731928563672901833">รายการอุปกรณ์</translation>
 <translation id="28332161031213248">รายการอุปกรณ์ด้านล่างแสดงอุปกรณ์ทั้งหมดในซิงค์เชนของคุณ คุณสามารถจัดการอุปกรณ์แต่ละรายการจากอุปกรณ์อื่นได้ทั้งหมด</translation>
 <translation id="1313162974556054106">ชื่ออุปกรณ์</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (อุปกรณ์นี้)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (อุปกรณ์นี้)</translation>
 <translation id="3686835020221422649">ใช้งานล่าสุด</translation>
-<translation id="2569646144216067185">จำนวนคำ: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">จำนวนคำ: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">คัดลอกแล้ว!</translation>
 <translation id="8802630444265810662">รหัส QR ให้สแกนด้วยอุปกรณ์มือถือเพื่อส่งรหัสซิงค์ของคุณ</translation>
 <translation id="6221331245829088299">เกิดความผิดพลาดในการแสดงรหัส QR โปรดรีเฟรชแล้วลองอีกครั้ง</translation>

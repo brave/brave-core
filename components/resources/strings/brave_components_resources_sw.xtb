@@ -431,7 +431,7 @@
 <translation id="3267911153934785912">Ingiza ufunguo wako wa urejeshaji au</translation>
 <translation id="6548189695918108191">Hifadhi nakala ya kipochi chako kabla ya kubadilisha. La sivyo, utapoteza pesa, {{funds}}, zilizo kwenye mfuko wako wa sasa.</translation>
 <translation id="5423214929210538027">Je, una uhakika kuwa ungependa kubadilisha Kipochi chako cha Zawadi?</translation>
-<translation id="9106875682287489763">&lt;ph name="BEGIN_BOLD"&gt;&lt;b&gt;&lt;/ph&gt;{{amount}} BATs&lt;ph name="BEGIN_END"&gt;&lt;/b&gt;&lt;/ph&gt; yako na data nyingine ya Zawadi itapotea kabisa ukibadilisha kipochi chako. Tafadhali hakikisha kuwa umethibitisha kipochi chako cha Uphold ili uweze kuhifadhi BAT yako.</translation>
+<translation id="9106875682287489763"><ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> yako na data nyingine ya Zawadi itapotea kabisa ukibadilisha kipochi chako. Tafadhali hakikisha kuwa umethibitisha kipochi chako cha Uphold ili uweze kuhifadhi BAT yako.</translation>
 <translation id="2028613172174411919">Data yako ya Zawadi itapotea kabisa ukibadilisha kipochi chako.</translation>
 <translation id="4914597931214386232">Ruzuku za Kianzio Zilizoombwa</translation>
 <translation id="3494964159182650590">Muhtasari wa Zawadi</translation>

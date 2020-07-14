@@ -107,9 +107,9 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="7731928563672901833">Lista de dispositivos</translation>
 <translation id="28332161031213248">La siguiente lista de dispositivos incluye todos los dispositivos en su cadena de sincronización. Cada dispositivo puede administrarse desde cualquier otro.</translation>
 <translation id="1313162974556054106">Nombre del dispositivo</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (este dispositivo)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (este dispositivo)</translation>
 <translation id="3686835020221422649">Activo por última vez</translation>
-<translation id="2569646144216067185">Recuento de palabras: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Recuento de palabras: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Copiado</translation>
 <translation id="8802630444265810662">Un código QR que se puede escanear con un dispositivo móvil para transmitir tu código de sincronización</translation>
 <translation id="6221331245829088299">Hubo un error al mostrar el código QR, actualiza y vuelve a intentarlo.</translation>

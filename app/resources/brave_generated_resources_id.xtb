@@ -73,7 +73,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="7390783310074170337">Tampilan baku</translation>
 <translation id="130615081792797568">Tampilan sederhana</translation>
 <translation id="2360360976480535628">Tampilan lanjut</translation>
-<translation id="2133317862976486547">Pemblokiran pelacak &amp;amp; iklan</translation>
+<translation id="2133317862976486547">Pemblokiran pelacak &amp; iklan</translation>
 <translation id="4385707520896576447">Pemblokiran cookie</translation>
 <translation id="4978786495456601191">Pemblokiran sidik jari</translation>
 <translation id="3570081523466826008">Tingkatkan koneksi ke HTTPS</translation>
@@ -107,9 +107,9 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="7731928563672901833">Daftar Perangkat</translation>
 <translation id="28332161031213248">Daftar perangkat di bawah ini mencakup semua perangkat di dalam rantai sinkronisasi Anda. Setiap perangkat dapat dikelola dari perangkat lain.</translation>
 <translation id="1313162974556054106">Nama Perangkat</translation>
-<translation id="923757506389336140">&lt;ph name="DEVICE_NAME"&gt;$1&lt;ex&gt;my-computer-1&lt;/ex&gt;&lt;/ph&gt; (Perangkat Ini)</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Perangkat Ini)</translation>
 <translation id="3686835020221422649">Terakhir Aktif</translation>
-<translation id="2569646144216067185">Jumlah kata: &lt;ph name="WORD_COUNT"&gt;$1&lt;ex&gt;24&lt;/ex&gt;&lt;/ph&gt;</translation>
+<translation id="2569646144216067185">Jumlah kata: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Disalin!</translation>
 <translation id="8802630444265810662">Kode QR yang akan dipindai dengan perangkat seluler untuk mentransmisikan kode sinkronisasi</translation>
 <translation id="6221331245829088299">Terjadi eror saat menampilkan kode QR, harap segarkan dan coba lagi.</translation>
