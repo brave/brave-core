@@ -7,6 +7,7 @@ import Foundation
 
 class SponsorCardView: FeedCardBackgroundButton, FeedCardContent {
     var actionHandler: ((Int, FeedItemAction) -> Void)?
+    var contextMenu: FeedItemMenu?
     
     let feedView = FeedItemView(layout: .bannerThumbnail).then {
         $0.isUserInteractionEnabled = false
@@ -25,9 +26,14 @@ class SponsorCardView: FeedCardBackgroundButton, FeedCardContent {
         addTarget(self, action: #selector(tappedSelf), for: .touchUpInside)
         
         if #available(iOS 13.0, *) {
-            let contextMenuDelegate = FeedContextMenu(handler: { [weak self] action in
-                self?.actionHandler?(0, action)
-            })
+            let contextMenuDelegate = FeedContextMenuDelegate(
+                performedPreviewAction: { [weak self] in
+                    self?.actionHandler?(0, .opened())
+                },
+                menu: { [weak self] in
+                    return self?.contextMenu?.menu?(0)
+                }
+            )
             addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
             self.contextMenuDelegate = contextMenuDelegate
         }

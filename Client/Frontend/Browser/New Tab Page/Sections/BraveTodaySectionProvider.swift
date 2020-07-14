@@ -5,6 +5,7 @@
 
 import Foundation
 import BraveUI
+import Shared
 
 /// Additonal information related to an action performed on a feed item
 struct FeedItemActionContext {
@@ -95,22 +96,90 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             }
         }
         
+        func contextMenu(from feedList: @escaping (Int) -> FeedItem) -> FeedItemMenu {
+            if #available(iOS 13.0, *) {
+                return .init { index -> UIMenu? in
+                    let item = feedList(index)
+                    let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
+                    
+                    var openInNewTab: UIAction {
+                        .init(title: Strings.openNewTabButtonTitle, handler: UIAction.deferredActionHandler { _ in
+                            self.actionHandler(.opened(inNewTab: true), context)
+                        })
+                    }
+                    
+                    var openInNewPrivateTab: UIAction {
+                        .init(title: Strings.openNewPrivateTabButtonTitle, handler: UIAction.deferredActionHandler { _ in
+                            self.actionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
+                        })
+                    }
+                    
+                    var hideContent: UIAction {
+                        // FIXME: Localize, Get our own image
+                        .init(title: "Hide Content", image: UIImage(systemName: "eye.slash.fill"), handler: UIAction.deferredActionHandler { _ in
+                            self.actionHandler(.hide, context)
+                        })
+                    }
+                    
+                    var blockSource: UIAction {
+                        // FIXME: Localize, Get our own image
+                        .init(title: "Block Source", image: UIImage(systemName: "nosign"), attributes: .destructive, handler: UIAction.deferredActionHandler { _ in
+                            self.actionHandler(.blockSource, context)
+                        })
+                    }
+                    
+                    let openActions: [UIAction] = [
+                        openInNewTab,
+                        // Brave Today is only available in normal tabs, so this isn't technically required
+                        // but good to be on the safe side
+                        !PrivateBrowsingManager.shared.isPrivateBrowsing ?
+                            openInNewPrivateTab :
+                        nil
+                        ].compactMap({ $0 })
+                    let manageActions = [
+                        hideContent,
+                        blockSource
+                    ]
+                    
+                    return UIMenu(title: item.content.title, children: [
+                        UIMenu(title: "", options: [.displayInline], children: openActions),
+                        UIMenu(title: "", options: [.displayInline], children: manageActions)
+                    ])
+                }
+            }
+            return .init { index -> FeedItemMenu.LegacyContext? in
+                let item = feedList(index)
+                return .init(
+                    title: item.content.title,
+                    message: nil,
+                    actions: []
+                )
+            }
+        }
+        
+        func contextMenu(for item: FeedItem) -> FeedItemMenu {
+            return contextMenu(from: { _  in item })
+        }
+        
         switch card {
         case .sponsor(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SponsorCardView>
             cell.content.feedView.setupWithItem(item, brandVisibility: .none)
             cell.content.actionHandler = handler(for: item)
+            cell.content.contextMenu = contextMenu(for: item)
             return cell
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>
             cell.content.feedView.setupWithItem(item, brandVisibility: .logo)
             cell.content.actionHandler = handler(for: item)
+            cell.content.contextMenu = contextMenu(for: item)
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
             cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.first, brandVisibility: .logo)
             cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.second, brandVisibility: .logo)
             cell.content.actionHandler = handler(from: { $0 == 0 ? pair.first : pair.second })
+            cell.content.contextMenu = contextMenu(from: { $0 == 0 ? pair.first : pair.second })
             return cell
         case .group(let items, let title, let direction, let displayBrand):
             let groupView: FeedGroupView
@@ -161,6 +230,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             }
             groupView.groupBrandImageView.isHidden = !displayBrand
             groupView.actionHandler = handler(from: { items[$0] })
+            groupView.contextMenu = contextMenu(from: { items[$0] })
             return cell
         case .numbered(let items, let title):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<NumberedFeedGroupView>
@@ -169,6 +239,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 view.setupWithItem(item, brandVisibility: .none)
             }
             cell.content.actionHandler = handler(from: { items[$0] })
+            cell.content.contextMenu = contextMenu(from: { items[$0] })
             return cell
         }
     }
