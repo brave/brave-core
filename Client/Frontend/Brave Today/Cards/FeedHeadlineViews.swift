@@ -38,15 +38,20 @@ class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
             )
             addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
             self.contextMenuDelegate = contextMenuDelegate
+        } else {
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
+            addGestureRecognizer(longPress)
         }
-    }
-    
-    func prepareForReuse() {
-        print(self.interactions)
     }
     
     @objc private func tappedSelf() {
         actionHandler?(0, .opened())
+    }
+    
+    @objc private func longPressed(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began, let legacyContext = contextMenu?.legacyMenu?(0) {
+            actionHandler?(0, .longPressed(legacyContext))
+        }
     }
 }
 

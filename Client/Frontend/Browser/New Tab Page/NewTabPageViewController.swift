@@ -169,6 +169,16 @@ class NewTabPageViewController: UIViewController, Themeable {
             collectionView.reloadItems(at: [context.indexPath])
         case .blockSource:
             break
+        case .longPressed(let context):
+            let alertController = UIAlertController(
+                title: context.title,
+                message: context.message,
+                preferredStyle: .actionSheet
+            )
+            for action in context.actions {
+                alertController.addAction(action)
+            }
+            present(alertController, animated: true)
         }
     }
     

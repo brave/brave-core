@@ -82,6 +82,9 @@ class FeedGroupView: UIView {
                 )
                 button.addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
                 contextMenuDelegates.append(contextMenuDelegate)
+            } else {
+                let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
+                button.addGestureRecognizer(longPress)
             }
         }
         let stackView = UIStackView().then {
@@ -118,6 +121,15 @@ class FeedGroupView: UIView {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
+    }
+    
+    @objc private func longPressed(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            if let index = buttons.firstIndex(where: { gesture.view === $0 }),
+                let legacyContext = contextMenu?.legacyMenu?(index) {
+                actionHandler?(index, .longPressed(legacyContext))
+            }
+        }
     }
     
     @objc private func tappedButton(_ sender: SpringButton) {
