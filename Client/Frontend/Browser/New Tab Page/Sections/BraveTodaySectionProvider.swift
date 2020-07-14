@@ -214,13 +214,13 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 }
                 
                 var hideContent: UIAction {
-                    // FIXME: Localize, Get our own image
-                    .init(title: "Hide Content", image: UIImage(systemName: "eye.slash.fill"), handler: mapDeferredHandler(hideHandler))
+                    // FIXME: Localize
+                    .init(title: "Hide Content", image: UIImage(named: "hide.feed.item"), handler: mapDeferredHandler(hideHandler))
                 }
                 
                 var blockSource: UIAction {
-                    // FIXME: Localize, Get our own image
-                    .init(title: "Block Source", image: UIImage(systemName: "nosign"), attributes: .destructive, handler: mapDeferredHandler(blockSourceHandler))
+                    // FIXME: Localize
+                    .init(title: "Block Source", image: UIImage(named: "block.feed.source"), attributes: .destructive, handler: mapDeferredHandler(blockSourceHandler))
                 }
                 
                 let openActions: [UIAction] = [
