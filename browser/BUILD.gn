@@ -291,8 +291,16 @@ source_set("browser_process") {
     ]
 
     deps += [
+      "//base",
+      "//brave/common",
+      "//brave/browser/profiles",
       "//brave/components/gemini/browser",
-      "//components/os_crypt",
+      "//components/country_codes",
+      "//components/keyed_service/content",
+      "//components/user_prefs",
+      "//content/public/browser",
+      "//ui/base",
+      "//url",
     ]
   }
 

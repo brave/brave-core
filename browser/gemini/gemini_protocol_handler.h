@@ -8,7 +8,10 @@
 
 #include <string>
 
-#include "chrome/browser/external_protocol/external_protocol_handler.h"
+#include "base/optional.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 
 namespace gemini {
 

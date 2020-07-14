@@ -66,13 +66,6 @@ source_set("extensions") {
     ]
   }
 
-  if (gemini_enabled) {
-    sources += [
-      "api/gemini_api.cc",
-      "api/gemini_api.h",
-    ]
-  }
-
   if (brave_together_enabled) {
     sources += [
       "api/brave_together_api.cc",
@@ -131,6 +124,18 @@ source_set("extensions") {
   if (enable_brave_wayback_machine) {
     deps += [
       "//brave/components/brave_wayback_machine",
+    ]
+  }
+  if (gemini_enabled) {
+    sources += [
+      "api/gemini_api.cc",
+      "api/gemini_api.h",
+    ]
+    deps += [
+      "//brave/common",
+      "//brave/components/gemini/browser",
+      "//components/country_codes",
+      "//extensions/browser",
     ]
   }
 }

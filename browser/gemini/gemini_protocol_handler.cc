@@ -9,6 +9,7 @@
 #include <map>
 #include <utility>
 
+#include "base/optional.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
@@ -19,8 +20,11 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/web_contents.h"
 #include "net/base/escape.h"
 #include "net/base/url_util.h"
+#include "ui/base/page_transition_types.h"
+#include "url/gurl.h"
 
 namespace {
 
