@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index fbbea351bd8ad009c81a41a7d1ba0590611c21bb..edc96d7f0b52ae06b336ff6d32ca055de5922ad9 100644
+index fbbea351bd8ad009c81a41a7d1ba0590611c21bb..aab8fbebbf4536e118bd2b41bee920e613cbc88b 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -745,6 +745,7 @@ if (!is_android) {
@@ -10,3 +10,11 @@ index fbbea351bd8ad009c81a41a7d1ba0590611c21bb..edc96d7f0b52ae06b336ff6d32ca055d
      # Runtime dependencies
      data_deps = [
        "//chrome:browser_tests_pak",
+@@ -3699,6 +3700,7 @@ test("unit_tests") {
+   deps = [
+     ":test_support",
+     ":test_support_unit",
++    "//brave/test:brave_test_support_unit",
+     "//base:base_stack_sampling_profiler_test_util",
+     "//base/test:test_support",
+     "//base/util/memory_pressure:test_support",
