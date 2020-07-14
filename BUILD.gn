@@ -34,9 +34,10 @@ if (!is_ios) {
 
   group("browser_dependencies") {
     deps = [
-      "//brave/browser",
-      "common",
+      "browser",
       "chromium_src:browser",
+      "common",
+      "//services/device/public/cpp:device_features",
     ]
 
     data_deps = [
