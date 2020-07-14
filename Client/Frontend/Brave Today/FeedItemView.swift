@@ -346,7 +346,8 @@ extension FeedItemView {
 }
 
 extension FeedItemView {
-    
+    /// A simple view that is placed on top of the contents of a `FeedItemView` when the content is to be
+    /// hidden.
     class HiddenOverlayView: UIView {
         private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
             $0.layer.cornerRadius = 4.0

@@ -8,6 +8,7 @@ import Lottie
 
 class BraveTodayWelcomeView: UIView, FeedCardContent {
     var actionHandler: ((Int, FeedItemAction) -> Void)?
+    var contextMenu: FeedItemMenu?
     
     private let backgroundView = FeedCardBackgroundView()
     

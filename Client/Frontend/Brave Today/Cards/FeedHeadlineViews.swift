@@ -7,6 +7,7 @@ import Foundation
 
 class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
     var actionHandler: ((Int, FeedItemAction) -> Void)?
+    var contextMenu: FeedItemMenu?
     
     let feedView = FeedItemView(layout: .brandedHeadline).then {
         // Title label slightly different
@@ -27,9 +28,14 @@ class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
         addTarget(self, action: #selector(tappedSelf), for: .touchUpInside)
         
         if #available(iOS 13.0, *) {
-            let contextMenuDelegate = FeedContextMenu(handler: { [weak self] action in
-                self?.actionHandler?(0, action)
-            })
+            let contextMenuDelegate = FeedContextMenuDelegate(
+                performedPreviewAction: { [weak self] in
+                    self?.actionHandler?(0, .opened())
+                },
+                menu: { [weak self] in
+                    return self?.contextMenu?.menu?(0)
+                }
+            )
             addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
             self.contextMenuDelegate = contextMenuDelegate
         }
@@ -61,6 +67,7 @@ class SmallHeadlineCardView: HeadlineCardView {
 
 class SmallHeadlinePairCardView: UIView, FeedCardContent {
     var actionHandler: ((Int, FeedItemAction) -> Void)?
+    var contextMenu: FeedItemMenu?
     
     private let stackView = UIStackView().then {
         $0.distribution = .fillEqually
@@ -81,6 +88,21 @@ class SmallHeadlinePairCardView: UIView, FeedCardContent {
         }
         smallHeadelineCardViews.right.actionHandler = { [weak self] _, action in
             self?.actionHandler?(1, action)
+        }
+        if #available(iOS 13.0, *) {
+            smallHeadelineCardViews.left.contextMenu = FeedItemMenu({ [weak self] _ -> UIMenu? in
+                return self?.contextMenu?.menu?(0)
+            })
+            smallHeadelineCardViews.right.contextMenu = FeedItemMenu({ [weak self] _ -> UIMenu? in
+                return self?.contextMenu?.menu?(1)
+            })
+        } else {
+            smallHeadelineCardViews.left.contextMenu = FeedItemMenu({ [weak self] _ -> FeedItemMenu.LegacyContext? in
+                return self?.contextMenu?.legacyMenu?(0)
+            })
+            smallHeadelineCardViews.right.contextMenu = FeedItemMenu({ [weak self] _ -> FeedItemMenu.LegacyContext? in
+                return self?.contextMenu?.legacyMenu?(1)
+            })
         }
         
         stackView.snp.makeConstraints {

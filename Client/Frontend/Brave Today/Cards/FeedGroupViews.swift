@@ -10,6 +10,9 @@ import BraveUI
 class FeedGroupView: UIView {
     /// The user has tapped the feed that exists at a specific index
     var actionHandler: ((Int, FeedItemAction) -> Void)?
+    
+    var contextMenu: FeedItemMenu?
+    
     /// The title label appearing above the list of feeds
     let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 21, weight: .bold)
@@ -68,9 +71,15 @@ class FeedGroupView: UIView {
         zip(buttons.indices, buttons).forEach { (index, button) in
             button.addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
             if #available(iOS 13.0, *) {
-                let contextMenuDelegate = FeedContextMenu(handler: { [weak self] action in
-                    self?.actionHandler?(index, action)
-                }, padPreview: true)
+                let contextMenuDelegate = FeedContextMenuDelegate(
+                    performedPreviewAction: { [weak self] in
+                        self?.actionHandler?(index, .opened())
+                    },
+                    menu: { [weak self] in
+                        return self?.contextMenu?.menu?(index)
+                    },
+                    padPreview: true
+                )
                 button.addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
                 contextMenuDelegates.append(contextMenuDelegate)
             }
