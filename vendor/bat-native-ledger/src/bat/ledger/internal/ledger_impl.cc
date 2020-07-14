@@ -707,7 +707,15 @@ void LedgerImpl::ContributionCompleted(
 
 void LedgerImpl::GetRewardsParameters(
     ledger::GetRewardsParametersCallback callback) {
-  callback(braveledger_state::GetRewardsParameters(this));
+  auto params = braveledger_state::GetRewardsParameters(this);
+  if (params->rate == 0.0) {
+    // A rate of zero indicates that the rewards parameters have
+    // not yet been successfully initialized from the server.
+    BLOG(1, "Rewards parameters not set - fetching from server");
+    bat_api_->FetchParameters(callback);
+  } else {
+    callback(std::move(params));
+  }
 }
 
 void LedgerImpl::ClaimPromotion(
@@ -1714,10 +1722,6 @@ void LedgerImpl::SaveProcessedPublisherList(
     const std::vector<std::string>& list,
     ledger::ResultCallback callback) {
   bat_database_->SaveProcessedPublisherList(list, callback);
-}
-
-void LedgerImpl::FetchParameters() {
-  bat_api_->FetchParameters();
 }
 
 void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
