@@ -25,6 +25,7 @@ export const defaultState: NewTab.State = {
   isBrandedWallpaperNotificationDismissed: true,
   showEmptyPage: false,
   togetherSupported: false,
+  geminiSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   isTor: false,
@@ -250,6 +251,7 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
       togetherSupported: data.togetherSupported,
+      geminiSupported: data.geminiSupported,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
       geminiState: data.geminiState,

@@ -117,6 +117,16 @@ class GeminiExecuteOrderFunction :
   ResponseAction Run() override;
 };
 
+class GeminiIsSupportedFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("gemini.isSupported", UNKNOWN)
+
+ protected:
+  ~GeminiIsSupportedFunction() override {}
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

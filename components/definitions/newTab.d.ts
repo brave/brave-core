@@ -95,6 +95,7 @@ declare namespace NewTab {
 
   export interface PersistentState {
     togetherSupported: boolean
+    geminiSupported: boolean
     showEmptyPage: boolean
     rewardsState: RewardsWidgetState
     currentStackWidget: StackWidget

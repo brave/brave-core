@@ -70,6 +70,7 @@ export const getNewTabData = (state: NewTab.State = defaultState) => ({
   showRewards: boolean('Show rewards?', true),
   showTogether: boolean('Show together?', true),
   togetherSupported: boolean('Together supported?', true),
+  geminiSupported: boolean('Gemini Supported?', true),
   showBinance: boolean('Show Binance?', true),
   showAddCard: true,
   textDirection: select('Text direction', { ltr: 'ltr', rtl: 'rtl' } , 'ltr'),

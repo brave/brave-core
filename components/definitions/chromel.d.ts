@@ -176,6 +176,7 @@ declare namespace chrome.gemini {
   const revokeToken: (callback: (success: boolean) => void) => {}
   const getOrderQuote: (side: string, symbol: string, spend: string, callback: (quote: any, error: string) => void) => {}
   const executeOrder: (symbol: string, side: string, quantity: string, price: string, fee: string, quoteId: number, callback: (success: boolean) => void) => {}
+  const isSupported: (callback: (supported: boolean) => void) => {}
 }
 
 declare namespace chrome.braveTogether {

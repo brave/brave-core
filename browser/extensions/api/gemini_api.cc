@@ -24,6 +24,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_util.h"
+#include "components/country_codes/country_codes.h"
+#include "brave/browser/gemini/gemini_util.h"
 
 namespace {
 
@@ -256,6 +258,19 @@ GeminiExecuteOrderFunction::Run() {
 
 void GeminiExecuteOrderFunction::OnOrderExecuted(bool success) {
   Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
+GeminiIsSupportedFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+
+  if (brave::IsTorProfile(profile)) {
+    return RespondNow(Error("Not available in Tor profile"));
+  }
+
+  bool is_supported = ::gemini::IsGeminiSupported(profile);
+  return RespondNow(OneArgument(
+      std::make_unique<base::Value>(is_supported)));
 }
 
 }  // namespace api

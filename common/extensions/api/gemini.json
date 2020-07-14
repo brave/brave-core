@@ -217,6 +217,23 @@
               ]
             }
           ]
+        },
+        {
+          "name": "isSupported",
+          "type": "function",
+          "description": "Fetches whether gemini is supported",
+          "parameters": [
+            {
+              "type": "function",
+              "name": "callback",
+              "parameters": [
+                {
+                  "name": "supported",
+                  "type": "boolean"
+                }
+              ]
+            }
+          ]
         }
       ],
       "types": [

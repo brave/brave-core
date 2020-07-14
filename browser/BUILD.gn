@@ -286,6 +286,8 @@ source_set("browser_process") {
       "gemini/gemini_service_factory.h",
       "gemini/gemini_protocol_handler.cc",
       "gemini/gemini_protocol_handler.h",
+      "gemini/gemini_util.cc",
+      "gemini/gemini_util.h",
     ]
 
     deps += [

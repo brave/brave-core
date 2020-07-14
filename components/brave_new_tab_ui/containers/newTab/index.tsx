@@ -608,7 +608,8 @@ class NewTabPage extends React.Component<Props, State> {
       showRewards,
       showBinance,
       showTogether,
-      showGemini
+      showGemini,
+      geminiSupported
     } = this.props.newTabData
     const lookup = {
       'rewards': {
@@ -624,7 +625,7 @@ class NewTabPage extends React.Component<Props, State> {
         render: this.renderTogetherWidget.bind(this)
       },
       'gemini': {
-        display: showGemini,
+        display: showGemini && geminiSupported,
         render: this.renderGeminiWidget.bind(this)
       }
     }
@@ -801,9 +802,9 @@ class NewTabPage extends React.Component<Props, State> {
   renderGeminiWidget (showContent: boolean) {
     const menuActions = {}
     const { newTabData } = this.props
-    const { geminiState, showGemini, textDirection } = newTabData
+    const { geminiState, showGemini, textDirection, geminiSupported } = newTabData
 
-    if (!showGemini) {
+    if (!showGemini || !geminiSupported) {
       return null
     }
 
