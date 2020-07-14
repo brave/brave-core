@@ -150,7 +150,16 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   EXPECT_EQ(ExecScriptGetInt(
                 "domAutomationController.send(navigator.plugins[0].length);",
                 contents()),
-            0);
+            1);
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[0][0].type);",
+                contents()),
+            "");
+  EXPECT_EQ(
+      ExecScriptGetStr(
+          "domAutomationController.send(navigator.plugins[0][0].description);",
+          contents()),
+      "HDBAgQo0aNGDBgw48.fvXrVKFiRIkyZM");
   EXPECT_EQ(ExecScriptGetStr(
                 "domAutomationController.send(navigator.plugins[1].name);",
                 contents()),
@@ -167,5 +176,14 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
   EXPECT_EQ(ExecScriptGetInt(
                 "domAutomationController.send(navigator.plugins[1].length);",
                 contents()),
-            0);
+            1);
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[1][0].type);",
+                contents()),
+            "");
+  EXPECT_EQ(
+      ExecScriptGetStr(
+          "domAutomationController.send(navigator.plugins[1][0].description);",
+          contents()),
+      "qVKly58ePHDBgQoUqVKFix48.fvXLlSJ");
 }
