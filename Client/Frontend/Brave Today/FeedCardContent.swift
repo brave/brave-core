@@ -35,7 +35,7 @@ class FeedItemMenu {
     }
     
     /// A legacy context to use on iOS 12 for an action sheet
-    struct LegacyContext {
+    struct LegacyContext: Equatable {
         /// Optionally, the alert title
         var title: String?
         /// Optionally, the alert message
@@ -53,6 +53,8 @@ enum FeedItemAction: Equatable {
     case hide
     /// Block the source of the feed item
     case blockSource
+    /// Handle a long press initiated by the user for legacy menus
+    case longPressed(_ legacyContext: FeedItemMenu.LegacyContext)
 }
 
 /// The content of a card placed in the Brave Today section on the NTP

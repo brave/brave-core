@@ -36,10 +36,19 @@ class SponsorCardView: FeedCardBackgroundButton, FeedCardContent {
             )
             addInteraction(UIContextMenuInteraction(delegate: contextMenuDelegate))
             self.contextMenuDelegate = contextMenuDelegate
+        } else {
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
+            addGestureRecognizer(longPress)
         }
     }
     
     @objc private func tappedSelf() {
         actionHandler?(0, .opened())
+    }
+    
+    @objc private func longPressed(_ gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began, let legacyMenu = self.contextMenu?.legacyMenu?(0) {
+            actionHandler?(0, .longPressed(legacyMenu))
+        }
     }
 }
