@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/extensions/api/content_settings/content_settings_api.cc b/chrome/browser/extensions/api/content_settings/content_settings_api.cc
-index d8dbcfece5b35c9f805eae4404ff36bdf5bb029c..87d11b102dcabdfcfd3398f22aaf308c158ad5f6 100644
+index cd71b0bd21c4..fe3d996fe817 100644
 --- a/chrome/browser/extensions/api/content_settings/content_settings_api.cc
 +++ b/chrome/browser/extensions/api/content_settings/content_settings_api.cc
-@@ -322,7 +322,7 @@ bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
-     return true;
+@@ -323,7 +323,7 @@ ContentSettingsContentSettingGetResourceIdentifiersFunction::Run() {
+     return RespondNow(NoArguments());
    }
  
 -#if BUILDFLAG(ENABLE_PLUGINS)
@@ -11,12 +11,12 @@ index d8dbcfece5b35c9f805eae4404ff36bdf5bb029c..87d11b102dcabdfcfd3398f22aaf308c
    content::PluginService::GetInstance()->GetPlugins(base::BindOnce(
        &ContentSettingsContentSettingGetResourceIdentifiersFunction::
            OnGotPlugins,
-@@ -332,7 +332,7 @@ bool ContentSettingsContentSettingGetResourceIdentifiersFunction::RunAsync() {
-   return true;
+@@ -333,7 +333,7 @@ ContentSettingsContentSettingGetResourceIdentifiersFunction::Run() {
+   return RespondLater();
  }
  
 -#if BUILDFLAG(ENABLE_PLUGINS)
 +#if BUILDFLAG(ENABLE_PLUGINS) && !defined(OS_ANDROID)
  void ContentSettingsContentSettingGetResourceIdentifiersFunction::OnGotPlugins(
      const std::vector<content::WebPluginInfo>& plugins) {
-   PluginFinder* finder = PluginFinder::GetInstance();
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);

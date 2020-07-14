@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
-index 4a17827809ca7e298e4554220c24cda641b80088..c2f2df0d55b84a3b954a79a22dba3a3abceaa7aa 100644
+index 3ec6c150da52..60b8998f3972 100644
 --- a/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
 +++ b/chrome/browser/extensions/api/browsing_data/browsing_data_api.cc
-@@ -351,7 +351,7 @@ bool BrowsingDataRemoverFunction::RunAsync() {
-     return false;
+@@ -357,7 +357,7 @@ ExtensionFunction::ResponseAction BrowsingDataRemoverFunction::Run() {
+         Error(extension_browsing_data_api_constants::kDeleteProhibitedError));
    }
  
 -#if BUILDFLAG(ENABLE_PLUGINS)

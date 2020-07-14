@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/signin_view_controller.h b/chrome/browser/ui/signin_view_controller.h
-index ccae481f693ba44d4c0d0d6d739c56cbf6d184fa..c23883382b0642aec17764c64c09cee307c702b9 100644
+index 3f8df309b279..25c26cee6df6 100644
 --- a/chrome/browser/ui/signin_view_controller.h
 +++ b/chrome/browser/ui/signin_view_controller.h
-@@ -13,9 +13,9 @@
- #include "components/signin/public/base/signin_buildflags.h"
- #include "url/gurl.h"
+@@ -21,9 +21,9 @@
+ #include "chrome/browser/ui/webui/signin/signin_email_confirmation_dialog.h"
+ #endif
  
 -#if defined(OS_ANDROID)
 -#error This file should only be included on desktop.
@@ -14,4 +14,4 @@ index ccae481f693ba44d4c0d0d6d739c56cbf6d184fa..c23883382b0642aec17764c64c09cee3
 +//#endif
  
  class Browser;
- class SigninViewControllerDelegate;
+ struct CoreAccountId;

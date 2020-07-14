@@ -1,39 +1,25 @@
 diff --git a/chrome/common/chrome_features.h b/chrome/common/chrome_features.h
-index e38762267431668074eb86583f2f4f1e84db62fb..d244ada1d93821fbbcf75ea0f4da43a1952d38d9 100644
+index 4b652fc862f8..cc61c6b50449 100644
 --- a/chrome/common/chrome_features.h
 +++ b/chrome/common/chrome_features.h
-@@ -55,7 +55,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kAppNotificationStatusMessaging;
- #endif  // defined(OS_ANDROID)
+@@ -50,14 +50,14 @@ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kShow10_9ObsoleteInfobar;
+ #endif  // defined(OS_MACOSX)
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)
  COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kAppServiceContextMenu;
  COMPONENT_EXPORT(CHROME_FEATURES)
-@@ -64,7 +64,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kAppServiceIntentHandling;
+ extern const base::Feature kAppServiceInstanceRegistry;
  COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kAppServiceShelf;
+ extern const base::Feature kAppServiceIntentHandling;
 -#endif  // !defined(OS_ANDROID)
 +//#endif  // !defined(OS_ANDROID)
  
  COMPONENT_EXPORT(CHROME_FEATURES) extern const base::Feature kAsyncDns;
  
-@@ -187,10 +187,10 @@ extern const base::Feature kEnableAmbientAuthenticationInGuestSession;
- COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kEnableAmbientAuthenticationInIncognito;
- 
--#if !defined(OS_ANDROID)
-+//#if !defined(OS_ANDROID)
- COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kEnterpriseReportingInBrowser;
--#endif
-+//#endif
- 
- #if defined(OS_CHROMEOS)
- COMPONENT_EXPORT(CHROME_FEATURES)
-@@ -255,7 +255,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
+@@ -224,7 +224,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kHappinessTrackingSystem;
  #endif
  
@@ -42,16 +28,16 @@ index e38762267431668074eb86583f2f4f1e84db62fb..d244ada1d93821fbbcf75ea0f4da43a1
  COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kHappinessTrackingSurveysForDesktop;
  
-@@ -267,7 +267,7 @@ extern const base::Feature kHappinessTrackingSurveysForDesktopSettings;
+@@ -239,7 +239,7 @@ extern const base::Feature kHappinessTrackingSurveysForDesktopSettingsPrivacy;
  
  COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kHappinessTrackingSurveysForDesktopSettingsPrivacy;
+ extern const base::Feature kHappinessTrackingSurveysForDesktopMigration;
 -#endif
 +//#endif
  
  COMPONENT_EXPORT(CHROME_FEATURES)
- extern const base::Feature kHTTPAuthCommittedInterstitials;
-@@ -327,9 +327,9 @@ extern const base::Feature kAcknowledgeNtpOverrideOnDeactivate;
+ extern const base::Feature kHideCorsLegacyModeEnabledPolicySupport;
+@@ -302,9 +302,9 @@ extern const base::Feature kAcknowledgeNtpOverrideOnDeactivate;
  COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kMixedContentSiteSetting;
  

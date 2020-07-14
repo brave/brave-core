@@ -1,16 +1,17 @@
 diff --git a/chrome/browser/ui/views/frame/browser_window_factory.cc b/chrome/browser/ui/views/frame/browser_window_factory.cc
-index 35024eee0a4a90ba127b2423d4022b9582eb65ee..9c772d483c4708e7fb9f1af3af36fad36f524589 100644
+index 9089e38b6a1a..b441fdc9ff82 100644
 --- a/chrome/browser/ui/views/frame/browser_window_factory.cc
 +++ b/chrome/browser/ui/views/frame/browser_window_factory.cc
-@@ -24,6 +24,7 @@ BrowserWindow* BrowserWindow::CreateBrowserWindow(
-   // so we don't need to do anything with the pointer.
-   BrowserView* view = new BrowserView(std::move(browser));
-   (new BrowserFrame(view))->InitBrowserFrame();
+@@ -37,7 +37,7 @@ BrowserWindow* BrowserWindow::CreateBrowserWindow(
+   if (in_tab_dragging)
+     browser_frame->SetTabDragKind(TabDragKind::kAllTabs);
+   browser_frame->InitBrowserFrame();
+-
 +#if !defined(OS_ANDROID)
    view->GetWidget()->non_client_view()->SetAccessibleName(
        l10n_util::GetStringUTF16(IDS_PRODUCT_NAME));
  
-@@ -32,6 +33,7 @@ BrowserWindow* BrowserWindow::CreateBrowserWindow(
+@@ -46,6 +46,7 @@ BrowserWindow* BrowserWindow::CreateBrowserWindow(
    // because it requires gfx::NativeWindow to be an aura::Window*.
    view->GetWidget()->GetNativeWindow()->SetProperty(
        aura::client::kCreatedByUserGesture, user_gesture);

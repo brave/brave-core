@@ -1,22 +1,22 @@
 diff --git a/chrome/browser/ui/views/extensions/extension_installed_bubble_view.cc b/chrome/browser/ui/views/extensions/extension_installed_bubble_view.cc
-index 28bb4c832702319f5344f93f17300b9a1ac92887..3cac1922a01c5c14119a1173b7d6bd1c88658ba6 100644
+index f928e40985a0..3a7743f9bb46 100644
 --- a/chrome/browser/ui/views/extensions/extension_installed_bubble_view.cc
 +++ b/chrome/browser/ui/views/extensions/extension_installed_bubble_view.cc
-@@ -513,6 +513,7 @@ void ExtensionInstalledBubbleUi::OnWidgetClosing(views::Widget* widget) {
- 
- // Views (BrowserView) specific implementation.
- bool ExtensionInstalledBubble::ShouldShow() {
-+#if !defined(OS_ANDROID)
-   if (base::FeatureList::IsEnabled(features::kExtensionsToolbarMenu))
-     return true;
-   if (anchor_position() == ANCHOR_ACTION) {
-@@ -523,6 +524,9 @@ bool ExtensionInstalledBubble::ShouldShow() {
-     return container && !container->animating();
+@@ -361,6 +361,7 @@ class IconAnimationWaiter {
    }
-   return true;
+ 
+   bool ShouldShow() {
++#if !defined(OS_ANDROID)
+     if (model_->anchor_to_action()) {
+       BrowserActionsContainer* container =
+           BrowserView::GetBrowserViewForBrowser(browser_)
+@@ -369,6 +370,9 @@ class IconAnimationWaiter {
+       return container && !container->animating();
+     }
+     return true;
 +#else
 +  return false;
 +#endif
- }
+   }
  
- std::unique_ptr<BubbleUi> ExtensionInstalledBubble::BuildBubbleUi() {
+   void OnExtensionRemoved() { delete this; }

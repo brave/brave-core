@@ -1,33 +1,37 @@
 diff --git a/chrome/browser/ui/webui/settings/safety_check_handler.h b/chrome/browser/ui/webui/settings/safety_check_handler.h
-index 6268c712010973867e6a2dbab58f2968baaaa4e6..ead912c2df4ee871975efefe9faf03763c01b813 100644
+index 0c73407ae34e..5c856094d0fb 100644
 --- a/chrome/browser/ui/webui/settings/safety_check_handler.h
 +++ b/chrome/browser/ui/webui/settings/safety_check_handler.h
-@@ -28,10 +28,12 @@ class SafetyCheckHandler : public settings::SettingsPageUIHandler {
-   // should only be called as a result of an explicit user action.
-   void PerformSafetyCheck();
+@@ -137,9 +137,11 @@ class SafetyCheckHandler
+   // ago the safety check last ran.
+   void HandleGetParentRanDisplayString(const base::ListValue* args);
  
 +#if !defined(OS_ANDROID)
-   // Each triggers a corresponding check and calls the provided callback on
-   // completion.
-   void CheckUpdates(VersionUpdater* updater,
-                     const VersionUpdater::StatusCallback& update_callback);
+   // Triggers an update check and invokes OnUpdateCheckResult once results
+   // are available.
+   void CheckUpdates();
 +#endif
  
-  private:
-   // SettingsPageUIHandler implementation.
-@@ -41,6 +43,7 @@ class SafetyCheckHandler : public settings::SettingsPageUIHandler {
-   // WebUIMessageHandler implementation.
-   void RegisterMessages() override {}
+   // Triggers a bulk password leak check and invokes OnPasswordsCheckResult once
+   // results are available.
+@@ -149,8 +151,10 @@ class SafetyCheckHandler
+   // that case, if any of those were re-enabled.
+   void CheckExtensions();
  
 +#if !defined(OS_ANDROID)
    // Callbacks that get triggered when each check completes.
-   void OnUpdateCheckResult(VersionUpdater::Status status,
-                            int progress,
-@@ -50,6 +53,7 @@ class SafetyCheckHandler : public settings::SettingsPageUIHandler {
-                            const base::string16& message);
+   void OnUpdateCheckResult(UpdateStatus status);
++#endif
+   void OnPasswordsCheckResult(PasswordsStatus status,
+                               Compromised compromised,
+                               Done done,
+@@ -234,7 +238,9 @@ class SafetyCheckHandler
+   std::unique_ptr<safety_check::SafetyCheck> safety_check_;
+   std::unique_ptr<safety_check::UpdateCheckHelper> update_helper_;
  
++#if !defined(OS_ANDROID)
    std::unique_ptr<VersionUpdater> version_updater_;
 +#endif
- 
-   DISALLOW_COPY_AND_ASSIGN(SafetyCheckHandler);
- };
+   password_manager::BulkLeakCheckService* leak_service_ = nullptr;
+   extensions::PasswordsPrivateDelegate* passwords_delegate_ = nullptr;
+   extensions::ExtensionPrefs* extension_prefs_ = nullptr;

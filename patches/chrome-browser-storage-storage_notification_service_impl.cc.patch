@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/storage/storage_notification_service_impl.cc b/chrome/browser/storage/storage_notification_service_impl.cc
-index b9b8c958e9566c24c2cba1fd8d7997cd87b250b0..b43a1cdf97444d6ae3f25d957a7af00de43917ad 100644
+index c5255b25797a..2c8c41aacc87 100644
 --- a/chrome/browser/storage/storage_notification_service_impl.cc
 +++ b/chrome/browser/storage/storage_notification_service_impl.cc
-@@ -7,9 +7,9 @@
- #include "build/build_config.h"
+@@ -11,9 +11,9 @@
  #include "chrome/browser/profiles/profile.h"
+ #include "chrome/common/chrome_switches.h"
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)
@@ -12,5 +12,5 @@ index b9b8c958e9566c24c2cba1fd8d7997cd87b250b0..b43a1cdf97444d6ae3f25d957a7af00d
 -#endif
 +//#endif
  
- base::RepeatingCallback<void(const url::Origin)>
- StorageNotificationServiceImpl::GetStoragePressureNotificationClosure() {
+ namespace {
+ 

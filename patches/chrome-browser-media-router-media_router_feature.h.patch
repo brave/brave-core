@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/media/router/media_router_feature.h b/chrome/browser/media/router/media_router_feature.h
-index bc1d4b51e60fbf06fa02601eb02f895a2a091b59..027e2c84bc4b0f44f962cd1c6e72750b0ebefc2f 100644
+index ec176542d741..78a171a339a5 100644
 --- a/chrome/browser/media/router/media_router_feature.h
 +++ b/chrome/browser/media/router/media_router_feature.h
 @@ -19,7 +19,7 @@ namespace media_router {
@@ -11,10 +11,10 @@ index bc1d4b51e60fbf06fa02601eb02f895a2a091b59..027e2c84bc4b0f44f962cd1c6e72750b
  
  // TODO(crbug.com/1028753): Remove default-enabled kDialMediaRouteProvider after
  // tests stop disabling it.
-@@ -66,7 +66,7 @@ bool CastMediaRouteProviderEnabled();
- // Returns true if Mirroring Service should be used for mirroring.
- bool ShouldUseMirroringService();
- 
+@@ -62,7 +62,7 @@ bool DialMediaRouteProviderEnabled();
+ // Returns true if browser side Cast Media Route Provider and sink query are
+ // enabled.
+ bool CastMediaRouteProviderEnabled();
 -#endif  // !defined(OS_ANDROID)
 +//#endif  // !defined(OS_ANDROID)
  

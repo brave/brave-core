@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_view_host_impl.cc b/content/browser/renderer_host/render_view_host_impl.cc
-index 26df70e508cd60ddc96d668697e76542a7f1cd2c..76c049b31cd6f616df6418c7827ac780c7a342a2 100644
+index 8c6deced5a7a..546a5cec4bd1 100644
 --- a/content/browser/renderer_host/render_view_host_impl.cc
 +++ b/content/browser/renderer_host/render_view_host_impl.cc
-@@ -104,9 +104,9 @@
+@@ -107,9 +107,9 @@
  #include "ui/gfx/system_fonts_win.h"
  #endif
  
@@ -14,7 +14,7 @@ index 26df70e508cd60ddc96d668697e76542a7f1cd2c..76c049b31cd6f616df6418c7827ac780
  
  using base::TimeDelta;
  
-@@ -700,10 +700,10 @@ void RenderViewHostImpl::ClosePage() {
+@@ -764,10 +764,10 @@ void RenderViewHostImpl::ClosePage() {
  
      // TODO(creis): Should this be moved to Shutdown?  It may not be called for
      // RenderViewHosts that have been swapped out.
@@ -25,5 +25,5 @@ index 26df70e508cd60ddc96d668697e76542a7f1cd2c..76c049b31cd6f616df6418c7827ac780
 -#endif
 +//#endif
  
-     Send(new ViewMsg_ClosePage(GetRoutingID()));
-   } else {
+     static_cast<RenderFrameHostImpl*>(GetMainFrame())
+         ->GetAssociatedLocalMainFrame()

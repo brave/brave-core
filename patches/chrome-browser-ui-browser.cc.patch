@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 1ff3ee68880875043cba7fe11b20e5ec5e4f41e4..769c84d9ccec6051bca0865aa1a3001145e4d78f 100644
+index 0f1344d9c357..cca72b40b83a 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -2012,6 +2012,7 @@ void Browser::RequestPpapiBrokerPermission(
+@@ -2131,6 +2131,7 @@ void Browser::RequestPpapiBrokerPermission(
      return;
    }
  
 +#if !defined(OS_ANDROID)
-   TabSpecificContentSettings* tab_content_settings =
-       TabSpecificContentSettings::FromWebContents(web_contents);
- 
-@@ -2044,6 +2045,9 @@ void Browser::RequestPpapiBrokerPermission(
+   content_settings::TabSpecificContentSettings* tab_content_settings =
+       content_settings::TabSpecificContentSettings::FromWebContents(
+           web_contents);
+@@ -2164,6 +2165,9 @@ void Browser::RequestPpapiBrokerPermission(
                           : base::UserMetricsAction("PPAPI.BrokerSettingDeny"));
    tab_content_settings->SetPepperBrokerAllowed(allowed);
    std::move(callback).Run(allowed);
@@ -20,7 +20,7 @@ index 1ff3ee68880875043cba7fe11b20e5ec5e4f41e4..769c84d9ccec6051bca0865aa1a30011
  #endif
  }
  
-@@ -2353,7 +2357,9 @@ void Browser::OnActiveTabChanged(WebContents* old_contents,
+@@ -2486,7 +2490,9 @@ void Browser::OnActiveTabChanged(WebContents* old_contents,
          session_id(), session_tab_helper->session_id(), base::TimeTicks::Now());
    }
  
@@ -30,7 +30,7 @@ index 1ff3ee68880875043cba7fe11b20e5ec5e4f41e4..769c84d9ccec6051bca0865aa1a30011
  }
  
  void Browser::OnTabMoved(int from_index, int to_index) {
-@@ -2651,6 +2657,7 @@ void Browser::SetAsDelegate(WebContents* web_contents, bool set_delegate) {
+@@ -2789,6 +2795,7 @@ void Browser::SetAsDelegate(WebContents* web_contents, bool set_delegate) {
    web_contents->SetDelegate(delegate);
  
    // ...and all the helpers.
@@ -38,7 +38,7 @@ index 1ff3ee68880875043cba7fe11b20e5ec5e4f41e4..769c84d9ccec6051bca0865aa1a30011
    WebContentsModalDialogManager::FromWebContents(web_contents)
        ->SetDelegate(delegate);
    translate::ContentTranslateDriver* content_translate_driver =
-@@ -2664,6 +2671,7 @@ void Browser::SetAsDelegate(WebContents* web_contents, bool set_delegate) {
+@@ -2802,6 +2809,7 @@ void Browser::SetAsDelegate(WebContents* web_contents, bool set_delegate) {
      content_translate_driver->RemoveObserver(this);
      BookmarkTabHelper::FromWebContents(web_contents)->RemoveObserver(this);
    }

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/profiles/profile.h b/chrome/browser/profiles/profile.h
-index 442d722969034d7327759f8aec5e4cbda7682357..633be7d40ff63eb34812891d3bd366a023713d0f 100644
+index a48ead96b3f7..5023fb03fb2f 100644
 --- a/chrome/browser/profiles/profile.h
 +++ b/chrome/browser/profiles/profile.h
-@@ -21,9 +21,9 @@
- #include "services/network/public/mojom/network_context.mojom-forward.h"
- #include "url/gurl.h"
+@@ -25,9 +25,9 @@
+ #include "base/android/scoped_java_ref.h"
+ #endif
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)
@@ -14,7 +14,7 @@ index 442d722969034d7327759f8aec5e4cbda7682357..633be7d40ff63eb34812891d3bd366a0
  
  class ExtensionSpecialStoragePolicy;
  class PrefService;
-@@ -218,12 +218,12 @@ class Profile : public content::BrowserContext {
+@@ -299,12 +299,12 @@ class Profile : public content::BrowserContext {
    virtual PrefService* GetPrefs() = 0;
    virtual const PrefService* GetPrefs() const = 0;
  
@@ -29,9 +29,9 @@ index 442d722969034d7327759f8aec5e4cbda7682357..633be7d40ff63eb34812891d3bd366a0
  
    // Retrieves a pointer to the PrefService that manages the preferences
    // for OffTheRecord Profiles.  This PrefService is lazily created the first
-@@ -421,11 +421,11 @@ class Profile : public content::BrowserContext {
-   // correctly assigned to its owner.
-   Profile* CreateOffTheRecordProfile();
+@@ -500,11 +500,11 @@ class Profile : public content::BrowserContext {
+   // ProfileDestroyer, but in tests, some are not.
+   void MaybeSendDestroyedNotification();
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)

@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/BUILD.gn b/chrome/browser/resources/BUILD.gn
-index 1bb1690f7bbe290bb08b3ebaf0cb12b4727ad296..d897ea8251eb7e3a8bed81e419b44b84a6959c22 100644
+index c5f813e5c89a..44f13b653f13 100644
 --- a/chrome/browser/resources/BUILD.gn
 +++ b/chrome/browser/resources/BUILD.gn
-@@ -18,7 +18,7 @@ if (closure_compile) {
-       "interventions_internals:closure_compile",
+@@ -21,7 +21,7 @@ if (closure_compile) {
+       "memory_internals:closure_compile",
        "reset_password:closure_compile",
      ]
 -    if (is_linux || is_win || is_mac) {
@@ -11,16 +11,16 @@ index 1bb1690f7bbe290bb08b3ebaf0cb12b4727ad296..d897ea8251eb7e3a8bed81e419b44b84
        deps += [
          "bluetooth_internals:closure_compile",
          "bookmarks:closure_compile",
-@@ -82,7 +82,7 @@ if (closure_compile) {
+@@ -86,7 +86,7 @@ if (closure_compile) {
    }
  }
  
 -if (!is_android) {
 +#if (!is_android) {
    grit("bookmarks_resources") {
-     # The .grd contains references to generated files.
-     source_is_generated = true
-@@ -261,7 +261,7 @@ if (!is_android) {
+     grit_flags = [
+       "-E",
+@@ -275,7 +275,7 @@ if (!is_android) {
      ]
      output_dir = "$root_gen_dir/chrome"
    }
@@ -29,7 +29,7 @@ index 1bb1690f7bbe290bb08b3ebaf0cb12b4727ad296..d897ea8251eb7e3a8bed81e419b44b84
  
  if (is_chromeos) {
    grit("os_settings_resources") {
-@@ -292,7 +292,7 @@ if (is_chromeos) {
+@@ -307,7 +307,7 @@ if (is_chromeos) {
    }
  }
  

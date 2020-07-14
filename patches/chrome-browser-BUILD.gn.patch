@@ -56,7 +56,7 @@ index ab78eae16b47..083da0f11efa 100644
        "upgrade_detector/upgrade_detector_impl.h",
      ]
 -  } else {  # is_android || is_chromeos
-+  } 
++  }
 +  if (is_android || is_chromeos) {  # is_android || is_chromeos
 +    sources -= ["policy/chrome_browser_cloud_management_controller.cc", "policy/chrome_browser_cloud_management_controller.h",
 +      "policy/chrome_browser_cloud_management_register_watcher.cc", "policy/chrome_browser_cloud_management_register_watcher.h",

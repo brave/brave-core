@@ -1,21 +1,30 @@
 diff --git a/chrome/browser/policy/configuration_policy_handler_list_factory.cc b/chrome/browser/policy/configuration_policy_handler_list_factory.cc
-index 438bfa455eeae81c687809923758dbe334a037fb..a353b94543e5cba9b1a36b78f2dfd23f1f47ec1c 100644
+index aea7af532667..a5864e2756d5 100644
 --- a/chrome/browser/policy/configuration_policy_handler_list_factory.cc
 +++ b/chrome/browser/policy/configuration_policy_handler_list_factory.cc
-@@ -1088,14 +1088,14 @@ const PolicyToPreferenceMapEntry kSimplePolicyMap[] = {
+@@ -642,12 +642,6 @@ const PolicyToPreferenceMapEntry kSimplePolicyMap[] = {
+   { key::kSuppressUnsupportedOSWarning,
+     prefs::kSuppressUnsupportedOSWarning,
      base::Value::Type::BOOLEAN },
- #endif
- 
--#if !defined(OS_ANDROID)
-+//#if !defined(OS_ANDROID)
-   { key::kRelaunchNotification,
-     prefs::kRelaunchNotification,
-     base::Value::Type::INTEGER },
-   { key::kRelaunchNotificationPeriod,
-     prefs::kRelaunchNotificationPeriod,
-     base::Value::Type::INTEGER },
--#endif  // !defined(OS_ANDROID)
-+//#endif  // !defined(OS_ANDROID)
+-  { key::kRelaunchNotification,
+-    prefs::kRelaunchNotification,
+-    base::Value::Type::INTEGER },
+-  { key::kRelaunchNotificationPeriod,
+-    prefs::kRelaunchNotificationPeriod,
+-    base::Value::Type::INTEGER },
+   { key::kAutoplayAllowed,
+     prefs::kAutoplayAllowed,
+     base::Value::Type::BOOLEAN },
+@@ -688,6 +682,12 @@ const PolicyToPreferenceMapEntry kSimplePolicyMap[] = {
+     prefs::kURLsToNotCheckComplianceOfUploadedContent,
+     base::Value::Type::LIST },
+ #endif  // defined(OS_ANDROID)
++  { key::kRelaunchNotification,
++    prefs::kRelaunchNotification,
++    base::Value::Type::INTEGER },
++  { key::kRelaunchNotificationPeriod,
++    prefs::kRelaunchNotificationPeriod,
++    base::Value::Type::INTEGER },
  
  #if defined(OS_CHROMEOS)
-   { key::kRelaunchHeadsUpPeriod,
+   { key::kClientCertificateManagementAllowed,

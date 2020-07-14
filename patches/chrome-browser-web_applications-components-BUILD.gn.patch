@@ -1,45 +1,18 @@
 diff --git a/chrome/browser/web_applications/components/BUILD.gn b/chrome/browser/web_applications/components/BUILD.gn
-index be56673b235b33e398a2fb8a3917eaac5bca199e..4e13a68dfaf682b4a6c75fe4d63dfde493146819 100644
+index 1ef11da47440..9ce495a5c143 100644
 --- a/chrome/browser/web_applications/components/BUILD.gn
 +++ b/chrome/browser/web_applications/components/BUILD.gn
-@@ -130,6 +130,7 @@ source_set("components") {
+@@ -138,6 +138,7 @@ source_set("components") {
      "//services/preferences/public/cpp",
      "//skia",
    ]
-+  deps += ["//brave/browser/web_applications/components"]
- }
++  if (is_android) { deps += ["//brave/browser/web_applications/components"] }
  
- source_set("unit_tests") {
-@@ -168,13 +169,16 @@ source_set("unit_tests") {
-     "//chrome/app/theme:theme_resources",
-     "//chrome/browser/web_applications:web_app_test_group",
-     "//chrome/browser/web_applications:web_applications_test_support",
--    "//chrome/test:test_support",
-     "//content/public/browser",
-     "//skia",
-     "//testing/gmock",
-     "//testing/gtest",
-   ]
- 
-+  if (!is_android) {
-+    deps += ["//chrome/test:test_support",]
-+  }
-+
-   if (is_chromeos) {
-     deps += [ "//chrome/browser/chromeos" ]
-   }
-@@ -190,8 +194,12 @@ source_set("browser_tests") {
-   deps = [
-     ":components",
-     "//chrome/browser/web_applications:web_applications_test_support",
--    "//chrome/test:test_support",
--    "//chrome/test:test_support_ui",
+   if (is_win) {
+     deps += [ "//chrome/browser/web_applications/chrome_pwa_launcher:util" ]
+@@ -222,4 +223,5 @@ source_set("browser_tests") {
+     "//chrome/test:test_support_ui",
      "//net:test_support",
    ]
-+
-+  if (!is_android) {
-+    deps += ["//chrome/test:test_support",
-+      "//chrome/test:test_support_ui",
-+    ]
-+  }
++  if (is_android) { deps -= ["//chrome/test:test_support", "//chrome/test:test_support_ui",] }
  }

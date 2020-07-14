@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/download/download_ui_model.h b/chrome/browser/download/download_ui_model.h
-index 73bc56ef5af441ecf6fc7f2bc6b8a2006a9171a8..673fac9720d56ea1e7dc35b62841d3a6164c1861 100644
+index 016cd85efb32..a68c44220b6c 100644
 --- a/chrome/browser/download/download_ui_model.h
 +++ b/chrome/browser/download/download_ui_model.h
 @@ -19,9 +19,9 @@
- #include "components/offline_items_collection/core/offline_item.h"
  #include "components/safe_browsing/buildflags.h"
+ #include "components/safe_browsing/core/proto/download_file_types.pb.h"
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)
@@ -14,7 +14,7 @@ index 73bc56ef5af441ecf6fc7f2bc6b8a2006a9171a8..673fac9720d56ea1e7dc35b62841d3a6
  
  namespace gfx {
  class FontList;
-@@ -295,7 +295,7 @@ class DownloadUIModel {
+@@ -298,7 +298,7 @@ class DownloadUIModel {
    // security reasons.
    virtual bool ShouldPromoteOrigin() const;
  
@@ -23,7 +23,7 @@ index 73bc56ef5af441ecf6fc7f2bc6b8a2006a9171a8..673fac9720d56ea1e7dc35b62841d3a6
    // Methods related to DownloadCommands.
    // Returns whether the given download command is enabled for this download.
    virtual bool IsCommandEnabled(const DownloadCommands* download_commands,
-@@ -308,7 +308,7 @@ class DownloadUIModel {
+@@ -311,7 +311,7 @@ class DownloadUIModel {
    // Executes the given download command on this download.
    virtual void ExecuteCommand(DownloadCommands* download_commands,
                                DownloadCommands::Command command);
@@ -32,3 +32,4 @@ index 73bc56ef5af441ecf6fc7f2bc6b8a2006a9171a8..673fac9720d56ea1e7dc35b62841d3a6
  
  #if BUILDFLAG(FULL_SAFE_BROWSING)
    // Complete the Safe Browsing scan early.
+   

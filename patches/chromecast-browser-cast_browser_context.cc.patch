@@ -1,9 +1,9 @@
 diff --git a/chromecast/browser/cast_browser_context.cc b/chromecast/browser/cast_browser_context.cc
-index 66fd3a45254e096a9a3cdf90dee9b50fa35301a8..8d508593628a518ff657a4f2d46e70a9eec1127c 100644
+index fe51d1d32742..8752a04b4b72 100644
 --- a/chromecast/browser/cast_browser_context.cc
 +++ b/chromecast/browser/cast_browser_context.cc
-@@ -80,13 +80,13 @@ void CastBrowserContext::InitWhileIOAllowed() {
-   BrowserContext::Initialize(this, path_);
+@@ -79,13 +79,13 @@ void CastBrowserContext::InitWhileIOAllowed() {
+ #endif  // defined(OS_ANDROID)
  }
  
 -#if !defined(OS_ANDROID)

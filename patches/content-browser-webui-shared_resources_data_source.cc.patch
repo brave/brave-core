@@ -1,13 +1,14 @@
 diff --git a/content/browser/webui/shared_resources_data_source.cc b/content/browser/webui/shared_resources_data_source.cc
-index 69fe841b0204145b4d1763e50477214e56cbba40..2bcc28db7b3453efbe41a08ba5cf2804bc362045 100644
+index 91ce33a80d0f..de88087059a7 100644
 --- a/content/browser/webui/shared_resources_data_source.cc
 +++ b/content/browser/webui/shared_resources_data_source.cc
-@@ -87,10 +87,10 @@ const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
+@@ -85,11 +85,11 @@ const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
      return aliases;
  #endif  // defined(OS_CHROMEOS)
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)
+   aliases["../../../third_party/lottie/"] = "lottie/";
    aliases["../../../third_party/polymer/v1_0/components-chromium/polymer2/"] =
        "polymer/v1_0/polymer/";
 -#endif  // !defined(OS_ANDROID)
@@ -15,7 +16,7 @@ index 69fe841b0204145b4d1763e50477214e56cbba40..2bcc28db7b3453efbe41a08ba5cf2804
    return aliases;
  }
  
-@@ -183,7 +183,7 @@ const std::map<int, std::string> CreateChromeosMojoResourceIdToAliasMap() {
+@@ -190,7 +190,7 @@ const std::map<int, std::string> CreateChromeosMojoResourceIdToAliasMap() {
  }
  #endif  // !defined(OS_CHROMEOS)
  
@@ -24,7 +25,7 @@ index 69fe841b0204145b4d1763e50477214e56cbba40..2bcc28db7b3453efbe41a08ba5cf2804
  bool ShouldIgnore(std::string resource) {
  #if defined(OS_CHROMEOS)
    if (UsingMultiplePolymerVersions())
-@@ -199,7 +199,7 @@ bool ShouldIgnore(std::string resource) {
+@@ -206,7 +206,7 @@ bool ShouldIgnore(std::string resource) {
  
    return false;
  }
@@ -33,7 +34,7 @@ index 69fe841b0204145b4d1763e50477214e56cbba40..2bcc28db7b3453efbe41a08ba5cf2804
  
  void AddResource(const std::string& path,
                   int resource_id,
-@@ -215,10 +215,10 @@ void AddResourcesToMap(ResourcesMap* resources_map) {
+@@ -222,10 +222,10 @@ void AddResourcesToMap(ResourcesMap* resources_map) {
    for (size_t i = 0; i < kWebuiResourcesSize; ++i) {
      const auto& resource = kWebuiResources[i];
  
