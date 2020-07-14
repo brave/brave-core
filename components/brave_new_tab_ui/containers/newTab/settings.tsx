@@ -25,7 +25,6 @@ import { getLocale } from '../../../common/locale'
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
 import BackgroundImageIcon from './settings/icons/backgroundImage.svg'
 import NraveStatsIcon from './settings/icons/braveStats.svg'
-import BraveRewardsIcon from './settings/icons/braveRewards.svg'
 import TopSitesIcon from './settings/icons/topSites.svg'
 import ClockIcon from './settings/icons/clock.svg'
 import MoreCardsIcon from './settings/icons/moreCards.svg'
@@ -33,7 +32,6 @@ import MoreCardsIcon from './settings/icons/moreCards.svg'
 // Tabs
 import BackgroundImageSettings from './settings/backgroundImage'
 import BraveStatsSettings from './settings/braveStats'
-import BraveRewardsSettings from './settings/braveRewards'
 import TopSitesSettings from './settings/topSites'
 import ClockSettings from './settings/clock'
 import MoreCardsSettings from './settings/moreCards'
@@ -61,9 +59,10 @@ export interface Props {
   showBinance: boolean
   binanceSupported: boolean
   togetherSupported: boolean
+  focusMoreCards: boolean
 }
 
-type ActiveTabType = 'BackgroundImage' | 'BraveStats' | 'Rewards' | 'TopSites' | 'Clock' | 'moreCards'
+type ActiveTabType = 'BackgroundImage' | 'BraveStats' | 'TopSites' | 'Clock' | 'MoreCards'
 
 interface State {
   activeTab: number
@@ -96,6 +95,12 @@ export default class Settings extends React.PureComponent<Props, State> {
     document.removeEventListener('mousedown', this.handleClickOutside)
   }
 
+  componentDidUpdate (prevProps: Props) {
+    if (!prevProps.focusMoreCards && this.props.focusMoreCards) {
+      this.setState({ activeTab: 4 })
+    }
+  }
+
   onKeyPressSettings = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       this.props.onClickOutside()
@@ -112,7 +117,7 @@ export default class Settings extends React.PureComponent<Props, State> {
 
   get activeTabOptions (): ActiveTabType[] {
     return [
-      'BackgroundImage', 'BraveStats', 'Rewards', 'TopSites', 'Clock', 'moreCards'
+      'BackgroundImage', 'BraveStats', 'TopSites', 'Clock', 'MoreCards'
     ]
   }
 
@@ -126,15 +131,12 @@ export default class Settings extends React.PureComponent<Props, State> {
         srcUrl = NraveStatsIcon
         break
       case 2:
-        srcUrl = BraveRewardsIcon
-        break
-      case 3:
         srcUrl = TopSitesIcon
         break
-      case 4:
+      case 3:
         srcUrl = ClockIcon
         break
-      case 5:
+      case 4:
         srcUrl = MoreCardsIcon
         break
       default:
@@ -150,13 +152,11 @@ export default class Settings extends React.PureComponent<Props, State> {
         return 'backgroundImageTitle'
       case 'BraveStats':
         return 'statsTitle'
-      case 'Rewards':
-        return 'rewardsTitle'
       case 'TopSites':
         return 'topSitesTitle'
       case 'Clock':
         return 'clockTitle'
-      case 'moreCards':
+      case 'MoreCards':
         return 'moreCards'
       default:
         return ''
@@ -253,15 +253,6 @@ export default class Settings extends React.PureComponent<Props, State> {
                 {
                   activeTab === 2
                     ? (
-                      <BraveRewardsSettings
-                        toggleShowRewards={toggleShowRewards}
-                        showRewards={showRewards}
-                      />
-                    ) : null
-                }
-                {
-                  activeTab === 3
-                    ? (
                       <TopSitesSettings
                         toggleShowTopSites={toggleShowTopSites}
                         showTopSites={showTopSites}
@@ -269,7 +260,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     ) : null
                 }
                 {
-                  activeTab === 4
+                  activeTab === 3
                     ? (
                       <ClockSettings
                         toggleShowClock={toggleShowClock}
@@ -278,7 +269,7 @@ export default class Settings extends React.PureComponent<Props, State> {
                     ) : null
                 }
                 {
-                  activeTab === 5
+                  activeTab === 4
                     ? (
                       <MoreCardsSettings
                         toggleShowBinance={toggleShowBinance}
@@ -287,6 +278,8 @@ export default class Settings extends React.PureComponent<Props, State> {
                         toggleShowTogether={toggleShowTogether}
                         showTogether={showTogether}
                         togetherSupported={togetherSupported}
+                        toggleShowRewards={toggleShowRewards}
+                        showRewards={showRewards}
                       />
                     ) : null
                 }

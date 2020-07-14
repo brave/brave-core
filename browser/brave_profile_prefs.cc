@@ -215,6 +215,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
   registry->RegisterBooleanPref(kNewTabPageShowBinance, true);
   registry->RegisterBooleanPref(kNewTabPageShowTogether, true);
+  registry->RegisterBooleanPref(kNewTabPageShowAddCard, true);
 
   // Brave Wallet
   registry->RegisterIntegerPref(kBraveWalletPrefVersion, 0);

@@ -121,6 +121,7 @@ declare namespace NewTab {
     showRewards: boolean
     showTogether: boolean
     showBinance: boolean
+    showAddCard: boolean
     brandedWallpaperOptIn: boolean
     isBrandedWallpaperNotificationDismissed: boolean
     stats: Stats,

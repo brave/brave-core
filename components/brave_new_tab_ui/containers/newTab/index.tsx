@@ -14,7 +14,8 @@ import {
   ClockWidget as Clock,
   RewardsWidget as Rewards,
   TogetherWidget as Together,
-  BinanceWidget as Binance
+  BinanceWidget as Binance,
+  AddCardWidget as AddCard
 } from '../../components/default'
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
@@ -48,6 +49,7 @@ interface Props {
   saveShowRewards: (value: boolean) => void
   saveShowTogether: (value: boolean) => void
   saveShowBinance: (value: boolean) => void
+  saveShowAddCard: (value: boolean) => void
   saveBrandedWallpaperOptIn: (value: boolean) => void
 }
 
@@ -55,6 +57,7 @@ interface State {
   onlyAnonWallet: boolean
   showSettingsMenu: boolean
   backgroundHasLoaded: boolean
+  focusMoreCards: boolean
 }
 
 function GetBackgroundImageSrc (props: Props) {
@@ -89,7 +92,8 @@ class NewTabPage extends React.Component<Props, State> {
   state = {
     onlyAnonWallet: false,
     showSettingsMenu: false,
-    backgroundHasLoaded: false
+    backgroundHasLoaded: false,
+    focusMoreCards: false
   }
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
@@ -220,6 +224,10 @@ class NewTabPage extends React.Component<Props, State> {
       this.setForegroundStackWidget('rewards')
     }
 
+    if (!showRewards) {
+      this.props.saveShowAddCard(true)
+    }
+
     this.props.saveShowRewards(!showRewards)
   }
 
@@ -230,6 +238,10 @@ class NewTabPage extends React.Component<Props, State> {
       this.removeStackWidget('together')
     } else {
       this.setForegroundStackWidget('together')
+    }
+
+    if (!showTogether) {
+      this.props.saveShowAddCard(true)
     }
 
     this.props.saveShowTogether(!showTogether)
@@ -244,6 +256,10 @@ class NewTabPage extends React.Component<Props, State> {
       this.setForegroundStackWidget('binance')
     }
 
+    if (!showBinance) {
+      this.props.saveShowAddCard(true)
+    }
+
     this.props.saveShowBinance(!showBinance)
 
     // If we are about to hide the widget, disconnect
@@ -252,6 +268,10 @@ class NewTabPage extends React.Component<Props, State> {
         this.disconnectBinance()
       })
     }
+  }
+
+  disableAddCard = () => {
+    this.props.saveShowAddCard(false)
   }
 
   onBinanceClientUrl = (clientUrl: string) => {
@@ -341,7 +361,19 @@ class NewTabPage extends React.Component<Props, State> {
   }
 
   toggleSettings = () => {
-    this.setState({ showSettingsMenu: !this.state.showSettingsMenu })
+    if (this.state.showSettingsMenu) {
+      this.setState({ focusMoreCards: false })
+    }
+    this.setState({
+      showSettingsMenu: !this.state.showSettingsMenu
+    })
+  }
+
+  toggleSettingsAddCard = () => {
+    this.setState({
+      showSettingsMenu: true,
+      focusMoreCards: true
+    })
   }
 
   setForegroundStackWidget = (widget: NewTab.StackWidget) => {
@@ -499,9 +531,25 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
+  allWidgetsHidden = () => {
+    const {
+      binanceState,
+      togetherSupported,
+      showRewards,
+      showBinance,
+      showTogether
+    } = this.props.newTabData
+    return [
+      showRewards,
+      togetherSupported && showTogether,
+      binanceState.binanceSupported && showBinance
+    ].every((widget: boolean) => !widget)
+  }
+
   renderCryptoContent () {
     const { newTabData } = this.props
-    const { widgetStackOrder } = newTabData
+    const { widgetStackOrder, textDirection, showAddCard } = newTabData
+    const allHidden = this.allWidgetsHidden()
 
     if (!widgetStackOrder.length) {
       return null
@@ -509,6 +557,18 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <Page.GridItemWidgetStack>
+        {showAddCard &&
+          <AddCard
+            isCrypto={true}
+            menuPosition={'left'}
+            widgetTitle={getLocale('addCardWidgetTitle')}
+            textDirection={textDirection}
+            hideMenu={!allHidden}
+            hideWidget={this.disableAddCard}
+            onAddCard={this.toggleSettingsAddCard}
+            isAlone={allHidden}
+          />
+        }
         {this.getCryptoContent()}
       </Page.GridItemWidgetStack>
     )
@@ -626,7 +686,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   render () {
     const { newTabData, gridSitesData, actions } = this.props
-    const { showSettingsMenu } = this.state
+    const { showSettingsMenu, focusMoreCards } = this.state
     const { binanceState } = newTabData
 
     if (!newTabData) {
@@ -660,6 +720,7 @@ class NewTabPage extends React.Component<Props, State> {
             showTogether={newTabData.showTogether && newTabData.togetherSupported}
             showBinance={newTabData.showBinance}
             showTopSites={showTopSites}
+            showAddCard={newTabData.showAddCard}
             showBrandedWallpaper={isShowingBrandedWallpaper}
         >
           {newTabData.showStats &&
@@ -750,6 +811,7 @@ class NewTabPage extends React.Component<Props, State> {
           togetherSupported={newTabData.togetherSupported}
           toggleShowTogether={this.toggleShowTogether}
           showTogether={newTabData.showTogether}
+          focusMoreCards={focusMoreCards}
         />
       </Page.App>
     )

@@ -14,7 +14,8 @@ const isDarkTheme = (p: any) => {
 }
 
 export const SettingsMenu = styled<Props, 'div'>('div')`
-  width: 680px;
+  width: 720px;
+  min-width: 720px;
   ${p => p.textDirection && (p.textDirection === 'rtl') ? `left: 12px` : `right: 12px`}
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
@@ -184,6 +185,8 @@ export const SettingsSidebarButton = styled<SettingsSidebarButtonProps, 'button'
 
 export const SettingsFeatureBody = styled<{}, 'section'>('section')`
   padding: 10px 16px 0;
+  height: 305px;
+  overflow-y: scroll;
 `
 
 export const SettingsTitle = styled<{}, 'div'>('div')`
@@ -273,4 +276,63 @@ export const SettingsWrapper = styled<SettingsWrapperProps, 'div'>('div')`
   &:hover {
     color: #ffffff;
   }
+`
+
+export const StyledWidgetSettings = styled<{}, 'div'>('div')`
+  font-family: ${p => p.theme.fontFamily.heading};
+`
+
+export const FeaturedSettingsWidget = styled<{}, 'div'>('div')`
+  width: 100%;
+`
+
+export const SettingsWidget = styled<{}, 'div'>('div')`
+  float: left;
+  width: 50%;
+  padding: 5px;
+  margin-top: 20px;
+`
+
+export const StyledBannerImage = styled<{}, 'img'>('img')`
+  margin-bottom: 10px;
+`
+
+export const StyledSettingsInfo = styled<{}, 'div'>('div')`
+  float: left;
+  max-width: 250px;
+`
+
+export const StyledSettingsTitle = styled<{}, 'div'>('div')`
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 5px;
+`
+
+export const StyledSettingsCopy = styled<{}, 'div'>('div')`
+  font-size: 13px;
+  font-weight: 300;
+`
+
+interface WidgetToggleProps {
+  isAdd: boolean
+  float: boolean
+}
+
+export const StyledWidgetToggle = styled<WidgetToggleProps, 'button'>('button')`
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 10px 25px;
+  border-radius: 100px;
+  float: ${p => p.float ? 'right' : 'none'};
+  border: none;
+  margin-top: 8px;
+  cursor: pointer;
+  background: ${p => p.isAdd ? '#FB542B' : '#212529'};
+`
+
+export const StyledButtonIcon = styled<{}, 'div'>('div')`
+  display: inline-block;
+  vertical-align: sub;
+  margin-right: 5px;
 `

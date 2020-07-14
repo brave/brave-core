@@ -16,6 +16,7 @@ export interface WidgetProps {
   isCrypto?: boolean
   isCryptoTab?: boolean
   widgetTitle?: string
+  hideMenu?: boolean
   onLearnMore?: () => void
   onDisconnect?: () => void
   onRefreshData?: () => void
@@ -55,6 +56,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
         isCrypto,
         isCryptoTab,
         widgetTitle,
+        hideMenu,
         onLearnMore,
         onDisconnect,
         onRefreshData
@@ -75,7 +77,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
           >
               <WrappedComponent {...this.props as P}/>
           </StyledWidget>
-          {hideWidget && !preventFocus &&
+          {hideWidget && !hideMenu && !preventFocus &&
           <WidgetMenu
             widgetTitle={widgetTitle}
             onLearnMore={onLearnMore}

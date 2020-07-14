@@ -4,10 +4,14 @@
 
 import styled from 'styled-components'
 
-export const StyledTitleTab = styled<{}, 'div'>('div')`
+interface StyleProps {
+  isAlone?: boolean
+}
+
+export const StyledTitleTab = styled<StyleProps, 'div'>('div')`
   color: #fff;
   cursor: pointer;
-  padding: 4px 20px 15px 20px;
+  padding: 4px 20px ${p => p.isAlone ? 5 : 15}px 20px;
   margin-bottom: -8px;
   backdrop-filter: blur(23px);
   background: linear-gradient(90deg, rgba(33, 37, 41, 0.1) 0%, rgba(33, 37, 41, 0.22) 100%);
