@@ -236,10 +236,13 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                     blockSource
                 ]
                 
-                return UIMenu(title: item.content.title, children: [
+                var children: [UIMenu] = [
                     UIMenu(title: "", options: [.displayInline], children: openActions),
-                    UIMenu(title: "", options: [.displayInline], children: manageActions)
-                ])
+                ]
+                if context.item.content.contentType == .article {
+                    children.append(UIMenu(title: "", options: [.displayInline], children: manageActions))
+                }
+                return UIMenu(title: item.content.title, children: children)
             }
         }
         return .init { index -> FeedItemMenu.LegacyContext? in
@@ -272,20 +275,28 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             
             let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
             
+            var actions: [UIAlertAction?] = [
+                openInNewTab,
+                // Brave Today is only available in normal tabs, so this isn't technically required
+                // but good to be on the safe side
+                !PrivateBrowsingManager.shared.isPrivateBrowsing ?
+                    openInNewPrivateTab :
+                nil
+            ]
+            
+            if context.item.content.contentType == .article {
+                actions.append(contentsOf: [
+                    hideContent,
+                    blockSource
+                ])
+            }
+            
+            actions.append(cancel)
+            
             return .init(
                 title: item.content.title,
                 message: nil,
-                actions: [
-                    openInNewTab,
-                    // Brave Today is only available in normal tabs, so this isn't technically required
-                    // but good to be on the safe side
-                    !PrivateBrowsingManager.shared.isPrivateBrowsing ?
-                        openInNewPrivateTab :
-                    nil,
-                    hideContent,
-                    blockSource,
-                    cancel
-                ].compactMap { $0 }
+                actions: actions.compactMap { $0 }
             )
         }
     }

@@ -175,9 +175,9 @@ class FeedDataSource {
             1st item, Large Card, Latest item from query
             Deals card
          */
-        var sponsors = feeds.filter { $0.content.contentType == "brave_offers" }
-        var deals = feeds.filter { $0.content.contentType == "product" }
-        var articles = feeds.filter { $0.content.contentType == "article" && !$0.isContentHidden }
+        var sponsors = feeds.filter { $0.content.contentType == .offer }
+        var deals = feeds.filter { $0.content.contentType == .product }
+        var articles = feeds.filter { $0.content.contentType == .article && !$0.isContentHidden }
         
         let rules: [FeedSequenceElement] = [
             .sponsor,
