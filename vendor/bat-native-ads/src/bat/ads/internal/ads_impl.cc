@@ -760,10 +760,6 @@ void AdsImpl::OnPageLoaded(
 
 void AdsImpl::ExtractPurchaseIntentSignal(
     const std::string& url) {
-  if (!page_classifier_->ShouldClassifyPages()) {
-    return;
-  }
-
   if (!SearchProviders::IsSearchEngine(url) &&
       SameSite(url, previous_tab_url_)) {
     return;
