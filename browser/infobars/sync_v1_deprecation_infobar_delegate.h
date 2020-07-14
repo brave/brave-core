@@ -27,6 +27,7 @@ class SyncV1DeprecationInfoBarDelegate : public ConfirmInfoBarDelegate {
   infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override;
   const gfx::VectorIcon& GetVectorIcon() const override;
   int GetButtons() const override;
+  bool ShouldExpire(const NavigationDetails& details) const override;
   base::string16 GetMessageText() const override;
   base::string16 GetLinkText() const override;
   GURL GetLinkURL() const override;

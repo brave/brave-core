@@ -63,6 +63,11 @@ SyncV1DeprecationInfoBarDelegate::GetIdentifier() const {
   return SYNC_V1_DEPRECATION_INFOBAR_DELEGATE;
 }
 
+bool SyncV1DeprecationInfoBarDelegate::ShouldExpire(
+    const NavigationDetails& details) const {
+  return false;
+}
+
 const gfx::VectorIcon& SyncV1DeprecationInfoBarDelegate::GetVectorIcon() const {
   return vector_icons::kSyncIcon;
 }
