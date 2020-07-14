@@ -147,6 +147,18 @@ IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitUnverifiedPublisher) {
       false);
 }
 
+// Registered publishers without a wallet address are displayed as verified
+IN_PROC_BROWSER_TEST_F(RewardsPublisherBrowserTest, VisitRegisteredPublisher) {
+  rewards_browsertest_helper::EnableRewards(browser());
+
+  rewards_browsertest_helper::VisitPublisher(
+      browser(),
+      rewards_browsertest_util::GetUrl(
+          https_server_.get(),
+          "registeredsite.com"),
+      true);
+}
+
 // Brave tip icon is injected when visiting Twitter
 IN_PROC_BROWSER_TEST_F(
     RewardsPublisherBrowserTest,

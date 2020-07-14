@@ -43,20 +43,14 @@ int64_t GetCacheExpiryInSeconds(bat_ledger::LedgerImpl* ledger) {
 
 ledger::PublisherStatus PublisherStatusFromMessage(
     const publishers_pb::ChannelResponse& response) {
-  auto status = ledger::PublisherStatus::NOT_VERIFIED;
+  auto status = ledger::PublisherStatus::CONNECTED;
   for (const auto& wallet : response.wallets()) {
     if (wallet.has_uphold_wallet()) {
       switch (wallet.uphold_wallet().wallet_state()) {
         case publishers_pb::UPHOLD_ACCOUNT_KYC:
           return ledger::PublisherStatus::VERIFIED;
-        case publishers_pb::UPHOLD_ACCOUNT_NO_KYC:
-          return ledger::PublisherStatus::CONNECTED;
         default: {}
       }
-    } else if (wallet.has_paypal_wallet()) {
-      // For paypal wallets, we set the publisher status to
-      // connected to enable AC.
-      status = ledger::PublisherStatus::CONNECTED;
     }
   }
   return status;
