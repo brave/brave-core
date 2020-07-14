@@ -45,6 +45,16 @@ extension FeedItem {
             case logo = "publisher_logo_padded"
         }
     }
+    
+    struct FeedContentType: RawRepresentable, Decodable, Equatable {
+        var rawValue: String
+        init?(rawValue: String) {
+            self.rawValue = rawValue
+        }
+        static let article = FeedContentType(rawValue: "article")
+        static let product = FeedContentType(rawValue: "product")
+        static let offer = FeedContentType(rawValue: "brave_offers")
+    }
 
     struct Content: Equatable, Decodable {
         var category: String
@@ -53,7 +63,7 @@ extension FeedItem {
         @URLString var imageURL: URL?
         var title: String
         var description: String
-        var contentType: String
+        var contentType: FeedContentType
         var publisherID: String
         var publisherName: String
         var urlHash: String
