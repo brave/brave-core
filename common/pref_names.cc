@@ -78,8 +78,6 @@ const char kLoadCryptoWalletsOnStartup[] = "brave.wallet.load_on_startup";
 const char kOptedIntoCryptoWallets[] = "brave.wallet.opted_in";
 const char kBinanceAccessToken[] = "brave.binance.access_token";
 const char kBinanceRefreshToken[] = "brave.binance.refresh_token";
-const char kGeminiAccessToken[] = "brave.gemini.access_token";
-const char kGeminiRefreshToken[] = "brave.gemini.refresh_token";
 const char kAlwaysShowBookmarkBarOnNTP[] =
     "brave.always_show_bookmark_bar_on_ntp";
 const char kAutocompleteEnabled[] = "brave.autocomplete_enabled";

@@ -13,25 +13,25 @@
 #include "base/containers/flat_set.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
+#include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/token.h"
-#include "brave/common/pref_names.h"
+#include "brave/components/gemini/browser/gemini_json_parser.h"
+#include "brave/components/gemini/browser/pref_names.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
+#include "crypto/random.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
-#include "brave/components/gemini/browser/gemini_json_parser.h"
-#include "base/json/json_writer.h"
-#include "crypto/random.h"
 
 namespace {
   const char oauth_host[] = "exchange.gemini.com";
@@ -75,10 +75,12 @@ namespace {
   }
 
   std::string GetEncodedRequestPayload(std::string payload) {
+    std::string json;
     std::string encoded_payload;
-    std::string request_payload =
-      "{\"request\": \"" + payload + "\"}";
-    base::Base64Encode(request_payload, &encoded_payload);
+    base::Value dict(base::Value::Type::DICTIONARY);
+    dict.SetStringKey("request", payload);
+    base::JSONWriter::Write(dict, &json);
+    base::Base64Encode(json, &encoded_payload);
     return encoded_payload;
   }
 
@@ -88,17 +90,19 @@ namespace {
                                        std::string price,
                                        std::string fee,
                                        int quote_id) {
+    std::string json;
     std::string encoded_payload;
-    std::string request_payload = "{\"request\": \"" +
-      std::string(api_path_execute_quote) +
-      "\",\"symbol\": \"" + symbol +
-      "\",\"side\": \"" + side +
-      "\",\"quantity\": \"" + quantity +
-      "\",\"price\": \"" + price +
-      "\",\"fee\": \"" + fee +
-      "\",\"quoteId\": " + std::to_string(quote_id) +
-    "}";
-    base::Base64Encode(request_payload, &encoded_payload);
+    base::Value dict(base::Value::Type::DICTIONARY);
+    dict.SetStringKey("request",
+      std::string(api_path_execute_quote));
+    dict.SetStringKey("symbol", symbol);
+    dict.SetStringKey("side", side);
+    dict.SetStringKey("quantity", quantity);
+    dict.SetStringKey("price", price);
+    dict.SetStringKey("fee", fee);
+    dict.SetIntKey("quoteId", quote_id);
+    base::JSONWriter::Write(dict, &json);
+    base::Base64Encode(json, &encoded_payload);
     return encoded_payload;
   }
 
