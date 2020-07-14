@@ -31,6 +31,7 @@
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "brave/components/gemini/browser/gemini_json_parser.h"
 #include "base/json/json_writer.h"
+#include "crypto/random.h"
 
 namespace {
   const char oauth_host[] = "exchange.gemini.com";
@@ -101,6 +102,15 @@ namespace {
     return encoded_payload;
   }
 
+  std::string GetEncodedCryptoRandomCSRF() {
+    uint8_t random_seed_bytes[24];
+    crypto::RandBytes(random_seed_bytes, 24);
+    std::string encoded_csrf;
+    base::Base64Encode(
+      reinterpret_cast<char*>(random_seed_bytes), &encoded_csrf);
+    return encoded_csrf;
+  }
+
 }  // namespace
 
 GeminiService::GeminiService(content::BrowserContext* context)
@@ -123,7 +133,7 @@ std::string GeminiService::GetOAuthClientUrl() {
   url = net::AppendQueryParameter(url, "client_id", client_id_);
   url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
   url = net::AppendQueryParameter(url, "scope", oauth_scope);
-  url = net::AppendQueryParameter(url, "state", "ghjk");
+  url = net::AppendQueryParameter(url, "state", GetEncodedCryptoRandomCSRF());
   return url.spec();
 }
 
