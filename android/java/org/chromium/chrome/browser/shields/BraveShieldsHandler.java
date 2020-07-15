@@ -497,6 +497,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                     } else if (checkedId == R.id.option3) {
                         BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, BraveShieldsContentSettings.ALLOW_RESOURCE, false);
                     }
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                    }
                 }
             }
         });
@@ -563,6 +566,9 @@ public class BraveShieldsHandler implements BraveRewardsHelper.LargeIconReadyCal
                         BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.BLOCK_THIRDPARTY_RESOURCE, false);
                     } else if (checkedId == R.id.option3) {
                         BraveShieldsContentSettings.setShieldsValue(mProfile, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, BraveShieldsContentSettings.ALLOW_RESOURCE, false);
+                    }
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
                     }
                 }
             }
