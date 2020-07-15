@@ -103,14 +103,8 @@
           preprocess="true"
           compress="false"
           type="BINDATA" />
-  <include name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_BROWSER_PROXY_M_JS"
-          file="${root_gen_dir}/brave/browser/resources/settings/default_brave_shields_page/default_brave_shields_browser_proxy.m.js"
-          use_base_dir="false"
-          preprocess="true"
-          compress="false"
-          type="BINDATA" />
-  <include name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_M_JS"
-          file="${root_gen_dir}/brave/browser/resources/settings/default_brave_shields_page/default_brave_shields_page.m.js"
+  <include name="IDR_SETTINGS_DEFAULT_BRAVE_SHIELDS_PAGE_JS"
+          file="${root_gen_dir}/brave/browser/resources/settings/default_brave_shields_page/default_brave_shields_page.js"
           use_base_dir="false"
           preprocess="true"
           compress="false"
