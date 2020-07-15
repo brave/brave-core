@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">ডিফল্ট ভিউ</translation>
 <translation id="130615081792797568">সহজ ভিউ</translation>
 <translation id="2360360976480535628">উন্নত ভিউ</translation>
+<translation id="2133317862976486547">ট্র্যাকারগুলি &amp; বিজ্ঞাপন ব্লকিং</translation>
+<translation id="4385707520896576447">কুকি ব্লকিং</translation>
+<translation id="4978786495456601191">ফিঙ্গারপ্রিন্টিং ব্লকিং</translation>
 <translation id="3570081523466826008">সংযোগগুলি HTTPS এ আপগ্রেড করুন</translation>
 <translation id="4824468494729001999">স্ক্রিপ্টগুলি ব্লক করুন</translation>
 <translation id="519861640102428255">দেখুন &amp; অনুভব করুন</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
+<translation id="4078738236287221428">আক্রমনাত্মক</translation>
 <translation id="7740996059027112821">মানক</translation>
 <translation id="4176463684765177261">অক্ষম</translation>
+<translation id="5770288601196774623">শুধুমাত্র ক্রস-সাইট</translation>
 <translation id="3587482841069643663">সকল</translation>
+<translation id="5533533363827555308">কঠোর, সাইটগুলিকে ভাঙ্গতে পারে</translation>
 <translation id="8942080017911802454">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>
@@ -91,12 +97,22 @@
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
 <translation id="8502234992433094996">পুশ মেসেজিংয়ের জন্য Google পরিষেবাগুলি ব্যবহার করুন</translation>
+<translation id="5565355416171743213">সিঙ্কের ব্যবহার শুরু করুন</translation>
 <translation id="4332558599726753990">সিঙ্ক সেটআপ</translation>
+<translation id="2187778349654214731">শুরু করতে আপনি সিঙ্ক করার পরিকল্পনা করেছেন এমন সমস্ত ডিভাইসে আপনাকে Brave ইনস্টল করতে হবে। তারপর, একটি সিঙ্ক কোডের দ্বারা সেগুলিকে নিরাপদে লিঙ্ক করুন।</translation>
+<translation id="7530575064080939974">আপনার সিঙ্ক হওয়া ডিভাইসগুলি পরিচালনা করুন</translation>
+<translation id="7575156386943878014">সিঙ্ক পরিচালক</translation>
 <translation id="1755198127524719638">সিঙ্ক সেটিংস দেখুন</translation>
 <translation id="7558480201297099157">আপনি ডিভাইসগুলির মধ্যে কোন তথ্য সিঙ্ক করতে চান তা পরিচালনা করুন। এই সেটিংস কেবলমাত্র এই ডিভাইসটিকে প্রভাবিত করে।</translation>
+<translation id="7731928563672901833">ডিভাইসের তালিকা</translation>
 <translation id="28332161031213248">নীচে দেওয়া ডিভাইসের তালিকাটিতে আপনার sync শৃঙ্খলে থাকা সমস্ত ডিভাইস অন্তর্ভুক্ত রয়েছে। প্রতিটি ডিভাইস অন্য কোনও ডিভাইস থেকে চালনা করা যাবে।</translation>
 <translation id="1313162974556054106">ডিভাইসের নাম</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (এই ডিভাইসটি)</translation>
+<translation id="3686835020221422649">শেষ সক্রিয় ছিল</translation>
+<translation id="2569646144216067185">শব্দ সংখ্যা: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">কপি করা হয়েছে!</translation>
+<translation id="8802630444265810662">আপনার সিঙ্ক কোড পাঠানোর করার জন্য একটি মোবাইল ডিভাইস দিয়ে একটি QR কোড স্ক্যান করতে হবে</translation>
+<translation id="6221331245829088299">QR কোড প্রদর্শন করানোর সময় সেখানে একটি ত্রুটি ঘটেছিল, অনুগ্রহ করে রিফ্রেশ করুন এবং আবার চেষ্টা করুন।</translation>
 <translation id="298546024891487702">শুরু করতে আপনি সিঙ্ক করার পরিকল্পনা করেছেন এমন সমস্ত ডিভাইসে আপনাকে Brave ইনস্টল করতে হবে। সেগুলিকে একসাথে শৃঙ্খলিত করতে আপনি আপনার সবকয়টি ডিভাইস নিরাপদে লিঙ্ক করতে যে sync শৃঙ্খলটি ব্যবহার করতে চান সেটি শুরু করুন।</translation>
 <translation id="6200528822592747640">একটি নতুন Sync শৃঙ্খল শুরু করুন</translation>
 <translation id="5184726904895809379">আমার একটি Sync কোড রয়েছে</translation>
@@ -116,7 +132,12 @@
 <translation id="5734745018569675530">আপনি যে sync শৃঙ্খল কোডটি সরবরাহ করেছেন সেটি নীচের ফর্মে কথায় টাইপ করুন।</translation>
 <translation id="1061533051865606843">নতুন ডিভাইস যোগ করুন</translation>
 <translation id="5093410893656857925">ডিভাইসের ধরন পছন্দ করুন</translation>
+<translation id="4581190919849683048">আপনি কোন প্রকারের ডিভাইসের সাথে সিঙ্ক করতে চান?</translation>
+<translation id="4112587618563511470">অবৈধ সিঙ্ক কোড, অনুগ্রহ করে চেক করুন এবং আবার চেষ্টা করুন।</translation>
 <translation id="2339730291919608488">Sync শৃঙ্খল ত্যাগ করুন</translation>
+<translation id="115699408012835975">আপনি যদি সিঙ্ক রিসেট করেন তহালে এর সাথে সিঙ্ক করার জন্য আপনাকে অন্য ডিভাইস থেকে একটি সিঙ্ক কোডটি পুনরায় প্রবেশ করতে হবে। আপনি কি এগিয়ে যাওয়ার বিষয়ে নিশ্চিত?</translation>
+<translation id="3396347744975515056">Brave সিঙ্ক আপগ্রেড করা হয়েছে এবং সেটআপ করা প্রয়োজন</translation>
+<translation id="7473245612074035141">সেটআপ আরম্ভ করুন</translation>
 <translation id="6696935187608454456">সহায়তার পরামর্শ</translation>
 <translation id="2775956301559569472">404 পৃষ্ঠায় ওয়েব্যাক মেশিন প্রম্পট দেখান</translation>
 <translation id="1807246157184219062">আলো</translation>

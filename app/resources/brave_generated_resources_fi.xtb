@@ -73,6 +73,9 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7390783310074170337">Oletusnäkymä</translation>
 <translation id="130615081792797568">Yksinkertainen näkymä</translation>
 <translation id="2360360976480535628">Edistynyt näkymä</translation>
+<translation id="2133317862976486547">Seurainten &amp; ads estäminen</translation>
+<translation id="4385707520896576447">Evästeiden estäminen</translation>
+<translation id="4978786495456601191">Sormenjälkiesto</translation>
 <translation id="3570081523466826008">Nosta yhteystasoksi HTTPS</translation>
 <translation id="4824468494729001999">Estä komentosarjat</translation>
 <translation id="519861640102428255">Katso ja kokeile</translation>
@@ -81,9 +84,12 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
 <translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
+<translation id="4078738236287221428">Aggressiivinen</translation>
 <translation id="7740996059027112821">Vakio</translation>
 <translation id="4176463684765177261">Pois käytöstä</translation>
+<translation id="5770288601196774623">Vain sivustojenvälinen</translation>
 <translation id="3587482841069643663">Kaikki</translation>
+<translation id="5533533363827555308">Ankara, voi rikkoa sivustoja</translation>
 <translation id="8942080017911802454">WebRTC IP käsittelykäytäntö</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="8798099450830957504">Oletus</translation>
@@ -91,12 +97,22 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="5825943197137337319">Vain julkinen oletuskäyttöliittymä</translation>
 <translation id="1689062823386843231">Estä yhteydetön UDP</translation>
 <translation id="8502234992433094996">Käytä Googlen palveluja push-viestintään</translation>
+<translation id="5565355416171743213">Aloita synkronoinnin käyttö</translation>
 <translation id="4332558599726753990">Synkronoinnin asennus</translation>
+<translation id="2187778349654214731">Aloittaminen vaatii Braven asentamisen synkronoitaville laitteille. Yhdistä ne sen jälkeen turvallisesti synkronointikoodilla.</translation>
+<translation id="7530575064080939974">Hallinnoi synkronoituja laitteitasi</translation>
+<translation id="7575156386943878014">Synkronoi hallinnoija</translation>
 <translation id="1755198127524719638">Synkronointiasetukset</translation>
 <translation id="7558480201297099157">Hallinnoi laitteiden välille synkronoitavaa tietoja. Nämä asetukset pätevät vain tähän laitteeseen.</translation>
+<translation id="7731928563672901833">Laiteluettelo</translation>
 <translation id="28332161031213248">Alla oleva laiteluettelo kattaa kaikki synkronointiketjusi laitteet. Jokaista laitetta voidaan hallinnoida minkä tahansa muun laitteen kautta.</translation>
 <translation id="1313162974556054106">Laitteen nimi</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Tämä laite)</translation>
+<translation id="3686835020221422649">Viimeksi aktiivisena</translation>
+<translation id="2569646144216067185">Sanalaskuri: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopioitu</translation>
+<translation id="8802630444265810662">Ruutukoodi, jonka lukemalla synkronointikoodisi lähetetään</translation>
+<translation id="6221331245829088299">Kohtasimme häiriön ruutukoodin korvaamisen yhteydessä. Päivitä sivu ja yritä uudelleen.</translation>
 <translation id="298546024891487702">Ensi alkuun sinun on asennettava Brave synkronoitaville laitteille. Voit ketjuttaa ne käynnistämällä synkronointiketjun, jonka avulla voit yhdistää kaikki laitteesi toisiinsa turvallisesti.</translation>
 <translation id="6200528822592747640">Käynnistä uusi synkronointiketju</translation>
 <translation id="5184726904895809379">Minulla on synkronointikoodi</translation>
@@ -116,7 +132,12 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="5734745018569675530">Kirjoita sinulle annettu synkronoinnin ketjukoodi alla olevaan lomakkeeseen.</translation>
 <translation id="1061533051865606843">Lisää uusi laite</translation>
 <translation id="5093410893656857925">Valitse laitteen tyyppi</translation>
+<translation id="4581190919849683048">Minkä tyyppiseen laitteeseen tahtoisit synkronoida?</translation>
+<translation id="4112587618563511470">Virheellinen synkronointikoodi. Tarkista koodi ja yritä uudelleen.</translation>
 <translation id="2339730291919608488">Jätä synkronointiketju</translation>
+<translation id="115699408012835975">Jos palautat synkronoinnin alkutilaan, niin sinun on annettava muiden laitteiden synkronointikoodit voidaksesi synkronoida kyseisen laitteen.</translation>
+<translation id="3396347744975515056">Brave Sync on päivitetty ja vaatii määrityksen</translation>
+<translation id="7473245612074035141">Aloita määrittäminen</translation>
 <translation id="6696935187608454456">Avustusvihjeet</translation>
 <translation id="2775956301559569472">Näytä Wayback Machine -kehote 404-sivuilla</translation>
 <translation id="1807246157184219062">Kevyt</translation>

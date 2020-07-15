@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">Privzeti pogled</translation>
 <translation id="130615081792797568">Preprost pogled</translation>
 <translation id="2360360976480535628">Napredni pogled</translation>
+<translation id="2133317862976486547">Sledilniki in oglasi blokirani</translation>
+<translation id="4385707520896576447">Blokiranje piškotkov</translation>
+<translation id="4978786495456601191">Blokiranje ustvarjanja prstnih odtisov</translation>
 <translation id="3570081523466826008">Posodobi povezave na HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="519861640102428255">Poglejte &amp; občutite</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
+<translation id="4078738236287221428">Agresivno</translation>
 <translation id="7740996059027112821">Standardno</translation>
 <translation id="4176463684765177261">Onemogočeno</translation>
+<translation id="5770288601196774623">Samo med mesti</translation>
 <translation id="3587482841069643663">Vse</translation>
+<translation id="5533533363827555308">Strogo, lahko zruši spletno mesto</translation>
 <translation id="8942080017911802454">Pravila za obravnavanje IP-naslova WebRTC</translation>
 <translation id="6165508094623778733">Več o tem</translation>
 <translation id="8798099450830957504">Privzeto</translation>
@@ -91,12 +97,22 @@
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 <translation id="8502234992433094996">Za potisno sporočanje uporabljajte Googlove storitve</translation>
+<translation id="5565355416171743213">Začni uporabljati sinhronizacijo</translation>
 <translation id="4332558599726753990">Nastavitev Sync</translation>
+<translation id="2187778349654214731">Za začetek boste morali Brave namestiti na vse naprave, ki jih nameravate sinhronizirati. Nato jih varno povežite s kodo za sinhronizacijo.</translation>
+<translation id="7530575064080939974">Upravljanje vaših sinhroniziranih podatkov</translation>
+<translation id="7575156386943878014">Upravitelj sinhronizacije</translation>
 <translation id="1755198127524719638">Nastavitve sinhronizacije</translation>
 <translation id="7558480201297099157">Upravljajte informacije, ki jih želite sinhronizirati med napravami. Te nastavitve vplivajo samo na to napravo.</translation>
+<translation id="7731928563672901833">Seznam naprav</translation>
 <translation id="28332161031213248">Spodnji seznam naprav vključuje vse naprave v vaši verigi za sinhronizacijo. Posamezno napravo lahko upravljate s poljubne druge naprave.</translation>
 <translation id="1313162974556054106">Ime naprave</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (ta naprava)</translation>
+<translation id="3686835020221422649">Zadnji aktiven</translation>
+<translation id="2569646144216067185">Število besed: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopirano!</translation>
+<translation id="8802630444265810662">Koda QR, ki jo je treba skenirati z mobilno napravo, da bi prenesli kodo za sinhronizacijo</translation>
+<translation id="6221331245829088299">Pri prikazu kode QR je prišlo do napake, osvežite in poskusite znova.</translation>
 <translation id="298546024891487702">Za začetek morate v vseh napravah, ki jih nameravate sinhronizirati, namestiti Brave. Za povezavo v verigo začnite verigo sinhronizacije, ki jo boste uporabili za varno povezavo vseh vaših naprav.</translation>
 <translation id="6200528822592747640">Zaženite novo verigo sinhronizacije</translation>
 <translation id="5184726904895809379">Imam kodo za sinhronizacijo</translation>
@@ -116,7 +132,12 @@
 <translation id="5734745018569675530">V spodnji obrazec vnesite svoje priložene kodne besede za sinhronizacijo verige.</translation>
 <translation id="1061533051865606843">Dodaj novo napravo</translation>
 <translation id="5093410893656857925">Izberite vrsto naprave</translation>
+<translation id="4581190919849683048">S katero vrsto naprave želite sinhronizirati?</translation>
+<translation id="4112587618563511470">Neveljavna koda za sinhronizacijo, preverite in poskusite znova.</translation>
 <translation id="2339730291919608488">Zapusti sinhronizacijsko verigo</translation>
+<translation id="115699408012835975">Če sinhronizacijo ponastavite, boste morali kodo za sinhronizacijo znova vnesti iz druge naprave, da jo boste lahko sinhronizirali. Ali ste prepričani, da želite nadaljevati?</translation>
+<translation id="3396347744975515056">Sinhronizacija Brave je bila nadgrajena in zahteva nastavitev</translation>
+<translation id="7473245612074035141">Začetek nastavitev</translation>
 <translation id="6696935187608454456">Koristni nasveti</translation>
 <translation id="2775956301559569472">Prikaži poziv računalnika Wayback na 404 straneh</translation>
 <translation id="1807246157184219062">Svetlo</translation>

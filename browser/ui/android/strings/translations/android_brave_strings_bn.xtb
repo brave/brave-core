@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">ফিঙ্গারপ্রিন্টিং থেকে ব্রাউজারকে বাধা দেয়</translation>
 <translation id="7459000603787995422">প্রস্থানে ট্যাবগুলি বন্ধ করুন</translation>
 <translation id="1680858055899097121">ব্রাউজিং সেশন চলাকালীন ট্যাবগুলি অবিচল রাখবেন না</translation>
+<translation id="453601949003770390">ট্র্যাকারগুলি &amp; বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে</translation>
 <translation id="6761596877474675418">ডেটা সংরক্ষিত হয়েছে</translation>
 <translation id="3034562645284925177">আনুমানিক সময় সংরক্ষণ করা হয়েছে</translation>
 <translation id="6572660632052512096">ডেস্কটপ মোড</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">ছেড়ে যান</translation>
 <translation id="316832010181763471">সার্চ ইঞ্জিন অনবোর্ডিং</translation>
 <translation id="986879628471635371">অনবোর্ডের সমস্যা সমাধান</translation>
+<translation id="5808759341041733958">ডিফল্ট সার্চ ইঞ্জিন বেছে নিন</translation>
 <translation id="4428458837269935199">একটি আরও ব্যক্তিগত অনুসন্ধানের জন্য, DuckDuckGo চেষ্টা করে দেখুন।</translation>
 <translation id="5317780077021120954">সেভ করুন</translation>
 <translation id="7053983685419859001">ব্লক করুন</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">এটি হল আপনার প্রথম Brave বিজ্ঞাপন। আরও জানতে আলতো চাপুন।</translation>
 <translation id="4930714375720679147">চালু করুন</translation>
 <translation id="2453860139492968684">সমাপ্ত করুন</translation>
+<translation id="7983303953939627894">উপার্জন করুন &amp; দিন</translation>
+<translation id="48520986898237073">ওয়ালেটে চালিয়ে যান</translation>
 <translation id="2359808026110333948">এগিয়ে যান</translation>
 <translation id="7658239707568436148">বাতিল করুন</translation>
 <translation id="3570367516044491911">ডিফল্ট ব্রাউজার হিসাবে সেট করুন</translation>
@@ -169,14 +173,19 @@
 <translation id="222883304157347087">(এই ডিভাইসটি)</translation>
 <translation id="8193724030871339658">চেইনে অন্য ডিভাইস</translation>
 <translation id="279635009973773843">ডিভাইস লোড করা হচ্ছে...</translation>
+<translation id="6394333525003604181">সিঙ্ক চেন ছেড়ে যাওয়া...</translation>
+<translation id="1604429341565715601">সিঙ্ক সেটআপ প্রগতিতে রয়েছে, পরে এটিকে রিসেট করার চেষ্টা করুন</translation>
 <translation id="2569646144216067185">শব্দ সংখ্যা: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">ভুল শব্দ সংখ্যা</translation>
+<translation id="7507533586185621084">ভুল সিঙ্ক কোড</translation>
+<translation id="8284063834901328650">ভুল সিঙ্ক QR কোড</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync আপনার বিভিন্ন ডিভাইসে আপনার Brave ব্রাউজারগুলির মধ্যে বুকমার্ক ডেটা গোপনে sync করতে অনুমোদন দেয়।</translation>
 <translation id="3735228155296883311">অন্য একটি ডিভাইসে আপনার তৈরি আপনার সিঙ্ক চেইন থেকে শুধু কোডটি স্ক্যান করুন। অথবা একটি নতুন সিঙ্ক চেইন শুরু করুন।</translation>
 <translation id="4690880825349994619">একটি বিদ্যমান সিঙ্ক করা ডিভাইস ব্যবহার করে, Brave সেটিংস খুলুন এবং সেটিংস ও সিঙ্কে নেভিগেট করুন। "ডিভাইস যোগ করুন" বেছে নিন এবং স্ক্রীনে প্রদর্শিত QR কোডটি স্ক্যান করুন।</translation>
 <translation id="5241263629636958324">ক্লিপবোর্ডে কপি করা হয়েছে</translation>
 <translation id="5817918615728894473">যুক্ত করুন</translation>
+<translation id="3394474617110693560">বিভাগগুলি</translation>
 <translation id="2004365171440701679">এই ডিভাইসটি অপসারণ করুন</translation>
 <translation id="1178128181015923849">আপনি কি ডিভাইস '<ph name="DEVICE_NAME"/>' মুছে ফেলতে চাওয়ার ব্যাপারে নিশ্চিত?</translation>
 <translation id="7745082336226088126">আপনার সিঙ্ক কোড স্ক্যান করুন বা লিখুন</translation>
@@ -316,4 +325,11 @@
 <translation id="76550953340008122">এই সাইটের সাথে কিছু ত্রুটি ঘটেছে তা Brave-এর বিকাশকারীদেরকে জানানোর জন্য ধন্যবাদ৷ এটির সমাধান করার জন্য আমরা আমাদের সর্বোত্তম চেষ্টা করব!</translation>
 <translation id="650318023204990401">উন্নত ধরনের নিয়ন্ত্রণসমূহ</translation>
 <translation id="7182293319417450928">যাচাই করতে ন্যূনতম 25 BAT ব্যালান্স থাকা প্রয়োজন।</translation>
+<translation id="1275664486910646411">স্বতঃসম্পূর্ণতে সেরা সাইটগুলি দেখান</translation>
+<translation id="5516010970279932133">স্বতঃসম্পূর্ণতে প্রস্তাবিত সাইটগুলি দেখান</translation>
+<translation id="5370478469168390143">অনলাইনে ডেটা বাঁচান</translation>
+<translation id="1118508688433541158">Brave এর সাথে দ্রুত ব্রাউজ করুন এবং বিজ্ঞাপনগুলিকে ব্লক করুন</translation>
+<translation id="915835519491851291">আপনি শুধুমাত্র কিছু ট্র্যাকার  &amp; বিজ্ঞাপন ব্লক করেছেন।</translation>
+<translation id="3286927551967858325">দেখুন</translation>
+<translation id="2929661208078053609">খুব ভালো!</translation>
 </translationbundle>

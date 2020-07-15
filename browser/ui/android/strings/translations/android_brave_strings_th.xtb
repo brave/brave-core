@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">ป้องกันเบราว์เซอร์ไม่ให้สร้างลายนิ้วมือ</translation>
 <translation id="7459000603787995422">ปิดแท็บเมื่อออกจากโปรแกรม</translation>
 <translation id="1680858055899097121">อย่าคงแท็บไว้เมื่อจบการท่องเว็บแต่ละรอบ</translation>
+<translation id="453601949003770390">บล็อก Tracker &amp; โฆษณาแล้ว</translation>
 <translation id="6761596877474675418">บันทึกข้อมูลแล้ว</translation>
 <translation id="3034562645284925177">เวลาที่ประหยัดได้โดยประมาณ</translation>
 <translation id="6572660632052512096">โหมดเดสก์ท็อป</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">ข้าม</translation>
 <translation id="316832010181763471">การเตรียมความพร้อมเสิร์ชเอนจิน</translation>
 <translation id="986879628471635371">การแก้ไขปัญหาการเตรียมความพร้อม</translation>
+<translation id="5808759341041733958">เลื่อกเอนจิ้นค้นหาเริ่มต้น</translation>
 <translation id="4428458837269935199">หากต้องการใช้การค้นหาที่เป็นส่วนตัวยิ่งขึ้น ลองใช้ DuckDuckGo</translation>
 <translation id="5317780077021120954">บันทึก</translation>
 <translation id="7053983685419859001">บล็อก</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">โฆษณาและตัวติดตามที่บุกรุกความเป็นส่วนตัว เพื่อให้คุณสามารถท่องเว็บได้โดยไม่มีอะไรคอยตาม</translation>
 <translation id="8537217141725709400">รับ <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">ด้วยการดูโฆษณาที่เคารพความเป็นส่วนตัวและสนับสนุนเว็บและครีเอเตอร์คนโปรดของคุณ</translation>
 <translation id="821707262661492716">เมื่อดูโฆษณาที่เคารพความเป็นส่วนตัว</translation>
+<translation id="8267692331246948056">ด้วยการแตะรับ &amp; มอบ คุณได้ยอมรับ</translation>
 <translation id="4281844954008187215">ข้อตกลงการใช้บริการ</translation>
 <translation id="6871397658902960384">เริ่มท่องเว็บ</translation>
 <translation id="454386012157232640">ฉันไม่เห็นโฆษณาเลย</translation>
 <translation id="1448877943847791441">Brave จะแสดงโฆษณาแรกของคุณใน</translation>
+<translation id="4410793187232041318">ตอนนี้คุณได้รับโทเคนจาก Brave Ads</translation>
 <translation id="6511854390690723657">นี่เป็นโฆษณา Brave อันแรกของคุณ แตะเพื่อเรียนรู้เพิ่มเติม</translation>
 <translation id="4930714375720679147">เปิด</translation>
 <translation id="2453860139492968684">เสร็จสิ้น</translation>
+<translation id="7983303953939627894">รับ &amp; ให้</translation>
+<translation id="48520986898237073">ไปยังกระเป๋าเงิน</translation>
 <translation id="2359808026110333948">ทำต่อไป</translation>
 <translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="3570367516044491911">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
@@ -175,14 +182,19 @@
 <translation id="222883304157347087">(อุปกรณ์นี้)</translation>
 <translation id="8193724030871339658">อุปกรณ์อื่นๆ ในลูกโซ่</translation>
 <translation id="279635009973773843">กำลังโหลดอุปกรณ์...</translation>
+<translation id="6394333525003604181">ทำการรีเซ็ต...</translation>
+<translation id="1604429341565715601">กำลังดำเนินการติดตั้งซิงค์ ลองรีเซ็ตภายหลัง</translation>
 <translation id="2569646144216067185">จำนวนคำ: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">จำนวนคำไม่ถูกต้อง</translation>
+<translation id="7507533586185621084">รหัสซิงค์ไม่ถูกต้อง</translation>
+<translation id="8284063834901328650">รหัส QR ซิงค์ไม่ถูกต้อง</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync ช่วยให้คุณซิงค์ข้อมูลบุ๊กมาร์กระหว่างเบราว์เซอร์ Brave บนอุปกรณ์ต่างๆ ของคุณได้อย่างเป็นส่วนตัว</translation>
 <translation id="3735228155296883311">เพียงสแกนโค้ดจากลูกโซ่การซิงค์ที่คุณสร้างขึ้นบนอุปกรณ์อื่น หรือเริ่มลูกโซ่การซิงค์ใหม่</translation>
 <translation id="4690880825349994619">ใช้อุปกรณ์ที่ซิงค์อยู่เปิดเมนูการตั้งค่า Brave และไปที่การตั้งค่าและการซิงค์ เลือก "เพิ่มอุปกรณ์" และสแกนคิวอาร์โค้ดที่แสดงขึ้นบนหน้าจอ</translation>
 <translation id="5241263629636958324">คัดลอกไปที่คลิบบอร์ดแล้ว</translation>
 <translation id="5817918615728894473">จับคู่</translation>
+<translation id="3394474617110693560">หมวดหมู่</translation>
 <translation id="2004365171440701679">ลบอุปกรณ์นี้</translation>
 <translation id="1178128181015923849">คุณแน่ใจหรือไม่ว่าต้องการลบอุปกรณ์ "<ph name="DEVICE_NAME"/>"?</translation>
 <translation id="7745082336226088126">สแกนหรือใส่ซิงค์โค้ด</translation>
@@ -323,4 +335,11 @@
 <translation id="76550953340008122">ขอบคุณที่แจ้งให้ผู้พัฒนา Brave ทราบว่ามีข้อผิดพลาดในเว็บไซต์นี้ เราจะพยายามแก้ไขปัญหานี้อย่างเต็มที่</translation>
 <translation id="650318023204990401">การควบคุมขั้นสูง</translation>
 <translation id="7182293319417450928">ต้องการเงินในบัญชีขั้นต่ำที่ 25 BAT เพื่อยืนยัน</translation>
+<translation id="1275664486910646411">แสดงเว็บไซต์ดังในการกรอกอัตโนมัติ</translation>
+<translation id="5516010970279932133">แสดงเว็บไซต์ที่แนะนำในการกรอกอัตโนมัติ</translation>
+<translation id="5370478469168390143">บันทึกข้อมูลออนไลน์</translation>
+<translation id="1118508688433541158">ท่องเว็บเร็วขึ้นและบล็อกโฆษณาด้วย Brave</translation>
+<translation id="915835519491851291">คุณเพิ่งบล็อก tracker &amp; โฆษณา</translation>
+<translation id="3286927551967858325">ลองดู</translation>
+<translation id="2929661208078053609">เยี่ยม!</translation>
 </translationbundle>

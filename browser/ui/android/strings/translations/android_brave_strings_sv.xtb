@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Förhindrar webbläsaren från signaturinsamling</translation>
 <translation id="7459000603787995422">Stäng flikar vid avslut</translation>
 <translation id="1680858055899097121">Behåll inte flikarna mellan surfsessioner</translation>
+<translation id="453601949003770390">Spårare och annonser blockade</translation>
 <translation id="6761596877474675418">Data sparade</translation>
 <translation id="3034562645284925177">Uppskattad tid sparad</translation>
 <translation id="6572660632052512096">Skrivbordsläge</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Hoppa över</translation>
 <translation id="316832010181763471">Sökmotor onboarding</translation>
 <translation id="986879628471635371">Felsökning onboarding</translation>
+<translation id="5808759341041733958">Välj ordinarie sökmotor</translation>
 <translation id="4428458837269935199">För en mer privat sökupplevelse, prova DuckDuckGo.</translation>
 <translation id="5317780077021120954">Spara</translation>
 <translation id="7053983685419859001">Blockera</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">integritetskränkande annonser och spårare så att du kan surfa utan att följas på nätet.</translation>
 <translation id="8537217141725709400">Tjäna <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">Genom att titta på annonser som värnar din integritet och stödja dina favoritsajter och -skapare.</translation>
 <translation id="821707262661492716">för att se annonser som respekterar integriteten.</translation>
+<translation id="8267692331246948056">Genom att trycka på Få och ge godkänner du</translation>
 <translation id="4281844954008187215">Användarvillkor</translation>
 <translation id="6871397658902960384">Börja surfa</translation>
 <translation id="454386012157232640">Jag såg ingen annons</translation>
 <translation id="1448877943847791441">Brave kommer att visa din första annons i</translation>
+<translation id="4410793187232041318">Nu får du polletter från Brave Ads.</translation>
 <translation id="6511854390690723657">Detta är din första Brave-annons. Tryck för att läsa mer.</translation>
 <translation id="4930714375720679147">Aktivera</translation>
 <translation id="2453860139492968684">Slutför</translation>
+<translation id="7983303953939627894">Få och ge</translation>
+<translation id="48520986898237073">Fortsätt till plånboken</translation>
 <translation id="2359808026110333948">Fortsätt</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="3570367516044491911">Ställ in som standardwebbläsare</translation>
@@ -175,14 +182,19 @@ denna månad...</translation>
 <translation id="222883304157347087">(denna enhet)</translation>
 <translation id="8193724030871339658">ANDRA ENHETER I KEDJAN</translation>
 <translation id="279635009973773843">LADDAR ENHETER...</translation>
+<translation id="6394333525003604181">LÄMNAR SYNKNINGSKEDJAN ...</translation>
+<translation id="1604429341565715601">Synkning pågår, prova att nollställa senare.</translation>
 <translation id="2569646144216067185">Antal ord: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Felaktigt antal ord</translation>
+<translation id="7507533586185621084">Fel synkningskod</translation>
+<translation id="8284063834901328650">Fel synknings- eller QR-kod</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync låter dig synka bokmärken mellan dina Brave-webbläsare på olika enheter.</translation>
 <translation id="3735228155296883311">Skanna helt enkelt koden från din synkroniseringskedja som du skapade på en annan enhet. Eller starta en ny synkroniseringskedja.</translation>
 <translation id="4690880825349994619">Öppna Brave-inställningarna på en befintlig synkroniserad enhet och gå till Inställningar &gt; Synk. Välj "Lägg till enhet" och skanna QR-koden som visas på skärmen.</translation>
 <translation id="5241263629636958324">Kopierat till urklipp</translation>
 <translation id="5817918615728894473">Koppla</translation>
+<translation id="3394474617110693560">Kategorier</translation>
 <translation id="2004365171440701679">Ta bort denna enhet</translation>
 <translation id="1178128181015923849">Är du säker på att du vill ta bort enheten <ph name="DEVICE_NAME"/>?</translation>
 <translation id="7745082336226088126">Skanna eller ange synkroniseringskod</translation>
@@ -323,4 +335,11 @@ denna månad...</translation>
 <translation id="76550953340008122">Tack för att du lät Braves utvecklare veta att något är fel på denna webbplats. Vi ska göra vårt bästa för att fixa det!</translation>
 <translation id="650318023204990401">Avancerade kontroller</translation>
 <translation id="7182293319417450928">Ett minsta saldo om 25 BAT krävs för att verifiera.</translation>
+<translation id="1275664486910646411">Visa toppsajter i automatisk komplettering</translation>
+<translation id="5516010970279932133">Visa förslag på sajter i automatisk komplettering</translation>
+<translation id="5370478469168390143">Spara data online</translation>
+<translation id="1118508688433541158">Surfa snabbare och blocka annonser med Brave</translation>
+<translation id="915835519491851291">Du blockade precis spårare och annonser.</translation>
+<translation id="3286927551967858325">Ta en titt</translation>
+<translation id="2929661208078053609">Bra!</translation>
 </translationbundle>

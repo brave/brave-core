@@ -6457,38 +6457,38 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Estableciendo conexión segura...</translation>
 <translation id="998747458861718449">I&amp;nspeccionar</translation>
-<translation id="658539216370629794">Abrir el enlace en una ventana de incó&amp;gnito</translation>
-<translation id="1432267168815937878">Abrir enlace en una ventana de incó&amp;gnito</translation>
-<translation id="6516243500644829484">Nueva ventana de &amp;incógnito</translation>
-<translation id="7973394300052703468">Nueva ventana de &amp;incógnito</translation>
-<translation id="6395403722585816044">Se ha descargado en modo de incógnito</translation>
-<translation id="203837651858678035">¿Quieres salir del modo de incógnito de todas formas?</translation>
-<translation id="7376221878517288144">¿Quieres salir del modo de incógnito de todas formas?</translation>
+<translation id="658539216370629794">Abrir el enlace en una ventana privada</translation>
+<translation id="1432267168815937878">Abrir enlace en una ventana privada</translation>
+<translation id="6516243500644829484">Nueva ventana privada</translation>
+<translation id="7973394300052703468">Nueva ventana privada</translation>
+<translation id="6395403722585816044">Se ha descargado en modo privado</translation>
+<translation id="203837651858678035">¿Quieres salir del modo privado de todas formas?</translation>
+<translation id="7376221878517288144">¿Quieres salir del modo privado de todas formas?</translation>
 <translation id="871606814707918245">La mayoría de los usuarios bloquean las notificaciones de este sitio web</translation>
-<translation id="5053701565089446556">Extensión de incógnito: <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">Extensión privada: <ph name="EXTENSION_NAME"/></translation>
 <translation id="611296870688433505">Aplicación de incógnito: <ph name="APP_NAME"/></translation>
-<translation id="9048137919253433011">Pestaña de incógnito: <ph name="TAB_NAME"/></translation>
-<translation id="1799432502220762862">Submarco incógnito: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="3193187622878830588">Portal de incógnito: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="9048137919253433011">Pestaña privada: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Subframe privado: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="3193187622878830588">Portal privado: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="8808478386290700967">Web Store</translation>
 <translation id="8261378640211443080">Esta extensión no aparece en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y se podría haber añadido sin tu conocimiento.</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (incógnito)</translation>
-<translation id="4369414322596874629">Puedes navegar en privado con una ventana de incógnito</translation>
-<translation id="3772947852642271642">Navega por Internet sin guardar tu historial de navegación con una ventana de incógnito</translation>
-<translation id="3871738366246972820">¿Utilizas un ordenador compartido? Prueba a abrir una ventana de incógnito.</translation>
-<translation id="5808622652939943719">Para navegar en privado, haz clic en el icono de puntos y abre una ventana de incógnito</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privado)</translation>
+<translation id="4369414322596874629">Puedes navegar privadamente utilizando una ventana privada</translation>
+<translation id="3772947852642271642">Navega por Internet sin guardar tu historial de navegación con una ventana privada</translation>
+<translation id="3871738366246972820">¿Utilizas un ordenador compartido? Prueba a abrir una ventana privada.</translation>
+<translation id="5808622652939943719">Para navegar privadamente, haz clic en el icono de puntos y abre una ventana privada</translation>
 <translation id="9079153198295609735">Enviar automáticamente estadísticas de uso e informes sobre fallos a Brave</translation>
 <translation id="8839398440242019256">No procede de Brave Web Store.</translation>
 <translation id="6945695820322143954">Esta extensión infringe la política de Brave Web Store.</translation>
-<translation id="1676595396635191120">Nueva ventana de incógnito</translation>
+<translation id="1676595396635191120">Nueva ventana privada</translation>
 <translation id="5094764494104066239">Mostrar siempre la barra de marcadores</translation>
-<translation id="4471385409549756595">Nueva ventana de incógnito</translation>
+<translation id="4471385409549756595">Nueva ventana privada</translation>
 <translation id="4540437243849625078">Este sitio web va a compartir información con una aplicación con la que no se utilizará el modo de incógnito.</translation>
-<translation id="1227836882233136433">¿Salir del modo de incógnito?</translation>
-<translation id="7618452966706304788">¿Quieres utilizar Touch ID con <ph name="APP_NAME"/> en el modo de incógnito?</translation>
+<translation id="1227836882233136433">¿Salir del modo privado?</translation>
+<translation id="7618452966706304788">¿Quieres utilizar TouchID con <ph name="APP_NAME"/> en modo privado?</translation>
 <translation id="3098826269712097986">Los datos de inicio de sesión se almacenarán en Brave cuando salgas del modo de incógnito. Así podrás usar Touch ID con este sitio web más adelante.</translation>
-<translation id="5186185447130319458">Incógnito</translation>
-<translation id="2579188629646253712">Salir del modo de incógnito</translation>
+<translation id="5186185447130319458">Privado</translation>
+<translation id="2579188629646253712">Salir del modo privado</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Abrir todas en una &amp;ventana de incógnito}=1{Abrir en una &amp;ventana de incógnito}other{Abrir (#) en una &amp;ventana de incógnito}}</translation>
 <translation id="2431625704210501303">Abrir en una ventana de &amp;incógnito</translation>
 <translation id="4620367155626060530">&amp;Mostrar barra de marcadores</translation>

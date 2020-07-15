@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Sprečava da pregledač bude praćen</translation>
 <translation id="7459000603787995422">Zatvorite kartice pri izlazu</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledanja</translation>
+<translation id="453601949003770390">Praćenja &amp; reklame blokirane</translation>
 <translation id="6761596877474675418">Podaci su sačuvani</translation>
 <translation id="3034562645284925177">Procenjeno sačuvano vreme</translation>
 <translation id="6572660632052512096">Režim radne površine</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Прескочи</translation>
 <translation id="316832010181763471">Ulazna migracija pretraživača</translation>
 <translation id="986879628471635371">Rešavanje problema ulazne migracije</translation>
+<translation id="5808759341041733958">Izaberi podrazumevani pregledač</translation>
 <translation id="4428458837269935199">Za privatnije iskustvo pretraživanja, probajte DuckDuckGo.</translation>
 <translation id="5317780077021120954">Сачувај</translation>
 <translation id="7053983685419859001">Blokiraj</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">oglasi koji narušavaju privatnost i praćenja, pa možete da pregleđujete tako da vas niko ne prati na vebu.</translation>
 <translation id="8537217141725709400">Zaradi <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">tako što ćete gledati reklame koje poštuju privatnost i podržavati vaše omiljene lokacije i kreatore podrazumevano.</translation>
 <translation id="821707262661492716">za gledanje reklama koje poštuju privatnost.</translation>
+<translation id="8267692331246948056">Kliktanjem na Zaradi &amp; Daj, pristajete na</translation>
 <translation id="4281844954008187215">Uslovi korišcenja usluge</translation>
 <translation id="6871397658902960384">Počnite pregledanje</translation>
 <translation id="454386012157232640">Nisam video reklamu</translation>
 <translation id="1448877943847791441">Brave će prikazati vaš prvi oglas u</translation>
+<translation id="4410793187232041318">Sada ćete zaraditi token od Brave reklama.</translation>
 <translation id="6511854390690723657">Ovo je vaša prva Brave reklama. Dodirnite da biste saznali više.</translation>
 <translation id="4930714375720679147">Укључи</translation>
 <translation id="2453860139492968684">Заврши</translation>
+<translation id="7983303953939627894">Zaradi &amp; Daj</translation>
+<translation id="48520986898237073">Nastavi ka novčaniku</translation>
 <translation id="2359808026110333948">Настави</translation>
 <translation id="7658239707568436148">Otkaži</translation>
 <translation id="3570367516044491911">Postavi kao podrazumevani pregledač</translation>
@@ -174,14 +181,19 @@ dok ne potvrde prijavu ili dok ne protekne 90 dana.</translation>
 <translation id="222883304157347087">(ovaj uređaj)</translation>
 <translation id="8193724030871339658">DRUGI UREĐAJI U LANCU</translation>
 <translation id="279635009973773843">UREĐAJI SE UČITAVAJU...</translation>
+<translation id="6394333525003604181">NAPUŠTA SE LANAC SIHNRONIZACIJE...</translation>
+<translation id="1604429341565715601">Podešavanje sinhronizacije je u toku, pokušajte kasnije da je ponovo postavite</translation>
 <translation id="2569646144216067185">Broj reči: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Netačan broj reči</translation>
+<translation id="7507533586185621084">Pogrešan kod za sinhronizaciju</translation>
+<translation id="8284063834901328650">Pogrešan QR kod za sinhronizaciju</translation>
 <translation id="3149880132460839085">Brave sinhronizacija</translation>
 <translation id="3680755684186855422">Brave sinhronizacija vam omogućava da diskretno sinhronizujete obeleživače između Brave pregledača na različitim uređajima koje koristite.</translation>
 <translation id="3735228155296883311">Jednostavno skenirajte kod sa vašeg lanca sinhronizacije koji ste kreirali na drugom uređaju. Ili pokrenite novi lanac sinhronizacije.</translation>
 <translation id="4690880825349994619">Koristeći postojeći sinhronizovani uređaj, otvorite Brave podešavanja i idite na Podešavanja &gt; Sinhronizacija. Izaberite „Dodaj uređaj” i skenirajte QR kod prikazan na ekranu.</translation>
 <translation id="5241263629636958324">Kopirano na ostavu</translation>
 <translation id="5817918615728894473">Упари</translation>
+<translation id="3394474617110693560">Kategorije</translation>
 <translation id="2004365171440701679">Ukloni ovaj uređaj</translation>
 <translation id="1178128181015923849">Želite li da izbrišete uređaj? '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Skenirajte ili unesite kod za sinhronizaciju</translation>
@@ -322,4 +334,11 @@ dok ne potvrde prijavu ili dok ne protekne 90 dana.</translation>
 <translation id="76550953340008122">Hvala što ste obavestili programere aplikacije Brave da nešto nije u redu sa ovim sajtom. Daćemo sve od sebe da to popravimo!</translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
 <translation id="7182293319417450928">Za potvrdu je potreban minimalni bilans od 25 BAT</translation>
+<translation id="1275664486910646411">Prikaži najposećenije lokacije u automatskom dovršavanju</translation>
+<translation id="5516010970279932133">Pokazuje predložene lokacije u automatskom dovršavanju</translation>
+<translation id="5370478469168390143">Sačuvaj podatke na internet vezi</translation>
+<translation id="1118508688433541158">Pregledajte brže i blokirajte reklame koristeći Brave</translation>
+<translation id="915835519491851291">Upravo ste blokirali neka praćenja &amp; ads.</translation>
+<translation id="3286927551967858325">Pogledajte</translation>
+<translation id="2929661208078053609">Fino!</translation>
 </translationbundle>

@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Megelőzi, hogy a böngésző ujjlenyomatot készítsen</translation>
 <translation id="7459000603787995422">Fülek bezárása kilépéskor</translation>
 <translation id="1680858055899097121">Új böngészés kezdésekor ne maradjanak nyitva az előzőleg megnyitott fülek</translation>
+<translation id="453601949003770390">Követők és hirdetések letiltva</translation>
 <translation id="6761596877474675418">Adatok mentve</translation>
 <translation id="3034562645284925177">Becsült megspórolt idő</translation>
 <translation id="6572660632052512096">Asztali mód</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Kihagyás</translation>
 <translation id="316832010181763471">Keresőmotor felvétele</translation>
 <translation id="986879628471635371">Előkészítési hibaelhárítás</translation>
+<translation id="5808759341041733958">Válasszon alapértelmezett keresőmotort</translation>
 <translation id="4428458837269935199">Ha még privátabb keresést szeretnél, próbáld ki a DuckDuckGo-t</translation>
 <translation id="5317780077021120954">Mentés</translation>
 <translation id="7053983685419859001">Tiltás</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">magánéletet sértő hirdetéseket és követőket, hogy ne lehessen követni tevékenységét a weben.</translation>
 <translation id="8537217141725709400">Szerezzen <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave jutalmak</translation>
+<translation id="5870330605209713397">magánéletet tiszteletben tartó hirdetések megtekintésével, és alapértelmezettként támogassa kedvenc oldalait és alkotóit.</translation>
 <translation id="821707262661492716">magánéletet tiszteletben tartó hirdetések megtekintéséért.</translation>
+<translation id="8267692331246948056">A Szerezzen és adjon-ra kattintva elfogadja a</translation>
 <translation id="4281844954008187215">Szolgáltatási feltételek</translation>
 <translation id="6871397658902960384">Böngészés elkezdése</translation>
 <translation id="454386012157232640">Nem láttam hirdetést</translation>
 <translation id="1448877943847791441">A Brave ennyi idő múlva fogja mutatni az első hirdetésed:</translation>
+<translation id="4410793187232041318">Mostantól tokeneket szerez a Brave Ads-től</translation>
 <translation id="6511854390690723657">Ez az első Brave hirdetése. Koppintson, ha szeretne többet megtudni.</translation>
 <translation id="4930714375720679147">Bekapcsolás</translation>
 <translation id="2453860139492968684">Befejezés</translation>
+<translation id="7983303953939627894">Szerezzen és adjon</translation>
+<translation id="48520986898237073">Tovább a pénztárcához</translation>
 <translation id="2359808026110333948">Tovább</translation>
 <translation id="7658239707568436148">Mégse</translation>
 <translation id="3570367516044491911">Beállítás alapértelmezett böngészőként</translation>
@@ -173,14 +180,19 @@ hónapban...</translation>
 <translation id="222883304157347087">(ez a készülék)</translation>
 <translation id="8193724030871339658">MÁS KÉSZÜLÉKEK A LÁNCON</translation>
 <translation id="279635009973773843">KÉSZÜLÉKEK BETÖLTÉSE...</translation>
+<translation id="6394333525003604181">SZINKRONIZÁLÁSI LÁNC ELHAGYÁSA</translation>
+<translation id="1604429341565715601">A szinkronizálási beállítás folyamatban van, próbálja újraállítani később.</translation>
 <translation id="2569646144216067185">Szavak száma: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Szavak száma helytelen</translation>
+<translation id="7507533586185621084">Rossz szinkronizálási kód</translation>
+<translation id="8284063834901328650">Rossz szinkronizálási QR-kód</translation>
 <translation id="3149880132460839085">Brave szinkronizáció</translation>
 <translation id="3680755684186855422">A Brave szinkronizáció lehetővé teszi a Brave böngészők között a könyvjelzők adatainak titkosított szinkronizációját az Ön különböző eszközein</translation>
 <translation id="3735228155296883311">Egyszerűen olvassa be a kódot egy másik készüléken létrehozott szinkronizálási láncról. Indíthat új szinkronizálási láncot is.</translation>
 <translation id="4690880825349994619">Meglévő, szinkronizált eszköz használatához nyisd meg a Brave Beállításokat, majd menj a Szinkronizálás beállításaira. Válaszd az "Eszköz hozzáadását" és szkenneld be a képernyőn látható QR kódot.</translation>
 <translation id="5241263629636958324">Vágólapra másolva</translation>
 <translation id="5817918615728894473">Párosítás</translation>
+<translation id="3394474617110693560">Kategóriák</translation>
 <translation id="2004365171440701679">A készülék eltávolítása</translation>
 <translation id="1178128181015923849">Biztosan törölni szeretné a(z) '<ph name="DEVICE_NAME"/>' készüléket</translation>
 <translation id="7745082336226088126">Olvassa be vagy írja be a szinkronizálási kódot</translation>
@@ -321,4 +333,11 @@ hónapban...</translation>
 <translation id="76550953340008122">Köszönjük, hogy értesítette a Brave fejlesztőit arról, hogy valami hiba van az oldalon. Mindent megteszünk, hogy kijavítsuk!</translation>
 <translation id="650318023204990401">Speciális vezérlők</translation>
 <translation id="7182293319417450928">Az ellenőrzéshez egy minimális 25 BAT-os egyenleg szükséges.</translation>
+<translation id="1275664486910646411">Mutassa a legnépszerűbb oldalakat az automatikus kiegészítésben</translation>
+<translation id="5516010970279932133">Mutassa a javasolt oldalakat az automatikus kiegészítőben</translation>
+<translation id="5370478469168390143">Adatok mentése online</translation>
+<translation id="1118508688433541158">Böngésszen gyorsabban, és blokkolja a hirdetéseket a Brave segítségével.</translation>
+<translation id="915835519491851291">Most tiltott le néhány követőt és hirdetést.</translation>
+<translation id="3286927551967858325">Vessen egy pillantást</translation>
+<translation id="2929661208078053609">Szép!</translation>
 </translationbundle>

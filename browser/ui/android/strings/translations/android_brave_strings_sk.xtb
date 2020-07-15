@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Zabraňuje prehliadaču získať odtlačky prstov</translation>
 <translation id="7459000603787995422">Zatvoriť karty pri ukončení prehliadania</translation>
 <translation id="1680858055899097121">Neotvárajte karty medzi prehliadanými reláciami</translation>
+<translation id="453601949003770390">Sledovania &amp; Reklamy blokované</translation>
 <translation id="6761596877474675418">Uložené údaje</translation>
 <translation id="3034562645284925177">Približný ušetrený čas</translation>
 <translation id="6572660632052512096">Desktop mód</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Preskočiť</translation>
 <translation id="316832010181763471">Prvotné nastavenia vyhľadávacieho nástroja</translation>
 <translation id="986879628471635371">Riešenie problémov pri prvotnom nastavení</translation>
+<translation id="5808759341041733958">Vyberte predvolený vyhľadávací nástroj</translation>
 <translation id="4428458837269935199">Ak chcete mať väčší zážitok z anonymného vyhľadávania, skúste DuckDuckGo.</translation>
 <translation id="5317780077021120954">Uložiť</translation>
 <translation id="7053983685419859001">Blokovať</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">reklamy a sledovače, ktoré narúšajú súkromie, takže nemôžete prehliadať stránky bez toho, aby vás niekto na internete sledoval.</translation>
 <translation id="8537217141725709400">Zarábať <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Odmeny Brave</translation>
+<translation id="5870330605209713397">prezeraním reklám rešpektujúcich súkromie a podporujete predvolene svoje obľúbené stránky a tvorcov.</translation>
 <translation id="821707262661492716">na zobrazovanie reklám, ktoré zachovávajú vaše súkromie.</translation>
+<translation id="8267692331246948056">Kliknutím na Zarábať &amp; Dať, súhlasíte s</translation>
 <translation id="4281844954008187215">Podmienky služby</translation>
 <translation id="6871397658902960384">Spustiť prehliadač</translation>
 <translation id="454386012157232640">Nevidel/a som reklamu</translation>
 <translation id="1448877943847791441">Prehliadač Brave zobrazí vašu prvú reklamu za</translation>
+<translation id="4410793187232041318">Teraz budete dostávať žetóny z reklám Brave.</translation>
 <translation id="6511854390690723657">Toto je vaša prvá Brave reklama. Kliknutím zistíte viac.</translation>
 <translation id="4930714375720679147">Zapnúť</translation>
 <translation id="2453860139492968684">Dokončiť</translation>
+<translation id="7983303953939627894">Získať &amp; Dať</translation>
+<translation id="48520986898237073">Pokračujte do peňaženky</translation>
 <translation id="2359808026110333948">Pokračovat</translation>
 <translation id="7658239707568436148">Zrušit</translation>
 <translation id="3570367516044491911">Nastaviť ako predvolený prehliadač</translation>
@@ -171,14 +178,19 @@
 <translation id="222883304157347087">(toto zariadenie)</translation>
 <translation id="8193724030871339658">OSTATNÉ ZARIADENIA V REŤAZCI</translation>
 <translation id="279635009973773843">NAČÍTANIE ZARIADENÍ ...</translation>
+<translation id="6394333525003604181">ODPÁJANIE REŤAZCA SYNCHRONIZÁCIE...</translation>
+<translation id="1604429341565715601">Prebieha nastavenie synchronizácie, skúste ho resetovať neskôr</translation>
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nesprávny počet slov</translation>
+<translation id="7507533586185621084">Zlý synchronizačný kód</translation>
+<translation id="8284063834901328650">Zlý synchronizačný QR kód</translation>
 <translation id="3149880132460839085">Synchronizácia Brave</translation>
 <translation id="3680755684186855422">Synchronizácia Brave vám umožňuje súkromne synchronizovať údaje medzi prehliadačmi Brave na rôznych zariadeniach.</translation>
 <translation id="3735228155296883311">Jednoducho naskenujte kód zo synchronizačného reťazca, ktorý ste vytvorili na inom zariadení alebo spustite nový synchronizačný reťazec.</translation>
 <translation id="4690880825349994619">Pomocou existujúceho synchronizovaného zariadenia otvorte Nastavenia prehliadača Brave a prejdite na Nastavenia &gt; Sync. Vyberte možnosť „Pridať zariadenie“ a naskenujte QR kód zobrazený na obrazovke.</translation>
 <translation id="5241263629636958324">Zkopírováno do schránky</translation>
 <translation id="5817918615728894473">Párovať</translation>
+<translation id="3394474617110693560">Kategórie</translation>
 <translation id="2004365171440701679">Odstrániť toto zariadenie</translation>
 <translation id="1178128181015923849">Naozaj chcete odstrániť toto zariadenie ’<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Naskenovať alebo zadať synchronizačný kód</translation>
@@ -319,4 +331,11 @@
 <translation id="76550953340008122">Ďakujeme, že ste vývojárom Brave oznámili, že na tejto stránke je niečo chybné. Urobíme všetko pre to, aby sme to napravili!</translation>
 <translation id="650318023204990401">Pokročilé ovládanie</translation>
 <translation id="7182293319417450928">Na overenie sa vyžaduje minimálny zostatok 25 BAT.</translation>
+<translation id="1275664486910646411">Zobraziť najlepšie stránky v automatickom dopĺňaní</translation>
+<translation id="5516010970279932133">Zobraziť navrhované stránky v automatickom dopĺňaní</translation>
+<translation id="5370478469168390143">Uložiť dáta online</translation>
+<translation id="1118508688433541158">Prehliadajte rýchlejšie a blokujte reklamy pomocou služby Brave</translation>
+<translation id="915835519491851291">Práve ste zablokovali niektoré sledovače &amp; reklám.</translation>
+<translation id="3286927551967858325">Nazrieť</translation>
+<translation id="2929661208078053609">Pekne!</translation>
 </translationbundle>
