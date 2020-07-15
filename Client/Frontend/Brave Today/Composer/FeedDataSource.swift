@@ -72,10 +72,10 @@ enum FeedSequenceElement {
 /// Powers Brave Today's feed.
 class FeedDataSource {
     private(set) var cards: [FeedCard] = []
+    private(set) var sources: [FeedItem.Source] = []
     
     private let session = NetworkManager(session: URLSession(configuration: .ephemeral))
     private var feeds: [FeedItem] = []
-    private var sources: [String: FeedItem.Source] = [:]
     private var hiddenItems: Set<String> = []
     
     init() {
@@ -93,7 +93,7 @@ class FeedDataSource {
         session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/sources.json")!) { [weak self] data, response, error in
             guard let self = self, let data = data else { return }
             do {
-                let decodedSources = try decoder.decode([String: FailableDecodable<FeedItem.Source>].self, from: data).compactMapValues({ $0.wrappedValue })
+                let decodedSources = try decoder.decode([FailableDecodable<FeedItem.Source>].self, from: data).compactMap(\.wrappedValue)
                 self.sources = decodedSources
                 self.session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
                     guard let self = self, let data = data else { return }
@@ -117,6 +117,12 @@ class FeedDataSource {
                 }
             }
         }
+    }
+    
+    func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
+        guard let index = sources.firstIndex(where: { $0.id == source.id }) else { return }
+        self.sources[index].enabled = enabled
+        // TODO: Update DB
     }
     
     /// Hide a specific feed item from a card showing in the list
@@ -150,21 +156,22 @@ class FeedDataSource {
         }
     }
     
-    private func scored(feeds: [FeedItem.Content], sources: [String: FeedItem.Source]) -> [FeedItem] {
+    private func scored(feeds: [FeedItem.Content], sources: [FeedItem.Source]) -> [FeedItem] {
         let lastVisitedDomains = (try? History.suffix(200)
             .lazy
             .compactMap(\.url)
             .compactMap { URL(string: $0)?.baseDomain }) ?? []
-        return feeds.compactMap {
-            let timeSincePublished = Double($0.publishTime.timeIntervalSinceNow)
+        return feeds.compactMap { content in
+            let timeSincePublished = Double(content.publishTime.timeIntervalSinceNow)
             var score = timeSincePublished > 0 ? log(timeSincePublished) : 0
-            if let feedBaseDomain = $0.url?.baseDomain, lastVisitedDomains.contains(feedBaseDomain) {
+            if let feedBaseDomain = content.url?.baseDomain,
+                lastVisitedDomains.contains(feedBaseDomain) {
                 score -= 5
             }
-            guard let source = sources[$0.publisherID] else {
+            guard let source = sources.first(where: { $0.id == content.publisherID }) else {
                 return nil
             }
-            return FeedItem(score: score, content: $0, source: source, isContentHidden: self.hiddenItems.contains($0.urlHash))
+            return FeedItem(score: score, content: content, source: source, isContentHidden: self.hiddenItems.contains(content.urlHash))
         }
     }
     
@@ -175,9 +182,10 @@ class FeedDataSource {
             1st item, Large Card, Latest item from query
             Deals card
          */
-        var sponsors = feeds.filter { $0.content.contentType == .offer }
-        var deals = feeds.filter { $0.content.contentType == .product }
-        var articles = feeds.filter { $0.content.contentType == .article && !$0.isContentHidden }
+        let feedsFromEnabledSources = feeds.filter(\.source.enabled)
+        var sponsors = feedsFromEnabledSources.filter { $0.content.contentType == .offer }
+        var deals = feedsFromEnabledSources.filter { $0.content.contentType == .product }
+        var articles = feedsFromEnabledSources.filter { $0.content.contentType == .article && !$0.isContentHidden }
         
         let rules: [FeedSequenceElement] = [
             .sponsor,

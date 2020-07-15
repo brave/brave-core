@@ -206,11 +206,11 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 }
                 
                 var openInNewTab: UIAction {
-                    .init(title: Strings.openNewTabButtonTitle, handler: mapDeferredHandler(openInNewTabHandler))
+                    .init(title: Strings.openNewTabButtonTitle, image: UIImage(named: "brave.plus"), handler: mapDeferredHandler(openInNewTabHandler))
                 }
                 
                 var openInNewPrivateTab: UIAction {
-                    .init(title: Strings.openNewPrivateTabButtonTitle, handler: mapDeferredHandler(openInNewPrivateTabHandler))
+                    .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(named: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
                 }
                 
                 var hideContent: UIAction {

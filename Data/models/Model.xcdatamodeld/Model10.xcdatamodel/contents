@@ -35,7 +35,6 @@
         <attribute name="itemDescription" attributeType="String"/>
         <attribute name="publisherID" attributeType="String"/>
         <attribute name="publisherLogo" optional="YES" attributeType="String"/>
-        <attribute name="publisherName" attributeType="String"/>
         <attribute name="publishTime" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="title" attributeType="String"/>
         <attribute name="url" optional="YES" attributeType="String"/>
@@ -50,6 +49,7 @@
         <attribute name="enabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="publisherID" attributeType="String"/>
         <attribute name="publisherLogo" optional="YES" attributeType="String"/>
+        <attribute name="publisherName" attributeType="String" defaultValueString=""/>
         <relationship name="items" toMany="YES" deletionRule="Nullify" destinationEntity="BraveTodayFeedItemMO" inverseName="source" inverseEntity="BraveTodayFeedItemMO"/>
         <fetchIndex name="byPublisherID">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
@@ -119,8 +119,8 @@
     </entity>
     <elements>
         <element name="Bookmark" positionX="0" positionY="-450" width="155" height="285"/>
-        <element name="BraveTodayFeedItemMO" positionX="-270" positionY="-288" width="128" height="253"/>
-        <element name="BraveTodaySourceMO" positionX="-279" positionY="-297" width="128" height="103"/>
+        <element name="BraveTodayFeedItemMO" positionX="-270" positionY="-288" width="128" height="238"/>
+        <element name="BraveTodaySourceMO" positionX="-279" positionY="-297" width="128" height="118"/>
         <element name="Device" positionX="-252" positionY="-207" width="128" height="150"/>
         <element name="Domain" positionX="225" positionY="-321" width="128" height="240"/>
         <element name="Favicon" positionX="439" positionY="-414" width="128" height="120"/>
