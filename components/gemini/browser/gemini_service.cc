@@ -288,12 +288,15 @@ void GeminiService::OnGetOrderQuote(GetOrderQuoteCallback callback,
   std::string quantity;
   std::string price;
   std::string error;
+  std::string total_price;
   if (status >= 200 && status <= 299) {
     const std::string json_body = "{\"data\": " + body + "}";
     GeminiJSONParser::GetOrderQuoteInfoFromJSON(
-      json_body, &quote_id, &quantity, &fee, &price, &error);
+      json_body, &quote_id, &quantity,
+      &fee, &price, &total_price, &error);
   }
-  std::move(callback).Run(quote_id, quantity, fee, price, error);
+  std::move(callback).Run(
+    quote_id, quantity, fee, price, total_price, error);
 }
 
 bool GeminiService::ExecuteOrder(const std::string& symbol,

@@ -26,6 +26,7 @@ class GeminiJSONParser {
                                         std::string *quantity,
                                         std::string *fee,
                                         std::string *price,
+                                        std::string *total_price,
                                         std::string *error);
 };
 
