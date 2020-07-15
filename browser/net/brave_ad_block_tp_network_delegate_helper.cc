@@ -13,7 +13,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
-#include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -88,15 +87,6 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
     std::shared_ptr<BraveRequestInfo> ctx) {
 
   if (ctx->request_url.is_empty()) {
-    return net::OK;
-  }
-
-  // Most blocked resources have been moved to our ad block lists.
-  // This is only for special cases like the PDFjs ping which can
-  // occur before the ad block lists are fully loaded.
-  if (IsBlockedResource(ctx->request_url)) {
-    ctx->new_url_spec = kEmptyDataURI;
-
     return net::OK;
   }
 

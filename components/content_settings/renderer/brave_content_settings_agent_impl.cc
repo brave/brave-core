@@ -15,7 +15,6 @@
 #include "base/stl_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
-#include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/content/common/frame_messages.h"
@@ -197,10 +196,6 @@ bool BraveContentSettingsAgentImpl::AllowFingerprinting(
   const GURL secondary_url(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
   if (IsBraveShieldsDown(frame, secondary_url)) {
-    return true;
-  }
-  const GURL& primary_url = GetOriginOrURL(frame);
-  if (brave::IsWhitelistedFingerprintingException(primary_url, secondary_url)) {
     return true;
   }
 
