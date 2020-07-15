@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/omnibox/omnibox_view_views.h b/chrome/browser/ui/views/omnibox/omnibox_view_views.h
+index 090122ae64681209581ea2e81dbd795e920b25d1..a67dccea75bcf01112c8298cc12fef8d30ffa2de 100644
+--- a/chrome/browser/ui/views/omnibox/omnibox_view_views.h
++++ b/chrome/browser/ui/views/omnibox/omnibox_view_views.h
+@@ -154,6 +154,7 @@ class OmniboxViewViews : public OmniboxView,
+   void OnThemeChanged() override;
+   bool IsDropCursorForInsertion() const override;
+ 
++ BRAVE_OMNIBOX_VIEW_VIEWS_H_
+  private:
+   // TODO(tommycli): Remove the rest of these friends after porting these
+   // browser tests to unit tests.

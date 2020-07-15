@@ -1,0 +1,24 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//ui/base/ui_features.gni")
+
+brave_browser_ui_sources = []
+brave_browser_ui_deps = [
+  "//brave/browser/ui",
+]
+
+if (toolkit_views) {
+brave_browser_ui_sources += [
+  "//brave/browser/ui/views/omnibox/brave_omnibox_view_views.cc",
+  "//brave/browser/ui/views/omnibox/brave_omnibox_view_views.h",
+]
+
+brave_browser_ui_deps += [
+  "//brave/app:brave_generated_resources_grit",
+  "//brave/browser/profiles",
+  "//brave/browser/tor",
+]
+}
