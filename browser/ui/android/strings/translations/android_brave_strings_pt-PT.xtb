@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Evita que o navegador utilize a impressão digital</translation>
 <translation id="7459000603787995422">Fechar separadores ao sair</translation>
 <translation id="1680858055899097121">Não manter separadores entre sessões de navegação</translation>
+<translation id="453601949003770390">Rastreadores &amp; Anúncios Bloquados</translation>
 <translation id="6761596877474675418">Dados guardados</translation>
 <translation id="3034562645284925177">Tempo poupado estimado</translation>
 <translation id="6572660632052512096">Modo desktop</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Ignorar</translation>
 <translation id="316832010181763471">Integração de motor de pesquisa</translation>
 <translation id="986879628471635371">Integração de resolução de problemas</translation>
+<translation id="5808759341041733958">Escolher o motor de busca padrão</translation>
 <translation id="4428458837269935199">Para uma pesquisa mais privada, experimente o DuckDuckGo.</translation>
 <translation id="5317780077021120954">Guardar</translation>
 <translation id="7053983685419859001">Bloquear</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">anúncios que invadem a privacidade e rastreadores para que possa navegar sem ser seguido na Internet.</translation>
 <translation id="8537217141725709400">Ganhe <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
+<translation id="5870330605209713397">pela visualização de anúncios que respeitam a privacidade e apoiam os seus sites e criadores preferidos por defeito.</translation>
 <translation id="821707262661492716">por ver anúncios que respeitam a privacidade.</translation>
+<translation id="8267692331246948056">Ao clicar em Ganhar &amp; Dar, concorda com</translation>
 <translation id="4281844954008187215">termos de serviço</translation>
 <translation id="6871397658902960384">Iniciar navegação</translation>
 <translation id="454386012157232640">Não vi um anúncio</translation>
 <translation id="1448877943847791441">O Brave irá mostrar o seu primeiro anúncio dentro de</translation>
+<translation id="4410793187232041318">Irá agora ganhar tokens da Brave Ads.</translation>
 <translation id="6511854390690723657">Este é o seu primeiro anúncio Brave. Toque para ficar a saber mais.</translation>
 <translation id="4930714375720679147">Ativar</translation>
 <translation id="2453860139492968684">Concluir</translation>
+<translation id="7983303953939627894">Ganhar &amp; Dar</translation>
+<translation id="48520986898237073">Continuar para a wallet (carteira)</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="3570367516044491911">Definir como navegador predefinido</translation>
@@ -178,14 +185,19 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="222883304157347087">(este dispositivo)</translation>
 <translation id="8193724030871339658">OUTROS DISPOSITIVOS NA CADEIA</translation>
 <translation id="279635009973773843">A CARREGAR DISPOSITIVOS...</translation>
+<translation id="6394333525003604181">A SAIR DA CORRENTE DE SINCRONIZAÇÃO…</translation>
+<translation id="1604429341565715601">Configuração da sincronização em progresso; por favor, procure redefini-la mais tarde</translation>
 <translation id="2569646144216067185">Contagem de palavras: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Número incorreto de palavras</translation>
+<translation id="7507533586185621084">Código de sincronização incorreto</translation>
+<translation id="8284063834901328650">Código QR de sincronização incorreto</translation>
 <translation id="3149880132460839085">Sincronização do Brave</translation>
 <translation id="3680755684186855422">A opção de «Sincronização» do Brave permite-lhe  sincronizar os dados dos marcadores de forma privada entre os «Navegadores Brave» em vários dispositivos.</translation>
 <translation id="3735228155296883311">Digitalize simplesmente o código da sua cadeia de sincronização que criou noutro dispositivo. Ou inicie uma nova cadeia de sincronização.</translation>
 <translation id="4690880825349994619">Utilizando um dispositivo sincronizado existente, abra as Definições Brave e navegue para Definições &gt; Sincronizar. Escolha "Adicionar Dispositivo" e digitalize o Código QR exibido no ecrã.</translation>
 <translation id="5241263629636958324">Copiado para a Área de transferência</translation>
 <translation id="5817918615728894473">Sincronizar</translation>
+<translation id="3394474617110693560">Categorias</translation>
 <translation id="2004365171440701679">Remover este dispositivo</translation>
 <translation id="1178128181015923849">Tem a certeza de que deseja eliminar o dispositivo '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Digitalizar ou introduzir o código de sincronização</translation>
@@ -326,4 +338,11 @@ até que a verificação ocorra ou tenham decorrido 90 dias.</translation>
 <translation id="76550953340008122">Obrigado por comunicar aos desenvolvedores da Brave que há algo de errado com o site. Daremos o nosso melhor para o consertar.</translation>
 <translation id="650318023204990401">Controlos avançados</translation>
 <translation id="7182293319417450928">É necessário um saldo mínimo de 25 MTD para a verificação.</translation>
+<translation id="1275664486910646411">Mostrar os sites principais em preenchimento automático</translation>
+<translation id="5516010970279932133">Mostrar os sites sugeridos em preenchimento automático</translation>
+<translation id="5370478469168390143">Guardar Dados Online</translation>
+<translation id="1118508688433541158">Navegue mais rápido e bloqueie anúncios com Brave</translation>
+<translation id="915835519491851291">Bloqueou alguns rastreadores &amp; anúncios.</translation>
+<translation id="3286927551967858325">Dê uma olhada</translation>
+<translation id="2929661208078053609">Excelente!</translation>
 </translationbundle>

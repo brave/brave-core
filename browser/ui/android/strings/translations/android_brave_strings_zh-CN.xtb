@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">防止浏览器使用指纹识别</translation>
 <translation id="7459000603787995422">退出时关闭标签页</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
+<translation id="453601949003770390">已拦截跟踪器和广告</translation>
 <translation id="6761596877474675418">数据已保存</translation>
 <translation id="3034562645284925177">预计节省时间</translation>
 <translation id="6572660632052512096">桌面模式</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">跳过</translation>
 <translation id="316832010181763471">搜索引擎启动过程</translation>
 <translation id="986879628471635371">对启动过程进行故障排除</translation>
+<translation id="5808759341041733958">请选择默认搜索引擎</translation>
 <translation id="4428458837269935199">要获得更私密的搜索体验，请尝试 DuckDuckGo。</translation>
 <translation id="5317780077021120954">保存</translation>
 <translation id="7053983685419859001">拦截</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">这是您的第一个 Brave 广告。点按以了解更多信息。</translation>
 <translation id="4930714375720679147">开启</translation>
 <translation id="2453860139492968684">完成</translation>
+<translation id="7983303953939627894">赚钱；花钱</translation>
+<translation id="48520986898237073">继续进入钱包</translation>
 <translation id="2359808026110333948">继续</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="3570367516044491911">设置为默认浏览器</translation>
@@ -169,14 +173,19 @@
 <translation id="222883304157347087">（此设备）</translation>
 <translation id="8193724030871339658">链上的其他设备</translation>
 <translation id="279635009973773843">加载设备...</translation>
+<translation id="6394333525003604181">脱离同步链...</translation>
+<translation id="1604429341565715601">同步设置处理中，请稍后进行重置</translation>
 <translation id="2569646144216067185">字数：<ph name="WORD_COUNT">和 %1$d</ph></translation>
 <translation id="4282642752844565114">字数不正确</translation>
+<translation id="7507533586185621084">同步代码错误</translation>
+<translation id="8284063834901328650">同步二维码错误</translation>
 <translation id="3149880132460839085">Brave 同步</translation>
 <translation id="3680755684186855422">Brave 同步使您能够在您的各种设备上的 Brave 浏览器之间私密同步书签数据。</translation>
 <translation id="3735228155296883311">只需扫描您在另一台设备上创建的同步链中的代码即可。或开始一个新的同步链。</translation>
 <translation id="4690880825349994619">在使用同步设备时，打开 Brave 设置并转到设备和同步。选择“添加设备”并扫描屏幕上显示的 QR 码。</translation>
 <translation id="5241263629636958324">已复制到剪贴板</translation>
 <translation id="5817918615728894473">配对</translation>
+<translation id="3394474617110693560">类别</translation>
 <translation id="2004365171440701679">移除此设备</translation>
 <translation id="1178128181015923849">确定要删除设备 '<ph name="DEVICE_NAME">和%1$s</ph>'？</translation>
 <translation id="7745082336226088126">扫描或输入同步码</translation>
@@ -317,4 +326,11 @@
 <translation id="76550953340008122">感谢您让 Brave 的开发人员知道此站点出了问题。我们会尽力解决问题！</translation>
 <translation id="650318023204990401">高级控制</translation>
 <translation id="7182293319417450928">至少需要 25 个 BAT 余额来验证。</translation>
+<translation id="1275664486910646411">在自动完成中显示顶级网站</translation>
+<translation id="5516010970279932133">在自动完成完成中显示建议网站</translation>
+<translation id="5370478469168390143">在线保存数据</translation>
+<translation id="1118508688433541158">利用 Brave 更快速的流量并能拦截广告</translation>
+<translation id="915835519491851291">您刚刚拦截了部分跟踪器和广告</translation>
+<translation id="3286927551967858325">看一下</translation>
+<translation id="2929661208078053609">干得好！</translation>
 </translationbundle>

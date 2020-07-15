@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">نمای پیش‌فرض</translation>
 <translation id="130615081792797568">نمای ساده</translation>
 <translation id="2360360976480535628">نمای پیشرفته</translation>
+<translation id="2133317862976486547">مسدود کردن ردیاب‌ها و آگهی‌ها</translation>
+<translation id="4385707520896576447">مسدود کردن کوکی</translation>
+<translation id="4978786495456601191">مسدود کردن تشخیص اثر انگشت</translation>
 <translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
 <translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
 <translation id="519861640102428255">ظاهر و حس</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
+<translation id="4078738236287221428">تهاجمی</translation>
 <translation id="7740996059027112821">استاندارد</translation>
 <translation id="4176463684765177261">غیرفعال شد</translation>
+<translation id="5770288601196774623">فقط بین سایتی</translation>
 <translation id="3587482841069643663">همه</translation>
+<translation id="5533533363827555308">شدید، ممکن است منجر به خرابی سایت‌ها شود</translation>
 <translation id="8942080017911802454">خط‌مشی مدیریت WebRTC IP</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
@@ -91,12 +97,22 @@
 <translation id="5825943197137337319">فقط رابط عمومی پیش‌فرض</translation>
 <translation id="1689062823386843231">غیرفعال کردن UDP غیرپروکسی</translation>
 <translation id="8502234992433094996">استفاده از خدمات Google برای پیام‌رسانی فشاری</translation>
+<translation id="5565355416171743213">شروع استفاده از همگام‌سازی</translation>
 <translation id="4332558599726753990">راه‌اندازی همگام‌سازی</translation>
+<translation id="2187778349654214731">برای شروع، باید در همه دستگاه‌هایی که قصد همگام‌سازی‌شان را دارید، Brave را نصب کنید، سپس با کد همگام‌سازی آنها را به‌صورت امن به هم پیوند دهید.</translation>
+<translation id="7530575064080939974">مدیریت دستگاه‌های همگام‌سازی‌شده خود</translation>
+<translation id="7575156386943878014">مدیر همگام‌سازی</translation>
 <translation id="1755198127524719638">تنظیمات همگام‌سازی</translation>
 <translation id="7558480201297099157">اطلاعاتی را که می‌خواهید بین دستگاه‌ها همگام‌سازی شود مدیریت کنید. این تنظیمات فقط در این دستگاه اعمال می‌شوند.</translation>
+<translation id="7731928563672901833">فهرست دستگاه‌ها</translation>
 <translation id="28332161031213248">فهرست دستگاه زیر حاوی همه دستگاه‌های موجود در زنجیره همگام‌سازی شما است. هر دستگاه می‌تواند از دستگاه دیگری مدیریت شود.</translation>
 <translation id="1313162974556054106">نام دستگاه</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (این دستگاه)</translation>
+<translation id="3686835020221422649">آخرین فعالیت</translation>
+<translation id="2569646144216067185">تعداد کلمات: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">کپی شد!</translation>
+<translation id="8802630444265810662">کد QR که باید به‌منظور انتقال کد همگام‌سازی شما با دستگاه تلفن همراه اسکن شود</translation>
+<translation id="6221331245829088299">خطایی در نمایش کد QR وجود داشت، لطفاً تازه‌سازی کنید و دوباره امتحان کنید.</translation>
 <translation id="298546024891487702">برای شروع، باید Brave را در همه دستگاه‌هایی که قصد همگام‌سازی‌شان را دارید نصب کنید. برای زنجیر کردن آنها به یکدیگر، یک زنجیره همگام‌سازی شروع کنید. برای پیوند کردن ایمن همه دستگاه‌هایتان به یکدیگر از این زنجیره استفاده خواهید کرد.</translation>
 <translation id="6200528822592747640">شروع «زنجیره همگام‌سازی» جدید</translation>
 <translation id="5184726904895809379">کد همگام‌سازی دارم</translation>
@@ -116,7 +132,12 @@
 <translation id="5734745018569675530">کدواژگان زنجیره همگام‌سازی دریافتی‌تان را در فرم زیر تایپ کنید.</translation>
 <translation id="1061533051865606843">افزودن دستگاه جدید</translation>
 <translation id="5093410893656857925">نوع دستگاه را انتخاب کنید</translation>
+<translation id="4581190919849683048">مایل به همگام‌سازی با چه نوع دستگاهی هستید؟</translation>
+<translation id="4112587618563511470">کد همگام‌سازی نامعتبر است. لطفاً بررسی و دوباره امتحان کنید.</translation>
 <translation id="2339730291919608488">خروج از زنجیره همگام‌سازی</translation>
+<translation id="115699408012835975">اگر «همگام‌سازی» را بازنشانی کنید، باید کد همگام‌سازی را مجدداً از دستگاه دیگری وارد کنید تا همگام‌سازی با آن انجام شود. مطمئن هستید که می‌خواهید ادامه دهید؟</translation>
+<translation id="3396347744975515056">همگام‌سازی Brave ارتقا یافته و نیازمند راه‌اندازی است</translation>
+<translation id="7473245612074035141">شروع راه‌اندازی</translation>
 <translation id="6696935187608454456">نکات راهنما</translation>
 <translation id="2775956301559569472">نشان دادن پیام‌واره Wayback Machine در صفحه‌های خطای 404</translation>
 <translation id="1807246157184219062">روشن</translation>

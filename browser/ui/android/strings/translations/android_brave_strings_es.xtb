@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Evita que el navegador tome tu huella digital</translation>
 <translation id="7459000603787995422">Cerrar pestañas al salir</translation>
 <translation id="1680858055899097121">No guardar las pestañas entre sesiones de navegación</translation>
+<translation id="453601949003770390">Rastreadores y anuncios bloqueados</translation>
 <translation id="6761596877474675418">Datos guardados</translation>
 <translation id="3034562645284925177">Tiempo Estimado Ahorrado</translation>
 <translation id="6572660632052512096">Modo Escritorio</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Saltar</translation>
 <translation id="316832010181763471">Visita guiada al motor de búsqueda</translation>
 <translation id="986879628471635371">Introducción a la solución de problemas</translation>
+<translation id="5808759341041733958">Elige el motor de búsqueda predeterminado</translation>
 <translation id="4428458837269935199">Para disfrutar de una experiencia de búsqueda más privada, prueba DuckDuckGo.</translation>
 <translation id="5317780077021120954">Guardar</translation>
 <translation id="7053983685419859001">Bloquear</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">anuncios y rastreadores que invaden tu privacidad para que puedas navegar sin que nadie te detecte en la web.</translation>
 <translation id="8537217141725709400">Gana <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">para ver anuncios que respeten la privacidad y apoyar sus sitios y creadores favoritos de forma predeterminada.</translation>
 <translation id="821707262661492716">por ver anuncios que respetan la privacidad.</translation>
+<translation id="8267692331246948056">Al pulsar Ganar y dar, acepta los</translation>
 <translation id="4281844954008187215">Términos del Servicio</translation>
 <translation id="6871397658902960384">Empezar a navegar</translation>
 <translation id="454386012157232640">No vi ningún anuncio</translation>
 <translation id="1448877943847791441">Brave te mostrará el primer anuncio en</translation>
+<translation id="4410793187232041318">Ahora podrá ganar fichas de Brave Ads.</translation>
 <translation id="6511854390690723657">Este es tu primer anuncio de Brave. Pulsa para obtener más información.</translation>
 <translation id="4930714375720679147">Activar</translation>
 <translation id="2453860139492968684">Finalizar</translation>
+<translation id="7983303953939627894">Ganar y dar</translation>
+<translation id="48520986898237073">Continuar con el monedero</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="3570367516044491911">Establecer como navegador predeterminado</translation>
@@ -175,14 +182,19 @@ para apoyarlos.</translation>
 <translation id="222883304157347087">(este dispositivo)</translation>
 <translation id="8193724030871339658">OTROS DISPOSITIVOS EN CADENA</translation>
 <translation id="279635009973773843">CARGANDO DISPOSITIVOS...</translation>
+<translation id="6394333525003604181">SALIENDO DE LA CADENA DE SINCRONIZACIÓN...</translation>
+<translation id="1604429341565715601">La configuración de la sincronización está en progreso, intenta restablecerla más tarde.</translation>
 <translation id="2569646144216067185">Recuento de palabras: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Número de palabras incorrecto</translation>
+<translation id="7507533586185621084">Código de sincronización erróneo</translation>
+<translation id="8284063834901328650">Código QR de sincronización erróneo</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync te permite sincronizar marcadores de manera privada entre los navegadores Brave de tus dispositivos.</translation>
 <translation id="3735228155296883311">Simplemente escanea el código de la cadena de sincronización que creaste en otro dispositivo. O inicia una nueva cadena de sincronización.</translation>
 <translation id="4690880825349994619">Utilizando un dispositivo sincronizado existente, abre la Configuración de Brave y navega hasta Configuración &gt; Brave Sync. Selecciona "Añadir dispositivo" y escanea el código QR que aparece en la pantalla.</translation>
 <translation id="5241263629636958324">Copiado al Portapapeles</translation>
 <translation id="5817918615728894473">Vincular</translation>
+<translation id="3394474617110693560">Categorías</translation>
 <translation id="2004365171440701679">Eliminar este dispositivo</translation>
 <translation id="1178128181015923849">¿Estás seguro de que quieres eliminar el dispositivo <ph name="DEVICE_NAME"/>?</translation>
 <translation id="7745082336226088126">Escanear o introducir código de sincronización</translation>
@@ -256,8 +268,8 @@ para apoyarlos.</translation>
 <translation id="543510923939676996">Monedero verificado</translation>
 <translation id="8673913984316081937">La verificación de tu monedero es opcional</translation>
 <translation id="8558636200953226885">Pero si lo verificas, podrás...</translation>
-<translation id="8697510149346635496">Extrae los BAT que has ganado visualizando anuncios que respetan la privacidad</translation>
-<translation id="1481480653609649134">Compra BAT adicionales con tarjetas de crédito y otras fuentes</translation>
+<translation id="8697510149346635496">Extrae los BATs que has ganado visualizando anuncios respetuosos con la privacidad.</translation>
+<translation id="1481480653609649134">Compra BATs adicionales con tarjetas de crédito y otras fuentes</translation>
 <translation id="9096003370755878766">Extrae los BAT que hayas podido añadir previamente a tu monedero de Brave Rewards</translation>
 <translation id="1554282356558968486">Nuestro servicio de monedero está ofrecido por</translation>
 <translation id="6569877533335686968">Uphold</translation>
@@ -276,9 +288,9 @@ para apoyarlos.</translation>
 <translation id="3248185426436836442">Pendiente</translation>
 <translation id="8108013093558639183">Según la ubicación en la que ha abierto la cuenta, BAT no se admite en su región. Vuelva a comprobar la admisibilidad más tarde.</translation>
 <translation id="4190454391025419535">Región no admitida</translation>
-<translation id="6830703472632069884">Se ha producido un problema al verificar el monedero. Inténtelo más tarde.</translation>
+<translation id="6830703472632069884">Se ha producido un problema al verificar el monedero. Por favor, inténtalo de nuevo más tarde.</translation>
 <translation id="3512533646933434345">Error de verificación del monedero</translation>
-<translation id="2260513517001048012">AVISO: este creador verificado de Brave aún no ha configurado su cuenta para recibir contribuciones de los usuarios de Brave. El navegador intentará contribuir hasta que se verifique o hasta que hayan pasado noventa días.</translation>
+<translation id="2260513517001048012">NOTA: Este creador verificado por Brave aún no ha configurado su cuenta para recibir contribuciones de usuarios de Brave. Tu navegador seguirá intentando contribuir hasta que se verifiquen, o hasta que hayan pasado 90 días.</translation>
 <translation id="4488355059795908907">Este creador verificado de Brave aún no ha configurado su cuenta para recibir contribuciones de los usuarios de Brave. Cualquier gratificación que envíe permanecerá en el monedero hasta que termine este proceso.</translation>
 <translation id="2495032782748793764">Brave predeterminado</translation>
 <translation id="9132378787893584761">Comparte Brave con tus amigos.</translation>
@@ -301,7 +313,7 @@ para apoyarlos.</translation>
 <translation id="828092975561478703">Por cada imagen patrocinada que vea, recibirá el 70 % de los ingresos en vales. Con Brave Ads, siempre controla los anuncios que ve.</translation>
 <translation id="4941539331405513605">Bloquear las cookies de terceros</translation>
 <translation id="3763681089644577874">Bloquear cookies</translation>
-<translation id="614747795780742163">Impide que los sitios web almacenen la información sobre sus visitas anteriores</translation>
+<translation id="614747795780742163">Impide que los sitios web almacenen la información sobre tus visitas anteriores</translation>
 <translation id="6883611015375728278">Bloquear todas las cookies</translation>
 <translation id="5657156137487675418">Permitir todas las cookies</translation>
 <translation id="5963670684159057574">Bloquear fingerprinting de terceros</translation>
@@ -325,4 +337,9 @@ para apoyarlos.</translation>
 <translation id="7182293319417450928">Se requiere un saldo mínimo de 25 BAT para hacer la verificación.</translation>
 <translation id="1275664486910646411">Mostrar los sitios principales en autocompletar</translation>
 <translation id="5516010970279932133">Mostrar los sitios sugeridos en autocompletar</translation>
+<translation id="5370478469168390143">Guardar datos en línea</translation>
+<translation id="1118508688433541158">Navega más rápido y bloquea los anuncios con Brave</translation>
+<translation id="915835519491851291">Acabas de bloquear algunos rastreadores y anuncios.</translation>
+<translation id="3286927551967858325">Echa un vistazo</translation>
+<translation id="2929661208078053609">¡Bien!</translation>
 </translationbundle>

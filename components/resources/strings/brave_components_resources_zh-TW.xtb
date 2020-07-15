@@ -40,6 +40,8 @@
 <translation id="2875302873837723333">熱門網站</translation>
 <translation id="8173998484743827990">Brave 統計</translation>
 <translation id="383680190590774040">時鐘</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="3159285901314605198">背景圖</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="6248988683584659830">搜尋設定</translation>
@@ -207,6 +209,7 @@
 <translation id="7413895050241358090">額度</translation>
 <translation id="386483240851194811">獎勵已關閉</translation>
 <translation id="3354337256330577726">自動捐款已關閉</translation>
+<translation id="6727186931929643711">停止重試</translation>
 <translation id="7375125077091615385">類型：</translation>
 <translation id="4973347371961481083">捐款</translation>
 <translation id="1924618796077284366">下載完整紀錄</translation>
@@ -272,7 +275,6 @@
 <translation id="2975780980638932742">Brave 廣告抵達了！</translation>
 <translation id="3361548743396744457">支援您最愛的網站或是在您喜歡的時候贊助小費給任何網站。</translation>
 <translation id="718303546189503957">自動捐款 {{processor}}</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4493850495402472953">與</translation>
 <translation id="8804164990146287819">隱私權政策</translation>
 <translation id="4281844954008187215">服務條款</translation>
@@ -393,10 +395,16 @@
 <translation id="8204292894173669182">從已儲存的項目移除</translation>
 <translation id="2160578257818656558">您已指定 {{reservedAmount}} {{currency}} 給尚未登記接受資助的創作者。您的瀏覽器會不斷嘗試捐助，直到他們驗證或 90 天過後為止。</translation>
 <translation id="8759753423332885148">深入瞭解。</translation>
+<translation id="5939518447894949180">重設</translation>
 <translation id="3157931365184549694">還原</translation>
 <translation id="1797334173232638045">已固定的網站已移往以下地點：</translation>
+<translation id="6803187280799213426">您在 Brave 錢包中的資金是虛擬的所以不需要備份。您可以專門在此瀏覽器上使用。</translation>
+<translation id="5290348443732633227">如果您想要在全新安裝瀏覽器或換到新設備的狀況下確保您所有資金的安全，並擁有其它好處，包括增加、提取和調動資金，我們建議</translation>
+<translation id="6733942359297688714">連結至已認證的 Uphold 錢包。</translation>
 <translation id="5717619667204259673">請確保此復原金鑰的安全。</translation>
 <translation id="4699702339303280827">如果瀏覽器或電腦發生狀況，您隨時都可以使用此金鑰來取回錢包。但務必加以保護 — 任何拿到這個金鑰的人都可以竊取您的錢包。最安全的方式可能’就是寫在一張紙上，或任何其它您記錄重要資料的地方。</translation>
+<translation id="8979401359137062629">請注意：</translation>
+<translation id="7934806082615382155">部份資金可能是從 Brave 接收的，且並未包含在備份中，因為這不是必須的。您可以專門在此瀏覽器上使用。</translation>
 <translation id="7354412786785889047">你可以藉由發送打賞來支持這位推文作者。這是感謝他們提供優質內容的方式。驗證過的作者在每個行事曆月份的第一週收到打賞。</translation>
 <translation id="972846019534552366">您可以在 Brave Rewards 面板中設定每月定期捐款。</translation>
 <translation id="121079855621707240">您可以透過設定每月捐款來支援這些內容創作者。這是感謝他們不斷產出優質內容的一種方式。已驗證的創作者會在每個日曆月裡的第一週獲得報酬。</translation>
@@ -421,6 +429,10 @@
 <translation id="459721429458957031">使用復原金鑰還原您的錢包。</translation>
 <translation id="4600052736217630789">若使用復原金鑰進行還原，此動作將會取代您目前的錢包。所以務必清空或備份目前的錢包再還原。</translation>
 <translation id="3267911153934785912">輸入您的復原金鑰或</translation>
+<translation id="6548189695918108191">在替換前將你的錢包備份。否則您會失去目前在您錢包中的資金 {{funds}}。</translation>
+<translation id="5423214929210538027">您確定要重置您的 Rewards Wallet 嗎？</translation>
+<translation id="9106875682287489763">您 <ph name="BEGIN_BOLD">&lt;b&gt;</ph>{{amount}} BATs<ph name="BEGIN_END">&lt;/b&gt;</ph> 和其它 Rewards 資訊將會永久遺失，如果您重置您的錢包的話。請確認您已向 Uphold 認證您的錢包，這樣您才能保留您的 BAT。</translation>
+<translation id="2028613172174411919">如果您重設您的錢包，您的 Rewards 資料將永遠遺失。</translation>
 <translation id="4914597931214386232">代幣經費已領</translation>
 <translation id="3494964159182650590">Rewards 摘要</translation>
 <translation id="63956545637156715">為何選擇 Brave Rewards？</translation>

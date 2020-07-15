@@ -73,6 +73,9 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="7390783310074170337">Paparan lalai</translation>
 <translation id="130615081792797568">Paparan ringkas</translation>
 <translation id="2360360976480535628">Paparan lanjutan</translation>
+<translation id="2133317862976486547">Sekatan &amp; penjejak</translation>
+<translation id="4385707520896576447">Kuki menyekat</translation>
+<translation id="4978786495456601191">Menyekat pengecapan jari</translation>
 <translation id="3570081523466826008">Naik taraf sambungan kepada HTTPS</translation>
 <translation id="4824468494729001999">Sekat skrip</translation>
 <translation id="519861640102428255">Rupa &amp; Rasa</translation>
@@ -81,9 +84,12 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
 <translation id="5165042248369837294">Benarkan Twitter memasukkan tweet</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
+<translation id="4078738236287221428">Agresif</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="4176463684765177261">Dilumpuhkan</translation>
+<translation id="5770288601196774623">Hanya merentas laman</translation>
 <translation id="3587482841069643663">Semua</translation>
+<translation id="5533533363827555308">Ketat, mungkin akan melanggar laman</translation>
 <translation id="8942080017911802454">Dasar Pengendalian IP WebRTC</translation>
 <translation id="6165508094623778733">Maklumat lanjut</translation>
 <translation id="8798099450830957504">Lalai</translation>
@@ -91,12 +97,22 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="5825943197137337319">Antara muka awam asal sahaja</translation>
 <translation id="1689062823386843231">Lumpuhkan UDP bukan proksi</translation>
 <translation id="8502234992433094996">Gunakan Google Services untuk Push Messaging</translation>
+<translation id="5565355416171743213">Mula menggunakan segerakan</translation>
 <translation id="4332558599726753990">Penetapan Segerak</translation>
+<translation id="2187778349654214731">Untuk bermula, anda perlu memasang Brave di semua peranti yang anda mahu segerakkan. Kemudian, pautkannya dengan selamat bersama dengan sebuah kod segerakan.</translation>
+<translation id="7530575064080939974">Uruskan peranti anda yang disegerakkan</translation>
+<translation id="7575156386943878014">Pengurus Segerakan</translation>
 <translation id="1755198127524719638">Tetapan Segerak</translation>
 <translation id="7558480201297099157">Uruskan maklumat yang anda ingin segerakkan antara peranti. Tetapan ini hanya melibatkan peranti ini.</translation>
+<translation id="7731928563672901833">Senarai Peranti</translation>
 <translation id="28332161031213248">Senarai peranti di bawah menyertakan semua peranti dalam rantaian penyegerakan anda. Setiap peranti boleh diuruskan dari mana-mana peranti lain.</translation>
 <translation id="1313162974556054106">Nama peranti</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Peranti Ini)</translation>
+<translation id="3686835020221422649">Terakhir Aktif</translation>
+<translation id="2569646144216067185">Kiraan perkataan: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Disalin!</translation>
+<translation id="8802630444265810662">Sebuah kod QR untuk diimbas dengan peranti mudah alih supaya anda boleh memancarkan kod segerakan anda</translation>
+<translation id="6221331245829088299">Terdapat ralat dalam memaparkan kod QR, sila segarkan semula dan cuba lagi.</translation>
 <translation id="298546024891487702">Untuk memulakan, anda perlu memasang Brave pada semua peranti yang telah anda rancang untuk disegerakkan. Untuk merantaikannya bersama-sama, mulakan rantaian penyegerakan yang anda akan gunakan untuk menghubungkan semua peranti anda secara selamat.</translation>
 <translation id="6200528822592747640">Mulakan Rantaian Segerak yang baru</translation>
 <translation id="5184726904895809379">Saya mempunyai Kod Segerak</translation>
@@ -116,7 +132,12 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="5734745018569675530">Taipkan perkataan kod rantaian penyegerakan yang dibekalkan kepada anda ke dalam borang di bawah.</translation>
 <translation id="1061533051865606843">Tambah Peranti Baru</translation>
 <translation id="5093410893656857925">Pilih Jenis Peranti</translation>
+<translation id="4581190919849683048">Ke peranti jenis manakah yang anda ingin segerakkan?</translation>
+<translation id="4112587618563511470">Kod segerakan salah, sila semak dan cuba lagi.</translation>
 <translation id="2339730291919608488">Tinggalkan Rantaian Segerak</translation>
+<translation id="115699408012835975">Sekiranya anda menetapkan semula Penyegerakan, anda perlu memasukkan semula kod penyegerakan daripada peranti yang lain untuk menyegerak dengannya. Adakah anda pasti anda ingin meneruskannya?</translation>
+<translation id="3396347744975515056">Segerakan Brave telah dinaik taraf dan memerlukan penetapan</translation>
+<translation id="7473245612074035141">Mulakan Tetapan</translation>
 <translation id="6696935187608454456">Bantuan Tips</translation>
 <translation id="2775956301559569472">Paparkan gesaan Wayback Machine pada laman 404</translation>
 <translation id="1807246157184219062">Cahaya</translation>

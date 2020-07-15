@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Huzuia kivinjari kisifuatilie tabia ya mtumiaji mtandaoni kwa kutumia</translation>
 <translation id="7459000603787995422">Futa vichupo unapofunga</translation>
 <translation id="1680858055899097121">Usisitize vichupo kati ya vipindi vya kuvinjari</translation>
+<translation id="453601949003770390">Matangazo na Vifuatiliaji Vimezuiwa</translation>
 <translation id="6761596877474675418">Data Iliyohifadhiwa</translation>
 <translation id="3034562645284925177">Kadirio la Muda Uliookoa</translation>
 <translation id="6572660632052512096">Hali ya Kopyuta ya Mezani</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Ruka</translation>
 <translation id="316832010181763471">Usajili wa mtambo wa utafutaji</translation>
 <translation id="986879628471635371">Utatuzi na usajili</translation>
+<translation id="5808759341041733958">Chagua mtambo chaguo msingi wa kutafuta</translation>
 <translation id="4428458837269935199">Kwa uzoefu wa utafutaji wa faragha zaidi, jaribu DuckDuckGo.</translation>
 <translation id="5317780077021120954">Hifadhi</translation>
 <translation id="7053983685419859001">Zuia</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">Hili ni tangazo lako la kwanza la Brave. Gusa upate maelezo zaidi.</translation>
 <translation id="4930714375720679147">Washa</translation>
 <translation id="2453860139492968684">Maliza</translation>
+<translation id="7983303953939627894">Chuma na Uchangie</translation>
+<translation id="48520986898237073">Nenda kwenye kipochi</translation>
 <translation id="2359808026110333948">Endelea</translation>
 <translation id="7658239707568436148">Ghairi</translation>
 <translation id="3570367516044491911">Weka kiwe kivinjari chaguo msingi</translation>
@@ -169,14 +173,19 @@ mwezi huu...</translation>
 <translation id="222883304157347087">(kifaa hiki)</translation>
 <translation id="8193724030871339658">VIFAA VINGINE VILIVYO KATIKA MSURURU</translation>
 <translation id="279635009973773843">VIFAA VINAPAKIWA...</translation>
+<translation id="6394333525003604181">INAONDOKA KWENYE USAWAZISHAJI...</translation>
+<translation id="1604429341565715601">Uwekaji wa mipangilio ya usawazishaji unaendelea, jaribu kuweka upya baadaye</translation>
 <translation id="2569646144216067185">Idadi ya maneno <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Idadi ya maneno si sahihi</translation>
+<translation id="7507533586185621084">Msimbo wa kusawazisha si sahihi</translation>
+<translation id="8284063834901328650">Msimbo wa QR wa kusawazisha si sahihi</translation>
 <translation id="3149880132460839085">Brave Kuoanisha</translation>
 <translation id="3680755684186855422">Brave Kuoanisha hukuruhusu kuoanisha data za vialamisho kwa faragha baina ya Vivinjari vya Brave kwenye vifaa vyako mbalimbali.</translation>
 <translation id="3735228155296883311">Changanua tu msimbo kutoka kwenye msururu wako wa usawazishaji ambao umeunda katika kifaa kingine. Au uanzishe msururu mpya wa usawazishaji.</translation>
 <translation id="4690880825349994619">Kwa kutumia kifaa cha sasa kilichosawazishwa, fungua Mipangilio ya Brave na uende kwenye Mipangilio &gt; Sawazisha. Chagua "Ongeza Kifaa" kisha uchanganue Msimbo wa QR ulioonyeshwa kwenye skrini.</translation>
 <translation id="5241263629636958324">Imenakiliwa kwenye ubao wa kunakilia</translation>
 <translation id="5817918615728894473">Oanisha</translation>
+<translation id="3394474617110693560">Aina</translation>
 <translation id="2004365171440701679">Ondoa kifaa hiki</translation>
 <translation id="1178128181015923849">Una uhakika ungependa kufuta kifaa cha '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Changanua au uweke msimbo wa kusawazisha</translation>
@@ -316,4 +325,11 @@ mwezi huu...</translation>
 <translation id="76550953340008122">Asante kwa kufahamisha wasanidi programu wa Brave kuwa kuna tatizo kwenye tovuti hii. Tutajitahidi kulitatua!</translation>
 <translation id="650318023204990401">Vidhibiti vya hali ya juu</translation>
 <translation id="7182293319417450928">Salio la chini la 25 BAT linahitajika ili kuthibitisha.</translation>
+<translation id="1275664486910646411">Onyesha tovuti maarufu kwenye sehemu ya kujaza kiotomatiki</translation>
+<translation id="5516010970279932133">Onyesha tovuti zinazopendekezwa kwenye sehemu ya kujaza kiotomatiki</translation>
+<translation id="5370478469168390143">Hifadhi Data Mtandaoni</translation>
+<translation id="1118508688433541158">Vinjari kwa haraka na uzuie matangazo ukitumia Brave</translation>
+<translation id="915835519491851291">Umezuia baadhi ya matangazo na vifuatiliaji hivi sasa.</translation>
+<translation id="3286927551967858325">Angalia</translation>
+<translation id="2929661208078053609">Vizuri sana!</translation>
 </translationbundle>

@@ -73,6 +73,9 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="7390783310074170337">Visualizzazione predefinita</translation>
 <translation id="130615081792797568">Visualizzazione semplice</translation>
 <translation id="2360360976480535628">Visualizzazione avanzata</translation>
+<translation id="2133317862976486547">Blocco di tracker e annunci</translation>
+<translation id="4385707520896576447">Blocco dei cookie</translation>
+<translation id="4978786495456601191">Blocco del fingerprinting</translation>
 <translation id="3570081523466826008">Aggiorna le connessioni a HTTPS</translation>
 <translation id="4824468494729001999">Script di blocco</translation>
 <translation id="519861640102428255">Vedi &amp; Senti</translation>
@@ -81,9 +84,12 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="863171915776379000">Consenti accessi a Facebook e post incorporati</translation>
 <translation id="5165042248369837294">Consenti tweet incorporati su Twitter</translation>
 <translation id="958971637207126733">Permetti i post integrati di LinkedIn</translation>
+<translation id="4078738236287221428">Aggressivo</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="4176463684765177261">Disabilitato</translation>
+<translation id="5770288601196774623">Solo tra siti</translation>
 <translation id="3587482841069643663">Tutti</translation>
+<translation id="5533533363827555308">Rigido, potrebbe non far funzionare alcuni siti</translation>
 <translation id="8942080017911802454">Politica di gestione IP WebRTC</translation>
 <translation id="6165508094623778733">Scopri di più</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -91,12 +97,22 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="5825943197137337319">Solamente l'interfaccia pubblica predefinita</translation>
 <translation id="1689062823386843231">Disabilita UDP senza proxy</translation>
 <translation id="8502234992433094996">Utilizza i servizi Google per i messaggi push</translation>
+<translation id="5565355416171743213">Comincia a usare la sincronizzazione</translation>
 <translation id="4332558599726753990">Impostazioni di Sincronizzazione</translation>
+<translation id="2187778349654214731">Per iniziare, avrai bisogno di avere Brave installato su tutti i dispositivi che intendi sincronizzare. Quindi, collegali in modo sicuro con un codice di sincronizzazione.</translation>
+<translation id="7530575064080939974">Gestisci i tuoi dispositivi sincronizzati</translation>
+<translation id="7575156386943878014">Gestore sincronizzazione</translation>
 <translation id="1755198127524719638">Impostazioni di Sincronizzazione</translation>
 <translation id="7558480201297099157">Decidi quali informazioni sincronizzare tra i dispositivi. Queste impostazioni riguardano solo il dispositivo corrente.</translation>
+<translation id="7731928563672901833">Lista dispositivi</translation>
 <translation id="28332161031213248">La lista dispositivi sottostante include tutti i dispositivi nella tua catena di sincronizzazione. Ogni dispositivo può essere gestito da qualsiasi altro dispositivo.</translation>
 <translation id="1313162974556054106">Nome del dispositivo</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (questo dispositivo)</translation>
+<translation id="3686835020221422649">Ultima attivazione</translation>
+<translation id="2569646144216067185">Conteggio parole: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Copiato!</translation>
+<translation id="8802630444265810662">Un codice QR da scansionare con un dispositivo mobile per trasmettere il tuo codice di sincronizzazione</translation>
+<translation id="6221331245829088299">Si è verificato un errore durante la visualizzazione del codice QR, aggiorna e riprova.</translation>
 <translation id="298546024891487702">Per cominciare, dovrai aver installato Brave su tutti i dispositivi che vuoi sincronizzare. Per collegarli, avvia una catena di sincronizzazione che userai per connettere in sicurezza tutti i tuoi dispositivi tra di loro.</translation>
 <translation id="6200528822592747640">Avvia una nuova Catena di Sincronizzazione</translation>
 <translation id="5184726904895809379">Ho un Codice di Sincronizzazione</translation>
@@ -116,7 +132,12 @@ Installando questa estensione, accetti i Termini di utilizzo di Google Widevine.
 <translation id="5734745018569675530">Digita le parole d'ordine della catena di sincronizzazione che ti sono state fornite nel modulo sottostante.</translation>
 <translation id="1061533051865606843">Aggiungi Nuovo Dispositivo</translation>
 <translation id="5093410893656857925">Scegli il Tipo di Dispositivo</translation>
+<translation id="4581190919849683048">Con quale tipo di dispositivo vuoi effettuare la sincronizzazione?</translation>
+<translation id="4112587618563511470">Codice di sincronizzazione non valido, controllalo e riprova.</translation>
 <translation id="2339730291919608488">Esci dalla catena di sincronizzazione</translation>
+<translation id="115699408012835975">Se reimposti la sincronizzazione, dovrai reinserire un codice di sincronizzazione da un altro dispositivo per sincronizzarti ad esso. Sei sicuro di voler procedere?</translation>
+<translation id="3396347744975515056">Brave Sync è stato aggiornato e deve essere configurato</translation>
+<translation id="7473245612074035141">Inizia configurazione</translation>
 <translation id="6696935187608454456">Mance di aiuto</translation>
 <translation id="2775956301559569472">Mostra il messaggio della Wayback Machine sulle pagine 404</translation>
 <translation id="1807246157184219062">Chiaro</translation>

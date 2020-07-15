@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Empêche le navigateur de relever les empreintes digitales</translation>
 <translation id="7459000603787995422">Fermez les onglets lorsque vous quittez</translation>
 <translation id="1680858055899097121">Ne gardez pas d'onglets entre les sessions de navigation</translation>
+<translation id="453601949003770390">Pisteurs et annonces bloqués</translation>
 <translation id="6761596877474675418">Données sauvegardées</translation>
 <translation id="3034562645284925177">Gain de temps estimé</translation>
 <translation id="6572660632052512096">Mode bureau</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Passer</translation>
 <translation id="316832010181763471">Intégration dans les moteurs de recherche</translation>
 <translation id="986879628471635371">Intégration du dépannage</translation>
+<translation id="5808759341041733958">Choisissez le moteur de recherche par défaut</translation>
 <translation id="4428458837269935199">Pour une expérience de recherche plus privée, essayez DuckDuckGo.</translation>
 <translation id="5317780077021120954">Enregistrer</translation>
 <translation id="7053983685419859001">Bloquer</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">les publicités et les localisateurs qui portent atteinte à la vie privée afin que vous puissiez naviguer sans être suivi sur le Web.</translation>
 <translation id="8537217141725709400">Gagnez des <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Récompenses Brave</translation>
+<translation id="5870330605209713397">en affichant des annonces respectueuses de la vie privée et en soutenant vos sites et créateurs préférés par défaut.</translation>
 <translation id="821707262661492716">pour voir des publicités respectueuses de la vie privée.</translation>
+<translation id="8267692331246948056">En appuyant sur Gagner &amp; Donner, vous acceptez les</translation>
 <translation id="4281844954008187215">Conditions d'utilisation</translation>
 <translation id="6871397658902960384">Démarrer la navigation</translation>
 <translation id="454386012157232640">Je n'ai pas vu de pub</translation>
 <translation id="1448877943847791441">Brave montrera votre première annonce dans</translation>
+<translation id="4410793187232041318">Vous gagnerez désormais des jetons grâce à Brave Ads.</translation>
 <translation id="6511854390690723657">Voici votre première publicité sur Brave. Tapez pour en savoir plus.</translation>
 <translation id="4930714375720679147">Activer</translation>
 <translation id="2453860139492968684">Terminer</translation>
+<translation id="7983303953939627894">Gagner &amp; Donner</translation>
+<translation id="48520986898237073">Continuer vers le portefeuille</translation>
 <translation id="2359808026110333948">Continuer</translation>
 <translation id="7658239707568436148">Annuler</translation>
 <translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
@@ -174,14 +181,19 @@ mois-ci...</translation>
 <translation id="222883304157347087">(cet appareil)</translation>
 <translation id="8193724030871339658">AUTRES PÉRIPHÉRIQUES SUR LA CHAÎNE</translation>
 <translation id="279635009973773843">CHARGEMENT DES APPAREILS...</translation>
+<translation id="6394333525003604181">VOUS QUITTEZ LA CHAÎNE DE SYNC...</translation>
+<translation id="1604429341565715601">La configuration de Sync est en cours, essayez de le réinitialiser plus tard</translation>
 <translation id="2569646144216067185">Nombre de mots : <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nombre de mots incorrect</translation>
+<translation id="7507533586185621084">Code de synchronisation erroné</translation>
+<translation id="8284063834901328650">Code QR de synchronisation erroné</translation>
 <translation id="3149880132460839085">Synchronisation Brave</translation>
 <translation id="3680755684186855422">La synchronisation Brave vous permet de synchroniser des données de favoris en privé entre vos navigateurs Brave sur différents appareils.</translation>
 <translation id="3735228155296883311">Numérisez simplement le code de la chaîne de synchronisation que vous avez créée sur un autre appareil. Ou démarrez une nouvelle chaîne de synchronisation.</translation>
 <translation id="4690880825349994619">À l'aide de l'appareil synchronisé existant, ouvrez « Paramètres de Brave » et accédez à « Paramètres et synchronisation ». Choisissez « Ajouter un appareil » et numérisez le code QR affiché à l'écran.</translation>
 <translation id="5241263629636958324">Copié dans le Presse-papiers</translation>
 <translation id="5817918615728894473">Associer</translation>
+<translation id="3394474617110693560">Catégories</translation>
 <translation id="2004365171440701679">Supprimer cet appareil</translation>
 <translation id="1178128181015923849">Êtes-vous sûr de vouloir supprimer l'appareil '<ph name="DEVICE_NAME"/>' ?</translation>
 <translation id="7745082336226088126">Scannez ou saisissez le code de synchro</translation>
@@ -322,4 +334,11 @@ mois-ci...</translation>
 <translation id="76550953340008122">Merci d'avoir fait savoir aux développeurs de Brave qu'il y a quelque chose qui ne marche pas sur ce site. Nous ferons de notre mieux pour le réparer !</translation>
 <translation id="650318023204990401">Commandes avancées</translation>
 <translation id="7182293319417450928">Un solde minimum de 25 BAT est requis pour la vérification.</translation>
+<translation id="1275664486910646411">Afficher les meilleurs sites en saisie automatique</translation>
+<translation id="5516010970279932133">Afficher les sites suggérés en saisie automatique</translation>
+<translation id="5370478469168390143">Sauvegarder les données en ligne</translation>
+<translation id="1118508688433541158">Naviguez plus rapidement et bloquez les annonces avec Brave</translation>
+<translation id="915835519491851291">Vous venez de bloquer des pisteurs et annonces.</translation>
+<translation id="3286927551967858325">Voir le site</translation>
+<translation id="2929661208078053609">Super !</translation>
 </translationbundle>
