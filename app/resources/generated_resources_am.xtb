@@ -5444,12 +5444,12 @@
 <translation id="7992202128769240372">ከ<ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/> ገደብ አልፏል</translation>
 <translation id="7994702968232966508">የEAP ስልት</translation>
 <translation id="7997826902155442747">የቅድሚያ ሂደት</translation>
-<translation id="7999229196265990314">'የሚከተሉትን ፋይሎች ፈጥሯል፦ 
+<translation id="7999229196265990314">'የሚከተሉትን ፋይሎች ፈጥሯል፦
 nil
 nil
 ቅጥያ፦ <ph name="EXTENSION_FILE"/>
 nil
-ቁልፍ ፋይል፦ <ph name="KEY_FILE"/> 
+ቁልፍ ፋይል፦ <ph name="KEY_FILE"/>
 nil
 nil
 nil
@@ -6467,10 +6467,10 @@ nil</translation>
 <translation id="203837651858678035">ለማንኛውም ማንነት ከማያሳውቅ ሁነታ ይውጡ?</translation>
 <translation id="7376221878517288144">ለማንኛውም ማንነት ከማያሳውቅ ሁነታ ይውጡ?</translation>
 <translation id="871606814707918245">አብዛኛዎቹ ሰዎች ከዚህ ጣቢያ የሚመጡ ማሳወቂያዎችን ያግዳሉ</translation>
-<translation id="5053701565089446556">የማንነትን የማያሳውቅ ቅጥያ፦ <ph name="EXTENSION_NAME"/></translation>
+<translation id="5053701565089446556">የግል ማራዘሚያ <ph name="EXTENSION_NAME"/></translation>
 <translation id="611296870688433505">ማንነትን የማያሳውቅ መተግበሪያ፦ <ph name="APP_NAME"/></translation>
 <translation id="9048137919253433011">ማንነት የማያሳውቅ ትር፦ <ph name="TAB_NAME"/></translation>
-<translation id="1799432502220762862">ማንነት የማያሳውቅ ንዑስ ክፈፍ፦ <ph name="SUBFRAME_SITE"/></translation>
+<translation id="1799432502220762862">የግል ንዑስ ክፈፍ <ph name = "SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">ማንነት የማያሳውቁ ሁነታ፦ <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8808478386290700967">የBrave የድር ገበያ</translation>
 <translation id="8261378640211443080">ይህ ቅጥያ በ<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ውስጥ ያልተጠቀሰ ሲሆን እርስዎ ሳያውቁት የታከለ ሊሆን ይችላል።</translation>

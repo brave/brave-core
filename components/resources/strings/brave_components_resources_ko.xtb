@@ -40,6 +40,7 @@
 <translation id="2875302873837723333">최고의 사이트</translation>
 <translation id="8173998484743827990">Brave Stats</translation>
 <translation id="383680190590774040">시계</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8730621377337864115">완료</translation>
 <translation id="6248988683584659830">검색 설정</translation>
@@ -245,7 +246,6 @@
 <translation id="2975780980638932742">Brave 광고가 왔습니다!</translation>
 <translation id="3361548743396744457">좋아하는 사이트를 둘러보는 것만으로 후원하시거나 – 언제든 원하시는 때 사이트에 팁을 주세요.</translation>
 <translation id="718303546189503957">자동 기부 {{processor}}</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4493850495402472953">및</translation>
 <translation id="8804164990146287819">개인정보 보호 정책</translation>
 <translation id="4281844954008187215">서비스 약관</translation>
@@ -366,6 +366,7 @@
 <translation id="8204292894173669182">저장된 항목에서 제거</translation>
 <translation id="2160578257818656558">아직 기부금을 받기 위해 가입하지 않은 제작자들에게 {{reservedAmount}} {{currency}}을/를 지정하셨습니다. 그들이 확인할 때까지, 또는 90일이 지날 때까지, 귀하의 브라우저가 계속 기부하려고 시도할 것입니다.</translation>
 <translation id="8759753423332885148">더 알아보기.</translation>
+<translation id="5939518447894949180">초기화</translation>
 <translation id="3157931365184549694">복구</translation>
 <translation id="1797334173232638045">고정된 사이트가 다음으로 이동됨</translation>
 <translation id="5717619667204259673">이 복구 키를 안전하게 보관하세요.</translation>

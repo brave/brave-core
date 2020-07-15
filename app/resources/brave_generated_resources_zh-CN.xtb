@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">默认视图</translation>
 <translation id="130615081792797568">简单视图</translation>
 <translation id="2360360976480535628">高级视图</translation>
+<translation id="2133317862976486547">跟踪器和和广告拦截</translation>
+<translation id="4385707520896576447">拦截 Cookie</translation>
+<translation id="4978786495456601191">拦截指纹识别</translation>
 <translation id="3570081523466826008">升级为 HTTPS 连接</translation>
 <translation id="4824468494729001999">拦截脚本</translation>
 <translation id="519861640102428255">外&amp; 观</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
 <translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允许 LinkedIn 嵌入帖子</translation>
+<translation id="4078738236287221428">攻击性</translation>
 <translation id="7740996059027112821">标准</translation>
 <translation id="4176463684765177261">已停用</translation>
+<translation id="5770288601196774623">仅限跨站点</translation>
 <translation id="3587482841069643663">全部</translation>
+<translation id="5533533363827555308">严格，可能会破坏网站</translation>
 <translation id="8942080017911802454">WebRTC IP 处理策略</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="8798099450830957504">默认</translation>
@@ -91,12 +97,22 @@
 <translation id="5825943197137337319">仅限默认公共接口</translation>
 <translation id="1689062823386843231">禁用无代理的 UDP</translation>
 <translation id="8502234992433094996">为推送消息使用 Google Services</translation>
+<translation id="5565355416171743213">开始使用同步</translation>
 <translation id="4332558599726753990">同步设置</translation>
+<translation id="2187778349654214731">首先，请在所有需要同步的设备上安装 Brave。然后，请通过同步代码将它们妥善的连接在一起。</translation>
+<translation id="7530575064080939974">管理您已同步的设备</translation>
+<translation id="7575156386943878014">同步管理器</translation>
 <translation id="1755198127524719638">同步设置</translation>
 <translation id="7558480201297099157">管理您要在设备间同步的信息。这些设置只应用于此设备。</translation>
+<translation id="7731928563672901833">设备清单</translation>
 <translation id="28332161031213248">下方的设备列表包括了您的同步链中的全部设备。每一台设备均可通过任意一台其他设备管理。</translation>
 <translation id="1313162974556054106">设备名称</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/>（本设备）</translation>
+<translation id="3686835020221422649">上次激活</translation>
+<translation id="2569646144216067185">字数：<ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">已复制</translation>
+<translation id="8802630444265810662">可以用移动设备扫描二维码，以便转发您的同步代码</translation>
+<translation id="6221331245829088299">显示二维码时出错，请刷新并重试。</translation>
 <translation id="298546024891487702">首先，请在所有需要同步的设备上安装Brave。要链接所有设备，请创建一个同步链，即可把所有设备安全连接到一起。</translation>
 <translation id="6200528822592747640">创建新的同步链</translation>
 <translation id="5184726904895809379">我有同步密码</translation>
@@ -116,7 +132,12 @@
 <translation id="5734745018569675530">在下方的表格输入您获得的同步链密码词。</translation>
 <translation id="1061533051865606843">添加新设备</translation>
 <translation id="5093410893656857925">选择设备类型</translation>
+<translation id="4581190919849683048">您想与那种类型的设备进行同步？</translation>
+<translation id="4112587618563511470">同步代码无效，请检查并重试。</translation>
 <translation id="2339730291919608488">离开同步链</translation>
+<translation id="115699408012835975">如果您重置同步，则您需要重新输入另一台设备的同步代码，以便与其进行同步。您确定想要继续吗？</translation>
+<translation id="3396347744975515056">Brave 同步已升级，并需要进行设置</translation>
+<translation id="7473245612074035141">开始设置</translation>
 <translation id="6696935187608454456">帮助提示</translation>
 <translation id="2775956301559569472">显示 404 页上的 Wayback Machine 提示</translation>
 <translation id="1807246157184219062">亮</translation>

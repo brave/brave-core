@@ -111,6 +111,8 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="3686835020221422649">Ostatnia aktywność</translation>
 <translation id="2569646144216067185">Liczba słów: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Skopiowano!</translation>
+<translation id="8802630444265810662">Kod QR, który zostanie zeskanowany za pomocą urządzenia mobilnego w celu przekazania Twojego kodu synchronizacji</translation>
+<translation id="6221331245829088299">Wystąpił problem podczas wyświetlania kodu QR, odśwież i spróbuj ponownie.</translation>
 <translation id="298546024891487702">Na początek musisz zainstalować przeglądarkę Brave na wszystkich urządzeniach, które chcesz zsynchronizować. Aby je połączyć, rozpocznij łańcuch synchronizacji, którego użyjesz do bezpiecznego połączenia wszystkich swoich urządzeń.</translation>
 <translation id="6200528822592747640">Rozpocznij nowy łańcuch synchronizacji</translation>
 <translation id="5184726904895809379">Mam kod synchronizacji</translation>

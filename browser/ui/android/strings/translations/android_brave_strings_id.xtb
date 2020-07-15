@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Mencegah pencatatan sidik-jari-peramban</translation>
 <translation id="7459000603787995422">Tutup tab saat keluar</translation>
 <translation id="1680858055899097121">Jangan simpan tab antar sesi penjelajahan</translation>
+<translation id="453601949003770390">Pelacak &amp; Iklan Diblokir</translation>
 <translation id="6761596877474675418">Data Tersimpan</translation>
 <translation id="3034562645284925177">± Waktu Dihemat</translation>
 <translation id="6572660632052512096">Mode Desktop</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Lewati</translation>
 <translation id="316832010181763471">Pengenalan mesin pencari</translation>
 <translation id="986879628471635371">Pengenalan Penyelesaian Masalah</translation>
+<translation id="5808759341041733958">Pilih mesin pencarian default</translation>
 <translation id="4428458837269935199">Untuk pencarian yang lebih privat, cobalah DuckDuckGo.</translation>
 <translation id="5317780077021120954">Simpan</translation>
 <translation id="7053983685419859001">Blokir</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">iklan yang mengganggu privasi dan pelacak sehingga Anda bisa menjelajah Internet tanpa harus diikuti.</translation>
 <translation id="8537217141725709400">Dapatkan <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="5870330605209713397">dengan melihat iklan yang menghormati privasi dan mendukung situs dan kreator favorit Anda secara default.</translation>
 <translation id="821707262661492716">untuk melihat iklan yang menghormati privasi.</translation>
+<translation id="8267692331246948056">Dengan mengetuk Hasilkan &amp; Beri, Anda menyetujui</translation>
 <translation id="4281844954008187215">Ketentuan Layanan</translation>
 <translation id="6871397658902960384">Mulai menjelajah</translation>
 <translation id="454386012157232640">Saya tidak melihat iklan</translation>
 <translation id="1448877943847791441">Brave akan menampilkan iklan pertama untuk Anda di</translation>
+<translation id="4410793187232041318">Kini Anda akan memperoleh token dari Brave Ads.</translation>
 <translation id="6511854390690723657">Inilah iklan Brave pertama Anda. Ketuk untuk mempelajari lebih lanjut.</translation>
 <translation id="4930714375720679147">Aktifkan</translation>
 <translation id="2453860139492968684">Selesai</translation>
+<translation id="7983303953939627894">Hasilkan &amp; Beri</translation>
+<translation id="48520986898237073">Lanjut ke dompet</translation>
 <translation id="2359808026110333948">Lanjutkan</translation>
 <translation id="7658239707568436148">Batal</translation>
 <translation id="3570367516044491911">Jadikan peramban baku</translation>
@@ -176,14 +183,19 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="222883304157347087">(perangkat ini)</translation>
 <translation id="8193724030871339658">PERANGKAT LAIN PADA UNTAI SINKRONISASI</translation>
 <translation id="279635009973773843">MEMUAT PERANGKAT...</translation>
+<translation id="6394333525003604181">MENINGGALKAN RANTAI SINKRONISASI...</translation>
+<translation id="1604429341565715601">Penataan sinkronisasi sedang berlangsung, cobalah mengaturnya ulang nanti</translation>
 <translation id="2569646144216067185">Jumlah kata: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Jumlah kata tidak tepat</translation>
+<translation id="7507533586185621084">Kode sinkronisasi salah</translation>
+<translation id="8284063834901328650">Kode QR sinkronisasi salah</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync memungkinkan Anda menyinkronkan data markah secara pribadi antarperamban Brave pada berbagai perangkat.</translation>
 <translation id="3735228155296883311">Cukup pindai kode dari untai sinkronisasi yang Anda buat di perangkat lain. Atau memulai rantai sinkronisasi baru.</translation>
 <translation id="4690880825349994619">Menggunakan perangkat yang sudah tersinkronisasi, buka Pengaturan Brave dan masuklah ke Pengaturan &gt; Sinkronisasi. Pilih "Tambah Perangkat" dan pindai kode QR yang ditampilkan di layar.</translation>
 <translation id="5241263629636958324">Disalin ke papan klip</translation>
 <translation id="5817918615728894473">Hubungkan</translation>
+<translation id="3394474617110693560">Kategori</translation>
 <translation id="2004365171440701679">Hapus perangkat ini</translation>
 <translation id="1178128181015923849">Anda yakin ingin menghapus perangkat '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Pindai atau masukkan kode sinkronisasi</translation>
@@ -324,4 +336,11 @@ sampai mereka memverifikasi, atau sampai 90 hari berlalu.</translation>
 <translation id="76550953340008122">Terima kasih telah memberi tahu pengembang Brave tentang masalah dengan situs ini. Kami akan berusaha sebaik mungkin untuk memperbaikinya!</translation>
 <translation id="650318023204990401">Kontrol lanjutan</translation>
 <translation id="7182293319417450928">Saldo minimal sebesar 25 BAT diperlukan untuk verifikasi.</translation>
+<translation id="1275664486910646411">Tampilkan situs teratas di isi otomatis</translation>
+<translation id="5516010970279932133">Tampilkan situs rekomendasi di isi otomatis</translation>
+<translation id="5370478469168390143">Simpan Data Online</translation>
+<translation id="1118508688433541158">Ramban lebih cepat dan blokir iklan dengan Brave</translation>
+<translation id="915835519491851291">Anda baru saja memblokir sejumlah pelacak &amp; iklan.</translation>
+<translation id="3286927551967858325">Lihat</translation>
+<translation id="2929661208078053609">Bagus!</translation>
 </translationbundle>

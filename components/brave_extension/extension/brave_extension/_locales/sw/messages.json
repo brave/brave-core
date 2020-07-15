@@ -92,11 +92,11 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "Alama ya kidole imezuiwa (kawaida)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "Alama ya kidole imezuiwa (inasisitizwa, inaweza kuathiri utendaji wa tovuti)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {

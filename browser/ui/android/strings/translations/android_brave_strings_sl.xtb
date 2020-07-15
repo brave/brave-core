@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Preprečuje strežniku ustvarjanje prstnih odtisov</translation>
 <translation id="7459000603787995422">Zapri zavihke ob izhodu</translation>
 <translation id="1680858055899097121">Ne ohranjaj zavihkov med sejami brskanja</translation>
+<translation id="453601949003770390">Sledilniki in oglasi blokirani</translation>
 <translation id="6761596877474675418">Podatki shranjeni</translation>
 <translation id="3034562645284925177">Shranjen predv. čas</translation>
 <translation id="6572660632052512096">Namizni način</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Preskoči</translation>
 <translation id="316832010181763471">Uvajalni proces iskalnika</translation>
 <translation id="986879628471635371">Odpravljanje težav uvajalnega procesa</translation>
+<translation id="5808759341041733958">Izberi privzeti iskalnik</translation>
 <translation id="4428458837269935199">Za bolj zasebno iskanje, poskusite storitev DuckDuckGo.</translation>
 <translation id="5317780077021120954">Shrani</translation>
 <translation id="7053983685419859001">Blokiraj</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">To je vaš prvi oglas Brave. Dotaknite se za več informacij.</translation>
 <translation id="4930714375720679147">Vklop</translation>
 <translation id="2453860139492968684">Dokončaj</translation>
+<translation id="7983303953939627894">Zaslužek in dajanje</translation>
+<translation id="48520986898237073">Nadaljuj na denarnico</translation>
 <translation id="2359808026110333948">Nadaljuj</translation>
 <translation id="7658239707568436148">Prekliči</translation>
 <translation id="3570367516044491911">Nastavite kot privzeti brskalnik</translation>
@@ -169,14 +173,19 @@ dejavnosti ...</translation>
 <translation id="222883304157347087">(ta naprava)</translation>
 <translation id="8193724030871339658">DRUGE NAPRAVE V VERIGI</translation>
 <translation id="279635009973773843">NALAGANJE NAPRAV ...</translation>
+<translation id="6394333525003604181">ZAPUŠČAM SINHRONIZACIJSKO VERIGO ...</translation>
+<translation id="1604429341565715601">Nastavitev sinhronizacije je v teku, poskusite jo ponastaviti pozneje</translation>
 <translation id="2569646144216067185">Število besed: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nepravilno število besed</translation>
+<translation id="7507533586185621084">Napačna sinhronizacijska koda</translation>
+<translation id="8284063834901328650">Napačna koda QR</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Brave Sync vam omogoča, da zasebno sinhronizirate podatke o zaznamkih med vašimi brskalniki Brave na različnih napravah.</translation>
 <translation id="3735228155296883311">Preprosto optično preberite kodo iz verige za sinhronizacijo, ki ste jo ustvarili v drugi napravi. Ali pa zaženite novo verigo sinhronizacije.</translation>
 <translation id="4690880825349994619">Z uporabo obstoječe sinhronizirane naprave odprite nastavitve brskalnika Brave in pojdite na možnost Nastavitve &gt; sinhronizacije. Izberite možnost »Dodaj napravo« in optično preberite kodo QR, ki je prikazana na zaslonu.</translation>
 <translation id="5241263629636958324">Kopirano v odložišče!</translation>
 <translation id="5817918615728894473">Seznani</translation>
+<translation id="3394474617110693560">Kategorije</translation>
 <translation id="2004365171440701679">Odstrani to napravo</translation>
 <translation id="1178128181015923849">Ali ste prepričani, da želite izbrisati napravo '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Optično preberite ali vnesite sinhronizacijsko kodo</translation>
@@ -316,4 +325,11 @@ dejavnosti ...</translation>
 <translation id="76550953340008122">Hvala, ker ste obvestili razvijalce Brave, da je s to spletno stranjo nekaj narobe. Potrudili se bomo, da to popravimo!</translation>
 <translation id="650318023204990401">Napredne nastavitve</translation>
 <translation id="7182293319417450928">Za potrditev potrebujete stanje najmanj 25 BAT.</translation>
+<translation id="1275664486910646411">V samodejnem dokončanju prikaži najbolj priljubljena spletna mesta</translation>
+<translation id="5516010970279932133">V samodejnem dokončanju prikaži predlagana spletna mesta</translation>
+<translation id="5370478469168390143">Podatke shrani na spletu</translation>
+<translation id="1118508688433541158">Brskaj hitreje in blokiraj oglase s programom Brave</translation>
+<translation id="915835519491851291">Pravkar ste blokirali nekatere sledilnike in oglase</translation>
+<translation id="3286927551967858325">Oglejte si</translation>
+<translation id="2929661208078053609">Lepo!</translation>
 </translationbundle>

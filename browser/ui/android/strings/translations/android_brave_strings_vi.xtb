@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Ngăn chặn trình duyệt lấy dấu vân tay</translation>
 <translation id="7459000603787995422">Đóng tab khi thoát</translation>
 <translation id="1680858055899097121">Đừng giữ nguyên các tab giữa các phiên duyệt</translation>
+<translation id="453601949003770390">Trình theo dõi &amp; Quảng cáo Đã chặn</translation>
 <translation id="6761596877474675418">Dữ liệu Đã tiết kiệm</translation>
 <translation id="3034562645284925177">Thời gian đã lưu ước tính</translation>
 <translation id="6572660632052512096">Chế độ cho máy tính để bàn</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Bỏ qua</translation>
 <translation id="316832010181763471">Bắt đầu sử dụng công cụ tìm kiếm</translation>
 <translation id="986879628471635371">Bắt đầu sử dụng công cụ khắc phục sự cố</translation>
+<translation id="5808759341041733958">Chọn công cụ tìm kiếm mặc định</translation>
 <translation id="4428458837269935199">Để có trải nghiệm tìm kiếm riêng tư hơn, hãy thử dùng DuckDuckGo.</translation>
 <translation id="5317780077021120954">Lưu</translation>
 <translation id="7053983685419859001">Chặn</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">các trình theo dõi và quảng cáo xâm phạm quyền riêng tư để bạn có thể duyệt mà không bị theo dõi trên các web.</translation>
 <translation id="8537217141725709400">Kiếm <ph name="TOKEN"/>s</translation>
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
+<translation id="5870330605209713397">bằng cách xem quảng cáo tôn trọng quyền riêng tư và hỗ trợ các website và người sáng tạo yêu thích của bạn theo mặc định.</translation>
 <translation id="821707262661492716">nhờ xem các quảng cáo tôn trọng quyền riêng tư.</translation>
+<translation id="8267692331246948056">Bằng cách chạm vào Kiếm &amp; Tặng, bạn đồng ý với</translation>
 <translation id="4281844954008187215">Điều khoản Dịch vụ</translation>
 <translation id="6871397658902960384">Bắt đầu duyệt</translation>
 <translation id="454386012157232640">Tôi không thấy quảng cáo</translation>
 <translation id="1448877943847791441">Brave sẽ hiển thị quảng cáo đầu tiên của bạn trong</translation>
+<translation id="4410793187232041318">Giờ đây, bạn sẽ kiếm được token từ Brave Ads.</translation>
 <translation id="6511854390690723657">Đây là quảng cáo Brave đầu tiên của bạn. Nhấn để tìm hiểu thêm.</translation>
 <translation id="4930714375720679147">Bật</translation>
 <translation id="2453860139492968684">Kết thúc</translation>
+<translation id="7983303953939627894">Kiếm &amp; Tặng</translation>
+<translation id="48520986898237073">Tiếp tục đến ví</translation>
 <translation id="2359808026110333948">Continue</translation>
 <translation id="7658239707568436148">Hủy</translation>
 <translation id="3570367516044491911">Đặt thành trình duyệt mặc định</translation>
@@ -173,14 +180,19 @@ tháng này...</translation>
 <translation id="222883304157347087">(thiết bị này)</translation>
 <translation id="8193724030871339658">CÁC THIẾT BỊ KHÁC TRONG CHUỖI</translation>
 <translation id="279635009973773843">ĐANG TẢI THIẾT BỊ...</translation>
+<translation id="6394333525003604181">ĐANG RỜI KHỎI CHUỖI ĐỒNG BỘ...</translation>
+<translation id="1604429341565715601">Đang thiết lập Đồng bộ hóa, hãy cố gắng đặt lại Đồng bộ hóa sau</translation>
 <translation id="2569646144216067185">Số từ: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Số từ không chính xác</translation>
+<translation id="7507533586185621084">Mã đồng bộ hóa sai</translation>
+<translation id="8284063834901328650">Mã QR đồng bộ hóa sai</translation>
 <translation id="3149880132460839085">Đồng bộ Brave</translation>
 <translation id="3680755684186855422">Đồng bộ Brave cho phép bạn đồng bộ dữ liệu dấu trang một cách riêng tư giữa các Trình duyệt Brave trên các thiết bị khác nhau của bạn.</translation>
 <translation id="3735228155296883311">Chỉ cần quét mã từ chuỗi đồng bộ hóa mà bạn đã tạo trên thiết bị khác. Hoặc bắt đầu một chuỗi đồng bộ hóa mới.</translation>
 <translation id="4690880825349994619">Bằng thiết bị đã đồng bộ hóa hiện có, mở Cài đặt Brave và chuyển đến Cài đặt &gt; Đồng bộ hóa. Chọn "Thêm thiết bị" và quét Mã QR hiển thị trên màn hình.</translation>
 <translation id="5241263629636958324">Đã sao chép vào bộ nhớ Clipboard</translation>
 <translation id="5817918615728894473">Ghép nối</translation>
+<translation id="3394474617110693560">Danh mục</translation>
 <translation id="2004365171440701679">Xóa thiết bị này</translation>
 <translation id="1178128181015923849">Bạn có chắc là bạn muốn xóa thiết bị '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Quét hoặc nhập mã đồng bộ hóa</translation>
@@ -321,4 +333,11 @@ tháng này...</translation>
 <translation id="76550953340008122">Cảm ơn bạn đã thông báo cho các nhà phát triển của Brave biết rằng đã xảy ra sự cố với trang web này. Chúng tôi sẽ cố gắng hết sức để khắc phục sự cố này!</translation>
 <translation id="650318023204990401">Kiểm soát nâng cao</translation>
 <translation id="7182293319417450928">Cần có số dư tối thiểu 25 BAT để xác minh.</translation>
+<translation id="1275664486910646411">Hiển thị các website hàng đầu trong mục tự động hoàn thành</translation>
+<translation id="5516010970279932133">Hiển thị các website được đề xuất trong mục tự động hoàn thành</translation>
+<translation id="5370478469168390143">Lưu Dữ liệu Trực tuyến</translation>
+<translation id="1118508688433541158">Duyệt web nhanh hơn và chặn quảng cáo với Brave</translation>
+<translation id="915835519491851291">Bạn vừa chặn một số trình theo dõi &amp; quảng cáo.</translation>
+<translation id="3286927551967858325">Hãy xem qua</translation>
+<translation id="2929661208078053609">Tuyệt!</translation>
 </translationbundle>

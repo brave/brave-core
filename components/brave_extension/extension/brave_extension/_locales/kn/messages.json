@@ -92,11 +92,11 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಪ್ರಮಾಣಿತ)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ (ಕಟ್ಟುನಿಟ್ಟಾದ, ಸೈಟ್‌ಗಳನ್ನು ವಿಂಗಡಿಸಬಹುದು)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
