@@ -73,6 +73,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="7390783310074170337">Default view</translation>
 <translation id="130615081792797568">Simple view</translation>
 <translation id="2360360976480535628">Advanced view</translation>
+<translation id="2133317862976486547">Trackers &amp; ads blocking</translation>
+<translation id="4385707520896576447">Cookie blocking</translation>
+<translation id="4978786495456601191">Fingerprinting blocking</translation>
 <translation id="3570081523466826008">Upgrade connections to HTTPS</translation>
 <translation id="4824468494729001999">Block scripts</translation>
 <translation id="519861640102428255">Look &amp; Feel</translation>
@@ -81,9 +84,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="863171915776379000">Allow Facebook logins and embedded posts</translation>
 <translation id="5165042248369837294">Allow Twitter embedded tweets</translation>
 <translation id="958971637207126733">Allow LinkedIn embedded posts</translation>
+<translation id="4078738236287221428">Aggressive</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="4176463684765177261">Disabled</translation>
+<translation id="5770288601196774623">Only cross-site</translation>
 <translation id="3587482841069643663">All</translation>
+<translation id="5533533363827555308">Strict, may break sites</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Learn more</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -91,12 +97,22 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="5825943197137337319">Default public interface only</translation>
 <translation id="1689062823386843231">Disable non-proxied UDP</translation>
 <translation id="8502234992433094996">Use Google Services for Push Messaging</translation>
+<translation id="5565355416171743213">Start using sync</translation>
 <translation id="4332558599726753990">Sync Setup</translation>
+<translation id="2187778349654214731">To start, you will need Brave installed on all the devices you plan to sync. Then, securely link them together with a sync code.</translation>
+<translation id="7530575064080939974">Manage your synced devices</translation>
+<translation id="7575156386943878014">Sync Manager</translation>
 <translation id="1755198127524719638">Sync Settings</translation>
 <translation id="7558480201297099157">Manage what information you would like to sync between devices. These settings only affect this device.</translation>
+<translation id="7731928563672901833">Device List</translation>
 <translation id="28332161031213248">The device list below includes all devices in your sync chain. Each device can be managed from any other device.</translation>
 <translation id="1313162974556054106">Device Name</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (This Device)</translation>
+<translation id="3686835020221422649">Last Active</translation>
+<translation id="2569646144216067185">Word count: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Copied!</translation>
+<translation id="8802630444265810662">A QR code to be scanned with a mobile device in order to transmit your sync code</translation>
+<translation id="6221331245829088299">There was an error displaying the QR code, please refresh and try again.</translation>
 <translation id="298546024891487702">To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.</translation>
 <translation id="6200528822592747640">Start a new Sync Chain</translation>
 <translation id="5184726904895809379">I have a Sync Code</translation>
@@ -116,7 +132,12 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
 <translation id="5734745018569675530">Type your supplied sync chain code words into the form below.</translation>
 <translation id="1061533051865606843">Add New Device</translation>
 <translation id="5093410893656857925">Choose Device Type</translation>
+<translation id="4581190919849683048">Which type of device would you like to sync to?</translation>
+<translation id="4112587618563511470">Invalid sync code, please check and try again.</translation>
 <translation id="2339730291919608488">Leave Sync Chain</translation>
+<translation id="115699408012835975">If you reset Sync, you will have to re-enter a sync code from another device in order to sync with it. Are you sure you want to proceed?</translation>
+<translation id="3396347744975515056">Brave Sync has been upgraded and requires setup</translation>
+<translation id="7473245612074035141">Begin Setup</translation>
 <translation id="6696935187608454456">Help Tips</translation>
 <translation id="2775956301559569472">Show Wayback Machine prompt on 404 pages</translation>
 <translation id="1807246157184219062">Light</translation>

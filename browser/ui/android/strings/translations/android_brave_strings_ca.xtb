@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Prevé el navegador de les empremtes digitals</translation>
 <translation id="7459000603787995422">Tanca les pestanyes en sortir</translation>
 <translation id="1680858055899097121">No segueixis les pestanyes entre sessions de navegació</translation>
+<translation id="453601949003770390">Rastrejadors &amp; Anuncis Bloquejats</translation>
 <translation id="6761596877474675418">Dades Guardades</translation>
 <translation id="3034562645284925177">Temps estalviat estimat</translation>
 <translation id="6572660632052512096">Mode d'escriptori</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Omet</translation>
 <translation id="316832010181763471">Motor de cerca a bord</translation>
 <translation id="986879628471635371">Resolució de problemes a bord</translation>
+<translation id="5808759341041733958">Sel·leccioneu el motor de cerca per defecte</translation>
 <translation id="4428458837269935199">Per obtenir una experiència de cerca més privada, prova DuckDuckGo.</translation>
 <translation id="5317780077021120954">Desa</translation>
 <translation id="7053983685419859001">Bloqueja</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">Aquest és el teu primer anunci de Brave. Toca per a més informació.</translation>
 <translation id="4930714375720679147">Activa</translation>
 <translation id="2453860139492968684">Finalitza</translation>
+<translation id="7983303953939627894">Guanyeu &amp; Doenu</translation>
+<translation id="48520986898237073">Continueu cap a la cartera</translation>
 <translation id="2359808026110333948">Continua</translation>
 <translation id="7658239707568436148">Cancel·la</translation>
 <translation id="3570367516044491911">Configura com a navegador predeterminat</translation>
@@ -166,14 +170,19 @@ aquest mes...</translation>
 <translation id="222883304157347087">(aquest dispositiu)</translation>
 <translation id="8193724030871339658">ALTRES DISPOSITIUS EN CADENA</translation>
 <translation id="279635009973773843">CARREGANT DISPOSITIUS...</translation>
+<translation id="6394333525003604181">SORTINT DE LA CADENA DE SINCRONITZACIÓ...</translation>
+<translation id="1604429341565715601">La configuració de sincronització està en curs, intenteu-ho restablir després.</translation>
 <translation id="2569646144216067185">Nombre de paraules: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nombre de paraules incorrecte</translation>
+<translation id="7507533586185621084">Codi de sincronització incorrecte</translation>
+<translation id="8284063834901328650">Codi QR de sincronització incorrecte</translation>
 <translation id="3149880132460839085">Sincronització de Brave</translation>
 <translation id="3680755684186855422">La sincronització de Brave et permet sincronitzar les dades de les adreces d'interès de manera privada entre els navegadors Brave dels teus dispositius.</translation>
 <translation id="3735228155296883311">Només has de cercar el codi des de la cadena de sincronització que has creat en un altre dispositiu. O inicia una nova cadena de sincronització.</translation>
 <translation id="4690880825349994619">Utilitza el dispositiu sincronitzat existent, obre la configuració de Brave i navega a Configuració &gt; Sincronització. Selecciona Afegeix dispositiu i cerca el codi QR que es mostra a la pantalla.</translation>
 <translation id="5241263629636958324">Copiat al portapapers</translation>
 <translation id="5817918615728894473">Vincula</translation>
+<translation id="3394474617110693560">Categories</translation>
 <translation id="2004365171440701679">Suprimeix aquest dispositiu</translation>
 <translation id="1178128181015923849">Estàs segur que vols suprimir el dispositiu '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Cerca o introdueix el codi de sincronització</translation>
@@ -313,4 +322,11 @@ aquest mes...</translation>
 <translation id="76550953340008122">Gràcies per fer saber als desenvolupadors de Brave que hi ha un problema amb aquesta web. Farem tot el que puguem per arreglar-lo!</translation>
 <translation id="650318023204990401">Controls Avançats</translation>
 <translation id="7182293319417450928">Es requereix un saldo mínim de 25 BAT per verificar.</translation>
+<translation id="1275664486910646411">Ensenyeu els llocs principals a la compleció automàtica</translation>
+<translation id="5516010970279932133">Mostra els llocs suggerits a una compleció automàtica</translation>
+<translation id="5370478469168390143">Guardeu les dades en línea</translation>
+<translation id="1118508688433541158">Navegueu més ràpid i bloquejeu anuncis amb Brave</translation>
+<translation id="915835519491851291">Acabeu de bloquejar alguns seguidors &amp; anuncis.</translation>
+<translation id="3286927551967858325">Doneu-hi un cop d'ull</translation>
+<translation id="2929661208078053609">Genial!</translation>
 </translationbundle>

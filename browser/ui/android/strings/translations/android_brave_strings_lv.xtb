@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Neļauj pārlūkprogrammai iegūt identificējošo ciparvirkni</translation>
 <translation id="7459000603787995422">Izejot aizvērt cilnes</translation>
 <translation id="1680858055899097121">Nesaglabāt cilnes pārlūkošanas sesiju starplaikos</translation>
+<translation id="453601949003770390">Izsekotāji un Ads ir bloķēti</translation>
 <translation id="6761596877474675418">Dati saglabāti</translation>
 <translation id="3034562645284925177">Aprēķinātais ietaupītais laiks</translation>
 <translation id="6572660632052512096">Darbvirsmas režīms</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Izlaist</translation>
 <translation id="316832010181763471">Meklētājprogrammas pievienošana</translation>
 <translation id="986879628471635371">Traucējummeklēšanas pievienošana</translation>
+<translation id="5808759341041733958">Izvēlēties noklusējuma meklētājprogrammu</translation>
 <translation id="4428458837269935199">Izmantojiet DuckDuckGo, lai meklējumi būtu vēl privātāki.</translation>
 <translation id="5317780077021120954">Saglabāt</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">Šī ir jūsu pirmā Brave reklāma. Pieskarieties, lai uzzinātu vairāk.</translation>
 <translation id="4930714375720679147">Ieslēgt</translation>
 <translation id="2453860139492968684">Pabeigt</translation>
+<translation id="7983303953939627894">Pelnīt un ziedot</translation>
+<translation id="48520986898237073">Pāriet uz maku</translation>
 <translation id="2359808026110333948">Turpināt</translation>
 <translation id="7658239707568436148">Atcelt</translation>
 <translation id="3570367516044491911">Iestatīt kā noklusējuma pārlūku</translation>
@@ -169,14 +173,19 @@ mēnesī...</translation>
 <translation id="222883304157347087">(šī ierīce)</translation>
 <translation id="8193724030871339658">CITAS ĶĒDĒ ESOŠĀS IERĪCES</translation>
 <translation id="279635009973773843">IELĀDĒ IERĪCES...</translation>
+<translation id="6394333525003604181">PAMET SINHRONIZĀCIJAS ĶĒDI...</translation>
+<translation id="1604429341565715601">Notiek sinhronizācijas iestatīšana, mēģiniet to atiestatīt vēlāk</translation>
 <translation id="2569646144216067185">Vārdu skaits: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Neatbilstošs vārdu skaits</translation>
+<translation id="7507533586185621084">Nepareizs sinhronizācijas kods</translation>
+<translation id="8284063834901328650">Nepareizs sinhronizācijas QR kods</translation>
 <translation id="3149880132460839085">Brave sinhronizācija</translation>
 <translation id="3680755684186855422">Brave sinhronizācija ļauj privāti sinhronizēt grāmatzīmju datus starp Brave pārlūkiem dažādās jūsu ierīcēs.</translation>
 <translation id="3735228155296883311">Vienkārši noskenējiet kodu no sinhronizācijas ķēdes, ko izveidojāt otrā ierīcē. Vai arī sāciet jaunu sinhronizācijas ķēdi.</translation>
 <translation id="4690880825349994619">Ierīcē, kura jau ir sinhronizēta, atveriet Brave iestatījumus un dodieties uz Iestatījumi &gt; Sinhronizācija. Izvēlieties iespēju "Pievienot ierīci" un noskenējiet ekrānā redzamo QR kodu.</translation>
 <translation id="5241263629636958324">Kopēts starpliktuvē</translation>
 <translation id="5817918615728894473">Savienot pārī</translation>
+<translation id="3394474617110693560">Kategorijas</translation>
 <translation id="2004365171440701679">Noņemt šo ierīci</translation>
 <translation id="1178128181015923849">Vai tiešām vēlaties dzēst ierīci '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Noskenējiet vai ievadiet sinhronizācijas kodu</translation>
@@ -316,4 +325,11 @@ mēnesī...</translation>
 <translation id="76550953340008122">Paldies, ka paziņojāt Brave izstrādātājiem par problēmām ar šo vietni. Pacentīsimies to salabot!</translation>
 <translation id="650318023204990401">Papildu vadīklas</translation>
 <translation id="7182293319417450928">Lai apstiprinātu, nepieciešama vismaz 25 BAT bilance.</translation>
+<translation id="1275664486910646411">Rādīt populārākās vietnes automātiskās pabeigšanas ieteikumos</translation>
+<translation id="5516010970279932133">Rādīt ieteiktās vietnes automātiskās pabeigšanas ieteikumos</translation>
+<translation id="5370478469168390143">Saglabāt datus tiešsaistē</translation>
+<translation id="1118508688433541158">Pārlūkojiet ātrāk un bloķējiet reklāmas ar Brave</translation>
+<translation id="915835519491851291">Jūs tikko bloķējāt dažus izsekotājus un reklāmas.</translation>
+<translation id="3286927551967858325">Skatīt</translation>
+<translation id="2929661208078053609">Lieliski!</translation>
 </translationbundle>

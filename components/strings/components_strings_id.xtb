@@ -748,23 +748,6 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
 <translation id="4215751373031079683">7x9 (Envelope)</translation>
 <translation id="4220128509585149162">Kerusakan</translation>
 <translation id="422022731706691852">Penyerang di <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> dapat mengelabui Anda agar menginstal program yang membahayakan pengalaman browsing Anda (misalnya, dengan mengubah halaman beranda atau menampilkan iklan tambahan di situs yang dikunjungi). <ph name="BEGIN_LEARN_MORE_LINK"/>Pelajari lebih lanjut<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="1426112902089905810">&lt;h4&gt;Langkah 1: Login ke portal&lt;/h4&gt;
-    &lt;p&gt;Jaringan Wi-Fi di tempat seperti kafe atau bandara mengharuskan Anda login. Untuk melihat halaman login, buka halaman yang menggunakan &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
-    &lt;ol&gt;
-    &lt;li&gt;Buka situs yang diawali dengan &lt;code&gt;http://&lt;/code&gt;, seperti &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Di halaman login yang terbuka, silakan login untuk menggunakan internet.&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;h4&gt;Langkah 2: Buka halaman dalam Mode samaran (khusus komputer)&lt;/h4&gt;
-    &lt;p&gt;Buka halaman yang Anda akses sebelumnya dalam Jendela samaran.&lt;/p&gt;
-    &lt;p&gt;Jika halaman tersebut terbuka, ekstensi Brave tidak berfungsi dengan baik. Untuk memperbaiki error, nonaktifkan ekstensi.&lt;/p&gt;
-    &lt;h4&gt;Langkah 3: Update sistem operasi&lt;/h4&gt;
-    &lt;p&gt;Pastikan perangkat sudah diupdate.&lt;/p&gt;
-    &lt;h4&gt;Langkah 4: Nonaktifkan antivirus untuk sementara waktu&lt;/h4&gt;
-    &lt;p&gt;Anda akan melihat error ini jika memiliki software antivirus yang menyediakan "perlindungan HTTPS" atau "pemindaian HTTPS". Antivirus mencegah Brave memberikan perlindungan keamanan.&lt;/p&gt;. 
-    &lt;p&gt;Untuk memperbaiki masalah, nonaktifkan software antivirus. Jika halaman berfungsi setelah software antivirus dinonaktifkan, nonaktifkan antivirus saat Anda menggunakan situs yang aman.&lt;/p&gt;
-    &lt;p&gt;Ingat untuk menonaktifkan kembali program antivirus setelah Anda selesai.&lt;/p&gt;
-    &lt;h4&gt;Langkah 5: Dapatkan bantuan ekstra&lt;/h4&gt;
-    &lt;p&gt;Jika Anda masih melihat error, hubungi pemilik situs.&lt;/p&gt;</translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Coba jalankan Diagnostik Jaringan<ph name="END_LINK"/>.</translation>
 <translation id="4234495348042597185"><ph name="BEGIN_LINK"/>Lanjutkan ke <ph name="SITE"/><ph name="END_LINK"/></translation>
 <translation id="4235360514405112390">Valid</translation>
@@ -1915,6 +1898,34 @@ Jika tidak, ini akan diblokir oleh setelan privasi Anda. Ini akan memungkinkan k
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Dari Brave Pay</translation>
-<translation id="3489858312836205593">Buka jendela samaran Brave baru</translation>
 <translation id="8820817407110198400">Bookmark</translation>
+<translation id="8362995731815961365">Profil yang menata komputer ini telah memblokir situs ini.</translation>
+<translation id="4075123085690634698">Buka halaman di jendela Privat baru (⇧⌘N)</translation>
+<translation id="2388886110302389394">Buka halaman di jendela Privat baru (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Buka halaman di tab Privat baru</translation>
+<translation id="2378238891085281592">Anda telah privat</translation>
+<translation id="3774752171665127360">Halaman yang Anda lihat di tab privat tidak akan tersimpan di riwayat peramban, penyimpanan cookie, atau riwayat pencarian setelah Anda menutup semua tab privat. Segala berkas yang diunduh atau markah yang Anda buat akan tetap ada.</translation>
+<translation id="9177896974490719854">Hanya saja, Anda bukannya tidak terlihat. Menjadi privat tidak menyembunyikan rambanan Anda dari atasan, penyedia internet, atau website yang Anda kunjungi.</translation>
+<translation id="2227116904818538760">Anda telah privat</translation>
+<translation id="2007417459975034427">Kini Anda bisa meramban dengan privat, dan profil lain yang menggunakan perangkat ini tidak dapat melihat aktivitas Anda. Hanya saja, unduhan dan markah buku akan tersimpan.</translation>
+<translation id="2586968635953373425">Buka Jendela Privat</translation>
+<translation id="3489858312836205593">Buka jendela privat Brave baru</translation>
+<translation id="6984479912851154518">Meninggalkan modus privat untuk membayar lewat aplikasi eksternal. Lanjutkan?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Langkah 1: Masuklah ke dalam portal&lt;/h4&gt;
+    &lt;p&gt;Jaringan Wi-Fi di lokasi seperti kafe atau bandara mengharuskan Anda masuk. Untuk mengunjungi halaman masuk, kunjungi halaman yang menggunakan &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+    &lt;ol&gt;
+    &lt;li&gt;Pergilah ke sembarang website yang dimulai dengan &lt;code&gt;http://&lt;/code&gt;, seperti &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;Di halaman masuk yang terbuka, masuklah untuk menggunakan internet.&lt;/li&gt;
+    &lt;/ol&gt;
+    &lt;h4&amp;gtLangkah 2: Buka halaman dalam modus Privat (hanya di komputer)&lt;/h4&gt;
+    &lt;p&gt;Buka halaman yang pernah Anda kunjungi di jendela Privat.&lt;/p&gt;
+    &lt;p&gt;Jika halamannya terbuka, berarti ekstensi Brave tidak berfungsi dengan benar. Untuk memperbaiki eror ini, matikan ekstensinya.&lt;/p&gt;
+    &lt;h4&gt;Langkah 3: Perbarui sistem operasi Anda&lt;/h4&gt;
+    &lt;p&gt;Pastikan perangkat Anda terperbarui.&lt;/p&gt;
+    &lt;h4&gt;Langkah 4: Matikan sementara antivirus Anda&lt;/h4&gt;
+    &lt;p&gt;Anda akan menjumpai eror ini jika memiliki antivirus yang memberikan "proteksi HTTPS" atau "pemindaian HTTPS". Antivirus tersebut mencegah Brave memberikan keamanan.&lt;/p&gt;
+    &lt;p&gt;Untuk mengatasi masalah ini, matikan antivirus Anda. Jika halaman bekerja setelah mematikan antivirus, matikan itu saat menggunakan situs yang aman.&lt;/p&gt;
+    &lt;p&gt;Jangan lupa nyalakan kembali antivirus setelah Anda selesai.&lt;/p&gt;
+    &lt;h4&gt;Langkah 5: Dapatkan bantuan ekstra&lt;/h4&gt;
+    &lt;p&gt;Jika eror berlanjut, hubungi pemilik website.&lt;/p&gt;</translation>
 </translationbundle>

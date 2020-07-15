@@ -99,6 +99,7 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="8502234992433094996">Utilize os Serviços da Google para o envio de notificações Push</translation>
 <translation id="5565355416171743213">Comece a utilizar a sincronização</translation>
 <translation id="4332558599726753990">Configuração da Sincronização</translation>
+<translation id="2187778349654214731">Para iniciar, precisa instalar o Brave em todos os dispositivos que visa sincronizar. Depois, vincule-os em segurança a um código de sincronização.</translation>
 <translation id="7530575064080939974">Gerir os dispositivos sincronizados</translation>
 <translation id="7575156386943878014">Gestor de Sincronização</translation>
 <translation id="1755198127524719638">Definições Sync</translation>
@@ -106,8 +107,12 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="7731928563672901833">Lista de Dispositivos</translation>
 <translation id="28332161031213248">A lista de dispositivos abaixo inclui todos os dispositivos na sua cadeia de sincronização. Cada dispositivo pode ser gerido a partir de qualquer outro dispositivo.</translation>
 <translation id="1313162974556054106">Nome do dispositivo</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Este Dispositivo)</translation>
 <translation id="3686835020221422649">Último Ativo</translation>
+<translation id="2569646144216067185">Número de palavras: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Copiado!</translation>
+<translation id="8802630444265810662">É preciso proceder à digitalização de um código QR através de um dispositivo móvel para a transmissão do seu código de sincronização</translation>
+<translation id="6221331245829088299">Ocorreu um erro ao apresentar o código QR; por favor, atualize e tente de novo.</translation>
 <translation id="298546024891487702">Antes de mais, necessita de instalar Brave em todos os dispositivos que planeia sincronizar. Para os associar todos em cadeia, inicie uma cadeia de sincronização que utilizará para ligar seguramente todos os seus dispositivos.</translation>
 <translation id="6200528822592747640">Inicie uma nova Cadeia de Sincronização</translation>
 <translation id="5184726904895809379">Possuo um Código Sync</translation>
@@ -127,7 +132,11 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="5734745018569675530">Digite o seu código providenciado de cadeia de sincronização no formulário abaixo.</translation>
 <translation id="1061533051865606843">Adicionar Novo Dispositivo</translation>
 <translation id="5093410893656857925">Escolher Tipo de Dispositivo</translation>
+<translation id="4581190919849683048">Qual o tipo de dispositivo que pretende sincronizar?</translation>
+<translation id="4112587618563511470">Código de sincronização inválido; por favor, verifique e tente de novo.</translation>
 <translation id="2339730291919608488">Sair da cadeia de sincronização</translation>
+<translation id="115699408012835975">Caso vise proceder à redefinição da Sincronização, precisará reintroduzir um código de sincronização de um outro dispositivo para os sincronizar. Tem a certeza que pretende continuar?</translation>
+<translation id="3396347744975515056">A Brave Sync foi atualizada e precisa ser configurada</translation>
 <translation id="7473245612074035141">Iniciar Configuração</translation>
 <translation id="6696935187608454456">Dicas de ajuda</translation>
 <translation id="2775956301559569472">Mostrar lembrete do Wayback Machine em páginas de erro 404</translation>

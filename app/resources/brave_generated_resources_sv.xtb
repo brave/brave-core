@@ -73,6 +73,9 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="7390783310074170337">Standardvy</translation>
 <translation id="130615081792797568">Enkel vy</translation>
 <translation id="2360360976480535628">Avancerad vy</translation>
+<translation id="2133317862976486547">Blockning av spårare och annonser</translation>
+<translation id="4385707520896576447">Blockning av cookies</translation>
+<translation id="4978786495456601191">Blockning av fingeravtrycksläsning</translation>
 <translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
 <translation id="4824468494729001999">Blockera skript</translation>
 <translation id="519861640102428255">Utseende och känsla</translation>
@@ -81,9 +84,12 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
+<translation id="4078738236287221428">Aggressiv</translation>
 <translation id="7740996059027112821">Standard</translation>
 <translation id="4176463684765177261">Inaktiverad</translation>
+<translation id="5770288601196774623">Enbart mellan sajter</translation>
 <translation id="3587482841069643663">Alla</translation>
+<translation id="5533533363827555308">Strikt, kan bryta sajter</translation>
 <translation id="8942080017911802454">WebRTC IP-hanteringspolicy</translation>
 <translation id="6165508094623778733">Läs mer</translation>
 <translation id="8798099450830957504">Standard</translation>
@@ -91,12 +97,22 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
 <translation id="8502234992433094996">Använd Google Services för pushmeddelanden</translation>
+<translation id="5565355416171743213">Börja synka</translation>
 <translation id="4332558599726753990">Synkinställning</translation>
+<translation id="2187778349654214731">För att börja måste du har Brave installerat på alla enheter du vill synka. Därefter sammankopplar du dem med en synkningskod.</translation>
+<translation id="7530575064080939974">Hantera synkade enheter</translation>
+<translation id="7575156386943878014">Synkningshanterare</translation>
 <translation id="1755198127524719638">Synkroniseringsinställningar</translation>
 <translation id="7558480201297099157">Hantera vilken information du vill synka mellan enheter. Dessa inställningar påverkar endast denna enhet.</translation>
+<translation id="7731928563672901833">Enhetslista</translation>
 <translation id="28332161031213248">Listan över enheter nedan inkluderar alla enheter i din synkkedja. Varje enhet kan hanteras från alla andra enheter.</translation>
 <translation id="1313162974556054106">Enhetsnamn</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (Denna enhet)</translation>
+<translation id="3686835020221422649">Senast aktiv</translation>
+<translation id="2569646144216067185">Antal ord: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopierades!</translation>
+<translation id="8802630444265810662">En QR-kod som ska läsas av med en mobil för att överföra din synkningskod</translation>
+<translation id="6221331245829088299">QR-koden kan inte visas, ladda om och prova igen.</translation>
 <translation id="298546024891487702">För att starta måste du ha Brave installerat på alla de enheter du avser att synka. För att länka ihop dem, starta en synkkedja som du använder för att på ett säkert sätt länka samman alla dina enheter.</translation>
 <translation id="6200528822592747640">Starta en ny synkkedja</translation>
 <translation id="5184726904895809379">Jag har en synkkod</translation>
@@ -116,7 +132,12 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5734745018569675530">Skriv in de givna kodorden till synkkedjan i formuläret nedan.</translation>
 <translation id="1061533051865606843">Lägg till ny enhet</translation>
 <translation id="5093410893656857925">Välj enhetstyp</translation>
+<translation id="4581190919849683048">Vilken slags enhet vill du synka med?</translation>
+<translation id="4112587618563511470">Ogiltig synkningskod, kontrollera och prova igen.</translation>
 <translation id="2339730291919608488">Lämna synkkedja</translation>
+<translation id="115699408012835975">Om du nollställer Synk måste du skriva in en synkningskod från en annan enhet för att synka med den. Är du säker på att du vill gå vidare?</translation>
+<translation id="3396347744975515056">Brave Sync har uppgraderats och måste installeras</translation>
+<translation id="7473245612074035141">Påbörja installation</translation>
 <translation id="6696935187608454456">Hjälptips</translation>
 <translation id="2775956301559569472">Visa  Wayback Machine-prompt på 404-sidor</translation>
 <translation id="1807246157184219062">Ljus</translation>

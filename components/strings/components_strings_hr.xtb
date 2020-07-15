@@ -748,23 +748,6 @@ To će u suprotnom biti onemogućeno na temelju vaših postavki privatnosti. To 
 <translation id="4215751373031079683">7x9 (omotnica)</translation>
 <translation id="4220128509585149162">Padovi programa</translation>
 <translation id="422022731706691852">Napadači na web-lokaciji <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> mogu vas pokušati navesti na instaliranje programa koji smanjuju kvalitetu pregledavanja interneta (na primjer, promjenom početne stranice ili prikazivanjem dodatnih oglasa na web-lokacijama koje posjetite). <ph name="BEGIN_LEARN_MORE_LINK"/>Saznajte više<ph name="END_LEARN_MORE_LINK"/></translation>
-<translation id="1426112902089905810">&lt;h4&gt;1. korak: prijavite se na portal&lt;/h4&gt;
-    &lt;p&gt;Na Wi-Fi mreže na mjestima kao što su kafići ili zračne luke trebate se prijaviti. Da biste vidjeli stranicu za prijavu, posjetite stranicu koja upotrebljava &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
-    &lt;ol&gt;
-    &lt;li&gt;Otvorite bilo koju web-lokaciju koja započinje s &lt;code&gt;http://&lt;/code&gt;, na primjer &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;Na stranici za prijavu koja će se otvoriti prijavite se da biste se povezali s internetom.&lt;/li&gt;
-    &lt;/ol&gt;
-    &lt;h4&gt;2. korak: otvorite stranicu u anonimnom načinu (samo na računalima)&lt;/h4&gt;
-    &lt;p&gt;Otvorite stranicu koju ste posjetili u anonimnom prozoru.&lt;/p&gt;
-    &lt;p&gt;Ako se ta stranica otvori, Braveovo proširenje ne funkcionira pravilno. Da biste ispravili tu pogrešku, isključite proširenje.&lt;/p&gt;
-    &lt;h4&gt;3. korak: ažurirajte operativni sustav&lt;/h4&gt;
-    &lt;p&gt;Ako uređaj nije ažuriran, ažurirajte ga.&lt;/p&gt;
-    &lt;h4&gt;4. korak: privremeno isključite antivirusni softver&lt;/h4&gt;
-    &lt;p&gt;Ta će se pogreška pojaviti ako imate antivirusni softver za "zaštitu HTTPS-a" ili "pretraživanje HTTPS-a". Taj softver onemogućuje Braveu da pruža zaštitu.&lt;/p&gt;
-    &lt;p&gt;Da biste riješili taj problem, isključite antivirusni softver. Ako nakon isključivanja tog softvera stranica funkcionira, isključite taj softver kada upotrebljavate sigurne web-lokacije.&lt;/p&gt;
-    &lt;p&gt;Ne zaboravite ponovo uključiti antivirusni program kada završite.&lt;/p&gt;
-    &lt;h4&gt;5. korak: potražite dodatnu pomoć&lt;/h4&gt;
-    &lt;p&gt;Ako i dalje vidite pogrešku, obratite se vlasniku web-lokacije.&lt;/p&gt;</translation>
 <translation id="4226937834893929579"><ph name="BEGIN_LINK"/>Pokušajte pokrenuti Mrežnu dijagnostiku<ph name="END_LINK"/>.</translation>
 <translation id="4234495348042597185"><ph name="BEGIN_LINK"/>Idi na web-lokaciju <ph name="SITE"/><ph name="END_LINK"/></translation>
 <translation id="4235360514405112390">Važeći</translation>
@@ -1921,6 +1904,34 @@ i netočne vjerodajnice. To može značiti da se neki napadač pokušava predsta
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">S Brave Paya</translation>
-<translation id="3489858312836205593">Otvorite novi anonimni prozor u Braveu</translation>
 <translation id="8820817407110198400">Knjižne oznake</translation>
+<translation id="8362995731815961365">Profil koji je postavio ovo računalo odlučio je blokirati ovo mrežno mjesto.</translation>
+<translation id="4075123085690634698">Otvori stranicu u novom privatnom prozoru (⇧⌘N)</translation>
+<translation id="2388886110302389394">Otvori stranicu u novom privatnom prozoru (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Otvori stranicu u novom privatnom prozoru</translation>
+<translation id="2378238891085281592">U privatnom ste načinu</translation>
+<translation id="3774752171665127360">Stranice koje ste pregledali u privatnim karticama ne ostaju u povijesti vašeg preglednika, spremištu kolačića ili povijesti pretraživanja nakon što zatvorite sve svoje privatne kartice. Bilo koje datoteke koje preuzmete ili knjiške oznake koje stvorite čuvaju se.</translation>
+<translation id="9177896974490719854">Međutim, niste nevidljivi. Prijelazom u privatni način rada ne skriva se vaše pretraživanje od vašeg poslodavca, vašeg pružatelja internetskih usluga ili mrežnih mjesta koje posjetite.</translation>
+<translation id="2227116904818538760">U privatnom ste načinu pregledavanja</translation>
+<translation id="2007417459975034427">Sada možete pregledavati privatno i drugi profili koji ste koriste ovim uređajem ne vide vašu aktivnosti. Međutim, preuzimanja se i knjiške oznake čuvaju.</translation>
+<translation id="2586968635953373425">Otvori privatni prozor</translation>
+<translation id="3489858312836205593">Otvori novi privatni prozor u pregledniku Brave</translation>
+<translation id="6984479912851154518">Napuštate privatni način za plaćanje uporabom vanjske aplikacije. Nastaviti?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;1. korak: prijavite se u portal&lt;/h4&gt;
+&lt;p&gt;Trebate se prijaviti na mreže Wi-Fi na mjestima poput kafića ili zračnih luka. Kako biste vidjeli stranicu za prijavu, posjetite stranicu na kojoj se upotrebljava&lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Posjetite bilo koje mrežno mjesto koje započinje stavkom &lt;code&gt;http://&lt;/code&gt;, like &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Na stranici za prijavu koja se otvori, prijavite se kako biste upotrebljavali internet.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4&gt;2. korak: otvorite stranicu u privatnom načinu (samo na računalu)&lt;/h4&gt;
+&lt;p&gt;Otvroite stranicu koju posjećujete u privatnom načinu.&lt;/p&gt;
+&lt;p&gt;Ako se stranica otvori, dodatak preglednika Brave ne radi ispravno. Kako biste ispravili grešku, isključite dodatak.&lt;/p&gt;
+&lt;h4&gt;3. korak: ažurirajte svoj operativni sustav&lt;/h4&gt;
+&lt;p&gt;Provjerite je li vaš uređaj ažuriran.&lt;/p&gt;
+&lt;h4&gt;4. korak: trenutačno isključite svoj antivirusni program,&lt;/h4&gt;
+&lt;p&gt;Ova se greška prikazuje ako upotrebljavate antivirusni program sa značajkom „zaštita HTTPS-om” ili „skeniranje HTTPS-om”. Antivirusnim se programom sprečava preglednik Brave da pruža zaštitu.&lt;/p&gt;
+&lt;p&gt;Za rješavanje problema isključite antivirusni program. Ako stranica radi nakon isključivanja softvera, isključite ovaj softver kada upotrebljavate sigurna mrežna mjesta.&lt;/p&gt;
+&lt;p&gt;Ne zaboravite ponovno uključiti antivirusni program kada završite.&lt;/p&gt;
+&lt;h4&gt;5. korak: potražite dodatnu pomoć&lt;/h4&gt;
+&lt;p&gt;Ako se greška i dalje pojavljuje, obratite se vlasniku mrežnog mjesta.&lt;/p&gt;</translation>
 </translationbundle>
