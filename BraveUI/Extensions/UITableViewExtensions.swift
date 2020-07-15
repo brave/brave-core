@@ -4,7 +4,7 @@
 
 import UIKit
 
-protocol TableViewReusable { }
+public protocol TableViewReusable { }
 
 extension TableViewReusable {
   fileprivate static var identifier: String {
@@ -14,18 +14,18 @@ extension TableViewReusable {
 
 extension UITableView {
   /// Register a UITableViewCell subclass as a dequeable cell
-  func register<T: UITableViewCell & TableViewReusable>(_ cellClass: T.Type) {
+  public func register<T: UITableViewCell & TableViewReusable>(_ cellClass: T.Type) {
     register(cellClass, forCellReuseIdentifier: cellClass.identifier)
   }
   /// Register a UITableViewHeaderFooterView subclass as a dequeable section header/footer
-  func registerHeaderFooter<T: UITableViewHeaderFooterView & TableViewReusable>(_ headerFooterClass: T.Type) {
+  public func registerHeaderFooter<T: UITableViewHeaderFooterView & TableViewReusable>(_ headerFooterClass: T.Type) {
     register(headerFooterClass, forHeaderFooterViewReuseIdentifier: headerFooterClass.identifier)
   }
   // swiftlint:disable force_cast
-  func dequeueReusableCell<T: UITableViewCell & TableViewReusable>(for indexPath: IndexPath) -> T {
+  public func dequeueReusableCell<T: UITableViewCell & TableViewReusable>(for indexPath: IndexPath) -> T {
     return dequeueReusableCell(withIdentifier: T.identifier, for: indexPath) as! T
   }
-  func dequeueReusableHeaderFooter<T: UITableViewHeaderFooterView & TableViewReusable>() -> T {
+  public func dequeueReusableHeaderFooter<T: UITableViewHeaderFooterView & TableViewReusable>() -> T {
     return dequeueReusableHeaderFooterView(withIdentifier: T.identifier) as! T
   }
   // swiftlint:enable force_cast

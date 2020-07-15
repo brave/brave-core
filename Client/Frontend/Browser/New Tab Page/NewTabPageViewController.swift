@@ -195,6 +195,7 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         collectionView.backgroundView = backgroundButtonsView
         
+        braveTodayHeaderView.settingsButton.addTarget(self, action: #selector(tappedBraveTodaySettings), for: .touchUpInside)
         backgroundButtonsView.tappedActiveButton = { [weak self] sender in
             self?.tappedActiveBackgroundButton(sender)
         }
@@ -469,6 +470,12 @@ class NewTabPageViewController: UIViewController, Themeable {
     }
     
     // MARK: - Actions
+    
+    @objc private func tappedBraveTodaySettings() {
+        let controller = FeedSourceListViewController(dataSource: feedDataSource)
+        let container = UINavigationController(rootViewController: controller)
+        present(container, animated: true)
+    }
     
     func updateDuckDuckGoVisibility() {
         if let section = sections.firstIndex(where: { $0 is DuckDuckGoCalloutSectionProvider }) {

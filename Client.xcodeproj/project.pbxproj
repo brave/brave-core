@@ -290,7 +290,6 @@
 		271DED1D234CC7EF009DAC37 /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB1234CC7EF009DAC37 /* Colors.swift */; };
 		271DED1E234CC7EF009DAC37 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB2234CC7EF009DAC37 /* GradientView.swift */; };
 		271DED1F234CC7EF009DAC37 /* FaviconData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB3234CC7EF009DAC37 /* FaviconData.swift */; };
-		271DED23234CC7EF009DAC37 /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */; };
 		271DED24234CC7EF009DAC37 /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB9234CC7EF009DAC37 /* ArrayExtensions.swift */; };
 		271DED26234CC7EF009DAC37 /* BraveLedgerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBB234CC7EF009DAC37 /* BraveLedgerExtensions.swift */; };
 		271DED27234CC7EF009DAC37 /* BraveRewardsExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECBC234CC7EF009DAC37 /* BraveRewardsExtensions.swift */; };
@@ -405,6 +404,8 @@
 		27D87C2E2152B50200FB55C6 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D87C2D2152B50200FB55C6 /* GradientView.swift */; };
 		27EA04C2249D4336004F5D2E /* FeedCardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EA04C1249D4336004F5D2E /* FeedCardContent.swift */; };
 		27EB6020244607DA00265C1B /* NewTabPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EB601F244607DA00265C1B /* NewTabPageViewController.swift */; };
+		27EF6B8024BF48C7005E034F /* FeedSourceListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */; };
+		27EF6B8124BF6095005E034F /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */; };
 		27F4439F2135E11200296C58 /* BraveShareTo.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* BraveShareTo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
 		27F443F42138843400296C58 /* BraveShareToInfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27F443F22138843400296C58 /* BraveShareToInfoPlist.strings */; };
@@ -1779,6 +1780,7 @@
 		27D922B221C9830F00345BF3 /* Model9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model9.xcdatamodel; sourceTree = "<group>"; };
 		27EA04C1249D4336004F5D2E /* FeedCardContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCardContent.swift; sourceTree = "<group>"; };
 		27EB601F244607DA00265C1B /* NewTabPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTabPageViewController.swift; sourceTree = "<group>"; };
+		27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSourceListViewController.swift; sourceTree = "<group>"; };
 		27F443952135E11200296C58 /* BraveShareTo.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BraveShareTo.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		27F4439C2135E11200296C58 /* BraveShareToInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = BraveShareToInfo.plist; sourceTree = "<group>"; };
 		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
@@ -3525,7 +3527,6 @@
 		271DECB7234CC7EF009DAC37 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */,
 				271DECB9234CC7EF009DAC37 /* ArrayExtensions.swift */,
 				271DECBB234CC7EF009DAC37 /* BraveLedgerExtensions.swift */,
 				271DECBC234CC7EF009DAC37 /* BraveRewardsExtensions.swift */,
@@ -3611,6 +3612,7 @@
 		276A79072446608100AC9446 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */,
 				276A790B244660B500AC9446 /* UICollectionViewExtensions.swift */,
 			);
 			path = Extensions;
@@ -3736,6 +3738,7 @@
 				27EA04C1249D4336004F5D2E /* FeedCardContent.swift */,
 				27A1ABF924855C1700344503 /* Cards */,
 				27A1AC0A2485A0CC00344503 /* Composer */,
+				27EF6B7D24BF48B1005E034F /* Source List */,
 				2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */,
 			);
 			path = "Brave Today";
@@ -3828,6 +3831,14 @@
 				278C46A123F1ED9B0083347F /* Colors */,
 			);
 			path = "Design System";
+			sourceTree = "<group>";
+		};
+		27EF6B7D24BF48B1005E034F /* Source List */ = {
+			isa = PBXGroup;
+			children = (
+				27EF6B7F24BF48C7005E034F /* FeedSourceListViewController.swift */,
+			);
+			path = "Source List";
 			sourceTree = "<group>";
 		};
 		27F443962135E11200296C58 /* BraveShareTo */ = {
@@ -6288,7 +6299,6 @@
 				27325A5724097DB900790DC6 /* LedgerInitializationFailedView.swift in Sources */,
 				271DECC4234CC7EF009DAC37 /* PublisherAttentionView.swift in Sources */,
 				27253973236CE6B100D06EF1 /* GrantClaimedViewController.swift in Sources */,
-				271DED23234CC7EF009DAC37 /* UITableViewExtensions.swift in Sources */,
 				27325A6724105F8500790DC6 /* SKUPurchaseDetailsView.swift in Sources */,
 				271DECD1234CC7EF009DAC37 /* AdView.swift in Sources */,
 				271DECE9234CC7EF009DAC37 /* BATValue.swift in Sources */,
@@ -6398,6 +6408,7 @@
 				278C46AF23F4A91C0083347F /* PopoverController.swift in Sources */,
 				278C46B523F4A9C80083347F /* POPExtensions.swift in Sources */,
 				278C46B923F4AB5A0083347F /* Then.swift in Sources */,
+				27EF6B8124BF6095005E034F /* UITableViewExtensions.swift in Sources */,
 				278C46B223F4A91D0083347F /* PopoverNavigationController.swift in Sources */,
 				278C46B023F4A91C0083347F /* PopoverContainerView.swift in Sources */,
 				278C46A323F1EDAB0083347F /* Colors.swift in Sources */,
@@ -6819,6 +6830,7 @@
 				0A1E84422190A57F0042F782 /* SyncPairCameraViewController.swift in Sources */,
 				44331DDC22561F34007E3E93 /* ToolbarUrlActionsDelegate.swift in Sources */,
 				4422D43721BFD29E00BF1855 /* NSData+GZIP.m in Sources */,
+				27EF6B8024BF48C7005E034F /* FeedSourceListViewController.swift in Sources */,
 				D31CF65C1CC1959A001D0BD0 /* PrivilegedRequest.swift in Sources */,
 				0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */,
 				D8D33A7D1FBD080300A20A28 /* SnapKitExtensions.swift in Sources */,

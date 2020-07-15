@@ -25,11 +25,12 @@ class BraveTodaySourceMOTests: CoreDataTestCase {
     @discardableResult
     private func createAndWait(enabled: Bool = true,
                                publisherID: String = "BravePub",
-                               publisherLogo: String? = nil) -> BraveTodaySourceMO {
+                               publisherLogo: String? = nil,
+                               publisherName: String = "Pub Name") -> BraveTodaySourceMO {
         
         backgroundSaveAndWaitForExpectation {
             BraveTodaySourceMO.insertInternal(enabled: enabled, publisherID: publisherID,
-                                              publisherLogo: publisherLogo)
+                                              publisherLogo: publisherLogo, publisherName: publisherName)
         }
         
         

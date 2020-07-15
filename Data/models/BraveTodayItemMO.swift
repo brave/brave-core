@@ -20,7 +20,6 @@ public struct BraveTodayFeedItemBridge {
     let itemDescription: String
     let contentType: String
     let publisherID: String
-    let publisherName: String
     let publisherLogo: String?
     let urlHash: String
 }
@@ -36,7 +35,6 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     @NSManaged var contentType: String
     // TODO: Some publisher items will get moved to `BraveTodaySourceMO`
     @NSManaged var publisherID: String
-    @NSManaged var publisherName: String
     @NSManaged var publisherLogo: String?
     @NSManaged var urlHash: String
     @NSManaged var source: BraveTodaySourceMO?
@@ -51,7 +49,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
         insertInternal(category: item.category, publishTime: item.publishTime, url: item.url,
                        imageURL: item.imageURL, title: item.title,
                        itemDescription: item.itemDescription, contentType: item.contentType,
-                       publisherID: item.publisherID, publisherName: item.publisherName,
+                       publisherID: item.publisherID,
                        publisherLogo: item.publisherLogo, urlHash: item.urlHash)
     }
     
@@ -62,7 +60,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
                 insertInternal(category: $0.category, publishTime: $0.publishTime, url: $0.url,
                                imageURL: $0.imageURL, title: $0.title,
                                itemDescription: $0.itemDescription, contentType: $0.contentType,
-                               publisherID: $0.publisherID, publisherName: $0.publisherName,
+                               publisherID: $0.publisherID,
                                publisherLogo: $0.publisherLogo, urlHash: $0.urlHash,
                                context: .existing(context))
             }
@@ -153,7 +151,7 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
     
     class func insertInternal(category: String, publishTime: Date, url: String?, 
                               imageURL: String?, title: String, itemDescription: String, contentType: String,
-                              publisherID: String, publisherName: String, publisherLogo: String?,
+                              publisherID: String, publisherLogo: String?,
                               urlHash: String, context: WriteContext = .new(inMemory: false)) {
         
         DataController.perform(context: context) { context in
@@ -176,7 +174,6 @@ public final class BraveTodayFeedItemMO: NSManagedObject, CRUD {
             item.itemDescription = itemDescription
             item.contentType = contentType
             item.publisherID = publisherID
-            item.publisherName = publisherName
             item.publisherLogo = publisherLogo
             item.urlHash = urlHash
             item.created = Date()
