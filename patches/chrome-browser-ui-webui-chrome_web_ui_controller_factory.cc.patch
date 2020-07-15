@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
-index 4db67163a62378f52c2d2753b43dcd351a4ed2a7..38a839c5b7f0037c391eb30598e730b043f8ccf2 100644
+index 60709ee12ab059e4d98a56d89bd447c56eab87d0..c2abdc56dee4b6fefc7b12e0561e744f7576b157 100644
 --- a/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
 +++ b/chrome/browser/ui/webui/chrome_web_ui_controller_factory.cc
 @@ -12,6 +12,7 @@

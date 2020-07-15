@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 011e83f9d9c5c893470d26dca15774184da64573..5d0220770da95fc087161a74b8455aaaae18652d 100644
+index a743e97d3de07ee543f4126605507acbff4af592..a9712b4266f09c34bd23b268ffed7ee545a28332 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -184,7 +184,7 @@ import java.util.Locale;
@@ -11,7 +11,7 @@ index 011e83f9d9c5c893470d26dca15774184da64573..5d0220770da95fc087161a74b8455aaa
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-@@ -1676,7 +1676,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1682,7 +1682,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -20,7 +20,7 @@ index 011e83f9d9c5c893470d26dca15774184da64573..5d0220770da95fc087161a74b8455aaa
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier, mBookmarkBridgeSupplier);
-@@ -1699,9 +1699,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1705,9 +1705,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -32,7 +32,7 @@ index 011e83f9d9c5c893470d26dca15774184da64573..5d0220770da95fc087161a74b8455aaa
                          tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -2090,7 +2090,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2096,7 +2096,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  
