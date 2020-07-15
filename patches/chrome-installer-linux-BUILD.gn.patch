@@ -1,8 +1,16 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442b2175715 100644
+index b101b0cb224260df3b02db2cbb1986a84db38a7b..f2fd8ac1f2aa5cdbc451f4c82eb336d4358e9a6f 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -30,8 +30,8 @@ declare_args() {
+@@ -1,6 +1,7 @@
+ # Copyright 2015 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/build/config/brave_build.gni")
+
+ import("//build/config/c++/c++.gni")
+ import("//build/config/chrome_build.gni")
+@@ -30,8 +31,8 @@ declare_args() {
  assert(is_linux)
  
  packaging_files_executables = [
@@ -13,7 +21,7 @@ index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442
    "$root_out_dir/crashpad_handler",
  ]
  packaging_files_shlibs = []
-@@ -167,10 +167,15 @@ action("merge_rpm_dependencies") {
+@@ -167,10 +168,15 @@ action("merge_rpm_dependencies") {
  }
  
  action("strip_chrome_binary") {
@@ -30,7 +38,7 @@ index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442
    script = "//build/gn_run_binary.py"
    sources = [
      "//buildtools/third_party/eu-strip/bin/eu-strip",
-@@ -208,7 +213,7 @@ branding_dir_100 =
+@@ -208,7 +214,7 @@ branding_dir_100 =
  copy("common_packaging_files") {
    visibility = [ ":*" ]
    sources = [
@@ -39,7 +47,7 @@ index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442
      "common/apt.include",
      "common/default-app-block.template",
      "common/default-app.template",
-@@ -231,8 +236,8 @@ copy("common_packaging_files") {
+@@ -231,8 +237,8 @@ copy("common_packaging_files") {
      ]
    } else {
      sources += [
@@ -50,7 +58,7 @@ index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442
      ]
    }
  
-@@ -333,6 +338,12 @@ group("installer_deps") {
+@@ -333,6 +339,12 @@ group("installer_deps") {
      "//sandbox/linux:chrome_sandbox",
      "//third_party/crashpad/crashpad/handler:crashpad_handler",
    ]
@@ -63,7 +71,7 @@ index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442
    if (enable_nacl) {
      public_deps += [
        "//components/nacl/loader:nacl_helper",
-@@ -367,6 +378,9 @@ group("installer_deps") {
+@@ -367,6 +379,9 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -73,7 +81,7 @@ index b101b0cb224260df3b02db2cbb1986a84db38a7b..1e5eb4df0c3501beaf0623bf18c3d442
  
    if (is_chrome_branded) {
      package = "google-chrome"
-@@ -530,3 +544,6 @@ linux_package("beta") {
+@@ -530,3 +545,6 @@ linux_package("beta") {
  linux_package("unstable") {
    channel = "unstable"
  }

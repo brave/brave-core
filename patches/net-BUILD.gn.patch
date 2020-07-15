@@ -1,8 +1,16 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index 9712bc3e46ac787f4cfb8de4012350991b46625a..73fb77c9e298026035a785bf5adbdf6112172a38 100644
+index 9712bc3e46ac787f4cfb8de4012350991b46625a..b414ecae9238b201abfb0dda3bc2a7c3b1582f94 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1177,6 +1177,7 @@ component("net") {
+@@ -1,6 +1,7 @@
+ # Copyright (c) 2013 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/build/config/brave_build.gni")
+
+ import("//build/buildflag_header.gni")
+ import("//build/config/chromecast_build.gni")
+@@ -1177,6 +1178,7 @@ component("net") {
          "reporting/reporting_uploader.h",
        ]
      }

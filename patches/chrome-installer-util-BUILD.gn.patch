@@ -1,8 +1,16 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index dae16bd9569eb23ce882df850bfe0295d1a9f2e9..9f93eae6e11e551c59c41130c474cfd54cea2347 100644
+index dae16bd9569eb23ce882df850bfe0295d1a9f2e9..623edadcab2b4b99fca0162670644326cb2c0138 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -224,7 +224,20 @@ generate_embedded_i18n("generate_strings") {
+@@ -1,6 +1,7 @@
+ # Copyright 2014 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/build/config/brave_build.gni")
+
+ import("//base/win/embedded_i18n/generate_embedded_i18n.gni")
+ import("//build/config/chrome_build.gni")
+@@ -224,7 +225,20 @@ generate_embedded_i18n("generate_strings") {
  
    output_file_name_base = "installer_util_strings"
  

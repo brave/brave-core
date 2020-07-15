@@ -1,8 +1,16 @@
 diff --git a/third_party/blink/renderer/modules/modules_idl_files.gni b/third_party/blink/renderer/modules/modules_idl_files.gni
-index 49501396fc5ba70b81ac103c1720f7f775c876cb..7b3bab95ea23f2fb7cd8140842163be0f7b4b493 100644
+index 49501396fc5ba70b81ac103c1720f7f775c876cb..a18eb7f04c22524274b9071dfe20cdb059a2715c 100644
 --- a/third_party/blink/renderer/modules/modules_idl_files.gni
 +++ b/third_party/blink/renderer/modules/modules_idl_files.gni
-@@ -135,6 +135,7 @@ _idl_imports = [
+@@ -1,6 +1,7 @@
+ # Copyright 2016 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/build/config/brave_build.gni")
+
+ import("//third_party/blink/renderer/bindings/bindings.gni")
+ import("//third_party/blink/renderer/config.gni")
+@@ -135,6 +136,7 @@ _idl_imports = [
  if (!is_android) {
    _idl_imports += [ "//third_party/blink/renderer/modules/serial/idls.gni" ]
  }

@@ -1,8 +1,16 @@
 diff --git a/chrome/chrome_repack_locales.gni b/chrome/chrome_repack_locales.gni
-index 9160857c6c4eedb5de1463e17cf15fa3aa1881fe..e0ca4ad524e26238e5c12213d4e6fa5813c7ec01 100644
+index 9160857c6c4eedb5de1463e17cf15fa3aa1881fe..75f71ec70d0beb9be564a97a3b090da61b836a62 100644
 --- a/chrome/chrome_repack_locales.gni
 +++ b/chrome/chrome_repack_locales.gni
-@@ -36,6 +36,7 @@ template("chrome_repack_locales") {
+@@ -1,6 +1,7 @@
+ # Copyright 2014 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/build/config/brave_build.gni")
+
+ import("//build/config/chrome_build.gni")
+ import("//build/config/features.gni")
+@@ -36,6 +37,7 @@ template("chrome_repack_locales") {
        "${root_gen_dir}/ui/strings/app_locale_settings_",
        "${root_gen_dir}/ui/strings/ui_strings_",
      ]
@@ -10,7 +18,7 @@ index 9160857c6c4eedb5de1463e17cf15fa3aa1881fe..e0ca4ad524e26238e5c12213d4e6fa58
      if (!defined(deps)) {
        deps = []
      }
-@@ -53,6 +54,7 @@ template("chrome_repack_locales") {
+@@ -53,6 +55,7 @@ template("chrome_repack_locales") {
        "//ui/strings:app_locale_settings",
        "//ui/strings:ui_strings",
      ]

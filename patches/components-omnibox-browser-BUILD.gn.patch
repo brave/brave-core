@@ -1,8 +1,16 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 2e8dee293107bd35fe8e8b11561e67bb31074ea7..8a7e35a506fb4540908cfeabe69d3f594df6ef29 100644
+index 2e8dee293107bd35fe8e8b11561e67bb31074ea7..9c745f186b47f6eaab07a89dad9659d41a93bd2b 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -262,6 +262,7 @@ jumbo_static_library("browser") {
+@@ -1,6 +1,7 @@
+ # Copyright 2014 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/build/config/brave_build.gni")
+
+ import("//build/buildflag_header.gni")
+ import("//build/config/jumbo.gni")
+@@ -262,6 +263,7 @@ jumbo_static_library("browser") {
    if ((!is_android || enable_vr) && !is_ios) {
      deps += [ ":vector_icons" ]
    }

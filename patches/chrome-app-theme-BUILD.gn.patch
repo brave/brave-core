@@ -1,8 +1,16 @@
 diff --git a/chrome/app/theme/BUILD.gn b/chrome/app/theme/BUILD.gn
-index 57e8917e359a2fc59f567bd33f9340e400e55b1f..b127c994019d8ba1e5750b33c300c2ec9dcf3463 100644
+index 57e8917e359a2fc59f567bd33f9340e400e55b1f..0fa2b48b18a0c5bafd5f05ead26e0fb9bda1506f 100644
 --- a/chrome/app/theme/BUILD.gn
 +++ b/chrome/app/theme/BUILD.gn
-@@ -21,6 +21,7 @@ grit("theme_resources") {
+@@ -1,6 +1,7 @@
+ # Copyright 2014 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/build/config/brave_build.gni")
+
+ import("//chrome/common/features.gni")
+ import("//tools/grit/grit_rule.gni")
+@@ -21,6 +22,7 @@ grit("theme_resources") {
      ":chrome_unscaled_resources",
      "//ui/resources",
    ]
@@ -10,7 +18,7 @@ index 57e8917e359a2fc59f567bd33f9340e400e55b1f..b127c994019d8ba1e5750b33c300c2ec
  
    output_dir = "$root_gen_dir/chrome"
  }
-@@ -32,6 +33,7 @@ grit("chrome_unscaled_resources") {
+@@ -32,6 +34,7 @@ grit("chrome_unscaled_resources") {
      "grit/chrome_unscaled_resources.h",
      "chrome_unscaled_resources.pak",
    ]

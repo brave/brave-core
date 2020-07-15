@@ -1,8 +1,16 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 01d97a3605ff2d6e9431ae2aab1d61434c09f085..be0293947c9679b43f838c4ba3a00bf5fe4a6b55 100644
+index 01d97a3605ff2d6e9431ae2aab1d61434c09f085..62e152bb309c6d5b4c1291a29c2d25ef8c4ab34c 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -1598,6 +1598,7 @@ config("chromium_code") {
+@@ -1,6 +1,7 @@
+ # Copyright (c) 2013 The Chromium Authors. All rights reserved.
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
++import("//brave/build/config/brave_build.gni")
+
+ import("//build/config/android/config.gni")
+ import("//build/config/c++/c++.gni")
+@@ -1598,6 +1599,7 @@ config("chromium_code") {
        cflags += [ "-Wextra-semi" ]
      }
    }
