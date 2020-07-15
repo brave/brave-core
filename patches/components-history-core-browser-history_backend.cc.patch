@@ -1,0 +1,24 @@
+diff --git a/components/history/core/browser/history_backend.cc b/components/history/core/browser/history_backend.cc
+index 4d45f5268a2ffea48860e2f2f436b176306ecb2d..e2df26760ca467e252856e91f14e7deb52fa3ca2 100644
+--- a/components/history/core/browser/history_backend.cc
++++ b/components/history/core/browser/history_backend.cc
+@@ -2283,8 +2283,8 @@ bool HistoryBackend::SetFaviconBitmaps(favicon_base::FaviconID icon_id,
+     } else {
+       if (!favicon_bitmaps_changed &&
+           IsFaviconBitmapDataEqual(bitmap_id, match_it->first)) {
+-        thumbnail_db_->SetFaviconBitmapLastUpdateTime(
+-            bitmap_id, base::Time::Now() /* new last updated time */);
++        //thumbnail_db_->SetFaviconBitmapLastUpdateTime(
++        //bitmap_id, base::Time::Now() /* new last updated time */);
+       } else {
+         thumbnail_db_->SetFaviconBitmap(
+             bitmap_id, match_it->first,
+@@ -2297,7 +2297,7 @@ bool HistoryBackend::SetFaviconBitmaps(favicon_base::FaviconID icon_id,
+ 
+   for (size_t i = 0; i < to_add.size(); ++i) {
+     thumbnail_db_->AddFaviconBitmap(
+-        icon_id, to_add[i].first, type,
++        icon_id, to_add[i].first, FaviconBitmapType::ON_DEMAND,
+         base::Time::Now() /* new last updated / last requested time */,
+         to_add[i].second);
+ 
