@@ -1,0 +1,45 @@
+import("//brave/build/config.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
+
+assert(gemini_enabled)
+
+declare_args() {
+  gemini_client_id = ""
+  gemini_client_secret = ""
+}
+
+source_set("browser") {
+  public_deps = [
+    "buildflags"
+  ]
+  sources = [
+    "gemini_service.cc",
+    "gemini_service.h",
+    "gemini_json_parser.cc",
+    "gemini_json_parser.h",
+    "pref_names.cc",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//components/os_crypt",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//crypto",
+    "//net",
+    "//services/network/public/cpp",
+    "//url",
+  ]
+
+  configs += [ ":gemini_config" ]
+}
+
+config("gemini_config") {
+  defines = [
+    "GEMINI_CLIENT_ID=\"$gemini_client_id\"",
+    "GEMINI_CLIENT_SECRET=\"$gemini_client_secret\""
+  ]
+}

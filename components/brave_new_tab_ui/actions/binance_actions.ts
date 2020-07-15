@@ -32,9 +32,9 @@ export const onBinanceClientUrl = (clientUrl: string) => action(types.ON_BINANCE
   clientUrl
 })
 
-export const onValidAuthCode = () => action(types.ON_VALID_AUTH_CODE)
+export const onValidBinanceAuthCode = () => action(types.ON_VALID_BINANCE_AUTH_CODE)
 
-export const setHideBalance = (hide: boolean) => action(types.SET_HIDE_BALANCE, {
+export const setBinanceHideBalance = (hide: boolean) => action(types.SET_HIDE_BALANCE, {
   hide
 })
 
@@ -62,7 +62,7 @@ export const onConvertableAssets = (convertAsset: string, assets: string[]) => a
   assets
 })
 
-export const setDisconnectInProgress = (inProgress: boolean) => action(types.SET_DISCONNECT_IN_PROGRESS, {
+export const setBinanceDisconnectInProgress = (inProgress: boolean) => action(types.SET_DISCONNECT_IN_PROGRESS, {
   inProgress
 })
 
@@ -70,6 +70,6 @@ export const setAuthInvalid = (authInvalid: boolean) => action(types.SET_AUTH_IN
   authInvalid
 })
 
-export const setSelectedView = (view: string) => action(types.SET_SELECTED_VIEW, {
+export const setBinanceSelectedView = (view: string) => action(types.SET_SELECTED_VIEW, {
   view
 })

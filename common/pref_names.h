@@ -56,6 +56,7 @@ extern const char kNewTabPageShowTopSites[];
 extern const char kNewTabPageShowStats[];
 extern const char kNewTabPageShowRewards[];
 extern const char kNewTabPageShowBinance[];
+extern const char kNewTabPageShowGemini[];
 extern const char kNewTabPageShowTogether[];
 extern const char kNewTabPageShowAddCard[];
 extern const char kBraveEnabledMediaRouter[];

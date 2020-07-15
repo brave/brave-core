@@ -20,10 +20,12 @@ export const defaultState: NewTab.State = {
   showTogether: false,
   showBinance: false,
   showAddCard: false,
+  showGemini: false,
   brandedWallpaperOptIn: false,
   isBrandedWallpaperNotificationDismissed: true,
   showEmptyPage: false,
   togetherSupported: false,
+  geminiSupported: false,
   isIncognito: chrome.extension.inIncognitoContext,
   useAlternativePrivateSearchEngine: false,
   isTor: false,
@@ -59,7 +61,7 @@ export const defaultState: NewTab.State = {
   currentStackWidget: '',
   removedStackWidgets: [],
   // Order is ascending, with last entry being in the foreground
-  widgetStackOrder: ['together', 'binance', 'rewards'],
+  widgetStackOrder: ['together', 'binance', 'gemini', 'rewards'],
   binanceState: {
     userTLD: 'com',
     initialFiat: 'USD',
@@ -86,6 +88,19 @@ export const defaultState: NewTab.State = {
     disconnectInProgress: false,
     authInvalid: false,
     selectedView: 'summary'
+  },
+  geminiState: {
+    geminiClientUrl: '',
+    userAuthed: false,
+    authInProgress: false,
+    tickerPrices: {},
+    selectedView: 'balance',
+    assetAddresses: {},
+    assetAddressQRCodes: {},
+    hideBalance: true,
+    accountBalances: {},
+    disconnectInProgress: false,
+    authInvalid: false
   }
 }
 
@@ -236,8 +251,10 @@ export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {
     const dataToSave = {
       togetherSupported: data.togetherSupported,
+      geminiSupported: data.geminiSupported,
       rewardsState: data.rewardsState,
       binanceState: data.binanceState,
+      geminiState: data.geminiState,
       removedStackWidgets: data.removedStackWidgets,
       widgetStackOrder: data.widgetStackOrder
     }

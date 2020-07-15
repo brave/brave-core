@@ -292,6 +292,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_NEW_TAB_BINANCE" desc="The label for Binance show/hide feature toggle">
         Binance
       </message>
+      <message name="IDS_SETTINGS_NEW_TAB_GEMINI" desc="The label for Gemini show/hide feature toggle">
+        Gemini
+      </message>
       <message name="IDS_SETTINGS_NEW_TAB_TOP_SITES" desc="The label for Top Sites show/hide feature toggle">
         Top Sites
       </message>

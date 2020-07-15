@@ -10,6 +10,7 @@
 namespace content {
 CONTENT_EXPORT extern const char kBraveUIScheme[];
 CONTENT_EXPORT extern const char kBinanceScheme[];
+CONTENT_EXPORT extern const char kGeminiScheme[];
 }
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_COMMON_URL_CONSTANTS_H_

@@ -4,6 +4,7 @@ import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
@@ -256,6 +257,15 @@ test("brave_unit_tests") {
   if (binance_enabled) {
     sources += [
       "//brave/components/binance/browser/binance_json_parser_unittest.cc"
+    ]
+  }
+
+  if (gemini_enabled) {
+    sources += [
+      "//brave/components/gemini/browser/gemini_json_parser_unittest.cc"
+    ]
+    deps += [
+      "//brave/components/gemini/browser",
     ]
   }
 
@@ -616,6 +626,12 @@ test("brave_browser_tests") {
   if (binance_enabled) {
     sources += [
       "//brave/components/binance/browser/binance_service_browsertest.cc",
+    ]
+  }
+
+  if (gemini_enabled) {
+    sources += [
+      "//brave/components/gemini/browser/gemini_service_browsertest.cc",
     ]
   }
 

@@ -172,6 +172,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "hideWidget", IDS_BRAVE_NEW_TAB_WIDGET_HIDE },
         { "rewardsWidgetDesc", IDS_BRAVE_NEW_TAB_REWARDS_WIDGET_DESC },
         { "binanceWidgetDesc", IDS_BRAVE_NEW_TAB_BINANCE_WIDGET_DESC },
+        { "geminiWidgetDesc", IDS_BRAVE_NEW_TAB_GEMINI_WIDGET_DESC },
         { "braveRewardsTitle", IDS_BRAVE_NEW_TAB_BRAVE_REWARDS_TITLE },
         // Private Tab - General
         { "learnMore", IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE },
@@ -289,7 +290,44 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "binanceWidgetSummary", IDS_BINANCE_WIDGET_SUMMARY },
         { "binanceWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
         { "binanceWidgetAuthInvalidCopy", IDS_BINANCE_WIDGET_AUTH_INVALID_COPY },         // NOLINT
-        { "binanceWidgetRefreshData", IDS_BINANCE_WIDGET_REFRESH_DATA }
+        { "binanceWidgetRefreshData", IDS_BINANCE_WIDGET_REFRESH_DATA },
+        // Gemini Widget
+        { "geminiWidgetAuthInvalid", IDS_BINANCE_WIDGET_AUTH_INVALID },
+        { "geminiWidgetAuthInvalidCopy", IDS_GEMINI_WIDGET_AUTH_INVALID_COPY },
+        { "geminiWidgetDone", IDS_BINANCE_WIDGET_DONE },
+        { "geminiWidgetCopy", IDS_BINANCE_WIDGET_COPY },
+        { "geminiWidgetRetry", IDS_BINANCE_WIDGET_RETRY },
+        { "geminiWidgetCancel", IDS_BINANCE_WIDGET_CANCEL },
+        { "geminiWidgetConfirm", IDS_BINANCE_WIDGET_CONFIRM },
+        { "geminiWidgetDisconnectTitle", IDS_BINANCE_WIDGET_DISCONNECT_TITLE },
+        { "geminiWidgetDisconnectText", IDS_BINANCE_WIDGET_DISCONNECT_TEXT },
+        { "geminiWidgetDisconnectButton", IDS_BINANCE_WIDGET_DISCONNECT_BUTTON },         // NOLINT
+        { "geminiWidgetCancelText", IDS_BINANCE_WIDGET_CANCEL },
+        { "geminiWidgetDismissText", IDS_BINANCE_WIDGET_DISMISS_TEXT },
+        { "geminiWidgetConnectTitle", IDS_GEMINI_WIDGET_CONNECT_TITLE },
+        { "geminiWidgetConnectCopy", IDS_GEMINI_WIDGET_CONNECT_COPY },
+        { "geminiWidgetConnectButton", IDS_GEMINI_WIDGET_CONNECT_BUTTON },
+        { "geminiWidgetFailedTrade", IDS_GEMINI_WIDGET_FAILED_TRADE },
+        { "geminiWidgetInsufficientFunds", IDS_BINANCE_WIDGET_INSUFFICIENT_FUNDS },       // NOLINT
+        { "geminiWidgetError", IDS_GEMINI_WIDGET_ERROR },
+        { "geminiWidgetConfirmTrade", IDS_GEMINI_WIDGET_CONFIRM_TRADE },
+        { "geminiWidgetBuy", IDS_BINANCE_WIDGET_BUY },
+        { "geminiWidgetSell", IDS_GEMINI_WIDGET_SELL },
+        { "geminiWidgetAvailable", IDS_BINANCE_WIDGET_AVAILABLE },
+        { "geminiWidgetGetQuote", IDS_GEMINI_WIDGET_GET_QUOTE },
+        { "geminiWidgetUnavailable", IDS_BINANCE_WIDGET_ADDRESS_UNAVAILABLE },
+        { "geminiWidgetDepositAddress", IDS_BINANCE_WIDGET_DEPOSIT_ADDRESS },
+        { "geminiWidgetSearch", IDS_BINANCE_WIDGET_SEARCH },
+        { "geminiWidgetDepositLabel", IDS_BINANCE_WIDGET_DEPOSIT_LABEL },
+        { "geminiWidgetTradeLabel", IDS_GEMINI_WIDGET_TRADE_LABEL },
+        { "geminiWidgetBalanceLabel", IDS_GEMINI_WIDGET_BALANCE_LABEL },
+        { "geminiWidgetBuying", IDS_GEMINI_WIDGET_BUYING },
+        { "geminiWidgetSelling", IDS_GEMINI_WIDGET_SELLING },
+        { "geminiWidgetContinue", IDS_BINANCE_WIDGET_CONTINUE },
+        { "geminiWidgetBought", IDS_GEMINI_WIDGET_BOUGHT },
+        { "geminiWidgetSold", IDS_GEMINI_WIDGET_SOLD },
+        { "geminiWidgetFee", IDS_BINANCE_WIDGET_FEE },
+        { "geminiWidgetPrice", IDS_GEMINI_WIDGET_PRICE }
       }
     }, {
       std::string("wallet"), {

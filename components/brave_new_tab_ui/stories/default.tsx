@@ -16,6 +16,7 @@ import * as newTabActions from '../actions/new_tab_actions'
 import * as gridSitesActions from '../actions/grid_sites_actions'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as binanceActions from '../actions/binance_actions'
+import * as geminiActions from '../actions/gemini_actions'
 import store from '../store'
 import { getNewTabData, getGridSitesData } from './default/data/storybookState'
 
@@ -48,7 +49,7 @@ storiesOf('New Tab/Containers', module)
       <NewTabPage
         newTabData={newTabData}
         gridSitesData={gridSitesData}
-        actions={Object.assign({}, newTabActions, gridSitesActions, rewardsActions, binanceActions)}
+        actions={Object.assign({}, newTabActions, gridSitesActions, rewardsActions, binanceActions, geminiActions)}
         saveShowBackgroundImage={doNothing}
         saveShowClock={doNothing}
         saveShowTopSites={doNothing}
@@ -57,6 +58,7 @@ storiesOf('New Tab/Containers', module)
         saveShowBinance={doNothing}
         saveShowTogether={doNothing}
         saveShowAddCard={doNothing}
+        saveShowGemini={doNothing}
         saveBrandedWallpaperOptIn={doNothing}
       />
     )

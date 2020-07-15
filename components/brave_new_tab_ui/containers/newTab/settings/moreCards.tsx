@@ -19,6 +19,7 @@ import {
 import togetherBanner from './assets/bravetogether.png'
 import binanceBanner from './assets/binance.png'
 import rewardsBanner from './assets/braverewards.png'
+import geminiBanner from './assets/gemini.png'
 import HideIcon from './assets/hide-icon'
 import AddIcon from '../../../components/default/addCard/assets/add-icon'
 
@@ -33,6 +34,9 @@ interface Props {
   togetherSupported: boolean
   toggleShowRewards: () => void
   showRewards: boolean
+  toggleShowGemini: () => void
+  geminiSupported: boolean
+  showGemini: boolean
 }
 
 class MoreCardsSettings extends React.PureComponent<Props, {}> {
@@ -69,7 +73,10 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
       showTogether,
       togetherSupported,
       toggleShowRewards,
-      showRewards
+      showRewards,
+      geminiSupported,
+      toggleShowGemini,
+      showGemini
     } = this.props
     return (
       <StyledWidgetSettings>
@@ -87,6 +94,22 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
               </StyledSettingsInfo>
               {this.renderToggleButton(showTogether, toggleShowTogether)}
             </FeaturedSettingsWidget>
+          : null
+        }
+        {
+          geminiSupported
+          ? <SettingsWidget>
+              <StyledBannerImage src={geminiBanner} />
+              <StyledSettingsInfo>
+                <StyledSettingsTitle>
+                  {'Gemini'}
+                </StyledSettingsTitle>
+                <StyledSettingsCopy>
+                  {getLocale('geminiWidgetDesc')}
+                </StyledSettingsCopy>
+              </StyledSettingsInfo>
+              {this.renderToggleButton(showGemini, toggleShowGemini, false)}
+            </SettingsWidget>
           : null
         }
         {

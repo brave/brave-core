@@ -12,6 +12,11 @@
   WebString binance_scheme(WebString::FromASCII(kBinanceScheme)); \
   WebSecurityPolicy::RegisterURLSchemeAsDisplayIsolated(binance_scheme); \
   WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs( \
-      binance_scheme);
+      binance_scheme); \
+                       \
+  WebString gemini_scheme(WebString::FromASCII(kGeminiScheme)); \
+  WebSecurityPolicy::RegisterURLSchemeAsDisplayIsolated(gemini_scheme); \
+  WebSecurityPolicy::RegisterURLSchemeAsNotAllowingJavascriptURLs( \
+      gemini_scheme);
 
 #include "../../../../content/renderer/render_thread_impl.cc"
