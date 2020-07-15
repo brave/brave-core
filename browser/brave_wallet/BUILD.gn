@@ -12,6 +12,7 @@ source_set("brave_wallet") {
     "brave_wallet_utils.h",
   ]
   deps = [
+    "//brave/browser/extensions",
     "//components/pref_registry",
     "//components/prefs",
     "//extensions/browser",
