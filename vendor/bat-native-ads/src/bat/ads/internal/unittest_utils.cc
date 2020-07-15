@@ -5,6 +5,8 @@
 
 #include "bat/ads/internal/unittest_utils.h"
 
+#include <stdint.h>
+
 #include <limits>
 #include <vector>
 
@@ -33,6 +35,8 @@ using ::testing::SetArgPointee;
 namespace ads {
 
 namespace {
+
+static std::map<std::string, uint16_t> indexes;
 
 const char kNowTagValue[] = "now";
 const char kDistantPastTagValue[] = "distant_past";
@@ -158,19 +162,40 @@ bool GetNextResponse(
 
   const auto iter = endpoints.find(path);
   if (iter == endpoints.end()) {
+    // Failed due to unknown endpoint
     return false;
   }
 
-  static std::map<std::string, uint16_t> indexes;
   const URLResponses responses = iter->second;
-  if (indexes[path] == responses.size()) {
+  if (responses.empty()) {
+    // Failed due as no mocked responses were provided
     return false;
   }
 
-  const int index = indexes[path];
+  const ::testing::TestInfo* const test_info =
+      ::testing::UnitTest::GetInstance()->current_test_info();
+
+  const std::string indexes_path = base::StringPrintf("%s:%s.%s", path.c_str(),
+      test_info->test_suite_name(), test_info->name());
+
+  uint16_t index;
+
+  const auto indexes_iter = indexes.find(indexes_path);
+  if (indexes_iter == indexes.end()) {
+    index = 0;
+    indexes.insert({indexes_path, index});
+  } else {
+    index = indexes_iter->second;
+  }
+
+  if (index == responses.size()) {
+    // Failed due as out of mocked responses for endpoints
+    return false;
+  }
+
   *response = responses.at(index);
 
-  indexes[path]++;
+  indexes_iter->second++;
 
   return true;
 }
@@ -339,11 +364,11 @@ void MockGetClientInfo(
 }
 
 int64_t DistantPast() {
-  return 0;
+  return 0;  // Thursday, 1 January 1970 00:00:00 UTC
 }
 
 int64_t DistantFuture() {
-  return 4102444799;  // Thursday, December 31, 2099 23:59:59 UTC
+  return 4102444799;  // Thursday, December 31 2099 23:59:59 UTC
 }
 
 }  // namespace ads

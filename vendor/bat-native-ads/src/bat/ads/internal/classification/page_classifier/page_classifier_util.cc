@@ -7,6 +7,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "base/strings/utf_string_conversions.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace ads {
@@ -29,7 +30,13 @@ std::string StripHtmlTagsAndNonAlphaCharacters(
 
   RE2::GlobalReplace(&stripped_content, pattern, " ");
 
-  return base::CollapseWhitespaceASCII(stripped_content, true);
+  base::string16 stripped_content_string16 =
+      base::UTF8ToUTF16(stripped_content);
+
+  stripped_content_string16 =
+      base::CollapseWhitespace(stripped_content_string16, true);
+
+  return base::UTF16ToUTF8(stripped_content_string16);
 }
 
 }  // namespace classification

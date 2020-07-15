@@ -36,8 +36,8 @@ TEST(BatAdsPageClassifierUtilTest,
       "The quick brown fox jumps over the lazy dog Les naïfs ægithales hâtifs "
       "pondant à Noël où il gèle sont sûrs d être déçus en voyant leurs drôles "
       "d œufs abîmés Falsches Üben von Xylophonmusik quält jeden größeren "
-      "Zwerg ξεσκεπάζω την ψυχοφθόρα βδελυγμία いろはにほへど　ちりぬるを "
-      "わがよたれぞ　つねならむ うゐのおくやま　けふこえて あさきゆめみじ　"
+      "Zwerg ξεσκεπάζω την ψυχοφθόρα βδελυγμία いろはにほへど ちりぬるを "
+      "わがよたれぞ つねならむ うゐのおくやま けふこえて あさきゆめみじ "
       "ゑひもせず";
 
   EXPECT_EQ(expected_stripped_content, stripped_content);
