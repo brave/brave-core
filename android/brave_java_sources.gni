@@ -122,6 +122,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/signin/BraveSigninManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/DesktopModePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/site_settings/PlayYTVideoInBrowserPreferences.java",
+  "../../brave/android/java/org/chromium/chrome/browser/sync/BraveAndroidSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/sync/settings/BraveManageSyncSettings.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/BraveHomeButton.java",
   "../../brave/android/java/org/chromium/chrome/browser/toolbar/bottom/BookmarksButton.java",
@@ -176,7 +177,6 @@ if (enable_brave_sync) {
     "../../brave/android/java/org/chromium/chrome/browser/BraveSyncInformers.java",
     "../../brave/android/java/org/chromium/chrome/browser/BraveSyncWorker.java",
     "../../brave/android/java/org/chromium/chrome/browser/settings/BraveSyncScreensPreference.java",
-    "../../brave/android/java/org/chromium/chrome/browser/sync/BraveAndroidSyncSettings.java",
     "../../brave/android/java/org/chromium/chrome/browser/sync/BraveSyncDevices.java",
   ]
 }
