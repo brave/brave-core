@@ -15,6 +15,7 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_registry.h"
+#include "extensions/common/constants.h"
 #include "net/http/http_content_disposition.h"
 #include "net/http/http_response_headers.h"
 
@@ -55,6 +56,17 @@ bool IsWebtorrentPrefEnabled(content::BrowserContext* browser_context) {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kWebTorrentEnabled, true);
+}
+
+bool IsWebtorrentURL(const GURL& url) {
+  if (url.SchemeIs(extensions::kExtensionScheme) &&
+      url.host() == brave_webtorrent_extension_id &&
+      (url.ExtractFileName() == brave_webtorrent_extension_filename ||
+       url.ExtractFileName() == brave_webtorrent_extension_filename2)) {
+    return true;
+  }
+
+  return false;
 }
 
 bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers) {

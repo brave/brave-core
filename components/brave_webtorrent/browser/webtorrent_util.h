@@ -25,6 +25,7 @@ namespace webtorrent {
 bool IsWebtorrentEnabled(content::BrowserContext* browser_context);
 bool IsWebtorrentPrefEnabled(content::BrowserContext* browser_context);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+bool IsWebtorrentURL(const GURL& url);
 bool IsTorrentFile(const GURL& url, const net::HttpResponseHeaders* headers);
 bool TorrentURLMatched(const GURL& url);
 

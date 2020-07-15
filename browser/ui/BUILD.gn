@@ -179,6 +179,9 @@ source_set("ui") {
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
     "//brave/browser/tor",
+    # //chrome/browser/ui depends on //brave/browser/ui, add this target here
+    # to pull in dependencies needed for the overwrite codes in chromium_src.
+    "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/common/tor",
