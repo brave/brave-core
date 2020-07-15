@@ -131,6 +131,7 @@ def main():
             add_extensions_output(ifElem, 'pa')
             add_extensions_output(ifElem, 'si')
             add_extensions_output(ifElem, 'sq')
+            add_extensions_output(ifElem, 'sr-Latn')
             add_extensions_output(ifElem, 'ur')
             add_extensions_output(ifElem, 'uz')
             add_extensions_output(ifElem, 'zh-HK')

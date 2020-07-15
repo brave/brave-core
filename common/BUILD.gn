@@ -69,7 +69,7 @@ source_set("common") {
 
   if (!is_ios) {
     deps += [
-      "//brave/common/importer",
+      "//brave/common/importer",]
 
     sources += [
       "importer/chrome_importer_utils.cc",
