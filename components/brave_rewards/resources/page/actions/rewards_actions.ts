@@ -76,8 +76,8 @@ export const recoverWallet = (key: string) => action(types.RECOVER_WALLET, {
   key
 })
 
-export const onRecoverWalletData = (properties: Rewards.RecoverWallet) => action(types.ON_RECOVER_WALLET_DATA, {
-  properties
+export const onRecoverWalletData = (result: number) => action(types.ON_RECOVER_WALLET_DATA, {
+  result
 })
 
 export const onModalBackupClose = () => action(types.ON_MODAL_BACKUP_CLOSE)

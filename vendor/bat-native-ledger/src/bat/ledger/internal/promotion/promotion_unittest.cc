@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
 #include "bat/ledger/internal/promotion/promotion.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -68,7 +69,7 @@ class PromotionTest : public testing::Test {
 
   void SetUp() override {
     const std::string payment_id = "this_is_id";
-    ON_CALL(*mock_ledger_impl_, GetPaymentId())
+    ON_CALL(*mock_ledger_impl_, GetStringState(ledger::kStatePaymentId))
       .WillByDefault(testing::Return(payment_id));
 
     const std::string wallet_passphrase = "phrase";

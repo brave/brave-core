@@ -165,24 +165,6 @@ void BatLedgerClientMojoBridge::FetchFavIcon(const std::string& url,
       base::BindOnce(&OnFetchFavIcon, std::move(callback)));
 }
 
-void OnLoadNicewareList(
-    const ledger::GetNicewareListCallback& callback,
-    const ledger::Result result,
-    const std::string& data) {
-  callback(result, data);
-}
-
-void BatLedgerClientMojoBridge::LoadNicewareList(
-    ledger::GetNicewareListCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  bat_ledger_client_->LoadNicewareList(
-      base::BindOnce(&OnLoadNicewareList, std::move(callback)));
-}
-
 std::string BatLedgerClientMojoBridge::URIEncode(const std::string& value) {
   if (!Connected())
     return "";

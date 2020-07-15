@@ -53,10 +53,11 @@ class WalletBalance {
       ledger::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
-  void OnUpholdFetchBalance(ledger::Balance info,
-                            ledger::FetchBalanceCallback callback,
-                            ledger::Result result,
-                            double balance);
+  void OnUpholdFetchBalance(
+      ledger::Balance info,
+      ledger::FetchBalanceCallback callback,
+      const ledger::Result result,
+      const double balance);
 
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

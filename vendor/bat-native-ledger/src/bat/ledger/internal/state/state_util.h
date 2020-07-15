@@ -74,12 +74,6 @@ uint64_t GetCreationStamp(bat_ledger::LedgerImpl* ledger);
 
 void SetCreationStamp(bat_ledger::LedgerImpl* ledger, const uint64_t stamp);
 
-std::string GetAnonymousCardId(bat_ledger::LedgerImpl* ledger);
-
-void SetAnonymousCardId(
-    bat_ledger::LedgerImpl* ledger,
-    const std::string& id);
-
 std::vector<uint8_t> GetRecoverySeed(bat_ledger::LedgerImpl* ledger);
 
 void SetRecoverySeed(

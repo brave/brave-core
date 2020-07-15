@@ -61,9 +61,7 @@ class Uphold {
       const std::map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback);
 
-  void TransferAnonToExternalWallet(ledger::ExternalWalletCallback callback);
-
-  void GenerateExternalWallet(ledger::ExternalWalletCallback callback);
+  void GenerateExternalWallet(ledger::ResultCallback callback);
 
   void CreateCard(CreateCardCallback callback);
 
@@ -87,10 +85,6 @@ class Uphold {
   void OnFetchBalance(
       const ledger::UrlResponse& response,
       FetchBalanceCallback callback);
-
-  void OnTransferAnonToExternalWalletCallback(
-      const ledger::Result result,
-      ledger::ExternalWalletCallback callback);
 
   void SaveTransferFee(ledger::TransferFeePtr transfer_fee);
 

@@ -67,10 +67,6 @@ using GetMonthlyReportCallback =
 using GetAllMonthlyReportIdsCallback =
     std::function<void(const std::vector<std::string>&)>;
 
-using RecoverWalletCallback = std::function<void(
-    const ledger::Result,
-    const double balance)>;
-
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(const std::string& url,
@@ -223,7 +219,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RecoverWallet(
       const std::string& pass_phrase,
-      RecoverWalletCallback callback)  = 0;
+      ResultCallback callback)  = 0;
 
   virtual void SetPublisherExclude(
       const std::string& publisher_id,

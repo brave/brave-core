@@ -29,6 +29,12 @@ std::string GetTransferTokens();
 
 std::string GetBatlossURL(const std::string& payment_id, const int32_t version);
 
+std::string GetCreateWalletURL();
+
+std::string GetRecoverWalletURL(const std::string& public_key);
+
+std::string GetClaimWalletURL(const std::string& payment_id);
+
 }  // namespace braveledger_request_util
 
 #endif  // BRAVELEDGER_COMMON_PROMOTION_REQUESTS_H_

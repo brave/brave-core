@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_attestation.h"
 #include "bat/ledger/internal/response/response_attestation.h"
+#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -74,7 +75,7 @@ void AttestationDesktop::Start(
       braveledger_request_util::GetStartAttestationDesktopUrl();
 
   base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("paymentId", ledger_->GetPaymentId());
+  body.SetStringKey("paymentId", braveledger_state::GetPaymentId(ledger_));
 
   std::string json;
   base::JSONWriter::Write(body, &json);

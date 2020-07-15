@@ -18,6 +18,7 @@
 #include "bat/confirmations/confirmations.h"
 #include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/media/media.h"
+#include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
 #include "bat/ledger/internal/publisher/publisher.h"
@@ -430,19 +431,20 @@ void LedgerImpl::SetConfirmationsWalletInfo() {
 
   const auto recovery_seed = braveledger_state::GetRecoverySeed(this);
   const std::vector<uint8_t> seed =
-      braveledger_bat_helper::getHKDF(recovery_seed);
+      braveledger_helper::Security::GetHKDF(recovery_seed);
   std::vector<uint8_t> public_key;
   std::vector<uint8_t> secret_key;
 
-  if (!braveledger_bat_helper::getPublicKeyFromSeed(seed, &public_key,
+  if (!braveledger_helper::Security::GetPublicKeyFromSeed(seed, &public_key,
       &secret_key)) {
     BLOG(0, "Failed to initialize confirmations due to invalid wallet");
     return;
   }
 
   confirmations::WalletInfo wallet_info;
-  wallet_info.payment_id = GetPaymentId();
-  wallet_info.private_key = braveledger_bat_helper::uint8ToHex(secret_key);
+  wallet_info.payment_id = braveledger_state::GetPaymentId(this);
+  wallet_info.private_key =
+      braveledger_helper::Security::Uint8ToHex(secret_key);
 
   if (!wallet_info.IsValid()) {
     BLOG(0, "Failed to initialize confirmations due to invalid wallet");
@@ -554,10 +556,6 @@ void LedgerImpl::OnRestorePublishers(
     const ledger::Result result,
     ledger::ResultCallback callback) {
   bat_publisher_->OnRestorePublishers(result, callback);
-}
-
-void LedgerImpl::LoadNicewareList(ledger::GetNicewareListCallback callback) {
-  ledger_client_->LoadNicewareList(callback);
 }
 
 void LedgerImpl::GetPublisherInfo(
@@ -752,28 +750,24 @@ std::string LedgerImpl::GetWalletPassphrase() const {
 
 void LedgerImpl::RecoverWallet(
     const std::string& pass_phrase,
-    ledger::RecoverWalletCallback callback) {
+    ledger::ResultCallback callback) {
   auto on_recover = std::bind(&LedgerImpl::OnRecoverWallet,
       this,
       _1,
-      _2,
       std::move(callback));
   bat_wallet_->RecoverWallet(pass_phrase, std::move(on_recover));
 }
 
 void LedgerImpl::OnRecoverWallet(
     const ledger::Result result,
-    const double balance,
-    ledger::RecoverWalletCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Failed to recover wallet");
-  }
+    ledger::ResultCallback callback) {
+  BLOG_IF(0, result != ledger::Result::LEDGER_OK, "Failed to recover wallet");
 
   if (result == ledger::Result::LEDGER_OK) {
     bat_database_->DeleteAllBalanceReports([](const ledger::Result _) {});
   }
 
-  callback(result, balance);
+  callback(result);
 }
 
 void LedgerImpl::GetBalanceReport(
@@ -929,30 +923,30 @@ void LedgerImpl::ResetReconcileStamp() {
   ledger_client_->ReconcileStampReset();
 }
 
-std::string LedgerImpl::GetPaymentId() {
-  return braveledger_state::GetPaymentId(this);
-}
-
 void LedgerImpl::GetRewardsInternalsInfo(
     ledger::RewardsInternalsInfoCallback callback) {
   ledger::RewardsInternalsInfoPtr info = ledger::RewardsInternalsInfo::New();
 
   // Retrieve the payment id.
-  info->payment_id = GetPaymentId();
+  info->payment_id = braveledger_state::GetPaymentId(this);
 
   // Retrieve the boot stamp.
   info->boot_stamp = GetCreationStamp();
 
   // Retrieve the key info seed and validate it.
   const auto seed = braveledger_state::GetRecoverySeed(this);
-  if (seed.size() != SEED_LENGTH) {
+  if (!braveledger_helper::Security::IsSeedValid(seed)) {
     info->is_key_info_seed_valid = false;
   } else {
-    std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(seed);
+    std::vector<uint8_t> secret_key =
+        braveledger_helper::Security::GetHKDF(seed);
     std::vector<uint8_t> public_key;
     std::vector<uint8_t> new_secret_key;
-    info->is_key_info_seed_valid = braveledger_bat_helper::getPublicKeyFromSeed(
-        secret_key, &public_key, &new_secret_key);
+    info->is_key_info_seed_valid =
+        braveledger_helper::Security::GetPublicKeyFromSeed(
+            secret_key,
+            &public_key,
+            &new_secret_key);
   }
 
   callback(std::move(info));
@@ -966,9 +960,6 @@ uint64_t LedgerImpl::GetCreationStamp() {
   return braveledger_state::GetCreationStamp(this);
 }
 
-void LedgerImpl::SetCreationStamp(uint64_t stamp) {
-  braveledger_state::SetCreationStamp(this, stamp);
-}
 void LedgerImpl::SaveContributionInfo(
     ledger::ContributionInfoPtr info,
     ledger::ResultCallback callback) {
@@ -1184,10 +1175,8 @@ void LedgerImpl::DisconnectWallet(
   bat_wallet_->DisconnectWallet(wallet_type, callback);
 }
 
-void LedgerImpl::TransferAnonToExternalWallet(
-    ledger::ResultCallback callback,
-    const bool allow_zero_balance) {
-  bat_wallet_->TransferAnonToExternalWallet(allow_zero_balance, callback);
+void LedgerImpl::ClaimFunds(ledger::ResultCallback callback) {
+  bat_wallet_->ClaimFunds(callback);
 }
 
 void LedgerImpl::ShowNotification(

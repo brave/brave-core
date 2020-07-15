@@ -79,7 +79,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_MODAL_BACKUP_CLOSE: {
       state = { ...state }
       let ui = state.ui
-      ui.walletRecoverySuccess = null
+      ui.walletRecoveryStatus = null
       ui.modalBackup = false
       state = {
         ...state,
@@ -98,7 +98,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.ON_CLEAR_ALERT: {
       let ui = state.ui
-      if (!ui[action.payload.property]) {
+      if (ui[action.payload.property] === undefined) {
         break
       }
 

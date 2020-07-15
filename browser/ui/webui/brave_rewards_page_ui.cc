@@ -217,9 +217,9 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsService* rewards_service,
       const uint32_t result,
       brave_rewards::Promotion promotion) override;
-  void OnRecoverWallet(brave_rewards::RewardsService* rewards_service,
-                       unsigned int result,
-                       double balance) override;
+  void OnRecoverWallet(
+      brave_rewards::RewardsService* rewards_service,
+      const int32_t result) override;
   void OnExcludedSitesChanged(brave_rewards::RewardsService* rewards_service,
                               std::string publisher_id,
                               bool excluded) override;
@@ -754,23 +754,20 @@ void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
 void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
   CHECK_EQ(1U, args->GetSize());
   if (rewards_service_) {
-    const std::string passPhrase = args->GetList()[0].GetString();
-    rewards_service_->RecoverWallet(passPhrase);
+    const std::string pass_phrase = args->GetList()[0].GetString();
+    rewards_service_->RecoverWallet(pass_phrase);
   }
 }
 
 void RewardsDOMHandler::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
-    unsigned int result,
-    double balance) {
-  if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue recover;
-    recover.SetInteger("result", result);
-    recover.SetDouble("balance", balance);
-
-    web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.recoverWalletData", recover);
+    const int32_t result) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
   }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.recoverWalletData", base::Value(result));
 }
 
 void RewardsDOMHandler::OnGetReconcileStamp(uint64_t reconcile_stamp) {

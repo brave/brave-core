@@ -5,271 +5,89 @@
 
 #include "bat/ledger/internal/wallet/wallet_create.h"
 
-#include <utility>
+#include <vector>
 
-#include "base/guid.h"
 #include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/values.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/legacy/wallet_info_properties.h"
+#include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_wallet.h"
 #include "bat/ledger/internal/state/state_util.h"
 
-#include "anon/anon.h"
-
 using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-
-namespace {
-
-std::string GetAnonizeProof(
-    const std::string& registrarVK,
-    const std::string& id,
-    std::string* preFlight) {
-  DCHECK(preFlight);
-
-  const char* cred = makeCred(id.c_str());
-  if (!cred) {
-    return "";
-  }
-
-  *preFlight = cred;
-  // should fix in
-  // https://github.com/brave-intl/bat-native-anonize/issues/11
-  free((void*)cred); // NOLINT
-
-  const char* proof_temp = registerUserMessage(
-      preFlight->c_str(),
-      registrarVK.c_str());
-
-  if (!proof_temp) {
-    return "";
-  }
-
-  std::string proof = proof_temp;
-  // should fix in
-  // https://github.com/brave-intl/bat-native-anonize/issues/11
-  free((void*)proof_temp); // NOLINT
-
-  return proof;
-}
-
-std::string StringifyRequestCredentials(
-    const std::string& proof,
-    const std::string& label,
-    const std::string& public_key,
-    const std::string& digest,
-    const std::string& signature,
-    const std::string& octets) {
-  base::Value headers(base::Value::Type::DICTIONARY);
-  headers.SetStringKey("digest", digest);
-  headers.SetStringKey("signature", signature);
-
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("currency", LEDGER_CURRENCY);
-  body.SetStringKey("label", label);
-  body.SetStringKey("publicKey", public_key);
-
-  base::Value request(base::Value::Type::DICTIONARY);
-  request.SetKey("headers", std::move(headers));
-  request.SetKey("body", std::move(body));
-  request.SetStringKey("octets", octets);
-
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("requestType", "httpSignature");
-  payload.SetStringKey("proof", proof);
-  payload.SetKey("request", std::move(request));
-
-  std::string json;
-  base::JSONWriter::Write(payload, &json);
-
-  return json;
-}
-
-}  // namespace
 
 namespace braveledger_wallet {
 
-WalletCreate::WalletCreate(bat_ledger::LedgerImpl* ledger) :
-    ledger_(ledger) {
-  initAnonize();
+WalletCreate::WalletCreate(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 }
 
-WalletCreate::~Create() = default;
+WalletCreate::~WalletCreate() = default;
 
 void WalletCreate::Start(ledger::ResultCallback callback) {
-  auto req_callback = std::bind(&WalletCreate::RequestCredentialsCallback,
-      this,
-      _1,
-      std::move(callback));
+  const auto payment_id = braveledger_state::GetPaymentId(ledger_);
+  const auto stamp = ledger_->GetCreationStamp();
 
-  const std::string url =
-      braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2);
-
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, req_callback);
-}
-
-void WalletCreate::RequestCredentialsCallback(
-      const ledger::UrlResponse& response,
-      ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckWalletRequestCredentials(response);
-  if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Can't get wallet info");
-    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
+  if (!payment_id.empty() && stamp != 0) {
+    BLOG(1, "Wallet already exists");
+    callback(ledger::Result::WALLET_CREATED);
     return;
   }
 
-  // Anonize2 limit is 31 octets
-  std::string user_id = base::GenerateGUID();
-  user_id.erase(
-      std::remove(user_id.begin(), user_id.end(), '-'), user_id.end());
-  user_id.erase(12, 1);
-
-  std::string registrar_vk;
-  if (!braveledger_bat_helper::getJSONValue(REGISTRARVK_FIELDNAME,
-                                            response.body,
-                                            &registrar_vk)) {
-    BLOG(0, "Bad registration response");
-    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
-    return;
-  }
-
-  DCHECK(!registrar_vk.empty());
-
-  std::string pre_flight;
-  const std::string proof = GetAnonizeProof(registrar_vk, user_id, &pre_flight);
-
-  if (proof.empty()) {
-    BLOG(0, "Proof is empty");
-    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
-    return;
-  }
-
-  std::vector<uint8_t> key_info_seed = braveledger_bat_helper::generateSeed();
-
+  auto key_info_seed = braveledger_helper::Security::GenerateSeed();
   braveledger_state::SetRecoverySeed(ledger_, key_info_seed);
-  std::vector<uint8_t> secretKey =
-      braveledger_bat_helper::getHKDF(key_info_seed);
-  std::vector<uint8_t> publicKey;
-  std::vector<uint8_t> newSecretKey;
-  braveledger_bat_helper::getPublicKeyFromSeed(secretKey,
-                                               &publicKey,
-                                               &newSecretKey);
-  std::string label = base::GenerateGUID();
-  std::string public_key_hex = braveledger_bat_helper::uint8ToHex(publicKey);
-  std::string keys[3] = {"currency", "label", "publicKey"};
-  std::string values[3] = {LEDGER_CURRENCY, label, public_key_hex};
-  std::string octets = braveledger_bat_helper::stringify(keys, values, 3);
-  std::string digest = "SHA-256=" +
-      braveledger_bat_helper::getBase64(
-          braveledger_bat_helper::getSHA256(octets));
 
-  std::vector<std::string> header_keys;
-  header_keys.push_back("digest");
-  std::vector<std::string> header_values;
-  header_values.push_back(digest);
+  const std::string public_key_hex =
+      braveledger_helper::Security::GetPublicKeyHexFromSeed(key_info_seed);
 
-  std::string signature = braveledger_bat_helper::sign(
-      header_keys,
-      header_values,
-      "primary",
-      newSecretKey);
-
-  std::string payload = StringifyRequestCredentials(
-      proof,
-      label,
-      public_key_hex,
-      digest,
-      signature,
-      octets);
-  std::vector<std::string> registerHeaders;
-  registerHeaders.push_back("Content-Type: application/json; charset=UTF-8");
-
-  // We should use simple callbacks on iOS
-  const std::string url = braveledger_request_util::BuildUrl(
-      (std::string)REGISTER_PERSONA + "/" + user_id, PREFIX_V2);
-  auto on_register = std::bind(&WalletCreate::RegisterPersonaCallback,
+  auto url_callback = std::bind(&WalletCreate::OnCreate,
       this,
       _1,
-      user_id,
-      pre_flight,
-      registrar_vk,
-      std::move(callback));
+      callback);
 
+  const auto headers = braveledger_request_util::BuildSignHeaders(
+      "post /v3/wallet/brave",
+      "",
+      public_key_hex,
+      braveledger_state::GetRecoverySeed(ledger_));
+
+  const std::string url = braveledger_request_util::GetCreateWalletURL();
   ledger_->LoadURL(
       url,
-      registerHeaders,
-      payload,
+      headers,
+      "",
       "application/json; charset=utf-8",
       ledger::UrlMethod::POST,
-      on_register);
+      url_callback);
 }
 
-void WalletCreate::RegisterPersonaCallback(
-      const ledger::UrlResponse& response,
-      const std::string& user_id,
-      const std::string& pre_flight,
-      const std::string& registrar_vk,
-      ledger::ResultCallback callback) {
+void WalletCreate::OnCreate(
+    const ledger::UrlResponse& response,
+    ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
   std::string payment_id;
-  std::string card_id;
-  const ledger::Result result =
-      braveledger_response_util::ParseWalletRegisterPersona(
-          response,
-          &payment_id,
-          &card_id);
+  const auto result = braveledger_response_util::ParseCreateWallet(
+      response,
+      &payment_id);
+
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Can't get wallet info");
-    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
+    callback(result);
     return;
   }
 
-  BLOG(0, response.body);
-
-  std::string verification;
-  if (!braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME,
-                                            response.body,
-                                            &verification)) {
-    BLOG(0, "Verification is missing");
-    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
-    return;
-  }
-
-  const char* masterUserToken = registerUserFinal(
-      user_id.c_str(),
-      verification.c_str(),
-      pre_flight.c_str(),
-      registrar_vk.c_str());
-
-  if (masterUserToken != nullptr) {
-    // should fix in
-    // https://github.com/brave-intl/bat-native-anonize/issues/11
-    free((void*)masterUserToken); // NOLINT
-  } else if (!ledger::is_testing) {
-    BLOG(0, "Master token error");
-    callback(ledger::Result::REGISTRATION_VERIFICATION_FAILED);
-    return;
-  }
+  braveledger_state::SetPaymentId(ledger_, payment_id);
 
   ledger_->SetRewardsMainEnabled(true);
   ledger_->SetAutoContributeEnabled(true);
-  braveledger_state::SetPaymentId(ledger_, payment_id);
-  braveledger_state::SetAnonymousCardId(ledger_, card_id);
+  ledger_->ResetReconcileStamp();
   if (!ledger::is_testing) {
     braveledger_state::SetFetchOldBalanceEnabled(ledger_, false);
   }
-  ledger_->SetCreationStamp(braveledger_time_util::GetCurrentTimeStamp());
-  ledger_->ResetReconcileStamp();
+  braveledger_state::SetCreationStamp(
+      ledger_,
+      braveledger_time_util::GetCurrentTimeStamp());
   braveledger_state::SetInlineTippingPlatformEnabled(
       ledger_,
       ledger::InlineTipsPlatforms::REDDIT,

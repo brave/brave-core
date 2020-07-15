@@ -77,7 +77,6 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDoublePref(prefs::kStateAutoContributeAmount, 0.0);
   registry->RegisterUint64Pref(prefs::kStateNextReconcileStamp, 0ull);
   registry->RegisterUint64Pref(prefs::kStateCreationStamp, 0ull);
-  registry->RegisterStringPref(prefs::kStateAnonymousCardId, "");
   registry->RegisterStringPref(prefs::kStateRecoverySeed, "");
   registry->RegisterStringPref(prefs::kStatePaymentId, "");
   registry->RegisterBooleanPref(prefs::kStateInlineTipRedditEnabled, false);

@@ -782,8 +782,7 @@ void BraveRewardsNativeWorker::RecoverWallet(
 
 void BraveRewardsNativeWorker::OnRecoverWallet(
     brave_rewards::RewardsService* rewards_service,
-    unsigned int result,
-    double balance) {
+    const int32_t result) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveRewardsNativeWorker_OnRecoverWallet(
       env, weak_java_brave_rewards_native_worker_.get(env), result);

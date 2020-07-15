@@ -39,8 +39,6 @@ class LedgerClientMojoBridge :
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
 
-  void LoadNicewareList(LoadNicewareListCallback callback) override;
-
   void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
   void OnPanelPublisherInfo(
@@ -195,11 +193,6 @@ class LedgerClientMojoBridge :
       CallbackHolder<FetchFavIconCallback>* holder,
       bool success,
       const std::string& favicon_url);
-
-  static void OnLoadNicewareList(
-      CallbackHolder<LoadNicewareListCallback>* holder,
-      const ledger::Result result,
-      const std::string& data);
 
   static void OnLoadURL(
       CallbackHolder<LoadURLCallback>* holder,

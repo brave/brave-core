@@ -180,37 +180,28 @@ class BraveAdsBrowserTest
     base::FilePath path;
     GetTestDataDir(&path);
     ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("register_persona_resp.json"),
-                               &registrarVK_));
-    ASSERT_TRUE(
-        base::ReadFileToString(path.AppendASCII("verify_persona_resp.json"),
-                               &verification_));
+        base::ReadFileToString(path.AppendASCII("wallet_resp.json"),
+                               &wallet_));
     ASSERT_TRUE(
         base::ReadFileToString(path.AppendASCII("parameters_resp.json"),
                                &parameters_));
   }
 
-  void GetTestResponse(const std::string& url,
-                       int32_t method,
-                       int* response_status_code,
-                       std::string* response,
-                       std::map<std::string, std::string>* headers) {
-    std::vector<std::string> tmp = base::SplitString(
-        url,
-        "/",
-        base::TRIM_WHITESPACE,
-        base::SPLIT_WANT_ALL);
-    const std::string persona_url =
-        braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2);
-    if (url.find(persona_url) == 0 && tmp.size() == 6) {
-      *response = registrarVK_;
-    } else if (URLMatches(url, REGISTER_PERSONA, PREFIX_V2,
-                          ServerTypes::LEDGER) &&
-               tmp.size() == 7) {
-      *response = verification_;
-    } else if (URLMatches(url, "/wallet/", PREFIX_V2,
-                          ServerTypes::BALANCE)) {
+  void GetTestResponse(
+      const std::string& url,
+      int32_t method,
+      int* response_status_code,
+      std::string* response,
+      std::map<std::string, std::string>* headers) {
+    if (url.find("/v3/wallet/brave") != std::string::npos) {
+      *response = wallet_;
+      *response_status_code = net::HTTP_CREATED;
+      return;
+    }
+
+    if (URLMatches(url, "/wallet/", PREFIX_V2, ServerTypes::BALANCE)) {
       *response = parameters_;
+      return;
     }
   }
 
@@ -520,8 +511,7 @@ class BraveAdsBrowserTest
   std::unique_ptr<base::RunLoop> brave_ads_have_arrived_notification_run_loop_;
   bool brave_ads_have_arrived_notification_was_already_shown_ = false;
 
-  std::string registrarVK_;
-  std::string verification_;
+  std::string wallet_;
   std::string parameters_;
 };
 

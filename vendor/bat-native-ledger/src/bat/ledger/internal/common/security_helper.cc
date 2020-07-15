@@ -4,13 +4,36 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <openssl/base64.h>
+#include <openssl/digest.h>
+#include <openssl/hkdf.h>
 #include <openssl/sha.h>
 
+#include <random>
+#include <iomanip>
 #include <vector>
 
 #include "base/base64.h"
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/internal/common/security_helper.h"
+
+#include "tweetnacl.h"  // NOLINT
+
+namespace {
+
+const uint8_t kHkdfSalt[] = {
+  126, 244, 99, 158, 51, 68, 253, 80, 133, 183, 51, 180, 77,
+  62, 74, 252, 62, 106, 96, 125, 241, 110, 134, 87, 190, 208,
+  158, 84, 125, 69, 246, 207, 162, 247, 107, 172, 37, 34, 53,
+  246, 105, 20, 215, 5, 248, 154, 179, 191, 46, 17, 6, 72, 210,
+  91, 10, 169, 145, 248, 22, 147, 117, 24, 105, 12};
+
+const int kSeedLength = 32;
+
+const int kSaltLength = 64;
+
+}  // namespace
 
 namespace braveledger_helper {
 
@@ -30,8 +53,6 @@ std::string Security::GetBase64(const std::vector<uint8_t>& data) {
 }
 
 std::vector<uint8_t> Security::GetSHA256(const std::string& string) {
-  DCHECK(!string.empty());
-
   std::vector<uint8_t> string_sha256(SHA256_DIGEST_LENGTH);
   SHA256((uint8_t*)string.c_str(), string.length(), &string_sha256.front());
   return string_sha256;
@@ -56,11 +77,10 @@ std::string Security::Sign(
     header_values.push_back(value);
   }
 
-  std::vector<uint8_t> secret_key =
-      braveledger_bat_helper::getHKDF(private_key);
+  std::vector<uint8_t> secret_key = GetHKDF(private_key);
   std::vector<uint8_t> public_key;
   std::vector<uint8_t> new_secret_key;
-  bool success = braveledger_bat_helper::getPublicKeyFromSeed(
+  bool success = GetPublicKeyFromSeed(
       secret_key,
       &public_key,
       &new_secret_key);
@@ -73,6 +93,101 @@ std::string Security::Sign(
       header_values,
       key_id,
       new_secret_key);
+}
+
+std::vector<uint8_t> Security::GenerateSeed() {
+  std::vector<uint8_t> v_seed(kSeedLength);
+  std::random_device r;
+  std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
+  auto rand = std::bind(
+      std::uniform_int_distribution<>(0, UCHAR_MAX),
+      std::mt19937(seed));
+
+  std::generate_n(v_seed.begin(), kSeedLength, rand);
+  return v_seed;
+}
+
+std::string Security::Uint8ToHex(const std::vector<uint8_t>& in) {
+  std::ostringstream res;
+  for (size_t i = 0; i < in.size(); i++) {
+    res << std::setfill('0') << std::setw(sizeof(uint8_t) * 2)
+       << std::hex << static_cast<int>(in[i]);
+  }
+  return res.str();
+}
+
+bool Security::GetPublicKeyFromSeed(
+    const std::vector<uint8_t>& seed,
+    std::vector<uint8_t>* public_key,
+    std::vector<uint8_t>* secret_key) {
+  DCHECK(public_key && secret_key && !seed.empty());
+  if (seed.empty()) {
+    return false;
+  }
+
+  public_key->resize(crypto_sign_PUBLICKEYBYTES);
+  *secret_key = seed;
+  secret_key->resize(crypto_sign_SECRETKEYBYTES);
+
+  crypto_sign_keypair(&public_key->front(), &secret_key->front(), 1);
+
+  DCHECK(!public_key->empty() && !secret_key->empty());
+  if (public_key->empty() && secret_key->empty()) {
+    return false;
+  }
+
+  return true;
+}
+
+std::vector<uint8_t> Security::GetHKDF(const std::vector<uint8_t>& seed) {
+  DCHECK(!seed.empty());
+  std::vector<uint8_t> out(kSeedLength);
+
+  const uint8_t info[] = {0};
+  int hkdf_res = HKDF(
+      &out.front(),
+      kSeedLength,
+      EVP_sha512(),
+      &seed.front(),
+      seed.size(),
+      kHkdfSalt,
+      kSaltLength,
+      info,
+      sizeof(info) / sizeof(info[0]));
+
+  DCHECK(hkdf_res);
+  DCHECK(!seed.empty());
+
+  // We set the key_length to the length of the expected output and then take
+  // the result from the first key, which is the client write key.
+
+  return out;
+}
+
+bool Security::IsSeedValid(const std::vector<uint8_t>& seed) {
+  return seed.size() == kSeedLength;
+}
+
+std::string Security::DigestValue(const std::string& body) {
+  const auto body_sha256 = Security::GetSHA256(body);
+  const auto body_sha256_base64 = Security::GetBase64(body_sha256);
+
+  return base::StringPrintf("SHA-256=%s", body_sha256_base64.c_str());
+}
+
+std::string Security::GetPublicKeyHexFromSeed(
+    const std::vector<uint8_t>& seed) {
+  std::vector<uint8_t> secret_key = GetHKDF(seed);
+  std::vector<uint8_t> public_key;
+  std::vector<uint8_t> new_secret_key;
+  const bool success =
+      GetPublicKeyFromSeed(secret_key, &public_key, &new_secret_key);
+
+  if (!success) {
+    return "";
+  }
+
+  return Uint8ToHex(public_key);
 }
 
 }  // namespace braveledger_helper

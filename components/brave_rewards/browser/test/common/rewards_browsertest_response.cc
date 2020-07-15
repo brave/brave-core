@@ -140,12 +140,8 @@ void RewardsBrowserTestResponse::LoadMocks() {
   base::FilePath path;
   rewards_browsertest_util::GetTestDataDir(&path);
   ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("register_persona_resp.json"),
-      &registrar_vk_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("verify_persona_resp.json"),
-      &verification_));
+      path.AppendASCII("wallet_resp.json"),
+      &wallet_));
 
   ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("promotions_resp.json"),
@@ -202,6 +198,10 @@ void RewardsBrowserTestResponse::LoadMocks() {
       path.AppendASCII("uphold_commit_resp.json"),
       &uphold_commit_resp_));
 
+  ASSERT_TRUE(base::ReadFileToString(
+      path.AppendASCII("uphold_addresses_resp.json"),
+      &uphold_addresses_resp_));
+
   std::vector<std::string> publisher_keys {
       "bumpsmack.com",
       "duckduckgo.com",
@@ -228,24 +228,9 @@ void RewardsBrowserTestResponse::Get(
   requests_.emplace_back(url, method);
   DCHECK(response_status_code && response);
 
-  std::vector<std::string> tmp = base::SplitString(
-      url,
-      "/",
-      base::TRIM_WHITESPACE,
-      base::SPLIT_WANT_ALL);
-  const std::string persona_url =
-      braveledger_request_util::BuildUrl(REGISTER_PERSONA, PREFIX_V2);
-  if (url.find(persona_url) == 0 && tmp.size() == 6) {
-    *response = registrar_vk_;
-    return;
-  }
-
-  if (URLMatches(
-      url,
-      REGISTER_PERSONA,
-      PREFIX_V2,
-      ServerTypes::LEDGER) && tmp.size() == 7) {
-    *response = verification_;
+  if (url.find("/v3/wallet/brave") != std::string::npos) {
+    *response = wallet_;
+    *response_status_code = net::HTTP_CREATED;
     return;
   }
 
@@ -354,7 +339,12 @@ void RewardsBrowserTestResponse::Get(
         url,
         "commit",
         base::CompareCase::INSENSITIVE_ASCII)) {
-      *response = uphold_commit_resp_;
+        *response = uphold_commit_resp_;
+    } else if (base::EndsWith(
+        url,
+        "addresses",
+        base::CompareCase::INSENSITIVE_ASCII)) {
+      *response = uphold_addresses_resp_;
     } else {
       *response = rewards_browsertest_util::GetUpholdCard(
           external_balance_,

@@ -19,7 +19,6 @@ private:
   void FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
-  void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) override;

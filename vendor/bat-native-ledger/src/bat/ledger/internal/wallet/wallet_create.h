@@ -8,10 +8,7 @@
 
 #include <stdint.h>
 
-#include <map>
-#include <memory>
 #include <string>
-#include <vector>
 
 #include "bat/ledger/ledger.h"
 
@@ -29,15 +26,8 @@ class WalletCreate {
   void Start(ledger::ResultCallback callback);
 
  private:
-  void RequestCredentialsCallback(
+  void OnCreate(
       const ledger::UrlResponse& response,
-      ledger::ResultCallback callback);
-
-  void RegisterPersonaCallback(
-      const ledger::UrlResponse& response,
-      const std::string& user_id,
-      const std::string& pre_flight,
-      const std::string& registrar_vk,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

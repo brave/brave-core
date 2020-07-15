@@ -216,7 +216,7 @@ void EmptyBalance::ReportResults(
       R"({"amount": %f})",
       total);
 
-  const std::string payment_id = ledger->GetPaymentId();
+  const std::string payment_id = braveledger_state::GetPaymentId(ledger);
   auto url_callback = std::bind(&EmptyBalance::Sent,
       _1,
       ledger);

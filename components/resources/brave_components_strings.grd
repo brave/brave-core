@@ -351,9 +351,10 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_ABILITY_TW" desc="">Twitter</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT1" desc="">Tip on the spot as you find gems.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_DISABLED_TEXT2" desc="">If you like, let people know with a quick tweet.</message>
-      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">{{balance}} {{currency}} was recovered. Your wallet key has been verified and loaded successfully.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS" desc="">Your wallet key has been verified and loaded successfully.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RESTORED" desc="">Wallet restored!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL" desc="">Please re-enter keys or try different keys.</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_OUTDATED" desc="">The restore key entered is not supported anymore. Please visit <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> to get a new key.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE" desc="">Almost there…</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_PROVE_HUMAN" desc="">Prove that you are human!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE" desc="">Hmmm, not quite...</message>

@@ -38,13 +38,13 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   // if we don't have user funds in anon card anymore
   // we can skip balance server ping
   if (!braveledger_state::GetFetchOldBalanceEnabled(ledger_)) {
-    auto balance = ledger::WalletBalance::New();
+    auto balance = ledger::Balance::New();
     balance->user_funds = "0";
     GetUnblindedTokens(std::move(balance), callback);
     return;
   }
 
-  std::string payment_id = ledger_->GetPaymentId();
+  const std::string payment_id = braveledger_state::GetPaymentId(ledger_);
 
   std::string path = base::StringPrintf(
       "/wallet/%s/balance",
@@ -106,7 +106,7 @@ void WalletBalance::OnGetUnblindedTokens(
     ledger::Balance info,
     ledger::FetchBalanceCallback callback,
     ledger::UnblindedTokenList list) {
-  auto info_ptr = ledger::WalletBalance::New(info);
+  auto info_ptr = ledger::Balance::New(info);
   double total = 0.0;
   for (auto & item : list) {
     total+=item->value;
@@ -146,7 +146,7 @@ void WalletBalance::OnUpholdFetchBalance(ledger::Balance info,
                                    ledger::FetchBalanceCallback callback,
                                    ledger::Result result,
                                    double balance) {
-  ledger::BalancePtr info_ptr = ledger::WalletBalance::New(info);
+  ledger::BalancePtr info_ptr = ledger::Balance::New(info);
 
   if (result == ledger::Result::LEDGER_ERROR) {
     BLOG(0, "Can't get uphold balance");

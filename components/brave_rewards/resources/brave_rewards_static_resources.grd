@@ -15,7 +15,6 @@
       <include name="IDR_BRAVE_REWARDS_IMG_CAPTCHA_BAT" file="page/img/captcha_bat.png" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_WELCOME_BG" file="page/img/welcome_bg.svg" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_FAVICON" file="page/img/favicon.ico" type="BINDATA" />
-      <include name="IDR_BRAVE_REWARDS_NICEWARE_LIST" file="../../../vendor/bat-native-ledger/niceware/wordlist" type="BINDATA" />
       <include name="IDR_BRAVE_REWARDS_IMG_TAP" file="page/promos/assets/tap_bg.svg" type="BINDATA" />
 
       <!-- WebUI Brave Rewards Internals resources -->

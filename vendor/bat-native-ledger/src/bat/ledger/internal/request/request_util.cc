@@ -217,24 +217,16 @@ std::string BuildUrl(
   return url + prefix + path;
 }
 
-std::string DigestValue(const std::string& body) {
-  const auto body_sha256 = braveledger_helper::Security::GetSHA256(body);
-  const auto body_sha256_base64 =
-      braveledger_helper::Security::GetBase64(body_sha256);
-
-  return base::StringPrintf("SHA-256=%s", body_sha256_base64.c_str());
-}
-
 std::string SignatureHeaderValue(
     const std::string& data,
     const std::string& body,
     const std::string key_id,
     const std::vector<uint8_t>& private_key,
     const bool idempotency_key) {
-  DCHECK(!body.empty());
   DCHECK(!private_key.empty());
 
-  auto digest_header_value = DigestValue(body);
+  auto digest_header_value =
+      braveledger_helper::Security::DigestValue(body);
 
   std::vector<std::map<std::string, std::string>> headers;
   headers.push_back({{"digest", digest_header_value}});
@@ -256,7 +248,8 @@ std::map<std::string, std::string> GetSignHeaders(
     const std::string& key_id,
     const std::vector<uint8_t>& private_key,
     const bool idempotency_key) {
-  const std::string digest_header = DigestValue(body).c_str();
+  const std::string digest_header =
+      braveledger_helper::Security::DigestValue(body).c_str();
   const std::string signature_header = SignatureHeaderValue(
       data,
       body,

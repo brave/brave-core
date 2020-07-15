@@ -111,27 +111,6 @@ void LedgerClientMojoBridge::FetchFavIcon(const std::string& url,
       std::bind(LedgerClientMojoBridge::OnFetchFavIcon, holder, _1, _2));
 }
 
-// static
-void LedgerClientMojoBridge::OnLoadNicewareList(
-    CallbackHolder<LoadNicewareListCallback>* holder,
-    const ledger::Result result,
-    const std::string& data) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, data);
-  delete holder;
-}
-
-void LedgerClientMojoBridge::LoadNicewareList(
-    LoadNicewareListCallback callback) {
-  // deleted in OnLoadNicewareList
-  auto* holder = new CallbackHolder<LoadNicewareListCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadNicewareList(
-      std::bind(LedgerClientMojoBridge::OnLoadNicewareList,
-        holder, _1, _2));
-}
-
 void LedgerClientMojoBridge::URIEncode(const std::string& value,
     URIEncodeCallback callback) {
   std::move(callback).Run(ledger_client_->URIEncode(value));

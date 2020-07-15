@@ -154,7 +154,6 @@ struct ExternalWallet {
   string user_name;
   string account_url;
   string login_url;
-  bool transferred;
 };
 
 struct BalanceReportInfo {

@@ -22,8 +22,6 @@ using PublisherInfoCallback =
 // TODO(nejczdovc) we should be providing result back as well
 using PublisherInfoListCallback =
     std::function<void(PublisherInfoList)>;
-using GetNicewareListCallback =
-    std::function<void(const Result, const std::string&)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const ledger::UrlResponse&)>;
 using OnLoadCallback = std::function<void(const Result,
@@ -79,8 +77,6 @@ class LEDGER_EXPORT LedgerClient {
   virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 
   virtual void LoadPublisherState(OnLoadCallback callback) = 0;
-
-  virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
   virtual void OnPanelPublisherInfo(Result result,
                                    ledger::PublisherInfoPtr publisher_info,

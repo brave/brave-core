@@ -70,10 +70,6 @@ void StateMigrationV2::OnLoadState(
       ledger::kStateCreationStamp,
       legacy_state_->GetCreationStamp());
 
-  ledger_->SetStringState(
-      ledger::kStateAnonymousCardId,
-      legacy_state_->GetCardIdAddress());
-
   const auto seed = legacy_state_->GetRecoverySeed();
   ledger_->SetStringState(
       ledger::kStateRecoverySeed,

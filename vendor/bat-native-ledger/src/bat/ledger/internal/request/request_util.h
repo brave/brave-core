@@ -13,8 +13,8 @@
 namespace braveledger_request_util {
 
 enum class ServerTypes {
-  LEDGER,
-  BALANCE,
+  LEDGER, // TODO remove me
+  BALANCE, // TODO remove me
   kPublisher,
   kPromotion,
   kPayments,

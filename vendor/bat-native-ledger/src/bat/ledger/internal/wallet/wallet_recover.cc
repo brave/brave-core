@@ -2,190 +2,113 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "bat/ledger/internal/wallet/wallet_recover.h"
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/strings/string_split.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/legacy/wallet_info_properties.h"
+#include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_wallet.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
 
-#include "anon/anon.h"
 #include "wally_bip39.h"  // NOLINT
 
 using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace braveledger_wallet {
 
 WalletRecover::WalletRecover(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
-  initAnonize();
 }
 
-WalletRecover::~WalletRecover() {
-}
+WalletRecover::~WalletRecover() = default;
 
 void WalletRecover::Start(
     const std::string& pass_phrase,
-    ledger::RecoverWalletCallback callback) {
+    ledger::ResultCallback callback) {
   if (pass_phrase.empty()) {
     BLOG(0, "Pass phrase is empty");
-    callback(ledger::Result::LEDGER_ERROR, 0);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  size_t written = 0;
   auto phrase_split = base::SplitString(
       pass_phrase,
-      WALLET_PASSPHRASE_DELIM,
+      " ",
       base::TRIM_WHITESPACE,
       base::SPLIT_WANT_NONEMPTY);
 
   if (phrase_split.size() == 16) {
-    // use niceware for legacy wallet passphrases
-    ledger_->LoadNicewareList(std::bind(&WalletRecover::OnNicewareListLoaded,
-        this,
-        pass_phrase,
-        _1,
-        _2,
-        std::move(callback)));
+    BLOG(0, "Pass phrase is niceware, update to bip39");
+    callback(ledger::Result::CORRUPTED_DATA);
     return;
   }
 
-  std::vector<unsigned char> newSeed;
-  newSeed.resize(32);
+  std::vector<unsigned char> new_seed;
+  new_seed.resize(32);
+  size_t written = 0;
   const int result = bip39_mnemonic_to_bytes(
       nullptr,
       pass_phrase.c_str(),
-      &newSeed.front(),
-      newSeed.size(),
+      &new_seed.front(),
+      new_seed.size(),
       &written);
-  ContinueRecover(result, &written, newSeed, std::move(callback));
-}
 
-void WalletRecover::OnNicewareListLoaded(
-    const std::string& pass_phrase,
-    ledger::Result result,
-    const std::string& data,
-    ledger::RecoverWalletCallback callback) {
-  auto phrase_split = base::SplitString(
-      pass_phrase,
-      WALLET_PASSPHRASE_DELIM,
-      base::TRIM_WHITESPACE,
-      base::SPLIT_WANT_NONEMPTY);
-
-  if (result == ledger::Result::LEDGER_OK && phrase_split.size() == 16) {
-    std::vector<uint8_t> seed;
-    seed.resize(32);
-    size_t written = 0;
-
-    auto data_split = base::SplitString(
-      data,
-      DICTIONARY_DELIMITER,
-      base::TRIM_WHITESPACE,
-      base::SPLIT_WANT_NONEMPTY);
-
-    uint8_t nwResult = braveledger_bat_helper::niceware_mnemonic_to_bytes(
-        pass_phrase,
-        &seed,
-        &written,
-        data_split);
-    ContinueRecover(nwResult, &written, seed, std::move(callback));
+  if (result != 0 || written == 0) {
+    BLOG(0, "Result: " << result << " Size: " << written);
+    callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  BLOG(0, "Failed to load niceware list");
-  callback(result, 0);
-  return;
-}
+  const std::string public_key_hex =
+      braveledger_helper::Security::GetPublicKeyHexFromSeed(new_seed);
 
-void WalletRecover::ContinueRecover(
-    int result,
-    size_t* written,
-    const std::vector<uint8_t>& newSeed,
-    ledger::RecoverWalletCallback callback) {
-  if (result != 0 || *written == 0) {
-    BLOG(1, "Result: " << result << " Size: " << *written);
-    callback(ledger::Result::LEDGER_ERROR, 0);
-    return;
-  }
-
-  std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(newSeed);
-  std::vector<uint8_t> publicKey;
-  std::vector<uint8_t> newSecretKey;
-  braveledger_bat_helper::getPublicKeyFromSeed(secretKey,
-                                               &publicKey,
-                                               &newSecretKey);
-  std::string publicKeyHex = braveledger_bat_helper::uint8ToHex(publicKey);
-
-  auto on_load = std::bind(&WalletRecover::RecoverWalletPublicKeyCallback,
-                            this,
-                            _1,
-                            newSeed,
-                            std::move(callback));
-  const auto url = braveledger_request_util::BuildUrl(
-        (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex,
-        PREFIX_V2);
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, std::move(on_load));
-}
-
-void WalletRecover::RecoverWalletPublicKeyCallback(
-    const ledger::UrlResponse& response,
-    const std::vector<uint8_t>& new_seed,
-    ledger::RecoverWalletCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  std::string recovery_id;
-  const auto result =
-      braveledger_response_util::ParseWalletRecoverKey(response, &recovery_id);
-  if (result == ledger::Result::LEDGER_ERROR) {
-    callback(result, 0.0);
-    return;
-  }
-
-  auto recover_callback = std::bind(&WalletRecover::RecoverWalletCallback,
+  auto url_callback = std::bind(&WalletRecover::OnRecover,
       this,
       _1,
-      recovery_id,
       new_seed,
-      std::move(callback));
-  const std::string url = braveledger_request_util::BuildUrl
-      ("/wallet/" + recovery_id, PREFIX_V2);
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, recover_callback);
+      callback);
+
+  const std::string url =
+      braveledger_request_util::GetRecoverWalletURL(public_key_hex);
+  ledger_->LoadURL(
+      url,
+      {},
+      "",
+      "application/json; charset=utf-8",
+      ledger::UrlMethod::GET,
+      url_callback);
 }
 
-void WalletRecover::RecoverWalletCallback(
+void WalletRecover::OnRecover(
     const ledger::UrlResponse& response,
-    const std::string& recovery_id,
     const std::vector<uint8_t>& new_seed,
-    ledger::RecoverWalletCallback callback) {
+    ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  double balance = 0.0;
-  std::string card_id;
+  std::string payment_id;
   const auto result = braveledger_response_util::ParseRecoverWallet(
       response,
-      &card_id,
-      &balance);
+      &payment_id);
+
   if (result != ledger::Result::LEDGER_OK) {
-    callback(result, balance);
+    callback(result);
     return;
   }
 
   braveledger_state::SetRecoverySeed(ledger_, new_seed);
-  braveledger_state::SetPaymentId(ledger_, recovery_id);
-  braveledger_state::SetAnonymousCardId(ledger_, card_id);
+  braveledger_state::SetPaymentId(ledger_, payment_id);
   braveledger_state::SetFetchOldBalanceEnabled(ledger_, true);
+  ledger_->SetBooleanState(ledger::kStateAnonTransferChecked, false);
   ledger_->SetUint64State(ledger::kStatePromotionLastFetchStamp, 0);
   ledger_->SetConfirmationsWalletInfo();
 
-  callback(ledger::Result::LEDGER_OK, balance);
+  callback(ledger::Result::LEDGER_OK);
 }
 
 }  // namespace braveledger_wallet

@@ -76,8 +76,8 @@ window.cr.define('brave_rewards', function () {
     getActions().onWalletPassphrase(pass)
   }
 
-  function recoverWalletData (properties: Rewards.RecoverWallet) {
-    getActions().onRecoverWalletData(properties)
+  function recoverWalletData (result: number) {
+    getActions().onRecoverWalletData(result)
   }
 
   function promotionFinish (properties: Rewards.PromotionFinish) {

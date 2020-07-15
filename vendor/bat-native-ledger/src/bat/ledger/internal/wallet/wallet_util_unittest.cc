@@ -53,7 +53,6 @@ TEST(WalletUtilTest, ResetWalletVerifiedWallet) {
   wallet->user_name = "3";
   wallet->one_time_string = "4";
   wallet->status = ledger::WalletStatus::VERIFIED;
-  wallet->transferred = true;
 
   auto reset_wallet = braveledger_wallet::ResetWallet(std::move(wallet));
 

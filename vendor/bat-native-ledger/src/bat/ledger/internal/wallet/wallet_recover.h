@@ -8,8 +8,6 @@
 
 #include <stdint.h>
 
-#include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -28,32 +26,13 @@ class WalletRecover {
 
   void Start(
       const std::string& pass_phrase,
-      ledger::RecoverWalletCallback callback);
+      ledger::ResultCallback callback);
 
  private:
-  void OnNicewareListLoaded(
-      const std::string& pass_phrase,
-      ledger::Result result,
-      const std::string& data,
-      ledger::RecoverWalletCallback callback);
-
-  void ContinueRecover(
-      int result,
-      size_t* written,
-      const std::vector<uint8_t>& newSeed,
-      ledger::RecoverWalletCallback callback);
-
-
-  void RecoverWalletPublicKeyCallback(
+  void OnRecover(
       const ledger::UrlResponse& response,
       const std::vector<uint8_t>& new_seed,
-      ledger::RecoverWalletCallback callback);
-
-  void RecoverWalletCallback(
-      const ledger::UrlResponse& response,
-      const std::string& recovery_id,
-      const std::vector<uint8_t>& new_seed,
-      ledger::RecoverWalletCallback callback);
+      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

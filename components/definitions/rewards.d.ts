@@ -73,7 +73,7 @@ declare namespace Rewards {
       promosDismissed?: {
         [key: string]: boolean
       }
-      walletRecoverySuccess: boolean | null
+      walletRecoveryStatus: number | null
       walletServerProblem: boolean
       walletCorrupted: boolean
       onBoardingDisplayed?: boolean

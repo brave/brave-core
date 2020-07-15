@@ -47,7 +47,6 @@ const char kStateAutoContributeEnabled[] = "brave.rewards.ac.enabled";
 const char kStateAutoContributeAmount[] = "brave.rewards.ac.amount";
 const char kStateNextReconcileStamp[] = "brave.rewards.ac.next_reconcile_stamp";
 const char kStateCreationStamp[] = "brave.rewards.creation_stamp";
-const char kStateAnonymousCardId[] = "brave.rewards.wallet.anonymous_card_id";
 const char kStateRecoverySeed[] = "brave.rewards.wallet.seed";
 const char kStatePaymentId[] = "brave.rewards.wallet.payment_id";
 const char kStateInlineTipRedditEnabled[] = "brave.rewards.inline_tip.reddit";

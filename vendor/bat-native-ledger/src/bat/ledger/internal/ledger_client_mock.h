@@ -34,9 +34,6 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(LoadPublisherState, void(
       ledger::OnLoadCallback callback));
 
-  MOCK_METHOD1(LoadNicewareList, void(
-      ledger::GetNicewareListCallback callback));
-
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,
       ledger::PublisherInfoPtr,

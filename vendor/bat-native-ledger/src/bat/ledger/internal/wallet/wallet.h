@@ -11,8 +11,11 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
+#include "bat/ledger/internal/wallet/wallet_balance.h"
+#include "bat/ledger/internal/wallet/wallet_claim.h"
+#include "bat/ledger/internal/wallet/wallet_create.h"
+#include "bat/ledger/internal/wallet/wallet_recover.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -20,41 +23,25 @@ class LedgerImpl;
 }
 
 namespace braveledger_wallet {
-class Create;
-}
-
-namespace braveledger_wallet {
-class Recover;
-}
-
-namespace braveledger_wallet {
-class Balance;
-}
-
-namespace braveledger_uphold {
-class Uphold;
-}
-
-namespace braveledger_wallet {
 
 class Wallet {
  public:
   explicit Wallet(bat_ledger::LedgerImpl* ledger);
-
   ~Wallet();
 
   void CreateWalletIfNecessary(ledger::ResultCallback callback);
 
   void RecoverWallet(
       const std::string& pass_phrase,
-      ledger::RecoverWalletCallback callback);
+      ledger::ResultCallback callback);
 
   std::string GetWalletPassphrase() const;
 
   void FetchBalance(ledger::FetchBalanceCallback callback);
 
-  void GetExternalWallet(const std::string& wallet_type,
-                         ledger::ExternalWalletCallback callback);
+  void GetExternalWallet(
+      const std::string& wallet_type,
+      ledger::ExternalWalletCallback callback);
 
   void ExternalWalletAuthorization(
       const std::string& wallet_type,
@@ -65,39 +52,18 @@ class Wallet {
       const std::string& wallet_type,
       ledger::ResultCallback callback);
 
-  void TransferAnonToExternalWallet(
-      const bool allow_zero_balance,
-      ledger::ResultCallback callback);
+  void ClaimFunds(ledger::ResultCallback callback);
 
   void GetAnonWalletStatus(ledger::ResultCallback callback);
 
   void DisconnectAllWallets(ledger::ResultCallback callback);
 
  private:
-  void OnTransferAnonToExternalWallet(
-    const ledger::UrlResponse& response,
-    ledger::ResultCallback callback);
-
-  void OnTransferAnonToExternalWalletBalance(
-      ledger::Result result,
-      ledger::BalancePtr properties,
-      const bool allow_zero_balance,
-      ledger::ResultCallback callback);
-
-  std::string GetClaimPayload(
-      const std::string& user_funds,
-      const std::string& address,
-      const std::string& anon_address);
-
-  void OnTransferAnonToExternalWalletAddress(
-      ledger::Result result,
-      const std::string& user_funds,
-      ledger::ResultCallback callback);
-
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;
   std::unique_ptr<WalletRecover> recover_;
   std::unique_ptr<WalletBalance> balance_;
+  std::unique_ptr<WalletClaim> claim_;
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
 };
 

@@ -175,10 +175,8 @@ ios_framework_bundle("brave_rewards_ios_framework") {
 
 bundle_data("resources") {
   ads_dir = "//brave/vendor/bat-native-ads"
-  ledger_dir = "//brave/vendor/bat-native-ledger"
   sources = [
     "$ads_dir/data/resources/catalog-schema.json",
-    "$ledger_dir/niceware/wordlist",
     "Ledger/Data/migrate.sql"
   ]
   outputs = [
