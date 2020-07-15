@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Pinagbabawalang kumuha ng fingerprint ang browser</translation>
 <translation id="7459000603787995422">Isara ang mga tab sa paglabas</translation>
 <translation id="1680858055899097121">Huwag magpapanatili ng mga tab sa sesyon ng pag-browse</translation>
+<translation id="453601949003770390">Na-block na Trackers at Ads</translation>
 <translation id="6761596877474675418">Data na Natipid</translation>
 <translation id="3034562645284925177">Tinatantyang Oras na Natipid</translation>
 <translation id="6572660632052512096">Desktop Mode</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Laktawan</translation>
 <translation id="316832010181763471">Onboarding ng search engine</translation>
 <translation id="986879628471635371">Pag-troubleshoot sa onboarding</translation>
+<translation id="5808759341041733958">Pumili ng default na search engine</translation>
 <translation id="4428458837269935199">Para sa mas pribadong karanasan sa search, subukan ang DuckDuckGo.</translation>
 <translation id="5317780077021120954">I-save</translation>
 <translation id="7053983685419859001">I-block</translation>
@@ -68,6 +70,8 @@
 <translation id="6511854390690723657">Ito ang iyong unang ad sa Brave. I-tap para matuto pa.</translation>
 <translation id="4930714375720679147">I-on</translation>
 <translation id="2453860139492968684">Tapos na</translation>
+<translation id="7983303953939627894">Kumita at Magbigay</translation>
+<translation id="48520986898237073">Tumuloy sa wallet</translation>
 <translation id="2359808026110333948">Magpatuloy</translation>
 <translation id="7658239707568436148">Kanselahin</translation>
 <translation id="3570367516044491911">Itakda bilang default na browser</translation>
@@ -169,14 +173,19 @@ buwang ito...</translation>
 <translation id="222883304157347087">(ang device na ito)</translation>
 <translation id="8193724030871339658">IBA PANG DEVICE SA CHAIN</translation>
 <translation id="279635009973773843">NILO-LOAD ANG MGA DEVICE...</translation>
+<translation id="6394333525003604181">UMAALIS SA SYNC CHAIN...</translation>
+<translation id="1604429341565715601">Kasalukuyang sine-set up ang Sync, subukang i-reset ito sa ibang pagkakataon</translation>
 <translation id="2569646144216067185">Dami ng salita: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Hindi wastong bilang ng mga salita</translation>
+<translation id="7507533586185621084">Mali ang sync code</translation>
+<translation id="8284063834901328650">Mali ang sync QR code</translation>
 <translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3680755684186855422">Nagbibigay-daan sa iyo ang Brave Sync na pribadong mag-sync ng data ng mga bookmark sa pagitan ng iyong mga Brave Browser sa iba't ibang device mo.</translation>
 <translation id="3735228155296883311">I-scan lang ang code mula sa iyong chain ng pag-sync na ginawa mo sa isa pang device. O magsimula ng bagong chain ng pag-sync.</translation>
 <translation id="4690880825349994619">Gamit ang kasalukuyang naka-sync na device, buksan ang Mga Setting ng Brave at mag-navigate sa Mga Setting &gt; I-sync. Piliin ang "Idagdag ang Device" at i-scan ang QR Code na ipinapakita sa screen.</translation>
 <translation id="5241263629636958324">Nakopya sa Clipboard</translation>
 <translation id="5817918615728894473">Ipares</translation>
+<translation id="3394474617110693560">Mga kategorya</translation>
 <translation id="2004365171440701679">Alisin ang device na ito</translation>
 <translation id="1178128181015923849">Sigurado ka bang gusto mong i-delete ang device na '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">I-scan o ilagay ang code ng pag-sync</translation>
@@ -316,4 +325,11 @@ buwang ito...</translation>
 <translation id="76550953340008122">Salamat sa pagbibigay-alam sa mga developer ng Brave na may problema sa site na ito. Gagawin namin ang buong makakaya namin para ayusin ito!</translation>
 <translation id="650318023204990401">Mga advanced na kontrol</translation>
 <translation id="7182293319417450928">Kailangan ng minimum na balanse na 25 BAT para mag-verify.</translation>
+<translation id="1275664486910646411">Magpakita ng mga nangungunang site sa autocomplete</translation>
+<translation id="5516010970279932133">Magpakita ng mga iminumungkahing site sa autocomplete</translation>
+<translation id="5370478469168390143">Mag-save ng Data Online</translation>
+<translation id="1118508688433541158">Mag-browse nang mas mabilis at mag-block ng ads gamit ang Brave</translation>
+<translation id="915835519491851291">Nag-block ka ng ilang trackers at ads.</translation>
+<translation id="3286927551967858325">Tingnan mo</translation>
+<translation id="2929661208078053609">Magaling!</translation>
 </translationbundle>

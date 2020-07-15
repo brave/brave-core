@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Previne amprentarea browserului</translation>
 <translation id="7459000603787995422">Închideți paginile la ieșire</translation>
 <translation id="1680858055899097121">Nu păstra paginile între sesiunile de navigare</translation>
+<translation id="453601949003770390">Instrumente de urmărire și Reclame blocate</translation>
 <translation id="6761596877474675418">Date salvate</translation>
 <translation id="3034562645284925177">Timp estimativ salvat</translation>
 <translation id="6572660632052512096">Mod desktop</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Omite</translation>
 <translation id="316832010181763471">Motor de căutare încorporat</translation>
 <translation id="986879628471635371">Depanarea procesului de înscriere</translation>
+<translation id="5808759341041733958">Alegeți motorul de căutare prestabilit</translation>
 <translation id="4428458837269935199">Pentru o experiență de căutare mai privată, încercați DuckDuckGo.</translation>
 <translation id="5317780077021120954">Salvează</translation>
 <translation id="7053983685419859001">Blochează</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">reclame și urmăritori care invadează intimitatea pentru a putea să navigați fără să fiți urmăriți pe web.</translation>
 <translation id="8537217141725709400">Câștigați <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Recompense Brave</translation>
+<translation id="5870330605209713397">vizualizând reclame care respectă confidențialitatea și susțineți site-urile preferate și creatorii lor în mod prestabilit.</translation>
 <translation id="821707262661492716">pentru vizualizarea reclamelor care respectă intimitatea.</translation>
+<translation id="8267692331246948056">Dacă atingeți Câștigați și dăruiți, sunteți de acord cu</translation>
 <translation id="4281844954008187215">Termeni Servicii</translation>
 <translation id="6871397658902960384">Începeți să răsfoiți</translation>
 <translation id="454386012157232640">Nu am văzut o reclamă</translation>
 <translation id="1448877943847791441">Brave va afișa prima reclamă în</translation>
+<translation id="4410793187232041318">Acum veți câștiga tokenuri de la Brave Ads.</translation>
 <translation id="6511854390690723657">Aceasta este prima reclamă Brave. Apăsați pentru a afla mai multe.</translation>
 <translation id="4930714375720679147">Activează</translation>
 <translation id="2453860139492968684">Terminați</translation>
+<translation id="7983303953939627894">Câștigați și dăruiți</translation>
+<translation id="48520986898237073">Continuați spre portofel</translation>
 <translation id="2359808026110333948">Continuă</translation>
 <translation id="7658239707568436148">Anulare</translation>
 <translation id="3570367516044491911">Setați ca browser implicit</translation>
@@ -174,14 +181,19 @@ lună...</translation>
 <translation id="222883304157347087">(acest dispozitiv)</translation>
 <translation id="8193724030871339658">ALTE DISPOZITIVE ÎN LANȚ</translation>
 <translation id="279635009973773843">SE ÎNCARCĂ DISPOZITIVELE...</translation>
+<translation id="6394333525003604181">SE PĂRĂSEȘTE LANȚUL DE SINCRONIZARE...</translation>
+<translation id="1604429341565715601">Se efectuează configurarea sincronizării, încercați să resetați mai târziu</translation>
 <translation id="2569646144216067185">Contor cuvinte: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Număr incorect de cuvinte</translation>
+<translation id="7507533586185621084">Cod de sincronizare greșit</translation>
+<translation id="8284063834901328650">Cod QR de sincronizare greșit</translation>
 <translation id="3149880132460839085">Sincronizare Brave</translation>
 <translation id="3680755684186855422">Sincronizarea Brave vă permite să sincronizați datele despre marcaje în mod privat între browserele dvs. Brave de pe diversele dispozitive.</translation>
 <translation id="3735228155296883311">Scanați codul din lanțul de sincronizare pe care l-ați creat pe alt dispozitiv. Sau porniți un nou lanț de sincronizare.</translation>
 <translation id="4690880825349994619">Folosind dispozitivul sincronizat existent, deschideți setările Brave și navigați la setări &gt; sincronizare. Selectați "Adaugă dispozitiv" și scanați codul QR afișat pe ecran.</translation>
 <translation id="5241263629636958324">Copiat în clipboard</translation>
 <translation id="5817918615728894473">Asociază</translation>
+<translation id="3394474617110693560">Categorii</translation>
 <translation id="2004365171440701679">Ștergeți acest dispozitiv</translation>
 <translation id="1178128181015923849">Sunteți sigur că vreți să ștergeți dispozitivul '<ph name="DEVICE_NAME"/>'?</translation>
 <translation id="7745082336226088126">Scanați sau introduceți codul de sincronizare</translation>
@@ -322,4 +334,11 @@ lună...</translation>
 <translation id="76550953340008122">Vă mulțumim că i-ați anunțat pe dezvoltatorii Brave că ceva nu este în regulă cu acest site. Vom face tot ce ne stă în putință ca să rezolvăm problema!</translation>
 <translation id="650318023204990401">Controale avansate</translation>
 <translation id="7182293319417450928">Un sold minim de 25 BAT este necesar pentru verificare.</translation>
+<translation id="1275664486910646411">Afișați site-urile în completarea automată</translation>
+<translation id="5516010970279932133">Afișați site-urile sugerate în completarea automată</translation>
+<translation id="5370478469168390143">Salvați datele online</translation>
+<translation id="1118508688433541158">Navigați mai rapid și blocați reclamele cu Brave</translation>
+<translation id="915835519491851291">Tocmai ați blocat unele instrumente de urmărire și reclame.</translation>
+<translation id="3286927551967858325">Aruncați o privire</translation>
+<translation id="2929661208078053609">Frumos!</translation>
 </translationbundle>

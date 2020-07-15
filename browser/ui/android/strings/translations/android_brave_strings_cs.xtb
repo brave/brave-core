@@ -26,6 +26,7 @@
 <translation id="5787084571334399599">Nezanechávejte po sobě stopy v prohlížeči</translation>
 <translation id="7459000603787995422">Po ukončení zavřít karty</translation>
 <translation id="1680858055899097121">Nesetrvávat v kartách mezi relacemi prohlížení</translation>
+<translation id="453601949003770390">Trackery &amp; a reklamy jsou zablokovány</translation>
 <translation id="6761596877474675418">Data uložena</translation>
 <translation id="3034562645284925177">Odhadovaná úspora času</translation>
 <translation id="6572660632052512096">Režim stolního počítače</translation>
@@ -54,6 +55,7 @@
 <translation id="8281886186245836920">Přeskočit</translation>
 <translation id="316832010181763471">Seznámení s vyhledávačem</translation>
 <translation id="986879628471635371">Seznámení s odstraňováním problémů</translation>
+<translation id="5808759341041733958">Zvolte si výchozí vyhledávač</translation>
 <translation id="4428458837269935199">Chcete-li více soukromé vyhledávání, zkuste prohlížeč DuckDuckGo.</translation>
 <translation id="5317780077021120954">Uložit</translation>
 <translation id="7053983685419859001">Blokovat</translation>
@@ -61,14 +63,19 @@
 <translation id="2880356288762235261">reklamy a trackery narušující soukromí, takže můžete prohlížet s vědomím, že vás na stránkách nikdo nesleduje.</translation>
 <translation id="8537217141725709400">Vydělávejte <ph name="TOKEN"/>y</translation>
 <translation id="3333887201479867589">Odměny Brave</translation>
+<translation id="5870330605209713397">zobrazením reklam, které respektují soukromí, a ve výchozím nastavení podporovat oblíbené stránky a tvůrce.</translation>
 <translation id="821707262661492716">za zobrazení reklam beroucích ohled na soukromí.</translation>
+<translation id="8267692331246948056">Klepnutím na Vydělat &amp; Darovat souhlasíte s</translation>
 <translation id="4281844954008187215">Smluvní podmínky</translation>
 <translation id="6871397658902960384">Začít prohlížet</translation>
 <translation id="454386012157232640">Neviděl/a jsem žádnou reklamu</translation>
 <translation id="1448877943847791441">Brave zobrazí vaši první reklamu v</translation>
+<translation id="4410793187232041318">Nyní jste si vydělali token z reklam Brave Ads.</translation>
 <translation id="6511854390690723657">Toto je vaše první reklama Brave. Klepněte pro více informací.</translation>
 <translation id="4930714375720679147">Zapnout</translation>
 <translation id="2453860139492968684">Dokončit</translation>
+<translation id="7983303953939627894">Vydělat &amp; Darovat</translation>
+<translation id="48520986898237073">Pokračovat do peněženky</translation>
 <translation id="2359808026110333948">Pokračovat</translation>
 <translation id="7658239707568436148">Zrušit</translation>
 <translation id="3570367516044491911">Nastavit jako výchozí prohlížeč</translation>
@@ -172,14 +179,19 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="222883304157347087">(toto zařízení)</translation>
 <translation id="8193724030871339658">DALŠÍ ZAŘÍZENÍ V ŘETĚZCI</translation>
 <translation id="279635009973773843">NAČÍTÁNÍ ZAŘÍZENÍ...</translation>
+<translation id="6394333525003604181">OPOUŠTĚNÍ SYNCHRONIZAČNÍHO ŘETĚZCE...</translation>
+<translation id="1604429341565715601">Probíhá nastavení synchronizace, zkuste resetovat později</translation>
 <translation id="2569646144216067185">Počet slov: <ph name="WORD_COUNT"/></translation>
 <translation id="4282642752844565114">Nesprávný počet slov</translation>
+<translation id="7507533586185621084">Nesprávný synchronizační kód</translation>
+<translation id="8284063834901328650">Nesprávný synchronizační QR kód</translation>
 <translation id="3149880132460839085">Synchronizace prohlížeče Brave</translation>
 <translation id="3680755684186855422">Synchronizace prohlížeče Brave umožňuje bezpečně synchronizovat záložky mezi vašimi zařízeními.</translation>
 <translation id="3735228155296883311">Jednoduše naskenujte kód z vašeho synchronizačního řetězce, který jste si vytvořili na jiném zařízení. Nebo spusťte nový synchronizační řetězec.</translation>
 <translation id="4690880825349994619">Pomocí existujícího synchronizovaného zařízení otevřete nastavení Brave a přejděte na Nastavení → Synchronizace. Vyberte Přidat zařízení a naskenujte QR Kód zobrazený na obrazovce.</translation>
 <translation id="5241263629636958324">Zkopírováno do schránky</translation>
 <translation id="5817918615728894473">Spárovat</translation>
+<translation id="3394474617110693560">Kategorie</translation>
 <translation id="2004365171440701679">Odstranit z tohoto zařízení</translation>
 <translation id="1178128181015923849">Opravdu chcete toto zařízení „<ph name="DEVICE_NAME"/>“ odstranit?</translation>
 <translation id="7745082336226088126">Naskenujte nebo zadejte synchronizační kód</translation>
@@ -322,4 +334,9 @@ ještě nezaregistrovali k příjmu příspěvků. Váš prohlížeč se bude i 
 <translation id="7182293319417450928">Pro ověření je vyžadován minimální rozpočet 25 BAT.</translation>
 <translation id="1275664486910646411">Ukazovat nejoblíbenější stránky v automatickém dokončení</translation>
 <translation id="5516010970279932133">Ukazovat navržené stránky v automatickém dokončení</translation>
+<translation id="5370478469168390143">Uložit data online</translation>
+<translation id="1118508688433541158">Prohlížejte rychleji a blokujte reklamy pomocí Brave</translation>
+<translation id="915835519491851291">Právě jste si zablokovali některé trackery &amp; reklamy.</translation>
+<translation id="3286927551967858325">Podívejte se</translation>
+<translation id="2929661208078053609">Krása!</translation>
 </translationbundle>

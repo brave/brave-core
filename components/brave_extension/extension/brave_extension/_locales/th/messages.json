@@ -92,11 +92,11 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "standardFingerprinting": {
-    "message": "Fingerprinting blocked (standard)",
+    "message": "บล็อก Fingerprinting แล้ว (ธรรมดา)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Fingerprinting blocked (strict, may break sites)",
+    "message": "บล็อก Fingerprinting แล้ว (เข้มงวด อาจทำหน้าเว็บเสียหาย)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {

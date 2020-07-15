@@ -73,6 +73,9 @@
 <translation id="7390783310074170337">デフォルト表示</translation>
 <translation id="130615081792797568">簡略表示</translation>
 <translation id="2360360976480535628">詳細表示</translation>
+<translation id="2133317862976486547">トラッカーと広告をブロック中</translation>
+<translation id="4385707520896576447">クッキーをブロック中</translation>
+<translation id="4978786495456601191">フィンガープリントをブロック中</translation>
 <translation id="3570081523466826008">接続をHTTPSにアップグレードする</translation>
 <translation id="4824468494729001999">スクリプトをブロックする</translation>
 <translation id="519861640102428255">ルック＆フィール</translation>
@@ -81,9 +84,12 @@
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedInの埋め込みポストを許可する</translation>
+<translation id="4078738236287221428">積極的</translation>
 <translation id="7740996059027112821">標準</translation>
 <translation id="4176463684765177261">無効</translation>
+<translation id="5770288601196774623">サイト間のみ</translation>
 <translation id="3587482841069643663">すべて</translation>
+<translation id="5533533363827555308">厳格、サイトの表示が崩れる可能性</translation>
 <translation id="8942080017911802454">WebRTC IPのハンドリングポリシー</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8798099450830957504">既定</translation>
@@ -91,13 +97,23 @@
 <translation id="5825943197137337319">デフォルトのパブリックインターフェイスのみ</translation>
 <translation id="1689062823386843231">非プロキシUDPを無効にする</translation>
 <translation id="8502234992433094996">プッシュメッセージにGoogleサービスを使う</translation>
+<translation id="5565355416171743213">同期機能を利用開始</translation>
 <translation id="4332558599726753990">同期設定</translation>
+<translation id="2187778349654214731">開始するには、同期したいデバイス全てにBraveをインストールしておく必要があります。それから、同期コードを使って安全に各デバイス同士をリンクします。</translation>
+<translation id="7530575064080939974">同期済みのデバイスを管理</translation>
+<translation id="7575156386943878014">Sync Manager</translation>
 <translation id="1755198127524719638">設定の同期</translation>
 <translation id="7558480201297099157">デバイス間でどのような情報を同期したいのかを管理してください。
 この設定はこのデバイスのみに有効です。</translation>
+<translation id="7731928563672901833">デバイスのリスト</translation>
 <translation id="28332161031213248">以下のデバイスリストは、あなたの同期チェーンにある全てのデバイスを表示しています。それぞれのデバイスは、他のデバイスから管理することができます。</translation>
 <translation id="1313162974556054106">デバイス名</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/>（このデバイス）</translation>
+<translation id="3686835020221422649">最終アクティブ時</translation>
+<translation id="2569646144216067185">文字数カウント：<ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">コピー完了!</translation>
+<translation id="8802630444265810662">同期コードを送信するには、モバイルデバイスでQRコードをスキャンしなければなりません</translation>
+<translation id="6221331245829088299">QRコードを表示する際エラーが発生しましたので、リフレッシュしてもう一度やり直してください。</translation>
 <translation id="298546024891487702">始めるためには、同期予定の全てのデバイスに Brave をインストールする必要があります。それらを一つに繋ぐには、安全にあなたのデバイス全てをリンクさせる、同期チェーンを開始してください。</translation>
 <translation id="6200528822592747640">新たな同期チェーンを開始する</translation>
 <translation id="5184726904895809379">同期コードを持っています</translation>
@@ -117,7 +133,12 @@
 <translation id="5734745018569675530">与えられた同期チェーンコードワードを以下のフォームに入力してください。</translation>
 <translation id="1061533051865606843">新たなデバイスを追加</translation>
 <translation id="5093410893656857925">デバイスの種類を選んでください</translation>
+<translation id="4581190919849683048">同期したいデバイスの種類はどれですか？</translation>
+<translation id="4112587618563511470">同期コードが無効ですので、確認してからやり直してください。</translation>
 <translation id="2339730291919608488">同期チェーンから離れる</translation>
+<translation id="115699408012835975">Syncをリセットすると、データを同期するためには別なデバイスから同期コードを再入力する必要があります。本当に続行してもよろしいですか？</translation>
+<translation id="3396347744975515056">Brave Syncがアップグレードされたのでセットアップする必要があります</translation>
+<translation id="7473245612074035141">セットアップ開始</translation>
 <translation id="6696935187608454456">ヘルプヒント</translation>
 <translation id="2775956301559569472">404ページ上に「Wayback Machine (ウェイバックマシン)」プロンプトを表示する</translation>
 <translation id="1807246157184219062">ライト</translation>

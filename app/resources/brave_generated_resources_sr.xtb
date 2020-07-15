@@ -73,6 +73,9 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="7390783310074170337">Podrazumevani prikaz</translation>
 <translation id="130615081792797568">Jednostavan prikaz</translation>
 <translation id="2360360976480535628">Prikaz više opcija</translation>
+<translation id="2133317862976486547">Praćenja &amp; blokiranje reklama</translation>
+<translation id="4385707520896576447">Blokiranje kolačića</translation>
+<translation id="4978786495456601191">Blokirano beleženje posebnih obeležja</translation>
 <translation id="3570081523466826008">Nadogradi veze u HTTPS</translation>
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="519861640102428255">Pogledaj &amp; Oseti</translation>
@@ -81,9 +84,12 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="863171915776379000">Dozvoli prijavljivanje putem Facebook-a i ugrađene objave</translation>
 <translation id="5165042248369837294">Dozvoli Twitter ugrađene tvitove</translation>
 <translation id="958971637207126733">Dozvolite ugrađene objave Linkedinu</translation>
+<translation id="4078738236287221428">Agresivno</translation>
 <translation id="7740996059027112821">Стандардно</translation>
 <translation id="4176463684765177261">Онемогућено</translation>
+<translation id="5770288601196774623">Samo više-lokacijski</translation>
 <translation id="3587482841069643663">Све</translation>
+<translation id="5533533363827555308">Strogo, može da probija lokacije</translation>
 <translation id="8942080017911802454">Smernice za obradu WebRTC IP-a</translation>
 <translation id="6165508094623778733">Nauči više</translation>
 <translation id="8798099450830957504">Подразумевано</translation>
@@ -91,12 +97,22 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="5825943197137337319">Samo interfejs sa podrazumevanom javnom vrednošću</translation>
 <translation id="1689062823386843231">Onemogućite neposrednički UDP</translation>
 <translation id="8502234992433094996">Koristi Google Usluge za Push prenošenje poruka</translation>
+<translation id="5565355416171743213">Počni korišćenje sinhronizacije</translation>
 <translation id="4332558599726753990">Konfigurisanje sinhronizacije</translation>
+<translation id="2187778349654214731">Da biste započeli, imaćete Brave instaliran na svim uređajima koje planirate da sinhronizujete. Onda, sigurno ih povežite zajedno sa kodom za sinhronizaciju.</translation>
+<translation id="7530575064080939974">Upravljajte vašim sinhronizovanim uređajima</translation>
+<translation id="7575156386943878014">Upravljač sinhronizacije</translation>
 <translation id="1755198127524719638">Sinhronizuj podešavanja</translation>
 <translation id="7558480201297099157">Upravljajte informacijama koje biste želeli da sinhronizujete između vaših uređaja. Ova podešavanja utiču samo na ovaj uređaj.</translation>
+<translation id="7731928563672901833">Lista uređaja</translation>
 <translation id="28332161031213248">Donja lista uređaja uključuje sve uređaje u vašem lancu sinhronizacije. Svakim uređajem se može upravljati sa bilo kog drugog uređaja.</translation>
 <translation id="1313162974556054106">Ime uređaja</translation>
+<translation id="923757506389336140"><ph name="DEVICE_NAME"/> (ovaj uređaj)</translation>
+<translation id="3686835020221422649">Poslednji put aktivan</translation>
+<translation id="2569646144216067185">Broj reči: <ph name="WORD_COUNT"/></translation>
 <translation id="7885157704277298658">Kopirano!</translation>
+<translation id="8802630444265810662">QR šifra treba da se skenira mobilnim uređajem da bi se preneo vaš kod za sinhronizaciju</translation>
+<translation id="6221331245829088299">Došlo je do greške pri prikazivanu QR koda, osvežite i pokušajte ponovo.</translation>
 <translation id="298546024891487702">Da biste započeli, moraćete da instalirate Brave na svim uređajima koje planirate da sinhronizujete. Da biste ih povezali, pokrenite lanac sinhronizacije koji ćete koristiti da bezbedno povežete sve svoje uređaje zajedno.</translation>
 <translation id="6200528822592747640">Započnite novi lanac sinhronizacije</translation>
 <translation id="5184726904895809379">Imam šifru sinhronizacije</translation>
@@ -116,7 +132,12 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="5734745018569675530">Ukucajte date reči šifre lanca sinhronizacije u donji obrazac.</translation>
 <translation id="1061533051865606843">Dodaj novi uređaj</translation>
 <translation id="5093410893656857925">Izaberite tip uređaja</translation>
+<translation id="4581190919849683048">Sa kojim tipom uređaja biste hteli da se sinhronizujete?</translation>
+<translation id="4112587618563511470">Nevažeći kod za sinhronizaciju, proverite i pokušajte ponovo.</translation>
 <translation id="2339730291919608488">Napusti lanac sinhronizacije</translation>
+<translation id="115699408012835975">Ako ponovo postavite sinhronizaciju, moraćete da ponovo unesete kod za sinhronizaciju sa drugog uređaja da biste ga sinhronizovali sa njim. Da li ste sigurni da želite da nastavite?</translation>
+<translation id="3396347744975515056">Brave sinhronizacija je nadograđena i zahteva podešavanje</translation>
+<translation id="7473245612074035141">Počni podešavanje</translation>
 <translation id="6696935187608454456">Pomoćni saveti</translation>
 <translation id="2775956301559569472">Pokaži gotovu Wayback Machine arhivu na 404 strana</translation>
 <translation id="1807246157184219062">Svetlo</translation>
