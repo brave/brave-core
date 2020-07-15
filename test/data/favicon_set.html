@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>Favicon Set</title>
+<script>
+function redirectToNextHop() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const values = urlParams.get('values');
+
+  bit = parseInt(urlParams.get('bit') ? urlParams.get('bit') : "0");
+  do {
+     if (values[bit] == '1') {
+       break;
+     }
+     bit += 1;
+  } while (bit < 3);
+
+  nextBit = bit + 1;
+  if (bit > 3) {
+    url = new URL(window.location);
+    url.hostname = 'a.com';
+    url.pathname = '/simple.html';
+    url.search = '';
+    window.location = url.toString();
+  } else {
+    nextHop = new URL(window.location);
+    nextHop.hostname = 'fav' + bit + '.a.com';
+    nextHop.search = '?bit=' + nextBit + '&values=' + values;
+    window.location = nextHop.toString();
+  }
+}
+</script>
+</head>
+<body>
+<script>
+setTimeout(redirectToNextHop, 100);
+</script>
+</body>
+</html>
