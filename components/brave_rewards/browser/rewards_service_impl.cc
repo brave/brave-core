@@ -1134,6 +1134,10 @@ void RewardsServiceImpl::OnURLLoaderComplete(
   ledger::UrlResponse response;
   response.body = response_body ? *response_body : "";
 
+  if (loader->NetError() != net::OK) {
+    response.error = net::ErrorToString(loader->NetError());
+  }
+
   int response_code = -1;
   if (loader->ResponseInfo() && loader->ResponseInfo()->headers) {
     response_code = loader->ResponseInfo()->headers->response_code();

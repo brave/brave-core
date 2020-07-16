@@ -39,18 +39,7 @@ BatLedgerClientMojoBridge::~BatLedgerClientMojoBridge() = default;
 void OnLoadURL(
     const ledger::LoadURLCallback& callback,
     ledger::UrlResponsePtr response_ptr) {
-  ledger::UrlResponse response;
-
-  if (!response_ptr) {
-    callback(response);
-    return;
-  }
-
-  response.url = response_ptr->url;
-  response.status_code = response_ptr->status_code;
-  response.body = response_ptr->body;
-  response.headers = response_ptr->headers;
-  callback(response);
+  callback(response_ptr ? *response_ptr : ledger::UrlResponse());
 }
 
 void BatLedgerClientMojoBridge::LoadURL(

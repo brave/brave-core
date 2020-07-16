@@ -1825,9 +1825,10 @@ BATLedgerBridge(BOOL,
   
   const auto copiedURL = [NSString stringWithUTF8String:url.c_str()];
   
-  return [self.commonOps loadURLRequest:url headers:headers content:content content_type:contentType method:methodMap[method] callback:^(int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+  return [self.commonOps loadURLRequest:url headers:headers content:content content_type:contentType method:methodMap[method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
     ledger::UrlResponse url_response;
     url_response.url = copiedURL.UTF8String;
+    url_response.error = errorDescription;
     url_response.status_code = statusCode;
     url_response.body = response;
     url_response.headers = base::MapToFlatMap(headers);
