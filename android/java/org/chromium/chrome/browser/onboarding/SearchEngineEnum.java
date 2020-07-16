@@ -11,6 +11,7 @@ import org.chromium.chrome.R;
 
 public enum SearchEngineEnum {
     GOOGLE(R.drawable.search_engine_google, SearchEngineEnumConstants.SEARCH_GOOGLE_ID),
+    YAHOO(R.drawable.search_engine_yahoo, SearchEngineEnumConstants.SEARCH_YAHOO_ID),
     DUCKDUCKGO(R.drawable.search_engine_duckduckgo, SearchEngineEnumConstants.SEARCH_DUCKDUCKGO_ID),
     DUCKDUCKGOLITE(R.drawable.search_engine_duckduckgo_lite,
             SearchEngineEnumConstants.SEARCH_DUCKDUCKGO_LITE_ID),
@@ -41,5 +42,6 @@ public enum SearchEngineEnum {
         static final int SEARCH_QWANT_ID = 3;
         static final int SEARCH_BING_ID = 4;
         static final int SEARCH_STARTPAGE_ID = 5;
+        static final int SEARCH_YAHOO_ID = 6;
     }
 }
