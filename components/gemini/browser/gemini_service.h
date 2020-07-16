@@ -65,6 +65,7 @@ class GeminiService : public KeyedService {
                                                         const std::string&,
                                                         const std::string&,
                                                         const std::string&,
+                                                        const std::string&,
                                                         const std::string&)>;
   using ExecuteOrderCallback = base::OnceCallback<void(bool)>;
 

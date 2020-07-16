@@ -327,7 +327,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "geminiWidgetBought", IDS_GEMINI_WIDGET_BOUGHT },
         { "geminiWidgetSold", IDS_GEMINI_WIDGET_SOLD },
         { "geminiWidgetFee", IDS_BINANCE_WIDGET_FEE },
-        { "geminiWidgetPrice", IDS_GEMINI_WIDGET_PRICE }
+        { "geminiWidgetUnitPrice", IDS_GEMINI_WIDGET_UNIT_PRICE },
+        { "geminiWidgetTotalPrice", IDS_GEMINI_WIDGET_TOTAL_PRICE },
+        { "geminiWidgetTotalAmount", IDS_GEMINI_WIDGET_TOTAL_AMOUNT },
       }
     }, {
       std::string("wallet"), {

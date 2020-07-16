@@ -184,7 +184,8 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
 
   void OnGetOrderQuote(const std::string& quote_id,
       const std::string& quantity, const std::string& fee,
-      const std::string& price, const std::string& error) {
+      const std::string& price, const std::string& total_price,
+      const std::string& error) {
     if (wait_for_request_) {
       wait_for_request_->Quit();
     }
@@ -192,12 +193,14 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     ASSERT_EQ(expected_quantity_, quantity);
     ASSERT_EQ(expected_total_fee_, fee);
     ASSERT_EQ(expected_quote_price_, price);
+    ASSERT_EQ(expected_total_price_, total_price);
   }
 
   void WaitForGetOrderQuote(const std::string& expected_quote_id,
       const std::string& expected_quantity,
       const std::string& expected_total_fee,
-      const std::string& expected_quote_price) {
+      const std::string& expected_quote_price,
+      const std::string& expected_total_price) {
     if (wait_for_request_) {
       return;
     }
@@ -206,6 +209,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     expected_quote_price_ = expected_quote_price;
     expected_total_fee_ = expected_total_fee;
     expected_quantity_ = expected_quantity;
+    expected_total_price_ = expected_total_price;
 
     wait_for_request_.reset(new base::RunLoop);
     wait_for_request_->Run();
@@ -277,6 +281,7 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
   bool expected_success_;
   std::string expected_quote_id_;
   std::string expected_quote_price_;
+  std::string expected_total_price_;
   std::string expected_total_fee_;
   std::string expected_quantity_;
   std::string expected_address_;
@@ -350,11 +355,11 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuote) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetGeminiService();
-  ASSERT_TRUE(service->GetOrderQuote("buy", "btcusd", "10",
+  ASSERT_TRUE(service->GetOrderQuote("buy", "btcusd", "100",
       base::BindOnce(
           &GeminiAPIBrowserTest::OnGetOrderQuote,
           base::Unretained(this))));
-  WaitForGetOrderQuote("1328", "0.01505181", "2.9900309233", "6445.07");
+  WaitForGetOrderQuote("1328", "0.01505181", "2.9900309233", "6445.07", "100");
 }
 
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuoteUnauthorized) {
@@ -365,7 +370,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuoteUnauthorized) {
       base::BindOnce(
           &GeminiAPIBrowserTest::OnGetOrderQuote,
           base::Unretained(this))));
-  WaitForGetOrderQuote("", "", "", "");
+  WaitForGetOrderQuote("", "", "", "", "");
 }
 
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuoteServerError) {
@@ -376,7 +381,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuoteServerError) {
       base::BindOnce(
           &GeminiAPIBrowserTest::OnGetOrderQuote,
           base::Unretained(this))));
-  WaitForGetOrderQuote("", "", "", "");
+  WaitForGetOrderQuote("", "", "", "", "");
 }
 
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccountBalances) {

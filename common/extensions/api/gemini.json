@@ -165,7 +165,11 @@
                     },
                     "price": {
                       "type": "string",
-                      "description": "order price"
+                      "description": "order unit price"
+                    },
+                    "totalPrice": {
+                      "type": "string",
+                      "description": "order total price"
                     }
                   }
                 },

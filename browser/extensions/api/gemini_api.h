@@ -100,6 +100,7 @@ class GeminiGetOrderQuoteFunction :
                           const std::string& quantity,
                           const std::string& fee,
                           const std::string& price,
+                          const std::string& total_price,
                           const std::string& error);
 
   ResponseAction Run() override;

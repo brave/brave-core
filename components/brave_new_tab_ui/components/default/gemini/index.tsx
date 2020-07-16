@@ -105,6 +105,7 @@ interface State {
   currentTradeId: string
   currentTradeFee: string
   currentTradePrice: string
+  currentTradeTotalPrice: string
   currentTradeQuantityLive: string
   currentTradeExpiryTime: number
 }
@@ -157,6 +158,7 @@ class Gemini extends React.PureComponent<Props, State> {
       currentTradeId: '',
       currentTradeFee: '',
       currentTradePrice: '',
+      currentTradeTotalPrice: '',
       currentTradeQuantityLive: '',
       currentTradeExpiryTime: 60
     }
@@ -318,12 +320,12 @@ class Gemini extends React.PureComponent<Props, State> {
     )
   }
 
-  formatCryptoBalance = (balance: string) => {
+  formatCryptoBalance = (balance: string, precision: number = 3) => {
     if (!balance) {
       return '0'
     }
 
-    return parseFloat(balance).toFixed(3)
+    return parseFloat(balance).toFixed(precision)
   }
 
   getAccountUSDValue = () => {
@@ -572,6 +574,7 @@ class Gemini extends React.PureComponent<Props, State> {
       currentTradeId: '',
       currentTradeFee: '',
       currentTradePrice: '',
+      currentTradeTotalPrice: '',
       currentTradeQuantity: '',
       currentTradeExpiryTime: 60
     })
@@ -587,6 +590,7 @@ class Gemini extends React.PureComponent<Props, State> {
       currentTradeId: '',
       currentTradeFee: '',
       currentTradePrice: '',
+      currentTradeTotalPrice: '',
       currentTradeQuantity: '',
       currentTradeExpiryTime: 60,
       currentTradeQuantityLive: '',
@@ -648,7 +652,7 @@ class Gemini extends React.PureComponent<Props, State> {
     }
 
     chrome.gemini.getOrderQuote(currentTradeMode, `${currentTradeAsset}usd`, currentTradeQuantity, (quote: any, error: string) => {
-      if (!quote.id || !quote.quantity || !quote.fee || !quote.price) {
+      if (!quote.id || !quote.quantity || !quote.fee || !quote.price || !quote.totalPrice) {
         if (error) {
           this.setState({
             tradeFailed: true,
@@ -666,6 +670,7 @@ class Gemini extends React.PureComponent<Props, State> {
         currentTradeId: quote.id,
         currentTradeFee: quote.fee,
         currentTradePrice: quote.price,
+        currentTradeTotalPrice: quote.totalPrice,
         currentTradeQuantityLive: quote.quantity,
         showTradePreview: true
       })
@@ -752,11 +757,16 @@ class Gemini extends React.PureComponent<Props, State> {
       currentTradeQuantityLive,
       currentTradeMode,
       currentTradeExpiryTime,
-      currentTradePrice
+      currentTradePrice,
+      currentTradeTotalPrice
     } = this.state
-    const tradeLabel = currentTradeMode === 'buy' ? 'geminiWidgetBuying' : 'geminiWidgetSelling'
+    const isBuy = currentTradeMode === 'buy'
+    const tradeLabel = isBuy ? 'geminiWidgetBuying' : 'geminiWidgetSelling'
     const quantity = this.formatCryptoBalance(currentTradeQuantityLive)
     const fee = this.formatCryptoBalance(currentTradeFee)
+    const total = this.formatCryptoBalance(currentTradeTotalPrice, (isBuy ? 2 : 3))
+    const totalAssetLabel = isBuy ? 'USD' : currentTradeAsset
+    const totalLabel = isBuy ? 'geminiWidgetTotalPrice' : 'geminiWidgetTotalAmount'
 
     return (
       <InvalidWrapper>
@@ -769,12 +779,16 @@ class Gemini extends React.PureComponent<Props, State> {
             <TradeValue>{`${quantity} ${currentTradeAsset}`}</TradeValue>
           </TradeInfoItem>
           <TradeInfoItem>
-            <TradeItemLabel>{getLocale('geminiWidgetPrice')}</TradeItemLabel>
+            <TradeItemLabel>{getLocale('geminiWidgetUnitPrice')}</TradeItemLabel>
             <TradeValue>{`${currentTradePrice} USD/${currentTradeAsset}`}</TradeValue>
           </TradeInfoItem>
-          <TradeInfoItem isLast={true}>
+          <TradeInfoItem>
             <TradeItemLabel>{getLocale('geminiWidgetFee')}</TradeItemLabel>
             <TradeValue>{`${fee} USD`}</TradeValue>
+          </TradeInfoItem>
+          <TradeInfoItem isLast={true}>
+            <TradeItemLabel>{getLocale(totalLabel)}</TradeItemLabel>
+            <TradeValue>{`${total} ${totalAssetLabel}`}</TradeValue>
           </TradeInfoItem>
         </TradeInfoWrapper>
         <ActionsWrapper>
