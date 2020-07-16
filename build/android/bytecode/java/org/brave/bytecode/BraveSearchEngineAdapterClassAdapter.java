@@ -12,7 +12,7 @@ public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
             "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter";
 
     static String sBraveSearchEngineAdapterBaseClassName =
-            "org/chromium/chrome/browser/search_engines/settings/BraveSearchEngineAdapter";
+            "org/chromium/chrome/browser/search_engines/settings/BraveBaseSearchEngineAdapter";
 
     static String sMethodGetPermissionsLinkMessage =
             "getPermissionsLinkMessage";
@@ -21,8 +21,8 @@ public class BraveSearchEngineAdapterClassAdapter extends BraveClassVisitor {
         super(visitor);
 
         changeSuperName(sSearchEngineAdapterClassName,
-        	sBraveSearchEngineAdapterBaseClassName);
-        deleteMethod(sSearchEngineAdapterClassName,
-                     sMethodGetPermissionsLinkMessage);
+                sBraveSearchEngineAdapterBaseClassName);
+        changeMethodOwner(sSearchEngineAdapterClassName, sMethodGetPermissionsLinkMessage,
+                sBraveSearchEngineAdapterBaseClassName);
     }
 }
