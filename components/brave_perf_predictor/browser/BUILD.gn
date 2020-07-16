@@ -10,6 +10,8 @@ buildflag_header("buildflags") {
 }
 
 source_set("browser") {
+  # Remove when https://github.com/brave/brave-browser/issues/10647 is resolved
+  check_includes = false
   public_deps = [
     ":buildflags",
   ]

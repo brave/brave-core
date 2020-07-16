@@ -46,6 +46,8 @@ source_set("switches") {
 }
 
 source_set("common") {
+  # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
+  check_includes = false
   deps = []
 
   sources = [
@@ -116,6 +118,8 @@ source_set("common") {
 }
 
 source_set("shield_exceptions") {
+  # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
+  check_includes = false
   sources = [
     "shield_exceptions.cc",
     "shield_exceptions.h",

@@ -1,4 +1,7 @@
 source_set("renderer_context_menu") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
+
   if (is_win || is_linux) {
     sources = [
       "brave_spelling_options_submenu_observer.cc",

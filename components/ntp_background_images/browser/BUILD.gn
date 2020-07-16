@@ -1,4 +1,6 @@
 static_library("browser") {
+  # Remove when https://github.com/brave/brave-browser/issues/10631 is resolved
+  check_includes = false
   sources = [
     "features.cc",
     "features.h",

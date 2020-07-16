@@ -1,4 +1,6 @@
 source_set("weekly_storage") {
+  # Remove when https://github.com/brave/brave-browser/issues/10641 is resolved
+  check_includes = false
   sources = [
     "weekly_storage.cc",
     "weekly_storage.h",

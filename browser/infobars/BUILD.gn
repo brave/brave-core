@@ -4,6 +4,8 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_sync/buildflags/buildflags.gni")
 
 source_set("infobars") {
+  # Remove when https://github.com/brave/brave-browser/issues/10649 is resolved
+  check_includes = false
   sources = [
     "brave_confirm_p3a_infobar_delegate.cc",
     "brave_confirm_p3a_infobar_delegate.h",

@@ -101,6 +101,8 @@ source_set("ledger") {
   visibility = [ ":*" ]
   configs += [ ":internal_config" ]
 
+  # Remove when https://github.com/brave/brave-browser/issues/10617 is resolved
+  check_includes = false
   output_name = "bat_native_ledger"
 
   sources = [
