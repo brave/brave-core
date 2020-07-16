@@ -14,7 +14,8 @@ import {
   StyledWidgetToggle,
   SettingsWidget,
   StyledButtonIcon,
-  StyledWidgetSettings
+  StyledWidgetSettings,
+  StyledButtonLabel
 } from '../../../components/default'
 import togetherBanner from './assets/bravetogether.png'
 import binanceBanner from './assets/binance.png'
@@ -55,11 +56,13 @@ class MoreCardsSettings extends React.PureComponent<Props, {}> {
             : <AddIcon />
           }
         </StyledButtonIcon>
-        {
-          on
-          ? getLocale('hideWidget')
-          : getLocale('addWidget')
-        }
+        <StyledButtonLabel>
+          {
+            on
+            ? getLocale('hideWidget')
+            : getLocale('addWidget')
+          }
+        </StyledButtonLabel>
       </StyledWidgetToggle>
     )
   }

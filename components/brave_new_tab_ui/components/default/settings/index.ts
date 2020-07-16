@@ -335,4 +335,14 @@ export const StyledButtonIcon = styled<{}, 'div'>('div')`
   display: inline-block;
   vertical-align: sub;
   margin-right: 5px;
+  height: 20px;
+  width: 20px;
+`
+
+export const StyledButtonLabel = styled<{}, 'span'>('span')`
+  max-width: 100px;
+  text-overflow: ellipsis;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
 `
