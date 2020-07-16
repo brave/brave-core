@@ -27,6 +27,7 @@ public class HighlightView extends FrameLayout {
 
     private HighlightItem item;
 
+    private boolean shouldShowHighlight = false;
 
     public HighlightView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -44,25 +45,31 @@ public class HighlightView extends FrameLayout {
         invalidate();
     }
 
+    public void setShouldShowHighlight(boolean shouldShowHighlight) {
+        this.shouldShowHighlight = shouldShowHighlight;
+    }
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
         int[] location = new int[2];
         getLocationOnScreen(location);
-        int width = item.getScreenRight() - item.getScreenLeft();
-        int height = item.getScreenBottom() - item.getScreenTop();
-        int cx = item.getScreenLeft() + width / 2 - location[0];
-        int cy = item.getScreenTop() + height / 2 - location[1];
-        float radius = width > height ? ((float)width / 2) : ((float)height / 2);
         Bitmap overlay = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(),
-                                             Bitmap.Config.ARGB_8888);
+                Bitmap.Config.ARGB_8888);
         Canvas overlayCanvas = new Canvas(overlay);
-        overlayCanvas.drawColor(0xcc3d4353);// 0x3333B5E5);
+        overlayCanvas.drawColor(0xcc1E2029);// 0x3333B5E5);
         eraserPaint.setAlpha(ALPHA_60_PERCENT);
-        float outerRadiusScaleMultiplier = 1.8f;
-        overlayCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, eraserPaint);
-        eraserPaint.setAlpha(0);
-        float innerRadiusScaleMultiplier = 1.2f;
-        overlayCanvas.drawCircle(cx, cy, radius * innerRadiusScaleMultiplier, eraserPaint);
+        if (shouldShowHighlight) {
+            int width = item.getScreenRight() - item.getScreenLeft();
+            int height = item.getScreenBottom() - item.getScreenTop();
+            int cx = item.getScreenLeft() + width / 2 - location[0];
+            int cy = item.getScreenTop() + height / 2 - location[1];
+            float radius = width > height ? ((float) width / 2) : ((float) height / 2);
+            float outerRadiusScaleMultiplier = 1.2f;
+            overlayCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, eraserPaint);
+            eraserPaint.setAlpha(0);
+            float innerRadiusScaleMultiplier = 0.8f;
+            overlayCanvas.drawCircle(cx, cy, radius * innerRadiusScaleMultiplier, eraserPaint);
+        }
         canvas.drawBitmap(overlay, 0, 0, basicPaint);
         super.dispatchDraw(canvas);
     }

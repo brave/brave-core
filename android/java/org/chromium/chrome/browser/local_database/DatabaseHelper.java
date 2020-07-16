@@ -148,7 +148,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(BraveStatsTable.COLUMN_TIMESTAMP, " datetime('now') ");
 
         // insert row
-        return db.insert(BraveStatsTable.TABLE_NAME, null, values);
+        long rowId =  db.insert(BraveStatsTable.TABLE_NAME, null, values);
+
+
+
+        Cursor cursorc = db.rawQuery("SELECT * FROM "+BraveStatsTable.TABLE_NAME+" WHERE ID = " + rowId, null); 
+        if (cursorc.moveToFirst()) {
+            do {
+                // BraveStatsTable braveStat = new BraveStatsTable(
+                //     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
+                //     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
+                //     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
+                //     cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
+                //     cursor.getLong(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
+
+                // braveStats.add(braveStat);
+                // Log.e("NTP", "Time : "+cursorc.getString(cursorc.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
+            } while (cursorc.moveToNext());
+        }
+
+        return rowId;
 
         // close db connection
         // db.close();
@@ -185,10 +204,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<Pair<String, Integer>> getStatsWithDate(int days) {
         List<Pair<String, Integer>> braveStats = new ArrayList<>();
-        String selectQuery = "SELECT  " + BraveStatsTable.COLUMN_DOMAIN + ", COUNT(*) as stat_count FROM "
+        String selectQuery = "SELECT  " + BraveStatsTable.COLUMN_DOMAIN + ", "+BraveStatsTable.COLUMN_TIMESTAMP+" , COUNT(*) as stat_count FROM "
                              + BraveStatsTable.TABLE_NAME 
-                             // + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP 
-                             // + " BETWEEN '2020-07-06' AND '2020-07-10'"
+                             + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP 
+                             + " >= DATETIME('now', '-7 day')"
                              + " GROUP BY " + BraveStatsTable.COLUMN_DOMAIN 
                              + " ORDER BY stat_count DESC";
 
@@ -197,6 +216,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
+                Log.e("NTP", "Time : "+cursor.getLong(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
                 Pair<String, Integer> statPair = new Pair<>(cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)), cursor.getInt(cursor.getColumnIndex("stat_count")));
                 braveStats.add(statPair);
             } while (cursor.moveToNext());

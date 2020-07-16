@@ -51,4 +51,5 @@
 
     <color name="brave_stats_bg_color">#1E2029</color>
     <color name="brave_stats_close_button_color">#F0F2FF</color>
+    <color name="brave_stats_radio_group_bg">#3B3E4F</color>
 </resources>

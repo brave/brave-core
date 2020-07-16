@@ -13,6 +13,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import android.os.Handler;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.airbnb.lottie.LottieAnimationView;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment.HighlightDialogListener;
 
 import org.chromium.chrome.R;
 
@@ -62,6 +64,7 @@ public class OnboardingV2Fragment extends Fragment {
 
 	private LottieAnimationView mAnimatedView;
 	private Button mAction;
+	private View mIndicator1, mIndicator2, mIndicator3, mIndicator4;
 
 	public OnboardingV2Fragment() {
 		// Required empty public constructor
@@ -71,16 +74,15 @@ public class OnboardingV2Fragment extends Fragment {
 	public void setUserVisibleHint(boolean isVisibleToUser) {
 		super.setUserVisibleHint(isVisibleToUser);
 		if (isVisibleToUser) {
-			if (mAction != null) {
-				if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-					mAction.setText(mContext.getResources().getString(R.string.next));
-				} else {
-					mAction.setText(mContext.getResources().getString(R.string.turn_on_privacy_stats));
+			new Handler().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (mAnimatedView != null) {
+						mAnimatedView.playAnimation();
+					}
 				}
-			}
-			if (mAnimatedView != null) {
-				mAnimatedView.playAnimation();
-			}
+			}, 200);
+			updateActionText();
 		}
 	}
 
@@ -89,7 +91,7 @@ public class OnboardingV2Fragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	                         Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.onboarding_pager_layout, container, false);
+		return inflater.inflate(R.layout.fragment_onboarding_v2, container, false);
 	}
 
 	@Override
@@ -128,12 +130,11 @@ public class OnboardingV2Fragment extends Fragment {
 		mAction.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (!OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-					OnboardingPrefManager.getInstance().setBraveStatsEnabled(true);
-				}
 				highlightDialogListener.onNextPage();
 			}
 		});
+
+		updateActionText();
 
 		mAnimatedView = view.findViewById(R.id.onboarding_image);
 		if (mAnimations.get(mPosition) != null) {
@@ -142,18 +143,23 @@ public class OnboardingV2Fragment extends Fragment {
 			mAnimatedView.loop(false);
 		}
 
+		mIndicator1 = view.findViewById(R.id.indicator_1);
+		mIndicator2 = view.findViewById(R.id.indicator_2);
+		mIndicator3 = view.findViewById(R.id.indicator_3);
+		mIndicator4 = view.findViewById(R.id.indicator_4);
+
 		switch (mPosition) {
 		case 0:
-			view.findViewById(R.id.indicator_1).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			mIndicator1.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
 			break;
 		case 1:
-			view.findViewById(R.id.indicator_2).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			mIndicator2.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
 			break;
 		case 2:
-			view.findViewById(R.id.indicator_3).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			mIndicator3.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
 			break;
 		case 3:
-			view.findViewById(R.id.indicator_4).setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
+			mIndicator4.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
 			break;
 		}
 	}
@@ -167,6 +173,20 @@ public class OnboardingV2Fragment extends Fragment {
 	}
 
 	public void setHighlightListener(HighlightDialogListener highlightDialogListener) {
-        this.highlightDialogListener = highlightDialogListener;
-    }
+		this.highlightDialogListener = highlightDialogListener;
+	}
+
+	private void updateActionText() {
+		if (mAction != null) {
+			if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+				mAction.setText(mContext.getResources().getString(R.string.next));
+				if (mIndicator4 != null)
+					mIndicator4.setVisibility(View.GONE);
+			} else {
+				mAction.setText(mContext.getResources().getString(R.string.turn_on_privacy_stats));
+				if (mIndicator4 != null)
+					mIndicator4.setVisibility(View.VISIBLE);
+			}
+		}
+	}
 }
