@@ -516,7 +516,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
     {ads::URLRequestMethod::POST, "POST"},
     {ads::URLRequestMethod::PUT, "PUT"}
   };
-  return [self.commonOps loadURLRequest:url headers:headers content:content content_type:content_type method:methodMap[method] callback:^(int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+  return [self.commonOps loadURLRequest:url headers:headers content:content content_type:content_type method:methodMap[method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
     callback(statusCode, response, headers);
   }];
 }
@@ -644,7 +644,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   baseUrl = [baseUrl stringByAppendingPathComponent:userModelPath];
 
   NSString *manifestUrl = [baseUrl stringByAppendingPathComponent:@"models.json"];
-  return [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+  return [self.commonOps loadURLRequest:manifestUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
 
@@ -704,7 +704,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
       BLOG(1, @"Downloading %@ user model version %@", modelId, version);
 
-      return [strongSelf.commonOps loadURLRequest:modelUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+      return [strongSelf.commonOps loadURLRequest:modelUrl.UTF8String headers:{} content:"" content_type:"" method:"GET" callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
         const auto strongSelf = weakSelf;
         if (!strongSelf) { return; }
 

@@ -11,7 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// A standard network completion block. Matches the native-ads/native-rewards signature, but
 /// each library uses their own typedef from their namespaces
-typedef void (^BATNetworkCompletionBlock)(int statusCode,
+typedef void (^BATNetworkCompletionBlock)(const std::string& errorDescription,
+                                          int statusCode,
                                           const std::string& response,
                                           const std::map<std::string, std::string>& headers);
 
