@@ -12,8 +12,8 @@ import android.widget.BaseAdapter;
 
 import androidx.annotation.StringRes;
 
-public class BraveSearchEngineAdapter extends BaseAdapter {
-    public BraveSearchEngineAdapter() {
+public class BraveBaseSearchEngineAdapter extends BaseAdapter {
+    public BraveBaseSearchEngineAdapter() {
     }
 
     // BaseAdapter:
