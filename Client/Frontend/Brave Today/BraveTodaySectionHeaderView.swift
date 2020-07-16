@@ -36,7 +36,7 @@ class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusa
         }
         backgroundView.contentView.addSubview(stackView)
         stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+            $0.edges.equalTo(safeAreaLayoutGuide).inset(UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
         }
         
         backgroundView.snp.makeConstraints {

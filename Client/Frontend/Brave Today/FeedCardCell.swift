@@ -5,18 +5,24 @@
 import Foundation
 import Storage
 import BraveUI
+import SnapKit
 
 /// Defines the basic feed card cell. A feed card can display 1 or more feed
 /// items. This cell is defined by the `View` type
 class FeedCardCell<Content: FeedCardContent>: UICollectionViewCell, CollectionViewReusable {
     var content = Content()
+    private var widthConstraint: Constraint?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         contentView.addSubview(content.view)
         content.view.snp.makeConstraints {
-            $0.edges.equalToSuperview()
+            $0.top.bottom.equalToSuperview()
+            $0.leading.greaterThanOrEqualToSuperview()
+            $0.trailing.lessThanOrEqualToSuperview()
+            widthConstraint = $0.width.equalTo(375).constraint
+            $0.centerX.equalToSuperview()
         }
     }
     
@@ -28,11 +34,17 @@ class FeedCardCell<Content: FeedCardContent>: UICollectionViewCell, CollectionVi
     override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         // swiftlint:disable:next force_cast
         let attributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
-        attributes.size = systemLayoutSizeFitting(
+        // Let iPads have a bit larger cards since theres more room
+        if traitCollection.horizontalSizeClass == .regular {
+            widthConstraint?.update(offset: min(600, attributes.size.width))
+        } else {
+            widthConstraint?.update(offset: min(400, attributes.size.width))
+        }
+        attributes.size.height = systemLayoutSizeFitting(
             UIView.layoutFittingCompressedSize,
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
-        )
+        ).height
         return attributes
     }
 }
