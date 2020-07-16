@@ -188,7 +188,7 @@ source_set("ui") {
     "//brave/chromium_src/chrome/browser/ui",
     "//brave/common",
     "//brave/common:pref_names",
-    "//brave/common/tor",
+    "//brave/common/tor:pref_names",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/brave_ads/browser",

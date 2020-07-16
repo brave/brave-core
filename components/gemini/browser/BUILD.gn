@@ -23,6 +23,7 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//components/prefs:prefs",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     "//components/os_crypt",

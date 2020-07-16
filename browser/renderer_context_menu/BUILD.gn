@@ -10,6 +10,7 @@ source_set("renderer_context_menu") {
 
     deps = [
       "//base",
+      "//chrome/app:command_ids",
       "//chrome/app:generated_resources",
       "//components/renderer_context_menu",
       "//ui/base",
