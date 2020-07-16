@@ -148,25 +148,35 @@ public class NTPUtil {
 
     public static int checkForNonDistruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
         BraveRewardsNativeWorker mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+
+        // Log.e("NTP", "Brave Rewrads : "+BraveRewardsPanelPopup.isBraveRewardsEnabled());
+        // Log.e("NTP", "Brave Ads : "+BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile()));
+        // Log.e("NTP", "nativeIsLocaleValid : "+BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile()));
+
         if (sponsoredTab.shouldShowBanner()) {
             if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)) {
                 if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())) {
                     if (ntpImage instanceof Wallpaper) {
+                        // Log.e("NTP", "BR_ON_ADS_ON");
                         return SponsoredImageUtil.BR_ON_ADS_ON;
                     }
                 } else if (BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())) {
                     if (ntpImage instanceof Wallpaper) {
+                        // Log.e("NTP", "BR_ON_ADS_OFF");
                         return SponsoredImageUtil.BR_ON_ADS_OFF ;
                     } else {
+                        // Log.e("NTP", "BR_INVALID_OPTION");
                         return SponsoredImageUtil.BR_INVALID_OPTION;
                     }
                 }
             } else {
                 if (ntpImage instanceof Wallpaper && !mBraveRewardsNativeWorker.IsCreateWalletInProcess()) {
+                    // Log.e("NTP", "BR_INVALID_OPTION_2");
                     return SponsoredImageUtil.BR_INVALID_OPTION;
                 }
             }
         }
+        // Log.e("NTP", "BR_INVALID_OPTION_3");
         return SponsoredImageUtil.BR_INVALID_OPTION;
     }
 

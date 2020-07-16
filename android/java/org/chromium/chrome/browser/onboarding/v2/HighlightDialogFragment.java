@@ -11,7 +11,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,28 +20,37 @@ import android.content.pm.ActivityInfo;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentManager;
 
 import org.chromium.chrome.R;
+import org.chromium.base.Log;
 
-import org.chromium.chrome.browser.onboarding.v2.HighlightManager;
 import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
-import org.chromium.chrome.browser.onboarding.v2.HighlightDialogListener;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 
-public class HighlightDialogFragment extends DialogFragment{
-    private HighlightManager highlightManager;
+import java.util.Arrays;
+import java.util.List;
+
+public class HighlightDialogFragment extends DialogFragment {
+    final public static String TAG_FRAGMENT = "HIGHLIGHT_FRAG";
+
+    public interface HighlightDialogListener {
+        void onNextPage();
+    }
+
+    private static final List<Integer> highlightViews = Arrays.asList(
+                R.id.brave_stats_ads,
+                R.id.brave_stats_data_saved,
+                R.id.brave_stats_time,
+                R.id.brave_stats_time
+            );
+
     private HighlightItem item;
     private HighlightView highlightView;
     private ViewPager viewpager;
 
-    public void setHighlightItem(HighlightItem item) {
-        this.item = item;
-        if (highlightView != null) {
-            highlightView.setHighlightItem(item);
-            highlightView.invalidate();
-        }
-    }
+    private OnboardingV2PagerAdapter onboardingV2PagerAdapter;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -56,10 +64,8 @@ public class HighlightDialogFragment extends DialogFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.highlight_layout, container);
         highlightView = view.findViewById(R.id.highlight_view);
-        highlightView.setHighlightItem(item);
 
-        // tab slider
-        OnboardingV2PagerAdapter onboardingV2PagerAdapter = new OnboardingV2PagerAdapter(getChildFragmentManager());
+        onboardingV2PagerAdapter = new OnboardingV2PagerAdapter(getChildFragmentManager());
         onboardingV2PagerAdapter.setHighlightListener(highlightDialogListener);
 
         // Set up the ViewPager with the sections adapter.
@@ -69,20 +75,13 @@ public class HighlightDialogFragment extends DialogFragment{
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (positionOffset == 0) {
-                    Log.e("HighlightDialogFragment", "onPageScrolled : " + position);
-                    if (position == 0) {
-                        highlightManager.showHighlight(R.id.brave_stats_ads, 0);
-                    } else if (position == 1) {
-                        highlightManager.showHighlight(R.id.brave_stats_data_saved, 1);
-                    } else if (position == 2) {
-                        highlightManager.showHighlight(R.id.brave_stats_time, 2);
-                    }
+                    highlightView(position);
                 }
             }
 
             @Override
             public void onPageSelected(int position) {
-                Log.e("HighlightDialogFragment", "onPageSelected : " + position);
+
             }
 
             @Override
@@ -99,8 +98,6 @@ public class HighlightDialogFragment extends DialogFragment{
             }
         });
 
-        OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
-
         return view;
     }
 
@@ -114,7 +111,7 @@ public class HighlightDialogFragment extends DialogFragment{
         }
 
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        
+
         super.onDestroyView();
     }
 
@@ -129,20 +126,45 @@ public class HighlightDialogFragment extends DialogFragment{
         // setHasOptionsMenu(false);
     }
 
-    public void setManager(HighlightManager highlightManager) {
-        this.highlightManager = highlightManager;
+    @Override
+    public void show(FragmentManager manager, String tag) {
+        if (tag != null && tag.equals(TAG_FRAGMENT)) {
+            // we do not show it twice
+            if (manager.findFragmentByTag(tag) == null) {
+                super.show(manager, tag);
+            }
+        } else {
+            super.show(manager, tag);
+        }
+    }
+
+    private void highlightView(int position) {
+        View view = getActivity().findViewById(highlightViews.get(position));
+        HighlightItem item = new HighlightItem(view);
+        highlightView.setHighlightItem(item);
+        if (position == 3) {
+            highlightView.setShouldShowHighlight(false);
+        } else {
+            highlightView.setShouldShowHighlight(true);
+        }
     }
 
     private HighlightDialogListener highlightDialogListener = new HighlightDialogListener() {
         @Override
         public void onNextPage() {
             if (viewpager != null) {
+                if (!OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    OnboardingPrefManager.getInstance().setBraveStatsEnabled(true);
+                    if (onboardingV2PagerAdapter != null) {
+                        onboardingV2PagerAdapter.notifyDataSetChanged();
+                    }
+                }
                 int currentPage = viewpager.getCurrentItem();
-                if (currentPage == viewpager.getAdapter().getCount() - 1
-                        && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                if ((OnboardingPrefManager.getInstance().isBraveStatsEnabled() && currentPage == 2)
+                        || currentPage == 3) {
                     dismiss();
                     BraveStatsUtil.showBraveStats();
-                } else{
+                } else {
                     viewpager.setCurrentItem(currentPage + 1);
                 }
             }

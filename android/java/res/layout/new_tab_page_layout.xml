@@ -35,7 +35,6 @@
             android:contentDescription="@null"
             app:lottie_fileName="onboarding_ads.json"
             app:lottie_autoPlay="true"
-            app:lottie_loop="true"
             android:layout_gravity="center_horizontal" />
 
         <ImageView

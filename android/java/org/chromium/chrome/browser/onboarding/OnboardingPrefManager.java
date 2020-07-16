@@ -110,7 +110,7 @@ public class OnboardingPrefManager {
     public void setNewOnboardingShown(boolean isShown) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_V2, isShown);
-        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.commit();
     }
 
     public boolean isOnboardingNotificationShown() {
@@ -124,7 +124,7 @@ public class OnboardingPrefManager {
     public void setBraveStatsEnabled(boolean enabled) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_STATS, enabled);
-        sharedPreferencesEditor.apply();
+        sharedPreferencesEditor.commit();
     }
 
     public long getPrefNextOnboardingDate() {

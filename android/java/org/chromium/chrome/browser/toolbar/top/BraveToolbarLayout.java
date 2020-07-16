@@ -731,6 +731,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void OnRewardsMainEnabled(boolean enabled) {
+
+    Log.e("OnRewardsMainEnabled", "isEnabled : "+enabled);
+
     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
 

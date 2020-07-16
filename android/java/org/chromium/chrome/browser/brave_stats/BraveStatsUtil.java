@@ -65,7 +65,7 @@ public class BraveStatsUtil {
 
 	public static Pair<String, String> getBraveStatsStringFormNumberPair(long number, boolean isBytes) {
 		String result = "";
-		String suffix = "";
+		String suffix = isBytes ? "KB" : "" ;
 		long base = isBytes ? 1024L : 1000L;
 		if (number >= base * base * base) {
 			result = result + (number / (base * base * base));
