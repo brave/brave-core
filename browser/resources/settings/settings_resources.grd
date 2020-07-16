@@ -24,6 +24,10 @@
           file="brave_sync_page/brave_sync_browser_proxy.js"
           compress="false"
           type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_JS"
+          file="brave_appearance_page/brave_appearance_browser_proxy.js"
+          compress="false"
+          type="BINDATA" />
       <!-- overrides -->
       <include name="IDR_SETTINGS_BRAVE_OVERRIDES_ABOUT_PAGE_JS"
           file="brave_overrides/about_page.js"
