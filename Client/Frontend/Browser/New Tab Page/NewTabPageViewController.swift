@@ -223,6 +223,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        layout.invalidateLayout()
         collectionView.reloadData()
         
         // Make sure that imageView has a frame calculated before we attempt
@@ -548,7 +549,7 @@ extension NewTabPageViewController {
             backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
             // Show the header as BraveToday feeds appear
             // Offset of where Brave Today starts
-            let todayStart = collectionView.frame.height - braveTodayHeaderView.bounds.height - 32
+            let todayStart = collectionView.frame.height - braveTodayHeaderView.bounds.height - 32 - 16
             // Offset of where the header should begin becoming visible
             let alphaInStart = collectionView.frame.height / 2.0
             let value = scrollView.contentOffset.y
