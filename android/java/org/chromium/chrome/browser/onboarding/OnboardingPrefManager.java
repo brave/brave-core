@@ -56,6 +56,7 @@ public class OnboardingPrefManager {
     private static final String QWANT = "Qwant";
     private static final String BING = "Bing";
     private static final String STARTPAGE = "StartPage";
+    private static final String YAHOO = "Yahoo";
 
     private OnboardingPrefManager() {
         mSharedPreferences = ContextUtils.getAppSharedPreferences();
@@ -163,6 +164,7 @@ public class OnboardingPrefManager {
     new HashMap<String, SearchEngineEnum>() {
         {
             put(GOOGLE, SearchEngineEnum.GOOGLE);
+            put(YAHOO, SearchEngineEnum.YAHOO);
             put(DUCKDUCKGO, SearchEngineEnum.DUCKDUCKGO);
             put(DUCKDUCKGOLITE, SearchEngineEnum.DUCKDUCKGOLITE);
             put(QWANT, SearchEngineEnum.QWANT);
