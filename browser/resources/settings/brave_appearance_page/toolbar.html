@@ -1,44 +1,33 @@
-<link rel="import" href="chrome://resources/html/polymer.html">
-
-<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
-<link rel="import" href="../settings_shared_css.html">
-<link rel="import" href="../settings_vars_css.html">
-
-<dom-module id="settings-brave-appearance-toolbar">
-  <template>
-    <style include="settings-shared md-select iron-flex">
-    </style>
-    <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.location_bar_is_wide}}"
-      label="$i18n{appearanceSettingsLocationBarIsWide}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.autocomplete_enabled}}"
-      label="$i18n{appearanceSettingsShowAutocompleteInAddressBar}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.top_site_suggestions_enabled}}"
-      label="$i18n{appearanceSettingsUseTopSiteSuggestions}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      class="cr-row"
-      pref="{{prefs.brave.brave_suggested_site_suggestions_enabled}}"
-      label="$i18n{appearanceSettingsUseBraveSuggestedSiteSuggestions}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      pref="{{prefs.brave.hide_brave_rewards_button}}"
-      class="cr-row"
-      label="$i18n{appearanceSettingsHideBraveRewardsButtonLabel}"
-      sub-label="$i18n{appearanceSettingsHideBraveRewardsButtonDesc}">
-    </settings-toggle-button>
-    <settings-toggle-button
-      pref="{{prefs.brave.always_show_bookmark_bar_on_ntp}}"
-      class="cr-row"
-      label="$i18n{appearanceSettingsAlwaysShowBookmarkBarOnNTP}">
-    </settings-toggle-button>
-  </template>
-  <script src="toolbar.js"></script>
-</dom-module>
+<style include="settings-shared">
+</style>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.location_bar_is_wide}}"
+  label="$i18n{appearanceSettingsLocationBarIsWide}">
+</settings-toggle-button>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.autocomplete_enabled}}"
+  label="$i18n{appearanceSettingsShowAutocompleteInAddressBar}">
+</settings-toggle-button>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.top_site_suggestions_enabled}}"
+  label="$i18n{appearanceSettingsUseTopSiteSuggestions}">
+</settings-toggle-button>
+<settings-toggle-button
+  class="cr-row"
+  pref="{{prefs.brave.brave_suggested_site_suggestions_enabled}}"
+  label="$i18n{appearanceSettingsUseBraveSuggestedSiteSuggestions}">
+</settings-toggle-button>
+<settings-toggle-button
+  pref="{{prefs.brave.hide_brave_rewards_button}}"
+  class="cr-row"
+  label="$i18n{appearanceSettingsHideBraveRewardsButtonLabel}"
+  sub-label="$i18n{appearanceSettingsHideBraveRewardsButtonDesc}">
+</settings-toggle-button>
+<settings-toggle-button
+  pref="{{prefs.brave.always_show_bookmark_bar_on_ntp}}"
+  class="cr-row"
+  label="$i18n{appearanceSettingsAlwaysShowBookmarkBarOnNTP}">
+</settings-toggle-button>

@@ -1,78 +1,67 @@
-<link rel="import" href="chrome://resources/html/polymer.html">
-<link rel="import" href="chrome://resources/html/i18n_behavior.html">
-<link rel="import" href="chrome://resources/html/assert.html">
+<style include="settings-shared">
+  /* The theme mixes a link and a cr-button divided by a separator with
+    * grit expressions and dom-if templates. That leads to a tricky thing
+    * to style correctly, these are a workaround. */
+  #themeRow cr-button {
+    margin-inline-end: 20px;
+  }
 
-<link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
+  #themeRow .separator {
+    margin-inline-start: 0;
+  }
 
-<dom-module id="settings-brave-appearance-super-referral">
-  <template>
-    <style include="settings-shared md-select iron-flex">
-      /* The theme mixes a link and a cr-button divided by a separator with
-       * grit expressions and dom-if templates. That leads to a tricky thing
-       * to style correctly, these are a workaround. */
-      #themeRow cr-button {
-        margin-inline-end: 20px;
-      }
+  .radio-group {
+    margin-left: 80px;
+    margin-bottom: 20px;
+  }
+</style>
 
-      #themeRow .separator {
-        margin-inline-start: 0;
-      }
-
-      .radio-group {
-        margin-left: 80px;
-        margin-bottom: 20px;
-      }
-    </style>
-
-    <div class="radio-group">
-      <settings-radio-group
-          pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}">
-        <controlled-radio-button name="[[themeValues_.DEFAULT]]"
-            pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}"
-            label="$i18n{appearanceBraveDefaultImagesOptionLabel}">
-        </controlled-radio-button>
-        <controlled-radio-button name="[[themeValues_.SUPER_REFERRAL]]"
-            pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}"
-            label="[[getSuperReferralThemeName_()]]">
-        </controlled-radio-button>
-      </settings-radio-group>
-    </div>
-    <div class="settings-box block first">
-      <div class="hr settings-row continuation" id="themeRow">
-        <cr-link-row class="label first"
-            label="$i18n{appearanceSettingsGetMoreThemes}"
-            sub-label="[[themeSublabel_]]"
-            on-click="openThemeUrl_" external></cr-link-row>
+<div class="radio-group">
+  <settings-radio-group
+      pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}">
+    <controlled-radio-button name="[[themeValues_.DEFAULT]]"
+        pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}"
+        label="$i18n{appearanceBraveDefaultImagesOptionLabel}">
+    </controlled-radio-button>
+    <controlled-radio-button name="[[themeValues_.SUPER_REFERRAL]]"
+        pref="{{prefs.brave.new_tab_page.super_referral_themes_option}}"
+        label="[[getSuperReferralThemeName_()]]">
+    </controlled-radio-button>
+  </settings-radio-group>
+</div>
+<div class="settings-box block first">
+  <div class="hr settings-row continuation" id="themeRow">
+    <cr-link-row class="label first"
+        label="$i18n{appearanceSettingsGetMoreThemes}"
+        sub-label="[[themeSublabel_]]"
+        on-click="openThemeUrl_" external></cr-link-row>
 <if expr="not is_linux">
-        <template is="dom-if" if="[[prefs.extensions.theme.id.value]]">
-          <div class="separator"></div>
-          <cr-button id="useDefault" on-click="onUseDefaultTap_">
-            $i18n{resetToDefaultTheme}
-          </cr-button>
-        </template>
+    <template is="dom-if" if="[[prefs.extensions.theme.id.value]]">
+      <div class="separator"></div>
+      <cr-button id="useDefault" on-click="onUseDefaultTap_">
+        $i18n{resetToDefaultTheme}
+      </cr-button>
+    </template>
 </if>
 <if expr="is_linux">
-        <div class="settings-row continuation"
-            hidden="[[!showThemesSecondary_(
-                prefs.extensions.theme.id.value, useSystemTheme_)]]"
-            id="themesSecondaryActions">
-          <div class="separator"></div>
-          <template is="dom-if" if="[[showUseClassic_(
-              prefs.extensions.theme.id.value, useSystemTheme_)]]" restamp>
-            <cr-button id="useDefault" on-click="onUseDefaultTap_">
-              $i18n{useClassicTheme}
-            </cr-button>
-          </template>
-          <template is="dom-if" if="[[showUseSystem_(
-              prefs.extensions.theme.id.value, useSystemTheme_)]]" restamp>
-            <cr-button id="useSystem" on-click="onUseSystemTap_">
-              $i18n{useSystemTheme}
-            </cr-button>
-          </template>
-        </div>
-</if>
-      </div>
+    <div class="settings-row continuation"
+        hidden="[[!showThemesSecondary_(
+            prefs.extensions.theme.id.value, useSystemTheme_)]]"
+        id="themesSecondaryActions">
+      <div class="separator"></div>
+      <template is="dom-if" if="[[showUseClassic_(
+          prefs.extensions.theme.id.value, useSystemTheme_)]]" restamp>
+        <cr-button id="useDefault" on-click="onUseDefaultTap_">
+          $i18n{useClassicTheme}
+        </cr-button>
+      </template>
+      <template is="dom-if" if="[[showUseSystem_(
+          prefs.extensions.theme.id.value, useSystemTheme_)]]" restamp>
+        <cr-button id="useSystem" on-click="onUseSystemTap_">
+          $i18n{useSystemTheme}
+        </cr-button>
+      </template>
     </div>
-  </template>
-  <script src="super_referral.js"></script>
-</dom-module>
+</if>
+  </div>
+</div>
