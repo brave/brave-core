@@ -31,16 +31,3 @@ TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   EXPECT_TRUE(request_info->new_url_spec.empty());
   EXPECT_EQ(rc, net::OK);
 }
-
-TEST(BraveAdBlockTPNetworkDelegateHelperTest, Blocking) {
-  const std::vector<const GURL> urls({
-      GURL("https://pdfjs.robwu.nl/ping"),
-  });
-  for (const auto& url : urls) {
-    auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
-    int rc =
-        OnBeforeURLRequest_AdBlockTPPreWork(ResponseCallback(), request_info);
-    EXPECT_EQ(request_info->new_url_spec, kEmptyDataURI);
-    EXPECT_EQ(rc, net::OK);
-  }
-}

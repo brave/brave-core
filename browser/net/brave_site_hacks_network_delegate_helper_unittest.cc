@@ -18,15 +18,11 @@ using brave::ResponseCallback;
 
 TEST(BraveSiteHacksNetworkDelegateHelperTest, UAWhitelistedTest) {
   const std::vector<const GURL> urls(
-      {GURL("https://adobe.com"), GURL("https://adobe.com/something"),
-       GURL("https://duckduckgo.com"), GURL("https://duckduckgo.com/something"),
-       GURL("https://brave.com"), GURL("https://brave.com/something"),
+      {GURL("https://duckduckgo.com"), GURL("https://duckduckgo.com/something"),
        GURL("https://netflix.com"), GURL("https://netflix.com/something"),
-       GURL("https://a.adobe.com"), GURL("https://a.duckduckgo.com"),
-       GURL("https://a.brave.com"), GURL("https://a.netflix.com"),
-       GURL("https://a.adobe.com/something"),
+       GURL("https://a.duckduckgo.com"),
+       GURL("https://a.netflix.com"),
        GURL("https://a.duckduckgo.com/something"),
-       GURL("https://a.brave.com/something"),
        GURL("https://a.netflix.com/something")});
   for (const auto& url : urls) {
     net::HttpRequestHeaders headers;
