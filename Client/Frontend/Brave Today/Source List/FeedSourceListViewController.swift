@@ -5,6 +5,19 @@
 
 import UIKit
 import BraveUI
+import BraveShared
+
+extension FeedItem.Source {
+    fileprivate var sectionIndexTitle: String {
+        if let firstCharacter = name.first?.uppercased() {
+            if Int(firstCharacter) != nil {
+                return "#"
+            }
+            return firstCharacter
+        }
+        return ""
+    }
+}
 
 private class SourceTableViewCell: UITableViewCell, TableViewReusable {
     let enabledToggle = UISwitch()
@@ -16,8 +29,6 @@ private class SourceTableViewCell: UITableViewCell, TableViewReusable {
         enabledToggle.addTarget(self, action: #selector(enabledToggleChanged), for: .valueChanged)
         
         selectionStyle = .none
-//        backgroundColor = .clear
-//        textLabel?.appearanceTextColor = .white
         textLabel?.numberOfLines = 0
     }
     
@@ -39,18 +50,42 @@ private class SourceTableViewCell: UITableViewCell, TableViewReusable {
 
 class FeedSourceListViewController: UITableViewController {
     let dataSource: FeedDataSource
-    var searchQuery: String?
+    var searchQuery: String = ""
     
-    private var sources: [FeedItem.Source] {
-        if let query = searchQuery, !query.isEmpty {
-            return dataSource.sources.filter { $0.name.contains(query) }
+    private var sections: [[FeedItem.Source]] = []
+    private var sectionIndexTitles: [String] = []
+    
+    private func reloadSections() {
+        var list: [FeedItem.Source] = dataSource.sources
+        if !searchQuery.isEmpty {
+            list = list
+                .filter { $0.name.lowercased().contains(searchQuery.lowercased()) }
         }
-        return dataSource.sources
+        let topNews = list.filter { $0.category == "Top News" }
+        var updatedSections: [[FeedItem.Source]] = []
+        if !topNews.isEmpty {
+            updatedSections.append(topNews)
+        }
+        let others = list.filter { $0.category != "Top News" }
+        let otherSections = Dictionary(grouping: others, by: { $0.sectionIndexTitle })
+            .sorted(by: { $0.key < $1.key })
+            .reduce(into: [[FeedItem.Source]]()) { (sections, value) in
+                sections.append(value.value)
+            }
+        if !otherSections.isEmpty {
+            updatedSections.append(contentsOf: otherSections)
+        }
+        sections = updatedSections
+        if isViewLoaded {
+            tableView.reloadData()
+        }
     }
     
     init(dataSource: FeedDataSource) {
         self.dataSource = dataSource
         super.init(style: .plain)
+        reloadSections()
+        sectionIndexTitles = ["★"] + sections[1...].compactMap { $0.first?.sectionIndexTitle }
     }
     
     @available(*, unavailable)
@@ -65,23 +100,14 @@ class FeedSourceListViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        if #available(iOS 13.0, *) {
-//            tableView.appearanceOverrideUserInterfaceStyle = .dark
-//        }
-//        tableView.backgroundView = backgroundView
-        
         tableView.register(SourceTableViewCell.self)
         tableView.estimatedRowHeight = UITableView.automaticDimension
         tableView.delegate = self
         tableView.dataSource = self
-//        tableView.appearanceBackgroundColor = .clear
+        tableView.sectionIndexColor = BraveUX.braveOrange
         
         title = "Choose Your Sources" // FIXME: Localize
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
-//        navigationController?.navigationBar.appearanceBarTintColor = nil
-//        navigationController?.navigationBar.barStyle = .blackTranslucent
-//        navigationController?.navigationBar.tintColor = .white
-//        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.white]
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -99,8 +125,9 @@ class FeedSourceListViewController: UITableViewController {
 // MARK: - UISearchResultsUpdating
 extension FeedSourceListViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        searchQuery = searchController.searchBar.text
-        tableView.reloadData()
+        searchQuery = searchController.searchBar.text ?? ""
+        reloadSections()
+        tableView.separatorStyle = sections.isEmpty ? .none : .singleLine
     }
 }
 
@@ -110,13 +137,34 @@ extension FeedSourceListViewController: UISearchResultsUpdating {
 
 // MARK: - UITableViewDataSource
 extension FeedSourceListViewController {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        guard let source = sections[safe: section]?[safe: 0] else {
+            return nil
+        }
+        if source.category == "Top News" {
+            return "Top News"
+        }
+        return source.sectionIndexTitle
+    }
+    
+    override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        if !searchQuery.isEmpty {
+            return nil
+        }
+        return sectionIndexTitles
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sources.count
+        return sections[section].count
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(for: indexPath) as SourceTableViewCell
-        guard let source = sources[safe: indexPath.row] else {
+        guard let source = sections[safe: indexPath.section]?[safe: indexPath.row] else {
             assertionFailure()
             return cell
         }
