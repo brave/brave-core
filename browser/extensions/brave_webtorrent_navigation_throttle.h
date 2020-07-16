@@ -31,6 +31,9 @@ class BraveWebTorrentNavigationThrottle : public content::NavigationThrottle,
   ThrottleCheckResult WillProcessResponse() override;
   const char* GetNameForLogging() override;
 
+  static bool MaybeLoadWebtorrent(
+      content::BrowserContext* context, const GURL& url);
+
  private:
   ThrottleCheckResult CommonWillProcessRequestResponse();
   void ResumeThrottle();

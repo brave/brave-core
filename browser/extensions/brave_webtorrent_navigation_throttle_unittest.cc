@@ -13,6 +13,9 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/extensions/load_error_reporter.h"
+#include "chrome/browser/extensions/test_extension_system.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -25,7 +28,7 @@
 #include "content/public/test/mock_navigation_handle.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
-#include "extensions/browser/extension_registry.h"
+#include "extensions/browser/extension_system.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -77,6 +80,16 @@ class BraveWebTorrentNavigationThrottleUnitTest
   void SetUp() override {
     original_client_ = content::SetBrowserClientForTesting(&client_);
     content::RenderViewHostTestHarness::SetUp();
+
+    // Initialize the various pieces of the extensions system.
+    extensions::LoadErrorReporter::Init(false);
+    extensions::TestExtensionSystem* extension_system =
+        static_cast<extensions::TestExtensionSystem*>(
+            extensions::ExtensionSystem::Get(profile()));
+    extension_system->CreateExtensionService(
+        base::CommandLine::ForCurrentProcess(), base::FilePath(), false);
+    extension_service_ =
+        extensions::ExtensionSystem::Get(profile())->extension_service();
   }
 
   std::unique_ptr<content::BrowserContext> CreateBrowserContext() override {
@@ -91,6 +104,10 @@ class BraveWebTorrentNavigationThrottleUnitTest
   void TearDown() override {
     content::SetBrowserClientForTesting(original_client_);
     content::RenderViewHostTestHarness::TearDown();
+  }
+
+  extensions::ExtensionService* extension_service() {
+    return extension_service_;
   }
 
   content::RenderFrameHostTester* render_frame_host_tester(
@@ -116,7 +133,7 @@ class BraveWebTorrentNavigationThrottleUnitTest
                      .SetID(brave_webtorrent_extension_id)
                      .Build();
     ASSERT_TRUE(extension_);
-    ExtensionRegistry::Get(browser_context())->AddReady(extension_.get());
+    extension_service()->AddExtension(extension_.get());
   }
 
  private:
@@ -126,6 +143,8 @@ class BraveWebTorrentNavigationThrottleUnitTest
   ScopedTestingLocalState local_state_;
   base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
+  // The ExtensionService associated with the primary profile.
+  extensions::ExtensionService* extension_service_ = nullptr;
   DISALLOW_COPY_AND_ASSIGN(BraveWebTorrentNavigationThrottleUnitTest);
 };
 

@@ -55,6 +55,27 @@ BraveWebTorrentNavigationThrottle::WillProcessResponse() {
   return CommonWillProcessRequestResponse();
 }
 
+// static
+bool BraveWebTorrentNavigationThrottle::MaybeLoadWebtorrent(
+  content::BrowserContext* context,
+  const GURL& url) {
+  // No need to load Webtorrent if pref is off or it is already enabled.
+  if (!webtorrent::IsWebtorrentPrefEnabled(context) ||
+      webtorrent::IsWebtorrentEnabled(context)) {
+    return false;
+  }
+
+  extensions::ExtensionService* service =
+    extensions::ExtensionSystem::Get(context)->extension_service();
+  if (!service)
+    return false;
+
+  extensions::ComponentLoader* loader = service->component_loader();
+  static_cast<extensions::BraveComponentLoader*>(loader)->
+    AddWebTorrentExtension();
+  return true;
+}
+
 content::NavigationThrottle::ThrottleCheckResult
 BraveWebTorrentNavigationThrottle::CommonWillProcessRequestResponse() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -69,29 +90,12 @@ BraveWebTorrentNavigationThrottle::CommonWillProcessRequestResponse() {
   auto* headers = navigation_handle()->GetResponseHeaders();
   bool is_torrent_file = headers ? webtorrent::IsTorrentFile(url, headers) :
       webtorrent::TorrentURLMatched(url);
-  if (url.SchemeIs(kMagnetScheme) || is_torrent_file) {
-    // If the WebTorrent pref is enabled, but the extension is not,
-    // then enable the extension at this time!
-    content::BrowserContext* browser_context =
-        web_contents->GetBrowserContext();
-    if (webtorrent::IsWebtorrentPrefEnabled(browser_context) &&
-        !webtorrent::IsWebtorrentEnabled(browser_context)) {
-      auto* registry = ExtensionRegistry::Get(browser_context);
-      if (!registry->ready_extensions().GetByID(
-            brave_webtorrent_extension_id)) {
-        resume_pending_ = true;
-        extensions::ExtensionService* service =
-           extensions::ExtensionSystem::Get(
-               browser_context)->extension_service();
-        if (service) {
-          extensions::ComponentLoader* loader = service->component_loader();
-          static_cast<extensions::BraveComponentLoader*>(loader)->
-              AddWebTorrentExtension();
-        }
-        return content::NavigationThrottle::DEFER;
-      }
-    }
+  if ((url.SchemeIs(kMagnetScheme) || is_torrent_file) &&
+       MaybeLoadWebtorrent(web_contents->GetBrowserContext(), url)) {
+    resume_pending_ = true;
+    return content::NavigationThrottle::DEFER;
   }
+
   return content::NavigationThrottle::PROCEED;
 }
 
