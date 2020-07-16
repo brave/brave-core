@@ -75,7 +75,7 @@ describe('gridSitesReducer', () => {
       state = {
         ...state,
         gridSites: [
-         {
+          {
             url: 'www.basicattentiontoken.org',
             title: 'BAT',
             id: 'topsite-0',
