@@ -103,4 +103,5 @@
 
     <color name="brave_stats_bg_color">#FFFFFF</color>
     <color name="brave_stats_close_button_color">#495057</color>
+    <color name="brave_stats_radio_group_bg">#E9E9F4</color>
 </resources>

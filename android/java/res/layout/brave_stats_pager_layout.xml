@@ -11,9 +11,13 @@
     android:background="@color/brave_stats_bg_color">
 
     <LinearLayout
+        android:id="@+id/brave_stats_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="16dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -36,7 +40,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="181"
-                    android:textSize="40sp"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
@@ -69,7 +74,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="18"
-                    android:textSize="40sp"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
@@ -101,12 +107,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="21"
-                    android:textSize="40sp"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
                     android:layout_marginTop="16dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:fontFamily="sans-serif"
-                    android:gravity="center_horizontal"
                     android:textColor="@color/brave_stats_text_color"/>
 
                 <TextView
@@ -116,6 +122,7 @@
                     android:textSize="12sp"
                     android:layout_margin="16dp"
                     android:fontFamily="sans-serif" 
+                    android:gravity="center_horizontal"
                     android:textColor="@color/brave_stats_title_color"/>
 
             </LinearLayout>

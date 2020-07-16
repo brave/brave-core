@@ -7,17 +7,21 @@
 
 package org.chromium.chrome.browser.onboarding.v2;
 
+import android.view.View;
+
 public class HighlightItem {
     private int screenLeft;
     private int screenTop;
     private int screenRight;
     private int screenBottom;
 
-    public void setScreenPosition(int screenLeft, int screenTop, int screenRight, int screenBottom) {
-        this.screenLeft = screenLeft;
-        this.screenTop = screenTop;
-        this.screenRight = screenRight;
-        this.screenBottom = screenBottom;
+    public HighlightItem(View highlightView) {
+        int[] location = new int[2];
+        highlightView.getLocationOnScreen(location);
+        screenLeft = location[0];
+        screenTop = location[1];
+        screenRight = location[0] + highlightView.getMeasuredWidth();
+        screenBottom = location[1] + highlightView.getMeasuredHeight();
     }
 
     public int getScreenLeft() {

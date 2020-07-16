@@ -8,7 +8,7 @@
     <org.chromium.chrome.browser.onboarding.v2.HighlightView
         android:id="@+id/highlight_view"
         android:layout_width="match_parent"
-        android:layout_height="250dp">
+        android:layout_height="200dp">
 
     </org.chromium.chrome.browser.onboarding.v2.HighlightView>
 

@@ -730,8 +730,18 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     @Override
     public void OnRecurringDonationUpdated() {}
 
+<<<<<<< HEAD
     @Override
     public void OnResetTheWholeState(boolean success) {}
+=======
+  @Override
+  public void OnRewardsMainEnabled(boolean enabled) {
+
+    Log.e("OnRewardsMainEnabled", "isEnabled : "+enabled);
+
+    SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+    SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+>>>>>>> Update UI with highlight view
 
     @Override
     public void OnRewardsMainEnabled(boolean enabled) {
