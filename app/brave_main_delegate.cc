@@ -32,6 +32,7 @@
 #include "components/feed/feed_feature_list.h"
 #include "components/language/core/common/language_experiments.h"
 #include "components/offline_pages/core/offline_page_feature.h"
+#include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/driver/sync_driver_switches.h"
@@ -195,6 +196,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if defined(OS_WIN)
       features::kWinrtGeolocationImplementation.name,
 #endif
+      omnibox::kOmniboxContextMenuShowFullUrls.name,
   };
 
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(

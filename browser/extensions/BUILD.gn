@@ -92,6 +92,7 @@ source_set("extensions") {
     "//chrome/common",
     "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
+    "//components/omnibox/browser:browser",
     "//components/prefs",
     "//components/services/patch/content",
     "//components/services/unzip/content",

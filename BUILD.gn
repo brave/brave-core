@@ -37,6 +37,7 @@ if (!is_ios) {
       "browser",
       "chromium_src:browser",
       "common",
+      "//components/omnibox/common",
       "//services/device/public/cpp:device_features",
     ]
 
