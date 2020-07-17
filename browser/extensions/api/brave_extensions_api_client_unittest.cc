@@ -86,4 +86,31 @@ TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlBinance) {
   ASSERT_FALSE(ShouldHideBrowserNetworkRequest(allowed2));
 }
 
+TEST_F(BraveExtensionsAPIClientTests, IsBraveProtectedUrlGemini) {
+  auto create_request_params = [](const std::string& url) {
+    const int kRendererProcessId = 2;
+    WebRequestInfoInitParams request;
+    request.url = GURL(url);
+    request.render_process_id = kRendererProcessId;
+    return request;
+  };
+
+  WebRequestInfo blocked1(
+      create_request_params("https://exchange.gemini.com/auth"));
+  WebRequestInfo blocked2(create_request_params(
+      "https://exchange.gemini.com/auth/token"));
+  WebRequestInfo blocked3(
+      create_request_params("com.brave.gemini://authorization?code=Sggjh9s"));
+
+  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked1));
+  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked2));
+  ASSERT_TRUE(ShouldHideBrowserNetworkRequest(blocked3));
+
+  WebRequestInfo allowed1(create_request_params("https://gemini.com/"));
+  WebRequestInfo allowed2(create_request_params(
+      "https://exchange.gemini.com/"));
+  ASSERT_FALSE(ShouldHideBrowserNetworkRequest(allowed1));
+  ASSERT_FALSE(ShouldHideBrowserNetworkRequest(allowed2));
+}
+
 }  // namespace extensions
