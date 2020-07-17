@@ -312,7 +312,7 @@ void Reddit::SavePublisherInfo(
   const std::string user_id = GetUserId(data);
   const std::string publisher_key = GetPublisherKey(user_id);
   const std::string media_key = GetMediaKey(user_name, REDDIT_MEDIA_TYPE);
-if (publisher_key.empty()) {
+  if (publisher_key.empty()) {
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     BLOG(0, "Publisher key is missing for: " << media_key);
     return;
@@ -327,18 +327,18 @@ if (publisher_key.empty()) {
   visit_data->favicon_url = favicon_url;
   visit_data->name = user_name;
 
-
-  ledger_->SaveMediaVisit(publisher_key,
-                          *visit_data,
-                          0,
-                          window_id,
-                          callback);
+  ledger_->SaveVisit(
+      publisher_key,
+      *visit_data,
+      0,
+      window_id,
+      callback);
 
   if (!media_key.empty()) {
     ledger_->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
-        [](const ledger::Result _){});
+        [](const ledger::Result) {});
   }
 }
 

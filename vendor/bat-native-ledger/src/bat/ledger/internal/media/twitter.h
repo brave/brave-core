@@ -72,9 +72,6 @@ class Twitter {
       const uint64_t window_id,
       ledger::PublisherInfoCallback callback);
 
-  void OnSaveMediaVisit(ledger::Result result,
-                        ledger::PublisherInfoPtr info);
-
   void OnMediaActivityError(const ledger::VisitData& visit_data,
                             uint64_t window_id);
 

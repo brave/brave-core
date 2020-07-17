@@ -631,11 +631,6 @@ void Vimeo::OnPublisherVideoPage(
                     0);
 }
 
-void Vimeo::OnSaveMediaVisit(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-}
-
 void Vimeo::SavePublisherInfo(
     const std::string& media_key,
     const uint64_t duration,
@@ -650,11 +645,6 @@ void Vimeo::SavePublisherInfo(
     BLOG(0, "User id is missing for: " << media_key);
     return;
   }
-
-  auto callback = std::bind(&Vimeo::OnSaveMediaVisit,
-                            this,
-                            _1,
-                            _2);
 
   std::string key = publisher_key;
   if (key.empty()) {
@@ -678,17 +668,18 @@ void Vimeo::SavePublisherInfo(
   visit_data.favicon_url = icon;
   visit_data.name = publisher_name;
 
-  ledger_->SaveMediaVisit(key,
-                          visit_data,
-                          duration,
-                          window_id,
-                          callback);
+  ledger_->SaveVideoVisit(
+      key,
+      visit_data,
+      duration,
+      window_id,
+      [](ledger::Result, ledger::PublisherInfoPtr) {});
 
   if (!media_key.empty()) {
     ledger_->SaveMediaPublisherInfo(
         media_key,
         key,
-        [](const ledger::Result _){});
+        [](const ledger::Result) {});
   }
 }
 

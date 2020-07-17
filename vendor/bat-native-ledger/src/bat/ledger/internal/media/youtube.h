@@ -71,9 +71,6 @@ class YouTube {
   void OnMediaActivityError(const ledger::VisitData& visit_data,
                             uint64_t window_id);
 
-  void OnSaveMediaVisit(ledger::Result result,
-                        ledger::PublisherInfoPtr info);
-
   void OnMediaPublisherInfo(
       const std::string& media_id,
       const std::string& media_key,
