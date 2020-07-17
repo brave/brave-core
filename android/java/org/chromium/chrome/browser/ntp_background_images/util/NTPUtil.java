@@ -149,7 +149,7 @@ public class NTPUtil {
     public static int checkForNonDistruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
         BraveRewardsNativeWorker mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (sponsoredTab.shouldShowBanner()) {
-            if (BraveRewardsPanelPopup.isBraveRewardsEnabled()) {
+            if (BravePrefServiceBridge.getInstance().isBraveRewardsEnabled()) {
                 if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())) {
                     if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_ON;
