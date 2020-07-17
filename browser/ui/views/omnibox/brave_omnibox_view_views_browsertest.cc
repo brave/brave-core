@@ -23,8 +23,10 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/controls/textfield/textfield.h"
+#include "ui/views/view_observer.h"
 
-class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
+class BraveOmniboxViewViewsTest : public InProcessBrowserTest,
+                                  public views::ViewObserver {
  public:
   LocationBarView* location_bar(Browser* browser) {
     auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
@@ -33,6 +35,13 @@ class BraveOmniboxViewViewsTest : public InProcessBrowserTest {
   OmniboxViewViews* omnibox_view(Browser* browser) {
     return location_bar(browser)->omnibox_view();
   }
+
+  // views::ViewObserver overrides:
+  void OnViewFocused(views::View* observed_view) override {
+    run_loop_->Quit();
+  }
+
+  base::RunLoop* run_loop_ = nullptr;
 };
 
 // Load brave url and check copied url also has brave scheme.
@@ -71,9 +80,18 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, WaitForTorProcess) {
   }
   DCHECK(tor_browser);
   OmniboxViewViews* tor_views = omnibox_view(tor_browser);
+  chrome::FocusLocationBar(tor_browser);
+
+  tor_views->AddObserver(this);
+
+  base::RunLoop run_loop;
+  if (!tor_views->HasFocus()) {
+    // Wait for omnibox get focused.
+    run_loop_ = &run_loop;
+    run_loop.Run();
+  }
 
   // Check indicator
-  chrome::FocusLocationBar(tor_browser);
   EXPECT_EQ(tor_views->GetPlaceholderText(),
             l10n_util::GetStringUTF16(IDS_OMNIBOX_INITIALIZING_TOR));
   EXPECT_EQ(tor_views->GetText(),
@@ -91,4 +109,6 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, WaitForTorProcess) {
             l10n_util::GetStringUTF16(IDS_OMNIBOX_INITIALIZING_TOR));
   EXPECT_NE(tor_views->GetText(),
             l10n_util::GetStringUTF16(IDS_OMNIBOX_INITIALIZING_TOR));
+
+  tor_views->RemoveObserver(this);
 }
