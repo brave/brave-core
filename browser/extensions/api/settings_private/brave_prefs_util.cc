@@ -13,6 +13,7 @@
 #include "chrome/common/extensions/api/settings_private.h"
 #include "components/browsing_data/core/pref_names.h"
 #include "components/gcm_driver/gcm_buildflags.h"
+#include "components/omnibox/browser/omnibox_prefs.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -145,6 +146,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   (*s_brave_whitelist)[kBraveGCMChannelStatus] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
 #endif
+  // Omnibox pref
+  (*s_brave_whitelist)[omnibox::kPreventUrlElisionsInOmnibox] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   return *s_brave_whitelist;
 }

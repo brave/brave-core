@@ -14,6 +14,7 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/embedder_support/switches.h"
 #include "components/language/core/common/language_experiments.h"
+#include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
@@ -82,6 +83,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if defined(OS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
+    &omnibox::kOmniboxContextMenuShowFullUrls,
   };
 
   for (const auto* feature : enabled_features)
