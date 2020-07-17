@@ -36,7 +36,8 @@ module.exports = (env, argv) => ({
         exclude: /node_modules\/(?!brave-ui)/,
         options: {
           getCustomTransformers: path.join(__dirname, './webpack-ts-transformers.js'),
-          allowTsInNodeModules: true
+          allowTsInNodeModules: true,
+          configFile: 'tsconfig-webpack.json'
         }
       },
       {
