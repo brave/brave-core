@@ -25,12 +25,12 @@ class BraveOmniboxViewViews : public OmniboxViewViews,
                         const gfx::FontList& font_list);
   ~BraveOmniboxViewViews() override;
 
+  // tor::TorLauncherServiceObserver:
+  void OnTorLaunched(bool result, int64_t pid) override;
+
  private:
   // views::Textfield:
   void OnFocus() override;
-
-  // tor::TorLauncherServiceObserver:
-  void OnTorLaunched(bool result, int64_t pid) override;
 
   tor::TorProfileService* tor_profile_service_ = nullptr;
 
