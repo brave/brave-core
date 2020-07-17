@@ -22,6 +22,7 @@ interface PageProps {
   showTopSites: boolean
   showAddCard: boolean
   showBrandedWallpaper: boolean
+  itemsOpacity: boolean
 }
 
 function getItemRowCount (p: PageProps): number {
@@ -68,6 +69,9 @@ export const Page = styled<PageProps, 'div'>('div')`
   height: 100%;
   min-height: 100vh;
   align-items: flex-start;
+
+  filter: blur(${p => p.itemsOpacity ? '18px' : '0'});
+  transition: filter 0.3s linear;
 
   /* lock the screen so when brave today is scroled
   NTP items remain in the same place */

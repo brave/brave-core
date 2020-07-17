@@ -23,6 +23,7 @@ import {
 import * as Page from '../../components/default/page'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
 import { brandedWallpaperLogoClicked } from '../../api/brandedWallpaper'
+import BraveToday from '../../components/default/braveToday'
 
 // Helpers
 import VisibilityTimer from '../../helpers/visibilityTimer'
@@ -46,6 +47,7 @@ import Settings from './settings'
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
+  todayData: NewTab.BraveTodayState
   actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
   saveShowStats: (value: boolean) => void
@@ -64,6 +66,7 @@ interface State {
   showSettingsMenu: boolean
   backgroundHasLoaded: boolean
   focusMoreCards: boolean
+  itemsOpacity: boolean
 }
 
 function GetBackgroundImageSrc (props: Props) {
@@ -99,7 +102,8 @@ class NewTabPage extends React.Component<Props, State> {
     onlyAnonWallet: false,
     showSettingsMenu: false,
     backgroundHasLoaded: false,
-    focusMoreCards: false
+    focusMoreCards: false,
+    itemsOpacity: false
   }
   imageSource?: string = undefined
   timerIdForBrandedWallpaperNotification?: number = undefined
@@ -407,6 +411,10 @@ class NewTabPage extends React.Component<Props, State> {
 
   setUserTLDAutoSet = () => {
     this.props.actions.setUserTLDAutoSet()
+  }
+
+  setOpacityForItems = (opacity: boolean) => {
+    this.setState({ itemsOpacity: opacity })
   }
 
   learnMoreRewards = () => {
@@ -966,7 +974,7 @@ class NewTabPage extends React.Component<Props, State> {
 
   render () {
     const { newTabData, gridSitesData, actions } = this.props
-    const { showSettingsMenu, focusMoreCards } = this.state
+    const { showSettingsMenu, focusMoreCards, itemsOpacity } = this.state
 
     if (!newTabData) {
       return null
@@ -993,6 +1001,7 @@ class NewTabPage extends React.Component<Props, State> {
           />
         }
         <Page.Page
+            itemsOpacity={itemsOpacity}
             showClock={newTabData.showClock}
             showStats={newTabData.showStats}
             showRewards={!!cryptoContent}
@@ -1075,6 +1084,12 @@ class NewTabPage extends React.Component<Props, State> {
             </Page.FooterContent>
           </Page.Footer>
         </Page.Page>
+        { this.props.todayData.feed &&
+        <BraveToday
+          setOpacityForItems={this.setOpacityForItems}
+          feed={this.props.todayData.feed}
+        />
+        }
         <Settings
           actions={actions}
           textDirection={newTabData.textDirection}
