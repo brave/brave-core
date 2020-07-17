@@ -21,6 +21,8 @@ void RecordEventInWeeklyStorage(
     PrefService* prefs,
     const std::string& pref_name);
 
+void EmitSuspendedMetricValue();
+
 }  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_

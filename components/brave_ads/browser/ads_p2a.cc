@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_ads/browser/ads_p2a.h"
 
+#include <iostream>
+
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -16,6 +18,8 @@
 namespace brave_ads {
 namespace {
 
+constexpr int32_t kSuspendedMetricValue = INT32_MIN;
+
 const char kAdViewConfirmationCountHistogramName[] =
     "Brave.P2A.ViewConfirmationCount";
 const char kAdViewConfirmationCountPrefName[] =
@@ -23,8 +27,7 @@ const char kAdViewConfirmationCountPrefName[] =
 const uint16_t kAdViewConfirmationCountIntervals[] =
     {0, 5, 10, 20, 50, 100, 250, 500};
 
-void EmitAdViewConfirmationHistogram(
-    uint64_t number_of_confirmations) {
+void EmitAdViewConfirmationHistogram(uint64_t number_of_confirmations) {
   const uint16_t* it = std::lower_bound(kAdViewConfirmationCountIntervals,
       std::end(kAdViewConfirmationCountIntervals), number_of_confirmations);
   const uint16_t answer = it - kAdViewConfirmationCountIntervals;
@@ -46,6 +49,10 @@ void RecordEventInWeeklyStorage(
     storage.AddDelta(1);
     EmitAdViewConfirmationHistogram(storage.GetWeeklySum());
   }
+}
+
+void EmitSuspendedMetricValue() {
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.P2A.Test", kSuspendedMetricValue, 1);
 }
 
 }  // namespace brave_ads

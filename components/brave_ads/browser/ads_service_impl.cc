@@ -1786,6 +1786,9 @@ void AdsServiceImpl::OnPrefsChanged(
 
       MaybeStart(false);
     } else {
+      // Record "special value" to prevent sending this week's data to P2A
+      // server
+      brave_ads::EmitSuspendedMetricValue();
       Stop();
     }
 

@@ -332,7 +332,9 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
 
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
+  VLOG(2) << "DEBUG 3 " << histogram_name << " - " << sample;
   if (IsSuspendedMetric(histogram_name, sample)) {
+    VLOG(2) << "DEBUG 4";
     base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                    base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
                                   this,
