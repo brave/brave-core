@@ -59,6 +59,7 @@ void BraveSyncAuthManager::ResetKeys() {
 }
 
 void BraveSyncAuthManager::RequestAccessToken() {
+  VLOG(1) << __func__;
   brave_sync::NetworkTimeHelper::GetInstance()->GetNetworkTime(
       base::BindOnce(&BraveSyncAuthManager::OnNetworkTimeFetched,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -115,6 +116,8 @@ std::string BraveSyncAuthManager::GenerateAccessToken(
 
 void BraveSyncAuthManager::OnNetworkTimeFetched(const base::Time& time) {
   std::string timestamp = std::to_string(int64_t(time.ToJsTime()));
+  if (public_key_.empty() || private_key_.empty())
+    return;
   access_token_ = GenerateAccessToken(timestamp);
   if (registered_for_auth_notifications_)
     credentials_changed_callback_.Run();
