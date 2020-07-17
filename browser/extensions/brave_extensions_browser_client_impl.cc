@@ -7,8 +7,10 @@
 
 #include <memory>
 
+#include "base/macros.h"
 #include "brave/browser/extensions/brave_extensions_browser_api_provider.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "chrome/browser/extensions/chrome_component_extension_resource_manager.h"
 #include "components/prefs/pref_service.h"
 
 namespace extensions {
@@ -16,6 +18,12 @@ namespace extensions {
 BraveExtensionsBrowserClientImpl::BraveExtensionsBrowserClientImpl() {
   BraveExtensionsBrowserClient::Set(this);
   AddAPIProvider(std::make_unique<BraveExtensionsBrowserAPIProvider>());
+  // ChromeComponentExtensionResourceManager's Data needs to be LazyInit'ed on
+  // the UI thread (due to pdf_extension_util::AddStrings calling
+  // g_browser_process->GetApplicationLocale() that has a DCHECK to that
+  // regard).
+  ignore_result(GetComponentExtensionResourceManager()
+                    ->GetTemplateReplacementsForExtension(""));
 }
 
 bool BraveExtensionsBrowserClientImpl::AreExtensionsDisabled(
