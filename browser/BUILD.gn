@@ -269,8 +269,6 @@ source_set("browser_process") {
     sources += [
       "binance/binance_service_factory.cc",
       "binance/binance_service_factory.h",
-      "binance/binance_protocol_handler.cc",
-      "binance/binance_protocol_handler.h",
       "binance/binance_util.cc",
       "binance/binance_util.h",
       "binance/static_values.h",
@@ -286,8 +284,6 @@ source_set("browser_process") {
     sources += [
       "gemini/gemini_service_factory.cc",
       "gemini/gemini_service_factory.h",
-      "gemini/gemini_protocol_handler.cc",
-      "gemini/gemini_protocol_handler.h",
       "gemini/gemini_util.cc",
       "gemini/gemini_util.h",
     ]
