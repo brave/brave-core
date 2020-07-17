@@ -16,6 +16,7 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
+#include "brave/browser/net/brave_oauth_protocol_handler.h"
 #include "brave/browser/net/brave_proxying_url_loader_factory.h"
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/tor/buildflags.h"
@@ -172,6 +173,13 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin,
     mojo::PendingRemote<network::mojom::URLLoaderFactory>* out_factory) {
+  if (oauth::IsOauthProtocol(url)) {
+    oauth::HandleOauthProtocol(url, std::move(web_contents_getter),
+                               page_transition, has_user_gesture,
+                               initiating_origin);
+    return true;
+  }
+
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::IsMagnetProtocol(url)) {
     webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),

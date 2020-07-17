@@ -38,7 +38,7 @@ class SimpleURLLoader;
 
 class Profile;
 
-const char oauth_path_access_token[] = "/auth/token";
+const char api_path_access_token[] = "/auth/token";
 const char api_path_account_balances[] = "/v1/balances";
 const char api_path_account_addresses[] = "/v1/addresses";
 const char api_path_get_quote[] = "/v1/instant/quote";

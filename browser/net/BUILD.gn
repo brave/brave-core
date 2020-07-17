@@ -1,6 +1,8 @@
 import("//brave/browser/translate/buildflags/buildflags.gni")
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 # Refer to the keyed API spec for more details about the Brave Services Key
@@ -19,6 +21,8 @@ source_set("net") {
     "brave_common_static_redirect_network_delegate_helper.h",
     "brave_httpse_network_delegate_helper.cc",
     "brave_httpse_network_delegate_helper.h",
+    "brave_oauth_protocol_handler.cc",
+    "brave_oauth_protocol_handler.h",
     "brave_proxying_url_loader_factory.cc",
     "brave_proxying_url_loader_factory.h",
     "brave_proxying_web_socket.cc",
@@ -62,6 +66,7 @@ source_set("net") {
     "//services/network/public/mojom",
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/re2",
+    "//ui/base",
     "//url",
   ]
 
@@ -88,6 +93,18 @@ source_set("net") {
     sources += [
       "brave_translate_redirect_network_delegate_helper.cc",
       "brave_translate_redirect_network_delegate_helper.h",
+    ]
+  }
+
+  if (binance_enabled) {
+    deps += [
+      "//brave/components/binance/browser",
+    ]
+  }
+
+  if (gemini_enabled) {
+    deps += [
+      "//brave/components/gemini/browser",
     ]
   }
 }

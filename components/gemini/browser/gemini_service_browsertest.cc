@@ -33,7 +33,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/html");
   std::string request_path = request.GetURL().path();
-  if (request_path == oauth_path_access_token) {
+  if (request_path == api_path_access_token) {
     http_response->set_content(R"({
         "access_token": "83f2bf51-a2c4-4c2e-b7c4-46cef6a8dba5",
         "refresh_token": "fb5587ee-d9cf-4cb5-a586-4aed72cc9bea",

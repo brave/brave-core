@@ -150,7 +150,7 @@ void GeminiService::SetAuthToken(const std::string& auth_token) {
 bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
-  GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
+  GURL base_url = GetURLWithPath(oauth_host_, api_path_access_token);
 
   base::Value dict(base::Value::Type::DICTIONARY);
   dict.SetStringKey("client_id", client_id_);
