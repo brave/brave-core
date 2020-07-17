@@ -1,8 +1,16 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index 4438f47bcfdb8cbbc1428b35d22bff3aa3f484c4..fdbfe3793dc5e7f9f114be0520d21796dda9beba 100644
+index 4438f47bcfdb8cbbc1428b35d22bff3aa3f484c4..eb9c59b2bb5b479272555578bab12e57ae0c710c 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -299,6 +299,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -194,6 +194,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+       "${_material_package}/design_text_*",
+       "${_material_package}/text_*",
+     ]
++    resource_exclusion_exceptions += ["${_material_package}design_bottom_*",]
+     resource_values_filter_rules = [ "${_material_package}:mtrl_alert" ]
+ 
+     if (!_is_monochrome) {
+@@ -299,6 +300,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        if (!defined(proguard_configs)) {
          proguard_configs = []
        }
