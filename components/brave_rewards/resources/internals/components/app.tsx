@@ -75,6 +75,10 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
         this.getContributions()
         break
       }
+      case 'logs': {
+        this.getPartialLog()
+        break
+      }
     }
   }
 
