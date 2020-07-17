@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+import { createAction } from 'redux-act'
 import { action } from 'typesafe-actions'
 
 // Constants
@@ -17,6 +18,8 @@ export const statsUpdated = (stats: Stats) =>
   action(types.NEW_TAB_STATS_UPDATED, {
     stats
   })
+
+export const init = createAction<void>('page init')
 
 export const privateTabDataUpdated = (data: PrivateTabData) =>
   action(types.NEW_TAB_PRIVATE_TAB_DATA_UPDATED, data)

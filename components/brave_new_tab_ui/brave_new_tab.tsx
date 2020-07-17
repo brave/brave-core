@@ -11,12 +11,16 @@ import DarkTheme from 'brave-ui/theme/brave-dark'
 import BraveCoreThemeProvider from '../common/BraveCoreThemeProvider'
 import { wireApiEventsToStore } from './apiEventsToStore'
 import * as topSitesAPI from './api/topSites'
+import { init } from './actions/new_tab_actions'
 
 // Components
 import App from './containers/app'
 
 // Utils
 import store from './store'
+
+// Let things handle 'init'
+store.dispatch(init())
 
 function initialize () {
   console.timeStamp('loaded')

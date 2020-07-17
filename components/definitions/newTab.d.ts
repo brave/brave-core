@@ -22,6 +22,11 @@ declare namespace NewTab {
   export interface ApplicationState {
     newTabData: State | undefined
     gridSitesData: GridSitesState | undefined
+    today: BraveTodayState
+  }
+
+  export interface BraveTodayState {
+
   }
 
   export interface Image {
