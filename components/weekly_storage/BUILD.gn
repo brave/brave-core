@@ -5,6 +5,7 @@ source_set("weekly_storage") {
   ]
 
   deps = [
+    "//base:base",
     "//components/prefs",
   ]
 }
