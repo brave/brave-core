@@ -210,7 +210,8 @@ void RewardsBrowserTestResponse::LoadMocks() {
       "site2.com",
       "site3.com",
       "laurenwags.github.io",
-      "kjozwiakstaging.github.io"
+      "kjozwiakstaging.github.io",
+      "registeredsite.com"
   };
 
   for (auto& key : publisher_keys) {
@@ -329,43 +330,6 @@ void RewardsBrowserTestResponse::Get(
     if (response->empty()) {
       *response_status_code = net::HTTP_NOT_FOUND;
     }
-  }
-
-  if (URLMatches(
-      url,
-      "/api/v3/public/channels",
-      "",
-      ServerTypes::kPublisher)) {
-    if (alternative_publisher_list_) {
-      *response =
-          "["
-          "[\"bumpsmack.com\",\"publisher_verified\",false,\"address1\",{}],"
-          "[\"duckduckgo.com\",\"wallet_connected\",false,\"address2\",{}],"
-          "[\"laurenwags.github.io\",\"wallet_connected\",false,\"address2\","
-            "{\"donationAmounts\": [5,10,20]}]"
-          "]";
-    } else {
-      *response =
-          "["
-          "[\"bumpsmack.com\",\"publisher_verified\",false,\"address1\",{}],"
-          "[\"duckduckgo.com\",\"wallet_connected\",false,\"address2\",{}],"
-          "[\"3zsistemi.si\",\"wallet_connected\",false,\"address3\",{}],"
-          "[\"site1.com\",\"wallet_connected\",false,\"address4\",{}],"
-          "[\"site2.com\",\"wallet_connected\",false,\"address5\",{}],"
-          "[\"site3.com\",\"wallet_connected\",false,\"address6\",{}],"
-          "[\"laurenwags.github.io\",\"wallet_connected\",false,\"address2\","
-            "{\"donationAmounts\": [5,10,20]}],"
-          "[\"kjozwiakstaging.github.io\",\"wallet_connected\",false,\"aa\","
-            "{\"donationAmounts\": [5,50,100]}]"
-          "]";
-    }
-
-    // we only have one page in this mock, so next page should return end
-    if (url.find("page=2") != std::string::npos) {
-      *response_status_code = net::HTTP_NO_CONTENT;
-    }
-
-    return;
   }
 
   if (base::StartsWith(
