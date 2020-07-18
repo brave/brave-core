@@ -6,6 +6,7 @@
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
 
 #include "base/strings/string_piece.h"
+#include "brave/common/url_constants.h"
 #include "extensions/common/permissions/permissions_data.h"
 #include "extensions/common/url_pattern.h"
 #include "url/origin.h"
@@ -27,6 +28,7 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     return true;  // protected URL
   }
 
+  // Binance
   URLPattern pattern1(URLPattern::SCHEME_HTTPS,
       "https://accounts.binance.com/*/oauth/authorize*");
   URLPattern pattern2(URLPattern::SCHEME_HTTPS,
@@ -35,7 +37,21 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     return true;
   }
 
-  if (request.url.SchemeIs("com.brave.binance")) {
+  if (request.url.SchemeIs(kBinanceScheme)) {
+    return true;
+  }
+
+  // Gemini
+  URLPattern auth_pattern(URLPattern::SCHEME_HTTPS,
+      "https://exchange.gemini.com/auth*");
+  URLPattern token_pattern(URLPattern::SCHEME_HTTPS,
+      "https://exchange.gemini.com/auth/token*");
+  if (auth_pattern.MatchesURL(request.url) ||
+      token_pattern.MatchesURL(request.url)) {
+    return true;
+  }
+
+  if (request.url.SchemeIs(kGeminiScheme)) {
     return true;
   }
 
