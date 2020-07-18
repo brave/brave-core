@@ -50,8 +50,6 @@ source_set("browser") {
     "balance.h",
     "external_wallet.cc",
     "external_wallet.h",
-    "rewards_protocol_handler.h",
-    "rewards_protocol_handler.cc",
     "static_values.h",
     "monthly_report.cc",
     "monthly_report.h",

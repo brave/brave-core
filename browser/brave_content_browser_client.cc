@@ -82,10 +82,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
 #endif
 
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/brave_rewards/browser/rewards_protocol_handler.h"
-#endif
-
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_navigation_throttle.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -185,14 +181,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),
                                      page_transition, has_user_gesture,
                                      initiating_origin);
-    return true;
-  }
-#endif
-
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  if (brave_rewards::IsRewardsProtocol(url)) {
-    brave_rewards::HandleRewardsProtocol(url, std::move(web_contents_getter),
-                                         page_transition, has_user_gesture);
     return true;
   }
 #endif
