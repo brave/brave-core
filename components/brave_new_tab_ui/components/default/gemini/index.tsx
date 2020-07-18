@@ -616,9 +616,7 @@ class Gemini extends React.PureComponent<Props, State> {
           this.props.onUpdateActions()
         }, 1000)
       } else {
-        this.setState({
-          tradeFailed: true
-        })
+        this.setTradeFailed()
       }
     })
   }
@@ -626,6 +624,14 @@ class Gemini extends React.PureComponent<Props, State> {
   finishTrade = () => {
     this.cancelTrade()
     this.props.onSetSelectedView('balance')
+  }
+
+  setTradeFailed = (message: string = '') => {
+    this.setState({
+      tradeFailed: true,
+      tradeError: message
+    })
+    clearInterval(this.tradeTimer)
   }
 
   shouldShowTradePreview = () => {
@@ -653,16 +659,7 @@ class Gemini extends React.PureComponent<Props, State> {
 
     chrome.gemini.getOrderQuote(currentTradeMode, `${currentTradeAsset}usd`, currentTradeQuantity, (quote: any, error: string) => {
       if (!quote.id || !quote.quantity || !quote.fee || !quote.price || !quote.totalPrice) {
-        if (error) {
-          this.setState({
-            tradeFailed: true,
-            tradeError: error
-          })
-        } else {
-          this.setState({
-            tradeFailed: true
-          })
-        }
+        this.setTradeFailed(error)
         return
       }
 
