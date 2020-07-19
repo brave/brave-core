@@ -125,15 +125,17 @@ interface Props {
   authInvalid: boolean
   onShowContent: () => void
   onDisableWidget: () => void
-  onValidAuthCode: () => void
+  getGeminiAccessToken: () => void
   onConnectGemini: () => void
   onUpdateActions: () => void
   onSetSelectedView: (view: string) => void
-  onGeminiClientUrl: (url: string) => void
+  getGeminiClientUrl: () => void
   onSetHideBalance: (hide: boolean) => void
-  onDisconnectGemini: () => void
+  revokeGeminiToken: () => void
   onCancelDisconnect: () => void
   onDismissAuthInvalid: () => void
+  executeGeminiOrder: (info: any, cb: any) => void
+  getGeminiOrderQuote: (info: any, callback: any) => void
 }
 
 class Gemini extends React.PureComponent<Props, State> {
@@ -175,7 +177,7 @@ class Gemini extends React.PureComponent<Props, State> {
       this.checkForOauthCode()
     }
 
-    this.getClientURL()
+    this.props.getGeminiClientUrl()
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -185,7 +187,7 @@ class Gemini extends React.PureComponent<Props, State> {
     }
 
     if (prevProps.userAuthed && !this.props.userAuthed) {
-      this.getClientURL()
+      this.props.getGeminiClientUrl()
       this.clearIntervals()
     }
   }
@@ -206,23 +208,13 @@ class Gemini extends React.PureComponent<Props, State> {
     clearInterval(this.refreshInterval)
   }
 
-  getClientURL = () => {
-    chrome.gemini.getClientUrl((clientUrl: string) => {
-      this.props.onGeminiClientUrl(clientUrl)
-    })
-  }
-
   checkForOauthCode = () => {
     const params = window.location.search
     const urlParams = new URLSearchParams(params)
     const geminiAuth = urlParams.get('geminiAuth')
 
     if (geminiAuth) {
-      chrome.gemini.getAccessToken((success: boolean) => {
-        if (success) {
-          this.props.onValidAuthCode()
-        }
-      })
+      this.props.getGeminiAccessToken()
     }
   }
 
@@ -237,10 +229,8 @@ class Gemini extends React.PureComponent<Props, State> {
 
   finishDisconnect = () => {
     this.clearIntervals()
-    chrome.gemini.revokeToken(() => {
-      this.props.onDisconnectGemini()
-      this.cancelDisconnect()
-    })
+    this.props.revokeGeminiToken()
+    this.cancelDisconnect()
   }
 
   renderIndexView () {
@@ -609,7 +599,9 @@ class Gemini extends React.PureComponent<Props, State> {
     } = this.state
     const quoteId = parseInt(currentTradeId, 10)
     const symbol = `${currentTradeAsset}usd`.toUpperCase()
-    chrome.gemini.executeOrder(symbol, side, quantity, price, fee, quoteId, (success: boolean) => {
+    const orderInfo = { symbol, side, quantity, price, fee, quoteId }
+
+    this.props.executeGeminiOrder(orderInfo, (success: boolean) => {
       if (success) {
         this.setState({ tradeSuccess: true })
         setTimeout(() => {
@@ -632,6 +624,36 @@ class Gemini extends React.PureComponent<Props, State> {
       tradeError: message
     })
     clearInterval(this.tradeTimer)
+  }
+
+  processOrderQuote = (quote: any, error: string) => {
+    if (!quote.id || !quote.quantity || !quote.fee || !quote.price || !quote.totalPrice) {
+      this.setTradeFailed(error)
+      return
+    }
+
+    this.setState({
+      currentTradeId: quote.id,
+      currentTradeFee: quote.fee,
+      currentTradePrice: quote.price,
+      currentTradeTotalPrice: quote.totalPrice,
+      currentTradeQuantityLive: quote.quantity,
+      showTradePreview: true
+    })
+
+    this.tradeTimer = setInterval(() => {
+      const { currentTradeExpiryTime } = this.state
+
+      if (currentTradeExpiryTime - 1 === 0) {
+        clearInterval(this.tradeTimer)
+        this.cancelTrade()
+        return
+      }
+
+      this.setState({
+        currentTradeExpiryTime: (currentTradeExpiryTime - 1)
+      })
+    }, 1000)
   }
 
   shouldShowTradePreview = () => {
@@ -657,34 +679,14 @@ class Gemini extends React.PureComponent<Props, State> {
       return
     }
 
-    chrome.gemini.getOrderQuote(currentTradeMode, `${currentTradeAsset}usd`, currentTradeQuantity, (quote: any, error: string) => {
-      if (!quote.id || !quote.quantity || !quote.fee || !quote.price || !quote.totalPrice) {
-        this.setTradeFailed(error)
-        return
-      }
+    const orderInfo = {
+      side: currentTradeMode,
+      symbol: `${currentTradeAsset}usd`,
+      spend: currentTradeQuantity
+    }
 
-      this.setState({
-        currentTradeId: quote.id,
-        currentTradeFee: quote.fee,
-        currentTradePrice: quote.price,
-        currentTradeTotalPrice: quote.totalPrice,
-        currentTradeQuantityLive: quote.quantity,
-        showTradePreview: true
-      })
-
-      this.tradeTimer = setInterval(() => {
-        const { currentTradeExpiryTime } = this.state
-
-        if (currentTradeExpiryTime - 1 === 0) {
-          clearInterval(this.tradeTimer)
-          this.cancelTrade()
-          return
-        }
-
-        this.setState({
-          currentTradeExpiryTime: (currentTradeExpiryTime - 1)
-        })
-      }, 1000)
+    this.props.getGeminiOrderQuote(orderInfo, (quote: any, error: string) => {
+      this.processOrderQuote(quote, error)
     })
   }
 

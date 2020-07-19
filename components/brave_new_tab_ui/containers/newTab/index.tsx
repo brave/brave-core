@@ -309,12 +309,26 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onBinanceClientUrl(clientUrl)
   }
 
+  getGeminiClientUrl = () => {
+    chrome.gemini.getClientUrl((clientUrl: string) => {
+      this.onGeminiClientUrl(clientUrl)
+    })
+  }
+
   onGeminiClientUrl = (clientUrl: string) => {
     this.props.actions.onGeminiClientUrl(clientUrl)
   }
 
   onValidBinanceAuthCode = () => {
     this.props.actions.onValidBinanceAuthCode()
+  }
+
+  getGeminiAccessToken = () => {
+    chrome.gemini.getAccessToken((success: boolean) => {
+      if (success) {
+        this.onValidGeminiAuthCode()
+      }
+    })
   }
 
   onValidGeminiAuthCode = () => {
@@ -339,6 +353,12 @@ class NewTabPage extends React.Component<Props, State> {
 
   cancelBinanceDisconnect = () => {
     this.props.actions.setBinanceDisconnectInProgress(false)
+  }
+
+  revokeGeminiToken = () => {
+    chrome.gemini.revokeToken(() => {
+      this.disconnectGemini()
+    })
   }
 
   disconnectGemini = () => {
@@ -500,6 +520,27 @@ class NewTabPage extends React.Component<Props, State> {
     this.fetchGeminiTickerPrices()
     this.fetchGeminiBalances()
     this.fetchGeminiDepositInfo()
+  }
+
+  getGeminiOrderQuote = (info: any, callback: any) => {
+    const { side, symbol, spend } = info
+    chrome.gemini.getOrderQuote(side, symbol, spend, (quote: any, error: string) => {
+      callback(quote, error)
+    })
+  }
+
+  executeGeminiOrder = (info: any, callback: any) => {
+    const {
+      symbol,
+      side,
+      quantity,
+      price,
+      fee,
+      quoteId
+    } = info
+    chrome.gemini.executeOrder(symbol, side, quantity, price, fee, quoteId, (success: boolean) => {
+      callback(success)
+    })
   }
 
   fetchGeminiTickerPrices = () => {
@@ -834,15 +875,17 @@ class NewTabPage extends React.Component<Props, State> {
         showContent={showContent}
         onShowContent={this.setForegroundStackWidget.bind(this, 'gemini')}
         onDisableWidget={this.toggleShowGemini}
-        onValidAuthCode={this.onValidGeminiAuthCode}
+        getGeminiAccessToken={this.getGeminiAccessToken}
         onConnectGemini={this.connectGemini}
-        onGeminiClientUrl={this.onGeminiClientUrl}
+        getGeminiClientUrl={this.getGeminiClientUrl}
         onUpdateActions={this.geminiUpdateActions}
         onSetSelectedView={this.setGeminiSelectedView}
         onSetHideBalance={this.setGeminiHideBalance}
         onCancelDisconnect={this.cancelGeminiDisconnect}
-        onDisconnectGemini={this.disconnectGemini}
+        revokeGeminiToken={this.revokeGeminiToken}
         onDismissAuthInvalid={this.dismissGeminiAuthInvalid}
+        executeGeminiOrder={this.executeGeminiOrder}
+        getGeminiOrderQuote={this.getGeminiOrderQuote}
       />
     )
   }
