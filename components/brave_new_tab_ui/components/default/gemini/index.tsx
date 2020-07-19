@@ -1046,7 +1046,6 @@ class Gemini extends React.PureComponent<Props, State> {
             </NavigationItem>
             <NavigationItem
               tabIndex={0}
-              isLast={true}
               isActive={isBalanceView}
               onClick={this.setSelectedView.bind(this, 'balance')}
             >
