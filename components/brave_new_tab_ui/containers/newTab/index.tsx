@@ -309,6 +309,12 @@ class NewTabPage extends React.Component<Props, State> {
     this.props.actions.onBinanceClientUrl(clientUrl)
   }
 
+  getBinanceClientUrl = () => {
+    chrome.binance.getClientUrl((clientUrl: string) => {
+      this.onBinanceClientUrl(clientUrl)
+    })
+  }
+
   getGeminiClientUrl = () => {
     chrome.gemini.getClientUrl((clientUrl: string) => {
       this.onGeminiClientUrl(clientUrl)
@@ -391,6 +397,13 @@ class NewTabPage extends React.Component<Props, State> {
     } else {
       window.open(`https://www.binance.com/en/buy-sell-crypto?fiat=${fiat}&crypto=${coin}&amount=${amount}&${refParams}`, '_blank', 'noopener')
     }
+  }
+
+  getUserTLD = () => {
+    chrome.binance.getUserTLD((userTLD: NewTab.BinanceTLD) => {
+      this.onBinanceUserTLD(userTLD)
+      this.setUserTLDAutoSet()
+    })
   }
 
   onBinanceUserTLD = (userTLD: NewTab.BinanceTLD) => {
@@ -520,6 +533,34 @@ class NewTabPage extends React.Component<Props, State> {
     this.fetchGeminiTickerPrices()
     this.fetchGeminiBalances()
     this.fetchGeminiDepositInfo()
+  }
+
+  getBinanceAccessToken = () => {
+    chrome.binance.getAccessToken((success: boolean) => {
+      if (success) {
+        this.onValidBinanceAuthCode()
+        this.binanceUpdateActions()
+      }
+    })
+  }
+
+  revokeBinanceToken = () => {
+    chrome.binance.revokeToken(() => {
+      this.disconnectBinance()
+    })
+  }
+
+  confirmBinanceConvert = (convertId: string, callback: any) => {
+    chrome.binance.confirmConvert(convertId, (success: boolean, message: string) => {
+      callback(success, message)
+    })
+  }
+
+  getBinanceConvertQuote = (info: any, callback: any) => {
+    const { from, to, amount } = info
+    chrome.binance.getConvertQuote(from, to, amount, (quote: any) => {
+      callback(quote)
+    })
   }
 
   getGeminiOrderQuote = (info: any, callback: any) => {
@@ -827,22 +868,24 @@ class NewTabPage extends React.Component<Props, State> {
         hideWidget={this.toggleShowBinance}
         showContent={showContent}
         onSetHideBalance={this.setBinanceHideBalance}
-        onBinanceClientUrl={this.onBinanceClientUrl}
+        getBinanceClientUrl={this.getBinanceClientUrl}
         onConnectBinance={this.connectBinance}
-        onDisconnectBinance={this.disconnectBinance}
         onCancelDisconnect={this.cancelBinanceDisconnect}
-        onValidAuthCode={this.onValidBinanceAuthCode}
         onBuyCrypto={this.buyCrypto}
         onBinanceUserTLD={this.onBinanceUserTLD}
         onShowContent={this.setForegroundStackWidget.bind(this, 'binance')}
         onSetInitialAmount={this.setInitialAmount}
         onSetInitialAsset={this.setInitialAsset}
         onSetInitialFiat={this.setInitialFiat}
-        onSetUserTLDAutoSet={this.setUserTLDAutoSet}
         onUpdateActions={this.binanceUpdateActions}
         onDismissAuthInvalid={this.dismissAuthInvalid}
         onSetSelectedView={this.setBinanceSelectedView}
         getCurrencyList={this.getCurrencyList}
+        getUserTLD={this.getUserTLD}
+        getAccessToken={this.getBinanceAccessToken}
+        revokeToken={this.revokeBinanceToken}
+        confirmConvert={this.confirmBinanceConvert}
+        getConvertQuote={this.getBinanceConvertQuote}
       />
     )
   }

@@ -143,17 +143,19 @@ interface Props {
   onSetInitialFiat: (initialFiat: string) => void
   onSetInitialAmount: (initialAmount: string) => void
   onSetInitialAsset: (initialAsset: string) => void
-  onSetUserTLDAutoSet: () => void
+  getUserTLD: () => void
   onSetHideBalance: (hide: boolean) => void
-  onBinanceClientUrl: (clientUrl: string) => void
-  onDisconnectBinance: () => void
+  getBinanceClientUrl: () => void
+  revokeToken: () => void
   onCancelDisconnect: () => void
   onConnectBinance: () => void
-  onValidAuthCode: () => void
+  getAccessToken: () => void
   onUpdateActions: () => void
   onDismissAuthInvalid: () => void
   onSetSelectedView: (view: string) => void
   getCurrencyList: () => string[]
+  confirmConvert: (convertId: string, callback: any) => void
+  getConvertQuote: (info: any, callback: any) => void
 }
 
 class Binance extends React.PureComponent<Props, State> {
@@ -215,19 +217,10 @@ class Binance extends React.PureComponent<Props, State> {
     }
 
     if (!userTLDAutoSet) {
-      chrome.binance.getUserTLD((userTLD: NewTab.BinanceTLD) => {
-        this.props.onBinanceUserTLD(userTLD)
-        this.props.onSetUserTLDAutoSet()
-      })
+      this.props.getUserTLD()
     }
 
-    this.getClientURL()
-  }
-
-  getClientURL = () => {
-    chrome.binance.getClientUrl((clientUrl: string) => {
-      this.props.onBinanceClientUrl(clientUrl)
-    })
+    this.props.getBinanceClientUrl()
   }
 
   componentWillUnmount () {
@@ -241,7 +234,7 @@ class Binance extends React.PureComponent<Props, State> {
     }
 
     if (prevProps.userAuthed && !this.props.userAuthed) {
-      this.getClientURL()
+      this.props.getBinanceClientUrl()
       this.clearIntervals()
     }
   }
@@ -260,12 +253,7 @@ class Binance extends React.PureComponent<Props, State> {
     const binanceAuth = urlParams.get('binanceAuth')
 
     if (binanceAuth) {
-      chrome.binance.getAccessToken((success: boolean) => {
-        if (success) {
-          this.props.onValidAuthCode()
-          this.props.onUpdateActions()
-        }
-      })
+      this.props.getAccessToken()
     }
   }
 
@@ -320,10 +308,8 @@ class Binance extends React.PureComponent<Props, State> {
 
   finishDisconnect = () => {
     this.clearIntervals()
-    chrome.binance.revokeToken(() => {
-      this.props.onDisconnectBinance()
-      this.cancelDisconnect()
-    })
+    this.props.revokeToken()
+    this.cancelDisconnect()
   }
 
   renderRoutes = () => {
@@ -371,7 +357,8 @@ class Binance extends React.PureComponent<Props, State> {
 
   processConvert = () => {
     const { currentConvertId } = this.state
-    chrome.binance.confirmConvert(currentConvertId, (success: boolean, message: string) => {
+
+    this.props.confirmConvert(currentConvertId, (success: boolean, message: string) => {
       if (success) {
         this.setState({ convertSuccess: true })
       } else {
@@ -462,6 +449,35 @@ class Binance extends React.PureComponent<Props, State> {
     this.setState({ currentTradeAsset: asset })
   }
 
+  processConvertQuote = (quote: any) => {
+    if (!quote.id || !quote.price || !quote.fee || !quote.amount) {
+      this.setState({ convertFailed: true })
+      return
+    }
+
+    this.setState({
+      currentConvertId: quote.id,
+      currentConvertPrice: quote.price,
+      currentConvertFee: quote.fee,
+      currentConvertTransAmount: quote.amount,
+      showConvertPreview: true
+    })
+
+    this.convertTimer = setInterval(() => {
+      const { currentConvertExpiryTime } = this.state
+
+      if (currentConvertExpiryTime - 1 === 0) {
+        clearInterval(this.convertTimer)
+        this.cancelConvert()
+        return
+      }
+
+      this.setState({
+        currentConvertExpiryTime: (currentConvertExpiryTime - 1)
+      })
+    }, 1000)
+  }
+
   shouldShowConvertPreview = () => {
     const {
       currentConvertFrom,
@@ -477,33 +493,14 @@ class Binance extends React.PureComponent<Props, State> {
       return
     }
 
-    chrome.binance.getConvertQuote(currentConvertFrom, currentConvertTo, currentConvertAmount, (quote: any) => {
-      if (!quote.id || !quote.price || !quote.fee || !quote.amount) {
-        this.setState({ convertFailed: true })
-        return
-      }
+    const quoteInfo = {
+      from: currentConvertFrom,
+      to: currentConvertTo,
+      amount: currentConvertAmount
+    }
 
-      this.setState({
-        currentConvertId: quote.id,
-        currentConvertPrice: quote.price,
-        currentConvertFee: quote.fee,
-        currentConvertTransAmount: quote.amount,
-        showConvertPreview: true
-      })
-
-      this.convertTimer = setInterval(() => {
-        const { currentConvertExpiryTime } = this.state
-
-        if (currentConvertExpiryTime - 1 === 0) {
-          clearInterval(this.convertTimer)
-          this.cancelConvert()
-          return
-        }
-
-        this.setState({
-          currentConvertExpiryTime: (currentConvertExpiryTime - 1)
-        })
-      }, 1000)
+    this.props.getConvertQuote(quoteInfo, (quote: any) => {
+      this.processConvertQuote(quote)
     })
   }
 
