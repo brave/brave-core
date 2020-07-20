@@ -25,6 +25,10 @@ source_set("components") {
     "Bookmarks.h",
     "BraveCoreShared.mm",
     "BraveCoreShared.h",
+    "LocalDeviceInfo.mm",
+    "LocalDeviceInfo.h",
+    "Passphrase.mm",
+    "Passphrase.h",
   ]
 
   deps = [

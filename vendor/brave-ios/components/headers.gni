@@ -1,4 +1,6 @@
 brave_components_public_headers = [
   "//brave/vendor/brave-ios/components/Bookmarks.h",
-  "//brave/vendor/brave-ios/components/BraveCoreShared.h"
+  "//brave/vendor/brave-ios/components/BraveCoreShared.h",
+  "//brave/vendor/brave-ios/components/LocalDeviceInfo.h",
+  "//brave/vendor/brave-ios/components/Passphrase.h"
 ]

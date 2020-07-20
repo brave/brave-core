@@ -9,6 +9,7 @@
 #include "ios/chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/undo/bookmark_undo_service_factory.h"
+#include "ios/chrome/browser/sync/device_info_sync_service_factory.h"
 
 using ios::BookmarkModelFactory;
 using ios::BookmarkUndoServiceFactory;
@@ -23,10 +24,16 @@ BraveSyncService::BraveSyncService(ChromeBrowserState* browser_state) {
 
   bookmarks_api_ =
       std::make_unique<bookmarks::BookmarksAPI>(model, undo_service);
+  device_info_sync_service_ =
+      DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state);
 }
 
 BraveSyncService::~BraveSyncService() {}
 
 bookmarks::BookmarksAPI* BraveSyncService::bookmarks_api() {
     return bookmarks_api_.get();
+}
+
+syncer::DeviceInfoSyncService* BraveSyncService::device_info_service() {
+	return device_info_sync_service_;
 }
