@@ -137,6 +137,7 @@ source_set("browser_process") {
     "//brave/components/brave_drm",
     "//brave/components/brave_together/browser",
     "//brave/components/brave_referrals/browser",
+    "//brave/components/brave_referrals/common",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_sync",

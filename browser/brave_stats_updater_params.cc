@@ -12,6 +12,7 @@
 #include "base/time/time.h"
 #include "brave/browser/brave_stats_updater_util.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave {

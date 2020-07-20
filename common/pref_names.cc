@@ -32,17 +32,12 @@ const char kBraveThemeType[] = "brave.theme.type";  // deprecated
 const char kUseOverriddenBraveThemeType[] =
     "brave.theme.use_overridden_brave_theme_type";  // deprecated
 const char kLocationBarIsWide[] = "brave.location_bar_is_wide";
-const char kReferralPromoCode[] = "brave.referral.promo_code";
 const char kReferralDownloadID[] = "brave.referral.download_id";
 const char kReferralTimestamp[] = "brave.referral.timestamp";
 const char kReferralAttemptTimestamp[] =
     "brave.referral.referral_attempt_timestamp";
 const char kReferralAttemptCount[] = "brave.referral.referral_attempt_count";
 const char kReferralHeaders[] = "brave.referral.headers";
-const char kReferralCheckedForPromoCodeFile[] =
-    "brave.referral.checked_for_promo_code_file";
-const char kReferralInitialization[] =
-    "brave.referral.initialization";
 const char kReferralAndroidFirstRunTimestamp[] =
     "brave.referral_android_first_run_timestamp";
 const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
