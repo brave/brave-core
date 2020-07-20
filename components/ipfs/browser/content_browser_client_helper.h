@@ -9,11 +9,13 @@
 #include <string>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/ipfs/browser/features.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -113,6 +115,9 @@ static void HandleIPFSProtocol(
 }
 
 static bool IsIPFSProtocol(const GURL& url) {
+  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature))
+    return false;
+
   GURL new_url;
   return TranslateIPFSURL(url, &new_url);
 }

@@ -21,6 +21,8 @@ extern const char kBraveSpeedreaderName[];
 extern const char kBraveSpeedreaderDescription[];
 extern const char kBraveSyncName[];
 extern const char kBraveSyncDescription[];
+extern const char kBraveIpfsName[];
+extern const char kBraveIpfsDescription[];
 extern const char kBraveSuperReferralName[];
 extern const char kBraveSuperReferralDescription[];
 }  // namespace flag_descriptions

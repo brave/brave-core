@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/task/post_task.h"
@@ -32,6 +33,7 @@
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/browser/features.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -166,10 +168,12 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
                           &webtorrent::HandleTorrentURLReverseRewrite);
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
-                          content::BrowserURLHandler::null_handler());
-  handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
-                          &ipfs::HandleIPFSURLReverseRewrite);
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
+                            content::BrowserURLHandler::null_handler());
+    handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
+                            &ipfs::HandleIPFSURLReverseRewrite);
+  }
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);

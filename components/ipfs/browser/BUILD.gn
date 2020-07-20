@@ -3,6 +3,8 @@ source_set("browser") {
     "brave_ipfs_client_updater.cc",
     "brave_ipfs_client_updater.h",
     "content_browser_client_helper.h",
+    "features.cc",
+    "features.h",
     "ipfs_service.cc",
     "ipfs_service.h",
   ]

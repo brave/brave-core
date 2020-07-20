@@ -6,6 +6,7 @@
 #include "brave/browser/brave_tab_helpers.h"
 
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/common/brave_switches.h"
@@ -17,6 +18,7 @@
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/browser/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/widevine/cdm/buildflags.h"
@@ -115,7 +117,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature) &&
+      !base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kDisableIpfsClientUpdaterExtension)) {
     ipfs::IPFSTabHelper::CreateForWebContents(web_contents);
   }
