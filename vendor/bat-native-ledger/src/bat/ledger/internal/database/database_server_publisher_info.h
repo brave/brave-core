@@ -20,8 +20,6 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
   explicit DatabaseServerPublisherInfo(bat_ledger::LedgerImpl* ledger);
   ~DatabaseServerPublisherInfo() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       const ledger::ServerPublisherInfo& server_info,
       ledger::ResultCallback callback);
@@ -35,18 +33,6 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV7(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV7(ledger::DBTransaction* transaction);
-
-  bool MigrateToV7(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
-  bool CreateTableV28(ledger::DBTransaction* transaction);
-
-  bool MigrateToV28(ledger::DBTransaction* transaction);
-
   void OnGetRecordBanner(
       ledger::PublisherBannerPtr banner,
       const std::string& publisher_key,

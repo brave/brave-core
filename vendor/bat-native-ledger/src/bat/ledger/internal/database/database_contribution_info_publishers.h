@@ -18,8 +18,6 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
   explicit DatabaseContributionInfoPublishers(bat_ledger::LedgerImpl* ledger);
   ~DatabaseContributionInfoPublishers() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::DBTransaction* transaction,
       ledger::ContributionInfoPtr info);
@@ -38,24 +36,6 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV11(ledger::DBTransaction* transaction);
-
-  bool CreateTableV15(ledger::DBTransaction* transaction);
-
-  bool CreateTableV21(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV11(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV15(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV21(ledger::DBTransaction* transaction);
-
-  bool MigrateToV11(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV21(ledger::DBTransaction* transaction);
-
   void OnGetRecordByContributionList(
       ledger::DBCommandResponsePtr response,
       ContributionPublisherListCallback callback);

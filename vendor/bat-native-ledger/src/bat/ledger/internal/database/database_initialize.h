@@ -10,14 +10,13 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/database/database_migration.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
 namespace braveledger_database {
-
-class DatabaseMigration;
 
 class DatabaseInitialize {
  public:
@@ -50,7 +49,7 @@ class DatabaseInitialize {
       const int table_version,
       ledger::ResultCallback callback);
 
-  std::unique_ptr<DatabaseMigration> migration_;
+  std::unique_ptr<ledger::database::DatabaseMigration> migration_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

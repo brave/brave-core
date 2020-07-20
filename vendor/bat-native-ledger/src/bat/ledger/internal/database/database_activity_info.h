@@ -17,8 +17,6 @@ class DatabaseActivityInfo: public DatabaseTable {
   explicit DatabaseActivityInfo(bat_ledger::LedgerImpl* ledger);
   ~DatabaseActivityInfo() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::PublisherInfoPtr info,
       ledger::ResultCallback callback);
@@ -38,38 +36,6 @@ class DatabaseActivityInfo: public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV1(ledger::DBTransaction* transaction);
-
-  bool CreateTableV2(ledger::DBTransaction* transaction);
-
-  bool CreateTableV4(ledger::DBTransaction* transaction);
-
-  bool CreateTableV6(ledger::DBTransaction* transaction);
-
-  bool CreateTableV15(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV1(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV2(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV4(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV6(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV1(ledger::DBTransaction* transaction);
-
-  bool MigrateToV2(ledger::DBTransaction* transaction);
-
-  bool MigrateToV4(ledger::DBTransaction* transaction);
-
-  bool MigrateToV5(ledger::DBTransaction* transaction);
-
-  bool MigrateToV6(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
   void CreateInsertOrUpdate(
       ledger::DBTransaction* transaction,
       ledger::PublisherInfoPtr info);

@@ -19,8 +19,6 @@ class DatabasePendingContribution: public DatabaseTable {
   explicit DatabasePendingContribution(bat_ledger::LedgerImpl* ledger);
   ~DatabasePendingContribution() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdateList(
       ledger::PendingContributionList list,
       ledger::ResultCallback callback);
@@ -34,30 +32,6 @@ class DatabasePendingContribution: public DatabaseTable {
   void DeleteAllRecords(ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV3(ledger::DBTransaction* transaction);
-
-  bool CreateTableV8(ledger::DBTransaction* transaction);
-
-  bool CreateTableV12(ledger::DBTransaction* transaction);
-
-  bool CreateTableV15(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV3(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV8(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV12(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV3(ledger::DBTransaction* transaction);
-
-  bool MigrateToV8(ledger::DBTransaction* transaction);
-
-  bool MigrateToV12(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
   void OnGetReservedAmount(
       ledger::DBCommandResponsePtr response,
       ledger::PendingContributionsTotalCallback callback);

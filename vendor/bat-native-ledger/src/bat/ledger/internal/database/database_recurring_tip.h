@@ -17,8 +17,6 @@ class DatabaseRecurringTip: public DatabaseTable {
   explicit DatabaseRecurringTip(bat_ledger::LedgerImpl* ledger);
   ~DatabaseRecurringTip() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::RecurringTipPtr info,
       ledger::ResultCallback callback);
@@ -30,18 +28,6 @@ class DatabaseRecurringTip: public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV2(ledger::DBTransaction* transaction);
-
-  bool CreateTableV15(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV2(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV2(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
   void OnGetAllRecords(
       ledger::DBCommandResponsePtr response,
       ledger::PublisherInfoListCallback callback);

@@ -17,8 +17,6 @@ class DatabaseSKUTransaction: public DatabaseTable {
   explicit DatabaseSKUTransaction(bat_ledger::LedgerImpl* ledger);
   ~DatabaseSKUTransaction() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::SKUTransactionPtr info,
       ledger::ResultCallback callback);
@@ -33,12 +31,6 @@ class DatabaseSKUTransaction: public DatabaseTable {
       ledger::GetSKUTransactionCallback callback);
 
  private:
-  bool CreateTableV19(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV19(ledger::DBTransaction* transaction);
-
-  bool MigrateToV19(ledger::DBTransaction* transaction);
-
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::GetSKUTransactionCallback callback);

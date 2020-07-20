@@ -17,8 +17,6 @@ class DatabasePublisherInfo: public DatabaseTable {
   explicit DatabasePublisherInfo(bat_ledger::LedgerImpl* ledger);
   ~DatabasePublisherInfo() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::PublisherInfoPtr info,
       ledger::ResultCallback callback);
@@ -36,14 +34,6 @@ class DatabasePublisherInfo: public DatabaseTable {
   void GetExcludedList(ledger::PublisherInfoListCallback callback);
 
  private:
-  bool CreateTableV1(ledger::DBTransaction* transaction);
-
-  bool CreateTableV7(ledger::DBTransaction* transaction);
-
-  bool MigrateToV1(ledger::DBTransaction* transaction);
-
-  bool MigrateToV7(ledger::DBTransaction* transaction);
-
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);

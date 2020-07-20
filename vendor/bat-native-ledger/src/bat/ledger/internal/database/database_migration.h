@@ -7,6 +7,7 @@
 #define BRAVELEDGER_DATABASE_DATABASE_MIGRATION_H_
 
 #include <memory>
+#include <string>
 
 #include "bat/ledger/ledger.h"
 
@@ -14,24 +15,8 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_database {
-
-class DatabaseActivityInfo;
-class DatabaseBalanceReport;
-class DatabaseContributionInfo;
-class DatabaseContributionQueue;
-class DatabaseCredsBatch;
-class DatabaseMediaPublisherInfo;
-class DatabasePendingContribution;
-class DatabaseProcessedPublisher;
-class DatabasePromotion;
-class DatabasePublisherInfo;
-class DatabasePublisherPrefixList;
-class DatabaseRecurringTip;
-class DatabaseServerPublisherInfo;
-class DatabaseSKUOrder;
-class DatabaseSKUTransaction;
-class DatabaseUnblindedToken;
+namespace ledger {
+namespace database {
 
 class DatabaseMigration {
  public:
@@ -39,30 +24,16 @@ class DatabaseMigration {
   ~DatabaseMigration();
 
   void Start(
-      const int table_version,
+      const uint32_t table_version,
       ledger::ResultCallback callback);
 
  private:
-  bool Migrate(ledger::DBTransaction* transaction, const int target);
-
-  std::unique_ptr<DatabaseActivityInfo> activity_info_;
-  std::unique_ptr<DatabaseBalanceReport> balance_report_;
-  std::unique_ptr<DatabaseContributionInfo> contribution_info_;
-  std::unique_ptr<DatabaseContributionQueue> contribution_queue_;
-  std::unique_ptr<DatabaseCredsBatch> creds_batch_;
-  std::unique_ptr<DatabaseMediaPublisherInfo> media_publisher_info_;
-  std::unique_ptr<DatabasePendingContribution> pending_contribution_;
-  std::unique_ptr<DatabaseProcessedPublisher> processed_publisher_;
-  std::unique_ptr<DatabasePromotion> promotion_;
-  std::unique_ptr<DatabasePublisherInfo> publisher_info_;
-  std::unique_ptr<DatabasePublisherPrefixList> publisher_prefix_list_;
-  std::unique_ptr<DatabaseRecurringTip> recurring_tip_;
-  std::unique_ptr<DatabaseServerPublisherInfo> server_publisher_info_;
-  std::unique_ptr<DatabaseSKUOrder> sku_order_;
-  std::unique_ptr<DatabaseSKUTransaction> sku_transaction_;
-  std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
+  void GenerateCommand(
+      ledger::DBTransaction* transaction,
+      const std::string& query);
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 #endif  // BRAVELEDGER_DATABASE_DATABASE_MIGRATION_H_

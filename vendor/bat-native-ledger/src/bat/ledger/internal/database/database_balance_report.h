@@ -17,8 +17,6 @@ class DatabaseBalanceReport : public DatabaseTable {
   explicit DatabaseBalanceReport(bat_ledger::LedgerImpl* ledger);
   ~DatabaseBalanceReport() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::BalanceReportInfoPtr info,
       ledger::ResultCallback callback);
@@ -46,12 +44,6 @@ class DatabaseBalanceReport : public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV22(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV22(ledger::DBTransaction* transaction);
-
-  bool MigrateToV22(ledger::DBTransaction* transaction);
-
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::GetBalanceReportCallback callback);

@@ -10,7 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "bat/ledger/internal/database/database_promotion_creds.h"
 #include "bat/ledger/internal/database/database_table.h"
 
 namespace braveledger_database {
@@ -19,8 +18,6 @@ class DatabasePromotion: public DatabaseTable {
  public:
   explicit DatabasePromotion(bat_ledger::LedgerImpl* ledger);
   ~DatabasePromotion() override;
-
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
 
   void InsertOrUpdate(
       ledger::PromotionPtr info,
@@ -65,22 +62,6 @@ class DatabasePromotion: public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV10(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV10(ledger::DBTransaction* transaction);
-
-  bool MigrateToV10(ledger::DBTransaction* transaction);
-
-  bool MigrateToV13(ledger::DBTransaction* transaction);
-
-  bool MigrateToV14(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV18(ledger::DBTransaction* transaction);
-
-  bool MigrateToV25(ledger::DBTransaction* transaction);
-
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::GetPromotionCallback callback);
@@ -92,8 +73,6 @@ class DatabasePromotion: public DatabaseTable {
   void OnGetRecords(
       ledger::DBCommandResponsePtr response,
       ledger::GetPromotionListCallback callback);
-
-  std::unique_ptr<DatabasePromotionCreds> creds_;
 };
 
 }  // namespace braveledger_database

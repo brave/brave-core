@@ -28,57 +28,6 @@ DatabaseProcessedPublisher::DatabaseProcessedPublisher(
 
 DatabaseProcessedPublisher::~DatabaseProcessedPublisher() = default;
 
-bool DatabaseProcessedPublisher::CreateTableV22(
-    ledger::DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s ("
-        "publisher_key TEXT PRIMARY KEY NOT NULL,"
-        "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP"
-      ")",
-      kTableName);
-
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = query;
-  transaction->commands.push_back(std::move(command));
-
-  return true;
-}
-
-bool DatabaseProcessedPublisher::Migrate(
-    ledger::DBTransaction* transaction,
-    const int target) {
-  DCHECK(transaction);
-
-  switch (target) {
-    case 22: {
-      return MigrateToV22(transaction);
-    }
-    default: {
-      return true;
-    }
-  }
-}
-
-bool DatabaseProcessedPublisher::MigrateToV22(
-    ledger::DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  if (!DropTable(transaction, kTableName)) {
-    BLOG(0, "Table couldn't be dropped");
-    return false;
-  }
-
-  if (!CreateTableV22(transaction)) {
-    BLOG(0, "Table couldn't be created");
-    return false;
-  }
-
-  return true;
-}
-
 void DatabaseProcessedPublisher::InsertOrUpdateList(
     const std::vector<std::string>& list,
     ledger::ResultCallback callback) {

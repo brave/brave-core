@@ -17,8 +17,6 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
   explicit DatabaseMediaPublisherInfo(bat_ledger::LedgerImpl* ledger);
   ~DatabaseMediaPublisherInfo() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       const std::string& media_key,
       const std::string& publisher_key,
@@ -29,16 +27,6 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
       ledger::PublisherInfoCallback callback);
 
  private:
-  bool CreateTableV1(ledger::DBTransaction* transaction);
-
-  bool CreateTableV15(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV1(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);

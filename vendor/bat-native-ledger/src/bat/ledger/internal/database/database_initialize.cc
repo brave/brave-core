@@ -6,7 +6,6 @@
 #include <utility>
 
 #include "bat/ledger/internal/database/database_initialize.h"
-#include "bat/ledger/internal/database/database_migration.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
@@ -18,7 +17,8 @@ namespace braveledger_database {
 
 DatabaseInitialize::DatabaseInitialize(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger) {
-  migration_ = std::make_unique<DatabaseMigration>(ledger_);
+  migration_ =
+      std::make_unique<ledger::database::DatabaseMigration>(ledger_);
 }
 
 DatabaseInitialize::~DatabaseInitialize() = default;

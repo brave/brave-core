@@ -20,8 +20,6 @@ class DatabaseSKUOrderItems: public DatabaseTable {
   explicit DatabaseSKUOrderItems(bat_ledger::LedgerImpl* ledger);
   ~DatabaseSKUOrderItems() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdateList(
       ledger::DBTransaction* transaction,
       ledger::SKUOrderItemList list);
@@ -31,12 +29,6 @@ class DatabaseSKUOrderItems: public DatabaseTable {
       GetSKUOrderItemsCallback callback);
 
  private:
-  bool CreateTableV19(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV19(ledger::DBTransaction* transaction);
-
-  bool MigrateToV19(ledger::DBTransaction* transaction);
-
   void OnGetRecordsByOrderId(
       ledger::DBCommandResponsePtr response,
       GetSKUOrderItemsCallback callback);

@@ -18,8 +18,6 @@ class DatabaseProcessedPublisher : public DatabaseTable {
   explicit DatabaseProcessedPublisher(bat_ledger::LedgerImpl* ledger);
   ~DatabaseProcessedPublisher() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdateList(
       const std::vector<std::string>& list,
       ledger::ResultCallback callback);
@@ -29,10 +27,6 @@ class DatabaseProcessedPublisher : public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV22(ledger::DBTransaction* transaction);
-
-  bool MigrateToV22(ledger::DBTransaction* transaction);
-
   void OnWasProcessed(
       ledger::DBCommandResponsePtr response,
       ledger::ResultCallback callback);
