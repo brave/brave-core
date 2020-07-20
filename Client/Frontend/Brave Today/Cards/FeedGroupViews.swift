@@ -103,8 +103,7 @@ class FeedGroupView: UIView {
                 let transform: ([UIView]) -> [UIView] = transformItems ?? { views in views }
                 let groupViews = transform(buttons)
                 groupViews.forEach($0.addArrangedSubview)
-            }),
-            .view(groupBrandImageView)
+            })
         )
         
         addSubview(backgroundView)

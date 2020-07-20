@@ -88,20 +88,20 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         switch card {
         case .sponsor(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SponsorCardView>
-            cell.content.feedView.setupWithItem(item, brandVisibility: .none)
+            cell.content.feedView.setupWithItem(item)
             cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
             return cell
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>
-            cell.content.feedView.setupWithItem(item, brandVisibility: .logo)
+            cell.content.feedView.setupWithItem(item)
             cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
-            cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.first, brandVisibility: .logo)
-            cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.second, brandVisibility: .logo)
+            cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.first)
+            cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.second)
             cell.content.actionHandler = handler(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
             return cell
@@ -129,7 +129,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             zip(groupView.feedViews, items).forEach { (view, item) in
                 view.setupWithItem(
                     item,
-                    brandVisibility: (isItemsAllSameSource && displayBrand) ? .none : .name
+                    isBrandVisible: (isItemsAllSameSource && displayBrand) ? false : true
                 )
             }
             if displayBrand {
@@ -160,7 +160,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<NumberedFeedGroupView>
             cell.content.titleLabel.text = title
             zip(cell.content.feedViews, items).forEach { (view, item) in
-                view.setupWithItem(item, brandVisibility: .none)
+                view.setupWithItem(item)
             }
             cell.content.actionHandler = handler(from: { items[$0] }, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(from: { items[$0] }, card: card, indexPath: indexPath)
@@ -307,13 +307,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
 }
 
 extension FeedItemView {
-    enum BrandVisibility {
-        case none
-        case name
-        case logo
-    }
-    
-    func setupWithItem(_ feedItem: FeedItem, brandVisibility: BrandVisibility = .none) {
+    func setupWithItem(_ feedItem: FeedItem, isBrandVisible: Bool = true) {
         isContentHidden = feedItem.isContentHidden
         titleLabel.text = feedItem.content.title
         if #available(iOS 13, *) {
@@ -338,27 +332,24 @@ extension FeedItemView {
                 }
             })
         }
-        brandLabelView.text = nil
-        brandImageView.image = nil
-        switch brandVisibility {
-        case .none:
-            break
-        case .name:
-            brandLabelView.text = feedItem.content.publisherName
-        case .logo:
+        brandContainerView.textLabel.text = nil
+        brandContainerView.logoImageView.image = nil
+        
+        if isBrandVisible {
+            brandContainerView.textLabel.text = feedItem.content.publisherName
             if let logo = feedItem.source.logo {
-                brandImageView.sd_setImage(with: logo, placeholderImage: nil, options: .avoidAutoSetImage) { (image, _, cacheType, _) in
+                brandContainerView.logoImageView.sd_setImage(with: logo, placeholderImage: nil, options: .avoidAutoSetImage) { (image, _, cacheType, _) in
                     if cacheType == .none {
                         UIView.transition(
-                            with: self.brandImageView,
+                            with: self.brandContainerView.logoImageView,
                             duration: 0.35,
                             options: [.transitionCrossDissolve, .curveEaseInOut],
                             animations: {
-                                self.brandImageView.image = image
-                            }
+                                self.brandContainerView.logoImageView.image = image
+                        }
                         )
                     } else {
-                        self.brandImageView.image = image
+                        self.brandContainerView.logoImageView.image = image
                     }
                 }
             }
