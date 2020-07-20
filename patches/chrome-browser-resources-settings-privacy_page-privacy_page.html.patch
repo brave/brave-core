@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 28b29dc2b048b29f177d3e82789a5def94df0213..bd735d5155c2652917af981e888619a3c3e9e1a2 100644
+index 28b29dc2b048b29f177d3e82789a5def94df0213..ea6c2905da6f27328928cb983c8c1260dd29c2eb 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
 @@ -11,6 +11,7 @@
@@ -106,7 +106,7 @@ index 28b29dc2b048b29f177d3e82789a5def94df0213..bd735d5155c2652917af981e888619a3
 +        <settings-subpage page-title="$i18n{siteSettingsCategoryAutoplay}">
 +          <category-default-setting
 +              toggle-off-label="$i18n{siteSettingsBlocked}"
-+              toggle-on-label="$i18n{siteSettingsAutoplayAskRecommended}"
++              toggle-on-label="$i18n{siteSettingsAllowed}"
 +              category="{{ContentSettingsTypes.AUTOPLAY}}">
 +          </category-default-setting>
 +          <category-setting-exceptions
