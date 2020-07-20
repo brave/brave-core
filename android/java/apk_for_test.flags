@@ -56,3 +56,10 @@
 -keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
     *** mHasClearedOmniboxForFocus;
 }
+
+-keep class org.chromium.chrome.browser.sync.settings.ManageSyncSettings {
+    *** mGoogleActivityControls;
+    *** mSyncEncryption;
+    *** mManageSyncData;
+    *** mSyncPaymentsIntegration;
+}

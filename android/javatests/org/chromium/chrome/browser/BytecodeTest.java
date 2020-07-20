@@ -36,6 +36,8 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPage"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
     }
 
     @Test
@@ -73,6 +75,16 @@ public class BytecodeTest {
         Assert.assertTrue(fieldExists(
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor",
                 "mHasClearedOmniboxForFocus"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                        "mGoogleActivityControls"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mSyncEncryption"));
+        Assert.assertTrue(fieldExists(
+                "org/chromium/chrome/browser/sync/settings/ManageSyncSettings", "mManageSyncData"));
+        Assert.assertTrue(
+                fieldExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings",
+                        "mSyncPaymentsIntegration"));
     }
 
     private boolean classExists(String className) {
