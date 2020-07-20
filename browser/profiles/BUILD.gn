@@ -1,6 +1,8 @@
 import("//components/gcm_driver/config.gni")
 
 source_set("profiles") {
+  # Remove when https://github.com/brave/brave-browser/issues/10648 is resolved
+  check_includes = false
   sources = [
     "brave_bookmark_model_loaded_observer.cc",
     "brave_bookmark_model_loaded_observer.h",

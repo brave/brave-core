@@ -2,6 +2,8 @@ import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
 
 source_set("browser") {
+  # Remove when https://github.com/brave/brave-browser/issues/10618 is resolved
+  check_includes = false
   public_deps = [
     "buildflags",
   ]
@@ -118,6 +120,8 @@ source_set("browser") {
 
 source_set("testutil") {
   testonly = true
+  # Remove when https://github.com/brave/brave-browser/issues/10618 is resolved
+  check_includes = false
 
   deps = [
     "//brave/vendor/bat-native-ledger:headers",

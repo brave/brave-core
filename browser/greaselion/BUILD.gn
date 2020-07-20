@@ -1,4 +1,6 @@
 source_set("greaselion") {
+  # Remove when https://github.com/brave/brave-browser/issues/10660 is resolved
+  check_includes = false
   sources = [
     "greaselion_service_factory.cc",
     "greaselion_service_factory.h",

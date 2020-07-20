@@ -5,6 +5,8 @@ declare_args() {
 }
 
 source_set("browser") {
+  # Remove when https://github.com/brave/brave-browser/issues/10646 is resolved
+  check_includes = false
   public_deps = [
     "//brave/components/brave_referrals/buildflags",
   ]

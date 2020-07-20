@@ -19,6 +19,8 @@ import("//third_party/widevine/cdm/widevine.gni")
 import("//third_party/protobuf/proto_library.gni")
 
 source_set("browser_process") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
   visibility = [
     "//chrome/browser/*",
     "//brave/browser/*",

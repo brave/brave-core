@@ -2,7 +2,8 @@ import("//build/config/ios/rules.gni")
 
 ios_xctest_test("brave_rewards_ios_tests") {
   testonly = true
-
+  # Remove when https://github.com/brave/brave-browser/issues/10703 is resolved
+  check_includes = false
   deps = [
     "//brave/vendor/brave-ios:brave_rewards_ios_framework+link",
     "//brave/vendor/brave-ios:rewards_db",

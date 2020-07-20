@@ -5,6 +5,8 @@ import("//build/config/features.gni")
 import("//build/config/ui.gni")
 
 source_set("utility") {
+  # Remove when https://github.com/brave/brave-browser/issues/10623 is resolved
+  check_includes = false
   visibility = [
     "//chrome/utility/*",
     "//brave/utility/*",

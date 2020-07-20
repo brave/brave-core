@@ -9,6 +9,8 @@ import("//testing/test.gni")
 
 source_set("brave_ads_unit_tests") {
   testonly = true
+  # Remove when https://github.com/brave/brave-browser/issues/10616 is resolved
+  check_includes = false
 
   if (brave_ads_enabled) {
     sources = [

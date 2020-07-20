@@ -2,6 +2,8 @@ source_set("browser") {
   # Only //components/omnibox/browser target can depend on this target
   # because this target expands //components/omnibox/browser implementation.
   visibility = [ "//components/omnibox/browser" ]
+  # Remove when https://github.com/brave/brave-browser/issues/10624 is resolved
+  check_includes = false
 
   sources = [
     "brave_omnibox_client.cc",

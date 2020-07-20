@@ -1,4 +1,6 @@
 source_set("browser") {
+  # Remove when https://github.com/brave/brave-browser/issues/10649 is resolved
+  check_includes = false
   sources = [
     "content_browser_client_helper.h",
     "webtorrent_util.cc",

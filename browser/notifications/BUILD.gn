@@ -1,4 +1,6 @@
 source_set("notifications") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
   if (is_mac) {
     sources = [
       "brave_alert_dispatcher_mac.mm",

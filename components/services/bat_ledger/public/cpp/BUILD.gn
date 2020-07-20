@@ -5,6 +5,7 @@ source_set("cpp") {
   ]
 
   deps = [
+    "//brave/base:base",
     "//brave/components/services/bat_ledger/public/interfaces",
     "//brave/vendor/bat-native-ledger",
   ]

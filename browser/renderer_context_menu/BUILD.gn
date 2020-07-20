@@ -1,4 +1,7 @@
 source_set("renderer_context_menu") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
+
   if (is_win || is_linux) {
     sources = [
       "brave_spelling_options_submenu_observer.cc",
@@ -7,6 +10,7 @@ source_set("renderer_context_menu") {
 
     deps = [
       "//base",
+      "//chrome/app:command_ids",
       "//chrome/app:generated_resources",
       "//components/renderer_context_menu",
       "//ui/base",

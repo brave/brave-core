@@ -1,4 +1,6 @@
 source_set("brave_wayback_machine") {
+  # Remove when https://github.com/brave/brave-browser/issues/10652 is resolved
+  check_includes = false
   sources = [
     "brave_wayback_machine_infobar_button_container.cc",
     "brave_wayback_machine_infobar_button_container.h",

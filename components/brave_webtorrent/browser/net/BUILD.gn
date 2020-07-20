@@ -1,4 +1,6 @@
 source_set("net") {
+  # Remove when https://github.com/brave/brave-browser/issues/10645 is resolved
+  check_includes = false
   sources = [
     "brave_torrent_redirect_network_delegate_helper.cc",
     "brave_torrent_redirect_network_delegate_helper.h",
