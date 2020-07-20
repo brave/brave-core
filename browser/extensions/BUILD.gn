@@ -13,6 +13,8 @@ declare_args() {
 }
 
 source_set("extensions") {
+  # Remove when https://github.com/brave/brave-browser/issues/10661 is resolved
+  check_includes = false
   sources = [
     "api/brave_action_api.cc",
     "api/brave_action_api.h",

@@ -1,4 +1,6 @@
 source_set("ntp_background_images") {
+  # Remove when https://github.com/brave/brave-browser/issues/10658 is resolved
+  check_includes = false
   sources = [
     "view_counter_service_factory.cc",
     "view_counter_service_factory.h",

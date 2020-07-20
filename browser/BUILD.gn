@@ -24,6 +24,8 @@ declare_args() {
 }
 
 source_set("browser_process") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
   visibility = [
     "//chrome/browser/*",
     "//brave/browser/*",

@@ -3,6 +3,8 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 assert(brave_wallet_enabled)
 
 source_set("brave_wallet") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
   sources = [
     "brave_wallet_delegate_impl.cc",
     "brave_wallet_delegate_impl.h",
@@ -12,6 +14,7 @@ source_set("brave_wallet") {
     "brave_wallet_utils.h",
   ]
   deps = [
+    "//components/keyed_service/content:content",
     "//components/pref_registry",
     "//components/prefs",
     "//extensions/browser",

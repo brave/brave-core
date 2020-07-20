@@ -9,6 +9,8 @@ import("//components/gcm_driver/config.gni")
 import("//chrome/common/features.gni")
 
 source_set("favicon_source") {
+  # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
+  check_includes = false
   sources = [
     "//chrome/browser/ui/webui/favicon_source.cc",
     "//chrome/browser/ui/webui/favicon_source.h",
@@ -25,6 +27,8 @@ source_set("favicon_source") {
 }
 
 source_set("ui") {
+  # Remove when https://github.com/brave/brave-browser/issues/10614 is resolved
+  check_includes = false
   sources = [
     "webui/basic_ui.cc",
     "webui/basic_ui.h",
@@ -181,7 +185,7 @@ source_set("ui") {
     "//brave/browser/tor",
     "//brave/common",
     "//brave/common:pref_names",
-    "//brave/common/tor",
+    "//brave/common/tor:pref_names",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/brave_ads/browser",

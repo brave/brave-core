@@ -4,6 +4,8 @@ import("//extensions/buildflags/buildflags.gni")
 import("//brave/vendor/adblock_rust_ffi/config.gni")
 
 source_set("browser") {
+  # Remove when https://github.com/brave/brave-browser/issues/10643 is resolved
+  check_includes = false
   public_deps = [
     "buildflags",
     ":adblock_libs"

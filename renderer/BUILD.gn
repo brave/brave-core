@@ -1,6 +1,8 @@
 import("//build/config/features.gni")
 
 source_set("renderer") {
+  # Remove when https://github.com/brave/brave-browser/issues/10632 is resolved
+  check_includes = false
   visibility = [
     "//chrome/renderer/*",
     "//brave/renderer/*",

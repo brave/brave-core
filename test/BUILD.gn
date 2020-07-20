@@ -58,6 +58,8 @@ if (fix_rust_install_name) {
 
 static_library("brave_test_support_unit") {
   testonly = true
+  # Remove when https://github.com/brave/brave-browser/issues/10613 is resolved
+  check_includes = false
   sources = [
     "base/brave_testing_profile.cc",
     "base/brave_testing_profile.h",
@@ -104,6 +106,8 @@ group("other_unit_tests") {
 
 test("brave_unit_tests") {
   testonly = true
+  # Remove when https://github.com/brave/brave-browser/issues/10613 is resolved
+  check_includes = false
   sources = [
     "//brave/browser/brave_content_browser_client_unittest.cc",
     "//brave/browser/brave_resources_util_unittest.cc",
@@ -413,6 +417,8 @@ test("brave_unit_tests") {
 
 if (!is_android && !is_ios) {
 test("brave_installer_unittests") {
+  # Remove when https://github.com/brave/brave-browser/issues/10613 is resolved
+  check_includes = false
   deps = [
     "//base/test:run_all_unittests",
     "//base/test:test_support",
@@ -488,6 +494,8 @@ if (!is_android) {
 
 test("brave_browser_tests") {
   testonly = true
+  # Remove when https://github.com/brave/brave-browser/issues/10613 is resolved
+  check_includes = false
   sources = [
     "//brave/app/brave_main_delegate_browsertest.cc",
     "//brave/app/brave_main_delegate_runtime_flags_browsertest.cc",

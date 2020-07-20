@@ -13,6 +13,7 @@ source_set("brave_prochlo") {
 
   public_deps = [
     ":prochlo_proto",
+    "//base:base",
     "//crypto",
     "//third_party/boringssl",
     "//third_party/protobuf:protobuf_lite",
