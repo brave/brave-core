@@ -91,17 +91,21 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             cell.content.feedView.setupWithItem(item)
             cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
+            cell.content.isEnabled = !item.isContentHidden
             return cell
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>
             cell.content.feedView.setupWithItem(item)
             cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
+            cell.content.isEnabled = !item.isContentHidden
             return cell
         case .headlinePair(let pair):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<SmallHeadlinePairCardView>
             cell.content.smallHeadelineCardViews.left.feedView.setupWithItem(pair.first)
             cell.content.smallHeadelineCardViews.right.feedView.setupWithItem(pair.second)
+            cell.content.smallHeadelineCardViews.left.isEnabled = !pair.first.isContentHidden
+            cell.content.smallHeadelineCardViews.right.isEnabled = !pair.second.isContentHidden
             cell.content.actionHandler = handler(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
             return cell
@@ -126,7 +130,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             
             let isItemsAllSameSource = Set(items.map(\.content.publisherID)).count == 1
             
-            zip(groupView.feedViews, items).forEach { (view, item) in
+            zip(groupView.feedViews, items.indices).forEach { (view, index) in
+                let item = items[index]
+                groupView.setButtonEnabled(at: index, enabled: !item.isContentHidden)
                 view.setupWithItem(
                     item,
                     isBrandVisible: (isItemsAllSameSource && displayBrand) ? false : true
@@ -159,7 +165,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         case .numbered(let items, let title):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<NumberedFeedGroupView>
             cell.content.titleLabel.text = title
-            zip(cell.content.feedViews, items).forEach { (view, item) in
+            zip(cell.content.feedViews, items.indices).forEach { (view, index) in
+                let item = items[index]
+                cell.content.setButtonEnabled(at: index, enabled: !item.isContentHidden)
                 view.setupWithItem(item)
             }
             cell.content.actionHandler = handler(from: { items[$0] }, card: card, indexPath: indexPath)
@@ -187,17 +195,18 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         let openInNewPrivateTabHandler: MenuActionHandler = { context in
             self.actionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
         }
-        let hideHandler: MenuActionHandler = { context in
-            self.actionHandler(.hide, context)
-        }
-        let blockSourceHandler: MenuActionHandler = { context in
-            self.actionHandler(.blockSource, context)
+        let disableSourceHandler: MenuActionHandler = { context in
+            self.actionHandler(.disableSource, context)
         }
         
         if #available(iOS 13.0, *) {
             return .init { index -> UIMenu? in
                 let item = feedList(index)
                 let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
+                
+                if !item.source.enabled || item.isContentHidden {
+                    return nil
+                }
                 
                 func mapDeferredHandler(_ handler: @escaping MenuActionHandler) -> UIActionHandler {
                     return UIAction.deferredActionHandler { _ in
@@ -213,14 +222,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                     .init(title: Strings.openNewPrivateTabButtonTitle, image: UIImage(named: "brave.shades"), handler: mapDeferredHandler(openInNewPrivateTabHandler))
                 }
                 
-                var hideContent: UIAction {
+                var disableSource: UIAction {
                     // FIXME: Localize
-                    .init(title: "Hide Content", image: UIImage(named: "hide.feed.item"), handler: mapDeferredHandler(hideHandler))
-                }
-                
-                var blockSource: UIAction {
-                    // FIXME: Localize
-                    .init(title: "Block Source", image: UIImage(named: "block.feed.source"), attributes: .destructive, handler: mapDeferredHandler(blockSourceHandler))
+                    .init(title: "Disable content from \(item.source.name)", image: UIImage(named: "hide.feed.item"), attributes: .destructive, handler: mapDeferredHandler(disableSourceHandler))
                 }
                 
                 let openActions: [UIAction] = [
@@ -232,8 +236,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                     nil
                     ].compactMap({ $0 })
                 let manageActions = [
-                    hideContent,
-                    blockSource
+                    disableSource
                 ]
                 
                 var children: [UIMenu] = [
@@ -249,6 +252,10 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             let item = feedList(index)
             let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
             
+            if !item.source.enabled || item.isContentHidden {
+                return nil
+            }
+            
             func mapHandler(_ handler: @escaping MenuActionHandler) -> UIAlertActionCallback {
                 return { _ in
                     handler(context)
@@ -263,14 +270,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 .init(title: Strings.openNewPrivateTabButtonTitle, style: .default, handler: mapHandler(openInNewPrivateTabHandler))
             }
             
-            var hideContent: UIAlertAction {
+            var disableSource: UIAlertAction {
                 // FIXME: Localize
-                .init(title: "Hide Content", style: .default, handler: mapHandler(hideHandler))
-            }
-            
-            var blockSource: UIAlertAction {
-                // FIXME: Localize
-                .init(title: "Block Source", style: .destructive, handler: mapHandler(blockSourceHandler))
+                .init(title: "Disable content from \(item.source.name)", style: .destructive, handler: mapHandler(disableSourceHandler))
             }
             
             let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
@@ -286,8 +288,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             
             if context.item.content.contentType == .article {
                 actions.append(contentsOf: [
-                    hideContent,
-                    blockSource
+                    disableSource
                 ])
             }
             
@@ -309,6 +310,11 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
 extension FeedItemView {
     func setupWithItem(_ feedItem: FeedItem, isBrandVisible: Bool = true) {
         isContentHidden = feedItem.isContentHidden
+        if isContentHidden {
+            itemHiddenOverlay.label.text = "Content from \(feedItem.source.name) disabled"
+        } else {
+            itemHiddenOverlay.label.text = nil
+        }
         titleLabel.text = feedItem.content.title
         if #available(iOS 13, *) {
             dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.content.publishTime, relativeTo: Date())

@@ -167,8 +167,9 @@ class NewTabPageViewController: UIViewController, Themeable {
         case .hide:
             feedDataSource.hide(item: context.item, in: context.card)
             collectionView.reloadItems(at: [context.indexPath])
-        case .blockSource:
-            break
+        case .disableSource:
+            feedDataSource.toggleSource(context.item.source, enabled: false)
+            collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
         case .longPressed(let context):
             let alertController = UIAlertController(
                 title: context.title,

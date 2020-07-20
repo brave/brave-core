@@ -10,22 +10,33 @@ import Shared
 
 private let logger = Logger.browserLogger
 
+/// A set of 2 items
 struct FeedPair: Equatable {
+    /// The first item
     var first: FeedItem
+    /// The second item
     var second: FeedItem
+    
     init(_ first: FeedItem, _ second: FeedItem) {
         self.first = first
         self.second = second
     }
 }
 
+/// A container for one or many `FeedItem`s
 enum FeedCard: Equatable {
+    /// A sponsored image to display
     case sponsor(_ feed: FeedItem)
+    /// A single item displayed prompinently with an image
     case headline(_ feed: FeedItem)
+    /// A pair of `headline` items that should be displayed side by side horizontally with equal sizes
     case headlinePair(_ pair: FeedPair)
+    /// A group of items that can be displayed in a number of different configurations
     case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
+    /// A numbered group of items which will always be displayed in a vertical list.
     case numbered(_ feeds: [FeedItem], title: String)
     
+    /// Obtain an estimated height for this card given a width it will be displayed with
     func estimatedHeight(for width: CGFloat) -> CGFloat {
         switch self {
         case .sponsor:
@@ -36,6 +47,49 @@ enum FeedCard: Equatable {
             return 300
         case .group, .numbered:
             return 400
+        }
+    }
+    
+    /// A list of feed items that are present in the card
+    var items: [FeedItem] {
+        switch self {
+        case .headline(let item), .sponsor(let item):
+            return [item]
+        case .headlinePair(let pair):
+            return [pair.first, pair.second]
+        case .group(let items, _, _, _), .numbered(let items, _):
+            return items
+        }
+    }
+    
+    /// Creates a new card that has replaced an item it is displaying with a replacement
+    ///
+    /// If `item` is not being displayed by this card this function returns itself
+    func replacing(item: FeedItem, with replacementItem: FeedItem) -> Self {
+        if !items.contains(item) { return self }
+        switch self {
+        case .headline:
+            return .headline(replacementItem)
+        case .headlinePair(let pair):
+            if pair.first == item {
+                return .headlinePair(.init(replacementItem, pair.second))
+            } else {
+                return .headlinePair(.init(pair.first, replacementItem))
+            }
+        case .sponsor:
+            return .sponsor(replacementItem)
+        case .numbered(var feeds, let title):
+            if let matchedItemIndex = feeds.firstIndex(of: item) {
+                feeds[matchedItemIndex] = replacementItem
+                return .numbered(feeds, title: title)
+            }
+            return self
+        case .group(var feeds, let title, let direction, let displayBrand):
+            if let matchedItemIndex = feeds.firstIndex(of: item) {
+                feeds[matchedItemIndex] = replacementItem
+                return .group(feeds, title: title, direction: direction, displayBrand: displayBrand)
+            }
+            return self
         }
     }
 }
@@ -120,9 +174,24 @@ class FeedDataSource {
     }
     
     func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
-        guard let index = sources.firstIndex(where: { $0.id == source.id }) else { return }
-        self.sources[index].enabled = enabled
+        guard let sourceIndex = sources.firstIndex(where: { $0.id == source.id }) else { return }
+        self.sources[sourceIndex].enabled = enabled
         // TODO: Update DB
+        
+        // Propigate source toggle to cards list
+        let cardsWithItemsFromSources = cards.enumerated().filter {
+            $0.element.items.contains(where: {
+                $0.source == source
+            })
+        }
+        for (index, element) in cardsWithItemsFromSources {
+            for item in element.items where item.source == source {
+                var alteredItem = item
+                alteredItem.source = self.sources[sourceIndex]
+                alteredItem.isContentHidden = true
+                self.cards[index] = element.replacing(item: item, with: alteredItem)
+            }
+        }
     }
     
     /// Hide a specific feed item from a card showing in the list
@@ -131,28 +200,7 @@ class FeedDataSource {
         if let cardIndex = cards.firstIndex(of: card) {
             var alteredItem = item
             alteredItem.isContentHidden = true
-            switch card {
-            case .headline:
-                cards[cardIndex] = .headline(alteredItem)
-            case .headlinePair(let pair):
-                if pair.first == item {
-                    cards[cardIndex] = .headlinePair(.init(alteredItem, pair.second))
-                } else {
-                    cards[cardIndex] = .headlinePair(.init(pair.first, alteredItem))
-                }
-            case .sponsor:
-                cards[cardIndex] = .sponsor(alteredItem)
-            case .numbered(var feeds, let title):
-                if let matchedItemIndex = feeds.firstIndex(of: item) {
-                    feeds[matchedItemIndex] = alteredItem
-                    cards[cardIndex] = .numbered(feeds, title: title)
-                }
-            case .group(var feeds, let title, let direction, let displayBrand):
-                if let matchedItemIndex = feeds.firstIndex(of: item) {
-                    feeds[matchedItemIndex] = alteredItem
-                    cards[cardIndex] = .group(feeds, title: title, direction: direction, displayBrand: displayBrand)
-                }
-            }
+            cards[cardIndex] = cards[cardIndex].replacing(item: item, with: alteredItem)
         }
     }
     

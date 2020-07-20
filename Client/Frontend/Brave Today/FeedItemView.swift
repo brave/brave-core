@@ -43,8 +43,8 @@ class FeedItemView: UIView {
     }
     /// The branding information (if applicable)
     lazy var brandContainerView = BrandContainerView()
-    
-    private lazy var itemHiddenOverlay = HiddenOverlayView()
+    /// The overlay displayed when the item has been hidden.
+    lazy var itemHiddenOverlay = HiddenOverlayView()
     
     /// Whether or not the item's content has been hidden by the user
     var isContentHidden: Bool = false {
@@ -340,8 +340,7 @@ extension FeedItemView {
                 $0.contentView.layer.cornerCurve = .continuous
             }
         }
-        private let label = UILabel().then {
-            $0.text = "Content Hidden" // TODO: Localize when copy is finalized
+        let label = UILabel().then {
             $0.font = .systemFont(ofSize: 18)
             $0.numberOfLines = 0
             $0.textAlignment = .center
