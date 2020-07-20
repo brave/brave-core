@@ -10,6 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
   `
   $('channel-promo-dev').innerHTML = `
       Interested in cool new Brave features? Try our
-      <a href="https://brave.com/download-beta/">dev channel</a>.
+      <a href="https://brave.com/download-nightly/">nightly channel</a>.
   `
 });
