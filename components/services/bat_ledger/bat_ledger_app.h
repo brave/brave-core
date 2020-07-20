@@ -11,16 +11,18 @@
 
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "mojo/public/cpp/bindings/binder_map.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/unique_receiver_set.h"
 #include "services/service_manager/public/cpp/service.h"
-#include "services/service_manager/public/cpp/service_binding.h"
 #include "services/service_manager/public/cpp/service_keepalive.h"
+#include "services/service_manager/public/cpp/service_receiver.h"
 
 namespace bat_ledger {
 
 class BatLedgerApp : public service_manager::Service {
  public:
-  explicit BatLedgerApp(service_manager::mojom::ServiceRequest request);
+  explicit BatLedgerApp(
+      mojo::PendingReceiver<service_manager::mojom::Service> receiver);
   ~BatLedgerApp() override;
 
   BatLedgerApp(const BatLedgerApp&) = delete;
@@ -33,7 +35,7 @@ class BatLedgerApp : public service_manager::Service {
                  const std::string& interface_name,
                  mojo::ScopedMessagePipeHandle receiver_pipe) override;
 
-  service_manager::ServiceBinding service_binding_;
+  service_manager::ServiceReceiver service_receiver_;
   service_manager::ServiceKeepalive service_keepalive_;
   mojo::BinderMap binders_;
   mojo::UniqueReceiverSet<mojom::BatLedgerService> receivers_;
