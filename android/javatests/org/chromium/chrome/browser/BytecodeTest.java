@@ -38,6 +38,8 @@ public class BytecodeTest {
                 "org/chromium/chrome/browser/omnibox/suggestions/editurl/EditUrlSuggestionProcessor"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
+        Assert.assertTrue(classExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
     }
 
     @Test
@@ -57,6 +59,9 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/homepage/HomepageManager", "shouldCloseAppWithZeroTabs"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "insertSiteSectionView"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "getMaxRowsForMostVisitedTiles"));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "getPermissionsLinkMessage"));
     }
 
     @Test
