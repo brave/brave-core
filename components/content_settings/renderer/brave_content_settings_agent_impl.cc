@@ -241,25 +241,19 @@ bool BraveContentSettingsAgentImpl::AllowAutoplay(bool default_value) {
 
   // respect user's site blocklist, if any
   bool ask = false;
-  const GURL& primary_url = GetOriginOrURL(frame);
-  const GURL& secondary_url =
-      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
-  for (const auto& rule : content_setting_rules_->autoplay_rules) {
-    if (rule.primary_pattern == ContentSettingsPattern::Wildcard())
-        continue;
-    if (rule.primary_pattern.Matches(primary_url) &&
-        (rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
-         rule.secondary_pattern.Matches(secondary_url))) {
-      if (rule.GetContentSetting() == CONTENT_SETTING_BLOCK) {
-        VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
-        return false;
-      } else if (rule.GetContentSetting() == CONTENT_SETTING_ASK) {
-        VLOG(1) << "AllowAutoplay=ask because rule=CONTENT_SETTING_ASK";
-        ask = true;
-      } else if (rule.GetContentSetting() == CONTENT_SETTING_ALLOW) {
-        VLOG(1) << "AllowAutoplay=true because rule=CONTENT_SETTING_ALLOW";
-        return true;
-      }
+  if (content_setting_rules_) {
+    ContentSetting setting = GetContentSettingFromRules(
+        content_setting_rules_->autoplay_rules, frame,
+        url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+    if (setting == CONTENT_SETTING_BLOCK) {
+      VLOG(1) << "AllowAutoplay=false because rule=CONTENT_SETTING_BLOCK";
+      return false;
+    } else if (setting == CONTENT_SETTING_ASK) {
+      VLOG(1) << "AllowAutoplay=ask because rule=CONTENT_SETTING_ASK";
+      ask = true;
+    } else if (setting == CONTENT_SETTING_ALLOW) {
+      VLOG(1) << "AllowAutoplay=true because rule=CONTENT_SETTING_ALLOW";
+      return true;
     }
   }
 
