@@ -13,9 +13,10 @@
 
 namespace bat_ledger {
 
-BatLedgerApp::BatLedgerApp(service_manager::mojom::ServiceRequest request) :
-    service_binding_(this, std::move(request)),
-    service_keepalive_(&service_binding_, base::TimeDelta()) {
+BatLedgerApp::BatLedgerApp(
+        mojo::PendingReceiver<service_manager::mojom::Service> receiver) :
+    service_receiver_(this, std::move(receiver)),
+    service_keepalive_(&service_receiver_, base::TimeDelta()) {
 }
 
 BatLedgerApp::~BatLedgerApp() = default;

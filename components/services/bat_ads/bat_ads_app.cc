@@ -21,9 +21,10 @@ void BatAdsApp::BindBatAdsServiceReceiver(
       std::move(receiver));
 }
 
-BatAdsApp::BatAdsApp(service_manager::mojom::ServiceRequest request) :
-    service_binding_(this, std::move(request)),
-    service_keepalive_(&service_binding_, base::TimeDelta()) {
+BatAdsApp::BatAdsApp(
+        mojo::PendingReceiver<service_manager::mojom::Service> receiver) :
+    service_receiver_(this, std::move(receiver)),
+    service_keepalive_(&service_receiver_, base::TimeDelta()) {
 }
 
 BatAdsApp::~BatAdsApp() {}
