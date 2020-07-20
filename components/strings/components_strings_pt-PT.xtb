@@ -437,7 +437,6 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="2824775600643448204">Barra de pesquisa e endereço</translation>
 <translation id="2826760142808435982">A ligação é encriptada e autenticada com <ph name="CIPHER"/> e utiliza <ph name="KX"/> como mecanismo de troca de chaves.</translation>
 <translation id="2835170189407361413">Limpar formulário</translation>
-<translation id="2847118875340931228">Abrir janela de navegação anónima</translation>
 <translation id="2850739647070081192">Invite (Envelope)</translation>
 <translation id="2856444702002559011">Os atacantes poderão estar a tentar roubar as suas informações de <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (por exemplo, palavras-passe, mensagens ou cartões de crédito). <ph name="BEGIN_LEARN_MORE_LINK"/>Saiba mais<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Dobra cruzada</translation>
@@ -487,7 +486,6 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="3041612393474885105">Informações do certificado</translation>
 <translation id="3060227939791841287">C9 (Envelope)</translation>
 <translation id="3061707000357573562">Serviço de patch</translation>
-<translation id="3064966200440839136">Está a sair do modo de navegação anónima para pagar através de uma aplicação externa. Pretende continuar?</translation>
 <translation id="3080254622891793721">Gráfico</translation>
 <translation id="3086579638707268289">A sua atividade na Web está a ser monitorizada</translation>
 <translation id="3087734570205094154">Parte inferior</translation>
@@ -507,7 +505,6 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="3154506275960390542">Esta página inclui um formulário que pode não ser enviado em segurança. Os dados que enviar podem ser vistos por outros utilizadores em trânsito ou podem ser modificados por um utilizador mal intencionado para alterar o que é recebido pelo servidor.</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="3162559335345991374">A rede Wi-Fi que está a utilizar pode exigir que visite a respetiva página de início de sessão.</translation>
-<translation id="3167968892399408617">As páginas que visualizar em separadores de navegação anónima não são memorizadas no histórico do navegador, no armazenamento de cookies ou no histórico de pesquisas depois de fechar todos os separadores de navegação anónima. Todos os ficheiros transferidos ou os marcadores criados são guardados.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Ilha</translation>
 <translation id="3176929007561373547">Verifique as definições de proxy ou contacte o gestor de rede para
@@ -624,7 +621,6 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="3676592649209844519">ID do dispositivo:</translation>
 <translation id="3677008721441257057">Será que quis dizer &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Não foi possível assinar o pedido</translation>
-<translation id="3678529606614285348">Abrir a página numa nova janela de navegação anónima (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Informações do certificado</translation>
 <translation id="3701427423622901115">Reposição confirmada.</translation>
 <translation id="3704162925118123524">A rede que está a utilizar pode exigir que visite a respetivapágina de início de sessão.</translation>
@@ -781,7 +777,7 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Os utilizadores mal intencionados neste site podem tentar instalar programas perigosos no seu computador que roubam ou eliminam as suas informações (por exemplo, fotos, palavras-passe, mensagens e cartões de crédito).</translation>
 <translation id="4358059973562876591">Os modelos que especificou podem não ser aplicados devido a um erro com a política DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">Gerir métodos de pagamento…</translation>
+<translation id="327628984294957152">Gerir métodos de pagamento…</translation>
 <translation id="4367563149485757821">Number-12 (Envelope)</translation>
 <translation id="437058704415269440">Saldo da conta</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -945,7 +941,7 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="5123063207673082822">Fim de semana</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Valide o cartão</translation>
-<translation id="5135404736266831032">Gerir endereços…</translation>
+<translation id="6291230311289558881">Gerir endereços…</translation>
 <translation id="5138227688689900538">Mostrar menos</translation>
 <translation id="7186167407612593632">Encriptar palavras-passe sincronizadas com as credenciais Brave</translation>
 <translation id="5145883236150621069">Código de erro presente na resposta da política</translation>
@@ -953,7 +949,6 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="5148809049217731050">Com orientação para cima</translation>
 <translation id="515292512908731282">C4 (Envelope)</translation>
 <translation id="5158275234811857234">Capa</translation>
-<translation id="5159010409087891077">Abrir a página numa nova janela de navegação anónima (⇧⌘N)</translation>
 <translation id="5161506081086828129">Empilhador 9</translation>
 <translation id="9016458749696512983">Introduza o Código de Segurança/CVC de <ph name="CREDIT_CARD"/>. Depois de confirmar, os detalhes do cartão da sua Conta Brave são partilhados com este site.</translation>
 <translation id="8515152881111950319">Pode perder o acesso à conta da sua entidade ou ser vítima de roubo de identidade. O Brave recomenda a alteração da palavra-passe agora.</translation>
@@ -961,7 +956,6 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Equipamento</translation>
 <translation id="5179510805599951267">Não está em <ph name="ORIGINAL_LANGUAGE"/>? Comunicar este erro</translation>
-<translation id="5190835502935405962">Barra de marcadores</translation>
 <translation id="519422657042045905">As notas não estão disponíveis.</translation>
 <translation id="5201306358585911203">Uma página incorporada nesta página diz</translation>
 <translation id="5205222826937269299">Nome obrigatório</translation>
@@ -1092,7 +1086,7 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="5689516760719285838">Local</translation>
 <translation id="569000877158168851">O valor DnsOverHttpsTemplates não é relevante e não será utilizado, a menos que a política DnsOverHttpsMode esteja definida como <ph name="SECURE_DNS_MODE_AUTOMATIC"/> ou <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">Centrar</translation>
-<translation id="570530837424789914">Gerir…</translation>
+<translation id="3655851112780233803">Gerir…</translation>
 <translation id="57094364128775171">Sugerir palavra-passe forte…</translation>
 <translation id="5710435578057952990">A identidade deste Website não foi verificada.</translation>
 <translation id="5720705177508910913">Utilizador atual</translation>
@@ -1271,7 +1265,7 @@ Se não permitir, isto será bloqueado pelas suas definições de privacidade. I
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6451458296329894277">Confirmar nova submissão de formulário</translation>
 <translation id="6457206614190510200">Agrafar ao meio</translation>
-<translation id="6465306955648956876">Gerir palavras-passe…</translation>
+<translation id="2275235756919172538">Gerir palavras-passe…</translation>
 <translation id="647261751007945333">Políticas do dispositivo</translation>
 <translation id="6476284679642588870">Gerir métodos de pagamento</translation>
 <translation id="6489534406876378309">Começar a carregar falhas</translation>
@@ -1585,7 +1579,6 @@ Detalhes adicionais:
 <translation id="782886543891417279">A rede Wi-Fi que está a utilizar (<ph name="WIFI_NAME"/>) pode exigir que visite a respetiva página de início de sessão.</translation>
 <translation id="7836231406687464395">Postfix (Envelope)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Nenhuma}=1{1 aplicação (<ph name="EXAMPLE_APP_1"/>)}=2{2 aplicações (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# aplicações (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">No entanto, a navegação não é invisível. Passar para o modo de navegação anónima não oculta a navegação do empregador ou do fornecedor de serviços de Internet, nem dos Sites que visitar.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">Pretende sair do site?</translation>
 <translation id="7865448901209910068">A melhor velocidade</translation>
@@ -1668,10 +1661,8 @@ Detalhes adicionais:
 <translation id="8220146938470311105">C7/C6 (Envelope)</translation>
 <translation id="8220639454292072926">Relatórios empresariais</translation>
 <translation id="3272614036080146686">Acabou de introduzir a sua palavra-passe num site fraudulento. O Brave recomenda que aceda a <ph name="WEBSITE_1"/> e outros sites em que utilize esta palavra-passe e que a altere agora.</translation>
-<translation id="8225771182978767009">A pessoa que configurou este computador optou por bloquear este site.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Temperatura da plataforma</translation>
-<translation id="8238581221633243064">Abrir página num novo separador anónimo</translation>
 <translation id="8241707690549784388">A página que procura utilizou informações introduzidas por si. Regressar a essa página poderá originar a repetição de qualquer ação que tenha efetuado. Pretende continuar?</translation>
 <translation id="8241712895048303527">Bloquear neste site</translation>
 <translation id="8242426110754782860">Continuar</translation>
@@ -1683,7 +1674,6 @@ Detalhes adicionais:
 <translation id="8262952874573525464">Coser extremidade inferior</translation>
 <translation id="8267698848189296333">A iniciar sessão como <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Documentos separados/cópias agrupadas</translation>
-<translation id="8269981117540303696">Agora, pode navegar em privado e as outras pessoas que utilizarem este dispositivo não veem a sua atividade. No entanto, as transferências e os marcadores são guardados.</translation>
 <translation id="8277900682056760511">A página do controlador do pagamento está aberta.</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Saber o identificador único do seu dispositivo</translation>
@@ -1702,7 +1692,6 @@ Detalhes adicionais:
 <translation id="833262891116910667">Realçar</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Se compreende os riscos para a sua segurança, pode <ph name="BEGIN_LINK"/>visitar este site<ph name="END_LINK"/> antes de os programas prejudiciais terem sido removidos.</translation>
-<translation id="8349305172487531364">Barra de marcadores</translation>
 <translation id="8355270400102541638">Contexto local da falha de sistema:</translation>
 <translation id="8363502534493474904">Desativar o modo de avião</translation>
 <translation id="8364627913115013041">Não definida.</translation>
@@ -1768,7 +1757,6 @@ Detalhes adicionais:
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, sugestão de pesquisa.</translation>
 <translation id="8719528812645237045">Perfuração múltipla na parte superior</translation>
 <translation id="8725066075913043281">Tentar novamente</translation>
-<translation id="8728672262656704056">Está anónimo</translation>
 <translation id="8730621377337864115">Concluído</translation>
 <translation id="6326805297893828864">Para estabelecer uma ligação segura, o relógio tem de ser definido corretamente. Isto deve-se ao facto de os certificados que os Sites utilizam para se identificarem serem apenas válidos para períodos de tempo específicos. Uma vez que o relógio do seu dispositivo está incorreto, o Brave não consegue validar estes certificados.</translation>
 <translation id="8740359287975076522">Não foi possível encontrar o &lt;abbr id="dnsDefinition"&gt;endereço DNS&lt;/abbr&gt; de <ph name="HOST_NAME"/>. Estamos a diagnosticar o problema.</translation>
@@ -1801,7 +1789,6 @@ Detalhes adicionais:
 <translation id="8903921497873541725">Ampliar</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Botão Remover sugestão, prima Enter para remover, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/>.</translation>
-<translation id="8910670906166981838">Está no Modo de navegação anónima</translation>
 <translation id="5713644099811900409">Conta Brave</translation>
 <translation id="8918231688545606538">Esta página é suspeita</translation>
 <translation id="892588693504540538">Perfurar na parte superior direita</translation>

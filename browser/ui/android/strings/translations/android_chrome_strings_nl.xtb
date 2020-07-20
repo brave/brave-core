@@ -7,7 +7,6 @@
 <translation id="1036727731225946849"><ph name="WEBAPK_NAME"/> toevoegen...</translation>
 <translation id="1041308826830691739">Van websites</translation>
 <translation id="1045899828449635435">Ook gegevens van deze sites wissen?</translation>
-<translation id="1049743911850919806">Incognito</translation>
 <translation id="10614374240317010">Nooit opgeslagen</translation>
 <translation id="5428209950370661546">Andere Brave-services</translation>
 <translation id="1068672505746868501">Pagina's in het <ph name="SOURCE_LANGUAGE"/> nooit vertalen</translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">Eerste synchronisatieconfiguratie niet voltooid</translation>
 <translation id="1821253160463689938">Maakt gebruik van cookies om je voorkeuren te onthouden, zelfs als je deze pagina's niet bezoekt</translation>
 <translation id="1829244130665387512">Zoeken op pagina</translation>
-<translation id="1853692000353488670">Nieuw incognitotabblad</translation>
 <translation id="1856325424225101786">Lite-versie resetten?</translation>
 <translation id="5817715962196959877">Brave downloadt bestanden nu sneller</translation>
 <translation id="1883903952484604915">Mijn bestanden</translation>
@@ -233,15 +231,12 @@ Tik op een woord en houd dit vast om te zoeken. Selecteer meer of minder woorden
 <translation id="2903493209154104877">Adressen</translation>
 <translation id="290376772003165898">Is deze pagina niet in het <ph name="LANGUAGE"/>?</translation>
 <translation id="2904414404539560095">De lijst met apparaten om een tabblad mee te delen, is op volledige hoogte geopend.</translation>
-<translation id="2905036901251765993">Als je wilt delen met mensen in de buurt, laat je ze deze QR-code scannen</translation>
 <translation id="7339921667754113786">Platform voor Brave-meldingen</translation>
 <translation id="2923908459366352541">Naam is ongeldig</translation>
 <translation id="6355102470683871794">Opslag van Brave <ph name="APP_NAME"/></translation>
 <translation id="2942036813789421260">Voorbeeldtabblad is gesloten</translation>
 <translation id="2956410042958133412">Dit account wordt beheerd door <ph name="PARENT_NAME_1"/> en <ph name="PARENT_NAME_2"/>.</translation>
-<translation id="2962095958535813455">Overgeschakeld naar incognitotabbladen</translation>
 <translation id="2968755619301702150">Certificaatviewer</translation>
-<translation id="2979025552038692506">Geselecteerd incognitotabblad</translation>
 <translation id="2987620471460279764">Gedeelde tekst van ander apparaat</translation>
 <translation id="2989523299700148168">Onlangs bezocht</translation>
 <translation id="2996291259634659425">Wachtwoordzin maken</translation>
@@ -252,16 +247,14 @@ Tik op een woord en houd dit vast om te zoeken. Selecteer meer of minder woorden
 <translation id="305593374596241526">Locatie is uitgeschakeld. Je kunt dit inschakelen in de <ph name="BEGIN_LINK"/>instellingen van Android<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">Je kunt synchronisatie op elk gewenst moment inschakelen via de instellingen</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> bookmark}other{<ph name="BOOKMARKS_COUNT_MANY"/> bookmarks}}</translation>
-<translation id="3089395242580810162">Openen op incognitotabblad</translation>
 <translation id="3114012059975132928">Videospeler</translation>
 <translation id="3123734510202723619">Aankondigingen</translation>
-<translation id="3137521801621304719">Incognitomodus verlaten</translation>
 <translation id="3143515551205905069">Synchronisatie annuleren</translation>
 <translation id="5063487983358782016">Homepage van Brave</translation>
 <translation id="3157842584138209013">Via de knop 'Meer opties' kun je zien hoeveel data je hebt bespaard</translation>
 <translation id="3166827708714933426">Sneltoetsen voor tabbladen en vensters</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">Safe Browsing (hiermee worden jij en je apparaat beschermd tegen gevaarlijke sites)</translation>
+<translation id="3201899458094819285">Safe Browsing (hiermee worden jij en je apparaat beschermd tegen gevaarlijke sites)</translation>
 <translation id="3205824638308738187">Bijna klaar</translation>
 <translation id="3207960819495026254">Toegevoegd aan 'Bookmarks'</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> is verwijderd</translation>
@@ -285,7 +278,6 @@ Tik op een woord en houd dit vast om te zoeken. Selecteer meer of minder woorden
 <translation id="3333961966071413176">Alle contacten</translation>
 <translation id="3334729583274622784">Bestandsextensie wijzigen?</translation>
 <translation id="3341058695485821946">Bekijk hoeveel data je hebt bespaard</translation>
-<translation id="3350687908700087792">Alle incognitotabbladen sluiten</translation>
 <translation id="8134317863207426198">Lite-pagina geleverd door Brave. Tik om de knop 'Origineel laden' om de originele pagina te laden.</translation>
 <translation id="3367813778245106622">Log opnieuw in om de synchronisatie te starten</translation>
 <translation id="2746024117903470217">Als je deze pagina wilt delen met een ander apparaat, schakel je op het andere apparaat synchronisatie in via de Brave-instellingen</translation>
@@ -298,7 +290,6 @@ Tik op een woord en houd dit vast om te zoeken. Selecteer meer of minder woorden
 <translation id="3443221991560634068">De huidige pagina opnieuw laden</translation>
 <translation id="3445014427084483498">Zojuist</translation>
 <translation id="3478363558367712427">Je kunt je zoekmachine kiezen</translation>
-<translation id="3492207499832628349">Nieuw incognitotabblad</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/> over voorgestelde content</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Augmented reality</translation>
@@ -329,7 +320,6 @@ Tik op een woord en houd dit vast om te zoeken. Selecteer meer of minder woorden
 <translation id="3749259744154402564">Niet ondersteund</translation>
 <translation id="3763247130972274048">Dubbeltik links of rechts in de video om tien seconden te verspringen</translation>
 <translation id="3771001275138982843">Kan de update niet downloaden</translation>
-<translation id="3771033907050503522">Incognitotabbladen</translation>
 <translation id="1138681184697033370">Servicevoorwaarden van Brave</translation>
 <translation id="3773755127849930740"><ph name="BEGIN_LINK"/>Schakel Bluetooth in<ph name="END_LINK"/> om te koppelen</translation>
 <translation id="3775705724665058594">Verzenden naar je apparaten</translation>
@@ -495,7 +485,6 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5040262127954254034">Privacy</translation>
 <translation id="5087580092889165836">Pas toevoegen</translation>
 <translation id="510275257476243843">1 uur resterend</translation>
-<translation id="5123685120097942451">Incognitotabblad</translation>
 <translation id="5127805178023152808">Synchronisatie is uitgeschakeld</translation>
 <translation id="5129038482087801250">Web-app installeren</translation>
 <translation id="5132942445612118989">Je wachtwoorden, geschiedenis en meer synchroniseren op al je apparaten</translation>
@@ -547,14 +536,12 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5517095782334947753">Je hebt bookmarks, geschiedenis, wachtwoorden en andere instellingen van <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">Omleiding geblokkeerd.</translation>
 <translation id="2367014990350929709">Brave heeft locatietoegang nodig om naar apparaten te scannen. <ph name="BEGIN_LINK1"/>Rechten updaten<ph name="END_LINK1"/>. Locatietoegang is ook <ph name="BEGIN_LINK2"/>uitgeschakeld voor dit apparaat<ph name="END_LINK2"/>.</translation>
-<translation id="5530766185686772672">Incognitotabbladen sluiten</translation>
 <translation id="5534640966246046842">Site gekopieerd</translation>
 <translation id="5561549206367097665">Wachten op netwerk…</translation>
 <translation id="55737423895878184">Locatie en meldingen zijn toegestaan</translation>
 <translation id="5578795271662203820">Zoeken op <ph name="SEARCH_ENGINE"/> naar afbeelding</translation>
 <translation id="5581519193887989363">Je kunt altijd in de <ph name="BEGIN_LINK1"/>instellingen<ph name="END_LINK1"/> bepalen wat je wilt synchroniseren.</translation>
 <translation id="5595485650161345191">Adres bewerken</translation>
-<translation id="5599455543593328020">Incognitomodus</translation>
 <translation id="5620928963363755975">Vind je bestanden en pagina's in 'Downloads' via de knop 'Meer opties'</translation>
 <translation id="5626134646977739690">Naam:</translation>
 <translation id="5639724618331995626">Alle sites toestaan</translation>
@@ -572,7 +559,6 @@ Voor je Brave-account kunnen andere vormen van browsegeschiedenis (zoals zoekopd
 <translation id="5726692708398506830">Alles op de pagina vergroten</translation>
 <translation id="5748802427693696783">Overgeschakeld naar standaardtabbladen</translation>
 <translation id="3088191967551450609">Brave heeft toegang tot de opslag nodig om deze bestanden te kunnen downloaden.</translation>
-<translation id="5763382633136178763">Incognitotabbladen</translation>
 <translation id="5763514718066511291">Tik om de URL voor deze app te kopiëren</translation>
 <translation id="5765780083710877561">Beschrijving:</translation>
 <translation id="5793665092639000975">Er wordt <ph name="SPACE_USED"/> van de <ph name="SPACE_AVAILABLE"/> gebruikt</translation>
@@ -858,7 +844,6 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties weer te gev
 <translation id="8073388330009372546">Openen op nieuw tabblad</translation>
 <translation id="8076492880354921740">Tabbladen</translation>
 <translation id="8084114998886531721">Opgeslagen wachtwoord</translation>
-<translation id="8103578431304235997">Incognitotabblad</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Schakel synchronisatie in om op al je apparaten toegang tot je bookmarks te hebben</translation>
 <translation id="4565206163201411670">Je Brave-activiteit weergeven in Digitaal welzijn?</translation>
@@ -909,7 +894,6 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties weer te gev
 <translation id="230699814587342492">Brave-wachtwoorden</translation>
 <translation id="8503813439785031346">Gebruikersnaam</translation>
 <translation id="133012818630824069">Wachtwoorden exporteren die zijn opgeslagen in Brave</translation>
-<translation id="8514577642972634246">Incognitomodus starten</translation>
 <translation id="8516012719330875537">Bewerkingsprogramma voor afbeeldingen</translation>
 <translation id="8523928698583292556">Opgeslagen wachtwoord verwijderen</translation>
 <translation id="854522910157234410">Deze pagina openen</translation>
@@ -955,7 +939,6 @@ Zo kunnen sommige websites op dit verzoek reageren door advertenties weer te gev
 <translation id="8970887620466824814">Er is iets misgegaan.</translation>
 <translation id="8972098258593396643">Downloaden naar standaardmap?</translation>
 <translation id="8988028529677883095">Telefoon gebruiken als beveiligingssleutel</translation>
-<translation id="8993760627012879038">Een nieuw venster openen in de incognitomodus</translation>
 <translation id="2689656545739939160">Je logt in met een account dat wordt beheerd door <ph name="MANAGED_DOMAIN"/> waarmee je de eigenaar beheer geeft over je Brave-gegevens. Je gegevens worden permanent gekoppeld aan dit account. Als je uitlogt van Brave, worden je gegevens van dit apparaat verwijderd. Ze blijven echter opgeslagen in je Brave-account.</translation>
 <translation id="9028914725102941583">Schakel de synchronisatie in om content op apparaten te delen</translation>
 <translation id="9040142327097499898">Meldingen zijn toegestaan. Locatie is uitgeschakeld voor dit apparaat.</translation>

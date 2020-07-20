@@ -435,7 +435,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="2824775600643448204">Upau wa anwani na utafutaji</translation>
 <translation id="2826760142808435982">Muunganisho umesimbwa kwa njia fiche na kuthibitishwa kupitia <ph name="CIPHER"/> na unatumia <ph name="KX"/> kama utaratibu msingi wa ubadilishaji.</translation>
 <translation id="2835170189407361413">Futa fomu</translation>
-<translation id="2847118875340931228">Fungua Dirisha Fiche</translation>
 <translation id="2850739647070081192">Invite (Bahasha)</translation>
 <translation id="2856444702002559011">Huenda wavamizi wanajaribu kuiba maelezo yako kutoka <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (kwa mfano, manenosiri, ujumbe au kadi za mikopo).<ph name="BEGIN_LEARN_MORE_LINK"/>Pata maelezo zaidi<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Mkunjo wa bango</translation>
@@ -485,7 +484,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="3041612393474885105">Maelezo ya Cheti</translation>
 <translation id="3060227939791841287">C9 (Bahasha)</translation>
 <translation id="3061707000357573562">Huduma ya Kurekebisha</translation>
-<translation id="3064966200440839136">Inaacha hali fiche ili kulipa kupitia programu ya nje. Je, ungependa kuendelea?</translation>
 <translation id="3080254622891793721">Picha</translation>
 <translation id="3086579638707268289">Shughuli yako kwenye tovuti inafuatiliwa</translation>
 <translation id="3087734570205094154">Chini</translation>
@@ -505,7 +503,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="3154506275960390542">Ukurasa huu una fomu ambayo haiwezi kuwasilishwa kwa njia salama. Data unayotuma inaweza kusomwa na watu wengine inapotumwa au inaweza kurekebishwa na mvamizi ili kubadilisha data ambayo seva inapokea.</translation>
 <translation id="3157931365184549694">Rejesha</translation>
 <translation id="3162559335345991374">Wi-Fi unayotumia inaweza kukuhitaji kutembelea ukurasa wake wa kuingia katika akaunti.</translation>
-<translation id="3167968892399408617">Kurasa unazoziangalia katika vichupo fiche hazitaendelea kuwepo katika historia ya kivinjari, hifadhi ya vidakuzi, au historia yako ya utafutaji ukishafunga vichupo vyako vyote fiche. Faili zozote unazopakua au alamisho unazounda hazitafutwa.</translation>
 <translation id="3169472444629675720">Gundua</translation>
 <translation id="3174168572213147020">Kisiwa</translation>
 <translation id="3176929007561373547">Angalia mipangilio yako ya seva mbadala au wasiliana na msimamizi wako wa mtandao ili
@@ -622,7 +619,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="3676592649209844519">Kitambulisho cha Kifaa:</translation>
 <translation id="3677008721441257057">Unamaanisha &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Ombi halikutiwa sahihi</translation>
-<translation id="3678529606614285348">Fungua ukurasa kwenye dirisha fiche jipya (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Maelezo ya cheti</translation>
 <translation id="3701427423622901115">Imekubali kuweka upya.</translation>
 <translation id="3704162925118123524">Mtandao unaotumia unaweza kukuhitaji kuutembelea ukurasa wake wa kuingia katika akaunti.</translation>
@@ -779,7 +775,7 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Huenda wavamizi walio kwenye tovuti hii wakajaribu kusakinisha programu hatari inayoiba au kufuta maelezo yako yaliyo kwenye kompyuta yako (kwa mfano, picha, manenosiri, ujumbe, na kadi za mikopo).</translation>
 <translation id="4358059973562876591">Huenda violezo ulivyobainisha visitumike kwa sababu ya hitilafu katika sera ya DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">Dhibiti njia za kulipa...</translation>
+<translation id="327628984294957152">Dhibiti njia za kulipa...</translation>
 <translation id="4367563149485757821">Number-12 (Bahasha)</translation>
 <translation id="437058704415269440">Salio la Akaunti</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -942,7 +938,7 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="5123063207673082822">Wikendi</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Thibitisha kadi yako</translation>
-<translation id="5135404736266831032">Dhibiti anwani...</translation>
+<translation id="6291230311289558881">Dhibiti anwani...</translation>
 <translation id="5138227688689900538">Onyesha chache</translation>
 <translation id="7186167407612593632">Simba kwa njia fiche manenosiri yaliyosawazishwa ukitumia stakabadhi zako za Brave</translation>
 <translation id="5145883236150621069">Msimbo wa hitilafu uko katika jibu la sera</translation>
@@ -950,7 +946,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="5148809049217731050">Kuangalia juu</translation>
 <translation id="515292512908731282">C4 (Bahasha)</translation>
 <translation id="5158275234811857234">Jalada</translation>
-<translation id="5159010409087891077">Fungua ukurasa kwenye dirisha fiche jipya (⇧⌘N)</translation>
 <translation id="5161506081086828129">Tupio la kutoa la printa la tisa</translation>
 <translation id="9016458749696512983">Weka CVC ya <ph name="CREDIT_CARD"/>. Baada ya kuthibitisha, maelezo ya kadi kutoka Akaunti yako ya Brave yatashirikiwa na tovuti hii.</translation>
 <translation id="8515152881111950319">Unaweza kupoteza uwezo wa kufikia akaunti ya shirika lako au kuibiwa utambulisho. Brave inapendekeza ubadilishe nenosiri lako sasa.</translation>
@@ -958,7 +953,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Mashine</translation>
 <translation id="5179510805599951267">Haiko katika <ph name="ORIGINAL_LANGUAGE"/>? Ripoti hitilafu hii</translation>
-<translation id="5190835502935405962">Sehemu ya Alamisho</translation>
 <translation id="519422657042045905">Vidokezi havipatikani</translation>
 <translation id="5201306358585911203">Ukurasa uliopachikwa kwenye ukurasa huu unasema</translation>
 <translation id="5205222826937269299">Jina linahitajika</translation>
@@ -1088,7 +1082,7 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="5689516760719285838">Mahali</translation>
 <translation id="569000877158168851">Thamani ya DnsOverHttpsTemplates haifai na haitatumika, isipokuwa sera ya DnsOverHttpsMode iwekwe kuwa <ph name="SECURE_DNS_MODE_AUTOMATIC"/> au <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">Katikati</translation>
-<translation id="570530837424789914">Dhibiti...</translation>
+<translation id="3655851112780233803">Dhibiti...</translation>
 <translation id="57094364128775171">Pendekeza nenosiri thabiti…</translation>
 <translation id="5710435578057952990">Utambulisho wa tovuti hii haujathibitishwa.</translation>
 <translation id="5720705177508910913">Mtumiaji wa sasa</translation>
@@ -1267,7 +1261,7 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="6447842834002726250">Vidakuzi</translation>
 <translation id="6451458296329894277">Thibitisha kuwa Fomu Iwasilishwe Tena</translation>
 <translation id="6457206614190510200">Mshono unaopitia kwenye mkunjo</translation>
-<translation id="6465306955648956876">Dhibiti manenosiri...</translation>
+<translation id="2275235756919172538">Dhibiti manenosiri...</translation>
 <translation id="647261751007945333">Sera za kifaa</translation>
 <translation id="6476284679642588870">Dhibiti njia za kulipa</translation>
 <translation id="6489534406876378309">Anza kupakia matukio ya kuacha kufanya kazi</translation>
@@ -1580,7 +1574,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="782886543891417279">Wi-Fi unayotumia (<ph name="WIFI_NAME"/>) inaweza kukuhitaji kutembelea ukurasa wake wa kuingia katika akaunti.</translation>
 <translation id="7836231406687464395">Postfix (Bahasha)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Hamna}=1{Programu 1 (<ph name="EXAMPLE_APP_1"/>)}=2{Programu 2 (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{Programu # (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">Hata hivyo, huonekani. Kuvinjari katika hali fiche hakufichi kuvinjari kwako kusionekane na mwajiri, mtoaji huduma wako wa intaneti, au tovuti unazotembelea.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">Ungependa kufunga tovuti?</translation>
 <translation id="7865448901209910068">Kasi bora zaidi</translation>
@@ -1663,10 +1656,8 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="8220146938470311105">C7/C6 (Bahasha)</translation>
 <translation id="8220639454292072926">Kuripoti katika Shirika</translation>
 <translation id="3272614036080146686">Umeweka nenosiri lako kwenye tovuti inayotiliwa shaka. Brave inapendekeza uende kwenye <ph name="WEBSITE_1"/> na tovuti zingine unakotumia nenosiri hili na ulibadilishe sasa.</translation>
-<translation id="8225771182978767009">Mtu ambaye aliweka mipangilio ya kompyuta hii ameamua kuzuia tovuti hii.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Halijoto ya mfumo</translation>
-<translation id="8238581221633243064">Fungua ukurasa kwenye kichupo fiche kipya</translation>
 <translation id="8241707690549784388">Ukurasa unaotafuta ulitumia maelezo uliyoyaingiza. Kurudi kwenye ukurasa huo huenda kukasababisha tendo lolote ulilofanya lirudiwe. Je, ungependa kuendelea?</translation>
 <translation id="8241712895048303527">Zuia kwenye tovuti hii</translation>
 <translation id="8242426110754782860">Endelea</translation>
@@ -1678,7 +1669,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="8262952874573525464">Shona ncha ya chini</translation>
 <translation id="8267698848189296333">Ingia katika akaunti ukitumia <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Hati zilizotenganishwa/Nakala zilizopangwa</translation>
-<translation id="8269981117540303696">Sasa unaweza kuvinjari kwa faragha na watu wengine wanaotumia kifaa hiki hawataona shughuli zako. Hata hivyo, vipakuliwa na alamisho zitahifadhiwa.</translation>
 <translation id="8277900682056760511">Laha la kidhibiti cha malipo limefunguliwa</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Jua kitambulisho chako cha kipekee cha kifaa</translation>
@@ -1697,7 +1687,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="833262891116910667">Angazia</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Ikiwa unaelewa hatari kwa usalama wako, unaweza <ph name="BEGIN_LINK"/>kutembelea tovuti hii<ph name="END_LINK"/> kabla programu hatari hazijaondolewa.</translation>
-<translation id="8349305172487531364">Sehemu ya Alamisho</translation>
 <translation id="8355270400102541638">Muktadha wa Ripoti ya Kuacha Kufanya:</translation>
 <translation id="8363502534493474904">Kuzima hali ya ndegeni</translation>
 <translation id="8364627913115013041">Haijawekwa.</translation>
@@ -1761,7 +1750,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="8719263113926255150"><ph name="ENTITY"/> , <ph name="DESCRIPTION"/> , pendekezo la utafutaji</translation>
 <translation id="8719528812645237045">Toboa mara nyingi juu</translation>
 <translation id="8725066075913043281">Jaribu tena</translation>
-<translation id="8728672262656704056">Unavinjari katika hali fiche</translation>
 <translation id="8730621377337864115">Nimemaliza</translation>
 <translation id="6326805297893828864">Ili kutambua muunganisho salama, saa yako inahitaji kuwekwa sahihi. Hii ni kwa sababu vyeti ambavyo tovuti hutumia kujitambua ni sahihi kwa vipindi mahususi pekee. Kwa kuwa saa ya kifaa chako si sahihi, Brave haiwezi kuthibitisha vyeti hivi.</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/> &lt;abbr id="dnsDefinition"&gt;anwani ya DNS&lt;/abbr&gt; haikupatikana. Tatizo linachunguzwa.</translation>
@@ -1794,7 +1782,6 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
 <translation id="8903921497873541725">Kuza karibu</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Ondoa kitufe cha Mapendekezo, bofya Enter ili uondoe, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">Unavinjari katika hali fiche</translation>
 <translation id="5713644099811900409">Akaunti ya Brave</translation>
 <translation id="8918231688545606538">Ukurasa huu unatiliwa shaka</translation>
 <translation id="892588693504540538">Toboa juu kulia</translation>
@@ -1896,7 +1883,7 @@ Vinginevyo, hatua hii itazuiwa na mipangilio yako ya faragha. Hali hii itaruhusu
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Kutoka Brave Pay</translation>
-<translation id="8820817407110198400">Sehemu ya Alamisho</translation>
+<translation id="8820817407110198400">Vialamisho</translation>
 <translation id="8362995731815961365">Mtu ambaye aliweka mipangilio ya kompyuta hii ameamua kuzuia tovuti hii.</translation>
 <translation id="4075123085690634698">Fungua ukurasa kwenye dirisha fiche jipya (⇧⌘N)</translation>
 <translation id="2388886110302389394">Fungua ukurasa kwenye dirisha fiche jipya (Ctrl-Shift-N)</translation>

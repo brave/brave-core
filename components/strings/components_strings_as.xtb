@@ -437,7 +437,6 @@
 <translation id="2824775600643448204">ঠিকনা আৰু সন্ধানৰ বাৰ</translation>
 <translation id="2826760142808435982">এই সংযোগটো এনক্ৰিপ্ট কৰিবলৈ তথা সেইটোৰ বিশ্বাসযোগ্যতাৰ সত্যাপন কৰিবলৈ <ph name="CIPHER"/> ব্যৱহাৰ কৰা হৈছে আৰু সেইটোৱে <ph name="KX"/>ক সলনা সলনিৰ মুখ্য উপায় হিচাপে ব্যৱহাৰ কৰে।</translation>
 <translation id="2835170189407361413">ফর্ম মচক</translation>
-<translation id="2847118875340931228">ইনক’গনিট’ ৱিণ্ড’ খোলক</translation>
 <translation id="2850739647070081192">আমন্ত্ৰণ (লেফাফা)</translation>
 <translation id="2856444702002559011">আক্ৰমণকাৰীয়ে <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>ৰ পৰা আপোনাৰ তথ্য চুৰি কৰিবলৈ চেষ্টা কৰি থাকিব পাৰে (উদাহৰণস্বৰূপে, পাছৱর্ড, বার্তা বা ক্ৰেডিট কার্ড)। <ph name="BEGIN_LEARN_MORE_LINK"/>অধিক জানক<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">প'ষ্টাৰ ফ'ল্ড</translation>
@@ -487,7 +486,6 @@
 <translation id="3041612393474885105">প্ৰমাণপত্ৰৰ তথ্য</translation>
 <translation id="3060227939791841287">C9 (লেফাফা)</translation>
 <translation id="3061707000357573562">পেচ্চ্‌ সেৱা</translation>
-<translation id="3064966200440839136">বাহ্যিক কোনো এপ্লিকেশ্বনেৰে পৰিশোধ কৰিবলৈ ইনক’গনিট’ ম’ড এৰি গৈ থকা হৈছে। অব্যাহত ৰাখিবনে?</translation>
 <translation id="3080254622891793721">গ্ৰাফিক</translation>
 <translation id="3086579638707268289">ৱেবত আপোনাৰ কাৰ্যকলাপ নিৰীক্ষণ কৰি থকা হৈছে</translation>
 <translation id="3087734570205094154">একেবাৰে তলি</translation>
@@ -507,7 +505,6 @@
 <translation id="3154506275960390542">এই পৃষ্ঠাত এখন ফর্ম আছে যিখন সুৰক্ষিতভাৱে দাখিল কৰা নহ'ব পাৰে। আপুনি পঠিওৱা ডেটা পৰিবহণৰ সময়ত অন্য লোকসকলে চাব পাৰিব আৰু ছার্ভাৰে পোৱা ডেটা সলনি কৰিবলৈ কোনো আক্ৰমণকাৰীয়ে এই ডেটা সংশোধন কৰিব পাৰে।</translation>
 <translation id="3157931365184549694">পুনঃস্থাপন কৰক</translation>
 <translation id="3162559335345991374">আপুনি ব্যৱহাৰ কৰি থকা ৱাই-ফাইটোৰ বাবে আপুনি এইটোৰ লগ ইন পৃষ্ঠালৈ যাব লগা হ'ব পাৰে।</translation>
-<translation id="3167968892399408617">আপুনি নিজৰ সকলো ইনক’গনিট’ টেব বন্ধ কৰাৰ পাছত আপুনি ইনক’গনিট’ টেবত চোৱা পৃষ্ঠাসমূহ নিজৰ ব্ৰাউজাৰৰ ইতিহাস, কুকি ষ্ট’ৰ বা সন্ধানৰ ইতিহাসত জমা হৈ নাথাকে। আপুনি ডাউনল’ড কৰা যিকোনো ফাইল বা আপুনি সৃষ্টি কৰা বুকমার্কসমূহ ৰখা হ’ব।</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">দ্বীপ</translation>
 <translation id="3176929007561373547">আপোনাৰ প্ৰ’ক্সি ছেটিংসমূহ পৰীক্ষা কৰক বা প্ৰ’ক্সি ছার্ভাৰে কাম কৰি থকাটো নিশ্চিত কৰিবলৈ নিজৰ নেটৱর্ক প্ৰশাসকৰ সৈতে যোগাযোগ কৰক। যদি আপুনি বিশ্বাস কৰা নাই তেন্তে আপুনি কোনো প্ৰ’ক্সি ছার্ভাৰ ব্যৱহাৰ কৰি আছে:
@@ -621,7 +618,6 @@
 <translation id="3676592649209844519">ডিভাইচ আইডি:</translation>
 <translation id="3677008721441257057">আপুনি &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;ৰ কথা কৈছে নেকি?</translation>
 <translation id="3678029195006412963">অনুৰোধ ছাইন কৰিব পৰা নগ’ল</translation>
-<translation id="3678529606614285348">এটা নতুন ৱিণ্ড’ত পৃষ্ঠা খোলক (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">প্ৰমাণপত্ৰৰ তথ্য</translation>
 <translation id="3701427423622901115">ৰিছেট কাৰ্যটো স্বীকাৰ কৰা হ’ল৷</translation>
 <translation id="3704162925118123524">আপুনি ব্যৱহাৰ কৰি থকা নেটৱর্কটোৰ বাবে আপুনি লগ ইনৰ পৃষ্ঠালৈ যাব লগা হ'ব পাৰে।</translation>
@@ -777,7 +773,7 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">এই ছাইটত থকা আক্ৰমণকাৰীয়ে আপোনাৰ কম্পিউটাৰত ক্ষতিকাৰক প্র’গ্ৰেম ছেট কৰিবলৈ চেষ্টা কৰিব পাৰে যি আপোনাৰ তথ্য (উদাহৰণ স্বৰূপে, ফট’ পাছৱৰ্ড, বাৰ্তা আৰু ক্ৰেডিট কাৰ্ড) চুৰ কৰিব পাৰে।</translation>
 <translation id="4358059973562876591">DnsOverHttpsMode নীতিৰ লগত জড়িত কোনো আসোঁৱাহৰ বাবে আপুনি নির্দিষ্ট কৰা টেমপ্লেটসমূহ প্ৰয়োগ কৰা নহ’ব পাৰে।</translation>
-<translation id="4358461427845829800">পৰিশোধৰ পদ্ধতি পৰিচালনা কৰক...</translation>
+<translation id="327628984294957152">পৰিশোধৰ পদ্ধতি পৰিচালনা কৰক...</translation>
 <translation id="4367563149485757821">নম্বৰ-১২ (লেফাফা)</translation>
 <translation id="437058704415269440">একাউণ্টৰ বেলেঞ্চ</translation>
 <translation id="4372516964750095882">ফেনফ’ল্ড-ইউএছ</translation>
@@ -941,7 +937,7 @@
 <translation id="5123063207673082822">সপ্তাহৰ অন্ত</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">আপোনাৰ কাৰ্ডখন সত্যাপন কৰক</translation>
-<translation id="5135404736266831032">ঠিকনাসমূহ পৰিচালনা কৰক...</translation>
+<translation id="6291230311289558881">ঠিকনাসমূহ পৰিচালনা কৰক...</translation>
 <translation id="5138227688689900538">কমকৈ দেখুৱাওক</translation>
 <translation id="7186167407612593632">আপোনাৰ Brave ক্ৰেডেনশ্বিয়েলসমূহৰ সৈতে ছিংক কৰি ৰখা পাছৱৰ্ড এনক্ৰিপ্ট কৰক</translation>
 <translation id="5145883236150621069">নীতিৰ সঁহাৰিত কোনো আসোঁৱাপূর্ণ ক'ড আছে</translation>
@@ -949,7 +945,6 @@
 <translation id="5148809049217731050">ওপৰমুখীয়া</translation>
 <translation id="515292512908731282">C4 (লেফাফা)</translation>
 <translation id="5158275234811857234">ক'ভাৰ</translation>
-<translation id="5159010409087891077">কোনো নতুন ইনক’গনিট’ ৱিণ্ড’ত পৃষ্ঠা খোলক (⇧⌘N)</translation>
 <translation id="5161506081086828129">ষ্টেকাৰ ৯</translation>
 <translation id="9016458749696512983"><ph name="CREDIT_CARD"/>ৰ CVCটো দিয়ক। আপুনি নিশ্চিতি প্ৰদান কৰাৰ পিছত আপোনাৰ Brave Accountৰ পৰা কাৰ্ডৰ সবিশেষ এই ছাইটটোৰ সৈতে শ্বেয়াৰ কৰা হ’ব।</translation>
 <translation id="8515152881111950319">আপুনি আপোনাৰ প্ৰতিষ্ঠানৰ একাউণ্টটো এক্সেছ কৰিব নোৱাৰা হ‘ব পাৰে বা আপোনাৰ পৰিচয় চুৰি হোৱাৰ নিচিনা ঘটনাৰ মুখামুখী হ‘ব পাৰে। Braveএ আপোনাৰ পাছৱৰ্ডটো এতিয়াই সলনি কৰাটো চুপাৰিছ কৰে।</translation>
@@ -957,7 +952,6 @@
 <translation id="5171689220826475070">ফেনফ’ল্ড-ইউৰোপীয়</translation>
 <translation id="5172758083709347301">মেচিন</translation>
 <translation id="5179510805599951267"><ph name="ORIGINAL_LANGUAGE"/>ত নাই নেকি? এই আসোঁৱাহটোৰ অভিযোগ দিয়ক</translation>
-<translation id="5190835502935405962">বুকমাৰ্কৰ বাৰ</translation>
 <translation id="519422657042045905">এন'টেশ্বন উপলব্ধ নহয়</translation>
 <translation id="5201306358585911203">এই পৃষ্ঠাটোত অন্তর্ভুক্ত অন্য এটা পৃষ্ঠায়ে এয়া জনায়</translation>
 <translation id="5205222826937269299">নামৰ আৱশ্যক</translation>
@@ -1088,7 +1082,7 @@
 <translation id="5689516760719285838">অৱস্থান</translation>
 <translation id="569000877158168851">DnsOverHttpsTemplatesৰ মানটো প্ৰাসংগিক নহয় আৰু DnsOverHttpsMode নীতিটো <ph name="SECURE_DNS_MODE_AUTOMATIC"/> অথবা <ph name="SECURE_DNS_MODE_SECURE"/> হিচাপে ছেট নকৰা পর্যন্ত সেয়া ব্যৱহাৰ কৰা নহ’ব।</translation>
 <translation id="5701381305118179107">কেন্দ্ৰ</translation>
-<translation id="570530837424789914">পৰিচালনা কৰক...</translation>
+<translation id="3655851112780233803">পৰিচালনা কৰক...</translation>
 <translation id="57094364128775171">জটিল পাছৱৰ্ডৰ পৰামৰ্শ দিয়ক…</translation>
 <translation id="5710435578057952990">এই ৱেবছাইটটোৰ পৰিচয় সত্যাপন কৰা হোৱা নাই।</translation>
 <translation id="5720705177508910913">বর্তমানৰ ব্যৱহাৰকাৰী</translation>
@@ -1265,7 +1259,7 @@
 <translation id="6447842834002726250">কুকীসমূহ</translation>
 <translation id="6451458296329894277">ফৰ্ম পুনৰ দাখিল কৰিবলৈ নিশ্চিত কৰক</translation>
 <translation id="6457206614190510200">কাষত ছেডেল কৰক</translation>
-<translation id="6465306955648956876">পাছৱৰ্ড পৰিচালনা কৰক...</translation>
+<translation id="2275235756919172538">পাছৱৰ্ড পৰিচালনা কৰক...</translation>
 <translation id="647261751007945333">ডিভাইচৰ নীতি</translation>
 <translation id="6476284679642588870">পৰিশোধ পদ্ধতিসমূহ পৰিচালনা কৰক</translation>
 <translation id="6489534406876378309">ক্ৰেশ্ব আপল’ড কৰা আৰম্ভ কৰক</translation>
@@ -1577,7 +1571,6 @@
 <translation id="782886543891417279">আপুনি ব্যৱহাৰ কৰি থকা ৱাই-ফাইটোৰ(<ph name="WIFI_NAME"/>) বাবে আপুনি তাৰ লগ ইন কৰা পৃষ্ঠালৈ যাব লগা হ’ব পাৰে।</translation>
 <translation id="7836231406687464395">প'ষ্টফিক্স (লেফাফা)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{এটাও নহয়}=1{১টা এপ্ (<ph name="EXAMPLE_APP_1"/>)}=2{২টা এপ্ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}one{#টা এপ্ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}other{#টা এপ্ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">তথাপি, আপুনি অদৃশ্য নহয়। আপুনি ইনক'গনিট' ৱিণ্ড' ব্যৱহাৰ কৰিলেও আপোনাৰ নিয়োগদাতা, ইণ্টাৰনেট সেৱা প্ৰদানকাৰী বা আপুনি চোৱা ৱেবছাইতে আপোনাৰ ব্ৰাউজিংৰ তথ্য চাব পাৰে।</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">ছাইটোৰ পৰা বাহিৰ হ’বনে?</translation>
 <translation id="7865448901209910068">উত্তম বেগ</translation>
@@ -1660,10 +1653,8 @@
 <translation id="8220146938470311105">C7/C6 (লেফাফা)</translation>
 <translation id="8220639454292072926">এণ্টাৰপ্ৰাইজৰ ৰিপ’ৰ্ট বনোৱা কাৰ্য</translation>
 <translation id="3272614036080146686">আপুনি এটা প্ৰবঞ্চনামূলক ছাইটত এইমাত্ৰ নিজৰ পাছৱৰ্ডটো দিছে। Braveএ <ph name="WEBSITE_1"/> আৰু আপুনি এই পাছৱৰ্ডটো ব্যৱহাৰ কৰা অন্য ছাইটসমূহলৈ গৈ এইটো এতিয়াই সলনি কৰাটো চুপাৰিছ কৰে।</translation>
-<translation id="8225771182978767009">এই কম্পিউটাৰটো ছেট আপ কৰা লোকজনে এই ছাইটটো অৱৰোধ কৰিছে।</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">প্লেটফৰ্মৰ তাপমান</translation>
-<translation id="8238581221633243064">এটা নতুন ইনক’গনিট’ টেবত পৃষ্ঠা খোলক</translation>
 <translation id="8241707690549784388">আপুনি বিচাৰি থকা পৃষ্ঠাটোৱে আপুনি দিয়া তথ্য ব্যৱহাৰ কৰিছে। সেই পৃষ্ঠাটোলৈ উভতি গ’লে আপুনি লোৱা কোনো কাৰ্যকলাপৰ পুনৰাবৃত্তি হ’ব পাৰে। আপুনি অব্যাহত ৰাখিবলৈ বিচাৰেনে?</translation>
 <translation id="8241712895048303527">এই ছাইটটোত অৱৰোধ কৰক</translation>
 <translation id="8242426110754782860">আগবাঢ়ক</translation>
@@ -1675,7 +1666,6 @@
 <translation id="8262952874573525464">তলৰ অংশৰ কাষত চিলাওক</translation>
 <translation id="8267698848189296333"><ph name="USERNAME"/> হিচাপে ছাইন ইন কৰিছে</translation>
 <translation id="8269242089528251720">পৃথক নথি/মিলোৱা প্ৰতিলিপিসমূহ</translation>
-<translation id="8269981117540303696">বর্তমান আপুনি ব্যক্তিগতভাৱে ব্ৰাউজিং কৰিব পাৰে আৰু এই ডিভাইচটো ব্যৱহাৰ কৰা অন্য লোকসকলে আপোনাৰ কার্যকলাপ দেখা নাপাব। অৱশ্যে, ডাউনল’ড আৰু বুকমার্কসমূহ ছেভ কৰা হ’ব।</translation>
 <translation id="8277900682056760511">পৰিশোধ নিয়ন্ত্ৰক শ্বীটখন খোলা আছে</translation>
 <translation id="8281084378435768645">ডাঙৰ-ফট'</translation>
 <translation id="8282947398454257691">আপোনাৰ অনন্য ডিভাইচ চিনাক্তকৰণকাৰীৰ বিষয়ে জানক</translation>
@@ -1694,7 +1684,6 @@
 <translation id="833262891116910667">হাইলাইট</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">যদি আপুনি আপোনাৰ সুৰক্ষাৰ প্ৰতি সৃষ্টি হ‘ব পৰা ভাবুকিৰ কথা বুজি পাইছে তেন্তে বিপজ্জনক প্ৰ‘গ্ৰামসমূহ আঁতৰোৱাৰ আগেয়ে আপুনি <ph name="BEGIN_LINK"/>এই ছাইটটো<ph name="END_LINK"/> খুলি চাব পাৰে।</translation>
-<translation id="8349305172487531364">বুকমাৰ্কৰ বাৰ</translation>
 <translation id="8355270400102541638">ল'কেল ক্ৰেশ্বৰ প্ৰসংগ:</translation>
 <translation id="8363502534493474904">এয়াৰপ্লেন ম’ড অফ কৰি থকা হৈছে</translation>
 <translation id="8364627913115013041">ছেট কৰা হোৱা নাই।</translation>
@@ -1734,7 +1723,6 @@
 <translation id="8557066899867184262">CVCটো আপোনাৰ কাৰ্ডৰ পিছফালে আছে।</translation>
 <translation id="8559762987265718583">আপোনাৰ ডিভাইচৰ তাৰিখ আৰু সময় (<ph name="DATE_AND_TIME"/>) অশুদ্ধ হোৱাৰ বাবে <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>লৈ কোনো ব্যক্তিগত সংযোগ স্থাপন কৰিব নোৱাৰি।</translation>
 <translation id="8564182942834072828">পৃথক নথি/নিমিলোৱা প্ৰতিলিপিসমূহ</translation>
-<translation id="8564985650692024650">আপুনি যদি নিজৰ পাছৱৰ্ডটো অন্য ছাইটত পুনৰ ব্যৱহাৰ কৰিছিল <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/>এ আপোনাৰ পাছৱর্ডটো ৰিছেট কৰিবলৈ চুপাৰিছ কৰে।</translation>
 <translation id="8571890674111243710">পৃষ্ঠাটো <ph name="LANGUAGE"/>লৈ অনুবাদ কৰি থকা হৈছে...</translation>
 <translation id="8574899947864779331">কাৰ্ডসমূহ খৰতকীয়াকৈ নিশ্চিত কৰিবলৈ স্পৰ্শ আইডি ব্যৱহাৰ কৰক</translation>
 <translation id="858637041960032120">ফোন নম্বৰ যোগ কৰক</translation>
@@ -1760,7 +1748,6 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, সন্ধানৰ পৰামৰ্শ</translation>
 <translation id="8719528812645237045">ওপৰৰ অংশত একাধিক পাঞ্চ কৰক</translation>
 <translation id="8725066075913043281">আকৌ চেষ্টা কৰক</translation>
-<translation id="8728672262656704056">আপুনি ইনক’গনিট’ ম’ডত প্ৰৱেশ কৰিছে</translation>
 <translation id="8730621377337864115">হ’ল</translation>
 <translation id="6326805297893828864">কোনো সুৰক্ষিত সংযোগ স্থাপন কৰিবলৈ আপোনাৰ ঘড়ীটো সঠিককৈ ছেট কৰাৰ আৱশ্যক। ইয়াৰ কাৰণ হৈছে ৱেবছাইটসমূহে নিজৰ চিনাক্তকৰণৰ বাবে ব্যৱহাৰ কৰা প্ৰমাণপত্ৰসমূহ কোনো নির্দিষ্ট সময়সীমাৰ বাবেহে মান্য হয়। আপোনাৰ ডিভাইচৰ ঘড়ীটো অশুদ্ধ হোৱাৰ বাবে Braveএ প্ৰমাণপত্ৰসমূহ সত্যাপন কৰিব নোৱাৰে।</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/>ৰ &lt;abbr id="dnsDefinition"&gt;DNS ঠিকনা&lt;/abbr&gt; বিচাৰিব পৰা নগ’ল। সমস্যাটোৰ কাৰণ জানিবলৈ চেষ্টা কৰি থকা হৈছে।</translation>
@@ -1793,7 +1780,6 @@
 <translation id="8903921497873541725">জুম ইন কৰক</translation>
 <translation id="890485472659500557">অভিযান্ত্রিক-C</translation>
 <translation id="890493561996401738">পৰামৰ্শৰ বুটামটো আঁতৰাওক, আঁতৰাবলৈ এণ্টাৰ টিপক, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">আপুনি ইনক’গনিট’ ম’ড ব্যৱহাৰ কৰিছে</translation>
 <translation id="5713644099811900409">Brave একাউণ্ট</translation>
 <translation id="8918231688545606538">এই পৃষ্ঠাখন সন্দেহজনক</translation>
 <translation id="892588693504540538">সোঁফালে ওপৰৰ অংশত পাঞ্চ কৰক</translation>
@@ -1894,7 +1880,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Brave Payৰ পৰা</translation>
-<translation id="8820817407110198400">বুকমাৰ্কৰ বাৰ</translation>
+<translation id="8820817407110198400">বুকমার্কসমূহ</translation>
 <translation id="8362995731815961365">এই কম্পিউটাৰটো ছেট আপ কৰা লোকজনে এই ছাইটটো অৱৰোধ কৰিছে।</translation>
 <translation id="4075123085690634698">কোনো নতুন ইনক’গনিট’ ৱিণ্ড’ত পৃষ্ঠা খোলক (⇧⌘N)</translation>
 <translation id="2388886110302389394">এটা নতুন ৱিণ্ড’ত পৃষ্ঠা খোলক (Ctrl-Shift-N)</translation>
