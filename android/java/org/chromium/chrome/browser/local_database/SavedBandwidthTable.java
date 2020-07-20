@@ -12,18 +12,18 @@ public class SavedBandwidthTable {
     public static final String COLUMN_TIMESTAMP = "timestamp";
     // Create table SQL query
     public static final String CREATE_TABLE =
-        "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
+        "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
         + COLUMN_SAVED_BANDWIDTH + " INTEGER,"
-        + COLUMN_TIMESTAMP + " INTEGER"
+        + COLUMN_TIMESTAMP + " DATETIME"
         + ")";
 
     public SavedBandwidthTable() {
     }
 
     private long mSavedBandwidth;
-    private long mTimestamp;
+    private String mTimestamp;
 
-    public SavedBandwidthTable(long savedBandwidth, long timestamp) {
+    public SavedBandwidthTable(long savedBandwidth, String timestamp) {
         mSavedBandwidth = savedBandwidth;
         mTimestamp = timestamp;
     }
@@ -32,7 +32,7 @@ public class SavedBandwidthTable {
         return mSavedBandwidth;
     }
 
-    public long getTimestamp() {
+    public String getTimestamp() {
         return mTimestamp;
     }
 }

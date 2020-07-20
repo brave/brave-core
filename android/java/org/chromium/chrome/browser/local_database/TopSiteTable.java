@@ -15,7 +15,7 @@ public class TopSiteTable {
 
     // Create table SQL query
     public static final String CREATE_TABLE =
-            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_DESTINATION_URL + " TEXT,"
                     + COLUMN_BACKGROUND_COLOR + " TEXT,"

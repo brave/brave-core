@@ -13,5 +13,4 @@ public interface NewTabPageListener {
 	void updateInteractableFlag(boolean isFromBottomSheet);
 	void updateNTPImage();
 	void updateTopSites(List<TopSite> topSites);
-	void selectedPage(int index);
 }

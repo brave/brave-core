@@ -12,15 +12,17 @@ public class BraveStatsTable {
     public static final String COLUMN_DOMAIN = "domain";
     public static final String COLUMN_STAT_TYPE = "stat_type";
     public static final String COLUMN_STAT_SITE = "stat_site"; 
+    public static final String COLUMN_STAT_SITE_DOMAIN = "stat_site_domain"; 
     public static final String COLUMN_TIMESTAMP = "timestamp";
     // Create table SQL query
     public static final String CREATE_TABLE =
-        "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "("
+        "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "( ID INTEGER PRIMARY KEY AUTOINCREMENT,"
         + COLUMN_URL + " TEXT,"
         + COLUMN_DOMAIN + " TEXT,"
         + COLUMN_STAT_TYPE + " TEXT,"
         + COLUMN_STAT_SITE + " TEXT,"
-        + COLUMN_TIMESTAMP + " INTEGER"
+        + COLUMN_STAT_SITE_DOMAIN + " TEXT,"
+        + COLUMN_TIMESTAMP + " DATETIME"
         + ")";
 
     public BraveStatsTable() {
@@ -30,13 +32,15 @@ public class BraveStatsTable {
     private String mDomain;
     private String mStatType;
     private String mStatSite;
-    private long mTimestamp;
+    private String mStatSiteDomain;
+    private String mTimestamp;
 
-    public BraveStatsTable(String url, String domain, String statType, String statSite, long timestamp) {
+    public BraveStatsTable(String url, String domain, String statType, String statSite, String statSiteDomain, String timestamp) {
         mUrl = url;
         mDomain = domain;
         mStatType = statType;
         mStatSite = statSite;
+        mStatSiteDomain = statSiteDomain;
         mTimestamp = timestamp;
     }
 
@@ -56,7 +60,11 @@ public class BraveStatsTable {
         return mStatSite;
     }
 
-    public long getTimestamp() {
+    public String getStatSiteDomain() {
+        return mStatSiteDomain;
+    }
+
+    public String getTimestamp() {
         return mTimestamp;
     }
 }

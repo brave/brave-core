@@ -37,18 +37,18 @@ import java.util.Arrays;
  */
 public class OnboardingV2Fragment extends Fragment {
 
-	private static final Context mContext = ContextUtils.getApplicationContext();
+	private Context mContext;
 	private static final List<String> mHeaders = Arrays.asList(
-	            mContext.getResources().getString(R.string.privacy_protection),
-	            mContext.getResources().getString(R.string.save_data_and_battery),
-	            mContext.getResources().getString(R.string.websites_load_faster),
-	            mContext.getResources().getString(R.string.get_weekly_updates)
+	            ContextUtils.getApplicationContext().getResources().getString(R.string.privacy_protection),
+	            ContextUtils.getApplicationContext().getResources().getString(R.string.save_data_and_battery),
+	            ContextUtils.getApplicationContext().getResources().getString(R.string.websites_load_faster),
+	            ContextUtils.getApplicationContext().getResources().getString(R.string.get_weekly_updates)
 	        );
 	private static final List<String> mTexts = Arrays.asList(
-	            mContext.getResources().getString(R.string.privacy_protection_text),
-	            mContext.getResources().getString(R.string.save_data_and_battery_text),
-	            mContext.getResources().getString(R.string.websites_load_faster_text),
-	            mContext.getResources().getString(R.string.get_weekly_updates_text)
+	            ContextUtils.getApplicationContext().getResources().getString(R.string.privacy_protection_text),
+	            ContextUtils.getApplicationContext().getResources().getString(R.string.save_data_and_battery_text),
+	            ContextUtils.getApplicationContext().getResources().getString(R.string.websites_load_faster_text),
+	            ContextUtils.getApplicationContext().getResources().getString(R.string.get_weekly_updates_text)
 	        );
 
 	private static final List<String> mAnimations = Arrays.asList(
@@ -64,7 +64,10 @@ public class OnboardingV2Fragment extends Fragment {
 
 	private LottieAnimationView mAnimatedView;
 	private Button mAction;
-	private View mIndicator1, mIndicator2, mIndicator3, mIndicator4;
+	private View mIndicator1;
+	private View mIndicator2;
+	private View mIndicator3;
+	private View mIndicator4;
 
 	public OnboardingV2Fragment() {
 		// Required empty public constructor
@@ -86,6 +89,11 @@ public class OnboardingV2Fragment extends Fragment {
 		}
 	}
 
+	@Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContext = ContextUtils.getApplicationContext();
+    }
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import android.content.res.Configuration;
 import android.widget.RadioGroup;
 import android.util.Pair;
+import android.content.pm.ActivityInfo;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -33,6 +34,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
@@ -47,18 +49,40 @@ import java.util.Date;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragment {
-    private static final Context mContext = ContextUtils.getApplicationContext();
     private static final short MILLISECONDS_PER_ITEM = 50;
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
+
+    private static final int WEBSITES = 0;
+    private static final int TRACKERS = 1;
 
     private static final int DAYS_7 = -7;
     private static final int DAYS_30 = -30;
     private static final int DAYS_90 = -90;
 
+
+    private TextView adsTrackersCountText;
+    private TextView dataSavedCountText;
+    private TextView dataSavedText;
+    private TextView timeSavedCountText;
+    private TextView timeSavedText;
     private TextView noDataText;
+    private LinearLayout websitesLayout;
+    private LinearLayout trackersLayout;
+
+    private int selectedType = WEBSITES;
+    private int selectedDuration = DAYS_7;
+
+    private Context mContext;
 
     public static BraveStatsBottomSheetDialogFragment newInstance() {
         return new BraveStatsBottomSheetDialogFragment();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mContext = ContextUtils.getApplicationContext();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Nullable
@@ -70,97 +94,53 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if (isTablet || (!isTablet && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)) {
-            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
-        } else {
-            getDialog().getWindow().setLayout(-1, -1);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
-            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
-        } else {
-            getDialog().getWindow().setLayout(-1, -1);
-        }
+    public void onDestroyView() {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        super.onDestroyView();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        LinearLayout layout = view.findViewById(R.id.brave_stats_layout);
-
-        int datePeriod = DAYS_7;
-        // switch (position) {
-        // case 0:
-        //     datePeriod = DAYS_7;
-        //     break;
-        // case 1:
-        //     datePeriod = DAYS_30;
-        //     break;
-        // case 2:
-        //     datePeriod = DAYS_90;
-        //     break;
-        // }
-
-        noDataText = layout.findViewById(R.id.empty_data_text);
-
-        long adsTrackersCount = mDatabaseHelper.getAllStats().size();
-        long timeSavedCount = adsTrackersCount * MILLISECONDS_PER_ITEM;
-
-        TextView adsTrackersCountText = layout.findViewById(R.id.ads_trackers_count_text);
-        Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
-        adsTrackersCountText.setText(adsTrackersPair.first + adsTrackersPair.second);
-
-        TextView dataSavedCountText = layout.findViewById(R.id.data_saved_count_text);
-        Pair<String, String> dataSavedPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(mDatabaseHelper.getTotalSavedBandwidth(), true);
-        dataSavedCountText.setText(dataSavedPair.first);
-
-        TextView dataSavedText = layout.findViewById(R.id.data_saved_text);
-        dataSavedText.setText(String.format(mContext.getResources().getString(R.string.data_saved_text), dataSavedPair.second));
-
-        TextView timeSavedCountText = layout.findViewById(R.id.time_saved_count_text);
-        Pair<String, String> timeSavedPair = BraveStatsUtil.getBraveStatsStringFromTimePair(timeSavedCount / 1000);
-        timeSavedCountText.setText(timeSavedPair.first);
-
-        TextView timeSavedText = layout.findViewById(R.id.time_saved_text);
-        timeSavedText.setText(String.format(mContext.getResources().getString(R.string.time_saved_text), timeSavedPair.second));
-
-        final LinearLayout websitesLayout = layout.findViewById(R.id.wesites_layout);
-        showWebsitesTrackers(websitesLayout, getWebsitesTrackersForDate(datePeriod, true), true);
-
-        final LinearLayout trackersLayout = layout.findViewById(R.id.trackers_layout);
-        showWebsitesTrackers(trackersLayout, getWebsitesTrackersForDate(datePeriod, false), false);
-
-        websitesLayout.setVisibility(View.VISIBLE);
-        trackersLayout.setVisibility(View.GONE);
-
-        RadioGroup radioGroup = layout.findViewById(R.id.radio_group);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        RadioGroup durationRadioGroup = view.findViewById(R.id.duration_radio_group);
+        durationRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                if (checkedId == R.id.websites_radio) {
-                    websitesLayout.setVisibility(View.VISIBLE);
-                    trackersLayout.setVisibility(View.GONE);
-                } else if (checkedId == R.id.trackers_radio) {
-                    websitesLayout.setVisibility(View.GONE);
-                    trackersLayout.setVisibility(View.VISIBLE);
+                if (checkedId == R.id.week_radio) {
+                    selectedDuration = DAYS_7;
+                } else if (checkedId == R.id.month_radio) {
+                    selectedDuration = DAYS_30;
+                } else if (checkedId == R.id.months_radio) {
+                    selectedDuration = DAYS_90;
                 }
+                updateBraveStatsLayout();
             }
         });
 
+        LinearLayout layout = view.findViewById(R.id.brave_stats_layout);
+        adsTrackersCountText = layout.findViewById(R.id.ads_trackers_count_text);
+        dataSavedCountText = layout.findViewById(R.id.data_saved_count_text);
+        dataSavedText = layout.findViewById(R.id.data_saved_text);
+        timeSavedCountText = layout.findViewById(R.id.time_saved_count_text);
+        timeSavedText = layout.findViewById(R.id.time_saved_text);
+        websitesLayout = layout.findViewById(R.id.wesites_layout);
+        trackersLayout = layout.findViewById(R.id.trackers_layout);
+
+        RadioGroup statTypeRadioGroup = layout.findViewById(R.id.stat_type_radio_group);
+        statTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if (checkedId == R.id.websites_radio) {
+                    selectedType = WEBSITES;
+                } else if (checkedId == R.id.trackers_radio) {
+                    selectedType = TRACKERS;
+                }
+                showWebsitesTrackers();
+            }
+        });
+
+        noDataText = layout.findViewById(R.id.empty_data_text);
         ImageView btnClose = view.findViewById(R.id.brave_stats_bottom_sheet_close);
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -168,17 +148,45 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 dismiss();
             }
         });
+        updateBraveStatsLayout();
     }
 
-    private List<Pair<String, Integer>> getWebsitesTrackersForDate(int datePeriod, boolean websitesShown) {
-        if (websitesShown) {
-            return mDatabaseHelper.getStatsWithDate(datePeriod);
+    private void updateBraveStatsLayout() {
+        long totalSavedBandwidth = mDatabaseHelper.getTotalSavedBandwidthWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+
+        long adsTrackersCount = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0)).size();
+        long timeSavedCount = adsTrackersCount * MILLISECONDS_PER_ITEM;
+
+        Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
+        adsTrackersCountText.setText(String.format(getResources().getString(R.string.ntp_stat_text), adsTrackersPair.first, adsTrackersPair.second));
+
+        Pair<String, String> dataSavedPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(totalSavedBandwidth, true);
+        dataSavedCountText.setText(dataSavedPair.first);
+        dataSavedText.setText(String.format(mContext.getResources().getString(R.string.data_saved_text), dataSavedPair.second));
+
+        timeSavedCountText.setText(BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000));
+        timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
+
+        showWebsitesTrackers();
+    }
+
+    private void showWebsitesTrackers() {
+        List<Pair<String, Integer>> websiteTrackers = null;
+        LinearLayout rootView = null;
+        if (selectedType == WEBSITES) {
+            websiteTrackers = mDatabaseHelper.getStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+            websitesLayout.setVisibility(View.VISIBLE);
+            trackersLayout.setVisibility(View.GONE);
+            rootView = websitesLayout;
         } else {
-            return mDatabaseHelper.getSitesWithDate();
+            websiteTrackers = mDatabaseHelper.getSitesWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+            websitesLayout.setVisibility(View.GONE);
+            trackersLayout.setVisibility(View.VISIBLE);
+            rootView = trackersLayout;
         }
-    }
 
-    private void showWebsitesTrackers(LinearLayout webSitesTrackersLayout, List<Pair<String, Integer>> websiteTrackers, boolean websitesShown) {
+        rootView.removeAllViews();
+
         if (websiteTrackers.size() > 0) {
             for (Pair<String, Integer> statPair : websiteTrackers) {
                 LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -187,17 +195,16 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 TextView mTrackerCountText = (TextView) layout.findViewById(R.id.tracker_count_text);
                 TextView mSiteText = (TextView) layout.findViewById(R.id.site_text);
 
-                mTrackerCountText.setVisibility(View.VISIBLE);
                 mTrackerCountText.setText(String.valueOf(statPair.second));
-
+                mTrackerCountText.setTextColor(getResources().getColor(R.color.brave_stats_text_color));
                 mSiteText.setText(statPair.first);
+                mSiteText.setTextColor(getResources().getColor(R.color.brave_stats_text_color));
 
-                webSitesTrackersLayout.addView(layout);
+                rootView.addView(layout);
             }
             noDataText.setVisibility(View.GONE);
         } else {
             noDataText.setVisibility(View.VISIBLE);
         }
     }
-
 }
