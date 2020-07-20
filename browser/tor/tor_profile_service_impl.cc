@@ -211,9 +211,15 @@ TorProfileServiceImpl::CreateProxyConfigService() {
 }
 
 bool TorProfileServiceImpl::IsTorLaunched() {
+  if (is_tor_launched_for_test_)
+    return true;
   if (!tor_launcher_factory_)
     return false;
   return tor_launcher_factory_->GetTorPid() > 0;
+}
+
+void TorProfileServiceImpl::SetTorLaunchedForTest() {
+  is_tor_launched_for_test_ = true;
 }
 
 }  // namespace tor
