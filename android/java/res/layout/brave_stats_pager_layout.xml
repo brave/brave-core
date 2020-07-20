@@ -138,7 +138,7 @@
             android:padding="24dp">
 
             <RadioGroup
-                android:id="@+id/radio_group"
+                android:id="@+id/stat_type_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -160,7 +160,7 @@
                     android:textStyle="bold"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
-                    android:text="Websites" />
+                    android:text="@string/websites" />
 
                 <RadioButton
                     android:id="@+id/trackers_radio"
@@ -175,7 +175,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:textColor="@color/brave_stats_text_color"
-                    android:text="Trackers" />
+                    android:text="@string/trackers" />
 
             </RadioGroup>
 

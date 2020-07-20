@@ -1224,7 +1224,13 @@ until they verify, or until 90 days have passed.
         Data Saved\n(<ph name="DATA_SAVED">%1$s</ph>)
       </message>
       <message name="IDS_TIME_SAVED_TEXT" desc="Brave stats text">
-        <ph name="TIME_SAVED">%1$s</ph>\nSaved
+        Time Saved
+      </message>
+      <message name="IDS_WEBSITES" desc="Brave stats title">
+        Websites
+      </message>
+      <message name="IDS_TRACKERS" desc="Brave stats title">
+        Trackers
       </message>
     </messages>
   </release>

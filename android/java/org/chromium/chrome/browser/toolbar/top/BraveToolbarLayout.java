@@ -74,6 +74,7 @@ import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 
 import java.net.URL;
 import java.util.List;
@@ -192,16 +193,19 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           return;
         }
         mBraveShieldsHandler.updateValues(tabId);
-        if (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
-            || block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS)) {
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+            && (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
+                || block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS))) {
+          Log.e("NTP", subresource);
           addStatsToDb(block_type, subresource, currentTab.getUrlString());
         }
       }
 
       @Override
       public void savedBandwidth(long savings) {
-        // Log.e("NTP", "Savings : " + savings);
-        addSavedBandwidthToDb(savings);
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+          addSavedBandwidthToDb(savings);
+        }
       }
     };
     // Initially show shields off image. Shields button state will be updated when tab is
@@ -258,9 +262,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           updateBraveShieldsButtonState(tab);
         }
         mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
-        // for (BraveStatsTable braveStatsTable : mDatabaseHelper.getAllStats()) {
-        //   Log.e("NTP", braveStatsTable.getUrl() + " : stat type = " + braveStatsTable.getStatType());
-        // }
       }
 
       @Override
@@ -317,13 +318,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       @Override
       protected Void doInBackground() {
         try {
-          Calendar calender = Calendar.getInstance();
-          calender.setTime(new Date());
-          long timestamp = calender.getTimeInMillis();
-          SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(savings, timestamp);
+          SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(savings, BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
           long rowId = mDatabaseHelper.insertSavedBandwidth(savedBandwidthTable);
-          // Log.e("NTP", braveStatsTable.getUrl() + " : stat type = " + braveStatsTable.getStatType());
-          // Log.e("NTP", "SavedBandwidthTable RowId : " + rowId);
         } catch (Exception e) {
           // Do nothing if url is invalid.
           // Just return w/o showing shields popup.
@@ -344,15 +340,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       @Override
       protected Void doInBackground() {
         try {
-          Calendar calender = Calendar.getInstance();
-          calender.setTime(new Date());
-          long timestamp = calender.getTimeInMillis();
           URL urlObject = new URL(url);
           URL siteObject = new URL(statSite);
-          BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), statType, siteObject.getHost(), timestamp);
+          BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), statType, statSite, siteObject.getHost(), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
           long rowId = mDatabaseHelper.insertStats(braveStatsTable);
-          // Log.e("NTP", braveStatsTable.getUrl() + " : stat type = " + braveStatsTable.getStatType());
-          // Log.e("NTP", "BraveStatsTable RowId : " + rowId);
         } catch (Exception e) {
           // Do nothing if url is invalid.
           // Just return w/o showing shields popup.
@@ -401,10 +392,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   }
 
   private void showShieldsMenu(View mBraveShieldsButton) {
-    // for (Pair<String,Integer> statPair : mDatabaseHelper.getStatsWithDate()) {
-    //   Log.e("NTP", statPair.first + " : count = " + statPair.second);
-    // }
-
     Tab currentTab = getToolbarDataProvider().getTab();
     if (currentTab == null) {
       return;
@@ -450,37 +437,37 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     //   Intent searchActivityIntent = new Intent(context, SearchActivity.class);
     //   context.startActivity(searchActivityIntent);
     // } else {
-      if (mBraveShieldsButton != null) {
-        Animator animator;
-        if (hasFocus) {
-          float density = getContext().getResources().getDisplayMetrics().density;
-          boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
-          float toolbarButtonTranslationX =
-            MathUtils.flipSignIf(urlFocusToolbarButtonsTranslationXDP, isRtl) * density;
-          animator = ObjectAnimator.ofFloat(
-                       mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
-          animator.setDuration(urlFocusToolbarButtonsDuration);
-          animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
-          animators.add(animator);
+    if (mBraveShieldsButton != null) {
+      Animator animator;
+      if (hasFocus) {
+        float density = getContext().getResources().getDisplayMetrics().density;
+        boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+        float toolbarButtonTranslationX =
+          MathUtils.flipSignIf(urlFocusToolbarButtonsTranslationXDP, isRtl) * density;
+        animator = ObjectAnimator.ofFloat(
+                     mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
+        animator.setDuration(urlFocusToolbarButtonsDuration);
+        animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
+        animators.add(animator);
 
-          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 0);
-          animator.setDuration(urlFocusToolbarButtonsDuration);
-          animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
-          animators.add(animator);
-        } else {
-          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, TRANSLATION_X, 0);
-          animator.setDuration(urlFocusToolbarButtonsDuration);
-          animator.setStartDelay(urlClearFocusTabStackDelayMs);
-          animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
-          animators.add(animator);
+        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 0);
+        animator.setDuration(urlFocusToolbarButtonsDuration);
+        animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
+        animators.add(animator);
+      } else {
+        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, TRANSLATION_X, 0);
+        animator.setDuration(urlFocusToolbarButtonsDuration);
+        animator.setStartDelay(urlClearFocusTabStackDelayMs);
+        animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
+        animators.add(animator);
 
-          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 1);
-          animator.setDuration(urlFocusToolbarButtonsDuration);
-          animator.setStartDelay(urlClearFocusTabStackDelayMs);
-          animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
-          animators.add(animator);
-        }
+        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 1);
+        animator.setDuration(urlFocusToolbarButtonsDuration);
+        animator.setStartDelay(urlClearFocusTabStackDelayMs);
+        animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
+        animators.add(animator);
       }
+    }
     // }
   }
 
@@ -732,7 +719,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   @Override
   public void OnRewardsMainEnabled(boolean enabled) {
 
-    Log.e("OnRewardsMainEnabled", "isEnabled : "+enabled);
+    Log.e("OnRewardsMainEnabled", "isEnabled : " + enabled);
 
     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();

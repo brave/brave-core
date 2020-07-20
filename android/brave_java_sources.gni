@@ -83,7 +83,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/HighlightView.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/OnboardingV2PagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/onboarding/v2/OnboardingV2Fragment.java",
-  "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetViewPagerAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_stats/BraveStatsUtil.java",
   "../../brave/android/java/org/chromium/chrome/browser/partnercustomizations/BravePartnerBrowserCustomizations.java",
