@@ -46,6 +46,8 @@ source_set("features") {
 }
 
 source_set("network_time_helper") {
+  # Remove when https://github.com/brave/brave-browser/issues/10650 is resolved
+  check_includes = false
   sources = [
     "network_time_helper.cc",
     "network_time_helper.h",

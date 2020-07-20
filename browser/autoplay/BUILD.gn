@@ -1,6 +1,8 @@
 import("//build/config/features.gni")
 
 source_set("autoplay") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
   sources = [
     "autoplay_permission_context.cc",
     "autoplay_permission_context.h",

@@ -7,6 +7,8 @@ import("//build/config/features.gni")
 defines = brave_service_key_defines
 
 source_set("net") {
+  # Remove when https://github.com/brave/brave-browser/issues/10659 is resolved
+  check_includes = false
   configs += [ "//brave/build/geolocation" ]
   sources = [
     "brave_ad_block_tp_network_delegate_helper.cc",

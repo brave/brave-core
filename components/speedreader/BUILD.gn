@@ -10,6 +10,8 @@ buildflag_header("buildflags") {
 }
 
 source_set("speedreader") {
+  # Remove when https://github.com/brave/brave-browser/issues/10638 is resolved
+  check_includes = false
   public_deps = [
     ":buildflags",
     "rust/ffi:speedreader_ffi_lib",

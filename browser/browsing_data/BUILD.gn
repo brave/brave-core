@@ -1,4 +1,6 @@
 source_set("browsing_data") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
   sources = [
     "brave_browsing_data_remover_delegate.cc",
     "brave_browsing_data_remover_delegate.h",

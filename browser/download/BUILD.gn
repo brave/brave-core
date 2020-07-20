@@ -1,6 +1,8 @@
 import("//build/config/features.gni")
 
 source_set("download") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
   sources = [
     "brave_download_item_model.cc",
     "brave_download_item_model.h",

@@ -1,4 +1,6 @@
 source_set("themes") {
+  # Remove when https://github.com/brave/brave-browser/issues/10656 is resolved
+  check_includes = false
   sources = [
     "brave_dark_mode_utils.h",
     "brave_dark_mode_utils_android.cc",

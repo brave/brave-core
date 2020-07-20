@@ -1,6 +1,8 @@
 import("//build/config/features.gni")
 
 source_set("importer") {
+  # Remove when https://github.com/brave/brave-browser/issues/10657 is resolved
+  check_includes = false
   sources = [
     "brave_external_process_importer_client.cc",
     "brave_external_process_importer_client.h",

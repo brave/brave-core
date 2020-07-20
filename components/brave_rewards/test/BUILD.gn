@@ -10,6 +10,8 @@ import("//testing/test.gni")
 source_set("brave_rewards_unit_tests") {
   testonly = true
 
+  # Remove when https://github.com/brave/brave-browser/issues/10615 is resolved
+  check_includes = false
   if (brave_rewards_enabled) {
     sources = [
       "//brave/components/l10n/browser/locale_helper_mock.cc",
