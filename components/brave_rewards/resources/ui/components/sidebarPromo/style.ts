@@ -9,63 +9,65 @@ interface StyleProps {
   src?: string
 }
 
-export const StyledWrapper = styled<{}, 'div'>('div')`
+export const StyledWrapper = styled<{}, 'a'>('a')`
   color: #fff;
   width: 100%;
-  padding: 7px;
   background: #fff;
   margin-top: 30px;
   border-radius: 8px;
   box-shadow: 0 0 13px 0 rgba(0,0,0,0.07);
+  min-height: 157px;
+  cursor: pointer;
+  display: flex;
+  overflow: hidden;
 `
 
 export const StyledCloseIcon = styled<{}, 'div'>('div')`
   width: 12px;
   height: 12px;
-  float: right;
-  cursor: pointer;
   color: ${palette.grey600};
+  position: relative;
+  z-index: 2;
+  float: right;
+  margin: 11px 11px 0 0;
 `
 
 export const StyledBackground = styled<StyleProps, 'div'>('div')`
-  float: left;
-  width: 130px;
-  height: 130px;
-  position: absolute;
-  border-radius: 8px;
-  margin: 10px 0px 0px -7px;
-  background: url(${p => p.src}) no-repeat top right;
+  width: 117px;
+  height: 100%;
+  background: url(${p => p.src}) no-repeat;
 `
 
 export const StyledContent = styled<{}, 'div'>('div')`
-  float: right;
-  max-width: 205px;
-  margin-top: 25px;
-  text-align: left;
+  max-width: 222px;
+  margin-top: 14px;
+  padding-left: 15px;
 `
 
 export const StyledTitle = styled<{}, 'span'>('span')`
   color: #000;
   display: block;
   font-size: 15px;
-  font-weight: bold;
-  margin-bottom: 5px;
+  font-weight: 600;
+  margin-bottom: 9px;
   font-family: Poppins, sans-serif;
+  line-height: 1.6;
 `
 
-export const StyledInfo = styled<{}, 'span'>('span')`
-  font-size: 13px;
+export const StyledInfo = styled<{}, 'div'>('div')`
+  font-size: 11.5px;
   line-height: 18px;
   color: ${palette.grey600};
   font-family: Muli, sans-serif;
+  line-height: 1.57;
 `
 
-export const StyledLink = styled<{}, 'span'>('span')`
-  cursor: pointer;
+export const StyledLink = styled<{}, 'a'>('a')`
   margin-left: 2px;
   font-weight: bold;
   display: inline-block;
   color: ${palette.blurple400};
+  text-decoration: none;
 `
 
 export const StyledDisclaimer = styled<{}, 'span'>('span')`
@@ -75,4 +77,8 @@ export const StyledDisclaimer = styled<{}, 'span'>('span')`
   font-weight: bold;
   color: ${palette.grey500};
   font-family: Muli, sans-serif;
+`
+
+export const StyleRight = styled<{}, 'div'>('div')`
+  flex-grow: 1;
 `

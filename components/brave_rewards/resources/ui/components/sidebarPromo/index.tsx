@@ -9,7 +9,8 @@ import {
   StyledBackground,
   StyledContent,
   StyledTitle,
-  StyledDisclaimer
+  StyledDisclaimer,
+  StyleRight
 } from './style'
 import { CloseStrokeIcon } from 'brave-ui/components/icons'
 
@@ -18,7 +19,8 @@ export interface Props {
   copy: JSX.Element
   imagePath: string
   disclaimer?: string | JSX.Element
-  onDismissPromo: () => void
+  onDismissPromo: (event: React.MouseEvent<HTMLDivElement>) => void
+  link: string
 }
 
 export default class SidebarPromo extends React.PureComponent<Props, {}> {
@@ -28,28 +30,31 @@ export default class SidebarPromo extends React.PureComponent<Props, {}> {
       title,
       imagePath,
       disclaimer,
-      onDismissPromo
+      onDismissPromo,
+      link
     } = this.props
 
     return (
-      <StyledWrapper>
-        <StyledCloseIcon onClick={onDismissPromo}>
-          <CloseStrokeIcon />
-        </StyledCloseIcon>
+      <StyledWrapper href={link} target={'_blank'}>
         <StyledBackground src={imagePath} />
-        <StyledContent>
-          <StyledTitle>
-            {title}
-          </StyledTitle>
-          {copy}
-          {
-            disclaimer
-            ? <StyledDisclaimer>
-                {disclaimer}
-              </StyledDisclaimer>
-            : null
-          }
-        </StyledContent>
+        <StyleRight>
+          <StyledCloseIcon onClick={onDismissPromo}>
+            <CloseStrokeIcon />
+          </StyledCloseIcon>
+          <StyledContent>
+            <StyledTitle>
+              {title}
+            </StyledTitle>
+            {copy}
+            {
+              disclaimer
+              ? <StyledDisclaimer>
+                  {disclaimer}
+                </StyledDisclaimer>
+              : null
+            }
+          </StyledContent>
+        </StyleRight>
       </StyledWrapper>
     )
   }

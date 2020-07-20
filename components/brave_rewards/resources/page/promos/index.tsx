@@ -4,56 +4,72 @@
 
 import * as React from 'react'
 import tapBg from './assets/tap_bg.svg'
-import { StyledLink, StyledInfo } from '../../ui/components/sidebarPromo/style'
+import upholdBg from './assets/uphold_bg.png'
+import { StyledInfo } from '../../ui/components/sidebarPromo/style'
 import { getLocale } from '../../../../common/locale'
 
-export type PromoType = 'tap-network'
+export type PromoType = 'uphold' | 'tap-network'
 
 export interface Promo {
-  title: string,
-  imagePath: string,
-  copy: JSX.Element,
-  disclaimer?: string,
+  title: string
+  imagePath: string
+  link: string
+  copy: JSX.Element
+  disclaimer?: string
   supportedLocales: string[]
 }
 
 export const getActivePromos = (rewardsData: Rewards.State) => {
   let promos = ['tap-network']
 
-  return promos
-}
-
-const openLink = (type: PromoType, rewardsData: Rewards.State) => {
-  let url
-  switch (type) {
-    case 'tap-network': {
-      url = 'https://brave.tapnetwork.io'
-      break
+  if (rewardsData) {
+    let wallet = rewardsData.externalWallet
+    if (wallet && wallet.address.length > 0 && wallet.status === 2) { // WalletStatus::VERIFIED
+      promos.unshift('uphold')
     }
   }
 
-  window.open(url, '_blank')
+  return promos
+}
+
+const getLink = (type: PromoType) => {
+  switch (type) {
+    case 'tap-network': {
+      return 'https://brave.tapnetwork.io'
+    }
+    case 'uphold': {
+      return 'https://uphold.com/brave/upholdcard'
+    }
+  }
+
+  return ''
 }
 
 export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
-  const link = openLink.bind(this, type, rewardsData)
   switch (type) {
     case 'tap-network':
       return {
         imagePath: tapBg,
+        link: getLink(type),
         copy: (
-          <div>
-            <StyledInfo>
-              {getLocale('tapNetworkInfo')}
-            </StyledInfo>
-            <StyledLink onClick={link}>
-              {getLocale('tapNetworkLink')}
-            </StyledLink>
-          </div>
+          <StyledInfo>
+            {getLocale('tapNetworkInfo')}
+          </StyledInfo>
         ),
         supportedLocales: ['US'],
         title: getLocale('tapNetworkTitle'),
         disclaimer: getLocale('tapNetworkDisclaimer')
+      }
+    case 'uphold':
+      return {
+        imagePath: upholdBg,
+        link: getLink(type),
+        copy: (
+          <StyledInfo>
+            {getLocale('upholdPromoInfo')}
+          </StyledInfo>
+        ),
+        title: getLocale('upholdPromoTitle')
       }
     default:
       return null

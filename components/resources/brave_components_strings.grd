@@ -787,8 +787,10 @@
 
       <message name="IDS_BRAVE_UI_TAP_NETWORK_TITLE" desc="">Redeem BAT for Gift Cards</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_INFO" desc="">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</message>
-      <message name="IDS_BRAVE_UI_TAP_NETWORK_LINK" desc="">Visit TAP.</message>
       <message name="IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER" desc="">* Requires Uphold Verification.</message>
+
+      <message name="IDS_BRAVE_UI_UPHOLD_PROMO_TITLE" desc="">Get 2% cryptoback with the Uphold card</message>
+      <message name="IDS_BRAVE_UI_UPHOLD_PROMO_INFO" desc="">Spend your crypto and other assets at nearly 50 million merchants and ATMs worldwide. Spend crypto to get crypto!</message>
 
       <!-- Rewards New Tab Widget resources -->
       <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
