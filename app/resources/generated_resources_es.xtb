@@ -6466,7 +6466,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7376221878517288144">¿Quieres salir del modo privado de todas formas?</translation>
 <translation id="871606814707918245">La mayoría de los usuarios bloquean las notificaciones de este sitio web</translation>
 <translation id="5053701565089446556">Extensión privada: <ph name="EXTENSION_NAME"/></translation>
-<translation id="611296870688433505">Aplicación de incógnito: <ph name="APP_NAME"/></translation>
+<translation id="611296870688433505">Aplicación Privada: <ph name="APP_NAME"/></translation>
 <translation id="9048137919253433011">Pestaña privada: <ph name="TAB_NAME"/></translation>
 <translation id="1799432502220762862">Subframe privado: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Portal privado: <ph name="SUBFRAME_SITE"/></translation>
@@ -6489,17 +6489,17 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3098826269712097986">Los datos de inicio de sesión se almacenarán en Brave cuando salgas del modo de incógnito. Así podrás usar Touch ID con este sitio web más adelante.</translation>
 <translation id="5186185447130319458">Privado</translation>
 <translation id="2579188629646253712">Salir del modo privado</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Abrir todas en una &amp;ventana de incógnito}=1{Abrir en una &amp;ventana de incógnito}other{Abrir (#) en una &amp;ventana de incógnito}}</translation>
-<translation id="2431625704210501303">Abrir en una ventana de &amp;incógnito</translation>
+<translation id="6744651634043798597">{COUNT,plural, =0{Abrir todas en una &amp;ventana privada}=1{Abrir en una &amp;ventana privada}other{Abrir (#) en una &amp;ventana privada}}</translation>
+<translation id="2431625704210501303">Abrir en una ventana privada</translation>
 <translation id="4620367155626060530">&amp;Mostrar barra de marcadores</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Abrir todas en una &amp;ventana de incógnito}=1{Abrir en una &amp;ventana de incógnito}other{Abrir (#) en una &amp;ventana de incógnito}}</translation>
-<translation id="1985165269306590797">Abrir en una ventana de &amp;incógnito</translation>
+<translation id="2633634757060186848">{COUNT,plural, =0{Abrir todas en una &amp;ventana privada}=1{Abrir en una &amp;ventana privada}other{Abrir (#) en una &amp;ventana privada}}</translation>
+<translation id="1985165269306590797">Abrir en una ventana privada</translation>
 <translation id="4680518314108745448">&amp;Mostrar barra de marcadores</translation>
-<translation id="642436385689435488">Abre todos los marcadores en una ventana de incógnito</translation>
-<translation id="5463021359602611602">Abrir en una ventana de incógnito</translation>
-<translation id="1850357845349976573">{0,plural, =1{Incógnito}other{# ventanas de incógnito abiertas}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Incógnito}other{Incógnito (#)}}</translation>
-<translation id="5070556616376997776">Estás en modo de incógnito</translation>
+<translation id="642436385689435488">Abre todos los marcadores en una ventana privada</translation>
+<translation id="5463021359602611602">Abrir en una ventana privada</translation>
+<translation id="1850357845349976573">{0,plural, =1{Privada}other{# ventanas privadas abiertas}}</translation>
+<translation id="37784332082579802">{0,plural, =1{Privada}other{Privada (#)}}</translation>
+<translation id="5070556616376997776">Esta es una ventana privada</translation>
 <translation id="5832813618714645810">Usuarios</translation>
 <translation id="7171000599584840888">Añadir perfil...</translation>
 <translation id="2005199804247617997">Otras personas</translation>
@@ -6525,21 +6525,21 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="5840822070878669614">Abrir Brave Web Store</translation>
 <translation id="383007806262310953">Mostrar barra de marcadores</translation>
 <translation id="2890280714162339872">Sesión de incógnito actual: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
-<translation id="4207277598811881727">Sesión de incógnito actual: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
-<translation id="4470052247371020791">Sesión de incógnito actual: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
-<translation id="4332019753717105077">Sesión de incógnito actual: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> y otros permisos</translation>
-<translation id="8648684608605749476">Bloquear cookies de terceros en el modo de incógnito</translation>
-<translation id="2199515977216775204">Mientras estás en modo de incógnito, los sitios web no pueden usar tus cookies para ver tu actividad de navegación en otros sitios web con el objetivo de, por ejemplo, personalizar tus anuncios. Es posible que las funciones de algunos sitios web no funcionen correctamente.</translation>
-<translation id="6105125042109106861">Las cookies de terceros están bloqueadas en el modo de incógnito</translation>
-<translation id="1281501490173223206">Solo a la sesión de incógnito actual</translation>
+<translation id="4207277598811881727">Sesión privada actual: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
+<translation id="4470052247371020791">Sesión privada actual: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
+<translation id="4332019753717105077">Sesión privada actual: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/>, y otros permisos</translation>
+<translation id="8648684608605749476">Bloquear cookies de terceros en el modo Privado</translation>
+<translation id="2199515977216775204">Mientras estás en modo privado, los sitios web no pueden usar tus cookies para ver tu actividad de navegación en otros sitios web con el objetivo de, por ejemplo, personalizar tus anuncios. Es posible que las funciones de algunos sitios web no funcionen correctamente.</translation>
+<translation id="6105125042109106861">Las cookies de terceros están bloqueadas en el modo privado</translation>
+<translation id="1281501490173223206">Solo a la sesión privada actual</translation>
 <translation id="5566692924079383101">Esta excepción se quitará automáticamente cuando salgas de la sesión de incógnito actual.</translation>
 <translation id="6906406176003824042">Cambiar persona</translation>
 <translation id="9063160602596686558">Envía automáticamente estadísticas de uso e informes sobre fallos a Brave</translation>
-<translation id="3860292630623580294">(Incógnito)</translation>
-<translation id="4854477725773269949">Permitir en modo de incógnito</translation>
+<translation id="3860292630623580294">(Privado)</translation>
+<translation id="4854477725773269949">Permitir en modo privado</translation>
 <translation id="6436164536244065364">Ver en Brave Web Store</translation>
 <translation id="38046578254905003">Busca extensiones y temas en <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
-<translation id="6336451774241870485">Nueva pestaña de incógnito</translation>
-<translation id="6610147964972079463">Cerrar pestañas de incógnito</translation>
+<translation id="6336451774241870485">Nueva pestaña privada</translation>
+<translation id="6610147964972079463">Cerrar pestañas privadas</translation>
 <translation id="4933782374919065856">¿Tienes alguna pregunta? Ponte en contacto con la persona que supervisa tu perfil.</translation>
 </translationbundle>
