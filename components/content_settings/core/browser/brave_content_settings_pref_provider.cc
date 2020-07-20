@@ -114,6 +114,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
                                      bool store_last_modified,
                                      bool restore_session)
     : PrefProvider(prefs, off_the_record, store_last_modified, restore_session),
+      initialized_(false),
       weak_factory_(this) {
   brave_pref_change_registrar_.Init(prefs_);
   brave_pref_change_registrar_.Add(
@@ -138,8 +139,9 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
 
   MigrateShieldsSettings(off_the_record);
 
-  AddObserver(this);
   OnCookieSettingsChanged(ContentSettingsType::PLUGINS);
+  initialized_ = true;
+  AddObserver(this);
 }
 
 BravePrefProvider::~BravePrefProvider() {}
@@ -442,7 +444,7 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   }
 
   // Notify brave cookie changes as ContentSettingsType::COOKIES
-  if (content_type == ContentSettingsType::PLUGINS) {
+  if (initialized_ && content_type == ContentSettingsType::PLUGINS) {
     // PostTask here to avoid content settings autolock DCHECK
     base::PostTask(
         FROM_HERE,
