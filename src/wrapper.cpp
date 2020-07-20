@@ -111,10 +111,6 @@ bool Engine::tagExists(const std::string& tag) {
   return engine_tag_exists(raw, tag.c_str());
 }
 
-void Engine::addFilter(const std::string& filter) {
-  engine_add_filter(raw, filter.c_str());
-}
-
 void Engine::addResource(const std::string& key,
     const std::string& content_type,
     const std::string &data) {

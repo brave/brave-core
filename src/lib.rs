@@ -27,9 +27,10 @@ pub struct FList {
 /// Create a new `Engine`.
 #[no_mangle]
 pub unsafe extern "C" fn engine_create(rules: *const c_char) -> *mut Engine {
-    let split = CStr::from_ptr(rules).to_str().unwrap().lines();
-    let rules: Vec<String> = split.map(String::from).collect();
-    let engine = Engine::from_rules_parametrised(rules.as_slice(), true, true, false, true);
+    let rules = CStr::from_ptr(rules).to_str().unwrap();
+    let mut filter_set = adblock::lists::FilterSet::new(false);
+    filter_set.add_filter_list(&rules, adblock::lists::FilterFormat::Standard);
+    let engine = Engine::from_filter_set(filter_set, true);
     Box::into_raw(Box::new(engine))
 }
 
@@ -77,7 +78,7 @@ pub unsafe extern "C" fn engine_add_tag(engine: *mut Engine, tag: *const c_char)
     let tag = CStr::from_ptr(tag).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.tags_enable(&[tag]);
+    engine.enable_tags(&[tag]);
 }
 
 /// Checks if a tag exists in the engine
@@ -108,7 +109,7 @@ pub unsafe extern "C" fn engine_add_resource(
     };
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.resource_add(resource);
+    engine.add_resource(resource);
 }
 
 /// Adds a list of `Resource`s from JSON format
@@ -121,16 +122,7 @@ pub unsafe extern "C" fn engine_add_resources(engine: *mut Engine, resources: *c
     });
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.with_resources(&resources);
-}
-
-// Adds a filter rule to the engine
-#[no_mangle]
-pub unsafe extern "C" fn engine_add_filter(engine: *mut Engine, filter: *const c_char) {
-    let filter = CStr::from_ptr(filter).to_str().unwrap();
-    assert!(!engine.is_null());
-    let engine = Box::leak(Box::from_raw(engine));
-    engine.filter_add(filter);
+    engine.use_resources(&resources);
 }
 
 /// Removes a tag to the engine for consideration
@@ -139,7 +131,7 @@ pub unsafe extern "C" fn engine_remove_tag(engine: *mut Engine, tag: *const c_ch
     let tag = CStr::from_ptr(tag).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine.tags_disable(&[tag]);
+    engine.disable_tags(&[tag]);
 }
 
 /// Deserializes a previously serialized data file list.

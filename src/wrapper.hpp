@@ -51,7 +51,6 @@ class Engine {
       bool* saved_from_exception,
       std::string *redirect);
   bool deserialize(const char* data, size_t data_size);
-  void addFilter(const std::string& filter);
   void addTag(const std::string& tag);
   void addResource(const std::string& key,
       const std::string& content_type,

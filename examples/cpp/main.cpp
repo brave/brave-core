@@ -120,21 +120,6 @@ void TestBasics() {
       "example.com", "example.com", false, "image");
 }
 
-void TestAddingFilters() {
-  Engine engine("");
-  engine.addFilter("-advertisement-icon.");
-  engine.addFilter("-advertisement-management");
-  engine.addFilter("-advertisement.");
-  engine.addFilter("-advertisement/script.");
-  engine.addFilter("@@good-advertisement");
-  Check(true, false, false, "", "Basic match", engine, "http://example.com/-advertisement-icon.",
-      "example.com", "example.com", false , "image");
-  Check(false, false, false, "", "Basic not match", engine, "https://brianbondy.com",
-      "brianbondy.com", "example.com", true, "image");
-  Check(false, false, true, "", "Basic saved from exception", engine, "http://example.com/good-advertisement-icon.",
-      "example.com", "example.com", false, "image");
-}
-
 void TestDeserialization() {
   Engine engine("");
   engine.deserialize(reinterpret_cast<const char*>(ad_banner_dat_buffer),
@@ -374,7 +359,7 @@ void TestGenerichide() {
 
 void TestDefaultLists() {
   std::vector<FilterList>& default_lists = FilterList::GetDefaultLists();
-  assert(default_lists.size() == 9);
+  assert(default_lists.size() == 10);
   FilterList& l = default_lists[0];
   assert(l.uuid == "67F880F5-7602-4042-8A3D-01481FD7437A");
   assert(l.url == "https://easylist.to/easylist/easylist.txt");
@@ -387,7 +372,7 @@ void TestDefaultLists() {
   num_passed++;
 
   // Includes Brave Disconnect list
-  FilterList& l2 = default_lists[7];
+  FilterList& l2 = default_lists[8];
   assert(l2.uuid == "9FA0665A-8FC0-4590-A80A-3FF6117A1258");
   assert(l2.url == "https://raw.githubusercontent.com"
       "/brave/adblock-lists/master/brave-disconnect.txt");
@@ -412,7 +397,6 @@ void TestRegionalLists() {
 
 int main() {
   TestBasics();
-  TestAddingFilters();
   TestDeserialization();
   TestTags();
   TestRedirects();

@@ -26,8 +26,6 @@ typedef struct {
  */
 void c_char_buffer_destroy(char *s);
 
-void engine_add_filter(C_Engine *engine, const char *filter);
-
 /**
  * Adds a resource to the engine by name
  */
