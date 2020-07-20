@@ -90,7 +90,7 @@ void BraveTextButton::OnPaintBackground(gfx::Canvas* canvas) {
   // Set brave-style hover colors
   LabelButton::OnPaintBackground(canvas);
   if (GetProminent() && (
-        hover_animation().is_animating() || state() == STATE_HOVERED)) {
+        hover_animation().is_animating() || GetState() == STATE_HOVERED)) {
     constexpr SkColor normal_color = kBraveBrandColor;
     constexpr SkColor hover_color = SkColorSetRGB(0xff, 0x97, 0x7d);
     const SkAlpha alpha = hover_animation().CurrentValueBetween(0x00, 0xff);
@@ -140,8 +140,8 @@ void BraveTextButton::UpdateColors() {
     SetTextColor(ButtonState::STATE_PRESSED, kBraveBrandColor);
   }
   // Override border color for hover on non-prominent
-  if (state() == ButtonState::STATE_PRESSED
-        || state() == ButtonState::STATE_HOVERED) {
+  if (GetState() == ButtonState::STATE_PRESSED
+        || GetState() == ButtonState::STATE_HOVERED) {
     // First, get the same background fill color that MdTextButton does.
     // It is undfortunate to copy these lines almost as-is. Consider otherwise
     // patching it in via a #define.
@@ -150,7 +150,7 @@ void BraveTextButton::UpdateColors() {
     if (GetBgColorOverride()) {
       bg_color = *GetBgColorOverride();
     }
-    if (state() == STATE_PRESSED) {
+    if (GetState() == STATE_PRESSED) {
       bg_color = GetNativeTheme()->GetSystemButtonPressedColor(bg_color);
     }
     // The only thing that differs for Brave is the stroke color
