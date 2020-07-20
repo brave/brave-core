@@ -155,7 +155,6 @@ test("brave_unit_tests") {
     "//content/test:test_support",
     "//services/network/public/cpp:cpp",
     "//services/network:test_support",
-    "//third_party/cacheinvalidation",
   ]
 
   data = [ "data/" ]
