@@ -36,33 +36,14 @@ class FeedItemView: UIView {
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
         $0.numberOfLines = 2
     }
-    /// The date of when the article was posted (if applicable)
+    /// The date of when the article was posted
     lazy var dateLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 11.0, weight: .semibold)
         $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.6)
     }
-    /// A brand label (if applicable)
-    lazy var brandLabelView = UILabel().then {
-        $0.font = .systemFont(ofSize: 13.0, weight: .semibold)
-        $0.appearanceTextColor = .white
-    }
-    /// A brand image (if applicable)
-    lazy var brandImageView = UIImageView().then {
-        $0.contentMode = .scaleAspectFit
-        $0.backgroundColor = .clear
-        $0.clipsToBounds = true
-    }
-    lazy var brandContainerView = UIView().then {
-        $0.snp.makeConstraints {
-            $0.height.equalTo(20)
-        }
-        $0.addSubview(self.brandImageView)
-        self.brandImageView.snp.makeConstraints {
-            $0.leading.top.bottom.equalToSuperview()
-            $0.trailing.lessThanOrEqualToSuperview()
-            $0.height.equalTo(20)
-        }
-    }
+    /// The branding information (if applicable)
+    lazy var brandContainerView = BrandContainerView()
+    
     private lazy var itemHiddenOverlay = HiddenOverlayView()
     
     /// Whether or not the item's content has been hidden by the user
@@ -82,10 +63,8 @@ class FeedItemView: UIView {
     /// Generates the view hierarchy given a layout component
     private func view(for component: Layout.Component) -> UIView {
         switch component {
-        case .brandImage:
+        case .brand:
             return brandContainerView
-        case .brandText:
-            return brandLabelView
         case .date:
             return dateLabel
         case .thumbnail(let imageLayout):
@@ -170,8 +149,7 @@ extension FeedItemView {
             case thumbnail(ImageLayout)
             case title(_ numberOfLines: Int = 2)
             case date
-            case brandImage
-            case brandText
+            case brand(viewingMode: BrandContainerView.ViewingMode = .automatic)
         }
         /// The root stack for a given layout
         var root: Stack
@@ -197,10 +175,13 @@ extension FeedItemView {
                     return UIFont.systemFont(ofSize: 14.0, weight: .semibold).lineHeight * CGFloat(numberOfLines)
                 case .date:
                     return UIFont.systemFont(ofSize: 11.0, weight: .semibold).lineHeight
-                case .brandImage:
-                    return 20.0
-                case .brandText:
-                    return UIFont.systemFont(ofSize: 13.0, weight: .semibold).lineHeight
+                case .brand(let viewingMode):
+                    switch viewingMode {
+                    case .automatic, .alwaysLogo:
+                        return 20.0
+                    case .alwaysText:
+                        return UIFont.systemFont(ofSize: 13.0, weight: .semibold).lineHeight
+                    }
                 }
                 
             }
@@ -219,7 +200,7 @@ extension FeedItemView {
         /// ├─────────────────┤
         /// │ title           │
         /// │ date            │
-        /// │ brand image     │
+        /// │ brand           │
         /// ╰─────────────────╯
         /// ```
         ///
@@ -236,8 +217,8 @@ extension FeedItemView {
                             children: [
                                 .title(),
                                 .date,
-                                .flexibleSpace(minHeight: 16),
-                                .brandImage
+                                .flexibleSpace(minHeight: 12),
+                                .brand()
                             ]
                         )
                     )
@@ -317,7 +298,7 @@ extension FeedItemView {
                             axis: .vertical,
                             spacing: 4,
                             children: [
-                                .brandText,
+                                .brand(viewingMode: .alwaysText),
                                 .title(3),
                                 .date
                             ]
@@ -387,6 +368,86 @@ extension FeedItemView {
         @available(*, unavailable)
         required init(coder: NSCoder) {
             fatalError()
+        }
+    }
+    
+    /// A container for showing a brand either through a logo image or through a simple text label
+    class BrandContainerView: UIView {
+        /// Which element the brand container should show
+        enum ViewingMode {
+            /// Shows the logo when available, otherwise falls back to text
+            case automatic
+            /// Always shows a logo even when not available (empty view)
+            case alwaysLogo
+            /// Always shows the brand as text even if a logo is available
+            case alwaysText
+        }
+        /// The current viewing mode for this brand container
+        var viewingMode: ViewingMode = .automatic {
+            didSet {
+                switch viewingMode {
+                case .automatic:
+                    updateAutomaticVisibleView()
+                case .alwaysText:
+                    visibleView = textLabel
+                case .alwaysLogo:
+                    visibleView = logoImageView
+                }
+            }
+        }
+        /// An image view for setting the brands logo
+        private(set) var logoImageView = UIImageView().then {
+            $0.contentMode = .scaleAspectFit
+            $0.backgroundColor = .clear
+            $0.clipsToBounds = true
+            $0.snp.makeConstraints {
+                $0.height.equalTo(20)
+            }
+        }
+        /// A label view for setting the brands name in plain text
+        private(set) var textLabel = UILabel().then {
+            $0.font = .systemFont(ofSize: 13.0, weight: .semibold)
+            $0.appearanceTextColor = .white
+        }
+        /// The currently visible view in the container based on `viewingMode`.
+        private var visibleView: UIView? {
+            didSet {
+                if oldValue === visibleView { return }
+                oldValue?.removeFromSuperview()
+                if let view = visibleView {
+                    addSubview(view)
+                    view.snp.makeConstraints {
+                        $0.top.leading.bottom.equalToSuperview()
+                        $0.trailing.lessThanOrEqualToSuperview()
+                    }
+                }
+            }
+        }
+        
+        private var imageObservervation: NSKeyValueObservation?
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            imageObservervation = logoImageView.observe(\.image, options: [.new]) { [weak self] _, _ in
+                guard let self = self else { return }
+                if self.viewingMode == .automatic {
+                    self.updateAutomaticVisibleView()
+                }
+            }
+        }
+        
+        @available(*, unavailable)
+        required init(coder: NSCoder) {
+            fatalError()
+        }
+        
+        private func updateAutomaticVisibleView() {
+            if logoImageView.image != nil {
+                visibleView = logoImageView
+            } else {
+                visibleView = textLabel
+            }
         }
     }
 }
