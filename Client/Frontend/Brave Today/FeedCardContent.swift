@@ -51,8 +51,8 @@ enum FeedItemAction: Equatable {
     case opened(inNewTab: Bool = false, switchingToPrivateMode: Bool = false)
     /// The user chose to hide a specific item
     case hide
-    /// Block the source of the feed item
-    case blockSource
+    /// Disable the source of the feed item
+    case disableSource
     /// Handle a long press initiated by the user for legacy menus
     case longPressed(_ legacyContext: FeedItemMenu.LegacyContext)
 }

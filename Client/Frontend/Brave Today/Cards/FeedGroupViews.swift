@@ -20,6 +20,12 @@ class FeedGroupView: UIView {
     }
     /// The buttons that contain each feed view
     private let buttons: [SpringButton]
+    /// Set whether or not a feed button at a given index is enabled
+    func setButtonEnabled(at index: Int, enabled: Bool) {
+        if let button = buttons[safe: index] {
+            button.isEnabled = enabled
+        }
+    }
     /// The feeds that are displayed within the list
     let feedViews: [FeedItemView]
     /// The brand image at the bottom of each card.
