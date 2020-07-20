@@ -32,6 +32,7 @@ source_set("p3a") {
     "//brave/components/p3a:buildflags",
     "//brave/components/brave_prochlo",
     "//brave/components/brave_prochlo:prochlo_proto",
+    "//brave/components/brave_referrals/common",
     "//brave/vendor/brave_base",
     "//components/metrics",
     "//components/prefs",

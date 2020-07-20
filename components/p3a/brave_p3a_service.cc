@@ -22,6 +22,7 @@
 #include "brave/common/brave_channel_info.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
+#include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
