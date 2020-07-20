@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
@@ -308,8 +309,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
         long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
 
-        mAdsBlockedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFormNumber(adsBlockedCount, false));
-        mDataSavedValueTextView.setText(BraveStatsUtil.getBraveStatsStringFormNumber(dataSaved, true));
+        Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
+        Pair<String, String> dataSavedPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
+
+        mAdsBlockedCountTextView.setText(String.format(getResources().getString(R.string.ntp_stat_text), adsTrackersPair.first, adsTrackersPair.second));
+        mDataSavedValueTextView.setText(String.format(getResources().getString(R.string.ntp_stat_text), dataSavedPair.first, dataSavedPair.second));
         mEstTimeSavedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
         if ((BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
@@ -408,7 +412,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private void checkForNonDistruptiveBanner(NTPImage ntpImage) {
         int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()) {
-            Log.e("NTP", "inside banner");
             NTPUtil.showNonDistruptiveBanner((BraveActivity) mActivity, this, brOption,
                                              sponsoredTab, newTabPageListener);
         }
@@ -474,35 +477,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     loadTopSites(topSites);
                 }
             } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        }
-
-        @Override
-        public void selectedPage(int index) {
-            if (index == 0) {
-                LottieAnimationView mAnimatedView = findViewById(R.id.ads_animation);
-                if (mAnimatedView != null) {
-                    mAnimatedView.setVisibility(View.VISIBLE);
-                    mAnimatedView.setAnimation("onboarding_ads.json");
-                    mAnimatedView.playAnimation();
-                    mAnimatedView.loop(false);
-                }
-            } else if (index == 1) {
-                LottieAnimationView mAnimatedView = findViewById(R.id.data_animation);
-                if (mAnimatedView != null) {
-                    mAnimatedView.setVisibility(View.VISIBLE);
-                    mAnimatedView.setAnimation("onboarding_data_saved.json");
-                    mAnimatedView.playAnimation();
-                    mAnimatedView.loop(false);
-                }
-            } else if (index == 2) {
-                LottieAnimationView mAnimatedView = findViewById(R.id.time_animation);
-                if (mAnimatedView != null) {
-                    mAnimatedView.setVisibility(View.VISIBLE);
-                    mAnimatedView.setAnimation("onboarding_time_saved.json");
-                    mAnimatedView.playAnimation();
-                    mAnimatedView.loop(false);
-                }
-            }
         }
     };
 

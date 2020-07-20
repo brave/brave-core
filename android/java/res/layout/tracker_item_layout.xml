@@ -16,14 +16,12 @@
         android:id="@+id/tracker_count_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="13"
         android:ellipsize="end"
         android:maxLines = "1"
         android:textSize="16sp"
         android:layout_gravity="center_vertical"
         android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif"
-        android:visibility="gone"
         android:textColor="@color/brave_stats_text_color"/>
 
     <TextView
@@ -31,7 +29,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Trackers 1"
         android:textSize="16sp"
         android:ellipsize="end"
         android:maxLines = "1"

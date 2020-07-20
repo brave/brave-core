@@ -4,93 +4,98 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<LinearLayout
+ <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/brave_stats_bg_color"
-    android:orientation="vertical">
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/onboarding_image"
-        android:layout_width="318dp"
-        android:layout_height="233dp"
-        android:gravity="center"
-        android:contentDescription="@null"
-        android:visibility="gone"
-        android:layout_gravity="center_horizontal" />
-
-    <TextView
-        android:id="@+id/onboarding_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="22sp"
-        android:layout_marginBottom="16dp"
-        android:textColor="@color/brave_stats_text_color"/>
-
-    <TextView
-        android:id="@+id/onboarding_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:textColor="@color/brave_stats_text_color"
-        android:layout_marginBottom="32dp"/>
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/indicator_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="32dp"
-        android:visibility="gone"
-        android:orientation="horizontal">
+        android:background="@color/brave_stats_bg_color"
+        android:orientation="vertical">
 
-        <View 
-            android:id="@+id/indicator_1"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/default_indicator"/>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/onboarding_image"
+            android:layout_width="318dp"
+            android:layout_height="233dp"
+            android:gravity="center"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal" />
 
-        <View 
-            android:id="@+id/indicator_2"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/default_indicator"/>
+        <TextView
+            android:id="@+id/onboarding_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="22sp"
+            android:layout_marginBottom="16dp"
+            android:textColor="@color/brave_stats_text_color"/>
 
-        <View 
-            android:id="@+id/indicator_3"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/default_indicator"/>
+        <TextView
+            android:id="@+id/onboarding_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@color/brave_stats_text_color"
+            android:layout_marginBottom="32dp"/>
 
-        <View 
-            android:id="@+id/indicator_4"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:background="@drawable/default_indicator"/>
+        <LinearLayout
+            android:id="@+id/indicator_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="32dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
 
+            <View 
+                android:id="@+id/indicator_1"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/default_indicator"/>
+
+            <View 
+                android:id="@+id/indicator_2"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/default_indicator"/>
+
+            <View 
+                android:id="@+id/indicator_3"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/default_indicator"/>
+
+            <View 
+                android:id="@+id/indicator_4"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/default_indicator"/>
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_turn_on_privacy_stats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/rounded_filled"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:text="@string/turn_on_privacy_stats"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_turn_on_privacy_stats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:background="@drawable/rounded_filled"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/turn_on_privacy_stats"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:padding="8dp"
-        android:textColor="@android:color/white"
-        style="?android:attr/borderlessButtonStyle"/>
-
-</LinearLayout>
+</ScrollView>

@@ -109,8 +109,6 @@ if (is_android) {
       "$root_build_dir/brave_100_percent.pak",
       "//brave/LICENSE.html",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_ads.json",
-      "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_data_saved.json",
-      "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/onboarding_time_saved.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/privacy_protection.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/save_data_and_battery.json",
       "//brave/android/java/org/chromium/chrome/browser/onboarding/animations/website_loads_faster.json",
