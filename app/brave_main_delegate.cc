@@ -225,6 +225,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     blink::features::kTextFragmentAnchor.name,
     features::kAllowPopupsDuringPageUnload.name,
     features::kNotificationTriggers.name,
+    features::kPrivacySettingsRedesign.name,
     features::kSmsReceiver.name,
     features::kVideoPlaybackQuality.name,
     features::kTabHoverCards.name,
