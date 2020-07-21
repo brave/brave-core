@@ -6,6 +6,7 @@ import * as React from 'react'
 // Components
 import { WalletInfo } from './walletInfo'
 import { Balance } from './balance'
+import { ExternalWallet } from './externalWallet'
 import { Button } from 'brave-ui/components'
 import { ButtonWrapper } from '../style'
 
@@ -31,6 +32,7 @@ export class General extends React.Component<Props, {}> {
         </ButtonWrapper>
         <WalletInfo state={this.props.data} />
         <Balance info={this.props.data.balance} />
+        <ExternalWallet info={this.props.data.externalWallet} />
       </>
     )
   }
