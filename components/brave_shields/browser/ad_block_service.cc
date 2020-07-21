@@ -21,12 +21,14 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
+#include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 #define DAT_FILE "rs-ABPFilterParserData.dat"
+#define REGIONAL_CATALOG "regional_catalog.json"
 
 namespace brave_shields {
 
@@ -73,6 +75,9 @@ void AdBlockService::OnComponentReady(const std::string& component_id,
   base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
   GetDATFileData(dat_file_path);
 
+  base::FilePath regional_catalog_file_path =
+      install_dir.AppendASCII(REGIONAL_CATALOG);
+
   base::FilePath resources_file_path =
       install_dir.AppendASCII(kAdBlockResourcesFilename);
   base::PostTaskAndReplyWithResult(
@@ -81,12 +86,24 @@ void AdBlockService::OnComponentReady(const std::string& component_id,
                      resources_file_path),
       base::BindOnce(&AdBlockService::OnResourcesFileDataReady,
                      weak_factory_.GetWeakPtr()));
+  base::PostTaskAndReplyWithResult(
+      GetTaskRunner().get(), FROM_HERE,
+      base::BindOnce(&brave_component_updater::GetDATFileAsString,
+                     regional_catalog_file_path),
+      base::BindOnce(&AdBlockService::OnRegionalCatalogFileDataReady,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void AdBlockService::OnResourcesFileDataReady(const std::string& resources) {
   g_brave_browser_process->ad_block_service()->AddResources(resources);
   g_brave_browser_process->ad_block_custom_filters_service()->AddResources(
       resources);
+}
+
+void AdBlockService::OnRegionalCatalogFileDataReady(
+    const std::string& catalog_json) {
+  g_brave_browser_process->ad_block_regional_service_manager()
+      ->SetRegionalCatalog(RegionalCatalogFromJSON(catalog_json));
 }
 
 // static

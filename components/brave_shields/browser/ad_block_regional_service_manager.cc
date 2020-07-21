@@ -58,12 +58,11 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   // user can override this setting in the future
   bool checked_default_region =
       local_state->GetBoolean(kAdBlockCheckedDefaultRegion);
-  std::vector<FilterList>&  region_lists = FilterList::GetRegionalLists();
   if (!checked_default_region) {
     local_state->SetBoolean(kAdBlockCheckedDefaultRegion, true);
     auto it = brave_shields::FindAdBlockFilterListByLocale(
-        region_lists, g_brave_browser_process->GetApplicationLocale());
-    if (it == region_lists.end())
+        regional_catalog_, g_brave_browser_process->GetApplicationLocale());
+    if (it == regional_catalog_.end())
       return;
     EnableFilterList(it->uuid, true);
   }
@@ -239,15 +238,17 @@ AdBlockRegionalServiceManager::HiddenClassIdSelectors(
   return first_value;
 }
 
-// static
 bool AdBlockRegionalServiceManager::IsSupportedLocale(
     const std::string& locale) {
-  std::vector<FilterList>&  region_lists = FilterList::GetRegionalLists();
-  return (brave_shields::FindAdBlockFilterListByLocale(region_lists, locale) !=
-          region_lists.end());
+  return (brave_shields::FindAdBlockFilterListByLocale(
+            regional_catalog_, locale) != regional_catalog_.end());
 }
 
-// static
+void AdBlockRegionalServiceManager::SetRegionalCatalog(
+        std::vector<adblock::FilterList> catalog) {
+  regional_catalog_ = std::move(catalog);
+}
+
 std::unique_ptr<base::ListValue>
 AdBlockRegionalServiceManager::GetRegionalLists() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -258,10 +259,9 @@ AdBlockRegionalServiceManager::GetRegionalLists() {
       local_state->GetDictionary(kAdBlockRegionalFilters);
 
   auto list_value = std::make_unique<base::ListValue>();
-  std::vector<FilterList>&  region_lists = FilterList::GetRegionalLists();
-  for (const auto& region_list : region_lists) {
-    // Most settings come directly from the region_lists vector, maintained in
-    // the AdBlock module
+  for (const auto& region_list : regional_catalog_) {
+    // Most settings come directly from the regional catalog from
+    // https://github.com/brave/adblock-resources
     auto dict = std::make_unique<base::DictionaryValue>();
     dict->SetString("uuid", region_list.uuid);
     dict->SetString("url", region_list.url);
