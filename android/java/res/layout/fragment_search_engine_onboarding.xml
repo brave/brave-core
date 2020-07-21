@@ -5,89 +5,96 @@
      You can obtain one at http://mozilla.org/MPL/2.0/.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/onboarding_black">
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/search_engine_layout"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:paddingTop="48dp"
-        android:background="@color/onboarding_bg_color"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/onboarding_black">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/choose_default_search_engine"
-            android:lineSpacingMultiplier="1.2"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:textSize="20sp"
-            android:textColor="@color/onboarding_text_color"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:lineSpacingMultiplier="1.2"
-            android:text="@string/search_engine_text"
-            android:textColor="@color/onboarding_text_color"
-            android:textSize="@dimen/onboarding_text_size" />
-
-        <ScrollView
+        <LinearLayout
+            android:id="@+id/search_engine_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:paddingTop="48dp"
+            android:background="@color/onboarding_bg_color"
+            android:orientation="vertical">
 
-            <RadioGroup
-                android:id="@+id/radio_group"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/choose_default_search_engine"
+                android:lineSpacingMultiplier="1.2"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:textSize="20sp"
+                android:textColor="@color/onboarding_text_color"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="@string/search_engine_text"
+                android:textColor="@color/onboarding_text_color"
+                android:textSize="@dimen/onboarding_text_size" />
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
-        </ScrollView>
+                <RadioGroup
+                    android:id="@+id/radio_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/search_engine_text"
-            android:lineSpacingMultiplier="1.2"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:textSize="14sp"
-            android:textColor="@color/onboarding_text_color"/>
+            </ScrollView>
 
-        <Button
-            android:id="@+id/btn_save"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/orange_rounded_button"
-            android:text="@string/save"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/onboarding_text_size"
-            style="?android:attr/borderlessButtonStyle"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/search_engine_text"
+                android:lineSpacingMultiplier="1.2"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:textSize="14sp"
+                android:textColor="@color/onboarding_text_color"/>
+
+            <Button
+                android:id="@+id/btn_save"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="32dp"
+                android:background="@drawable/orange_rounded_button"
+                android:text="@string/save"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/onboarding_text_size"
+                style="?android:attr/borderlessButtonStyle"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>
