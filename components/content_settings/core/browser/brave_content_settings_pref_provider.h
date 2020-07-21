@@ -75,6 +75,8 @@ class BravePrefProvider : public PrefProvider,
   std::map<bool /* is_incognito */, std::vector<Rule>> cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<Rule>> brave_cookie_rules_;
 
+  bool initialized_;
+
   base::WeakPtrFactory<BravePrefProvider> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BravePrefProvider);
