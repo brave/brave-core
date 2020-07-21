@@ -20,8 +20,6 @@ class DatabaseContributionInfo: public DatabaseTable {
   explicit DatabaseContributionInfo(bat_ledger::LedgerImpl* ledger);
   ~DatabaseContributionInfo() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::ContributionInfoPtr info,
       ledger::ResultCallback callback);
@@ -63,30 +61,6 @@ class DatabaseContributionInfo: public DatabaseTable {
   void FinishAllInProgressRecords(ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV2(ledger::DBTransaction* transaction);
-
-  bool CreateTableV8(ledger::DBTransaction* transaction);
-
-  bool CreateTableV11(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV2(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV8(ledger::DBTransaction* transaction);
-
-  bool MigrateToV2(ledger::DBTransaction* transaction);
-
-  bool MigrateToV8(ledger::DBTransaction* transaction);
-
-  bool MigrateToV11(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV16(ledger::DBTransaction* transaction);
-
-  bool MigrateToV17(ledger::DBTransaction* transaction);
-
-  bool MigrateToV21(ledger::DBTransaction* transaction);
-
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ledger::GetContributionInfoCallback callback);

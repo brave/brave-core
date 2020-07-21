@@ -17,8 +17,6 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
   explicit DatabaseContributionQueuePublishers(bat_ledger::LedgerImpl* ledger);
   ~DatabaseContributionQueuePublishers() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       const std::string& id,
       ledger::ContributionQueuePublisherList list,
@@ -29,22 +27,6 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
       ContributionQueuePublishersListCallback callback);
 
  private:
-  bool CreateTableV9(ledger::DBTransaction* transaction);
-
-  bool CreateTableV15(ledger::DBTransaction* transaction);
-
-  bool CreateTableV23(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV15(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV23(ledger::DBTransaction* transaction);
-
-  bool MigrateToV9(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV23(ledger::DBTransaction* transaction);
-
   void OnGetRecordsByQueueId(
       ledger::DBCommandResponsePtr response,
       ContributionQueuePublishersListCallback callback);

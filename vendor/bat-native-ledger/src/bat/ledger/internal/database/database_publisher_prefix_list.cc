@@ -57,48 +57,6 @@ DatabasePublisherPrefixList::DatabasePublisherPrefixList(
 
 DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;
 
-bool DatabasePublisherPrefixList::Migrate(
-    ledger::DBTransaction* transaction,
-    const int target) {
-  DCHECK(transaction);
-  switch (target) {
-    case 28:
-      return MigrateToV28(transaction);
-    default:
-      return true;
-  }
-}
-
-bool DatabasePublisherPrefixList::MigrateToV28(
-    ledger::DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  if (!braveledger_database::DropTable(transaction, kTableName)) {
-    return false;
-  }
-
-  if (!CreateTableV28(transaction)) {
-    return false;
-  }
-
-  ledger_->ClearState(ledger::kStateServerPublisherListStamp);
-  return true;
-}
-
-bool DatabasePublisherPrefixList::CreateTableV28(
-    ledger::DBTransaction* transaction) {
-  DCHECK(transaction);
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = base::StringPrintf(
-      "CREATE TABLE %s "
-      "(hash_prefix BLOB PRIMARY KEY NOT NULL)",
-      kTableName);
-
-  transaction->commands.push_back(std::move(command));
-  return true;
-}
-
 void DatabasePublisherPrefixList::Search(
     const std::string& publisher_key,
     ledger::SearchPublisherPrefixListCallback callback) {

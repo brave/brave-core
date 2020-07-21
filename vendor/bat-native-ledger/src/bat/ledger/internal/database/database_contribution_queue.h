@@ -19,8 +19,6 @@ class DatabaseContributionQueue: public DatabaseTable {
   explicit DatabaseContributionQueue(bat_ledger::LedgerImpl* ledger);
   ~DatabaseContributionQueue() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::ContributionQueuePtr info,
       ledger::ResultCallback callback);
@@ -32,18 +30,6 @@ class DatabaseContributionQueue: public DatabaseTable {
       ledger::ResultCallback callback);
 
  private:
-  bool CreateTableV9(ledger::DBTransaction* transaction);
-
-  bool CreateTableV23(ledger::DBTransaction* transaction);
-
-  bool MigrateToV9(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV23(ledger::DBTransaction* transaction);
-
-  bool MigrateToV24(ledger::DBTransaction* transaction);
-
   void OnInsertOrUpdate(
       ledger::DBCommandResponsePtr response,
       const std::string& queue_string,

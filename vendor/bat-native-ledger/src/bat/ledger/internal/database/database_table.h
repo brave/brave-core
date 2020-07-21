@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "bat/ledger/ledger.h"
-#include "sql/database.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -43,16 +42,7 @@ class DatabaseTable {
   explicit DatabaseTable(bat_ledger::LedgerImpl* ledger);
   virtual ~DatabaseTable();
 
-  virtual bool Migrate(
-      ledger::DBTransaction* transaction,
-      const int target) = 0;
-
  protected:
-  bool InsertIndex(
-      ledger::DBTransaction* transaction,
-      const std::string& table_name,
-      const std::string& key);
-
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

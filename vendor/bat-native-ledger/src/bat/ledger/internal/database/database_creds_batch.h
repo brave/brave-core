@@ -18,8 +18,6 @@ class DatabaseCredsBatch: public DatabaseTable {
   explicit DatabaseCredsBatch(bat_ledger::LedgerImpl* ledger);
   ~DatabaseCredsBatch() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::CredsBatchPtr creds,
       ledger::ResultCallback callback);
@@ -52,12 +50,6 @@ class DatabaseCredsBatch: public DatabaseTable {
       ledger::GetCredsBatchListCallback callback);
 
  private:
-  bool CreateTableV18(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV18(ledger::DBTransaction* transaction);
-
-  bool MigrateToV18(ledger::DBTransaction* transaction);
-
   void OnGetRecordByTrigger(
       ledger::DBCommandResponsePtr response,
       ledger::GetCredsBatchCallback callback);

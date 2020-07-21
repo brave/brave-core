@@ -5,80 +5,106 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
-#include "bat/ledger/internal/database/database_activity_info.h"
-#include "bat/ledger/internal/database/database_balance_report.h"
-#include "bat/ledger/internal/database/database_contribution_info.h"
-#include "bat/ledger/internal/database/database_contribution_queue.h"
-#include "bat/ledger/internal/database/database_creds_batch.h"
-#include "bat/ledger/internal/database/database_media_publisher_info.h"
+#include "base/strings/string_util.h"
 #include "bat/ledger/internal/database/database_migration.h"
-#include "bat/ledger/internal/database/database_pending_contribution.h"
-#include "bat/ledger/internal/database/database_processed_publisher.h"
-#include "bat/ledger/internal/database/database_promotion.h"
-#include "bat/ledger/internal/database/database_publisher_info.h"
-#include "bat/ledger/internal/database/database_publisher_prefix_list.h"
-#include "bat/ledger/internal/database/database_recurring_tip.h"
-#include "bat/ledger/internal/database/database_server_publisher_info.h"
-#include "bat/ledger/internal/database/database_sku_order.h"
-#include "bat/ledger/internal/database/database_sku_transaction.h"
-#include "bat/ledger/internal/database/database_unblinded_token.h"
 #include "bat/ledger/internal/database/database_util.h"
+#include "bat/ledger/internal/database/migration/migration_v1.h"
+#include "bat/ledger/internal/database/migration/migration_v2.h"
+#include "bat/ledger/internal/database/migration/migration_v3.h"
+#include "bat/ledger/internal/database/migration/migration_v4.h"
+#include "bat/ledger/internal/database/migration/migration_v5.h"
+#include "bat/ledger/internal/database/migration/migration_v6.h"
+#include "bat/ledger/internal/database/migration/migration_v7.h"
+#include "bat/ledger/internal/database/migration/migration_v8.h"
+#include "bat/ledger/internal/database/migration/migration_v9.h"
+#include "bat/ledger/internal/database/migration/migration_v10.h"
+#include "bat/ledger/internal/database/migration/migration_v11.h"
+#include "bat/ledger/internal/database/migration/migration_v12.h"
+#include "bat/ledger/internal/database/migration/migration_v13.h"
+#include "bat/ledger/internal/database/migration/migration_v14.h"
+#include "bat/ledger/internal/database/migration/migration_v15.h"
+#include "bat/ledger/internal/database/migration/migration_v16.h"
+#include "bat/ledger/internal/database/migration/migration_v17.h"
+#include "bat/ledger/internal/database/migration/migration_v18.h"
+#include "bat/ledger/internal/database/migration/migration_v19.h"
+#include "bat/ledger/internal/database/migration/migration_v20.h"
+#include "bat/ledger/internal/database/migration/migration_v21.h"
+#include "bat/ledger/internal/database/migration/migration_v22.h"
+#include "bat/ledger/internal/database/migration/migration_v23.h"
+#include "bat/ledger/internal/database/migration/migration_v24.h"
+#include "bat/ledger/internal/database/migration/migration_v25.h"
+#include "bat/ledger/internal/database/migration/migration_v26.h"
+#include "bat/ledger/internal/database/migration/migration_v27.h"
+#include "bat/ledger/internal/database/migration/migration_v28.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "third_party/re2/src/re2/re2.h"
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseMigration::DatabaseMigration(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
-  activity_info_ = std::make_unique<DatabaseActivityInfo>(ledger_);
-  balance_report_ = std::make_unique<DatabaseBalanceReport>(ledger_);
-  contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
-  contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
-  creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
-  media_publisher_info_ = std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
-  pending_contribution_ =
-      std::make_unique<DatabasePendingContribution>(ledger_);
-  processed_publisher_ =
-      std::make_unique<DatabaseProcessedPublisher>(ledger_);
-  promotion_ = std::make_unique<DatabasePromotion>(ledger_);
-  publisher_info_ = std::make_unique<DatabasePublisherInfo>(ledger_);
-  publisher_prefix_list_ =
-      std::make_unique<DatabasePublisherPrefixList>(ledger_);
-  recurring_tip_ = std::make_unique<DatabaseRecurringTip>(ledger_);
-  server_publisher_info_ =
-      std::make_unique<DatabaseServerPublisherInfo>(ledger_);
-  sku_order_ = std::make_unique<DatabaseSKUOrder>(ledger_);
-  sku_transaction_ = std::make_unique<DatabaseSKUTransaction>(ledger_);
-  unblinded_token_ =
-      std::make_unique<DatabaseUnblindedToken>(ledger_);
 }
 
 DatabaseMigration::~DatabaseMigration() = default;
 
 void DatabaseMigration::Start(
-    const int table_version,
+    const uint32_t table_version,
     ledger::ResultCallback callback) {
-  const int start_version = table_version + 1;
+  const uint32_t start_version = table_version + 1;
+  DCHECK_GT(start_version, 0u);
+
   auto transaction = ledger::DBTransaction::New();
   int migrated_version = table_version;
-  const int target_version = GetCurrentVersion();
+  const uint32_t target_version = braveledger_database::GetCurrentVersion();
 
   if (target_version == table_version) {
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
+  const std::vector<std::string> mappings {
+    "",
+    migration::v1,
+    migration::v2,
+    migration::v3,
+    migration::v4,
+    migration::v5,
+    migration::v6,
+    migration::v7,
+    migration::v8,
+    migration::v9,
+    migration::v10,
+    migration::v11,
+    migration::v12,
+    migration::v13,
+    migration::v14,
+    migration::v15,
+    migration::v16,
+    migration::v17,
+    migration::v18,
+    migration::v19,
+    migration::v20,
+    migration::v21,
+    migration::v22,
+    migration::v23,
+    migration::v24,
+    migration::v25,
+    migration::v26,
+    migration::v27,
+    migration::v28,
+  };
+
+  DCHECK_LE(target_version, mappings.size());
+
   for (auto i = start_version; i <= target_version; i++) {
-    if (!Migrate(transaction.get(), i)) {
-      BLOG(0, "DB: Error with MigrateV" << (i - 1) << "toV" << i);
-      break;
-    }
-
+    GenerateCommand(transaction.get(), mappings[i]);
     BLOG(1, "DB: Migrated to version " << i);
-
     migrated_version = i;
   }
 
@@ -86,85 +112,35 @@ void DatabaseMigration::Start(
   command->type = ledger::DBCommand::Type::MIGRATE;
 
   transaction->version = migrated_version;
-  transaction->compatible_version = GetCompatibleVersion();
+  transaction->compatible_version =
+      braveledger_database::GetCompatibleVersion();
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
+  command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::VACUUM;
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&braveledger_database::OnResultCallback,
       _1,
       callback);
 
   ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
 }
 
-bool DatabaseMigration::Migrate(
+void DatabaseMigration::GenerateCommand(
     ledger::DBTransaction* transaction,
-    const int target) {
+    const std::string& query) {
   DCHECK(transaction);
 
-  if (!activity_info_->Migrate(transaction, target)) {
-    return false;
-  }
+  std::string optimized_query = query;
+  // remove all unnecessary spaces and new lines
+  re2::RE2::GlobalReplace(&optimized_query, "\\s\\s+", " ");
 
-  if (!balance_report_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!contribution_info_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!contribution_queue_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!creds_batch_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!media_publisher_info_->Migrate(transaction, target)) {
-    return false;
-  }
-  if (!pending_contribution_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!processed_publisher_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!promotion_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!publisher_info_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!recurring_tip_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!server_publisher_info_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!publisher_prefix_list_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!sku_order_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!sku_transaction_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  if (!unblinded_token_->Migrate(transaction, target)) {
-    return false;
-  }
-
-  return true;
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::EXECUTE;
+  command->command = optimized_query;
+  transaction->commands.push_back(std::move(command));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

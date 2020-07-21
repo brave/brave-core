@@ -19,8 +19,6 @@ class DatabasePublisherPrefixList : public DatabaseTable {
   explicit DatabasePublisherPrefixList(bat_ledger::LedgerImpl* ledger);
   ~DatabasePublisherPrefixList() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void Reset(
       std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
       ledger::ResultCallback callback);
@@ -30,10 +28,6 @@ class DatabasePublisherPrefixList : public DatabaseTable {
       ledger::SearchPublisherPrefixListCallback callback);
 
  private:
-  bool MigrateToV28(ledger::DBTransaction* transaction);
-
-  bool CreateTableV28(ledger::DBTransaction* transaction);
-
   void InsertNext(
       braveledger_publisher::PrefixIterator begin,
       ledger::ResultCallback callback);

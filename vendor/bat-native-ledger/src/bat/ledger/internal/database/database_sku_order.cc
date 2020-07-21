@@ -29,61 +29,6 @@ DatabaseSKUOrder::DatabaseSKUOrder(
 
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
-bool DatabaseSKUOrder::CreateTableV19(ledger::DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  const std::string query = base::StringPrintf(
-      "CREATE TABLE %s ("
-      "order_id TEXT NOT NULL,"
-      "total_amount DOUBLE,"
-      "merchant_id TEXT,"
-      "location TEXT,"
-      "status INTEGER NOT NULL DEFAULT 0,"
-      "contribution_id TEXT,"
-      "created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
-      "PRIMARY KEY (order_id)"
-      ")",
-      kTableName);
-
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = query;
-  transaction->commands.push_back(std::move(command));
-
-  return true;
-}
-
-bool DatabaseSKUOrder::Migrate(
-    ledger::DBTransaction* transaction,
-    const int target) {
-  DCHECK(transaction);
-
-  switch (target) {
-    case 19: {
-      return MigrateToV19(transaction);
-    }
-    default: {
-      return true;
-    }
-  }
-}
-
-bool DatabaseSKUOrder::MigrateToV19(ledger::DBTransaction* transaction) {
-  DCHECK(transaction);
-
-  if (!DropTable(transaction, kTableName)) {
-    BLOG(0, "Table couldn't be dropped");
-    return false;
-  }
-
-  if (!CreateTableV19(transaction)) {
-    BLOG(0, "Table couldn't be created");
-    return false;
-  }
-
-  return items_->Migrate(transaction, 19);
-}
-
 void DatabaseSKUOrder::InsertOrUpdate(
     ledger::SKUOrderPtr order,
     ledger::ResultCallback callback) {

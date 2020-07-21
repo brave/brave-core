@@ -17,37 +17,6 @@ namespace braveledger_database {
 
 const size_t kBatchLimit = 999;
 
-bool DropTable(
-    ledger::DBTransaction* transaction,
-    const std::string& table_name);
-
-std::string GenerateDBInsertQuery(
-    const std::string& from,
-    const std::string& to,
-    const std::map<std::string, std::string>& columns,
-    const std::string group_by);
-
-bool MigrateDBTable(
-    ledger::DBTransaction* transaction,
-    const std::string& from,
-    const std::string& to,
-    const std::map<std::string, std::string>& columns,
-    const bool should_drop,
-    const std::string group_by = "");
-
-bool MigrateDBTable(
-    ledger::DBTransaction* transaction,
-    const std::string& from,
-    const std::string& to,
-    const std::vector<std::string>& columns,
-    const bool should_drop,
-    const std::string group_by = "");
-
-bool RenameDBTable(
-    ledger::DBTransaction* transaction,
-    const std::string& from,
-    const std::string& to);
-
 void BindNull(
     ledger::DBCommand* command,
     const int index);

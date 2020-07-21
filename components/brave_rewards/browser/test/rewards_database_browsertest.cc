@@ -102,6 +102,12 @@ class RewardsDatabaseBrowserTest : public InProcessBrowserTest {
       base::TRIM_WHITESPACE,
       base::SPLIT_WANT_NONEMPTY);
 
+    if (version_split.size() < 2) {
+      LOG(ERROR) << "You need to specify version in db";
+      NOTREACHED();
+      return;
+    }
+
     int32_t test_version = std::stoi(version_split[1]);
 
     ASSERT_GT(test_version, 0);
@@ -157,21 +163,20 @@ class RewardsDatabaseBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(base::CopyFile(test_data_path, db_path));
   }
 
-  void InitDB(int32_t version = 0) {
-    if (version == 0) {
-      GetMigrationVersionFromTest(&version);
-    }
+  void InitDB() {
+    int32_t version;
+    GetMigrationVersionFromTest(&version);
 
     base::FilePath db_path;
     GetDBPath(&db_path);
     ASSERT_TRUE(db_.Open(db_path));
     ASSERT_TRUE(meta_table_.Init(
         &db_,
-        braveledger_database::GetCurrentVersion(),
+        version,
         braveledger_database::GetCompatibleVersion()));
   }
 
-  std::string GetSchemaString() {
+  std::string GetExpectedSchemaString() {
     const std::string file_name = "publisher_info_schema_current.txt";
 
     // Get expected schema for this version
@@ -207,18 +212,7 @@ class RewardsDatabaseBrowserTest : public InProcessBrowserTest {
   }
 
   std::string GetSchema() const {
-    std::string schema = db_.GetSchema();
-
-    // Legacy: This is needed, because old db file had publisher_info table
-    // that was never recreated, so that space is still in there
-    // so we need to remove it
-    base::ReplaceSubstringsAfterOffset(
-      &schema,
-      0,
-      "CREATE TABLE publisher_info (",
-      "CREATE TABLE publisher_info(");
-
-    return schema;
+    return db_.GetSchema();
   }
 
   int32_t CountTableRows(const std::string& table) {
@@ -245,58 +239,19 @@ class RewardsDatabaseBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<RewardsBrowserTestResponse> response_;
 };
 
-/**
- * AUTOMATED SCHEMA MIGRATION TESTS
- */
-struct SchemaCheckParamInfo {
-  int32_t version;
-};
-
-class SchemaCheck :
-    public RewardsDatabaseBrowserTest,
-    public ::testing::WithParamInterface<SchemaCheckParamInfo> {};
-
-static std::string GetTestCaseName(
-    ::testing::TestParamInfo<SchemaCheckParamInfo> param_info) {
-  return base::StringPrintf("Migration_%d", param_info.param.version);
-}
-
-std::vector<SchemaCheckParamInfo> GetTestData() {
-  std::vector<SchemaCheckParamInfo> data;
-
-  const int32_t min_migration_version = 4;
-  const auto version = braveledger_database::GetCurrentVersion();
-  for (int32_t i = min_migration_version; i <= version; i++) {
-    data.push_back({
-      i
-    });
-  }
-
-  return data;
-}
-
-IN_PROC_BROWSER_TEST_P(SchemaCheck, PerVersion) {
-  SchemaCheckParamInfo param(GetParam());
+IN_PROC_BROWSER_TEST_F(RewardsDatabaseBrowserTest, SchemaCheck_2) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    InitDB(param.version);
+    InitDB();
     rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
     const std::string schema = GetSchema();
-    EXPECT_EQ(schema, GetSchemaString());
+    EXPECT_EQ(schema, GetExpectedSchemaString());
     ASSERT_EQ(
         GetTableVersionNumber(),
         braveledger_database::GetCurrentVersion());
   }
 }
 
-INSTANTIATE_TEST_CASE_P(
-    RewardsDatabaseBrowserTest,
-    SchemaCheck,
-    ::testing::ValuesIn(GetTestData()), GetTestCaseName);
-
-/**
- * TABLE SPECIFIC MIGRATION TESTS
- */
 IN_PROC_BROWSER_TEST_F(RewardsDatabaseBrowserTest, Migration_4_ActivityInfo) {
   {
     base::ScopedAllowBlockingForTesting allow_blocking;

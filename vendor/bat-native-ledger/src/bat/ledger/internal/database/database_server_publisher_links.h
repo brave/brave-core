@@ -19,8 +19,6 @@ class DatabaseServerPublisherLinks: public DatabaseTable {
   explicit DatabaseServerPublisherLinks(bat_ledger::LedgerImpl* ledger);
   ~DatabaseServerPublisherLinks() override;
 
-  bool Migrate(ledger::DBTransaction* transaction, const int target) override;
-
   void InsertOrUpdate(
       ledger::DBTransaction* transaction,
       const ledger::ServerPublisherInfo& server_info);
@@ -34,20 +32,6 @@ class DatabaseServerPublisherLinks: public DatabaseTable {
       ServerPublisherLinksCallback callback);
 
  private:
-  bool CreateTableV7(ledger::DBTransaction* transaction);
-
-  bool CreateTableV15(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV7(ledger::DBTransaction* transaction);
-
-  bool CreateIndexV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV7(ledger::DBTransaction* transaction);
-
-  bool MigrateToV15(ledger::DBTransaction* transaction);
-
-  bool MigrateToV28(ledger::DBTransaction* transaction);
-
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       ServerPublisherLinksCallback callback);
