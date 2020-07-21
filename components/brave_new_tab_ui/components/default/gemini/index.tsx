@@ -420,8 +420,6 @@ class Gemini extends React.PureComponent<Props, State> {
   }
 
   renderAuthView () {
-    const { onDisableWidget } = this.props
-
     return (
       <>
         <IntroTitle>
@@ -430,17 +428,10 @@ class Gemini extends React.PureComponent<Props, State> {
         <Copy>
           {getLocale('geminiWidgetConnectCopy')}
         </Copy>
-        <ActionsWrapper>
-          {
-            <>
-              <ConnectButton onClick={this.connectGemini}>
-                {getLocale('geminiWidgetConnectButton')}
-              </ConnectButton>
-              <DismissAction onClick={onDisableWidget}>
-                {getLocale('geminiWidgetDismissText')}
-              </DismissAction>
-            </>
-          }
+        <ActionsWrapper isAuth={true}>
+          <ConnectButton onClick={this.connectGemini}>
+            {getLocale('geminiWidgetConnectButton')}
+          </ConnectButton>
         </ActionsWrapper>
       </>
     )

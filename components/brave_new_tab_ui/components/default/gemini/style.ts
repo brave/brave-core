@@ -20,6 +20,7 @@ interface StyleProps {
   itemsShowing?: boolean
   disabled?: boolean
   isSmall?: boolean
+  isAuth?: boolean
 }
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
@@ -84,8 +85,8 @@ export const Copy = styled<{}, 'p'>('p')`
   color: #A6A6A6;
 `
 
-export const ActionsWrapper = styled<{}, 'div'>('div')`
-  margin-bottom: 5px;
+export const ActionsWrapper = styled<StyleProps, 'div'>('div')`
+  margin-bottom: ${p => p.isAuth ? 20 : 5}px;
   text-align: center;
 `
 
