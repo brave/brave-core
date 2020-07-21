@@ -1,17 +1,16 @@
 diff --git a/chrome/android/chrome_public_apk_tmpl.gni b/chrome/android/chrome_public_apk_tmpl.gni
-index f5fab3e7ff209d13bddf0e0107a5318cc4b97eca..8018680d5b5db8fc96219affc33dc80129814561 100644
+index f5fab3e7ff209d13bddf0e0107a5318cc4b97eca..c3531b4b55bf5eb296ff00db6797831809f1491f 100644
 --- a/chrome/android/chrome_public_apk_tmpl.gni
 +++ b/chrome/android/chrome_public_apk_tmpl.gni
-@@ -227,6 +227,8 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -227,6 +227,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        "${_material_package}:[Ss]lider",
        "${_material_package}:[Tt]oolbarLayout",
      ]
-+    resource_exclusion_exceptions += brave_resources_exclusion_exceptions
-+    resource_values_filter_rules -= ["${_material_package}:[Ff]loatingActionButton"]
++    resource_exclusion_exceptions += brave_resources_exclusion_exceptions resource_values_filter_rules -= ["${_material_package}:[Ff]loatingActionButton", "${_material_package}:[Bb]ottomSheet",]
  
      if (!_is_monochrome) {
        product_config_java_packages = [ "org.chromium.chrome.browser" ]
-@@ -331,6 +333,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
+@@ -331,6 +332,7 @@ template("chrome_public_common_apk_or_module_tmpl") {
        if (!defined(proguard_configs)) {
          proguard_configs = []
        }
