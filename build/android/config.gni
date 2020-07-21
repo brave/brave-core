@@ -30,3 +30,7 @@ brave_chrome_java_srcjar_deps = [
 brave_chrome_app_java_resources_deps = [
   "//brave/build/android:android_brave_strings_grd",
 ]
+
+brave_resources_exclusion_exceptions = [
+"*com_google_android_material_material*design_bottom_*"
+]
