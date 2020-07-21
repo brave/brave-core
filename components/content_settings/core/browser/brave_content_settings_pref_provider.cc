@@ -140,6 +140,8 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
   MigrateShieldsSettings(off_the_record);
 
   OnCookieSettingsChanged(ContentSettingsType::PLUGINS);
+
+  // Enable change notifications after initial setup to avoid notification spam
   initialized_ = true;
   AddObserver(this);
 }
