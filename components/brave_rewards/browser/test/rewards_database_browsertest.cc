@@ -890,12 +890,19 @@ IN_PROC_BROWSER_TEST_F(
     RewardsDatabaseBrowserTest,
     Migration_28_ServerPublisherInfoCleared) {
   base::ScopedAllowBlockingForTesting allow_blocking;
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  const char timestamp_pref[] = "brave.rewards.server_publisher_list_stamp";
+  prefs->SetUint64(timestamp_pref, 1024ul);
+
   InitDB();
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
   EXPECT_EQ(CountTableRows("server_publisher_info"), 0);
   EXPECT_EQ(CountTableRows("server_publisher_amounts"), 0);
   EXPECT_EQ(CountTableRows("server_publisher_banner"), 0);
   EXPECT_EQ(CountTableRows("server_publisher_links"), 0);
+
+  EXPECT_EQ(prefs->GetUint64(timestamp_pref), 0ul);
 }
 
 }  // namespace rewards_browsertest

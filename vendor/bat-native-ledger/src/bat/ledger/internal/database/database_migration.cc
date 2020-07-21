@@ -39,6 +39,7 @@
 #include "bat/ledger/internal/database/migration/migration_v27.h"
 #include "bat/ledger/internal/database/migration/migration_v28.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/state/state_keys.h"
 #include "third_party/re2/src/re2/re2.h"
 
 using std::placeholders::_1;
@@ -104,6 +105,15 @@ void DatabaseMigration::Start(
 
   for (auto i = start_version; i <= target_version; i++) {
     GenerateCommand(transaction.get(), mappings[i]);
+
+    // Database migration 28 introduced the publisher hash prefix
+    // list and forced a refresh of that table by clearing a timestamp
+    // stored in state. The following statement is kept here for legacy
+    // compatibility.
+    if (i == 28) {
+      ledger_->ClearState(ledger::kStateServerPublisherListStamp);
+    }
+
     BLOG(1, "DB: Migrated to version " << i);
     migrated_version = i;
   }
