@@ -136,14 +136,7 @@ void BookmarkBarInstructionsView::UpdateColors() {
   if (!import_link_)
     return;
 
-  // Use the default link color if it provides enough contrast. If
-  // contrast is too low, fall back to the bookmark text color and use an
-  // underline to make it obvious it's a link. The default color readability
-  // code (which only adjusts luminance) doesn't work well in this case.
-  SkColor bg = theme_provider->GetColor(ThemeProperties::COLOR_TOOLBAR);
   SkColor link_color =
       GetNativeTheme()->GetSystemColor(ui::NativeTheme::kColorId_LinkEnabled);
-  bool link_has_contrast = color_utils::GetContrastRatio(link_color, bg) >=
-                           color_utils::kMinimumReadableContrastRatio;
-  import_link_->SetEnabledColor(link_has_contrast ? link_color : text_color);
+  import_link_->SetEnabledColor(link_color);
 }
