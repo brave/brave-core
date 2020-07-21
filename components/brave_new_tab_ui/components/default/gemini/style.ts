@@ -118,15 +118,14 @@ export const NavigationBar = styled<{}, 'div'>('div')`
 
 export const NavigationItem = styled<StyleProps, 'button'>('button')`
   float: left;
-  width: 25%;
+  width: 33%;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
-  text-align: center;
   background: inherit;
   border: none;
   color: ${p => p.isActive ? '#EEEEEE' : '#8F8F8F'};
-  margin-right: ${p => p.isLast ? 12 : 0}px
+  padding: 0px;
   margin-left: 0px;
   &:focus {
     outline: 0;
