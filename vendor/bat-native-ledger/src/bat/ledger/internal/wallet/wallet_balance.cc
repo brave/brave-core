@@ -10,11 +10,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/json/json_reader.h"
-#include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/response/response_wallet.h"
 #include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/static_values.h"
@@ -22,7 +20,6 @@
 
 using std::placeholders::_1;
 using std::placeholders::_2;
-using std::placeholders::_3;
 
 namespace braveledger_wallet {
 
@@ -31,8 +28,7 @@ WalletBalance::WalletBalance(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger) {
 }
 
-WalletBalance::~WalletBalance() {
-}
+WalletBalance::~WalletBalance() = default;
 
 void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   // if we don't have user funds in anon card anymore
@@ -46,13 +42,9 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
 
   const std::string payment_id = braveledger_state::GetPaymentId(ledger_);
 
-  std::string path = base::StringPrintf(
-      "/wallet/%s/balance",
-      payment_id.c_str());
-  const std::string url = braveledger_request_util::BuildUrl(
-      path,
-      PREFIX_V2,
-      braveledger_request_util::ServerTypes::BALANCE);
+  const std::string url = braveledger_request_util::GetBalanceWalletURL(
+      braveledger_state::GetPaymentId(ledger_));
+
   auto load_callback = std::bind(&WalletBalance::OnFetch,
                             this,
                             _1,
@@ -66,15 +58,12 @@ void WalletBalance::OnFetch(
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
   ledger::BalancePtr balance =
-      braveledger_response_util::ParseWalletFetchBalance(response);
+      braveledger_response_util::ParseWalletBalance(response);
   if (!balance) {
     BLOG(0, "Couldn't fetch wallet balance");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
-
-  balance->wallets.insert(
-      std::make_pair(ledger::kWalletAnonymous, balance->total));
 
   if (balance->total == 0.0) {
     braveledger_state::SetFetchOldBalanceEnabled(ledger_, false);

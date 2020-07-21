@@ -17,13 +17,6 @@ const char kStaging[] =
     "https://ledger-staging.mercury.basicattentiontoken.org";
 const char kProduction[] = "https://ledger.mercury.basicattentiontoken.org";
 
-namespace balance {
-const char kDevelopment[] = "https://balance.rewards.brave.software";
-const char kStaging[] =
-    "https:kP/balance-staging.mercury.basicattentiontoken.org";
-const char kProduction[] = "https://balance.mercury.basicattentiontoken.org";
-}  // namespace balance
-
 namespace publisher {
 const char kDevelopment[] = "https://rewards-dev.brave.software";
 const char kStaging[] = "https://rewards-stg.bravesoftware.com";
@@ -53,23 +46,6 @@ const char kDevelopment[] = "https://pcdn.brave.software";
 const char kStaging[] = "https://pcdn.bravesoftware.com";
 const char kProduction[] = "https://pcdn.brave.com";
 }  // namespace cdn
-
-std::string BuildBalanceUrl() {
-  std::string url;
-  switch (ledger::_environment) {
-    case ledger::Environment::DEVELOPMENT:
-      url = balance::kDevelopment;
-      break;
-    case ledger::Environment::STAGING:
-      url = balance::kStaging;
-      break;
-    case ledger::Environment::PRODUCTION:
-      url = balance::kProduction;
-      break;
-  }
-
-  return url;
-}
 
 std::string BuildPublisherUrl() {
   std::string url;
@@ -179,10 +155,6 @@ std::string BuildUrl(
     const ServerTypes& server) {
   std::string url;
   switch (server) {
-    case ServerTypes::BALANCE: {
-      url = BuildBalanceUrl();
-      break;
-    }
     case ServerTypes::kPublisher: {
       url = BuildPublisherUrl();
       break;

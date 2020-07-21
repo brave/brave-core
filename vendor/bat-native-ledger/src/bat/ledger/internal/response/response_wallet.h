@@ -22,7 +22,7 @@ ledger::Result ParseRecoverWallet(
 
 ledger::Result CheckClaimWallet(const ledger::UrlResponse& response);
 
-ledger::BalancePtr ParseWalletFetchBalance(const ledger::UrlResponse& response);
+ledger::BalancePtr ParseWalletBalance(const ledger::UrlResponse& response);
 
 }  // namespace braveledger_response_util
 

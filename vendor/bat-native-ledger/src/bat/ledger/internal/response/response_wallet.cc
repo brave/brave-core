@@ -5,9 +5,12 @@
 
 #include "bat/ledger/internal/response/response_wallet.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
+#include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/logging.h"
 #include "net/http/http_status_code.h"
 
@@ -180,96 +183,20 @@ ledger::Result CheckClaimWallet(const ledger::UrlResponse& response) {
 }
 
 // Request Url:
-// GET /wallet/{payment_id}/balance
+// GET /v3/wallet/uphold/{payment_id}
 //
 // Success:
 // OK (200)
 //
 // Response Format:
 // {
-//   "altcurrency": "BAT",
-//   "probi": "0",
-//   "cardBalance": "0",
-//   "balance": "0.0000",
-//   "unconfirmed": "0.0000",
-//   "rates": {
-//     "AED": 0.864759348,
-//     "ARS": 16.3201969584,
-//     "AUD": 0.3420872568,
-//     "BAT": 1,
-//     "BCH": 0.00096277302,
-//     "BRL": 1.17166716,
-//     "BTC": 0.0000247753512,
-//     "BTG": 0.0267530566176,
-//     "CAD": 0.3193696512,
-//     "CHF": 0.2209298328,
-//     "CNY": 1.663407144,
-//     "DASH": 0.0030994899048,
-//     "DKK": 1.5428430288,
-//     "ETH": 0.000987728323025758,
-//     "EUR": 0.2069541144,
-//     "GBP": 0.1864519992,
-//     "HKD": 1.8247023792,
-//     "ILS": 0.8132238864,
-//     "INR": 17.927590572,
-//     "JPY": 25.1176738968,
-//     "KES": 25.0625197224,
-//     "LBA": 19.393739703459637,
-//     "LTC": 0.0052345069128,
-//     "MXN": 5.3096381712,
-//     "NOK": 2.2435171776,
-//     "NZD": 0.3647860272,
-//     "PHP": 11.8485109368,
-//     "PLN": 0.926880192,
-//     "SEK": 2.178867708,
-//     "SGD": 0.3270167424,
-//     "USD": 0.23624649565116654,
-//     "XAG": 0.0128360428272,
-//     "XAU": 0.00013620204,
-//     "XPD": 0.0001530524808,
-//     "XPT": 0.0002889696384,
-//     "XRP": 1.21298311296
-//   },
-//   "parameters": {
-//     "adFree": {
-//       "currency": "BAT",
-//       "fee": {
-//         "BAT": 10
-//       },
-//       "choices": {
-//         "BAT": [
-//           5,
-//           10,
-//           15,
-//           20,
-//           25,
-//           50,
-//           100
-//         ]
-//       },
-//       "range": {
-//         "BAT": [
-//           5,
-//           100
-//         ]
-//       },
-//       "days": 30
-//     },
-//     "defaultTipChoices": [
-//       "1",
-//       "10",
-//       "50"
-//     ],
-//     "defaultMonthlyChoices": [
-//       "1",
-//       "10",
-//       "50"
-//     ]
-//   }
+//  "total": 0.0
+//  "spendable": 0.0
+//  "confirmed": 0.0
+//  "unconfirmed": 0.0
 // }
 
-ledger::BalancePtr ParseWalletFetchBalance(
-    const ledger::UrlResponse& response) {
+ledger::BalancePtr ParseWalletBalance(const ledger::UrlResponse& response) {
   // Bad Request (400)
   if (response.status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid payment id");
@@ -279,12 +206,6 @@ ledger::BalancePtr ParseWalletFetchBalance(
   // Not Found (404)
   if (response.status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized payment id");
-    return nullptr;
-  }
-
-  // Internal Server Error (500)
-  if (response.status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
     return nullptr;
   }
 
@@ -300,6 +221,7 @@ ledger::BalancePtr ParseWalletFetchBalance(
 
   base::Optional<base::Value> value = base::JSONReader::Read(response.body);
   if (!value || !value->is_dict()) {
+    BLOG(0, "Invalid JSON");
     return nullptr;
   }
 
@@ -311,22 +233,14 @@ ledger::BalancePtr ParseWalletFetchBalance(
 
   ledger::BalancePtr balance = ledger::Balance::New();
 
-  double total_anon = 0.0;
-  const auto* total = dictionary->FindStringKey("balance");
-  if (total) {
-    const bool success = base::StringToDouble(*total, &total_anon);
-    if (!success) {
-      total_anon = 0.0;
-    }
+  const auto confirmed = dictionary->FindDoubleKey("confirmed");
+  if (confirmed) {
+    balance->total = *confirmed;
   }
-  balance->total = total_anon;
 
-  std::string user_funds = "0";
-  const auto* funds = dictionary->FindStringKey("cardBalance");
-  if (funds) {
-    user_funds = *funds;
-  }
-  balance->user_funds = user_funds;
+  balance->user_funds = balance->total;
+  balance->wallets.insert(
+      std::make_pair(ledger::kWalletAnonymous, balance->total));
 
   return balance;
 }

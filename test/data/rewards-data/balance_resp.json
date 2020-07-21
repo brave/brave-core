@@ -1,31 +1,6 @@
 {
-  "altcurrency": "BAT",
-  "probi": "0",
-  "balance": "0.0000",
-  "unconfirmed": "0.0000",
-  "parameters": {
-    "adFree": {
-      "currency": "BAT",
-      "fee": {
-        "BAT": 20
-      },
-      "choices": {
-        "BAT": [
-          10,
-          15,
-          20,
-          30,
-          50,
-          100
-        ]
-      },
-      "range": {
-        "BAT": [
-          10,
-          100
-        ]
-      },
-      "days": 30
-    }
-  }
+  "total": 0,
+  "spendable": 0,
+  "confirmed": 0,
+  "unconfirmed": 0
 }

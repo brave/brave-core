@@ -87,4 +87,11 @@ std::string GetClaimWalletURL(const std::string& payment_id) {
   return BuildUrl(path, PREFIX_V3, ServerTypes::kPromotion);
 }
 
+std::string GetBalanceWalletURL(const std::string& payment_id) {
+    const std::string path = base::StringPrintf(
+      "/wallet/uphold/%s",
+      payment_id.c_str());
+  return BuildUrl(path, PREFIX_V3, ServerTypes::kPromotion);
+}
+
 }  // namespace braveledger_request_util

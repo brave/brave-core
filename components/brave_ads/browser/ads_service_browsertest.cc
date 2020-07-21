@@ -102,15 +102,6 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   return std::move(http_response);
 }
 
-bool URLMatches(const std::string& url,
-                const std::string& path,
-                const std::string& prefix,
-                const ServerTypes& server) {
-  const std::string target_url =
-      braveledger_request_util::BuildUrl(path, prefix, server);
-  return (url.find(target_url) == 0);
-}
-
 }  // namespace
 
 class BraveAdsBrowserTest
@@ -196,11 +187,6 @@ class BraveAdsBrowserTest
     if (url.find("/v3/wallet/brave") != std::string::npos) {
       *response = wallet_;
       *response_status_code = net::HTTP_CREATED;
-      return;
-    }
-
-    if (URLMatches(url, "/wallet/", PREFIX_V2, ServerTypes::BALANCE)) {
-      *response = parameters_;
       return;
     }
   }

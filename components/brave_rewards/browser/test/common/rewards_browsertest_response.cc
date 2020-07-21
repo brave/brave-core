@@ -236,9 +236,9 @@ void RewardsBrowserTestResponse::Get(
 
   if (URLMatches(
       url,
-      "/wallet/",
-      PREFIX_V2,
-      ServerTypes::BALANCE)) {
+      "/wallet/uphold",
+      PREFIX_V3,
+      ServerTypes::kPromotion)) {
     if (user_funds_balance_) {
       *response = user_funds_balance_resp_;
     } else {
