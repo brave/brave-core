@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.infobar.InfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 
@@ -51,7 +52,7 @@ public class BraveSyncInformers {
         Tab tab = activity.getActivityTabProvider().get();
         if (tab == null) return;
 
-        SimpleConfirmInfoBarBuilder.create(tab.getWebContents(),
+        BraveSimpleConfirmInfoBarBuilder.createInfobarWithDrawable(tab.getWebContents(),
                 new SimpleConfirmInfoBarBuilder.Listener() {
                     @Override
                     public void onInfoBarDismissed() {
