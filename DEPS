@@ -21,25 +21,25 @@ hooks = [
   {
     'name': 'bootstrap',
     'pattern': '.',
-    'action': ['python', 'src/brave/script/bootstrap.py'],
+    'action': ['python', 'script/bootstrap.py'],
   },
   {
     # Download rust deps if necessary for Android
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'checkout_android',
-    'action': ['vpython3', 'src/brave/script/download_rust_deps.py', '--platform', 'android'],
+    'action': ['vpython3', 'script/download_rust_deps.py', '--platform', 'android'],
   },
   {
     # Download rust deps if necessary for macOS, Windows and Linux
     'name': 'download_rust_deps',
     'pattern': '.',
     'condition': 'not checkout_android',
-    'action': ['vpython3', 'src/brave/script/download_rust_deps.py'],
+    'action': ['vpython3', 'script/download_rust_deps.py'],
   },
   {
     'name': 'generate_licenses',
     'pattern': '.',
-    'action': ['python', 'src/brave/script/generate_licenses.py'],
+    'action': ['python', 'script/generate_licenses.py'],
   },
 ]
