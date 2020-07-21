@@ -117,7 +117,8 @@ export type WalletState =
   'verified' |
   'connected' |
   'disconnected_unverified' |
-  'disconnected_verified'
+  'disconnected_verified' |
+  'pending'
 
 export interface Notification {
   id: string
@@ -380,6 +381,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         )
 
       case 'connected':
+      case 'pending':
         return (
           <Button
             type={'accent'}
@@ -424,19 +426,18 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
   getVerificationDetails = () => {
     const { goToUphold, greetings, onDisconnectClick, onVerifyClick, walletState } = this.props
-    const verified = walletState === 'verified'
-    const connected = walletState === 'connected'
+    const notVerified = walletState === 'connected' || walletState === 'pending'
 
     return (
       <WalletPopup
         onClose={this.toggleVerificationDetails}
         greetings={greetings || ''}
-        verified={verified}
+        walletState={walletState}
       >
         {
           <StyledDialogList>
             {
-              connected
+              notVerified
               ? <li>
                 <StyledLink onClick={this.onDetailsLinkClicked.bind(this, onVerifyClick)} target={'_blank'}>
                   {getLocale('walletGoToVerifyPage')}

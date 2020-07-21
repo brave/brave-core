@@ -170,7 +170,8 @@ declare namespace RewardsExtension {
     CONNECTED = 1,
     VERIFIED = 2,
     DISCONNECTED_NOT_VERIFIED = 3,
-    DISCONNECTED_VERIFIED = 4
+    DISCONNECTED_VERIFIED = 4,
+    PENDING = 5
   }
 
   export interface ExternalWallet {

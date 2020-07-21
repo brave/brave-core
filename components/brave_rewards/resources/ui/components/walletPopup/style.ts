@@ -4,6 +4,10 @@
 
 import styled from 'styled-components'
 
+interface PropsStatus {
+  isVerified: boolean
+}
+
 export const StyledWrapper = styled<{}, 'div'>('div')`
   position: absolute;
   top: 0;
@@ -36,10 +40,10 @@ export const StyledHeader = styled<{}, 'div'>('div')`
   margin-bottom: 10px;
 `
 
-export const StyledStatus = styled<{}, 'div'>('div')`
+export const StyledStatus = styled<PropsStatus, 'div'>('div')`
   font-weight: normal;
   float: right;
-  color: ${p => p.theme.palette.green600};
+  color: ${p => p.isVerified ? p.theme.palette.green600 : p.theme.palette.black};
 `
 
 export const StyledIcon = styled<{}, 'span'>('span')`

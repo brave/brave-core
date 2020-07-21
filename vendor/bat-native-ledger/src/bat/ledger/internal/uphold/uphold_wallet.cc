@@ -177,7 +177,15 @@ ledger::WalletStatus UpholdWallet::GetNewStatus(
         break;
       }
 
-      new_status = ledger::WalletStatus::CONNECTED;
+      if (user.verified) {
+        new_status = ledger::WalletStatus::VERIFIED;
+        ledger_->ShowNotification(
+           "wallet_new_verified",
+           [](ledger::Result _){},
+           {"Uphold"});
+      } else {
+        new_status = ledger::WalletStatus::CONNECTED;
+      }
       break;
     }
     case ledger::WalletStatus::NOT_CONNECTED:

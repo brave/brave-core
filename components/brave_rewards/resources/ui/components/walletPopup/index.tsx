@@ -6,6 +6,7 @@ import * as React from 'react'
 
 // Helpers
 import { getLocale } from 'brave-ui/helpers'
+import { WalletState } from '../walletWrapper/index'
 
 // Styled Components
 import {
@@ -25,7 +26,7 @@ export interface Props {
   onClose: () => void
   greetings: string
   id?: string
-  verified?: boolean
+  walletState?: WalletState
 }
 
 export default class WalletPopup extends React.PureComponent<Props, {}> {
@@ -34,13 +35,34 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
     e.stopPropagation()
   }
 
+  isVerified () {
+    const { walletState } = this.props
+    return walletState === 'verified'
+  }
+
+  getStatusMessage () {
+    const { walletState } = this.props
+    switch (walletState) {
+      case 'verified': {
+        return getLocale('walletVerified')
+      }
+      case 'connected': {
+        return getLocale('walletConnected')
+      }
+      case 'pending': {
+        return getLocale('walletPending')
+      }
+    }
+
+    return ''
+  }
+
   render () {
     const {
       children,
       onClose,
       greetings,
-      id,
-      verified
+      id
     } = this.props
     return (
       <StyledWrapper onClick={onClose} id={id}>
@@ -51,13 +73,9 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
                 <UpholdColorIcon />
               </StyledIcon>
               {greetings}
-              {
-                verified
-                ? <StyledStatus>
-                  {getLocale('walletVerified')}
-                </StyledStatus>
-                : null
-              }
+              <StyledStatus isVerified={this.isVerified()}>
+                {this.getStatusMessage()}
+              </StyledStatus>
             </StyledHeader>
             {children}
           </StyledContent>
