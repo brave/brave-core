@@ -130,7 +130,6 @@ class FeedDataSource {
     
     private let session = NetworkManager(session: URLSession(configuration: .ephemeral))
     private var feeds: [FeedItem] = []
-    private var hiddenItems: Set<String> = []
     
     init() {
     }
@@ -188,19 +187,8 @@ class FeedDataSource {
             for item in element.items where item.source == source {
                 var alteredItem = item
                 alteredItem.source = self.sources[sourceIndex]
-                alteredItem.isContentHidden = true
                 self.cards[index] = element.replacing(item: item, with: alteredItem)
             }
-        }
-    }
-    
-    /// Hide a specific feed item from a card showing in the list
-    func hide(item: FeedItem, in card: FeedCard) {
-        hiddenItems.insert(item.content.urlHash)
-        if let cardIndex = cards.firstIndex(of: card) {
-            var alteredItem = item
-            alteredItem.isContentHidden = true
-            cards[cardIndex] = cards[cardIndex].replacing(item: item, with: alteredItem)
         }
     }
     
@@ -219,7 +207,7 @@ class FeedDataSource {
             guard let source = sources.first(where: { $0.id == content.publisherID }) else {
                 return nil
             }
-            return FeedItem(score: score, content: content, source: source, isContentHidden: self.hiddenItems.contains(content.urlHash))
+            return FeedItem(score: score, content: content, source: source)
         }
     }
     
@@ -233,7 +221,7 @@ class FeedDataSource {
         let feedsFromEnabledSources = feeds.filter(\.source.enabled)
         var sponsors = feedsFromEnabledSources.filter { $0.content.contentType == .offer }
         var deals = feedsFromEnabledSources.filter { $0.content.contentType == .product }
-        var articles = feedsFromEnabledSources.filter { $0.content.contentType == .article && !$0.isContentHidden }
+        var articles = feedsFromEnabledSources.filter { $0.content.contentType == .article }
         
         let rules: [FeedSequenceElement] = [
             .sponsor,
