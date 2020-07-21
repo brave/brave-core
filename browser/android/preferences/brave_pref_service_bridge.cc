@@ -268,12 +268,6 @@ void JNI_BravePrefServiceBridge_SetReferralDownloadId(
       kReferralDownloadID, ConvertJavaStringToUTF8(env, downloadId));
 }
 
-jboolean JNI_BravePrefServiceBridge_IsBraveRewardsEnabled(
-    JNIEnv* env) {
-  return GetOriginalProfile()->GetPrefs()->
-      GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
-}
-
 static jboolean JNI_BravePrefServiceBridge_GetBoolean(
     JNIEnv* env,
     const jint j_pref_index) {

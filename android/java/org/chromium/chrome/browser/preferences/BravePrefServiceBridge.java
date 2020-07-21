@@ -192,10 +192,6 @@ public class BravePrefServiceBridge {
         BravePrefServiceBridgeJni.get().setReferralDownloadId(downloadId);
     }
 
-    public boolean isBraveRewardsEnabled() {
-        return BravePrefServiceBridgeJni.get().isBraveRewardsEnabled();
-    }
-
     @NativeMethods
     interface Natives {
         void setHTTPSEEnabled(boolean enabled);
@@ -242,7 +238,5 @@ public class BravePrefServiceBridge {
         void setReferralInitialization(boolean value);
         void setReferralPromoCode(String promoCode);
         void setReferralDownloadId(String downloadId);
-
-        boolean isBraveRewardsEnabled();
     }
 }
