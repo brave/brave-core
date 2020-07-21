@@ -57,7 +57,9 @@ fixup_replacements = [
 
 # Replacements for text nodes and neither for inside descriptions nor comments
 main_text_only_replacements = [
-    (r'Copyright', u'Copyright \xa9'),
+    # By converting it back first, it makes this idempotent
+    (u'Copyright \xa9', u'Copyright'),
+    (u'Copyright', u'Copyright \xa9'),
 ]
 
 

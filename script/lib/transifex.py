@@ -133,6 +133,41 @@ def get_transifex_translation_file_content(source_file_path, filename,
     return content
 
 
+def process_bad_ph_tags_for_one_string(val):
+    val = (val.replace('\r\n', '\n')
+              .replace('\r', '\n'))
+    if val.find('&lt;ph') == -1:
+        return val
+    val = (val.replace('&lt;', '<')
+              .replace('&gt;', '>')
+              .replace('>  ', '> ')
+              .replace('  <', ' <'))
+    return val
+
+
+def fixup_bad_ph_tags_from_raw_transifex_string(xml_content):
+    begin_index = 0
+    while begin_index < len(xml_content) and begin_index != -1:
+        string_index = xml_content.find('<string', begin_index)
+        if string_index == -1:
+            return xml_content
+        string_index = xml_content.find('>', string_index)
+        if string_index == -1:
+            return xml_content
+        string_index += 1
+        string_end_index = xml_content.find('</string>', string_index)
+        if string_end_index == -1:
+            return xml_content
+        before_part = xml_content[:string_index]
+        ending_part = xml_content[string_end_index:]
+        val = process_bad_ph_tags_for_one_string(xml_content[string_index:string_end_index])
+        xml_content = before_part + val + ending_part
+        begin_index = xml_content.find('</string>', begin_index)
+        if begin_index != -1:
+            begin_index += 9
+    return xml_content
+
+
 def trim_ph_tags_in_xtb_file_content(xml_content):
     """Removes all children of <ph> tags including $X and %X text inside ph tag"""
     xml = lxml.etree.fromstring(xml_content)
@@ -224,14 +259,19 @@ def textify(t):
     return val
 
 
-def textify_from_transifex(t):
+def replace_string_from_transifex(val):
     """Returns the text of a node from Transifex which also fixes up common problems that localizers do"""
-    val = textify(t)
+    if val is None:
+        return val
     val = (val.replace('&amp;lt;', '&lt;')
               .replace('&amp;gt;', '&gt;')
-              .replace('&amp;&amp;', '&amp;'))
-    # TODO(bbondy) we should also do fixups for ph tags here that localizers often mess up
+              .replace('&amp;amp;', '&amp;'))
     return val
+
+
+def textify_from_transifex(t):
+    """Returns the text of a node from Transifex which also fixes up common problems that localizers do"""
+    return replace_string_from_transifex(textify(t))
 
 
 def get_grd_message_string_tags(grd_file_path):
@@ -620,6 +660,7 @@ def pull_source_files_from_transifex(source_file_path, filename):
             print 'Updating: ', xtb_file_path, lang_code
             xml_content = get_transifex_translation_file_content(
                 source_file_path, filename, lang_code)
+            xml_content = fixup_bad_ph_tags_from_raw_transifex_string(xml_content)
             xml_content = trim_ph_tags_in_xtb_file_content(xml_content)
             translations = get_strings_dict_from_xml_content(xml_content)
             xtb_content = generate_xtb_content(lang_code, grd_strings,
