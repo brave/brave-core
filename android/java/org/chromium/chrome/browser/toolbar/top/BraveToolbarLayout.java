@@ -34,6 +34,7 @@ import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.dialogs.BraveAdsSignupDialog;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
@@ -540,7 +541,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void OnNotificationsCount(int count) {
-      boolean rewardsEnabled = BraveRewardsPanelPopup.isBraveRewardsEnabled();
+      boolean rewardsEnabled = BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED);
       if (mBraveRewardsNotificationsCount != null && rewardsEnabled) {
           if (count != 0) {
               String value = Integer.toString(count);
@@ -615,8 +616,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           needRelaunch = true;
       }
 
-      sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_IS_BRAVE_REWARDS_ENABLED, enabled);
-      sharedPreferencesEditor.apply();
       if (mBraveRewardsNotificationsCount != null) {
           String count = mBraveRewardsNotificationsCount.getText().toString();
           if (!count.isEmpty()) {
