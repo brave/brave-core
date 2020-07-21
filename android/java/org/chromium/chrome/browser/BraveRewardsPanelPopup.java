@@ -86,7 +86,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
 
     public static final String PREF_WAS_BRAVE_REWARDS_TURNED_ON = "brave_rewards_turned_on";
     public static final String PREF_GRANTS_NOTIFICATION_RECEIVED = "grants_notification_received";
-    public static final String PREF_IS_BRAVE_REWARDS_ENABLED = "brave_rewards_enabled";
     public static final String PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED = "was_toolbar_bat_logo_button_pressed";
     private static final String ADS_GRANT_TYPE = "1";
 
@@ -165,11 +164,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
     private BraveRewardsExternalWallet mExternal_wallet;
 
     private double walletBalance = .0;
-
-    public static boolean isBraveRewardsEnabled() {
-        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-        return sharedPreferences.getBoolean(BraveRewardsPanelPopup.PREF_IS_BRAVE_REWARDS_ENABLED, false);
-    }
 
     private boolean isVerifyWalletEnabled() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
