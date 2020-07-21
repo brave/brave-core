@@ -167,9 +167,6 @@ std::string Reports::GenerateLoadEventReport(
     writer.String("click");
   }
 
-  writer.String("tabUrl");
-  writer.String(info.tab_url.c_str());
-
   writer.String("tabClassification");
   writer.StartArray();
   auto classifications = classification::SplitCategory(info.tab_classification);
