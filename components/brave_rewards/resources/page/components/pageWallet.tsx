@@ -415,6 +415,9 @@ class PageWallet extends React.Component<Props, State> {
       // WalletStatus::DISCONNECTED_VERIFIED
       case 4:
         return 'disconnected_verified'
+      // ledger::WalletStatus::PENDING
+      case 5:
+        return 'pending'
       default:
         return 'unverified'
     }
