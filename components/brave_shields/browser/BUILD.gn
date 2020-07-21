@@ -40,8 +40,6 @@ source_set("browser") {
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
-    "referrer_whitelist_service.cc",
-    "referrer_whitelist_service.h",
     "tracking_protection_service.cc",
     "tracking_protection_service.h",
   ]

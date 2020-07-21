@@ -23,8 +23,6 @@ class PrefService;
 
 namespace brave_shields {
 
-class ReferrerWhitelistService;
-
 enum ControlType { ALLOW = 0, BLOCK, BLOCK_THIRD_PARTY, DEFAULT, INVALID };
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url);
@@ -102,7 +100,6 @@ bool MaybeChangeReferrer(
     const GURL& tab_origin,
     const GURL& target_url,
     network::mojom::ReferrerPolicy policy,
-    brave_shields::ReferrerWhitelistService* referrer_whitelist_service,
     content::Referrer* output_referrer);
 
 

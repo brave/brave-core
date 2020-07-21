@@ -26,7 +26,6 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
-#include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "brave/components/brave_sync/network_time_helper.h"
@@ -194,7 +193,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   extension_whitelist_service();
 #endif
-  referrer_whitelist_service();
   tracking_protection_service();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
@@ -271,16 +269,6 @@ BraveBrowserProcessImpl::extension_whitelist_service() {
   return extension_whitelist_service_.get();
 }
 #endif
-
-brave_shields::ReferrerWhitelistService*
-BraveBrowserProcessImpl::referrer_whitelist_service() {
-  if (!referrer_whitelist_service_) {
-    referrer_whitelist_service_ =
-        brave_shields::ReferrerWhitelistServiceFactory(
-            local_data_files_service());
-  }
-  return referrer_whitelist_service_.get();
-}
 
 #if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*

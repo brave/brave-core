@@ -12,7 +12,6 @@
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
@@ -440,17 +439,9 @@ bool MaybeChangeReferrer(
     const GURL& tab_origin,
     const GURL& target_url,
     network::mojom::ReferrerPolicy policy,
-    brave_shields::ReferrerWhitelistService* referrer_whitelist_service,
     Referrer* output_referrer) {
   DCHECK(output_referrer);
   if (allow_referrers || !shields_up || current_referrer.is_empty()) {
-    return false;
-  }
-
-  // TODO(iefremov): Get rid of the whitelist once our webcompat is OK.
-  if (referrer_whitelist_service &&
-      referrer_whitelist_service->IsWhitelisted(
-          tab_origin, target_url.GetOrigin())) {
     return false;
   }
 
