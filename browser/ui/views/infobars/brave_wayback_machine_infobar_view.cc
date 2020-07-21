@@ -25,7 +25,7 @@ BraveWaybackMachineInfoBarView::BraveWaybackMachineInfoBarView(
       std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
       content::WebContents* contents)
     : InfoBarView(std::move(delegate)) {
-  sub_views_ = new BraveWaybackMachineInfoBarContentsView(this, contents);
+  sub_views_ = new BraveWaybackMachineInfoBarContentsView(contents);
   sub_views_->SizeToPreferredSize();
   AddChildView(sub_views_);
 }
