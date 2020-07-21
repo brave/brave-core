@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/resources/settings/site_settings/category_default_setting.js b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-index 3896e3a244379284fe673b0cc3047e0613b795e4..6414192287cca73f9d858aa8d6c3228142cbaef2 100644
+index 3896e3a244379284fe673b0cc3047e0613b795e4..26f3a1732a0917d514d0d32fb40d8d072fb7db18 100644
 --- a/chrome/browser/resources/settings/site_settings/category_default_setting.js
 +++ b/chrome/browser/resources/settings/site_settings/category_default_setting.js
-@@ -185,6 +185,7 @@ Polymer({
-             this.categoryEnabled ? ContentSetting.ALLOW : ContentSetting.BLOCK);
-         break;
-       case ContentSettingsTypes.AUTOMATIC_DOWNLOADS:
+@@ -169,6 +169,7 @@ Polymer({
+     }
+     switch (this.category) {
+       case ContentSettingsTypes.ADS:
 +      case ContentSettingsTypes.AUTOPLAY:
-       case ContentSettingsTypes.CAMERA:
-       case ContentSettingsTypes.CLIPBOARD:
-       case ContentSettingsTypes.GEOLOCATION:
+       case ContentSettingsTypes.BACKGROUND_SYNC:
+       case ContentSettingsTypes.IMAGES:
+       case ContentSettingsTypes.JAVASCRIPT:

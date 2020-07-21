@@ -46,6 +46,11 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   BraveFarblingLevel GetBraveFarblingLevel() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
+                           AutoplayBlockedByDefault);
+  FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
+                           AutoplayAllowedByDefault);
+
   bool IsBraveShieldsDown(
       const blink::WebFrame* frame,
       const GURL& secondary_url);

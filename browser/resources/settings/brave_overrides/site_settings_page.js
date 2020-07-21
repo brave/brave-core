@@ -37,7 +37,7 @@ RegisterPolymerComponentBehaviors({
             id: 'autoplay',
             label: 'siteSettingsAutoplay',
             icon: 'cr:extension',
-            enabledLabel: 'siteSettingsAutoplayAsk',
+            enabledLabel: 'siteSettingsAllowed',
             disabledLabel: 'siteSettingsBlocked'
           }
           lists_.all.splice(indexForAutoplay, 0, autoplayItem)
