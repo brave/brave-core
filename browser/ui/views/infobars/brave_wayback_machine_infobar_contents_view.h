@@ -15,10 +15,6 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-namespace infobars {
-class InfoBar;
-}  // namespace infobars
-
 namespace views {
 class ImageView;
 class Label;
@@ -34,8 +30,7 @@ class BraveWaybackMachineInfoBarContentsView
       public views::ButtonListener,
       public WaybackMachineURLFetcher::Client {
  public:
-  BraveWaybackMachineInfoBarContentsView(
-      infobars::InfoBar* infobar,
+  explicit BraveWaybackMachineInfoBarContentsView(
       content::WebContents* contents);
   ~BraveWaybackMachineInfoBarContentsView() override;
 
@@ -61,12 +56,12 @@ class BraveWaybackMachineInfoBarContentsView
   void UpdateChildrenVisibility(bool show_before_checking_views);
   void FetchWaybackURL();
   void LoadURL(const GURL& url);
+  void HideInfobar();
 
   // Used for labels theme changing all together.
   Labels labels_;
   Views views_visible_before_checking_;
   Views views_visible_after_checking_;
-  infobars::InfoBar* infobar_;
   content::WebContents* contents_;
   WaybackMachineURLFetcher wayback_machine_url_fetcher_;
 
