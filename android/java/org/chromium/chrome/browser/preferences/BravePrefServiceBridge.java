@@ -123,10 +123,10 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getBooleanForContentSetting(content_type);
     }
 
-        /**
-     * @param preference The name of the preference.
-     * @return Whether the specified preference is enabled.
-     */
+    /**
+    * @param preference The name of the preference.
+    * @return Whether the specified preference is enabled.
+    */
     public boolean getBoolean(@Pref int preference) {
         return BravePrefServiceBridgeJni.get().getBoolean(preference);
     }
