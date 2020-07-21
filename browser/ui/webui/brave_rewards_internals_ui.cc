@@ -63,6 +63,10 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetFulllLog(const std::string& log);
   void ClearLog(const base::ListValue* args);
   void OnClearLog(const bool success);
+  void GetExternalWallet(const base::ListValue* args);
+  void OnGetExternalWallet(
+      int32_t result,
+      std::unique_ptr<brave_rewards::ExternalWallet> wallet);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   Profile* profile_;
@@ -116,6 +120,12 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       "brave_rewards_internals.clearLog",
       base::BindRepeating(
           &RewardsInternalsDOMHandler::ClearLog,
+          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getExternalWallet",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::GetExternalWallet,
           base::Unretained(this)));
 }
 
@@ -360,6 +370,44 @@ void RewardsInternalsDOMHandler::OnClearLog(const bool success) {
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_internals.partialLog",
       base::Value(""));
+}
+
+void RewardsInternalsDOMHandler::GetExternalWallet(
+    const base::ListValue* args) {
+  CHECK_EQ(1U, args->GetSize());
+  if (!rewards_service_) {
+    return;
+  }
+
+  const std::string wallet_type = args->GetList()[0].GetString();
+  rewards_service_->GetExternalWallet(
+      wallet_type,
+      base::BindOnce(
+          &RewardsInternalsDOMHandler::OnGetExternalWallet,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetExternalWallet(
+    int32_t result,
+    std::unique_ptr<brave_rewards::ExternalWallet> wallet) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+  base::Value data(base::Value::Type::DICTIONARY);
+
+  data.SetIntKey("result", result);
+  base::Value wallet_dict(base::Value::Type::DICTIONARY);
+
+  if (wallet) {
+    wallet_dict.SetStringKey("address", wallet->address);
+    wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
+  }
+
+  data.SetKey("wallet", std::move(wallet_dict));
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.externalWallet",
+      data);
 }
 
 }  // namespace

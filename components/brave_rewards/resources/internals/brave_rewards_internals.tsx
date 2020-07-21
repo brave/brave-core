@@ -59,6 +59,10 @@ window.cr.define('brave_rewards_internals', function () {
     getActions().onGetFullLog(log)
   }
 
+  function externalWallet (properties: {result: number, wallet: RewardsInternals.ExternalWallet}) {
+    getActions().onExternalWallet(properties.result, properties.wallet)
+  }
+
   function initialize () {
     window.i18nTemplate.process(window.document, window.loadTimeData)
 
@@ -79,7 +83,8 @@ window.cr.define('brave_rewards_internals', function () {
     contributions,
     promotions,
     partialLog,
-    fullLog
+    fullLog,
+    externalWallet
   }
 })
 

@@ -18,5 +18,7 @@ export const enum types {
   GET_FULL_LOG = '@@rewards_internals/GET_FULL_LOG',
   ON_GET_FULL_LOG = '@@rewards_internals/ON_GET_FULL_LOG',
   CLEAR_LOG = '@@rewards_internals/CLEAR_LOG',
-  DOWNLOAD_COMPLETED = '@@rewards_internals/DOWNLOAD_COMPLETED'
+  DOWNLOAD_COMPLETED = '@@rewards_internals/DOWNLOAD_COMPLETED',
+  GET_EXTERNAL_WALLET = '@@rewards_internals/GET_EXTERNAL_WALLET',
+  ON_EXTERNAL_WALLET = '@@rewards_internals/ON_EXTERNAL_WALLET'
 }

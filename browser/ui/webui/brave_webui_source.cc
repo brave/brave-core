@@ -856,6 +856,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "contributionType", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE },
         { "contributions", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS },
         { "downloadButton", IDS_BRAVE_REWARDS_INTERNALS_DOWNLOAD_BUTTON },
+        { "externalWallet", IDS_BRAVE_REWARDS_INTERNALS_EXTERNAL_WALLET },
         { "invalid", IDS_BRAVE_REWARDS_INTERNALS_INVALID },
         { "keyInfoSeed", IDS_BRAVE_REWARDS_INTERNALS_KEY_INFO_SEED },
         { "logNotice", IDS_BRAVE_REWARDS_INTERNALS_LOG_NOTICE },
@@ -892,8 +893,16 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "totalBalance", IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE },
         { "userId", IDS_BRAVE_REWARDS_INTERNALS_USER_ID },
         { "valid", IDS_BRAVE_REWARDS_INTERNALS_VALID },
+        { "walletAddress", IDS_BRAVE_REWARDS_INTERNALS_WALLET_ADDRESS },
         { "walletInfo", IDS_BRAVE_REWARDS_INTERNALS_WALLET_INFO },
         { "walletPaymentId", IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID },
+        { "walletStatus", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS },
+        { "walletStatusConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_CONNECTED },    // NOLINT
+        { "walletStatusNotConnected", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_NOT_CONNECTED },    // NOLINT
+        { "walletStatusVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_VERIFIED },    // NOLINT
+        { "walletStatusDisconnectedNotVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_NOT_VERIFIED },    // NOLINT
+        { "walletStatusDisconnectedVerified", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_DISCONNECTED_VERIFIED },    // NOLINT
+        { "walletStatusPending", IDS_BRAVE_REWARDS_INTERNALS_WALLET_STATUS_PENDING },    // NOLINT
       }
     }, {
       std::string("webcompat"), {

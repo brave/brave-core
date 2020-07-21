@@ -16,7 +16,11 @@ const defaultState: RewardsInternals.State = {
   contributions: [],
   promotions: [],
   log: '',
-  fullLog: ''
+  fullLog: '',
+  externalWallet: {
+    address: '',
+    status: 0
+  }
 }
 
 export const load = (): RewardsInternals.State => {
