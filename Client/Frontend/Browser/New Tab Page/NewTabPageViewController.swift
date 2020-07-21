@@ -164,11 +164,8 @@ class NewTabPageViewController: UIViewController, Themeable {
                 inNewTab: inNewTab,
                 switchingToPrivateMode: switchingToPrivateMode
             )
-        case .hide:
-            feedDataSource.hide(item: context.item, in: context.card)
-            collectionView.reloadItems(at: [context.indexPath])
-        case .disableSource:
-            feedDataSource.toggleSource(context.item.source, enabled: false)
+        case .toggleSource:
+            feedDataSource.toggleSource(context.item.source, enabled: !context.item.source.enabled)
             collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
         case .longPressed(let context):
             let alertController = UIAlertController(

@@ -27,7 +27,6 @@ struct FeedItem: Equatable, Comparable {
     var score: Double
     var content: Content
     var source: Source
-    var isContentHidden: Bool
     
     static func < (lhs: Self, rhs: Self) -> Bool {
         return lhs.score < rhs.score
@@ -49,6 +48,10 @@ extension FeedItem {
             case category
             case logo = "publisher_logo_padded"
             case name = "publisher_name"
+        }
+        
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            return lhs.id == rhs.id
         }
     }
     
