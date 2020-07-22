@@ -1049,6 +1049,9 @@
                   },
                   "accountUrl": {
                     "type": "any"
+                  },
+                  "loginUrl": {
+                    "type": "string"
                   }
                 }
               }

@@ -32,6 +32,8 @@ class RewardsBrowserTestPromotion
 
   void WaitForPromotionFinished();
 
+  void WaitForUnblindedTokensReady();
+
   brave_rewards::Promotion GetPromotion();
 
   std::string GetPromotionId();
@@ -49,10 +51,15 @@ class RewardsBrowserTestPromotion
       const uint32_t result,
       brave_rewards::Promotion promotion) override;
 
+  void OnUnblindedTokensReady(
+      brave_rewards::RewardsService* rewards_service) override;
+
   std::unique_ptr<base::RunLoop> wait_for_initialization_loop_;
   bool initialized_ = false;
   std::unique_ptr<base::RunLoop> wait_for_finished_loop_;
   bool finished_ = false;
+  std::unique_ptr<base::RunLoop> wait_for_unblinded_tokens_loop_;
+  bool unblinded_tokens_ = false;
 
   brave_rewards::Promotion promotion_;
   Browser* browser_;  // NOT OWNED

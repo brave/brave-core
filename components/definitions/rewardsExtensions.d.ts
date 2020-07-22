@@ -183,5 +183,6 @@ declare namespace RewardsExtension {
     withdrawUrl: string
     userName: string
     accountUrl: string
+    loginUrl: string
   }
 }

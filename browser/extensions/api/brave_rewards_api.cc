@@ -1014,6 +1014,7 @@ void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
     data->SetStringKey("withdrawUrl", wallet->withdraw_url);
     data->SetStringKey("userName", wallet->user_name);
     data->SetStringKey("accountUrl", wallet->account_url);
+    data->SetStringKey("loginUrl", wallet->login_url);
   }
 
   Respond(TwoArguments(

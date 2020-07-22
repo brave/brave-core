@@ -41,7 +41,10 @@ import {
   StyledVerifiedButtonIcon,
   StyledVerifiedButtonText,
   StyledDialogList,
-  StyledLink
+  StyledLink,
+  LoginMessage,
+  LoginMessageButtons,
+  LoginMessageText
 } from './style'
 import { getLocale } from 'brave-ui/helpers'
 import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper, WalletPopup } from '../'
@@ -151,6 +154,7 @@ export interface Props {
   goToUphold?: () => void
   greetings?: string
   onlyAnonWallet?: boolean
+  showLoginMessage?: boolean
 }
 
 export type Step = '' | 'captcha' | 'complete'
@@ -158,6 +162,7 @@ export type Step = '' | 'captcha' | 'complete'
 interface State {
   grantDetails: boolean,
   verificationDetails: boolean
+  showLoginMessage: boolean
 }
 
 export default class WalletWrapper extends React.PureComponent<Props, State> {
@@ -165,7 +170,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     super(props)
     this.state = {
       grantDetails: false,
-      verificationDetails: false
+      verificationDetails: false,
+      showLoginMessage: false
     }
   }
 
@@ -317,12 +323,27 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     )
   }
 
+  walletButtonClicked = () => {
+    if (!this.props.onVerifyClick) {
+      return
+    }
+
+    if (!this.props.showLoginMessage) {
+      this.props.onVerifyClick()
+      return
+    }
+
+    this.setState({
+      showLoginMessage: true
+    })
+  }
+
   generateWalletButton = (walletState: WalletState) => {
     const buttonProps: Partial<ButtonProps> = {
       size: 'small',
       level: 'primary',
       brand: 'rewards',
-      onClick: this.props.onVerifyClick
+      onClick: this.walletButtonClicked
     }
 
     switch (walletState) {
@@ -531,6 +552,12 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     )
   }
 
+  toggleLoginMessage = () => {
+    this.setState({
+      showLoginMessage: false
+    })
+  }
+
   render () {
     const {
       id,
@@ -695,6 +722,32 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                 : this.generateNotification(notification)
             }
             <StyledCurve background={gradientTop} />
+            {
+              this.state.showLoginMessage
+              ? <LoginMessage>
+                  <LoginMessageText>
+                    <b>{getLocale('loginMessageTitle')}</b>
+                    <p dangerouslySetInnerHTML={{ __html: getLocale('loginMessageText') }} />
+                  </LoginMessageText>
+                  <LoginMessageButtons>
+                    <Button
+                      level={'secondary'}
+                      type={'accent'}
+                      text={getLocale('cancel')}
+                      onClick={this.toggleLoginMessage}
+                      id={'cancel-login-button'}
+                    />
+                    <Button
+                      level={'primary'}
+                      type={'accent'}
+                      text={getLocale('login')}
+                      onClick={this.props.onVerifyClick}
+                      id={'login-button'}
+                    />
+                  </LoginMessageButtons>
+              </LoginMessage>
+              : null
+            }
           </StyledHeader>
           <StyledContent
             contentPadding={contentPadding}

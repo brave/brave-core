@@ -342,6 +342,12 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
+      // NOT_FOUND
+      if (data.result === 9) {
+        ui.modalRedirect = 'batLimit'
+        break
+      }
+
       if (data.result !== 0) {
         ui.modalRedirect = 'error'
         break

@@ -152,6 +152,7 @@ struct ExternalWallet {
   string one_time_string;
   string user_name;
   string account_url;
+  string login_url;
   bool transferred;
 };
 

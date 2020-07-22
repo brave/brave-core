@@ -25,6 +25,7 @@ namespace brave_rewards {
     withdraw_url = properties.withdraw_url;
     user_name = properties.user_name;
     account_url = properties.account_url;
+    login_url = properties.login_url;
   }
 
   std::string ExternalWallet::toJson() {
@@ -41,6 +42,7 @@ namespace brave_rewards {
     dict.SetStringKey("withdraw_url", withdraw_url);
     dict.SetStringKey("user_name", user_name);
     dict.SetStringKey("account_url", account_url);
+    dict.SetStringKey("login_url", login_url);
     base::JSONWriter::Write(dict, &json_wallet);
     return json_wallet;
   }

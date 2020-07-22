@@ -68,7 +68,7 @@ declare namespace Rewards {
     ui: {
       emptyWallet: boolean
       modalBackup: boolean
-      modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed'
+      modalRedirect: 'show' | 'hide' | 'error' | 'notAllowed' | 'batLimit'
       paymentIdCheck: boolean
       promosDismissed?: {
         [key: string]: boolean
@@ -288,6 +288,7 @@ declare namespace Rewards {
     withdrawUrl: string
     userName?: string
     accountUrl: string
+    loginUrl: string
   }
 
   export interface ProcessRewardsPageUrl {

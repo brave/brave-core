@@ -67,6 +67,23 @@ void RewardsBrowserTestPromotion::OnPromotionFinished(
   }
 }
 
+void RewardsBrowserTestPromotion::WaitForUnblindedTokensReady() {
+  if (unblinded_tokens_) {
+    return;
+  }
+
+  wait_for_unblinded_tokens_loop_.reset(new base::RunLoop);
+  wait_for_unblinded_tokens_loop_->Run();
+}
+
+void RewardsBrowserTestPromotion::OnUnblindedTokensReady(
+    brave_rewards::RewardsService* rewards_service) {
+  unblinded_tokens_ = true;
+  if (wait_for_unblinded_tokens_loop_) {
+    wait_for_unblinded_tokens_loop_->Quit();
+  }
+}
+
 brave_rewards::Promotion RewardsBrowserTestPromotion::GetPromotion() {
   return promotion_;
 }
@@ -90,6 +107,7 @@ double RewardsBrowserTestPromotion::ClaimPromotionViaCode() {
       solution,
       base::DoNothing());
   WaitForPromotionFinished();
+  WaitForUnblindedTokensReady();
   return 30;
 }
 
