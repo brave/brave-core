@@ -37,7 +37,8 @@ class BraveBrowsingDataRemoverDelegate
                           uint64_t remove_mask,
                           content::BrowsingDataFilterBuilder* filter_builder,
                           uint64_t origin_type_mask,
-                          base::OnceClosure callback) override;
+                          base::OnceCallback<void(uint64_t)> callback)
+                          override;
 
   void ClearShieldsSettings(base::Time begin_time, base::Time end_time);
 
