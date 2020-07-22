@@ -32,6 +32,8 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 
 public class CrossPromotionalModalDialogFragment extends DialogFragment implements View.OnClickListener {
 
+    private static final String BRAVE_URL = "brave.com";
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -65,7 +67,7 @@ public class CrossPromotionalModalDialogFragment extends DialogFragment implemen
         mDoneButton.setOnClickListener(this);
 
         String mPromoText = getResources().getString(R.string.download_brave);
-        int indexOfSpan = mPromoText.indexOf(getResources().getString(R.string.brave_url));
+        int indexOfSpan = mPromoText.indexOf(BRAVE_URL);
 
         TextView mCrossPromoText = view.findViewById(R.id.cross_modal_text);
 
@@ -75,9 +77,8 @@ public class CrossPromotionalModalDialogFragment extends DialogFragment implemen
         ForegroundColorSpan foregroundSpan =
             new ForegroundColorSpan(getResources().getColor(R.color.shield_back_button_tint));
         ss.setSpan(foregroundSpan, indexOfSpan,
-                   (indexOfSpan + getResources().getString(R.string.brave_url).length()), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                   (indexOfSpan + BRAVE_URL.length()), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         mCrossPromoText.setText(ss);
-
     }
 
     @Override

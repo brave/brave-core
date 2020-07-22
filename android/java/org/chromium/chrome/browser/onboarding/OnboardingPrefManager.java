@@ -30,6 +30,7 @@ import java.util.Map;
  */
 public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING = "onboarding";
+    private static final String PREF_CROSS_PROMO_MODAL = "cross_promo_modal";
     private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
     private static final String PREF_NEXT_CROSS_PROMO_MODAL_DATE = "next_cross_promo_modal_date";
     private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
@@ -170,8 +171,20 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
+    public void setCrossPromoModalShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_CROSS_PROMO_MODAL, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
+    private boolean hasCrossPromoModalShown() {
+        return mSharedPreferences.getBoolean(PREF_CROSS_PROMO_MODAL, false);
+    }
+
     public boolean showCrossPromoModal() {
-        boolean shouldShow = (getNextCrossPromoModalDate() > 0 && System.currentTimeMillis() > getNextCrossPromoModalDate());
+        boolean shouldShow = !hasCrossPromoModalShown()
+                             && (getNextCrossPromoModalDate() > 0
+                                 && System.currentTimeMillis() > getNextCrossPromoModalDate());
         return shouldShow;
     }
 
