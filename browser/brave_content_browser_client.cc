@@ -415,7 +415,7 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
       allow_referrers, shields_up, (*referrer)->url, document_url, request_url,
-      policy, g_brave_browser_process->referrer_whitelist_service(),
+      policy,
       &new_referrer)) {
     (*referrer)->url = new_referrer.url;
     (*referrer)->policy = new_referrer.policy;

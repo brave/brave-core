@@ -13,7 +13,6 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/no_destructor.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/common/url_constants.h"
@@ -110,9 +109,6 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
           GURL(ctx->referrer), ctx->tab_origin, ctx->request_url,
           content::Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
               ctx->referrer_policy),
-          g_brave_browser_process
-              ? g_brave_browser_process->referrer_whitelist_service()
-              : nullptr,
           &new_referrer)) {
     ctx->new_referrer = new_referrer.url;
     return true;

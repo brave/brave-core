@@ -41,7 +41,6 @@ class AdBlockService;
 class AdBlockCustomFiltersService;
 class AdBlockRegionalServiceManager;
 class HTTPSEverywhereService;
-class ReferrerWhitelistService;
 class TrackingProtectionService;
 }  // namespace brave_shields
 
@@ -86,7 +85,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_component_updater::ExtensionWhitelistService*
   extension_whitelist_service();
 #endif
-  brave_shields::ReferrerWhitelistService* referrer_whitelist_service();
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion::GreaselionDownloadService* greaselion_download_service();
 #endif
@@ -142,8 +140,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<brave_component_updater::ExtensionWhitelistService>
       extension_whitelist_service_;
 #endif
-  std::unique_ptr<brave_shields::ReferrerWhitelistService>
-      referrer_whitelist_service_;
 #if BUILDFLAG(ENABLE_GREASELION)
   std::unique_ptr<greaselion::GreaselionDownloadService>
       greaselion_download_service_;
