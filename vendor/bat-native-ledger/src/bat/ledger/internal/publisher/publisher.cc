@@ -714,9 +714,6 @@ void Publisher::OnPublisherPrefixListUpdated() {
   // Attempt to reprocess any contributions for previously
   // unverified publishers that are now verified.
   ledger_->ContributeUnverifiedPublishers();
-
-  // Remove stale server publisher records to recover space.
-  server_publisher_fetcher_->PurgeExpiredRecords();
 }
 
 }  // namespace braveledger_publisher

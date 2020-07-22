@@ -892,10 +892,21 @@ IN_PROC_BROWSER_TEST_F(
   base::ScopedAllowBlockingForTesting allow_blocking;
   InitDB();
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-  EXPECT_EQ(CountTableRows("server_publisher_info"), 0);
-  EXPECT_EQ(CountTableRows("server_publisher_amounts"), 0);
-  EXPECT_EQ(CountTableRows("server_publisher_banner"), 0);
-  EXPECT_EQ(CountTableRows("server_publisher_links"), 0);
+  EXPECT_EQ(CountTableRows("server_publisher_info"), 1);
+  EXPECT_EQ(CountTableRows("server_publisher_banner"), 1);
+  EXPECT_EQ(CountTableRows("server_publisher_amounts"), 3);
+  EXPECT_EQ(CountTableRows("server_publisher_links"), 3);
+
+  sql::Statement sql(db_.GetUniqueStatement(
+      "SELECT publisher_key, status, address, updated_at "
+      "FROM server_publisher_info"));
+
+  while (sql.Step()) {
+    EXPECT_EQ(sql.ColumnString(0), "laurenwags.github.io");
+    EXPECT_EQ(sql.ColumnInt64(1), 2);
+    EXPECT_EQ(sql.ColumnString(2), "096f1756-9406-4d9b-94c8-5bb566c2ea5f");
+    EXPECT_EQ(sql.ColumnInt64(3), 0);
+  }
 }
 
 }  // namespace rewards_browsertest

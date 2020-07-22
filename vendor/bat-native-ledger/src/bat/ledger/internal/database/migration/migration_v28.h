@@ -11,9 +11,12 @@ namespace database {
 namespace migration {
 
 const char v28[] = R"(
-  PRAGMA foreign_keys = off;
-    DROP TABLE IF EXISTS server_publisher_info;
-  PRAGMA foreign_keys = on;
+  DELETE FROM server_publisher_info
+  WHERE status = 0 OR publisher_key NOT IN (
+    SELECT publisher_id FROM publisher_info
+  );
+
+  ALTER TABLE server_publisher_info RENAME TO server_publisher_info_temp;
 
   CREATE TABLE server_publisher_info (
     publisher_key LONGVARCHAR PRIMARY KEY NOT NULL,
@@ -22,11 +25,23 @@ const char v28[] = R"(
     updated_at TIMESTAMP NOT NULL
   );
 
-  DELETE FROM server_publisher_banner;
+  INSERT OR IGNORE INTO server_publisher_info
+    (publisher_key, status, address, updated_at)
+  SELECT publisher_key, status, address, 0
+  FROM server_publisher_info_temp;
 
-  DELETE FROM server_publisher_links;
+  PRAGMA foreign_keys = off;
+    DROP TABLE IF EXISTS server_publisher_info_temp;
+  PRAGMA foreign_keys = on;
 
-  DELETE FROM server_publisher_amounts;
+  DELETE FROM server_publisher_banner
+  WHERE publisher_key NOT IN (SELECT publisher_key FROM server_publisher_info);
+
+  DELETE FROM server_publisher_links
+  WHERE publisher_key NOT IN (SELECT publisher_key FROM server_publisher_info);
+
+  DELETE FROM server_publisher_amounts
+  WHERE publisher_key NOT IN (SELECT publisher_key FROM server_publisher_info);
 
   PRAGMA foreign_keys = off;
     DROP TABLE IF EXISTS publisher_prefix_list;
