@@ -19,6 +19,7 @@
 #include "components/component_updater/component_updater_url_constants.h"
 #include "extensions/buildflags/buildflags.h"
 #include "extensions/common/url_pattern.h"
+#include "net/base/net_errors.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/common/extension_urls.h"
