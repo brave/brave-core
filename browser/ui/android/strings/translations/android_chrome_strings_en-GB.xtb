@@ -7,7 +7,6 @@
 <translation id="1036727731225946849">Adding <ph name="WEBAPK_NAME"/>...</translation>
 <translation id="1041308826830691739">From websites</translation>
 <translation id="1045899828449635435">Also clear data from these sites?</translation>
-<translation id="1049743911850919806">Incognito</translation>
 <translation id="10614374240317010">Never saved</translation>
 <translation id="5428209950370661546">Other Brave services</translation>
 <translation id="1068672505746868501">Never translate pages in <ph name="SOURCE_LANGUAGE"/></translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">Initial sync setup not finished</translation>
 <translation id="1821253160463689938">Uses cookies to remember your preferences, even if you don't visit those pages</translation>
 <translation id="1829244130665387512">Find in page</translation>
-<translation id="1853692000353488670">New incognito tab</translation>
 <translation id="1856325424225101786">Reset Lite mode?</translation>
 <translation id="5817715962196959877">Brave now downloads files faster</translation>
 <translation id="1883903952484604915">My files</translation>
@@ -233,15 +231,12 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="2903493209154104877">Addresses</translation>
 <translation id="290376772003165898">Page is not in <ph name="LANGUAGE"/>?</translation>
 <translation id="2904414404539560095">List of devices to share a tab with, opened at full height.</translation>
-<translation id="2905036901251765993">To share with people nearby, let them scan this QR code</translation>
 <translation id="7339921667754113786">Brave Notifications Platform</translation>
 <translation id="2923908459366352541">Name is invalid</translation>
 <translation id="6355102470683871794">Brave <ph name="APP_NAME"/> storage</translation>
 <translation id="2942036813789421260">Preview tab is closed</translation>
 <translation id="2956410042958133412">This account is managed by <ph name="PARENT_NAME_1"/> and <ph name="PARENT_NAME_2"/>.</translation>
-<translation id="2962095958535813455">Switched to incognito tabs</translation>
 <translation id="2968755619301702150">Certificate viewer</translation>
-<translation id="2979025552038692506">Selected Incognito Tab</translation>
 <translation id="2987620471460279764">Text shared from other device</translation>
 <translation id="2989523299700148168">Recently Visited</translation>
 <translation id="2996291259634659425">Create passphrase</translation>
@@ -252,10 +247,8 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="305593374596241526">Location is off; turn it on in <ph name="BEGIN_LINK"/>Android Settings<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">You can turn on sync at any time in settings</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> bookmark}other{<ph name="BOOKMARKS_COUNT_MANY"/> bookmarks}}</translation>
-<translation id="3089395242580810162">Open in incognito tab</translation>
 <translation id="3114012059975132928">Video player</translation>
 <translation id="3123734510202723619">Announcements</translation>
-<translation id="3137521801621304719">Leave incognito mode</translation>
 <translation id="3143515551205905069">Cancel sync</translation>
 <translation id="5063487983358782016">Brave’s homepage</translation>
 <translation id="3157842584138209013">See how much data you've saved from the More Options button</translation>
@@ -285,7 +278,6 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="3333961966071413176">All contacts</translation>
 <translation id="3334729583274622784">Change file extension?</translation>
 <translation id="3341058695485821946">See how much data you've saved</translation>
-<translation id="3350687908700087792">Close all incognito tabs</translation>
 <translation id="8134317863207426198">Lite page provided by Brave. Tap the load original button to load the original page.</translation>
 <translation id="3367813778245106622">Sign in again to start sync</translation>
 <translation id="2746024117903470217">To share this page to another device, turn on sync in Brave settings on the other device</translation>
@@ -298,7 +290,6 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="3443221991560634068">Reload the current page</translation>
 <translation id="3445014427084483498">Just now</translation>
 <translation id="3478363558367712427">You can choose your search engine</translation>
-<translation id="3492207499832628349">New incognito tab</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Find out more<ph name="END_LINK"/> about suggested content</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Augmented Reality</translation>
@@ -329,7 +320,6 @@ Touch and hold any word to search. To refine your search, select more or fewer w
 <translation id="3749259744154402564">Unsupported</translation>
 <translation id="3763247130972274048">Double-tap video left or right to skip 10s</translation>
 <translation id="3771001275138982843">Couldn’t download the update</translation>
-<translation id="3771033907050503522">Incognito Tabs</translation>
 <translation id="1138681184697033370">Brave Terms of Service</translation>
 <translation id="3773755127849930740"><ph name="BEGIN_LINK"/>Turn on Bluetooth<ph name="END_LINK"/> to allow pairing</translation>
 <translation id="3775705724665058594">Send to your devices</translation>
@@ -495,7 +485,6 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5040262127954254034">Privacy</translation>
 <translation id="5087580092889165836">Add card</translation>
 <translation id="510275257476243843">1 hour left</translation>
-<translation id="5123685120097942451">Incognito tab</translation>
 <translation id="5127805178023152808">Sync is off</translation>
 <translation id="5129038482087801250">Install web app</translation>
 <translation id="5132942445612118989">Sync your passwords, history and more on all devices</translation>
@@ -547,14 +536,12 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5517095782334947753">You have bookmarks, history, passwords and other settings from <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">Redirect blocked.</translation>
 <translation id="2367014990350929709">Brave needs location access to scan for devices. <ph name="BEGIN_LINK1"/>Update permissions<ph name="END_LINK1"/>. Location access is also <ph name="BEGIN_LINK2"/>turned off for this device<ph name="END_LINK2"/>.</translation>
-<translation id="5530766185686772672">Close incognito tabs</translation>
 <translation id="5534640966246046842">Site copied</translation>
 <translation id="5561549206367097665">Waiting for network…</translation>
 <translation id="55737423895878184">Location and notifications are allowed</translation>
 <translation id="5578795271662203820">Search <ph name="SEARCH_ENGINE"/> for this image</translation>
 <translation id="5581519193887989363">You can always choose what to sync in <ph name="BEGIN_LINK1"/>settings<ph name="END_LINK1"/>.</translation>
 <translation id="5595485650161345191">Edit address</translation>
-<translation id="5599455543593328020">Incognito mode</translation>
 <translation id="5620928963363755975">Find your files and pages in Downloads from the More Options button</translation>
 <translation id="5626134646977739690">Name:</translation>
 <translation id="5639724618331995626">Allow all sites</translation>
@@ -572,7 +559,6 @@ To change this setting, <ph name="BEGIN_LINK"/>reset sync<ph name="END_LINK"/></
 <translation id="5726692708398506830">Make everything on the page bigger</translation>
 <translation id="5748802427693696783">Switched to standard tabs</translation>
 <translation id="3088191967551450609">Brave needs storage access to download files.</translation>
-<translation id="5763382633136178763">Incognito tabs</translation>
 <translation id="5763514718066511291">Tap to copy the URL for this app</translation>
 <translation id="5765780083710877561">Description:</translation>
 <translation id="5793665092639000975">Using <ph name="SPACE_USED"/> of <ph name="SPACE_AVAILABLE"/></translation>
@@ -858,7 +844,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="8073388330009372546">Open image in new tab</translation>
 <translation id="8076492880354921740">Tabs</translation>
 <translation id="8084114998886531721">Saved password</translation>
-<translation id="8103578431304235997">Incognito Tab</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">To get your bookmarks on all your devices, turn on sync</translation>
 <translation id="4565206163201411670">Show your Brave activity in Digital Wellbeing?</translation>
@@ -909,7 +894,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="230699814587342492">Brave Passwords</translation>
 <translation id="8503813439785031346">Username</translation>
 <translation id="133012818630824069">Export passwords stored with Brave</translation>
-<translation id="8514577642972634246">Enter incognito mode</translation>
 <translation id="8516012719330875537">Image editor</translation>
 <translation id="8523928698583292556">Delete stored password</translation>
 <translation id="854522910157234410">Open this page:</translation>
@@ -955,7 +939,6 @@ For example, some websites may respond to this request by showing you ads that a
 <translation id="8970887620466824814">Something went wrong.</translation>
 <translation id="8972098258593396643">Download to default folder?</translation>
 <translation id="8988028529677883095">Use phone as a security key</translation>
-<translation id="8993760627012879038">Open a new tab in Incognito mode</translation>
 <translation id="2689656545739939160">You are signing in with an account managed by <ph name="MANAGED_DOMAIN"/> and giving its administrator control over your Brave data. Your data will become permanently tied to this account. Signing out of Brave will delete your data from this device, but it will remain stored in your Brave Account.</translation>
 <translation id="9028914725102941583">Turn on sync to share across devices</translation>
 <translation id="9040142327097499898">Notifications are allowed. Location is off for this device.</translation>

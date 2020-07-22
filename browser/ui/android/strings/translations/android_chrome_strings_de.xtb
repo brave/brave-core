@@ -7,7 +7,6 @@
 <translation id="1036727731225946849"><ph name="WEBAPK_NAME"/> wird hinzugefügt...</translation>
 <translation id="1041308826830691739">Von Websites</translation>
 <translation id="1045899828449635435">Auch Daten dieser Websites löschen?</translation>
-<translation id="1049743911850919806">Inkognito</translation>
 <translation id="10614374240317010">Nie speichern für…</translation>
 <translation id="5428209950370661546">Weitere Brave-Dienste</translation>
 <translation id="1068672505746868501">Seiten auf <ph name="SOURCE_LANGUAGE"/> nie übersetzen</translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">Erste Einrichtung der Synchronisierung nicht abgeschlossen</translation>
 <translation id="1821253160463689938">Zum Speichern Ihrer Einstellungen werden Cookies verwendet, auch wenn Sie diese Seiten nicht besuchen</translation>
 <translation id="1829244130665387512">Auf Seite suchen</translation>
-<translation id="1853692000353488670">Neuer Inkognitotab</translation>
 <translation id="1856325424225101786">Lite-Modus zurücksetzen?</translation>
 <translation id="5817715962196959877">In Brave sind Downloads jetzt noch schneller</translation>
 <translation id="1883903952484604915">Meine Dateien</translation>
@@ -233,15 +231,12 @@ Berühren und halten Sie ein Wort, um eine Suche damit zu starten. Sie können I
 <translation id="2903493209154104877">Adressen</translation>
 <translation id="290376772003165898">Diese Seite ist nicht auf <ph name="LANGUAGE"/>?</translation>
 <translation id="2904414404539560095">Die Liste von Geräten, mit denen ein Tab geteilt werden kann, ist ganz geöffnet.</translation>
-<translation id="2905036901251765993">Bitten Sie Leute in der Nähe, diesen QR-Code zu scannen, um Inhalte mit Ihnen zu teilen</translation>
 <translation id="7339921667754113786">Brave-Benachrichtigungsplattform</translation>
 <translation id="2923908459366352541">Der Name ist ungültig</translation>
 <translation id="6355102470683871794">Brave <ph name="APP_NAME"/>-Speicher</translation>
 <translation id="2942036813789421260">Vorschau-Tab ist geschlossen</translation>
 <translation id="2956410042958133412">Dieses Konto wird von <ph name="PARENT_NAME_1"/> und <ph name="PARENT_NAME_2"/> verwaltet.</translation>
-<translation id="2962095958535813455">Zu Inkognito-Tabs gewechselt</translation>
 <translation id="2968755619301702150">Zertifikats-Viewer</translation>
-<translation id="2979025552038692506">Ausgewählter Inkognitotab</translation>
 <translation id="2987620471460279764">Text, der über ein anderes Gerät geteilt wurde</translation>
 <translation id="2989523299700148168">Kürzlich besucht</translation>
 <translation id="2996291259634659425">Passphrase erstellen</translation>
@@ -252,16 +247,14 @@ Berühren und halten Sie ein Wort, um eine Suche damit zu starten. Sie können I
 <translation id="305593374596241526">Die Standortermittlung ist deaktiviert. Sie können sie in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktivieren.</translation>
 <translation id="3058498974290601450">Sie können die Synchronisierung jederzeit in den Einstellungen aktivieren</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> Lesezeichen}other{<ph name="BOOKMARKS_COUNT_MANY"/> Lesezeichen}}</translation>
-<translation id="3089395242580810162">In Inkognitotab öffnen</translation>
 <translation id="3114012059975132928">Videoplayer</translation>
 <translation id="3123734510202723619">Ankündigungen</translation>
-<translation id="3137521801621304719">Inkognitomodus deaktivieren</translation>
 <translation id="3143515551205905069">Synchronisierung abbrechen</translation>
 <translation id="5063487983358782016">Brave-Startseite</translation>
 <translation id="3157842584138209013">Über die Schaltfläche "Weitere Optionen" können Sie sich ansehen, wie viel Datenvolumen Sie einsparen</translation>
 <translation id="3166827708714933426">Tastenkombinationen für Tabs und Fenster</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">Safe Browsing (mich und mein Gerät vor schädlichen Websites schützen)</translation>
+<translation id="3201899458094819285">Safe Browsing (mich und mein Gerät vor schädlichen Websites schützen)</translation>
 <translation id="3205824638308738187">Fast fertig.</translation>
 <translation id="3207960819495026254">Mit einem Lesezeichen versehen</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> gelöscht</translation>
@@ -285,7 +278,6 @@ Berühren und halten Sie ein Wort, um eine Suche damit zu starten. Sie können I
 <translation id="3333961966071413176">Alle Kontakte</translation>
 <translation id="3334729583274622784">Dateiendung ändern?</translation>
 <translation id="3341058695485821946">Erfahren Sie, wie viel Datenvolumen Sie eingespart haben</translation>
-<translation id="3350687908700087792">Alle Inkognito-Tabs schließen</translation>
 <translation id="8134317863207426198">Lite-Modus-Seite von Brave bereitgestellt. Zum Laden der Originalseite auf die Schaltfläche "Original laden" tippen.</translation>
 <translation id="3367813778245106622">Melden Sie sich nochmals an, um die Synchronisierung zu starten</translation>
 <translation id="2746024117903470217">Wenn Sie diese Seite mit einem anderen Gerät teilen möchten, aktivieren Sie auf dem anderen Gerät in den Brave-Einstellungen die Synchronisierung</translation>
@@ -298,7 +290,6 @@ Berühren und halten Sie ein Wort, um eine Suche damit zu starten. Sie können I
 <translation id="3443221991560634068">Aktuelle Seite neu laden</translation>
 <translation id="3445014427084483498">Gerade eben</translation>
 <translation id="3478363558367712427">Sie können Ihre Suchmaschine auswählen</translation>
-<translation id="3492207499832628349">Neuer Inkognitotab</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/> zu vorgeschlagenen Inhalten</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Augmented Reality</translation>
@@ -329,7 +320,6 @@ Berühren und halten Sie ein Wort, um eine Suche damit zu starten. Sie können I
 <translation id="3749259744154402564">Nicht unterstützt</translation>
 <translation id="3763247130972274048">Tippen Sie links oder rechts im Video doppelt, um 10 s zu überspringen</translation>
 <translation id="3771001275138982843">Update konnte nicht heruntergeladen werden</translation>
-<translation id="3771033907050503522">Inkognito-Tabs</translation>
 <translation id="1138681184697033370">Brave-Nutzungsbedingungen</translation>
 <translation id="3773755127849930740"><ph name="BEGIN_LINK"/>Aktivieren Sie Bluetooth<ph name="END_LINK"/>, um die Kopplung zu ermöglichen</translation>
 <translation id="3775705724665058594">An meine Geräte senden</translation>
@@ -471,7 +461,7 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="1248710015876067820">Nicht unterstützte Anzahl von Brave-Instanzen</translation>
 <translation id="3217997482476578430">Discover von Brave</translation>
 <translation id="4910889077668685004">Zahlungs-Apps</translation>
-<translation id="4913161338056004800">Statistiken zurücksetzen</translation>
+<translation id="4913161338056004800">Statistiken wieder auf Null setzen</translation>
 <translation id="4913169188695071480">Aktualisierung anhalten</translation>
 <translation id="4915549754973153784"><ph name="BEGIN_LINK"/>Hilfe aufrufen<ph name="END_LINK"/>, während nach Geräten gesucht wird…</translation>
 <translation id="4921180162323349895">{FILE_COUNT,plural, =1{# Seite}other{# Seiten}}</translation>
@@ -495,7 +485,6 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="5040262127954254034">Datenschutz</translation>
 <translation id="5087580092889165836">Karte hinzufügen</translation>
 <translation id="510275257476243843">1 Stunde übrig</translation>
-<translation id="5123685120097942451">Inkognitotab</translation>
 <translation id="5127805178023152808">Synchronisierung ist deaktiviert</translation>
 <translation id="5129038482087801250">Web-App installieren</translation>
 <translation id="5132942445612118989">Passwörter, Verlauf und mehr auf allen Geräten synchronisieren</translation>
@@ -547,14 +536,12 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="5517095782334947753">Sie haben Lesezeichen, den Verlauf, Passwörter und andere Einstellungen von <ph name="FROM_ACCOUNT"/> übernommen.</translation>
 <translation id="5524843473235508879">Weiterleitung blockiert.</translation>
 <translation id="2367014990350929709">Brave benötigt Zugriff auf den Standort, um nach Geräten suchen zu können. <ph name="BEGIN_LINK1"/>Berechtigungen aktualisieren.<ph name="END_LINK1"/> Außerdem ist der Standortzugriff <ph name="BEGIN_LINK2"/>für dieses Gerät deaktiviert<ph name="END_LINK2"/>.</translation>
-<translation id="5530766185686772672">Inkognito-Tabs schließen</translation>
 <translation id="5534640966246046842">Website kopiert</translation>
 <translation id="5561549206367097665">Warten auf Netzwerk…</translation>
 <translation id="55737423895878184">Standortermittlung und Benachrichtigungen sind erlaubt</translation>
 <translation id="5578795271662203820">In <ph name="SEARCH_ENGINE"/> nach dem Bild suchen</translation>
 <translation id="5581519193887989363">Sie können in den <ph name="BEGIN_LINK1"/>Einstellungen<ph name="END_LINK1"/> auswählen, was Sie synchronisieren möchten.</translation>
 <translation id="5595485650161345191">Adresse bearbeiten</translation>
-<translation id="5599455543593328020">Inkognitomodus</translation>
 <translation id="5620928963363755975">Ihre Dateien und Seiten finden Sie durch Auswahl der Schaltfläche "Weitere Optionen" unter "Downloads"</translation>
 <translation id="5626134646977739690">Name:</translation>
 <translation id="5639724618331995626">Alle Websites zulassen</translation>
@@ -572,7 +559,6 @@ Wenn Sie diese Einstellung ändern möchten, <ph name="BEGIN_LINK"/>setzen Sie d
 <translation id="5726692708398506830">Gesamten Seiteninhalt vergrößern</translation>
 <translation id="5748802427693696783">Zu Standard-Tabs gewechselt</translation>
 <translation id="3088191967551450609">Brave benötigt Speicherzugriff, um Dateien herunterladen zu können.</translation>
-<translation id="5763382633136178763">Inkognito-Tabs</translation>
 <translation id="5763514718066511291">Tippen, um die URL für diese App zu kopieren</translation>
 <translation id="5765780083710877561">Beschreibung:</translation>
 <translation id="5793665092639000975"><ph name="SPACE_USED"/> von <ph name="SPACE_AVAILABLE"/> werden verwendet</translation>
@@ -858,7 +844,6 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="8073388330009372546">Bild in neuem Tab öffnen</translation>
 <translation id="8076492880354921740">Tabs</translation>
 <translation id="8084114998886531721">Gespeichertes Passwort</translation>
-<translation id="8103578431304235997">Inkognitotab</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Aktivieren Sie die Synchronisierung, um Ihre Lesezeichen auf allen Ihren Geräten zu sehen</translation>
 <translation id="4565206163201411670">Ihre Brave-Aktivitäten in Digital Wellbeing anzeigen?</translation>
@@ -897,7 +882,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="8428213095426709021">Einstellungen</translation>
 <translation id="8438566539970814960">Suchanfragen und das Surfen verbessern</translation>
 <translation id="8441146129660941386">Zurück navigieren</translation>
-<translation id="8443209985646068659">Update nicht möglich</translation>
+<translation id="4058091506841967397">Update nicht möglich</translation>
 <translation id="8445448999790540984">Passwörter können nicht exportiert werden</translation>
 <translation id="8461694314515752532">Synchronisierte Daten mit eigener Synchronisierungspassphrase verschlüsseln</translation>
 <translation id="8466613982764129868">Prüfen Sie, ob <ph name="TARGET_DEVICE_NAME"/> mit dem Internet verbunden ist</translation>
@@ -909,7 +894,6 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="230699814587342492">Brave-Passwörter</translation>
 <translation id="8503813439785031346">Nutzername</translation>
 <translation id="133012818630824069">In Brave gespeicherte Passwörter exportieren</translation>
-<translation id="8514577642972634246">Inkognitomodus aktivieren</translation>
 <translation id="8516012719330875537">Bildeditor</translation>
 <translation id="8523928698583292556">Gespeichertes Passwort löschen</translation>
 <translation id="854522910157234410">Diese Seite öffnen</translation>
@@ -955,7 +939,6 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="8970887620466824814">Es gab ein Problem.</translation>
 <translation id="8972098258593396643">In Standardordner herunterladen?</translation>
 <translation id="8988028529677883095">Smartphone als Sicherheitsschlüssel verwenden</translation>
-<translation id="8993760627012879038">Neuen Tab im Inkognitomodus öffnen</translation>
 <translation id="2689656545739939160">Sie melden sich mit einem von <ph name="MANAGED_DOMAIN"/> verwalteten Konto an und geben dem Administrator der Domain Kontrolle über Ihre Brave-Daten. Die Daten werden diesem Konto dauerhaft zugeordnet. Wenn Sie sich von Brave abmelden, werden Ihre Daten auf dem Gerät gelöscht, bleiben jedoch in Ihrem Brave-Konto erhalten.</translation>
 <translation id="9028914725102941583">Synchronisierung aktivieren, um geräteübergreifend zu teilen</translation>
 <translation id="9040142327097499898">Benachrichtigungen sind erlaubt. Der Standortzugriff ist für dieses Gerät deaktiviert.</translation>
@@ -1002,7 +985,7 @@ Einige Websites schalten möglicherweise Werbeanzeigen, deren Auswahl nicht dara
 <translation id="4526803704855831732">Private Registerkarten</translation>
 <translation id="7465104139234185284">Alle privaten Registerkarten schließen</translation>
 <translation id="6336451774241870485">Neue private Registerkarte</translation>
-<translation id="3234355010754616171">Neue private Registerkarte</translation>
+<translation id="3234355010754616171">Neuer privater Tab</translation>
 <translation id="6610147964972079463">Private Registerkarten schließen</translation>
 <translation id="4968908871398201967">Privatmodus</translation>
 <translation id="9080642952018487277">Privatmodus</translation>

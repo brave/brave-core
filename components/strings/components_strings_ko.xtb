@@ -228,12 +228,11 @@
 <translation id="1914326953223720820">압축 해제 서비스</translation>
 <translation id="1915697529809968049">CVC 대신 Touch ID를 사용하시겠습니까?</translation>
 <translation id="1916770123977586577">이 사이트에 업데이트된 설정을 적용하려면 이 페이지를 다시 로드하세요.</translation>
-<translation id="1917876262703816781">사이트 또는 앱의 정보 유출로 인해 비밀번호가 노출되었습니다. 지금 <ph name="ORIGIN"/>의 비밀번호를 변경하는 것이 좋습니다.</translation>
+<translation id="688541908229382784">사이트 또는 앱의 정보 유출로 인해 비밀번호가 노출되었습니다. 지금 <ph name="ORIGIN"/>의 비밀번호를 변경하는 것이 좋습니다.</translation>
 <translation id="1919345977826869612">광고</translation>
 <translation id="1919367280705858090">특정 오류 메시지에 관한 도움말 보기</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{없음}=1{사이트 1개}other{사이트 #개}}</translation>
 <translation id="194030505837763158"><ph name="LINK"/>(으)로 이동</translation>
-<translation id="1945968466830820669">조직의 계정에 액세스할 수 없게 되거나 신원 도용이 발생할 수도 있습니다. 지금 비밀번호를 변경하는 것이 좋습니다.</translation>
 <translation id="1947454675006758438">오른쪽 상단 스테이플</translation>
 <translation id="1962204205936693436"><ph name="DOMAIN"/> 북마크</translation>
 <translation id="1973335181906896915">일련화 오류</translation>
@@ -346,7 +345,6 @@
 <translation id="2410754574180102685">Government-Legal</translation>
 <translation id="2413528052993050574">이 서버가 <ph name="DOMAIN"/>임을 입증할 수 없으며 서버의 보안 인증서가 취소될 수 있습니다. 서버를 잘못 설정했거나 불법 사용자가 연결을 가로채고 있기 때문일 수 있습니다.</translation>
 <translation id="2438874542388153331">오른쪽 4공 펀칭</translation>
-<translation id="245044156129055925">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 비밀번호를 변경하는 것이 좋습니다.</translation>
 <translation id="2463193859425327265">홈페이지 변경</translation>
 <translation id="2463739503403862330">입력</translation>
 <translation id="2465402087343596252">Architecture-E</translation>
@@ -437,7 +435,6 @@
 <translation id="2824775600643448204">주소창 및 검색창</translation>
 <translation id="2826760142808435982">이 연결은 <ph name="CIPHER"/>을(를) 사용하여 암호화되고 인증되며 <ph name="KX"/>을(를) 키 교환 매커니즘으로 사용합니다.</translation>
 <translation id="2835170189407361413">서식 지우기</translation>
-<translation id="2847118875340931228">시크릿 창 열기</translation>
 <translation id="2850739647070081192">Invite(봉투)</translation>
 <translation id="2856444702002559011">공격자가 <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>에서 정보(예: 비밀번호, 메시지, 신용카드 등)를 도용하려고 시도 중일 수 있습니다. <ph name="BEGIN_LEARN_MORE_LINK"/>자세히 알아보기<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">포스터 폴드</translation>
@@ -487,7 +484,6 @@
 <translation id="3041612393474885105">인증서 정보</translation>
 <translation id="3060227939791841287">C9(봉투)</translation>
 <translation id="3061707000357573562">서비스 패치</translation>
-<translation id="3064966200440839136">시크릿 모드를 종료하고 외부 애플리케이션에서 결제합니다. 계속하시겠습니까?</translation>
 <translation id="3080254622891793721">그래픽</translation>
 <translation id="3086579638707268289">웹상의 활동이 모니터링되고 있음</translation>
 <translation id="3087734570205094154">맨 아래</translation>
@@ -507,7 +503,6 @@
 <translation id="3154506275960390542">이 페이지에 포함된 양식은 안전하게 제출되지 않을 수 있습니다. 전송되는 데이터는 전송 중에 다른 사람이 볼 수 있으며 서버에서 수신하는 데이터를 변경하기 위해 공격자가 수정할 수 있습니다.</translation>
 <translation id="3157931365184549694">복구</translation>
 <translation id="3162559335345991374">사용 중인 Wi-Fi에서 로그인 페이지 방문을 요청할 수 있습니다.</translation>
-<translation id="3167968892399408617">시크릿 탭을 모두 닫으면 시크릿 탭에서 보는 페이지는 브라우저의 방문 기록, 쿠키 저장소, 검색 기록 어디에도 남지 않습니다. 단, 다운로드한 파일이나 생성한 북마크는 유지됩니다.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">섬</translation>
 <translation id="3176929007561373547">프록시 설정을 확인하거나 네트워크 관리자에게 문의하여
@@ -565,7 +560,6 @@
 <translation id="3423742043356668186">시스템 지정 값</translation>
 <translation id="3427092606871434483">허용(기본값)</translation>
 <translation id="3427342743765426898">수정 다시 실행(&amp;R)</translation>
-<translation id="342781501876943858">다른 사이트에서 비밀번호를 재사용했다면 비밀번호를 재설정하는 것이 좋습니다.</translation>
 <translation id="3428151540071562330">하나 이상의 DnsOverHttpsTemplates 서버 템플릿 URI가 유효하지 않아 앞으로 사용되지 않습니다.</translation>
 <translation id="3431636764301398940">기기에 카드 저장</translation>
 <translation id="3432601291244612633">페이지 닫기</translation>
@@ -625,7 +619,6 @@
 <translation id="3676592649209844519">기기 ID:</translation>
 <translation id="3677008721441257057">&lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;을(를) 찾으셨나요?</translation>
 <translation id="3678029195006412963">요청을 서명할 수 없음</translation>
-<translation id="3678529606614285348">새 시크릿 창에서 페이지 열기(Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">인증서 정보</translation>
 <translation id="3701427423622901115">재설정이 확인되었습니다.</translation>
 <translation id="3704162925118123524">사용 중인 네트워크에서 로그인 페이지 방문을 요청할 수 있습니다.</translation>
@@ -780,10 +773,9 @@
 <translation id="6116812392674177288">이 컴퓨터는 기업에서 관리하는 기기가 아닌 것으로 파악되므로, Brave 웹 스토어에 호스팅된 확장 프로그램만 정책을 통해 자동으로 설치할 수 있습니다. Brave 웹 스토어의 업데이트 URL은 '<ph name="CWS_UPDATE_URL"/>'입니다.</translation>
 <translation id="4346197816712207223">사용 가능한 신용카드</translation>
 <translation id="4346833872170306413">Roc-16K</translation>
-<translation id="4349531505348777662">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
 <translation id="4356973930735388585">이 사이트의 공격자가 사용자 정보(예: 사진, 비밀번호, 메시지, 신용카드)를 도용하거나 삭제하는 위험한 프로그램을 컴퓨터에 설치하려고 시도할 수 있습니다.</translation>
 <translation id="4358059973562876591">지정한 템플릿이 DnsOverHttpsMode 정책 오류로 인해 적용되지 않을 수 있습니다.</translation>
-<translation id="4358461427845829800">결제 수단 관리...</translation>
+<translation id="327628984294957152">결제 수단 관리...</translation>
 <translation id="4367563149485757821">Number-12(봉투)</translation>
 <translation id="437058704415269440">계정 잔액</translation>
 <translation id="4372516964750095882">Fanfold-미국</translation>
@@ -793,7 +785,6 @@
 <translation id="4390472908992056574">브림</translation>
 <translation id="4406896451731180161">검색결과</translation>
 <translation id="4408413947728134509">쿠키 <ph name="NUM_COOKIES"/>개</translation>
-<translation id="4414290883293381923">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
 <translation id="4415426530740016218">픽업 주소</translation>
 <translation id="443121186588148776">직렬 포트</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/>에서 로그인 인증서를 승인하지 않았거나 로그인 인증서가 제공되지 않았을 수 있습니다.</translation>
@@ -841,7 +832,6 @@
 <translation id="467662567472608290">이 서버가 <ph name="DOMAIN"/>임을 입증할 수 없으며 서버의 보안 인증서에 오류가 있습니다. 서버를 잘못 설정했거나 불법 사용자가 연결을 가로채고 있기 때문일 수 있습니다.</translation>
 <translation id="4677585247300749148"><ph name="URL"/>에서 접근성 이벤트에 응답하려고 합니다</translation>
 <translation id="8197094463444457125">Brave 프레젠테이션</translation>
-<translation id="4680804919228900307">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
 <translation id="4690462567478992370">유효하지 않은 인증서 사용 중단</translation>
 <translation id="4691835149146451662">Architecture-A(봉투)</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
@@ -949,7 +939,7 @@
 <translation id="5123063207673082822">주말</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">카드 인증</translation>
-<translation id="5135404736266831032">주소 관리...</translation>
+<translation id="6291230311289558881">주소 관리...</translation>
 <translation id="5138227688689900538">간략히</translation>
 <translation id="7186167407612593632">동기화 비밀번호를 Brave 자격증명으로 암호화</translation>
 <translation id="5145883236150621069">정책 응답에 오류 코드가 포함되어 있음</translation>
@@ -957,15 +947,13 @@
 <translation id="5148809049217731050">인쇄면이 위로</translation>
 <translation id="515292512908731282">C4(봉투)</translation>
 <translation id="5158275234811857234">표지</translation>
-<translation id="5159010409087891077">새 시크릿 창에서 페이지 열기(⇧⌘N)</translation>
 <translation id="5161506081086828129">스태커 9</translation>
 <translation id="9016458749696512983"><ph name="CREDIT_CARD"/> 카드의 CVC를 입력하세요. 카드를 확인하면 Brave 계정의 카드 세부정보가 이 사이트와 공유됩니다.</translation>
-<translation id="5169827969064885044">조직의 계정에 액세스할 수 없게 되거나 신원 도용이 발생할 수도 있습니다. 지금 비밀번호를 변경하는 것이 좋습니다.</translation>
+<translation id="8515152881111950319">조직의 계정에 액세스할 수 없게 되거나 신원 도용이 발생할 수도 있습니다. 지금 비밀번호를 변경하는 것이 좋습니다.</translation>
 <translation id="5171045022955879922">검색 또는 URL 입력</translation>
 <translation id="5171689220826475070">Fanfold-유럽</translation>
 <translation id="5172758083709347301">컴퓨터</translation>
 <translation id="5179510805599951267"><ph name="ORIGINAL_LANGUAGE"/>가 아닙니까? 오류 신고</translation>
-<translation id="5190835502935405962">북마크바</translation>
 <translation id="519422657042045905">주석을 사용할 수 없음</translation>
 <translation id="5201306358585911203">이 페이지에 삽입된 페이지 내용:</translation>
 <translation id="5205222826937269299">이름은 필수입니다.</translation>
@@ -994,7 +982,7 @@
 <translation id="5287456746628258573">이 사이트에서는 오래된 보안 구성을 사용하므로 정보(예: 비밀번호나 신용카드 번호)를 이 사이트로 전송할 경우 정보가 유출될 수도 있습니다.</translation>
 <translation id="5288108484102287882">정책 값 유효성 검사 결과 경고가 발생했습니다.</translation>
 <translation id="5289384342738547352">여러 문서 처리</translation>
-<translation id="5295292838686006428">사이트 또는 앱의 정보 유출로 인해 비밀번호가 노출되었습니다. 지금 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
+<translation id="3764885446986388155">사이트 또는 앱의 정보 유출로 인해 비밀번호가 노출되었습니다. 지금 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
 <translation id="5299298092464848405">정책을 파싱하는 중 오류 발생</translation>
 <translation id="5300589172476337783">표시</translation>
 <translation id="5306593769196050043">모든 시트</translation>
@@ -1096,12 +1084,12 @@
 <translation id="5689516760719285838">위치</translation>
 <translation id="569000877158168851">DnsOverHttpsMode 정책이 <ph name="SECURE_DNS_MODE_AUTOMATIC"/> 또는 <ph name="SECURE_DNS_MODE_SECURE"/>(으)로 설정되지 않는 한 DnsOverHttpsTemplates 값은 관련성이 없어 앞으로 사용되지 않습니다.</translation>
 <translation id="5701381305118179107">가운데</translation>
-<translation id="570530837424789914">관리...</translation>
+<translation id="3655851112780233803">관리...</translation>
 <translation id="57094364128775171">강력한 비밀번호 추천...</translation>
 <translation id="5710435578057952990">이 웹사이트의 주소가 확인되지 않았습니다.</translation>
 <translation id="5720705177508910913">현재 사용자</translation>
 <translation id="5728056243719941842">C5(봉투)</translation>
-<translation id="5730040223043577876">다른 사이트에서 비밀번호를 재사용했다면 비밀번호를 재설정하는 것이 좋습니다.</translation>
+<translation id="3006790309890592320">다른 사이트에서 비밀번호를 재사용했다면 비밀번호를 재설정하는 것이 좋습니다.</translation>
 <translation id="8514108354025239538">{NUM_CARDS,plural, =1{Brave 계정에 카드 저장}other{Brave 계정에 카드 저장}}</translation>
 <translation id="5745980000221562234">{NUM_CARDS,plural, =1{이 카드의 가상 번호 사용}other{카드 선택}}</translation>
 <translation id="5763042198335101085">올바른 이메일 주소를 입력하세요.</translation>
@@ -1260,7 +1248,7 @@
 <translation id="6401136357288658127">지원 중단된 정책입니다. <ph name="NEW_POLICY"/> 정책을 대신 사용해야 합니다.</translation>
 <translation id="6404511346730675251">북마크 수정</translation>
 <translation id="6406765186087300643">C0(봉투)</translation>
-<translation id="6409754798200046165">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 비밀번호를 변경하는 것이 좋습니다.</translation>
+<translation id="9018981925326888629">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 비밀번호를 변경하는 것이 좋습니다.</translation>
 <translation id="6410264514553301377"><ph name="CREDIT_CARD"/>의 만료일과 CVC를 입력하세요.</translation>
 <translation id="6423385022588644828">지금부터 Touch ID를 사용하여 빠르게 카드를 확인합니다.</translation>
 <translation id="6425092077175753609">머티리얼</translation>
@@ -1275,7 +1263,7 @@
 <translation id="6447842834002726250">쿠키</translation>
 <translation id="6451458296329894277">양식 다시 제출 확인</translation>
 <translation id="6457206614190510200">새들 스티치</translation>
-<translation id="6465306955648956876">비밀번호 관리...</translation>
+<translation id="2275235756919172538">비밀번호 관리...</translation>
 <translation id="647261751007945333">기기 정책</translation>
 <translation id="6476284679642588870">결제 수단 관리</translation>
 <translation id="6489534406876378309">비정상 종료 업로드 시작하기</translation>
@@ -1373,7 +1361,7 @@
 <translation id="6970216967273061347">주소</translation>
 <translation id="6973656660372572881">고정 프록시 서버와 .pac 스크립트 URL이 모두 지정되어 있습니다.</translation>
 <translation id="6973932557599545801">죄송합니다. 더 이상 도와드릴 수 없습니다. 직접 계속해 주세요.</translation>
-<translation id="6975012522936652259">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
+<translation id="846000886289004690">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
 <translation id="6979158407327259162">Brave 드라이브</translation>
 <translation id="6979440798594660689">음소거(기본값)</translation>
 <translation id="6989763994942163495">고급 설정 표시</translation>
@@ -1430,7 +1418,7 @@
 <translation id="7219179957768738017"><ph name="SSL_VERSION"/> 연결입니다.</translation>
 <translation id="7220786058474068424">처리 중</translation>
 <translation id="7221855153210829124">알림 표시</translation>
-<translation id="7229659723041939809">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
+<translation id="3619365259205518877">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
 <translation id="7233592378249864828">인쇄 확인 시트</translation>
 <translation id="7238585580608191973">SHA-256 지문</translation>
 <translation id="7240120331469437312">인증서 대상 대체 이름</translation>
@@ -1453,7 +1441,7 @@
 <translation id="7320336641823683070">연결 도움말</translation>
 <translation id="7323804146520582233">‘<ph name="SECTION"/>’ 섹션 숨기기</translation>
 <translation id="733354035281974745">기기 로컬 계정 재정의</translation>
-<translation id="7333654844024768166">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
+<translation id="8539546768943490744">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/>, <ph name="WEBSITE_3"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
 <translation id="7334320624316649418">재정렬 다시 실행(&amp;R)</translation>
 <translation id="7337706099755338005">사용 중인 플랫폼에서는 제공되지 않습니다.</translation>
 <translation id="733923710415886693">서버 인증서가 인증서 투명성 정책을 사용하여 공개되지 않았습니다.</translation>
@@ -1495,9 +1483,8 @@
 <translation id="7473891865547856676">건너뛰기</translation>
 <translation id="7481312909269577407">앞으로</translation>
 <translation id="7485870689360869515">데이터 없음</translation>
-<translation id="7495290002932347110">사이트 또는 앱의 정보 유출로 인해 비밀번호가 노출되었습니다. 지금 저장된 비밀번호를 확인하고 <ph name="ORIGIN"/>의 비밀번호를 변경하는 것이 좋습니다.</translation>
+<translation id="3692186536781145635">사이트 또는 앱의 정보 유출로 인해 비밀번호가 노출되었습니다. 지금 저장된 비밀번호를 확인하고 <ph name="ORIGIN"/>의 비밀번호를 변경하는 것이 좋습니다.</translation>
 <translation id="7498234416455752244">계속 수정</translation>
-<translation id="7503664977220660814">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
 <translation id="7508255263130623398">반환된 정책 기기 ID가 비었거나 현재 기기 ID와 일치하지 않음</translation>
 <translation id="7508870219247277067">아보카도 녹색</translation>
 <translation id="7511955381719512146">사용 중인 Wi-Fi에서 <ph name="BEGIN_BOLD"/><ph name="LOGIN_URL"/><ph name="END_BOLD"/> 방문을 요청할 수 있습니다.</translation>
@@ -1516,7 +1503,6 @@
 <translation id="5474381306981932386">기기 사용자 이름 및 Brave 사용자 이름</translation>
 <translation id="7552846755917812628">다음 도움말을 확인해 보세요.</translation>
 <translation id="7554791636758816595">새 탭</translation>
-<translation id="7564049878696755256"><ph name="ORG_NAME"/> 계정에 액세스할 수 없게 되거나 신원 도용이 발생할 수도 있습니다. 따라서 지금 비밀번호를 변경하는 것이 좋습니다.</translation>
 <translation id="7567204685887185387">이 서버가 <ph name="DOMAIN"/>임을 입증할 수 없으며 서버의 보안 인증서가 부정한 방식으로 발행되었을 수 있습니다. 서버를 잘못 설정했거나 불법 사용자가 연결을 가로채고 있기 때문일 수 있습니다.</translation>
 <translation id="7569983096843329377">검정색</translation>
 <translation id="7575207903026901870">추천 삭제 버튼, Enter 키를 눌러 이 추천 삭제</translation>
@@ -1591,11 +1577,10 @@
 <translation id="782886543891417279">사용 중인 Wi-Fi(<ph name="WIFI_NAME"/>)에서 로그인 페이지 방문을 요청할 수 있습니다.</translation>
 <translation id="7836231406687464395">Postfix(봉투)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{없음}=1{앱 1개(<ph name="EXAMPLE_APP_1"/>)}=2{앱 2개(<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{앱 #개(<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">하지만 흔적이 아예 남지 않는 것은 아닙니다. 시크릿 모드로 탐색해도 회사, 인터넷 서비스 제공업체 또는 방문한 웹사이트에 저장된 흔적까지 없앨 수는 없습니다.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">사이트에서 나가시겠습니까?</translation>
 <translation id="7865448901209910068">최고 속도</translation>
-<translation id="7874263914261512992">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
+<translation id="1012292338579042608">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/>, <ph name="WEBSITE_2"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
 <translation id="7878562273885520351">비밀번호가 도용될 수도 있음</translation>
 <translation id="7882421473871500483">갈색</translation>
 <translation id="7887683347370398519">CVC를 확인한 후 다시 시도하세요.</translation>
@@ -1656,7 +1641,6 @@
 <translation id="8105368624971345109">사용 중지</translation>
 <translation id="8118489163946903409">결제 수단</translation>
 <translation id="8127301229239896662">'<ph name="SOFTWARE_NAME"/>'이(가) 컴퓨터 또는 네트워크에 제대로 설치되지 않았습니다. IT 관리자에게 문제 해결을 요청해 보세요.</translation>
-<translation id="8128526133099929547">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
 <translation id="8131740175452115882">확인</translation>
 <translation id="8149426793427495338">컴퓨터가 절전 모드 상태입니다.</translation>
 <translation id="8150722005171944719"><ph name="URL"/>의 파일을 읽을 수 없습니다. 삭제 또는 이동되었거나 파일 사용 권한이 액세스를 차단할 수도 있습니다.</translation>
@@ -1674,11 +1658,9 @@
 <translation id="8218327578424803826">지정된 위치:</translation>
 <translation id="8220146938470311105">C7/C6(봉투)</translation>
 <translation id="8220639454292072926">엔터프라이즈 보고</translation>
-<translation id="8221250263817408492">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
-<translation id="8225771182978767009">컴퓨터를 설정한 사용자가 이 사이트를 차단했습니다.</translation>
+<translation id="3272614036080146686">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/> 등 동일한 비밀번호를 사용한 사이트로 이동하여 비밀번호를 변경하시기 바랍니다.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">플랫폼 온도</translation>
-<translation id="8238581221633243064">새 시크릿 창에서 페이지 열기</translation>
 <translation id="8241707690549784388">찾고 있는 페이지에서 사용자가 입력한 정보를 사용했습니다. 해당 페이지로 돌아가면 기존 작업을 반복할 수 있습니다. 계속하시겠습니까?</translation>
 <translation id="8241712895048303527">이 사이트에서 차단</translation>
 <translation id="8242426110754782860">계속</translation>
@@ -1690,7 +1672,6 @@
 <translation id="8262952874573525464">하단 에지 스티치</translation>
 <translation id="8267698848189296333"><ph name="USERNAME"/>(으)로 로그인</translation>
 <translation id="8269242089528251720">별도 문서/모은 사본</translation>
-<translation id="8269981117540303696">이제 비공개로 인터넷을 탐색할 수 있으며, 이 기기를 사용하는 다른 사용자가 내 활동을 볼 수 없습니다. 하지만 다운로드 파일과 북마크는 계속해서 저장됩니다.</translation>
 <translation id="8277900682056760511">결제 핸들러 시트가 열림</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">고유 기기 식별자 조회</translation>
@@ -1709,7 +1690,6 @@
 <translation id="833262891116910667">강조표시</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_YEAR"/>/<ph name="EXPIRATION_MONTH"/></translation>
 <translation id="834457929814110454">보안 관련 위험을 이해한다면 악성 프로그램이 삭제되기 전에 <ph name="BEGIN_LINK"/>이 사이트를 방문<ph name="END_LINK"/>해도 됩니다.</translation>
-<translation id="8349305172487531364">북마크바</translation>
 <translation id="8355270400102541638">로컬 비정상 종료 컨텍스트:</translation>
 <translation id="8363502534493474904">비행기 모드 사용 중지</translation>
 <translation id="8364627913115013041">설정 안됨</translation>
@@ -1735,7 +1715,6 @@
 <translation id="8474910779563686872">개발자 세부정보 표시</translation>
 <translation id="8479754468255770962">왼쪽 하단 스테이플</translation>
 <translation id="503686638841780887">Brave 계정에서 카드를 사용하려면 Brave에 로그인하세요.</translation>
-<translation id="8485393050551136813">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
 <translation id="8488350697529856933">적용 대상</translation>
 <translation id="8490137692873530638">스태커 10</translation>
 <translation id="8498891568109133222"><ph name="HOST_NAME"/>에서 응답하는 데 시간이 너무 오래 걸립니다.</translation>
@@ -1750,7 +1729,6 @@
 <translation id="8557066899867184262">CVC는 카드 뒷면에 있습니다.</translation>
 <translation id="8559762987265718583">기기의 날짜와 시간(<ph name="DATE_AND_TIME"/>)이 잘못되어 <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/>에 대한 비공개 연결을 설정할 수 없습니다.</translation>
 <translation id="8564182942834072828">별도 문서/모으지 않은 사본</translation>
-<translation id="8564985650692024650">다른 사이트에서 비밀번호를 재사용했다면 <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> 비밀번호를 재설정하는 것이 좋습니다.</translation>
 <translation id="8571890674111243710">페이지를 <ph name="LANGUAGE"/>(으)로 번역 중...</translation>
 <translation id="8574899947864779331">Touch ID를 사용하여 빠르게 카드 확인</translation>
 <translation id="858637041960032120">번호 추가</translation>
@@ -1776,7 +1754,6 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, 추천 검색어</translation>
 <translation id="8719528812645237045">상단 다공 펀칭</translation>
 <translation id="8725066075913043281">다시 시도하세요</translation>
-<translation id="8728672262656704056">시크릿 모드로 전환됨</translation>
 <translation id="8730621377337864115">완료</translation>
 <translation id="6326805297893828864">보안 연결을 설정하려면 시계가 올바로 설정되어 있어야 합니다. 웹사이트가 자신을 식별하는 데 사용하는 인증서가 특정 기간에만 유효하기 때문입니다. 기기의 시계가 잘못 설정되어 Brave에서 이 인증서를 확인할 수 없습니다.</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/>의 &lt;abbr id="dnsDefinition"&gt;DNS 주소&lt;/abbr&gt;를 찾을 수 없습니다. 문제를 진단하는 중입니다.</translation>
@@ -1786,10 +1763,10 @@
 <translation id="87601671197631245">이 사이트에서는 오래된 보안 설정을 사용하므로 개인정보(예: 비밀번호, 메시지 또는 신용카드)를 이 사이트로 전송할 경우 정보가 유출될 수도 있습니다.</translation>
 <translation id="8761567432415473239">Brave 세이프 브라우징 결과 <ph name="SITE"/>에서 최근 <ph name="BEGIN_LINK"/>악성 프로그램이 발견<ph name="END_LINK"/>되었습니다.</translation>
 <translation id="8763927697961133303">USB 기기</translation>
-<translation id="8774457497170244317">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
+<translation id="565908431635579039">사기성 사이트에 비밀번호를 입력했습니다. 지금 바로 <ph name="WEBSITE_1"/> 등 동일한 비밀번호를 사용한 사이트에 저장된 비밀번호를 확인하는 것이 좋습니다.</translation>
 <translation id="877985182522063539">A4</translation>
 <translation id="8790007591277257123">삭제 다시 실행(&amp;R)</translation>
-<translation id="8792621596287649091"><ph name="ORG_NAME"/> 계정에 액세스할 수 없게 되거나 신원 도용이 발생할 수도 있습니다. 따라서 지금 비밀번호를 변경하는 것이 좋습니다.</translation>
+<translation id="5304100303568917877"><ph name="ORG_NAME"/> 계정에 액세스할 수 없게 되거나 신원 도용이 발생할 수도 있습니다. 따라서 지금 비밀번호를 변경하는 것이 좋습니다.</translation>
 <translation id="8800988563907321413">근처 추천 항목이 여기에 표시됩니다.</translation>
 <translation id="8805819170075074995">목록 항목 '<ph name="LANGUAGE_ID"/>': SpellcheckLanguage 정책에도 포함되었기 때문에 항목이 무시되었습니다.</translation>
 <translation id="8807160976559152894">각 페이지 뒤에 트림</translation>
@@ -1797,7 +1774,7 @@
 <translation id="884264119367021077">배송지 주소</translation>
 <translation id="884923133447025588">폐기 매커니즘을 찾을 수 없습니다.</translation>
 <translation id="7487066225574140895">Brave과 공유</translation>
-<translation id="8858065207712248076">다른 사이트에서 비밀번호를 재사용했다면 <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> 비밀번호를 재설정하는 것이 좋습니다.</translation>
+<translation id="4764754838347156633">다른 사이트에서 비밀번호를 재사용했다면 <ph name="BEGIN_BOLD"/><ph name="ORG_NAME"/><ph name="END_BOLD"/> 비밀번호를 재설정하는 것이 좋습니다.</translation>
 <translation id="8866481888320382733">정책 설정을 파싱하는 중 오류 발생</translation>
 <translation id="8866928039507595380">폴드</translation>
 <translation id="886872106311861689">B3</translation>
@@ -1809,7 +1786,6 @@
 <translation id="8903921497873541725">확대</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">추천 삭제 버튼, Enter 키를 눌러 삭제, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">시크릿 모드로 전환됨</translation>
 <translation id="5713644099811900409">Brave 계정</translation>
 <translation id="8918231688545606538">의심스러운 페이지</translation>
 <translation id="892588693504540538">오른쪽 상단 펀칭</translation>
@@ -1911,7 +1887,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">출처: Brave Pay</translation>
-<translation id="8820817407110198400">북마크바</translation>
+<translation id="8820817407110198400">북마크</translation>
 <translation id="8362995731815961365">컴퓨터를 설정한 사용자가 이 사이트를 차단했습니다.</translation>
 <translation id="4075123085690634698">새 시크릿 창에서 페이지 열기(⇧⌘N)</translation>
 <translation id="2388886110302389394">새 시크릿 창에서 페이지 열기(Ctrl-Shift-N)</translation>

@@ -7,7 +7,6 @@
 <translation id="1036727731225946849">正在添加<ph name="WEBAPK_NAME"/>…</translation>
 <translation id="1041308826830691739">来自网站</translation>
 <translation id="1045899828449635435">一并清除以下网站内的数据？</translation>
-<translation id="1049743911850919806">无痕</translation>
 <translation id="10614374240317010">一律不保存</translation>
 <translation id="5428209950370661546">其他 Brave 服务</translation>
 <translation id="1068672505746868501">一律不翻译<ph name="SOURCE_LANGUAGE"/>网页</translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">未完成初始同步设置</translation>
 <translation id="1821253160463689938">使用 Cookie 记住您的偏好设置（即使您不访问这些网页）</translation>
 <translation id="1829244130665387512">在网页中查找</translation>
-<translation id="1853692000353488670">打开新的无痕式标签页</translation>
 <translation id="1856325424225101786">重置精简模式？</translation>
 <translation id="5817715962196959877">Brave 现可更快速地下载文件</translation>
 <translation id="1883903952484604915">我的文件</translation>
@@ -233,15 +231,12 @@
 <translation id="2903493209154104877">地址</translation>
 <translation id="290376772003165898">网页的源语言不是<ph name="LANGUAGE"/>？</translation>
 <translation id="2904414404539560095">要与之分享标签页的设备的列表已全屏打开。</translation>
-<translation id="2905036901251765993">要与附近的人分享，请让他们扫描此二维码</translation>
 <translation id="7339921667754113786">Brave 通知平台</translation>
 <translation id="2923908459366352541">名称无效</translation>
 <translation id="6355102470683871794">Brave <ph name="APP_NAME"/> 存储数据</translation>
 <translation id="2942036813789421260">预览标签页已关闭</translation>
 <translation id="2956410042958133412">该帐号由 <ph name="PARENT_NAME_1"/> 和 <ph name="PARENT_NAME_2"/> 管理。</translation>
-<translation id="2962095958535813455">已切换到隐身标签页</translation>
 <translation id="2968755619301702150">证书查看器</translation>
-<translation id="2979025552038692506">所选的隐身标签页</translation>
 <translation id="2987620471460279764">从其他设备分享的文字</translation>
 <translation id="2989523299700148168">最近用过的搜索引擎</translation>
 <translation id="2996291259634659425">创建密码</translation>
@@ -252,16 +247,14 @@
 <translation id="305593374596241526">位置信息功能现处于关闭状态；请在 <ph name="BEGIN_LINK"/>Android 设置<ph name="END_LINK"/>中开启此项功能。</translation>
 <translation id="3058498974290601450">您随时可在“设置”中开启同步功能</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> 个书签}other{<ph name="BOOKMARKS_COUNT_MANY"/> 个书签}}</translation>
-<translation id="3089395242580810162">在隐身标签页中打开</translation>
 <translation id="3114012059975132928">视频播放器</translation>
 <translation id="3123734510202723619">通告</translation>
-<translation id="3137521801621304719">退出隐身模式</translation>
 <translation id="3143515551205905069">取消同步</translation>
 <translation id="5063487983358782016">Brave 主页</translation>
 <translation id="3157842584138209013">通过“更多选项”按钮查看您已节省多少数据流量</translation>
 <translation id="3166827708714933426">标签页和窗口快捷键</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">安全浏览（保护您和您的设备不受危险网站的侵害）</translation>
+<translation id="3201899458094819285">安全浏览（保护您和您的设备不受危险网站的侵害）</translation>
 <translation id="3205824638308738187">即将完成！</translation>
 <translation id="3207960819495026254">已加书签</translation>
 <translation id="3211426585530211793">已删除“<ph name="ITEM_TITLE"/>”</translation>
@@ -285,7 +278,6 @@
 <translation id="3333961966071413176">所有联系人</translation>
 <translation id="3334729583274622784">更改文件扩展名？</translation>
 <translation id="3341058695485821946">查看您已节省多少数据流量</translation>
-<translation id="3350687908700087792">关闭所有隐身标签页</translation>
 <translation id="8134317863207426198">由 Brave 提供的精简版网页。点按“加载原始网页”按钮即可加载原始网页。</translation>
 <translation id="3367813778245106622">重新登录以开始同步</translation>
 <translation id="2746024117903470217">如果想将此页分享到其他设备，请在相应设备上的 Brave 设置中开启同步</translation>
@@ -298,7 +290,6 @@
 <translation id="3443221991560634068">重新加载当前网页</translation>
 <translation id="3445014427084483498">刚刚</translation>
 <translation id="3478363558367712427">您可自行选择要使用的搜索引擎</translation>
-<translation id="3492207499832628349">打开新的无痕式标签页</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>详细了解<ph name="END_LINK"/>推荐内容</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">增强现实</translation>
@@ -329,7 +320,6 @@
 <translation id="3749259744154402564">不支持</translation>
 <translation id="3763247130972274048">在视频左侧或右侧点按两次即可跳过 10 秒</translation>
 <translation id="3771001275138982843">无法下载此项更新</translation>
-<translation id="3771033907050503522">隐身标签页</translation>
 <translation id="1138681184697033370">Brave 服务条款</translation>
 <translation id="3773755127849930740">请<ph name="BEGIN_LINK"/>开启蓝牙<ph name="END_LINK"/>以允许配对</translation>
 <translation id="3775705724665058594">发送到您的设备</translation>
@@ -495,7 +485,6 @@
 <translation id="5040262127954254034">隐私设置</translation>
 <translation id="5087580092889165836">添加新卡</translation>
 <translation id="510275257476243843">还剩 1 小时</translation>
-<translation id="5123685120097942451">无痕式标签页</translation>
 <translation id="5127805178023152808">同步功能已关闭</translation>
 <translation id="5129038482087801250">安装网络应用</translation>
 <translation id="5132942445612118989">将您的密码、历史记录等信息同步到所有设备上</translation>
@@ -547,14 +536,12 @@
 <translation id="5517095782334947753">您有来自 <ph name="FROM_ACCOUNT"/> 的书签、历史记录、密码及其他设置。</translation>
 <translation id="5524843473235508879">已禁止重定向。</translation>
 <translation id="2367014990350929709">Brave 需要拥有位置信息使用权才能扫描设备。请<ph name="BEGIN_LINK1"/>更新权限<ph name="END_LINK1"/>。<ph name="BEGIN_LINK2"/>此设备的位置信息使用权也已被停用<ph name="END_LINK2"/>。</translation>
-<translation id="5530766185686772672">关闭隐身标签页</translation>
 <translation id="5534640966246046842">已复制网站</translation>
 <translation id="5561549206367097665">正在等待连接到网络…</translation>
 <translation id="55737423895878184">允许使用位置信息以及显示通知</translation>
 <translation id="5578795271662203820">在<ph name="SEARCH_ENGINE"/>中搜索此图片</translation>
 <translation id="5581519193887989363">您始终可在<ph name="BEGIN_LINK1"/>设置<ph name="END_LINK1"/>中选择要同步的内容。</translation>
 <translation id="5595485650161345191">修改地址</translation>
-<translation id="5599455543593328020">无痕模式</translation>
 <translation id="5620928963363755975">通过“更多选项”按钮在“下载内容”中查找您的文件和网页</translation>
 <translation id="5626134646977739690">名字：</translation>
 <translation id="5639724618331995626">允许访问所有网站</translation>
@@ -572,7 +559,6 @@
 <translation id="5726692708398506830">放大网页上的所有内容</translation>
 <translation id="5748802427693696783">已切换到标准标签页</translation>
 <translation id="3088191967551450609">Brave 需要具备存储空间使用权限，才能下载文件。</translation>
-<translation id="5763382633136178763">隐身标签页</translation>
 <translation id="5763514718066511291">点按即可复制该应用的网址</translation>
 <translation id="5765780083710877561">说明：</translation>
 <translation id="5793665092639000975">已使用 <ph name="SPACE_USED"/>，共 <ph name="SPACE_AVAILABLE"/></translation>
@@ -858,7 +844,6 @@
 <translation id="8073388330009372546">在新标签页中打开图片</translation>
 <translation id="8076492880354921740">标签页</translation>
 <translation id="8084114998886531721">保存的密码</translation>
-<translation id="8103578431304235997">隐身标签页</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">要将您的书签同步到您的所有设备上，请开启同步功能</translation>
 <translation id="4565206163201411670">在“数字健康”应用中显示您的 Brave 活动记录？</translation>
@@ -909,7 +894,6 @@
 <translation id="230699814587342492">Brave 密码</translation>
 <translation id="8503813439785031346">用户名</translation>
 <translation id="133012818630824069">导出存储在 Brave 中的密码</translation>
-<translation id="8514577642972634246">进入隐身模式</translation>
 <translation id="8516012719330875537">图片编辑器</translation>
 <translation id="8523928698583292556">删除存储的密码</translation>
 <translation id="854522910157234410">打开此网页</translation>
@@ -955,7 +939,6 @@
 <translation id="8970887620466824814">出了点问题。</translation>
 <translation id="8972098258593396643">是否下载到默认文件夹？</translation>
 <translation id="8988028529677883095">使用手机作为安全密钥</translation>
-<translation id="8993760627012879038">在无痕模式下打开新标签页</translation>
 <translation id="2689656545739939160">您正要登录由 <ph name="MANAGED_DOMAIN"/> 管理的帐号，并要授权其管理员控制您的 Brave 数据。您的数据将与此帐号永久关联。退出 Brave 后，您的数据将从这台设备上删除，但仍会保留在您的 Brave 帐号中。</translation>
 <translation id="9028914725102941583">开启同步功能以跨设备分享内容</translation>
 <translation id="9040142327097499898">允许显示通知。但此设备的位置信息功能已关闭。</translation>

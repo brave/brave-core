@@ -7,7 +7,6 @@
 <translation id="1036727731225946849">Ajout de <ph name="WEBAPK_NAME"/>…</translation>
 <translation id="1041308826830691739">À partir de sites Web</translation>
 <translation id="1045899828449635435">Effacer ces données ?</translation>
-<translation id="1049743911850919806">Navigation privée</translation>
 <translation id="10614374240317010">Jamais enregistrés</translation>
 <translation id="5428209950370661546">Autres services Brave</translation>
 <translation id="1068672505746868501">Ne jamais traduire les pages en <ph name="SOURCE_LANGUAGE"/></translation>
@@ -38,7 +37,7 @@
 <translation id="123724288017357924">Actualiser page active et ignorer contenu en cache</translation>
 <translation id="124116460088058876">Plus de langues</translation>
 <translation id="124678866338384709">Fermer l'onglet actuel</translation>
-<translation id="1258753120186372309">Doodle : <ph name="DOODLE_DESCRIPTION"/></translation>
+<translation id="1996480094660735607">Doodle : <ph name="DOODLE_DESCRIPTION"/></translation>
 <translation id="1260236875608242557">Rechercher et explorer</translation>
 <translation id="1266864766717917324">Impossible de partager le contenu suivant : <ph name="CONTENT_TYPE"/></translation>
 <translation id="1283039547216852943">Appuyer pour développer</translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">Configuration de la synchronisation initiale non terminée</translation>
 <translation id="1821253160463689938">Utilise des cookies pour mémoriser vos préférences, même si vous n'accédez pas à ces pages</translation>
 <translation id="1829244130665387512">Rechercher sur la page</translation>
-<translation id="1853692000353488670">Nouvel onglet de navigation privée</translation>
 <translation id="1856325424225101786">Réinitialiser le mode simplifié ?</translation>
 <translation id="5817715962196959877">Brave permet désormais de télécharger des fichiers plus vite</translation>
 <translation id="1883903952484604915">Mes fichiers</translation>
@@ -233,15 +231,12 @@ Appuyez sur n'importe quel mot pour effectuer une recherche. Pour affiner la rec
 <translation id="2903493209154104877">Adresses</translation>
 <translation id="290376772003165898">La page n'est pas en <ph name="LANGUAGE"/> ?</translation>
 <translation id="2904414404539560095">La liste des appareils avec lesquels vous pouvez partager un onglet est ouverte à hauteur maximale.</translation>
-<translation id="2905036901251765993">Pour partager avec des personnes à proximité, laissez-les scanner ce code QR</translation>
 <translation id="7339921667754113786">Plate-forme de notifications Brave</translation>
 <translation id="2923908459366352541">Le nom n'est pas valide</translation>
 <translation id="6355102470683871794">Stockage Brave <ph name="APP_NAME"/></translation>
 <translation id="2942036813789421260">L'onglet "Aperçu" est fermé</translation>
 <translation id="2956410042958133412">Ce compte est géré par <ph name="PARENT_NAME_1"/> et <ph name="PARENT_NAME_2"/>.</translation>
-<translation id="2962095958535813455">Onglets de navigation privée sélectionnés</translation>
 <translation id="2968755619301702150">Lecteur de certificat</translation>
-<translation id="2979025552038692506">Onglet de navigation privée sélectionné</translation>
 <translation id="2987620471460279764">Texte partagé depuis un autre appareil</translation>
 <translation id="2989523299700148168">Consultations récentes</translation>
 <translation id="2996291259634659425">Créer une phrase secrète</translation>
@@ -252,16 +247,14 @@ Appuyez sur n'importe quel mot pour effectuer une recherche. Pour affiner la rec
 <translation id="305593374596241526">La localisation est désactivée. Activez-la dans les <ph name="BEGIN_LINK"/>paramètres Android<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">Vous pouvez activer la synchronisation à tout moment dans les paramètres</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> favori}one{<ph name="BOOKMARKS_COUNT_MANY"/> favori}other{<ph name="BOOKMARKS_COUNT_MANY"/> favoris}}</translation>
-<translation id="3089395242580810162">Ouvrir onglet navig. privée</translation>
 <translation id="3114012059975132928">Lecteur vidéo</translation>
 <translation id="3123734510202723619">Annonces</translation>
-<translation id="3137521801621304719">Désactiver le mode navigation privée</translation>
 <translation id="3143515551205905069">Annuler la synchronisation</translation>
 <translation id="5063487983358782016">Page d'accueil de Brave</translation>
 <translation id="3157842584138209013">Découvrez la quantité de données économisées en cliquant sur le bouton "Plus d'options"</translation>
 <translation id="3166827708714933426">Raccourcis liés aux onglets et aux fenêtres</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">Navigation sécurisée (assure votre protection et celle de votre appareil contre les sites dangereux)</translation>
+<translation id="3201899458094819285">Navigation sécurisée (assure votre protection et celle de votre appareil contre les sites dangereux)</translation>
 <translation id="3205824638308738187">C'est presque fini !</translation>
 <translation id="3207960819495026254">Favori</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> a été supprimé</translation>
@@ -285,7 +278,6 @@ Appuyez sur n'importe quel mot pour effectuer une recherche. Pour affiner la rec
 <translation id="3333961966071413176">Tous les contacts</translation>
 <translation id="3334729583274622784">Modifier l'extension du fichier ?</translation>
 <translation id="3341058695485821946">Découvrez la quantité de données économisées</translation>
-<translation id="3350687908700087792">Fermer tous les onglets de navigation privée</translation>
 <translation id="8134317863207426198">Page simplifiée fournie par Brave. Appuyez sur le bouton "Charger le site d'origine" pour charger la page d'origine.</translation>
 <translation id="3367813778245106622">Connectez-vous de nouveau à votre compte pour démarrer la synchronisation.</translation>
 <translation id="2746024117903470217">Pour partager cette page avec un autre appareil, activez la synchronisation dans les paramètres Brave de ce second appareil</translation>
@@ -298,7 +290,6 @@ Appuyez sur n'importe quel mot pour effectuer une recherche. Pour affiner la rec
 <translation id="3443221991560634068">Actualiser la page active</translation>
 <translation id="3445014427084483498">À l'instant</translation>
 <translation id="3478363558367712427">Vous pouvez choisir votre moteur de recherche</translation>
-<translation id="3492207499832628349">Nouvel onglet nav. privée</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>En savoir plus<ph name="END_LINK"/> sur le contenu suggéré</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Réalité augmentée</translation>
@@ -329,7 +320,6 @@ Appuyez sur n'importe quel mot pour effectuer une recherche. Pour affiner la rec
 <translation id="3749259744154402564">Impossible d'effectuer cette action</translation>
 <translation id="3763247130972274048">Appuyez deux fois à gauche/droite de la vidéo pour reculer/avancer de 10 s</translation>
 <translation id="3771001275138982843">Impossible de télécharger la mise à jour</translation>
-<translation id="3771033907050503522">Ongl. navig. priv.</translation>
 <translation id="1138681184697033370">Conditions d'utilisation de Brave</translation>
 <translation id="3773755127849930740">Pour permettre l'association, <ph name="BEGIN_LINK"/>activez le Bluetooth<ph name="END_LINK"/></translation>
 <translation id="3775705724665058594">Envoyer à vos appareils</translation>
@@ -495,7 +485,6 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="5040262127954254034">Confidentialité</translation>
 <translation id="5087580092889165836">Ajouter une carte</translation>
 <translation id="510275257476243843">1 heure restante</translation>
-<translation id="5123685120097942451">Onglet de navigation privée</translation>
 <translation id="5127805178023152808">La synchronisation est désactivée.</translation>
 <translation id="5129038482087801250">Installer l'application Web</translation>
 <translation id="5132942445612118989">Synchroniser vos mots de passe, votre historique et plus encore sur tous les appareils</translation>
@@ -547,14 +536,12 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="5517095782334947753">Vous disposez des favoris, de l'historique, des mots de passe et d'autres paramètres du compte <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">Redirection bloquée.</translation>
 <translation id="2367014990350929709">Brave doit avoir accès aux données de localisation pour rechercher des appareils. <ph name="BEGIN_LINK1"/>Modifiez les autorisations.<ph name="END_LINK1"/> De plus, l'accès aux données de localisation est <ph name="BEGIN_LINK2"/>désactivé pour cet appareil<ph name="END_LINK2"/>.</translation>
-<translation id="5530766185686772672">Fermer onglets navig. privée</translation>
 <translation id="5534640966246046842">Site copié</translation>
 <translation id="5561549206367097665">En attente de connexion au réseau…</translation>
 <translation id="55737423895878184">La localisation et les notifications sont autorisées</translation>
 <translation id="5578795271662203820">Rechercher l'image sur <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Vous avez toujours la possibilité de sélectionner les éléments à synchroniser dans les <ph name="BEGIN_LINK1"/>paramètres<ph name="END_LINK1"/>.</translation>
 <translation id="5595485650161345191">Modifier l'adresse</translation>
-<translation id="5599455543593328020">Mode Navigation privée</translation>
 <translation id="5620928963363755975">Recherchez vos fichiers et vos pages dans les téléchargements, à partir du bouton "Plus d'options"</translation>
 <translation id="5626134646977739690">Nom :</translation>
 <translation id="5639724618331995626">Autoriser tous les sites</translation>
@@ -572,7 +559,6 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="5726692708398506830">Agrandir tous les éléments de la page</translation>
 <translation id="5748802427693696783">Onglets standards sélectionnés</translation>
 <translation id="3088191967551450609">Pour télécharger des fichiers, Brave a besoin d'accéder à l'espace de stockage.</translation>
-<translation id="5763382633136178763">Onglets de navigation privée</translation>
 <translation id="5763514718066511291">Appuyez pour copier l'URL pour cette application</translation>
 <translation id="5765780083710877561">Description :</translation>
 <translation id="5793665092639000975">Utilisation de <ph name="SPACE_USED"/> sur <ph name="SPACE_AVAILABLE"/></translation>
@@ -599,7 +585,7 @@ Pour modifier ce paramètre, <ph name="BEGIN_LINK"/>réinitialisez la synchronis
 <translation id="5939518447894949180">Réinitialiser</translation>
 <translation id="6103327872225198548">Utilisation de Brave pour les recherches</translation>
 <translation id="8109318360573330108">Envoie l'URL de la page que vous essayez d'ouvrir à Brave</translation>
-<translation id="5956665950594638604">Ouvrir le centre d'aide dans un nouvel onglet</translation>
+<translation id="305870044889644984">Ouvrir le centre d'aide dans un nouvel onglet</translation>
 <translation id="5958275228015807058">Recherchez vos fichiers et vos pages dans la section "Téléchargements"</translation>
 <translation id="5962718611393537961">Appuyer pour réduire</translation>
 <translation id="7760665516427405230">Pour partager cette page avec un autre appareil, activez la synchronisation dans les paramètres Brave</translation>
@@ -858,7 +844,6 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="8073388330009372546">Ouvrir image dans autre onglet</translation>
 <translation id="8076492880354921740">Onglets</translation>
 <translation id="8084114998886531721">Mot de passe enregistré</translation>
-<translation id="8103578431304235997">Onglet de navigation privée</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Activez la synchronisation pour accéder à vos favoris sur tous vos appareils</translation>
 <translation id="4565206163201411670">Afficher votre activité Brave dans Bien-être numérique ?</translation>
@@ -909,7 +894,6 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="230699814587342492">Mots de passe Brave Brave</translation>
 <translation id="8503813439785031346">Nom d'utilisateur</translation>
 <translation id="133012818630824069">Exporter les mots de passe enregistrés dans Brave</translation>
-<translation id="8514577642972634246">Activer le mode navigation privée</translation>
 <translation id="8516012719330875537">Éditeur d'image</translation>
 <translation id="8523928698583292556">Supprimer le mot de passe enregistré</translation>
 <translation id="854522910157234410">Ouvrir cette page</translation>
@@ -955,7 +939,6 @@ Par exemple, certains sites Web peuvent répondre à cette demande en diffusant 
 <translation id="8970887620466824814">Un problème est survenu</translation>
 <translation id="8972098258593396643">Télécharger dans le dossier par défaut ?</translation>
 <translation id="8988028529677883095">Utiliser un téléphone comme clé de sécurité</translation>
-<translation id="8993760627012879038">Ouvrir un nouvel onglet en mode navigation privée</translation>
 <translation id="2689656545739939160">Vous vous connectez avec un compte géré par <ph name="MANAGED_DOMAIN"/>, ce qui permettra à son administrateur de contrôler vos données Brave. Celles-ci seront définitivement associées à ce compte. Si vous vous déconnectez de Brave, vos données seront supprimées de cet appareil, mais elles seront conservées dans votre compte Brave.</translation>
 <translation id="9028914725102941583">Activer la synchronisation pour partager des contenus entre des appareils</translation>
 <translation id="9040142327097499898">Les notifications sont autorisées. La localisation est désactivée pour cet appareil.</translation>

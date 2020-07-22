@@ -45,7 +45,6 @@
 <translation id="1047431265488717055">คัดลอก&amp;ข้อความของลิงก์</translation>
 <translation id="1048286738600630630">การแสดงผล</translation>
 <translation id="1048986595386481879">จัดสรรแบบไดนามิก</translation>
-<translation id="1049743911850919806">โหมดไม่ระบุตัวตน</translation>
 <translation id="1049795001945932310">&amp;การตั้งค่าภาษา</translation>
 <translation id="1054153489933238809">เ&amp;ปิดภาพต้นฉบับในแท็บใหม่</translation>
 <translation id="1055806300943943258">กำลังค้นหาอุปกรณ์บลูทูธและอุปกรณ์ USB...</translation>
@@ -104,7 +103,6 @@
 <translation id="1128591060186966949">แก้ไขเครื่องมือค้นหา</translation>
 <translation id="1129850422003387628">จัดการแอป</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> - ส่วนหนึ่งของกลุ่ม <ph name="GROUP_NAME"/></translation>
-<translation id="1134009406053225289">เปิดในหน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="1136712381129578788">คีย์ความปลอดภัยถูกล็อกเพราะคุณป้อน PIN ไม่ถูกต้องหลายครั้งเกินไป หากต้องการปลดล็อก ให้ถอดคีย์ความปลอดภัยออกแล้วเสียบกลับเข้าไปใหม่</translation>
 <translation id="1137673463384776352">เปิดลิงก์ใน <ph name="APP"/></translation>
 <translation id="1139343347646843679">เกิดข้อผิดพลาดขณะกำหนดค่า Linux โปรดติดต่อผู้ดูแลระบบ</translation>
@@ -166,7 +164,6 @@
 <translation id="1205489148908752564">อ่านและเปลี่ยนผู้ใช้ที่อนุญาตพิเศษ</translation>
 <translation id="1206407435587370571">สำรวจ Bravebook</translation>
 <translation id="1209796539517632982">เซิร์ฟเวอร์ชื่ออัตโนมัติ</translation>
-<translation id="1211364473545090084">ใช้เว็บโดยไม่บันทึกประวัติการท่องเว็บด้วยหน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="1211769675100312947">ทางลัดที่คุณเป็นผู้คัดสรร</translation>
 <translation id="1213037489357051291">การตั้งค่าลายนิ้วมือ <ph name="NUM_FINGERPRINTS"/> รายการ</translation>
 <translation id="1213254615020057352">ส่งข้อมูลการใช้งานและการวินิจฉัย ช่วยปรับปรุงประสบการณ์การใช้งาน Android ของบุตรหลานให้ดีขึ้นด้วยการส่งข้อมูลการวินิจฉัย อุปกรณ์ และการใช้งานแอปไปยัง Brave โดยอัตโนมัติ โดยจะไม่มีการใช้ข้อมูลนี้ในการระบุชื่อบุตรหลานของคุณ และจะช่วยปรับปรุงความเสถียรของแอปและระบบ และอื่นๆ ข้อมูลที่รวบรวมมาบางส่วนจะมีประโยชน์ต่อแอปและพาร์ทเนอร์ของ Brave ด้วย เช่น นักพัฒนาซอฟต์แวร์ Android เจ้าของเป็นผู้บังคับใช้การตั้งค่านี้ เจ้าของอาจเลือกที่จะส่งข้อมูลการวินิจฉัยและการใช้งานสำหรับอุปกรณ์นี้ไปยัง Brave หากเปิดการตั้งค่ากิจกรรมเพิ่มเติมบนเว็บและแอปสำหรับบุตรหลาน ระบบอาจบันทึกข้อมูลนี้ไว้ในบัญชี Brave ของบุตรหลาน</translation>
@@ -296,7 +293,6 @@
 <translation id="1377600615067678409">ข้ามไปก่อน</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> กำลังควบคุมการตั้งค่านี้</translation>
 <translation id="1380028686461971526">เชื่อมต่อกับเครือข่ายโดยอัตโนมัติ</translation>
-<translation id="1380436189840894976">ต้องการออกจากโหมดไม่ระบุตัวตนไหม</translation>
 <translation id="1383861834909034572">เปิดไฟล์เมื่อดาวน์โหลดเสร็จสมบูรณ์</translation>
 <translation id="1383876407941801731">ค้นหา</translation>
 <translation id="1386387014181100145">สวัสดี</translation>
@@ -355,7 +351,6 @@
 <translation id="144518587530125858">ไม่สามารถโหลดธีมจาก "<ph name="IMAGE_PATH"/>"</translation>
 <translation id="1445693676523799095">อาจใช้เวลาสักครู่</translation>
 <translation id="1451375123200651445">หน้าเว็บ ไฟล์เดียว</translation>
-<translation id="1451917004835509682">เพิ่มบุคคลภายใต้การดูแล</translation>
 <translation id="1454223536435069390">จับ&amp;ภาพหน้าจอ</translation>
 <translation id="1459967076783105826">เครื่องมือค้นหาที่เพิ่มโดยส่วนขยาย</translation>
 <translation id="146000042969587795">เฟรมนี้ถูกป้องกันเนื่องจากมีเนื้อหาบางอย่างที่ไม่ปลอดภัย</translation>
@@ -478,7 +473,6 @@
 <translation id="1600857548979126453">เข้าถึงแบ็คเอนด์เครื่องซ่อมแซมหน้าเว็บ</translation>
 <translation id="1601560923496285236">นำไปใช้</translation>
 <translation id="1602085790802918092">กำลังเริ่มเครื่องเสมือน</translation>
-<translation id="1603914832182249871">(โหมดไม่ระบุตัวตน)</translation>
 <translation id="1604432177629086300">พิมพ์ไม่สำเร็จ ตรวจสอบเครื่องพิมพ์แล้วลองอีกครั้ง</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: การซิงค์รหัสผ่านไม่ทำงาน</translation>
 <translation id="1607139524282324606">ล้างรายการ</translation>
@@ -550,7 +544,6 @@
 <translation id="1680841347983561661">โปรดรอสักครู่แล้วลองเริ่มต้น Google Play อีกครั้ง</translation>
 <translation id="1680849702532889074">เกิดข้อผิดพลาดระหว่างการติดตั้งแอปพลิเคชัน Linux</translation>
 <translation id="16815041330799488">ไม่อนุญาตให้เว็บไซต์ดูข้อความและรูปภาพที่คัดลอกไปยังคลิปบอร์ด</translation>
-<translation id="1682548588986054654">หน้าต่างใหม่ที่ไม่ระบุตัวตน</translation>
 <translation id="168715261339224929">เปิดการซิงค์เพื่อรับบุ๊กมาร์กในอุปกรณ์ทุกเครื่องของคุณ</translation>
 <translation id="1688867105868176567">ล้างข้อมูลเว็บไซต์ไหม</translation>
 <translation id="1688935057616748272">พิมพ์ตัวอักษร</translation>
@@ -561,10 +554,8 @@
 <translation id="1692210323591458290">สีม่วงเข้ม</translation>
 <translation id="1697150536837697295">ศิลปะ</translation>
 <translation id="1697686431566694143">แก้ไขไฟล์</translation>
-<translation id="1698122934742150150">เซสชันไม่ระบุตัวตนปัจจุบันเท่านั้น</translation>
 <translation id="1700079447639026019">เว็บไซต์ที่จะใช้คุกกี้ไม่ได้เลย</translation>
 <translation id="1700845716982723710">ปิดโหมดแอมเบียนท์</translation>
-<translation id="1701062906490865540">นำบุคคลนี้ออก</translation>
 <translation id="1703331064825191675">ไม่ต้องกังวลเกี่ยวกับรหัสผ่านอีกต่อไป</translation>
 <translation id="1704970325597567340">เรียกใช้การตรวจสอบความปลอดภัยเมื่อวันที่ <ph name="DATE"/></translation>
 <translation id="1706586824377653884">เพิ่มโดยผู้ดูแลระบบ</translation>
@@ -692,7 +683,6 @@
 <translation id="1850508293116537636">หมุน&amp;ตามเข็มนาฬิกา</translation>
 <translation id="1852141627593563189">ค้นหาซอฟต์แวร์อันตราย</translation>
 <translation id="1852799913675865625">เกิดข้อผิดพลาดขณะพยายามอ่านไฟล์: <ph name="ERROR_TEXT"/></translation>
-<translation id="1853692000353488670">แท็บใหม่ที่ไม่ระบุตัวตน</translation>
 <translation id="1854180393107901205">หยุดการแคสต์</translation>
 <translation id="1856715684130786728">เพิ่มตำแหน่ง...</translation>
 <translation id="1858585891038687145">เชื่อถือใบรับรองนี้ในการระบุตัวตนผู้ผลิตซอฟต์แวร์</translation>
@@ -933,7 +923,6 @@
 <translation id="2174948148799307353">บัญชีนี้จัดการโดย <ph name="PARENT_EMAIL"/> คลิกเวลาในหน้าจอเพื่อออกจากระบบบัญชีหลักในอุปกรณ์นี้ แล้วคลิก "ออกจากระบบ" ในเมนูที่ปรากฏขึ้น</translation>
 <translation id="2175607476662778685">แถบเปิดใช้งานด่วน</translation>
 <translation id="217576141146192373">เพิ่มเครื่องพิมพ์ไม่ได้ โปรดตรวจสอบการกำหนดค่าของเครื่องพิมพ์แล้วลองอีกครั้ง</translation>
-<translation id="2177950615300672361">แท็บไม่ระบุตัวตน: <ph name="TAB_NAME"/></translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_NAME"/> ใน <ph name="PEPPER_PLUGIN_DOMAIN"/> ต้องการเข้าถึงคอมพิวเตอร์ของคุณ</translation>
 <translation id="2178614541317717477">ผู้มีสิทธิ์ออกใบรับรองไม่สมบูรณ์</translation>
 <translation id="2182058453334755893">คัดลอกไปยังคลิปบอร์ดแล้ว</translation>
@@ -944,7 +933,7 @@
 <translation id="2190069059097339078">ตัวรับข้อมูลรับรอง Wi-Fi</translation>
 <translation id="219008588003277019">โมดูล Native Client: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(ว่างเปล่า)</translation>
-<translation id="2191754378957563929">เปิด</translation>
+<translation id="8959699239363253085">เปิด</translation>
 <translation id="2192505247865591433">จาก:</translation>
 <translation id="2193365732679659387">การตั้งค่าความเชื่อถือ</translation>
 <translation id="2195331105963583686">คุณยังคงใช้ <ph name="DEVICE_TYPE"/> นี้ได้หลังจากเวลานั้น แต่จะไม่ได้รับการอัปเดตซอฟต์แวร์และการอัปเดตการรักษาความปลอดภัยอัตโนมัติอีกต่อไป</translation>
@@ -978,7 +967,6 @@
 <translation id="2225864335125757863">เปลี่ยนรหัสผ่านเหล่านี้ทันทีเพื่อรักษาความปลอดภัยของบัญชี</translation>
 <translation id="2226449515541314767">ไซต์นี้ถูกบล็อกจากการมีสิทธิ์ควบคุมอุปกรณ์ MIDI เต็มรูปแบบ</translation>
 <translation id="222657802677009088">ตั้งค่าเครื่องพิมพ์</translation>
-<translation id="222704500187107962">ระบบจะนำข้อยกเว้นนี้ออกโดยอัตโนมัติหลังคุณออกจากเซสชันที่ไม่ระบุตัวตนในปัจจุบัน</translation>
 <translation id="2227179592712503583">นำคำแนะนำออก</translation>
 <translation id="2229161054156947610">เหลือเวลามากกว่า 1 ชั่วโมง</translation>
 <translation id="222931766245975952">ไฟล์ไม่สมบูรณ์</translation>
@@ -989,7 +977,6 @@
 <translation id="7956662517480676674">การซิงค์และบริการของ Brave</translation>
 <translation id="2235344399760031203">บล็อกคุกกี้ของบุคคลที่สามอยู่</translation>
 <translation id="2238379619048995541">ข้อมูลสถานะความถี่</translation>
-<translation id="2239921694246509981">เพิ่มบุคคลภายใต้การดูแล</translation>
 <translation id="2241053333139545397">อ่านและเปลี่ยนแปลงข้อมูลของคุณในหลายเว็บไซต์</translation>
 <translation id="2241634353105152135">เพียงครั้งเดียว</translation>
 <translation id="2242687258748107519">ข้อมูลไฟล์</translation>
@@ -1277,7 +1264,6 @@
 <translation id="2129873093718581193">ค้นหาด้วย Brave หรือพิมพ์ URL</translation>
 <translation id="2602501489742255173">เลื่อนขึ้นเพื่อเริ่มต้นใช้งาน</translation>
 <translation id="2603115962224169880">ล้างข้อมูลในคอมพิวเตอร์</translation>
-<translation id="2603463522847370204">เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="2604255671529671813">ข้อผิดพลาดในการเชื่อมต่อเครือข่าย</translation>
 <translation id="2606246518223360146">ลิงก์ข้อมูล</translation>
 <translation id="2607101320794533334">ข้อมูลหัวเรื่องคีย์สาธารณะ</translation>
@@ -1339,13 +1325,12 @@
 <translation id="2672142220933875349">ไฟล์ crx ใช้ไม่ได้ การคลายการแพ็กล้มเหลว</translation>
 <translation id="2673135533890720193">อ่านประวัติการเข้าชม</translation>
 <translation id="2673589024369449924">สร้างทางลัดบนเดสก์ท็อปสำหรับผู้ใช้นี้</translation>
-<translation id="2674764818721168631">ปิด</translation>
+<translation id="6175644081330715138">ปิด</translation>
 <translation id="2677748264148917807">ออก</translation>
 <translation id="2678063897982469759">เปิดการใช้งานอีกครั้ง</translation>
 <translation id="268053382412112343">ประวั&amp;ติ</translation>
 <translation id="2682498795777673382">อัปเดตจากผู้ปกครองของคุณ</translation>
 <translation id="2683638487103917598">จัดเรียงโฟลเดอร์แล้ว</translation>
-<translation id="2684004000387153598">หากต้องการดำเนินการต่อ ให้คลิก "ตกลง" จากนั้นคลิก "เพิ่มบุคคล" เพื่อสร้างโปรไฟล์ใหม่สำหรับที่อยู่อีเมล</translation>
 <translation id="2687403674020088961">บล็อกคุกกี้ทั้งหมด (ไม่แนะนำ)</translation>
 <translation id="2687407218262674387">ข้อกำหนดในการให้บริการ Brave</translation>
 <translation id="2688196195245426394">เกิดข้อผิดพลาดขณะลงทะเบียนอุปกรณ์กับเซิร์ฟเวอร์: <ph name="CLIENT_ERROR"/></translation>
@@ -1483,7 +1468,6 @@
 <translation id="2841837950101800123">ผู้ให้บริการ</translation>
 <translation id="2844169650293029770">อุปกรณ์ USB-C (พอร์ตด้านหน้าซ้าย)</translation>
 <translation id="2844809857160214557">ดูและจัดการงานพิมพ์</translation>
-<translation id="2845382757467349449">แสดงแถบบุ๊กมาร์กเสมอ</translation>
 <translation id="284805635805850872">นำซอฟต์แวร์อันตรายออกไหม</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
 <translation id="284975061945174219">การทำความสะอาดไม่สำเร็จ</translation>
@@ -1733,7 +1717,7 @@
 <translation id="3170072451822350649">คุณสามารถข้ามการลงชื่อเข้าใช้และ<ph name="LINK_START"/>เรียกดูในฐานะผู้เยี่ยมชม<ph name="LINK_END"/>ได้ด้วย</translation>
 <translation id="3177909033752230686">ภาษาหน้าเว็บ:</translation>
 <translation id="3179982752812949580">แบบอักษรของข้อความ</translation>
-<translation id="3181954750937456830">Google Safe Browsing (ปกป้องคุณและอุปกรณ์จากเว็บไซต์ที่เป็นอันตราย)</translation>
+<translation id="3201899458094819285">Google Safe Browsing (ปกป้องคุณและอุปกรณ์จากเว็บไซต์ที่เป็นอันตราย)</translation>
 <translation id="3182749001423093222">ตรวจตัวสะกด</translation>
 <translation id="3183139917765991655">ตัวนำเข้าโปรไฟล์</translation>
 <translation id="3183944777708523606">การจัดตำแหน่งจอภาพ</translation>
@@ -1841,7 +1825,6 @@
 <translation id="3315158641124845231">ซ่อน <ph name="PRODUCT_NAME"/></translation>
 <translation id="3317459757438853210">สองด้าน</translation>
 <translation id="3317678681329786349">บล็อกกล้องถ่ายรูปและไมโครโฟน</translation>
-<translation id="3319048459796106952">หน้าต่างใหม่และไม่ระบุตัวตน</translation>
 <translation id="3320630259304269485">Google Safe Browsing (การปกป้องจากเว็บไซต์ที่เป็นอันตราย) และการตั้งค่าด้านความปลอดภัยอื่นๆ</translation>
 <translation id="3323295311852517824">{NUM_FILES,plural, =0{ข้อมูลนี้มีเนื้อหาที่ละเอียดอ่อนหรือเป็นอันตราย นำเนื้อหานี้ออกแล้วลองอีกครั้ง}=1{ไฟล์นี้มีเนื้อหาที่ละเอียดอ่อนหรือเป็นอันตราย นำเนื้อหานี้ออกแล้วลองอีกครั้ง}other{ไฟล์เหล่านี้มีเนื้อหาที่ละเอียดอ่อนหรือเป็นอันตราย นำเนื้อหานี้ออกแล้วลองอีกครั้ง}}</translation>
 <translation id="3323521181261657960">พิเศษสุด คุณได้เวลาอยู่หน้าจอเพิ่มขึ้น</translation>
@@ -1894,7 +1877,6 @@
 <translation id="3404065873681873169">ไม่มีรหัสผ่านบันทึกไว้สำหรับเว็บไซต์นี้</translation>
 <translation id="3405664148539009465">กำหนดค่าแบบอักษร</translation>
 <translation id="3405763860805964263">...</translation>
-<translation id="3406605057700382950">&amp;แสดงแถบบุ๊กมาร์ก</translation>
 <translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{ส่วนขยายนี้อาจเป็นอันตราย}other{ส่วนขยายเหล่านี้อาจเป็นอันตราย}}</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="3410832398355316179">ระบบจะลบไฟล์ทั้งหมดและข้อมูลในเครื่องที่เชื่อมโยงกับผู้ใช้รายนี้ออกอย่างถาวรหลังจากนำผู้ใช้รายนี้ออกแล้ว <ph name="USER_EMAIL"/> ยังมีสิทธิ์ลงชื่อเข้าใช้ภายหลังได้</translation>
@@ -1961,7 +1943,6 @@
 <translation id="3476303763173086583">ส่งข้อมูลการใช้งานและการวินิจฉัย ช่วยปรับปรุงประสบการณ์การใช้งาน Android ของบุตรหลานให้ดีขึ้นด้วยการส่งข้อมูลการวินิจฉัย อุปกรณ์ และการใช้งานแอปไปยัง Brave โดยอัตโนมัติ โดยจะไม่มีการใช้ข้อมูลนี้ในการระบุชื่อบุตรหลานของคุณ และจะช่วยปรับปรุงความเสถียรของแอปและระบบ และอื่นๆ ข้อมูลที่รวบรวมมาบางส่วนจะมีประโยชน์ต่อแอปและพาร์ทเนอร์ของ Brave ด้วย เช่น นักพัฒนาซอฟต์แวร์ Android เจ้าของเป็นผู้บังคับใช้<ph name="BEGIN_LINK1"/>การตั้งค่า<ph name="END_LINK1"/>นี้ เจ้าของอาจเลือกที่จะส่งข้อมูลการวินิจฉัยและการใช้งานสำหรับอุปกรณ์นี้ไปยัง Brave หากเปิดการตั้งค่ากิจกรรมเพิ่มเติมบนเว็บและแอปสำหรับบุตรหลาน ระบบอาจบันทึกข้อมูลนี้ไว้ในบัญชี Brave ของบุตรหลาน <ph name="BEGIN_LINK2"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">อ๊ะ! ระบบไม่สามารถดึงข้อมูลนโยบายจากอุปกรณ์</translation>
 <translation id="347785443197175480">อนุญาตให้ <ph name="HOST"/> เข้าถึงกล้องถ่ายรูปและไมโครโฟนของคุณต่อไป</translation>
-<translation id="3478685642445675458">โปรดปลดล็อกโปรไฟล์ของคุณก่อนนำบุคคลออก</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="3479685872808224578">ไม่พบเซิร์ฟเวอร์การพิมพ์ โปรดตรวจสอบที่อยู่แล้วลองอีกครั้ง</translation>
 <translation id="3481268647794498892">กำลังจะเปิดใน <ph name="ALTERNATIVE_BROWSER_NAME"/> ในอีก <ph name="COUNTDOWN_SECONDS"/> วินาที</translation>
@@ -2031,7 +2012,6 @@
 <translation id="3569682580018832495"><ph name="ORIGIN"/> ดูไฟล์และโฟลเดอร์ต่อไปนี้ได้</translation>
 <translation id="3571734092741541777">ตั้งค่า</translation>
 <translation id="3574210789297084292">ลงชื่อเข้าใช้</translation>
-<translation id="3574917942258583917">ต้องการออกจากโหมดไม่ระบุตัวตนไหม</translation>
 <translation id="3575121482199441727">อนุญาตสำหรับเว็บไซต์นี้</translation>
 <translation id="3576324189521867626">ติดตั้งเรียบร้อยแล้ว</translation>
 <translation id="3578594933904494462">เนื้อหาของแท็บนี้กำลังถูกแชร์</translation>
@@ -2050,7 +2030,6 @@
 <translation id="359283478042092570">ป้อน</translation>
 <translation id="3593965109698325041">ข้อจำกัดของชื่อใบรับรอง</translation>
 <translation id="3596235046596950091">เปิดใช้บริการระบบคลาวด์</translation>
-<translation id="3596414637720633074">บล็อกคุกกี้ของบุคคลที่สามในโหมดไม่ระบุตัวตน</translation>
 <translation id="3599221874935822507">ยกขึ้น</translation>
 <translation id="8122693181154564064">ล้างประวัติจากอุปกรณ์ที่ลงชื่อเข้าใช้ทั้งหมด บัญชี Brave อาจมีประวัติการท่องเว็บรูปแบบอื่นๆ ที่ <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/></translation>
 <translation id="3600051066689725006">ข้อมูลคำขอเว็บ</translation>
@@ -2078,7 +2057,6 @@
 <translation id="3625481642044239431">เลือกไฟล์ไม่ถูกต้อง โปรดลองอีกครั้ง</translation>
 <translation id="3626296069957678981">ใช้แบตเตอรี่ Dell ที่เข้ากันได้เพื่อชาร์จ Bravebook เครื่องนี้</translation>
 <translation id="3627320433825461852">เหลือเวลาน้อยกว่า 1 นาที</translation>
-<translation id="3627588569887975815">เปิดลิงก์ในหน้าต่างที่ไม่ระบุตัวตน (&amp;G)</translation>
 <translation id="3627671146180677314">เวลาการต่ออายุใบรับรองของ Netscape</translation>
 <translation id="3627879631695760395">ติดตั้ง <ph name="APP"/>...</translation>
 <translation id="3628275722731025472">ปิดบลูทูธ</translation>
@@ -2199,7 +2177,6 @@
 <translation id="3758842566811519622">มีการใช้คุกกี้</translation>
 <translation id="3759933321830434300">บล็อกส่วนต่างๆ ของหน้าเว็บ</translation>
 <translation id="3760460896538743390">ตรวจสอบ&amp;หน้าพื้นหลัง</translation>
-<translation id="37613671848467444">เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="3761556954875533505">อนุญาตให้เว็บไซต์แก้ไขไฟล์ไหม</translation>
 <translation id="3764314093345384080">ข้อมูลบิวด์โดยละเอียด</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{สื่อสารกับอุปกรณ์ USB 1 เครื่อง}other{สื่อสารกับอุปกรณ์ USB # เครื่อง}}</translation>
@@ -2441,7 +2418,6 @@
 <translation id="4035758313003622889">&amp;ตัวจัดการงาน</translation>
 <translation id="4036778507053569103">นโยบายที่ดาวน์โหลดจากเซิร์ฟเวอร์ไม่ถูกต้อง</translation>
 <translation id="4037084878352560732">ม้า</translation>
-<translation id="4037889604535939429">แก้ไขบุคคล</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{หน้าที่ออกไป}other{หน้าที่ออกไป}}</translation>
 <translation id="4044612648082411741">ป้อนรหัสผ่านใบรับรอง</translation>
 <translation id="404493185430269859">เครื่องมือค้นหาเริ่มต้น</translation>
@@ -2561,7 +2537,6 @@
 <translation id="4209251085232852247">ปิดอยู่</translation>
 <translation id="2624930408905606513">เอกสารจะ<ph name="BEGIN_LINK_HELP"/>ส่งไปยัง Brave<ph name="END_LINK_HELP"/> เพื่อเตรียมพิมพ์ ดู แก้ไข และจัดการเครื่องพิมพ์และประวัติการพิมพ์ได้ใน<ph name="BEGIN_LINK_DASHBOARD"/>แดชบอร์ด Google Cloud Print<ph name="END_LINK_DASHBOARD"/></translation>
 <translation id="4210048056321123003">กำลังดาวน์โหลดเครื่องเสมือน</translation>
-<translation id="421182450098841253">&amp;แสดงแถบบุ๊กมาร์ก</translation>
 <translation id="4211851069413100178">ส่งข้อมูลการใช้งานและการวินิจฉัย ช่วยปรับปรุงประสบการณ์การใช้งาน Android ของคุณให้ดีขึ้นด้วยการส่งข้อมูลการวินิจฉัย อุปกรณ์ และการใช้งานแอปไปยัง Brave โดยอัตโนมัติ ซึ่งจะช่วยปรับปรุงความเสถียรของแอปและระบบ และอื่นๆ ข้อมูลที่รวบรวมมาบางส่วนจะมีประโยชน์ต่อแอปและพาร์ทเนอร์ของ Brave ด้วย เช่น นักพัฒนาซอฟต์แวร์ Android เจ้าของเป็นผู้บังคับใช้<ph name="BEGIN_LINK1"/>การตั้งค่า<ph name="END_LINK1"/>นี้ เจ้าของอาจเลือกที่จะส่งข้อมูลการวินิจฉัยและการใช้งานสำหรับอุปกรณ์นี้ไปยัง Brave หากเปิดการตั้งค่ากิจกรรมเพิ่มเติมบนเว็บและแอปไว้ ระบบอาจบันทึกข้อมูลนี้ไว้ในบัญชี Brave ของคุณ <ph name="BEGIN_LINK2"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK2"/></translation>
 <translation id="42126664696688958">ส่งออก</translation>
 <translation id="42137655013211669">เซิร์ฟเวอร์ได้ห้ามการเข้าถึงทรัพยากรนี้</translation>
@@ -2680,7 +2655,6 @@
 <translation id="4387004326333427325">ใบรับรองการตรวจสอบสิทธิ์ได้รับการปฏิเสธจากระยะไกล</translation>
 <translation id="4387890294700445764">รหัสผ่านที่ไม่รัดกุม</translation>
 <translation id="4389091756366370506">ผู้ใช้ <ph name="VALUE"/></translation>
-<translation id="4390000551125140321">{0,plural, =1{ไม่ระบุตัวตน}other{หน้าต่างที่ไม่ระบุตัวตนเปิดอยู่ # หน้า}}</translation>
 <translation id="439266289085815679">การกำหนดค่าบลูทูธควบคุมโดย <ph name="USER_EMAIL"/></translation>
 <translation id="4392896746540753732">แก้ไขไฟล์การกำหนดค่า</translation>
 <translation id="4394049700291259645">ปิดการใช้งาน</translation>
@@ -2699,7 +2673,6 @@
 <translation id="4411578466613447185">ผู้เซ็นชื่อบนโค้ด</translation>
 <translation id="4412698727486357573">ศูนย์ช่วยเหลือ</translation>
 <translation id="44141919652824029">อนุญาตให้ "<ph name="APP_NAME"/>" เรียกรายการอุปกรณ์ USB ที่เชื่อมต่ออยู่ใช่ไหม</translation>
-<translation id="4414232939543644979">หน้าต่างใหม่&amp;ที่ไม่ระบุตัวตน</translation>
 <translation id="4415213869328311284">คุณพร้อมเริ่มใช้งาน <ph name="DEVICE_TYPE"/> แล้ว</translation>
 <translation id="4415245286584082850">ไม่พบอุปกรณ์ โปรดเปิดบทความในศูนย์ช่วยเหลือในแท็บใหม่</translation>
 <translation id="1125261911132334651">จัดการบัญชี Brave</translation>
@@ -2762,7 +2735,6 @@
 <translation id="4502423230170890588">นำออกจากอุปกรณ์นี้</translation>
 <translation id="4504374760782163539">{COUNT,plural, =0{อนุญาตให้ใช้คุกกี้}=1{อนุญาตให้ใช้คุกกี้ ยกเว้น 1 รายการ}other{อนุญาตให้ใช้คุกกี้ ยกเว้น {COUNT} รายการ}}</translation>
 <translation id="4504940961672722399">ใช้ส่วนขยายนี้โดยคลิกที่ไอคอนนี้ หรือกด <ph name="EXTENSION_SHORTCUT"/></translation>
-<translation id="4508051413094283164">เปิดทั้งหมดในหน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="4508265954913339219">การเปิดใช้งานล้มเหลว</translation>
 <translation id="4508765956121923607">ดู&amp;ต้นฉบับ</translation>
 <translation id="4510479820467554003">รายการบัญชีผู้ปกครอง</translation>
@@ -2774,7 +2746,6 @@
 <translation id="4519935350946509010">เกิดข้อผิดพลาดในการเชื่อมต่อ</translation>
 <translation id="4520385623207007473">คุกกี้ที่ใช้งานอยู่</translation>
 <translation id="452039078290142656">อุปกรณ์ที่ไม่รู้จักจาก <ph name="VENDOR_NAME"/></translation>
-<translation id="4521489190203965562">เซสชันไม่ระบุตัวตนปัจจุบัน: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/> <ph name="RECENT_PERMISSIONS_CHANGE_1"/> <ph name="RECENT_PERMISSIONS_CHANGE_2"/> และอื่นๆ</translation>
 <translation id="4522570452068850558">รายละเอียด</translation>
 <translation id="4522600456902129422">อนุญาตให้เว็บไซต์นี้ดูคลิปบอร์ดต่อไปได้</translation>
 <translation id="4524832533047962394">ระบบปฏิบัติการเวอร์ชันนี้ไม่รองรับโหมดการลงทะเบียนที่กำหนด โปรดตรวจสอบว่าคุณใช้เวอร์ชันล่าสุดอยู่</translation>
@@ -2876,7 +2847,6 @@
 <translation id="4647090755847581616">&amp;ปิดแท็บ</translation>
 <translation id="4647697156028544508">โปรดป้อน PIN สำหรับ "<ph name="DEVICE_NAME"/>":</translation>
 <translation id="4648491805942548247">สิทธิ์ไม่เพียงพอ</translation>
-<translation id="4648499713050786492">โปรดปลดล็อกโปรไฟล์ของคุณก่อนเพิ่มบุคคล</translation>
 <translation id="4650591383426000695">ยกเลิกการเชื่อมต่อโทรศัพท์จาก <ph name="DEVICE_TYPE"/></translation>
 <translation id="4651484272688821107">โหลดองค์ประกอบออนไลน์ที่มีทรัพยากรโหมดสาธิตไม่ได้</translation>
 <translation id="4653405415038586100">เกิดข้อผิดพลาดขณะกำหนดค่า Linux</translation>
@@ -3014,7 +2984,6 @@
 <translation id="4854317507773910281">เลือกบัญชีผู้ปกครองที่จะเป็นผู้อนุมัติ</translation>
 <translation id="485480310608090163">การตั้งค่าและสิทธิ์อื่นๆ</translation>
 <translation id="4856478137399998590">บริการดาต้าบนมือถือของคุณเปิดใช้งานและพร้อมทำงานแล้ว</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{เปิดทั้งหมดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}=1{เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}other{เปิดทั้งหมด (#) ใน&amp;หน้าต่างที่ไม่ระบุตัวตน}}</translation>
 <translation id="4858792381671956233">คุณถามผู้ปกครองแล้วว่าสามารถเข้าชมเว็บไซต์นี้ได้ไหม</translation>
 <translation id="4858913220355269194">ฟริทซ์</translation>
 <translation id="4862642413395066333">การเซ็นชื่อในการตอบสนอง OCSP</translation>
@@ -3203,7 +3172,6 @@
 <translation id="5107443654503185812">ส่วนขยายหนึ่งได้ปิด Google Safe Browsing ไป</translation>
 <translation id="5108967062857032718">การตั้งค่า - นำแอป Android ออก</translation>
 <translation id="5109044022078737958">มีอา</translation>
-<translation id="5111646998522066203">ออกจากโหมดไม่ระบุตัวตน</translation>
 <translation id="5111692334209731439">&amp;ตัวจัดการบุ๊กมาร์ก</translation>
 <translation id="5112577000029535889">&amp;เครื่องมือสำหรับนักพัฒนาซอฟต์แวร์</translation>
 <translation id="5113739826273394829">หากคุณคลิกไอคอนนี้ จะเป็นการล็อก <ph name="DEVICE_TYPE"/> นี้ด้วยตนเอง คุณจะต้องพิมพ์รหัสผ่านเพื่อเข้าใช้งานในครั้งถัดไป</translation>
@@ -3413,7 +3381,6 @@
 <translation id="5379140238605961210">บล็อกการเข้าถึงไมโครโฟนต่อไป</translation>
 <translation id="5382591305415226340">จัดการลิงก์ที่สนับสนุน</translation>
 <translation id="5383377866517186886">กล้องปิดอยู่ในค่ากำหนดของระบบ Mac</translation>
-<translation id="5384883051496921101">ไซต์นี้กำลังจะแชร์ข้อมูลกับแอปนอกโหมดไม่ระบุตัวตน</translation>
 <translation id="5388885445722491159">จับคู่</translation>
 <translation id="5389237414310520250">ไม่สามารถสร้างผู้ใช้ใหม่ได้ โปรดตรวจสอบพื้นที่ว่างในฮาร์ดไดรฟ์และสิทธิ์ของคุณ แล้วลองอีกครั้ง</translation>
 <translation id="5390100381392048184">อนุญาตให้เว็บไซต์เล่นเสียง</translation>
@@ -3425,7 +3392,7 @@
 <translation id="5402815541704507626">ดาวน์โหลดอัปเดตโดยใช้อินเทอร์เน็ตมือถือ</translation>
 <translation id="540296380408672091">บล็อกคุกกี้เสมอบน <ph name="HOST"/></translation>
 <translation id="540495485885201800">สลับกับชั้นวางก่อนหน้า</translation>
-<translation id="5405146885510277940">รีเซ็ตการตั้งค่า</translation>
+<translation id="8632933437936028548">รีเซ็ตการตั้งค่า</translation>
 <translation id="5408750356094797285">ซูม: <ph name="PERCENT"/></translation>
 <translation id="5411472733320185105">อย่าใช้การตั้งค่าพร็อกซีสำหรับโฮสต์และโดเมนเหล่านี้:</translation>
 <translation id="5414566801737831689">อ่านไอคอนของเว็บไซต์ที่คุณเข้าชม</translation>
@@ -3462,7 +3429,6 @@
 <translation id="5449551289610225147">รหัสผ่านไม่ถูกต้อง</translation>
 <translation id="5449588825071916739">บุ๊กมาร์กแท็บทั้งหมด</translation>
 <translation id="5449716055534515760">ปิดหน้าต่&amp;าง</translation>
-<translation id="5452974209916053028">เซสชันไม่ระบุตัวตนปัจจุบัน: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/> <ph name="RECENT_PERMISSIONS_CHANGE_1"/> <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
 <translation id="5454166040603940656">กับ <ph name="PROVIDER"/></translation>
 <translation id="5454360575035671759">การนำ Plugin VM ออกจะเป็นการลบ VM ของคุณ ซึ่งรวมถึงแอปพลิเคชัน การตั้งค่า และข้อมูลของ VM ด้วย คุณแน่ใจไหมว่าต้องการดำเนินการต่อ</translation>
 <translation id="5457113250005438886">ไม่ถูกต้อง</translation>
@@ -3492,7 +3458,6 @@
 <translation id="5486561344817861625">จำลองการรีสตาร์ทเบราว์เซอร์</translation>
 <translation id="5487521232677179737">ล้างข้อมูล</translation>
 <translation id="5488093641312826914">คัดลอก "<ph name="COPIED_ITEM_NAME"/>" แล้ว</translation>
-<translation id="5488468185303821006">อนุญาตให้ใช้โหมดไม่ระบุตัวตน</translation>
 <translation id="5489435190927933437">รหัสผ่านที่บันทึกไว้สำหรับ <ph name="DOMAIN"/></translation>
 <translation id="5490721031479690399">ยกเลิกการเชื่อมต่ออุปกรณ์บลูทูธ</translation>
 <translation id="5490798133083738649">อนุญาตให้ Linux เข้าถึงไมโครโฟน</translation>
@@ -3530,7 +3495,6 @@
 <translation id="5526745900034778153">ลงชื่อเข้าใช้อีกครั้งเพื่อซิงค์ต่อ</translation>
 <translation id="5527463195266282916">มีความพยายามที่จะปรับลดรุ่นของส่วนขยาย</translation>
 <translation id="5527474464531963247">คุณสามารถเลือกเครือข่ายอื่นได้ด้วย</translation>
-<translation id="5530766185686772672">ปิดแท็บที่ไม่ระบุตัวตน</translation>
 <translation id="5532223876348815659">ทั่วโลก</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> ต้องการที่จะ</translation>
 <translation id="5534304873398226603">ทิ้งรูปภาพหรือวิดีโอ</translation>
@@ -3565,7 +3529,6 @@
 <translation id="5567989639534621706">แคชของแอปพลิเคชัน</translation>
 <translation id="5568069709869097550">ไม่สามารถลงชื่อเข้าใช้</translation>
 <translation id="1254756632288991504">โปรดเปิดและลงชื่อเข้าใช้ Brave เพื่อให้ Brave ตรวจสอบได้ว่าคุณได้รับอนุญาตให้เข้าถึงไซต์นี้หรือไม่</translation>
-<translation id="5575473780076478375">ส่วนขยายแบบไม่ระบุตัวตน: <ph name="EXTENSION_NAME"/></translation>
 <translation id="5575528586625653441">เกิดปัญหาเกี่ยวกับคำขอลงทะเบียนสาธิต</translation>
 <translation id="557722062034137776">การรีเซ็ตอุปกรณ์ของคุณจะไม่ส่งผลต่อบัญชี Brave ของคุณหรือข้อมูลใดๆ ที่ซิงค์กับบัญชีเหล่านี้ อย่างไรก็ตาม ไฟล์ทั้งหมดที่บันทึกอยู่ภายในอุปกรณ์จะถูกลบ</translation>
 <translation id="5578059481725149024">ลงชื่อเข้าใช้อัตโนมัติ</translation>
@@ -3657,7 +3620,6 @@
 <translation id="5691511426247308406">ครอบครัว</translation>
 <translation id="5691772641933328258">ระบบไม่รู้จักลายนิ้วมือนี้</translation>
 <translation id="5692183275898619210">การพิมพ์เสร็จสมบูรณ์</translation>
-<translation id="569425414730375234">เซสชันไม่ระบุตัวตนปัจจุบัน: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="5695184138696833495">ADB ของแอป Android ใน Linux</translation>
 <translation id="5696143504434933566">รายงานการละเมิดจาก "<ph name="EXTENSION_NAME"/>"</translation>
 <translation id="5696177755977520104">การซิงค์การตั้งค่า Chrome OS</translation>
@@ -3685,7 +3647,6 @@
 <translation id="5722930212736070253">แย่จัง! ที่เก็บ ZIP ถาวรพบข้อผิดพลาด</translation>
 <translation id="572328651809341494">แท็บล่าสุด</translation>
 <translation id="5723508132121499792">ไม่มีแอปพลิเคชันทำงานในพื้นหลัง</translation>
-<translation id="5723967018671998714">บล็อกคุกกี้ของบุคคลที่สามในโหมดไม่ระบุตัวตนอยู่</translation>
 <translation id="5727728807527375859">ส่วนขยาย แอปพลิเคชัน และธีมอาจเป็นอันตรายต่อคอมพิวเตอร์ของคุณได้ คุณแน่ใจหรือไม่ว่าต้องการดำเนินการต่อ</translation>
 <translation id="5728450728039149624">ตัวเลือกล็อกหน้าจอ Smart Lock</translation>
 <translation id="5729712731028706266">&amp;มุมมอง</translation>
@@ -3758,7 +3719,6 @@
 <translation id="5827266244928330802">Safari</translation>
 <translation id="5828633471261496623">กำลังพิมพ์...</translation>
 <translation id="5830720307094128296">บันทึกหน้าเ&amp;ป็น...</translation>
-<translation id="5832805196449965646">เพิ่มบุคคล</translation>
 <translation id="583281660410589416">ไม่รู้จัก</translation>
 <translation id="5832976493438355584">ล็อกอยู่</translation>
 <translation id="5833397272224757657">ใช้เนื้อหาในเว็บไซต์ที่คุณเข้าชม รวมถึงกิจกรรมและการโต้ตอบในเบราว์เซอร์เพื่อการปรับเปลี่ยนในแบบของคุณ</translation>
@@ -3848,7 +3808,6 @@
 <translation id="5935656526031444304">จัดการ Google Safe Browsing</translation>
 <translation id="5938002010494270685">การอัปเกรดความปลอดภัยพร้อมใช้งานแล้ว</translation>
 <translation id="5939518447894949180">รีเซ็ต</translation>
-<translation id="5941153596444580863">เพิ่มบุคคล...</translation>
 <translation id="5941343993301164315">โปรดลงชื่อเข้าใช้ <ph name="TOKEN_NAME"/></translation>
 <translation id="5941711191222866238">ย่อ</translation>
 <translation id="5942964813783878922"><ph name="DEVICE_TYPE"/> จะรีสตาร์ทหลังการอัปเดตนี้ การอัปเดตซอฟต์แวร์และการรักษาความปลอดภัยในอนาคตจะติดตั้งโดยอัตโนมัติ</translation>
@@ -3884,7 +3843,6 @@
 <translation id="5979421442488174909">&amp;แปลเป็น<ph name="LANGUAGE"/></translation>
 <translation id="5979469435153841984">หากต้องการบุ๊กมาร์กหน้าต่างๆ ให้คลิกรูปดาวในแถบที่อยู่เว็บ</translation>
 <translation id="5984222099446776634">เข้าชมล่าสุด</translation>
-<translation id="598472838394900788">{0,plural, =1{ไม่ระบุตัวตน}other{ไม่ระบุตัวตน (#)}}</translation>
 <translation id="5985458664595100876">รูปแบบ URL ไม่ถูกต้อง รูปแบบที่รองรับคือ \\server\share และ smb://server/share</translation>
 <translation id="5990386583461751448">แปลแล้ว</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{โปรดขอให้ผู้ดูแลระบบนำแอปพลิเคชันนี้ออกเพื่อให้คุณท่องเว็บได้ต่อไป}other{โปรดขอให้ผู้ดูแลระบบนำแอปพลิเคชันนี้ออกเพื่อให้คุณท่องเว็บได้ต่อไป}}</translation>
@@ -3961,7 +3919,6 @@
 <translation id="6078323886959318429">เพิ่มทางลัด</translation>
 <translation id="6078752646384677957">โปรดตรวจสอบไมโครโฟนและระดับเสียง</translation>
 <translation id="6078769373519310690">"<ph name="CHROME_EXTENSION_NAME"/>" ต้องการเชื่อมต่อกับอุปกรณ์ HID</translation>
-<translation id="6080515710685820702">หากมีการใช้คอมพิวเตอร์ร่วมกัน ให้ลองเปิดหน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="6080689532560039067">ตรวจสอบเวลาระบบของคุณ</translation>
 <translation id="6082651258230788217">แสดงในแถบเครื่องมือ</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/> - ส่วนหนึ่งของกลุ่มที่ไม่มีชื่อ</translation>
@@ -3989,7 +3946,6 @@
 <translation id="6112294629795967147">แตะเพื่อปรับขนาด</translation>
 <translation id="6112727384379533756">เพิ่มตั๋ว</translation>
 <translation id="6112931163620622315">ตรวจสอบโทรศัพท์</translation>
-<translation id="6112952769866305444">แก้ไขบุคคล, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="6113942107547980621">โปรดเปลี่ยนเป็นโปรไฟล์ผู้ใช้หลักในโทรศัพท์เพื่อใช้ Smart Lock</translation>
 <translation id="6116921718742659598">เปลี่ยนการตั้งค่าภาษาและการป้อนข้อมูล</translation>
 <translation id="6120205520491252677">ตรึงหน้าเว็บนี้ไว้ที่หน้าจอเริ่ม...</translation>
@@ -4022,7 +3978,6 @@
 <translation id="615436196126345398">โปรโตคอล</translation>
 <translation id="6154697846084421647">ลงชื่อเข้าใช้อยู่</translation>
 <translation id="6155141482566063812">แท็บพื้นหลังกำลังแชร์หน้าจอ</translation>
-<translation id="6156323911414505561">แสดงแถบบุ๊กมาร์ก</translation>
 <translation id="6156863943908443225">แคชของสคริปต์</translation>
 <translation id="6160625263637492097">มอบใบรับรองสำหรับการตรวจสอบสิทธิ์</translation>
 <translation id="6163363155248589649">&amp;ปกติ</translation>
@@ -4211,7 +4166,6 @@
 <translation id="6410668567036790476">เพิ่มเครื่องมือค้นหา</translation>
 <translation id="641081527798843608">หัวเรื่องที่ตรงกัน</translation>
 <translation id="7810992039564280750">ตรวจสอบ URL กับรายการเว็บไซต์ที่ไม่ปลอดภัยซึ่งจัดเก็บไว้ใน Brave หากเว็บไซต์พยายามขโมยรหัสผ่าน หรือคุณดาวน์โหลดไฟล์ที่เป็นอันตราย Brave อาจส่ง URL รวมถึงเนื้อหาบางส่วนในหน้าไปยัง Google Safe Browsing ด้วย</translation>
-<translation id="6412931879992742813">หน้าต่างที่ไม่ระบุตัวตนใหม่</translation>
 <translation id="641469293210305670">ติดตั้งอัปเดตและแอป</translation>
 <translation id="6414888972213066896">คุณถามผู้ปกครองแล้วว่าสามารถเข้าชมเว็บไซต์นี้ได้ไหม</translation>
 <translation id="6415659939354280526">เลือกแหล่งที่มาสำหรับโหมดแอมเบียนท์</translation>
@@ -4319,7 +4273,6 @@
 <translation id="6550675742724504774">ตัวเลือก</translation>
 <translation id="6551508934388063976">คำสั่งไม่สามารถใช้งานได้ กด Control-N เพื่อเปิดหน้าต่างใหม่</translation>
 <translation id="6551612971599078809">เว็บไซต์กำลังใช้ USB</translation>
-<translation id="6552395360547205189">เซสชันไม่ระบุตัวตนปัจจุบัน: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/> <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="655384502888039633">ผู้ใช้ <ph name="USER_COUNT"/> คน</translation>
 <translation id="655483977608336153">ลองอีกครั้ง</translation>
 <translation id="6555432686520421228">ลบบัญชีผู้ใช้ทั้งหมดและรีเซ็ตอุปกรณ์ <ph name="IDS_SHORT_PRODUCT_NAME"/> ของคุณให้เหมือนใหม่</translation>
@@ -4330,7 +4283,6 @@
 <translation id="6561726789132298588">ป้อน</translation>
 <translation id="656293578423618167">เส้นทางหรือชื่อของไฟล์ยาวเกินไป โปรดบันทึกด้วยชื่อที่สั้นกว่านี้หรือบันทึกลงในตำแหน่งอื่น</translation>
 <translation id="6563469144985748109">ผู้จัดการยังไม่ได้อนุมัติเว็บไซต์นี้</translation>
-<translation id="6569934958368283244">บุคคลอื่น</translation>
 <translation id="657402800789773160">&amp;โหลดหน้านี้ใหม่</translation>
 <translation id="6577284282025554716">ยกเลิกการดาวน์โหลดแล้ว: <ph name="FILE_NAME"/></translation>
 <translation id="2459230470861708651">เข้ารหัสลับรหัสผ่านที่ซิงค์ด้วยชื่อผู้ใช้และรหัสผ่าน Brave ของคุณ</translation>
@@ -4446,7 +4398,6 @@
 <translation id="6727969043791803658">เชื่อมต่อแล้ว แบตเตอรี่ <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="6732801395666424405">ยังไม่ได้โหลดใบรับรอง</translation>
 <translation id="6732900235521116609">นำทางลัดออกไม่ได้</translation>
-<translation id="6734468588183300211">ขณะอยู่ในโหมดไม่ระบุตัวตน เว็บไซต์จะใช้คุกกี้เพื่อดูกิจกรรมการท่องเว็บของคุณในเว็บไซต์ต่างๆ ไม่ได้ เช่น เพื่อปรับโฆษณาตามโปรไฟล์ของคุณ ฟีเจอร์ในเว็บไซต์บางแห่งอาจใช้งานไม่ได้</translation>
 <translation id="6735304988756581115">แสดงคุกกี้และข้อมูลอื่นของไซต์...</translation>
 <translation id="6736243959894955139">ที่อยู่</translation>
 <translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
@@ -4462,7 +4413,6 @@
 <translation id="6748465660675848252">คุณสามารถดำเนินการต่อได้ แต่ระบบจะกู้คืนข้อมูลที่ซิงค์และการตั้งค่าเท่านั้น ข้อมูลในเครื่องทั้งหมดจะสูญหาย</translation>
 <translation id="6749006854028927059">เว็บไซต์จะใช้คุกกี้เพื่อดูกิจกรรมการท่องเว็บของคุณในเว็บไซต์ต่างๆ ไม่ได้ เช่น เพื่อปรับโฆษณาตามโปรไฟล์ของคุณ ฟีเจอร์ในเว็บไซต์บางแห่งอาจใช้งานไม่ได้</translation>
 <translation id="6750757184909117990">ปิดใช้เครือข่ายมือถือ</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (โหมดไม่ระบุตัวตน)</translation>
 <translation id="6757101664402245801">คัดลอก URL แล้ว</translation>
 <translation id="6758056191028427665">แจ้งให้เราทราบถึงความพึงพอใจ</translation>
 <translation id="6759193508432371551">รีเซ็ตเป็นค่าเริ่มต้นจากโรงงาน</translation>
@@ -4488,7 +4438,6 @@
 <translation id="6789592661892473991">แยกในแนวนอน</translation>
 <translation id="6790428901817661496">เล่น</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> ได้รับการเพิ่มจากระยะไกล</translation>
-<translation id="6790820461102226165">เพิ่มบุคคล...</translation>
 <translation id="6792072150955115067"><ph name="APP_NAME"/> ต้องการแชร์เนื้อหาบนหน้าจอของคุณกับ <ph name="TARGET_NAME"/> เลือกส่วนที่คุณต้องการแชร์</translation>
 <translation id="6793604637258913070">ไฮไลต์เครื่องหมาย caret ของข้อความเมื่อปรากฏขึ้นหรือเคลื่อนที่</translation>
 <translation id="6795884519221689054">แพนด้า</translation>
@@ -4601,7 +4550,6 @@
 <translation id="6935286146439255109">ไม่มีถาดกระดาษ</translation>
 <translation id="693807610556624488">การเขียนไปยังอุปกรณ์ต่อไปนี้เกินขีดจำกัดความยาวสูงสุดของแอตทริบิวต์: "<ph name="DEVICE_NAME"/>"</translation>
 <translation id="6938386202199793006">คุณมีเครื่องพิมพ์ที่บันทึกไว้ 1 เครื่อง</translation>
-<translation id="6938789263968032501">บุคคล</translation>
 <translation id="6941937518557314510">โปรดลงชื่อเข้าใช้ <ph name="TOKEN_NAME"/> เพื่อตรวจสอบสิทธิ์กับ <ph name="HOST_NAME"/> ด้วยใบรับรองของคุณ</translation>
 <translation id="6943060957016121200">เปิดใช้การเชื่อมต่อ Wi-Fi ฮอตสปอตจากมือถือโดยอัตโนมัติ</translation>
 <translation id="6943176775188458830">ยกเลิกการพิมพ์</translation>
@@ -4700,7 +4648,6 @@
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{เรียกใช้การตรวจสอบความปลอดภัยเมื่อ 1 นาทีที่ผ่านมา}other{เรียกใช้การตรวจสอบความปลอดภัยเมื่อ {NUM_MINS} นาทีที่ผ่านมา}}</translation>
 <translation id="7057767408836081338">รับข้อมูลแอปไม่สำเร็จ ยังพยายามเรียกใช้แอปอยู่...</translation>
 <translation id="7059858479264779982">ตั้งค่าเป็นเรียกใช้อัตโนมัติ</translation>
-<translation id="7059893117020417984">หากต้องการท่องเว็บแบบส่วนตัว ให้คลิกเมนูไอคอนรูปจุดเพื่อเปิดหน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="7062222374113411376">อนุญาตให้เว็บไซต์ที่ปิดล่าสุดดำเนินการส่งและรับข้อมูลต่อจนเสร็จ (แนะนำ)</translation>
 <translation id="7063129466199351735">กำลังประมวลผลทางลัด...</translation>
 <translation id="7063311912041006059">URL ที่มี <ph name="SPECIAL_SYMBOL"/> ในตำแหน่งคำค้นหา</translation>
@@ -4722,7 +4669,6 @@
 <translation id="7077829361966535409">หน้าลงชื่อเข้าใช้ไม่สามารถโหลดโดยใช้การตั้งค่าพร็อกซีในปัจจุบัน โปรด <ph name="GAIA_RELOAD_LINK_START"/>ลองลงชื่อเข้าใช้อีกครั้ง<ph name="GAIA_RELOAD_LINK_END"/> หรือใช้<ph name="PROXY_SETTINGS_LINK_START"/>การตั้งค่าพร็อกซี<ph name="PROXY_SETTINGS_LINK_END"/>อื่นๆ</translation>
 <translation id="7078120482318506217">ทุกเครือข่าย</translation>
 <translation id="708060913198414444">คัด&amp;ลอกที่อยู่ของเสียง</translation>
-<translation id="7081952801286122383">คุณอยู่ในโหมดไม่ระบุตัวตน</translation>
 <translation id="708278670402572152">ยกเลิกการเชื่อมต่อเพื่อเปิดใช้การสแกน</translation>
 <translation id="1439926347196400598">อนุญาตให้ Brave บันทึกเสียงไหม</translation>
 <translation id="7088434364990739311">การเริ่มต้นการตรวจสอบการอัปเดตล้มเหลว (รหัสข้อผิดพลาด <ph name="ERROR"/>)</translation>
@@ -4968,7 +4914,6 @@
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{เรียกใช้การตรวจสอบความปลอดภัยเมื่อ 1 ชั่วโมงที่ผ่านมา}other{เรียกใช้การตรวจสอบความปลอดภัยเมื่อ {NUM_HOURS} ชั่วโมงที่ผ่านมา}}</translation>
 <translation id="740624631517654988">ปิดกั้นป๊อปอัป</translation>
 <translation id="7407430846095439694">นำเข้าและเชื่อมโยง</translation>
-<translation id="7407504355934009739">คนส่วนใหญ่บล็อกการแจ้งเตือนจากเว็บไซต์นี้</translation>
 <translation id="740810853557944681">เพิ่มเซิร์ฟเวอร์การพิมพ์</translation>
 <translation id="7409549334477097887">ใหญ่พิเศษ</translation>
 <translation id="7410344089573941623">ถามว่า <ph name="HOST"/> ต้องการเข้าถึงกล้องและไมโครโฟนของคุณหรือไม่</translation>
@@ -5013,7 +4958,6 @@
 <translation id="7460045493116006516">ธีมที่คุณติดตั้งอยู่ตอนนี้</translation>
 <translation id="7461924472993315131">ตรึง</translation>
 <translation id="746216226901520237">โทรศัพท์จะปลดล็อก <ph name="DEVICE_TYPE"/> ของคุณในครั้งถัดไป คุณปิด Smart Lock ได้ในการตั้งค่า</translation>
-<translation id="7463006580194749499">เพิ่มบุคคล</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{มีแท็บที่เปิดอยู่ # แท็บ กดเพื่อสลับแนวแท็บ}other{มีแท็บที่เปิดอยู่ # แท็บ กดเพื่อสลับแนวแท็บ}}</translation>
 <translation id="7465635034594602553">เกิดข้อผิดพลาด โปรดรอสักครู่แล้วเรียกใช้ <ph name="APP_NAME"/> อีกครั้ง</translation>
 <translation id="7465778193084373987">URL การเพิกถอนใบรับรองของ Netscape</translation>
@@ -5035,7 +4979,6 @@
 <translation id="7488682689406685343">เว็บไซต์นี้อาจกำลังพยายามหลอกล่อคุณให้อนุญาตการแจ้งเตือนที่ล่วงล้ำ</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;เปิดทั้งหมด}=1{&amp;เปิดบุ๊กมาร์ก}other{&amp;เปิดทั้งหมด (#)}}</translation>
 <translation id="7489761397368794366">โทรจากอุปกรณ์ของคุณ</translation>
-<translation id="749028671485790643">คนที่ <ph name="VALUE"/></translation>
 <translation id="7490813197707563893">ที่อยู่ MAC</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{คุกกี้ 1 รายการ}other{คุกกี้ {NUM_COOKIES} รายการ}}</translation>
 <translation id="7493386493263658176">ส่วนขยาย <ph name="EXTENSION_NAME"/> อาจรวบรวมข้อความทั้งหมดที่คุณพิมพ์ ซึ่งรวมถึงข้อมูลส่วนตัว เช่น รหัสผ่านและหมายเลขบัตรเครดิต คุณต้องการใช้ส่วนขยายนี้ไหม</translation>
@@ -5057,7 +5000,6 @@
 <translation id="751523031290522286">ผู้ดูแลระบบบล็อก <ph name="APP_NAME"/> ไว้ โปรดขอสิทธิ์จากผู้ดูแลระบบเพื่อใช้แอปนี้</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> หยุดชั่วคราว</translation>
 <translation id="7517063221058203587">{0,plural, =1{อัปเดตอุปกรณ์ภายใน 1 นาที}other{อัปเดตอุปกรณ์ภายใน # นาที}}</translation>
-<translation id="7520766081042531487">พอร์ทัลที่ไม่ระบุตัวตน: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">พูดว่า "Ok Brave"</translation>
 <translation id="7525067979554623046">สร้าง</translation>
@@ -5151,7 +5093,6 @@
 <translation id="7647403192093989392">ไม่มีกิจกรรมล่าสุด</translation>
 <translation id="7649070708921625228">ช่วยเหลือ</translation>
 <translation id="7650511557061837441">"<ph name="TRIGGERING_EXTENSION_NAME"/>" ต้องการลบ "<ph name="EXTENSION_NAME"/>"</translation>
-<translation id="7652808307838961528">แก้ไขบุคคล, <ph name="PROFILE_NAME"/></translation>
 <translation id="765293928828334535">เพิ่มแอป ส่วนขยาย และสคริปต์ของผู้ใช้จากเว็บไซต์นี้ไม่ได้</translation>
 <translation id="7652954539215530680">สร้าง PIN</translation>
 <translation id="7654941827281939388">ใช้บัญชีนี้ในคอมพิวเตอร์เครื่องนี้อยู่แล้ว</translation>
@@ -5172,7 +5113,6 @@
 <translation id="7674416868315480713">ปิดใช้งานทุกพอร์ตที่กำลังส่งต่อใน Linux</translation>
 <translation id="1800308196794859773">ส่งเสียงของคุณไปยัง Brave เพื่อให้พิมพ์ตามคำบอกในช่องข้อความต่างๆ</translation>
 <translation id="7681095912841365527">เว็บไซต์ใช้บลูทูธได้</translation>
-<translation id="7683373461016844951">หากต้องการดำเนินการต่อ ให้คลิก "ตกลง" จากนั้นคลิก "เพิ่มบุคคล" เพื่อสร้างโปรไฟล์ใหม่สำหรับที่อยู่อีเมล <ph name="DOMAIN"/></translation>
 <translation id="7684212569183643648">ติดตั้งโดยผู้ดูแลระบบ</translation>
 <translation id="7684559058815332124">ดูหน้าการเข้าสู่ระบบแคปทีฟพอร์ทัล</translation>
 <translation id="1669729672557072907">หากต้องการสร้างและทดสอบแอป ให้เปิดใช้ Android Debug Bridge (ADB) โปรดทราบว่าการดำเนินการนี้จะอนุญาตให้ติดตั้งแอป Android ที่ยังไม่ได้รับการยืนยันจาก Brave และต้องรีเซ็ตเป็นค่าเริ่มต้นเพื่อปิดใช้</translation>
@@ -5273,7 +5213,7 @@
 <translation id="7792388396321542707">หยุดการแชร์</translation>
 <translation id="779308894558717334">สีเขียวอ่อน</translation>
 <translation id="7793098747275782155">สีน้ำเงินเข้ม</translation>
-<translation id="7797571222998226653">ปิด</translation>
+<translation id="971479617738309149">ปิด</translation>
 <translation id="7798844538707273832">บล็อก<ph name="PERMISSION"/>โดยอัตโนมัติ</translation>
 <translation id="7799299114731150374">ตั้งค่าวอลเปเปอร์เรียบร้อยแล้ว</translation>
 <translation id="7800518121066352902">หมุน&amp;ทวนเข็มนาฬิกา</translation>
@@ -5376,7 +5316,6 @@
 <translation id="7904094684485781019">ผู้ดูแลระบบของบัญชีนี้ไม่อนุญาตการลงชื่อเข้าสู่ระบบพร้อมกันหลายบัญชี</translation>
 <translation id="7904526211178107182">ทำให้พอร์ต Linux ใช้งานได้กับอุปกรณ์อื่นๆ ในเครือข่าย</translation>
 <translation id="7908378463497120834">ขออภัย ไม่สามารถติดตั้งอย่างน้อยหนึ่งพาร์ทิชันในอุปกรณ์จัดเก็บข้อมูลภายนอกของคุณ</translation>
-<translation id="7909969815743704077">ดาวน์โหลดในโหมดไม่ระบุตัวตนแล้ว</translation>
 <translation id="7910768399700579500">โ&amp;ฟลเดอร์ใหม่</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="7912080627461681647">มีการเปลี่ยนรหัสผ่านของคุณในเซิร์ฟเวอร์ โปรดออกจากระบบแล้วลงชื่อเข้าใช้อีกครั้ง</translation>
@@ -5439,7 +5378,6 @@
 <translation id="7982083145464587921">โปรดรีสตาร์ทอุปกรณ์เพื่อแก้ไขข้อผิดพลาดนี้</translation>
 <translation id="7982789257301363584">เครือข่าย</translation>
 <translation id="7984068253310542383">มิเรอร์ <ph name="DISPLAY_NAME"/></translation>
-<translation id="7985283639530788531">คุณต้องการใช้ Touch ID กับ <ph name="APP_NAME"/> ในโหมดไม่ระบุตัวตนไหม</translation>
 <translation id="7986295104073916105">อ่านและเปลี่ยนการตั้งค่ารหัสผ่านที่บันทึกไว้</translation>
 <translation id="7987814697832569482">เชื่อมต่อผ่าน VPN นี้ทุกครั้ง</translation>
 <translation id="7988355189918024273">เปิดการใช้งานฟีเจอร์การเข้าถึง</translation>
@@ -5480,7 +5418,6 @@
 <translation id="8030852056903932865">อนุญาต</translation>
 <translation id="8032244173881942855">ไม่สามารถแคสต์แท็บ</translation>
 <translation id="8033827949643255796">เลือกแล้ว</translation>
-<translation id="803435727213847625">{COUNT,plural, =0{เปิดทั้งหมดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}=1{เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}other{เปิดทั้งหมด (#) ใน&amp;หน้าต่างที่ไม่ระบุตัวตน}}</translation>
 <translation id="8037117027592400564">อ่านข้อความทั้งหมดที่พูดโดยใช้เสียงสังเคราะห์</translation>
 <translation id="8037357227543935929">ขอ (ค่าเริ่มต้น)</translation>
 <translation id="803771048473350947">ไฟล์</translation>
@@ -5616,7 +5553,6 @@
 <translation id="8213449224684199188">เข้าสู่โหมดรูปภาพแล้ว</translation>
 <translation id="8213577208796878755">อุปกรณ์อื่นอีกหนึ่งอุปกรณ์ที่พร้อมใช้งาน</translation>
 <translation id="8214489666383623925">เปิดไฟล์...</translation>
-<translation id="8214962590150211830">นำบุคคลนี้ออก</translation>
 <translation id="8215295261562449873">สำรองข้อมูลแอปและไฟล์ในโฟลเดอร์ดาวน์โหลดก่อนที่จะอัปเกรด Linux</translation>
 <translation id="8217399928341212914">ดำเนินการบล็อกการดาวน์โหลดไฟล์หลายๆ ไฟล์โดยอัตโนมัติต่อไป</translation>
 <translation id="8218847192766059983">เพิ่มภาษาหรือจัดเรียงรายการใหม่ <ph name="BEGIN_LINK"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK"/></translation>
@@ -5683,7 +5619,6 @@
 <translation id="8284279544186306258">ไซต์ <ph name="WEBSITE_1"/> ทั้งหมด</translation>
 <translation id="8284326494547611709">คำบรรยาย</translation>
 <translation id="8286036467436129157">ลงชื่อเข้าใช้</translation>
-<translation id="8286963743045814739">คุณจะท่องเว็บแบบส่วนตัวได้โดยใช้หน้าต่างที่ไม่ระบุตัวตน</translation>
 <translation id="8287902281644548111">ค้นหาตามการเรียก API/URL</translation>
 <translation id="8288032458496410887">ถอนการติดตั้ง <ph name="APP"/>...</translation>
 <translation id="8289128870594824098">ขนาดดิสก์</translation>
@@ -5762,7 +5697,6 @@
 <translation id="839736845446313156">ลงทะเบียน</translation>
 <translation id="8397825320644530257">ยกเลิกการเชื่อมต่อโทรศัพท์ที่เชื่อมต่ออยู่</translation>
 <translation id="8398877366907290961">ดำเนินการต่อ</translation>
-<translation id="8400146488506985033">จัดการบุคคล</translation>
 <translation id="8401432541486058167">ใส่ PIN ที่เชื่อมโยงกับสมาร์ทการ์ดของคุณ</translation>
 <translation id="8405046151008197676">ดูไฮไลต์จากอัปเดตล่าสุด</translation>
 <translation id="8407199357649073301">ระดับบันทึก:</translation>
@@ -5812,7 +5746,6 @@
 <translation id="8465444703385715657"><ph name="PLUGIN_NAME"/> ต้องได้รับอนุญาตจากคุณก่อนจึงจะทำงานได้</translation>
 <translation id="8466417995783206254">แท็บนี้กำลังเล่นวิดีโอในโหมดการแสดงภาพซ้อนภาพ</translation>
 <translation id="8467326454809944210">เลือกภาษาอื่น</translation>
-<translation id="8470214316007448308">บุคคลอื่น</translation>
 <translation id="8470513973197838199">รหัสผ่านที่บันทึกไว้สำหรับ <ph name="ORIGIN"/></translation>
 <translation id="8472623782143987204">การสนับสนุนฮาร์ดแวร์</translation>
 <translation id="8473863474539038330">ที่อยู่และอื่นๆ</translation>
@@ -5860,7 +5793,6 @@
 <translation id="8540608333167683902">เครือข่ายที่ <ph name="NETWORK_INDEX"/> จาก <ph name="NETWORK_COUNT"/>, <ph name="NETWORK_NAME"/>, <ph name="CONNECTION_STATUS"/>, ความแรงสัญญาณ <ph name="SIGNAL_STRENGTH"/>%, รายละเอียด</translation>
 <translation id="8541462173655894684">ไม่พบเครื่องพิมพ์จากเซิร์ฟเวอร์การพิมพ์</translation>
 <translation id="8542618328173222274">ถามเมื่อเว็บไซต์ต้องการใช้อุปกรณ์และข้อมูล Virtual Reality ของคุณ</translation>
-<translation id="8543556556237226809">โปรดติดต่อผู้ที่ดูแลโปรไฟล์ของคุณหากมีคำถาม</translation>
 <translation id="8545575359873600875">ขออภัย ไม่สามารถยืนยันรหัสผ่านของคุณ ผู้จัดการของผู้ใช้ภายใต้การดูแลรายนี้อาจเปลี่ยนรหัสผ่านเมื่อเร็วๆ นี้ หากเป็นเช่นนั้น จะมีการใช้รหัสผ่านใหม่เมื่อคุณลงชื่อเข้าใช้ครั้งถัดไป ลองใช้รหัสผ่านเก่าของคุณ</translation>
 <translation id="8546186510985480118">อุปกรณ์มีพื้นที่เหลือน้อย</translation>
 <translation id="8546306075665861288">แคชของภาพ</translation>
@@ -5871,7 +5803,6 @@
 <translation id="85486688517848470">กดแป้น "ค้นหา" ค้างไว้เพื่อเปลี่ยนการทำงานของแป้นแถวบนสุด</translation>
 <translation id="8551388862522347954">ใบอนุญาต</translation>
 <translation id="8551588720239073785">การตั้งค่าวันที่และเวลา</translation>
-<translation id="8553342806078037065">จัดการบุคคลอื่นๆ</translation>
 <translation id="8554899698005018844">ไม่มีภาษา</translation>
 <translation id="8557022314818157177">แตะคีย์ความปลอดภัยซ้ำๆ จนกว่าระบบจะบันทึกลายนิ้วมือของคุณได้</translation>
 <translation id="855773602626431402">ปลั๊กอินที่ไม่ได้อยู่ในแซนด์บ็อกซ์ถูกป้องกันไม่ให้ทำงานในหน้าเว็บนี้</translation>
@@ -5909,7 +5840,6 @@
 <translation id="8610103157987623234">รูปแบบไม่ถูกต้อง โปรดลองอีกครั้ง</translation>
 <translation id="8613164732773110792">อักขระตัวพิมพ์เล็ก ตัวเลข ขีดล่าง หรือขีดกลางเท่านั้น</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> ใหญ่เกินไปสำหรับการตรวจสอบความปลอดภัย ไฟล์ที่เปิดต้องมีขนาดไม่เกิน 50 MB</translation>
-<translation id="8615618338313291042">แอปพลิเคชันที่ไม่ระบุตัวตน: <ph name="APP_NAME"/></translation>
 <translation id="8619803522055190423">เงาตกกระทบ</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620436878122366504">ผู้ปกครองยังไม่ได้อนุมัติเว็บไซต์นี้</translation>
@@ -5951,9 +5881,7 @@
 <translation id="8655972064210167941">การลงชื่อเข้าใช้ล้มเหลวเนื่องจากไม่สามารถยืนยันรหัสผ่านได้ โปรดติดต่อผู้ดูแลระบบของคุณหรือลองอีกครั้ง</translation>
 <translation id="8656768832129462377">ไม่ต้องตรวจสอบ</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> กำลังแชร์หน้าจอและเสียงของคุณกับ <ph name="TAB_NAME"/></translation>
-<translation id="8661290697478713397">เปิดลิงก์ในหน้าต่าง&amp;ที่ไม่ระบุตัวตน</translation>
 <translation id="8662671328352114214">เข้าร่วมเครือข่าย <ph name="TYPE"/></translation>
-<translation id="8662795692588422978">บุคคล</translation>
 <translation id="8662811608048051533">นำคุณออกจากระบบของเว็บไซต์ส่วนใหญ่</translation>
 <translation id="8662911384982557515">เปลี่ยนหน้าแรกของคุณเป็น: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Brave ไม่สามารถตั้งวอลเปเปอร์</translation>
@@ -6045,7 +5973,6 @@
 <translation id="8763927697961133303">อุปกรณ์ USB</translation>
 <translation id="4570609078116869893">อัปเดต Brave สำหรับผู้ใช้ทุกคนโดยอัตโนมัติ</translation>
 <translation id="8770406935328356739">ไดเรกทอรีหลักของส่วนขยาย</translation>
-<translation id="8770507190024617908">จัดการบุคคล</translation>
 <translation id="8771300903067484968">มีการรีเซ็ตพื้นหลังของหน้าเริ่มต้นเป็นพื้นหลังเริ่มต้น</translation>
 <translation id="8773302562181397928">บันทึก <ph name="PRINTER_NAME"/></translation>
 <translation id="8774379074441005279">ยืนยันการคืนค่า</translation>
@@ -6173,7 +6100,6 @@
 <translation id="8912793549644936705">ยืด</translation>
 <translation id="8912810933860534797">เปิดใช้การสแกนอัตโนมัติ</translation>
 <translation id="8915370057835397490">กำลังโหลดคำแนะนำ</translation>
-<translation id="8916476537757519021">เฟรมย่อยแบบไม่ระบุตัวตน: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8922013791253848639">อนุญาตโฆษณาในไซต์นี้เสมอ</translation>
 <translation id="8923880975836399332">สีน้ำเงินอมเขียวเข้ม</translation>
 <translation id="8925458182817574960">&amp;การตั้งค่า</translation>
@@ -6195,7 +6121,6 @@
 <translation id="8944964446326379280"><ph name="APP_NAME"/> กำลังแชร์หน้าต่างกับ <ph name="TAB_NAME"/></translation>
 <translation id="8945274638472141382">ขนาดไอคอน</translation>
 <translation id="8946359700442089734">ไม่ได้เปิดใช้ฟีเจอร์การแก้ไขข้อบกพร่องอย่างสมบูรณ์บนอุปกรณ์ <ph name="IDS_SHORT_PRODUCT_NAME"/> นี้</translation>
-<translation id="894871326938397531">ออกจากโหมดไม่ระบุตัวตนไหม</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> ต้องการดูยี่ห้อและรุ่นของคีย์ความปลอดภัย</translation>
 <translation id="8951256747718668828">คืนค่าให้เสร็จสมบูรณ์ไม่ได้เนื่องจากเกิดข้อผิดพลาด</translation>
 <translation id="8951465597020890363">ออกจากโหมดผู้มาเยือนใช่ไหม</translation>
@@ -6458,72 +6383,84 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">กำลังทำการเชื่อมต่ออย่างปลอดภัย...</translation>
 <translation id="998747458861718449">&amp;ตรวจสอบ</translation>
-<translation id="658539216370629794">เปิดลิงก์ในหน้าต่างที่ไม่ระบุตัวตน (&amp;G)</translation>
-<translation id="1432267168815937878">เปิดลิงก์ในหน้าต่าง&amp;ที่ไม่ระบุตัวตน</translation>
-<translation id="6516243500644829484">หน้าต่างใหม่และไม่ระบุตัวตน</translation>
-<translation id="7973394300052703468">หน้าต่างใหม่&amp;ที่ไม่ระบุตัวตน</translation>
-<translation id="6395403722585816044">ดาวน์โหลดในโหมดไม่ระบุตัวตนแล้ว</translation>
-<translation id="203837651858678035">ต้องการออกจากโหมดไม่ระบุตัวตนไหม</translation>
-<translation id="7376221878517288144">ต้องการออกจากโหมดไม่ระบุตัวตนไหม</translation>
+<translation id="658539216370629794">เปิดลิงก์ใน &amp;หน้าต่างส่วนตัว</translation>
+<translation id="1432267168815937878">เปิดลิงก์ใน &amp;หน้าต่างส่วนตัว</translation>
+<translation id="6516243500644829484">&amp;หน้าต่างส่วนตัวใหม่</translation>
+<translation id="7973394300052703468">&amp;หน้าต่างส่วนตัวใหม่</translation>
+<translation id="6395403722585816044">ดาวน์โหลดในโหมดส่วนตัวแล้ว</translation>
+<translation id="203837651858678035">ออกจากโหมดส่วนตัว?</translation>
+<translation id="7376221878517288144">ออกจากโหมดส่วนตัว?</translation>
 <translation id="871606814707918245">คนส่วนใหญ่บล็อกการแจ้งเตือนจากเว็บไซต์นี้</translation>
-<translation id="5053701565089446556">ส่วนขยายแบบไม่ระบุตัวตน: <ph name="EXTENSION_NAME"/></translation>
-<translation id="611296870688433505">แอปพลิเคชันที่ไม่ระบุตัวตน: <ph name="APP_NAME"/></translation>
-<translation id="9048137919253433011">แท็บไม่ระบุตัวตน: <ph name="TAB_NAME"/></translation>
-<translation id="1799432502220762862">เฟรมย่อยแบบไม่ระบุตัวตน: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5053701565089446556">ส่วนขยายส่วนตัว: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">แอปส่วนตัว: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">แท็บส่วนตัว: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">เฟรมย่อยส่วนตัว: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">พอร์ทัลที่ไม่ระบุตัวตน: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8808478386290700967">เว็บสโตร์</translation>
 <translation id="8261378640211443080">ส่วนขยายนี้ไม่ได้ระบุไว้ใน <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> และอาจถูกเพิ่มเข้ามาโดยที่คุณไม่รู้ตัว</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (โหมดไม่ระบุตัวตน)</translation>
-<translation id="4369414322596874629">คุณจะท่องเว็บแบบส่วนตัวได้โดยใช้หน้าต่างที่ไม่ระบุตัวตน</translation>
-<translation id="3772947852642271642">ใช้เว็บโดยไม่บันทึกประวัติการท่องเว็บด้วยหน้าต่างที่ไม่ระบุตัวตน</translation>
-<translation id="3871738366246972820">หากมีการใช้คอมพิวเตอร์ร่วมกัน ให้ลองเปิดหน้าต่างที่ไม่ระบุตัวตน</translation>
-<translation id="5808622652939943719">หากต้องการท่องเว็บแบบส่วนตัว ให้คลิกเมนูไอคอนรูปจุดเพื่อเปิดหน้าต่างที่ไม่ระบุตัวตน</translation>
-<translation id="9079153198295609735">ส่งสถิติการใช้งานและรายงานข้อขัดข้องไปยัง Brave โดยอัตโนมัติ</translation>
-<translation id="8839398440242019256">ไม่ได้มาจาก Brave เว็บสโตร์</translation>
-<translation id="6945695820322143954">ส่วนขยายนี้ละเมิดนโยบาย Brave เว็บสโตร์</translation>
-<translation id="1676595396635191120">หน้าต่างใหม่ที่ไม่ระบุตัวตน</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ส่วนตัว)</translation>
+<translation id="4369414322596874629">คุณสามารถค้นหาแบบส่วนตัวได้โดยใช้หน้าต่างส่วนตัว</translation>
+<translation id="3772947852642271642">ใช้งานเว็บโดยไม่บันทึกประวัติการค้นหาด้วยหน้าต่างส่วนตัว</translation>
+<translation id="3871738366246972820">ใช้คอมพิวเตอร์ร่วมกับคนอื่น? ลองเปิดหน้าต่างส่วนตัว</translation>
+<translation id="5808622652939943719">เพื่อค้นหาแบบส่วนตัว คลิกที่เมนูไอคอนรูปจุดเพื่อเปิดหน้าต่างส่วนตัว</translation>
+<translation id="9079153198295609735">ส่งสถิติการใช้งานและรายงานข้อขัดข้องไปยัง Brave Software โดยอัตโนมัติ</translation>
+<translation id="8839398440242019256">ไม่ได้มาจากเว็บสโตร์</translation>
+<translation id="6945695820322143954">ส่วนขยายนี้ละเมิดนโยบายของเว็บสโตร์</translation>
+<translation id="1676595396635191120">หน้าต่างส่วนตัวใหม่</translation>
 <translation id="5094764494104066239">แสดงแถบบุ๊กมาร์กเสมอ</translation>
-<translation id="4471385409549756595">หน้าต่างที่ไม่ระบุตัวตนใหม่</translation>
-<translation id="4540437243849625078">ไซต์นี้กำลังจะแชร์ข้อมูลกับแอปนอกโหมดไม่ระบุตัวตน</translation>
-<translation id="1227836882233136433">ออกจากโหมดไม่ระบุตัวตนไหม</translation>
-<translation id="7618452966706304788">คุณต้องการใช้ Touch ID กับ <ph name="APP_NAME"/> ในโหมดไม่ระบุตัวตนไหม</translation>
-<translation id="3098826269712097986">ข้อมูลการลงชื่อเข้าใช้จะจัดเก็บอยู่ใน Brave หลังจากที่คุณออกจากโหมดไม่ระบุตัวตน การดำเนินการนี้จะทำให้คุณใช้ Touch ID กับเว็บไซต์นี้ได้อีกในภายหลัง</translation>
-<translation id="5186185447130319458">โหมดไม่ระบุตัวตน</translation>
-<translation id="2579188629646253712">ออกจากโหมดไม่ระบุตัวตน</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{เปิดทั้งหมดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}=1{เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}other{เปิดทั้งหมด (#) ใน&amp;หน้าต่างที่ไม่ระบุตัวตน}}</translation>
-<translation id="2431625704210501303">เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน</translation>
+<translation id="4471385409549756595">หน้าต่างส่วนตัวใหม่</translation>
+<translation id="4540437243849625078">เว็บนี้กำลังจะแชร์ข้อมูลกับแอปภายนอกโหมดส่วนตัว</translation>
+<translation id="1227836882233136433">ออกจากโหมดส่วนตัว</translation>
+<translation id="7618452966706304788">คุณต้องการใช้ Touch ID กับ <ph name="APP_NAME"/> ในโหมดส่วนตัวหรือไม่?</translation>
+<translation id="3098826269712097986">ข้อมูลการลงชื่อเข้าใช้จะถูกเก็บใน Brave หลังคุณออกจากโหมดส่วนตัว นี่จะทำให้คุณใช้ Touch ID กับเว็บไซต์นี้ได้อีกครั้งในภายหลัง</translation>
+<translation id="5186185447130319458">ส่วนตัว</translation>
+<translation id="2579188629646253712">ออกจากโหมดส่วนตัว</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {เปิดทั้งหมดใน &amp;หน้าต่างส่วนตัว}
+          =1 {เปิดใน &amp;หน้าต่างส่วนตัว}
+          other {เปิดทั้งหมด (#) ใน &amp;หน้าต่างส่วนตัว}}</translation>
+<translation id="2431625704210501303">เปิดใน &amp;หน้าต่างส่วนตัว</translation>
 <translation id="4620367155626060530">&amp;แสดงแถบบุ๊กมาร์ก</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{เปิดทั้งหมดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}=1{เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน}other{เปิดทั้งหมด (#) ใน&amp;หน้าต่างที่ไม่ระบุตัวตน}}</translation>
-<translation id="1985165269306590797">เปิดใน&amp;หน้าต่างที่ไม่ระบุตัวตน</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {เปิดทั้งหมดใน &amp;หน้าต่างส่วนตัว}
+          =1 {เปิดใน &amp;หน้าต่างส่วนตัว}
+          other {เปิดทั้งหมด (#) ใน &amp;หน้าต่างส่วนตัว}}</translation>
+<translation id="1985165269306590797">เปิดใน &amp;หน้าต่างส่วนตัว</translation>
 <translation id="4680518314108745448">&amp;แสดงแถบบุ๊กมาร์ก</translation>
-<translation id="642436385689435488">เปิดทั้งหมดในหน้าต่างที่ไม่ระบุตัวตน</translation>
-<translation id="5463021359602611602">เปิดในหน้าต่างที่ไม่ระบุตัวตน</translation>
-<translation id="1850357845349976573">{0,plural, =1{ไม่ระบุตัวตน}other{หน้าต่างที่ไม่ระบุตัวตนเปิดอยู่ # หน้า}}</translation>
-<translation id="37784332082579802">{0,plural, =1{ไม่ระบุตัวตน}other{ไม่ระบุตัวตน (#)}}</translation>
-<translation id="5070556616376997776">คุณอยู่ในโหมดไม่ระบุตัวตน</translation>
-<translation id="5832813618714645810">บุคคล</translation>
-<translation id="7171000599584840888">เพิ่มบุคคล...</translation>
+<translation id="642436385689435488">เปิดหน้าต่างส่วนตัวทั้งหมด</translation>
+<translation id="5463021359602611602">เปิดในหน้าต่างส่วนตัว</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {ส่วนตัว}
+        other {# เปิดหน้าต่างส่วนตัว}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {ส่วนตัว}
+      other {ส่วนตัว (#)}
+    }</translation>
+<translation id="5070556616376997776">นี่คือหน้าต่างส่วนตัว</translation>
+<translation id="5832813618714645810">โปรไฟล์</translation>
+<translation id="7171000599584840888">เพิ่มโปรไฟล์...</translation>
 <translation id="2005199804247617997">บุคคลอื่น</translation>
-<translation id="2935225303485967257">จัดการบุคคล</translation>
+<translation id="2935225303485967257">จัดการโปรไฟล์</translation>
 <translation id="8966809848145604011">บุคคลอื่น</translation>
-<translation id="688280436658139163">จัดการบุคคล</translation>
-<translation id="4133080584509825342">แก้ไขบุคคล, <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">แก้ไขบุคคล, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
-<translation id="4536111748245793305">คนที่ <ph name="VALUE"/></translation>
+<translation id="688280436658139163">จัดการโปรไฟล์</translation>
+<translation id="4133080584509825342">แก้ไขโปรไฟล์ <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">แก้ไขโปรไฟล์, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">โปรไฟล์ <ph name="VALUE"/></translation>
 <translation id="5828545842856466741">เพิ่มบุคคล...</translation>
 <translation id="2254158488150713536">หากต้องการดำเนินการต่อ ให้คลิก "ตกลง" จากนั้นคลิก "เพิ่มบุคคล" เพื่อสร้างโปรไฟล์ใหม่สำหรับที่อยู่อีเมล</translation>
 <translation id="1725743343613175327">หากต้องการดำเนินการต่อ ให้คลิก "ตกลง" จากนั้นคลิก "เพิ่มบุคคล" เพื่อสร้างโปรไฟล์ใหม่สำหรับที่อยู่อีเมล <ph name="DOMAIN"/></translation>
-<translation id="6921634551681321094">เพิ่มบุคคล</translation>
-<translation id="4904061654709986277">เพิ่มบุคคล</translation>
-<translation id="6114945161119872228">นำบุคคลนี้ออก</translation>
-<translation id="769308100792069196">เพิ่มบุคคลภายใต้การดูแล</translation>
-<translation id="8006143138282906848">ลบผู้ใช้รายนี้</translation>
-<translation id="6912187023601892621">เพิ่มผู้ใช้ภายใต้การดูแล</translation>
-<translation id="8086119151297127544">โปรดปลดล็อกโปรไฟล์ของคุณก่อนนำบุคคลออก</translation>
-<translation id="7805701378418968629">โปรดปลดล็อกโปรไฟล์ของคุณก่อนเพิ่มบุคคล</translation>
+<translation id="6921634551681321094">เพิ่มโปรไฟล์</translation>
+<translation id="4904061654709986277">เพิ่มโปรไฟล์</translation>
+<translation id="6114945161119872228">ลบโปรไฟล์นี้</translation>
+<translation id="769308100792069196">เพิ่มโปรไฟล์ที่อยู่ภายใต้การดูแล</translation>
+<translation id="8006143138282906848">ลบโปรไฟล์นี้</translation>
+<translation id="6912187023601892621">เพิ่มโปรไฟล์ที่อยู่ภายใต้การดูแล</translation>
+<translation id="8086119151297127544">โปรดปลดล็อกโปรไฟล์ของคุณก่อนทำการลบโปรไฟล์</translation>
+<translation id="7805701378418968629">โปรดปลดล็อกโปรไฟล์ของคุณก่อนเพิ่มโปรไฟล์</translation>
 <translation id="6315812488257290136">บุคคล</translation>
-<translation id="3707212204259470604">จัดการบุคคลอื่นๆ</translation>
-<translation id="5840822070878669614">เปิด Brave เว็บสโตร์</translation>
+<translation id="3707212204259470604">จัดการโปรไฟล์อื่น ๆ</translation>
+<translation id="5840822070878669614">เปิดเว็บสโตร์</translation>
 <translation id="383007806262310953">แสดงแถบบุ๊กมาร์ก</translation>
 <translation id="2890280714162339872">เซสชันไม่ระบุตัวตนปัจจุบัน: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="4207277598811881727">เซสชันไม่ระบุตัวตนปัจจุบัน: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/> <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
@@ -6532,15 +6469,15 @@
 <translation id="8648684608605749476">บล็อกคุกกี้ของบุคคลที่สามในโหมดไม่ระบุตัวตน</translation>
 <translation id="2199515977216775204">ขณะอยู่ในโหมดไม่ระบุตัวตน เว็บไซต์จะใช้คุกกี้เพื่อดูกิจกรรมการท่องเว็บของคุณในเว็บไซต์ต่างๆ ไม่ได้ เช่น เพื่อปรับโฆษณาตามโปรไฟล์ของคุณ ฟีเจอร์ในเว็บไซต์บางแห่งอาจใช้งานไม่ได้</translation>
 <translation id="6105125042109106861">บล็อกคุกกี้ของบุคคลที่สามในโหมดไม่ระบุตัวตนอยู่</translation>
-<translation id="1281501490173223206">เซสชันไม่ระบุตัวตนปัจจุบันเท่านั้น</translation>
+<translation id="1281501490173223206">เฉพาะเซสชันส่วนตัวปัจจุบันเท่านั้น</translation>
 <translation id="5566692924079383101">ระบบจะนำข้อยกเว้นนี้ออกโดยอัตโนมัติหลังคุณออกจากเซสชันที่ไม่ระบุตัวตนในปัจจุบัน</translation>
-<translation id="6906406176003824042">แก้ไขบุคคล</translation>
-<translation id="9063160602596686558">ส่งสถิติการใช้งานและรายงานข้อขัดข้องให้กับ Brave โดยอัตโนมัติ</translation>
-<translation id="3860292630623580294">(โหมดไม่ระบุตัวตน)</translation>
-<translation id="4854477725773269949">อนุญาตให้ใช้โหมดไม่ระบุตัวตน</translation>
-<translation id="6436164536244065364">ดูใน Brave เว็บสโตร์</translation>
-<translation id="38046578254905003">ค้นหาส่วนขยายและธีมต่างๆ ได้ใน <ph name="BEGIN_LINK"/>Brave เว็บสโตร์<ph name="END_LINK"/></translation>
-<translation id="6336451774241870485">แท็บใหม่ที่ไม่ระบุตัวตน</translation>
-<translation id="6610147964972079463">ปิดแท็บที่ไม่ระบุตัวตน</translation>
+<translation id="6906406176003824042">แก้ไขโปรไฟล์</translation>
+<translation id="9063160602596686558">ส่งสถิติการใช้งานและรายงานข้อขัดข้องให้กับ Brave Software โดยอัตโนมัติ</translation>
+<translation id="3860292630623580294">(ส่วนตัว)</translation>
+<translation id="4854477725773269949">อนุญาตในโหมดส่วนตัว</translation>
+<translation id="6436164536244065364">ดูในเว็บสโตร์</translation>
+<translation id="38046578254905003">หาธีมและส่วนขยายใน <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>เว็บสโตร์<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="6336451774241870485">แท็บส่วนตัวใหม่</translation>
+<translation id="6610147964972079463">ปิดแท็บส่วนตัว</translation>
 <translation id="4933782374919065856">โปรดติดต่อผู้ที่ดูแลโปรไฟล์ของคุณหากมีคำถาม</translation>
 </translationbundle>

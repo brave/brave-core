@@ -7,7 +7,6 @@
 <translation id="1036727731225946849">Menambahkan <ph name="WEBAPK_NAME"/>...</translation>
 <translation id="1041308826830691739">Daripada tapak web</translation>
 <translation id="1045899828449635435">Kosongkan data?</translation>
-<translation id="1049743911850919806">Inkognito</translation>
 <translation id="10614374240317010">Tidak pernah disimpan</translation>
 <translation id="5428209950370661546">Perkhidmatan Brave yang lain</translation>
 <translation id="1068672505746868501">Jangan sekali-kali terjemahkan halaman dalam <ph name="SOURCE_LANGUAGE"/></translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">Penyediaan penyegerakan permulaan belum selesai</translation>
 <translation id="1821253160463689938">Menggunakan kuki untuk mengingati pilihan anda, walaupun anda tidak melawati halaman tersebut</translation>
 <translation id="1829244130665387512">Cari dalam halaman</translation>
-<translation id="1853692000353488670">Tab inkognito baharu</translation>
 <translation id="1856325424225101786">Tetapkan semula mod Ringkas?</translation>
 <translation id="5817715962196959877">Brave kini memuat turun fail dengan lebih pantas</translation>
 <translation id="1883903952484604915">Fail Saya</translation>
@@ -233,15 +231,12 @@ Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian a
 <translation id="2903493209154104877">Alamat</translation>
 <translation id="290376772003165898">Halaman bukan dalam <ph name="LANGUAGE"/>?</translation>
 <translation id="2904414404539560095">Senarai peranti untuk berkongsi tab dibuka pada ketinggian penuh.</translation>
-<translation id="2905036901251765993">Benarkan orang berdekatan mengimbas kod QR ini untuk berkongsi dengan mereka</translation>
 <translation id="7339921667754113786">Platform Pemberitahuan Brave</translation>
 <translation id="2923908459366352541">Nama tidak sah</translation>
 <translation id="6355102470683871794">Storan Brave <ph name="APP_NAME"/></translation>
 <translation id="2942036813789421260">Tab pratonton ditutup</translation>
 <translation id="2956410042958133412">Akaun ini diurus oleh <ph name="PARENT_NAME_1"/> dan <ph name="PARENT_NAME_2"/>.</translation>
-<translation id="2962095958535813455">Beralih ke tab inkognito</translation>
 <translation id="2968755619301702150">Pemapar sijil</translation>
-<translation id="2979025552038692506">Tab Inkognito yang Dipilih</translation>
 <translation id="2987620471460279764">Teks yang dikongsi daripada peranti lain</translation>
 <translation id="2989523299700148168">Dilawati baru-baru ini</translation>
 <translation id="2996291259634659425">Buat ungkapan laluan</translation>
@@ -252,16 +247,14 @@ Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian a
 <translation id="305593374596241526">Lokasi dimatikan, hidupkannya dalam <ph name="BEGIN_LINK"/>Tetapan Android<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">Anda boleh mematikan penyegerakan pada bila-bila masa dalam tetapan</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> penanda halaman}other{<ph name="BOOKMARKS_COUNT_MANY"/> penanda halaman}}</translation>
-<translation id="3089395242580810162">Buka dalam tab inkognito</translation>
 <translation id="3114012059975132928">Pemain video</translation>
 <translation id="3123734510202723619">Pengumuman</translation>
-<translation id="3137521801621304719">Tinggalkan mod inkognito</translation>
 <translation id="3143515551205905069">Batalkan penyegerakan</translation>
 <translation id="5063487983358782016">Halaman utama Brave</translation>
 <translation id="3157842584138209013">Lihat jumlah data yang dapat dijimatkan daripada butang Lagi Pilihan</translation>
 <translation id="3166827708714933426">Pintasan tab dan tetingkap</translation>
 <translation id="3169472444629675720">Temui</translation>
-<translation id="3181954750937456830">Penyemakan Imbas Selamat (melindungi anda dan peranti anda daripada tapak yang berbahaya)</translation>
+<translation id="3201899458094819285">Penyemakan Imbas Selamat (melindungi anda dan peranti anda daripada tapak yang berbahaya)</translation>
 <translation id="3205824638308738187">Hampir selesai!</translation>
 <translation id="3207960819495026254">Ditandai halaman</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> dipadamkan</translation>
@@ -285,7 +278,6 @@ Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian a
 <translation id="3333961966071413176">Semua kenalan</translation>
 <translation id="3334729583274622784">Tukar sambungan fail?</translation>
 <translation id="3341058695485821946">Lihat jumlah data yang dapat dijimatkan</translation>
-<translation id="3350687908700087792">Tutup semua tab inkognito</translation>
 <translation id="8134317863207426198">Halaman Lite disediakan oleh Brave. Ketik butang muatkan halaman asal untuk memuatkan halaman asal.</translation>
 <translation id="3367813778245106622">Log masuk semula untuk memulakan penyegerakan</translation>
 <translation id="2746024117903470217">Untuk berkongsi halaman ini dengan peranti lain, hidupkan penyegerakan dalam tetapan Brave pada peranti lain itu</translation>
@@ -298,7 +290,6 @@ Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian a
 <translation id="3443221991560634068">Muat semula halaman semasa</translation>
 <translation id="3445014427084483498">Sebentar Tadi</translation>
 <translation id="3478363558367712427">Anda boleh memilih enjin carian anda</translation>
-<translation id="3492207499832628349">Tab inkognito baharu</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/> tentang kandungan yang disyorkan</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Realiti Tambahan</translation>
@@ -329,7 +320,6 @@ Sentuh &amp; tahan mana-mana perkataan untuk mencari. Untuk memperhalus carian a
 <translation id="3749259744154402564">Tidak disokong</translation>
 <translation id="3763247130972274048">Dwiketik video di sebelah kiri atau kanan untuk melangkau 10s</translation>
 <translation id="3771001275138982843">Tidak dapat memuat turun kemas kini</translation>
-<translation id="3771033907050503522">Tab Inkognito</translation>
 <translation id="1138681184697033370">Syarat Perkhidmatan Brave</translation>
 <translation id="3773755127849930740"><ph name="BEGIN_LINK"/>Hidupkan Bluetooth<ph name="END_LINK"/> untuk membenarkan penggandingan</translation>
 <translation id="3775705724665058594">Hantar ke peranti anda</translation>
@@ -495,7 +485,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="5040262127954254034">Privasi</translation>
 <translation id="5087580092889165836">Tambah kad</translation>
 <translation id="510275257476243843">1 jam lagi</translation>
-<translation id="5123685120097942451">Tab Inkognito</translation>
 <translation id="5127805178023152808">Penyegerakan dimatikan</translation>
 <translation id="5129038482087801250">Pasang apl web</translation>
 <translation id="5132942445612118989">Segerakkan kata laluan, sejarah &amp; pelbagai lagi pada semua peranti</translation>
@@ -547,14 +536,12 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="5517095782334947753">Anda mempunyai penanda halaman, sejarah, kata laluan dan tetapan lain daripada <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">Ubah hala disekat.</translation>
 <translation id="2367014990350929709">Brave memerlukan akses lokasi untuk mengimbas peranti. <ph name="BEGIN_LINK1"/>Kemas kini kebenaran<ph name="END_LINK1"/>. Akses lokasi turut <ph name="BEGIN_LINK2"/>dimatikan untuk peranti ini<ph name="END_LINK2"/>.</translation>
-<translation id="5530766185686772672">Tutup tab inkognito</translation>
 <translation id="5534640966246046842">Tapak disalin</translation>
 <translation id="5561549206367097665">Menunggu rangkaian…</translation>
 <translation id="55737423895878184">Lokasi dan pemberitahuan dibenarkan</translation>
 <translation id="5578795271662203820">Cari imej ini di <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Anda boleh memilih item yang hendak disegerakkan dalam <ph name="BEGIN_LINK1"/>tetapan<ph name="END_LINK1"/> pada bila-bila masa.</translation>
 <translation id="5595485650161345191">Edit alamat</translation>
-<translation id="5599455543593328020">Mod inkognito</translation>
 <translation id="5620928963363755975">Cari fail dan halaman anda dalam Muat Turun daripada butang Lagi Pilihan</translation>
 <translation id="5626134646977739690">Nama:</translation>
 <translation id="5639724618331995626">Benarkan semua tapak</translation>
@@ -572,7 +559,6 @@ Untuk menukar tetapan ini, <ph name="BEGIN_LINK"/>tetapkan semula penyegerakan<p
 <translation id="5726692708398506830">Jadikan semua yang ada pada halaman lebih besar</translation>
 <translation id="5748802427693696783">Beralih ke tab standard</translation>
 <translation id="3088191967551450609">Brave memerlukan akses storan untuk memuat turun fail.</translation>
-<translation id="5763382633136178763">Tab inkognito</translation>
 <translation id="5763514718066511291">Ketik untuk menyalin URL apl ini</translation>
 <translation id="5765780083710877561">Huraian:</translation>
 <translation id="5793665092639000975">Menggunakan <ph name="SPACE_USED"/> daripada <ph name="SPACE_AVAILABLE"/></translation>
@@ -858,7 +844,6 @@ Sebagai contoh, sesetengah tapak web mungkin memberi respons kepada permintaan i
 <translation id="8073388330009372546">Buka imej dalam tab baharu</translation>
 <translation id="8076492880354921740">Tab</translation>
 <translation id="8084114998886531721">Kata laluan disimpan</translation>
-<translation id="8103578431304235997">Tab Inkognito</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Hidupkan penyegerakan untuk mendapatkan penanda halaman pada semua peranti anda</translation>
 <translation id="4565206163201411670">Tunjukkan aktiviti Brave anda dalam Kesejahteraan Digital?</translation>
@@ -909,7 +894,6 @@ Sebagai contoh, sesetengah tapak web mungkin memberi respons kepada permintaan i
 <translation id="230699814587342492">Kata Laluan Brave</translation>
 <translation id="8503813439785031346">Nama pengguna</translation>
 <translation id="133012818630824069">Eksport kata laluan yang disimpan dengan menggunakan Brave</translation>
-<translation id="8514577642972634246">Masuk ke mod inkognito</translation>
 <translation id="8516012719330875537">Editor Imej</translation>
 <translation id="8523928698583292556">Padam kata laluan yang disimpan</translation>
 <translation id="854522910157234410">Buka halaman ini</translation>
@@ -955,7 +939,6 @@ Sebagai contoh, sesetengah tapak web mungkin memberi respons kepada permintaan i
 <translation id="8970887620466824814">Kesilapan telah berlaku.</translation>
 <translation id="8972098258593396643">Muat turun ke folder lalai?</translation>
 <translation id="8988028529677883095">Gunakan telefon sebagai kunci keselamatan</translation>
-<translation id="8993760627012879038">Buka tetingkap baharu dalam mod Inkognito</translation>
 <translation id="2689656545739939160">Anda log masuk dengan akaun yang diurus oleh <ph name="MANAGED_DOMAIN"/> dan memberikan kawalan terhadap data Brave anda kepada pentadbirnya. Data anda akan terikat secara kekal kepada akaun ini. Tindakan log keluar daripada Brave akan memadamkan data anda daripada peranti ini, tetapi data itu akan kekal disimpan dalam Akaun Brave anda.</translation>
 <translation id="9028914725102941583">Hidupkan penyegerakan untuk berkongsi merentas peranti</translation>
 <translation id="9040142327097499898">Pemberitahuan dibenarkan. Lokasi dimatikan untuk peranti ini.</translation>
