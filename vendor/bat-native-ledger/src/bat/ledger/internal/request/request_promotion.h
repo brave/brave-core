@@ -21,7 +21,7 @@ std::string FetchSignedCredsUrl(
     const std::string& promotion_id,
     const std::string& claim_id);
 
-std::string GetReedemTokensUrl();
+std::string GetRedeemTokensUrl();
 
 std::string ReportClobberedClaimsUrl();
 

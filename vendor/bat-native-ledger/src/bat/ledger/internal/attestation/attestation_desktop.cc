@@ -7,14 +7,12 @@
 #include <utility>
 #include <vector>
 
-#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/attestation/attestation_desktop.h"
+#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_attestation.h"
-#include "net/http/http_status_code.h"
+#include "bat/ledger/internal/response/response_attestation.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -27,35 +25,6 @@ AttestationDesktop::AttestationDesktop(bat_ledger::LedgerImpl* ledger) :
 }
 
 AttestationDesktop::~AttestationDesktop() = default;
-
-void AttestationDesktop::ParseCaptchaResponse(
-    const std::string& response,
-    base::Value* result) {
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
-  if (!value || !value->is_dict()) {
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return;
-  }
-
-  const auto* captcha_id = dictionary->FindStringKey("captchaId");
-  if (!captcha_id) {
-    BLOG(0, "Captcha id is wrong");
-    return;
-  }
-
-  const auto* hint = dictionary->FindStringKey("hint");
-  if (!hint) {
-    BLOG(0, "Hint is wrong");
-    return;
-  }
-
-  result->SetStringKey("hint", *hint);
-  result->SetStringKey("captchaId", *captcha_id);
-}
 
 void AttestationDesktop::ParseClaimSolution(
     const std::string& response,
@@ -124,20 +93,20 @@ void AttestationDesktop::OnStart(
     StartCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  DownloadCaptchaImage(ledger::Result::LEDGER_OK, response.body, callback);
+  DownloadCaptchaImage(response, callback);
 }
 
 void AttestationDesktop::DownloadCaptchaImage(
-    const ledger::Result result,
-    const std::string& response,
+    const ledger::UrlResponse& response,
     StartCallback callback) {
   base::Value dictionary(base::Value::Type::DICTIONARY);
-  ParseCaptchaResponse(response, &dictionary);
+  const ledger::Result result =
+      braveledger_response_util::ParseCaptcha(response, &dictionary);
+
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(ledger::Result::LEDGER_ERROR, "");
+    return;
+  }
 
   if (dictionary.DictEmpty()) {
     BLOG(0, "Captcha response is empty");
@@ -164,14 +133,16 @@ void AttestationDesktop::DownloadCaptchaImage(
 
 void AttestationDesktop::OnDownloadCaptchaImage(
     const ledger::UrlResponse& response,
-    const std::string& captcha_response,
+    const ledger::UrlResponse& captcha_response,
     StartCallback callback) {
   BLOG(7, ledger::UrlResponseToString(__func__, response));
 
   base::Value dictionary(base::Value::Type::DICTIONARY);
-  ParseCaptchaResponse(captcha_response, &dictionary);
+  const ledger::Result result = braveledger_response_util::ParseCaptcha(
+      captcha_response,
+      &dictionary);
 
-  if (response.status_code != net::HTTP_OK) {
+  if (result != ledger::Result::LEDGER_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -183,9 +154,7 @@ void AttestationDesktop::OnDownloadCaptchaImage(
   }
 
   std::string encoded_image;
-  base::Base64Encode(response.body, &encoded_image);
-  encoded_image =
-      base::StringPrintf("data:image/jpeg;base64,%s", encoded_image.c_str());
+  braveledger_response_util::ParseCaptchaImage(response, &encoded_image);
   dictionary.SetStringKey("captchaImage", encoded_image);
 
   std::string json;
@@ -241,18 +210,15 @@ void AttestationDesktop::OnConfirm(
     ConfirmCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_OK);
+  const ledger::Result result =
+      braveledger_response_util::CheckConfirmAttestation(response);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Failed to confirm attestation");
+    callback(result);
     return;
   }
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED ||
-      response.status_code == net::HTTP_BAD_REQUEST ) {
-    callback(ledger::Result::CAPTCHA_FAILED);
-    return;
-  }
-
-  callback(ledger::Result::LEDGER_ERROR);
+  callback(ledger::Result::LEDGER_OK);
 }
 
 }  // namespace braveledger_attestation

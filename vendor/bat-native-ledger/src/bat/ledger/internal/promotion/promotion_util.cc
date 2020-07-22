@@ -6,9 +6,6 @@
 #include <utility>
 
 #include "bat/ledger/internal/promotion/promotion_util.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/time/time.h"
 
 namespace braveledger_promotion {
 
@@ -83,113 +80,6 @@ ledger::ReportType ConvertPromotionTypeToReportType(
       return ledger::ReportType::GRANT_UGP;
     }
   }
-}
-
-ledger::Result ParseFetchResponse(
-    const std::string& response,
-    ledger::PromotionList* list,
-    std::vector<std::string>* corrupted_promotions) {
-  DCHECK(corrupted_promotions);
-  if (!list) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
-  if (!value || !value->is_dict()) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  auto* promotions = dictionary->FindListKey("promotions");
-  if (promotions) {
-    const auto promotion_size = promotions->GetList().size();
-    for (auto& item : promotions->GetList()) {
-      ledger::PromotionPtr promotion = ledger::Promotion::New();
-
-      const auto* id = item.FindStringKey("id");
-      if (!id) {
-        continue;
-      }
-      promotion->id = *id;
-
-      const auto version = item.FindIntKey("version");
-      if (!version) {
-        corrupted_promotions->push_back(promotion->id);
-        continue;
-      }
-      promotion->version = *version;
-
-      const auto* type = item.FindStringKey("type");
-      if (!type) {
-        corrupted_promotions->push_back(promotion->id);
-        continue;
-      }
-      promotion->type = ConvertStringToPromotionType(*type);
-
-      const auto suggestions = item.FindIntKey("suggestionsPerGrant");
-      if (!suggestions) {
-        corrupted_promotions->push_back(promotion->id);
-        continue;
-      }
-      promotion->suggestions = *suggestions;
-
-      const auto* approximate_value = item.FindStringKey("approximateValue");
-      if (!approximate_value) {
-        corrupted_promotions->push_back(promotion->id);
-        continue;
-      }
-      promotion->approximate_value = std::stod(*approximate_value);
-
-      const auto available = item.FindBoolKey("available");
-      if (!available) {
-        corrupted_promotions->push_back(promotion->id);
-        continue;
-      }
-
-      if (*available) {
-        promotion->status = ledger::PromotionStatus::ACTIVE;
-      } else {
-        promotion->status = ledger::PromotionStatus::OVER;
-      }
-
-      auto* expires_at = item.FindStringKey("expiresAt");
-      if (!expires_at) {
-        corrupted_promotions->push_back(promotion->id);
-        continue;
-      }
-
-      base::Time time;
-      bool success =  base::Time::FromUTCString((*expires_at).c_str(), &time);
-      if (success) {
-        promotion->expires_at = time.ToDoubleT();
-      }
-
-      auto* public_keys = item.FindListKey("publicKeys");
-      if (!public_keys || public_keys->GetList().empty()) {
-        corrupted_promotions->push_back(promotion->id);
-        continue;
-      }
-
-      std::string keys_json;
-      base::JSONWriter::Write(*public_keys, &keys_json);
-      promotion->public_keys = keys_json;
-
-      auto legacy_claimed = item.FindBoolKey("legacyClaimed");
-      promotion->legacy_claimed = legacy_claimed.value_or(false);
-
-      list->push_back(std::move(promotion));
-    }
-
-    if (promotion_size != list->size()) {
-      return ledger::Result::CORRUPTED_DATA;
-    }
-  }
-
-  return ledger::Result::LEDGER_OK;
 }
 
 std::vector<ledger::PromotionType> GetEligiblePromotions() {

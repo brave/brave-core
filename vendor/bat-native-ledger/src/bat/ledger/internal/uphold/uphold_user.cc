@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/uphold/uphold_user.h"
+
 #include <algorithm>
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/uphold/uphold_user.h"
+#include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -66,80 +67,25 @@ void UpholdUser::Get(GetUserCallback callback) {
 void UpholdUser::OnGet(
     const ledger::UrlResponse& response,
     GetUserCallback callback) {
-  User user;
   BLOG(7, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
+  User user;
+  const ledger::Result result =
+      braveledger_response_util::ParseUpholdGetUser(response, &user);
+
+  if (result == ledger::Result::EXPIRED_TOKEN) {
+    BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN, user);
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Couldn't get user");
     callback(ledger::Result::LEDGER_ERROR, user);
     return;
-  }
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_dict()) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, user);
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, user);
-    return;
-  }
-
-  const auto* name = dictionary->FindStringKey("firstName");
-  if (name) {
-    user.name = *name;
-  }
-
-  const auto* member_at = dictionary->FindStringKey("memberAt");
-  if (member_at) {
-    user.member_at = *member_at;
-    user.verified = !user.member_at.empty();
-  }
-
-  const auto* currencies = dictionary->FindListKey("currencies");
-  if (currencies) {
-    const std::string currency = "BAT";
-    auto bat_in_list = std::find(
-        currencies->GetList().begin(),
-        currencies->GetList().end(),
-        base::Value(currency));
-    user.bat_not_allowed = bat_in_list == currencies->GetList().end();
-  }
-
-  const auto* status = dictionary->FindStringKey("status");
-  if (status) {
-    user.status = GetStatus(*status);
   }
 
   callback(ledger::Result::LEDGER_OK, user);
-}
-
-UserStatus UpholdUser::GetStatus(const std::string& status) {
-  if (status == "pending") {
-    return UserStatus::PENDING;
-  }
-
-  if (status == "restricted") {
-    return UserStatus::RESTRICTED;
-  }
-
-  if (status == "blocked") {
-    return UserStatus::BLOCKED;
-  }
-
-  if (status == "ok") {
-    return UserStatus::OK;
-  }
-
-  return UserStatus::EMPTY;
 }
 
 }  // namespace braveledger_uphold

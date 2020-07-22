@@ -5,9 +5,9 @@
 
 #include <utility>
 
-#include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
@@ -70,40 +70,23 @@ void UpholdTransfer::OnCreateTransaction(
     ledger::TransactionCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
+  std::string id;
+  const ledger::Result result =
+      braveledger_response_util::ParseUpholdCreateTransaction(response, &id);
+
+  if (result == ledger::Result::EXPIRED_TOKEN) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response.status_code != net::HTTP_ACCEPTED) {
+  if (result != ledger::Result::LEDGER_OK) {
     // TODO(nejczdovc): add retry logic to all errors in this function
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_dict()) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  const auto* id = dictionary->FindStringKey("id");
-  if (!id) {
-    BLOG(0, "ID not found");
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  CommitTransaction(*id, callback);
+  CommitTransaction(id, callback);
 }
 
 void UpholdTransfer::CommitTransaction(
@@ -149,13 +132,16 @@ void UpholdTransfer::OnCommitTransaction(
     ledger::TransactionCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
+  const ledger::Result result =
+      braveledger_response_util::CheckUpholdCommitTransaction(response);
+
+  if (result == ledger::Result::EXPIRED_TOKEN) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
+  if (result != ledger::Result::LEDGER_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }

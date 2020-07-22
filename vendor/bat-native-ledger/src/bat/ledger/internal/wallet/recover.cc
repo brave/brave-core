@@ -2,20 +2,19 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "bat/ledger/internal/wallet/recover.h"
 
-#include<utility>
+#include <utility>
 
-#include "base/json/json_reader.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/response/response_wallet.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
-#include "net/http/http_status_code.h"
 
 #include "anon/anon.h"
 #include "wally_bip39.h"  // NOLINT
@@ -23,72 +22,6 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
-
-namespace {
-
-ledger::Result ParseRecoverKeyResponse(
-    const std::string& response,
-    std::string* payment_id) {
-  DCHECK(payment_id);
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
-  if (!value || !value->is_dict()) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  const auto* payment_id_string = dictionary->FindStringKey("paymentId");
-  if (!payment_id_string || payment_id_string->empty()) {
-    BLOG(0, "Payment id is wrong");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  *payment_id = *payment_id_string;
-  return ledger::Result::LEDGER_OK;
-}
-
-ledger::Result ParseRecoverWalletResponse(
-    const std::string& response,
-    std::string* card_id,
-    double* balance) {
-  DCHECK(card_id && balance);
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
-  if (!value || !value->is_dict()) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  const auto* balance_string = dictionary->FindStringKey("balance");
-  if (!balance_string) {
-    BLOG(0, "Balance is wrong");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  const auto* card_id_string = dictionary->FindStringPath("addresses.CARD_ID");
-  if (!card_id_string || card_id_string->empty()) {
-    BLOG(0, "Card id is wrong");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  const bool success = base::StringToDouble(*balance_string, balance);
-  if (!success) {
-    *balance = 0.0;
-  }
-
-  *card_id = *card_id_string;
-  return ledger::Result::LEDGER_OK;
-}
-
-}  // namespace
 
 namespace braveledger_wallet {
 
@@ -208,13 +141,10 @@ void Recover::RecoverWalletPublicKeyCallback(
     const std::vector<uint8_t>& new_seed,
     ledger::RecoverWalletCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR, 0);
-    return;
-  }
 
   std::string recovery_id;
-  const auto result = ParseRecoverKeyResponse(response.body, &recovery_id);
+  const auto result =
+      braveledger_response_util::ParseWalletRecoverKey(response, &recovery_id);
   if (result == ledger::Result::LEDGER_ERROR) {
     callback(result, 0.0);
     return;
@@ -237,19 +167,15 @@ void Recover::RecoverWalletCallback(
     const std::vector<uint8_t>& new_seed,
     ledger::RecoverWalletCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR, 0);
-    return;
-  }
 
-  double balance = .0;
+  double balance = 0.0;
   std::string card_id;
-  const auto result = ParseRecoverWalletResponse(
-      response.body,
+  const auto result = braveledger_response_util::ParseRecoverWallet(
+      response,
       &card_id,
       &balance);
-  if (result == ledger::Result::LEDGER_ERROR) {
-    callback(result, 0.0);
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(result, balance);
     return;
   }
 

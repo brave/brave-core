@@ -6,58 +6,16 @@
 #include <utility>
 
 #include "base/guid.h"
-#include "base/values.h"
-#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "bat/ledger/internal/credentials/credentials_common.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_promotion.h"
-#include "bat/ledger/internal/request/request_util.h"
-#include "net/http/http_status_code.h"
+#include "bat/ledger/internal/response/response_credentials.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
-
-namespace {
-
-void ParseSignedCredsResponse(
-    const std::string& response,
-    base::Value* result) {
-  DCHECK(result);
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
-  if (!value || !value->is_dict()) {
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return;
-  }
-
-  auto* batch_proof = dictionary->FindStringKey("batchProof");
-  if (!batch_proof) {
-    return;
-  }
-
-  auto* signed_creds = dictionary->FindListKey("signedCreds");
-  if (!signed_creds) {
-    return;
-  }
-
-  auto* public_key = dictionary->FindStringKey("publicKey");
-  if (!public_key) {
-    return;
-  }
-
-  result->SetStringKey("batch_proof", *batch_proof);
-  result->SetStringKey("public_key", *public_key);
-  result->SetKey("signed_creds", base::Value(signed_creds->GetList()));
-}
-
-}  // namespace
 
 namespace braveledger_credentials {
 
@@ -121,12 +79,18 @@ void CredentialsCommon::BlindedCredsSaved(
 
 void CredentialsCommon::GetSignedCredsFromResponse(
     const CredentialsTrigger& trigger,
-    const std::string& response,
+    const ledger::UrlResponse& response,
     ledger::ResultCallback callback) {
   base::Value parsed_response(base::Value::Type::DICTIONARY);
-  ParseSignedCredsResponse(response, &parsed_response);
+  const ledger::Result result =
+      braveledger_response_util::ParseSignedCreds(response, &parsed_response);
 
-  if (parsed_response.DictSize() != 3) {
+  if (result == ledger::Result::RETRY_SHORT) {
+    callback(ledger::Result::RETRY_SHORT);
+    return;
+  }
+
+  if (result != ledger::Result::LEDGER_OK || parsed_response.DictSize() != 3) {
     BLOG(0, "Parsing failed");
     callback(ledger::Result::RETRY);
     return;

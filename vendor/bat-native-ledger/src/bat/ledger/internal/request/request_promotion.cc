@@ -44,7 +44,7 @@ std::string FetchSignedCredsUrl(
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPromotion);
 }
 
-std::string GetReedemTokensUrl() {
+std::string GetRedeemTokensUrl() {
   return BuildUrl("/suggestions", PREFIX_V1, ServerTypes::kPromotion);
 }
 

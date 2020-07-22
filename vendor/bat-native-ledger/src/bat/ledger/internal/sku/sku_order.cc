@@ -9,9 +9,9 @@
 #include "base/values.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_sku.h"
+#include "bat/ledger/internal/response/response_sku.h"
 #include "bat/ledger/internal/sku/sku_order.h"
 #include "bat/ledger/internal/sku/sku_util.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -71,12 +71,8 @@ void SKUOrder::OnCreate(
     ledger::SKUOrderCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_CREATED) {
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  auto order = ParseOrderCreateResponse(response.body, order_items);
+  auto order =
+      braveledger_response_util::ParseOrderCreate(response, order_items);
 
   if (!order) {
     BLOG(0, "Order response could not be parsed");

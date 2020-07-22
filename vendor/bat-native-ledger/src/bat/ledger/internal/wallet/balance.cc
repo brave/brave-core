@@ -14,11 +14,11 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/request/request_util.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/response/response_wallet.h"
 #include "bat/ledger/internal/state/state_util.h"
-#include "net/http/http_status_code.h"
+#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/uphold/uphold.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -63,42 +63,18 @@ void Balance::Fetch(ledger::FetchBalanceCallback callback) {
 void Balance::OnFetch(
     const ledger::UrlResponse& response,
     ledger::FetchBalanceCallback callback) {
-  ledger::BalancePtr balance = ledger::Balance::New();
   BLOG(6, ledger::UrlResponseToString(__func__, response));
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR, std::move(balance));
+
+  ledger::BalancePtr balance =
+      braveledger_response_util::ParseWalletFetchBalance(response);
+  if (!balance) {
+    BLOG(0, "Couldn't fetch wallet balance");
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_dict()) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, std::move(balance));
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, std::move(balance));
-    return;
-  }
-
-  const auto* total = dictionary->FindStringKey("balance");
-  double total_anon = 0.0;
-  if (total) {
-    total_anon = std::stod(*total);
-  }
-  balance->total = total_anon;
-
-  const auto* funds = dictionary->FindStringKey("cardBalance");
-  std::string user_funds = "0";
-  if (funds) {
-    user_funds = *funds;
-  }
-  balance->user_funds = user_funds;
-
-  balance->wallets.insert(std::make_pair(ledger::kWalletAnonymous, total_anon));
+  balance->wallets.insert(
+      std::make_pair(ledger::kWalletAnonymous, balance->total));
 
   if (balance->total == 0.0) {
     braveledger_state::SetFetchOldBalanceEnabled(ledger_, false);

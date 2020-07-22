@@ -32,7 +32,7 @@ class CredentialsCommon {
 
   void GetSignedCredsFromResponse(
       const CredentialsTrigger& trigger,
-      const std::string& response,
+      const ledger::UrlResponse& response,
       ledger::ResultCallback callback);
 
   void SaveUnblindedCreds(
