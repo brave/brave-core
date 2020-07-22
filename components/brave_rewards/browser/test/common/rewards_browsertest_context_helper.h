@@ -33,6 +33,8 @@ void VisitPublisher(
     const bool verified,
     const bool last_add = false);
 
+void LoadURL(Browser* browser, GURL url);
+
 }  // namespace rewards_browsertest_helper
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_CONTEXT_HELPER_H_

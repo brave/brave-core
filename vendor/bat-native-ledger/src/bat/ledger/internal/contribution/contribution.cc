@@ -708,7 +708,8 @@ void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
     return;
   }
 
-  if (contribution->retry_count == 3) {
+  if (contribution->retry_count == 3 &&
+      contribution->step != ledger::ContributionStep::STEP_PREPARE) {
     BLOG(0, "Contribution failed after 3 retries");
     ledger_->ContributionCompleted(
         ledger::Result::TOO_MANY_RESULTS,
