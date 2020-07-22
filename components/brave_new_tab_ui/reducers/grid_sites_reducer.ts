@@ -44,7 +44,7 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
 
       // New profiles just store what comes from Chromium
       state = gridSitesState
-        .gridSitesReducerSetFirstRenderData(state, payload.topSites)
+        .gridSitesReducerSetFirstRenderData(state, payload.topSites, payload.defaultSuperReferralTopSites)
 
       // Handle default top sites data only once.
       if (payload.defaultSuperReferralTopSites && !storage.isDefaultSuperReferralTopSitesAddedToPinnedSites()) {
@@ -52,6 +52,9 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
           .gridSitesReducerSetDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
         storage.setDefaultSuperReferralTopSitesAddedToPinnedSites()
       }
+
+      // Cached gridSites can be updated when history has modified.
+      state = gridSitesState.gridSitesReducerDataUpdated(state, state.gridSites)
       break
     }
 

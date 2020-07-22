@@ -60,7 +60,7 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerSetFirstRenderDataStub).toBeCalledTimes(1)
       expect(gridSitesReducerSetFirstRenderDataStub)
-        .toBeCalledWith(storage.initialGridSitesState, [])
+        .toBeCalledWith(storage.initialGridSitesState, [], undefined)
     })
     it('populate state.gridSites list with Chromium topSites data', () => {
       const assertion = gridSitesReducer(storage.initialGridSitesState, {
@@ -69,6 +69,120 @@ describe('gridSitesReducer', () => {
       })
 
       expect(assertion.gridSites).toHaveLength(2)
+    })
+    it('check gridSites does not have sites that are removed from topSites', () => {
+      let state: NewTab.GridSitesState = storage.initialGridSitesState
+      state = {
+        ...state,
+        gridSites: [
+          {
+            url: 'www.basicattentiontoken.org',
+            title: 'BAT',
+            id: 'topsite-0',
+            favicon: '',
+            letter: 'b',
+            pinnedIndex: 0
+          },
+          {
+            url: 'www.brave.com',
+            title: 'Brave Software',
+            id: 'topsite-1',
+            favicon: '',
+            letter: 'c',
+            pinnedIndex: undefined
+          },
+          {
+            url: 'www.google.com',
+            title: 'Google',
+            id: 'topsite-2',
+            favicon: '',
+            letter: 'c',
+            pinnedIndex: undefined
+          }
+        ]
+      }
+
+      const topSites = [
+        {
+          url: 'www.brave.com',
+          title: 'brave'
+        }, {
+          url: 'www.cnn.com',
+          title: 'cnn'
+        }
+      ]
+      const assertion = gridSitesReducer(state, {
+        type: types.GRID_SITES_SET_FIRST_RENDER_DATA,
+        payload: { topSites }
+      })
+
+      // Initial state has google site but it's deleted because topSites doesn't
+      // have it.
+      expect(assertion.gridSites).toHaveLength(2)
+      expect(assertion.gridSites[0].url).toBe('www.cnn.com')
+      expect(assertion.gridSites[1].url).toBe('www.brave.com')
+    })
+    it('check sites from SR are not deleted from gridSites', () => {
+      let state: NewTab.GridSitesState = storage.initialGridSitesState
+      state = {
+        ...state,
+        gridSites: [
+          {
+            url: 'www.basicattentiontoken.org',
+            title: 'BAT',
+            id: 'topsite-0',
+            favicon: '',
+            letter: 'b',
+            pinnedIndex: 0
+          },
+          {
+            url: 'www.brave.com',
+            title: 'Brave Software',
+            id: 'topsite-1',
+            favicon: '',
+            letter: 'c',
+            pinnedIndex: undefined
+          },
+          {
+            url: 'www.google.com',
+            title: 'Google',
+            id: 'topsite-2',
+            favicon: '',
+            letter: 'c',
+            pinnedIndex: undefined
+          }
+        ]
+      }
+
+      const topSites = [
+        {
+          url: 'www.brave.com',
+          title: 'brave'
+        }, {
+          url: 'www.cnn.com',
+          title: 'cnn'
+        }
+      ]
+
+      const defaultSuperReferralTopSites = [
+        {
+          pinnedIndex: 0,
+          url: 'www.basicattentiontoken.org',
+          title: 'BAT',
+          favicon: 'favicon.png'
+        }
+      ]
+      const assertion = gridSitesReducer(state, {
+        type: types.GRID_SITES_SET_FIRST_RENDER_DATA,
+        payload: { topSites, defaultSuperReferralTopSites }
+      })
+
+      // topSites doesn't have bat site but it's in SR's default top sites.
+      // So, it's not deleted from gritSites.
+      expect(assertion.gridSites).toHaveLength(3)
+      expect(assertion.gridSites[0].url).toBe('www.basicattentiontoken.org')
+      expect(assertion.gridSites[1].url).toBe('www.cnn.com')
+      expect(assertion.gridSites[2].url).toBe('www.brave.com')
     })
     it('populate state.gridSites list without duplicates', () => {
       const brandNewSite: NewTab.Site = {
@@ -109,7 +223,7 @@ describe('gridSitesReducer', () => {
 
       const assertion = gridSitesReducer(veryRepetitiveInitialGridSitesState, {
         type: types.GRID_SITES_SET_FIRST_RENDER_DATA,
-        payload: { topSites: [ brandNewSite ] }
+        payload: { topSites: [ brandNewSite, veryRepetitiveSite ] }
       })
       // We should see just one repetitive site and the new
       // one added on the payload above
