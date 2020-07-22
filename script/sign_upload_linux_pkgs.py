@@ -31,8 +31,6 @@ def main():
     if args.skip_github and args.github_token:
         exit("Error: --skip_github and --github_token are mutually exclusive, only one allowed")
 
-    if args.unmount is not False and channel in ['beta', 'dev', 'nightly']:
-        unmount = args.unmount
     if channel in ['release']:
         if not args.gpg_passphrase:
             logging.error("Error: --gpg_passphrase required for channel {}".format(channel))
@@ -59,8 +57,12 @@ def main():
         logging.debug('brave_core_dir: {}'.format(brave_core_dir))
 
     # verify we have the the GPG key we're expecting in the public keyring
-    list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
-        gpg_full_key_id)
+    if channel in ['release']:
+        list_keys_cmd = "GNUPGHOME=$HOME/.gnupg-release /usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
+            gpg_full_key_id)
+    else:
+        list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
+            gpg_full_key_id)
     logging.info("Verifying the GPG key \'{}\' is in our public keyring...".format(
         gpg_full_key_id))
     logging.debug("Running command: {}".format(list_keys_cmd))
@@ -69,23 +71,6 @@ def main():
     except subprocess.CalledProcessError as cpe:
         logging.debug("Expected GPG ID not found in keyring!")
         logging.debug("Output from gpg2 --list-keys command: {}".format(cpe))
-        if args.unmount is not False and channel in ['beta', 'dev', 'nightly']:
-            logging.debug("Unmounting /home/ubuntu/.gnupg")
-            list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
-                unmount)
-            logging.debug("Running command: {}".format(list_keys_cmd))
-            try:
-                output = subprocess.check_output(list_keys_cmd, shell=True)
-            except subprocess.CalledProcessError as cpe:
-                logging.error("Error: {}".format(cpe))
-                exit(1)
-            try:
-                unmount_cmd = "sudo umount /home/ubuntu/.gnupg"
-                logging.debug("Running command: {}".format(unmount_cmd))
-                output = subprocess.check_output(unmount_cmd, shell=True)
-            except subprocess.CalledProcessError as cpe:
-                logging.error("Error: {}".format(cpe))
-                exit(1)
 
     saved_path = os.getcwd()
     try:
@@ -123,7 +108,7 @@ def main():
     # If release channel, unlock GPG signing key which has a cache timeout of 30
     # minutes set in the gpg-agent.conf
     if channel in ['release']:
-        gpgconf_cmd = ['gpgconf', '--kill', 'gpg-agent']
+        gpgconf_cmd = ['GNUPGHOME=$HOME/.gnupg-release', 'gpgconf', '--kill', 'gpg-agent']
         logging.info("Running command: \"{}\"".format(gpgconf_cmd))
         try:
             subprocess.check_output(gpgconf_cmd, shell=True)
@@ -131,9 +116,9 @@ def main():
         except subprocess.CalledProcessError as cpe:
             loggint.error("Error: {}".format(cpe))
             exit(1)
-        cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
+        cmd = ['GNUPGHOME=$HOME/.gnupg-release', 'gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
                gpg_passphrase, '--sign']
-        log_cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
+        log_cmd = ['GNUPGHOME=$HOME/.gnupg-release', 'gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
                    'NOTAREALPASSWORD', '--sign']
         logging.info("Running command: \"{}\"".format(log_cmd))
         try:
@@ -347,13 +332,11 @@ def parse_args():
         '-t', '--tag', help='The branch (actually tag) to download packages from GitHub. (i.e. v1.5.18)',
         required=True)
     parser.add_argument('-p', '--gpg_passphrase',
-                        help='GPG passphrase to unlock signing keychain')
+                        help='GPG passphrase to unlock release channel signing keychain')
     parser.add_argument('-r', '--repo_dir', help='Directory on upload server to download RPM/DEB files into',
                         required=True)
     parser.add_argument('-s', '--s3_test_buckets', help='Upload to test S3 buckets (same names but with'
                         ' \'-test\' postfix) for QA testing', action='store_true')
-    parser.add_argument('-u', '--unmount', help='Unmount the ~/.gnupg filesystem if this key is found in'
-                        ' the GPG Keyring', required=False)
     return parser.parse_args()
 
 
