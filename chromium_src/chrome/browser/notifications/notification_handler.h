@@ -23,7 +23,8 @@ class NotificationHandler : public NotificationHandler_ChromiumImpl {
     PERMISSION_REQUEST = 5,
     SHARING = 6,
     ANNOUNCEMENT = 7,
-    BRAVE_ADS = 8,
+    NEARBY_SHARE = 8,
+    BRAVE_ADS = 9,
     MAX = BRAVE_ADS,
   };
 
