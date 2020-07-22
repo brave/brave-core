@@ -10,7 +10,7 @@
 
 namespace ledger {
   const char kStateEnabled[] = "enabled";
-  const char kStateServerPublisherListStamp[] = "server_publisher_list_stamp";
+  const char kStateServerPublisherListStamp[] = "publisher_prefix_list_stamp";
   const char kStateUpholdAnonAddress[] = "uphold_anon_address";  // DEPRECATED
   const char kStatePromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
   const char kStatePromotionCorruptedMigrated[] =
