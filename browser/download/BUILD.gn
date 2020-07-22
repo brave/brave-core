@@ -13,6 +13,9 @@ source_set("download") {
     # Need for //chrome/common/safe_browsing/download_file_types.pb.h included
     # from download_item_model.h.
     "//chrome/common/safe_browsing:proto",
+    # //chrome/common/buildflag.h is referenced indirectly while building
+    # brave_download_item_model.cc.
+    "//chrome/common",
     "//components/strings:components_strings_grit",
     "//content/public/common",
     "//ui/base",
