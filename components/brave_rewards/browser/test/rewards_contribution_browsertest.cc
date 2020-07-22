@@ -156,6 +156,22 @@ IN_PROC_BROWSER_TEST_F(
           https_server_.get(),
           "laurenwags.github.io"),
       true);
+  rewards_browsertest_helper::VisitPublisher(
+      browser(),
+      rewards_browsertest_util::GetUrl(https_server_.get(), "site1.com"),
+      true);
+  rewards_browsertest_helper::VisitPublisher(
+      browser(),
+      rewards_browsertest_util::GetUrl(https_server_.get(), "site2.com"),
+      true);
+  rewards_browsertest_helper::VisitPublisher(
+      browser(),
+      rewards_browsertest_util::GetUrl(https_server_.get(), "site3.com"),
+      true);
+  rewards_browsertest_helper::VisitPublisher(
+      browser(),
+      rewards_browsertest_util::GetUrl(https_server_.get(), "3zsistemi.si"),
+      true);
 
   rewards_service_->StartMonthlyContributionForTest();
 
@@ -168,6 +184,25 @@ IN_PROC_BROWSER_TEST_F(
       contents(),
       "[color=contribute]",
       "-20.000BAT");
+
+  rewards_browsertest_helper::LoadURL(
+      browser(),
+      rewards_browsertest_util::GetRewardsInternalsUrl());
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "#internals-tabs > div > div:nth-of-type(4)");
+
+  for (int i = 1; i <= 6; i++) {
+    const std::string query = base::StringPrintf(
+        "[data-test-id='publisher-wrapper'] > div:nth-of-type(%d) "
+        "[data-test-id='contributed-amount']",
+        i);
+    LOG(ERROR) << query;
+    EXPECT_NE(
+      rewards_browsertest_util::WaitForElementThenGetContent(contents(), query),
+      "0 BAT");
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(

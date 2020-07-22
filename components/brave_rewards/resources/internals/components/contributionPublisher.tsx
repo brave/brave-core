@@ -25,7 +25,7 @@ export const ContributionPublisher = (props: Props) => {
         {getLocale('totalAmount')} {props.publisher.totalAmount} {getLocale('bat')}
       </div>
       <div>
-        {getLocale('contributedAmount')} {props.publisher.contributedAmount} {getLocale('bat')}
+        {getLocale('contributedAmount')} <span data-test-id={'contributed-amount'}>{props.publisher.contributedAmount} {getLocale('bat')}</span>
       </div>
     </Publisher>)
 }
