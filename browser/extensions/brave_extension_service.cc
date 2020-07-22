@@ -21,12 +21,12 @@ BraveExtensionService::BraveExtensionService(Profile* profile,
     const base::CommandLine* command_line,
     const base::FilePath& install_directory,
     ExtensionPrefs* extension_prefs,
-    Blacklist* blacklist,
+    Blocklist* blocklist,
     bool autoupdate_enabled,
     bool extensions_enabled,
     base::OneShotEvent* ready) :
     ExtensionService(profile, command_line, install_directory, extension_prefs,
-        blacklist, autoupdate_enabled, extensions_enabled, ready) {
+        blocklist, autoupdate_enabled, extensions_enabled, ready) {
 }
 
 BraveExtensionService::~BraveExtensionService() {
