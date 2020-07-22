@@ -61,18 +61,6 @@ TorNavigationThrottle::WillStartRequest() {
   return content::NavigationThrottle::BLOCK_REQUEST;
 }
 
-content::NavigationThrottle::ThrottleCheckResult
-TorNavigationThrottle::WillFailRequest() {
-  if (navigation_handle()->GetNetErrorCode() ==
-      net::ERR_PROXY_CONNECTION_FAILED) {
-    content::OpenURLParams params =
-      content::OpenURLParams::FromNavigationHandle(navigation_handle());
-    navigation_handle()->GetWebContents()->OpenURL(std::move(params));
-    return content::NavigationThrottle::CANCEL_AND_IGNORE;
-  }
-  return content::NavigationThrottle::PROCEED;
-}
-
 const char* TorNavigationThrottle::GetNameForLogging() {
   return "TorNavigationThrottle";
 }

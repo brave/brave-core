@@ -30,7 +30,6 @@ class TorNavigationThrottle : public content::NavigationThrottle,
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillStartRequest() override;
-  ThrottleCheckResult WillFailRequest() override;
   const char* GetNameForLogging() override;
 
  private:
