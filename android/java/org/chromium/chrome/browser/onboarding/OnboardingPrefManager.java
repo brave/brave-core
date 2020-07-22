@@ -31,6 +31,7 @@ import java.util.Map;
 public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING = "onboarding";
     private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
+    private static final String PREF_NEXT_CROSS_PROMO_MODAL_DATE = "next_cross_promo_modal_date";
     private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
     private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
@@ -157,6 +158,21 @@ public class OnboardingPrefManager {
             BraveOnboardingNotification.showOnboardingNotification(context);
             setOnboardingNotificationShown(true);
         }
+    }
+
+    private long getNextCrossPromoModalDate() {
+        return mSharedPreferences.getLong(PREF_NEXT_CROSS_PROMO_MODAL_DATE, 0);
+    }
+
+    public void setNextCrossPromoModalDate(long nextDate) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putLong(PREF_NEXT_CROSS_PROMO_MODAL_DATE, nextDate);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean showCrossPromoModal() {
+        boolean shouldShow = (getNextCrossPromoModalDate() > 0 && System.currentTimeMillis() > getNextCrossPromoModalDate());
+        return shouldShow;
     }
 
     public static Map<String, SearchEngineEnum> searchEngineMap =
