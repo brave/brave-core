@@ -684,6 +684,7 @@ brave_java_resources = [
   "java/res/layout/menu_separator.xml",
   "java/res/layout/brave_rewards_panel_grant.xml",
   "java/res/layout/brave_sync_add_laptop.xml",
+  "java/res/layout/fragment_cross_promotional_modal_dialog.xml",
   "java/res/layout-land/brave_rewards_site_banner.xml",
   "java/res/layout-land/verify_wallet_activity.xml",
   "java/res/menu/new_tab_menu.xml",

@@ -1166,6 +1166,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NICE" desc="Shields tootltip title">
         Nice!
       </message>
+      <message name="IDS_BRAVE_WORKS_EVERYWHERE" desc="Cross promotional modal title text">
+        Brave works everywhere
+      </message>
+      <message name="IDS_DOWNLOAD_BRAVE" desc="Cross promotional modal text">
+        Download Brave at brave.com on your laptop ot tablet for a faster and more private web
+      </message>
     </messages>
   </release>
 </grit>
