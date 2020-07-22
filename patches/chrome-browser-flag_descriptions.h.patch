@@ -1,13 +1,21 @@
 diff --git a/chrome/browser/flag_descriptions.h b/chrome/browser/flag_descriptions.h
-index 2bad3bd2cac8a6eaa0d4cae1ca0b821d30c69947..5ec53db1bedeb39d0609635b20ab8cf9e3dbc5ee 100644
+index 3e65daf14c3f..4e1d84a846e8 100644
 --- a/chrome/browser/flag_descriptions.h
 +++ b/chrome/browser/flag_descriptions.h
-@@ -1566,7 +1566,7 @@ extern const char kAndroidNightModeTabReparentingDescription[];
+@@ -1644,7 +1644,7 @@ extern const char kAndroidNightModeTabReparentingDescription[];
  
  // Non-Android ----------------------------------------------------------------
  
 -#else  // !defined(OS_ANDROID)
-+//#else  // !defined(OS_ANDROID)
++#endif  // defined(OS_ANDROID)
  
- extern const char kAppManagementName[];
- extern const char kAppManagementDescription[];
+ extern const char kEnableAccessibilityLiveCaptionsName[];
+ extern const char kEnableAccessibilityLiveCaptionsDescription[];
+@@ -1731,7 +1731,6 @@ extern const char kWebUIA11yEnhancementsDescription[];
+ extern const char kSyncSetupFriendlySettingsName[];
+ extern const char kSyncSetupFriendlySettingsDescription[];
+ 
+-#endif  // defined(OS_ANDROID)
+ 
+ // Windows --------------------------------------------------------------------
+ 

@@ -1,25 +1,51 @@
 diff --git a/chrome/browser/ui/webui/settings/safety_check_handler.cc b/chrome/browser/ui/webui/settings/safety_check_handler.cc
-index be365ff44891fea2a6971972f748cfebcaf0de28..d9f94b922ae94b0bd036cbb03628cdbcf4e9de6e 100644
+index fabe2039537c..6aa9c0cafdbc 100644
 --- a/chrome/browser/ui/webui/settings/safety_check_handler.cc
 +++ b/chrome/browser/ui/webui/settings/safety_check_handler.cc
-@@ -11,12 +11,15 @@ SafetyCheckHandler::SafetyCheckHandler() = default;
- SafetyCheckHandler::~SafetyCheckHandler() = default;
+@@ -128,10 +128,12 @@ void SafetyCheckHandler::PerformSafetyCheck() {
+   safety_check_.reset(new safety_check::SafetyCheck(this));
+   safety_check_->CheckSafeBrowsing(Profile::FromWebUI(web_ui())->GetPrefs());
  
- void SafetyCheckHandler::PerformSafetyCheck() {
 +#if !defined(OS_ANDROID)
-   version_updater_.reset(VersionUpdater::Create(web_ui()->GetWebContents()));
-   CheckUpdates(version_updater_.get(),
-                base::Bind(&SafetyCheckHandler::OnUpdateCheckResult,
-                           base::Unretained(this)));
+   if (!version_updater_) {
+     version_updater_.reset(VersionUpdater::Create(web_ui()->GetWebContents()));
+   }
+   DCHECK(version_updater_);
++#endif
+   if (!update_helper_) {
+     update_helper_.reset(new safety_check::UpdateCheckHelper(
+         content::BrowserContext::GetDefaultStoragePartition(
+@@ -176,7 +178,9 @@ SafetyCheckHandler::SafetyCheckHandler(
+     extensions::ExtensionPrefs* extension_prefs,
+     extensions::ExtensionServiceInterface* extension_service)
+     : update_helper_(std::move(update_helper)),
++#if !defined(OS_ANDROID)
+       version_updater_(std::move(version_updater)),
++#endif
+       leak_service_(leak_service),
+       passwords_delegate_(passwords_delegate),
+       extension_prefs_(extension_prefs),
+@@ -206,11 +210,13 @@ void SafetyCheckHandler::HandleGetParentRanDisplayString(
+ }
+ 
+ void SafetyCheckHandler::CheckUpdates() {
++#if !defined(OS_ANDROID)
+   // Usage of base::Unretained(this) is safe, because we own `version_updater_`.
+   version_updater_->CheckForUpdate(
+       base::Bind(&SafetyCheckHandler::OnVersionUpdaterResult,
+                  base::Unretained(this)),
+       VersionUpdater::PromoteCallback());
 +#endif
  }
  
+ void SafetyCheckHandler::CheckPasswords() {
+@@ -670,7 +676,9 @@ void SafetyCheckHandler::OnJavascriptDisallowed() {
+   observed_leak_check_.RemoveAll();
+   // Destroy the version updater to prevent getting a callback and firing a
+   // WebUI event, which would cause a crash.
 +#if !defined(OS_ANDROID)
- void SafetyCheckHandler::CheckUpdates(
-     VersionUpdater* version_updater,
-     const VersionUpdater::StatusCallback& update_callback) {
-@@ -32,3 +35,4 @@ void SafetyCheckHandler::OnUpdateCheckResult(VersionUpdater::Status status,
-                                              const base::string16& message) {
-   NOTIMPLEMENTED();
- }
+   version_updater_.reset();
 +#endif
+   // Stop observing safety check events.
+   safety_check_.reset(nullptr);
+ }

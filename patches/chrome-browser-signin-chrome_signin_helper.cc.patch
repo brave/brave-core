@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/signin/chrome_signin_helper.cc b/chrome/browser/signin/chrome_signin_helper.cc
-index f73fca57478f1293914a69bf3910c809c0c56f50..01d61f9d8f16dc827e7522f61161121e8458708c 100644
+index 09e4f73ac083..a0ef64b0c002 100644
 --- a/chrome/browser/signin/chrome_signin_helper.cc
 +++ b/chrome/browser/signin/chrome_signin_helper.cc
-@@ -48,12 +48,11 @@
+@@ -51,12 +51,11 @@
  #if defined(OS_ANDROID)
  #include "chrome/browser/android/signin/signin_utils.h"
  #include "ui/android/view_android.h"
@@ -15,4 +15,4 @@ index f73fca57478f1293914a69bf3910c809c0c56f50..01d61f9d8f16dc827e7522f61161121e
 -#endif  // defined(OS_ANDROID)
  
  #if defined(OS_CHROMEOS)
- #include "chrome/browser/supervised_user/supervised_user_service.h"
+ #include "chrome/browser/profiles/profile_manager.h"

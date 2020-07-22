@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/storage_partition.h b/content/public/browser/storage_partition.h
-index 333b2aa410c50b538d4362fca82f40271775f0c8..2ded5248757dda0a2260f466c25394e65e93e5f9 100644
+index 01ab7ba6e2dd..e82bb895926a 100644
 --- a/content/public/browser/storage_partition.h
 +++ b/content/public/browser/storage_partition.h
-@@ -67,11 +67,11 @@ class PlatformNotificationContext;
- class ServiceWorkerContext;
+@@ -68,11 +68,11 @@ class ServiceWorkerContext;
  class SharedWorkerService;
+ class IdleManager;
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)
@@ -16,7 +16,7 @@ index 333b2aa410c50b538d4362fca82f40271775f0c8..2ded5248757dda0a2260f466c25394e6
  
  // Defines what persistent state a child process can access.
  //
-@@ -138,11 +138,11 @@ class CONTENT_EXPORT StoragePartition {
+@@ -128,11 +128,11 @@ class CONTENT_EXPORT StoragePartition {
    virtual DevToolsBackgroundServicesContext*
    GetDevToolsBackgroundServicesContext() = 0;
    virtual ContentIndexContext* GetContentIndexContext() = 0;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/off_the_record_profile_impl.h b/chrome/browser/profiles/off_the_record_profile_impl.h
-index 4c34e6c7d772dcbfe17da39573851b9430fec406..07bc7b89364301e5ba913e77623bb6146ac0fa7b 100644
+index 10e20fec7d4b..c6106ed797c3 100644
 --- a/chrome/browser/profiles/off_the_record_profile_impl.h
 +++ b/chrome/browser/profiles/off_the_record_profile_impl.h
 @@ -17,10 +17,10 @@
@@ -15,7 +15,7 @@ index 4c34e6c7d772dcbfe17da39573851b9430fec406..07bc7b89364301e5ba913e77623bb614
  
  namespace sync_preferences {
  class PrefServiceSyncable;
-@@ -93,10 +93,10 @@ class OffTheRecordProfileImpl : public Profile {
+@@ -99,10 +99,10 @@ class OffTheRecordProfileImpl : public Profile {
    base::FilePath GetPath() override;
    base::FilePath GetPath() const override;
    base::Time GetCreationTime() const override;
@@ -28,7 +28,7 @@ index 4c34e6c7d772dcbfe17da39573851b9430fec406..07bc7b89364301e5ba913e77623bb614
    scoped_refptr<base::SequencedTaskRunner> GetIOTaskRunner() override;
    bool IsOffTheRecord() override;
    bool IsOffTheRecord() const override;
-@@ -127,28 +127,28 @@ class OffTheRecordProfileImpl : public Profile {
+@@ -134,17 +134,17 @@ class OffTheRecordProfileImpl : public Profile {
    GetNativeFileSystemPermissionContext() override;
  
   private:
@@ -50,6 +50,7 @@ index 4c34e6c7d772dcbfe17da39573851b9430fec406..07bc7b89364301e5ba913e77623bb614
  
    // The real underlying profile.
    Profile* profile_;
+@@ -153,11 +153,11 @@ class OffTheRecordProfileImpl : public Profile {
  
    std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs_;
  

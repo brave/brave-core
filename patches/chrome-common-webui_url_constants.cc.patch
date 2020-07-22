@@ -1,17 +1,17 @@
 diff --git a/chrome/common/webui_url_constants.cc b/chrome/common/webui_url_constants.cc
-index 20917e7c79eb3a7275d3a8dc564bef85e44a3a58..4a0469ec27b2478e0a6c4f798e8a74bb1ac96b69 100644
+index 1eb51da8a9e1..1853e7ac6f6f 100644
 --- a/chrome/common/webui_url_constants.cc
 +++ b/chrome/common/webui_url_constants.cc
-@@ -321,7 +321,7 @@ bool IsSystemWebUIHost(base::StringPiece host) {
- const char kChromeUICastHost[] = "cast";
- #endif
+@@ -318,7 +318,7 @@ bool IsSystemWebUIHost(base::StringPiece host) {
+ }
+ #endif  // defined(OS_CHROMEOS)
  
 -#if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
 +#if defined(OS_ANDROID) || defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_LINUX)
  const char kChromeUIDiscardsHost[] = "discards";
  const char kChromeUIDiscardsURL[] = "chrome://discards/";
  const char kChromeUIHatsHost[] = "hats";
-@@ -336,7 +336,7 @@ const char kChromeUILinuxProxyConfigHost[] = "linux-proxy-config";
+@@ -334,7 +334,7 @@ const char kChromeUILinuxProxyConfigHost[] = "linux-proxy-config";
  const char kChromeUISandboxHost[] = "sandbox";
  #endif
  

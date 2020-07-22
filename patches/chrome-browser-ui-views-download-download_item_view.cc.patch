@@ -1,14 +1,14 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.cc b/chrome/browser/ui/views/download/download_item_view.cc
-index 268aaba8ed297c0782cd09418506627a59182631..5ae7a2d938b906e0bf9c35101d598390dc1c507e 100644
+index 5ecb74a99cca..3e5393431a40 100644
 --- a/chrome/browser/ui/views/download/download_item_view.cc
 +++ b/chrome/browser/ui/views/download/download_item_view.cc
-@@ -1625,7 +1625,9 @@ base::string16 DownloadItemView::ElidedFilename() {
+@@ -1628,7 +1628,9 @@ base::string16 DownloadItemView::ElidedFilename() {
  }
  
  void DownloadItemView::OpenDownloadDuringAsyncScanning() {
 +#if !defined(OS_ANDROID)
    model_->CompleteSafeBrowsingScan();
 +#endif
-   should_open_while_scanning_ = true;
+   model_->SetOpenWhenComplete(true);
  }
  

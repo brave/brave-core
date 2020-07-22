@@ -1,11 +1,11 @@
 diff --git a/ui/views/views_touch_selection_controller_factory_aura.cc b/ui/views/views_touch_selection_controller_factory_aura.cc
-index 8010719703f67197f452143b7fff19788668dfdb..4e0ff8362e29ff0bdeb00534549434f0c4017951 100644
+index 41946b08641f..b0396174573d 100644
 --- a/ui/views/views_touch_selection_controller_factory_aura.cc
 +++ b/ui/views/views_touch_selection_controller_factory_aura.cc
-@@ -15,7 +15,11 @@ ViewsTouchEditingControllerFactory::ViewsTouchEditingControllerFactory() =
+@@ -13,7 +13,11 @@ ViewsTouchEditingControllerFactory::ViewsTouchEditingControllerFactory() =
+ 
  ui::TouchEditingControllerDeprecated*
- ViewsTouchEditingControllerFactory::Create(
-     ui::TouchEditable* client_view) {
+ ViewsTouchEditingControllerFactory::Create(ui::TouchEditable* client_view) {
 +#if !defined(OS_ANDROID)
    return new views::TouchSelectionControllerImpl(client_view);
 +#else

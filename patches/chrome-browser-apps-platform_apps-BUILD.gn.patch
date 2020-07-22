@@ -1,22 +1,12 @@
 diff --git a/chrome/browser/apps/platform_apps/BUILD.gn b/chrome/browser/apps/platform_apps/BUILD.gn
-index 37975f0e9c3ea8193f64b75db0f79cce94bc5cb4..5dce1b6b9d624982137ac41a2e777356e0c6a335 100644
+index 00bf7253317c..e92bf14735fd 100644
 --- a/chrome/browser/apps/platform_apps/BUILD.gn
 +++ b/chrome/browser/apps/platform_apps/BUILD.gn
-@@ -47,7 +47,6 @@ source_set("platform_apps") {
-   deps = [
-     "//chrome/app:command_ids",
-     "//chrome/browser/extensions",
--    "//chrome/browser/media/router/discovery",
-     "//chrome/browser/web_applications/extensions",
-     "//chrome/common",
-     "//components/crx_file",
-@@ -64,5 +63,9 @@ source_set("platform_apps") {
+@@ -65,6 +65,7 @@ source_set("platform_apps") {
+     "//services/preferences/public/cpp:cpp",
      "//ui/gfx",
    ]
++  if (!is_android) { deps -= ["//chrome/browser/media/router/discovery",] }
  
-+  if (!is_android) {
-+    deps += ["//chrome/browser/media/router/discovery",]
-+  }
-+
-   allow_circular_includes_from = [ "//chrome/browser/extensions" ]
- }
+   if (is_mac) {
+     deps += [ "//chrome/browser/apps/app_shim" ]

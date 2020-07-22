@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/media/router/providers/cast/cast_activity_record.cc b/chrome/browser/media/router/providers/cast/cast_activity_record.cc
-index a5ad2af2e597d3bf37801fa26a6f12af9a3a9477..b8775dcbbc73d2e3ab12fbe86ed8b7998503a02c 100644
+index 7e25f7b98dd3..b82caaba750c 100644
 --- a/chrome/browser/media/router/providers/cast/cast_activity_record.cc
 +++ b/chrome/browser/media/router/providers/cast/cast_activity_record.cc
-@@ -241,12 +241,16 @@ bool CastActivityRecord::CanJoinSession(const CastMediaSource& cast_source,
+@@ -159,12 +159,16 @@ bool CastActivityRecord::CanJoinSession(const CastMediaSource& cast_source,
  bool CastActivityRecord::HasJoinableClient(AutoJoinPolicy policy,
                                             const url::Origin& origin,
                                             int tab_id) const {
@@ -18,4 +18,4 @@ index a5ad2af2e597d3bf37801fa26a6f12af9a3a9477..b8775dcbbc73d2e3ab12fbe86ed8b799
 +#endif
  }
  
- CastSessionClientFactoryForTest* CastActivityRecord::client_factory_for_test_ =
+ }  // namespace media_router

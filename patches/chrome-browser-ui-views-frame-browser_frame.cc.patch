@@ -1,18 +1,18 @@
 diff --git a/chrome/browser/ui/views/frame/browser_frame.cc b/chrome/browser/ui/views/frame/browser_frame.cc
-index 0d7f5b0320d90bd175149e1d37b70b5c2373e19f..31b9273f5331dff92858b6af6dbdf9133c64d8b3 100644
+index 250cdaf96de8..ec21213b4b24 100644
 --- a/chrome/browser/ui/views/frame/browser_frame.cc
 +++ b/chrome/browser/ui/views/frame/browser_frame.cc
-@@ -32,6 +32,9 @@
+@@ -31,6 +31,9 @@
+ #include "ui/base/hit_test.h"
  #include "ui/events/event_handler.h"
  #include "ui/gfx/font_list.h"
- #include "ui/native_theme/native_theme_dark_aura.h"
 +#if defined(OS_ANDROID)
 +#include "ui/native_theme/native_theme_android.h"
 +#endif
  #include "ui/views/controls/menu/menu_runner.h"
  #include "ui/views/widget/native_widget.h"
  
-@@ -207,11 +210,13 @@ const ui::ThemeProvider* BrowserFrame::GetThemeProvider() const {
+@@ -208,11 +211,13 @@ const ui::ThemeProvider* BrowserFrame::GetThemeProvider() const {
  }
  
  const ui::NativeTheme* BrowserFrame::GetNativeTheme() const {
@@ -20,7 +20,7 @@ index 0d7f5b0320d90bd175149e1d37b70b5c2373e19f..31b9273f5331dff92858b6af6dbdf913
    if (browser_view_->browser()->profile()->IsIncognitoProfile() &&
        ThemeServiceFactory::GetForProfile(browser_view_->browser()->profile())
            ->UsingDefaultTheme()) {
-     return ui::NativeThemeDarkAura::instance();
+     return ui::NativeTheme::GetInstanceForDarkUI();
    }
 +#endif
    return views::Widget::GetNativeTheme();

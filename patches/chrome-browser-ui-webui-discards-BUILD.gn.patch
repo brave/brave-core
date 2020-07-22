@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/discards/BUILD.gn b/chrome/browser/ui/webui/discards/BUILD.gn
-index 91df9add5d8ef5f668f1cca16b43525e12f40527..83f971ea33ba480d85b2ae3ba304c7b9cb9e0d95 100644
+index ec52c2e09186..7cb02251f4ef 100644
 --- a/chrome/browser/ui/webui/discards/BUILD.gn
 +++ b/chrome/browser/ui/webui/discards/BUILD.gn
 @@ -4,7 +4,7 @@
@@ -9,5 +9,5 @@ index 91df9add5d8ef5f668f1cca16b43525e12f40527..83f971ea33ba480d85b2ae3ba304c7b9
 -if (is_win || is_mac || is_desktop_linux || is_chromeos) {
 +if (is_android || is_win || is_mac || is_desktop_linux || is_chromeos) {
    mojom("mojo_bindings") {
-     sources = [ "discards.mojom" ]
- 
+     sources = [
+       "discards.mojom",

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc b/chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc
-index d0c59bb4cc4080e992b3f83d27091e9891389b11..13a605680a8e9b93a992ff78f20f645066cde79d 100644
+index 7b0cdb28d3d3..c1a33c6098f2 100644
 --- a/chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc
 +++ b/chrome/browser/extensions/api/bookmark_manager_private/bookmark_manager_private_api.cc
-@@ -445,10 +445,12 @@ bool BookmarkManagerPrivateStartDragFunction::RunOnReady() {
+@@ -454,10 +454,12 @@ BookmarkManagerPrivateStartDragFunction::RunOnReady() {
    if (params->is_from_touch)
      source = ui::DragDropTypes::DRAG_EVENT_SOURCE_TOUCH;
  
@@ -13,5 +13,5 @@ index d0c59bb4cc4080e992b3f83d27091e9891389b11..13a605680a8e9b93a992ff78f20f6450
                           gfx::Point(params->x, params->y)});
 +#endif
  
-   return true;
+   return NoArguments();
  }

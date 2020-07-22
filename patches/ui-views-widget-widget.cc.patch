@@ -1,8 +1,8 @@
 diff --git a/ui/views/widget/widget.cc b/ui/views/widget/widget.cc
-index 750f064c58fbc96a7870436ccb4c3c35739f2dd2..62cc8aafe3066adab0fb06893c45a3f569249596 100644
+index ecd7be9185fd..7803a9854224 100644
 --- a/ui/views/widget/widget.cc
 +++ b/ui/views/widget/widget.cc
-@@ -42,6 +42,10 @@
+@@ -43,6 +43,10 @@
  #include "ui/views/window/custom_frame_view.h"
  #include "ui/views/window/dialog_delegate.h"
  
@@ -13,7 +13,7 @@ index 750f064c58fbc96a7870436ccb4c3c35739f2dd2..62cc8aafe3066adab0fb06893c45a3f5
  namespace views {
  
  namespace {
-@@ -173,6 +177,12 @@ ui::ZOrderLevel Widget::InitParams::EffectiveZOrderLevel() const {
+@@ -169,6 +173,12 @@ ui::ZOrderLevel Widget::InitParams::EffectiveZOrderLevel() const {
    }
  }
  
@@ -26,7 +26,7 @@ index 750f064c58fbc96a7870436ccb4c3c35739f2dd2..62cc8aafe3066adab0fb06893c45a3f5
  ////////////////////////////////////////////////////////////////////////////////
  // Widget, public:
  
-@@ -230,42 +240,60 @@ Widget* Widget::CreateWindowWithContextAndBounds(WidgetDelegate* delegate,
+@@ -214,41 +224,59 @@ Widget* Widget::CreateWindowWithContext(WidgetDelegate* delegate,
  
  // static
  Widget* Widget::GetWidgetForNativeView(gfx::NativeView native_view) {
@@ -71,8 +71,7 @@ index 750f064c58fbc96a7870436ccb4c3c35739f2dd2..62cc8aafe3066adab0fb06893c45a3f5
  }
  
  // static
- void Widget::GetAllOwnedWidgets(gfx::NativeView native_view,
-                                 Widgets* owned) {
+ void Widget::GetAllOwnedWidgets(gfx::NativeView native_view, Widgets* owned) {
 +#if !defined(OS_ANDROID)
    internal::NativeWidgetPrivate::GetAllOwnedWidgets(native_view, owned);
 +#endif
@@ -87,30 +86,28 @@ index 750f064c58fbc96a7870436ccb4c3c35739f2dd2..62cc8aafe3066adab0fb06893c45a3f5
  }
  
  // static
-@@ -344,14 +372,15 @@ void Widget::Init(InitParams params) {
+@@ -326,13 +354,16 @@ void Widget::Init(InitParams params) {
    native_widget_ = CreateNativeWidget(params, this)->AsNativeWidgetPrivate();
    root_view_.reset(CreateRootView());
-   default_theme_provider_ = std::make_unique<ui::DefaultThemeProvider>();
--
+ 
 +#if !defined(OS_ANDROID)
    // Copy the elements of params that will be used after it is moved.
    const InitParams::Type type = params.type;
    const gfx::Rect bounds = params.bounds;
    const ui::WindowShowState show_state = params.show_state;
    WidgetDelegate* delegate = params.delegate;
--
 +#endif
+ 
    native_widget_->InitNativeWidget(std::move(params));
 +#if !defined(OS_ANDROID)
    if (type == InitParams::TYPE_MENU)
      is_mouse_button_pressed_ = native_widget_->IsMouseButtonDown();
    if (RequiresNonClientView(type)) {
-@@ -397,12 +426,15 @@ void Widget::Init(InitParams params) {
-     observer_manager_.Add(native_theme);
- #else
+@@ -373,11 +404,14 @@ void Widget::Init(InitParams params) {
+   }
+ 
    observer_manager_.Add(GetNativeTheme());
 +#endif
- #endif
    native_widget_initialized_ = true;
    native_widget_->OnWidgetInitDone();
  
@@ -118,10 +115,10 @@ index 750f064c58fbc96a7870436ccb4c3c35739f2dd2..62cc8aafe3066adab0fb06893c45a3f5
    if (delegate)
      delegate->OnWidgetInitialized();
 +#endif
- }
  
- void Widget::ShowEmojiPanel() {
-@@ -1256,6 +1288,7 @@ void Widget::OnKeyEvent(ui::KeyEvent* event) {
+   internal::AnyWidgetObserverSingleton::GetInstance()->OnAnyWidgetInitialized(
+       this);
+@@ -1229,6 +1263,7 @@ void Widget::OnKeyEvent(ui::KeyEvent* event) {
  //                   RootView from anywhere in Widget. Use
  //                   SendEventToSink() instead. See crbug.com/348087.
  void Widget::OnMouseEvent(ui::MouseEvent* event) {
@@ -129,7 +126,7 @@ index 750f064c58fbc96a7870436ccb4c3c35739f2dd2..62cc8aafe3066adab0fb06893c45a3f5
    View* root_view = GetRootView();
    switch (event->type()) {
      case ui::ET_MOUSE_PRESSED: {
-@@ -1341,6 +1374,7 @@ void Widget::OnMouseEvent(ui::MouseEvent* event) {
+@@ -1314,6 +1349,7 @@ void Widget::OnMouseEvent(ui::MouseEvent* event) {
      default:
        return;
    }

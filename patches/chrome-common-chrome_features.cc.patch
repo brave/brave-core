@@ -1,40 +1,26 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index e85079fa2f021e22e6c11176b7742f9dafff69de..3f5ca4fc63e602d0a28588a5dae8f4359660db5d 100644
+index c70c0e041f4d..2bd80e4e3f79 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
-@@ -64,7 +64,7 @@ const base::Feature kAppNotificationStatusMessaging{
-     "AppNotificationStatusMessaging", base::FEATURE_DISABLED_BY_DEFAULT};
- #endif  // defined(OS_ANDROID)
+@@ -48,7 +48,7 @@ const base::Feature kShow10_9ObsoleteInfobar{"Show109ObsoleteInfobar",
+                                              base::FEATURE_DISABLED_BY_DEFAULT};
+ #endif  // defined(OS_MACOSX)
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)
  // App Service related flags. See chrome/services/app_service/README.md.
  const base::Feature kAppServiceContextMenu{"AppServiceContextMenu",
-                                            base::FEATURE_DISABLED_BY_DEFAULT};
-@@ -74,7 +74,7 @@ const base::Feature kAppServiceIntentHandling{
+                                            base::FEATURE_ENABLED_BY_DEFAULT};
+@@ -56,7 +56,7 @@ const base::Feature kAppServiceInstanceRegistry{
+     "AppServiceInstanceRegistry", base::FEATURE_ENABLED_BY_DEFAULT};
+ const base::Feature kAppServiceIntentHandling{
      "AppServiceIntentHandling", base::FEATURE_DISABLED_BY_DEFAULT};
- const base::Feature kAppServiceShelf{"AppServiceShelf",
-                                      base::FEATURE_ENABLED_BY_DEFAULT};
 -#endif  // !defined(OS_ANDROID)
 +//#endif  // !defined(OS_ANDROID)
  
  // Enables the built-in DNS resolver.
  const base::Feature kAsyncDns {
-@@ -328,11 +328,11 @@ const base::Feature kEnableAmbientAuthenticationInGuestSession{
-     "EnableAmbientAuthenticationInGuestSession",
-     base::FEATURE_DISABLED_BY_DEFAULT};
- 
--#if !defined(OS_ANDROID)
-+//#if !defined(OS_ANDROID)
- // Upload enterprise cloud reporting without the extension.
- const base::Feature kEnterpriseReportingInBrowser{
-     "EnterpriseReportingInBrowser", base::FEATURE_DISABLED_BY_DEFAULT};
--#endif
-+//#endif
- 
- #if defined(OS_CHROMEOS)
- // Upload enterprise cloud reporting from Chrome OS.
-@@ -406,7 +406,7 @@ const base::Feature kHappinessTrackingSystem{"HappinessTrackingSystem",
+@@ -369,7 +369,7 @@ const base::Feature kHappinessTrackingSystem{"HappinessTrackingSystem",
                                               base::FEATURE_DISABLED_BY_DEFAULT};
  #endif
  
@@ -43,23 +29,18 @@ index e85079fa2f021e22e6c11176b7742f9dafff69de..3f5ca4fc63e602d0a28588a5dae8f435
  // Enables or disables the Happiness Tracking System for Desktop Chrome.
  const base::Feature kHappinessTrackingSurveysForDesktop{
      "HappinessTrackingSurveysForDesktop", base::FEATURE_DISABLED_BY_DEFAULT};
-@@ -428,7 +428,7 @@ const base::Feature kHappinessTrackingSurveysForDesktopSettings{
- const base::Feature kHappinessTrackingSurveysForDesktopSettingsPrivacy{
-     "HappinessTrackingSurveysForDesktopSettingsPrivacy",
+@@ -397,7 +397,7 @@ const base::Feature kHappinessTrackingSurveysForDesktopSettingsPrivacy{
+ const base::Feature kHappinessTrackingSurveysForDesktopMigration{
+     "HappinessTrackingSurveysForDesktopMigration",
      base::FEATURE_DISABLED_BY_DEFAULT};
 -#endif  // !defined(OS_ANDROID)
 +//#endif  // !defined(OS_ANDROID)
  
- // Enables committed error pages instead of transient navigation entries for
- // HTTP auth interstitial pages (i.e. HTTP auth prompts initiated cross-origin).
-@@ -518,13 +518,15 @@ const base::Feature kAcknowledgeNtpOverrideOnDeactivate{
- // allowing blockable mixed content. When enabled, the mixed content shield is
- // not shown on the omnibox, since its functionality is replaced by the
- // setting.
-+//#if !defined(OS_ANDROID)
+ // Hide CorsLegacyModeEnabled enterprise policy support. This feature and
+ // the enterprise policy supporting code will be removed at m84.
+@@ -495,10 +495,10 @@ const base::Feature kAcknowledgeNtpOverrideOnDeactivate{
  const base::Feature kMixedContentSiteSetting{"MixedContentSiteSetting",
                                               base::FEATURE_ENABLED_BY_DEFAULT};
-+//#endif
  
 -#if !defined(OS_ANDROID)
 +//#if !defined(OS_ANDROID)

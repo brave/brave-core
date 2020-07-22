@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/media/router/media_router_feature.cc b/chrome/browser/media/router/media_router_feature.cc
-index 2d478addf60e6d75c6cdca2f7e6a5b793ee14d16..63a77fd1282811664d4bd92db2756291c1f4ad29 100644
+index 3ff8fee05123..14f92580c1b4 100644
 --- a/chrome/browser/media/router/media_router_feature.cc
 +++ b/chrome/browser/media/router/media_router_feature.cc
-@@ -23,13 +23,13 @@
+@@ -22,13 +22,13 @@
  #include "components/user_prefs/user_prefs.h"
  #endif  // defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
  
@@ -19,7 +19,7 @@ index 2d478addf60e6d75c6cdca2f7e6a5b793ee14d16..63a77fd1282811664d4bd92db2756291
  // Controls if browser side DialMediaRouteProvider is enabled.
  const base::Feature kDialMediaRouteProvider{"DialMediaRouteProvider",
                                              base::FEATURE_ENABLED_BY_DEFAULT};
-@@ -37,7 +37,7 @@ const base::Feature kCastMediaRouteProvider{"CastMediaRouteProvider",
+@@ -36,7 +36,7 @@ const base::Feature kCastMediaRouteProvider{"CastMediaRouteProvider",
                                              base::FEATURE_DISABLED_BY_DEFAULT};
  const base::Feature kCastAllowAllIPsFeature{"CastAllowAllIPs",
                                              base::FEATURE_DISABLED_BY_DEFAULT};
@@ -28,7 +28,7 @@ index 2d478addf60e6d75c6cdca2f7e6a5b793ee14d16..63a77fd1282811664d4bd92db2756291
  
  #if defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
  namespace {
-@@ -67,7 +67,7 @@ bool MediaRouterEnabled(content::BrowserContext* context) {
+@@ -66,7 +66,7 @@ bool MediaRouterEnabled(content::BrowserContext* context) {
  #endif  // defined(OS_ANDROID) || BUILDFLAG(ENABLE_EXTENSIONS)
  }
  
@@ -37,8 +37,8 @@ index 2d478addf60e6d75c6cdca2f7e6a5b793ee14d16..63a77fd1282811664d4bd92db2756291
  void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterBooleanPref(prefs::kMediaRouterCastAllowAllIPs, false,
                                  PrefRegistry::PUBLIC);
-@@ -121,6 +121,6 @@ bool ShouldUseMirroringService() {
-          base::FeatureList::IsEnabled(kCastMediaRouteProvider);
+@@ -113,6 +113,6 @@ bool CastMediaRouteProviderEnabled() {
+   return base::FeatureList::IsEnabled(kCastMediaRouteProvider);
  }
  
 -#endif  // !defined(OS_ANDROID)

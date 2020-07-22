@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sharing/click_to_call/feature.cc b/chrome/browser/sharing/click_to_call/feature.cc
-index 9921fd492667bf2917b0349c667e7be64f250c96..42da055c2308749917116882a190926c79edd1eb 100644
+index 09bfc55644be..a83d5bccf895 100644
 --- a/chrome/browser/sharing/click_to_call/feature.cc
 +++ b/chrome/browser/sharing/click_to_call/feature.cc
 @@ -9,7 +9,7 @@ const base::Feature kClickToCallReceiver{"ClickToCallReceiver",
@@ -10,4 +10,4 @@ index 9921fd492667bf2917b0349c667e7be64f250c96..42da055c2308749917116882a190926c
 +#if BUILDFLAG(ENABLE_CLICK_TO_CALL) || defined(OS_ANDROID)
  const base::Feature kClickToCallUI{"ClickToCallUI",
                                     base::FEATURE_ENABLED_BY_DEFAULT};
- 
+ #endif  // BUILDFLAG(ENABLE_CLICK_TO_CALL)

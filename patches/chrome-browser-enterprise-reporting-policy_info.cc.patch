@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/enterprise/reporting/policy_info.cc b/chrome/browser/enterprise/reporting/policy_info.cc
+index 78363f896f83..5b8cf5010d0e 100644
+--- a/chrome/browser/enterprise/reporting/policy_info.cc
++++ b/chrome/browser/enterprise/reporting/policy_info.cc
+@@ -123,7 +123,7 @@ void AppendExtensionPolicyInfoIntoProfileReport(
+ 
+ void AppendMachineLevelUserCloudPolicyFetchTimestamp(
+     em::ChromeUserProfileInfo* profile_info) {
+-#if !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+   policy::MachineLevelUserCloudPolicyManager* manager =
+       g_browser_process->browser_policy_connector()
+           ->machine_level_user_cloud_policy_manager();

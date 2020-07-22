@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/about_handler.cc b/chrome/browser/ui/webui/settings/about_handler.cc
-index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf6f403c7d 100644
+index 9f615ac73cbb..ee2183763660 100644
 --- a/chrome/browser/ui/webui/settings/about_handler.cc
 +++ b/chrome/browser/ui/webui/settings/about_handler.cc
-@@ -446,7 +446,9 @@ void AboutHandler::RegisterMessages() {
+@@ -349,7 +349,9 @@ void AboutHandler::RegisterMessages() {
  
  void AboutHandler::OnJavascriptAllowed() {
    apply_changes_from_upgrade_observer_ = true;
@@ -12,7 +12,7 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
    policy_registrar_ = std::make_unique<policy::PolicyChangeRegistrar>(
        g_browser_process->policy_service(),
        policy::PolicyNamespace(policy::POLICY_DOMAIN_CHROME, std::string()));
-@@ -458,7 +460,9 @@ void AboutHandler::OnJavascriptAllowed() {
+@@ -361,7 +363,9 @@ void AboutHandler::OnJavascriptAllowed() {
  
  void AboutHandler::OnJavascriptDisallowed() {
    apply_changes_from_upgrade_observer_ = false;
@@ -22,7 +22,7 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
    policy_registrar_.reset();
  }
  
-@@ -586,6 +590,7 @@ void AboutHandler::HandleSetChannel(const base::ListValue* args) {
+@@ -489,6 +493,7 @@ void AboutHandler::HandleSetChannel(const base::ListValue* args) {
      return;
    }
  
@@ -30,7 +30,7 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
    version_updater_->SetChannel(base::UTF16ToUTF8(channel),
                                 is_powerwash_allowed);
    if (user_manager::UserManager::Get()->IsCurrentUserOwner()) {
-@@ -594,6 +599,7 @@ void AboutHandler::HandleSetChannel(const base::ListValue* args) {
+@@ -497,6 +502,7 @@ void AboutHandler::HandleSetChannel(const base::ListValue* args) {
          base::Bind(&AboutHandler::SetUpdateStatus, base::Unretained(this)),
          VersionUpdater::PromoteCallback());
    }
@@ -38,7 +38,7 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
  }
  
  void AboutHandler::HandleGetVersionInfo(const base::ListValue* args) {
-@@ -631,18 +637,22 @@ void AboutHandler::HandleGetChannelInfo(const base::ListValue* args) {
+@@ -532,10 +538,12 @@ void AboutHandler::HandleGetChannelInfo(const base::ListValue* args) {
    CHECK_EQ(1U, args->GetSize());
    std::string callback_id;
    CHECK(args->GetString(0, &callback_id));
@@ -49,6 +49,9 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
                   callback_id));
 +#endif
  }
+ 
+ void AboutHandler::HandleCanChangeChannel(const base::ListValue* args) {
+@@ -549,10 +557,12 @@ void AboutHandler::HandleCanChangeChannel(const base::ListValue* args) {
  
  void AboutHandler::OnGetCurrentChannel(std::string callback_id,
                                         const std::string& current_channel) {
@@ -61,7 +64,7 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
  }
  
  void AboutHandler::OnGetTargetChannel(std::string callback_id,
-@@ -679,9 +689,11 @@ void AboutHandler::HandleRequestUpdateOverCellular(
+@@ -587,9 +597,11 @@ void AboutHandler::HandleRequestUpdateOverCellular(
  
  void AboutHandler::RequestUpdateOverCellular(const std::string& update_version,
                                               int64_t update_size) {
@@ -73,7 +76,7 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
  }
  
  void AboutHandler::HandleRefreshTPMFirmwareUpdateStatus(
-@@ -703,9 +715,11 @@ void AboutHandler::HandleGetEndOfLifeInfo(const base::ListValue* args) {
+@@ -611,9 +623,11 @@ void AboutHandler::HandleGetEndOfLifeInfo(const base::ListValue* args) {
    CHECK_EQ(1U, args->GetSize());
    std::string callback_id;
    CHECK(args->GetString(0, &callback_id));
@@ -85,7 +88,7 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
  }
  
  void AboutHandler::OnGetEndOfLifeInfo(
-@@ -729,6 +743,7 @@ void AboutHandler::OnGetEndOfLifeInfo(
+@@ -640,6 +654,7 @@ void AboutHandler::OnGetEndOfLifeInfo(
  #endif  // defined(OS_CHROMEOS)
  
  void AboutHandler::RequestUpdate() {
@@ -93,7 +96,7 @@ index ebe6fb285e29b2bf59006a49173cee2f1f06f5f9..6b8c05e0cb0c1e1bcd0050f6b9e196cf
    version_updater_->CheckForUpdate(
        base::Bind(&AboutHandler::SetUpdateStatus, base::Unretained(this)),
  #if defined(OS_MACOSX)
-@@ -736,6 +751,7 @@ void AboutHandler::RequestUpdate() {
+@@ -647,6 +662,7 @@ void AboutHandler::RequestUpdate() {
  #else
        VersionUpdater::PromoteCallback());
  #endif  // OS_MACOSX

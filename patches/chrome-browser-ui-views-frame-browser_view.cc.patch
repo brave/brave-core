@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee27e9fd4d 100644
+index cadbd4693740..5834bdd1eed3 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
-@@ -917,6 +917,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+@@ -993,6 +993,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
                                       content::WebContents* new_contents,
                                       int index,
                                       int reason) {
@@ -10,7 +10,7 @@ index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee
    DCHECK(new_contents);
    TRACE_EVENT0("ui", "BrowserView::OnActiveTabChanged");
  
-@@ -1025,10 +1026,12 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+@@ -1101,10 +1102,12 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
    UpdateTitleBar();
  
    TranslateBubbleView::CloseCurrentBubble();
@@ -23,7 +23,7 @@ index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee
    if (was_active) {
      // We need to reset the current tab contents to null before it gets
      // freed. This is because the focus manager performs some operations
-@@ -1041,6 +1044,7 @@ void BrowserView::OnTabDetached(content::WebContents* contents,
+@@ -1117,6 +1120,7 @@ void BrowserView::OnTabDetached(content::WebContents* contents,
      app_banner_manager_observer_.RemoveAll();
      UpdateDevToolsForContents(nullptr, true);
    }
@@ -31,7 +31,7 @@ index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee
  }
  
  void BrowserView::OnTabRestored(int command_id) {
-@@ -1048,11 +1052,13 @@ void BrowserView::OnTabRestored(int command_id) {
+@@ -1124,11 +1128,13 @@ void BrowserView::OnTabRestored(int command_id) {
  }
  
  void BrowserView::ZoomChangedForActiveTab(bool can_show_bubble) {
@@ -45,7 +45,7 @@ index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee
  }
  
  gfx::Rect BrowserView::GetRestoredBounds() const {
-@@ -1172,11 +1178,15 @@ void BrowserView::OnExclusiveAccessUserInput() {
+@@ -1248,11 +1254,15 @@ void BrowserView::OnExclusiveAccessUserInput() {
  }
  
  bool BrowserView::ShouldHideUIForFullscreen() const {
@@ -61,7 +61,7 @@ index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee
  }
  
  bool BrowserView::IsFullscreen() const {
-@@ -1232,6 +1242,7 @@ LocationBar* BrowserView::GetLocationBar() const {
+@@ -1308,6 +1318,7 @@ LocationBar* BrowserView::GetLocationBar() const {
  }
  
  void BrowserView::SetFocusToLocationBar(bool select_all) {
@@ -69,7 +69,7 @@ index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee
    // On Windows, changing focus to the location bar causes the browser window to
    // become active. This can steal focus if the user has another window open
    // already. On Chrome OS, changing focus makes a view believe it has a focus
-@@ -1250,31 +1261,40 @@ void BrowserView::SetFocusToLocationBar(bool select_all) {
+@@ -1326,31 +1337,40 @@ void BrowserView::SetFocusToLocationBar(bool select_all) {
      DCHECK(focus_manager);
      focus_manager->ClearFocus();
    }
@@ -110,15 +110,13 @@ index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee
  }
  
  void BrowserView::FocusToolbar() {
-@@ -1354,6 +1374,7 @@ void BrowserView::FocusBookmarksToolbar() {
+@@ -1422,11 +1442,13 @@ void BrowserView::FocusBookmarksToolbar() {
  }
  
  void BrowserView::FocusInactivePopupForAccessibility() {
 +#if !defined(OS_ANDROID)
-   if (GetLocationBarView()->ActivateFirstInactiveBubbleForAccessibility())
+   if (ActivateFirstInactiveBubbleForAccessibility())
      return;
- 
-@@ -1366,6 +1387,7 @@ void BrowserView::FocusInactivePopupForAccessibility() {
  
    if (!infobar_container_->children().empty())
      infobar_container_->SetPaneFocusAndFocusDefault();
@@ -126,7 +124,7 @@ index 9038d797631ad076514d62c6ac0db7d22eaf6ec9..626199074a14113ded14410824624aee
  }
  
  void BrowserView::FocusAppMenu() {
-@@ -2026,12 +2048,14 @@ base::string16 BrowserView::GetAccessibleWindowTitleForChannelAndProfile(
+@@ -2116,12 +2138,14 @@ base::string16 BrowserView::GetAccessibleWindowTitleForChannelAndProfile(
          IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT, title);
    } else if (profile->IsRegularProfile() &&
               profile_manager->GetNumberOfProfiles() > 1) {
