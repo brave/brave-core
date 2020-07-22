@@ -11,6 +11,7 @@
 #include "base/strings/strcat.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
+#include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 

@@ -10,6 +10,8 @@
 #include <set>
 #include <string>
 
+#include "net/http/http_request_headers.h"
+#include "net/http/http_response_headers.h"
 #include "net/url_request/referrer_policy.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"

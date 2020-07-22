@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/browser/net/url_context.h"
+#include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"

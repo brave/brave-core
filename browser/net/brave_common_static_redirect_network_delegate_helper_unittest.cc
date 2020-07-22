@@ -13,6 +13,7 @@
 #include "brave/common/network_constants.h"
 #include "brave/components/brave_component_updater/browser/switches.h"
 #include "components/component_updater/component_updater_url_constants.h"
+#include "net/base/net_errors.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
