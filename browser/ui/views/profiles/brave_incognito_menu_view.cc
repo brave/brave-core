@@ -69,12 +69,14 @@ void BraveIncognitoMenuView::BuildMenu() {
       *this, views::style::CONTEXT_LABEL, views::style::STYLE_PRIMARY);
 
   int window_count = GetWindowCount(browser()->profile());
-  SetIdentityInfo(
-      ColoredImageForMenu(kIncognitoProfileIcon, icon_color),
-      l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
-      window_count > 1 ? l10n_util::GetPluralStringFUTF16(
+  SetProfileIdentityInfo(/*profile_name=*/base::string16(),
+                         /*edit_button=*/base::nullopt,
+                         ColoredImageForMenu(kIncognitoProfileIcon, icon_color),
+                         l10n_util::GetStringUTF16(
+                           GetProfileMenuTitleId(browser()->profile())),
+                         window_count > 1 ? l10n_util::GetPluralStringFUTF16(
                              IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)
-                       : base::string16());
+                           : base::string16());
 
   AddTorButton();
 
