@@ -209,7 +209,11 @@ bool DatabaseServerPublisherBanner::MigrateToV28(
 
   auto command = ledger::DBCommand::New();
   command->type = ledger::DBCommand::Type::EXECUTE;
-  command->command = base::StringPrintf("DELETE FROM %s", kTableName);
+  command->command = base::StringPrintf(
+      "DELETE FROM %s "
+      "WHERE publisher_key NOT IN "
+        "(SELECT publisher_key FROM server_publisher_info)",
+      kTableName);
   transaction->commands.push_back(std::move(command));
 
   if (!links_->Migrate(transaction, 28)) {
