@@ -5,6 +5,7 @@
 
 #include "brave/browser/themes/brave_theme_helper.h"
 
+#include "base/numerics/safe_conversions.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "chrome/browser/themes/theme_properties.h"
@@ -62,7 +63,7 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
   }
   return color_utils::BlendTowardMaxContrast(
       color,
-      gfx::ToRoundedInt(GetOmniboxStateOpacity(state) * 0xff));
+      base::Round(GetOmniboxStateOpacity(state) * 0xff));
 }
 
 #if defined(OS_LINUX)
