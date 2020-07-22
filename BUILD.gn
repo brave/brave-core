@@ -300,6 +300,16 @@ if (!is_mac && !is_android && !is_ios) {
   }
 }
 
+copy("brave_license_dist_resources") {
+  sources = [
+    "//brave/LICENSE",
+  ]
+
+  outputs = [
+    "$brave_dist_dir/{{source_file_part}}"
+  ]
+}
+
 process_version("generate_version") {
   template_file = "version.version"
   extra_args = [ "-e", "BRAVE_BROWSER_VERSION=\"$brave_version\"" ]
@@ -314,6 +324,7 @@ if (!is_android && !is_ios) {
     deps = [
       ":brave",
       ":generate_version",
+      ":brave_license_dist_resources",
       ":packed_resources",
       "build/$target_os:brave",
       "//chrome:packed_resources",
@@ -361,13 +372,20 @@ action("create_symbols_dist") {
 
   script = "//brave/script/create-dist.py"
 
+  inputs = get_target_outputs(":brave_license_dist_resources")
   dir_inputs = [ "$brave_project_name.breakpad.syms" ]
+
+  file_inputs = []
+  foreach(input, inputs) {
+    file_inputs += [ rebase_path(input, brave_dist_dir) ]
+  }
 
   rebase_output = rebase_path(output)
   rebase_base_dir = rebase_path(brave_dist_dir)
 
   args = [
     "--base-dir=$rebase_base_dir",
+    "--inputs=$file_inputs",
     "--dir-inputs=$dir_inputs",
     "--output=$rebase_output",
   ]
@@ -376,6 +394,7 @@ action("create_symbols_dist") {
 
   deps = [
     "app/$current_os:symbol_dist_resources",
+    ":brave_license_dist_resources",
   ]
 }
 
@@ -384,7 +403,7 @@ action("create_dist_zips") {
 
   script = "//brave/script/create-dist.py"
 
-  inputs = []
+  inputs = get_target_outputs(":brave_license_dist_resources")
 
   if (!is_mac && !is_android && !is_ios) {
     inputs += get_target_outputs(":brave_dist_resources")
@@ -423,6 +442,7 @@ action("create_dist_zips") {
 
   deps = [
     ":create_symbols_dist",
+    ":brave_license_dist_resources",
     "app/$current_os:dist_resources",
   ]
 
