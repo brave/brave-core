@@ -67,7 +67,7 @@ void UpholdUser::OnGet(
     const ledger::UrlResponse& response,
     GetUserCallback callback) {
   User user;
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
+  BLOG(7, ledger::UrlResponseToString(__func__, response));
 
   if (response.status_code == net::HTTP_UNAUTHORIZED) {
     callback(ledger::Result::EXPIRED_TOKEN, user);
