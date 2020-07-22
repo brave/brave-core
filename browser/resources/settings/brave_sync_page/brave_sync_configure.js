@@ -63,11 +63,7 @@ Polymer({
   },
 
   attached: async function() {
-    const [syncCode, deviceList] = await Promise.all([
-      this.browserProxy_.getSyncCode(),
-      this.browserProxy_.getDeviceList()
-    ])
-    this.syncCode = syncCode
+    const deviceList = await this.browserProxy_.getDeviceList()
     this.addWebUIListener('device-info-changed', this.handleDeviceInfo_.bind(this))
     this.handleDeviceInfo_(deviceList)
   },
@@ -82,11 +78,24 @@ Polymer({
     return displayDate.toDateString()
   },
 
-  onViewSyncCode_: function() {
+  /*
+   * This only sets sync code when it is not already set. It needs to be cleared
+   * when sync chain reset
+   */
+  ensureSetSyncCode_: async function() {
+    if (!!this.syncCode)
+      return
+    const syncCode = await this.browserProxy_.getSyncCode()
+    this.syncCode = syncCode
+  },
+
+  onViewSyncCode_: async function() {
+    await this.ensureSetSyncCode_()
     this.syncCodeDialogType_ = 'words'
   },
 
-  onAddDevice_: function() {
+  onAddDevice_: async function() {
+    await this.ensureSetSyncCode_()
     this.syncCodeDialogType_ = 'choose'
   },
 
@@ -101,6 +110,9 @@ Polymer({
       return
     }
     await this.browserProxy_.resetSyncChain();
+    // Clear sync code because user might use the same page to create a new sync
+    // chain without reload
+    this.syncCode = undefined
     const router = Router.getInstance();
     router.navigateTo(router.getRoutes().BRAVE_SYNC);
   }
