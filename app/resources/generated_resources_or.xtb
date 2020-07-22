@@ -45,7 +45,6 @@
 <translation id="1047431265488717055">ଟେ&amp;କ୍ସଟ୍ ଲିଙ୍କ୍ କପି କରନ୍ତୁ</translation>
 <translation id="1048286738600630630">ଡିସ୍‌ପ୍ଲେ</translation>
 <translation id="1048986595386481879">ଗତିଶୀଳ ଭାବେ ଦିଆଯାଇଛି</translation>
-<translation id="1049743911850919806">ଇନ୍‌କଗ୍ନିଟୋ</translation>
 <translation id="1049795001945932310">&amp;ଭାଷା ସେଟିଂସ୍‌</translation>
 <translation id="1054153489933238809">ନୂଆ ଟାବ୍‍‍ରେ ମୂଳ &amp;ଛବି ଖୋଲନ୍ତୁ</translation>
 <translation id="1055806300943943258">ବ୍ଲୁଟୁଥ୍ ଓ USB ଡିଭାଇସ୍‍ଗୁଡ଼ିକ ପାଇଁ ସନ୍ଧାନ କରାଯାଉଛି...</translation>
@@ -104,7 +103,6 @@
 <translation id="1128591060186966949">ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍ ଏଡିଟ୍ କରନ୍ତୁ</translation>
 <translation id="1129850422003387628">ଆପଗୁଡ଼ିକୁ ପରିଚାଳନା କରନ୍ତୁ</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> - <ph name="GROUP_NAME"/> ଗୋଷ୍ଠୀର ଅଂଶ</translation>
-<translation id="1134009406053225289">ଗୁପ୍ତ ୱ୍ଵିଣ୍ଡୋରେ ଖୋଲିଛି</translation>
 <translation id="1136712381129578788">ଅନେକ ଥର ଭୁଲ ପିନ୍ ଦିଆଯାଇଥିବା ହେତୁ ସୁରକ୍ଷା କୀ ଲକ୍ ହୋଇଯାଇଛି । ଏହାକୁ ଅନ୍‍ଲକ୍ କରିବା ପାଇଁ, ଏହାକୁ କାଢ଼ନ୍ତୁ ଏବଂ ପୁଣି ଭର୍ତ୍ତି କରନ୍ତୁ।</translation>
 <translation id="1137673463384776352"><ph name="APP"/>ଲିଙ୍କ୍ ଖୋଲନ୍ତୁ</translation>
 <translation id="1139343347646843679">Linux କନଫିଗର୍ କରାଯାଉଥିବା ସମୟରେ ଏକ ତ୍ରୁଟି ହୋଇଥିଲା। ଦୟାକରି ଆପଣଙ୍କ ଆଡମିନିଷ୍ଟ୍ରେଟରଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ।</translation>
@@ -137,7 +135,7 @@
 <translation id="1173894706177603556">ରିନେମ୍ କରନ୍ତୁ</translation>
 <translation id="1173916544412572294"><ph name="NETWORK_COUNT"/>ଟିର <ph name="NETWORK_INDEX"/> ନେଟ୍‌ୱାର୍କ, <ph name="PHONE_NAME"/>, <ph name="CONNECTION_STATUS"/>, ସିଗ୍‍ନାଲ୍‍ର କ୍ଷମତା <ph name="SIGNAL_STRENGTH"/>%, ଫୋନ୍‌ ବ୍ୟାଟେରୀ <ph name="BATTERY_STATUS"/>%, ବିବରଣୀ</translation>
 <translation id="1174073918202301297">ସର୍ଟକଟ୍ ଯୋଗ କରାଗଲା</translation>
-<translation id="117445914942805388">ଆପଣଙ୍କର ସମସ୍ତ ସିଙ୍କ୍‌ ହୋ‍ଇଥିବା ଡିଭାଇସ୍‌ ଏବଂ ଆପଣଙ୍କର ଆକାଉଣ୍ଟରୁ ବ୍ରାଉଜିଂ ଡାଟା ଖାଲି କରିବାକୁ <ph name="BEGIN_LINK"/>ସିଙ୍କ୍‍ ସେଟିଂସ୍‌କୁ ଯାଆନ୍ତୁ<ph name="END_LINK"/>।</translation>
+<translation id="4445433576366924090">ଆପଣଙ୍କର ସମସ୍ତ ସିଙ୍କ୍‌ ହୋ‍ଇଥିବା ଡିଭାଇସ୍‌ ଏବଂ ଆପଣଙ୍କର ଆକାଉଣ୍ଟରୁ ବ୍ରାଉଜିଂ ଡାଟା ଖାଲି କରିବାକୁ <ph name="BEGIN_LINK"/>ସିଙ୍କ୍‍ ସେଟିଂସ୍‌କୁ ଯାଆନ୍ତୁ<ph name="END_LINK"/>।</translation>
 <translation id="1175364870820465910">&amp;ମୁଦ୍ରଣ...</translation>
 <translation id="1177138678118607465">Brave, ସନ୍ଧାନ, ବିଜ୍ଞାପନ ଏବଂ ଅନ୍ୟ Brave ସେବାକୁ ବ୍ୟକ୍ତିଗତ କରିବା ପାଇଁ ଆପଣଙ୍କ ବ୍ରାଉଜିଂ ଇତିବୃତ୍ତିକୁ ବ୍ୟବହାର କରିପାରେ। ଆପଣ ଯେକୌଣସି ସମୟରେ ଏହାକୁ myaccount.google.com/activitycontrols/searchରେ ପରିବର୍ତ୍ତନ କରିପାରିବେ।</translation>
 <translation id="1177863135347784049">କଷ୍ଟମ୍‌</translation>
@@ -166,7 +164,6 @@
 <translation id="1205489148908752564">ହ୍ୱାଇଟ୍‍ଲିଷ୍ଟରେ ଥିବା ଉପଯୋଗକର୍ତ୍ତାମାନଙ୍କୁ ପଢ଼ନ୍ତୁ ଏବଂ ପରିବର୍ତ୍ତନ କରନ୍ତୁ</translation>
 <translation id="1206407435587370571">ଆପଣଙ୍କ Bravebookକୁ ଏକ୍ସପ୍ଲୋର୍ କରନ୍ତୁ</translation>
 <translation id="1209796539517632982">ସ୍ୱଚାଳିତ ନାମ ସର୍ଭର</translation>
-<translation id="1211364473545090084">ଇନ୍‌କଗ୍‌ନିଟୋ window ମାଧ୍ୟମରେ ଆପଣଙ୍କର ବ୍ରାଉଜିଂ ଇତିବୃତିକୁ ସେଭ୍ ନକରି ୱେବ୍‌ର ବ୍ୟବହାର କରନ୍ତୁ</translation>
 <translation id="1211769675100312947">ଆପଣଙ୍କ ତତ୍ତ୍ୱାବଧାନରେ ସର୍ଟକଟ୍‌ଗୁଡ଼ିକ ଅଛି</translation>
 <translation id="1213037489357051291"><ph name="NUM_FINGERPRINTS"/>ଟି ଟିପଚିହ୍ନ ସେଟ୍ କରାଯାଇଛି</translation>
 <translation id="1213254615020057352">ବ୍ୟବହାର ଏବଂ ଡାଏଗ୍ନୋଷ୍ଟିକ୍ ଡାଟା ପଠାନ୍ତୁ। ସ୍ଵଚାଳିତ ଭାବେ ଡାଏଗ୍ନୋଷ୍ଟିକ୍, ଡିଭାଇସ୍ ଏବଂ ଆପ୍ ବ୍ୟବହାର ଡାଟା Braveକୁ ପଠାଇ ଆପଣଙ୍କ ପିଲାର Android ଅନୁଭୂତିକୁ ଉନ୍ନତ କରିବାରେ ସାହାଯ୍ୟ କରନ୍ତୁ। ଆପଣଙ୍କ ପିଲାକୁ ଚିହ୍ନଟ କରିବାରେ ଏହାକୁ ବ୍ୟବହାର କରାଯିବ ନାହିଁ ଏବଂ ସିଷ୍ଟମ୍ ଓ ଆପର ସ୍ଥିରତା ତଥା ଅନ୍ୟ ଉନ୍ନତିଗୁଡ଼ିକରେ ସାହାଯ୍ୟ କରିବ। କିଛି ଏକତ୍ରିତ ଡାଟା Brave ଆପ୍ ଓ Android ଡେଭଲପର୍ ପରି ଏହାର ପାର୍ଟନରଗୁଡ଼ିକୁ ମଧ୍ୟ ସାହାଯ୍ୟ କରିବ। ଏହି ସେଟିଂ ମାଲିକଙ୍କ ଦ୍ୱାରା ଲାଗୁ କରାଯାଇଛି। ଏହି ଡିଭାଇସ୍ ପାଇଁ ଡାଏଗ୍ନୋଷ୍ଟିକ୍ ଏବଂ ବ୍ୟବହାର ଡାଟା Braveକୁ ପଠାଇବା ନିମନ୍ତେ ମାଲିକ ବାଛିପାରନ୍ତି। ଯଦି ଆପଣଙ୍କ ପିଲା ପାଇଁ ଅତିରିକ୍ତ ୱେବ୍ ଏବଂ ଆପ୍ କାର୍ଯ୍ୟକଳାପ ସେଟିଂସ୍ ଚାଲୁ ଥାଏ, ତେବେ ଏହି ଡାଟା ତା'ର Brave ଆକାଉଣ୍ଟରେ ସେଭ୍ ହୋଇପାରେ।</translation>
@@ -295,7 +292,6 @@
 <translation id="1377600615067678409">ବର୍ତ୍ତମାନ ପାଇଁ ଛାଡ଼ିଦିଅନ୍ତୁ</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> ଏହି ସେଟିଂକୁ ନିୟନ୍ତ୍ରଣ କରୁଛି</translation>
 <translation id="1380028686461971526">ନେଟୱାର୍କ ସହ ସ୍ୱତଃ ସଂଯୋଗ କରନ୍ତୁ</translation>
-<translation id="1380436189840894976">ଯେକୌଣସି ମତେ ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ ଛାଡିବେ?</translation>
 <translation id="1383861834909034572">ସମାପନ ହେବାବେଳେ ଖୋଲୁଛି</translation>
 <translation id="1383876407941801731">ସନ୍ଧାନ</translation>
 <translation id="1386387014181100145">ହାୱଡି</translation>
@@ -354,7 +350,6 @@
 <translation id="144518587530125858">ଥିମ୍ ପାଇଁ '<ph name="IMAGE_PATH"/>'କୁ ଲୋଡ୍ କରାଯାଇପାରିଲା ନାହିଁ।</translation>
 <translation id="1445693676523799095">ଏଥିପାଇଁ ହୁଏତ କିଛି ସମୟ ଲାଗିପାରେ</translation>
 <translation id="1451375123200651445">ୱେବ୍‍ପୃଷ୍ଠା, ଗୋଟିଏ ଫାଇଲ୍</translation>
-<translation id="1451917004835509682">ପର୍ଯ୍ୟବେକ୍ଷିତ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="1454223536435069390">ସ୍କ୍ରିନ୍‌ସଟ୍ ନି&amp;ଅନ୍ତୁ</translation>
 <translation id="1459967076783105826">ଏକ୍ସଟେନ୍‌ସନ୍‌ ଦ୍ୱାରା ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍‌ଗୁଡ଼ିକ‍ ଯୋଗ କରାଯାଇଛି</translation>
 <translation id="146000042969587795">ଏହି ଫ୍ରେମଟି ଅବରୋଧିତ ଥିଲା କାରଣ ଏହା କେତେକ ନିରାପତ୍ତାଜନକ ବିଷୟବସ୍ତୁ ଧାରଣକରେ ।</translation>
@@ -474,7 +469,6 @@
 <translation id="1600857548979126453">ପୃଷ୍ଠା ଡିବଗର୍ ବ୍ୟାକ୍‍ଏଣ୍ଡ ଆକ୍ସେସ୍‌ କରନ୍ତୁ</translation>
 <translation id="1601560923496285236">ଲାଗୁ କରନ୍ତୁ</translation>
 <translation id="1602085790802918092">ଭର୍ଚୁଆଲ୍ ମେସିନ୍ ଆରମ୍ଭ ହେଉଛି</translation>
-<translation id="1603914832182249871">(ଇନ୍‌କଗ୍ନିଟୋ)</translation>
 <translation id="1604432177629086300">ପ୍ରିଣ୍ଟ କରାଯାଇପାରିଲା ନାହିଁ। ପ୍ରିଣ୍ଟର୍ ଯାଞ୍ଚ କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: ପାସ୍‍ୱାର୍ଡ ସିଙ୍କ୍ କାମ କରୁ ନାହିଁ</translation>
 <translation id="1607139524282324606">ଏଣ୍ଟ୍ରି ଖାଲି କରନ୍ତୁ</translation>
@@ -546,7 +540,6 @@
 <translation id="1680841347983561661">ଦୟାକରି କିଛି ସମୟ ମଧ୍ୟରେ Google Play ପୁଣି ଆରମ୍ଭ କରିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="1680849702532889074">ଆପଣଙ୍କର Linux ଆପ୍ଲିକେସନ୍ ଇନ୍‍ଷ୍ଟଲେସନ୍ ସମୟରେ ଏକ ସମସ୍ୟା ଦେଖାଦେଲା।</translation>
 <translation id="16815041330799488">କ୍ଲିପ୍‌ବୋର୍ଡକୁ କପି ହୋ‍ଇଥିବା ଟେକ୍ସଟ୍‍ ଏବଂ ଛବିଗୁଡ଼ିକୁ ଦେଖିବାକୁ ସାଇଟ୍‌ଗୁଡ଼ିକୁ ଅନୁମତି ଦିଅନ୍ତୁ ନାହିଁ</translation>
-<translation id="1682548588986054654">&amp;ନୂଆ ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋ</translation>
 <translation id="168715261339224929">ଆପଣଙ୍କର ବୁକ୍‌ମାର୍କଗୁଡ଼ିକୁ ନିଜର ସବୁ ଡିଭାଇସ୍‌ଗୁଡ଼ିକରେ ପାଇବା ପାଇଁ, ସିଙ୍କକୁ ଚାଲୁ କରନ୍ତୁ।</translation>
 <translation id="1688867105868176567">ସାଇଟ୍‍ ଡାଟା ଖାଲି କରିବେ?</translation>
 <translation id="1688935057616748272">ଏକ ଅକ୍ଷର ଟାଇପ୍‌ କରନ୍ତୁ</translation>
@@ -557,10 +550,8 @@
 <translation id="1692210323591458290">ଗାଢ଼ ବାଇଗଣୀ</translation>
 <translation id="1697150536837697295">କଳା</translation>
 <translation id="1697686431566694143">ଫାଇଲ୍ ଏଡିଟ୍ କରନ୍ତୁ</translation>
-<translation id="1698122934742150150">କେବଳ ବର୍ତ୍ତମାନର ଇନ୍‌କଗ୍ନିଟୋ ସମୟ ଅବଧି</translation>
 <translation id="1700079447639026019">କୁକୀଗୁଡ଼ିକୁ କେବେ ବି ବ୍ୟବହାର କରିପାରୁନଥିବା ସାଇଟଗୁଡ଼ିକ</translation>
 <translation id="1700845716982723710">ଆମ୍ବିଏଣ୍ଟ ମୋଡ୍ ବନ୍ଦ କରନ୍ତୁ</translation>
-<translation id="1701062906490865540">ଏହି ବ୍ୟକ୍ତିଙ୍କୁ ବାହାର କରନ୍ତୁ</translation>
 <translation id="1703331064825191675">ଆପଣଙ୍କର ପାସ୍‍ୱାର୍ଡଗୁଡ଼ିକ ବିଷୟରେ କେବେ ବି ଚିନ୍ତା କରନ୍ତୁ ନାହିଁ</translation>
 <translation id="1704970325597567340">ସୁରକ୍ଷା ଯାଞ୍ଚ <ph name="DATE"/>ରେ ଚାଲିଥିଲା</translation>
 <translation id="1706586824377653884">ଆପଣଙ୍କର ଆଡମିନିଷ୍ଟ୍ରେଟର୍‌ଙ୍କ ଦ୍ୱାରା ଯୋଗ କରାଯାଇଛି</translation>
@@ -686,7 +677,6 @@
 <translation id="1850508293116537636">&amp;ଡାହାଣ ପଟକୁ ଘୂରାନ୍ତୁ</translation>
 <translation id="1852141627593563189">କ୍ଷତିକାରକ ସଫ୍ଟୱେର୍ ଖୋଜନ୍ତୁ</translation>
 <translation id="1852799913675865625">ଫାଇଲ୍‌ ପଢିବା ପାଇଁ ଚେଷ୍ଟା କରିବା ସମୟରେ ଏକ ତ୍ରୁଟି ହୋ‍ଇଛି: <ph name="ERROR_TEXT"/>।</translation>
-<translation id="1853692000353488670">ନୂଆ ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍</translation>
 <translation id="1854180393107901205">କାଷ୍ଟ କରିବା ବନ୍ଦ କରନ୍ତୁ</translation>
 <translation id="1856715684130786728">ଲୋକେସନ୍ ଯୋଗ କରନ୍ତୁ...</translation>
 <translation id="1858585891038687145">ସଫ୍ଟୱେୟାର୍ ନିର୍ମାତା ଚିହ୍ନଟ କରିବା ପାଇଁ ଏହି ସାର୍ଟିଫିକେଟ୍ ଉପରେ ବିଶ୍ଵାସ ରଖନ୍ତୁ</translation>
@@ -927,7 +917,6 @@
 <translation id="2174948148799307353">ଆକାଉଣ୍ଟ <ph name="PARENT_EMAIL"/> ଦ୍ୱାରା ପରିଚାଳିତ ହେଉଛି। ଏହି ଡିଭାଇସର ମୁଖ୍ୟ ଆକାଉଣ୍ଟରୁ ସାଇନ୍ ଆଉଟ୍ କରିବାକୁ, ଆପଣଙ୍କ ସ୍କ୍ରିନରେ ଥିବା ସମୟରେ କ୍ଲିକ୍ କରନ୍ତୁ। ଯେଉଁ ମେନୁ ଦେଖାଯିବ, ସେଥିରେ ଥିବା "ସାଇନ୍ ଆଉଟ୍ କରନ୍ତୁ"ରେ କ୍ଲିକ୍ କରନ୍ତୁ।</translation>
 <translation id="2175607476662778685">ଶୀଘ୍ର ଉନ୍ମୋଚନ ଦଣ୍ଡିକା</translation>
 <translation id="217576141146192373">ପ୍ରିଣ୍ଟର୍ ଯୋଗ କରିବାକୁ ଅକ୍ଷମ। ଦୟାକରି ଆପଣଙ୍କ ପ୍ରିଣ୍ଟର୍‌ର କନ୍‌ଫିଗ୍‌ରେସନ୍ ଯାଞ୍ଚ କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
-<translation id="2177950615300672361">ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍‍: <ph name="TAB_NAME"/></translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_DOMAIN"/>ରେ ଥିବା <ph name="PEPPER_PLUGIN_NAME"/> ଆପଣଙ୍କ କମ୍ପ୍ୟୁଟର୍ ଆକ୍ସେସ୍ କରିବାକୁ ଚାହୁଁଛି</translation>
 <translation id="2178614541317717477">CA କମ୍ପ୍ରୋମାଇଜ୍</translation>
 <translation id="2182058453334755893">ଆପଣଙ୍କର କ୍ଲିପ୍‌ବୋର୍ଡକୁ କପି କରାଯାଇଛି</translation>
@@ -938,7 +927,7 @@
 <translation id="2190069059097339078">ୱାଇଫାଇ କ୍ରେଡେନ୍ସିଆଲ୍ ପ୍ରାପ୍ତକର୍ତ୍ତା</translation>
 <translation id="219008588003277019">ସ୍ଥାନୀୟ କ୍ଲାଏଣ୍ଟ ମଡ୍ୟୁଲ୍: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(ଖାଲି)</translation>
-<translation id="2191754378957563929">ଚାଲୁ ଅଛି</translation>
+<translation id="8959699239363253085">ଚାଲୁ ଅଛି</translation>
 <translation id="2192505247865591433">ଠାରୁ:</translation>
 <translation id="2193365732679659387">ବିଶ୍ୱସ୍ତ ସେଟିଂସ୍</translation>
 <translation id="2195331105963583686">ଆପଣ ସେହି ସମୟ ପରେ ମଧ୍ୟ <ph name="DEVICE_TYPE"/> ବ୍ୟବହାର କରିପାରିବେ, କିନ୍ତୁ ଏହା ଆଉ ସ୍ୱଚାଳିତ ସଫ୍ଟୱେୟାର ଏବଂ ସୁରକ୍ଷା ଅପ୍‌ଡେଟ୍‍ଗୁଡ଼ିକ ପାଇବ ନାହିଁ।</translation>
@@ -972,7 +961,6 @@
 <translation id="2225864335125757863">ଆପଣଙ୍କ ଆକାଉଣ୍ଟ ସୁରକ୍ଷିତ ରଖିବାକୁ ଏହି ପାସୱାର୍ଡଗୁଡ଼ିକ ତୁରନ୍ତ ପରିବର୍ତ୍ତନ କରନ୍ତୁ:</translation>
 <translation id="2226449515541314767">ଏହି ସାଇଟ୍‌ MIDI ଡିଭାଇସ୍‌ଗୁଡ଼ିକର ପୂର୍ଣ୍ଣ ନିୟନ୍ତ୍ରଣରୁ ଅବରୋଧ କରାଯାଇଛି।</translation>
 <translation id="222657802677009088">ପ୍ରିଣ୍ଟର୍ ସେଟଅପ୍ କରନ୍ତୁ</translation>
-<translation id="222704500187107962">ଆପଣ ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧିରୁ ବାହାରିବା ପରେ ଏହି ବ୍ୟତିକ୍ରମକୁ ସ୍ୱଚାଳିତ ଭାବେ କାଢ଼ି ଦିଆଯିବ</translation>
 <translation id="2227179592712503583">ପରାମର୍ଶ କାଢ଼ନ୍ତୁ</translation>
 <translation id="2229161054156947610">ଆଉ ଅଧିକ 1 ଘଣ୍ଟା ସମୟ ଅଛି</translation>
 <translation id="222931766245975952">ଫାଇଲ୍‍ ଛୋଟ କରାଗଲା</translation>
@@ -983,7 +971,6 @@
 <translation id="7956662517480676674">ସିଙ୍କ ଓ Brave ସେବାଗୁଡ଼ିକ</translation>
 <translation id="2235344399760031203">ତୃତୀୟ-ପକ୍ଷ କୁକୀଗୁଡ଼ିକ ବ୍ଲକ୍ କରାଯାଇଛି</translation>
 <translation id="2238379619048995541">ଫ୍ରିକ୍ୟୁଏନ୍ସି ସ୍ଥିତିରେ ଥିବା ଡାଟା</translation>
-<translation id="2239921694246509981">ପର୍ଯ୍ୟବେକ୍ଷିତ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="2241053333139545397">ଅନେକଗୁଡ଼ିଏ ୱେବ୍‌ସାଇଟ୍‌ରେ ଆପଣଙ୍କର ଡାଟା ପଢ଼ନ୍ତୁ ଏବଂ ପରିବର୍ତ୍ତନ କରନ୍ତୁ</translation>
 <translation id="2241634353105152135">ଥରେ ମାତ୍ର</translation>
 <translation id="2242687258748107519">ଫାଇଲ୍ ସୂଚନା</translation>
@@ -1270,7 +1257,6 @@
 <translation id="2129873093718581193">Braveରେ ସନ୍ଧାନ କରନ୍ତୁ କିମ୍ବା URL ଟାଇପ୍ କରନ୍ତୁ</translation>
 <translation id="2602501489742255173">ଆରମ୍ଭ କରିବା ପାଇଁ ଉପରକୁ ସ୍ୱାଇପ୍ କରନ୍ତୁ</translation>
 <translation id="2603115962224169880">କମ୍ପ୍ୟୁଟର୍ ଖାଲି କରନ୍ତୁ</translation>
-<translation id="2603463522847370204">&amp;ଇନ୍‌କଗ୍‌ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ</translation>
 <translation id="2604255671529671813">ନେଟ୍‍ୱାର୍କ ସଂଯୋଗରେ ତ୍ରୁଟି</translation>
 <translation id="2606246518223360146">ଡାଟା ଲିଙ୍କ୍‍ କରନ୍ତୁ</translation>
 <translation id="2607101320794533334">ବିଷୟ ସାର୍ବଜନିକ କୀ ସୂଚନା</translation>
@@ -1332,13 +1318,12 @@
 <translation id="2672142220933875349">ଖରାପ crx ଫାଇଲ୍‌, ଅନ୍‍ପ୍ୟାକିଂ ବିଫଳ ହେଲା।</translation>
 <translation id="2673135533890720193">ଆପଣଙ୍କର ବ୍ରାଉଜିଂ ଇତିବୃତ୍ତି ପଢ଼ନ୍ତୁ</translation>
 <translation id="2673589024369449924">ଏହି ଉପଯୋଗକର୍ତ୍ତାଙ୍କ ପାଇଁ ଏକ ଡେସ୍କଟପ୍ ସର୍ଟକଟ୍ ତିଆରି କରନ୍ତୁ</translation>
-<translation id="2674764818721168631">ବନ୍ଦ ଅଛି</translation>
+<translation id="6175644081330715138">ବନ୍ଦ ଅଛି</translation>
 <translation id="2677748264148917807">ଛାଡ଼ନ୍ତୁ</translation>
 <translation id="2678063897982469759">ପୁନଃ-ସକ୍ଷମ କରନ୍ତୁ</translation>
 <translation id="268053382412112343">&amp;ଇତିବୃତ୍ତି</translation>
 <translation id="2682498795777673382">ନିଜ ବାପାମା'ଙ୍କ ଠାରୁ ଅପ୍‌ଡେଟ୍</translation>
 <translation id="2683638487103917598">ଫୋଲ୍ଡର୍ ସଜଡ଼ାଗଲା</translation>
-<translation id="2684004000387153598">ଜାରି ରଖିବାକୁ 'OK'ରେ କ୍ଲିକ୍ କରନ୍ତୁ ତା'ପରେ ଆପଣଙ୍କର ଇମେଲ୍ ଠିକଣା ପାଇଁ ଏକ ନୂତନ ପ୍ରୋଫାଇଲ୍ ତିଆରି କରିବା ନିମନ୍ତେ 'ବ୍ୟକ୍ତି ଯୋଗ କରନ୍ତୁ'ରେ କ୍ଲିକ୍ କରନ୍ତୁ।</translation>
 <translation id="2687403674020088961">ସମସ୍ତ କୁକୀ ବ୍ଲକ୍ କରନ୍ତୁ (ସୁପାରିଶ କରାଯାଇ ନାହିଁ)</translation>
 <translation id="2687407218262674387">Brave ସେବାର ସର୍ତ୍ତାବଳୀ</translation>
 <translation id="2688196195245426394">ସର୍ଭର୍‌ ସହ ଡିଭାଇସ୍‌ ପଞ୍ଜିକରଣ କରିବା ସମୟରେ ତ୍ରୁଟି: <ph name="CLIENT_ERROR"/>।</translation>
@@ -1476,7 +1461,6 @@
 <translation id="2841837950101800123">ପ୍ରଦାତା</translation>
 <translation id="2844169650293029770">USB-C ଡିଭାଇସ୍ (ବାମପଟ ସାମ୍ନା ପୋର୍ଟ)</translation>
 <translation id="2844809857160214557">ପ୍ରିଣ୍ଟ କାର୍ଯ୍ୟଗୁଡ଼ିକ ଦେଖନ୍ତୁ ଓ ପରିଚାଳନା କରନ୍ତୁ</translation>
-<translation id="2845382757467349449">ସର୍ବଦା ବୁକମାର୍କ ବାର୍‍ ଦେଖାନ୍ତୁ</translation>
 <translation id="284805635805850872">କ୍ଷତିକାରକ ସଫ୍ଟୱେର୍ କାଢ଼ିବେ?</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
 <translation id="284975061945174219">କ୍ଲିନ୍‍ଅପ୍ କାର୍ଯ୍ୟ ବିଫଳ ହେଲା</translation>
@@ -1726,7 +1710,7 @@
 <translation id="3170072451822350649">ଆପଣ ହୁଏତ ସାଇନ୍ ଇନ୍‌କୁ ଛାଡ଼ିପାରିବେ ଏବଂ <ph name="LINK_START"/>ଅତିଥି ଭାବେ ବ୍ରାଉଜ୍ କରିପାରିବେ<ph name="LINK_END"/>।</translation>
 <translation id="3177909033752230686">ପୃଷ୍ଠାର ଭାଷା:</translation>
 <translation id="3179982752812949580">ଟେକ୍ସଟ୍ ଫଣ୍ଟ</translation>
-<translation id="3181954750937456830">ସେଫ୍ ବ୍ରାଉଜିଂ (ଆପଣଙ୍କୁ ଏବଂ ଆପଣଙ୍କର ଡିଭାଇସ୍‍କୁ ବିପଜ୍ଜନକ ସାଇଟ୍‍ଗୁଡ଼ିକରୁ ରକ୍ଷା କରେ)</translation>
+<translation id="3201899458094819285">ସେଫ୍ ବ୍ରାଉଜିଂ (ଆପଣଙ୍କୁ ଏବଂ ଆପଣଙ୍କର ଡିଭାଇସ୍‍କୁ ବିପଜ୍ଜନକ ସାଇଟ୍‍ଗୁଡ଼ିକରୁ ରକ୍ଷା କରେ)</translation>
 <translation id="3182749001423093222">ବନାନ ଯାଞ୍ଚ</translation>
 <translation id="3183139917765991655">ପ୍ରୋଫାଇଲ୍ ଇମ୍ପୋର୍ଟର୍</translation>
 <translation id="3183944777708523606">ମନିଟର୍ ବ୍ୟବସ୍ଥିତ କରିବା ସେଟିଂସ୍</translation>
@@ -1834,7 +1818,6 @@
 <translation id="3315158641124845231"><ph name="PRODUCT_NAME"/> ଲୁଚାନ୍ତୁ</translation>
 <translation id="3317459757438853210">ଦୁଇ-ତରଫା</translation>
 <translation id="3317678681329786349">କ୍ୟାମେରା ଏବଂ ମାଇକ୍ରୋଫୋନ୍ ବ୍ଲକ୍ ଅଛି</translation>
-<translation id="3319048459796106952">&amp;ନୂତନ ଗୁପ୍ତ ୱିଣ୍ଡୋ</translation>
 <translation id="3320630259304269485">ସେଫ୍ ବ୍ରାଉଜିଂ (ବିପଦଜନକ ସାଇଟଗୁଡ଼ିକରୁ ସୁରକ୍ଷା) ଏବଂ ଅନ୍ୟ ସୁରକ୍ଷା ସେଟିଂସ୍</translation>
 <translation id="3323295311852517824">{NUM_FILES,plural, =0{ଏହି ଡାଟାରେ ସମ୍ବେଦନଶୀଳ କିମ୍ବା ବିପଦଜନକ ବିଷୟବସ୍ତୁ ଅଛି। ଏହି ବିଷୟବସ୍ତୁ କାଢ଼ି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।}=1{ଏହି ଫାଇଲରେ ସମ୍ବେଦନଶୀଳ କିମ୍ବା ବିପଦଜନକ ବିଷୟବସ୍ତୁ ଅଛି। ଏହି ବିଷୟବସ୍ତୁ କାଢ଼ି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।}other{ଏହି ଫାଇଲଗୁଡ଼ିକରେ ସମ୍ବେଦନଶୀଳ କିମ୍ବା ବିପଦଜନକ ବିଷୟବସ୍ତୁ ଅଛି। ଏହି ବିଷୟବସ୍ତୁ କାଢ଼ି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।}}</translation>
 <translation id="3323521181261657960">ବୋନସ୍! ଆପଣ ଅଧିକ ସ୍କ୍ରିନ୍ ସମୟ ପାଇଛନ୍ତି</translation>
@@ -1887,7 +1870,6 @@
 <translation id="3404065873681873169">ଏହି ସାଇଟ୍‌ ପାଇଁ କୌଣସି ପାସ୍‌ୱର୍ଡ ସେଭ୍‌ କରାଯାଇନାହିଁ</translation>
 <translation id="3405664148539009465">ଫଣ୍ଟଗୁଡ଼ିକୁ କଷ୍ଟମାଇଜ୍ କରନ୍ତୁ</translation>
 <translation id="3405763860805964263">...</translation>
-<translation id="3406605057700382950">&amp;ବୁକ୍‌ମାର୍କ ବାର୍ ଦେଖାନ୍ତୁ</translation>
 <translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{ଏହି ଏକ୍ସଟେନସନ୍ ବିପଦଜନକ ହୋଇପାରେ}other{ଏହି ଏକ୍ସଟେନସନଗୁଡ଼ିକ ବିପଦଜନକ ହୋଇପାରେ}}</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="3410832398355316179">ଥରେ ଏହି ଉପଯୋଗକର୍ତ୍ତା ହୋ‍ଇଯିବେ, ତେବେ ଏହି ଉପଯୋଗକର୍ତ୍ତାଙ୍କର ସମସ୍ତ ଫାଇଲ୍‌ ଏବଂ ସ୍ଥାନୀୟ ଡାଟା ସ୍ଥାୟୀ ଭାବେ ଡିଲିଟ୍‍ ହୋ‍ଇଯିବ। <ph name="USER_EMAIL"/> ଏବେ ମଧ୍ୟ ପରେ ସାଇନ୍‍ ଇନ୍‌ କରିପାରିବେ।</translation>
@@ -1954,7 +1936,6 @@
 <translation id="3476303763173086583">ବ୍ୟବହାର ଓ ଡାଏଗ୍ନୋଷ୍ଟିକ୍ ଡାଟାକୁ ପଠାନ୍ତୁ। ସ୍ଵଚାଳିତ ଭାବେ ଡାଏଗ୍ନୋଷ୍ଟିକ୍, ଡିଭାଇସ୍ ଓ ଆପ୍ ବ୍ୟବହାର ଡାଟା Braveକୁ ପଠାଇ ଆପଣଙ୍କ ପିଲାର Android ଅନୁଭବକୁ ଉନ୍ନତ କରିବାରେ ସାହାଯ୍ୟ କରନ୍ତୁ। ଆପଣଙ୍କ ପିଲାକୁ ଚିହ୍ନଟ କରିବାରେ ଏହାକୁ ବ୍ୟବହାର କରାଯିବ ନାହିଁ ଏବଂ ସିଷ୍ଟମ୍ ଓ ଆପ୍‌ର ସ୍ଥିରତା ଏବଂ ଅନ୍ୟାନ୍ୟ ଉନ୍ନତିରେ ସାହାଯ୍ୟ କରିବ। କିଛି ଏକତ୍ରିତ ଡାଟା, Brave ଆପ୍ସ ଓ ସହଭାଗୀମାନଙ୍କୁ ମଧ୍ୟ ସାହାଯ୍ୟ କରିବ, ଯେପରି Android ଡେଭଲପର୍। ଏହି <ph name="BEGIN_LINK1"/>ସେଟିଂ<ph name="END_LINK1"/> ମାଲିକଙ୍କ ଦ୍ୱାରା ଲାଗୁ କରାଯାଇଛି। ମାଲିକ ଏହି ଡିଭାଇସ୍ ପାଇଁ Braveକୁ ଡାଏଗ୍ନୋଷ୍ଟିକ୍ ଓ ବ୍ୟବହାର ଡାଟା ପଠାଇବାକୁ ବାଛିପାରନ୍ତି। ଯଦି ଆପଣଙ୍କର ପିଲା ପାଇଁ ଅତିରିକ୍ତ ୱେବ୍ ଏବଂ ଆପ୍ କାର୍ଯ୍ୟକଳାପ ସେଟିଂସ୍ ଚାଲୁ କରାଯାଏ, ତେବେ ଏହି ଡାଟା ସେମାନଙ୍କର Brave ଆକାଉଣ୍ଟରେ ସେଭ୍ ହୋଇପାରେ। <ph name="BEGIN_LINK2"/>ଅଧିକ ଜାଣନ୍ତୁ<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">ଓହୋଃ!  ସିଷ୍ଟମ୍ ଆପଣଙ୍କ ଡିଭାଇସ୍ ପାଇଁ ନୀତି ଆଣିବାକୁ ବିଫଳ ହେଲା।</translation>
 <translation id="347785443197175480"><ph name="HOST"/>କୁ ଆପଣଙ୍କର କ୍ୟାମେରା ଏବଂ ମାଇକ୍ରୋଫୋନ୍ ଆକ୍‌ସେସ୍ କରିବାକୁ ଅନୁମତି ଦେବା ଜାରି ରଖନ୍ତୁ</translation>
-<translation id="3478685642445675458">ଜଣେ ବ୍ୟକ୍ତିଙ୍କୁ କାଢ଼ି ଦେବା ପୂର୍ବରୁ ଦୟାକରି ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍‍କୁ ଅନ୍‌ଲକ୍‍ କରନ୍ତୁ।</translation>
 <translation id="3479552764303398839">ଏବେ ନୁହେଁ</translation>
 <translation id="3479685872808224578">ପ୍ରିଣ୍ଟ ସର୍ଭର୍ ଚିହ୍ନଟ କରାଯାଇପାରିଲା ନାହିଁ। ଦୟାକରି ଠିକଣା ଯାଞ୍ଚ କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="3481268647794498892"><ph name="ALTERNATIVE_BROWSER_NAME"/>ରେ <ph name="COUNTDOWN_SECONDS"/>ରେ ଖୋଲୁଛି</translation>
@@ -2024,7 +2005,6 @@
 <translation id="3569682580018832495"><ph name="ORIGIN"/> ନିମ୍ନୋକ୍ତ ଫାଇଲ୍ ଏବଂ ଫୋଲ୍ଡରଗୁଡ଼ିକୁ ଦେଖିପାରିବ</translation>
 <translation id="3571734092741541777">ସେଟ୍ ଅପ୍</translation>
 <translation id="3574210789297084292">ସାଇନ୍ ଇନ୍ କରନ୍ତୁ</translation>
-<translation id="3574917942258583917">ଯେକୌଣସି ମତେ ଇନ୍‌କଗ୍‌ନିଟୋ ମୋଡ୍‌ରୁ ବାହାରିବେ କି?</translation>
 <translation id="3575121482199441727">ଏହି ସାଇଟ୍ ପାଇଁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
 <translation id="3576324189521867626">ସଫଳତାପୂର୍ବକ ଇନ୍‌ଷ୍ଟଲ୍‌ କରାଗଲା</translation>
 <translation id="3578594933904494462">ଏହି ଟାବ୍‍ର ବିଷୟବସ୍ତୁ ସେୟାର୍ କରାଯାଉଛି।</translation>
@@ -2043,7 +2023,6 @@
 <translation id="359283478042092570">ପ୍ରବେଶ କରନ୍ତୁ</translation>
 <translation id="3593965109698325041">ସାର୍ଟିଫିକେଟ୍ ନାମ ସୀମାବଦ୍ଧତା</translation>
 <translation id="3596235046596950091">କ୍ଲାଉଡ୍ ସେବା ସକ୍ଷମ କରନ୍ତୁ</translation>
-<translation id="3596414637720633074">ଇନକଗ୍ନିଟୋ ମୋଡରେ ତୃତୀୟ-ପକ୍ଷ କୁକୀଗୁଡ଼ିକୁ ବ୍ଲକ୍ କରନ୍ତୁ</translation>
 <translation id="3599221874935822507">ଉଠାଯାଇଥିବା</translation>
 <translation id="8122693181154564064">ସମସ୍ତ ସାଇନ୍‌-ଇନ୍‍ ହୋ‍ଇଥିବା ଡିଭାଇସ୍‍ରୁ ଇତିବୃତ୍ତି ଖାଲି କରେ। ଆପଣଙ୍କ Brave ଆକାଉଣ୍ଟର <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> ରେ ଅନ୍ୟ ପ୍ରକାରର ବ୍ରାଉଜିଂ ଇତିବୃତ୍ତି ଥାଇପାରେ।</translation>
 <translation id="3600051066689725006">ୱେବ୍ ଅନୁରୋଧର ସୂଚନା</translation>
@@ -2071,7 +2050,6 @@
 <translation id="3625481642044239431">ଅବୈଧ ଫାଇଲ୍ ବଛାଯାଇଛି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="3626296069957678981">ଏହି Bravebookକୁ ଚାର୍ଜ କରିବା ପାଇଁ, ଏକ ସୁସଙ୍ଗତ Dell ବ୍ୟାଟେରୀ ବ୍ୟବହାର କରନ୍ତୁ।</translation>
 <translation id="3627320433825461852">1 ମିନିଟ୍‌ରୁ କମ୍‌ ସମୟ ରହିଲା</translation>
-<translation id="3627588569887975815">ଗୁପ୍ତ ୱିଣ୍ଡୋରେ ଲିଙ୍କ୍ ଖୋଲନ୍ତୁ</translation>
 <translation id="3627671146180677314">Netscape ସାର୍ଟିଫିକେଟ୍ ନବୀକରଣ ସମୟ</translation>
 <translation id="3627879631695760395"><ph name="APP"/>କୁ ଇନ୍‍ଷ୍ଟଲ୍ କରନ୍ତୁ...</translation>
 <translation id="3628275722731025472">ବ୍ଲୁଟୁଥ୍ ବନ୍ଦ କରନ୍ତୁ</translation>
@@ -2192,7 +2170,6 @@
 <translation id="3758842566811519622">କୁକୀ ସେଟ୍‌ କରାଗଲା</translation>
 <translation id="3759933321830434300">ୱେବ୍‌ ପୃଷ୍ଠାଗୁଡ଼ିକର ଅଂଶଗୁଡ଼ିକୁ ଅବରୋଧ କରନ୍ତୁ</translation>
 <translation id="3760460896538743390">&amp;ପୃଷ୍ଠଭୂମି ପୃଷ୍ଠା ନିରୀକ୍ଷଣ କରନ୍ତୁ</translation>
-<translation id="37613671848467444">&amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ</translation>
 <translation id="3761556954875533505">ସାଇଟକୁ ଫାଇଲଗୁଡ଼ିକ ଏଡିଟ୍ କରିବାକୁ ଦେବେ?</translation>
 <translation id="3764314093345384080">ବିବରଣୀ ସହ ତିଆରି କରାଯାଇଥିବା ସୂଚନା</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{ଏକ USB ଡିଭାଇସ୍ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ}other{#ଟି USB ଡିଭାଇସ୍ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ}}</translation>
@@ -2433,7 +2410,6 @@
 <translation id="4035758313003622889">&amp;ଟାସ୍କ ପରିଚାଳକ</translation>
 <translation id="4036778507053569103">ସର୍ଭରରୁ ଡାଉନ୍‌ଲୋଡ୍ ହୋଇଥିବା ନୀତି ଅବୈଧ ଅଟେ।</translation>
 <translation id="4037084878352560732">ଘୋଡା</translation>
-<translation id="4037889604535939429">ବ୍ୟକ୍ତିଙ୍କର ସୂଚନା ଏଡିଟ୍‍ କରନ୍ତୁ</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{ପୃଷ୍ଠାରୁ ବାହାରି ଯାଆନ୍ତୁ}other{ପୃଷ୍ଠାରୁ ବାହାରି ଯାଆନ୍ତୁ}}</translation>
 <translation id="4044612648082411741">ଆପଣଙ୍କ ସାର୍ଟିଫିକେଟ୍‌‍ର ପାସ୍‍ୱାର୍ଡ ଲେଖନ୍ତୁ</translation>
 <translation id="404493185430269859">ଡିଫଲ୍ଟ ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍</translation>
@@ -2553,7 +2529,6 @@
 <translation id="4209251085232852247">ବନ୍ଦ କରାଯାଇଛି</translation>
 <translation id="2624930408905606513">ଡକ୍ୟୁମେଣ୍ଟଗୁଡ଼ିକୁ ପ୍ରିଣ୍ଟ କରିବାକୁ ପ୍ରସ୍ତୁତ କରିବା ପାଇଁ <ph name="BEGIN_LINK_HELP"/>Braveକୁ ପଠାଯାଇଛି<ph name="END_LINK_HELP"/>। <ph name="BEGIN_LINK_DASHBOARD"/>Brave କ୍ଲାଉଡ୍ ପ୍ରିଣ୍ଟ ଡ୍ୟାସ୍‍‍ବୋର୍ଡ<ph name="END_LINK_DASHBOARD"/>କୁ ଯାଇ ଆପଣଙ୍କର ପ୍ରିଣ୍ଟର୍ ଓ ପ୍ରିଣ୍ଟର୍ ଇତିବୃତ୍ତି ଦେଖନ୍ତୁ, ଏଡିଟ୍ କରନ୍ତୁ ଏବଂ ପରିଚାଳନ କରନ୍ତୁ।</translation>
 <translation id="4210048056321123003">ଭର୍ଚୁଆଲ୍ ମେସିନ୍ ଡାଉନ୍‌ଲୋଡ୍ କରାଯାଉଛି</translation>
-<translation id="421182450098841253">&amp;ବୁକ୍‌ମାର୍କ ବାର୍ ଦେଖାନ୍ତୁ</translation>
 <translation id="4211851069413100178">ବ୍ୟବହାର ପ୍ରଣାଳୀ ଓ ଡାଏଗ୍ନୋଷ୍ଟିକ୍ ଡାଟା ପଠାନ୍ତୁ। ସ୍ଵଚାଳିତ ଭାବେ ଡାଏଗ୍ନୋଷ୍ଟିକ୍, ଡିଭାଇସ୍ ଓ ଆପ୍ ବ୍ୟବହାର ଡାଟାକୁ Braveକୁ ପଠାଇ ଆପଣଙ୍କର Android ଅନୁଭବକୁ ଉନ୍ନତ କରିବାରେ ସାହାଯ୍ୟ କରନ୍ତୁ। ଏହା ସିଷ୍ଟମ୍ ଓ ଆପ୍‌ର ସ୍ଥିରତା ତଥା ଅନ୍ୟାନ୍ୟ ଉନ୍ନତି ଆଣିବାରେ ସାହାଯ୍ୟ କରିବ। କିଛି ଏକତ୍ରିତ ଡାଟା, Brave ଆପ୍ସ ଓ Android ଡେଭଲପର୍ ଭଳି ତାହାର ସହଭାଗୀମାନଙ୍କୁ ମଧ୍ୟ ସାହାଯ୍ୟ କରିବ। ଏହି <ph name="BEGIN_LINK1"/>ସେଟିଂ<ph name="END_LINK1"/> ମାଲିକଙ୍କ ଦ୍ୱାରା ଲାଗୁ କରାଯାଇଛି। ଏହି ଡିଭାଇସ୍‌ ପାଇଁ ମାଲିକ ଡାଏଗ୍ନୋଷ୍ଟିକ୍ ଏବଂ ବ୍ୟବହାର ହେଉଥିବା ଡାଟା Braveକୁ ପଠାଇବା ପାଇଁ ବାଛିପାରିବେ। ଯଦି ଆପଣଙ୍କର ଅତିରିକ୍ତ ୱେବ୍ ଓ ଆପ୍ ଗତିବିଧି ସେଟିଂ ଚାଲୁ ଅଛି, ତେବେ ଏହି ଡାଟା ଆପଣଙ୍କର Brave ଆକାଉଣ୍ଟରେ ସେଭ୍ କରାଯାଇପାରେ। <ph name="BEGIN_LINK2"/>ଅଧିକ ଜାଣନ୍ତୁ<ph name="END_LINK2"/></translation>
 <translation id="42126664696688958">ଏକ୍ସପୋର୍ଟ କରନ୍ତୁ</translation>
 <translation id="42137655013211669">ଏହି ରିସୋର୍ସକୁ ଆକ୍ସେସ୍‌ ସର୍ଭର୍‌ ଦ୍ୱାରା ନିଷିଦ୍ଧ କରାଯାଇଥିଲା।</translation>
@@ -2672,7 +2647,6 @@
 <translation id="4387004326333427325">ପ୍ରମାଣିକିକରଣ ସାର୍ଟିଫିକେଟ୍‌ ରିମୋଟ୍‍ ଭାବେ ଖାରଜ କରାଯାଇଛି</translation>
 <translation id="4387890294700445764">ଚୋରି ହୋଇଯାଇଥିବା ପାସୱାର୍ଡଗୁଡ଼ିକ</translation>
 <translation id="4389091756366370506">ଉପଯୋଗକର୍ତ୍ତା <ph name="VALUE"/></translation>
-<translation id="4390000551125140321">{0,plural, =1{ଇନ୍‌କଗ୍ନିଟୋ}other{# ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋଗୁଡ଼ିକ ଖୋଲନ୍ତୁ}}</translation>
 <translation id="439266289085815679"><ph name="USER_EMAIL"/> ଦ୍ବାରା ବ୍ଲୁ-ଟୁଥ୍ କନଫିଗ୍‍‍ରେସନ୍ ନିୟନ୍ତ୍ରଣ କରାଯାଉଛି।</translation>
 <translation id="4392896746540753732">କନ୍‍ଫିଗ୍‌ରେସନ୍ ଫାଇଲ୍ ସମ୍ପାଦନ କରନ୍ତୁ</translation>
 <translation id="4394049700291259645">ଅକ୍ଷମ କରନ୍ତୁ</translation>
@@ -2691,7 +2665,6 @@
 <translation id="4411578466613447185">କୋଡ୍ ସାଇନର୍</translation>
 <translation id="4412698727486357573">ସହାୟତା କେନ୍ଦ୍ର</translation>
 <translation id="44141919652824029">ଆପଣଙ୍କର ସଂଯୁକ୍ତ USB ଡିଭାଇସ୍‍ଗୁଡ଼ିକର ତାଲିକା ପ୍ରାପ୍ତ କରିବାକୁ <ph name="APP_NAME"/>କୁ ଅନୁମତି ଦେବେ?</translation>
-<translation id="4414232939543644979">ନୂଆ &amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋ</translation>
 <translation id="4415213869328311284">ଆପଣଙ୍କ <ph name="DEVICE_TYPE"/>ର ବ୍ୟବହାର ଆରମ୍ଭ କରିବାକୁ ଆପଣ ପ୍ରସ୍ତୁତ ଅଛନ୍ତି।</translation>
 <translation id="4415245286584082850">କୌଣସି ଡିଭାଇସ୍ ମିଳିଲା ନାହିଁ। ଏକ ନୂଆ ଟାବ୍‌ରେ ଏକ ସହାୟତା କେନ୍ଦ୍ର ପ୍ରବନ୍ଧ ଖୋଲନ୍ତୁ।</translation>
 <translation id="1125261911132334651">ଆପଣଙ୍କର Brave ଆକାଉଣ୍ଟ ପରିଚାଳନା କରନ୍ତୁ</translation>
@@ -2754,7 +2727,6 @@
 <translation id="4502423230170890588">ଏହି ଡିଭାଇସ୍‌ରୁ କାଢ଼ି ଦିଅନ୍ତୁ</translation>
 <translation id="4504374760782163539">{COUNT,plural, =0{କୁକୀଗୁଡ଼ିକୁ ଅନୁମତି ଦିଆଯାଇଛି}=1{କୁକୀଗୁଡ଼ିକୁ ଅନୁମତି ଦିଆଯାଇଛି, 1ଟି ବ୍ୟତିକ୍ରମ}other{କୁକୀଗୁଡ଼ିକୁ ଅନୁମତି ଦିଆଯାଇଛି, {COUNT}ଟି ବ୍ୟତିକ୍ରମ}}</translation>
 <translation id="4504940961672722399">ଏହି ଆଇକନ୍‍ ଉପରେ କ୍ଲିକ୍‍ କରି କିମ୍ବା<ph name="EXTENSION_SHORTCUT"/> ଦବାଇ ଏହି ଏକ୍ସଟେନ୍‌ସନ୍‌କୁ ବ୍ୟବହାର କରନ୍ତୁ।</translation>
-<translation id="4508051413094283164">ସବୁ ଇନ୍‌କଗ୍‌ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ</translation>
 <translation id="4508265954913339219">ସକ୍ରିୟକରଣ ବିଫଳ ହେଲା</translation>
 <translation id="4508765956121923607">ଉ&amp;ତ୍ସ ଦର୍ଶନ କରନ୍ତୁ</translation>
 <translation id="4510479820467554003">ବାପାମାଙ୍କ ଆକାଉଣ୍ଟ ତାଲିକା</translation>
@@ -2766,7 +2738,6 @@
 <translation id="4519935350946509010">ସଂଯୋଗରେ ତ୍ରୁଟି।</translation>
 <translation id="4520385623207007473">ବ୍ୟବହାରରେ ଥିବା କୁକି‌ଗୁଡ଼ିକ</translation>
 <translation id="452039078290142656"><ph name="VENDOR_NAME"/>ଙ୍କ ତରଫରୁ ଅଜଣା ଡିଭାଇସ୍</translation>
-<translation id="4521489190203965562">ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧି: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> ଏବଂ ଆହୁରି ଅନେକ କିଛି</translation>
 <translation id="4522570452068850558">ବିବରଣୀ</translation>
 <translation id="4522600456902129422">କ୍ଲିପ୍‌ବୋର୍ଡ ଦେଖିବାକୁ ଏହି ସାଇଟ୍‍କୁ ଜାରି ରଖିବା ପାଇଁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
 <translation id="4524832533047962394">ପ୍ରଦାନ କରାଯାଇଥିବା ନାମାଙ୍କନ ମୋଡ୍, ଅପରେଟିଂ ସିଷ୍ଟମ୍‍ର ଏହି ସଂସ୍କରଣରେ ସମର୍ଥିତ ନୁହେଁ। ଦୟାକରି ସୁନିଶ୍ଚିତ କରନ୍ତୁ କି ଆପଣ ନବୀନତମ ସଂସ୍କରଣ ଚଲାଉଛନ୍ତି।</translation>
@@ -2868,7 +2839,6 @@
 <translation id="4647090755847581616">&amp;ଟାବ୍ ବନ୍ଦ କରନ୍ତୁ</translation>
 <translation id="4647697156028544508">"<ph name="DEVICE_NAME"/>" ପାଇଁ ଦୟାକରି ପିନ୍‌ ଲେଖନ୍ତୁ:</translation>
 <translation id="4648491805942548247">ପର୍ଯ୍ୟାପ୍ତ ଅନୁମତି ନାହିଁ</translation>
-<translation id="4648499713050786492">ଜଣେ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଗ କରିବା ପୂର୍ବରୁ ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍‌ ଅନ୍‌ଲକ୍‌ କରନ୍ତୁ।</translation>
 <translation id="4650591383426000695">ଆପଣଙ୍କ <ph name="DEVICE_TYPE"/>ରୁ ଆପଣଙ୍କର ଫୋନ୍‍କୁ ବିଚ୍ଛିନ୍ନ କରନ୍ତୁ</translation>
 <translation id="4651484272688821107">ଡେମୋ ମୋଡ୍ ସାଧନଗୁଡ଼ିକ ସହିତ ଅନ୍‌ଲାଇନ୍ କମ୍ପୋନେଟ୍ ଲୋଡ୍ କରାଯାଇପାରିଲା ନାହିଁ।</translation>
 <translation id="4653405415038586100">Linux କନଫିଗର୍ କରାଯାଉଥିବା ସମୟରେ ଏକ ତ୍ରୁଟି</translation>
@@ -3006,7 +2976,6 @@
 <translation id="4854317507773910281">ଅନୁମୋଦନ କରିବା ପାଇଁ ବାପାମାଙ୍କ ଆକାଉଣ୍ଟ ବାଛନ୍ତୁ</translation>
 <translation id="485480310608090163">ଅଧିକ ସେଟିଂସ୍ ଏବଂ ଅନୁମତିଗୁଡ଼ିକ</translation>
 <translation id="4856478137399998590">ଆପଣଙ୍କର ମୋବାଇଲ୍ ଡାଟା ସର୍ଭିସ୍ ସକ୍ରିୟ ଅଛି ଏବଂ ବ୍ୟବହାର ପାଇଁ ପ୍ରସ୍ତୁତ</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{ସବୁ &amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}=1{&amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}other{ସବୁ (#) &amp;ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}}</translation>
 <translation id="4858792381671956233">ଆପଣ ନିଜର ମାତାପିତାଙ୍କୁ ଏହି ସାଇଟ୍‌କୁ ଯିବା ଠିକ୍ କି ବୋଲି ପଚାରିଛନ୍ତି</translation>
 <translation id="4858913220355269194">Fritz</translation>
 <translation id="4862642413395066333">OCSP ପ୍ରତିକ୍ରିୟା ସାଇନ୍ କରୁଛି</translation>
@@ -3195,7 +3164,6 @@
 <translation id="5107443654503185812">ଏକ ଏକ୍ସଟେନସନ୍ ସେଫ୍ ବ୍ରାଉଜିଂ ବନ୍ଦ କରିଦେଇଛି</translation>
 <translation id="5108967062857032718">ସେଟିଂସ୍ - Android ଆପ୍ସ କାଢ଼ି ଦିଅନ୍ତୁ</translation>
 <translation id="5109044022078737958">ମୀଆ</translation>
-<translation id="5111646998522066203">ଇନକଗ୍ନିଟୋରୁ ପ୍ରସ୍ଥାନ କରନ୍ତୁ</translation>
 <translation id="5111692334209731439">&amp;ବୁକମାର୍କ ପରିଚାଳକ</translation>
 <translation id="5112577000029535889">&amp;ଡେଭଲପର୍‍ ଟୁଲ୍</translation>
 <translation id="5113739826273394829">ଯଦି ଆପଣ ଏଇ ଆଇକନ୍ କ୍ଲିକ୍ କରନ୍ତି, ଏବେ ଆପଣ ଏହି <ph name="DEVICE_TYPE"/>କୁ ମାନୁଆଲୀ ଲକ୍ କରିବେ। ପରବର୍ତ୍ତୀ ସମୟରେ, ଏଥିରେ ପ୍ରବେଶ କରିବା ପାଇଁ ଆପଣଙ୍କୁ ନିଜର ପାସ୍‌ୱର୍ଡ ଟାଇପ୍ କରିବାକୁ ପଡ଼ିବ।</translation>
@@ -3405,7 +3373,6 @@
 <translation id="5379140238605961210">ମାଇକ୍ରୋଫୋନ୍‌ ଆକ୍ସେସ୍‌ ଅବରୋଧ କରିବା ଜାରି ରଖନ୍ତୁ</translation>
 <translation id="5382591305415226340">ସମର୍ଥିତ ଲିଙ୍କଗୁଡ଼ିକୁ ପରିଚାଳନ କରନ୍ତୁ</translation>
 <translation id="5383377866517186886">Mac ସିଷ୍ଟମ୍ ଅଗ୍ରାଧିକାରଗୁଡ଼ିକରେ କ୍ୟାମେରା ବନ୍ଦ କରାଯାଇଛି</translation>
-<translation id="5384883051496921101">ଏହି ସାଇଟ୍ ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‍‍ରେ ବାହାରର କୌଣସି ଆପ୍ ସହ ସୂଚନା ସେୟାର୍ କରିବାକୁ ଯାଉଛି।</translation>
 <translation id="5388885445722491159">ପେୟାର୍‌ ହୋଇଛି</translation>
 <translation id="5389237414310520250">ନୂଆ ଉପଯୋଗକର୍ତ୍ତା ତିଆରି ହୋଇପାରିଲେ ନାହିଁ। ଦୟାକରି ଆପଣଙ୍କ ହାର୍ଡ ଡ୍ରାଇଭ୍‍‍ରେ ସ୍ଥାନ ଓ ଅନୁମତି ଯାଞ୍ଚ କରନ୍ତୁ ଓ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="5390100381392048184">ସାଉଣ୍ଡ୍ ଚଲାଇବା ପାଇଁ ସାଇଟ୍‌ଗୁଡ଼ିକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
@@ -3417,7 +3384,7 @@
 <translation id="5402815541704507626">ମୋବାଇଲ୍‌ ଡାଟା ବ୍ୟବହାର କରି ଅପ୍‌ଡେଟ୍‌ ଡାଉନ୍‌ଲୋଡ୍‌ କରନ୍ତୁ</translation>
 <translation id="540296380408672091">ସର୍ବଦା <ph name="HOST"/>ରେ କୁକୀଗୁଡ଼ିକୁ ବ୍ଲକ୍ କରନ୍ତୁ</translation>
 <translation id="540495485885201800">ପୂର୍ବବର୍ତ୍ତୀ ଆଇଟମ୍ ସହିତ ସ୍ୱାପ୍ କରନ୍ତୁ</translation>
-<translation id="5405146885510277940">ସେଟିଂସ୍ ରିସେଟ୍ କରନ୍ତୁ</translation>
+<translation id="8632933437936028548">ସେଟିଂସ୍ ରିସେଟ୍ କରନ୍ତୁ</translation>
 <translation id="5408750356094797285">ଜୁମ୍ କରନ୍ତୁ: <ph name="PERCENT"/></translation>
 <translation id="5411472733320185105">ଏହି ହୋଷ୍ଟ ଏବଂ ଡୋମେନ୍‌ଗୁଡ଼ିକ ପାଇଁ ପ୍ରକ୍ସି ସେଟିଂସ୍ ବ୍ୟବହାର କରନ୍ତୁ ନାହିଁ:</translation>
 <translation id="5414566801737831689">ଆପଣ ଯାଇଥିବା ୱେବ୍‌ସାଇଟ୍‌ଗୁଡ଼ିକର ଆଇକନ୍‌ଗୁଡ଼ିକୁ ପଢ଼ନ୍ତୁ</translation>
@@ -3454,7 +3421,6 @@
 <translation id="5449551289610225147">ଅବୈଧ ପାସ୍‌ୱର୍ଡ</translation>
 <translation id="5449588825071916739">ସମସ୍ତ ଟାବ୍‌କୁ ବୁକ୍‌ମାର୍କ କରନ୍ତୁ</translation>
 <translation id="5449716055534515760">Win&amp;dow ବନ୍ଦ କରନ୍ତୁ</translation>
-<translation id="5452974209916053028">ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧି: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
 <translation id="5454166040603940656"><ph name="PROVIDER"/>ଙ୍କ ସହିତ</translation>
 <translation id="5454360575035671759">Plugin VM କାଢ଼ି ଦେବା ଦ୍ୱାରା ଆପଣଙ୍କର VM ଡିଲିଟ୍ ହୋଇଯିବ। ଏଥିରେ ଏହାର ଆପ୍ଲିକେସନଗୁଡ଼ିକ, ସେଟିଂସ୍ ଏବଂ ଡାଟା ଅନ୍ତର୍ଭୁକ୍ତ ରହିବ। ଆପଣ ଜାରି ରଖିବାକୁ ଚାହୁଁଥିବା ନିଶ୍ଚିତ କି?</translation>
 <translation id="5457113250005438886">ଅବୈଧ</translation>
@@ -3484,7 +3450,6 @@
 <translation id="5486561344817861625">ବ୍ରାଉଜର୍ ରିଷ୍ଟାର୍ଟ ଅନୁକରଣ କରନ୍ତୁ</translation>
 <translation id="5487521232677179737">ଡାଟା ଖାଲି କରନ୍ତୁ</translation>
 <translation id="5488093641312826914"><ph name="COPIED_ITEM_NAME"/> / କପି ହୋ‍ଇଗଲା</translation>
-<translation id="5488468185303821006">ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ରେ ରହିବାକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
 <translation id="5489435190927933437"><ph name="DOMAIN"/> ପାଇଁ ସେଭ୍ କରାଯାଇଥିବା ପାସ୍‌ୱାର୍ଡଗୁଡ଼ିକ</translation>
 <translation id="5490721031479690399">ବ୍ଲୁଟୁଥ୍ ଡିଭାଇସ୍ ବିଚ୍ଛିନ୍ନ କରନ୍ତୁ</translation>
 <translation id="5490798133083738649">Linuxକୁ ଆପଣଙ୍କ ମାଇକ୍ରୋଫୋନ ଆକ୍ସେସ୍ କରିବାକୁ ଦିଅନ୍ତୁ</translation>
@@ -3522,7 +3487,6 @@
 <translation id="5526745900034778153">ପୁଣି ସିଙ୍କ୍ ଆରମ୍ଭ କରିବାକୁ ଆଉଥରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ</translation>
 <translation id="5527463195266282916">ଏକ୍ସଟେନ୍‌ସନ୍‌କୁ ଡାଉନ୍‌ଗ୍ରେଡ୍‌ କରିବାକୁ ଚେଷ୍ଟା କରାଯାଇଛି।</translation>
 <translation id="5527474464531963247">ଆପଣ ମଧ୍ୟ ଅନ୍ୟ ଏକ ନେଟ୍‍ୱର୍କ ଚୟନ କରିପାରିବେ।</translation>
-<translation id="5530766185686772672">ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍ସ ବନ୍ଦ କରନ୍ତୁ</translation>
 <translation id="5532223876348815659">ବିଶ୍ୱବ୍ୟାପୀ</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> ଏହା କରିବାକୁ ଚାହେଁ</translation>
 <translation id="5534304873398226603">ଫଟୋ କିମ୍ବା ଭିଡିଓ ଖାରଜ କରନ୍ତୁ</translation>
@@ -3557,7 +3521,6 @@
 <translation id="5567989639534621706">ଆପ୍ଲିକେସନ୍ କେଚ୍‍</translation>
 <translation id="5568069709869097550">ସାଇନ୍ ଇନ୍ କରିପାରିବ ନାହିଁ</translation>
 <translation id="1254756632288991504">ଦୟାକରି Braveରେ ସାଇନ୍‌ ଇନ୍‍ କରି ଆରମ୍ଭ କରନ୍ତୁ ଯାହା ଦ୍ୱାରା Brave ଏହା ଯାଞ୍ଚ କରିପାରିବ ଯେ ଆପଣଙ୍କୁ ଏହି ସାଇଟ୍‌ ଆକ୍ସେସ୍‌ କରିବାକୁ ଅନୁମତି ଅଛି କି ନାହିଁ।</translation>
-<translation id="5575473780076478375">ଇନ୍‌କଗ୍‌ନିଟୋ ଏକ୍ସଟେନ୍‌ସନ୍: <ph name="EXTENSION_NAME"/></translation>
 <translation id="5575528586625653441">ଡେମୋ ପଞ୍ଜିକରଣ ଅନୁରୋଧରେ ଏକ ସମସ୍ୟା ହୋ‍ଇଛି।</translation>
 <translation id="557722062034137776">ଆପଣଙ୍କର ଡିଭାଇସ୍‌କୁ ରିସେଟ୍ କରିବା ଦ୍ୱାରା, ଆପଣଙ୍କ Brave ଆକାଉଣ୍ଟଗୁଡ଼ିକୁ କିମ୍ବା ଏହି ଆକାଉଣ୍ଟଗୁଡ଼ିକୁ ସିଙ୍କ୍ ହେଉଥିବା କୌଣସି ଡାଟାକୁ ଏହା ପ୍ରଭାବିତ କରିବ ନାହିଁ। ତାହା ସତ୍ୱେ ମଧ୍ୟ, ଆପଣଙ୍କର ଡିଭାଇସ୍‌ରେ ସେଭ୍ ହୋଇଥିବା ସମସ୍ତ ଫାଇଲ୍ ଡିଲିଟ୍ ହୋଇଯିବ।</translation>
 <translation id="5578059481725149024">ସ୍ୱଚାଳିତ ସାଇନ୍-ଇନ୍</translation>
@@ -3649,7 +3612,6 @@
 <translation id="5691511426247308406">ଫ୍ୟାମିଲି</translation>
 <translation id="5691772641933328258">ଟିପ ଚିହ୍ନ ଚିହ୍ନଟ ହେଲାନାହିଁ</translation>
 <translation id="5692183275898619210">ପ୍ରିଣ୍ଟିଂ ସମ୍ପୁର୍ଣ୍ଣ ହୋଇଛି</translation>
-<translation id="569425414730375234">ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧି: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="5695184138696833495">Linux Android ଆପ୍ ADB</translation>
 <translation id="5696143504434933566">"<ph name="EXTENSION_NAME"/>"ରୁ ଦୁର୍ବ୍ୟବହାରର ରିପୋର୍ଟ କରନ୍ତୁ</translation>
 <translation id="5696177755977520104">Chrome OS ସେଟିଂସ୍ ସିଙ୍କ୍</translation>
@@ -3677,7 +3639,6 @@
 <translation id="5722930212736070253">ଇସ, କିଛି ଭୁଲ୍ ହୋଇଛି! Zip Archiverରେ କିଛି ତ୍ରୁଟି ଦେଖାଦେ‍ଇଛି।</translation>
 <translation id="572328651809341494">ନିକଟର ଟାବ୍‌ଗୁଡ଼ିକ</translation>
 <translation id="5723508132121499792">କୌଣସି ପୃଷ୍ଠଭୂମି ଆପ୍ସ ଚାଲୁନାହିଁ</translation>
-<translation id="5723967018671998714">ଇନକଗ୍ନିଟୋ ମୋଡରେ ତୃତୀୟ-ପକ୍ଷ କୁକୀଗୁଡ଼ିକ ବ୍ଲକ୍ କରାଯାଇଛି</translation>
 <translation id="5727728807527375859">ଏକ୍ସଟେନ୍‍ସନ୍, ଆପ୍ ଓ ଥିମ୍ ଆପଣଙ୍କ କମ୍ପ୍ୟୁଟର୍‍କୁ କ୍ଷତି କରିପାରେ। ଆପଣ କ'ଣ ନିଶ୍ଚିତ ଭାବରେ ଜାରି ରଖିବାକୁ ଚାହୁଁଛନ୍ତି?</translation>
 <translation id="5728450728039149624">ସ୍ମାର୍ଟ ଲକ୍ ସ୍କ୍ରିନ୍ ଲକ୍ ବିକଳ୍ପଗୁଡ଼ିକ</translation>
 <translation id="5729712731028706266">&amp;ଦୃଶ୍ୟ</translation>
@@ -3750,7 +3711,6 @@
 <translation id="5827266244928330802">Safari</translation>
 <translation id="5828633471261496623">ପ୍ରିଣ୍ଟିଂ...</translation>
 <translation id="5830720307094128296">&amp;ଏହି ଭାବେ ପୃଷ୍ଠା ସେଭ୍ କରନ୍ତୁ...</translation>
-<translation id="5832805196449965646">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="583281660410589416">ଅଜ୍ଞାତ</translation>
 <translation id="5832976493438355584">ଲକ୍ ଅଛି</translation>
 <translation id="5833397272224757657">ବ୍ୟକ୍ତିଗତକରଣ ପାଇଁ ଆପଣ ଦେଖିଥିବା ସାଇଟ୍‌ଗୁଡ଼ିକର ବିଷୟବସ୍ତୁ ଏବଂ ବ୍ରାଉଜିଂ କାର୍ଯ୍ୟକଳାପ ଓ ବାର୍ତ୍ତାଳାପଗୁଡ଼ିକ ବ୍ୟବହାର କରେ।</translation>
@@ -3840,7 +3800,6 @@
 <translation id="5935656526031444304">ସେଫ୍ ବ୍ରାଉଜିଂ ପରିଚାଳନା କରନ୍ତୁ</translation>
 <translation id="5938002010494270685">ସୁରକ୍ଷା ଅପ୍‌ଗ୍ରେଡ୍‍ ଉପଲବ୍ଧ ଅଛି</translation>
 <translation id="5939518447894949180">ପୁନଃସେଟ୍</translation>
-<translation id="5941153596444580863">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ...</translation>
 <translation id="5941343993301164315"><ph name="TOKEN_NAME"/>ରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।</translation>
 <translation id="5941711191222866238">ସର୍ବନିମ୍ନ କରନ୍ତୁ</translation>
 <translation id="5942964813783878922">ଆପଣଙ୍କର <ph name="DEVICE_TYPE"/> ଏହି ଅପ୍‌ଡେଟ୍ ପରେ ରିଷ୍ଟାର୍ଟ ହେବ। ଭବିଷ୍ୟତର ସଫ୍ଟୱେୟାର୍ ଏବଂ ସୁରକ୍ଷା ଅପ୍‌ଡେଟ୍‌ଗୁଡ଼ିକ ସ୍ୱଚାଳିତରୂପେ ଇନ୍‌ଷ୍ଟଲ୍ ହେବ।</translation>
@@ -3876,7 +3835,6 @@
 <translation id="5979421442488174909"><ph name="LANGUAGE"/>କୁ &amp;ଅନୁବାଦ</translation>
 <translation id="5979469435153841984">ପୃଷ୍ଠାଗୁଡ଼ିକୁ ବୁକ୍‍ମାର୍କ କରିବା ପାଇଁ, ଠିକଣା ବାର୍‍‍ରେ ଥିବା ତାରା ଉପରେ କ୍ଲିକ୍ କରନ୍ତୁ</translation>
 <translation id="5984222099446776634">ସମ୍ପ୍ରତି ଯାଇଥିବା</translation>
-<translation id="598472838394900788">{0,plural, =1{ଇନ୍‌କଗ୍ନିଟୋ}other{ଇନ୍‌କଗ୍ନିଟୋ (#)}}</translation>
 <translation id="5985458664595100876">ଅବୈଧ URL ଫର୍ମାଟ୍। ସମର୍ଥିତ ଫର୍ମାଟ୍‌ଗୁଡ଼ିକ ହେଉଛି \\server\share ଓ smb://server/share।</translation>
 <translation id="5990386583461751448">ଅନୁବାଦ ହୋଇଛି</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{ଏହା ସୁନିଶ୍ଚିତ କରିବା ପାଇଁ ଯେ ଆପଣ ୱେବ୍‌ ବ୍ରାଉଜିଂ ଜାରି ରଖିପାରିବେ, ଆପଣଙ୍କର ବ୍ୟବସ୍ଥାପକଙ୍କୁ ଏହି ଆପ୍ଲିକେସନ୍‌ କାଢ଼ିବାକୁ କୁହନ୍ତୁ।}other{ଏହା ସୁନିଶ୍ଚିତ କରିବା ପାଇଁ ଯେ ଆପଣ ୱେବ୍‌ ବ୍ରାଉଜିଂ ଜାରି ରଖିପାରିବେ, ଆପଣଙ୍କର ବ୍ୟବସ୍ଥାପକଙ୍କୁ ଏହି ଆପ୍ଲିକେସନ୍‌ଗୁଡ଼ିକ କାଢ଼ିବାକୁ କୁହନ୍ତୁ।}}</translation>
@@ -3953,7 +3911,6 @@
 <translation id="6078323886959318429">ସର୍ଟକଟ୍ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="6078752646384677957">ଦୟାକରି ଆପଣଙ୍କର ମାଇକ୍ରୋଫୋନ୍ ଓ ଅଡିଓ ସ୍ତର ଯାଞ୍ଚ କରନ୍ତୁ।</translation>
 <translation id="6078769373519310690">"<ph name="CHROME_EXTENSION_NAME"/>", ଗୋଟିଏ HID ଡିଭାଇସ୍‌କୁ ସଂଯୋଗ କରିବାକୁ ଚାହୁଁଛନ୍ତି</translation>
-<translation id="6080515710685820702">ଏକ ସେୟାର୍ ହୋ‍ଇଥିବା କମ୍ପ୍ୟୁଟର୍‌ ବ୍ୟବହାର କରୁଛନ୍ତି କି? ଏକ ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋ ଖୋଲିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="6080689532560039067">ଆପଣଙ୍କର ସିଷ୍ଟମ୍ ସମୟ ଯାଞ୍ଚ କରନ୍ତୁ</translation>
 <translation id="6082651258230788217">ଟୁଲ୍‍ବାର୍‌ରେ ଦେଖାନ୍ତୁ</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/> - ବେନାମୀ ଗୋଷ୍ଠୀର ଅଂଶ</translation>
@@ -3981,7 +3938,6 @@
 <translation id="6112294629795967147">ଆକାର ରିସାଇଜ୍ କରିବାକୁ ସ୍ପର୍ଶ କରନ୍ତୁ</translation>
 <translation id="6112727384379533756">ଏକ ଟିକେଟ୍ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="6112931163620622315">ଆପଣଙ୍କର ଫୋନ୍ ଦେଖନ୍ତୁ</translation>
-<translation id="6112952769866305444">ବ୍ୟକ୍ତିର, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/> ଏଡ଼ିଟ୍‍ କରନ୍ତୁ</translation>
 <translation id="6113942107547980621">ସ୍ମାର୍ଟ ଲକ୍ ବ୍ୟବହାର କରିବାକୁ, ଆପଣଙ୍କ ଫୋନ୍‍‍ରେ ପ୍ରାଥମିକ ଉପଯୋଗକର୍ତ୍ତା ପ୍ରୋଫାଇଲ୍‍କୁ ସ୍ୱିଚ୍ କରନ୍ତୁ</translation>
 <translation id="6116921718742659598">ଭାଷା ଓ ଇନ୍‌ପୁଟ୍ ସେଟିଂସ୍ ବଦଳାନ୍ତୁ</translation>
 <translation id="6120205520491252677">ସ୍କ୍ରିନ୍ ଆରମ୍ଭ କରିବା ପାଇଁ ଏହି ପୃଷ୍ଠାକୁ ପିନ୍ କରନ୍ତୁ...</translation>
@@ -4014,7 +3970,6 @@
 <translation id="615436196126345398">ପ୍ରୋଟୋକଲ୍</translation>
 <translation id="6154697846084421647">ବର୍ତ୍ତମାନ ସାଇନ୍ ଇନ୍ କରିଛନ୍ତି</translation>
 <translation id="6155141482566063812">ପୃଷ୍ଠଭୂମି ଟାବ୍ ଆପଣଙ୍କର ସ୍କ୍ରିନ୍ ସେୟାର୍ କରୁଛି</translation>
-<translation id="6156323911414505561">ବୁକ୍‌ମାର୍କଗୁଡ଼ିକର ବାର୍‌ ଦେଖାନ୍ତୁ</translation>
 <translation id="6156863943908443225">ସ୍କ୍ରିପ୍ଟ କେଚ୍</translation>
 <translation id="6160625263637492097">ପ୍ରାମାଣିକତା ପାଇଁ ସାର୍ଟିଫିକେଟ୍ ପ୍ରଦାନ କରନ୍ତୁ</translation>
 <translation id="6163363155248589649">&amp;ସାଧାରଣ</translation>
@@ -4203,7 +4158,6 @@
 <translation id="6410668567036790476">ସର୍ଚ୍ଚ ଇଞ୍ଜିନ୍ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="641081527798843608">ବିଷୟ ମେଳ</translation>
 <translation id="7810992039564280750">Braveରେ ଷ୍ଟୋର୍ କରାଯାଇଥିବା ଅସୁରକ୍ଷିତ ସାଇଟଗୁଡ଼ିକର ଏକ ତାଲିକା ସହିତ URLଗୁଡ଼ିକୁ ଯାଞ୍ଚ କରେ। ଯଦି କୌଣସି ସାଇଟ୍ ଆପଣଙ୍କ ପାସୱାର୍ଡ ଚୋରି କରିବାକୁ ଚେଷ୍ଟା କରେ କିମ୍ବା ଆପଣ ଏକ କ୍ଷତିକାରକ ଫାଇଲ୍ ଡାଉନଲୋଡ୍ କଲେ, ପୃଷ୍ଠାର କିଛି ବିଷୟବସ୍ତୁ ସହିତ URLଗୁଡ଼ିକୁ ମଧ୍ୟ Brave ସେଫ୍ ବ୍ରାଉଜିଂକୁ ପଠାଇପାରେ।</translation>
-<translation id="6412931879992742813">ନୂଆ ଇନ୍‌କଗ୍‌ନିଟୋ ୱିଣ୍ଡୋ</translation>
 <translation id="641469293210305670">ଅପଡେଟ୍ ଏବଂ ଆପଗୁଡ଼ିକ ଇନଷ୍ଟଲ୍ କରନ୍ତୁ</translation>
 <translation id="6414888972213066896">ଆପଣ ନିଜର ମାତାପିତାଙ୍କୁ ଏହି ସାଇଟ୍‌କୁ ଯିବା ଠିକ୍ କି ବୋଲି ପଚାରିଛନ୍ତି</translation>
 <translation id="6415659939354280526">ଆମ୍ବିଏଣ୍ଟ ମୋଡର ସୋର୍ସ ବାଛନ୍ତୁ</translation>
@@ -4312,7 +4266,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="6550675742724504774">ବିକଳ୍ପଗୁଡ଼ିକ</translation>
 <translation id="6551508934388063976">କମାଣ୍ଡ ଉପଲବ୍ଧ ନାହିଁ। ଗୋଟିଏ ନୂଆ ୱିଣ୍ଡୋ ଖୋଲିବା ପାଇଁ control-N ଦବାନ୍ତୁ।</translation>
 <translation id="6551612971599078809">ସାଇଟ୍ USB ବ୍ୟବହାର କରୁଛି</translation>
-<translation id="6552395360547205189">ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧି: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="655384502888039633"><ph name="USER_COUNT"/> ଉପଯୋଗକର୍ତ୍ତା</translation>
 <translation id="655483977608336153">ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ</translation>
 <translation id="6555432686520421228">ସମସ୍ତ ଉପଯୋଗକର୍ତ୍ତାଙ୍କ ଆକାଉଣ୍ଟ କାଢ଼ି ଦିଅନ୍ତୁ ଏବଂ ଆପଣଙ୍କର <ph name="IDS_SHORT_PRODUCT_NAME"/> ଡିଭାଇସ୍‌କୁ ନୂଆ ପରି ରିସେଟ୍‍ କରନ୍ତୁ।</translation>
@@ -4323,7 +4276,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="6561726789132298588">ଏଣ୍ଟର୍</translation>
 <translation id="656293578423618167">ଫାଇଲ୍‌ର ପାଥ୍‍ କିମ୍ବା ନାମ ବହୁତ ଲମ୍ବା ଅଟେ।  ଦୟାକରି ଛୋଟ ନାମରେ କିମ୍ବା ଅନ୍ୟ ଏକ ଲୋକେସନ୍‌ରେ ସେଭ୍‌ କରନ୍ତୁ।</translation>
 <translation id="6563469144985748109">ଏପର୍ଯ୍ୟନ୍ତସୁଦ୍ଧା ଆପଣଙ୍କର ପରିଚାଳକ ଏହାକୁ ଅନୁମୋଦିତ କରିନାହାନ୍ତି</translation>
-<translation id="6569934958368283244">ଅନ୍ୟ ବ୍ୟକ୍ତି</translation>
 <translation id="657402800789773160">ଏହି ପୃଷ୍ଠାକୁ &amp;ରିଲୋଡ୍ କରନ୍ତୁ</translation>
 <translation id="6577284282025554716">ଏହି ଫାଇଲ୍ ଡାଉନ୍‌ଲୋଡ୍ ବାତିଲ୍‍ ହେଲା: <ph name="FILE_NAME"/></translation>
 <translation id="2459230470861708651">ଆପଣଙ୍କର Brave ଉପଯୋଗକର୍ତ୍ତାନାମ ଓ ପାସ୍‍ୱାର୍ଡ ସହିତ ସିଙ୍କ୍ ହୋଇଥିବା ପାସ୍‍ୱାର୍ଡଗୁଡ଼ିକୁ ଏନ୍‍କ୍ରିପ୍ଟ କରନ୍ତୁ</translation>
@@ -4440,7 +4392,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="6727969043791803658">ସଂଯୋଗ କରାଯାଇଛି, <ph name="BATTERY_PERCENTAGE"/>% ବ୍ୟାଟେରୀ</translation>
 <translation id="6732801395666424405">ସାର୍ଟିଫିକେଟ୍‌ଗୁଡ଼ିକ ଲୋଡ୍ ହୋଇନାହିଁ</translation>
 <translation id="6732900235521116609">ସର୍ଟକଟ୍‌ କାଢ଼ିପାରିବ ନାହିଁ</translation>
-<translation id="6734468588183300211">ଇନକଗ୍ନିଟୋ ମୋଡରେ ଥିବା ସମୟରେ, ବିଜ୍ଞାପନଗୁଡ଼ିକୁ ବ୍ୟକ୍ତିଗତକୃତ କରିବା ପରି ବିଭିନ୍ନ ସାଇଟରେ ଆପଣଙ୍କ ବ୍ରାଉଜିଂ କାର୍ଯ୍ୟକଳାପକୁ ଦେଖିବା ନିମନ୍ତେ ସାଇଟଗୁଡ଼ିକ କୁକୀଗୁଡ଼ିକୁ ବ୍ୟବହାର କରିପାରିବ ନାହିଁ। କିଛି ସାଇଟରେ ଫିଚରଗୁଡ଼ିକ ଠିକ୍ ଭାବେ କାମ କରିନପାରେ।</translation>
 <translation id="6735304988756581115">କୁକୀ ଏବଂ ଅନ୍ୟ ସାଇଟ୍‌ ଡାଟା ଦେଖନ୍ତୁ...</translation>
 <translation id="6736243959894955139">ଠିକଣା</translation>
 <translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
@@ -4456,7 +4407,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="6748465660675848252">ହୁଏତ ଆପଣ ଆଗକୁ ବଢ଼ିପାରିବେ, କିନ୍ତୁ ଆପଣଙ୍କର ସିଙ୍କ୍ କରାଯାଇଥିବା ଡାଟା ଏବଂ ସେଟିଂସ୍ କେବଳ ରିଷ୍ଟୋର୍ କରାଯିବ। ସମସ୍ତ ସ୍ଥାନୀୟ ଡାଟା ଡିଲିଟ୍ ହୋଇଯିବ।</translation>
 <translation id="6749006854028927059">ବିଜ୍ଞାପନଗୁଡ଼ିକୁ ବ୍ୟକ୍ତିଗତକୃତ କରିବା ପରି ବିଭିନ୍ନ ସାଇଟରେ ଆପଣଙ୍କ ବ୍ରାଉଜିଂ କାର୍ଯ୍ୟକଳାପକୁ ଦେଖିବା ନିମନ୍ତେ ସାଇଟଗୁଡ଼ିକ କୁକୀଗୁଡ଼ିକୁ ବ୍ୟବହାର କରିପାରିବ ନାହିଁ। କିଛି ସାଇଟରେ ଫିଚରଗୁଡ଼ିକ ଠିକ୍ ଭାବେ କାମ କରିନପାରେ।</translation>
 <translation id="6750757184909117990">ସେଲ୍ୟୁଲାର୍ ଅକ୍ଷମ କରନ୍ତୁ</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (ଇନ୍‌କଗ୍ନିଟୋ)</translation>
 <translation id="6757101664402245801">URL କପି କରାଗଲା</translation>
 <translation id="6758056191028427665">ଆମେ କେଉଁଭଳି କାମ କରୁଛୁ, ତାହା ଆମକୁ ଜଣାନ୍ତୁ।</translation>
 <translation id="6759193508432371551">ଫ୍ୟାକ୍ଟୋରୀ ରିସେଟ୍</translation>
@@ -4482,7 +4432,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="6789592661892473991">ହରିଜୋଣ୍ଟାଲ୍ ଭାବରେ ଭାଗ କରନ୍ତୁ</translation>
 <translation id="6790428901817661496">ଚଲାନ୍ତୁ</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/>କୁ ରିମୋଟ୍‍ ଭାବେ ଯୋଗ କରାଯାଇଛି</translation>
-<translation id="6790820461102226165">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ...</translation>
 <translation id="6792072150955115067"><ph name="APP_NAME"/> ଆପଣଙ୍କର ସ୍କ୍ରିନ୍‌ର ବିଷୟବସ୍ତୁକୁ <ph name="TARGET_NAME"/> ସହିତ ସେୟାର୍ କରିବାକୁ ଚାହୁଁଛି। ଆପଣ କ'ଣ ସେୟାର୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି ତାହା ବାଛନ୍ତୁ।</translation>
 <translation id="6793604637258913070">ଯେତେବେଳେ ଟେକ୍ସଟ୍ କ୍ୟାରେଟ୍ ଦୃଶ୍ୟମାନ ହେବ କିମ୍ବା ଘୁଞ୍ଚିବ ସେତେବେଳେ ଏହାକୁ ହାଇଲାଇଟ୍ କରନ୍ତୁ</translation>
 <translation id="6795884519221689054">ପାଣ୍ଡା</translation>
@@ -4595,7 +4544,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="6935286146439255109">ଏକ ପେପର୍ ଟ୍ରେ ଉପଲବ୍ଧ ନାହିଁ</translation>
 <translation id="693807610556624488">ଲେଖିବା କାର୍ଯ୍ୟ ବିଶେଷତାର ସର୍ବାଧିକ ଦୈର୍ଘ୍ୟରୁ ଅଧିକ ହୋଇଛି: "<ph name="DEVICE_NAME"/>"।</translation>
 <translation id="6938386202199793006">ଆପଣଙ୍କ ପାଖରେ 1ଟି ସେଭ୍ କରାଯାଇଥିବା ପ୍ରିଣ୍ଟର୍ ଅଛି।</translation>
-<translation id="6938789263968032501">ଲୋକମାନେ</translation>
 <translation id="6941937518557314510">ଆପଣଙ୍କ ସାର୍ଟିଫିକେଟ୍ ସହ <ph name="HOST_NAME"/>କୁ ପ୍ରାମାଣିକରଣ କରିବା ପାଇଁ ଦୟାକରି <ph name="TOKEN_NAME"/>ରେ ସାଇନ୍ ଇନ୍ କରନ୍ତୁ।</translation>
 <translation id="6943060957016121200">ଇନଷ୍ଟାଣ୍ଟ ଟିଥରିଂ ସକ୍ଷମ କରନ୍ତୁ</translation>
 <translation id="6943176775188458830">ପ୍ରିଣ୍ଟିଂ ବାତିଲ୍ କରନ୍ତୁ</translation>
@@ -4694,7 +4642,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{ସୁରକ୍ଷା ଯାଞ୍ଚ 1 ମିନିଟ୍ ପୂର୍ବେ ଚାଲିଥିଲା}other{ସୁରକ୍ଷା ଯାଞ୍ଚ {NUM_MINS} ମିନିଟ୍ ପୂର୍ବେ ଚାଲିଥିଲା}}</translation>
 <translation id="7057767408836081338">ଆପ୍ ଡାଟା ପାଇବାକୁ ବିଫଳ ହୋଇଛି, ଯେ କୌଣସି ପ୍ରକାରେ ଆପ୍ ଚଲାଇବାକୁ ଚେଷ୍ଟା କରୁଛି...</translation>
 <translation id="7059858479264779982">ସ୍ୱତଃ-ଲଞ୍ଚରେ ସେଟ୍‌ କରାଯାଇଛି</translation>
-<translation id="7059893117020417984">ବ୍ୟକ୍ତିଗତ ଭାବେ ବ୍ରାଉଜ୍‌ କରିବାକୁ, ଡଟ୍‍ ଆଇକନ୍‍ ମେନୁରେ କ୍ଲିକ୍‍ କରି ଏକ ଇନ୍‍କଗ୍ନିଟୋ ୱିଣ୍ଡୋ ଖୋଲନ୍ତୁ</translation>
 <translation id="7062222374113411376">ଡାଟା ପଠାଇବା ଓ ଗ୍ରହଣ କରିବା ସମାପ୍ତ କରିବାକୁ ନିକଟରେ ବନ୍ଦ କରାଯାଇଥିବା ସାଇଟ୍‌ଗୁଡ଼ିକୁ ଅନୁମତି ଦିଅନ୍ତୁ (ସୁପାରିଶ୍ କରାଯାଇଛି)</translation>
 <translation id="7063129466199351735">ସର୍ଟକଟ୍ ପ୍ରକ୍ରିୟାକରଣ ହେଉଛି...</translation>
 <translation id="7063311912041006059">କ୍ୱେରୀ ସ୍ଥାନରେ <ph name="SPECIAL_SYMBOL"/> ସହିତ URL</translation>
@@ -4716,7 +4663,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7077829361966535409">ସାମ୍ପ୍ରତିକ ପ୍ରକ୍ସି ସେଟିଂସ୍ ବ୍ୟବହାର କରି ସାଇନ୍-ଇନ୍ ପୃଷ୍ଠା ଲୋଡ୍ କରିବାରେ ବିଫଳ ହେଲା। ଦୟାକରି <ph name="GAIA_RELOAD_LINK_START"/>ପୁଣି ସାଇନ୍ ଇନ୍ କରିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ<ph name="GAIA_RELOAD_LINK_END"/> କିମ୍ବା ଭିନ୍ନ <ph name="PROXY_SETTINGS_LINK_START"/>ପ୍ରକ୍ସି ସେଟିଂସ୍<ph name="PROXY_SETTINGS_LINK_END"/> ବ୍ୟବହାର କରନ୍ତୁ।</translation>
 <translation id="7078120482318506217">ସମସ୍ତ ନେଟ୍‌ୱାର୍କ</translation>
 <translation id="708060913198414444">ଅଡିଓ ଠିକଣା କ&amp;ପି କରନ୍ତୁ</translation>
-<translation id="7081952801286122383">ଆପଣ ଇନ୍‍କଗ୍ନିଟୋ ମୋଡ୍‌ରେ ଅଛନ୍ତି</translation>
 <translation id="708278670402572152">ସ୍କାନିଂକୁ ସକ୍ଷମ କରିବା ପାଇଁ ବିଚ୍ଛିନ୍ନ କରନ୍ତୁ</translation>
 <translation id="1439926347196400598">ଅଡିଓ ରେକର୍ଡ କରିବାକୁ Braveକୁ ଅନୁମତି ଦେବେ କି?</translation>
 <translation id="7088434364990739311">ଅପ୍‍ଡେଟ୍‍ର ଯାଞ୍ଚ ପ୍ରକ୍ରିୟା ଆରମ୍ଭ କରିବାରେ ବିଫଳ ହେଲା (ତ୍ରୁଟି କୋଡ୍ <ph name="ERROR"/>)।</translation>
@@ -4962,7 +4908,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{ସୁରକ୍ଷା ଯାଞ୍ଚ 1 ଘଣ୍ଟା ପୂର୍ବେ ଚାଲିଥିଲା}other{ସୁରକ୍ଷା ଯାଞ୍ଚ {NUM_HOURS} ଘଣ୍ଟା ପୂର୍ବେ ଚାଲିଥିଲା}}</translation>
 <translation id="740624631517654988">ପପ୍‍-ଅପ୍ ବ୍ଲକ୍ କରାଯାଇଛି</translation>
 <translation id="7407430846095439694">ଇମ୍ପୋର୍ଟ ଏବଂ ଆବଦ୍ଧ କରନ୍ତୁ</translation>
-<translation id="7407504355934009739">ଏହି ସାଇଟ୍‌ର ବିଜ୍ଞପ୍ତିଗୁଡ଼ିକୁ ଅଧିକାଂଶ ଲୋକ ବ୍ଲକ୍ କରିଥାନ୍ତି</translation>
 <translation id="740810853557944681">ଏକ ପ୍ରିଣ୍ଟ ସର୍ଭର୍ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="7409549334477097887">ଅତିରିକ୍ତ ବୃହତ</translation>
 <translation id="7410344089573941623">ଯଦି <ph name="HOST"/> ଆପଣଙ୍କର କ୍ୟାମେରା ଏବଂ ମାଇକ୍ରୋଫୋନ୍‌କୁ ଆକ୍ସେସ୍‌ କରିବାକୁ ଚାହୁଁଛି, ତେବେ ପଚାରନ୍ତୁ</translation>
@@ -5007,7 +4952,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7460045493116006516">ଆପଣ ଇନ୍‌ଷ୍ଟଲ୍ କରିଥିବା ବର୍ତ୍ତମାନର ଥିମ୍</translation>
 <translation id="7461924472993315131">ପିନ୍‍</translation>
 <translation id="746216226901520237">ପରବର୍ତ୍ତୀ ସମୟରେ, ଆପଣଙ୍କର ଫୋନ୍‌ ଆପଣଙ୍କର <ph name="DEVICE_TYPE"/>କୁ ଅନ୍‌ଲକ୍‌ କରିବ। ସେଟିଂସ୍‌ରେ ଆପଣ ସ୍ମାର୍ଟ ଲକ୍‌ ବନ୍ଦ କରିପାରିବେ।</translation>
-<translation id="7463006580194749499">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{#ଟି ଖୋଲା ଟାବ୍, ଟାବ୍ ଷ୍ଟ୍ରିପ୍‍କୁ ଟୋଗଲ୍ କରିବା ପାଇଁ ଦବାନ୍ତୁ}other{# ଟି ଖୋଲା ଟାବ୍, ଟାବ୍ ଷ୍ଟ୍ରିପ୍‍କୁ ଟୋଗଲ୍ କରିବା ପାଇଁ ଦବାନ୍ତୁ}}</translation>
 <translation id="7465635034594602553">କିଛି ତ୍ରୁଟି ହୋଇଗଲା। ଦୟାକରି କିଛି ସମୟ ପାଇଁ ଅପେକ୍ଷା କରି <ph name="APP_NAME"/> ପୁଣି ଚଲାନ୍ତୁ।</translation>
 <translation id="7465778193084373987">Netscape ସାର୍ଟିଫିକେଟ୍ ପ୍ରତ୍ୟାହାର URL</translation>
@@ -5029,7 +4973,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7488682689406685343">ଅନାଧିକୃତ ବିଜ୍ଞପ୍ତିଗୁଡ଼ିକ ପାଇଁ ଆପଣ ଅନୁମତି ଦେବାକୁ କୌଶଳରେ ଏହି ସାଇଟ୍ ଚେଷ୍ଟା କରିପାରେ।</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;ସମସ୍ତ ଖୋଲନ୍ତୁ}=1{&amp;ବୁକ୍‍ମାର୍କ ଖୋଲନ୍ତୁ}other{&amp;ସମସ୍ତ (#) ଖୋଲନ୍ତୁ}}</translation>
 <translation id="7489761397368794366">ଆପଣଙ୍କର ଡିଭାଇସ୍‍ରୁ କଲ୍ କରନ୍ତୁ</translation>
-<translation id="749028671485790643">ବ୍ୟକ୍ତି <ph name="VALUE"/></translation>
 <translation id="7490813197707563893">MAC ଠିକଣା</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{1ଟି କୁକୀ}other{{NUM_COOKIES}ଟି କୁକୀ}}</translation>
 <translation id="7493386493263658176"><ph name="EXTENSION_NAME"/> ଏକ୍ସଟେନ୍‌ସନ୍ ଆପଣ ଟାଇପ୍ କରିଥିବା ସମସ୍ତ ଟେକ୍ସଟ୍‌କୁ ହୁଏତ ସଂଗୃହୀତ କରିପାରେ, ଯେଉଁଥିରେ ବ୍ୟକ୍ତିଗତ ଡାଟା ଯେପରିକି ପାସ୍‌ୱର୍ଡ ଏବଂ କ୍ରେଡିଟ୍ କାର୍ଡ ନମ୍ବର ଅନ୍ତର୍ଭୁକ୍ତ ଥାଏ। ଆପଣ ଏହି ଏକ୍ସଟେନ୍‌ସନ୍ ବ୍ୟବହାର କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</translation>
@@ -5051,7 +4994,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="751523031290522286"><ph name="APP_NAME"/> ଆଡମିନଙ୍କ ଦ୍ୱାରା ବ୍ଲକ୍ କରାଯାଇଛି। ଏହି ଆପ୍ ବ୍ୟବହାର କରିବାକୁ ଅନୁମତି ଦେବା ପାଇଁ ଆଡମିନଙ୍କୁ କୁହନ୍ତୁ।</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/>କୁ ବିରତ କରାଯାଇଛି</translation>
 <translation id="7517063221058203587">{0,plural, =1{1 ମିନିଟ୍ ଭିତରେ ଡିଭାଇସ୍ ଅପଡେଟ୍ କରନ୍ତୁ}other{# ମିନିଟ୍ ଭିତରେ ଡିଭାଇସ୍ ଅପଡେଟ୍ କରନ୍ତୁ}}</translation>
-<translation id="7520766081042531487">ଇନକଗ୍ନିଟୋ ପୋର୍ଟାଲ୍: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">"Ok Brave" କୁହନ୍ତୁ</translation>
 <translation id="7525067979554623046">ତିଆରି କରନ୍ତୁ</translation>
@@ -5145,7 +5087,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7647403192093989392">ନିକଟ ଅତୀତରେ କୌଣସି କାର୍ଯ୍ୟକଳାପ ହୋ‍ଇନାହିଁ</translation>
 <translation id="7649070708921625228">ସହାୟତା</translation>
 <translation id="7650511557061837441">"<ph name="TRIGGERING_EXTENSION_NAME"/>", "<ph name="EXTENSION_NAME"/>"କୁ କାଢ଼ିବାକୁ ଚାହିଁବେ।</translation>
-<translation id="7652808307838961528">ବ୍ୟକ୍ତିଙ୍କର, <ph name="PROFILE_NAME"/> ଏଡିଟ୍‍ କରନ୍ତୁ</translation>
 <translation id="765293928828334535">ଏହି ୱେବ୍‌ସାଇଟ୍‌ରୁ ଆପ୍ସ, ଏକ୍ସଟେ‌ନ୍‌ସନ୍, ଏବଂ ଉପଯୋଗକର୍ତ୍ତାଙ୍କ ସ୍କ୍ରିପ୍ଟ ଯୋଗ କରାଯାଇପାରିବ ନାହିଁ</translation>
 <translation id="7652954539215530680">ଗୋଟିଏ ପିନ୍ ତିଆରି କରନ୍ତୁ</translation>
 <translation id="7654941827281939388">ଏହି ଆକାଉଣ୍ଟ ପୂର୍ବରୁ ଏହି ଡିଭାଇସ୍‌ରେ ବ୍ୟବହୃତ ହୋଇଛି।</translation>
@@ -5166,7 +5107,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7674416868315480713">Linuxରେ ଫରୱାର୍ଡ କରାଯାଉଥିବା ସମସ୍ତ ପୋର୍ଟ ନିଷ୍କ୍ରିୟ କରନ୍ତୁ</translation>
 <translation id="1800308196794859773">ଯେକୌଣସି ଟେକ୍ସଟ୍ ଫିଲ୍ଡରେ ଶ୍ରୁତଲିଖନକୁ ଅନୁମତି ଦେବା ପାଇଁ Braveକୁ ଆପଣଙ୍କର ଭଏସ୍ ପଠାନ୍ତୁ।</translation>
 <translation id="7681095912841365527">ସାଇଟ୍‍ ବ୍ଲୁଟୁଥ୍‍ ବ୍ୟବହାର କରିପାରେ</translation>
-<translation id="7683373461016844951">ଜାରି ରଖିବାକୁ 'OK'ରେ କ୍ଲିକ୍ କରନ୍ତୁ ତା'ପରେ ଆପଣଙ୍କର <ph name="DOMAIN"/> ଇମେଲ୍ ଠିକଣା ପାଇଁ ଏକ ନୂତନ ପ୍ରୋଫାଇଲ୍ ତିଆରି କରିବା ନିମନ୍ତେ 'ବ୍ୟକ୍ତି ଯୋଗ କରନ୍ତୁ'ରେ କ୍ଲିକ୍ କରନ୍ତୁ</translation>
 <translation id="7684212569183643648">ଆପଣଙ୍କର ବ୍ୟବସ୍ଥାପକଙ୍କ ଦ୍ୱାରା ଇନ୍‌ଷ୍ଟଲ୍‌ କରାଯାଇଛି</translation>
 <translation id="7684559058815332124">କ୍ୟାପ୍ଟିଭ୍ ପୋର୍ଟାଲ୍ ଲଗ୍‌ଇନ୍ ପୃଷ୍ଠା ଦେଖନ୍ତୁ</translation>
 <translation id="1669729672557072907">ଆପଣଙ୍କର ଆପ୍‍ଗୁଡ଼ିକ ତିଆରି କରିବା ଏବଂ ପରୀକ୍ଷା କରିବା ପାଇଁ Android Debug Bridge (ADB) ସକ୍ଷମ କରନ୍ତୁ। ଧ୍ୟାନ ଦିଅନ୍ତୁ ଯେ ଏହି କାର୍ଯ୍ୟ Brave ଦ୍ୱାରା ଯାଞ୍ଚ କରାଯାଇନଥିବା Android ଆପ୍ସର ଇନ୍‍ଷ୍ଟଲେସନ୍‍କୁ ଅନୁମତି ଦିଏ ଏବଂ ଅକ୍ଷମ କରିବା ପାଇଁ ଏକ ଫ୍ୟାକ୍ଟୋରୀ ରିସେଟ୍ ଆବଶ୍ୟକ କରେ।</translation>
@@ -5267,7 +5207,7 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7792388396321542707">ସେୟାର୍ କରିବା ବନ୍ଦ କରନ୍ତୁ</translation>
 <translation id="779308894558717334">ହାଲୁକା ସବୁଜ</translation>
 <translation id="7793098747275782155">ଗାଢ଼ ନୀଳ</translation>
-<translation id="7797571222998226653">ବନ୍ଦ ଅଛି</translation>
+<translation id="971479617738309149">ବନ୍ଦ ଅଛି</translation>
 <translation id="7798844538707273832"><ph name="PERMISSION"/> ସ୍ୱଚାଳିତ ଭାବେ ବ୍ଲକ୍ ହୋଇଛି</translation>
 <translation id="7799299114731150374">ୱାଲପେପର୍ ସଫଳତାର ସହ ସେଟ୍ ହୋଇଛି</translation>
 <translation id="7800518121066352902">ଘଡ଼ିର &amp;ବିପରୀତ ଦିଗରେ ଘୂରାନ୍ତୁ</translation>
@@ -5370,7 +5310,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7904094684485781019">ଏହି ଆକାଉଣ୍ଟର ବ୍ୟବସ୍ଥାପକ ଏକାଧିକ ସାଇନ୍‌ ଇନ୍‌ ପାଇଁ ଅନୁମତି ଦେଇନାହାନ୍ତି।</translation>
 <translation id="7904526211178107182">ଆପଣଙ୍କ ନେଟୱାର୍କରେ ଅନ୍ୟ ଡିଭାଇସଗୁଡ଼ିକ ପାଇଁ Linux ପୋର୍ଟଗୁଡ଼ିକ ଉପଲବ୍ଧ କରାନ୍ତୁ।</translation>
 <translation id="7908378463497120834">ଆମେ ଦୁଃଖିତ, ଆପଣଙ୍କର ଏକ୍ସଟର୍ନଲ୍ ଷ୍ଟୋରେଜ୍ ଡିଭାଇସ୍‍ର ଅତି କମ୍‍‍ରେ ଗୋଟିଏ ଭାଗ ମାଉଣ୍ଟ କରାଯାଇପାରିଲା ନାହିଁ।</translation>
-<translation id="7909969815743704077">ଇନ୍‌କଗ୍ନିଟୋରେ ଡାଉନ୍‌ଲୋଡ୍‌ କରନ୍ତୁ</translation>
 <translation id="7910768399700579500">&amp;ନୂତନ ଫୋଲ୍ଡର</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="7912080627461681647">ସର୍ଭର୍‌ରେ ଆପଣଙ୍କର ପାସ୍‌ୱର୍ଡ ପରିବର୍ତ୍ତନ କରାଯାଇଛି। ଦୟାକରି ସାଇନ୍‌ ଆଉଟ୍‌ କରନ୍ତୁ, ତା’ପରେ ପୁଣି ସାଇନ୍‌ ଇନ୍‌ କରନ୍ତୁ।</translation>
@@ -5433,7 +5372,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="7982083145464587921">ଏହି ତ୍ରୁଟିକୁ ସମାଧାନ କରିବାକୁ ଦୟାକରି ଆପଣଙ୍କର ଡିଭାଇସ୍‌ ରିଷ୍ଟାର୍ଟ କରନ୍ତୁ।</translation>
 <translation id="7982789257301363584">ନେଟୱାର୍କ</translation>
 <translation id="7984068253310542383">ମିରର୍‌ <ph name="DISPLAY_NAME"/></translation>
-<translation id="7985283639530788531">ଆପଣ କ’ଣ ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ରେ ସ୍ପର୍ଶ ID <ph name="APP_NAME"/> ସହିତ ସ୍ପର୍ଶ ID ବ୍ୟବହାର କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</translation>
 <translation id="7986295104073916105">ସେଭ୍ ଥିବା ପାସ୍‌ୱର୍ଡ ସେଟିଂସ୍‌କୁ ପଢ଼ନ୍ତୁ ଓ ବଦଳାନ୍ତୁ</translation>
 <translation id="7987814697832569482">ସର୍ବଦା ଏହି VPN ମାଧ୍ୟମରେ ସଂଯୋଗ କରନ୍ତୁ</translation>
 <translation id="7988355189918024273">ଆକ୍ସେସ୍‌ବିଲିଟୀ ବୈଶିଷ୍ଟ୍ୟଗୁଡ଼ିକ ସକ୍ଷମ କରନ୍ତୁ</translation>
@@ -5472,7 +5410,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8030852056903932865">ଅନୁମୋଦନ କରନ୍ତୁ</translation>
 <translation id="8032244173881942855">ଟାବ୍‌ କାଷ୍ଟ କରିବାରେ ଅକ୍ଷମ।</translation>
 <translation id="8033827949643255796">ଚୟନ କରାଯାଇଛି</translation>
-<translation id="803435727213847625">{COUNT,plural, =0{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ସବୁ ଖୋଲନ୍ତୁ}=1{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଖୋଲନ୍ତୁ}other{ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ସବୁ (#) ଖୋଲନ୍ତୁ}}</translation>
 <translation id="8037117027592400564">ସ୍ପୀଚ୍‍ର ସମ୍ମିଶ୍ରଣ ବ୍ୟବହାର କରି ସମସ୍ତ କୁହାଯାଇଥିବା ଟେକ୍ସଟ୍‍ ପଢ଼ନ୍ତୁ</translation>
 <translation id="8037357227543935929">ପଚାରନ୍ତୁ (ଡିଫଲ୍ଟ)</translation>
 <translation id="803771048473350947">ଫାଇଲ୍</translation>
@@ -5607,7 +5544,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8213449224684199188">ଫଟୋ ମୋଡ୍‌ରେ ପ୍ରବେଶ ହୋଇଛି</translation>
 <translation id="8213577208796878755">ଅନ୍ୟ ଏକ ଉପଲବ୍ଧ ଡିଭାଇସ୍।</translation>
 <translation id="8214489666383623925">ଫାଇଲ୍ ଖୋଲନ୍ତୁ...</translation>
-<translation id="8214962590150211830">ଏହି ବ୍ୟକ୍ତିଙ୍କୁ କାଢ଼ନ୍ତୁ</translation>
 <translation id="8215295261562449873">Linux ଅପଗ୍ରେଡ୍ କରିବା ପୂର୍ବରୁ ଡାଉନ୍‍‍ଲୋଡ୍ ଫୋଲ୍ଡର୍‍‍ରେ ମୋର ଆପ୍ ଓ ଫାଇଲ୍‍ଗୁଡ଼ିକର ବ୍ୟାକ୍ ଅପ୍ ନିଅନ୍ତୁ।</translation>
 <translation id="8217399928341212914">ଏକାଧିକ ଫାଇଲ୍‍କୁ ସ୍ୱଚାଳିତ ଡାଉନ୍‌ଲୋଡ୍‌ର ଅବରୋଧ କରିବା ଜାରି ରଖନ୍ତୁ</translation>
 <translation id="8218847192766059983">ଭାଷାଗୁଡ଼ିକୁ ଯୋଗ କରନ୍ତୁ କିମ୍ବା ତାଲିକାକୁ ପୁନଃକ୍ରମରେ ରଖନ୍ତୁ। <ph name="BEGIN_LINK"/>ଅଧିକ ଜାଣନ୍ତୁ<ph name="END_LINK"/></translation>
@@ -5674,7 +5610,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8284279544186306258">ସମସ୍ତ <ph name="WEBSITE_1"/> ସାଇଟ୍</translation>
 <translation id="8284326494547611709">କ୍ୟାପସନ୍</translation>
 <translation id="8286036467436129157">ସାଇନ୍ ଇନ୍ କରନ୍ତୁ</translation>
-<translation id="8286963743045814739">ଆପଣ ଏକ ଇନ୍‍କଗ୍ନିଟୋ ୱିଣ୍ଡୋ ବ୍ୟବହାର କରି ବ୍ୟକ୍ତିଗତ ଭାବେ ବ୍ରାଉଜ୍ କରିପାରିବେ</translation>
 <translation id="8287902281644548111">API କଲ୍/URL ଦ୍ୱାରା ସନ୍ଧାନ କରନ୍ତୁ</translation>
 <translation id="8288032458496410887"><ph name="APP"/> ଅନ୍‍ଇନ୍‍ଷ୍ଟଲ୍ କରନ୍ତୁ...</translation>
 <translation id="8289128870594824098">ଡିସ୍କ ଆକାର</translation>
@@ -5753,7 +5688,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="839736845446313156">ପଞ୍ଜିକରଣ କରନ୍ତୁ</translation>
 <translation id="8397825320644530257">ସଂଯୁକ୍ତ ଥିବା ଫୋନକୁ ବିଚ୍ଛିନ୍ନ କରନ୍ତୁ</translation>
 <translation id="8398877366907290961">ଯେକୌଣସି ପ୍ରକାରେ ଆଗେଇ ଚାଲନ୍ତୁ</translation>
-<translation id="8400146488506985033">ଲୋକମାନଙ୍କୁ ପରିଚାଳନା କରନ୍ତୁ</translation>
 <translation id="8401432541486058167">ଆପଣଙ୍କର ସ୍ମାର୍ଟ କାର୍ଡ ସହିତ ସମ୍ବନ୍ଧିତ ଥିବା PIN ପ୍ରଦାନ କରନ୍ତୁ।</translation>
 <translation id="8405046151008197676">ନବୀନତମ ଅପ୍‌ଡେଟ୍‍ରୁ ହାଇଲାଇଟ୍ସ ପାଆନ୍ତୁ</translation>
 <translation id="8407199357649073301">ଲଗ୍ ଲେବଲ୍:</translation>
@@ -5803,7 +5737,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8465444703385715657"><ph name="PLUGIN_NAME"/>କୁ ଚଲାଇବା ପାଇଁ ଆପଣଙ୍କର ଅନୁମତି ଆବଶ୍ୟକ</translation>
 <translation id="8466417995783206254">ଏହି ଟାବ୍ ଛବି ଭିତରେ ଛବି ମୋଡ୍‍‍ରେ ଏକ ଭିଡିଓ ଚଲାଉଛି।</translation>
 <translation id="8467326454809944210">ଅନ୍ୟ ଏକ ଭାଷା ବାଛନ୍ତୁ</translation>
-<translation id="8470214316007448308">ଅନ୍ୟ ବ୍ୟକ୍ତି</translation>
 <translation id="8470513973197838199"><ph name="ORIGIN"/> ପାଇଁ ପାସ୍‍ୱର୍ଡ ସେଭ୍ କରାଯାଇଛି</translation>
 <translation id="8472623782143987204">ହାର୍ଡୱେର୍-ସମର୍ଥିତ</translation>
 <translation id="8473863474539038330">ଠିକଣାଗୁଡ଼ିକ ଏବଂ ଅଧିକ</translation>
@@ -5851,7 +5784,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8540608333167683902"><ph name="NETWORK_COUNT"/>ଟିର <ph name="NETWORK_INDEX"/> ନେଟ୍‌ୱାର୍କ, <ph name="NETWORK_NAME"/>, <ph name="CONNECTION_STATUS"/>, ସିଗ୍‌ନାଲ୍‌ର କ୍ଷମତା <ph name="SIGNAL_STRENGTH"/>%, ବିବରଣୀ</translation>
 <translation id="8541462173655894684">ପ୍ରିଣ୍ଟ ସର୍ଭରରୁ କୌଣସି ପ୍ରିଣ୍ଟର୍ ମିଳିଲା ନାହିଁ</translation>
 <translation id="8542618328173222274">କୌଣସି ସାଇଟ୍ ଆପଣଙ୍କର ଭର୍ଚୁଆଲ୍ ରିଆଲିଟୀ ଡିଭାଇସଗୁଡ଼ିକ ଏବଂ ଡାଟା ବ୍ୟବହାର କରିବାକୁ ଚାହିଁଲେ ପଚାରନ୍ତୁ</translation>
-<translation id="8543556556237226809">ପ୍ରଶ୍ନ ଅଛି? ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍ ପର୍ଯ୍ୟବେକ୍ଷଣ କରୁଥିବା ବ୍ୟକ୍ତିଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ</translation>
 <translation id="8545575359873600875">କ୍ଷମା କରିବେ, ଆପଣଙ୍କର ପାସ୍‌ୱର୍ଡ ଯାଞ୍ଚ କରାଯାଇପାରିଲା ନାହିଁ। ଏହି ପର୍ଯ୍ୟବେକ୍ଷିତ ଉପଯୋଗକର୍ତ୍ତାଙ୍କର ପରିଚାଳକ ହୁଏତ ସମ୍ପ୍ରତି ପାସ୍‌ୱର୍ଡଟିକୁ ପରିବର୍ତ୍ତନ କରିଛନ୍ତି। ଯଦି ଏପରି ହୋଇଥାଏ, ତେବେ ଆଗାମୀ ଥର ଆପଣ ସାଇନ୍ ଇନ୍ କରିବା ସମୟରେ ନୂତନ ପାସ୍‌ୱର୍ଡଟି ଲାଗୁ ହେବ। ଆପଣଙ୍କର ପୁରୁଣା ପାସ୍‌ୱର୍ଡ ବ୍ୟବହାର କରି ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="8546186510985480118">ଡିଭାଇସ୍‍‍ରେ କମ୍ ସ୍ଥାନ ରହିଛି</translation>
 <translation id="8546306075665861288">ଛବି କେଚ୍</translation>
@@ -5862,7 +5794,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="85486688517848470">ଶୀର୍ଷ-ଧାଡିରେ ଥିବା କୀ'ଗୁଡ଼ିକର ଆଚରଣ ସ୍ୱିଚ୍ କରିବାକୁ ସନ୍ଧାନ କୀ'କୁ ଧରି ରଖନ୍ତୁ</translation>
 <translation id="8551388862522347954">ଲାଇସେନ୍ସ</translation>
 <translation id="8551588720239073785">ତାରିଖ ଏବଂ ସମୟ ସେଟିଂସ୍</translation>
-<translation id="8553342806078037065">ଅନ୍ୟ ଲୋକମାନଙ୍କୁ ପରିଚାଳନା କରନ୍ତୁ</translation>
 <translation id="8554899698005018844">କୌଣସି ଭାଷା ନାହିଁ</translation>
 <translation id="8557022314818157177">ଆପଣଙ୍କର ଟିପଚିହ୍ନ କ୍ୟାପଚର୍ ନହେବା ପର୍ଯ୍ୟନ୍ତ ଆପଣଙ୍କ ସୁରକ୍ଷା କୀକୁ ସ୍ପର୍ଶ କରି ଧରି ରଖନ୍ତୁ</translation>
 <translation id="855773602626431402">ଏହି ପୃଷ୍ଠାରେ ଏକ ସ୍ୟାଣ୍ଡବକ୍ସ କରାଯାଇନଥିବା ପ୍ଲଗଇନ୍‍କୁ ଚଲାଇବାରୁ ପ୍ରତିରୋଧ କରାଯାଇଥିଲା।</translation>
@@ -5900,7 +5831,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8610103157987623234">ଭୁଲ ଫର୍ମାଟ୍, ଦୟାକରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ</translation>
 <translation id="8613164732773110792">କେବଳ ସାନ ଅକ୍ଷର, ଅଙ୍କ, ଅଣ୍ଡରସ୍କୋର୍ କିମ୍ବା ଡ୍ୟାସଗୁଡ଼ିକ</translation>
 <translation id="8613786722548417558">ସୁରକ୍ଷା ଯାଞ୍ଚ ପାଇଁ <ph name="FILE_NAME"/> ବହୁତ ବଡ଼ ଅଟେ। ଆପଣ 50 MB ପର୍ଯ୍ୟନ୍ତ ଫାଇଲଗୁଡ଼ିକୁ ଖୋଲି ପାରିବେ।</translation>
-<translation id="8615618338313291042">ଇନ୍‌କଗ୍ନିଟୋ ଆପ୍: <ph name="APP_NAME"/></translation>
 <translation id="8619803522055190423">ଡ୍ରପ୍ ଶାଡୋ</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620436878122366504">ଆପଣଙ୍କର ମାତାପିତା ବର୍ତ୍ତମାନ ପର୍ଯ୍ୟନ୍ତ ଏହାକୁ ଅନୁମୋଦିତ କରିନାହାନ୍ତି</translation>
@@ -5942,9 +5872,7 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8655972064210167941">ଆପଣଙ୍କର ପାସ୍‌ୱର୍ଡ ଯାଞ୍ଚ ହୋଇନଥିବାରୁ ସାଇନ୍‌ ଇନ୍ ବିଫଳ ହୋଇଛି। ଦୟାକରି ଆପଣଙ୍କ ବ୍ୟବସ୍ଥାପକଙ୍କ ସହ ଯୋଗାଯୋଗ କରନ୍ତୁ ବା ପୁଣିଥରେ ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="8656768832129462377">ଯାଞ୍ଚ କରନ୍ତୁ ନାହିଁ</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/>,<ph name="TAB_NAME"/>ସହ ଆପଣଙ୍କର ସ୍କ୍ରିନ୍ ଓ ଅଡିଓ ସେୟାର୍ କରୁଛନ୍ତି।</translation>
-<translation id="8661290697478713397">ଇନ୍‍କ&amp;ଗ୍ନିଟୋ ୱିଣ୍ଡୋରେ ଲିଙ୍କ ଖୋଲନ୍ତୁ</translation>
 <translation id="8662671328352114214"><ph name="TYPE"/>ନେଟ୍‌ୱର୍କରେ ଯୋଗ ଦିଅନ୍ତୁ</translation>
-<translation id="8662795692588422978">ଲୋକମାନେ</translation>
 <translation id="8662811608048051533">ଆପଣଙ୍କୁ ଅଧିକାଂଶ ସାଇଟ୍‌ରୁ ସାଇନ୍ ଆଉଟ୍ କରିଦିଏ।</translation>
 <translation id="8662911384982557515">ଏଠାରେ ଆପଣଙ୍କର ମୂଳ ପୃଷ୍ଠାକୁ ପରିବର୍ତ୍ତନ କରନ୍ତୁ: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Brave ୱାଲପେପର୍‌ ସେଟ୍ କରିପାରିବ ନାହିଁ।</translation>
@@ -6036,7 +5964,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8763927697961133303">USB ଡିଭାଇସ୍</translation>
 <translation id="4570609078116869893">ସମସ୍ତ ଉପଯୋଗକର୍ତ୍ତାଙ୍କ ପାଇଁ ସ୍ୱଚାଳିତ ଭାବେ Brave ଅପ୍‌ଡେଟ୍‌ କରେ</translation>
 <translation id="8770406935328356739">ଏକ୍ସଣ୍ଟେନ୍‌ସନ୍ ରୁଟ୍ ଡିରେକ୍ଟୋରୀ</translation>
-<translation id="8770507190024617908">ଲୋକମାନଙ୍କୁ ପରିଚାଳନା କରନ୍ତୁ</translation>
 <translation id="8771300903067484968">ପ୍ରାରମ୍ଭ ପୃଷ୍ଠାର ବ୍ୟାକ୍‌ଗ୍ରାଉଣ୍ଡକୁ ଡିଫଲ୍ଟ ବ୍ୟାକ୍‌ଗ୍ରାଉଣ୍ଡରେ ରିସେଟ୍‍ କରାଯାଇଛି।</translation>
 <translation id="8773302562181397928"><ph name="PRINTER_NAME"/> ସେଭ୍ କରନ୍ତୁ</translation>
 <translation id="8774379074441005279">ରିଷ୍ଟୋର୍ କରିବାକୁ ସୁନିଶ୍ଚିତ କରନ୍ତୁ</translation>
@@ -6164,7 +6091,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8912793549644936705">ବିସ୍ତାର କରନ୍ତୁ</translation>
 <translation id="8912810933860534797">ସ୍ୱତଃ-ସ୍କାନ୍ ସକ୍ଷମ କରନ୍ତୁ</translation>
 <translation id="8915370057835397490">ପରାମର୍ଶ ଲୋଡ୍‌ ହେଉଛି</translation>
-<translation id="8916476537757519021">ଇନ୍‌କଗ୍ନିଟୋ ସବଫ୍ରେମ୍: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8922013791253848639">ଏହି ସାଇଟ୍‌ରେ ସର୍ବଦା ବିଜ୍ଞାପନକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
 <translation id="8923880975836399332">ଗାଢ଼ ଟିଲ୍</translation>
 <translation id="8925458182817574960">&amp;ସେଟିଂସ୍</translation>
@@ -6186,7 +6112,6 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="8944964446326379280"><ph name="APP_NAME"/>, <ph name="TAB_NAME"/> ସହ ଏକ ୱିଣ୍ଡୋ ସେୟାର୍ କରୁଛି।</translation>
 <translation id="8945274638472141382">ଆଇକନର ଆକାର</translation>
 <translation id="8946359700442089734">ଏହି <ph name="IDS_SHORT_PRODUCT_NAME"/> ଡିଭାଇସ୍‌ରେ ଡିବଗିଂ ବୈଶିଷ୍ଟ୍ୟ ସମ୍ପୂର୍ଣ୍ଣ ଭାବେ ସକ୍ଷମ ହୋଇନାହିଁ।</translation>
-<translation id="894871326938397531">ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍ ଛାଡ଼ିବେ?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> ଆପଣଙ୍କର ସୁରକ୍ଷା କୀ'ର ନିର୍ମାତା ଏବଂ ମଡେଲ୍ ଦେଖିବାକୁ ଚାହୁଁଛନ୍ତି</translation>
 <translation id="8951256747718668828">ଗୋଟିଏ ତ୍ରୁଟି ଯୋଗୁଁ ରିଷ୍ଟୋର୍ କରିପାରିଲା ନାହିଁ</translation>
 <translation id="8951465597020890363">ଯେ କୌଣସି ମତେ ଅତିଥି ମୋଡ୍‌ରୁ ବାହାରିବେ?</translation>
@@ -6407,7 +6332,7 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="939519157834106403">SSID</translation>
 <translation id="939598580284253335">ପାସ୍‌-ଫ୍ରେଜ୍ ଲେଖନ୍ତୁ</translation>
 <translation id="939736085109172342">ନୂତନ ଫୋଲ୍ଡର</translation>
-<translation id="942532530371314860"><ph name="APP_NAME"/> ଏକ ଟାବ୍‍ ଏବଂ ଅଡ଼ିଓ ସେୟାର୍‌ କରୁଛି।</translation>
+<translation id="5770515304879261338"><ph name="APP_NAME"/> ଏକ ଟାବ୍‍ ଏବଂ ଅଡ଼ିଓ ସେୟାର୍‌ କରୁଛି।</translation>
 <translation id="945522503751344254">ମତାମତ ପଠାନ୍ତୁ</translation>
 <translation id="947329552760389097">&amp;ଉପାଦାନଗୁଡ଼ିକ ନିରୀକ୍ଷଣ କରନ୍ତୁ</translation>
 <translation id="952992212772159698">ସକ୍ରିୟ ହୋ‍ଇନାହିଁ</translation>
@@ -6469,7 +6394,7 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="3772947852642271642">ଇନ୍‌କଗ୍‌ନିଟୋ window ମାଧ୍ୟମରେ ଆପଣଙ୍କର ବ୍ରାଉଜିଂ ଇତିବୃତିକୁ ସେଭ୍ ନକରି ୱେବ୍‌ର ବ୍ୟବହାର କରନ୍ତୁ</translation>
 <translation id="3871738366246972820">ଏକ ସେୟାର୍ ହୋ‍ଇଥିବା କମ୍ପ୍ୟୁଟର୍‌ ବ୍ୟବହାର କରୁଛନ୍ତି କି? ଏକ ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋ ଖୋଲିବାକୁ ଚେଷ୍ଟା କରନ୍ତୁ।</translation>
 <translation id="5808622652939943719">ବ୍ୟକ୍ତିଗତ ଭାବେ ବ୍ରାଉଜ୍‌ କରିବାକୁ, ଡଟ୍‍ ଆଇକନ୍‍ ମେନୁରେ କ୍ଲିକ୍‍ କରି ଏକ ଇନ୍‍କଗ୍ନିଟୋ ୱିଣ୍ଡୋ ଖୋଲନ୍ତୁ</translation>
-<translation id="9079153198295609735">ସ୍ୱଚାଳିତରୂପେ Braveକୁ ବ୍ୟବହାରର ପରିସଂଖ୍ୟାନ ଏବଂ କ୍ରାସ୍ ରିପୋର୍ଟ ପଠାନ୍ତୁ</translation>
+<translation id="9079153198295609735">ସ୍ୱଚାଳିତରୂପେ Brave Softwareକୁ ବ୍ୟବହାରର ପରିସଂଖ୍ୟାନ ଏବଂ କ୍ରାସ୍ ରିପୋର୍ଟ ପଠାନ୍ତୁ</translation>
 <translation id="8839398440242019256">Brave ୱେବ୍ ଷ୍ଟୋର୍‌ରୁ ନୁହେଁ।</translation>
 <translation id="6945695820322143954">ଏହି ଏକ୍ସଟେନ୍‌ସନ୍ Brave ୱେବ୍ ଷ୍ଟୋର୍ ନୀତିକୁ ଉଲ୍ଲଂଘନ କରେ।</translation>
 <translation id="1676595396635191120">&amp;ନୂଆ ଇନ୍‌କଗ୍ନିଟୋ ୱିଣ୍ଡୋ</translation>
@@ -6508,8 +6433,8 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="4904061654709986277">ଲୋକଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="6114945161119872228">ଏହି ବ୍ୟକ୍ତିଙ୍କୁ କାଢ଼ନ୍ତୁ</translation>
 <translation id="769308100792069196">ପର୍ଯ୍ୟବେକ୍ଷିତ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
-<translation id="8006143138282906848">ଏହି ଉପଯୋଗକର୍ତ୍ତାଙ୍କୁ କାଢ଼ନ୍ତୁ</translation>
-<translation id="6912187023601892621">ପର୍ଯ୍ୟବେକ୍ଷିତ ଉପଯୋଗକର୍ତ୍ତା ଯୋଗ କରନ୍ତୁ</translation>
+<translation id="8006143138282906848">ଏହି ବ୍ୟକ୍ତିଙ୍କୁ ବାହାର କରନ୍ତୁ</translation>
+<translation id="6912187023601892621">ପର୍ଯ୍ୟବେକ୍ଷିତ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଗ କରନ୍ତୁ</translation>
 <translation id="8086119151297127544">ଜଣେ ବ୍ୟକ୍ତିଙ୍କୁ କାଢ଼ି ଦେବା ପୂର୍ବରୁ ଦୟାକରି ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍‍କୁ ଅନ୍‌ଲକ୍‍ କରନ୍ତୁ।</translation>
 <translation id="7805701378418968629">ଜଣେ ବ୍ୟକ୍ତିଙ୍କୁ ଯୋଗ କରିବା ପୂର୍ବରୁ ଆପଣଙ୍କର ପ୍ରୋଫାଇଲ୍‌ ଅନ୍‌ଲକ୍‌ କରନ୍ତୁ।</translation>
 <translation id="6315812488257290136">ଲୋକମାନେ</translation>
@@ -6526,10 +6451,10 @@ Brave ଆପଣଙ୍କ ମୋବାଇଲ୍ ଡାଟା ବ୍ୟବହା�
 <translation id="1281501490173223206">କେବଳ ବର୍ତ୍ତମାନର ଇନ୍‌କଗ୍ନିଟୋ ସମୟ ଅବଧି</translation>
 <translation id="5566692924079383101">ଆପଣ ବର୍ତ୍ତମାନର ଇନକଗ୍ନିଟୋ ଅବଧିରୁ ବାହାରିବା ପରେ ଏହି ବ୍ୟତିକ୍ରମକୁ ସ୍ୱଚାଳିତ ଭାବେ କାଢ଼ି ଦିଆଯିବ</translation>
 <translation id="6906406176003824042">ବ୍ୟକ୍ତିଙ୍କର ସୂଚନା ଏଡିଟ୍‍ କରନ୍ତୁ</translation>
-<translation id="9063160602596686558">ସ୍ୱଚାଳିତରୂପେ Braveକୁ ବ୍ୟବହାରର ପରିସଂଖ୍ୟାନ ଏବଂ କ୍ରାସ୍ ରିପୋର୍ଟ ପଠାଏ</translation>
+<translation id="9063160602596686558">ସ୍ୱଚାଳିତରୂପେ Brave Softwareକୁ ବ୍ୟବହାରର ପରିସଂଖ୍ୟାନ ଏବଂ କ୍ରାସ୍ ରିପୋର୍ଟ ପଠାଏ</translation>
 <translation id="3860292630623580294">(ଇନ୍‌କଗ୍ନିଟୋ)</translation>
 <translation id="4854477725773269949">ଇନ୍‌କଗ୍ନିଟୋ ମୋଡ୍‌ରେ ରହିବାକୁ ଅନୁମତି ଦିଅନ୍ତୁ</translation>
-<translation id="6436164536244065364">Brave ୱେବ୍‌ ଷ୍ଟୋର୍‌ରେ ଦେଖନ୍ତୁ</translation>
+<translation id="6436164536244065364">ୱେବ୍ ଷ୍ଟୋର୍‌‌ରେ ଦେଖନ୍ତୁ</translation>
 <translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave ୱେବ୍ ଷ୍ଟୋର୍‌<ph name="END_LINK"/>ରେ ଏକ୍ସଟେନ୍‌ସନ୍ ଏବଂ ଥିମ୍ ଖୋଜନ୍ତୁ</translation>
 <translation id="6336451774241870485">ନୂଆ ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍</translation>
 <translation id="6610147964972079463">ଇନ୍‌କଗ୍ନିଟୋ ଟାବ୍ସ ବନ୍ଦ କରନ୍ତୁ</translation>

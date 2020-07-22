@@ -45,7 +45,6 @@
 <translation id="1047431265488717055">Kopiatu estekaren te&amp;stua</translation>
 <translation id="1048286738600630630">Pantaila</translation>
 <translation id="1048986595386481879">Dinamikoki esleituta</translation>
-<translation id="1049743911850919806">Ezkutuko modua</translation>
 <translation id="1049795001945932310">&amp;Hizkuntza-ezarpenak</translation>
 <translation id="1054153489933238809">Ireki jatorrizko &amp;irudia beste fitxa batean</translation>
 <translation id="1055806300943943258">Bluetooth eta USB gailuak bilatzen...</translation>
@@ -104,7 +103,6 @@
 <translation id="1128591060186966949">Editatu bilatzailea</translation>
 <translation id="1129850422003387628">Kudeatu aplikazioak</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/>, <ph name="GROUP_NAME"/> taldekoa</translation>
-<translation id="1134009406053225289">Ireki ezkutuko moduko leiho batean</translation>
 <translation id="1136712381129578788">Segurtasun-giltza blokeatuta dago PINa gehiegitan idatzi delako oker. Hura desblokeatzeko, atera ezazu, eta sar ezazu berriro.</translation>
 <translation id="1137673463384776352">Ireki esteka <ph name="APP"/> aplikazioan</translation>
 <translation id="1139343347646843679">Errore bat gertatu da Linux konfiguratzean. Jarri administratzailearekin harremanetan.</translation>
@@ -166,7 +164,6 @@
 <translation id="1205489148908752564">Irakurri eta aldatu sarbidea duten erabiltzaileak</translation>
 <translation id="1206407435587370571">Arakatu Bravebook-a</translation>
 <translation id="1209796539517632982">Izen-zerbitzari automatikoak</translation>
-<translation id="1211364473545090084">Sarean egiten duzuna historian gordeta geratzerik nahi ez baduzu, ireki leiho bat ezkutuko moduan</translation>
 <translation id="1211769675100312947">Zeuk aukeratzen dituzu lasterbideak</translation>
 <translation id="1213037489357051291"><ph name="NUM_FINGERPRINTS"/> hatz-marka daude konfiguratuta</translation>
 <translation id="1213254615020057352">Bidali erabilera- eta diagnostiko-datuak. Bidali diagnostikoak eta gailu zein aplikazioen erabilera-datuak Brave-ri automatikoki haurrak Android-en darabiltzan zerbitzuak hobetzeko. Informazio hori ez da erabiliko haurra identifikatzeko eta, hari esker, sistemaren eta aplikazioen egonkortasuna hobetuko da, besteak beste. Gainera, multzokatutako datu batzuk oso baliagarriak izango dira Brave-ren aplikazioak hobetzeko eta bazkideei laguntzeko (adibidez, Android-en garatzaileei). Jabeak konfiguratu du ezarpen hori. Gailu honen diagnostikoak eta erabilera-datuak Brave-ri bidaltzea aukera dezake jabeak. Haurraren kontuko Sareko eta aplikazioetako jarduera gehigarriak ezarpena aktibatuta badago, baliteke datu horiek haren Brave-ko kontuan gordetzea.</translation>
@@ -296,7 +293,6 @@
 <translation id="1377600615067678409">Saltatu, momentuz</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> ari da ezarpen hau kontrolatzen</translation>
 <translation id="1380028686461971526">Konektatu sarera automatikoki</translation>
-<translation id="1380436189840894976">Ezkutuko modutik irten nahi duzu hala ere?</translation>
 <translation id="1383861834909034572">Osatzen denean irekiko da</translation>
 <translation id="1383876407941801731">Bilaketa</translation>
 <translation id="1386387014181100145">Kaixo.</translation>
@@ -355,7 +351,6 @@
 <translation id="144518587530125858">Ezin izan da "<ph name="IMAGE_PATH"/>" kargatu itxura gisa.</translation>
 <translation id="1445693676523799095">Zenbait minutu beharko dira</translation>
 <translation id="1451375123200651445">Webgunea, fitxategi bakarra</translation>
-<translation id="1451917004835509682">Gehitu gainbegiratutako pertsona</translation>
 <translation id="1454223536435069390">&amp;Atera pantaila-argazkia</translation>
 <translation id="1459967076783105826">Luzapen gisa gehitutako bilatzailea</translation>
 <translation id="146000042969587795">Markoa blokeatu da segurua ez den edukia duelako.</translation>
@@ -478,7 +473,6 @@
 <translation id="1600857548979126453">Atzitu orriaren araztailearen backenda</translation>
 <translation id="1601560923496285236">Aplikatu</translation>
 <translation id="1602085790802918092">Makina birtuala abiarazten</translation>
-<translation id="1603914832182249871">(Ezkutuko modua)</translation>
 <translation id="1604432177629086300">Ezin izan da inprimatu. Begiratu inprimagailua eta saiatu berriro.</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: pasahitzen sinkronizazioa ez dabil</translation>
 <translation id="1607139524282324606">Garbitu sarrera</translation>
@@ -550,7 +544,6 @@
 <translation id="1680841347983561661">Abiarazi berriro Google Play minutu gutxi batzuk barru.</translation>
 <translation id="1680849702532889074">Errore bat gertatu da Linux aplikazioa instalatzean.</translation>
 <translation id="16815041330799488">Ez utzi ikusten webguneei arbelean kopiatzen dituzun testuak eta irudiak</translation>
-<translation id="1682548588986054654">Ezkutuko leiho berria</translation>
 <translation id="168715261339224929">Laster-markak gailu guztietan eskura izateko, aktibatu sinkronizazioa.</translation>
 <translation id="1688867105868176567">Webguneko datuak garbitu nahi dituzu?</translation>
 <translation id="1688935057616748272">Idatzi letra bat</translation>
@@ -561,10 +554,8 @@
 <translation id="1692210323591458290">More iluna</translation>
 <translation id="1697150536837697295">Artea</translation>
 <translation id="1697686431566694143">Editatu fitxategia</translation>
-<translation id="1698122934742150150">Uneko ezkutuko saioan soilik</translation>
 <translation id="1700079447639026019">Webguneek ezin dituzte erabili cookieak inoiz</translation>
 <translation id="1700845716982723710">Desaktibatu pantaila ilunduko modua</translation>
-<translation id="1701062906490865540">Kendu pertsona hau</translation>
 <translation id="1703331064825191675">Ez arduratu pasahitzak gogoratu beharraz</translation>
 <translation id="1704970325597567340">Azken segurtasun-egiaztapenaren data: <ph name="DATE"/></translation>
 <translation id="1706586824377653884">Administratzaileak gehitu du</translation>
@@ -692,7 +683,6 @@
 <translation id="1850508293116537636">Biratu e&amp;rlojuaren orratzen norabidean</translation>
 <translation id="1852141627593563189">Bilatu software kaltegarria</translation>
 <translation id="1852799913675865625">Errore bat gertatu da fitxategia irakurtzen saiatzean: <ph name="ERROR_TEXT"/>.</translation>
-<translation id="1853692000353488670">Ezkutuko moduko fitxa berria</translation>
 <translation id="1854180393107901205">Utzi igortzeari</translation>
 <translation id="1856715684130786728">Gehitu kokapena…</translation>
 <translation id="1858585891038687145">Jo fidagarritzat software-egileak identifikatzeko ziurtagiri hau</translation>
@@ -933,7 +923,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="2174948148799307353"><ph name="PARENT_EMAIL"/> arduratzen da kontu hau kudeatzeaz. Gailu honetako kontu nagusiko saioa amaitzeko, sakatu pantailako ordua. Agertuko den menuan, sakatu "Amaitu saioa".</translation>
 <translation id="2175607476662778685">Abiarazte bizkorraren barra</translation>
 <translation id="217576141146192373">Ezin da gehitu inprimagailua. Egiaztatu ongi konfiguratuta dagoela eta saiatu berriro.</translation>
-<translation id="2177950615300672361">Ezkutuko fitxa: <ph name="TAB_NAME"/></translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_DOMAIN"/> domeinuan dagoen <ph name="PEPPER_PLUGIN_NAME"/> pluginak ordenagailua atzitu nahi du</translation>
 <translation id="2178614541317717477">Autoritate ziurtagiri-emailea kolokan</translation>
 <translation id="2182058453334755893">Arbelean kopiatu da</translation>
@@ -944,7 +933,7 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="2190069059097339078">Wi-Fi kredentzialen lortzailea</translation>
 <translation id="219008588003277019">Bezero natiboaren modulua: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(hutsik)</translation>
-<translation id="2191754378957563929">Aktibatuta</translation>
+<translation id="8959699239363253085">Aktibatuta</translation>
 <translation id="2192505247865591433">Igorlea:</translation>
 <translation id="2193365732679659387">Fidagarritasun-ezarpenak</translation>
 <translation id="2195331105963583686">Handik aurrera, <ph name="DEVICE_TYPE"/> erabiltzen jarraitu ahal izango duzu, baina ez duzu jasoko software- eta segurtasun-eguneratze automatikorik</translation>
@@ -978,7 +967,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="2225864335125757863">Aldatu honako pasahitz hauek ahal bezain laster kontua babestuta mantentzeko:</translation>
 <translation id="2226449515541314767">Webguneak MIDI gailuen kontrol osoa izateko blokeatuta dago.</translation>
 <translation id="222657802677009088">Konfiguratu inprimagailua</translation>
-<translation id="222704500187107962">Salbuespen hau automatikoki kenduko da ezkutuko moduko uneko saiotik irteten zarenean</translation>
 <translation id="2227179592712503583">Kendu iradokizuna</translation>
 <translation id="2229161054156947610">Ordu bat baino gehiago geratzen da</translation>
 <translation id="222931766245975952">Fitxategia moztuta dago</translation>
@@ -989,7 +977,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="7956662517480676674">Sinkronizazioa eta Brave-ren zerbitzuak</translation>
 <translation id="2235344399760031203">Hirugarrenen cookieak blokeatu dira</translation>
 <translation id="2238379619048995541">Maiztasunaren egoeraren datuak</translation>
-<translation id="2239921694246509981">Gehitu gainbegiratutako pertsona</translation>
 <translation id="2241053333139545397">Irakurri eta aldatu hainbat webguneetan dituzun datuak</translation>
 <translation id="2241634353105152135">Behin soilik</translation>
 <translation id="2242687258748107519">Fitxategiari buruzko informazioa</translation>
@@ -1277,7 +1264,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="2129873093718581193">Bilatu Brave-n edo idatzi URLa</translation>
 <translation id="2602501489742255173">Hasteko, pasatu hatza gorantz</translation>
 <translation id="2603115962224169880">Garbitu ordenagailua</translation>
-<translation id="2603463522847370204">Ireki &amp;ezkutuko nabigazio-leihoan</translation>
 <translation id="2604255671529671813">Sareko konexioaren errorea</translation>
 <translation id="2606246518223360146">Lotu datuak</translation>
 <translation id="2607101320794533334">Hartzailearen gako publikoaren informazioa</translation>
@@ -1339,13 +1325,12 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="2672142220933875349">crx fitxategiak ez du balio. Ezin izan da deskonprimatu.</translation>
 <translation id="2673135533890720193">Irakurri arakatze-historia</translation>
 <translation id="2673589024369449924">Sortu mahaigaineko lasterbide bat erabiltzaile honentzat</translation>
-<translation id="2674764818721168631">Desaktibatuta</translation>
+<translation id="6175644081330715138">Desaktibatuta</translation>
 <translation id="2677748264148917807">Irten</translation>
 <translation id="2678063897982469759">Gaitu berriro</translation>
 <translation id="268053382412112343">Hi&amp;storia</translation>
 <translation id="2682498795777673382">Gurasoak aldaketa bat egin du</translation>
 <translation id="2683638487103917598">Ordenatu da karpeta</translation>
-<translation id="2684004000387153598">Aurrera egiteko, sakatu Ados eta sakatu Gehitu pertsona bat zure helbide elektronikorako profila sortzeko.</translation>
 <translation id="2687403674020088961">Blokeatu cookie guztiak (ez da gomendatzen)</translation>
 <translation id="2687407218262674387">Brave-ren Zerbitzu-baldintzak</translation>
 <translation id="2688196195245426394">Errore bat gertatu da gailua zerbitzariarekin erregistratzean: <ph name="CLIENT_ERROR"/>.</translation>
@@ -1483,7 +1468,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="2841837950101800123">Hornitzailea</translation>
 <translation id="2844169650293029770">USB-C gailua (ezkerraldeko aurreko ataka)</translation>
 <translation id="2844809857160214557">Ikusi eta kudeatu inprimatze-lanak</translation>
-<translation id="2845382757467349449">Erakutsi beti laster-marken barra</translation>
 <translation id="284805635805850872">Software kaltegarria kendu nahi duzu?</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
 <translation id="284975061945174219">Ezin izan da garbitu</translation>
@@ -1733,7 +1717,7 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3170072451822350649">Nahi baduzu, saioa hasi gabe, <ph name="LINK_START"/>gonbidatu gisa araka dezakezu<ph name="LINK_END"/> sarea.</translation>
 <translation id="3177909033752230686">Orriaren hizkuntza:</translation>
 <translation id="3179982752812949580">Testuaren letra</translation>
-<translation id="3181954750937456830">Arakatze segurua (webgune arriskutsuen aurka babesten zaituzte gailua eta zu)</translation>
+<translation id="3201899458094819285">Arakatze segurua (webgune arriskutsuen aurka babesten zaituzte gailua eta zu)</translation>
 <translation id="3182749001423093222">Ortografia-zuzentzailea</translation>
 <translation id="3183139917765991655">Profil-inportatzailea</translation>
 <translation id="3183944777708523606">Monitorearen antolaketa</translation>
@@ -1841,7 +1825,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3315158641124845231">Ezkutatu <ph name="PRODUCT_NAME"/></translation>
 <translation id="3317459757438853210">Bi aldetan</translation>
 <translation id="3317678681329786349">Kamera eta mikrofonoa blokeatuta daude</translation>
-<translation id="3319048459796106952">&amp;Ezkutuko leiho berria</translation>
 <translation id="3320630259304269485">Arakatze segurua (webgune kaltegarrien aurreko babesa) eta bestelako segurtasun-ezarpenak</translation>
 <translation id="3323295311852517824">{NUM_FILES,plural, =0{Datuek kontuzko edukia edo eduki arriskutsua daukate. Kendu edukia eta saiatu berriro.}=1{Fitxategiak kontuzko edukia edo eduki arriskutsua dauka. Kendu edukia eta saiatu berriro.}other{Fitxategiek kontuzko edukia edo eduki arriskutsua daukate. Kendu edukia eta saiatu berriro.}}</translation>
 <translation id="3323521181261657960">Erabilera-denbora gehiago eman dizute!</translation>
@@ -1894,7 +1877,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3404065873681873169">Ez da gorde webgune honetako pasahitzik</translation>
 <translation id="3405664148539009465">Pertsonalizatu letrak</translation>
 <translation id="3405763860805964263">…</translation>
-<translation id="3406605057700382950">&amp;Erakutsi laster-marken barra</translation>
 <translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{Baliteke luzapen hori arriskutsua izatea}other{Baliteke luzapen horiek arriskutsuak izatea}}</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="3410832398355316179">Erabiltzailea kentzen denean, harekin erlazionatutako fitxategi eta gailuko datu guztiak betiko ezabatuko dira. Geroago ere hasi ahal izango du saioa <ph name="USER_EMAIL"/> erabiltzaileak.</translation>
@@ -1924,7 +1906,7 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3435738964857648380">Segurtasuna</translation>
 <translation id="343578350365773421">Papera agortu da</translation>
 <translation id="3435896845095436175">Gaitu</translation>
-<translation id="3436642683618870087">"Istanteko azpitituluak" eginbideak multimedia-edukietako hizketaldiak antzematen, eta azpitituluak automatikoki sortzen ditu.</translation>
+<translation id="7075426315046750605">"Istanteko azpitituluak" eginbideak multimedia-edukietako hizketaldiak antzematen, eta azpitituluak automatikoki sortzen ditu.</translation>
 <translation id="3438633801274389918">Ninja</translation>
 <translation id="3439153939049640737">Eman beti mikrofonoa erabiltzeko baimena <ph name="HOST"/> webguneari</translation>
 <translation id="3439970425423980614">PDF dokumentua aurrebistan irekitzen</translation>
@@ -1961,7 +1943,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3476303763173086583">Bidali erabilera- eta diagnostiko-datuak. Bidali diagnostikoak eta gailu zein aplikazioen erabilerari buruzko datuak Brave-ri automatikoki haurrak darabiltzan Android zerbitzuak hobetzen laguntzeko. Informazio hori ez da erabiliko haurra identifikatzeko eta, hari esker, sistemaren eta aplikazioen egonkortasuna hobetuko da, besteak beste. Gainera, multzokatutako datu batzuk oso baliagarriak izango dira Brave-ren aplikazioak hobetzeko eta bazkideei laguntzeko (adibidez, Android-en garatzaileei). Jabeak konfiguratu du <ph name="BEGIN_LINK1"/>ezarpen<ph name="END_LINK1"/> hori. Gailu honen diagnostikoak eta erabilera-datuak Brave-ri bidaltzea aukera dezake jabeak. Haurraren kontuko Sareko eta aplikazioetako jarduera gehigarriak ezarpena aktibatuta badago, baliteke datu horiek haren Brave-ko kontuan gordetzea. <ph name="BEGIN_LINK2"/>Lortu informazio gehiago<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">Sistemak ezin izan ditu eskuratu gailuaren gidalerroak.</translation>
 <translation id="347785443197175480">Jarraitu <ph name="HOST"/> webguneari kamera eta mikrofonoa atzitzea baimentzen</translation>
-<translation id="3478685642445675458">Desblokeatu profila inor kendu aurretik.</translation>
 <translation id="3479552764303398839">Orain ez</translation>
 <translation id="3479685872808224578">Ezin izan da hauteman inprimatze-zerbitzaria. Egiaztatu helbidea zuzena dela eta saiatu berriro.</translation>
 <translation id="3481268647794498892"><ph name="ALTERNATIVE_BROWSER_NAME"/> arakatzailean irekiko da <ph name="COUNTDOWN_SECONDS"/> segundo barru</translation>
@@ -2031,7 +2012,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3569682580018832495"><ph name="ORIGIN"/> webguneak honako fitxategi eta karpeta hauek ikus ditzake</translation>
 <translation id="3571734092741541777">Konfiguratu</translation>
 <translation id="3574210789297084292">hasi saioa</translation>
-<translation id="3574917942258583917">Ezkutuko modutik irten nahi duzu hala ere?</translation>
 <translation id="3575121482199441727">Eman webgune honen jakinarazpenak ikusteko baimena</translation>
 <translation id="3576324189521867626">Instalatu da</translation>
 <translation id="3578594933904494462">Fitxa honetako edukia partekatzen ari zara.</translation>
@@ -2050,7 +2030,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="359283478042092570">Sartu</translation>
 <translation id="3593965109698325041">Ziurtagiri-izenen murriztapenak</translation>
 <translation id="3596235046596950091">Gaitu hodeiko zerbitzuak</translation>
-<translation id="3596414637720633074">Blokeatu hirugarrenen cookieak ezkutuko moduan</translation>
 <translation id="3599221874935822507">Goratua</translation>
 <translation id="8122693181154564064">Saioa hasita daukaten gailu guztietako historia garbitzen du. Brave-ko kontuko historia arakatzeko beste modu batzuk aurki zenitzake <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> webgunean.</translation>
 <translation id="3600051066689725006">Web-eskaerari buruzko informazioa</translation>
@@ -2078,7 +2057,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3625481642044239431">Balio ez duen fitxategi bat hautatu da. Saiatu berriro.</translation>
 <translation id="3626296069957678981">Bravebook gailua kargatzeko, erabili Dell-eko bateria bateragarri bat.</translation>
 <translation id="3627320433825461852">Minutu bat baino gutxiago gelditzen da</translation>
-<translation id="3627588569887975815">Ireki esteka &amp;ezkutuko moduko leihoan</translation>
 <translation id="3627671146180677314">Netscape ziurtagiria berritzeko ordua</translation>
 <translation id="3627879631695760395">Instalatu <ph name="APP"/>…</translation>
 <translation id="3628275722731025472">Desaktibatu Bluetooth-a</translation>
@@ -2199,7 +2177,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="3758842566811519622">Cookieak ezarri dira</translation>
 <translation id="3759933321830434300">Blokeatu web-orrietako zatiak</translation>
 <translation id="3760460896538743390">Ikuskatu &amp;atzeko planoko orria</translation>
-<translation id="37613671848467444">Ireki &amp;ezkutuko nabigazio-leihoan</translation>
 <translation id="3761556954875533505">Fitxategiak editatzeko baimena eman nahi diozu webguneari?</translation>
 <translation id="3764314093345384080">Konpilazioari buruzko informazio xehatua</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{Komunikatu USB gailu batekin}other{Komunikatu # USB gailurekin}}</translation>
@@ -2441,7 +2418,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="4035758313003622889">&amp;Zereginen kudeatzailea</translation>
 <translation id="4036778507053569103">Zerbitzaritik deskargatu den gidalerroak ez du balio.</translation>
 <translation id="4037084878352560732">Zaldia</translation>
-<translation id="4037889604535939429">Editatu pertsona</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{Irten orritik}other{Irten orrietatik}}</translation>
 <translation id="4044612648082411741">Idatzi ziurtagiriaren pasahitza</translation>
 <translation id="404493185430269859">Bilatzaile lehenetsia</translation>
@@ -2561,7 +2537,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="4209251085232852247">Desaktibatuta</translation>
 <translation id="2624930408905606513"><ph name="BEGIN_LINK_HELP"/>Brave-ri bidaltzen zaizkio<ph name="END_LINK_HELP"/> dokumentuak, inprimatzeko presta ditzan. Inprimagailuak eta inprimagailu-historia ikusi, editatu eta kudeatzeko, joan <ph name="BEGIN_LINK_DASHBOARD"/>Google Cloud Print panelera<ph name="END_LINK_DASHBOARD"/>.</translation>
 <translation id="4210048056321123003">Makina birtuala deskargatzen</translation>
-<translation id="421182450098841253">&amp;Erakutsi laster-marken barra</translation>
 <translation id="4211851069413100178">Bidali erabilera- eta diagnostiko-datuak. Bidali diagnostikoak eta gailu zein aplikazioen erabilerari buruzko datuak Brave-ri automatikoki haurrak darabiltzan Android zerbitzuak hobetzen laguntzeko. Horri esker, sistemaren eta aplikazioen egonkortasuna hobetuko da, besteak beste. Gainera, multzokatutako datu batzuk oso baliagarriak izango dira Brave-ren aplikazioak hobetzeko eta bazkideei laguntzeko (adibidez, Android-en garatzaileei). Jabeak konfiguratu du <ph name="BEGIN_LINK1"/>ezarpen<ph name="END_LINK1"/> hori. Gailu honen diagnostikoak eta erabilera-datuak Brave-ri bidaltzea aukera dezake jabeak. Sareko eta aplikazioetako jarduera gehigarriak ezarpena aktibatuta badago, baliteke datu horiek Brave-ko kontuan gordetzea. <ph name="BEGIN_LINK2"/>Lortu informazio gehiago<ph name="END_LINK2"/></translation>
 <translation id="42126664696688958">Esportatu</translation>
 <translation id="42137655013211669">Zerbitzariak debekatu egin du baliabiderako sarbidea.</translation>
@@ -2680,7 +2655,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="4387004326333427325">Autentifikazio-ziurtagiria urrunetik baztertu da</translation>
 <translation id="4387890294700445764">Arriskuan dauden pasahitzak</translation>
 <translation id="4389091756366370506"><ph name="VALUE"/> erabiltzailea</translation>
-<translation id="4390000551125140321">{0,plural, =1{Ezkutuko modua}other{Ezkutuko moduko # leiho daude irekita}}</translation>
 <translation id="439266289085815679"><ph name="USER_EMAIL"/> erabiltzaileak kontrolatzen du Bluetooth konfigurazioa.</translation>
 <translation id="4392896746540753732">Editatu konfigurazio-fitxategia</translation>
 <translation id="4394049700291259645">Desgaitu</translation>
@@ -2699,7 +2673,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="4411578466613447185">Kodearen sinatzailea</translation>
 <translation id="4412698727486357573">Laguntza-zentroa</translation>
 <translation id="44141919652824029">Konektatutako USB gailuen zerrenda lortzeko baimena eman nahi diozu "<ph name="APP_NAME"/>" aplikazioari?</translation>
-<translation id="4414232939543644979">&amp;Ezkutuko moduko leiho berria</translation>
 <translation id="4415213869328311284">Prest zaude <ph name="DEVICE_TYPE"/> gailua erabiltzeko.</translation>
 <translation id="4415245286584082850">Ez da aurkitu gailurik. Ireki laguntza-zentroko artikulu bat beste fitxa batean.</translation>
 <translation id="1125261911132334651">Kudeatu Brave-ko kontua</translation>
@@ -2762,7 +2735,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="4502423230170890588">Kendu gailu honetatik</translation>
 <translation id="4504374760782163539">{COUNT,plural, =0{Cookieak onartzen dira}=1{Cookieak onartzen dira, salbuespen batekin}other{Cookieak onartzen dira, {COUNT} salbuespenekin}}</translation>
 <translation id="4504940961672722399">Luzapena erabiltzeko, sakatu ikonoa edo <ph name="EXTENSION_SHORTCUT"/>.</translation>
-<translation id="4508051413094283164">Ireki guztiak ezkutuko moduko leiho batean</translation>
 <translation id="4508265954913339219">Ezin izan da aktibatu</translation>
 <translation id="4508765956121923607">Ikusi I&amp;turburua</translation>
 <translation id="4510479820467554003">Gurasoen kontuen zerrenda</translation>
@@ -2774,7 +2746,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="4519935350946509010">Konexio-errorea.</translation>
 <translation id="4520385623207007473">Erabiltzen diren cookieak</translation>
 <translation id="452039078290142656"><ph name="VENDOR_NAME"/> saltzailearen gailu ezezagunak</translation>
-<translation id="4521489190203965562">Uneko ezkutuko saioa: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> eta beste</translation>
 <translation id="4522570452068850558">Xehetasunak</translation>
 <translation id="4522600456902129422">Jarraitu baimentzen webguneak arbela ikustea</translation>
 <translation id="4524832533047962394">Sistema eragilearen bertsio honek ez du onartzen erregistratzeko adierazitako modua. Ziurtatu bertsiorik berriena erabiltzen ari zarela.</translation>
@@ -2876,7 +2847,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="4647090755847581616">&amp;Itxi fitxa</translation>
 <translation id="4647697156028544508">Idatzi "<ph name="DEVICE_NAME"/>" gailuaren PIN kodea:</translation>
 <translation id="4648491805942548247">Ez dago behar adina baimen</translation>
-<translation id="4648499713050786492">Desblokeatu profila inor gehitu aurretik.</translation>
 <translation id="4650591383426000695">Deskonektatu telefonoa <ph name="DEVICE_TYPE"/> gailutik</translation>
 <translation id="4651484272688821107">Ezin izan da kargatu sareko osagaia demo moduko baliabideekin.</translation>
 <translation id="4653405415038586100">Errore bat gertatu da Linux konfiguratzean</translation>
@@ -3014,7 +2984,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="4854317507773910281">Aukeratu gurasoaren zer kontu erabili nahi duzun onartzeko</translation>
 <translation id="485480310608090163">Ezarpen eta baimen gehiago</translation>
 <translation id="4856478137399998590">Mugikorreko datuen zerbitzua aktibatu egin da eta erabiltzeko prest dago</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Ireki guztiak &amp;ezkutuko moduko leiho batean}=1{Ireki &amp;ezkutuko moduko leiho batean}other{Ireki guztiak (#) &amp;ezkutuko moduko leiho batean}}</translation>
 <translation id="4858792381671956233">Webgunean sar zaitezkeen galdetu diezu gurasoei</translation>
 <translation id="4858913220355269194">Mikel</translation>
 <translation id="4862642413395066333">OCSP erantzunak sinatzen</translation>
@@ -3203,7 +3172,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5107443654503185812">Luzapen batek arakatze segurua desaktibatu du</translation>
 <translation id="5108967062857032718">Ezarpenak - Kendu Android-erako aplikazioak</translation>
 <translation id="5109044022078737958">Amaia</translation>
-<translation id="5111646998522066203">Irten ezkutuko modutik</translation>
 <translation id="5111692334209731439">&amp;Laster-marken kudeatzailea</translation>
 <translation id="5112577000029535889">&amp;Garatzaileen tresnak</translation>
 <translation id="5113739826273394829">Ikono hau sakatzen baduzu, eskuz blokeatuko duzu <ph name="DEVICE_TYPE"/>. Hurrengoan, pasahitza idatzi beharko duzu sartzeko.</translation>
@@ -3413,7 +3381,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5379140238605961210">Jarraitu mikrofonorako sarbidea blokeatzen</translation>
 <translation id="5382591305415226340">Kudeatu esteka bateragarriak</translation>
 <translation id="5383377866517186886">Kamera erabiltzeko baimena desaktibatuta dago Mac sistemaren hobespenetan</translation>
-<translation id="5384883051496921101">Webgune hau informazioa partekatzera doa aplikazio batekin ezkutuko modutik kanpo.</translation>
 <translation id="5388885445722491159">Parekatuta</translation>
 <translation id="5389237414310520250">Ezin izan da sortu erabiltzailea. Egiaztatu baimenak eta disko gogorrean duzun tokia, eta saiatu berriro.</translation>
 <translation id="5390100381392048184">Baimendu webguneei soinua erreproduzitzea</translation>
@@ -3425,7 +3392,7 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5402815541704507626">Deskargatu eguneratzea datu-konexioa erabilita</translation>
 <translation id="540296380408672091">Blokeatu beti webguneko cookieak <ph name="HOST"/></translation>
 <translation id="540495485885201800">Aldatu aurrekoarekin</translation>
-<translation id="5405146885510277940">Berrezarri ezarpenak</translation>
+<translation id="8632933437936028548">Berrezarri ezarpenak</translation>
 <translation id="5408750356094797285">Zooma: <ph name="PERCENT"/></translation>
 <translation id="5411472733320185105">Ez erabili proxy-ezarpenak ostalari eta domeinu hauetan:</translation>
 <translation id="5414566801737831689">Irakurri bisitatzen dituzun webguneetako ikonoak</translation>
@@ -3462,7 +3429,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5449551289610225147">Pasahitzak ez du balio</translation>
 <translation id="5449588825071916739">Ezarri laster-marka fitxa guztiei</translation>
 <translation id="5449716055534515760">Itxi l&amp;eihoa</translation>
-<translation id="5452974209916053028">Uneko ezkutuko saioa: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/> eta <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
 <translation id="5454166040603940656">Hornitzailea: <ph name="PROVIDER"/></translation>
 <translation id="5454360575035671759">Plugin VM kenduz gero, makina birtuala ezabatuko da. Besteak beste, aplikazioak, ezarpenak eta datuak ezabatuko dira. Ziur aurrera egin nahi duzula?</translation>
 <translation id="5457113250005438886">Ez du balio</translation>
@@ -3492,7 +3458,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5486561344817861625">Simulatu arakatzailea berrabiaraztea</translation>
 <translation id="5487521232677179737">Garbitu datuak</translation>
 <translation id="5488093641312826914">Kopiatu da "<ph name="COPIED_ITEM_NAME"/>"</translation>
-<translation id="5488468185303821006">Baimendu ezkutuko moduan</translation>
 <translation id="5489435190927933437"><ph name="DOMAIN"/> domeinuaren gordetako pasahitzak</translation>
 <translation id="5490721031479690399">Deskonektatu Bluetooth bidezko gailua</translation>
 <translation id="5490798133083738649">Eman Linux-i mikrofonoa atzitzeko baimena</translation>
@@ -3530,7 +3495,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5526745900034778153">Hasi saioa berriro sinkronizazioari berrekiteko</translation>
 <translation id="5527463195266282916">Luzapenaren aurreko bertsio bat instalatzen saiatu zara.</translation>
 <translation id="5527474464531963247">Beste sare bat ere aukera dezakezu.</translation>
-<translation id="5530766185686772672">Itxi ezkutuko moduko fitxak</translation>
 <translation id="5532223876348815659">Orokorra</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> webguneak hau egin nahi du:</translation>
 <translation id="5534304873398226603">Baztertu argazkia edo bideoa</translation>
@@ -3565,7 +3529,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5567989639534621706">Aplikazio-cacheak</translation>
 <translation id="5568069709869097550">Ezin da hasi saioa</translation>
 <translation id="1254756632288991504">Ireki Brave eta hasi saioa Brave-k webgune hau atzitzeko baimena duzula egiazta dezan.</translation>
-<translation id="5575473780076478375">Ezkutuko luzapena: <ph name="EXTENSION_NAME"/></translation>
 <translation id="5575528586625653441">Arazo bat izan da demoa erregistratzeko eskaerarekin.</translation>
 <translation id="557722062034137776">Gailua berrezartzeak ez die eragingo zure Brave-ko kontuei edo kontu horiekin sinkronizatutako datuei. Hala ere, gailuan bertan gorde dituzun fitxategi guztiak ezabatuko dira.</translation>
 <translation id="5578059481725149024">Saio-hasiera automatikoa</translation>
@@ -3657,7 +3620,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5691511426247308406">Familia</translation>
 <translation id="5691772641933328258">Ez da ezagutu hatz-marka</translation>
 <translation id="5692183275898619210">Inprimatu da</translation>
-<translation id="569425414730375234">Uneko ezkutuko saioa: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="5695184138696833495">Linux-en Android-erako aplikazioen ADB</translation>
 <translation id="5696143504434933566">Salatu "<ph name="EXTENSION_NAME"/>" luzapenak erabilera okerra egin duela</translation>
 <translation id="5696177755977520104">Chrome OS-ren ezarpenak sinkronizatzea</translation>
@@ -3685,7 +3647,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5722930212736070253">Hutsegite bat izan da. Errore bat gertatu da Zip Archiver aplikazioan.</translation>
 <translation id="572328651809341494">Azken fitxak</translation>
 <translation id="5723508132121499792">Ez da aplikaziorik atzeko planoan abian</translation>
-<translation id="5723967018671998714">Hirugarrenen cookieak blokeatuta daude ezkutuko moduan</translation>
 <translation id="5727728807527375859">Luzapenek, aplikazioek eta gaiek ordenagailua kalte diezazukete. Ziur aurrera jarraitu nahi duzula?</translation>
 <translation id="5728450728039149624">Pantaila blokeatzeko Smart Lock-en aukerak</translation>
 <translation id="5729712731028706266">I&amp;kuspegia</translation>
@@ -3758,7 +3719,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5827266244928330802">Safari</translation>
 <translation id="5828633471261496623">Inprimatzen…</translation>
 <translation id="5830720307094128296">Gorde orria &amp;honela…</translation>
-<translation id="5832805196449965646">Gehitu pertsona bat</translation>
 <translation id="583281660410589416">Ezezaguna</translation>
 <translation id="5832976493438355584">Blokeatuta</translation>
 <translation id="5833397272224757657">Zerbitzua pertsonalizatzeko, bisitatzen dituzun webguneetako edukiak eta arakatzailean izandako jarduerak nahiz interakzioak erabiltzen ditu</translation>
@@ -3848,7 +3808,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5935656526031444304">Kudeatu arakatze segurua</translation>
 <translation id="5938002010494270685">Segurtasun-eguneratze bat dago</translation>
 <translation id="5939518447894949180">Berrezarri</translation>
-<translation id="5941153596444580863">Gehitu pertsona bat…</translation>
 <translation id="5941343993301164315">Hasi saioa <ph name="TOKEN_NAME"/> gailuan.</translation>
 <translation id="5941711191222866238">Minimizatu</translation>
 <translation id="5942964813783878922">Eguneratzen amaitutakoan, berrabiarazi egingo da <ph name="DEVICE_TYPE"/>. Aurrerantzean, automatikoki instalatuko dira software- eta segurtasun-eguneratzeak.</translation>
@@ -3884,7 +3843,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="5979421442488174909">&amp;Itzuli <ph name="LANGUAGE"/> hizkuntzara</translation>
 <translation id="5979469435153841984">Orrien laster-markak gordetzeko, sakatu helbide-barrako izarra</translation>
 <translation id="5984222099446776634">Bisitatutako azkenak</translation>
-<translation id="598472838394900788">{0,plural, =1{Ezkutuko modua}other{Ezkutuko modua (#)}}</translation>
 <translation id="5985458664595100876">URLaren formatuak ez du balio. Onartutako formatuak \\server\share eta smb://server/share dira.</translation>
 <translation id="5990386583461751448">Itzulita</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Sarea arakatzen jarrai dezakezula ziurtatzeko, eskatu administratzaileari aplikazio hau kentzeko.}other{Sarea arakatzen jarrai dezakezula ziurtatzeko, eskatu administratzaileari aplikazio hauek kentzeko.}}</translation>
@@ -3961,7 +3919,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6078323886959318429">Gehitu lasterbidea</translation>
 <translation id="6078752646384677957">Egiaztatu mikrofonoa eta bolumena.</translation>
 <translation id="6078769373519310690">"<ph name="CHROME_EXTENSION_NAME"/>" luzapenak HID gailu batekin konektatu nahi du</translation>
-<translation id="6080515710685820702">Ordenagailua jende gehiagok erabiltzen du? Erabili arakatzailearen ezkutuko modua.</translation>
 <translation id="6080689532560039067">Egiaztatu sistemako ordua</translation>
 <translation id="6082651258230788217">Erakutsi tresna-barran</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/>, talde izengabe batekoa</translation>
@@ -3989,7 +3946,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6112294629795967147">Sakatu tamaina aldatzeko</translation>
 <translation id="6112727384379533756">Gehitu zerbitzu-eskaera bat</translation>
 <translation id="6112931163620622315">Begiratu telefonoan</translation>
-<translation id="6112952769866305444">Editatu pertsona, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="6113942107547980621">Smart Lock erabiltzeko, aldatu telefonoko erabiltzaile-profil nagusira</translation>
 <translation id="6116921718742659598">Aldatu hizkuntza- eta idazketa-ezarpenak</translation>
 <translation id="6120205520491252677">Ainguratu orria hasierako pantailan…</translation>
@@ -4022,7 +3978,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="615436196126345398">Protokoloa</translation>
 <translation id="6154697846084421647">Saioa hasita dago</translation>
 <translation id="6155141482566063812">Atzeko planoko fitxa bat zure pantaila partekatzen ari da</translation>
-<translation id="6156323911414505561">Erakutsi laster-marken barra</translation>
 <translation id="6156863943908443225">Scripten cachea</translation>
 <translation id="6160625263637492097">Eman autentifikatzeko ziurtagiriak</translation>
 <translation id="6163363155248589649">&amp;Normala</translation>
@@ -4211,7 +4166,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6410668567036790476">Gehitu bilatzailea</translation>
 <translation id="641081527798843608">Gaiaren bat-etortzea</translation>
 <translation id="7810992039564280750">URLak Brave-n gordetako webgune ez-seguruen zerrendan dauden ala ez egiaztatzen du. Webguneren bat pasahitza lapurtzen saiatzen bada, edo fitxategi kaltegarriren bat deskargatzen baduzu, baliteke Brave-k URLak ere bidaltzea (orriko edukiaren zati batzuk barne) Arakatze segurua eginbideari.</translation>
-<translation id="6412931879992742813">Ezkutuko leiho berria</translation>
 <translation id="641469293210305670">Instalatu eguneratzeak eta aplikazioak</translation>
 <translation id="6414888972213066896">Webgune honetan sar zaitezkeen galdetu diezu gurasoei</translation>
 <translation id="6415659939354280526">Aukeratu pantaila ilunduko moduaren iturburua</translation>
@@ -4319,7 +4273,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6550675742724504774">Aukerak</translation>
 <translation id="6551508934388063976">Agindua ez dago erabilgarri. Beste leiho bat irekitzeko, sakatu Kontrol+N.</translation>
 <translation id="6551612971599078809">USB gailu bat erabiltzen ari da webgunea</translation>
-<translation id="6552395360547205189">Uneko ezkutuko saioa: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="655384502888039633"><ph name="USER_COUNT"/> erabiltzaile</translation>
 <translation id="655483977608336153">Saiatu berriro</translation>
 <translation id="6555432686520421228">Kendu erabiltzaile-kontu guztiak eta berrezarri <ph name="IDS_SHORT_PRODUCT_NAME"/> gailua, berria izango balitz bezala gera dadin.</translation>
@@ -4330,7 +4283,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6561726789132298588">sartu</translation>
 <translation id="656293578423618167">Fitxategi-bidea edo -izena luzeegia da. Gorde izen laburrago batekin edo beste kokapen batean.</translation>
 <translation id="6563469144985748109">Kudeatzaileak ez du onartu eskaera oraindik</translation>
-<translation id="6569934958368283244">Jende gehiago</translation>
 <translation id="657402800789773160">&amp;Kargatu orria berriro</translation>
 <translation id="6577284282025554716">Bertan behera utzi da <ph name="FILE_NAME"/> fitxategia deskargatzeko prozesua</translation>
 <translation id="2459230470861708651">Enkriptatu sinkronizatutako pasahitzak Brave-ren erabiltzaile-izen eta pasahitzarekin</translation>
@@ -4446,7 +4398,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6727969043791803658">Konektatuta; bateria: % <ph name="BATTERY_PERCENTAGE"/></translation>
 <translation id="6732801395666424405">Ez dira ziurtagiriak kargatu</translation>
 <translation id="6732900235521116609">Ezin da kendu lasterbidea</translation>
-<translation id="6734468588183300211">Ezkutuko moduan zaudenean, webguneek ezin dituzte erabili cookieak beste webguneetan egiten dituzun arakatze-jarduerak ikusteko, hala nola iragarkiak pertsonalizatzeko. Baliteke webgune batzuetako eginbideek ez funtzionatzea.</translation>
 <translation id="6735304988756581115">Erakutsi cookieak eta webguneko beste datu batzuk…</translation>
 <translation id="6736243959894955139">Helbidea</translation>
 <translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
@@ -4462,7 +4413,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6748465660675848252">Aurrera egin dezakezu, baina sinkronizatutako datuak eta ezarpenak soilik leheneratuko dira. Galdu egingo dira gailuko datu guztiak.</translation>
 <translation id="6749006854028927059">Webguneek ezin dituzte erabili cookieak beste webguneetan egiten dituzun arakatze-jarduerak ikusteko, hala nola iragarkiak pertsonalizatzeko. Baliteke webgune batzuetako eginbideek ez funtzionatzea.</translation>
 <translation id="6750757184909117990">Desgaitu sare mugikorra</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (ezkutuko moduan)</translation>
 <translation id="6757101664402245801">Kopiatu da URLa</translation>
 <translation id="6758056191028427665">Eman iritzia.</translation>
 <translation id="6759193508432371551">Jatorrizko datuak berrezartzea</translation>
@@ -4488,7 +4438,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6789592661892473991">Zatitu horizontalki</translation>
 <translation id="6790428901817661496">Erreproduzitu</translation>
 <translation id="6790497603648687708">Urrunetik gehitu da <ph name="EXTENSION_NAME"/></translation>
-<translation id="6790820461102226165">Gehitu pertsona bat...</translation>
 <translation id="6792072150955115067"><ph name="APP_NAME"/> aplikazioak pantailan duzun edukia <ph name="TARGET_NAME"/> fitxarekin partekatu nahi ditu. Aukeratu zer partekatu nahi duzun.</translation>
 <translation id="6793604637258913070">Agertzen edo mugitzen denean, nabarmendu tartekatze-ikurra</translation>
 <translation id="6795884519221689054">Panda</translation>
@@ -4601,7 +4550,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="6935286146439255109">Paper-erretilu bat falta da</translation>
 <translation id="693807610556624488">Idazteko eragiketak gainditu egiten du "<ph name="DEVICE_NAME"/>" gailuaren atributuaren gehieneko luzera.</translation>
 <translation id="6938386202199793006">1 inprimagailu daukazu gordeta.</translation>
-<translation id="6938789263968032501">Jendea</translation>
 <translation id="6941937518557314510"><ph name="HOST_NAME"/> ostalarian zure ziurtagiriarekin autentifikatzeko, hasi saioa <ph name="TOKEN_NAME"/> zerbitzuan.</translation>
 <translation id="6943060957016121200">Gaitu Konexioa bizkor partekatzeko eginbidea</translation>
 <translation id="6943176775188458830">Utzi inprimatzea bertan behera</translation>
@@ -4700,7 +4648,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{Duela minutu bat egin da segurtasun-egiaztapena}other{Duela {NUM_MINS} minutu egin da segurtasun-egiaztapena}}</translation>
 <translation id="7057767408836081338">Ezin izan dira eskuratu aplikazioko datuak. Hala ere aplikazioa abiarazten saiatzen ari gara…</translation>
 <translation id="7059858479264779982">Ezarri abiarazte automatikoa</translation>
-<translation id="7059893117020417984">Sarea modu pribatuan arakatzeko, sakatu hiru puntuen ikonoa duen menua eta ireki leiho bat ezkutuko moduan</translation>
 <translation id="7062222374113411376">Baimendu berriki itxitako webguneei datuak bidaltzen eta jasotzen amaitzea (gomendatua)</translation>
 <translation id="7063129466199351735">Lasterbideak prozesatzen…</translation>
 <translation id="7063311912041006059">URLa <ph name="SPECIAL_SYMBOL"/> ikurrarekin kontsultaren ordez</translation>
@@ -4722,7 +4669,6 @@ Kontu honen ezarpenak kudeatzeko, instalatu Family Link aplikazioa zure gailuan.
 <translation id="7077829361966535409">Ezin izan da kargatu saioa hasteko orria uneko proxy-ezarpenekin. <ph name="GAIA_RELOAD_LINK_START"/>Saiatu saioa berriro hasten<ph name="GAIA_RELOAD_LINK_END"/> edo erabili beste <ph name="PROXY_SETTINGS_LINK_START"/>proxy-ezarpen<ph name="PROXY_SETTINGS_LINK_END"/> batzuk.</translation>
 <translation id="7078120482318506217">Sare guztiak</translation>
 <translation id="708060913198414444">K&amp;opiatu audioaren helbidea</translation>
-<translation id="7081952801286122383">Ezkutuko moduan zaude</translation>
 <translation id="708278670402572152">Sareak bilatu ahal izateko, deskonektatu</translation>
 <translation id="1439926347196400598">Audioa grabatzeko baimena eman nahi diozu Brave-ri?</translation>
 <translation id="7088434364990739311">Ezin izan da eguneratze-egiaztapena hasi (errore-kodea: <ph name="ERROR"/>).</translation>
@@ -4968,7 +4914,6 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{Duela ordubete egin da segurtasun-egiaztapena}other{Duela {NUM_HOURS} ordu egin da segurtasun-egiaztapena}}</translation>
 <translation id="740624631517654988">Leiho gainerakorra blokeatu da</translation>
 <translation id="7407430846095439694">Inportatu eta lotu</translation>
-<translation id="7407504355934009739">Jende gehienak blokeatu egiten ditu webgune honen jakinarazpenak</translation>
 <translation id="740810853557944681">Gehitu inprimatze-zerbitzari bat</translation>
 <translation id="7409549334477097887">Oso-oso handia</translation>
 <translation id="7410344089573941623">Galdetu <ph name="HOST"/> webguneak kamera eta mikrofonoa atzitu nahi baditu</translation>
@@ -5013,7 +4958,6 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="7460045493116006516">Instalatuta daukazun gaia</translation>
 <translation id="7461924472993315131">Ainguratu</translation>
 <translation id="746216226901520237">Hurrengoan, telefonoak desblokeatuko du <ph name="DEVICE_TYPE"/> gailua. Smart Lock desaktibatzeko, joan ezarpenetara.</translation>
-<translation id="7463006580194749499">Gehitu pertsona bat</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# fitxa dago irekita. Sakatu hau fitxen zinta ikusgai jartzeko edo ezkutatzeko.}other{# fitxa daude irekita. Sakatu hau fitxen zinta ikusgai jartzeko edo ezkutatzeko.}}</translation>
 <translation id="7465635034594602553">Arazoren bat izan da. Itxaron minutu batzuk eta exekutatu <ph name="APP_NAME"/> berriro.</translation>
 <translation id="7465778193084373987">Netscape ziurtagiria ezeztatzeko URLa</translation>
@@ -5035,7 +4979,6 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="7488682689406685343">Webgune hau zu iruzurtzen saiatzen ari da jakinarazpen oztopatzaileak baimen ditzazun.</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Ireki guztiak}=1{&amp;Ireki laster-marka}other{&amp;Ireki guztiak (#)}}</translation>
 <translation id="7489761397368794366">Deitu zure gailutik</translation>
-<translation id="749028671485790643">Pertsona: <ph name="VALUE"/></translation>
 <translation id="7490813197707563893">MAC helbidea</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{1 cookie}other{{NUM_COOKIES} cookie}}</translation>
 <translation id="7493386493263658176">Baliteke <ph name="EXTENSION_NAME"/> luzapenak idazten duzun guztia bildu ahal izatea; besteak beste, datu pertsonalak (pasahitzak, kreditu-txartelak, etab.). Luzapen hori erabili nahi duzu?</translation>
@@ -5057,7 +5000,6 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="751523031290522286">Administratzaileak <ph name="APP_NAME"/> aplikazioa blokeatu du. Eska iezaiozu baimena aplikazio hau erabiltzeko.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> pausatuta dago</translation>
 <translation id="7517063221058203587">{0,plural, =1{Eguneratu gailua minutu bateko epean}other{Eguneratu gailua # minutuko epean}}</translation>
-<translation id="7520766081042531487">Ezkutuko moduaren ataria: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">Esan "Ok Brave"</translation>
 <translation id="7525067979554623046">Sortu</translation>
@@ -5151,7 +5093,6 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="7647403192093989392">Ez dago azkenaldiko jarduerarik</translation>
 <translation id="7649070708921625228">Laguntza</translation>
 <translation id="7650511557061837441">"<ph name="TRIGGERING_EXTENSION_NAME"/>" luzapenak "<ph name="EXTENSION_NAME"/>" kendu nahi du.</translation>
-<translation id="7652808307838961528">Editatu pertsona, <ph name="PROFILE_NAME"/></translation>
 <translation id="765293928828334535">Webgune honetatik ezin da gehitu aplikaziorik, luzapenik edo erabiltzaileen scriptik</translation>
 <translation id="7652954539215530680">Sortu PIN kode bat</translation>
 <translation id="7654941827281939388">Kontua ordenagailuan erabiltzen ari da dagoeneko.</translation>
@@ -5172,7 +5113,6 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="7674416868315480713">Desaktibatu Linux-en desbideratzen ari diren ataka guztiak</translation>
 <translation id="1800308196794859773">Bidali ahotsa Brave-ri, testu-eremuetan diktatu ahal izateko.</translation>
 <translation id="7681095912841365527">Webguneak Bluetooth-a erabil dezake</translation>
-<translation id="7683373461016844951">Aurrera egiteko, sakatu Ados eta sakatu Gehitu pertsona bat <ph name="DOMAIN"/> domeinuko zure helbide elektronikorako profila sortzeko.</translation>
 <translation id="7684212569183643648">Administratzaileak instalatu du</translation>
 <translation id="7684559058815332124">Joan saioa hasteko atari gatibuaren orrira</translation>
 <translation id="1669729672557072907">Zeure aplikazioak sortu eta probatzeko, gaitu Android Debug Bridge (ADB). Kontuan izan ekintza honekin baimendu egiten dela Brave-k egiaztatu ez dituen Android-erako aplikazioak instalatzeko aukera eta, inoiz tresna hori desgaitu nahi izanez gero, jatorrizko datuak berrezarri beharko direla.</translation>
@@ -5273,7 +5213,7 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="7792388396321542707">Utzi partekatzeari</translation>
 <translation id="779308894558717334">Berde argia</translation>
 <translation id="7793098747275782155">Urdin iluna</translation>
-<translation id="7797571222998226653">Desaktibatuta</translation>
+<translation id="971479617738309149">Desaktibatuta</translation>
 <translation id="7798844538707273832"><ph name="PERMISSION"/> automatikoki blokeatu da</translation>
 <translation id="7799299114731150374">Ezarri da horma-papera</translation>
 <translation id="7800518121066352902">Biratu &amp;erlojuaren orratzen aurka</translation>
@@ -5376,7 +5316,6 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="7904094684485781019">Kontu honen administratzaileak saio-hasiera anitzerako baimenak kendu ditu.</translation>
 <translation id="7904526211178107182">Ezarri Linux-eko atakak sareko beste gailu batzuentzat erabilgarri.</translation>
 <translation id="7908378463497120834">Ezin izan da muntatu kanpoko biltegiratze-gailuaren partizio bat edo gehiago.</translation>
-<translation id="7909969815743704077">Ezkutuko moduan deskargatu da</translation>
 <translation id="7910768399700579500">&amp;Karpeta berria</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="7912080627461681647">Pasahitza aldatu egin da zerbitzarian. Amaitu saioa eta has ezazu berriro.</translation>
@@ -5439,7 +5378,6 @@ Haurrak ikastetxean ez badu Bravebook-ik erabiltzen, edo nahiago baduzu etxean e
 <translation id="7982083145464587921">Errorea konpontzeko, berrabiarazi gailua.</translation>
 <translation id="7982789257301363584">Sarea</translation>
 <translation id="7984068253310542383">Islatu <ph name="DISPLAY_NAME"/></translation>
-<translation id="7985283639530788531">Touch ID erabili nahi duzu <ph name="APP_NAME"/> aplikazioarekin ezkutuko moduan zaudenean?</translation>
 <translation id="7986295104073916105">Irakurri eta aldatu gordetako pasahitzen ezarpenak</translation>
 <translation id="7987814697832569482">Konektatu beti VPN honen bidez</translation>
 <translation id="7988355189918024273">Gaitu erabilerraztasun-eginbideak</translation>
@@ -5479,7 +5417,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8030852056903932865">Onartu</translation>
 <translation id="8032244173881942855">Ezin da igorri fitxa.</translation>
 <translation id="8033827949643255796">hautatuta</translation>
-<translation id="803435727213847625">{COUNT,plural, =0{Ireki guztiak &amp;ezkutuko moduko leiho batean}=1{Ireki &amp;ezkutuko moduko leiho batean}other{Ireki guztiak (#) &amp;ezkutuko moduko leiho batean}}</translation>
 <translation id="8037117027592400564">Irakurri testu idatzi guztiak ahots sintetizatua erabilita</translation>
 <translation id="8037357227543935929">Galdetu (lehenetsia)</translation>
 <translation id="803771048473350947">Fitxategia</translation>
@@ -5615,7 +5552,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8213449224684199188">Argazki moduan sartu zara</translation>
 <translation id="8213577208796878755">Beste gailu erabilgarri bat dago.</translation>
 <translation id="8214489666383623925">Ireki fitxategia…</translation>
-<translation id="8214962590150211830">Kendu pertsona hau</translation>
 <translation id="8215295261562449873">Linux bertsio-berritu aurretik, gorde aplikazio eta fitxategien babeskopia "Deskargak" karpetan.</translation>
 <translation id="8217399928341212914">Jarraitu blokeatzen fitxategi bat baino gehiagoren deskarga automatikoa</translation>
 <translation id="8218847192766059983">Gehitu hizkuntzak edo aldatu zerrendako elementuen ordena. <ph name="BEGIN_LINK"/>Lortu informazio gehiago<ph name="END_LINK"/></translation>
@@ -5682,7 +5618,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8284279544186306258"><ph name="WEBSITE_1"/> webguneak</translation>
 <translation id="8284326494547611709">Azpitituluak</translation>
 <translation id="8286036467436129157">Hasi saioa</translation>
-<translation id="8286963743045814739">Sarea modu pribatuan araka dezakezu ezkutuko moduko leihoak erabilita</translation>
 <translation id="8287902281644548111">Bilatu API deiaren edo URLaren arabera</translation>
 <translation id="8288032458496410887">Desinstalatu <ph name="APP"/>…</translation>
 <translation id="8289128870594824098">Diskoaren tamaina</translation>
@@ -5761,7 +5696,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="839736845446313156">Erregistratu</translation>
 <translation id="8397825320644530257">Deskonektatu konektatutako telefonoa</translation>
 <translation id="8398877366907290961">Jarraitu, hala ere</translation>
-<translation id="8400146488506985033">Kudeatu jendea</translation>
 <translation id="8401432541486058167">Eman txartel adimendunarekin lotutako PIN kodea.</translation>
 <translation id="8405046151008197676">Irakurri azken eguneratzeari buruzko datu aipagarriak</translation>
 <translation id="8407199357649073301">Erregistro-maila:</translation>
@@ -5811,7 +5745,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8465444703385715657"><ph name="PLUGIN_NAME"/> pluginak zure baimena behar du exekutatzeko</translation>
 <translation id="8466417995783206254">Fitxa honetan, bideo bat pantaila txikiko moduan erreproduzitzen ari da.</translation>
 <translation id="8467326454809944210">Aukeratu beste hizkuntza bat</translation>
-<translation id="8470214316007448308">Jende gehiago</translation>
 <translation id="8470513973197838199"><ph name="ORIGIN"/> webgunean gordetako pasahitzak</translation>
 <translation id="8472623782143987204">hardwarean gordeak</translation>
 <translation id="8473863474539038330">Helbideak eta beste</translation>
@@ -5859,7 +5792,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8540608333167683902"><ph name="NETWORK_INDEX"/>/<ph name="NETWORK_COUNT"/> sarea. <ph name="NETWORK_NAME"/> (<ph name="CONNECTION_STATUS"/>). Seinalearen indarra % <ph name="SIGNAL_STRENGTH"/>. Xehetasunak.</translation>
 <translation id="8541462173655894684">Ez da aurkitu inprimagailurik inprimatze-zerbitzarian</translation>
 <translation id="8542618328173222274">Eskatu zure baimena webguneren batek errealitate birtualeko gailuak eta datuak erabili nahi dituenean</translation>
-<translation id="8543556556237226809">Galderak dituzu? Jarri harremanetan zure profila gainbegiratzen duen pertsonarekin.</translation>
 <translation id="8545575359873600875">Ezin izan dugu egiaztatu pasahitza. Agian erabiltzaile gainbegiratuaren kudeatzaileak pasahitza duela gutxi aldatu du. Hala bada, pasahitz berria aplikatuko da saioa hasten duzun hurrengo aldian. Saiatu aurreko pasahitza erabiltzen.</translation>
 <translation id="8546186510985480118">Toki gutxi dago gailuan</translation>
 <translation id="8546306075665861288">Irudien cachea</translation>
@@ -5870,7 +5802,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="85486688517848470">Goiko errenkadako teklen portaera aldatzeko, eduki sakatuta Bilaketa tekla</translation>
 <translation id="8551388862522347954">Lizentziak</translation>
 <translation id="8551588720239073785">Data- eta ordu-ezarpenak</translation>
-<translation id="8553342806078037065">Kudeatu beste pertsona batzuk</translation>
 <translation id="8554899698005018844">Ez da zehaztu hizkuntzarik</translation>
 <translation id="8557022314818157177">Jarraitu segurtasun-giltza sakatzen, hatz-marka hauteman arte</translation>
 <translation id="855773602626431402">Proben eremuan sartu gabeko plugin bat orri honetan abiaraztea eragotzi da.</translation>
@@ -5908,7 +5839,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8610103157987623234">Formatua okerra da. Saiatu berriro.</translation>
 <translation id="8613164732773110792">Minuskulak, digituak, azpimarrak edo marratxoak bakarrik</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> handiegia da segurtasun-egiaztapena egiteko. Gehienez 50 MB dituzten fitxategiak ireki ditzakezu.</translation>
-<translation id="8615618338313291042">Ezkutuko aplikazioa: <ph name="APP_NAME"/></translation>
 <translation id="8619803522055190423">Itzal paraleloa</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620436878122366504">Gurasoek ez dute onartu eskaera oraindik</translation>
@@ -5950,9 +5880,7 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8655972064210167941">Ezin izan da hasi saioa, ezin izan delako egiaztatu pasahitza. Jarri administratzailearekin harremanetan edo saiatu berriro.</translation>
 <translation id="8656768832129462377">Ez egiaztatu</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> pantaila eta audioa partekatzen ari da <ph name="TAB_NAME"/> fitxarekin.</translation>
-<translation id="8661290697478713397">Ireki esteka &amp;ezkutuko moduko leihoan</translation>
 <translation id="8662671328352114214">Sartu <ph name="TYPE"/> sarean</translation>
-<translation id="8662795692588422978">Jendea</translation>
 <translation id="8662811608048051533">Webgune gehienetako saioa amaitzen du.</translation>
 <translation id="8662911384982557515">Aldatu orri nagusia hau izan dadin: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Brave-k ezin du horma-papera ezarri.</translation>
@@ -6044,7 +5972,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8763927697961133303">USB bidezko gailua</translation>
 <translation id="4570609078116869893">Eguneratu Brave automatikoki erabiltzaile guztiei</translation>
 <translation id="8770406935328356739">Luzapenaren erroko direktorioa</translation>
-<translation id="8770507190024617908">Kudeatu jendea</translation>
 <translation id="8771300903067484968">Atzeko plano lehenetsia berrezarri da orri nagusian.</translation>
 <translation id="8773302562181397928">Gorde <ph name="PRINTER_NAME"/></translation>
 <translation id="8774379074441005279">Berretsi leheneratu nahi duzula</translation>
@@ -6172,7 +6099,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8912793549644936705">Zabaldu</translation>
 <translation id="8912810933860534797">Gaitu bilaketa automatikoa</translation>
 <translation id="8915370057835397490">Iradokizuna kargatzen</translation>
-<translation id="8916476537757519021">Ezkutuko moduko azpimarkoa: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8922013791253848639">Eman beti iragarkiak webgune honetan erakusteko baimena</translation>
 <translation id="8923880975836399332">Anil iluna</translation>
 <translation id="8925458182817574960">&amp;Ezarpenak</translation>
@@ -6194,7 +6120,6 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="8944964446326379280"><ph name="APP_NAME"/> leiho bat partekatzen ari da <ph name="TAB_NAME"/> fitxarekin.</translation>
 <translation id="8945274638472141382">Ikonoaren tamaina</translation>
 <translation id="8946359700442089734">Arazte-eginbideak ez dira guztiz gaitu <ph name="IDS_SHORT_PRODUCT_NAME"/> gailu honetan.</translation>
-<translation id="894871326938397531">Ezkutuko modutik irten?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> webguneak zure segurtasun-giltzaren marka eta modeloa ikusi nahi ditu</translation>
 <translation id="8951256747718668828">Ezin izan da leheneratu errore bat gertatu delako</translation>
 <translation id="8951465597020890363">Gonbidatu modutik irten nahi duzu hala ere?</translation>
@@ -6477,7 +6402,7 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="3772947852642271642">Sarean egiten duzuna historian gordeta geratzerik nahi ez baduzu, ireki leiho bat ezkutuko moduan</translation>
 <translation id="3871738366246972820">Ordenagailua jende gehiagok erabiltzen du? Erabili arakatzailearen ezkutuko modua.</translation>
 <translation id="5808622652939943719">Sarea modu pribatuan arakatzeko, sakatu hiru puntuen ikonoa duen menua eta ireki leiho bat ezkutuko moduan</translation>
-<translation id="9079153198295609735">Bidali automatikoki erabilera-estatistikak eta hutsegite-txostenak Brave-ra</translation>
+<translation id="9079153198295609735">Bidali automatikoki erabilera-estatistikak eta hutsegite-txostenak Brave Software-ra</translation>
 <translation id="8839398440242019256">Ez da Brave Web Store dendakoa.</translation>
 <translation id="6945695820322143954">Luzapenak Brave Web-dendaren gidalerroak urratzen ditu.</translation>
 <translation id="1676595396635191120">Ezkutuko leiho berria</translation>
@@ -6516,8 +6441,8 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="4904061654709986277">Gehitu pertsona bat</translation>
 <translation id="6114945161119872228">Kendu pertsona hau</translation>
 <translation id="769308100792069196">Gehitu gainbegiratutako pertsona</translation>
-<translation id="8006143138282906848">Kendu erabiltzailea</translation>
-<translation id="6912187023601892621">Gehitu gainbegiratutako erabiltzailea</translation>
+<translation id="8006143138282906848">Kendu pertsona hau</translation>
+<translation id="6912187023601892621">Gehitu gainbegiratutako pertsona</translation>
 <translation id="8086119151297127544">Desblokeatu profila inor kendu aurretik.</translation>
 <translation id="7805701378418968629">Desblokeatu profila inor gehitu aurretik.</translation>
 <translation id="6315812488257290136">Jendea</translation>
@@ -6534,10 +6459,10 @@ Gorde gakoen fitxategia leku seguru batean. Zure luzapenaren bertsio berriak sor
 <translation id="1281501490173223206">Uneko ezkutuko saioan soilik</translation>
 <translation id="5566692924079383101">Salbuespen hau automatikoki kenduko da ezkutuko moduko uneko saiotik irteten zarenean</translation>
 <translation id="6906406176003824042">Editatu pertsona</translation>
-<translation id="9063160602596686558">Erabilera-estatistikak eta hutsegite-txostenak automatikoki bidaltzen dizkio Brave-ri</translation>
+<translation id="9063160602596686558">Erabilera-estatistikak eta hutsegite-txostenak automatikoki bidaltzen dizkio Brave Software-ri</translation>
 <translation id="3860292630623580294">(Ezkutuko modua)</translation>
 <translation id="4854477725773269949">Baimendu ezkutuko moduan</translation>
-<translation id="6436164536244065364">Ikusi Brave Web Store dendan</translation>
+<translation id="6436164536244065364">Ikusi Web Store dendan</translation>
 <translation id="38046578254905003">Aurkitu luzapenak eta gaiak <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> dendan</translation>
 <translation id="6336451774241870485">Ezkutuko moduko fitxa berria</translation>
 <translation id="6610147964972079463">Itxi ezkutuko moduko fitxak</translation>

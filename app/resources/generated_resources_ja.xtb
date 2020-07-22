@@ -45,7 +45,6 @@
 <translation id="1047431265488717055">リンクテキストをコピー(&amp;X)</translation>
 <translation id="1048286738600630630">ディスプレイ</translation>
 <translation id="1048986595386481879">動的に割り当て</translation>
-<translation id="1049743911850919806">シークレット モード</translation>
 <translation id="1049795001945932310">言語設定(&amp;L)</translation>
 <translation id="1054153489933238809">元の画像を新しいタブで開く(&amp;I)</translation>
 <translation id="1055806300943943258">Bluetooth デバイスと USB デバイスを検索しています...</translation>
@@ -104,7 +103,6 @@
 <translation id="1128591060186966949">検索エンジンの編集</translation>
 <translation id="1129850422003387628">アプリの管理</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> - <ph name="GROUP_NAME"/> グループの一部</translation>
-<translation id="1134009406053225289">シークレット ウィンドウで開く</translation>
 <translation id="1136712381129578788">PIN の入力間違いが許容回数を超えたため、セキュリティ キーがロックされています。ロックを解除するには、セキュリティ キーをいったん取り外し、もう一度挿入してください。</translation>
 <translation id="1137673463384776352"><ph name="APP"/> でリンクを開く</translation>
 <translation id="1139343347646843679">Linux の設定中にエラーが発生しました。管理者にお問い合わせください。</translation>
@@ -166,7 +164,6 @@
 <translation id="1205489148908752564">ホワイトリストに登録されたユーザーの読み取りと変更</translation>
 <translation id="1206407435587370571">Bravebook を使いこなそう</translation>
 <translation id="1209796539517632982">自動ネーム サーバー</translation>
-<translation id="1211364473545090084">シークレット ウィンドウを使うと、閲覧履歴を残さずにウェブを閲覧できます</translation>
 <translation id="1211769675100312947">ユーザーが選択したショートカットが表示されます</translation>
 <translation id="1213037489357051291"><ph name="NUM_FINGERPRINTS"/> 個の指紋を登録済み</translation>
 <translation id="1213254615020057352">使用状況データや診断データを送信します。診断データやデバイスとアプリの使用状況データを Brave に自動送信して、お子様向けの Android 機能の向上にご協力ください。この情報を使ってお子様個人が特定されることはありません。この情報は、システムとアプリの安定性の向上やその他の機能の改善に役立てられます。また、Brave のアプリやパートナー（Android デベロッパーなど）も、集計データとしてこの情報を活用します。この設定は所有者によって管理されています。このデバイスの診断データや使用状況データを Brave に送信するよう所有者が設定している可能性があります。お子様の [その他のウェブとアプリのアクティビティ] の設定がオンになっている場合、このデータはお子様の Brave アカウントに保存されます。</translation>
@@ -296,7 +293,6 @@
 <translation id="1377600615067678409">今回はスキップ</translation>
 <translation id="1378613616312864539">この設定は <ph name="NAME"/> により制御されています</translation>
 <translation id="1380028686461971526">自動接続するネットワーク</translation>
-<translation id="1380436189840894976">シークレット モードを終了してもよろしいですか？</translation>
 <translation id="1383861834909034572">ダウンロードが完了したら開きます</translation>
 <translation id="1383876407941801731">検索</translation>
 <translation id="1386387014181100145">こんにちは。</translation>
@@ -355,7 +351,6 @@
 <translation id="144518587530125858">テーマの「<ph name="IMAGE_PATH"/>」を読み込むことができませんでした。</translation>
 <translation id="1445693676523799095">しばらくお待ちください</translation>
 <translation id="1451375123200651445">ウェブページ、1 つのファイル</translation>
-<translation id="1451917004835509682">監視対象ユーザーを追加</translation>
 <translation id="1454223536435069390">スクリーンショットを撮る(&amp;A)</translation>
 <translation id="1459967076783105826">拡張機能によって追加された検索エンジン</translation>
 <translation id="146000042969587795">このフレームにはセキュリティで保護されていないコンテンツが含まれているためブロックされました。</translation>
@@ -478,7 +473,6 @@
 <translation id="1600857548979126453">ページ デバッガ バックエンドにアクセスする</translation>
 <translation id="1601560923496285236">適用</translation>
 <translation id="1602085790802918092">仮想マシンを起動しています</translation>
-<translation id="1603914832182249871">（シークレット モード）</translation>
 <translation id="1604432177629086300">印刷できませんでした。プリンタを確認してもう一度お試しください。</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: パスワード同期が機能していません</translation>
 <translation id="1607139524282324606">エラー項目を消去</translation>
@@ -550,7 +544,6 @@
 <translation id="1680841347983561661">しばらくしてからもう一度 Google Play の起動をお試しください。</translation>
 <translation id="1680849702532889074">Linux アプリケーションのインストール中にエラーが発生しました。</translation>
 <translation id="16815041330799488">クリップボードにコピーされているテキストや画像へのアクセスをサイトに許可しない</translation>
-<translation id="1682548588986054654">新規シークレット ウインドウ</translation>
 <translation id="168715261339224929">お使いのどのデバイスでも同じブックマークを使用するには、同期を有効にします。</translation>
 <translation id="1688867105868176567">サイトデータを削除しますか？</translation>
 <translation id="1688935057616748272">文字を入力してください</translation>
@@ -561,10 +554,8 @@
 <translation id="1692210323591458290">暗い紫</translation>
 <translation id="1697150536837697295">アート</translation>
 <translation id="1697686431566694143">ファイルを編集</translation>
-<translation id="1698122934742150150">現在のシークレット モード セッションのみ</translation>
 <translation id="1700079447639026019">Cookie を使用できないサイト</translation>
 <translation id="1700845716982723710">背景モードをオフにする</translation>
-<translation id="1701062906490865540">このユーザーを削除</translation>
 <translation id="1703331064825191675">パスワードを気にする必要はありません</translation>
 <translation id="1704970325597567340">安全確認を <ph name="DATE"/> に実行しました</translation>
 <translation id="1706586824377653884">管理者により追加</translation>
@@ -692,7 +683,6 @@
 <translation id="1850508293116537636">時計回りに回転(&amp;C)</translation>
 <translation id="1852141627593563189">有害なソフトウェアの検出</translation>
 <translation id="1852799913675865625">ファイルの読み込み中にエラーが発生しました: <ph name="ERROR_TEXT"/></translation>
-<translation id="1853692000353488670">新しいシークレット タブ</translation>
 <translation id="1854180393107901205">キャストを停止</translation>
 <translation id="1856715684130786728">位置情報を追加...</translation>
 <translation id="1858585891038687145">ソフトウェア作成元の識別でこの証明書を信頼します</translation>
@@ -933,7 +923,6 @@
 <translation id="2174948148799307353">アカウントは <ph name="PARENT_EMAIL"/> によって管理されています。このデバイスでメイン アカウントからログアウトするには、画面上にある時間をクリックして表示されるメニューで [ログアウト] をクリックします。</translation>
 <translation id="2175607476662778685">クイック起動バー</translation>
 <translation id="217576141146192373">プリンタを追加できません。プリンタの設定を確認して、もう一度お試しください。</translation>
-<translation id="2177950615300672361">シークレット タブ: <ph name="TAB_NAME"/></translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_DOMAIN"/> の <ph name="PEPPER_PLUGIN_NAME"/> プラグインから、パソコンへのアクセス許可を求められています</translation>
 <translation id="2178614541317717477">認証局が侵害された</translation>
 <translation id="2182058453334755893">クリップボードにコピーされました</translation>
@@ -944,7 +933,7 @@
 <translation id="2190069059097339078">WiFi 認証情報の取得機能</translation>
 <translation id="219008588003277019">ネイティブ クライアント モジュール: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(なし)</translation>
-<translation id="2191754378957563929">オン</translation>
+<translation id="8959699239363253085">オン</translation>
 <translation id="2192505247865591433">取得先:</translation>
 <translation id="2193365732679659387">信頼の設定</translation>
 <translation id="2195331105963583686">この期限を過ぎても <ph name="DEVICE_TYPE"/> は使用できますが、ソフトウェアとセキュリティは自動更新されなくなります。</translation>
@@ -978,7 +967,6 @@
 <translation id="2225864335125757863">アカウントのセキュリティ保護のため、今すぐ次のパスワードを変更してください。</translation>
 <translation id="2226449515541314767">このサイトには MIDI デバイスのフル コントロールは許可されていません。</translation>
 <translation id="222657802677009088">プリンタの設定</translation>
-<translation id="222704500187107962">この例外は、現在のシークレット モード セッションを終了した後に自動的に削除されます</translation>
 <translation id="2227179592712503583">候補を削除</translation>
 <translation id="2229161054156947610">あと 1 時間以上</translation>
 <translation id="222931766245975952">ファイルの一部が削除されました</translation>
@@ -989,7 +977,6 @@
 <translation id="7956662517480676674">同期と Brave サービス</translation>
 <translation id="2235344399760031203">サードパーティの Cookie がブロックされています</translation>
 <translation id="2238379619048995541">周波数状態データ</translation>
-<translation id="2239921694246509981">監視対象ユーザーを追加</translation>
 <translation id="2241053333139545397">多数のウェブサイト上にある自分のデータの読み取りと変更</translation>
 <translation id="2241634353105152135">一回限り</translation>
 <translation id="2242687258748107519">ファイル情報</translation>
@@ -1277,7 +1264,6 @@
 <translation id="2129873093718581193">Brave で検索、または URL を入力</translation>
 <translation id="2602501489742255173">開始するには上にスワイプします</translation>
 <translation id="2603115962224169880">パソコンのクリーンアップ</translation>
-<translation id="2603463522847370204">シークレット ウィンドウで開く(&amp;I)</translation>
 <translation id="2604255671529671813">ネットワーク接続エラー</translation>
 <translation id="2606246518223360146">データをリンク</translation>
 <translation id="2607101320794533334">サブジェクトの公開鍵情報</translation>
@@ -1339,13 +1325,12 @@
 <translation id="2672142220933875349">不正な crx ファイルです。解凍できませんでした。</translation>
 <translation id="2673135533890720193">閲覧履歴の読み取り</translation>
 <translation id="2673589024369449924">このユーザーのデスクトップ ショートカットを作成</translation>
-<translation id="2674764818721168631">オフ</translation>
+<translation id="6175644081330715138">オフ</translation>
 <translation id="2677748264148917807">このページを離れる</translation>
 <translation id="2678063897982469759">再度有効にする</translation>
 <translation id="268053382412112343">履歴(&amp;S)</translation>
 <translation id="2682498795777673382">保護者の方による更新</translation>
 <translation id="2683638487103917598">フォルダが並べ替えられました</translation>
-<translation id="2684004000387153598">利用を続けるには、[OK]、[ユーザーを追加] の順にクリックして、お使いのメールアドレス用の新しいプロフィールを作成してください。</translation>
 <translation id="2687403674020088961">すべての Cookie をブロックする（推奨されません）</translation>
 <translation id="2687407218262674387">Brave 利用規約</translation>
 <translation id="2688196195245426394">デバイスをサーバーに登録するときにエラーが発生しました: <ph name="CLIENT_ERROR"/>。</translation>
@@ -1483,7 +1468,6 @@
 <translation id="2841837950101800123">提供元</translation>
 <translation id="2844169650293029770">USB-C デバイス（左手前のポート）</translation>
 <translation id="2844809857160214557">印刷ジョブの表示と管理</translation>
-<translation id="2845382757467349449">ブックマーク バーを常に表示</translation>
 <translation id="284805635805850872">有害なソフトウェアを削除しますか？</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/>（<ph name="UNICODE_NAME"/>）</translation>
 <translation id="284975061945174219">クリーンアップできませんでした</translation>
@@ -1733,7 +1717,7 @@
 <translation id="3170072451822350649">ログインせずに<ph name="LINK_START"/>ゲストとしてブラウジング<ph name="LINK_END"/>することもできます。</translation>
 <translation id="3177909033752230686">ページの言語:</translation>
 <translation id="3179982752812949580">テキストのフォント</translation>
-<translation id="3181954750937456830">セーフ ブラウジング（危険なサイトからユーザーとデバイスを保護します）</translation>
+<translation id="3201899458094819285">セーフ ブラウジング（危険なサイトからユーザーとデバイスを保護します）</translation>
 <translation id="3182749001423093222">スペルチェック</translation>
 <translation id="3183139917765991655">プロフィール インポーター</translation>
 <translation id="3183944777708523606">モニターの配置</translation>
@@ -1841,7 +1825,6 @@
 <translation id="3315158641124845231"><ph name="PRODUCT_NAME"/> を隠す</translation>
 <translation id="3317459757438853210">両面印刷</translation>
 <translation id="3317678681329786349">カメラとマイクがブロックされています</translation>
-<translation id="3319048459796106952">シークレット ウィンドウを開く(&amp;I)</translation>
 <translation id="3320630259304269485">セーフ ブラウジング（危険なサイトからの保護機能）などのセキュリティ設定</translation>
 <translation id="3323295311852517824">{NUM_FILES,plural, =0{このデータにはデリケートなコンテンツまたは危険なコンテンツが含まれています。このコンテンツを削除してから、もう一度お試しください。}=1{このファイルにはデリケートなコンテンツまたは危険なコンテンツが含まれています。このコンテンツを削除してから、もう一度お試しください。}other{これらのファイルにはデリケートなコンテンツまたは危険なコンテンツが含まれています。このコンテンツを削除してから、もう一度お試しください。}}</translation>
 <translation id="3323521181261657960">ボーナスタイムが加算されました</translation>
@@ -1894,7 +1877,6 @@
 <translation id="3404065873681873169">このサイト用に保存されているパスワードはありません</translation>
 <translation id="3405664148539009465">フォントをカスタマイズ</translation>
 <translation id="3405763860805964263">...</translation>
-<translation id="3406605057700382950">ブックマーク バーを表示(&amp;S)</translation>
 <translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{この拡張機能は安全でない可能性があります}other{これらの拡張機能は安全でない可能性があります}}</translation>
 <translation id="3409785640040772790">マップ</translation>
 <translation id="3410832398355316179">このユーザーを削除すると、このユーザーに関連付けられているファイルとローカルデータもすべて完全に削除されます。<ph name="USER_EMAIL"/> が後でログインすることは引き続き可能です。</translation>
@@ -1961,7 +1943,6 @@
 <translation id="3476303763173086583">使用状況データや診断データを送信します。診断データやデバイスとアプリの使用状況データを Brave に自動送信して、お子様向けの Android 機能の向上にご協力ください。この情報を使ってお子様個人が特定されることはありません。この情報は、システムとアプリの安定性の向上やその他の機能の改善に役立てられます。また、Brave のアプリやパートナー（Android デベロッパーなど）も、集計データとしてこの情報を活用します。この<ph name="BEGIN_LINK1"/>設定<ph name="END_LINK1"/>は所有者によって管理されています。このデバイスの診断データや使用状況データを Brave に送信するよう所有者が設定している可能性があります。お子様の [その他のウェブとアプリのアクティビティ] の設定がオンになっている場合、このデータはお子様の Brave アカウントに保存されます。<ph name="BEGIN_LINK2"/>詳細<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">デバイスのポリシーを取得できませんでした。</translation>
 <translation id="347785443197175480"><ph name="HOST"/> によるカメラとマイクへのアクセスを引き続き許可する</translation>
-<translation id="3478685642445675458">ユーザーを削除するにはまずプロフィールのロックを解除してください。</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="3479685872808224578">プリント サーバーを検出できませんでした。アドレスを確認してから、もう一度お試しください。</translation>
 <translation id="3481268647794498892"><ph name="COUNTDOWN_SECONDS"/> 秒後に <ph name="ALTERNATIVE_BROWSER_NAME"/> で開きます</translation>
@@ -2031,7 +2012,6 @@
 <translation id="3569682580018832495"><ph name="ORIGIN"/> は次のファイルとフォルダを表示できます</translation>
 <translation id="3571734092741541777">設定</translation>
 <translation id="3574210789297084292">ログイン</translation>
-<translation id="3574917942258583917">シークレット モードを終了してもよろしいですか？</translation>
 <translation id="3575121482199441727">このサイトの通知を許可</translation>
 <translation id="3576324189521867626">インストールが完了しました</translation>
 <translation id="3578594933904494462">このタブのコンテンツは共有されています。</translation>
@@ -2050,7 +2030,6 @@
 <translation id="359283478042092570">ログイン</translation>
 <translation id="3593965109698325041">証明書名の制約</translation>
 <translation id="3596235046596950091">クラウド サービスを有効にする</translation>
-<translation id="3596414637720633074">シークレット モードでサードパーティの Cookie をブロックする</translation>
 <translation id="3599221874935822507">浮き彫り</translation>
 <translation id="8122693181154564064">ログインしているすべてのデバイスの履歴を削除します。お使いの Brave アカウントの <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に、他の形式の閲覧履歴が記録されている場合があります。</translation>
 <translation id="3600051066689725006">ウェブ リクエスト情報</translation>
@@ -2078,7 +2057,6 @@
 <translation id="3625481642044239431">無効なファイルが選択されています。もう一度お試しください。</translation>
 <translation id="3626296069957678981">この Bravebook を充電するには、対応する Dell のバッテリーを使用してください。</translation>
 <translation id="3627320433825461852">あと 1 分未満</translation>
-<translation id="3627588569887975815">シークレット ウィンドウで開く(&amp;G)</translation>
 <translation id="3627671146180677314">Netscape 証明書更新時間</translation>
 <translation id="3627879631695760395">「<ph name="APP"/>」をインストール...</translation>
 <translation id="3628275722731025472">Bluetooth のオフ</translation>
@@ -2111,7 +2089,7 @@
 <translation id="3660234220361471169">信頼されていない</translation>
 <translation id="3661172646479098821">現在、Android デバイスのみがサポートされています。</translation>
 <translation id="3664511988987167893">拡張機能アイコン</translation>
-<translation id="3665589677786828986">設定の一部が別のプログラムによって変更されていたため、元のデフォルト設定に戻しました。</translation>
+<translation id="2334029754052191847">設定の一部が別のプログラムによって変更されていたため、元のデフォルト設定に戻しました。</translation>
 <translation id="8545590844135745781">Bluetooth の問題の診断に向けて、Brave 社員はフィードバック レポートに追加の Bluetooth ログを含めることができます。このオプションのチェックボックスがオンになっている場合、レポートには現在のセッションの btsnoop ログと HCI ログが含められます。その際、個人を特定できる情報は可能な限り削除されます。これらのログへのアクセスは、Listnr での Chrome OS プロダクト グループのマネージャーのみに制限されます。ログは 90 日経過後に消去されます。</translation>
 <translation id="3668823961463113931">ハンドラ</translation>
 <translation id="3670113805793654926">任意のベンダーのデバイス</translation>
@@ -2199,7 +2177,6 @@
 <translation id="3758842566811519622">Cookie が設定されました</translation>
 <translation id="3759933321830434300">一部のウェブページをブロックする</translation>
 <translation id="3760460896538743390">バックグラウンド ページの検証(&amp;B)</translation>
-<translation id="37613671848467444">シークレット ウィンドウで開く(&amp;I)</translation>
 <translation id="3761556954875533505">サイトにファイルの編集を許可しますか？</translation>
 <translation id="3764314093345384080">ビルド情報の詳細</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{1 台の USB デバイスと通信します}other{# 台の USB デバイスと通信します}}</translation>
@@ -2441,7 +2418,6 @@
 <translation id="4035758313003622889">タスク マネージャ(&amp;T)</translation>
 <translation id="4036778507053569103">サーバーからダウンロードされたポリシーが無効です。</translation>
 <translation id="4037084878352560732">馬</translation>
-<translation id="4037889604535939429">画像と名前を設定</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{ページを離れる}other{ページを離れる}}</translation>
 <translation id="4044612648082411741">証明書のパスワードを入力してください</translation>
 <translation id="404493185430269859">デフォルトの検索エンジン</translation>
@@ -2561,7 +2537,6 @@
 <translation id="4209251085232852247">オフになっています</translation>
 <translation id="2624930408905606513">ドキュメントは印刷準備のため <ph name="BEGIN_LINK_HELP"/>Brave に送信<ph name="END_LINK_HELP"/>されます。<ph name="BEGIN_LINK_DASHBOARD"/>Brave クラウド プリントのダッシュボード<ph name="END_LINK_DASHBOARD"/>でプリンタとプリンタの履歴を表示、編集、管理できます。</translation>
 <translation id="4210048056321123003">仮想マシンをダウンロードしています</translation>
-<translation id="421182450098841253">ブックマーク バーを表示(&amp;S)</translation>
 <translation id="4211851069413100178">使用状況データや診断データを送信します。診断データやデバイスとアプリの使用状況データを Brave に自動送信して、Android の機能向上にご協力ください。この情報は、システムとアプリの安定性の向上やその他の機能の改善に役立てられます。また、Brave のアプリやパートナー（Android デベロッパーなど）も、集計データとしてこの情報を活用します。この<ph name="BEGIN_LINK1"/>設定<ph name="END_LINK1"/>は所有者によって管理されています。このデバイスの診断データや使用状況データを Brave に送信するよう所有者が設定している可能性があります。[その他のウェブとアプリのアクティビティ] の設定がオンになっている場合、このデータは Brave アカウントに保存されます。<ph name="BEGIN_LINK2"/>詳細<ph name="END_LINK2"/></translation>
 <translation id="42126664696688958">エクスポート</translation>
 <translation id="42137655013211669">このリソースへのアクセスはサーバーにより禁止されています。</translation>
@@ -2680,7 +2655,6 @@
 <translation id="4387004326333427325">認証証明書がリモートで拒否されました</translation>
 <translation id="4387890294700445764">不正使用されたパスワード</translation>
 <translation id="4389091756366370506">ユーザー <ph name="VALUE"/></translation>
-<translation id="4390000551125140321">{0,plural, =1{シークレット}other{開いているシークレット ウィンドウ # 個}}</translation>
 <translation id="439266289085815679">Bluetooth 設定は <ph name="USER_EMAIL"/> によって管理されています。</translation>
 <translation id="4392896746540753732">設定ファイルを編集します</translation>
 <translation id="4394049700291259645">無効にする</translation>
@@ -2699,7 +2673,6 @@
 <translation id="4411578466613447185">コードの署名者</translation>
 <translation id="4412698727486357573">ヘルプセンター</translation>
 <translation id="44141919652824029">接続された USB デバイスのリストを「<ph name="APP_NAME"/>」が取得することを許可しますか？</translation>
-<translation id="4414232939543644979">新しいシークレット ウインドウ(&amp;I)</translation>
 <translation id="4415213869328311284"><ph name="DEVICE_TYPE"/> を使用する準備ができました。</translation>
 <translation id="4415245286584082850">デバイスが見つかりませんでした。新しいタブでヘルプセンター記事を開いてください。</translation>
 <translation id="1125261911132334651">Brave アカウントの管理</translation>
@@ -2762,7 +2735,6 @@
 <translation id="4502423230170890588">このデバイスから削除</translation>
 <translation id="4504374760782163539">{COUNT,plural, =0{Cookie が許可されています}=1{Cookie が許可されています（1 件の例外）}other{Cookie が許可されています（{COUNT} 件の例外）}}</translation>
 <translation id="4504940961672722399">この拡張機能を使用するには、このアイコンをクリックするか、<ph name="EXTENSION_SHORTCUT"/> を押します。</translation>
-<translation id="4508051413094283164">すべてをシークレット ウィンドウで開く</translation>
 <translation id="4508265954913339219">起動に失敗しました</translation>
 <translation id="4508765956121923607">ソースを表示(&amp;O)</translation>
 <translation id="4510479820467554003">保護者のアカウント リスト</translation>
@@ -2774,7 +2746,6 @@
 <translation id="4519935350946509010">接続エラーが発生しました。</translation>
 <translation id="4520385623207007473">使用中の Cookie</translation>
 <translation id="452039078290142656"><ph name="VENDOR_NAME"/> の不明なデバイス</translation>
-<translation id="4521489190203965562">現在のシークレット モード セッション: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>、<ph name="RECENT_PERMISSIONS_CHANGE_1"/>、<ph name="RECENT_PERMISSIONS_CHANGE_2"/>、その他</translation>
 <translation id="4522570452068850558">詳細</translation>
 <translation id="4522600456902129422">このサイトによるクリップボードへのアクセスを今後も許可する</translation>
 <translation id="4524832533047962394">指定の登録モードは、このバージョンのオペレーティング システムではサポートされていません。最新バージョンであることをご確認ください。</translation>
@@ -2876,7 +2847,6 @@
 <translation id="4647090755847581616">タブを閉じる(&amp;C)</translation>
 <translation id="4647697156028544508">「<ph name="DEVICE_NAME"/>」の PIN を入力してください:</translation>
 <translation id="4648491805942548247">十分な権限がありません</translation>
-<translation id="4648499713050786492">ユーザーを追加するにはまずプロフィールのロックを解除してください。</translation>
 <translation id="4650591383426000695">スマートフォンを <ph name="DEVICE_TYPE"/> から切断します</translation>
 <translation id="4651484272688821107">デモモード リソースでオンライン コンポーネントを読み込めませんでした。</translation>
 <translation id="4653405415038586100">Linux の設定中にエラーが発生しました</translation>
@@ -3014,7 +2984,6 @@
 <translation id="4854317507773910281">承認してもらう保護者のアカウントを選択</translation>
 <translation id="485480310608090163">その他の設定と権限</translation>
 <translation id="4856478137399998590">モバイル データ サービスがご利用いただけるようになりました</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{すべてをシークレット ウィンドウで開く(&amp;I)}=1{シークレット ウィンドウで開く(&amp;I)}other{すべて（# 件）をシークレット ウィンドウで開く(&amp;I)}}</translation>
 <translation id="4858792381671956233">このサイトを開いてもよいかの問い合わせを保護者に送信しました</translation>
 <translation id="4858913220355269194">フリッツ</translation>
 <translation id="4862642413395066333">OCSP 応答の署名</translation>
@@ -3203,7 +3172,6 @@
 <translation id="5107443654503185812">拡張機能により、セーフ ブラウジングがオフになりました</translation>
 <translation id="5108967062857032718">設定 - Android アプリの削除</translation>
 <translation id="5109044022078737958">ミア</translation>
-<translation id="5111646998522066203">シークレット モードを終了</translation>
 <translation id="5111692334209731439">ブックマーク マネージャ(&amp;B)</translation>
 <translation id="5112577000029535889">デベロッパー ツール(&amp;D)</translation>
 <translation id="5113739826273394829">このアイコンをクリックすると、この <ph name="DEVICE_TYPE"/> は手動でロックされます。次回ログインするにはパスワードを入力する必要があります。</translation>
@@ -3413,7 +3381,6 @@
 <translation id="5379140238605961210">マイクへのアクセスを引き続きブロックする</translation>
 <translation id="5382591305415226340">サポートされているリンクを管理</translation>
 <translation id="5383377866517186886">Mac のシステム環境設定でカメラがオフになっています</translation>
-<translation id="5384883051496921101">このサイトの情報がシークレット モードの外部のアプリに共有されようとしています。</translation>
 <translation id="5388885445722491159">ペア設定済み</translation>
 <translation id="5389237414310520250">新しいユーザーを作成できませんでした。ハードドライブの空き容量と権限を確認し、もう一度お試しください。</translation>
 <translation id="5390100381392048184">音声の再生をサイトに許可する</translation>
@@ -3425,7 +3392,7 @@
 <translation id="5402815541704507626">モバイルデータ接続でのアップデートのダウンロード</translation>
 <translation id="540296380408672091"><ph name="HOST"/> の Cookie を常にブロックする</translation>
 <translation id="540495485885201800">前と交換</translation>
-<translation id="5405146885510277940">設定のリセット</translation>
+<translation id="8632933437936028548">設定のリセット</translation>
 <translation id="5408750356094797285">ズーム: <ph name="PERCENT"/></translation>
 <translation id="5411472733320185105">以下のホストとドメインにはプロキシ設定を使用しない:</translation>
 <translation id="5414566801737831689">アクセスしたウェブサイトのアイコンの読み取り</translation>
@@ -3462,7 +3429,6 @@
 <translation id="5449551289610225147">パスワードが無効です</translation>
 <translation id="5449588825071916739">すべてのタブをブックマークに追加する</translation>
 <translation id="5449716055534515760">ウィンドウを閉じる(&amp;D)</translation>
-<translation id="5452974209916053028">現在のシークレット モード セッション: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>、<ph name="RECENT_PERMISSIONS_CHANGE_1"/>、<ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
 <translation id="5454166040603940656">- <ph name="PROVIDER"/></translation>
 <translation id="5454360575035671759">Plugin VM を削除すると、VM が削除されます。これにはアプリケーション、設定、データも含まれます。続行してもよろしいですか？</translation>
 <translation id="5457113250005438886">無効</translation>
@@ -3492,7 +3458,6 @@
 <translation id="5486561344817861625">ブラウザ再起動のシミュレート</translation>
 <translation id="5487521232677179737">データを削除</translation>
 <translation id="5488093641312826914">「<ph name="COPIED_ITEM_NAME"/>」がコピーされました</translation>
-<translation id="5488468185303821006">シークレット モードでの実行を許可する</translation>
 <translation id="5489435190927933437"><ph name="DOMAIN"/> 用に保存されているパスワード</translation>
 <translation id="5490721031479690399">Bluetooth デバイスの接続の解除</translation>
 <translation id="5490798133083738649">Linux にマイクへのアクセスを許可する</translation>
@@ -3530,7 +3495,6 @@
 <translation id="5526745900034778153">同期を再開するにはもう一度ログインしてください</translation>
 <translation id="5527463195266282916">拡張機能のダウングレードが試行されました。</translation>
 <translation id="5527474464531963247">別のネットワークも選択できます。</translation>
-<translation id="5530766185686772672">シークレットタブを閉じる</translation>
 <translation id="5532223876348815659">グローバル</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> が次の許可を求めています</translation>
 <translation id="5534304873398226603">写真または動画を破棄</translation>
@@ -3565,7 +3529,6 @@
 <translation id="5567989639534621706">アプリケーション キャッシュ</translation>
 <translation id="5568069709869097550">ログインできない</translation>
 <translation id="1254756632288991504">このサイトへのアクセス権があるかどうかを Brave で確認できるように、Brave を起動してログインしてください。</translation>
-<translation id="5575473780076478375">シークレット モード拡張機能: <ph name="EXTENSION_NAME"/></translation>
 <translation id="5575528586625653441">デモ登録リクエストで問題が発生しました。</translation>
 <translation id="557722062034137776">デバイスをリセットしても、お使いの Brave アカウントや、これらのアカウントに同期されているデータには影響しません。ただし、デバイス上でローカルに保存されているすべてのファイルは削除されます。</translation>
 <translation id="5578059481725149024">自動ログイン</translation>
@@ -3657,7 +3620,6 @@
 <translation id="5691511426247308406">ファミリー</translation>
 <translation id="5691772641933328258">指紋を認識できません</translation>
 <translation id="5692183275898619210">印刷完了</translation>
-<translation id="569425414730375234">現在のシークレット モード セッション: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="5695184138696833495">Linux Android アプリ ADB</translation>
 <translation id="5696143504434933566">「<ph name="EXTENSION_NAME"/>」の不正行為を報告する</translation>
 <translation id="5696177755977520104">Chrome OS 設定の同期</translation>
@@ -3685,7 +3647,6 @@
 <translation id="5722930212736070253">エラー: Zip アーカイブ ツールでエラーが発生しました。</translation>
 <translation id="572328651809341494">最近使ったタブ</translation>
 <translation id="5723508132121499792">実行中のバックグラウンド アプリはありません</translation>
-<translation id="5723967018671998714">シークレット モードでサードパーティの Cookie がブロックされています</translation>
 <translation id="5727728807527375859">拡張機能、アプリ、テーマはパソコンに悪影響を与える可能性があります。処理を続けてもよろしいですか？</translation>
 <translation id="5728450728039149624">Smart Lock の画面ロックの方法</translation>
 <translation id="5729712731028706266">表示(&amp;V)</translation>
@@ -3758,7 +3719,6 @@
 <translation id="5827266244928330802">Safari</translation>
 <translation id="5828633471261496623">印刷中...</translation>
 <translation id="5830720307094128296">ページを別名で保存(&amp;A)...</translation>
-<translation id="5832805196449965646">ユーザーを追加</translation>
 <translation id="583281660410589416">不明</translation>
 <translation id="5832976493438355584">ロックされています</translation>
 <translation id="5833397272224757657">ユーザーがアクセスしたサイトのコンテンツと、ブラウザのアクティビティおよび操作をカスタマイズに使用します</translation>
@@ -3848,7 +3808,6 @@
 <translation id="5935656526031444304">セーフ ブラウジングを管理</translation>
 <translation id="5938002010494270685">セキュリティ アップグレードが利用可能です</translation>
 <translation id="5939518447894949180">リセット</translation>
-<translation id="5941153596444580863">ユーザーを追加...</translation>
 <translation id="5941343993301164315"><ph name="TOKEN_NAME"/> にログインしてください。</translation>
 <translation id="5941711191222866238">最小化</translation>
 <translation id="5942964813783878922">この更新が行われた後、<ph name="DEVICE_TYPE"/> は再起動します。今後はソフトウェアとセキュリティに関するアップデートが自動的にインストールされます。</translation>
@@ -3884,7 +3843,6 @@
 <translation id="5979421442488174909"><ph name="LANGUAGE"/>に翻訳(&amp;T)</translation>
 <translation id="5979469435153841984">ページをブックマークするには、アドレスバーのスターアイコンをクリックしてください</translation>
 <translation id="5984222099446776634">最近のアクセス</translation>
-<translation id="598472838394900788">{0,plural, =1{シークレット}other{シークレット（#）}}</translation>
 <translation id="5985458664595100876">URL の形式が無効です。サポートされている形式は \\server\share と smb://server/share です。</translation>
 <translation id="5990386583461751448">翻訳済み</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{今後もウェブ ブラウジングを続けられるように、管理者にこのアプリケーションの削除を依頼してください。}other{今後もウェブ ブラウジングを続けられるように、管理者にこれらのアプリケーションの削除を依頼してください。}}</translation>
@@ -3961,7 +3919,6 @@
 <translation id="6078323886959318429">ショートカットを追加</translation>
 <translation id="6078752646384677957">マイクと音声のレベルを確認してください。</translation>
 <translation id="6078769373519310690">「<ph name="CHROME_EXTENSION_NAME"/>」が HID デバイスへの接続を要求しています</translation>
-<translation id="6080515710685820702">共有のパソコンをお使いの場合は、シークレット ウィンドウをご活用ください。</translation>
 <translation id="6080689532560039067">システムの時刻の確認</translation>
 <translation id="6082651258230788217">ツールバーに表示</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/> - 名前のないグループの一部</translation>
@@ -3989,7 +3946,6 @@
 <translation id="6112294629795967147">タップしてサイズを変更</translation>
 <translation id="6112727384379533756">チケットを追加</translation>
 <translation id="6112931163620622315">スマートフォンを確認してください</translation>
-<translation id="6112952769866305444">ユーザー（<ph name="PROFILE_NAME"/>、<ph name="USERNAME"/>）を編集</translation>
 <translation id="6113942107547980621">Smart Lock を使用するには、お使いのスマートフォンでメインユーザーのプロフィールに切り替えます</translation>
 <translation id="6116921718742659598">言語と入力の設定を変更</translation>
 <translation id="6120205520491252677">このページを起動画面に固定...</translation>
@@ -4022,7 +3978,6 @@
 <translation id="615436196126345398">プロトコル</translation>
 <translation id="6154697846084421647">現在ログイン中</translation>
 <translation id="6155141482566063812">バックグラウンドのタブで画面が共有されています</translation>
-<translation id="6156323911414505561">ブックマーク バーを表示する</translation>
 <translation id="6156863943908443225">スクリプト キャッシュ</translation>
 <translation id="6160625263637492097">認証用の証明書の提供</translation>
 <translation id="6163363155248589649">標準(&amp;N)</translation>
@@ -4211,7 +4166,6 @@
 <translation id="6410668567036790476">検索エンジンの追加</translation>
 <translation id="641081527798843608">件名の一致</translation>
 <translation id="7810992039564280750">Brave に保存されている安全でないサイトのリストと URL を照合します。サイトがパスワードを不正に取得しようとしている場合や、ユーザーが安全でないファイルをダウンロードしようとした場合は、URL とページ コンテンツの一部をセーフ ブラウジングに送信することがあります。</translation>
-<translation id="6412931879992742813">新しいシークレット ウィンドウ</translation>
 <translation id="641469293210305670">アップデートとアプリのインストール</translation>
 <translation id="6414888972213066896">このサイトを開いてもよいかの問い合わせを保護者に送信しました</translation>
 <translation id="6415659939354280526">背景モードの参照元を選択</translation>
@@ -4319,7 +4273,6 @@
 <translation id="6550675742724504774">オプション</translation>
 <translation id="6551508934388063976">コマンドを使用できません。Ctrl+N を押して新しいウィンドウを開いてください。</translation>
 <translation id="6551612971599078809">サイトで USB が使用されています</translation>
-<translation id="6552395360547205189">現在のシークレット モード セッション: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>、<ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="655384502888039633">ユーザー数: <ph name="USER_COUNT"/> 人</translation>
 <translation id="655483977608336153">再試行</translation>
 <translation id="6555432686520421228">すべてのユーザー アカウントを削除し、<ph name="IDS_SHORT_PRODUCT_NAME"/> デバイスを出荷時と同じ状態にリセットします。</translation>
@@ -4330,7 +4283,6 @@
 <translation id="6561726789132298588">Enter</translation>
 <translation id="656293578423618167">ファイルのパスまたは名前が長すぎます。名前を短くするか、別の場所に保存してください。</translation>
 <translation id="6563469144985748109">管理者がまだサイトを開くことを許可していません</translation>
-<translation id="6569934958368283244">他のユーザー</translation>
 <translation id="657402800789773160">ページを再読み込み(&amp;R)</translation>
 <translation id="6577284282025554716"><ph name="FILE_NAME"/> のダウンロードがキャンセルされました</translation>
 <translation id="2459230470861708651">Brave のユーザー名とパスワードを使用して同期パスワードを暗号化する</translation>
@@ -4446,7 +4398,6 @@
 <translation id="6727969043791803658">接続済み、<ph name="BATTERY_PERCENTAGE"/>% のバッテリー残量</translation>
 <translation id="6732801395666424405">証明書が読み込まれていません</translation>
 <translation id="6732900235521116609">ショートカットの削除はできません</translation>
-<translation id="6734468588183300211">シークレット モードを使用中は、サイトは、Cookie を使用して別のサイトでのあなたの閲覧アクティビティを確認できず、広告のカスタマイズなどが行えなくなります。一部サイトの機能が使用できなくなる可能性もあります。</translation>
 <translation id="6735304988756581115">Cookie と他のサイトのデータを表示...</translation>
 <translation id="6736243959894955139">アドレス</translation>
 <translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
@@ -4462,7 +4413,6 @@
 <translation id="6748465660675848252">続行した場合、同期済みのデータと設定のみが復元され、ローカルデータはすべて失われます。</translation>
 <translation id="6749006854028927059">サイトは、Cookie を使用して別のサイトでのあなたの閲覧アクティビティを確認できず、広告のカスタマイズなどが行えなくなります。一部サイトの機能が使用できなくなる可能性もあります。</translation>
 <translation id="6750757184909117990">モバイルデータ通信を無効にする</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/>（シークレット モード）</translation>
 <translation id="6757101664402245801">URL がコピーされました</translation>
 <translation id="6758056191028427665">アンケートにご協力ください。</translation>
 <translation id="6759193508432371551">初期状態へのリセット</translation>
@@ -4488,7 +4438,6 @@
 <translation id="6789592661892473991">横に分割</translation>
 <translation id="6790428901817661496">再生</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> がリモートで追加されました</translation>
-<translation id="6790820461102226165">ユーザーを追加...</translation>
 <translation id="6792072150955115067"><ph name="APP_NAME"/> が <ph name="TARGET_NAME"/> との画面コンテンツの共有をリクエストしています。共有する部分を選択してください。</translation>
 <translation id="6793604637258913070">テキスト キャレットが表示されるか移動したときに強調表示する</translation>
 <translation id="6795884519221689054">パンダ</translation>
@@ -4601,7 +4550,6 @@
 <translation id="6935286146439255109">用紙トレイが見つかりません</translation>
 <translation id="693807610556624488">「<ph name="DEVICE_NAME"/>」での書き込み操作で属性の長さが上限を超えています。</translation>
 <translation id="6938386202199793006">保存済みのプリンタは 1 件です。</translation>
-<translation id="6938789263968032501">ユーザー</translation>
 <translation id="6941937518557314510">証明書で <ph name="HOST_NAME"/> の認証を受けるには <ph name="TOKEN_NAME"/> にログインしてください。</translation>
 <translation id="6943060957016121200">インスタント テザリングを有効にする</translation>
 <translation id="6943176775188458830">印刷をキャンセル</translation>
@@ -4700,7 +4648,6 @@
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{安全確認を 1 分前に実行しました}other{安全確認を {NUM_MINS} 分前に実行しました}}</translation>
 <translation id="7057767408836081338">アプリのデータを取得できませんでした。引き続きアプリの実行を試みています...</translation>
 <translation id="7059858479264779982">自動起動に設定する</translation>
-<translation id="7059893117020417984">シークレット モードを使うには、その他アイコンのメニューからシークレット ウィンドウを開きます</translation>
 <translation id="7062222374113411376">最近閉じたサイトがデータの送受信を完了できるようにする（推奨）</translation>
 <translation id="7063129466199351735">ショートカットを処理しています...</translation>
 <translation id="7063311912041006059">URL（<ph name="SPECIAL_SYMBOL"/>=検索語句）</translation>
@@ -4722,7 +4669,6 @@
 <translation id="7077829361966535409">現在のプロキシ設定を使用してログイン ページを読み込むことができませんでした。<ph name="GAIA_RELOAD_LINK_START"/>もう一度ログイン<ph name="GAIA_RELOAD_LINK_END"/>してみるか、別の<ph name="PROXY_SETTINGS_LINK_START"/>プロキシ設定<ph name="PROXY_SETTINGS_LINK_END"/>を使用してみてください。</translation>
 <translation id="7078120482318506217">すべてのネットワーク</translation>
 <translation id="708060913198414444">オーディオ アドレスをコピー(&amp;C)</translation>
-<translation id="7081952801286122383">シークレット モード使用中</translation>
 <translation id="708278670402572152">スキャンを有効にするにはネットワークから切断してください</translation>
 <translation id="1439926347196400598">Brave に録音を許可しますか？</translation>
 <translation id="7088434364990739311">更新チェックを起動できませんでした（エラー コード <ph name="ERROR"/>）。</translation>
@@ -4968,7 +4914,6 @@
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{安全確認を 1 時間前に実行しました}other{安全確認を {NUM_HOURS} 時間前に実行しました}}</translation>
 <translation id="740624631517654988">ポップアップがブロックされました</translation>
 <translation id="7407430846095439694">インポートしてバインド</translation>
-<translation id="7407504355934009739">ほとんどのユーザーがこのサイトの通知をブロックしています</translation>
 <translation id="740810853557944681">プリント サーバーを追加</translation>
 <translation id="7409549334477097887">特大</translation>
 <translation id="7410344089573941623"><ph name="HOST"/> がカメラやマイクへのアクセスを要求しているか確認する</translation>
@@ -5013,7 +4958,6 @@
 <translation id="7460045493116006516">インストールした現在のテーマ</translation>
 <translation id="7461924472993315131">固定</translation>
 <translation id="746216226901520237">次回から、スマートフォンで <ph name="DEVICE_TYPE"/> のロックを解除できます。Smart Lock を無効にするには [設定] をご利用ください。</translation>
-<translation id="7463006580194749499">ユーザーを追加</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{現在開いているタブは # 個で、このボタンを押すとタブバーを切り替えます}other{現在開いているタブは # 個で、このボタンを押すとタブバーを切り替えます}}</translation>
 <translation id="7465635034594602553">エラーが発生しました。数分後にもう一度 <ph name="APP_NAME"/> を実行してください。</translation>
 <translation id="7465778193084373987">Netscape 証明書取り消し URL</translation>
@@ -5035,7 +4979,6 @@
 <translation id="7488682689406685343">このサイトは、ユーザーをだまして煩わしい通知を許可させようとする可能性があります。</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{すべてを開く(&amp;O)}=1{ブックマークを開く(&amp;O)}other{すべて（# 件）を開く(&amp;O)}}</translation>
 <translation id="7489761397368794366">デバイスから発信</translation>
-<translation id="749028671485790643">ユーザー <ph name="VALUE"/></translation>
 <translation id="7490813197707563893">MAC アドレス</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{1 件の Cookie}other{{NUM_COOKIES} 件の Cookie}}</translation>
 <translation id="7493386493263658176"><ph name="EXTENSION_NAME"/> 拡張機能では、パスワードやクレジット カード番号などの個人データを含むすべての入力テキストが収集される可能性があります。この拡張機能を使用しますか？</translation>
@@ -5057,7 +5000,6 @@
 <translation id="751523031290522286"><ph name="APP_NAME"/> は管理者によってブロックされています。このアプリを使用するには、管理者の許可が必要です。</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> は一時停止中です</translation>
 <translation id="7517063221058203587">{0,plural, =1{1 分以内にデバイスを更新してください}other{# 分以内にデバイスを更新してください}}</translation>
-<translation id="7520766081042531487">シークレット ポータル: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">「OK Brave」と言ってください</translation>
 <translation id="7525067979554623046">作成</translation>
@@ -5151,7 +5093,6 @@
 <translation id="7647403192093989392">最近のアクティビティはありません</translation>
 <translation id="7649070708921625228">ヘルプ</translation>
 <translation id="7650511557061837441">「<ph name="TRIGGERING_EXTENSION_NAME"/>」が「<ph name="EXTENSION_NAME"/>」の削除をリクエストしています。</translation>
-<translation id="7652808307838961528">ユーザー（<ph name="PROFILE_NAME"/>）を編集</translation>
 <translation id="765293928828334535">このウェブサイトからアプリ、拡張機能、ユーザー スクリプトを追加することはできません</translation>
 <translation id="7652954539215530680">PIN の作成</translation>
 <translation id="7654941827281939388">このアカウントは既にこのパソコンで使用されています。</translation>
@@ -5172,7 +5113,6 @@
 <translation id="7674416868315480713">Linux で転送中のポートをすべて無効にする</translation>
 <translation id="1800308196794859773">テキスト欄で音声入力できるように Brave に音声を送信します。</translation>
 <translation id="7681095912841365527">サイトに Bluetooth の使用が許可されています</translation>
-<translation id="7683373461016844951">利用を続けるには、[OK]、[ユーザーを追加] の順にクリックして、<ph name="DOMAIN"/> のメールアドレス用の新しいプロフィールを作成してください。</translation>
 <translation id="7684212569183643648">管理者によりインストールされています</translation>
 <translation id="7684559058815332124">キャプティブ ポータルのログインページにアクセス</translation>
 <translation id="1669729672557072907">アプリを作成してテストするには、Android Debug Bridge（ADB）を有効にします。この操作を行うと、Brave が確認していない Android アプリのインストールが許可されます。無効にする場合は、出荷時の設定へのリセットが必要になります。</translation>
@@ -5253,7 +5193,7 @@
 <translation id="7776701556330691704">音声が見つかりません</translation>
 <translation id="7780252971640011240">接続できません。サポートが必要な場合は、ご利用の携帯通信会社にお問い合わせください。</translation>
 <translation id="7781335840981796660">すべてのユーザー アカウントとローカル データは削除されます。</translation>
-<translation id="7782102568078991263">候補は以上です</translation>
+<translation id="6191804255817539692">候補は以上です</translation>
 <translation id="7782717250816686129">ログイン画面での永続データの保存とセッションへの認証情報の入力。</translation>
 <translation id="778330624322499012"><ph name="PLUGIN_NAME"/> を読み込めませんでした</translation>
 <translation id="7784067724422331729">お使いのパソコンのセキュリティ設定により、このファイルはブロックされました。</translation>
@@ -5273,7 +5213,7 @@
 <translation id="7792388396321542707">共有を停止</translation>
 <translation id="779308894558717334">明るい緑</translation>
 <translation id="7793098747275782155">暗い青</translation>
-<translation id="7797571222998226653">オフ</translation>
+<translation id="971479617738309149">オフ</translation>
 <translation id="7798844538707273832"><ph name="PERMISSION"/>を自動ブロック</translation>
 <translation id="7799299114731150374">壁紙の設定が完了しました</translation>
 <translation id="7800518121066352902">反時計回りに回転(&amp;O)</translation>
@@ -5376,7 +5316,6 @@
 <translation id="7904094684485781019">このアカウントの管理者がマルチログインを許可していません。</translation>
 <translation id="7904526211178107182">Linux ポートをネットワーク上の他のデバイスが利用できるようにします。</translation>
 <translation id="7908378463497120834">外部ストレージ デバイスの少なくとも 1 つのパーティションがマウントできませんでした。</translation>
-<translation id="7909969815743704077">シークレット モードでダウンロード</translation>
 <translation id="7910768399700579500">新しいフォルダ(&amp;N)</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="7912080627461681647">サーバーでパスワードが変更されました。いったんログアウトして再度ログインしてください。</translation>
@@ -5439,7 +5378,6 @@
 <translation id="7982083145464587921">このエラーを修正するには、デバイスを再起動してください。</translation>
 <translation id="7982789257301363584">ネットワーク</translation>
 <translation id="7984068253310542383"><ph name="DISPLAY_NAME"/> をミラーリング</translation>
-<translation id="7985283639530788531">シークレット モードで <ph name="APP_NAME"/> に Touch ID を使用しますか？</translation>
 <translation id="7986295104073916105">保存されたパスワード設定の読み取りと変更</translation>
 <translation id="7987814697832569482">この VPN で常に接続する</translation>
 <translation id="7988355189918024273">ユーザー補助機能を有効にします</translation>
@@ -5480,7 +5418,6 @@
 <translation id="8030852056903932865">承認</translation>
 <translation id="8032244173881942855">タブをキャストできません。</translation>
 <translation id="8033827949643255796">選択しました</translation>
-<translation id="803435727213847625">{COUNT,plural, =0{すべてをシークレット ウィンドウで開く(&amp;I)}=1{シークレット ウィンドウで開く(&amp;I)}other{すべて（# 件）をシークレット ウィンドウで開く(&amp;I)}}</translation>
 <translation id="8037117027592400564">合成音声で読み上げたすべてのテキストの読み取り</translation>
 <translation id="8037357227543935929">確認（デフォルト）</translation>
 <translation id="803771048473350947">ファイル</translation>
@@ -5491,7 +5428,7 @@
 <translation id="5462539695964427820">同期は Brave ダッシュボードで停止されています。</translation>
 <translation id="8045923671629973368">アプリケーション ID またはウェブストアの URL を入力します</translation>
 <translation id="804786196054284061">エンドユーザー使用許諾契約</translation>
-<translation id="8049705080247101012">「<ph name="EXTENSION_NAME"/>」は、不正な拡張機能として認識されているためインストールされませんでした</translation>
+<translation id="3009487527589249344">「<ph name="EXTENSION_NAME"/>」は、不正な拡張機能として認識されているためインストールされませんでした</translation>
 <translation id="8049948037269924837">タッチパッドの逆スクロール</translation>
 <translation id="8050038245906040378">Microsoft 商用コード署名</translation>
 <translation id="8053278772142718589">PKCS #12 ファイル</translation>
@@ -5616,7 +5553,6 @@
 <translation id="8213449224684199188">写真モードに切り替えました</translation>
 <translation id="8213577208796878755">利用可能なデバイスが 1 つあります。</translation>
 <translation id="8214489666383623925">ファイルを開く...</translation>
-<translation id="8214962590150211830">このユーザーを削除</translation>
 <translation id="8215295261562449873">Linux をアップグレードする前に、アプリとファイルをダウンロード フォルダにバックアップします。</translation>
 <translation id="8217399928341212914">複数ファイルの自動ダウンロードを今後もブロックする</translation>
 <translation id="8218847192766059983">言語を追加するか、リストを並べ替えます。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
@@ -5683,7 +5619,6 @@
 <translation id="8284279544186306258"><ph name="WEBSITE_1"/> の全サイト</translation>
 <translation id="8284326494547611709">字幕</translation>
 <translation id="8286036467436129157">ログイン</translation>
-<translation id="8286963743045814739">シークレット ウィンドウを使って、シークレット モードで閲覧できます</translation>
 <translation id="8287902281644548111">API 呼び出しまたは URL で検索</translation>
 <translation id="8288032458496410887">「<ph name="APP"/>」をアンインストール...</translation>
 <translation id="8289128870594824098">ディスクサイズ</translation>
@@ -5762,7 +5697,6 @@
 <translation id="839736845446313156">登録</translation>
 <translation id="8397825320644530257">接続済みスマートフォンの切断</translation>
 <translation id="8398877366907290961">このまま続行</translation>
-<translation id="8400146488506985033">ユーザーを管理</translation>
 <translation id="8401432541486058167">スマートカードに関連付けられている PIN を入力してください。</translation>
 <translation id="8405046151008197676">最新のアップデートの概要をご確認ください</translation>
 <translation id="8407199357649073301">ログレベル:</translation>
@@ -5812,7 +5746,6 @@
 <translation id="8465444703385715657"><ph name="PLUGIN_NAME"/> が実行の許可を求めています</translation>
 <translation id="8466417995783206254">このタブではピクチャー イン ピクチャー モードで動画を再生しています。</translation>
 <translation id="8467326454809944210">別の言語を選択</translation>
-<translation id="8470214316007448308">他のユーザー</translation>
 <translation id="8470513973197838199"><ph name="ORIGIN"/> 用に保存されているパスワード</translation>
 <translation id="8472623782143987204">ハードウェア式</translation>
 <translation id="8473863474539038330">住所やその他の情報</translation>
@@ -5860,7 +5793,6 @@
 <translation id="8540608333167683902"><ph name="NETWORK_INDEX"/> 番目のネットワーク（全 <ph name="NETWORK_COUNT"/> 件）、<ph name="NETWORK_NAME"/>、<ph name="CONNECTION_STATUS"/>、信号強度 <ph name="SIGNAL_STRENGTH"/>%、詳細</translation>
 <translation id="8541462173655894684">プリント サーバーでプリンタが見つかりませんでした</translation>
 <translation id="8542618328173222274">サイトからバーチャル リアリティ デバイスとデータの使用を求められたときに確認する</translation>
-<translation id="8543556556237226809">ご不明な点は、プロフィールの管理担当者にお問い合わせください。</translation>
 <translation id="8545575359873600875">パスワードを確認できませんでした。この監視対象ユーザーの管理者によって最近パスワードが変更された可能性があります。パスワードが変更されている場合、新しいパスワードは次回のログインから適用されます。古いパスワードでログインをお試しください。</translation>
 <translation id="8546186510985480118">デバイスの空き領域が少なくなっています</translation>
 <translation id="8546306075665861288">画像キャッシュ</translation>
@@ -5871,7 +5803,6 @@
 <translation id="85486688517848470">キーボードの最上段にあるキーの動作を切り替えるには、検索キーを押したままにします</translation>
 <translation id="8551388862522347954">ライセンス</translation>
 <translation id="8551588720239073785">日時の設定</translation>
-<translation id="8553342806078037065">他のユーザーを管理</translation>
 <translation id="8554899698005018844">言語設定なし</translation>
 <translation id="8557022314818157177">指紋の登録が完了するまで、セキュリティ キーをタッチし続けてください</translation>
 <translation id="855773602626431402">このページでのサンドボックスの無効化プラグインの実行がブロックされました。</translation>
@@ -5882,7 +5813,7 @@
 <translation id="8569682776816196752">送信先が見つかりません</translation>
 <translation id="8571213806525832805">過去 4 週間</translation>
 <translation id="8571687764447439720">Kerberos チケットの追加</translation>
-<translation id="8573403125070227391">この広告は、デバイスのリソース消費が多すぎるため、Chorme によって削除されました。</translation>
+<translation id="7533556202636568669">この広告は、デバイスのリソース消費が多すぎるため、Chorme によって削除されました。</translation>
 <translation id="8574990355410201600"><ph name="HOST"/> の音声を常に許可する</translation>
 <translation id="8575286410928791436">終了するには <ph name="KEY_EQUIVALENT"/> キーを押します</translation>
 <translation id="8576984108917644670">アカウントの他のデバイスと同期しています。このデバイスの他のユーザーもこのネットワークを使用できます。他のユーザーが変更した設定は同期されません。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
@@ -5909,7 +5840,6 @@
 <translation id="8610103157987623234">無効な形式です。もう一度お試しください</translation>
 <translation id="8613164732773110792">英小文字、数字、アンダースコア、ダッシュのみ</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> はセキュリティ チェックには大きすぎます。開けるファイルは 50 MB までです。</translation>
-<translation id="8615618338313291042">シークレット モード アプリ: <ph name="APP_NAME"/></translation>
 <translation id="8619803522055190423">ドロップ シャドウ</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620436878122366504">保護者がまだサイトを開くことを許可していません</translation>
@@ -5951,9 +5881,7 @@
 <translation id="8655972064210167941">パスワードを確認できなかったためログインできませんでした。管理者に問い合わせるか、もう一度お試しください。</translation>
 <translation id="8656768832129462377">確認しない</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> が <ph name="TAB_NAME"/> の画面と音声を共有しています。</translation>
-<translation id="8661290697478713397">シークレット ウインドウでリンクを開く(&amp;G)</translation>
 <translation id="8662671328352114214"><ph name="TYPE"/> ネットワークへの接続</translation>
-<translation id="8662795692588422978">ユーザー</translation>
 <translation id="8662811608048051533">ほとんどのサイトからログアウトします。</translation>
 <translation id="8662911384982557515">ホームページを次に変更: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">壁紙は設定できません。</translation>
@@ -6045,7 +5973,6 @@
 <translation id="8763927697961133303">USB デバイス</translation>
 <translation id="4570609078116869893">すべてのユーザーに対して Brave を自動的に更新</translation>
 <translation id="8770406935328356739">拡張機能のルート ディレクトリ</translation>
-<translation id="8770507190024617908">ユーザーを管理</translation>
 <translation id="8771300903067484968">スタートページの背景をデフォルトの背景にリセットしました。</translation>
 <translation id="8773302562181397928"><ph name="PRINTER_NAME"/> を保存</translation>
 <translation id="8774379074441005279">復元を実行</translation>
@@ -6173,7 +6100,6 @@
 <translation id="8912793549644936705">拡大</translation>
 <translation id="8912810933860534797">自動スキャンを有効にする</translation>
 <translation id="8915370057835397490">候補を読み込んでいます</translation>
-<translation id="8916476537757519021">シークレット サブフレーム: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8922013791253848639">このサイトで常に広告を許可します</translation>
 <translation id="8923880975836399332">暗い青緑</translation>
 <translation id="8925458182817574960">設定(&amp;S)</translation>
@@ -6195,7 +6121,6 @@
 <translation id="8944964446326379280"><ph name="APP_NAME"/> が <ph name="TAB_NAME"/> のウィンドウを共有しています。</translation>
 <translation id="8945274638472141382">アイコンのサイズ</translation>
 <translation id="8946359700442089734">この <ph name="IDS_SHORT_PRODUCT_NAME"/> デバイスでデバッグ機能が完全に有効になっていませんでした。</translation>
-<translation id="894871326938397531">シークレット モードを終了しますか？</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> から、セキュリティ キーのメーカーとモデルの読み取り許可がリクエストされています</translation>
 <translation id="8951256747718668828">エラーが発生したため、復元を完了できませんでした</translation>
 <translation id="8951465597020890363">ゲストモードを終了してもよろしいですか？</translation>
@@ -6458,72 +6383,84 @@
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">安全な接続を確立しています...</translation>
 <translation id="998747458861718449">検証(&amp;I)</translation>
-<translation id="658539216370629794">シークレット ウィンドウで開く(&amp;G)</translation>
-<translation id="1432267168815937878">シークレット ウインドウでリンクを開く(&amp;G)</translation>
-<translation id="6516243500644829484">シークレット ウィンドウを開く(&amp;I)</translation>
-<translation id="7973394300052703468">新しいシークレット ウインドウ(&amp;I)</translation>
-<translation id="6395403722585816044">シークレット モードでダウンロード</translation>
-<translation id="203837651858678035">シークレット モードを終了してもよろしいですか？</translation>
-<translation id="7376221878517288144">シークレット モードを終了してもよろしいですか？</translation>
+<translation id="658539216370629794">&amp;プライベートウィンドウでリンクを開く</translation>
+<translation id="1432267168815937878">&amp;プライベートウィンドウでリンクを開く</translation>
+<translation id="6516243500644829484">新しい&amp;プライベートウィンドウ</translation>
+<translation id="7973394300052703468">新しい&amp;プライベートウィンドウ</translation>
+<translation id="6395403722585816044">プライベートモードでダウンロード</translation>
+<translation id="203837651858678035">とにかくプライベートモードを終了しますか？</translation>
+<translation id="7376221878517288144">とにかくプライベートモードを終了しますか？</translation>
 <translation id="871606814707918245">ほとんどのユーザーがこのサイトの通知をブロックしています</translation>
-<translation id="5053701565089446556">シークレット モード拡張機能: <ph name="EXTENSION_NAME"/></translation>
-<translation id="611296870688433505">シークレット モード アプリ: <ph name="APP_NAME"/></translation>
-<translation id="9048137919253433011">シークレット タブ: <ph name="TAB_NAME"/></translation>
-<translation id="1799432502220762862">シークレット サブフレーム: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5053701565089446556">プライベート拡張機能: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">プライベートアプリ: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">プライベートタブ: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">プライベートサブフレーム: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">シークレット ポータル: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8808478386290700967">ウェブストア</translation>
 <translation id="8261378640211443080">この拡張機能は <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/>で提供されていません。知らないうちに追加された可能性があります。</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/>（シークレット モード）</translation>
-<translation id="4369414322596874629">シークレット ウィンドウを使って、シークレット モードで閲覧できます</translation>
-<translation id="3772947852642271642">シークレット ウィンドウを使うと、閲覧履歴を残さずにウェブを閲覧できます</translation>
-<translation id="3871738366246972820">共有のパソコンをお使いの場合は、シークレット ウィンドウをご活用ください。</translation>
-<translation id="5808622652939943719">シークレット モードを使うには、その他アイコンのメニューからシークレット ウィンドウを開きます</translation>
-<translation id="9079153198295609735">使用統計データと障害レポートを Brave に自動送信します</translation>
-<translation id="8839398440242019256">Brave ウェブストア以外の場所からインストールされました。</translation>
-<translation id="6945695820322143954">この拡張機能は Brave ウェブストアのポリシーに違反しています。</translation>
-<translation id="1676595396635191120">新規シークレット ウインドウ</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (プライベート)</translation>
+<translation id="4369414322596874629">プライベートウィンドウを使用してプライベートに閲覧できます</translation>
+<translation id="3772947852642271642">プライベートウィンドウで、閲覧履歴を保存せずにウェブを使用</translation>
+<translation id="3871738366246972820">共有コンピューターを使用していますか？ プライベートウィンドウを開いてみてください。</translation>
+<translation id="5808622652939943719">プライベートに閲覧するには、ドットアイコンメニューをクリックしてプライベートウィンドウを開いてください</translation>
+<translation id="9079153198295609735">使用統計データと障害レポートを Brave Software に自動送信します</translation>
+<translation id="8839398440242019256">ウェブストアからではありません。</translation>
+<translation id="6945695820322143954">この拡張機能は、ウェブストアのポリシーに違反しています。</translation>
+<translation id="1676595396635191120">新しいプライベートウィンドウ</translation>
 <translation id="5094764494104066239">ブックマーク バーを常に表示</translation>
-<translation id="4471385409549756595">新しいシークレット ウィンドウ</translation>
-<translation id="4540437243849625078">このサイトの情報がシークレット モードの外部のアプリに共有されようとしています。</translation>
-<translation id="1227836882233136433">シークレット モードを終了しますか？</translation>
-<translation id="7618452966706304788">シークレット モードで <ph name="APP_NAME"/> に Touch ID を使用しますか？</translation>
-<translation id="3098826269712097986">ログインデータはシークレット モードの終了後に Brave に保存されます。そのため、このウェブサイトでは後でもう一度 Touch ID を使用する必要があります。</translation>
-<translation id="5186185447130319458">シークレット モード</translation>
-<translation id="2579188629646253712">シークレット モードを終了</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{すべてをシークレット ウィンドウで開く(&amp;I)}=1{シークレット ウィンドウで開く(&amp;I)}other{すべて（# 件）をシークレット ウィンドウで開く(&amp;I)}}</translation>
-<translation id="2431625704210501303">シークレット ウィンドウで開く(&amp;I)</translation>
+<translation id="4471385409549756595">新しいプライベートウィンドウ</translation>
+<translation id="4540437243849625078">このサイトは、プライベートモードの外部のアプリと情報を共有しようとしています。</translation>
+<translation id="1227836882233136433">プライベートモードを離れますか？</translation>
+<translation id="7618452966706304788">プライベートモードで<ph name="APP_NAME"/>でTouch IDを使いますか？</translation>
+<translation id="3098826269712097986">プライベートモードを終了すると、サインインデータはBraveに保存されます。 これにより、後でこのウェブサイトでTouch IDを使用できるようになります。</translation>
+<translation id="5186185447130319458">プライベート</translation>
+<translation id="2579188629646253712">プライベートモードを離れる</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open all in &amp;private window}
+          =1 {Open in &amp;private window}
+          other {Open all (#) in &amp;private window}}</translation>
+<translation id="2431625704210501303">&amp;プライベートウィンドウで開く</translation>
 <translation id="4620367155626060530">ブックマーク バーを表示(&amp;S)</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{すべてをシークレット ウィンドウで開く(&amp;I)}=1{シークレット ウィンドウで開く(&amp;I)}other{すべて（# 件）をシークレット ウィンドウで開く(&amp;I)}}</translation>
-<translation id="1985165269306590797">シークレット ウィンドウで開く(&amp;I)</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open All in &amp;Private Window}
+          =1 {Open in &amp;Private Window}
+          other {Open All (#) in &amp;Private Window}}</translation>
+<translation id="1985165269306590797">&amp;プライベートウィンドウで開く</translation>
 <translation id="4680518314108745448">ブックマーク バーを表示(&amp;S)</translation>
-<translation id="642436385689435488">すべてをシークレット ウィンドウで開く</translation>
-<translation id="5463021359602611602">シークレット ウィンドウで開く</translation>
-<translation id="1850357845349976573">{0,plural, =1{シークレット}other{開いているシークレット ウィンドウ # 個}}</translation>
-<translation id="37784332082579802">{0,plural, =1{シークレット}other{シークレット（#）}}</translation>
-<translation id="5070556616376997776">シークレット モード使用中</translation>
-<translation id="5832813618714645810">ユーザー</translation>
-<translation id="7171000599584840888">ユーザーを追加...</translation>
+<translation id="642436385689435488">すべてをプライベートウィンドウで開く</translation>
+<translation id="5463021359602611602">プライベートウィンドウで開く</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {Private}
+        その他 {# open private windows}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {Private}
+      その他 {Private (#)}
+    }</translation>
+<translation id="5070556616376997776">これはプライベートウィンドウです</translation>
+<translation id="5832813618714645810">プロフィール</translation>
+<translation id="7171000599584840888">プロフィールを追加...</translation>
 <translation id="2005199804247617997">他のユーザー</translation>
-<translation id="2935225303485967257">ユーザーを管理</translation>
+<translation id="2935225303485967257">プロフィールを管理</translation>
 <translation id="8966809848145604011">他のユーザー</translation>
-<translation id="688280436658139163">ユーザーを管理</translation>
-<translation id="4133080584509825342">ユーザー（<ph name="PROFILE_NAME"/>）を編集</translation>
-<translation id="4848862725510532982">ユーザー（<ph name="PROFILE_NAME"/>、<ph name="USERNAME"/>）を編集</translation>
-<translation id="4536111748245793305">ユーザー <ph name="VALUE"/></translation>
+<translation id="688280436658139163">プロフィールを管理</translation>
+<translation id="4133080584509825342">プロフィールを編集, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">プロフィールを編集, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">プロフィール <ph name="VALUE"/></translation>
 <translation id="5828545842856466741">ユーザーを追加...</translation>
 <translation id="2254158488150713536">利用を続けるには、[OK]、[ユーザーを追加] の順にクリックして、お使いのメールアドレス用の新しいプロフィールを作成してください。</translation>
 <translation id="1725743343613175327">利用を続けるには、[OK]、[ユーザーを追加] の順にクリックして、<ph name="DOMAIN"/> のメールアドレス用の新しいプロフィールを作成してください。</translation>
-<translation id="6921634551681321094">ユーザーを追加</translation>
-<translation id="4904061654709986277">ユーザーを追加</translation>
-<translation id="6114945161119872228">このユーザーを削除</translation>
-<translation id="769308100792069196">監視対象ユーザーを追加</translation>
-<translation id="8006143138282906848">このユーザーを削除</translation>
-<translation id="6912187023601892621">監視対象ユーザーを追加</translation>
-<translation id="8086119151297127544">ユーザーを削除するにはまずプロフィールのロックを解除してください。</translation>
-<translation id="7805701378418968629">ユーザーを追加するにはまずプロフィールのロックを解除してください。</translation>
+<translation id="6921634551681321094">プロフィールを追加</translation>
+<translation id="4904061654709986277">プロフィールを追加</translation>
+<translation id="6114945161119872228">このプロファイルを削除</translation>
+<translation id="769308100792069196">監督されたプロフィールを追加</translation>
+<translation id="8006143138282906848">このプロフィールを削除</translation>
+<translation id="6912187023601892621">監督されたプロフィールを追加</translation>
+<translation id="8086119151297127544">プロフィールを削除する前に、プロファイルのロックを解除してください。</translation>
+<translation id="7805701378418968629">プロフィールを追加する前に、プロフィールのロックを解除してください。</translation>
 <translation id="6315812488257290136">ユーザー</translation>
-<translation id="3707212204259470604">他のユーザーを管理</translation>
-<translation id="5840822070878669614">Brave ウェブストアを開きます</translation>
+<translation id="3707212204259470604">他のプロフィールを管理</translation>
+<translation id="5840822070878669614">ウェブストアを開く</translation>
 <translation id="383007806262310953">ブックマーク バーを表示する</translation>
 <translation id="2890280714162339872">現在のシークレット モード セッション: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="4207277598811881727">現在のシークレット モード セッション: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>、<ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
@@ -6532,15 +6469,15 @@
 <translation id="8648684608605749476">シークレット モードでサードパーティの Cookie をブロックします</translation>
 <translation id="2199515977216775204">シークレット モードを使用中は、サイトは、Cookie を使用して別のサイトでのあなたの閲覧アクティビティを確認できず、広告のカスタマイズなどが行えなくなります。一部サイトの機能が使用できなくなる可能性もあります。</translation>
 <translation id="6105125042109106861">シークレット モードでサードパーティの Cookie がブロックされています</translation>
-<translation id="1281501490173223206">現在のシークレット モード セッションのみ</translation>
+<translation id="1281501490173223206">現在のプライベートセッションのみ</translation>
 <translation id="5566692924079383101">この例外は、現在のシークレット モード セッションを終了した後に自動的に削除されます</translation>
-<translation id="6906406176003824042">画像と名前を設定</translation>
-<translation id="9063160602596686558">使用統計情報や障害レポートを Brave に自動送信します</translation>
-<translation id="3860292630623580294">（シークレット モード）</translation>
-<translation id="4854477725773269949">シークレット モードでの実行を許可する</translation>
-<translation id="6436164536244065364">Brave ウェブストアのページに移動</translation>
-<translation id="38046578254905003"><ph name="BEGIN_LINK"/>Brave ウェブストア<ph name="END_LINK"/>で拡張機能やテーマを探すことができます</translation>
-<translation id="6336451774241870485">新しいシークレット タブ</translation>
-<translation id="6610147964972079463">シークレットタブを閉じる</translation>
+<translation id="6906406176003824042">プロフィールを編集</translation>
+<translation id="9063160602596686558">使用統計情報や障害レポートを Brave Software に自動送信します</translation>
+<translation id="3860292630623580294">(プライベート)</translation>
+<translation id="4854477725773269949">プライベートで許可する</translation>
+<translation id="6436164536244065364">ウェブストアで見る</translation>
+<translation id="38046578254905003">拡張機能とテーマを見つける <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>ウェブストア<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="6336451774241870485">新しいプライベートタブ</translation>
+<translation id="6610147964972079463">プライベートタブを閉じる</translation>
 <translation id="4933782374919065856">ご不明な点は、プロフィールの管理担当者にお問い合わせください。</translation>
 </translationbundle>
