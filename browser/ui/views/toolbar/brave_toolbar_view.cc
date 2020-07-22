@@ -136,8 +136,6 @@ void BraveToolbarView::Init() {
   bookmark_ = new BookmarkButton(this);
   bookmark_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
                                          ui::EF_MIDDLE_MOUSE_BUTTON);
-  bookmark_->Init();
-
   DCHECK(location_bar_);
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
   bookmark_->UpdateImage();
@@ -148,7 +146,6 @@ void BraveToolbarView::Init() {
     speedreader_ = new SpeedreaderButton(this, profile->GetPrefs());
     speedreader_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
                                               ui::EF_MIDDLE_MOUSE_BUTTON);
-    speedreader_->Init();
   }
 
   if (speedreader_) {
