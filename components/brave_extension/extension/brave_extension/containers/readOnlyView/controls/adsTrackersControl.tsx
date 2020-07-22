@@ -88,7 +88,7 @@ export default class AdsTrackersControl extends React.PureComponent<Props, State
                 : <ArrowDownIcon />
             }
             <BlockedInfoRowStats>{this.totalAdsTrackersBlockedDisplay}</BlockedInfoRowStats>
-            <BlockedInfoRowText>{getLocale('thirdPartyTrackersBlocked')}</BlockedInfoRowText>
+            <BlockedInfoRowText>{getLocale('readOnlyAdsTrackersBlocking')}</BlockedInfoRowText>
           </BlockedInfoRowData>
         </BlockedInfoRowSummary>
         <BlockedListStatic>
