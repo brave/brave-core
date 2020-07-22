@@ -320,6 +320,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/response/response_credentials.h",
     "src/bat/ledger/internal/response/response_promotion.cc",
     "src/bat/ledger/internal/response/response_promotion.h",
+    "src/bat/ledger/internal/response/response_publisher.cc",
+    "src/bat/ledger/internal/response/response_publisher.h",
     "src/bat/ledger/internal/response/response_sku.cc",
     "src/bat/ledger/internal/response/response_sku.h",
     "src/bat/ledger/internal/response/response_uphold.cc",
