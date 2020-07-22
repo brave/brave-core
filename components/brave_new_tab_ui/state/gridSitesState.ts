@@ -58,11 +58,6 @@ export function gridSitesReducerSetFirstRenderData (
   // Delete sites from |state.gridSites| that don't exist in topSites(history).
   // Then, |updatedGridSites| will only store previously used sites that topSites have.
   const updatedGridSites: NewTab.Site[] = state.gridSites.filter((gridSite: NewTab.Site) => {
-    // Pinned tab will be remained even if it's deleted from history.
-    // If unpinned, it will not be visible if it's not in topSites.
-    if (gridSite.pinnedIndex !== undefined) {
-      return true
-    }
     // Don't delete top sites came from SR's default top sites even if they
     // are not in history.
     if (defaultSuperReferralTopSites &&

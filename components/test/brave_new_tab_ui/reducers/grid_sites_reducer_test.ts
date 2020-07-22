@@ -118,10 +118,9 @@ describe('gridSitesReducer', () => {
 
       // Initial state has google site but it's deleted because topSites doesn't
       // have it.
-      expect(assertion.gridSites).toHaveLength(3)
-      expect(assertion.gridSites[0].url).toBe('www.basicattentiontoken.org')
-      expect(assertion.gridSites[1].url).toBe('www.cnn.com')
-      expect(assertion.gridSites[2].url).toBe('www.brave.com')
+      expect(assertion.gridSites).toHaveLength(2)
+      expect(assertion.gridSites[0].url).toBe('www.cnn.com')
+      expect(assertion.gridSites[1].url).toBe('www.brave.com')
     })
     it('populate state.gridSites list without duplicates', () => {
       const brandNewSite: NewTab.Site = {
@@ -162,7 +161,7 @@ describe('gridSitesReducer', () => {
 
       const assertion = gridSitesReducer(veryRepetitiveInitialGridSitesState, {
         type: types.GRID_SITES_SET_FIRST_RENDER_DATA,
-        payload: { topSites: [ brandNewSite ] }
+        payload: { topSites: [ brandNewSite, veryRepetitiveSite ] }
       })
       // We should see just one repetitive site and the new
       // one added on the payload above

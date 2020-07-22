@@ -52,6 +52,9 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
           .gridSitesReducerSetDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
         storage.setDefaultSuperReferralTopSitesAddedToPinnedSites()
       }
+
+      // Cached gridSites can be updated when history has modified.
+      state = gridSitesState.gridSitesReducerDataUpdated(state, state.gridSites)
       break
     }
 
