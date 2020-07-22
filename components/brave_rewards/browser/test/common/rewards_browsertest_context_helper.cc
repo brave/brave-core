@@ -93,10 +93,9 @@ void EnableRewards(Browser* browser, const bool use_new_tab) {
   GURL page_url = use_new_tab
       ? rewards_browsertest_util::GetNewTabUrl()
       : rewards_browsertest_util::GetRewardsUrl();
-  ui_test_utils::NavigateToURL(browser, page_url);
-  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
-  WaitForLoadStop(contents);
+  LoadURL(browser, page_url);
 
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
   // Opt in and create wallet to enable rewards
   rewards_browsertest_util::WaitForElementThenClick(
       contents,
@@ -192,6 +191,13 @@ void VisitPublisher(
         content::ISOLATED_WORLD_ID_CONTENT_END);
     EXPECT_TRUE(js_result.ExtractBool());
   }
+}
+
+void LoadURL(Browser* browser, GURL url) {
+  DCHECK(browser);
+  ui_test_utils::NavigateToURL(browser, url);
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  WaitForLoadStop(contents);
 }
 
 }  // namespace rewards_browsertest_helper
