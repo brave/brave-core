@@ -8,7 +8,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="32dp"
+    android:padding="32dp"
     android:orientation="vertical">
 
     <TextView
@@ -18,7 +18,7 @@
         android:text="@string/brave_works_everywhere"
         android:textSize="20sp"
         android:layout_marginBottom="24dp"
-        android:textColor="@color/default_icon_color_tint_list"
+        android:textColor="@color/shield_text_color"
         android:textStyle="bold" />
 
     <ImageView
@@ -34,8 +34,9 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:textSize="16sp"
+        android:text="@string/download_brave"
         android:layout_marginBottom="32dp"
-        android:textColor="@color/default_icon_color_tint_list"/>
+        android:textColor="@color/shield_text_color"/>
 
     <Button
         android:id="@+id/btn_done"

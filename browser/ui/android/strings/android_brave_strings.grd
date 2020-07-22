@@ -1172,6 +1172,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_DOWNLOAD_BRAVE" desc="Cross promotional modal text">
         Download Brave at brave.com on your laptop ot tablet for a faster and more private web
       </message>
+      <message name="IDS_BRAVE_URL" desc="Brave url">
+        brave.com
+      </message>
     </messages>
   </release>
 </grit>

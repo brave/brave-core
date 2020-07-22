@@ -66,6 +66,7 @@ import org.chromium.ui.widget.Toast;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
+import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -218,6 +219,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
+
+        showCrossPromotionalDialog();
 
         if (PackageUtils.isFirstInstall(this) 
             && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
@@ -394,6 +397,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         RateDialogFragment mRateDialogFragment = new RateDialogFragment();
         mRateDialogFragment.setCancelable(false);
         mRateDialogFragment.show(getSupportFragmentManager(), "RateDialogFragment");
+    }
+
+    private void showCrossPromotionalDialog() {
+        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
+        mCrossPromotionalModalDialogFragment.setCancelable(false);
+        mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
     private native void nativeRestartStatsUpdater();
