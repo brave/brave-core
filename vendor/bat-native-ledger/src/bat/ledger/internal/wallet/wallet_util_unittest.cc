@@ -41,36 +41,38 @@ TEST(WalletUtilTest, GetWallet) {
   ASSERT_EQ(result->address, "12355");
 }
 
-TEST(WalletUtilTest, ResetWallet) {
-  // null wallet
+TEST(WalletUtilTest, ResetWalletNull) {
   auto result = braveledger_wallet::ResetWallet(nullptr);
   ASSERT_TRUE(!result);
-
-  // verfied wallet
-  auto verified = ledger::ExternalWallet::New();
-  verified->token = "1";
-  verified->address = "2";
-  verified->user_name = "3";
-  verified->one_time_string = "4";
-  verified->status = ledger::WalletStatus::VERIFIED;
-  verified->transferred = true;
-
-  result = braveledger_wallet::ResetWallet(std::move(verified));
-
-  ASSERT_EQ(result->token, "");
-  ASSERT_EQ(result->address, "");
-  ASSERT_EQ(result->user_name, "");
-  ASSERT_EQ(result->one_time_string, "");
-  ASSERT_EQ(result->status, ledger::WalletStatus::DISCONNECTED_VERIFIED);
-  ASSERT_EQ(result->transferred, true);
-
-  // non verfied wallet
-  auto non_verified = ledger::ExternalWallet::New();
-  non_verified->status = ledger::WalletStatus::CONNECTED;
-  result =
-      braveledger_wallet::ResetWallet(std::move(non_verified));
-  ASSERT_EQ(result->status, ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED);
 }
 
+TEST(WalletUtilTest, ResetWalletVerifiedWallet) {
+  auto wallet = ledger::ExternalWallet::New();
+  wallet->token = "1";
+  wallet->address = "2";
+  wallet->user_name = "3";
+  wallet->one_time_string = "4";
+  wallet->status = ledger::WalletStatus::VERIFIED;
+  wallet->transferred = true;
+
+  auto reset_wallet = braveledger_wallet::ResetWallet(std::move(wallet));
+
+  ledger::ExternalWallet expected_wallet;
+  expected_wallet.status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
+
+  ASSERT_TRUE(expected_wallet.Equals(*reset_wallet));
+}
+
+TEST(WalletUtilTest, ResetWalletNotVerifiedWallet) {
+  auto not_verified = ledger::ExternalWallet::New();
+  not_verified->status = ledger::WalletStatus::CONNECTED;
+  auto reset_wallet =
+      braveledger_wallet::ResetWallet(std::move(not_verified));
+
+  ledger::ExternalWallet expected_wallet;
+  expected_wallet.status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+
+  ASSERT_TRUE(expected_wallet.Equals(*reset_wallet));
+}
 
 }  // namespace braveledger_wallet
