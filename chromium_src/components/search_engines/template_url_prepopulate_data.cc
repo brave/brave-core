@@ -148,6 +148,8 @@ const std::map<int, std::vector<BravePrepopulatedEngineID>>
         {country_codes::CountryCharsToCountryID('I', 'E'),
          brave_engines_AU_NZ_IE}};
 
+// A map to keep track of country-specific implementations of Yahoo.
+// Used in LocalizeEngineList.
 const std::map<int, BravePrepopulatedEngineID>
     yahoo_engines_by_country_id_map = {
         {country_codes::CountryCharsToCountryID('A', 'R'),
@@ -254,14 +256,21 @@ void UpdateTemplateURLDataKeyword(
   }
 }
 
-// TODO(bsclifton): finish me
-// void LocalizeEngineList(std::vector<BravePrepopulatedEngineID> engines) {
-//   const auto& it = engines.find(PREPOPULATED_ENGINE_ID_YAHOO);
-//   if (it != engines.end()) {
-//     //..
-//     // replace
-//   }
-// }
+// Some engines (like Yahoo) have different URLs per country
+// The intention of this function is to find the generic one
+// (ex: PREPOPULATED_ENGINE_ID_YAHOO) and then substitute the
+// country specific version.
+void LocalizeEngineList(std::vector<BravePrepopulatedEngineID>& engines,
+      int country_id) {
+  for (size_t i = 0; i < engines.size(); ++i) {
+    if (engines[i] == PREPOPULATED_ENGINE_ID_YAHOO) {
+      const auto& it = yahoo_engines_by_country_id_map.find(country_id);
+      if (it != yahoo_engines_by_country_id_map.end()) {
+        engines[i] = it->second;
+      }
+    }
+  }
+}
 
 // Uses brave_engines_XX localized arrays of engine IDs instead of Chromium's
 // localized arrays of PrepopulatedEngines to construct the vector of
@@ -276,12 +285,14 @@ GetBravePrepopulatedEnginesForCountryID(
   // Check for exceptions from the default list of engines
   const auto& it = default_engines_by_country_id_map.find(country_id);
   if (it != default_engines_by_country_id_map.end()) {
-    // brave_engines = LocalizeEngineList(it->second);
     brave_engines = it->second;
   } else {
     brave_engines = brave_engines_default;
   }
   DCHECK_GT(brave_engines.size(), 0ul);
+
+  // Allow for per-country overrides
+  LocalizeEngineList(brave_engines, country_id);
 
   // Default engine is the first in the list
   BravePrepopulatedEngineID default_id = brave_engines.front();
