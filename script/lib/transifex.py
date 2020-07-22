@@ -770,8 +770,18 @@ def pull_xtb_without_transifex(grd_file_path, brave_source_root):
 
         for node in xml_tree.xpath('//translation'):
             pre_text_node = textify(node)
+            pre_meaning = node.get('meaning') if 'meaning' in node.attrib else ''
+            pre_desc = node.get('desc') if 'desc' in node.attrib else ''
+
             generate_braveified_node(node, False, True)
-            if pre_text_node != textify(node):
+
+            meaning = node.get('meaning') if 'meaning' in node.attrib else ''
+            desc = node.get('desc') if 'desc' in node.attrib else ''
+
+            # A node's fingerprint changes if the desc or the meaning change
+            if (pre_text_node != textify(node) or
+                    pre_meaning != meaning or
+                    pre_desc == desc):
                 old_fp = node.attrib['id']
                 # It's possible for an xtb string to not be in our GRD
                 # This happens for exmaple with Chrome OS strings which
