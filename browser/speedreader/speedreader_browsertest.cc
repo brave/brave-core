@@ -83,5 +83,6 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   // Check that disabled speedreader doesn't affect the page.
   chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
   ui_test_utils::NavigateToURL(browser(), url);
+  rfh = contents->GetMainFrame();
   EXPECT_LT(106000, content::EvalJs(rfh, kGetContentLength));
 }
