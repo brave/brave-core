@@ -10,55 +10,6 @@
 #include <string>
 #include <vector>
 
-#define LEDGER_STAGING_SERVER               \
-"https://ledger-staging.mercury.basicattentiontoken.org"
-#define LEDGER_PRODUCTION_SERVER            \
-"https://ledger.mercury.basicattentiontoken.org"
-#define LEDGER_DEVELOPMENT_SERVER            \
-"https://ledger.rewards.brave.software"
-
-#define BALANCE_STAGING_SERVER              \
-"https://balance-staging.mercury.basicattentiontoken.org"
-#define BALANCE_PRODUCTION_SERVER           \
-"https://balance.mercury.basicattentiontoken.org"
-#define BALANCE_DEVELOPMENT_SERVER            \
-"https://balance.rewards.brave.software"
-
-#define PUBLISHER_STAGING_SERVER     \
-"https://rewards-stg.bravesoftware.com"
-#define PUBLISHER_PRODUCTION_SERVER  \
-"https://rewards.brave.com"
-#define PUBLISHER_DEVELOPMENT_SERVER  \
-"https://rewards-dev.brave.software"
-
-#define PROMOTION_STAGING_SERVER              \
-"https://grant.rewards.bravesoftware.com"
-#define PROMOTION_PRODUCTION_SERVER           \
-"https://grant.rewards.brave.com"
-#define PROMOTION_DEVELOPMENT_SERVER            \
-"https://grant.rewards.brave.software"
-
-#define PAYMENTS_STAGING_SERVER              \
-"http://payment.rewards.bravesoftware.com"
-#define PAYMENTS_PRODUCTION_SERVER           \
-"http://payment.rewards.brave.com"
-#define PAYMENTS_DEVELOPMENT_SERVER            \
-"https://payment.rewards.brave.software"
-
-#define API_STAGING_SERVER              \
-"https://api.rewards.bravesoftware.com"
-#define API_PRODUCTION_SERVER           \
-"https://api.rewards.brave.com"
-#define API_DEVELOPMENT_SERVER            \
-"https://api.rewards.brave.software"
-
-#define PRIVATE_CDN_STAGING_SERVER     \
-"https://pcdn.bravesoftware.com"
-#define PRIVATE_CDN_PRODUCTION_SERVER  \
-"https://pcdn.brave.com"
-#define PRIVATE_CDN_DEVELOPMENT_SERVER \
-"https://pcdn.brave.software"
-
 #define PREFIX_V1                       "/v1"
 #define PREFIX_V2                       "/v2"
 #define PREFIX_V3                       "/v3"

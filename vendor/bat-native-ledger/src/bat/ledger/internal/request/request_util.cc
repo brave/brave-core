@@ -2,7 +2,6 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 #include <map>
 
 #include "base/strings/stringprintf.h"
@@ -11,19 +10,61 @@
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/common/security_helper.h"
 
-namespace {
+namespace braveledger_request_util {
+
+const char kDevelopment[] = "https://ledger.rewards.brave.software";
+const char kStaging[] =
+    "https://ledger-staging.mercury.basicattentiontoken.org";
+const char kProduction[] = "https://ledger.mercury.basicattentiontoken.org";
+
+namespace balance {
+const char kDevelopment[] = "https://balance.rewards.brave.software";
+const char kStaging[] =
+    "https:kP/balance-staging.mercury.basicattentiontoken.org";
+const char kProduction[] = "https://balance.mercury.basicattentiontoken.org";
+}  // namespace balance
+
+namespace publisher {
+const char kDevelopment[] = "https://rewards-dev.brave.software";
+const char kStaging[] = "https://rewards-stg.bravesoftware.com";
+const char kProduction[] = "https://rewards.brave.com";
+}  // namespace publisher
+
+namespace promotion {
+const char kDevelopment[] = "https://grant.rewards.brave.software";
+const char kStaging[] = "https://grant.rewards.bravesoftware.com";
+const char kProduction[] = "https://grant.rewards.brave.com";
+}  // namespace promotion
+
+namespace payment {
+const char kDevelopment[] = "https://payment.rewards.brave.software";
+const char kStaging[] = "http://payment.rewards.bravesoftware.com";
+const char kProduction[] = "http://payment.rewards.brave.com";
+}  // namespace payment
+
+namespace api {
+const char kDevelopment[] = "https://api.rewards.brave.software";
+const char kStaging[] = "https://api.rewards.bravesoftware.com";
+const char kProduction[] = "https://api.rewards.brave.com";
+}  // namespace api
+
+namespace cdn {
+const char kDevelopment[] = "https://pcdn.brave.software";
+const char kStaging[] = "https://pcdn.bravesoftware.com";
+const char kProduction[] = "https://pcdn.brave.com";
+}  // namespace cdn
 
 std::string BuildBalanceUrl() {
   std::string url;
   switch (ledger::_environment) {
+    case ledger::Environment::DEVELOPMENT:
+      url = balance::kDevelopment;
+      break;
     case ledger::Environment::STAGING:
-      url = BALANCE_STAGING_SERVER;
+      url = balance::kStaging;
       break;
     case ledger::Environment::PRODUCTION:
-      url = BALANCE_PRODUCTION_SERVER;
-      break;
-    case ledger::Environment::DEVELOPMENT:
-      url = BALANCE_DEVELOPMENT_SERVER;
+      url = balance::kProduction;
       break;
   }
 
@@ -33,14 +74,14 @@ std::string BuildBalanceUrl() {
 std::string BuildPublisherUrl() {
   std::string url;
   switch (ledger::_environment) {
+    case ledger::Environment::DEVELOPMENT:
+      url = publisher::kDevelopment;
+      break;
     case ledger::Environment::STAGING:
-      url = PUBLISHER_STAGING_SERVER;
+      url = publisher::kStaging;
       break;
     case ledger::Environment::PRODUCTION:
-      url = PUBLISHER_PRODUCTION_SERVER;
-      break;
-    case ledger::Environment::DEVELOPMENT:
-      url = PUBLISHER_DEVELOPMENT_SERVER;
+      url = publisher::kProduction;
       break;
   }
 
@@ -50,14 +91,14 @@ std::string BuildPublisherUrl() {
 std::string BuildLedgerUrl() {
   std::string url;
   switch (ledger::_environment) {
+    case ledger::Environment::DEVELOPMENT:
+      url = kDevelopment;
+      break;
     case ledger::Environment::STAGING:
-      url = LEDGER_STAGING_SERVER;
+      url = kStaging;
       break;
     case ledger::Environment::PRODUCTION:
-      url = LEDGER_PRODUCTION_SERVER;
-      break;
-    case ledger::Environment::DEVELOPMENT:
-      url = LEDGER_DEVELOPMENT_SERVER;
+      url = kProduction;
       break;
   }
 
@@ -67,18 +108,15 @@ std::string BuildLedgerUrl() {
 std::string BuildPromotionUrl() {
   std::string url;
   switch (ledger::_environment) {
-    case ledger::Environment::STAGING: {
-      url = PROMOTION_STAGING_SERVER;
+    case ledger::Environment::DEVELOPMENT:
+      url = promotion::kDevelopment;
       break;
-    }
-    case ledger::Environment::PRODUCTION: {
-      url = PROMOTION_PRODUCTION_SERVER;
+    case ledger::Environment::STAGING:
+      url = promotion::kStaging;
       break;
-    }
-    case ledger::Environment::DEVELOPMENT: {
-      url = PROMOTION_DEVELOPMENT_SERVER;
+    case ledger::Environment::PRODUCTION:
+      url = promotion::kProduction;
       break;
-    }
   }
 
   return url;
@@ -87,18 +125,15 @@ std::string BuildPromotionUrl() {
 std::string BuildPaymentsUrl() {
   std::string url;
   switch (ledger::_environment) {
-    case ledger::Environment::STAGING: {
-      url = PAYMENTS_STAGING_SERVER;
+    case ledger::Environment::DEVELOPMENT:
+      url = payment::kDevelopment;
       break;
-    }
-    case ledger::Environment::PRODUCTION: {
-      url = PAYMENTS_PRODUCTION_SERVER;
+    case ledger::Environment::STAGING:
+      url = payment::kStaging;
       break;
-    }
-    case ledger::Environment::DEVELOPMENT: {
-      url = PAYMENTS_DEVELOPMENT_SERVER;
+    case ledger::Environment::PRODUCTION:
+      url = payment::kProduction;
       break;
-    }
   }
 
   return url;
@@ -107,18 +142,15 @@ std::string BuildPaymentsUrl() {
 std::string BuildApiUrl() {
   std::string url;
   switch (ledger::_environment) {
-    case ledger::Environment::STAGING: {
-      url = API_STAGING_SERVER;
+    case ledger::Environment::DEVELOPMENT:
+      url = api::kDevelopment;
       break;
-    }
-    case ledger::Environment::PRODUCTION: {
-      url = API_PRODUCTION_SERVER;
+    case ledger::Environment::STAGING:
+      url = api::kStaging;
       break;
-    }
-    case ledger::Environment::DEVELOPMENT: {
-      url = API_DEVELOPMENT_SERVER;
+    case ledger::Environment::PRODUCTION:
+      url = api::kProduction;
       break;
-    }
   }
 
   return url;
@@ -127,23 +159,19 @@ std::string BuildApiUrl() {
 std::string BuildPrivateCdnUrl() {
   std::string url;
   switch (ledger::_environment) {
+    case ledger::Environment::DEVELOPMENT:
+      url = cdn::kDevelopment;
+      break;
     case ledger::Environment::STAGING:
-      url = PRIVATE_CDN_STAGING_SERVER;
+      url = cdn::kStaging;
       break;
     case ledger::Environment::PRODUCTION:
-      url = PRIVATE_CDN_PRODUCTION_SERVER;
-      break;
-    case ledger::Environment::DEVELOPMENT:
-      url = PRIVATE_CDN_DEVELOPMENT_SERVER;
+      url = cdn::kProduction;
       break;
   }
 
   return url;
 }
-
-}  // namespace
-
-namespace braveledger_request_util {
 
 std::string BuildUrl(
     const std::string& path,
