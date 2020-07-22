@@ -399,6 +399,8 @@ source_set("ledger") {
     "//base",
     "//brave/components/brave_private_cdn",
     "//crypto",
+    "//net:net",
+    "//sql:sql",
     "//third_party/boringssl",
     "//third_party/brotli:dec",
     "//third_party/protobuf:protobuf_lite",
