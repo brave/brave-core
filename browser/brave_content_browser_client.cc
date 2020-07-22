@@ -156,7 +156,7 @@ BraveContentBrowserClient::CreateBrowserMainParts(
       ChromeContentBrowserClient::CreateBrowserMainParts(parameters);
   ChromeBrowserMainParts* chrome_main_parts =
       static_cast<ChromeBrowserMainParts*>(main_parts.get());
-  chrome_main_parts->AddParts(new BraveBrowserMainExtraParts());
+  chrome_main_parts->AddParts(std::make_unique<BraveBrowserMainExtraParts>());
   return main_parts;
 }
 
