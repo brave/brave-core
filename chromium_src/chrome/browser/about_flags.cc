@@ -48,6 +48,12 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_SYNC_FEATURE_ENTRIES
 #endif
 
+#if !defined(OS_ANDROID)
+  #define BRAVE_FEATURE_ENTRIES_COMMA ,
+#else
+  #define BRAVE_FEATURE_ENTRIES_COMMA
+#endif // !defined(OS_ANDROID)
+
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/components/ipfs/browser/features.h"
 
@@ -61,7 +67,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #endif
 
 #define BRAVE_FEATURE_ENTRIES \
-    ,                                                                      \
+    BRAVE_FEATURE_ENTRIES_COMMA                                            \
     {"use-dev-updater-url",                                                \
      flag_descriptions::kUseDevUpdaterUrlName,                             \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,              \
