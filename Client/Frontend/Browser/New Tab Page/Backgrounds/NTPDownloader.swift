@@ -24,7 +24,7 @@ class NTPDownloader {
         
         var resourceBaseURL: URL? {
             // This should _probably_ correspond host for URP
-            let baseUrl = AppConstants.buildChannel == .developer
+            let baseUrl = AppConstants.buildChannel == .debug
                 ? "https://mobile-data-dev.s3.brave.software"
                 : "https://mobile-data.s3.brave.com/"
             

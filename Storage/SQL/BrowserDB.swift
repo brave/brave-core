@@ -25,7 +25,7 @@ open class BrowserDB {
         // swiftlint:disable:next force_try
         let file = URL(fileURLWithPath: (try! files.getAndEnsureDirectory())).appendingPathComponent(filename).path
 
-        if AppConstants.buildChannel == .developer && secretKey != nil {
+        if AppConstants.buildChannel == .debug && secretKey != nil {
             log.debug("Will attempt to use encrypted DB: \(file) with secret = \(secretKey ?? "nil")")
         }
 

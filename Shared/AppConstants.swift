@@ -5,10 +5,11 @@
 import UIKit
 
 public enum AppBuildChannel: String {
-    case release = "release"
-    case beta = "beta"
-    case enterprise = "enterprise"
-    case developer = "developer"
+    case release
+    case beta
+    case dev
+    case enterprise
+    case debug
     
     /// Whether this release channel is used/seen by external users (app store or testers)
     public var isPublic: Bool {
@@ -18,7 +19,7 @@ public enum AppBuildChannel: String {
         switch self {
         case .release, .beta:
             return true
-        case .enterprise, .developer:
+        case .dev, .debug, .enterprise:
             return false
         }
     }
@@ -29,10 +30,10 @@ public enum AppBuildChannel: String {
             return "release"
         case .beta:
             return "beta"
-         case .enterprise:
+         case .dev:
              // This is designed to follow desktop platform
             return "developer"
-        case .developer:
+        case .debug, .enterprise:
             return "invalid"
         }
     }
@@ -59,10 +60,12 @@ public struct AppConstants {
             return AppBuildChannel.release
         #elseif MOZ_CHANNEL_BETA
             return AppBuildChannel.beta
+        #elseif MOZ_CHANNEL_DEV
+            return AppBuildChannel.dev
         #elseif MOZ_CHANNEL_ENTERPRISE
             return AppBuildChannel.enterprise
-        #elseif MOZ_CHANNEL_FENNEC
-            return AppBuildChannel.developer
+        #elseif MOZ_CHANNEL_DEBUG
+            return AppBuildChannel.debug
         #endif
     }()
 
@@ -89,7 +92,7 @@ public struct AppConstants {
             return false
         #elseif MOZ_CHANNEL_BETA
             return true
-        #elseif MOZ_CHANNEL_FENNEC
+        #elseif MOZ_CHANNEL_DEBUG
             return true
         #else
             return true

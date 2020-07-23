@@ -111,7 +111,7 @@ public class Sync: JSInjector {
     /// Please note that sync initialization also happens on app launch, not only on first connection to Sync.
     public var syncSetupFailureCallback: (() -> Void)?
     
-    fileprivate lazy var isDebug: Bool = { return AppConstants.buildChannel == .developer }()
+    fileprivate lazy var isDebug: Bool = { return AppConstants.buildChannel == .debug }()
     
     fileprivate lazy var serverUrl: String = {
         return isDebug ? "https://sync-staging.brave.com" : "https://sync.brave.com"
