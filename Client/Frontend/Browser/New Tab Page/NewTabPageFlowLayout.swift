@@ -10,6 +10,13 @@ import Foundation
 /// Handles correcting center-aligned single items in a flow layout while using
 /// automatic sizing cells
 class NewTabPageFlowLayout: UICollectionViewFlowLayout {
+    /// The section which should be providing a flexible amount of space
+    var flexibleSpaceSection: Int? {
+        didSet {
+            invalidateLayout()
+        }
+    }
+    
     override init() {
         super.init()
         estimatedItemSize = Self.automaticSize

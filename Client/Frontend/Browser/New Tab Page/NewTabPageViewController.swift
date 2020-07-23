@@ -95,15 +95,18 @@ class NewTabPageViewController: UIViewController, Themeable {
     private var background: NewTabPageBackground
     private let backgroundView = NewTabPageBackgroundView()
     private let backgroundButtonsView = NewTabPageBackgroundButtonsView()
+    private let feedDataSource: FeedDataSource
     
     private let notifications: NewTabPageNotifications
     
     init(tab: Tab,
          profile: Profile,
          dataSource: NTPDataSource,
+         feedDataSource: FeedDataSource,
          rewards: BraveRewards) {
         self.tab = tab
         self.rewards = rewards
+        self.feedDataSource = feedDataSource
         background = NewTabPageBackground(dataSource: dataSource)
         notifications = NewTabPageNotifications(rewards: rewards)
         collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
@@ -122,6 +125,7 @@ class NewTabPageViewController: UIViewController, Themeable {
             DuckDuckGoCalloutSectionProvider(profile: profile, action: { [weak self] in
                 self?.delegate?.tappedDuckDuckGoCallout()
             }),
+            BraveTodaySectionProvider(dataSource: feedDataSource),
         ]
         collectionView.delegate = self
         collectionView.dataSource = self
