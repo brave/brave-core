@@ -39,7 +39,7 @@ function warn (message) {
 }
 
 function updateStatus (projectUpdateStatus) {
-  const statusLines = Object.values(projectUpdateStatus).map(entry =>
+  const statusLines = Object.values(projectUpdateStatus).map(entry => 
     `${chalk.bold(entry.name)} (${entry.ref}): ${chalk.green.italic(entry.phase)}`
   )
   logUpdate(statusLines.join(os.EOL))

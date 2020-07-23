@@ -4,16 +4,32 @@ const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
 
-const packages = require('../package')
+const packages = require('../../../../../package')
+const DirConfig = require('../../../../../lib/dirConfig')
+const util = require('../../../../../lib/util')
+
+let NpmConfig = null
+
+var packageConfig = function(path){
+  let obj = packages['config']
+  for (var i = 0, len = path.length; i < len; i++) {
+    if (!obj) {
+      return obj
+    }
+    obj = obj[path[i]]
+  }
+  return obj
+}
 
 const getNPMConfig = (path) => {
+  if (!NpmConfig) {
+    const list = util.run('npm', ['config', 'list', '--json'], {
+        cwd: DirConfig.rootDir})
+    NpmConfig = JSON.parse(list.stdout.toString())
+  }
+
   const key = path.join('_').replace('-', '_')
-  const npm_prefix = 'npm_config_'
-  const package_config_prefix = 'npm_package_config_'
-  const package_prefix = 'npm_package_'
-  return process.env[npm_prefix + key] ||
-    process.env[package_config_prefix + key] ||
-    process.env[package_prefix + key]
+  return NpmConfig[key] || packageConfig(path)
 }
 
 const parseExtraInputs = (inputs, accumulator, callback) => {
@@ -36,13 +52,13 @@ const Config = function () {
   this.projects = {}
   this.signTarget = 'sign_app'
   this.buildTarget = 'brave'
-  this.rootDir = path.join(path.dirname(__filename), '..')
+  this.rootDir = DirConfig.rootDir
   this.scriptDir = path.join(this.rootDir, 'scripts')
-  this.depotToolsDir = path.join(this.rootDir, 'vendor', 'depot_tools')
-  this.srcDir = path.join(this.rootDir, getNPMConfig(['projects', 'chrome', 'dir']))
+  this.depotToolsDir = DirConfig.depotToolsDir
+  this.srcDir = DirConfig.srcDir
   this.chromeVersion = this.getProjectVersion('chrome')
   this.chromiumRepo = getNPMConfig(['projects', 'chrome', 'repository', 'url'])
-  this.braveCoreDir = path.join(this.rootDir, getNPMConfig(['projects', 'brave-core', 'dir']))
+  this.braveCoreDir = DirConfig.braveCoreDir
   this.braveCoreRepo = getNPMConfig(['projects', 'brave-core', 'repository', 'url'])
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
@@ -292,7 +308,7 @@ Config.prototype.buildArgs = function () {
     args.enable_stripping = args.enable_dsyms
     args.use_xcode_clang = this.isOfficialBuild()
     args.use_clang_coverage = false
-    // Component builds are not supported for iOS: 
+    // Component builds are not supported for iOS:
     // https://chromium.googlesource.com/chromium/src/+/master/docs/component_build.md
     args.is_component_build = false
     args.ios_deployment_target = '12.0'
@@ -301,7 +317,7 @@ Config.prototype.buildArgs = function () {
     // DCHECK's crash on Static builds without allowing the debugger to continue
     // Can be removed when approprioate DCHECK's have been fixed:
     // https://github.com/brave/brave-browser/issues/10334
-    args.dcheck_always_on = this.isDebug() 
+    args.dcheck_always_on = this.isDebug()
 
     delete args.safebrowsing_api_endpoint
     delete args.updater_prod_endpoint

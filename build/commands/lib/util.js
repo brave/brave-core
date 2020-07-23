@@ -29,11 +29,6 @@ const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
 }
 
-
-const patchIgnoreErrorPaths = [
-  'chrome/VERSION'
-]
-
 async function applyPatches() {
   const GitPatcher = require('./gitPatcher')
   Log.progress('Applying patches...')
@@ -59,9 +54,9 @@ async function applyPatches() {
   v8PatchStatus.forEach(s => s.path = path.join('v8', s.path))
   devtoolsFrontendSrcStatus.forEach(s => s.path = path.join('devtoolsFrontendSrc', s.path))
   const allPatchStatus = chromiumPatchStatus.concat(v8PatchStatus).concat(devtoolsFrontendSrcStatus)
-  Log.allPatchStatus(allPatchStatus, 'Chromium', patchIgnoreErrorPaths)
+  Log.allPatchStatus(allPatchStatus, 'Chromium')
 
-  const hasPatchError = allPatchStatus.some(p => p.error && !patchIgnoreErrorPaths.includes(p.path))
+  const hasPatchError = allPatchStatus.some(p => p.error)
   Log.progress('Done applying patches.')
   // Exit on error in any patch
   if (hasPatchError) {
@@ -71,6 +66,7 @@ async function applyPatches() {
 }
 
 const util = {
+
   run: (cmd, args = [], options = {}) => {
     const { continueOnFail, ...cmdOptions } = options
     Log.command(cmdOptions.cwd, cmd, args)
@@ -83,6 +79,16 @@ const util = {
       }
     }
     return prog
+  },
+
+  runGit: (repoPath, gitArgs, continueOnFail = false) => {
+    let prog = util.run('git', gitArgs, { cwd: repoPath, continueOnFail })
+
+    if (prog.status !== 0) {
+      return null
+    } else {
+      return prog.stdout.toString().trim()
+    }
   },
 
   runAsync: (cmd, args = [], options = {}) => {
@@ -126,15 +132,6 @@ const util = {
     })
   },
 
-  runGit: function (repoPath, gitArgs, continueOnFail = false) {
-    let prog = util.run('git', gitArgs, { cwd: repoPath, continueOnFail })
-
-    if (prog.status !== 0) {
-      return null
-    } else {
-      return prog.stdout.toString().trim()
-    }
-  },
 
   runGitAsync: function (repoPath, gitArgs, verbose = false, logError = false) {
     return util.runAsync('git', gitArgs, { cwd: repoPath, verbose, continueOnFail: true })
