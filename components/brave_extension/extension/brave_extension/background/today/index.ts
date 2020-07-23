@@ -69,6 +69,21 @@ Background.setListener<Messages.GetFeedResponse>(
   }
 )
 
+Background.setListener<Messages.GetFeedImageDataResponse, Messages.GetFeedImageDataPayload>(
+  MessageTypes.getFeedImageData,
+  async function (req, sender, sendResponse) {
+    const blob = await fetch(req.url).then(r => r.blob());
+    const dataUrl: string = await new Promise(resolve => {
+      let reader = new FileReader();
+      reader.onload = () => resolve(reader.result as string);
+      reader.readAsDataURL(blob);
+    });
+    sendResponse({
+      dataUrl
+    })
+  }
+)
+
 
 
 

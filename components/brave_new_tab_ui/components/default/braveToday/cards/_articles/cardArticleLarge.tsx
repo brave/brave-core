@@ -6,11 +6,9 @@
 import * as React from 'react'
 
 // Feature-specific components
-import * as Card from '../../../../components/default/braveToday/cardSizes'
-import { Debugger } from '../../../../components/default/braveToday/default'
-
-// Utils
-import { generateRelativeTimeFormat } from '../../../../helpers/braveTodayUtils'
+import * as Card from '../../cardSizes'
+import CardImage from '../CardImage'
+import { Debugger } from '../../default'
 
 interface Props {
   content: (BraveToday.Article | undefined)[]
@@ -39,16 +37,15 @@ class CardSingleArticleLarge extends React.PureComponent<Props, {}> {
                 ? <Debugger>this comes from a sponsor</Debugger>
                 : null
             }
-            <Card.Image
+            <CardImage
               size='large'
-              src={item.img || ''}
-              alt=''
+              imageUrl={item.img}
             />
             <Card.Content>
               <Card.Heading>
                 {item.title}
               </Card.Heading>
-              <Card.Time>{generateRelativeTimeFormat(item.publish_time)}</Card.Time>
+              <Card.Time>{item.relative_time}</Card.Time>
               {
                 item.publisher_logo !== ''
                 ? (

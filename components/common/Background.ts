@@ -9,6 +9,7 @@ export namespace MessageTypes {
   export enum Today {
     getFeed = 'getFeed',
     indicatingOpen = 'indicatingOpen',
+    getFeedImageData = 'getFeedImageData',
   }
 }
 export type Payload = any
