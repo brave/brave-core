@@ -14,6 +14,9 @@
 
 namespace confirmations {
 
+bool ShouldAllowHeader(
+    const std::string& header);
+
 std::string UrlRequestToString(
     const std::string& url,
     const std::vector<std::string>& headers,
