@@ -53,63 +53,60 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
-    content::SetupCrossSiteRedirector(embedded_test_server());
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-
-    ASSERT_TRUE(embedded_test_server()->Start());
 
     https_server_.ServeFilesFromDirectory(test_data_dir);
-    net::test_server::RegisterDefaultHandlers(&https_server_);
+    https_server_.AddDefaultHandlers(GetChromeTestDataDir());
+    content::SetupCrossSiteRedirector(&https_server_);
     ASSERT_TRUE(https_server_.Start());
 
-    url_ = embedded_test_server()->GetURL("a.com", "/nested_iframe.html");
+    url_ = https_server_.GetURL("a.com", "/nested_iframe.html");
     nested_iframe_script_url_ =
-        embedded_test_server()->GetURL("a.com", "/nested_iframe_script.html");
+        https_server_.GetURL("a.com", "/nested_iframe_script.html");
 
-    top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
+    top_level_page_url_ = https_server_.GetURL("a.com", "/");
     https_top_level_page_url_ = https_server_.GetURL("a.com", "/");
 
     cookie_iframe_url_ =
-        embedded_test_server()->GetURL("a.com", "/cookie_iframe.html");
+        https_server_.GetURL("a.com", "/cookie_iframe.html");
     https_cookie_iframe_url_ =
         https_server_.GetURL("a.com", "/cookie_iframe.html");
 
     third_party_cookie_url_ =
-        embedded_test_server()->GetURL("b.com", "/set-cookie?name=bcom");
+        https_server_.GetURL("b.com", "/set-cookie?name=bcom;SameSite=None;Secure");
     first_party_cookie_url_ =
-        embedded_test_server()->GetURL("a.com",
-                                       "/set-cookie?name=acom");
+        https_server_.GetURL("a.com",
+                                       "/set-cookie?name=acom;SameSite=None;Secure");
     subdomain_first_party_cookie_url_ =
-        embedded_test_server()->GetURL("subdomain.a.com",
-                                       "/set-cookie?name=subdomainacom");
+        https_server_.GetURL("subdomain.a.com",
+                                       "/set-cookie?name=subdomainacom;SameSite=None;Secure");
 
-    domain_registry_url_ = embedded_test_server()->GetURL("mobile.twitter.com",
+    domain_registry_url_ = https_server_.GetURL("mobile.twitter.com",
                                                         "/cookie_iframe.html");
     iframe_domain_registry_url_ =
-        embedded_test_server()->GetURL("blah.twitter.com",
-                          "/set-cookie?name=blahtwittercom;domain=twitter.com");
+        https_server_.GetURL("blah.twitter.com",
+                          "/set-cookie?name=blahtwittercom;domain=twitter.com;SameSite=None;Secure");
 
     google_oauth_cookie_url_ =
-        https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true");
+        https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true;SameSite=None;Secure");
 
     top_level_page_pattern_ =
-        ContentSettingsPattern::FromString("http://a.com/*");
+        ContentSettingsPattern::FromString("https://a.com/*");
     first_party_pattern_ =
         ContentSettingsPattern::FromString("https://firstParty/*");
 
     wordpress_top_url_ = https_server_
         .GetURL("example.wordpress.com", "/cookie_iframe.html");
     wordpress_frame_url_ = https_server_
-        .GetURL("example.wordpress.com", "/set-cookie?frame=true");
+        .GetURL("example.wordpress.com", "/set-cookie?frame=true;SameSite=None;Secure");
     wp_top_url_ = https_server_
         .GetURL("example.wp.com", "/cookie_iframe.html");
     wp_frame_url_ = https_server_
-        .GetURL("example.wp.com", "/set-cookie?frame=true");
-    a_frame_url_ = https_server_.GetURL("a.com", "/set-cookie?frame=true");
+        .GetURL("example.wp.com", "/set-cookie?frame=true;SameSite=None;Secure");
+    a_frame_url_ = https_server_.GetURL("a.com", "/set-cookie?frame=true;SameSite=None;Secure");
   }
 
   HostContentSettingsMap* content_settings() {
@@ -204,12 +201,12 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   GURL wp_top_url_;
   GURL wp_frame_url_;
   GURL a_frame_url_;
+  net::test_server::EmbeddedTestServer https_server_;
 
  private:
   ContentSettingsPattern top_level_page_pattern_;
   ContentSettingsPattern first_party_pattern_;
   ContentSettingsPattern iframe_pattern_;
-  net::test_server::EmbeddedTestServer https_server_;
 };
 
 // It is important that cookies in following tests are set by response headers,
@@ -217,7 +214,7 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieBlocked) {
   ui_test_utils::NavigateToURL(browser(), url_);
   const std::string cookie =
-      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+      content::GetCookies(browser()->profile(), https_server_.GetURL("c.com", "/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 }
 
@@ -225,7 +222,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieAllowed) {
   AllowCookies(top_level_page_url_);
   ui_test_utils::NavigateToURL(browser(), url_);
   const std::string cookie =
-      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+      content::GetCookies(browser()->profile(), https_server_.GetURL("c.com", "/"));
   EXPECT_FALSE(cookie.empty());
 }
 
@@ -233,7 +230,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PShieldsDown) {
   ShieldsDown(top_level_page_url_);
   ui_test_utils::NavigateToURL(browser(), url_);
   const std::string cookie =
-      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+      content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_FALSE(cookie.empty());
 }
 
@@ -243,12 +240,12 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   BlockCookies(top_level_page_url_);
   ui_test_utils::NavigateToURL(browser(), url_);
   std::string cookie =
-      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+      content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 
   ShieldsDown(top_level_page_url_);
   ui_test_utils::NavigateToURL(browser(), url_);
-  cookie = content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+  cookie = content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_FALSE(cookie.empty());
 }
 
@@ -257,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
                        IframeJs3PCookieBlocked) {
   ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_);
   const std::string cookie =
-      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+      content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 }
 
@@ -266,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   AllowCookies(top_level_page_url_);
   ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_);
   const std::string cookie =
-      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+      content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_FALSE(cookie.empty());
 }
 
@@ -274,9 +271,9 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, DefaultCookiesBlocked) {
   DefaultBlockAllCookies();
   ui_test_utils::NavigateToURL(browser(), nested_iframe_script_url_);
   std::string cookie =
-      content::GetCookies(browser()->profile(), GURL("http://c.com/"));
+      content::GetCookies(browser()->profile(), GURL("https://c.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
-  cookie = content::GetCookies(browser()->profile(), GURL("http://a.com/"));
+  cookie = content::GetCookies(browser()->profile(), GURL("https://a.com/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 }
 
@@ -290,7 +287,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   NavigateFrameTo(
-      embedded_test_server()->GetURL("b.com", "/iframe_cookie.html"),
+      https_server_.GetURL("b.com", "/iframe_cookie.html"),
       "nested_iframe");
 
   content::RenderFrameHost* child_frame =
@@ -338,7 +335,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(third_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(GURL("http://b.com"), "name=bcom");
+  ExpectCookiesOnHost(GURL("https://b.com"), "name=bcom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -356,7 +353,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(third_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(GURL("http://b.com"), "name=bcom");
+  ExpectCookiesOnHost(GURL("https://b.com"), "name=bcom");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -374,7 +371,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(third_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "");
-  ExpectCookiesOnHost(GURL("http://b.com"), "");
+  ExpectCookiesOnHost(GURL("https://b.com"), "");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -392,7 +389,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(third_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "name=Good");
-  ExpectCookiesOnHost(GURL("http://b.com"), "");
+  ExpectCookiesOnHost(GURL("https://b.com"), "");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
@@ -410,7 +407,7 @@ IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
   NavigateFrameTo(third_party_cookie_url_);
 
   ExpectCookiesOnHost(top_level_page_url_, "");
-  ExpectCookiesOnHost(GURL("http://b.com"), "");
+  ExpectCookiesOnHost(GURL("https://b.com"), "");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest,
