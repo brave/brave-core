@@ -47,8 +47,14 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_SYNC_FEATURE_ENTRIES
 #endif
 
+#if !defined(OS_ANDROID)
+  #define BRAVE_FEATURE_ENTRIES_COMMA ,
+#else
+  #define BRAVE_FEATURE_ENTRIES_COMMA
+#endif // !defined(OS_ANDROID)
+
 #define BRAVE_FEATURE_ENTRIES \
-    ,                                                                      \
+    BRAVE_FEATURE_ENTRIES_COMMA                                            \
     {"use-dev-updater-url",                                                \
      flag_descriptions::kUseDevUpdaterUrlName,                             \
      flag_descriptions::kUseDevUpdaterUrlDescription, kOsAll,              \
