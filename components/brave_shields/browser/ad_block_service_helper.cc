@@ -60,7 +60,7 @@ void MergeResourcesInto(
   if (force_hide) {
     resources_hide_selectors = into->FindKey("force_hide_selectors");
     if (!resources_hide_selectors || !resources_hide_selectors->is_list()) {
-        into->SetPath("force_hide_selectors", base::ListValue());
+        into->SetKey("force_hide_selectors", base::ListValue());
         resources_hide_selectors = into->FindKey("force_hide_selectors");
     }
   } else {
@@ -90,7 +90,7 @@ void MergeResourcesInto(
           resources_entry->Append(std::move(*j));
         }
       } else {
-        resources_style_selectors->SetPath(i.first, std::move(i.second));
+        resources_style_selectors->SetKey(i.first, std::move(i.second));
       }
     }
   }
