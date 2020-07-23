@@ -12,7 +12,7 @@ import { Promotions } from './promotions'
 import { General } from './general'
 import { Log } from './log'
 import { Tabs } from 'brave-ui/components'
-import { Wrapper, MainTitle, DisabledContent } from '../style'
+import { Wrapper, MainTitle, DisabledContent, Disclaimer } from '../style'
 
 // Utils
 import { getLocale } from '../../../../common/locale'
@@ -119,6 +119,7 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     return (
       <Wrapper id='rewardsInternalsPage'>
         <MainTitle level={2}>{getLocale('mainTitle')}</MainTitle>
+        <Disclaimer>{getLocale('mainDisclaimer')}</Disclaimer>
         <Tabs
           activeTabId={this.state.currentTabId}
           onChange={this.onTabChange}
