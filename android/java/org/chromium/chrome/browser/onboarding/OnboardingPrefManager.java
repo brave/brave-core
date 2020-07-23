@@ -19,6 +19,8 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 
 import java.lang.System;
 import java.util.HashMap;
@@ -130,7 +132,7 @@ public class OnboardingPrefManager {
     private boolean shouldShowExistingUserOnboardingIfRewardsIsSwitchedOff(Context context) {
         boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
                 && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
-                && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
+                && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
@@ -140,7 +142,7 @@ public class OnboardingPrefManager {
     private boolean shouldShowExistingUserOnboardingIfRewardsIsSwitchedOn(Context context) {
         boolean shouldShow = getPrefOnboardingEnabled() && showOnboardingForSkip()
                 && isAdsAvailableNewLocale() && !PackageUtils.isFirstInstall(context)
-                && BraveRewardsPanelPopup.isBraveRewardsEnabled()
+                && BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
                 && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
                 && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 

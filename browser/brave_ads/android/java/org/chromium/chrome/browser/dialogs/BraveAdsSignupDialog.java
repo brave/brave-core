@@ -27,8 +27,10 @@ import org.chromium.chrome.browser.BraveRewardsPanelPopup;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BraveRewardsPreferences;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.util.PackageUtils;
 
 import java.lang.System;
@@ -46,7 +48,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
-          && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
+          && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
           && hasElapsed24Hours(context)
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
@@ -61,7 +63,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && !PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
-          && !BraveRewardsPanelPopup.isBraveRewardsEnabled()
+          && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
@@ -75,7 +77,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && !PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())
-          && BraveRewardsPanelPopup.isBraveRewardsEnabled()
+          && BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
           && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedProfile())
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
