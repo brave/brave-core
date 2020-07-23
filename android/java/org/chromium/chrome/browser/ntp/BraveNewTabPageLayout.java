@@ -148,30 +148,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mDataSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_text);
         mEstTimeSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time);
 
-        LinearLayout mAdsLayout = mBraveStatsView.findViewById(R.id.brave_stats_ads);
-        mAdsLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // ((BraveActivity)mActivity).showOnboarding(OnboardingPrefManager.ONBOARDING_ADS, 0);
-            }
-        });
-
-        LinearLayout mDataSavedLayout = mBraveStatsView.findViewById(R.id.brave_stats_data_saved);
-        mDataSavedLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // ((BraveActivity)mActivity).showOnboarding(OnboardingPrefManager.ONBOARDING_DATA_SAVED, 0);
-            }
-        });
-
-        LinearLayout mEstTimeSavedLayout = mBraveStatsView.findViewById(R.id.brave_stats_time);
-        mEstTimeSavedLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // ((BraveActivity)mActivity).showOnboarding(OnboardingPrefManager.ONBOARDING_TIME, 0);
-            }
-        });
-
         FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
         ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
         mBadgeImageView.setOnClickListener(new View.OnClickListener() {
@@ -180,7 +156,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
                     BraveStatsUtil.showBraveStats();
                 } else {
-                    ((BraveActivity)mActivity).showOnboarding(OnboardingPrefManager.ONBOARDING_INVALID_OPTION, 0);
+                    ((BraveActivity)mActivity).showOnboarding();
                 }
             }
         });

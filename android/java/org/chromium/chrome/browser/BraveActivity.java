@@ -260,11 +260,11 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
                 && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            showOnboarding(OnboardingPrefManager.ONBOARDING_INVALID_OPTION, -1);
+            showOnboarding();
         }
     }
 
-    public void showOnboarding(int onboradingType, int index) {
+    public void showOnboarding() {
         OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
         FragmentManager fm = getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm

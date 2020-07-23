@@ -26,7 +26,6 @@ public class OnboardingV2PagerAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         OnboardingV2Fragment onboardingV2Fragment = new OnboardingV2Fragment();
         onboardingV2Fragment.setPosition(position);
-        onboardingV2Fragment.setOnboardingType(OnboardingPrefManager.ONBOARDING_INVALID_OPTION);
         onboardingV2Fragment.setHighlightListener(highlightDialogListener);
 
         return onboardingV2Fragment;
