@@ -141,8 +141,8 @@
 <translation id="1847863811689960237">Recompensa a los creadores por el contenido que te gusta.</translation>
 <translation id="4129489167302464118">Tu pago mensual se repartirá entre los sitios web que visites.</translation>
 <translation id="4898632353264854950">Sitios web que aparecerán mientras navegas</translation>
-<translation id="3024485967181749006">Total de propinas este mes</translation>
-<translation id="5055577484189948413">Contribuciones totales de este mes</translation>
+<translation id="3024485967181749006">Total de propinas en el mes actual</translation>
+<translation id="5055577484189948413">Contribuciones totales en el mes actual</translation>
 <translation id="4153752809523809915">¿Has dado hoy propina a tu creador de contenido favorito?</translation>
 <translation id="1165667598801520610">Añadir fondos</translation>
 <translation id="6239274080752256452">Retirar fondos</translation>
@@ -534,9 +534,9 @@
 <translation id="6915065518766963119">* Requiere la verificación de Uphold.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/> sobre Brave Rewards</translation>
 <translation id="5826706758731195747">Al activar Brave Rewards, aceptas los <ph name="LINK_BEGIN"/>Términos del Servicio<ph name="LINK_END"/>.</translation>
-<translation id="8344084848798035850">Ganancias estimadas en lo que va de mes</translation>
+<translation id="8344084848798035850">Ganancias estimadas en el mes actual</translation>
 <translation id="6778392839723468409">Recibe tokens visualizando anuncios respetuosos con la privacidad.</translation>
-<translation id="5235444069025581717">Propinas y contribuciones este mes</translation>
+<translation id="5235444069025581717">Propinas y contribuciones en el mes actual</translation>
 <translation id="1210965535849006928">Reclamar mis recompensas</translation>
 <translation id="8315514906653279104">Activando...</translation>
 <translation id="7307847920988946894">Activar Rewards</translation>

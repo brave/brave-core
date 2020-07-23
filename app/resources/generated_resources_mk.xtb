@@ -45,7 +45,6 @@
 <translation id="1047431265488717055">Копирај го &amp;текстот на врската</translation>
 <translation id="1048286738600630630">Екрани</translation>
 <translation id="1048986595386481879">Динамички доделена</translation>
-<translation id="1049743911850919806">Инкогнито</translation>
 <translation id="1049795001945932310">&amp;Поставки за јазик</translation>
 <translation id="1054153489933238809">Отвори оригинална &amp;слика во нова картичка</translation>
 <translation id="1055806300943943258">Се пребаруваат уреди со Bluetooth и USB...</translation>
@@ -104,7 +103,6 @@
 <translation id="1128591060186966949">Уредете го пребарувачот</translation>
 <translation id="1129850422003387628">Управување со апликациите</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> - дел од групата <ph name="GROUP_NAME"/></translation>
-<translation id="1134009406053225289">Отвори во инкогнито прозорец</translation>
 <translation id="1136712381129578788">Безбедносниот клуч е заклучен бидејќи внесовте погрешен PIN премногу пати. За да го отклучите, отстранете го и вметнете го пак.</translation>
 <translation id="1137673463384776352">Отвори го линкот во <ph name="APP"/></translation>
 <translation id="1139343347646843679">Имаше грешка при конфигурирањето на Linux. Контактирајте со администраторот.</translation>
@@ -166,7 +164,6 @@
 <translation id="1205489148908752564">Читајте и променете ги корисниците на белиот список</translation>
 <translation id="1206407435587370571">Истражете го вашиот Bravebook</translation>
 <translation id="1209796539517632982">Сервери за автоматско име</translation>
-<translation id="1211364473545090084">Користете интернет без да ја зачувате историјата на прелистување со инкогнито прозорец</translation>
 <translation id="1211769675100312947">Кратенките се избрани од ваша страна</translation>
 <translation id="1213037489357051291">Поставени отпечатоци: <ph name="NUM_FINGERPRINTS"/></translation>
 <translation id="1213254615020057352">Испраќајте податоци за користење и дијагностика. Помогнете ни да го подобриме доживувањето на вашето дете на Android со автоматско испраќање дијагностички и податоци за користењето на уредот и апликациите до Brave. Податоциве нема да се користат за идентификација на вашето дете, а ќе ни помогнат околу стабилноста на системот и апликациите и за други подобрувања. Некои збирни податоци ќе им помогнат на апликациите и партнерите на Brave, како што се програмерите на Android. Поставкава е наметната од сопственикот. Сопственикот може да избере да испраќа дијагностички и податоци за користењето на овој уред до Brave. Ако сте ја вклучиле дополнителната поставка „Активност на интернет и апликации“ за вашето дете, овие податоци може да се зачувуваат во сметката на Brave на детето.</translation>
@@ -296,7 +293,6 @@
 <translation id="1377600615067678409">Прескокни засега</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> ја контролира поставкава</translation>
 <translation id="1380028686461971526">Автоматско поврзување на мрежа</translation>
-<translation id="1380436189840894976">Сепак да се напушти режим „Инкогнито“?</translation>
 <translation id="1383861834909034572">Ќе се отвори кога ќе заврши</translation>
 <translation id="1383876407941801731">Барај</translation>
 <translation id="1386387014181100145">Здраво.</translation>
@@ -355,7 +351,6 @@
 <translation id="144518587530125858">Не може да вчита „<ph name="IMAGE_PATH"/>“ за тема.</translation>
 <translation id="1445693676523799095">Ова може да потрае</translation>
 <translation id="1451375123200651445">Веб-страница, единечна датотека</translation>
-<translation id="1451917004835509682">Додај надгледувано лице</translation>
 <translation id="1454223536435069390">&amp;Сними слика од екранот</translation>
 <translation id="1459967076783105826">Пребарајте пребарувачи што се додадени од наставки</translation>
 <translation id="146000042969587795">Рамката е блокирана затоа што содржи небезбедна содржина.</translation>
@@ -478,7 +473,6 @@
 <translation id="1600857548979126453">Пристапете кон задниот дел на отстранувачот на грешки на страница</translation>
 <translation id="1601560923496285236">Примени</translation>
 <translation id="1602085790802918092">Се стартува виртуелната машина</translation>
-<translation id="1603914832182249871">(Инкогнито)</translation>
 <translation id="1604432177629086300">Не можеше да се отпечати. Проверете го печатачот и обидете се повторно.</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: синхронизацијата на лозинките не работи</translation>
 <translation id="1607139524282324606">Исчисти го записот</translation>
@@ -550,7 +544,6 @@
 <translation id="1680841347983561661">Обидете се да го стартувате Google Play повторно по неколку секунди.</translation>
 <translation id="1680849702532889074">Дојде до грешка при инсталирањето на вашата апликација за Linux.</translation>
 <translation id="16815041330799488">Не дозволувај им на сајтовите да гледаат текст и слики копирани на привремената меморија</translation>
-<translation id="1682548588986054654">Нов инкогнито прозорец</translation>
 <translation id="168715261339224929">За да ги добиете обележувачите на сите уреди, вклучете ја синхронизацијата.</translation>
 <translation id="1688867105868176567">Дали да се исчистат сите податоци?</translation>
 <translation id="1688935057616748272">Напишете буква</translation>
@@ -561,10 +554,8 @@
 <translation id="1692210323591458290">Темновиолетова</translation>
 <translation id="1697150536837697295">Уметност</translation>
 <translation id="1697686431566694143">Измени датотека</translation>
-<translation id="1698122934742150150">Само тековната инкогнито сесија</translation>
 <translation id="1700079447639026019">Сајтови што никогаш не може да користат колачиња</translation>
 <translation id="1700845716982723710">Исклучување на „Амбиентален режим“</translation>
-<translation id="1701062906490865540">Отстрани го ова лице</translation>
 <translation id="1703331064825191675">Не грижете се за своите лозинки</translation>
 <translation id="1704970325597567340">Безбедносната проверка беше извршена на <ph name="DATE"/></translation>
 <translation id="1706586824377653884">Додадено од вашиот администратор</translation>
@@ -692,7 +683,6 @@
 <translation id="1850508293116537636">Ротирај &amp;надесно</translation>
 <translation id="1852141627593563189">Најди штетен софтвер</translation>
 <translation id="1852799913675865625">Имаше грешка при обидот да се прочита датотеката: <ph name="ERROR_TEXT"/>.</translation>
-<translation id="1853692000353488670">Нова картичка „Инкогнито“</translation>
 <translation id="1854180393107901205">Запри со емитување</translation>
 <translation id="1856715684130786728">Додај локација...</translation>
 <translation id="1858585891038687145">Имајте доверба во сертификатов за идентификување на производителите на софтвер</translation>
@@ -933,7 +923,6 @@
 <translation id="2174948148799307353"><ph name="PARENT_EMAIL"/> управува со сметката. За да се одјавите од примарната сметка на уредов, кликнете го времето на екранот. Во менито што ќе се појави, кликнете „Одјави се“.</translation>
 <translation id="2175607476662778685">Лента за брзо активирање</translation>
 <translation id="217576141146192373">Не може да се додаде печатач. Проверете ја конфигурацијата на печатачот и обидете се повторно.</translation>
-<translation id="2177950615300672361">Инкогнито картичка: <ph name="TAB_NAME"/></translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_NAME"/> на <ph name="PEPPER_PLUGIN_DOMAIN"/> сака да пристапи до вашиот компјутер</translation>
 <translation id="2178614541317717477">ЦА е изложен на ризик</translation>
 <translation id="2182058453334755893">Копирано во привремената меморија</translation>
@@ -944,7 +933,7 @@
 <translation id="2190069059097339078">WiFi Credentials Getter</translation>
 <translation id="219008588003277019">Модул на матичен клиент: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(празно)</translation>
-<translation id="2191754378957563929">Вклучен</translation>
+<translation id="8959699239363253085">Вклучен</translation>
 <translation id="2192505247865591433">Од:</translation>
 <translation id="2193365732679659387">Поставки на довербата</translation>
 <translation id="2195331105963583686">Сѐ уште ќе може да го користите овој <ph name="DEVICE_TYPE"/> после тој период, но веќе нема да добива автоматски софтверски и безбедносни ажурирања</translation>
@@ -978,7 +967,6 @@
 <translation id="2225864335125757863">Веднаш променете ги лозинкиве заради безбедност на сметката:</translation>
 <translation id="2226449515541314767">Локацијата е блокирана за целосна контрола на уреди со MIDI.</translation>
 <translation id="222657802677009088">Поставување на печатачот</translation>
-<translation id="222704500187107962">Исклучоков автоматски ќе се отстрани откако ќе излезете од тековната инкогнито сесија</translation>
 <translation id="2227179592712503583">Отстрани го предлогот</translation>
 <translation id="2229161054156947610">Преостанува повеќе од 1 час</translation>
 <translation id="222931766245975952">Скратена датотека</translation>
@@ -989,7 +977,6 @@
 <translation id="7956662517480676674">Синхронизација и услуги на Brave</translation>
 <translation id="2235344399760031203">Блокирани се колачиња од трети страни</translation>
 <translation id="2238379619048995541">Податоци за статусот на фреквенцијата</translation>
-<translation id="2239921694246509981">Додај надгледувано лице</translation>
 <translation id="2241053333139545397">Прочитајте ги и променете ги вашите податоци на повеќе веб-локации</translation>
 <translation id="2241634353105152135">Само еднаш</translation>
 <translation id="2242687258748107519">Информации за датотека</translation>
@@ -1277,7 +1264,6 @@
 <translation id="2129873093718581193">Пребарајте на Brave или внесете URL-адреса</translation>
 <translation id="2602501489742255173">Повлечете нагоре за да започнете</translation>
 <translation id="2603115962224169880">Чистење на компјутерот</translation>
-<translation id="2603463522847370204">Отвори во &amp;инкогнито прозорец</translation>
 <translation id="2604255671529671813">Грешка во мрежното поврзување</translation>
 <translation id="2606246518223360146">Поврзи ги податоците</translation>
 <translation id="2607101320794533334">Информации за јавен клуч на субјект</translation>
@@ -1339,13 +1325,12 @@
 <translation id="2672142220933875349">Лоша crx датотека, отпакувањето не успеа.</translation>
 <translation id="2673135533890720193">Прочитајте ја историјата на прелистувачот</translation>
 <translation id="2673589024369449924">Направи кратенка за овој корисник на работната површина</translation>
-<translation id="2674764818721168631">Исклучено</translation>
+<translation id="6175644081330715138">Исклучено</translation>
 <translation id="2677748264148917807">Напушти</translation>
 <translation id="2678063897982469759">Овозможи повторно</translation>
 <translation id="268053382412112343">И&amp;сторија</translation>
 <translation id="2682498795777673382">Ажурирање од родителот</translation>
 <translation id="2683638487103917598">Папката е подредена</translation>
-<translation id="2684004000387153598">За да продолжите, кликнете „Во ред“, а потоа кликнете „Додај лице“ за да создадете нов профил за адресата на е-пошта.</translation>
 <translation id="2687403674020088961">Блокирај ги сите колачиња (не се препорачува)</translation>
 <translation id="2687407218262674387">Услови за користење на Brave</translation>
 <translation id="2688196195245426394">Грешка при регистрирање на уредот на серверот: <ph name="CLIENT_ERROR"/>.</translation>
@@ -1483,7 +1468,6 @@
 <translation id="2841837950101800123">Давател</translation>
 <translation id="2844169650293029770">USB-Ц уред (предна порта од лева страна)</translation>
 <translation id="2844809857160214557">Прегледувајте ги и управувајте со налозите за печатење</translation>
-<translation id="2845382757467349449">Секогаш прикажувај ја лентата со обележувачи</translation>
 <translation id="284805635805850872">Да се отстрани штетниот софтвер?</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
 <translation id="284975061945174219">Чистењето не успеа</translation>
@@ -1733,7 +1717,7 @@
 <translation id="3170072451822350649">Може да прескокнете и најавување и <ph name="LINK_START"/>да прелистувате како Гостин<ph name="LINK_END"/>.</translation>
 <translation id="3177909033752230686">Јазик на страницата:</translation>
 <translation id="3179982752812949580">Фонт на текстот</translation>
-<translation id="3181954750937456830">Безбедно прелистување (ве заштитува вас и вашиот уред од опасни сајтови)</translation>
+<translation id="3201899458094819285">Безбедно прелистување (ве заштитува вас и вашиот уред од опасни сајтови)</translation>
 <translation id="3182749001423093222">Проверка на правопис</translation>
 <translation id="3183139917765991655">Увозник на профил</translation>
 <translation id="3183944777708523606">Подредување на мониторот</translation>
@@ -1841,7 +1825,6 @@
 <translation id="3315158641124845231">Сокриј <ph name="PRODUCT_NAME"/></translation>
 <translation id="3317459757438853210">Двострано</translation>
 <translation id="3317678681329786349">Камерата и микрофонот се блокирани</translation>
-<translation id="3319048459796106952">Нов &amp;инкогнито прозорец</translation>
 <translation id="3320630259304269485">Безбедно прелистување (заштита од опасни сајтови) и други безбедносни поставки</translation>
 <translation id="3323295311852517824">{NUM_FILES,plural, =0{Податоциве содржат чувствителни или опасни содржини. Отстранете ги тие содржини и обидете се повторно.}=1{Датотекава содржи чувствителни или опасни содржини. Отстранете ги тие содржини и обидете се повторно.}one{Датотекиве содржат чувствителни или опасни содржини. Отстранете ги тие содржини и обидете се повторно.}other{Датотекиве содржат чувствителни или опасни содржини. Отстранете ги тие содржини и обидете се повторно.}}</translation>
 <translation id="3323521181261657960">Бонус! Доби уште време за користење на уредот</translation>
@@ -1894,7 +1877,6 @@
 <translation id="3404065873681873169">Нема зачувани лозинки за сајтов</translation>
 <translation id="3405664148539009465">Приспособете ги фонтовите</translation>
 <translation id="3405763860805964263">...</translation>
-<translation id="3406605057700382950">&amp;Покажи лента со обележувачи</translation>
 <translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{Екстензијава може да е опасна}one{Екстензииве може да се опасни}other{Екстензииве може да се опасни}}</translation>
 <translation id="3409785640040772790">Карти</translation>
 <translation id="3410832398355316179">Сите датотеки и локални податоци што се поврзани со корисников трајно ќе се избришат по неговото отстранување. <ph name="USER_EMAIL"/> сепак ќе може да се најави подоцна.</translation>
@@ -1961,7 +1943,6 @@
 <translation id="3476303763173086583">Испраќајте податоци за користење и дијагностика. Помогнете ни да го подобриме искуството на вашето дете со Android со автоматско испраќање дијагностички и податоци за користењето на уредот и апликациите до Brave. Овие податоци нема да се користат за идентификација на вашето дете, а ќе ни помогнат околу стабилноста на системот и апликациите и за други подобрувања. Некои збирни податоци ќе им помогнат на апликациите и партнерите на Brave, како што се програмерите на Android. Оваа <ph name="BEGIN_LINK1"/>поставка<ph name="END_LINK1"/> е наметната од сопственикот. Сопственикот може да избере да испраќа дијагностички и податоци за користењето на овој уред до Brave. Ако сте ја вклучиле дополнителната поставка „Активност на интернет и апликации“ за вашето дете, овие податоци може да се зачувуваат во сметката на Brave на детето. <ph name="BEGIN_LINK2"/>Дознајте повеќе<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">Упс!  Системот не успеа да ја вчита политиката за вашиот уред.</translation>
 <translation id="347785443197175480">Продолжи дозволувајќи <ph name="HOST"/> да пристапи до вашата камера и микрофон</translation>
-<translation id="3478685642445675458">Отклучете го профилот пред да отстраните некого.</translation>
 <translation id="3479552764303398839">Не сега</translation>
 <translation id="3479685872808224578">Не можеше да се открие серверот за печатење. Проверете ја адресата и обидете се повторно.</translation>
 <translation id="3481268647794498892">Ќе се отвори во <ph name="ALTERNATIVE_BROWSER_NAME"/> за <ph name="COUNTDOWN_SECONDS"/> секунди</translation>
@@ -2031,7 +2012,6 @@
 <translation id="3569682580018832495"><ph name="ORIGIN"/> може да ги прегледува следниве датотеки и папки</translation>
 <translation id="3571734092741541777">Постави</translation>
 <translation id="3574210789297084292">најави се</translation>
-<translation id="3574917942258583917">Сепак да се излезе од режим „Инкогнито“?</translation>
 <translation id="3575121482199441727">Дозволи за овој сајт</translation>
 <translation id="3576324189521867626">Успешно е инсталирана</translation>
 <translation id="3578594933904494462">Содржината на картичкава се споделува.</translation>
@@ -2050,7 +2030,6 @@
 <translation id="359283478042092570">Влези</translation>
 <translation id="3593965109698325041">Ограничувања на име на сертификат</translation>
 <translation id="3596235046596950091">Овозможување услуги во облак</translation>
-<translation id="3596414637720633074">Блокирај колачиња од трети страни во „Инкогнито“</translation>
 <translation id="3599221874935822507">Со подигнат раб</translation>
 <translation id="8122693181154564064">Ја чисти историјата од сите најавени уреди. Вашата сметка на Brave можеби има други видови историја на прелистување на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="3600051066689725006">Информации за веб-барањето</translation>
@@ -2078,7 +2057,6 @@
 <translation id="3625481642044239431">Избравте неважечка датотека. Обидете се повторно.</translation>
 <translation id="3626296069957678981">За да го наполните овој Bravebook, користете компатибилна батерија од Dell.</translation>
 <translation id="3627320433825461852">Преостанува помалку од 1 минута</translation>
-<translation id="3627588569887975815">Отвори ја врската во инко&amp;гнито прозорец</translation>
 <translation id="3627671146180677314">Време за обновување сертификат на Netscape</translation>
 <translation id="3627879631695760395">Инсталирај ја <ph name="APP"/>…</translation>
 <translation id="3628275722731025472">Исклучи Bluetooth</translation>
@@ -2199,7 +2177,6 @@
 <translation id="3758842566811519622">Колачињата се поставени</translation>
 <translation id="3759933321830434300">Блокирај делови од веб-страници</translation>
 <translation id="3760460896538743390">Страница за проверка на &amp;заднина</translation>
-<translation id="37613671848467444">Отвори во &amp;Инкогнито прозорец</translation>
 <translation id="3761556954875533505">Да се дозволи сајтот да изменува датотеки?</translation>
 <translation id="3764314093345384080">Детални информации за верзијата</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{Комуницирај со USB-уред}one{Комуницирај со # USB-уред}other{Комуницирај со # USB-уреди}}</translation>
@@ -2441,7 +2418,6 @@
 <translation id="4035758313003622889">&amp;Управник со задачи</translation>
 <translation id="4036778507053569103">Правилото преземено од серверот е неважечко.</translation>
 <translation id="4037084878352560732">Коњ</translation>
-<translation id="4037889604535939429">Уредете го лицето</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{Излези од страницата}one{Излези од страниците}other{Излези од страниците}}</translation>
 <translation id="4044612648082411741">Внесете ја лозинката за сертификатот</translation>
 <translation id="404493185430269859">Стандарден пребарувач</translation>
@@ -2561,7 +2537,6 @@
 <translation id="4209251085232852247">Исклучено</translation>
 <translation id="2624930408905606513">Документите се <ph name="BEGIN_LINK_HELP"/>испраќаат до Brave<ph name="END_LINK_HELP"/> за да се подготват за печатење. Прегледувајте ги, изменувајте ги и управувајте со своите печатачи и историјата на печатачите од <ph name="BEGIN_LINK_DASHBOARD"/>контролната табла на Google Cloud Print<ph name="END_LINK_DASHBOARD"/>.</translation>
 <translation id="4210048056321123003">Се презема виртуелната машина</translation>
-<translation id="421182450098841253">&amp;Покажи лента со обележувачи</translation>
 <translation id="4211851069413100178">Испраќајте податоци за користење и дијагностика. Помогнете ни да го подобриме вашето доживување со Android со автоматско испраќање дијагностички и податоци за користењето на уредот и апликациите до Brave. Овие податоци ќе ни помогнат околу стабилноста на системот и апликациите и за други подобрувања. Некои збирни податоци ќе им помогнат на апликациите и партнерите на Brave, како што се програмерите на Android. Оваа <ph name="BEGIN_LINK1"/>поставка<ph name="END_LINK1"/> е наметната од сопственикот. Сопственикот може да избере да испраќа дијагностички и податоци за користењето на овој уред до Brave. Ако сте ја вклучиле дополнителната поставка „Активност на интернет и апликации“, овие податоци може да се зачувуваат во вашата сметка на Brave. <ph name="BEGIN_LINK2"/>Дознајте повеќе<ph name="END_LINK2"/></translation>
 <translation id="42126664696688958">Извези</translation>
 <translation id="42137655013211669">Пристапот до изворов е забранет од серверот.</translation>
@@ -2680,7 +2655,6 @@
 <translation id="4387004326333427325">Одбиена далечинска автентикација на сертификат</translation>
 <translation id="4387890294700445764">Компромитирани лозинки</translation>
 <translation id="4389091756366370506">Корисник <ph name="VALUE"/></translation>
-<translation id="4390000551125140321">{0,plural, =1{Инкогнито}one{# отворен инкогнито прозорец}other{# отворени инкогнито прозорци}}</translation>
 <translation id="439266289085815679"><ph name="USER_EMAIL"/> ја контролира конфигурацијата на Bluetooth.</translation>
 <translation id="4392896746540753732">Изменете ја датотеката за конфигурација</translation>
 <translation id="4394049700291259645">Оневозможи</translation>
@@ -2699,7 +2673,6 @@
 <translation id="4411578466613447185">Потпишувач на код</translation>
 <translation id="4412698727486357573">Центар за помош</translation>
 <translation id="44141919652824029">Дали дозволувате <ph name="APP_NAME"/> да го преземе списокот со прикачените USB-уреди?</translation>
-<translation id="4414232939543644979">Нов &amp;инкогнито прозорец</translation>
 <translation id="4415213869328311284">Спремни сте да почнете да го користите <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="4415245286584082850">Не се пронајдени уреди. Отворете статија од центарот за помош во нова картичка.</translation>
 <translation id="1125261911132334651">Управувајте со сметката на Brave</translation>
@@ -2762,7 +2735,6 @@
 <translation id="4502423230170890588">Отстрани од уредов</translation>
 <translation id="4504374760782163539">{COUNT,plural, =0{Колачињата се дозволени}=1{Колачињата се дозволени, 1 исклучок}one{Колачињата се дозволени, {COUNT} исклучок}other{Колачињата се дозволени, {COUNT} исклучоци}}</translation>
 <translation id="4504940961672722399">Користете ја наставката со кликнување на иконата или со притискање на <ph name="EXTENSION_SHORTCUT"/>.</translation>
-<translation id="4508051413094283164">Отвори ги сите во инкогнито прозорец</translation>
 <translation id="4508265954913339219">Активирањето не успеа</translation>
 <translation id="4508765956121923607">Прикажи и&amp;звор</translation>
 <translation id="4510479820467554003">Список со сметки на родители</translation>
@@ -2774,7 +2746,6 @@
 <translation id="4519935350946509010">Грешка при поврзувањето.</translation>
 <translation id="4520385623207007473">Колачиња во употреба</translation>
 <translation id="452039078290142656">непознати уреди од <ph name="VENDOR_NAME"/></translation>
-<translation id="4521489190203965562">Тековна инкогнито сесија: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> и друго</translation>
 <translation id="4522570452068850558">Детали</translation>
 <translation id="4522600456902129422">Продолжи да дозволуваш страницава да ја гледа привремената меморија</translation>
 <translation id="4524832533047962394">Оваа верзија на оперативниот систем не го поддржува обезбедениот режим на регистрирање. Проверете дали ја користите најновата верзија.</translation>
@@ -2876,7 +2847,6 @@
 <translation id="4647090755847581616">&amp;Затвори ја картичката</translation>
 <translation id="4647697156028544508">Внесете PIN за „<ph name="DEVICE_NAME"/>“.</translation>
 <translation id="4648491805942548247">Недоволно дозволи</translation>
-<translation id="4648499713050786492">Отклучете го профилот пред да додадете некого.</translation>
 <translation id="4650591383426000695">Прекинете ја врската помеѓу телефонот и <ph name="DEVICE_TYPE"/></translation>
 <translation id="4651484272688821107">Не можеше да се вчита онлајн компонентата со ресурси во демо-режим.</translation>
 <translation id="4653405415038586100">Грешка при конфигурирање на Linux</translation>
@@ -3014,7 +2984,6 @@
 <translation id="4854317507773910281">Избери сметка на родител за одобрување</translation>
 <translation id="485480310608090163">Повеќе лозинки и дозволи</translation>
 <translation id="4856478137399998590">Услугата со мобилни податоци е активирана и подготвена за користење</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Отвори ги сите во &amp;инкогнито прозорец}=1{Отвори во &amp;инкогнито прозорец}one{Отвори ги сите (#) во &amp;инкогнито прозорец}other{Отвори ги сите (#) во &amp;инкогнито прозорец}}</translation>
 <translation id="4858792381671956233">Ги прашавте родителите дали е во ред да го посетите сајтов</translation>
 <translation id="4858913220355269194">Фудбалер</translation>
 <translation id="4862642413395066333">Најавување на одговори на OCSP</translation>
@@ -3203,7 +3172,6 @@
 <translation id="5107443654503185812">Екстензија го исклучила „Безбедно прелистување“</translation>
 <translation id="5108967062857032718">Поставки - Отстранете ги апликациите за Android</translation>
 <translation id="5109044022078737958">Миа</translation>
-<translation id="5111646998522066203">Излези од инкогнито</translation>
 <translation id="5111692334209731439">&amp;Управник со обележувачи</translation>
 <translation id="5112577000029535889">&amp;Програмерски алатки</translation>
 <translation id="5113739826273394829">Доколку кликнете на иконата, рачно ќе го заклучите <ph name="DEVICE_TYPE"/>. Следниот пат ќе треба да ја напишете лозинката за да влезете.</translation>
@@ -3413,7 +3381,6 @@
 <translation id="5379140238605961210">Продолжи со блокирање пристап до микрофон</translation>
 <translation id="5382591305415226340">Управувајте со поддржаните линкови</translation>
 <translation id="5383377866517186886">Камерата е исклучена во поставките за системот Mac</translation>
-<translation id="5384883051496921101">Сајтов ќе сподели информации со една апликација надвор од режимот „Инкогнито“.</translation>
 <translation id="5388885445722491159">Спарено</translation>
 <translation id="5389237414310520250">Не можеше да се создаде новиот корисник. Проверете ги просторот на хард дискот и дозволите и обидете се повторно.</translation>
 <translation id="5390100381392048184">Дозволи сајтовите да пуштаат звук</translation>
@@ -3425,7 +3392,7 @@
 <translation id="5402815541704507626">Преземете ажурирање преку мобилен интернет</translation>
 <translation id="540296380408672091">Секогаш блокирај ги колачињата на <ph name="HOST"/></translation>
 <translation id="540495485885201800">Заменете ја со претходната</translation>
-<translation id="5405146885510277940">Ресетирање поставки</translation>
+<translation id="8632933437936028548">Ресетирање поставки</translation>
 <translation id="5408750356094797285">Зумирај: <ph name="PERCENT"/></translation>
 <translation id="5411472733320185105">Не користете ги поставките за прокси на овие домаќини и домени:</translation>
 <translation id="5414566801737831689">Прочитајте ги иконите од посетените веб-локации</translation>
@@ -3462,7 +3429,6 @@
 <translation id="5449551289610225147">Погрешна лозинка</translation>
 <translation id="5449588825071916739">Обележи ги сите картички...</translation>
 <translation id="5449716055534515760">Затвори го про&amp;зорецот</translation>
-<translation id="5452974209916053028">Тековна инкогнито сесија: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
 <translation id="5454166040603940656">со <ph name="PROVIDER"/></translation>
 <translation id="5454360575035671759">Отстранувањето на Plugin VM ќе ја избрише вашата VM. Тоа ги опфаќа нејзините апликации, поставки и податоци. Дали сигурно сакате да продолжите?</translation>
 <translation id="5457113250005438886">Неважечки</translation>
@@ -3492,7 +3458,6 @@
 <translation id="5486561344817861625">Симулирај рестартирање на прелистувач</translation>
 <translation id="5487521232677179737">Избриши податоци</translation>
 <translation id="5488093641312826914">Ставката „<ph name="COPIED_ITEM_NAME"/>“ е копирана</translation>
-<translation id="5488468185303821006">Овозможи во инкогнито</translation>
 <translation id="5489435190927933437">Зачувани лозинки за <ph name="DOMAIN"/></translation>
 <translation id="5490721031479690399">Прекинете ја врската на уредот со Bluetooth</translation>
 <translation id="5490798133083738649">Дозволете Linux да пристапува до микрофонот</translation>
@@ -3530,7 +3495,6 @@
 <translation id="5526745900034778153">Најавете се повторно за да продолжите со синхронизацијата</translation>
 <translation id="5527463195266282916">Обид да се премине на постара верзија на наставка.</translation>
 <translation id="5527474464531963247">Може да изберете и друга мрежа.</translation>
-<translation id="5530766185686772672">Затвори инкогнито-картички</translation>
 <translation id="5532223876348815659">Глобални</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> сака да</translation>
 <translation id="5534304873398226603">Отфрли фотографија или видео</translation>
@@ -3565,7 +3529,6 @@
 <translation id="5567989639534621706">Кешови на апликација</translation>
 <translation id="5568069709869097550">Не може да се најавите</translation>
 <translation id="1254756632288991504">Започнете и најавете се на Brave за да може Brave да провери дали ви е дозволено да пристапите на сајтов.</translation>
-<translation id="5575473780076478375">Наставка на таен идентитет: <ph name="EXTENSION_NAME"/></translation>
 <translation id="5575528586625653441">Настана проблем со барањето за регистрација на демо.</translation>
 <translation id="557722062034137776">Ресетирањето на уредот нема да влијае врз вашите сметки на Brave или врз податоците што се синхронизирани со овие сметки. Сепак, сите датотеки што се зачувани локално на уредот ќе се избришат.</translation>
 <translation id="5578059481725149024">Автоматско најавување</translation>
@@ -3657,7 +3620,6 @@
 <translation id="5691511426247308406">Семејни</translation>
 <translation id="5691772641933328258">Отпечатокот не е препознаен</translation>
 <translation id="5692183275898619210">Печатењето е завршено</translation>
-<translation id="569425414730375234">Тековна инкогнито сесија: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="5695184138696833495">ADB за апликации на Android за Linux</translation>
 <translation id="5696143504434933566">Пријавете злоупотреба од „<ph name="EXTENSION_NAME"/>“</translation>
 <translation id="5696177755977520104">Синхронизација на поставките за Chrome OS</translation>
@@ -3685,7 +3647,6 @@
 <translation id="5722930212736070253">Да му се сневиди! Архивирачот на Zip наиде на грешка.</translation>
 <translation id="572328651809341494">Неодамнешни картички</translation>
 <translation id="5723508132121499792">Нема активни апликации во заднина</translation>
-<translation id="5723967018671998714">Колачињата од трети страни се блокирани во режим инкогнито</translation>
 <translation id="5727728807527375859">Наставки, апликации и теми може да му наштетат на вашиот компјутер. Дали сте сигурни дека сакате да продолжите?</translation>
 <translation id="5728450728039149624">Опции за заклучување на екранот со Smart Lock</translation>
 <translation id="5729712731028706266">&amp;Приказ</translation>
@@ -3758,7 +3719,6 @@
 <translation id="5827266244928330802">Сафари</translation>
 <translation id="5828633471261496623">Се печати…</translation>
 <translation id="5830720307094128296">Зачувај страница &amp;како...</translation>
-<translation id="5832805196449965646">Додај лице</translation>
 <translation id="583281660410589416">Непознат</translation>
 <translation id="5832976493438355584">Заклучен</translation>
 <translation id="5833397272224757657">За персонализација ги користи содржините на сајтовите што ги посетувате, како и активноста и интеракциите на прелистувачот</translation>
@@ -3848,7 +3808,6 @@
 <translation id="5935656526031444304">Управувајте со „Безбедното прелистување“</translation>
 <translation id="5938002010494270685">Достапна е надградба за безбедност</translation>
 <translation id="5939518447894949180">Ресетирај</translation>
-<translation id="5941153596444580863">Додај лице...</translation>
 <translation id="5941343993301164315">Најавете се на <ph name="TOKEN_NAME"/>.</translation>
 <translation id="5941711191222866238">Минимизирај</translation>
 <translation id="5942964813783878922">Вашиот <ph name="DEVICE_TYPE"/> ќе се рестартира после ова ажурирање. Идните верзии и безбедносните ажурирања ќе се инсталираат автоматски.</translation>
@@ -3884,7 +3843,6 @@
 <translation id="5979421442488174909">&amp;Преведи на <ph name="LANGUAGE"/></translation>
 <translation id="5979469435153841984">За да обележите некоја страница, кликнете на ѕвездата во лентата за адреси</translation>
 <translation id="5984222099446776634">Неодамна посетени</translation>
-<translation id="598472838394900788">{0,plural, =1{Инкогнито}one{Инкогнито (#)}other{Инкогнито (#)}}</translation>
 <translation id="5985458664595100876">Погрешен URL-формат. Поддржани формати се \\server\share и smb://server/share.</translation>
 <translation id="5990386583461751448">Преведено</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{За да може и понатаму да прелистувате на интернет, побарајте од администраторот да ја отстрани апликацијава.}one{За да може и понатаму да прелистувате на интернет, побарајте од администраторот да ги отстрани апликацииве.}other{За да може и понатаму да прелистувате на интернет, побарајте од администраторот да ги отстрани апликацииве.}}</translation>
@@ -3961,7 +3919,6 @@
 <translation id="6078323886959318429">Додајте кратенка</translation>
 <translation id="6078752646384677957">Проверете ги нивоата на микрофонот и аудиото.</translation>
 <translation id="6078769373519310690">„<ph name="CHROME_EXTENSION_NAME"/>“ сака да се поврзе со HID-уред</translation>
-<translation id="6080515710685820702">Користите заеднички компјутер? Обидете се со отворање инкогнито прозорец.</translation>
 <translation id="6080689532560039067">Проверете го времето на вашиот систем</translation>
 <translation id="6082651258230788217">Прикажи во алатник</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/> - дел од неименувана група</translation>
@@ -3989,7 +3946,6 @@
 <translation id="6112294629795967147">Допрете за да ја промените големината</translation>
 <translation id="6112727384379533756">Додајте билет</translation>
 <translation id="6112931163620622315">Проверете го телефонот</translation>
-<translation id="6112952769866305444">Измени го лицето, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="6113942107547980621">За да користите Smart Lock, префрлете се на примарниот кориснички профил на телефонот</translation>
 <translation id="6116921718742659598">Промени поставки за јазик и внесување...</translation>
 <translation id="6120205520491252677">Прикачи ја оваа страница на Почетен екран...</translation>
@@ -4022,7 +3978,6 @@
 <translation id="615436196126345398">Протокол</translation>
 <translation id="6154697846084421647">Моментално пријавено</translation>
 <translation id="6155141482566063812">Картичка во заднина го споделува вашиот екран</translation>
-<translation id="6156323911414505561">Покажи лента со обележувачи</translation>
 <translation id="6156863943908443225">Кеш на скрипта</translation>
 <translation id="6160625263637492097">Обезбеди сертификат за автентикација</translation>
 <translation id="6163363155248589649">&amp;Нормален</translation>
@@ -4211,7 +4166,6 @@
 <translation id="6410668567036790476">Додајте пребарувач</translation>
 <translation id="641081527798843608">Совпаѓање на предмети</translation>
 <translation id="7810992039564280750">Ги проверува URL-адресите во список со небезбедни сајтови меморирани во Brave. Ако некој сајт се обиде да ви ја украде лозинката или кога ќе преземете штетна датотека, Brave може да испрати и URL-адреси, вклучувајќи и делови од содржините на страницата, во „Безбедно прелистување“.</translation>
-<translation id="6412931879992742813">Нов инкогнито прозорец</translation>
 <translation id="641469293210305670">Инсталирајте ажурирања и апликации</translation>
 <translation id="6414888972213066896">Го прашавте родителот дали е во ред да го посетите сајтов</translation>
 <translation id="6415659939354280526">Избирање извор за „Амбиентален режим“</translation>
@@ -4319,7 +4273,6 @@
 <translation id="6550675742724504774">Опции</translation>
 <translation id="6551508934388063976">Наредбата е недостапна. Притиснете control-N за да отворите нов прозорец.</translation>
 <translation id="6551612971599078809">Сајтот користи USB</translation>
-<translation id="6552395360547205189">Тековна инкогнито сесија: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="655384502888039633"><ph name="USER_COUNT"/> корисници</translation>
 <translation id="655483977608336153">Обиди се пак</translation>
 <translation id="6555432686520421228">Отстранете ги сите кориснички сметки и ресетирајте го својот уред на <ph name="IDS_SHORT_PRODUCT_NAME"/> да биде исто како нов.</translation>
@@ -4330,7 +4283,6 @@
 <translation id="6561726789132298588">enter</translation>
 <translation id="656293578423618167">Патеката на датотеката или нејзиното име се многу долги. Зачувајте ја со пократко име или на друга локација.</translation>
 <translation id="6563469144985748109">Управникот уште не го одобрил</translation>
-<translation id="6569934958368283244">Други луѓе</translation>
 <translation id="657402800789773160">&amp;Пак вчитај страница</translation>
 <translation id="6577284282025554716">Преземањето е откажано: <ph name="FILE_NAME"/></translation>
 <translation id="2459230470861708651">Шифрирајте ги синхронизираните лозинки со вашето корисничко име и акредитивите на Brave</translation>
@@ -4446,7 +4398,6 @@
 <translation id="6727969043791803658">Поврзан, <ph name="BATTERY_PERCENTAGE"/> % батерија</translation>
 <translation id="6732801395666424405">Нема вчитано сертификати</translation>
 <translation id="6732900235521116609">Не може да се отстрани кратенката</translation>
-<translation id="6734468588183300211">Додека сте во „Инкогнито“, сајтовите не може да ги користат колачињата за да ја гледаат вашата активност од прелистувањето на различни сајтови, на пример, за персонализирање реклами. Функциите на некои сајтови можеби нема да работат.</translation>
 <translation id="6735304988756581115">Прикажи колачиња и други податоци за локација…</translation>
 <translation id="6736243959894955139">Адреса</translation>
 <translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
@@ -4462,7 +4413,6 @@
 <translation id="6748465660675848252">Може да продолжите, но ќе се обноват само синхронизираните податоци и поставки. Сите локални податоци ќе се загубат.</translation>
 <translation id="6749006854028927059">Сајтовите не може да ги користат колачињата за да ја гледаат вашата активност од прелистувањето на различни сајтови, на пример, за персонализирање реклами. Функциите на некои сајтови можеби нема да работат.</translation>
 <translation id="6750757184909117990">Оневозможување мобилна мрежа</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Инкогнито)</translation>
 <translation id="6757101664402245801">Линкот е копиран</translation>
 <translation id="6758056191028427665">Оценете ја нашата работа.</translation>
 <translation id="6759193508432371551">Ресетирање до фабрички вредности</translation>
@@ -4488,7 +4438,6 @@
 <translation id="6789592661892473991">Подели хоризонтално</translation>
 <translation id="6790428901817661496">Репродуцирај</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> е додадена далечински</translation>
-<translation id="6790820461102226165">Додај лице...</translation>
 <translation id="6792072150955115067"><ph name="APP_NAME"/> сака да ја сподели содржината на екранот со <ph name="TARGET_NAME"/>. Одберете што би сакале да споделите.</translation>
 <translation id="6793604637258913070">Нагласување на каретот за текст кога се појавува или се движи</translation>
 <translation id="6795884519221689054">Панда</translation>
@@ -4601,7 +4550,6 @@
 <translation id="6935286146439255109">Недостасува фиока за хартија</translation>
 <translation id="693807610556624488">Операцијата за пишување ја надминува максималната должина на атрибутот на: „<ph name="DEVICE_NAME"/>".</translation>
 <translation id="6938386202199793006">Имате 1 зачуван печатач.</translation>
-<translation id="6938789263968032501">Луѓе</translation>
 <translation id="6941937518557314510">Најавете се со <ph name="TOKEN_NAME"/> за автентикација на <ph name="HOST_NAME"/> со вашиот сертификат.</translation>
 <translation id="6943060957016121200">Овозможување инстант врзување</translation>
 <translation id="6943176775188458830">Откажи печатење</translation>
@@ -4700,7 +4648,6 @@
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{Безбедносната проверка беше извршена пред 1 минута}one{Безбедносната проверка беше извршена пред {NUM_MINS} минута}other{Безбедносната проверка беше извршена пред {NUM_MINS} минути}}</translation>
 <translation id="7057767408836081338">Не успеавме да добиеме податоци од апликацијата, но сепак се обидуваме да ја стартуваме…</translation>
 <translation id="7059858479264779982">Постави на автоматско стартување</translation>
-<translation id="7059893117020417984">За да прелистувате приватно, кликнете на менито со икона со точки за да отворите инкогнито прозорец</translation>
 <translation id="7062222374113411376">Дозволи неодамна затворените сајтови да завршат со испраќањето и примањето податоци (препорачано)</translation>
 <translation id="7063129466199351735">Обработување кратенки...</translation>
 <translation id="7063311912041006059">URL со <ph name="SPECIAL_SYMBOL"/> наместо прашалник</translation>
@@ -4722,7 +4669,6 @@
 <translation id="7077829361966535409">Страницата за пријавување не успеа да се вчита со користење на тековните поставки за прокси. <ph name="GAIA_RELOAD_LINK_START"/>Обидете се да се пријавите повторно<ph name="GAIA_RELOAD_LINK_END"/> или користете поинакви <ph name="PROXY_SETTINGS_LINK_START"/>поставки за прокси<ph name="PROXY_SETTINGS_LINK_END"/>.</translation>
 <translation id="7078120482318506217">Сите мрежи</translation>
 <translation id="708060913198414444">К&amp;опирај ја адресата на аудиото</translation>
-<translation id="7081952801286122383">Инкогнито</translation>
 <translation id="708278670402572152">Прекинете ја врската со мрежата за да го овозможите скенирањето</translation>
 <translation id="1439926347196400598">Да се дозволи Brave да сними аудио?</translation>
 <translation id="7088434364990739311">Проверката за ажурирање не успеа да започне (код на грешка <ph name="ERROR"/>).</translation>
@@ -4968,7 +4914,6 @@
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{Безбедносната проверка беше извршена пред 1 час}one{Безбедносната проверка беше извршена пред {NUM_HOURS} час}other{Безбедносната проверка беше извршена пред {NUM_HOURS} часа}}</translation>
 <translation id="740624631517654988">Појавниот прозорец е блокиран</translation>
 <translation id="7407430846095439694">Увези и врзи</translation>
-<translation id="7407504355934009739">Повеќето луѓе ги блокираат известувањата од сајтов</translation>
 <translation id="740810853557944681">Додајте сервер за печатење</translation>
 <translation id="7409549334477097887">Многу голем</translation>
 <translation id="7410344089573941623">Прашај дали <ph name="HOST"/> сака да пристапи до вашите фотоапарат и микрофон</translation>
@@ -5013,7 +4958,6 @@
 <translation id="7460045493116006516">Темата што ви е инсталирана</translation>
 <translation id="7461924472993315131">Прикачи</translation>
 <translation id="746216226901520237">Следниот пат, телефонот ќе го отклучи вашиот <ph name="DEVICE_TYPE"/>. Smart Lock може да се исклучи во „Поставки“.</translation>
-<translation id="7463006580194749499">Додај лице</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# отворена картичка, притиснете за да префрлите на лента за картички}one{# отворена картичка, притиснете за да префрлите на лента за картички}other{# отворени картички, притиснете за да префрлите на лента за картички}}</translation>
 <translation id="7465635034594602553">Нешто не е во ред. Почекајте неколку минути и повторно извршете го <ph name="APP_NAME"/>.</translation>
 <translation id="7465778193084373987">URL-адреса за отповикани сертификати на Netscape</translation>
@@ -5035,7 +4979,6 @@
 <translation id="7488682689406685343">Сајтов можеби се обидува да ве измами да дозволите нападни известувања.</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Отвори ги сите}=1{&amp;Отвори го обележувачот}one{&amp;Отвори ги сите (#)}other{&amp;Отвори ги сите (#)}}</translation>
 <translation id="7489761397368794366">Јавете се од вашиот уред</translation>
-<translation id="749028671485790643">Лице <ph name="VALUE"/></translation>
 <translation id="7490813197707563893">MAC-адреса</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{1 колаче}one{{NUM_COOKIES} колаче}other{{NUM_COOKIES} колачиња}}</translation>
 <translation id="7493386493263658176">Екстензијата <ph name="EXTENSION_NAME"/> ќе може да го собира текстот што го пишувате, вклучувајќи ги личните податоци, како лозинки и броеви на кредитни картички. Дали сакате да ја користите?</translation>
@@ -5057,7 +5000,6 @@
 <translation id="751523031290522286">Администраторот ја блокирал <ph name="APP_NAME"/>. Побарајте дозвола од администраторот за користење на апликацијава.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> е паузирана</translation>
 <translation id="7517063221058203587">{0,plural, =1{Ажурирајте го уредот во рок од 1 минута}one{Ажурирајте го уредот во рок од # минута}other{Ажурирајте го уредот во рок од # минути}}</translation>
-<translation id="7520766081042531487">Инкогнито портал: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">Кажете „Ok Brave“</translation>
 <translation id="7525067979554623046">Создај</translation>
@@ -5151,7 +5093,6 @@
 <translation id="7647403192093989392">Нема неодамнешни активности</translation>
 <translation id="7649070708921625228">Помош</translation>
 <translation id="7650511557061837441">„<ph name="TRIGGERING_EXTENSION_NAME"/>“ сака да ја отстрани наставката „<ph name="EXTENSION_NAME"/>“.</translation>
-<translation id="7652808307838961528">Измени го лицето, <ph name="PROFILE_NAME"/></translation>
 <translation id="765293928828334535">Апликациите, екстензии и кориснички скрипти не може да се додадат од овој веб-сајт</translation>
 <translation id="7652954539215530680">Создајте PIN</translation>
 <translation id="7654941827281939388">Сметкава веќе се користи на компјутеров.</translation>
@@ -5172,7 +5113,6 @@
 <translation id="7674416868315480713">Деактивирај ги сите порти што се проследени во Linux</translation>
 <translation id="1800308196794859773">Испратете го вашиот глас во Brave за да се дозволи диктирање во кое било поле за текст.</translation>
 <translation id="7681095912841365527">Сајтот може да користи Bluetooth</translation>
-<translation id="7683373461016844951">За да продолжите, кликнете „Во ред“, а потоа кликнете „Додај лице“ за да создадете нов профил за адресата на е-пошта на <ph name="DOMAIN"/>.</translation>
 <translation id="7684212569183643648">Инсталирано од вашиот администратор</translation>
 <translation id="7684559058815332124">Посетете ја страницата за најавување на порталот за автентикација</translation>
 <translation id="1669729672557072907">За создавање и тестирање на вашите апликации, овозможете ја Android Debug Bridge (ADB). Имајте предвид дека дејствово овозможува инсталирање апликации за Android што не се потврдени од Brave, а за оневозможувањето е потребно фабричко ресетирање.</translation>
@@ -5273,7 +5213,7 @@
 <translation id="7792388396321542707">Запри споделување</translation>
 <translation id="779308894558717334">Светлозелена</translation>
 <translation id="7793098747275782155">Темносина</translation>
-<translation id="7797571222998226653">Исклучено</translation>
+<translation id="971479617738309149">Исклучено</translation>
 <translation id="7798844538707273832">Автоматски ја блокираше <ph name="PERMISSION"/></translation>
 <translation id="7799299114731150374">Тапетот е успешно поставен</translation>
 <translation id="7800518121066352902">Ротирај на&amp;лево</translation>
@@ -5376,7 +5316,6 @@
 <translation id="7904094684485781019">Администраторот за оваа сметка не дозволува повеќекратно пријавување.</translation>
 <translation id="7904526211178107182">Направете ги портите за Linux достапни на други уреди на вашата мрежа.</translation>
 <translation id="7908378463497120834">Извинете, најмалку една партиција на надворешниот уред не можеше да се постави.</translation>
-<translation id="7909969815743704077">Преземено во Инкогнито</translation>
 <translation id="7910768399700579500">&amp;Нова папка</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="7912080627461681647">Вашата лозинка е променета на серверот. Одјавете се и повторно најавете се.</translation>
@@ -5439,7 +5378,6 @@
 <translation id="7982083145464587921">Рестартирајте го уредот за да ја поправите грешката.</translation>
 <translation id="7982789257301363584">Мрежа</translation>
 <translation id="7984068253310542383">Отсликај <ph name="DISPLAY_NAME"/></translation>
-<translation id="7985283639530788531">Дали сакате да користите „ID на допир“ со <ph name="APP_NAME"/> во режимот „Инкогнито“?</translation>
 <translation id="7986295104073916105">Прочитајте ги и променете ги зачуваните поставки за лозинката</translation>
 <translation id="7987814697832569482">Секогаш поврзувај преку оваа VPN</translation>
 <translation id="7988355189918024273">Овозможете ги функциите за пристапност</translation>
@@ -5479,7 +5417,6 @@
 <translation id="8030852056903932865">Одобри</translation>
 <translation id="8032244173881942855">Не може да се емитува картичката.</translation>
 <translation id="8033827949643255796">избрано</translation>
-<translation id="803435727213847625">{COUNT,plural, =0{Отвори ги сите во &amp;инкогнито прозорец}=1{Отвори во &amp;инкогнито прозорец}one{Отвори ги сите (#) во &amp;инкогнито прозорец}other{Отвори ги сите (#) во &amp;инкогнито прозорец}}</translation>
 <translation id="8037117027592400564">Прочитајте го текстот што се изговара со помош на синтетизиран говор.</translation>
 <translation id="8037357227543935929">Прашај (стандардно)</translation>
 <translation id="803771048473350947">Датотека</translation>
@@ -5615,7 +5552,6 @@
 <translation id="8213449224684199188">Влеговте во режим на фотографија</translation>
 <translation id="8213577208796878755">Уште еден достапен уред.</translation>
 <translation id="8214489666383623925">Отвори датотека...</translation>
-<translation id="8214962590150211830">Отстрани го ова лице</translation>
 <translation id="8215295261562449873">Направи бекап на моите апликации и датотеки во папката „Преземања“ пред да се надгради Linux.</translation>
 <translation id="8217399928341212914">Продолжи со блокирање автоматски преземања на повеќе датотеки</translation>
 <translation id="8218847192766059983">Додајте јазици или прередете го списокот. <ph name="BEGIN_LINK"/>Дознајте повеќе<ph name="END_LINK"/></translation>
@@ -5685,7 +5621,6 @@
 <translation id="8284279544186306258">сите локации на <ph name="WEBSITE_1"/></translation>
 <translation id="8284326494547611709">Титлови</translation>
 <translation id="8286036467436129157">Најави се</translation>
-<translation id="8286963743045814739">Може да прелистувате приватно со инкогнито прозорец</translation>
 <translation id="8287902281644548111">Пребарувајте по повик/URL на API</translation>
 <translation id="8288032458496410887">Деинсталирајте ја <ph name="APP"/>…</translation>
 <translation id="8289128870594824098">Големина на диск</translation>
@@ -5764,7 +5699,6 @@
 <translation id="839736845446313156">Регистрирај</translation>
 <translation id="8397825320644530257">Прекини врска со поврзаниот телефон</translation>
 <translation id="8398877366907290961">Сепак продолжи</translation>
-<translation id="8400146488506985033">Управувај со луѓе</translation>
 <translation id="8401432541486058167">Наведете го PIN-кодот што е поврзан со вашата паметна картичка.</translation>
 <translation id="8405046151008197676">Дознајте ги најдобрите карактеристики од најновото ажурирање</translation>
 <translation id="8407199357649073301">Ниво на евиденција:</translation>
@@ -5814,7 +5748,6 @@
 <translation id="8465444703385715657"><ph name="PLUGIN_NAME"/> бара ваша дозвола за да се изврши</translation>
 <translation id="8466417995783206254">Картичкава пушта видео во режимот „слика во слика“.</translation>
 <translation id="8467326454809944210">Изберете друг јазик</translation>
-<translation id="8470214316007448308">Други луѓе</translation>
 <translation id="8470513973197838199">Зачувани лозинки за <ph name="ORIGIN"/></translation>
 <translation id="8472623782143987204">со резервни копии од хардвер</translation>
 <translation id="8473863474539038330">Адреси и друго</translation>
@@ -5862,7 +5795,6 @@
 <translation id="8540608333167683902">Мрежа <ph name="NETWORK_INDEX"/> од <ph name="NETWORK_COUNT"/>, <ph name="NETWORK_NAME"/>, <ph name="CONNECTION_STATUS"/>, јачина на сигналот: <ph name="SIGNAL_STRENGTH"/> %, детали</translation>
 <translation id="8541462173655894684">Не се најдени печатачи од серверот за печатење</translation>
 <translation id="8542618328173222274">Прашувај кога некој сајт ќе сака да ги користи уредите и податоците за виртуелна реалност</translation>
-<translation id="8543556556237226809">Имате прашања? Контактирајте со лицето што го надгледува вашиот профил.</translation>
 <translation id="8545575359873600875">Извинете, вашата лозинка не може да се провери. Управникот на овој надгледуван корисник можеби ја сменил лозинката неодамна. Доколку е тоа така, новата лозинка ќе се примени следниот пат кога ќе се пријавите. Обидете се да ја користите вашата стара лозинка.</translation>
 <translation id="8546186510985480118">Уредот нема доволно простор</translation>
 <translation id="8546306075665861288">Кеш на слика</translation>
@@ -5873,7 +5805,6 @@
 <translation id="85486688517848470">Држете го копчето „Пребарување“ за да го промените однесувањето на копчињата во најгорниот ред</translation>
 <translation id="8551388862522347954">Лиценци</translation>
 <translation id="8551588720239073785">Поставки за датум и време</translation>
-<translation id="8553342806078037065">Управувај со другите луѓе</translation>
 <translation id="8554899698005018844">Нема јазик</translation>
 <translation id="8557022314818157177">Допирајте го безбедносниот клуч додека не се сними вашиот отпечаток</translation>
 <translation id="855773602626431402">Спречено е активирање на неизолиран приклучок на оваа страница.</translation>
@@ -5911,7 +5842,6 @@
 <translation id="8610103157987623234">Погрешен формат. Обидете се повторно</translation>
 <translation id="8613164732773110792">Само мали букви, цифри, долни црти и црти</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> е преголема за безбедносна проверка. Може да отворате датотеки до 50 MB.</translation>
-<translation id="8615618338313291042">Инкогнито апликација: <ph name="APP_NAME"/></translation>
 <translation id="8619803522055190423">Со сенка</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620436878122366504">Родителите уште не го одобриле</translation>
@@ -5953,9 +5883,7 @@
 <translation id="8655972064210167941">Најавувањето не успеа бидејќи не можеше да се потврди вашата лозинка. Контактирајте со администраторот или обидете се повторно.</translation>
 <translation id="8656768832129462377">Не проверувај</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> ги споделува вашиот екран и аудио со <ph name="TAB_NAME"/>.</translation>
-<translation id="8661290697478713397">Отвори ја врската во инко&amp;гнито прозорец</translation>
 <translation id="8662671328352114214">Придружување на мрежа <ph name="TYPE"/></translation>
-<translation id="8662795692588422978">Луѓе</translation>
 <translation id="8662811608048051533">Ќе ве одјави од повеќето сајтови.</translation>
 <translation id="8662911384982557515">Промени Почетна страница на: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Brave не може да постави тапет.</translation>
@@ -6047,7 +5975,6 @@
 <translation id="8763927697961133303">USB-уред</translation>
 <translation id="4570609078116869893">Автоматски ажурирај го Brave за сите корисници</translation>
 <translation id="8770406935328356739">Основен именик на екстензии</translation>
-<translation id="8770507190024617908">Управувај со луѓе</translation>
 <translation id="8771300903067484968">Заднината на почетната страница е ресетирана на стандардната заднина.</translation>
 <translation id="8773302562181397928">Зачувај го <ph name="PRINTER_NAME"/></translation>
 <translation id="8774379074441005279">Потврдете го враќањето</translation>
@@ -6175,7 +6102,6 @@
 <translation id="8912793549644936705">Растегни</translation>
 <translation id="8912810933860534797">Овозможете автоматско скенирање</translation>
 <translation id="8915370057835397490">Се вчитува предлог</translation>
-<translation id="8916476537757519021">Инкогнито подрамка: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8922013791253848639">Секогаш дозволувај реклами на сајтов</translation>
 <translation id="8923880975836399332">Темна синозелена</translation>
 <translation id="8925458182817574960">&amp;Поставки</translation>
@@ -6197,7 +6123,6 @@
 <translation id="8944964446326379280"><ph name="APP_NAME"/> споделува прозорец со <ph name="TAB_NAME"/>.</translation>
 <translation id="8945274638472141382">Големина на иконата</translation>
 <translation id="8946359700442089734">Функциите за отстранување грешки не се целосно овозможени на овој уред со <ph name="IDS_SHORT_PRODUCT_NAME"/>.</translation>
-<translation id="894871326938397531">Да се напушти режимот „Инкогнито“?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> сака да ги види производителот и моделот на вашиот безбедносен клуч</translation>
 <translation id="8951256747718668828">Враќањето не може да се заврши поради грешка</translation>
 <translation id="8951465597020890363">Сепак да се излезе од режимот на гостин?</translation>
@@ -6480,7 +6405,7 @@
 <translation id="3772947852642271642">Користете интернет без да ја зачувате историјата на прелистување со инкогнито прозорец</translation>
 <translation id="3871738366246972820">Користите заеднички компјутер? Обидете се со отворање инкогнито прозорец.</translation>
 <translation id="5808622652939943719">За да прелистувате приватно, кликнете на менито со икона со точки за да отворите инкогнито прозорец</translation>
-<translation id="9079153198295609735">Автоматски испрати статистика за користење и извештаи за падови до Brave</translation>
+<translation id="9079153198295609735">Автоматски испрати статистика за користење и извештаи за падови до Brave Software</translation>
 <translation id="8839398440242019256">Не од Веб-продавницата на Brave.</translation>
 <translation id="6945695820322143954">Наставката ја прекршува политиката на Веб-продавницата на Brave.</translation>
 <translation id="1676595396635191120">Нов инкогнито прозорец</translation>
@@ -6519,8 +6444,8 @@
 <translation id="4904061654709986277">Додај лице</translation>
 <translation id="6114945161119872228">Отстрани го ова лице</translation>
 <translation id="769308100792069196">Додај надгледувано лице</translation>
-<translation id="8006143138282906848">Отстрани го овој корисник</translation>
-<translation id="6912187023601892621">Додај надгледуван корисник</translation>
+<translation id="8006143138282906848">Отстрани го ова лице</translation>
+<translation id="6912187023601892621">Додај надгледувано лице</translation>
 <translation id="8086119151297127544">Отклучете го профилот пред да отстраните некого.</translation>
 <translation id="7805701378418968629">Отклучете го профилот пред да додадете некого.</translation>
 <translation id="6315812488257290136">Луѓе</translation>
@@ -6537,10 +6462,10 @@
 <translation id="1281501490173223206">Само тековната инкогнито сесија</translation>
 <translation id="5566692924079383101">Исклучоков автоматски ќе се отстрани откако ќе излезете од тековната инкогнито сесија</translation>
 <translation id="6906406176003824042">Уредете го лицето</translation>
-<translation id="9063160602596686558">Автоматски испраќа статистика на користењето и извештаи за падовите до Brave.</translation>
+<translation id="9063160602596686558">Автоматски испраќа статистика на користењето и извештаи за падовите до Brave Software.</translation>
 <translation id="3860292630623580294">(Инкогнито)</translation>
 <translation id="4854477725773269949">Овозможи во инкогнито</translation>
-<translation id="6436164536244065364">Прикажи во веб-продавницата на Brave</translation>
+<translation id="6436164536244065364">Прикажи во веб-продавница</translation>
 <translation id="38046578254905003">Најдете екстензии и теми во <ph name="BEGIN_LINK"/>Веб-продавницата на Brave<ph name="END_LINK"/></translation>
 <translation id="6336451774241870485">Нова картичка „Инкогнито“</translation>
 <translation id="6610147964972079463">Затвори инкогнито-картички</translation>

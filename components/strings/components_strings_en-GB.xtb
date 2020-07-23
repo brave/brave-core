@@ -433,7 +433,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="2824775600643448204">Address and search bar</translation>
 <translation id="2826760142808435982">The connection is encrypted and authenticated using <ph name="CIPHER"/> and uses <ph name="KX"/> as the key exchange mechanism.</translation>
 <translation id="2835170189407361413">Clear form</translation>
-<translation id="2847118875340931228">Open incognito window</translation>
 <translation id="2850739647070081192">Invite (Envelope)</translation>
 <translation id="2856444702002559011">Attackers might be trying to steal your information from <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (for example, passwords, messages or credit cards). <ph name="BEGIN_LEARN_MORE_LINK"/>Learn more<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Poster fold</translation>
@@ -483,7 +482,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3041612393474885105">Certificate Information</translation>
 <translation id="3060227939791841287">C9 (Envelope)</translation>
 <translation id="3061707000357573562">Patch Service</translation>
-<translation id="3064966200440839136">Leaving incognito mode to pay via an external application. Continue?</translation>
 <translation id="3080254622891793721">Graphic</translation>
 <translation id="3086579638707268289">Your activity on the web is being monitored</translation>
 <translation id="3087734570205094154">Bottom</translation>
@@ -503,7 +501,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3154506275960390542">This page includes a form that may not submit securely. Data that you send can be viewed by others while in transit or could be modified by an attacker to change what the server receives.</translation>
 <translation id="3157931365184549694">Restore</translation>
 <translation id="3162559335345991374">The Wi-Fi that you are using may require you to visit its login page.</translation>
-<translation id="3167968892399408617">Pages that you view in incognito tabs won’t stick around in your browser’s history, cookie store or search history after you’ve closed all of your incognito tabs. Any files you download or bookmarks you create will be kept.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Island</translation>
 <translation id="3176929007561373547">Check your proxy settings or contact your network administrator to
@@ -620,7 +617,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="3676592649209844519">Device ID:</translation>
 <translation id="3677008721441257057">Did you mean &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Request could not be signed</translation>
-<translation id="3678529606614285348">Open page in a new incognito window (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Certificate information</translation>
 <translation id="3701427423622901115">Reset acknowledged.</translation>
 <translation id="3704162925118123524">The network that you are using may require you to visit its log-in page.</translation>
@@ -777,7 +773,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Attackers on this site might attempt to install dangerous programs on your computer that steal or delete your information (for example, photos, passwords, messages and credit cards).</translation>
 <translation id="4358059973562876591">The templates that you've specified may not be applied due to an error with the DnsOverHttpsMode policy.</translation>
-<translation id="4358461427845829800">Manage payment methods...</translation>
+<translation id="327628984294957152">Manage payment methods...</translation>
 <translation id="4367563149485757821">Number-12 (Envelope)</translation>
 <translation id="437058704415269440">Account balance</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -940,7 +936,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5123063207673082822">Weekend</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Verify your card</translation>
-<translation id="5135404736266831032">Manage addresses...</translation>
+<translation id="6291230311289558881">Manage addresses...</translation>
 <translation id="5138227688689900538">Show less</translation>
 <translation id="7186167407612593632">Encrypt synced passwords with your Brave credentials</translation>
 <translation id="5145883236150621069">Error code present in the policy response</translation>
@@ -948,7 +944,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5148809049217731050">Face up</translation>
 <translation id="515292512908731282">C4 (Envelope)</translation>
 <translation id="5158275234811857234">Cover</translation>
-<translation id="5159010409087891077">Open page in a new incognito window (⇧⌘N)</translation>
 <translation id="5161506081086828129">Stacker 9</translation>
 <translation id="9016458749696512983">Enter the CVC for <ph name="CREDIT_CARD"/>. Once you confirm, card details from your Brave Account will be shared with this site.</translation>
 <translation id="8515152881111950319">You could lose access to your organisation's account or experience identity theft. Brave recommends changing your password now.</translation>
@@ -956,7 +951,6 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Machine</translation>
 <translation id="5179510805599951267">Not in <ph name="ORIGINAL_LANGUAGE"/>? Report this error</translation>
-<translation id="5190835502935405962">Bookmarks Bar</translation>
 <translation id="519422657042045905">Annotation not available</translation>
 <translation id="5201306358585911203">An embedded page on this page says</translation>
 <translation id="5205222826937269299">Name required</translation>
@@ -1086,7 +1080,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="5689516760719285838">Location</translation>
 <translation id="569000877158168851">The DnsOverHttpsTemplates value is not relevant, and will not be used, unless the DnsOverHttpsMode policy is set to either <ph name="SECURE_DNS_MODE_AUTOMATIC"/> or <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">Centre</translation>
-<translation id="570530837424789914">Manage...</translation>
+<translation id="3655851112780233803">Manage...</translation>
 <translation id="57094364128775171">Suggest strong password…</translation>
 <translation id="5710435578057952990">The identity of this website has not been verified.</translation>
 <translation id="5720705177508910913">Current user</translation>
@@ -1265,7 +1259,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6451458296329894277">Confirm Form Resubmission</translation>
 <translation id="6457206614190510200">Saddle stitch</translation>
-<translation id="6465306955648956876">Manage passwords...</translation>
+<translation id="2275235756919172538">Manage passwords...</translation>
 <translation id="647261751007945333">Device policies</translation>
 <translation id="6476284679642588870">Manage payment methods</translation>
 <translation id="6489534406876378309">Start uploading crashes</translation>
@@ -1580,7 +1574,6 @@ Additional details:
 <translation id="782886543891417279">The Wi-Fi that you are using (<ph name="WIFI_NAME"/>) may require you to visit its login page.</translation>
 <translation id="7836231406687464395">Postfix (Envelope)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{None}=1{1 app (<ph name="EXAMPLE_APP_1"/>)}=2{2 apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">However, you aren’t invisible. Going incognito doesn’t hide your browsing from your employer, your Internet service provider or the websites that you visit.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">Leave site?</translation>
 <translation id="7865448901209910068">Best speed</translation>
@@ -1663,10 +1656,8 @@ Additional details:
 <translation id="8220146938470311105">C7/C6 (Envelope)</translation>
 <translation id="8220639454292072926">Enterprise Reporting</translation>
 <translation id="3272614036080146686">You just entered your password on a deceptive site. Brave recommends going to <ph name="WEBSITE_1"/> and other sites where you use this password, and changing it now.</translation>
-<translation id="8225771182978767009">The person who set up this computer has chosen to block this site.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Platform temperature</translation>
-<translation id="8238581221633243064">Open page in a new Incognito tab</translation>
 <translation id="8241707690549784388">The page that you're looking for used information that you entered. Returning to that page might cause any action that you took to be repeated. Do you want to continue?</translation>
 <translation id="8241712895048303527">Block on this site</translation>
 <translation id="8242426110754782860">Proceed</translation>
@@ -1678,7 +1669,6 @@ Additional details:
 <translation id="8262952874573525464">Edge stitch bottom</translation>
 <translation id="8267698848189296333">Signing in as <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Separate documents/Collated copies</translation>
-<translation id="8269981117540303696">Now you can browse privately, and other people who use this device won't see your activity. However, downloads and bookmarks will be saved.</translation>
 <translation id="8277900682056760511">Payment handler sheet is opened</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Know your unique device identifier</translation>
@@ -1697,7 +1687,6 @@ Additional details:
 <translation id="833262891116910667">Highlight</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">If you understand the risks to your security, you may <ph name="BEGIN_LINK"/>visit this site<ph name="END_LINK"/> before the harmful programs have been removed.</translation>
-<translation id="8349305172487531364">Bookmarks bar</translation>
 <translation id="8355270400102541638">Local crash context:</translation>
 <translation id="8363502534493474904">Turning off aeroplane mode</translation>
 <translation id="8364627913115013041">Not set.</translation>
@@ -1762,7 +1751,6 @@ Additional details:
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, search suggestion</translation>
 <translation id="8719528812645237045">Multiple punch top</translation>
 <translation id="8725066075913043281">Try again</translation>
-<translation id="8728672262656704056">You’ve gone incognito</translation>
 <translation id="8730621377337864115">Done</translation>
 <translation id="6326805297893828864">To establish a secure connection, your clock needs to be set correctly. This is because the certificates that websites use to identify themselves are only valid for specific periods of time. Since your device's clock is incorrect, Brave cannot verify these certificates.</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/>’s &lt;abbr id="dnsDefinition"&gt;DNS address&lt;/abbr&gt; could not be found. Diagnosing the problem.</translation>
@@ -1795,7 +1783,6 @@ Additional details:
 <translation id="8903921497873541725">Zoom in</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Remove Suggestion button, press Enter to remove, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">You've gone incognito</translation>
 <translation id="5713644099811900409">Brave Account</translation>
 <translation id="8918231688545606538">This page is suspicious</translation>
 <translation id="892588693504540538">Punch top right</translation>

@@ -7,7 +7,6 @@
 <translation id="1036727731225946849">Dodaję aplikację <ph name="WEBAPK_NAME"/>…</translation>
 <translation id="1041308826830691739">Ze stron internetowych</translation>
 <translation id="1045899828449635435">Wyczyścić też dane z tych stron?</translation>
-<translation id="1049743911850919806">Incognito</translation>
 <translation id="10614374240317010">Nigdy nie zapisane</translation>
 <translation id="5428209950370661546">Inne usługi Brave</translation>
 <translation id="1068672505746868501">Nigdy nie tłumacz stron, których językiem jest <ph name="SOURCE_LANGUAGE"/></translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">Nie dokończono wstępnego konfigurowania synchronizacji</translation>
 <translation id="1821253160463689938">Twoje ustawienia będą zapisywane w plikach cookie, nawet jeśli nie odwiedzisz tych stron</translation>
 <translation id="1829244130665387512">Znajdź na stronie</translation>
-<translation id="1853692000353488670">Nowa karta incognito</translation>
 <translation id="1856325424225101786">Zresetować wersję uproszczoną?</translation>
 <translation id="5817715962196959877">Brave pobiera pliki jeszcze szybciej</translation>
 <translation id="1883903952484604915">Moje pliki</translation>
@@ -233,15 +231,12 @@ Aby coś wyszukać, naciśnij i przytrzymaj dowolne słowo. Aby doprecyzować w
 <translation id="2903493209154104877">Adresy</translation>
 <translation id="290376772003165898">Język tej strony to nie <ph name="LANGUAGE"/>?</translation>
 <translation id="2904414404539560095">Lista urządzeń, którym udostępnisz kartę, jest otwarta na pełną wysokość.</translation>
-<translation id="2905036901251765993">Aby udostępniać pliki użytkownikom w pobliżu, pozwól im zeskanować ten kod QR</translation>
 <translation id="7339921667754113786">Platforma powiadomień Brave</translation>
 <translation id="2923908459366352541">Nazwa jest nieprawidłowa.</translation>
 <translation id="6355102470683871794">Dane aplikacji Brave <ph name="APP_NAME"/></translation>
 <translation id="2942036813789421260">Karta podglądu jest zamknięta</translation>
 <translation id="2956410042958133412">Tym kontem zarządzają <ph name="PARENT_NAME_1"/> i <ph name="PARENT_NAME_2"/>.</translation>
-<translation id="2962095958535813455">Przełączono na karty incognito</translation>
 <translation id="2968755619301702150">Przeglądarka certyfikatów</translation>
-<translation id="2979025552038692506">Wybrana karta incognito</translation>
 <translation id="2987620471460279764">Tekst udostępniany przez inne urządzenia</translation>
 <translation id="2989523299700148168">Ostatnio odwiedzone</translation>
 <translation id="2996291259634659425">Utwórz hasło</translation>
@@ -252,16 +247,14 @@ Aby coś wyszukać, naciśnij i przytrzymaj dowolne słowo. Aby doprecyzować w
 <translation id="305593374596241526">Lokalizacja jest wyłączona. Włącz ją w <ph name="BEGIN_LINK"/>Ustawieniach Androida<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">W każdej chwili możesz włączyć synchronizację w ustawieniach</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> zakładka}few{<ph name="BOOKMARKS_COUNT_MANY"/> zakładki}many{<ph name="BOOKMARKS_COUNT_MANY"/> zakładek}other{<ph name="BOOKMARKS_COUNT_MANY"/> zakładki}}</translation>
-<translation id="3089395242580810162">Otwórz w karcie incognito</translation>
 <translation id="3114012059975132928">Odtwarzacz</translation>
 <translation id="3123734510202723619">Komunikaty</translation>
-<translation id="3137521801621304719">Wyłącz tryb incognito</translation>
 <translation id="3143515551205905069">Anuluj synchronizację</translation>
 <translation id="5063487983358782016">Strona główna Brave</translation>
 <translation id="3157842584138209013">Sprawdź ilość zaoszczędzonych danych, używając przycisku Więcej opcji</translation>
 <translation id="3166827708714933426">Skróty kart i okien</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">Bezpieczne przeglądanie (chroni Ciebie i Twoje urządzenie przed niebezpiecznymi witrynami)</translation>
+<translation id="3201899458094819285">Bezpieczne przeglądanie (chroni Ciebie i Twoje urządzenie przed niebezpiecznymi witrynami)</translation>
 <translation id="3205824638308738187">Prawie gotowe!</translation>
 <translation id="3207960819495026254">Dodano do zakładek</translation>
 <translation id="3211426585530211793">Usunięto: <ph name="ITEM_TITLE"/></translation>
@@ -285,7 +278,6 @@ Aby coś wyszukać, naciśnij i przytrzymaj dowolne słowo. Aby doprecyzować w
 <translation id="3333961966071413176">Wszystkie kontakty</translation>
 <translation id="3334729583274622784">Zmienić rozszerzenie pliku?</translation>
 <translation id="3341058695485821946">Sprawdź ilość zaoszczędzonych danych</translation>
-<translation id="3350687908700087792">Zamknij wszystkie karty incognito</translation>
 <translation id="8134317863207426198">Lżejsza wersja strony dostarczona przez Brave. Aby wczytać oryginalną wersję, kliknij przycisk Załaduj oryginał.</translation>
 <translation id="3367813778245106622">Zaloguj się ponownie, by rozpocząć synchronizację</translation>
 <translation id="2746024117903470217">Aby udostępnić tę stronę na innym urządzeniu, włącz synchronizację w ustawieniach Brave na obu urządzeniach</translation>
@@ -298,7 +290,6 @@ Aby coś wyszukać, naciśnij i przytrzymaj dowolne słowo. Aby doprecyzować w
 <translation id="3443221991560634068">Ponownie załaduj bieżącą stronę</translation>
 <translation id="3445014427084483498">Przed chwilą</translation>
 <translation id="3478363558367712427">Możesz wybrać wyszukiwarkę</translation>
-<translation id="3492207499832628349">Nowa karta incognito</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Dowiedz się więcej<ph name="END_LINK"/> o proponowanej treści</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Rzeczywistość rozszerzona</translation>
@@ -329,7 +320,6 @@ Aby coś wyszukać, naciśnij i przytrzymaj dowolne słowo. Aby doprecyzować w
 <translation id="3749259744154402564">Nieobsługiwane</translation>
 <translation id="3763247130972274048">Kliknij dwukrotnie z lewej lub prawej strony filmu, by przewinąć o 10 s</translation>
 <translation id="3771001275138982843">Nie udało się pobrać aktualizacji</translation>
-<translation id="3771033907050503522">Karty incognito</translation>
 <translation id="1138681184697033370">Warunki korzystania z usług Brave</translation>
 <translation id="3773755127849930740"><ph name="BEGIN_LINK"/>Włącz Bluetooth<ph name="END_LINK"/>, by umożliwić parowanie</translation>
 <translation id="3775705724665058594">Wyślij na swoje urządzenia</translation>
@@ -495,7 +485,6 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="5040262127954254034">Prywatność</translation>
 <translation id="5087580092889165836">Dodaj kartę</translation>
 <translation id="510275257476243843">Pozostała godzina</translation>
-<translation id="5123685120097942451">Karta incognito</translation>
 <translation id="5127805178023152808">Synchronizacja jest wyłączona</translation>
 <translation id="5129038482087801250">Zainstaluj aplikację internetową</translation>
 <translation id="5132942445612118989">Synchronizuj swoje hasła, historię i inne dane na wszystkich swoich urządzeniach</translation>
@@ -547,14 +536,12 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="5517095782334947753">Masz zakładki, historię, hasła i inne ustawienia z konta <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">Przekierowanie zostało zablokowane.</translation>
 <translation id="2367014990350929709">Aby wyszukać urządzenia, Brave potrzebuje dostępu do lokalizacji. <ph name="BEGIN_LINK1"/>Zwiększ uprawnienia<ph name="END_LINK1"/>. Dostęp do lokalizacji jest <ph name="BEGIN_LINK2"/>wyłączony na tym urządzeniu<ph name="END_LINK2"/>.</translation>
-<translation id="5530766185686772672">Zamknij karty incognito</translation>
 <translation id="5534640966246046842">Strona została skopiowana</translation>
 <translation id="5561549206367097665">Czekam na sieć…</translation>
 <translation id="55737423895878184">Lokalizacja i powiadomienia są włączone</translation>
 <translation id="5578795271662203820">Szukaj tej grafiki w <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">W <ph name="BEGIN_LINK1"/>ustawieniach<ph name="END_LINK1"/> możesz wybrać, co chcesz synchronizować.</translation>
 <translation id="5595485650161345191">Edytuj adres</translation>
-<translation id="5599455543593328020">Tryb incognito</translation>
 <translation id="5620928963363755975">Znajdź pliki i strony w Pobranych plikach, używając przycisku Więcej opcji</translation>
 <translation id="5626134646977739690">Nazwa:</translation>
 <translation id="5639724618331995626">Pozwól na otwieranie wszystkich stron</translation>
@@ -572,7 +559,6 @@ Aby zmienić to ustawienie, <ph name="BEGIN_LINK"/>zresetuj synchronizację<ph n
 <translation id="5726692708398506830">Powiększ całą zawartość strony</translation>
 <translation id="5748802427693696783">Przełączono na karty standardowe</translation>
 <translation id="3088191967551450609">Brave musi mieć dostęp do pamięci, by pobierać pliki.</translation>
-<translation id="5763382633136178763">Karty incognito</translation>
 <translation id="5763514718066511291">Kliknij, by skopiować URL tej aplikacji</translation>
 <translation id="5765780083710877561">Opis:</translation>
 <translation id="5793665092639000975">Zajmują <ph name="SPACE_USED"/> z <ph name="SPACE_AVAILABLE"/></translation>
@@ -858,7 +844,6 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
 <translation id="8073388330009372546">Otwórz grafikę w nowej karcie</translation>
 <translation id="8076492880354921740">Karty</translation>
 <translation id="8084114998886531721">Zapisane hasło</translation>
-<translation id="8103578431304235997">Karta incognito</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Aby korzystać ze swoich zakładek na wszystkich urządzeniach, włącz synchronizację</translation>
 <translation id="4565206163201411670">Pokazywać Twoją aktywność w Brave w Cyfrowej równowadze?</translation>
@@ -897,7 +882,7 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
 <translation id="8428213095426709021">Ustawienia</translation>
 <translation id="8438566539970814960">Ulepsz wyszukiwanie i przeglądanie</translation>
 <translation id="8441146129660941386">Przewiń do tyłu</translation>
-<translation id="8443209985646068659">Nie można zaktualizować</translation>
+<translation id="4058091506841967397">Nie można zaktualizować</translation>
 <translation id="8445448999790540984">Nie można wyeksportować haseł</translation>
 <translation id="8461694314515752532">Szyfruj synchronizowane dane własnym hasłem synchronizacji</translation>
 <translation id="8466613982764129868">Sprawdź, czy <ph name="TARGET_DEVICE_NAME"/> ma połączenie z internetem</translation>
@@ -909,7 +894,6 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
 <translation id="230699814587342492">Hasła w Brave</translation>
 <translation id="8503813439785031346">Nazwa użytkownika</translation>
 <translation id="133012818630824069">Eksportuj hasła zapisane w Brave</translation>
-<translation id="8514577642972634246">Włącz tryb incognito</translation>
 <translation id="8516012719330875537">Edytor obrazów</translation>
 <translation id="8523928698583292556">Usuń zapisane hasło</translation>
 <translation id="854522910157234410">Otwórz tę stronę</translation>
@@ -955,7 +939,6 @@ Na przykład niektóre strony mogą na nie zareagować, wyświetlając reklamy b
 <translation id="8970887620466824814">Coś poszło nie tak.</translation>
 <translation id="8972098258593396643">Czy pobrać do folderu domyślnego?</translation>
 <translation id="8988028529677883095">Używaj telefonu jako klucza bezpieczeństwa</translation>
-<translation id="8993760627012879038">Otwórz nową kartę w trybie incognito</translation>
 <translation id="2689656545739939160">Logujesz się na konto, którym zarządza <ph name="MANAGED_DOMAIN"/>, i przekazujesz jego administratorowi kontrolę nad Twoimi danymi Brave. Zostaną one trwale przypisane do tego konta. Gdy się wylogujesz, znikną one z tego urządzenia, ale pozostaną zapisane na Twoim koncie Brave.</translation>
 <translation id="9028914725102941583">Aby udostępniać treści między urządzeniami, włącz synchronizację</translation>
 <translation id="9040142327097499898">Powiadomienia są włączone. Lokalizacja jest wyłączona na tym urządzeniu.</translation>

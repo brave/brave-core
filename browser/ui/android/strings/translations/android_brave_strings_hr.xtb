@@ -153,7 +153,7 @@ mjeseca...</translation>
 <translation id="5463954686005964104">Daj mjesečnu napojnicu ovom mrežnom mjestu</translation>
 <translation id="7530570094705720669">Izrada novčanika</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
-<translation id="4751553692764711651">Doprinijeli ste u vrijednosti od <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
+<translation id="4751553692764711651">Doprinijeli ste u vrijednosti od <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Nije moguće provesti zakazano mjesečno plaćanje automatskog doprinosa ili mjesečne napojnice zbog nedovoljnih sredstava. Pokušat ćemo ponovno za 30 dana.</translation>
 <translation id="5306913077198665897">Ispričavamo se, ali nastao je problem tijekom obrađivanja vaše napojnice. Pokušajte ponovo.</translation>
 <translation id="2429828319207652823">Pojavio se problem s obradom vašeg doprinosa.</translation>
@@ -172,7 +172,7 @@ mjeseca...</translation>
 <translation id="4292832015778676417">zarađeno od oglasa</translation>
 <translation id="683765328936486920">na usluzi YouTube</translation>
 <translation id="8969049974285901797">na usluzi Twitch</translation>
-<translation id="4376933248999950592">Odredili ste <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> za stvaratelje koji se još nisu
+<translation id="4376933248999950592">Odredili ste <ph name="BAT_VALUE"/> <ph name="BAT_TEXT"/> za stvaratelje koji se još nisu
 registrirali za primanje doprinosa. Vašim se preglednikom pokušavaju ustupiti doprinosi dok se ne provjere ili do isteka 90 dana.</translation>
 <translation id="3101693828171454453">nema dovoljno <ph name="TOKEN"/>s</translation>
 <translation id="6940273954212603510">molimo</translation>
