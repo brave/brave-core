@@ -86,8 +86,8 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
 
 // Default order in which engines will appear in the UI.
 std::vector<BravePrepopulatedEngineID> brave_engines_default = {
-    PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_YAHOO,
+    PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
 #if defined(OS_ANDROID)
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
@@ -97,10 +97,10 @@ std::vector<BravePrepopulatedEngineID> brave_engines_default = {
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
-// Germany - DDG appears on top.
+// Variations of the order / default options by country.
 std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
     PREPOPULATED_ENGINE_ID_YAHOO,
+    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
 #if defined(OS_ANDROID)
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
 #endif
@@ -110,10 +110,9 @@ std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
-// France - Qwant appears on top.
 std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
-    PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_YAHOO,
+    PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
 #if defined(OS_ANDROID)
@@ -123,10 +122,9 @@ std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
-// Australia / NZ / IE - DDG appears on top.
 std::vector<BravePrepopulatedEngineID> brave_engines_AU_NZ_IE = {
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
     PREPOPULATED_ENGINE_ID_YAHOO,
+    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
 #if defined(OS_ANDROID)
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
 #endif
@@ -135,18 +133,38 @@ std::vector<BravePrepopulatedEngineID> brave_engines_AU_NZ_IE = {
     PREPOPULATED_ENGINE_ID_BING,
     PREPOPULATED_ENGINE_ID_STARTPAGE};
 
-// A map to keep track of default engines for countries that don't use the
-// regular default engine.
+// A map to keep track of a full list of default engines for countries
+// that don't use the default list.
 const std::map<int, std::vector<BravePrepopulatedEngineID>>
     default_engines_by_country_id_map = {
-        {country_codes::CountryCharsToCountryID('D', 'E'), brave_engines_DE},
-        {country_codes::CountryCharsToCountryID('F', 'R'), brave_engines_FR},
+        {country_codes::CountryCharsToCountryID('D', 'E'),
+         brave_engines_DE},
+        {country_codes::CountryCharsToCountryID('F', 'R'),
+         brave_engines_FR},
         {country_codes::CountryCharsToCountryID('A', 'U'),
          brave_engines_AU_NZ_IE},
         {country_codes::CountryCharsToCountryID('N', 'Z'),
          brave_engines_AU_NZ_IE},
         {country_codes::CountryCharsToCountryID('I', 'E'),
          brave_engines_AU_NZ_IE}};
+
+// Default search engine. Overridable on a per-country basis.
+const BravePrepopulatedEngineID default_engine =
+    PREPOPULATED_ENGINE_ID_GOOGLE;
+
+// A map tracking the singular default search engine per-country.
+const std::map<int, BravePrepopulatedEngineID>
+    default_engine_by_country_id_map = {
+        {country_codes::CountryCharsToCountryID('A', 'U'),
+         PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+        {country_codes::CountryCharsToCountryID('F', 'R'),
+         PREPOPULATED_ENGINE_ID_QWANT},
+        {country_codes::CountryCharsToCountryID('D', 'E'),
+         PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE},
+        {country_codes::CountryCharsToCountryID('I', 'E'),
+         PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE},
+        {country_codes::CountryCharsToCountryID('N', 'Z'),
+         PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE}};
 
 // A map to keep track of country-specific implementations of Yahoo.
 // Used in LocalizeEngineList.
@@ -280,22 +298,24 @@ std::vector<std::unique_ptr<TemplateURLData>>
 GetBravePrepopulatedEnginesForCountryID(
     int country_id,
     size_t* default_search_provider_index = nullptr) {
-  std::vector<BravePrepopulatedEngineID> brave_engines;
+  std::vector<BravePrepopulatedEngineID> brave_engines = brave_engines_default;
 
-  // Check for exceptions from the default list of engines
+  // Check for a per-country override of this list
   const auto& it = default_engines_by_country_id_map.find(country_id);
   if (it != default_engines_by_country_id_map.end()) {
     brave_engines = it->second;
-  } else {
-    brave_engines = brave_engines_default;
   }
   DCHECK_GT(brave_engines.size(), 0ul);
 
+  // Get the default engine (overridable by country)
+  BravePrepopulatedEngineID default_id = default_engine;
+  const auto& it2 = default_engine_by_country_id_map.find(country_id);
+  if (it2 != default_engine_by_country_id_map.end()) {
+    default_id = it2->second;
+  }
+
   // Allow for per-country overrides
   LocalizeEngineList(brave_engines, country_id);
-
-  // Default engine is the first in the list
-  BravePrepopulatedEngineID default_id = brave_engines.front();
 
   // Build a vector PrepopulatedEngines from BravePrepopulatedEngineIDs and
   // also get the default engine index
