@@ -100,11 +100,7 @@ Polymer({
     if (!shouldReset) {
       return
     }
-    const resetResult = await this.browserProxy_.resetSyncChain();
-    if (!resetResult) {
-      // When this happens, setup process will be terminated.
-      return;
-    }
+    await this.browserProxy_.resetSyncChain();
     const router = Router.getInstance();
     router.navigateTo(router.getRoutes().BRAVE_SYNC);
   }

@@ -173,13 +173,15 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   CHECK_EQ(1U, args->GetSize());
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
+  base::Value callback_id_arg(callback_id->Clone());
+
   auto* sync_service = GetSyncService();
-  if (!sync_service ||
-      !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
-    ResolveJavascriptCallback(*callback_id, base::Value(false));
+  // Do not send self deleted commit if engine is not up and running
+  if (!sync_service || sync_service->GetTransportState() !=
+      syncer::SyncService::TransportState::ACTIVE) {
+    OnSelfDeleted(std::move(callback_id_arg));
     return;
   }
-  base::Value callback_id_arg(callback_id->Clone());
 
   syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
   DCHECK(tracker);
