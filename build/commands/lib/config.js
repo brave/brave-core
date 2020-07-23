@@ -11,7 +11,7 @@ const util = require('../../../../../lib/util')
 let NpmConfig = null
 
 var packageConfig = function(path){
-  let obj = packages['config']
+  let obj = packages.config
   for (var i = 0, len = path.length; i < len; i++) {
     if (!obj) {
       return obj

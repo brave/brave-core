@@ -74,7 +74,7 @@ const touchOverriddenVectorIconFiles = () => {
  * Checks to make sure the src/chrome/VERSION matches brave-browser's package.json version
  */
 const checkVersionsMatch = () => {
-  const srcChromeVersionDir = path.resolve(path.join(__dirname, '..', 'src', 'chrome', 'VERSION'))
+  const srcChromeVersionDir = path.resolve(path.join(config.srcDir, 'chrome', 'VERSION'))
   const versionData = fs.readFileSync(srcChromeVersionDir, 'utf8')
   const re = /MAJOR=(\d+)\s+MINOR=(\d+)\s+BUILD=(\d+)\s+PATCH=(\d+)/
   const found = versionData.match(re)

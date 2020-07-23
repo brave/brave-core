@@ -22,13 +22,13 @@
     "push_l10n": "node ./build/commands/scripts/commands.js push_l10n",
     "pull_l10n": "node ./build/commands/scripts/commands.js pull_l10n",
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
-    // "lint": "node ./build/commands/scripts/commands.js lint",
+    "lint": "node ./build/commands/scripts/commands.js lint",
     "test": "node ./build/commands/scripts/commands.js test",
-    // "test:scripts": "jest lib scripts",
-    // "test-security": "npm run audit_deps && node ./build/commands/scripts/commands.js start --enable_brave_update --network_log --user_data_dir_name=brave-network-test"
+    "test:scripts": "jest lib scripts",
+    "test-security": "npm run audit_deps && node ./build/commands/scripts/commands.js start --enable_brave_update --network_log --user_data_dir_name=brave-network-test",
 
 
-    "lint": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
+    "lint-js": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui": "webpack --config components/webpack/webpack.config.js --progress --colors",
