@@ -14,11 +14,9 @@
  protected:                                  \
   bool IsShowingWarningDialog() const;
 
-#define GetYForFilenameText virtual GetYForFilenameText
 #define UpdateAccessibleName virtual UpdateAccessibleName
 #include "../../../../../../../chrome/browser/ui/views/download/download_item_view.h"
 #undef UpdateAccessibleName
-#undef GetYForFilenameText
 #undef BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_

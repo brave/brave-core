@@ -36,7 +36,7 @@ class BraveDownloadItemView : public DownloadItemView {
   static constexpr int kBraveVerticalTextPadding = 3;
 
   // These functions calculate the vertical coordinates for each text line.
-  int GetYForFilenameText() const override;
+  int GetYForFilenameText() const;
   int GetYForOriginURLText() const;
   int GetYForStatusText() const;
 

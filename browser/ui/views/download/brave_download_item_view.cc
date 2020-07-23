@@ -69,6 +69,7 @@ void BraveDownloadItemView::Layout() {
   DownloadItemView::Layout();
   // Adjust the position of the status text label.
   if (!IsShowingWarningDialog()) {
+    file_name_label_->SetY(GetYForFilenameText());
     status_label_->SetY(GetYForStatusText());
   }
 }
