@@ -13,9 +13,22 @@
 
 namespace confirmations {
 
-namespace {
+bool ShouldAllowHeader(const std::string& header) {
+  const std::vector<std::string> allowed_headers {
+      "digest",
+      "signature",
+      "accept",
+      "content-type"
+  };
 
-}  // namespace
+  for (const auto& item : allowed_headers) {
+    if (base::StartsWith(header, item, base::CompareCase::INSENSITIVE_ASCII)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 std::string UrlRequestToString(
     const std::string& url,
@@ -31,6 +44,10 @@ std::string UrlRequestToString(
     log += "  Headers:\n";
 
     for (const auto& header : headers) {
+      if (!ShouldAllowHeader(header)) {
+        continue;
+      }
+
       log += base::StringPrintf("    %s\n", header.c_str());
     }
   }

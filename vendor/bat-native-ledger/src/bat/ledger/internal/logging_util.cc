@@ -5,13 +5,29 @@
 
 #include "bat/ledger/internal/logging_util.h"
 
-#include <time.h>
-
 #include <sstream>
 
+#include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
 
 namespace ledger {
+
+bool ShouldLogHeader(const std::string& header) {
+  const std::vector<std::string> allowed_headers {
+      "digest",
+      "signature",
+      "accept",
+      "content-type"
+  };
+
+  for (const auto& item : allowed_headers) {
+    if (base::StartsWith(header, item, base::CompareCase::INSENSITIVE_ASCII)) {
+      return true;
+    }
+  }
+
+  return false;
+}
 
 std::string UrlRequestToString(
     const std::string& url,
@@ -35,6 +51,10 @@ std::string UrlRequestToString(
   }
 
   for (const auto& header : headers) {
+    if (!ShouldLogHeader(header)) {
+      continue;
+    }
+
     log += base::StringPrintf("\n> Header %s", header.c_str());
   }
 
