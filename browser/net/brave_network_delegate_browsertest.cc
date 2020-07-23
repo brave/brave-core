@@ -114,6 +114,8 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+
     // This is needed to load pages from "domain.com" without an interstitial.
     command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
