@@ -33,6 +33,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveSyncInformers;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -223,6 +224,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
+
+        BraveSyncInformers.show();
     }
 
     @Override
