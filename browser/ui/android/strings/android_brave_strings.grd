@@ -313,7 +313,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Choose default search engine
       </message>
       <message name="IDS_SEARCH_ENGINE_TEXT" desc="Text for search engine page for onboarding">
-        For a more private search experience, try DuckDuckGo.
+        You can always change your preference later in app settings.
       </message>
       <message name="IDS_SAVE" desc="Text for save button">
         Save

@@ -8,13 +8,14 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:background="@color/onboarding_bg_color">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/onboarding_black">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/search_engine_layout"
@@ -23,7 +24,6 @@
             android:layout_weight="1"
             android:gravity="center"
             android:paddingTop="48dp"
-            android:background="@color/onboarding_bg_color"
             android:orientation="vertical">
 
             <TextView
@@ -39,31 +39,13 @@
                 android:textColor="@color/onboarding_text_color"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
-                android:lineSpacingMultiplier="1.2"
-                android:text="@string/search_engine_text"
-                android:textColor="@color/onboarding_text_color"
-                android:textSize="@dimen/onboarding_text_size" />
-
-            <ScrollView
+            <RadioGroup
+                android:id="@+id/radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:paddingStart="16dp"
-                android:paddingEnd="16dp">
-
-                <RadioGroup
-                    android:id="@+id/radio_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </ScrollView>
+                android:paddingEnd="16dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
