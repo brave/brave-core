@@ -38,6 +38,8 @@ class TorProfileServiceImpl : public TorProfileService,
   // TorProfileService:
   void SetNewTorCircuit(content::WebContents* web_contents) override;
   std::unique_ptr<net::ProxyConfigService> CreateProxyConfigService() override;
+  bool IsTorLaunched() override;
+  void SetTorLaunchedForTest() override;
 
   void KillTor();
 
@@ -52,6 +54,7 @@ class TorProfileServiceImpl : public TorProfileService,
   // BraveTorClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
 
+  bool is_tor_launched_for_test_ = false;
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_;  // Singleton
   net::ProxyConfigServiceTor* proxy_config_service_;  // NOT OWNED

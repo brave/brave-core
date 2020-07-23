@@ -8,6 +8,8 @@
 
 #include <memory>
 
+#include "base/gtest_prod_util.h"
+#include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "content/public/browser/navigation_throttle.h"
 
 namespace content {
@@ -16,7 +18,10 @@ class NavigationHandle;
 
 namespace tor {
 
-class TorNavigationThrottle : public content::NavigationThrottle {
+class TorProfileService;
+
+class TorNavigationThrottle : public content::NavigationThrottle,
+                              public TorLauncherServiceObserver {
  public:
   static std::unique_ptr<TorNavigationThrottle>
     MaybeCreateThrottleFor(content::NavigationHandle* navigation_handle);
@@ -28,6 +33,15 @@ class TorNavigationThrottle : public content::NavigationThrottle {
   const char* GetNameForLogging() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(TorNavigationThrottleUnitTest,
+                           DeferUntilTorProcessLaunched);
+
+  // TorLauncherServiceObserver:
+  void OnTorLaunched(bool result, int64_t pid) override;
+
+  bool resume_pending_ = false;
+  TorProfileService* tor_profile_service_ = nullptr;
+
   DISALLOW_COPY_AND_ASSIGN(TorNavigationThrottle);
 };
 

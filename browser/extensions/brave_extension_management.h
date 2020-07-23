@@ -8,6 +8,7 @@
 
 #include "base/scoped_observer.h"
 #include "chrome/browser/extensions/extension_management.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
 
@@ -20,9 +21,6 @@ class BraveExtensionManagement : public ExtensionManagement,
   ~BraveExtensionManagement() override;
 
  private:
-  void RegisterBraveExtensions();
-  void CleanupBraveExtensions();
-
   // ExtensionRegistryObserver implementation.
   void OnExtensionLoaded(
       content::BrowserContext* browser_context,
@@ -32,10 +30,12 @@ class BraveExtensionManagement : public ExtensionManagement,
       const Extension* extension,
       UnloadedExtensionReason reason) override;
 
+  void OnTorDisabledChanged();
+
+  PrefChangeRegistrar local_state_pref_change_registrar_;
+
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;
-
-  Profile* profile_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };

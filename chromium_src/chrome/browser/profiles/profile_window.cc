@@ -12,6 +12,8 @@
 #include "base/bind.h"
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -42,6 +44,10 @@ void OpenBrowserWindowForTorProfile(ProfileManager::CreateCallback callback,
   profiles::OpenBrowserWindowForProfile(
       callback, always_create, is_new_profile, unblock_extensions,
       profile->GetOffTheRecordProfile(), status);
+  tor::TorProfileService* service =
+      TorProfileServiceFactory::GetForProfile(profile);
+  DCHECK(service);
+  service->RegisterTorClientUpdater();
 }
 
 void OnTorRegularProfileCreated(ProfileManager::CreateCallback callback,

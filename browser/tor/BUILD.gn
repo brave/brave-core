@@ -38,10 +38,13 @@ source_set("tor") {
       "tor_profile_service.h",
       "tor_profile_service_impl.cc",
       "tor_profile_service_impl.h",
+      "tor_tab_helper.cc",
+      "tor_tab_helper.h",
     ]
 
     deps += [
       "//brave/components/services/tor/public/interfaces",
+      "//content/public/browser",
       "//content/public/common",
       "//extensions/common:common_constants",
       "//net",

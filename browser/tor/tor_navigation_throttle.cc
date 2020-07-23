@@ -5,7 +5,11 @@
 
 #include "brave/browser/tor/tor_navigation_throttle.h"
 
+#include <utility>
+
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -27,9 +31,18 @@ TorNavigationThrottle::MaybeCreateThrottleFor(
 
 TorNavigationThrottle::TorNavigationThrottle(
     content::NavigationHandle* navigation_handle)
-    : content::NavigationThrottle(navigation_handle) {}
+    : content::NavigationThrottle(navigation_handle) {
+  Profile* profile = Profile::FromBrowserContext(
+      navigation_handle->GetWebContents()->GetBrowserContext());
+  DCHECK(brave::IsTorProfile(profile));
+  tor_profile_service_ = TorProfileServiceFactory::GetForProfile(profile);
+  DCHECK(tor_profile_service_);
+  tor_profile_service_->AddObserver(this);
+}
 
-TorNavigationThrottle::~TorNavigationThrottle() = default;
+TorNavigationThrottle::~TorNavigationThrottle() {
+  tor_profile_service_->RemoveObserver(this);
+}
 
 content::NavigationThrottle::ThrottleCheckResult
 TorNavigationThrottle::WillStartRequest() {
@@ -37,13 +50,26 @@ TorNavigationThrottle::WillStartRequest() {
   if (url.SchemeIsHTTPOrHTTPS() ||
       url.SchemeIs(content::kChromeUIScheme) ||
       url.SchemeIs(extensions::kExtensionScheme) ||
-      url.SchemeIs(content::kChromeDevToolsScheme))
+      url.SchemeIs(content::kChromeDevToolsScheme)) {
+    if (!tor_profile_service_->IsTorLaunched() &&
+        !url.SchemeIs(content::kChromeUIScheme)) {
+      resume_pending_ = true;
+      return content::NavigationThrottle::DEFER;
+    }
     return content::NavigationThrottle::PROCEED;
+  }
   return content::NavigationThrottle::BLOCK_REQUEST;
 }
 
 const char* TorNavigationThrottle::GetNameForLogging() {
   return "TorNavigationThrottle";
+}
+
+void TorNavigationThrottle::OnTorLaunched(bool result, int64_t pid) {
+  if (result && resume_pending_) {
+    resume_pending_ = false;
+    Resume();
+  }
 }
 
 }  // namespace tor
