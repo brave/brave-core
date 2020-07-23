@@ -45,7 +45,6 @@
 <translation id="1047431265488717055">Lin&amp;ktekst kopiëren</translation>
 <translation id="1048286738600630630">Schermen</translation>
 <translation id="1048986595386481879">Dynamisch toegewezen</translation>
-<translation id="1049743911850919806">Incognito</translation>
 <translation id="1049795001945932310">&amp;Taalinstellingen</translation>
 <translation id="1054153489933238809">Oorspronkelijke &amp;afbeelding openen op nieuw tabblad</translation>
 <translation id="1055806300943943258">Zoeken naar Bluetooth- en USB-apparaten...</translation>
@@ -98,13 +97,12 @@
 <translation id="1123753900084781868">Live ondertiteling is momenteel niet beschikbaar</translation>
 <translation id="1124772482545689468">Gebruiker</translation>
 <translation id="1125550662859510761">Ziet eruit als <ph name="WIDTH"/> x <ph name="HEIGHT"/> (systeemeigen resolutie)</translation>
-<translation id="1126809382673880764">Beschermt je niet tegen gevaarlijke websites, downloads en extensies. Je wordt voor andere services, zoals Gmail en Zoeken, nog steeds beschermd door Safe Browsing als dat beschikbaar is.</translation>
+<translation id="1295971429974142731">Beschermt je niet tegen gevaarlijke websites, downloads en extensies. Je wordt voor andere services, zoals Gmail en Zoeken, nog steeds beschermd door Safe Browsing als dat beschikbaar is.</translation>
 <translation id="1128109161498068552">Sites niet toestaan berichten exclusief voor het systeem te gebruiken om toegang te krijgen tot MIDI-apparaten</translation>
 <translation id="1128128132059598906">EAP-TTLS</translation>
 <translation id="1128591060186966949">Zoekmachine bewerken</translation>
 <translation id="1129850422003387628">Apps beheren</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> - onderdeel van groep <ph name="GROUP_NAME"/></translation>
-<translation id="1134009406053225289">Openen in incognitovenster</translation>
 <translation id="1136712381129578788">De beveiligingssleutel is vergrendeld omdat je te vaak een onjuiste pincode hebt ingevoerd. Ontgrendel de sleutel door deze te verwijderen en opnieuw te plaatsen.</translation>
 <translation id="1137673463384776352">Link openen in <ph name="APP"/></translation>
 <translation id="1139343347646843679">Er is een fout opgetreden bij het configureren van Linux. Neem contact op met je beheerder.</translation>
@@ -166,7 +164,6 @@
 <translation id="1205489148908752564">Gebruikers op de witte lijst lezen en wijzigen</translation>
 <translation id="1206407435587370571">Je Bravebook leren kennen</translation>
 <translation id="1209796539517632982">Automatische naamservers</translation>
-<translation id="1211364473545090084">Gebruik een incognitovenster om te internetten zonder dat je browsegeschiedenis wordt opgeslagen</translation>
 <translation id="1211769675100312947">Snelkoppelingen worden door jou beheerd</translation>
 <translation id="1213037489357051291"><ph name="NUM_FINGERPRINTS"/> vingerafdrukken ingesteld</translation>
 <translation id="1213254615020057352">Stuur gebruiks- en diagnostische gegevens. Verbeter de Android-functionaliteit voor je kind door automatisch diagnostische, apparaat- en app-gebruiksgegevens naar Brave te sturen. Deze gegevens worden niet gebruikt om je kind te identificeren en kunnen helpen om de systeem- en app-stabiliteit te verbeteren en andere optimalisaties mogelijk te maken. Daarnaast zijn bepaalde verzamelde gegevens nuttig voor Brave-apps en -partners, zoals Android-ontwikkelaars. Deze instelling wordt afgedwongen door de eigenaar. De eigenaar kan ervoor kiezen diagnostische en gebruiksgegevens voor dit apparaat naar Brave te sturen. Als je de instelling voor aanvullende Web- en app-activiteit hebt ingeschakeld voor je kind, kunnen deze gegevens worden opgeslagen in het Brave-account van je kind.</translation>
@@ -296,7 +293,6 @@
 <translation id="1377600615067678409">Nu overslaan</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> beheert deze instelling</translation>
 <translation id="1380028686461971526">Automatisch verbinding maken met netwerk</translation>
-<translation id="1380436189840894976">Incognitomodus toch afsluiten?</translation>
 <translation id="1383861834909034572">Openen wanneer voltooid</translation>
 <translation id="1383876407941801731">Zoeken</translation>
 <translation id="1386387014181100145">Hallo.</translation>
@@ -355,7 +351,6 @@
 <translation id="144518587530125858">Kan '<ph name="IMAGE_PATH"/>' niet laden voor thema.</translation>
 <translation id="1445693676523799095">Dit kan even duren</translation>
 <translation id="1451375123200651445">Webpagina, één bestand</translation>
-<translation id="1451917004835509682">Persoon met beperkte rechten toevoegen</translation>
 <translation id="1454223536435069390">&amp;Screenshot maken</translation>
 <translation id="1459967076783105826">Zoekmachines toegevoegd door extensies</translation>
 <translation id="146000042969587795">Dit frame is geblokkeerd omdat het onbeveiligde content bevat.</translation>
@@ -478,7 +473,6 @@
 <translation id="1600857548979126453">Back-end voor foutopsporing van pagina openen</translation>
 <translation id="1601560923496285236">Toepassen</translation>
 <translation id="1602085790802918092">De virtuele machine wordt gestart</translation>
-<translation id="1603914832182249871">(Incognito)</translation>
 <translation id="1604432177629086300">Kan niet afdrukken. Controleer de printer en probeer het opnieuw.</translation>
 <translation id="1605544918554600534"><ph name="PROFILE_NAME"/>: wachtwoordsynchronisatie werkt niet</translation>
 <translation id="1607139524282324606">Item wissen</translation>
@@ -550,7 +544,6 @@
 <translation id="1680841347983561661">Probeer Google Play straks opnieuw te starten.</translation>
 <translation id="1680849702532889074">Er is een fout opgetreden tijdens de installatie van je Linux-app.</translation>
 <translation id="16815041330799488">Niet toestaan dat sites tekst en afbeeldingen kunnen zien die naar het klembord zijn gekopieerd</translation>
-<translation id="1682548588986054654">Nieuw incognitovenster</translation>
 <translation id="168715261339224929">Schakel synchronisatie in om al je bookmarks op al je apparaten te bekijken.</translation>
 <translation id="1688867105868176567">Sitegegevens wissen?</translation>
 <translation id="1688935057616748272">Typ een letter</translation>
@@ -561,10 +554,8 @@
 <translation id="1692210323591458290">Donkerpaars</translation>
 <translation id="1697150536837697295">Kunst</translation>
 <translation id="1697686431566694143">Bestand bewerken</translation>
-<translation id="1698122934742150150">Alleen huidige incognitosessie</translation>
 <translation id="1700079447639026019">Sites die nooit cookies mogen gebruiken</translation>
 <translation id="1700845716982723710">Sfeerstand uitschakelen</translation>
-<translation id="1701062906490865540">Deze persoon verwijderen</translation>
 <translation id="1703331064825191675">Maak je nooit meer zorgen over je wachtwoorden</translation>
 <translation id="1704970325597567340">Veiligheidscheck is uitgevoerd op <ph name="DATE"/></translation>
 <translation id="1706586824377653884">Toegevoegd door je beheerder</translation>
@@ -692,7 +683,6 @@
 <translation id="1850508293116537636">Rechtsom &amp;draaien</translation>
 <translation id="1852141627593563189">Schadelijke software zoeken</translation>
 <translation id="1852799913675865625">Er is een fout opgetreden bij het lezen van het bestand: <ph name="ERROR_TEXT"/>.</translation>
-<translation id="1853692000353488670">Nieuw incognitotabblad</translation>
 <translation id="1854180393107901205">Casten stoppen</translation>
 <translation id="1856715684130786728">Locatie toevoegen...</translation>
 <translation id="1858585891038687145">Dit certificaat vertrouwen voor het identificeren van softwareontwikkelaars</translation>
@@ -933,7 +923,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="2174948148799307353">Account wordt beheerd door <ph name="PARENT_EMAIL"/>. Als je wilt uitloggen van het primaire account op dit apparaat, klik je op de tijd op het scherm. Klik op Uitloggen in het menu dat wordt weergegeven.</translation>
 <translation id="2175607476662778685">Balk Snelstarten</translation>
 <translation id="217576141146192373">Kan printer niet toevoegen. Controleer de configuratie van je printer en probeer het opnieuw.</translation>
-<translation id="2177950615300672361">Incognitotabblad: <ph name="TAB_NAME"/></translation>
 <translation id="2178098616815594724"><ph name="PEPPER_PLUGIN_NAME"/> op <ph name="PEPPER_PLUGIN_DOMAIN"/> vraagt om toegang tot je computer</translation>
 <translation id="2178614541317717477">Inbreuk op CA</translation>
 <translation id="2182058453334755893">Naar klembord gekopieerd</translation>
@@ -944,7 +933,7 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="2190069059097339078">WiFi Credentials Getter</translation>
 <translation id="219008588003277019">Native Client-module: <ph name="NEXE_NAME"/></translation>
 <translation id="2190355936436201913">(leeg)</translation>
-<translation id="2191754378957563929">Aan</translation>
+<translation id="8959699239363253085">Aan</translation>
 <translation id="2192505247865591433">Van:</translation>
 <translation id="2193365732679659387">Vertrouwensinstellingen</translation>
 <translation id="2195331105963583686">Je kunt deze <ph name="DEVICE_TYPE"/> daarna nog steeds gebruiken, maar je apparaat ontvangt geen automatische software- en beveiligingsupdates meer.</translation>
@@ -978,7 +967,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="2225864335125757863">Verander de volgende wachtwoorden onmiddellijk om je account te beveiligen:</translation>
 <translation id="2226449515541314767">Deze site is geblokkeerd voor volledig beheer van MIDI-apparaten.</translation>
 <translation id="222657802677009088">Printer instellen</translation>
-<translation id="222704500187107962">Deze exceptie wordt automatisch verwijderd nadat je de huidige incognitosessie hebt afgesloten</translation>
 <translation id="2227179592712503583">Suggestie verwijderen</translation>
 <translation id="2229161054156947610">Meer dan 1 uur resterend</translation>
 <translation id="222931766245975952">Bestand afgekapt</translation>
@@ -989,7 +977,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7956662517480676674">Synchronisatie en Brave-services</translation>
 <translation id="2235344399760031203">Cookies van derden worden geblokkeerd</translation>
 <translation id="2238379619048995541">Gegevens van frequentiestatus</translation>
-<translation id="2239921694246509981">Persoon met beperkte rechten toevoegen</translation>
 <translation id="2241053333139545397">Je gegevens lezen en wijzigen op een aantal websites</translation>
 <translation id="2241634353105152135">Slechts één keer</translation>
 <translation id="2242687258748107519">Bestandsinformatie</translation>
@@ -1277,7 +1264,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="2129873093718581193">Zoek op Brave of typ een URL</translation>
 <translation id="2602501489742255173">Swipe omhoog om te beginnen</translation>
 <translation id="2603115962224169880">Computer opruimen</translation>
-<translation id="2603463522847370204">Openen in &amp;incognitovenster</translation>
 <translation id="2604255671529671813">Fout bij netwerkverbinding</translation>
 <translation id="2606246518223360146">Gegevens linken</translation>
 <translation id="2607101320794533334">Informatie van openbare sleutel van entiteit</translation>
@@ -1339,13 +1325,12 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="2672142220933875349">Beschadigd crx-bestand, uitpakken mislukt.</translation>
 <translation id="2673135533890720193">Je browsegeschiedenis lezen</translation>
 <translation id="2673589024369449924">Een snelkoppeling voor deze gebruiker maken</translation>
-<translation id="2674764818721168631">Uit</translation>
+<translation id="6175644081330715138">Uit</translation>
 <translation id="2677748264148917807">Verlaten</translation>
 <translation id="2678063897982469759">Opnieuw inschakelen</translation>
 <translation id="268053382412112343">Geschi&amp;edenis</translation>
 <translation id="2682498795777673382">Update van je ouder</translation>
 <translation id="2683638487103917598">Map gesorteerd</translation>
-<translation id="2684004000387153598">Als je verder wilt gaan, klik je op 'OK' en vervolgens op 'Persoon toevoegen' om een nieuw profiel te maken voor je e-mailadres.</translation>
 <translation id="2687403674020088961">Alle cookies blokkeren (niet aanbevolen)</translation>
 <translation id="2687407218262674387">Servicevoorwaarden van Brave</translation>
 <translation id="2688196195245426394">Fout bij het registreren van het apparaat bij de server: <ph name="CLIENT_ERROR"/>.</translation>
@@ -1483,7 +1468,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="2841837950101800123">Provider</translation>
 <translation id="2844169650293029770">USB-C-apparaat (poort links aan de voorkant)</translation>
 <translation id="2844809857160214557">Afdruktaken weergeven en beheren</translation>
-<translation id="2845382757467349449">Bladwijzerbalk altijd weergeven</translation>
 <translation id="284805635805850872">Schadelijke software verwijderen?</translation>
 <translation id="284970761985428403"><ph name="ASCII_NAME"/> (<ph name="UNICODE_NAME"/>)</translation>
 <translation id="284975061945174219">Opschonen is mislukt</translation>
@@ -1733,7 +1717,7 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="3170072451822350649">Je kunt het inloggen ook overslaan en <ph name="LINK_START"/>browsen als gast<ph name="LINK_END"/>.</translation>
 <translation id="3177909033752230686">Brontaal:</translation>
 <translation id="3179982752812949580">Lettertype</translation>
-<translation id="3181954750937456830">Safe Browsing (hiermee worden jij en je apparaat beschermd tegen gevaarlijke sites)</translation>
+<translation id="3201899458094819285">Safe Browsing (hiermee worden jij en je apparaat beschermd tegen gevaarlijke sites)</translation>
 <translation id="3182749001423093222">Spellingcontrole</translation>
 <translation id="3183139917765991655">Profile Importer</translation>
 <translation id="3183944777708523606">Monitorindeling</translation>
@@ -1841,7 +1825,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="3315158641124845231">Verberg <ph name="PRODUCT_NAME"/></translation>
 <translation id="3317459757438853210">Dubbelzijdig</translation>
 <translation id="3317678681329786349">Camera en microfoon geblokkeerd</translation>
-<translation id="3319048459796106952">Nieuw &amp;incognitovenster</translation>
 <translation id="3320630259304269485">Safe Browsing (bescherming tegen gevaarlijke sites) en andere beveiligingsinstellingen</translation>
 <translation id="3323295311852517824">{NUM_FILES,plural, =0{Deze gegevens bevatten gevoelige of gevaarlijke content. Verwijder deze content en probeer het opnieuw.}=1{Dit bestand bevat gevoelige of gevaarlijke content. Verwijder deze content en probeer het opnieuw.}other{Deze bestanden bevatten gevoelige of gevaarlijke content. Verwijder deze content en probeer het opnieuw.}}</translation>
 <translation id="3323521181261657960">Bonus! Je hebt meer schermtijd gekregen</translation>
@@ -1894,7 +1877,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="3404065873681873169">Geen wachtwoorden opgeslagen voor deze site</translation>
 <translation id="3405664148539009465">Lettertypen aanpassen</translation>
 <translation id="3405763860805964263">…</translation>
-<translation id="3406605057700382950">&amp;Bladwijzerbalk weergeven</translation>
 <translation id="340671561090997290">{NUM_EXTENSIONS,plural, =1{Deze extensie kan gevaarlijk zijn}other{Deze extensies kunnen gevaarlijk zijn}}</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="3410832398355316179">Alle bestanden en lokale gegevens die gekoppeld zijn aan deze gebruiker, worden definitief verwijderd zodra deze gebruiker is verwijderd. <ph name="USER_EMAIL"/> kan later nog inloggen.</translation>
@@ -1961,7 +1943,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="3476303763173086583">Verzend gebruiks- en diagnostische gegevens. Verbeter de Android-functionaliteit voor je kind door automatisch diagnostische, apparaat- en app-gebruiksgegevens naar Brave te verzenden. Deze gegevens worden niet gebruikt om je kind te identificeren en kunnen helpen om de systeem- en app-stabiliteit te verbeteren en andere optimalisaties mogelijk te maken. Daarnaast zijn bepaalde verzamelde gegevens nuttig voor Brave-apps en -partners, zoals Android-ontwikkelaars. Deze <ph name="BEGIN_LINK1"/>instelling<ph name="END_LINK1"/> wordt afgedwongen door de eigenaar. De eigenaar kan ervoor kiezen diagnostische en gebruiksgegevens voor dit apparaat naar Brave te verzenden. Als je de instelling voor aanvullende Web- en app-activiteit hebt ingeschakeld voor je kind, kunnen deze gegevens worden opgeslagen in het Brave-account van je kind. <ph name="BEGIN_LINK2"/>Meer informatie<ph name="END_LINK2"/></translation>
 <translation id="347670947055184738">Het systeem kan het beleid voor je apparaat niet ophalen.</translation>
 <translation id="347785443197175480"><ph name="HOST"/> toegang blijven geven tot je camera en microfoon</translation>
-<translation id="3478685642445675458">Ontgrendel je profiel voordat je een persoon verwijdert.</translation>
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="3479685872808224578">Kan de afdrukserver niet vinden. Controleer het adres en probeer het opnieuw.</translation>
 <translation id="3481268647794498892">Wordt geopend in <ph name="ALTERNATIVE_BROWSER_NAME"/> over <ph name="COUNTDOWN_SECONDS"/> seconden</translation>
@@ -2031,7 +2012,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="3569682580018832495"><ph name="ORIGIN"/> kan de volgende bestanden en mappen bekijken</translation>
 <translation id="3571734092741541777">Instellen</translation>
 <translation id="3574210789297084292">inloggen</translation>
-<translation id="3574917942258583917">Incognitomodus toch afsluiten?</translation>
 <translation id="3575121482199441727">Toestaan voor deze site</translation>
 <translation id="3576324189521867626">Installatie geslaagd</translation>
 <translation id="3578594933904494462">De content van dit tabblad wordt gedeeld.</translation>
@@ -2050,7 +2030,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="359283478042092570">Invoeren</translation>
 <translation id="3593965109698325041">Naambeperkingen voor certificaten</translation>
 <translation id="3596235046596950091">Cloudservices inschakelen</translation>
-<translation id="3596414637720633074">Cookies van derden blokkeren in incognitomodus</translation>
 <translation id="3599221874935822507">Verhoogd</translation>
 <translation id="8122693181154564064">Hiermee wordt de geschiedenis van alle ingelogde apparaten gewist. Er kunnen andere vormen van browsegeschiedenis zijn opgeslagen voor je Brave-account op <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="3600051066689725006">Informatie over webverzoek</translation>
@@ -2078,7 +2057,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="3625481642044239431">Ongeldig bestand geselecteerd. Probeer het opnieuw.</translation>
 <translation id="3626296069957678981">Gebruik een geschikte Dell-batterij voor het opladen van deze Bravebook.</translation>
 <translation id="3627320433825461852">Minder dan 1 minuut resterend</translation>
-<translation id="3627588569887975815">Link openen in inco&amp;gnitovenster</translation>
 <translation id="3627671146180677314">Vernieuwingsmoment voor Netscape-certificaat</translation>
 <translation id="3627879631695760395"><ph name="APP"/> installeren...</translation>
 <translation id="3628275722731025472">Bluetooth uitschakelen</translation>
@@ -2199,7 +2177,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="3758842566811519622">Cookies ingesteld</translation>
 <translation id="3759933321830434300">Delen van webpagina's blokkeren</translation>
 <translation id="3760460896538743390">&amp;Achtergrondpagina controleren</translation>
-<translation id="37613671848467444">Openen in &amp;incognitovenster</translation>
 <translation id="3761556954875533505">Toestaan dat site bestanden bewerkt?</translation>
 <translation id="3764314093345384080">Gedetailleerde build-gegevens</translation>
 <translation id="3764583730281406327">{NUM_DEVICES,plural, =1{Communiceren met een USB-apparaat}other{Communiceren met # USB-apparaten}}</translation>
@@ -2441,7 +2418,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="4035758313003622889">&amp;Taakbeheer</translation>
 <translation id="4036778507053569103">Het beleid dat van de server is gedownload, is ongeldig.</translation>
 <translation id="4037084878352560732">Paard</translation>
-<translation id="4037889604535939429">Persoon bewerken</translation>
 <translation id="4042863763121826131">{NUM_PAGES,plural, =1{Pagina afsluiten}other{Pagina's afsluiten}}</translation>
 <translation id="4044612648082411741">Geef je certificaatwachtwoord op</translation>
 <translation id="404493185430269859">Standaard­zoekmachine</translation>
@@ -2561,7 +2537,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="4209251085232852247">Uitgeschakeld</translation>
 <translation id="2624930408905606513">Documenten worden <ph name="BEGIN_LINK_HELP"/>naar Brave verzonden<ph name="END_LINK_HELP"/> om de afdruktaak voor te bereiden. Bekijk, bewerk en beheer je printers en printergeschiedenis via het <ph name="BEGIN_LINK_DASHBOARD"/>dashboard van Brave Cloudprinter<ph name="END_LINK_DASHBOARD"/>.</translation>
 <translation id="4210048056321123003">De virtuele machine wordt gedownload</translation>
-<translation id="421182450098841253">&amp;Bladwijzerbalk weergeven</translation>
 <translation id="4211851069413100178">Verzend gebruiks- en diagnostische gegevens. Verbeter je Android-functionaliteit door automatisch diagnostische, apparaat- en app-gebruiksgegevens naar Brave te verzenden. Deze gegevens kunnen worden gebruikt om de systeem- en app-stabiliteit te verbeteren en andere optimalisaties mogelijk te maken. Daarnaast zijn bepaalde verzamelde gegevens nuttig voor Brave-apps en -partners, zoals Android-ontwikkelaars. Deze <ph name="BEGIN_LINK1"/>instelling<ph name="END_LINK1"/> wordt afgedwongen door de eigenaar. De eigenaar kan ervoor kiezen diagnostische en gebruiksgegevens voor dit apparaat naar Brave te verzenden. Als je de instelling voor aanvullende Web- en app-activiteit hebt ingeschakeld, kunnen deze gegevens worden opgeslagen in je Brave-account. <ph name="BEGIN_LINK2"/>Meer informatie<ph name="END_LINK2"/></translation>
 <translation id="42126664696688958">Exporteren</translation>
 <translation id="42137655013211669">De toegang tot deze bron is verboden door de server.</translation>
@@ -2680,7 +2655,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="4387004326333427325">Verificatiecertificaat afgewezen op afstand</translation>
 <translation id="4387890294700445764">Gehackte wachtwoorden</translation>
 <translation id="4389091756366370506">Gebruiker <ph name="VALUE"/></translation>
-<translation id="4390000551125140321">{0,plural, =1{Incognito}other{# geopende incognitovensters}}</translation>
 <translation id="439266289085815679">Bluetooth-configuratie wordt beheerd door <ph name="USER_EMAIL"/>.</translation>
 <translation id="4392896746540753732">Het configuratiebestand bewerken</translation>
 <translation id="4394049700291259645">Uitschakelen</translation>
@@ -2699,7 +2673,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="4411578466613447185">Ondertekening van code</translation>
 <translation id="4412698727486357573">Helpcentrum</translation>
 <translation id="44141919652824029"><ph name="APP_NAME"/> toestaan om de lijst met je aangesloten USB-apparaten op te halen?</translation>
-<translation id="4414232939543644979">Nieuw &amp;incognitovenster</translation>
 <translation id="4415213869328311284">Je kunt je <ph name="DEVICE_TYPE"/> nu gebruiken.</translation>
 <translation id="4415245286584082850">Geen apparaten gevonden. Open een Helpcentrum-artikel op een nieuw tabblad.</translation>
 <translation id="1125261911132334651">Je Brave-account beheren</translation>
@@ -2762,7 +2735,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="4502423230170890588">Verwijderen van dit apparaat</translation>
 <translation id="4504374760782163539">{COUNT,plural, =0{Cookies zijn toegestaan}=1{Cookies zijn toegestaan, 1 uitzondering}other{Cookies zijn toegestaan, {COUNT} uitzonderingen}}</translation>
 <translation id="4504940961672722399">Gebruik deze extensie door op dit pictogram te klikken of op <ph name="EXTENSION_SHORTCUT"/> te drukken.</translation>
-<translation id="4508051413094283164">Alles openen in incognitovenster</translation>
 <translation id="4508265954913339219">Activering mislukt</translation>
 <translation id="4508765956121923607">Br&amp;on weergeven</translation>
 <translation id="4510479820467554003">Lijst met ouderaccounts</translation>
@@ -2774,7 +2746,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="4519935350946509010">Verbindingsfout.</translation>
 <translation id="4520385623207007473">Gebruikte cookies</translation>
 <translation id="452039078290142656">onbekende apparaten van <ph name="VENDOR_NAME"/></translation>
-<translation id="4521489190203965562">Huidige incognitosessie: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/> en meer</translation>
 <translation id="4522570452068850558">Details</translation>
 <translation id="4522600456902129422">Bekijken van het klembord door deze site blijven toestaan</translation>
 <translation id="4524832533047962394">De geleverde inschrijvingsmodus wordt niet ondersteund door deze versie van het besturingssysteem. Zorg ervoor dat je de nieuwste versie gebruikt.</translation>
@@ -2876,7 +2847,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="4647090755847581616">&amp;Tabblad sluiten</translation>
 <translation id="4647697156028544508">Geef de pincode op voor '<ph name="DEVICE_NAME"/>':</translation>
 <translation id="4648491805942548247">Onvoldoende rechten</translation>
-<translation id="4648499713050786492">Ontgrendel je profiel voordat je een persoon toevoegt.</translation>
 <translation id="4650591383426000695">Je telefoon ontkoppelen van je <ph name="DEVICE_TYPE"/></translation>
 <translation id="4651484272688821107">Kan online component niet laden met bronnen van demomodus.</translation>
 <translation id="4653405415038586100">Fout bij configureren van Linux</translation>
@@ -3014,7 +2984,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="4854317507773910281">Kies een ouderaccount voor goedkeuring</translation>
 <translation id="485480310608090163">Meer instellingen en rechten</translation>
 <translation id="4856478137399998590">Je mobiele netwerk is actief en klaar voor gebruik</translation>
-<translation id="4857506433977877623">{COUNT,plural, =0{Alles openen in &amp;incognitovenster}=1{Openen in &amp;incognitovenster}other{Alles (#) openen in &amp;incognitovenster}}</translation>
 <translation id="4858792381671956233">Je hebt je ouders gevraagd of je deze site mag bezoeken</translation>
 <translation id="4858913220355269194">Fritz</translation>
 <translation id="4862642413395066333">OCSP-antwoorden ondertekenen</translation>
@@ -3203,7 +3172,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5107443654503185812">Een extensie heeft Safe Browsing uitgeschakeld</translation>
 <translation id="5108967062857032718">Instellingen - Android-apps verwijderen</translation>
 <translation id="5109044022078737958">Mia</translation>
-<translation id="5111646998522066203">Incognitomodus sluiten</translation>
 <translation id="5111692334209731439">&amp;Bladwijzermanager</translation>
 <translation id="5112577000029535889">&amp;Hulpprogramma's voor ontwikkelaars</translation>
 <translation id="5113739826273394829">Als je op dit pictogram klikt, vergrendel je deze <ph name="DEVICE_TYPE"/> handmatig. De volgende keer moet je je wachtwoord typen om deze te ontgrendelen.</translation>
@@ -3413,7 +3381,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5379140238605961210">Microfoontoegang blijven blokkeren</translation>
 <translation id="5382591305415226340">Ondersteunde links beheren</translation>
 <translation id="5383377866517186886">Camera is uitgeschakeld in Mac-systeemvoorkeuren</translation>
-<translation id="5384883051496921101">Deze site staat op het punt buiten de incognitomodus informatie met een app te delen.</translation>
 <translation id="5388885445722491159">Gekoppeld</translation>
 <translation id="5389237414310520250">De nieuwe gebruiker kan niet worden gemaakt. Controleer de ruimte op je harde schijf en je rechten, en probeer het opnieuw.</translation>
 <translation id="5390100381392048184">Toestaan dat sites geluid afspelen</translation>
@@ -3425,7 +3392,7 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5402815541704507626">Update downloaden via mobiele data</translation>
 <translation id="540296380408672091">Cookies op <ph name="HOST"/> altijd blokkeren</translation>
 <translation id="540495485885201800">Wisselen met vorige</translation>
-<translation id="5405146885510277940">Instellingen resetten</translation>
+<translation id="8632933437936028548">Instellingen resetten</translation>
 <translation id="5408750356094797285">Zoom: <ph name="PERCENT"/></translation>
 <translation id="5411472733320185105">De proxyinstellingen niet gebruiken voor deze hosts en domeinen:</translation>
 <translation id="5414566801737831689">De pictogrammen lezen van websites die je bezoekt</translation>
@@ -3462,7 +3429,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5449551289610225147">Ongeldig wachtwoord</translation>
 <translation id="5449588825071916739">Bookmark toevoegen aan alle tabbladen</translation>
 <translation id="5449716055534515760">Ve&amp;nster sluiten</translation>
-<translation id="5452974209916053028">Huidige incognitosessie: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/>, <ph name="RECENT_PERMISSIONS_CHANGE_2"/></translation>
 <translation id="5454166040603940656">met <ph name="PROVIDER"/></translation>
 <translation id="5454360575035671759">Als je Plugin VM verwijdert, wordt je VM verwijderd. Bijbehorende apps, instellingen en gegevens worden ook verwijderd. Weet je zeker dat je wilt doorgaan?</translation>
 <translation id="5457113250005438886">Ongeldig</translation>
@@ -3492,7 +3458,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5486561344817861625">Opnieuw starten van browser simuleren</translation>
 <translation id="5487521232677179737">Gegevens wissen</translation>
 <translation id="5488093641312826914">'<ph name="COPIED_ITEM_NAME"/>' gekopieerd</translation>
-<translation id="5488468185303821006">Toestaan in incognitomodus</translation>
 <translation id="5489435190927933437">Opgeslagen wachtwoorden voor <ph name="DOMAIN"/></translation>
 <translation id="5490721031479690399">Bluetooth-apparaat ontkoppelen</translation>
 <translation id="5490798133083738649">Linux toegang geven tot je microfoon</translation>
@@ -3530,7 +3495,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5526745900034778153">Log opnieuw in om door te gaan met synchroniseren</translation>
 <translation id="5527463195266282916">Je probeert een oudere versie van de extensie te installeren.</translation>
 <translation id="5527474464531963247">Je kunt ook een ander netwerk selecteren.</translation>
-<translation id="5530766185686772672">Incognitotabbladen sluiten</translation>
 <translation id="5532223876348815659">Algemeen</translation>
 <translation id="5533001281916885985"><ph name="SITE_NAME"/> wil het volgende</translation>
 <translation id="5534304873398226603">Foto of video verwijderen</translation>
@@ -3565,7 +3529,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5567989639534621706">Applicatiecaches</translation>
 <translation id="5568069709869097550">Kan niet aanmelden</translation>
 <translation id="1254756632288991504">Start Brave en log in zodat Brave kan controleren of je deze site mag openen.</translation>
-<translation id="5575473780076478375">Incognito-extensie: <ph name="EXTENSION_NAME"/></translation>
 <translation id="5575528586625653441">Er is een probleem opgetreden met een demoregistratieverzoek.</translation>
 <translation id="557722062034137776">Als je je apparaat opnieuw instelt, heeft dit geen effect op je Brave-accounts of gegevens die zijn gesynchroniseerd met deze accounts. Alle bestanden die lokaal op je apparaat zijn opgeslagen, worden wel verwijderd.</translation>
 <translation id="5578059481725149024">Automatisch inloggen</translation>
@@ -3657,7 +3620,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5691511426247308406">Familie</translation>
 <translation id="5691772641933328258">Vingerafdruk niet herkend</translation>
 <translation id="5692183275898619210">Afdrukken voltooid</translation>
-<translation id="569425414730375234">Huidige incognitosessie: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="5695184138696833495">Android-app-ADB voor Linux</translation>
 <translation id="5696143504434933566">Misbruik melden vanuit '<ph name="EXTENSION_NAME"/>'</translation>
 <translation id="5696177755977520104">Synchronisatie van Chrome OS-instellingen</translation>
@@ -3685,7 +3647,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5722930212736070253">Helaas. Er is een fout voor Zip Archiver opgetreden.</translation>
 <translation id="572328651809341494">Recente tabbladen</translation>
 <translation id="5723508132121499792">Geen actieve achtergrondapps</translation>
-<translation id="5723967018671998714">Cookies van derden worden geblokkeerd in de incognitomodus</translation>
 <translation id="5727728807527375859">Extensies, applicaties en thema's kunnen schade toebrengen aan je computer. Weet je zeker dat je wilt doorgaan?</translation>
 <translation id="5728450728039149624">Opties voor Smart Lock-schermvergrendeling</translation>
 <translation id="5729712731028706266">&amp;Weergave</translation>
@@ -3758,7 +3719,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5827266244928330802">Safari</translation>
 <translation id="5828633471261496623">Bezig met afdrukken....</translation>
 <translation id="5830720307094128296">Pagina opslaan &amp;als...</translation>
-<translation id="5832805196449965646">Persoon toevoegen</translation>
 <translation id="583281660410589416">Onbekend</translation>
 <translation id="5832976493438355584">Vergrendeld</translation>
 <translation id="5833397272224757657">Maakt gebruik van content op sites die je bezoekt en browseractiviteit en -interactie voor personalisatie</translation>
@@ -3848,7 +3808,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5935656526031444304">Safe Browsing beheren</translation>
 <translation id="5938002010494270685">Beveiligingsupgrade beschikbaar</translation>
 <translation id="5939518447894949180">Resetten</translation>
-<translation id="5941153596444580863">Persoon toevoegen...</translation>
 <translation id="5941343993301164315">Log in bij <ph name="TOKEN_NAME"/>.</translation>
 <translation id="5941711191222866238">Minimaliseren</translation>
 <translation id="5942964813783878922">Na deze update wordt je <ph name="DEVICE_TYPE"/> opnieuw opgestart. Toekomstige software- en beveiligingsupdates worden automatisch geïnstalleerd.</translation>
@@ -3884,7 +3843,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="5979421442488174909">&amp;Vertalen in het <ph name="LANGUAGE"/></translation>
 <translation id="5979469435153841984">Als je een bookmark wilt instellen voor een pagina, klik je op de ster in de adresbalk</translation>
 <translation id="5984222099446776634">Recent bezocht</translation>
-<translation id="598472838394900788">{0,plural, =1{Incognito}other{Incognito (#)}}</translation>
 <translation id="5985458664595100876">Ongeldige URL-indeling. Ondersteunde formaten zijn \\server\share en smb://server/share.</translation>
 <translation id="5990386583461751448">Vertaald</translation>
 <translation id="599131315899248751">{NUM_APPLICATIONS,plural, =1{Vraag je beheerder deze app te verwijderen om ervoor te zorgen dat je kunt blijven browsen op het web.}other{Vraag je beheerder deze apps te verwijderen om ervoor te zorgen dat je kunt blijven browsen op het web.}}</translation>
@@ -3961,7 +3919,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6078323886959318429">Snelle link toevoegen</translation>
 <translation id="6078752646384677957">Controleer je microfoon en audioniveaus</translation>
 <translation id="6078769373519310690">'<ph name="CHROME_EXTENSION_NAME"/>' wil verbinding maken met een HID-apparaat</translation>
-<translation id="6080515710685820702">Gebruik je een gedeelde computer? Open een incognitovenster.</translation>
 <translation id="6080689532560039067">De systeemtijd controleren</translation>
 <translation id="6082651258230788217">In werkbalk weergeven</translation>
 <translation id="608531959444400877"><ph name="WINDOW_TITLE"/> - deel van naamloze groep</translation>
@@ -3989,7 +3946,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6112294629795967147">Tikken om het formaat aan te passen</translation>
 <translation id="6112727384379533756">Een ticket toevoegen</translation>
 <translation id="6112931163620622315">Controleer je telefoon</translation>
-<translation id="6112952769866305444">Persoon bewerken: <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
 <translation id="6113942107547980621">Als je Smart Lock wilt gebruiken, schakel je over naar het primaire gebruikersprofiel op je telefoon</translation>
 <translation id="6116921718742659598">Taal- en invoerinstellingen wijzigen</translation>
 <translation id="6120205520491252677">Deze pagina vastzetten op het startscherm...</translation>
@@ -4022,7 +3978,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="615436196126345398">Protocol</translation>
 <translation id="6154697846084421647">Momenteel ingelogd</translation>
 <translation id="6155141482566063812">Achtergrondtabblad deelt je scherm</translation>
-<translation id="6156323911414505561">Bladwijzerbalk weergeven</translation>
 <translation id="6156863943908443225">Script in cachegeheugen</translation>
 <translation id="6160625263637492097">Certificaten voor verificatie kiezen</translation>
 <translation id="6163363155248589649">&amp;Normaal</translation>
@@ -4211,7 +4166,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6410668567036790476">Zoekmachine toevoegen</translation>
 <translation id="641081527798843608">Overeenkomst van onderwerp</translation>
 <translation id="7810992039564280750">Controleert URL's aan de hand van een lijst met onveilige sites die is opgeslagen in Brave. Als een site je wachtwoord probeert te stelen of als je een schadelijk bestand downloadt, kan Brave ook URL's, inclusief delen van de paginacontent, naar Safe Browsing sturen.</translation>
-<translation id="6412931879992742813">Nieuw incognitovenster</translation>
 <translation id="641469293210305670">Updates en apps installeren</translation>
 <translation id="6414888972213066896">Je hebt je ouder of voogd gevraagd of je deze site mag bezoeken</translation>
 <translation id="6415659939354280526">Bron voor Sfeerstand kiezen</translation>
@@ -4319,7 +4273,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6550675742724504774">Opties</translation>
 <translation id="6551508934388063976">Opdracht niet beschikbaar. Druk op Ctrl-N om een nieuw venster te openen.</translation>
 <translation id="6551612971599078809">De site gebruikt een USB-apparaat</translation>
-<translation id="6552395360547205189">Huidige incognitosessie: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
 <translation id="655384502888039633"><ph name="USER_COUNT"/> gebruikers</translation>
 <translation id="655483977608336153">Opnieuw</translation>
 <translation id="6555432686520421228">Alle gebruikersaccounts verwijderen en je <ph name="IDS_SHORT_PRODUCT_NAME"/>-apparaat opnieuw instellen.</translation>
@@ -4330,7 +4283,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6561726789132298588">enter</translation>
 <translation id="656293578423618167">Het bestandspad of de bestandsnaam is te lang. Sla op met een kortere naam of op een andere locatie.</translation>
 <translation id="6563469144985748109">Je beheerder heeft dit nog niet goedgekeurd</translation>
-<translation id="6569934958368283244">Andere mensen</translation>
 <translation id="657402800789773160">&amp;Laad pagina opnieuw</translation>
 <translation id="6577284282025554716">Download geannuleerd: <ph name="FILE_NAME"/></translation>
 <translation id="2459230470861708651">Gesynchroniseerde wachtwoorden versleutelen met je Brave-gebruikersnaam en -wachtwoord</translation>
@@ -4446,7 +4398,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6727969043791803658">Verbonden, batterij <ph name="BATTERY_PERCENTAGE"/>%</translation>
 <translation id="6732801395666424405">Certificaten niet geladen</translation>
 <translation id="6732900235521116609">Kan snelkoppeling niet verwijderen</translation>
-<translation id="6734468588183300211">Als je de incognitomodus gebruikt, kunnen sites je cookies niet gebruiken om je browse-activiteit op verschillende sites te bekijken om bijvoorbeeld advertenties te personaliseren. Functies op bepaalde sites werken mogelijk niet meer.</translation>
 <translation id="6735304988756581115">Cookies en andere sitegegevens weergeven...</translation>
 <translation id="6736243959894955139">Adres</translation>
 <translation id="6736329909263487977"><ph name="ISSUED_BY"/> [<ph name="ISSUED_TO"/>]</translation>
@@ -4462,7 +4413,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6748465660675848252">Je kunt doorgaan, maar alleen je gesynchroniseerde gegevens en instellingen worden hersteld. Alle lokale gegevens gaan verloren.</translation>
 <translation id="6749006854028927059">Sites kunnen je cookies niet gebruiken om je browse-activiteit op verschillende sites te bekijken, bijvoorbeeld om advertenties te personaliseren. Functies op bepaalde sites werken mogelijk niet meer.</translation>
 <translation id="6750757184909117990">Mobiel netwerk uitschakelen</translation>
-<translation id="6751344591405861699"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
 <translation id="6757101664402245801">URL gekopieerd</translation>
 <translation id="6758056191028427665">Laat ons weten of we goed bezig zijn.</translation>
 <translation id="6759193508432371551">Terugzetten op fabrieksinstellingen</translation>
@@ -4488,7 +4438,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6789592661892473991">Horizontaal splitsen</translation>
 <translation id="6790428901817661496">Spelen</translation>
 <translation id="6790497603648687708"><ph name="EXTENSION_NAME"/> is op afstand toegevoegd</translation>
-<translation id="6790820461102226165">Persoon toevoegen...</translation>
 <translation id="6792072150955115067"><ph name="APP_NAME"/> wil de content op je scherm delen met <ph name="TARGET_NAME"/>. Kies wat je wilt delen.</translation>
 <translation id="6793604637258913070">Markeer het tekstinvoerpunt wanneer dit wordt weergegeven of wanneer het wordt verplaatst</translation>
 <translation id="6795884519221689054">Panda</translation>
@@ -4601,7 +4550,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="6935286146439255109">Er ontbreekt een papierlade</translation>
 <translation id="693807610556624488">Schrijfbewerking overschrijdt de maximumlengte van het kenmerk voor: <ph name="DEVICE_NAME"/>.</translation>
 <translation id="6938386202199793006">Je hebt 1 opgeslagen printer.</translation>
-<translation id="6938789263968032501">Mensen</translation>
 <translation id="6941937518557314510">Log in bij <ph name="TOKEN_NAME"/> om uzelf bij <ph name="HOST_NAME"/> te verifiëren met je certificaat.</translation>
 <translation id="6943060957016121200">Instant-tethering inschakelen</translation>
 <translation id="6943176775188458830">Afdrukken annuleren</translation>
@@ -4700,7 +4648,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7057184853669165321">{NUM_MINS,plural, =1{Veiligheidscheck is 1 minuut geleden uitgevoerd}other{Veiligheidscheck is {NUM_MINS} minuten geleden uitgevoerd}}</translation>
 <translation id="7057767408836081338">App-gegevens kunnen niet worden opgehaald. Er wordt toch geprobeerd de app uit te voeren.</translation>
 <translation id="7059858479264779982">Instellen op automatisch starten</translation>
-<translation id="7059893117020417984">Als je privé wilt browsen, klik je op het menupictogram met de stippen om een incognitovenster te openen</translation>
 <translation id="7062222374113411376">Toestaan dat onlangs gesloten sites het verzenden en ontvangen van gegevens voltooien (aanbevolen)</translation>
 <translation id="7063129466199351735">Snelle links verwerken...</translation>
 <translation id="7063311912041006059">URL met <ph name="SPECIAL_SYMBOL"/> in plaats van zoekterm</translation>
@@ -4722,7 +4669,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7077829361966535409">De inlogpagina kan niet worden geladen met de huidige proxyinstellingen. <ph name="GAIA_RELOAD_LINK_START"/>Probeer opnieuw in te loggen<ph name="GAIA_RELOAD_LINK_END"/> of gebruik andere <ph name="PROXY_SETTINGS_LINK_START"/>proxyinstellingen<ph name="PROXY_SETTINGS_LINK_END"/>.</translation>
 <translation id="7078120482318506217">Alle netwerken</translation>
 <translation id="708060913198414444">Adres van audio k&amp;opiëren</translation>
-<translation id="7081952801286122383">Je bent incognito</translation>
 <translation id="708278670402572152">Verbreek de verbinding om te scannen</translation>
 <translation id="1439926347196400598">Toestaan dat Brave audio opneemt?</translation>
 <translation id="7088434364990739311">Het starten van de updatecontrole is mislukt (foutcode <ph name="ERROR"/>).</translation>
@@ -4968,7 +4914,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7405938989981604410">{NUM_HOURS,plural, =1{Veiligheidscheck is 1 uur geleden uitgevoerd}other{Veiligheidscheck is {NUM_HOURS} uur geleden uitgevoerd}}</translation>
 <translation id="740624631517654988">Pop-up geblokkeerd</translation>
 <translation id="7407430846095439694">Importeren en binden</translation>
-<translation id="7407504355934009739">De meeste mensen blokkeren meldingen van deze site</translation>
 <translation id="740810853557944681">Een afdrukserver toevoegen</translation>
 <translation id="7409549334477097887">Extra groot</translation>
 <translation id="7410344089573941623">Vragen of <ph name="HOST"/> toegang wil tot je camera en microfoon</translation>
@@ -5013,7 +4958,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7460045493116006516">Huidig thema dat je hebt geïnstalleerd</translation>
 <translation id="7461924472993315131">Vastzetten</translation>
 <translation id="746216226901520237">De volgende keer wordt <ph name="DEVICE_TYPE"/> ontgrendeld met je telefoon. Je kunt Smart Lock uitschakelen in Instellingen.</translation>
-<translation id="7463006580194749499">Persoon toevoegen</translation>
 <translation id="7465522323587461835">{NUM_OPEN_TABS,plural, =1{# geopend tabblad, druk om de tabbladstrook in of uit te schakelen}other{# geopende tabbladen, druk om de tabbladstrook in of uit te schakelen}}</translation>
 <translation id="7465635034594602553">Er is iets misgegaan. Wacht enkele minuten en voer <ph name="APP_NAME"/> opnieuw uit.</translation>
 <translation id="7465778193084373987">URL voor intrekken van Netscape-certificaat</translation>
@@ -5035,7 +4979,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7488682689406685343">Deze site probeert je mogelijk zover te krijgen dat je opdringerige meldingen toestaat.</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{Alles &amp;openen}=1{Bladwijzer &amp;openen}other{Alles (#) &amp;openen}}</translation>
 <translation id="7489761397368794366">Bellen vanaf je apparaat</translation>
-<translation id="749028671485790643">Persoon <ph name="VALUE"/></translation>
 <translation id="7490813197707563893">MAC-adres</translation>
 <translation id="7491963308094506985">{NUM_COOKIES,plural, =1{1 cookie}other{{NUM_COOKIES} cookies}}</translation>
 <translation id="7493386493263658176">De extensie <ph name="EXTENSION_NAME"/> kan alle tekst verzamelen die je typt, waaronder persoonsgegevens zoals wachtwoorden en creditcardnummers. Wil je deze extensie gebruiken?</translation>
@@ -5057,7 +5000,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="751523031290522286"><ph name="APP_NAME"/> is geblokkeerd door de beheerder. Vraag de beheerder toestemming om deze app te gebruiken.</translation>
 <translation id="7516981202574715431"><ph name="APP_NAME"/> is onderbroken</translation>
 <translation id="7517063221058203587">{0,plural, =1{Apparaat binnen 1 minuut updaten}other{Apparaat binnen # minuten updaten}}</translation>
-<translation id="7520766081042531487">Incognitoportal: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="7522255036471229694">Zeg "Oké Brave"</translation>
 <translation id="7525067979554623046">Maken</translation>
@@ -5151,7 +5093,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7647403192093989392">Geen recente activiteiten</translation>
 <translation id="7649070708921625228">Hulp</translation>
 <translation id="7650511557061837441">'<ph name="TRIGGERING_EXTENSION_NAME"/>' wil '<ph name="EXTENSION_NAME"/>' verwijderen.</translation>
-<translation id="7652808307838961528">Persoon bewerken: <ph name="PROFILE_NAME"/></translation>
 <translation id="765293928828334535">Apps, extensies en gebruikersscripts kunnen niet worden toegevoegd vanaf deze website</translation>
 <translation id="7652954539215530680">Een pincode instellen</translation>
 <translation id="7654941827281939388">Dit account wordt al gebruikt op deze computer.</translation>
@@ -5172,7 +5113,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7674416868315480713">Alle doorgeschakelde poorten deactiveren in Linux</translation>
 <translation id="1800308196794859773">Verzend je stem naar Brave zodat je kunt dicteren in tekstvelden.</translation>
 <translation id="7681095912841365527">Site kan Bluetooth gebruiken</translation>
-<translation id="7683373461016844951">Als je verder wilt gaan, klik je op 'OK' en vervolgens op 'Persoon toevoegen' om een nieuw profiel te maken voor je <ph name="DOMAIN"/>-mailadres.</translation>
 <translation id="7684212569183643648">Geïnstalleerd door je beheerder</translation>
 <translation id="7684559058815332124">Captive portal-loginpagina bezoeken</translation>
 <translation id="1669729672557072907">Schakel Android Debug Bridge (ADB) in om je apps te maken en te testen. Let op: Met deze actie sta je toe dat Android-apps worden geïnstalleerd die niet door Brave zijn geverifieerd. Als je deze functie wilt uitschakelen, moet je apparaat worden teruggezet op de fabrieksinstellingen.</translation>
@@ -5272,7 +5212,7 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7792388396321542707">Delen stoppen</translation>
 <translation id="779308894558717334">Lichtgroen</translation>
 <translation id="7793098747275782155">Donkerblauw</translation>
-<translation id="7797571222998226653">Uit</translation>
+<translation id="971479617738309149">Uit</translation>
 <translation id="7798844538707273832"><ph name="PERMISSION"/> automatisch geblokkeerd</translation>
 <translation id="7799299114731150374">Achtergrond is ingesteld</translation>
 <translation id="7800518121066352902">Links&amp;om draaien</translation>
@@ -5375,7 +5315,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7904094684485781019">De beheerder van dit account heeft toegang tot meerdere accounts niet toegestaan.</translation>
 <translation id="7904526211178107182">Linux-poorten beschikbaar maken voor andere apparaten in je netwerk.</translation>
 <translation id="7908378463497120834">Ten minste één partitie op je externe opslagapparaat kan niet worden gekoppeld.</translation>
-<translation id="7909969815743704077">Gedownload in incognitomodus</translation>
 <translation id="7910768399700579500">&amp;Nieuwe map</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="7912080627461681647">Je wachtwoord is gewijzigd op de server. Log uit en weer in.</translation>
@@ -5438,7 +5377,6 @@ Je kunt de instellingen van dit account beheren door de Family Link-app op je ap
 <translation id="7982083145464587921">Start je apparaat opnieuw op om deze fout te verhelpen.</translation>
 <translation id="7982789257301363584">Netwerk</translation>
 <translation id="7984068253310542383"><ph name="DISPLAY_NAME"/> mirroren</translation>
-<translation id="7985283639530788531">Wil je in incognitomodus Touch ID gebruiken met <ph name="APP_NAME"/>?</translation>
 <translation id="7986295104073916105">Instellingen voor opgeslagen wachtwoorden lezen en wijzigen</translation>
 <translation id="7987814697832569482">Altijd verbinding maken via dit VPN</translation>
 <translation id="7988355189918024273">Functies voor toegankelijkheid inschakelen</translation>
@@ -5479,7 +5417,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8030852056903932865">Goedkeuren</translation>
 <translation id="8032244173881942855">Kan tabblad niet casten.</translation>
 <translation id="8033827949643255796">geselecteerd</translation>
-<translation id="803435727213847625">{COUNT,plural, =0{Alles openen in &amp;incognitovenster}=1{Openen in &amp;incognitovenster}other{Alles (#) openen in &amp;incognitovenster}}</translation>
 <translation id="8037117027592400564">Alle tekst lezen die wordt gesproken met gesynthetiseerde spraak</translation>
 <translation id="8037357227543935929">Vragen (standaard)</translation>
 <translation id="803771048473350947">Archief</translation>
@@ -5615,7 +5552,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8213449224684199188">Fotomodus geopend</translation>
 <translation id="8213577208796878755">Eén ander beschikbaar apparaat.</translation>
 <translation id="8214489666383623925">Open bestand...</translation>
-<translation id="8214962590150211830">Deze persoon verwijderen</translation>
 <translation id="8215295261562449873">Een back-up van mijn apps en bestanden maken in de map Downloads voordat Linux wordt geüpgraded.</translation>
 <translation id="8217399928341212914">Automatische downloads van meerdere bestanden blijven blokkeren</translation>
 <translation id="8218847192766059983">Voeg talen toe of sorteer de lijst opnieuw. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
@@ -5682,7 +5618,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8284279544186306258">alle sites op <ph name="WEBSITE_1"/></translation>
 <translation id="8284326494547611709">Ondertiteling</translation>
 <translation id="8286036467436129157">Inloggen</translation>
-<translation id="8286963743045814739">Je kunt privé browsen in een incognitovenster</translation>
 <translation id="8287902281644548111">Zoeken op API-aanroep/URL</translation>
 <translation id="8288032458496410887"><ph name="APP"/> verwijderen...</translation>
 <translation id="8289128870594824098">Schijfgrootte</translation>
@@ -5761,7 +5696,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="839736845446313156">Registreren</translation>
 <translation id="8397825320644530257">Verbonden telefoon loskoppelen</translation>
 <translation id="8398877366907290961">Toch doorgaan</translation>
-<translation id="8400146488506985033">Mensen beheren</translation>
 <translation id="8401432541486058167">Geef de pincode op die hoort bij je smartkaart.</translation>
 <translation id="8405046151008197676">Ontvang de hoogtepunten van de nieuwste update</translation>
 <translation id="8407199357649073301">Logniveau:</translation>
@@ -5811,7 +5745,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8465444703385715657">Voor het uitvoeren van <ph name="PLUGIN_NAME"/> is je toestemming nodig</translation>
 <translation id="8466417995783206254">De video op dit tabblad wordt afgespeeld in de scherm-in-scherm-modus.</translation>
 <translation id="8467326454809944210">Een andere taal kiezen</translation>
-<translation id="8470214316007448308">Andere mensen</translation>
 <translation id="8470513973197838199">Opgeslagen wachtwoorden voor <ph name="ORIGIN"/></translation>
 <translation id="8472623782143987204">hardware-ondersteund</translation>
 <translation id="8473863474539038330">Adressen en meer</translation>
@@ -5859,7 +5792,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8540608333167683902">Netwerk <ph name="NETWORK_INDEX"/> van <ph name="NETWORK_COUNT"/>, <ph name="NETWORK_NAME"/>, <ph name="CONNECTION_STATUS"/>, signaalsterkte <ph name="SIGNAL_STRENGTH"/>%, details</translation>
 <translation id="8541462173655894684">Er zijn geen printers gevonden op de afdrukserver</translation>
 <translation id="8542618328173222274">Vragen als een site je virtualreality-apparaten en -gegevens wil gebruiken</translation>
-<translation id="8543556556237226809">Vragen? Neem contact op met de persoon die je profiel beheert.</translation>
 <translation id="8545575359873600875">Je wachtwoord kan niet worden geverifieerd. De beheerder van deze gebruiker met beperkte rechten heeft het wachtwoord misschien recent gewijzigd. Als dit het geval is, wordt het nieuwe wachtwoord toegepast wanneer je weer inlogt. Probeer je oude wachtwoord te gebruiken.</translation>
 <translation id="8546186510985480118">Weinig ruimte beschikbaar op het apparaat</translation>
 <translation id="8546306075665861288">Cachegeheugen met afbeeldingen</translation>
@@ -5870,7 +5802,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="85486688517848470">Houd de zoektoets ingedrukt om het gedrag van de toetsen in de bovenste rij om te schakelen</translation>
 <translation id="8551388862522347954">Licenties</translation>
 <translation id="8551588720239073785">Instellingen voor datum en tijd</translation>
-<translation id="8553342806078037065">Andere mensen beheren</translation>
 <translation id="8554899698005018844">Geen taal</translation>
 <translation id="8557022314818157177">Blijf je beveiligingssleutel aanraken totdat je vingerafdruk is geregistreerd</translation>
 <translation id="855773602626431402">Er is voorkomen dat een plug-in zonder sandbox op deze pagina werd uitgevoerd.</translation>
@@ -5908,7 +5839,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8610103157987623234">Onjuiste indeling. Probeer het opnieuw.</translation>
 <translation id="8613164732773110792">Alleen kleine letters, cijfers, underscores of koppeltekens</translation>
 <translation id="8613786722548417558"><ph name="FILE_NAME"/> is te groot voor een beveiligingscontrole. Je kunt bestanden tot 50 MB openen.</translation>
-<translation id="8615618338313291042">Incognitotoepassing: <ph name="APP_NAME"/></translation>
 <translation id="8619803522055190423">Slagschaduw</translation>
 <translation id="8619892228487928601"><ph name="CERTIFICATE_NAME"/>: <ph name="ERROR"/></translation>
 <translation id="8620436878122366504">Je ouders hebben dit nog niet goedgekeurd</translation>
@@ -5950,9 +5880,7 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8655972064210167941">Het inloggen is mislukt omdat je wachtwoord niet kan worden geverifieerd. Neem contact op met je beheerder of probeer het opnieuw.</translation>
 <translation id="8656768832129462377">Niet controleren</translation>
 <translation id="8658645149275195032"><ph name="APP_NAME"/> deelt je scherm en audio met <ph name="TAB_NAME"/>.</translation>
-<translation id="8661290697478713397">Link openen in inco&amp;gnitovenster</translation>
 <translation id="8662671328352114214">Deelnemen aan <ph name="TYPE"/>-netwerk</translation>
-<translation id="8662795692588422978">Personen</translation>
 <translation id="8662811608048051533">Hiermee word je uitgelogd van de meeste sites.</translation>
 <translation id="8662911384982557515">Je homepage wijzigen in: <ph name="HOME_PAGE"/></translation>
 <translation id="8662978096466608964">Brave kan de achtergrond niet instellen.</translation>
@@ -6045,7 +5973,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8763927697961133303">USB-apparaat</translation>
 <translation id="4570609078116869893">Brave automatisch updaten voor alle gebruikers</translation>
 <translation id="8770406935328356739">Hoofddirectory van extensie</translation>
-<translation id="8770507190024617908">Mensen beheren</translation>
 <translation id="8771300903067484968">De achtergrond van de startpagina is gereset naar de standaardachtergrond.</translation>
 <translation id="8773302562181397928"><ph name="PRINTER_NAME"/> opslaan</translation>
 <translation id="8774379074441005279">Herstel bevestigen</translation>
@@ -6173,7 +6100,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8912793549644936705">Uitrekken</translation>
 <translation id="8912810933860534797">Automatisch scannen inschakelen</translation>
 <translation id="8915370057835397490">Suggestie wordt geladen</translation>
-<translation id="8916476537757519021">Incognito-subframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="8922013791253848639">Altijd advertenties op deze site toestaan</translation>
 <translation id="8923880975836399332">Donkerblauwgroen</translation>
 <translation id="8925458182817574960">&amp;Instellingen</translation>
@@ -6195,7 +6121,6 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8944964446326379280"><ph name="APP_NAME"/> deelt een venster met <ph name="TAB_NAME"/>.</translation>
 <translation id="8945274638472141382">Icoonformaat</translation>
 <translation id="8946359700442089734">Foutopsporingsfuncties zijn niet volledig ingeschakeld op dit <ph name="IDS_SHORT_PRODUCT_NAME"/>-apparaat.</translation>
-<translation id="894871326938397531">Incognitomodus verlaten?</translation>
 <translation id="8948939328578167195"><ph name="WEBSITE"/> wil het merk en het model van je beveiligingssleutel bekijken</translation>
 <translation id="8951256747718668828">De herstelactie kan niet worden voltooid door een fout</translation>
 <translation id="8951465597020890363">Gastmodus toch sluiten?</translation>
@@ -6458,72 +6383,84 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="995782501881226248">YouTube</translation>
 <translation id="996250603853062861">Beveiligde verbinding tot stand brengen...</translation>
 <translation id="998747458861718449">I&amp;nspecteren</translation>
-<translation id="658539216370629794">Link openen in inco&amp;gnitovenster</translation>
-<translation id="1432267168815937878">Link openen in inco&amp;gnitovenster</translation>
-<translation id="6516243500644829484">Nieuw &amp;incognitovenster</translation>
-<translation id="7973394300052703468">Nieuw &amp;incognitovenster</translation>
-<translation id="6395403722585816044">Gedownload in incognitomodus</translation>
-<translation id="203837651858678035">Incognitomodus toch afsluiten?</translation>
-<translation id="7376221878517288144">Incognitomodus toch afsluiten?</translation>
+<translation id="658539216370629794">Open link in &amp;privéscherm</translation>
+<translation id="1432267168815937878">Open link in &amp;privéscherm</translation>
+<translation id="6516243500644829484">Nieuw &amp;privéscherm</translation>
+<translation id="7973394300052703468">Nieuw &amp;privéscherm</translation>
+<translation id="6395403722585816044">Gedownload in Privé</translation>
+<translation id="203837651858678035">Privémodus toch afsluiten?</translation>
+<translation id="7376221878517288144">Wilt u de privémodus toch afsluiten?</translation>
 <translation id="871606814707918245">De meeste mensen blokkeren meldingen van deze site</translation>
-<translation id="5053701565089446556">Incognito-extensie: <ph name="EXTENSION_NAME"/></translation>
-<translation id="611296870688433505">Incognitotoepassing: <ph name="APP_NAME"/></translation>
-<translation id="9048137919253433011">Incognitotabblad: <ph name="TAB_NAME"/></translation>
-<translation id="1799432502220762862">Incognito-subframe: <ph name="SUBFRAME_SITE"/></translation>
+<translation id="5053701565089446556">Privé-extensie: <ph name="EXTENSION_NAME"/></translation>
+<translation id="611296870688433505">Privé-app: <ph name="APP_NAME"/></translation>
+<translation id="9048137919253433011">Privétabblad: <ph name="TAB_NAME"/></translation>
+<translation id="1799432502220762862">Privé-hulpframe: <ph name="SUBFRAME_SITE"/></translation>
 <translation id="3193187622878830588">Incognitoportal: <ph name="SUBFRAME_SITE"/></translation>
-<translation id="8808478386290700967">Brave Web Store</translation>
+<translation id="8808478386290700967">Webwinkel</translation>
 <translation id="8261378640211443080">Deze extensie wordt niet vermeld in de <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> en is mogelijk zonder je medeweten toegevoegd.</translation>
-<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
-<translation id="4369414322596874629">Je kunt privé browsen in een incognitovenster</translation>
-<translation id="3772947852642271642">Gebruik een incognitovenster om te internetten zonder dat je browsegeschiedenis wordt opgeslagen</translation>
-<translation id="3871738366246972820">Gebruik je een gedeelde computer? Open een incognitovenster.</translation>
-<translation id="5808622652939943719">Als je privé wilt browsen, klik je op het menupictogram met de stippen om een incognitovenster te openen</translation>
-<translation id="9079153198295609735">Automatisch gebruiksstatistieken en crashrapporten naar Brave verzenden</translation>
-<translation id="8839398440242019256">Niet via de Brave Web Store.</translation>
-<translation id="6945695820322143954">Deze extensie schendt het beleid voor de Brave Web Store.</translation>
-<translation id="1676595396635191120">Nieuw incognitovenster</translation>
+<translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Privé)</translation>
+<translation id="4369414322596874629">U kunt privé browsen met behulp met een privéscherm</translation>
+<translation id="3772947852642271642">Doorzoek het web zonder uw browsegeschiedenis op te slaan met behulp van een privéscherm</translation>
+<translation id="3871738366246972820">Gebruikt u een gedeelde computer? Probeer eens een privéscherm te openen.</translation>
+<translation id="5808622652939943719">Om privé te browsen klikt u op het menu-icoontje met de stipjes om een privéscherm te openen</translation>
+<translation id="9079153198295609735">Automatisch gebruiksstatistieken en crashrapporten naar Brave Software verzenden</translation>
+<translation id="8839398440242019256">Niet uit Webwinkel.</translation>
+<translation id="6945695820322143954">Deze extensie schendt het beleid van de Webwinkel.</translation>
+<translation id="1676595396635191120">Nieuw privévenster</translation>
 <translation id="5094764494104066239">Bladwijzerbalk altijd weergeven</translation>
-<translation id="4471385409549756595">Nieuw incognitovenster</translation>
-<translation id="4540437243849625078">Deze site staat op het punt buiten de incognitomodus informatie met een app te delen.</translation>
-<translation id="1227836882233136433">Incognitomodus verlaten?</translation>
-<translation id="7618452966706304788">Wil je in incognitomodus Touch ID gebruiken met <ph name="APP_NAME"/>?</translation>
-<translation id="3098826269712097986">Inloggegevens worden in Brave opgeslagen nadat je de incognitomodus hebt afgesloten. Hierdoor kun je Touch ID later opnieuw gebruiken voor deze website.</translation>
-<translation id="5186185447130319458">Incognito</translation>
-<translation id="2579188629646253712">Incognitomodus sluiten</translation>
-<translation id="6744651634043798597">{COUNT,plural, =0{Alles openen in &amp;incognitovenster}=1{Openen in &amp;incognitovenster}other{Alles (#) openen in &amp;incognitovenster}}</translation>
-<translation id="2431625704210501303">Openen in &amp;incognitovenster</translation>
+<translation id="4471385409549756595">Nieuw privéscherm</translation>
+<translation id="4540437243849625078">Deze site staat op het punt informatie te delen met een app buiten de privémodus om.</translation>
+<translation id="1227836882233136433">Wilt u de privémodus verlaten?</translation>
+<translation id="7618452966706304788">Wilt u Touch ID gebruiken met <ph name="APP_NAME"/> in de privémodus?</translation>
+<translation id="3098826269712097986">Inloggegevens worden na het afsluiten van de privémodus opgeslagen in Brave. Hierdoor kunt u Touch ID later nogmaals op deze website gebruiken.</translation>
+<translation id="5186185447130319458">Privé</translation>
+<translation id="2579188629646253712">Sluit Privé af</translation>
+<translation id="6744651634043798597">{COUNT, plural,
+          =0 {Open alle in &amp;privéscherm}
+          =1 {Open in &amp;privéscherm}
+          other {Open alle (#) in &amp;privéscherm}}</translation>
+<translation id="2431625704210501303">Open in &amp;privéscherm</translation>
 <translation id="4620367155626060530">&amp;Bladwijzerbalk weergeven</translation>
-<translation id="2633634757060186848">{COUNT,plural, =0{Alles openen in &amp;incognitovenster}=1{Openen in &amp;incognitovenster}other{Alles (#) openen in &amp;incognitovenster}}</translation>
-<translation id="1985165269306590797">Openen in &amp;incognitovenster</translation>
+<translation id="2633634757060186848">{COUNT, plural,
+          =0 {Open alle in &amp;privéscherm}
+          =1 {Open in &amp;privéscherm}
+          other {Open alle (#) in &amp;privéscherm}}</translation>
+<translation id="1985165269306590797">Open in &amp;privéscherm</translation>
 <translation id="4680518314108745448">&amp;Bladwijzerbalk weergeven</translation>
-<translation id="642436385689435488">Alles openen in incognitovenster</translation>
-<translation id="5463021359602611602">Openen in incognitovenster</translation>
-<translation id="1850357845349976573">{0,plural, =1{Incognito}other{# geopende incognitovensters}}</translation>
-<translation id="37784332082579802">{0,plural, =1{Incognito}other{Incognito (#)}}</translation>
-<translation id="5070556616376997776">Je bent incognito</translation>
-<translation id="5832813618714645810">Personen</translation>
-<translation id="7171000599584840888">Persoon toevoegen...</translation>
+<translation id="642436385689435488">Open alle in privéscherm</translation>
+<translation id="5463021359602611602">Openen in privéscherm</translation>
+<translation id="1850357845349976573">{0, plural,
+        =1 {Privé}
+        other {# open privéschermen}
+      }</translation>
+<translation id="37784332082579802">{0, plural,
+      =1 {privé}
+      other {privé (#)}
+    }</translation>
+<translation id="5070556616376997776">Dit is een privéscherm</translation>
+<translation id="5832813618714645810">Profielen</translation>
+<translation id="7171000599584840888">Voeg profiel toe...</translation>
 <translation id="2005199804247617997">Andere mensen</translation>
-<translation id="2935225303485967257">Mensen beheren</translation>
+<translation id="2935225303485967257">Beheer profielen</translation>
 <translation id="8966809848145604011">Andere mensen</translation>
-<translation id="688280436658139163">Mensen beheren</translation>
-<translation id="4133080584509825342">Persoon bewerken: <ph name="PROFILE_NAME"/></translation>
-<translation id="4848862725510532982">Persoon bewerken: <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
-<translation id="4536111748245793305">Persoon <ph name="VALUE"/></translation>
+<translation id="688280436658139163">Beheer profielen</translation>
+<translation id="4133080584509825342">Wijzig profiel, <ph name="PROFILE_NAME"/></translation>
+<translation id="4848862725510532982">Wijzig profiel, <ph name="PROFILE_NAME"/>, <ph name="USERNAME"/></translation>
+<translation id="4536111748245793305">Profiel <ph name="VALUE"/></translation>
 <translation id="5828545842856466741">Persoon toevoegen...</translation>
 <translation id="2254158488150713536">Als je verder wilt gaan, klik je op 'OK' en vervolgens op 'Persoon toevoegen' om een nieuw profiel te maken voor je e-mailadres.</translation>
 <translation id="1725743343613175327">Als je verder wilt gaan, klik je op 'OK' en vervolgens op 'Persoon toevoegen' om een nieuw profiel te maken voor je <ph name="DOMAIN"/>-mailadres.</translation>
-<translation id="6921634551681321094">Persoon toevoegen</translation>
-<translation id="4904061654709986277">Persoon toevoegen</translation>
-<translation id="6114945161119872228">Deze persoon verwijderen</translation>
-<translation id="769308100792069196">Persoon met beperkte rechten toevoegen</translation>
-<translation id="8006143138282906848">Gebruiker verwijderen</translation>
-<translation id="6912187023601892621">Gebruiker met beperkte rechten toevoegen</translation>
-<translation id="8086119151297127544">Ontgrendel je profiel voordat je een persoon verwijdert.</translation>
-<translation id="7805701378418968629">Ontgrendel je profiel voordat je een persoon toevoegt.</translation>
+<translation id="6921634551681321094">Voeg profiel toe</translation>
+<translation id="4904061654709986277">Voeg profiel toe</translation>
+<translation id="6114945161119872228">Verwijder dit profiel</translation>
+<translation id="769308100792069196">Voeg profiel onder toezicht toe</translation>
+<translation id="8006143138282906848">Verwijder dit profiel</translation>
+<translation id="6912187023601892621">Voeg profiel onder toezicht toe</translation>
+<translation id="8086119151297127544">Ontgrendel uw profiel voor u een profiel verwijdert.</translation>
+<translation id="7805701378418968629">Ontgrendel uw profiel voor u een profiel toevoegt.</translation>
 <translation id="6315812488257290136">Mensen</translation>
-<translation id="3707212204259470604">Andere mensen beheren</translation>
-<translation id="5840822070878669614">Brave Web Store openen</translation>
+<translation id="3707212204259470604">Beheer andere profielen</translation>
+<translation id="5840822070878669614">Open Webwinkel</translation>
 <translation id="383007806262310953">Bladwijzerbalk weergeven</translation>
 <translation id="2890280714162339872">Huidige incognitosessie: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/></translation>
 <translation id="4207277598811881727">Huidige incognitosessie: <ph name="RECENT_PERMISSIONS_CHANGE_SENTENCE_START"/>, <ph name="RECENT_PERMISSIONS_CHANGE_1"/></translation>
@@ -6532,15 +6469,15 @@ Bewaar je sleutelbestand op een veilige plaats. Je hebt het bestand nodig om nie
 <translation id="8648684608605749476">Cookies van derden blokkeren in incognitomodus</translation>
 <translation id="2199515977216775204">Als je de incognitomodus gebruikt, kunnen sites je cookies niet gebruiken om je browse-activiteit op verschillende sites te bekijken om bijvoorbeeld advertenties te personaliseren. Functies op bepaalde sites werken mogelijk niet meer.</translation>
 <translation id="6105125042109106861">Cookies van derden worden geblokkeerd in de incognitomodus</translation>
-<translation id="1281501490173223206">Alleen huidige incognitosessie</translation>
+<translation id="1281501490173223206">Alleen huidige privésessie</translation>
 <translation id="5566692924079383101">Deze exceptie wordt automatisch verwijderd nadat je de huidige incognitosessie hebt afgesloten</translation>
-<translation id="6906406176003824042">Persoon bewerken</translation>
-<translation id="9063160602596686558">Hiermee worden automatisch gebruiksstatistieken en crashrapporten naar Brave verzonden</translation>
-<translation id="3860292630623580294">(Incognito)</translation>
-<translation id="4854477725773269949">Toestaan in incognitomodus</translation>
-<translation id="6436164536244065364">Bekijken in de Brave Web Store</translation>
-<translation id="38046578254905003">Zoek extensies en thema's in de <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/></translation>
-<translation id="6336451774241870485">Nieuw incognitotabblad</translation>
-<translation id="6610147964972079463">Incognitotabbladen sluiten</translation>
+<translation id="6906406176003824042">Wijzig profiel</translation>
+<translation id="9063160602596686558">Hiermee worden automatisch gebruiksstatistieken en crashrapporten naar Brave Software verzonden</translation>
+<translation id="3860292630623580294">(Privé)</translation>
+<translation id="4854477725773269949">Toestaan in privé</translation>
+<translation id="6436164536244065364">Bekijken in Web Store</translation>
+<translation id="38046578254905003">Vind extensies en thema's in de <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://chrome.google.com/webstore/category/extensions"&gt;</ph>Web Store<ph name="END_LINK">&lt;/a&gt;</ph></translation>
+<translation id="6336451774241870485">Nieuw privétabblad</translation>
+<translation id="6610147964972079463">Sluit privétabbladen af</translation>
 <translation id="4933782374919065856">Vragen? Neem contact op met de persoon die je profiel beheert.</translation>
 </translationbundle>

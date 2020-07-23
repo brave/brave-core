@@ -435,7 +435,6 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="2824775600643448204">Barra de direcciones y de búsqueda</translation>
 <translation id="2826760142808435982">La conexión se encriptó y autenticó con <ph name="CIPHER"/>, y utiliza <ph name="KX"/> como el mecanismo de intercambio de claves.</translation>
 <translation id="2835170189407361413">Eliminar formulario</translation>
-<translation id="2847118875340931228">Abrir ventana de incógnito</translation>
 <translation id="2850739647070081192">Invite (Envelope)</translation>
 <translation id="2856444702002559011">Es posible que algunos atacantes intenten robar tu información de <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (p. ej., contraseñas, mensajes o tarjetas de crédito). <ph name="BEGIN_LEARN_MORE_LINK"/>Más información<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Plegado de póster</translation>
@@ -485,7 +484,6 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="3041612393474885105">Información sobre el certificado</translation>
 <translation id="3060227939791841287">C9 (Envelope)</translation>
 <translation id="3061707000357573562">Aplicar parche al servicio</translation>
-<translation id="3064966200440839136">Saldrás del modo de navegación incógnito para pagar mediante una aplicación externa. ¿Deseas continuar?</translation>
 <translation id="3080254622891793721">Gráfico</translation>
 <translation id="3086579638707268289">Se supervisa tu actividad en la Web</translation>
 <translation id="3087734570205094154">Inferior</translation>
@@ -505,7 +503,6 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="3154506275960390542">Esta página incluye un formulario cuyo envío no es seguro. Es posible que otras personas vean los datos que envíes mientras están en tránsito o que un atacante los modifique antes de que los reciba el servidor.</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="3162559335345991374">Es posible que la red Wi-Fi que estás usando requiera que visites la página de acceso.</translation>
-<translation id="3167968892399408617">Una vez que cierres todas las pestañas de incógnito, las páginas que hayas visitado en ese modo no se guardarán en el historial del navegador, en la lista de cookies ni en el historial de búsquedas. Se guardarán los archivos que descargues y los favoritos que crees.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Isla</translation>
 <translation id="3176929007561373547">Comprueba la configuración del proxy o comunícate con tu
@@ -623,7 +620,6 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="3676592649209844519">ID de dispositivo:</translation>
 <translation id="3677008721441257057">¿Quisiste decir &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">La solicitud no se pudo firmar</translation>
-<translation id="3678529606614285348">Abre la página en una nueva ventana de incógnito (Ctrl-mayúscula-N).</translation>
 <translation id="3681007416295224113">Información sobre el certificado</translation>
 <translation id="3701427423622901115">Se detectó el restablecimiento.</translation>
 <translation id="3704162925118123524">Es posible que la red que estás usando requiera que visites la página de acceso.</translation>
@@ -780,7 +776,7 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Es posible que los atacantes que se encuentren en este sitio intenten instalar programas peligrosos en tu computadora con el fin de robarte información o borrarla (p. ej., fotos, contraseñas, mensajes y tarjetas de crédito).</translation>
 <translation id="4358059973562876591">Debido a un error relacionado con la política DnsOverHttpsMode, es posible que no se apliquen las plantillas que especificaste.</translation>
-<translation id="4358461427845829800">Administrar formas de pago…</translation>
+<translation id="327628984294957152">Administrar formas de pago…</translation>
 <translation id="4367563149485757821">Number-12 (Envelope)</translation>
 <translation id="437058704415269440">Saldo de cuenta</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -944,7 +940,7 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="5123063207673082822">Fin de semana</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Verifica tu tarjeta</translation>
-<translation id="5135404736266831032">Administrar direcciones…</translation>
+<translation id="6291230311289558881">Administrar direcciones…</translation>
 <translation id="5138227688689900538">Mostrar menos</translation>
 <translation id="7186167407612593632">Encriptar contraseñas sincronizadas con tus credenciales de Brave</translation>
 <translation id="5145883236150621069">Código de error en la respuesta de la política</translation>
@@ -952,7 +948,6 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="5148809049217731050">Hacia arriba</translation>
 <translation id="515292512908731282">C4 (Envelope)</translation>
 <translation id="5158275234811857234">Portada</translation>
-<translation id="5159010409087891077">Abre la página en una nueva ventana de incógnito (⇧⌘N).</translation>
 <translation id="5161506081086828129">Apilador 9</translation>
 <translation id="9016458749696512983">Ingresa el CVC de la tarjeta <ph name="CREDIT_CARD"/>. Después de confirmarla, los datos de la tarjeta en tu Cuenta de Brave se compartirán con este sitio.</translation>
 <translation id="8515152881111950319">Es posible que hayas perdido el acceso a la cuenta de tu organización o sufrido un robo de identidad. Brave te recomienda que cambies la contraseña ahora.</translation>
@@ -960,7 +955,6 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Equipo</translation>
 <translation id="5179510805599951267">¿No está en <ph name="ORIGINAL_LANGUAGE"/>? Informa este error</translation>
-<translation id="5190835502935405962">Barra de favoritos</translation>
 <translation id="519422657042045905">La anotación no está disponible</translation>
 <translation id="5201306358585911203">Una página incorporada en esta página dice</translation>
 <translation id="5205222826937269299">Nombre (obligatorio)</translation>
@@ -1091,7 +1085,7 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="5689516760719285838">Ubicación</translation>
 <translation id="569000877158168851">El valor de la política DnsOverHttpsTemplates no es relevante y no se usará, a menos que se establezca la política DnsOverHttpsMode como <ph name="SECURE_DNS_MODE_AUTOMATIC"/> o <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">Centrar</translation>
-<translation id="570530837424789914">Administrar…</translation>
+<translation id="3655851112780233803">Administrar…</translation>
 <translation id="57094364128775171">Sugerir contraseña segura…</translation>
 <translation id="5710435578057952990">No se ha verificado la identidad de este sitio web.</translation>
 <translation id="5720705177508910913">Usuario actual</translation>
@@ -1270,7 +1264,7 @@ De lo contrario, la configuración de privacidad bloqueará esta acción. Esto p
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6451458296329894277">Confirmar reenvío del formulario</translation>
 <translation id="6457206614190510200">Grapado en el pliegue central</translation>
-<translation id="6465306955648956876">Administrar contraseñas…</translation>
+<translation id="2275235756919172538">Administrar contraseñas…</translation>
 <translation id="647261751007945333">Políticas de dispositivos</translation>
 <translation id="6476284679642588870">Administrar las formas de pago</translation>
 <translation id="6489534406876378309">Comenzar a cargar fallos</translation>
@@ -1585,7 +1579,6 @@ Detalles adicionales:
 <translation id="782886543891417279">Es posible que la red Wi-Fi que estás usando (<ph name="WIFI_NAME"/>) requiera que visites la página de acceso.</translation>
 <translation id="7836231406687464395">Postfix (Envelope)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Ninguna}=1{1 app (<ph name="EXAMPLE_APP_1"/>)}=2{2 apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# apps (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">Sin embargo, no eres invisible. El modo de navegación de incógnito no oculta tu navegación de tu empleador, de tu proveedor de servicios de Internet, ni de los sitios web que visitas.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">¿Deseas abandonar el sitio?</translation>
 <translation id="7865448901209910068">Mejor velocidad</translation>
@@ -1668,10 +1661,8 @@ Detalles adicionales:
 <translation id="8220146938470311105">C7/C6 (Envelope)</translation>
 <translation id="8220639454292072926">Informes empresariales</translation>
 <translation id="3272614036080146686">Ingresaste tu contraseña en un sitio engañoso. Brave te recomienda que la cambies ahora en <ph name="WEBSITE_1"/> y otros sitios donde la uses.</translation>
-<translation id="8225771182978767009">La persona que configuró esta computadora decidió bloquear este sitio.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Temperatura de la plataforma</translation>
-<translation id="8238581221633243064">Abre la página en una nueva pestaña de incógnito.</translation>
 <translation id="8241707690549784388">La página que buscas ha utilizado la información que has especificado. Volver a la página podría provocar la repetición de alguna acción. ¿Deseas continuar?</translation>
 <translation id="8241712895048303527">Bloquear en este sitio</translation>
 <translation id="8242426110754782860">Continuar</translation>
@@ -1683,7 +1674,6 @@ Detalles adicionales:
 <translation id="8262952874573525464">Costura del borde inferior</translation>
 <translation id="8267698848189296333">Acceder como <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Documentos separados/copias intercaladas</translation>
-<translation id="8269981117540303696">Ahora puedes navegar de forma privada. Si otras personas usan este dispositivo, no verán tu actividad. Sin embargo, se guardarán las descargas y los favoritos.</translation>
 <translation id="8277900682056760511">La hoja del controlador de pagos está abierta</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Conocer tu identificador de dispositivo único</translation>
@@ -1702,7 +1692,6 @@ Detalles adicionales:
 <translation id="833262891116910667">Destacar</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Si comprendes los riesgos de seguridad, puedes <ph name="BEGIN_LINK"/>visitar este sitio<ph name="END_LINK"/> antes de que se hayan eliminado los programas peligrosos.</translation>
-<translation id="8349305172487531364">Barra de favoritos</translation>
 <translation id="8355270400102541638">Contexto de falla local:</translation>
 <translation id="8363502534493474904">Desactivar el modo de avión.</translation>
 <translation id="8364627913115013041">Sin establecer</translation>
@@ -1768,7 +1757,6 @@ Detalles adicionales:
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, sugerencia de búsqueda</translation>
 <translation id="8719528812645237045">Perforaciones múltiples en la parte superior</translation>
 <translation id="8725066075913043281">Intentar nuevamente</translation>
-<translation id="8728672262656704056">Estás en modo incógnito</translation>
 <translation id="8730621377337864115">Listo</translation>
 <translation id="6326805297893828864">Para establecer una conexión segura, el reloj debe estar configurado correctamente. Esto se debe a que los certificados que usan los sitios web para su identificación solo son válidos por períodos de tiempo específicos. Debido a que la configuración del reloj del dispositivo es incorrecta, Brave no puede verificar estos certificados.</translation>
 <translation id="8740359287975076522">No se encontró <ph name="HOST_NAME"/>’s &lt;abbr id="dnsDefinition"&gt;DNS address&lt;/abbr&gt;. Se está diagnosticando el problema.</translation>
@@ -1801,7 +1789,6 @@ Detalles adicionales:
 <translation id="8903921497873541725">Acercar</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Botón Quitar sugerencia; presiona Intro para quitarla, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">Estás en modo Incógnito</translation>
 <translation id="5713644099811900409">Cuenta de Brave</translation>
 <translation id="8918231688545606538">Esta página es sospechosa</translation>
 <translation id="892588693504540538">Perforación en la esquina superior derecha</translation>

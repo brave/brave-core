@@ -437,7 +437,6 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="2824775600643448204">Barra de direcciones y de búsqueda </translation>
 <translation id="2826760142808435982">La conexión se ha encriptado y autenticado con <ph name="CIPHER"/>, y utiliza <ph name="KX"/> como el mecanismo de intercambio clave.</translation>
 <translation id="2835170189407361413">Eliminar formulario</translation>
-<translation id="2847118875340931228">Abrir una ventana de incógnito</translation>
 <translation id="2850739647070081192">Invite (sobre)</translation>
 <translation id="2856444702002559011">Es posible que los atacantes estén intentando robar tu información de <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (por ejemplo, contraseñas, mensajes o tarjetas de crédito). <ph name="BEGIN_LEARN_MORE_LINK"/>Más información<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Plegado en cruz</translation>
@@ -487,7 +486,6 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="3041612393474885105">Datos del certificado</translation>
 <translation id="3060227939791841287">C9 (sobre)</translation>
 <translation id="3061707000357573562">Aplicar parche a servicio</translation>
-<translation id="3064966200440839136">Saldrás del modo de incógnito para realizar un pago en una aplicación externa. ¿Quieres continuar?</translation>
 <translation id="3080254622891793721">Gráfico</translation>
 <translation id="3086579638707268289">Se está vigilando tu actividad en la Web</translation>
 <translation id="3087734570205094154">Inferior</translation>
@@ -507,7 +505,6 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="3154506275960390542">Es posible que un formulario de esta página no se envíe de forma segura. Otros usuarios pueden ver los datos que envías mientras estén en circulación y un atacante podría modificar lo que recibe el servidor.</translation>
 <translation id="3157931365184549694">Restaurar</translation>
 <translation id="3162559335345991374">La red Wi-Fi que estás utilizando puede requerir que accedas a su página de inicio de sesión.</translation>
-<translation id="3167968892399408617">Las páginas que aparezcan en las pestañas de incógnito no se guardarán en el historial del navegador, en el almacén de cookies ni en el historial de búsquedas una vez que hayas cerrado todas tus pestañas de incógnito. Se mantendrán los archivos que descargues o los marcadores que crees.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Isla</translation>
 <translation id="3176929007561373547">Comprueba la configuración del proxy o ponte en contacto con el administrador de red para
@@ -624,7 +621,6 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="3676592649209844519">ID del dispositivo:</translation>
 <translation id="3677008721441257057">Quizás quisiste decir: &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;</translation>
 <translation id="3678029195006412963">No se ha podido firmar la solicitud</translation>
-<translation id="3678529606614285348">Abre una página en una nueva ventana de incógnito (Ctrl + Mayús + N).</translation>
 <translation id="3681007416295224113">Datos del certificado</translation>
 <translation id="3701427423622901115">Se han restablecido los ajustes.</translation>
 <translation id="3704162925118123524">La red que estás utilizando puede requerir el acceso a su página de inicio de sesión.</translation>
@@ -781,7 +777,7 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Es posible que los atacantes que se encuentren en este sitio web intenten instalar programas peligrosos en tu ordenador para robar o eliminar tu información (por ejemplo, fotos, contraseñas, mensajes y tarjetas de crédito).</translation>
 <translation id="4358059973562876591">Es posible que las plantillas que has especificado no se apliquen debido a un error con la política DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">Gestiona tus métodos de pago...</translation>
+<translation id="327628984294957152">Gestiona tus métodos de pago...</translation>
 <translation id="4367563149485757821">Number-12 (sobre)</translation>
 <translation id="437058704415269440">Saldo de cuenta</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -945,7 +941,7 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="5123063207673082822">Fin de semana</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Verifica tu tarjeta</translation>
-<translation id="5135404736266831032">Gestiona tus direcciones...</translation>
+<translation id="6291230311289558881">Gestiona tus direcciones...</translation>
 <translation id="5138227688689900538">Mostrar menos</translation>
 <translation id="7186167407612593632">Cifrar contraseñas sincronizadas con tus credenciales de Brave</translation>
 <translation id="5145883236150621069">Código de error presente en respuesta de la política</translation>
@@ -953,7 +949,6 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="5148809049217731050">Boca arriba</translation>
 <translation id="515292512908731282">C4 (sobre)</translation>
 <translation id="5158275234811857234">Portada</translation>
-<translation id="5159010409087891077">Abre una página en una nueva ventana de incógnito (⇧ + ⌘ + N)</translation>
 <translation id="5161506081086828129">Apilador 9</translation>
 <translation id="9016458749696512983">Introduce el CVC de <ph name="CREDIT_CARD"/>. Una vez que confirmes esta acción, la información de la tarjeta de tu cuenta de Brave se compartirá con este sitio web.</translation>
 <translation id="8515152881111950319">Podrías perder el acceso a la cuenta de tu organización o tener problemas de suplantación de identidad. Brave te recomienda que cambies tu contraseña ahora.</translation>
@@ -961,7 +956,6 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Equipo</translation>
 <translation id="5179510805599951267">¿Esta página no está escrita en <ph name="ORIGINAL_LANGUAGE"/>? Informa de este error.</translation>
-<translation id="5190835502935405962">Barra de marcadores</translation>
 <translation id="519422657042045905">No están disponibles las anotaciones</translation>
 <translation id="5201306358585911203">Una página insertada en esta dice</translation>
 <translation id="5205222826937269299">Nombre obligatorio</translation>
@@ -1092,7 +1086,7 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="5689516760719285838">Ubicación</translation>
 <translation id="569000877158168851">El valor DnsOverHttpsTemplates no es relevante y no se utilizará salvo que la política DnsOverHttpsMode esté configurada en <ph name="SECURE_DNS_MODE_AUTOMATIC"/> o <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">Centrar</translation>
-<translation id="570530837424789914">Gestionar...</translation>
+<translation id="3655851112780233803">Gestionar...</translation>
 <translation id="57094364128775171">Sugerir contraseña segura…</translation>
 <translation id="5710435578057952990">No se ha verificado la identidad de este sitio web.</translation>
 <translation id="5720705177508910913">Usuario actual</translation>
@@ -1271,7 +1265,7 @@ De lo contrario, tu configuración de privacidad lo impedirá. Permitirá que el
 <translation id="6447842834002726250">Cookies</translation>
 <translation id="6451458296329894277">Confirmar reenvío del formulario</translation>
 <translation id="6457206614190510200">Grapado en el pliegue central</translation>
-<translation id="6465306955648956876">Gestiona tus contraseñas...</translation>
+<translation id="2275235756919172538">Gestiona tus contraseñas...</translation>
 <translation id="647261751007945333">Políticas de dispositivos</translation>
 <translation id="6476284679642588870">Gestionar métodos de pago</translation>
 <translation id="6489534406876378309">Empezar a subir errores</translation>
@@ -1586,7 +1580,6 @@ Más información:
 <translation id="782886543891417279">La red Wi-Fi que estás utilizando (<ph name="WIFI_NAME"/>) puede requerir que accedas a su página de inicio de sesión.</translation>
 <translation id="7836231406687464395">Postfix (sobre)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Ninguna}=1{1 aplicación (<ph name="EXAMPLE_APP_1"/>)}=2{2 aplicaciones (<ph name="EXAMPLE_APP_1"/> y <ph name="EXAMPLE_APP_2"/>)}other{# aplicaciones (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">Ten en cuenta que tus acciones no serán totalmente invisibles. El uso del modo de incógnito no te permite ocultar tu actividad de navegación a tu empresa, a tu proveedor de servicios de Internet o a los sitios web que visites.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="7862185352068345852">¿Quieres salir del sitio web?</translation>
 <translation id="7865448901209910068">Mejor velocidad</translation>
@@ -1669,10 +1662,8 @@ Más información:
 <translation id="8220146938470311105">C7/C6 (sobre)</translation>
 <translation id="8220639454292072926">Informes de empresa</translation>
 <translation id="3272614036080146686">Acabas de introducir tu contraseña en un sitio web engañoso. Brave te recomienda que accedas a <ph name="WEBSITE_1"/> y a otros sitios web en los que uses esa contraseña y la cambies ahora.</translation>
-<translation id="8225771182978767009">La persona que ha configurado este ordenador ha elegido bloquear este sitio web.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/> o <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Temperatura de plataforma</translation>
-<translation id="8238581221633243064">Abre una página en una nueva pestaña de incógnito</translation>
 <translation id="8241707690549784388">La página que buscas ha utilizado la información que has especificado. Volver a la página podría provocar la repetición de alguna acción. ¿Quieres continuar?</translation>
 <translation id="8241712895048303527">Bloquear en este sitio web</translation>
 <translation id="8242426110754782860">Continuar</translation>
@@ -1684,7 +1675,6 @@ Más información:
 <translation id="8262952874573525464">Grapado en el borde inferior</translation>
 <translation id="8267698848189296333">Iniciando sesión como <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Documentos separados/Copias intercaladas</translation>
-<translation id="8269981117540303696">Ahora puedes navegar de forma privada. Nadie más que use este dispositivo verá tu actividad, pero sí se guardarán tus descargas y marcadores.</translation>
 <translation id="8277900682056760511">La hoja del controlador de pagos está abierta</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Conocer tu identificador de dispositivo único</translation>
@@ -1703,7 +1693,6 @@ Más información:
 <translation id="833262891116910667">Resaltar</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Si entiendes los riesgos para tu seguridad, puedes <ph name="BEGIN_LINK"/>acceder a este sitio<ph name="END_LINK"/> antes de que se hayan eliminado los programas dañinos.</translation>
-<translation id="8349305172487531364">Barra de marcadores</translation>
 <translation id="8355270400102541638">Contexto del fallo local:</translation>
 <translation id="8363502534493474904">Desactivar el modo avión</translation>
 <translation id="8364627913115013041">No establecida</translation>
@@ -1768,7 +1757,6 @@ Más información:
 <translation id="8719263113926255150">Sugerencia de búsqueda: <ph name="ENTITY"/>, <ph name="DESCRIPTION"/></translation>
 <translation id="8719528812645237045">Perforado múltiple en la parte superior</translation>
 <translation id="8725066075913043281">Volver a intentarlo</translation>
-<translation id="8728672262656704056">Has iniciado una sesión de incógnito</translation>
 <translation id="8730621377337864115">Listo</translation>
 <translation id="6326805297893828864">Para establecer una conexión segura, tu reloj debe estar correctamente configurado. Esto se debe a que los certificados utilizados por los sitios web para identificarse son solo válidos durante períodos específicos de tiempo. Dado que la hora de tu dispositivo no es correcta, Brave no puede verificar estos certificados.</translation>
 <translation id="8740359287975076522">No se ha podido encontrar la &lt;abbr id="dnsDefinition"&gt;dirección DNS&lt;/abbr&gt; de la página <ph name="HOST_NAME"/>. Se está diagnosticando el problema.</translation>
@@ -1801,7 +1789,6 @@ Más información:
 <translation id="8903921497873541725">Acercar</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Botón Eliminar sugerencia, pulsa Intro para eliminar, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">Estás en modo de navegación de incógnito</translation>
 <translation id="5713644099811900409">cuenta de Brave</translation>
 <translation id="8918231688545606538">Esta página es sospechosa</translation>
 <translation id="892588693504540538">Perforado en la parte superior derecha</translation>
@@ -1903,34 +1890,34 @@ Más información:
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">De Brave Pay</translation>
-<translation id="8820817407110198400">Barra de marcadores</translation>
-<translation id="8362995731815961365">La persona que ha configurado este ordenador ha elegido bloquear este sitio web.</translation>
-<translation id="4075123085690634698">Abre una página en una nueva ventana de incógnito (⇧ + ⌘ + N)</translation>
-<translation id="2388886110302389394">Abre una página en una nueva ventana de incógnito (Ctrl + Mayús + N).</translation>
-<translation id="6957624206566198865">Abre una página en una nueva pestaña de incógnito</translation>
-<translation id="2378238891085281592">Has iniciado una sesión de incógnito</translation>
-<translation id="3774752171665127360">Las páginas que aparezcan en las pestañas de incógnito no se guardarán en el historial del navegador, en el almacén de cookies ni en el historial de búsquedas una vez que hayas cerrado todas tus pestañas de incógnito. Se mantendrán los archivos que descargues o los marcadores que crees.</translation>
-<translation id="9177896974490719854">Ten en cuenta que tus acciones no serán totalmente invisibles. El uso del modo de incógnito no te permite ocultar tu actividad de navegación a tu empresa, a tu proveedor de servicios de Internet o a los sitios web que visites.</translation>
-<translation id="2227116904818538760">Estás en modo de navegación de incógnito</translation>
-<translation id="2007417459975034427">Ahora puedes navegar de forma privada. Nadie más que use este dispositivo verá tu actividad, pero sí se guardarán tus descargas y marcadores.</translation>
-<translation id="2586968635953373425">Abrir una ventana de incógnito</translation>
-<translation id="3489858312836205593">Abre una nueva ventana de incógnito en Brave</translation>
-<translation id="6984479912851154518">Saldrás del modo de incógnito para realizar un pago en una aplicación externa. ¿Quieres continuar?</translation>
-<translation id="1426112902089905810">&lt;h4&gt;Paso 1: Inicia sesión en el portal&lt;/h4&gt;
-    &lt;p&gt;Para acceder a las redes Wi‑Fi de sitios como cafeterías o aeropuertos, tienes que iniciar sesión. Para ver la página de inicio de sesión, accede a una página que utilice &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
+<translation id="8820817407110198400">Marcadores</translation>
+<translation id="8362995731815961365">El perfil que ha configurado este ordenador ha elegido bloquear este sitio.</translation>
+<translation id="4075123085690634698">Abrir página en una nueva ventana privada (⇧⌘N)</translation>
+<translation id="2388886110302389394">Abrir página en una nueva ventana privada (Ctrl-Mayús-N)</translation>
+<translation id="6957624206566198865">Abrir página en una Pestaña Privada</translation>
+<translation id="2378238891085281592">Te has convertido en privado</translation>
+<translation id="3774752171665127360">Las páginas que veas en las pestañas privadas no se quedarán en el historial de tu navegador, en el almacén de cookies o en el historial una vez hayas cerrado todas tus pestañas privadas. Todos los archivos que descargues o los marcadores que añadas se conservarán.</translation>
+<translation id="9177896974490719854">Sin embargo, no eres invisible. Ser privado no oculta tu navegación a tu empresa, tu proveedor de servicios de Internet o los sitios web que visitas.</translation>
+<translation id="2227116904818538760">Te has convertido en privado</translation>
+<translation id="2007417459975034427">No se ha informado de ningún fallo reciente. Los fallos que ocurrieron cuando el informe de error estaba deshabilitado no aparecerán aquí.</translation>
+<translation id="2586968635953373425">Abrir Ventana Privada</translation>
+<translation id="3489858312836205593">Abrir nueva ventana privada</translation>
+<translation id="6984479912851154518">Abandonando el modo privado para pagar mediante una aplicación externa. ¿Quieres continuar?</translation>
+<translation id="1426112902089905810">&lt;h4&gt;Paso 1: Iniciar sesión en el portal&lt;/h4&gt;
+    &lt;p&gt;Wi-Fi networks at places like cafes or airports need you to sign in. To see the sign-in page, visit a page that uses &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;
-    &lt;li&gt;Accede a cualquier sitio web que empiece por &lt;code&gt;http://&lt;/code&gt;, como &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
-    &lt;li&gt;En la página de inicio de sesión que se abre, inicia sesión para utilizar la conexión a Internet.&lt;/li&gt;
+    &lt;li&gt;Go to any website starting with &lt;code&gt;http://&lt;/code&gt;, like &lt;a href="http://example.com" target="_blank"&gt;http://example.com&lt;/a&gt;.&lt;/li&gt;
+    &lt;li&gt;En la página de inicio de sesión abierta, inicia sesión para usar Internet.&lt;/li&gt;
     &lt;/ol&gt;
-    &lt;h4&gt;Paso 2: Abre la página en modo de incógnito (solo en ordenadores)&lt;/h4&gt;
-    &lt;p&gt;Abre la página que estabas visitando en una ventana de incógnito.&lt;/p&gt;
-    &lt;p&gt;Si la página se abre, significa que una extensión de Brave no funciona correctamente. Para solucionarlo, desactiva esa extensión.&lt;/p&gt;
-    &lt;h4&gt;Paso 3: Actualiza tu sistema operativo&lt;/h4&gt;
-    &lt;p&gt;Comprueba que tu dispositivo esté actualizado.&lt;/p&gt;
-    &lt;h4&gt;Paso 4: Desactiva tu antivirus temporalmente&lt;/h4&gt;
-    &lt;p&gt;Este error se muestra si tienes software antivirus que ofrezca "protección HTTPS" o "análisis de HTTPS". Este software evita que Brave proporcione seguridad.&lt;/p&gt;
-    &lt;p&gt;Desactiva el software antivirus para solucionar el problema. Si la página funciona después de desactivar el software antivirus, desactívalo cuando navegues por sitios web seguros.&lt;/p&gt;
-    &lt;p&gt;Recuerda que debes volver a activar el antivirus cuando hayas finalizado.&lt;/p&gt;
-    &lt;h4&gt;Paso 5: Busca más ayuda&lt;/h4&gt;
-    &lt;p&gt;Si el error persiste, ponte en contacto con el propietario del sitio web.&lt;/p&gt;</translation>
+    &lt;h4&gt;Paso 2: Abrir la página en modo privado (solo PC)&lt;/h4&gt;
+    &lt;p&gt;Open the page you were visiting in a Private window.&lt;/p&gt;
+    &lt;p&gt;If the page opens, a Brave extension isn't working right. Para solucionar este error, deshabilita la extensión.&lt;/p&gt;
+    &lt;h4&gt;Paso 3: Actualiza tu sistema operativo&lt;/h4&gt;
+    &lt;p&gt;Make sure your device is up-to-date.&lt;/p&gt;
+    &lt;h4&gt;Paso 4: Desactiva tu antivirus temporalmente&lt;/h4&gt;
+    &lt;p&gt;You'll see this error if you have antivirus software that provides "HTTPS protection" or "HTTPS scanning." The antivirus is preventing Brave from providing security.&lt;/p&gt;
+    &lt;p&gt;To fix the problem, turn off your antivirus software. If the page works after turning off the software, desactiva este software cuando navegues en sitios seguros.&lt;/p&gt;
+    &lt;p&gt;Remember to turn your antivirus program back on when you're done.&lt;/p&gt;
+    &lt;h4&gt;Paso 5: Recibe ayuda extra&lt;/h4&gt;
+    &lt;p&gt;Si continúas viendo un error, contacta con el propietario del sitio web.&lt;/p&gt;</translation>
 </translationbundle>

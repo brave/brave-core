@@ -435,7 +435,6 @@
 <translation id="2824775600643448204">نوار جستجو و آدرس</translation>
 <translation id="2826760142808435982">اتصال با استفاده از <ph name="CIPHER"/> رمزگذاری و راستی‌آزمایی شده است و از <ph name="KX"/> به عنوان مکانیسم تبادل کلید استفاده می‌کند.</translation>
 <translation id="2835170189407361413">پاک کردن فرم</translation>
-<translation id="2847118875340931228">پنجره ناشناس باز کنید</translation>
 <translation id="2850739647070081192">Invite (Envelope)</translation>
 <translation id="2856444702002559011">شاید مهاجم‌ها در تلاش باشند اطلاعات شما (مانند گذرواژه‌ها، پیام‌ها یا کارت‌های اعتباری) را از <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> سرقت کنند. <ph name="BEGIN_LEARN_MORE_LINK"/>بیشتر بدانید<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">تاخوردگی پوسترمانند</translation>
@@ -485,7 +484,6 @@
 <translation id="3041612393474885105">اطلاعات گواهی</translation>
 <translation id="3060227939791841287">C9 (Envelope)</translation>
 <translation id="3061707000357573562">سرویس وصله</translation>
-<translation id="3064966200440839136">درحال خروج از حالت ناشناس، برای پرداخت ازطریق یک برنامه خارجی. ادامه می‌دهید؟</translation>
 <translation id="3080254622891793721">گرافیکی</translation>
 <translation id="3086579638707268289">فعالیتتان در وب تحت‌نظارت است</translation>
 <translation id="3087734570205094154">پایین</translation>
@@ -505,7 +503,6 @@
 <translation id="3154506275960390542">این صفحه حاوی فرمی است که ممکن است به‌طور ایمن ارسال نشود. دیگران می‌توانند داده‌هایی را که ارسال می‌کنید درحین انتقال ببینند یا مهاجمان می‌توانند برای تغییر آنچه سرور دریافت می‌کند، آن‌ها را تغییر دهند.</translation>
 <translation id="3157931365184549694">بازیابی</translation>
 <translation id="3162559335345991374">‏شبکه Wi-Fi مورد استفاده‌تان احتمالاً نیاز دارد که به یک صفحه ورود به سیستم بروید.</translation>
-<translation id="3167968892399408617">صفحه‌هایی که در برگه‌های حالت ناشناس مرور می‌کنید، بعد از بستن همه برگه‌های حالت ناشناس در سابقه مرورگر، فضای ذخیره کوکی یا سابقه جستجو باقی نمی‌مانند. فایل‌هایی که بارگیری می‌کنید یا نشانک‌هایی که ایجاد می‌کنید حفظ می‌شود.</translation>
 <translation id="3169472444629675720">کشف کردن</translation>
 <translation id="3174168572213147020">ایسلند</translation>
 <translation id="3176929007561373547">تنظیمات پروکسی‌ را بررسی کنید یا با سرپرست شبکه‌‌تان تماس بگیرید تا
@@ -622,7 +619,6 @@
 <translation id="3676592649209844519">شناسه دستگاه:</translation>
 <translation id="3677008721441257057">‏منظورتان &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt; است؟</translation>
 <translation id="3678029195006412963">درخواست امضا نشد</translation>
-<translation id="3678529606614285348">‏صفحه را در پنجره‌ «ناشناس» جدیدی باز کنید (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">اطلاعات گواهی</translation>
 <translation id="3701427423622901115">بازنشانی تأیید شد.</translation>
 <translation id="3704162925118123524">شاید شبکه‌ای که استفاده می‌کنید، بازدید از صفحه ورود به سیستم خودش را برای شما ضروری کرده باشد.</translation>
@@ -779,7 +775,7 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">مهاجم‌ها در این سایت ممکن است تلاش کنند برنامه‌های خطرناکی در رایانه شما نصب کنند که اطلاعات شما (مانند عکس‌ها، گذرواژه‌ها، پیام‌ها و کارت‌های اعتباری) را به سرقت می‌برند یا حذف می‌کنند.</translation>
 <translation id="4358059973562876591">‏ممکن است الگوهایی که مشخص کردید به‌دلیل خطای خط‌مشی DnsOverHttpsMode اعمال نشوند.</translation>
-<translation id="4358461427845829800">مدیریت روش‌های پرداخت…</translation>
+<translation id="327628984294957152">مدیریت روش‌های پرداخت…</translation>
 <translation id="4367563149485757821">Number-12 (Envelope)</translation>
 <translation id="437058704415269440">موجودی حساب</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -943,7 +939,7 @@
 <translation id="5123063207673082822">آخر هفته</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">کارتتان را تأیید کنید</translation>
-<translation id="5135404736266831032">مدیریت نشانی‌ها…</translation>
+<translation id="6291230311289558881">مدیریت نشانی‌ها…</translation>
 <translation id="5138227688689900538">نمایش موارد کمتر</translation>
 <translation id="7186167407612593632">‏رمزگذاری گذرواژه‌های همگام‌سازی شده با اطلاعات کاربری Brave شما</translation>
 <translation id="5145883236150621069">کد خطا در پاسخ خط‌مشی موجود است</translation>
@@ -951,7 +947,6 @@
 <translation id="5148809049217731050">روبه‌بالا</translation>
 <translation id="515292512908731282">C4 (Envelope)</translation>
 <translation id="5158275234811857234">جلد</translation>
-<translation id="5159010409087891077">‏صفحه را در پنجره «ناشناس» جدیدی باز کنید (N⌘⇧)</translation>
 <translation id="5161506081086828129">پشته‌ساز ۹</translation>
 <translation id="9016458749696512983">‏CVC کارت <ph name="CREDIT_CARD"/> را وارد کنید. بعد از تأیید کردن، جزئیات کارت از حساب Brave شما با این سایت هم‌رسانی می‌شود.</translation>
 <translation id="8515152881111950319">‏ممکن است دسترسی به حساب سازمانتان را از دست بدهید یا به سرقت هویت دچار شوید. Brave توصیه می‌کند هم‌اکنون گذرواژه‌تان را تغییر دهید.</translation>
@@ -959,7 +954,6 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">دستگاه</translation>
 <translation id="5179510805599951267">به زبان <ph name="ORIGINAL_LANGUAGE"/> نیست؟ گزارش این خطا</translation>
-<translation id="5190835502935405962">نوار نشانک‌ها</translation>
 <translation id="519422657042045905">حاشیه‌نویسی دردسترس نیست</translation>
 <translation id="5201306358585911203">صفحه جاسازی‌شده‌ای در این صفحه می‌گوید</translation>
 <translation id="5205222826937269299">نام ضروری است</translation>
@@ -1090,7 +1084,7 @@
 <translation id="5689516760719285838">مکان</translation>
 <translation id="569000877158168851">‏مقدار DnsOverHttpsTemplates مرتبط نیست و استفاده نخواهد شد، مگراینکه خط‌مشی DnsOverHttpsMode روی <ph name="SECURE_DNS_MODE_AUTOMATIC"/> یا<ph name="SECURE_DNS_MODE_SECURE"/> تنظیم شده باشد.</translation>
 <translation id="5701381305118179107">مرکز</translation>
-<translation id="570530837424789914">مدیریت…</translation>
+<translation id="3655851112780233803">مدیریت…</translation>
 <translation id="57094364128775171">پیشنهاد گذرواژه قوی…</translation>
 <translation id="5710435578057952990">هویت این وب سایت تأیید نشده است.</translation>
 <translation id="5720705177508910913">کاربر کنونی</translation>
@@ -1269,7 +1263,7 @@
 <translation id="6447842834002726250">کوکی‌ها</translation>
 <translation id="6451458296329894277">تأیید ارسال مجدد فرم</translation>
 <translation id="6457206614190510200">منگنه تخت</translation>
-<translation id="6465306955648956876">مدیریت گذرواژه‌ها…</translation>
+<translation id="2275235756919172538">مدیریت گذرواژه‌ها…</translation>
 <translation id="647261751007945333">خط‌‌مشی‌های دستگاه</translation>
 <translation id="6476284679642588870">مدیریت روش‌های پرداخت</translation>
 <translation id="6489534406876378309">شروع بارگذاری کردن خرابی‌ها</translation>
@@ -1584,7 +1578,6 @@
 <translation id="782886543891417279">‏شبکه Wi-Fi (<ph name="WIFI_NAME"/>) مورد استفاده‌تان احتمالاً نیاز دارد که به یک صفحه ورود به سیستم بروید.</translation>
 <translation id="7836231406687464395">Postfix (Envelope)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{هیچ‌کدام}=1{۱ برنامه (<ph name="EXAMPLE_APP_1"/>)}=2{۲ برنامه (<ph name="EXAMPLE_APP_1"/>،‏ <ph name="EXAMPLE_APP_2"/>)}one{# برنامه (<ph name="EXAMPLE_APP_1"/>،‏ <ph name="EXAMPLE_APP_2"/>،‏ <ph name="AND_MORE"/>)}other{# برنامه (<ph name="EXAMPLE_APP_1"/>،‏ <ph name="EXAMPLE_APP_2"/>،‏ <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">اما، شما نامرئی نیستید. با استفاده از حالت ناشناس، مرورتان از چشمان کارفرمای شما، ارائه‌دهنده خدمات اینترنت یا وب‌‌سایت‌هایی که بازدید می‌کنید پنهان نمی‌ماند.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">سایت را ترک می‌کنید؟</translation>
 <translation id="7865448901209910068">بهترین سرعت</translation>
@@ -1667,10 +1660,8 @@
 <translation id="8220146938470311105">C7/C6 (Envelope)</translation>
 <translation id="8220639454292072926">گزارش خطای شرکتی</translation>
 <translation id="3272614036080146686">‏اخیراً گذرواژه‌تان را در سایتی فریب‌کار وارد کرده‌اید. Brave توصیه می‌کند همین حالا به <ph name="WEBSITE_1"/> و سایت‌های دیگری که در آن‌ها از این گذرواژه استفاده کرده‌اید، بروید و گذرواژه را تغییر دهید.</translation>
-<translation id="8225771182978767009">شخصی که این رایانه را راه‌اندازی کرده این سایت را مسدود کرده است.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>،‏ <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">دمای پلتفورم</translation>
-<translation id="8238581221633243064">صفحه را در برگه «ناشناس» جدیدی باز کنید</translation>
 <translation id="8241707690549784388">صفحه‌ای که جستجو می‌کنید از اطلاعاتی استفاده می‌کند که شما وارد کرده‌اید. بازگشت به آن صفحه ممکن است باعث شود اقدامی را که قبلاً انجام دادید دوباره تکرار کنید. آیا می‌خواهید ادامه دهید؟</translation>
 <translation id="8241712895048303527">مسدود کردن در این سایت</translation>
 <translation id="8242426110754782860">ادامه دادن</translation>
@@ -1682,7 +1673,6 @@
 <translation id="8262952874573525464">دوختن لبه پایین</translation>
 <translation id="8267698848189296333">ورود به سیستم به‌عنوان <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">اسناد جداگانه/کپی‌های تلفیقی</translation>
-<translation id="8269981117540303696">اکنون می‌توانید به‌طور خصوصی مرور کنید و سایر افرادی که از این دستگاه استفاده می‌کنند فعالیت شما را نخواهند دید. بااین‌وجود بارگیری‌ها و نشانک‌ها ذخیره خواهند شد.</translation>
 <translation id="8277900682056760511">برگ کنترل‌کننده پرداخت باز است</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">شناسه یکتای دستگاهتان را بداند</translation>
@@ -1701,7 +1691,6 @@
 <translation id="833262891116910667">برجسته‌سازی</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">اگر خطرات امنیتی‌ای که متوجه شما هستند را درک می‌کنید، می‌توانید قبل از حذف شدن برنامه‌های خطرناک، <ph name="BEGIN_LINK"/>از این سایت بازدید کنید<ph name="END_LINK"/>.</translation>
-<translation id="8349305172487531364">نوار نشانک‌ها</translation>
 <translation id="8355270400102541638">بافت خرابی محلی:</translation>
 <translation id="8363502534493474904">خاموش کردن حالت هواپیما</translation>
 <translation id="8364627913115013041">تنظیم نشده است.</translation>
@@ -1766,7 +1755,6 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>، <ph name="DESCRIPTION"/>، پیشنهاد جستجو</translation>
 <translation id="8719528812645237045">چند سوراخ در بالا</translation>
 <translation id="8725066075913043281">سعی مجدد</translation>
-<translation id="8728672262656704056">اکنون در حالت ناشناس هستید</translation>
 <translation id="8730621377337864115">تمام</translation>
 <translation id="6326805297893828864">‏به منظور برقراری یک اتصال امن، لازم است که ساعت شما به درستی تنظیم شود. زیرا گواهینامه‌هایی که وب‌سایت‌ها برای شناسایی خودشان استفاده می‌کنند تنها برای دوره‌های زمانی خاصی معتبر هستند. از آنجایی که ساعت دستگاه نادرست است، Brave نمی‌تواند این گواهینامه‌ها را تأیید کند.</translation>
 <translation id="8740359287975076522">‏<ph name="HOST_NAME"/>’s &lt;abbr id="dnsDefinition"&gt;آدرس DNS&lt;/abbr&gt; پیدا نشد. درحال بررسی برای تشخیص مشکل.</translation>
@@ -1799,7 +1787,6 @@
 <translation id="8903921497873541725">بزرگ‌نمایی</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">‏برداشتن دکمه «پیشنهاد»، برای برداشتن، دکمه Enter را فشار دهید، <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">در حالت ناشناس هستید</translation>
 <translation id="5713644099811900409">‏حساب Brave</translation>
 <translation id="8918231688545606538">این صفحه مشکوک است</translation>
 <translation id="892588693504540538">سوراخ در بالا سمت راست</translation>
@@ -1901,7 +1888,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">‏از Brave Pay</translation>
-<translation id="8820817407110198400">نوار نشانک‌ها</translation>
+<translation id="8820817407110198400">نشانک‌ها</translation>
 <translation id="8362995731815961365">شخصی که این رایانه را راه‌اندازی کرده این سایت را مسدود کرده است.</translation>
 <translation id="4075123085690634698">‏صفحه را در پنجره «ناشناس» جدیدی باز کنید (N⌘⇧)</translation>
 <translation id="2388886110302389394">‏صفحه را در پنجره‌ «ناشناس» جدیدی باز کنید (Ctrl-Shift-N)</translation>

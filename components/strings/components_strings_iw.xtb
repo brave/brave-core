@@ -228,7 +228,7 @@
 <translation id="1914326953223720820">שירות לפתיחת קבצים דחוסים</translation>
 <translation id="1915697529809968049">‏האם להשתמש ב-Touch ID במקום ב-CVC?</translation>
 <translation id="1916770123977586577">כדי להחיל על האתר את ההגדרות המעודכנות, טען מחדש את הדף</translation>
-<translation id="1917876262703816781">הסיסמה שלך נחשפה בעקבות פרצת אבטחת מידע באתר או באפליקציה כלשהם. מומלץ לבדוק עכשיו את הסיסמאות השמורות שלך ולשנות את הסיסמה באתר <ph name="ORIGIN"/>.</translation>
+<translation id="688541908229382784">הסיסמה שלך נחשפה בעקבות פרצת אבטחת מידע באתר או באפליקציה כלשהם. מומלץ לבדוק עכשיו את הסיסמאות השמורות שלך ולשנות את הסיסמה באתר <ph name="ORIGIN"/>.</translation>
 <translation id="1919345977826869612">מודעות</translation>
 <translation id="1919367280705858090">עזרה לגבי הודעות שגיאה ספציפיות</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{ללא}=1{אתר אחד}two{שני אתרים}many{# אתרים}other{# אתרים}}</translation>
@@ -435,7 +435,6 @@
 <translation id="2824775600643448204">שורת חיפוש וכתובות אתרים</translation>
 <translation id="2826760142808435982">החיבור מוצפן ומאומת באמצעות <ph name="CIPHER"/> ומשתמש ב-<ph name="KX"/> כמנגנון להחלפת מפתחות.</translation>
 <translation id="2835170189407361413">ניקוי הטופס</translation>
-<translation id="2847118875340931228">פתיחת חלון גלישה בסתר</translation>
 <translation id="2850739647070081192">Invite (Envelope)‎</translation>
 <translation id="2856444702002559011">ייתכן שתוקפים מנסים לגנוב את הפרטים שלך מהאתר <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (לדוגמה, סיסמאות, הודעות או כרטיסי אשראי). <ph name="BEGIN_LEARN_MORE_LINK"/>מידע נוסף<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">קיפול כרזה</translation>
@@ -485,7 +484,6 @@
 <translation id="3041612393474885105">פרטי אישור</translation>
 <translation id="3060227939791841287">C9 (Envelope)‎</translation>
 <translation id="3061707000357573562">שירות תיקון</translation>
-<translation id="3064966200440839136">בחרת לצאת ממצב גלישה בסתר כדי לשלם באמצעות יישום חיצוני. להמשיך?</translation>
 <translation id="3080254622891793721">גרפיקה</translation>
 <translation id="3086579638707268289">הפעילות שלך באינטרנט נמצאת במעקב</translation>
 <translation id="3087734570205094154">תחתית</translation>
@@ -505,7 +503,6 @@
 <translation id="3154506275960390542">דף זה כולל טופס שעשוי להישלח באופן לא מאובטח. הנתונים ששולחים יהיו גלויים במהלך ההעברה, וקיימת סכנה שמישהו ישנה את הפרטים שהשרת יקבל.</translation>
 <translation id="3157931365184549694">שחזר</translation>
 <translation id="3162559335345991374">‏ייתכן שתידרש להיכנס לדף ההתחברות של רשת ה-Wi-Fi שבה אתה משתמש.</translation>
-<translation id="3167968892399408617">‏דפים שאתה מציג בכרטיסיות גלישה בסתר לא יישארו בהיסטוריית הדפדפן, באחסון קובצי ה-Cookie או בהיסטוריית החיפושים לאחר שתסגור את כל כרטיסיות הגלישה בסתר. קבצים שהורדת או סימניות שיצרת יישמרו.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">אי</translation>
 <translation id="3176929007561373547">‏בדוק את הגדרות שרת ה-proxy או פנה למנהל הרשת
@@ -622,7 +619,6 @@
 <translation id="3676592649209844519">מזהה מכשיר:</translation>
 <translation id="3677008721441257057">‏התכוונת לכתובת &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">לא ניתן היה לחתום על הבקשה</translation>
-<translation id="3678529606614285348">‏פתח את הדף בחלון חדש של גלישה בסתר (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">פרטי אישור</translation>
 <translation id="3701427423622901115">האיפוס אושר.</translation>
 <translation id="3704162925118123524">ייתכן שתוצג דרישה להיכנס לדף ההתחברות של הרשת שבה אתה משתמש.</translation>
@@ -779,7 +775,7 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">תוקפים באתר הזה עשויים לנסות להתקין במחשב שלך תוכניות מסוכנות שגונבות או מוחקות מידע שלך (לדוגמה: תמונות, סיסמאות, הודעות ופרטי כרטיסי אשראי).</translation>
 <translation id="4358059973562876591">‏לא ניתן להחיל את התבניות שבחרת עקב שגיאה במדיניות DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">ניהול אמצעי תשלום...</translation>
+<translation id="327628984294957152">ניהול אמצעי תשלום...</translation>
 <translation id="4367563149485757821">Number-12 (Envelope)‎</translation>
 <translation id="437058704415269440">יתרה בחשבון</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -947,7 +943,7 @@ Del</translation>
 <translation id="5123063207673082822">סוף השבוע</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">אימות הכרטיס</translation>
-<translation id="5135404736266831032">ניהול כתובות...</translation>
+<translation id="6291230311289558881">ניהול כתובות...</translation>
 <translation id="5138227688689900538">פחות אפליקציות</translation>
 <translation id="7186167407612593632">‏הצפנת סיסמאות מסונכרנות באמצעות פרטי הכניסה שלך ל-Brave</translation>
 <translation id="5145883236150621069">קיים קוד שגיאה בתגובת המדיניות</translation>
@@ -955,7 +951,6 @@ Del</translation>
 <translation id="5148809049217731050">פנים כלפי מעלה</translation>
 <translation id="515292512908731282">C4 (Envelope)‎</translation>
 <translation id="5158275234811857234">שער</translation>
-<translation id="5159010409087891077">‏פתח את הדף בחלון חדש של גלישה בסתר (‎⇧⌘N)</translation>
 <translation id="5161506081086828129">מערים 9</translation>
 <translation id="9016458749696512983">‏יש להזין את קוד האימות של <ph name="CREDIT_CARD"/>. אחרי שנקבל ממך אישור, נשתף עם האתר הזה את פרטי הכרטיס מחשבון Brave.</translation>
 <translation id="8515152881111950319">‏ייתכן שלא יתאפשר לך לגשת לחשבון הארגוני, והזהות שלך עלולה להיגנב. לגלישה בטוחה ב-Brave, מומלץ לשנות את הסיסמה עכשיו.</translation>
@@ -963,7 +958,6 @@ Del</translation>
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">מכונה</translation>
 <translation id="5179510805599951267">לא ב<ph name="ORIGINAL_LANGUAGE"/>? דיווח על שגיאה זו</translation>
-<translation id="5190835502935405962">סרגל הסימניות</translation>
 <translation id="519422657042045905">ההערה לא זמינה</translation>
 <translation id="5201306358585911203">דף מוטמע בדף הזה אומר</translation>
 <translation id="5205222826937269299">שם (חובה)</translation>
@@ -992,7 +986,7 @@ Del</translation>
 <translation id="5287456746628258573">האתר הזה משתמש בהגדרת אבטחה מיושנת, שעלולה לחשוף את המידע שלך (למשל, סיסמאות או מספרים של כרטיס אשראי) כשהוא נשלח לאתר זה.</translation>
 <translation id="5288108484102287882">בעקבות אימות ערכי המדיניות הופיעו אזהרות</translation>
 <translation id="5289384342738547352">טיפול במסמכים מרובים</translation>
-<translation id="5295292838686006428">הסיסמה שלך נחשפה בעקבות פרצת אבטחת מידע באתר או באפליקציה כלשהם. מומלץ לבדוק עכשיו את הסיסמאות השמורות שלך.</translation>
+<translation id="3764885446986388155">הסיסמה שלך נחשפה בעקבות פרצת אבטחת מידע באתר או באפליקציה כלשהם. מומלץ לבדוק עכשיו את הסיסמאות השמורות שלך.</translation>
 <translation id="5299298092464848405">שגיאה בניתוח המדיניות</translation>
 <translation id="5300589172476337783">הצגה</translation>
 <translation id="5306593769196050043">שני הגיליונות</translation>
@@ -1095,7 +1089,7 @@ Del</translation>
 <translation id="5689516760719285838">מיקום</translation>
 <translation id="569000877158168851">‏ערך DnsOverHttpsTemplates אינו רלוונטי ולא ייעשה בו שימוש, אלא אם מדיניות DnsOverHttpsMode תוגדר עם הערך <ph name="SECURE_DNS_MODE_AUTOMATIC"/> או <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">מרכז</translation>
-<translation id="570530837424789914">ניהול...</translation>
+<translation id="3655851112780233803">ניהול...</translation>
 <translation id="57094364128775171">הצעת סיסמה חזקה…</translation>
 <translation id="5710435578057952990">הזהות של אתר זה לא אומתה.</translation>
 <translation id="5720705177508910913">משתמש נוכחי:</translation>
@@ -1274,7 +1268,7 @@ Del</translation>
 <translation id="6447842834002726250">‏קובצי Cookie</translation>
 <translation id="6451458296329894277">אשר שליחה-מחדש של הטופס</translation>
 <translation id="6457206614190510200">קיפול והידוק של כפולות עמודים</translation>
-<translation id="6465306955648956876">ניהול סיסמאות...</translation>
+<translation id="2275235756919172538">ניהול סיסמאות...</translation>
 <translation id="647261751007945333">מדיניות המכשיר</translation>
 <translation id="6476284679642588870">ניהול אמצעי תשלום</translation>
 <translation id="6489534406876378309">התחל להעלות קריסות</translation>
@@ -1495,7 +1489,7 @@ Del</translation>
 <translation id="7473891865547856676">לא, תודה</translation>
 <translation id="7481312909269577407">קדימה</translation>
 <translation id="7485870689360869515">לא נמצאו נתונים.</translation>
-<translation id="7495290002932347110">הסיסמה שלך נחשפה בעקבות פרצת אבטחת מידע באתר או באפליקציה כלשהם. מומלץ לבדוק עכשיו את הסיסמאות השמורות שלך ולשנות את הסיסמה ב-<ph name="ORIGIN"/>.</translation>
+<translation id="3692186536781145635">הסיסמה שלך נחשפה בעקבות פרצת אבטחת מידע באתר או באפליקציה כלשהם. מומלץ לבדוק עכשיו את הסיסמאות השמורות שלך ולשנות את הסיסמה ב-<ph name="ORIGIN"/>.</translation>
 <translation id="7498234416455752244">המשך העריכה</translation>
 <translation id="7508255263130623398">מזהה המכשיר במדיניות שהוחזר ריק או שאינו תואם את מזהה המכשיר הנוכחי</translation>
 <translation id="7508870219247277067">ירוק אבוקדו</translation>
@@ -1589,7 +1583,6 @@ Del</translation>
 <translation id="782886543891417279">‏ייתכן שתידרש להיכנס לדף ההתחברות של רשת ה-Wi-Fi שבה אתה משתמש (<ph name="WIFI_NAME"/>).</translation>
 <translation id="7836231406687464395">Postfix (Envelope)‎</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{ללא}=1{אפליקציה אחת (<ph name="EXAMPLE_APP_1"/>)}=2{2 אפליקציות (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}many{# אפליקציות (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}other{# אפליקציות (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/> <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">עם זאת, אינך בלתי נראה. המעבר למצב גלישה בסתר לא מסתיר את הגלישה שלך מהמעסיק, מספק האינטרנט או מהאתרים שאליהם אתה נכנס.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">לצאת מהאתר?</translation>
 <translation id="7865448901209910068">המהירות הטובה ביותר</translation>
@@ -1672,10 +1665,8 @@ Del</translation>
 <translation id="8220146938470311105">C7/C6 (Envelope)‎</translation>
 <translation id="8220639454292072926">דיווח ארגוני</translation>
 <translation id="3272614036080146686">‏הזנת כרגע את הסיסמה שלך באתר מטעה. ההמלצה של Brave היא לעבור אל <ph name="WEBSITE_1"/> ואל אתרים אחרים שבהם הסיסמה הזו בשימוש ולשנות אותה עכשיו.</translation>
-<translation id="8225771182978767009">המשתמש שהגדיר את המחשב הזה בחר לחסום את האתר הזה.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">טמפרטורת פלטפורמה</translation>
-<translation id="8238581221633243064">פתיחת הדף בכרטיסייה חדשה של גלישה בסתר</translation>
 <translation id="8241707690549784388">הדף שאתה מחפש השתמש במידע שהזנת. החזרה לדף זה עלולה לגרום לכפילות בפעולות שביצעת. האם ברצונך להמשיך?</translation>
 <translation id="8241712895048303527">חסום באתר הזה</translation>
 <translation id="8242426110754782860">המשך</translation>
@@ -1687,7 +1678,6 @@ Del</translation>
 <translation id="8262952874573525464">הידוק קצוות בחלק התחתון</translation>
 <translation id="8267698848189296333">נכנס כ-<ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">מסמכים נפרדים/עותקים מסודרים</translation>
-<translation id="8269981117540303696">עכשיו אפשר לגלוש באופן פרטי, ואנשים אחרים שמשתמשים במכשיר הזה לא יראו את הפעילות שלך. עם זאת, עדיין תתבצע שמירה של הורדות וסימניות.</translation>
 <translation id="8277900682056760511">טופס פרטי התשלום פתוח</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">ידיעת המזהה הייחודי של המכשיר</translation>
@@ -1706,7 +1696,6 @@ Del</translation>
 <translation id="833262891116910667">הדגשה</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">אם אתה מבין את סיכוני האבטחה, תוכל <ph name="BEGIN_LINK"/>להיכנס לאתר לא בטוח זה<ph name="END_LINK"/> לפני הסרת התכניות המסוכנות.</translation>
-<translation id="8349305172487531364">סרגל סימניות</translation>
 <translation id="8355270400102541638">ההקשר המקומי של הקריסה:</translation>
 <translation id="8363502534493474904">לכבות את מצב הטיסה</translation>
 <translation id="8364627913115013041">לא מוגדר.</translation>
@@ -1772,7 +1761,6 @@ Del</translation>
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, הצעת חיפוש</translation>
 <translation id="8719528812645237045">ניקובים מרובים בחלק העליון</translation>
 <translation id="8725066075913043281">נסה שוב</translation>
-<translation id="8728672262656704056">עברת למצב גלישה בסתר</translation>
 <translation id="8730621377337864115">בוצע</translation>
 <translation id="6326805297893828864">‏כדי ליצור חיבור מאובטח, השעון צריך להיות מוגדר כהלכה. הסיבה לכך היא שהאישורים שבהם אתרים משתמשים כדי לזהות את עצמם תקפים רק למשך פרקי זמן מסוימים. מאחר שהשעון במכשיר שלך שגוי, Brave לא יכול לאמת את האישורים האלו.</translation>
 <translation id="8740359287975076522">‏לא ניתן היה למצוא את &lt;abbr id="dnsDefinition"&gt;כתובת ה-DNS&lt;/abbr&gt; של <ph name="HOST_NAME"/>. מאבחן את הבעיה.</translation>
@@ -1805,7 +1793,6 @@ Del</translation>
 <translation id="8903921497873541725">התקרב</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">‏הלחצן 'הסרת הצעה', יש ללחוץ על Enter כדי להסיר, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">עברת למצב אנונימי</translation>
 <translation id="5713644099811900409">‏חשבון Brave</translation>
 <translation id="8918231688545606538">הדף הזה חשוד</translation>
 <translation id="892588693504540538">ניקוב בפינה הימנית העליונה</translation>
@@ -1907,7 +1894,7 @@ Del</translation>
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">‏מ-Brave Pay</translation>
-<translation id="8820817407110198400">סרגל סימניות</translation>
+<translation id="8820817407110198400">סימניות</translation>
 <translation id="8362995731815961365">המשתמש שהגדיר את המחשב הזה בחר לחסום את האתר הזה.</translation>
 <translation id="4075123085690634698">‏פתח את הדף בחלון חדש של גלישה בסתר (‎⇧⌘N)</translation>
 <translation id="2388886110302389394">‏פתח את הדף בחלון חדש של גלישה בסתר (Ctrl-Shift-N)</translation>

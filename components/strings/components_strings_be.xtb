@@ -341,7 +341,7 @@
 <translation id="2392959068659972793">Паказваць палітыкі з незададзенымі значэннямі</translation>
 <translation id="239429038616798445">Гэты спосаб дастаўкі недаступны. Выберыце іншы спосаб.</translation>
 <translation id="2396249848217231973">&amp;Адрабіць выдаленне</translation>
-<translation id="2409589295040002961">Адміністратар можа аддалена змяняць налады браўзера. Сама прылада таксама можа знаходзіцца пад знешнім кіраваннем. <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
+<translation id="4885543419166909817">Адміністратар можа аддалена змяняць налады браўзера. Сама прылада таксама можа знаходзіцца пад знешнім кіраваннем. <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
 <translation id="2410754574180102685">Government-Legal</translation>
 <translation id="2413528052993050574">Серверу не ўдалося даказаць, што гэта <ph name="DOMAIN"/>; магчыма, яго сертыфікат бяспекі адкліканы. Прычынай могуць быць няправільныя налады або зламыснік, які спрабуе перахапіць падключэнне.</translation>
 <translation id="2438874542388153331">Чатыры дзіркі справа</translation>
@@ -437,7 +437,6 @@
 <translation id="2824775600643448204">Адрасны радок і панэль пошуку</translation>
 <translation id="2826760142808435982">Падключэнне зашыфравана і аўтэнтыфікавана з дапамогай <ph name="CIPHER"/>, механізм абмену ключамі – <ph name="KX"/>.</translation>
 <translation id="2835170189407361413">Ачысціць форму</translation>
-<translation id="2847118875340931228">Адкрыць акно ў рэжыме інкогніта</translation>
 <translation id="2850739647070081192">Invite (канверт)</translation>
 <translation id="2856444702002559011">Зламыснікі могуць спрабаваць украсці вашы даныя з сайта <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (напрыклад, паролі, паведамленні або даныя крэдытных картак). <ph name="BEGIN_LEARN_MORE_LINK"/>Даведацца больш<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Плакатны згіб</translation>
@@ -487,7 +486,6 @@
 <translation id="3041612393474885105">Інфармацыя аб сертыфікаце</translation>
 <translation id="3060227939791841287">C9 (канверт)</translation>
 <translation id="3061707000357573562">Сэрвіс выпраўленняў</translation>
-<translation id="3064966200440839136">Выхад з рэжыму інкогніта для плацяжу праз знешнюю праграму. Працягнуць?</translation>
 <translation id="3080254622891793721">Графіка</translation>
 <translation id="3086579638707268289">Вашы дзеянні ў інтэрнэце адсочваюцца</translation>
 <translation id="3087734570205094154">Знізу</translation>
@@ -507,7 +505,6 @@
 <translation id="3154506275960390542">На гэтай старонцы ёсць форма, адпраўка звестак праз якую можа быць небяспечнай. Даныя, якія вы адпраўляеце, могуць быць прагледжаны падчас перадачы або могуць быць мадыфікаваны зламыснікам з мэтай унесці змены ў даныя, якія атрымае сервер.</translation>
 <translation id="3157931365184549694">Аднавіць</translation>
 <translation id="3162559335345991374">Сетка Wi-Fi, якую вы выкарыстоўваеце, можа запатрабаваць ад вас наведаць яе старонку ўваходу.</translation>
-<translation id="3167968892399408617">Старонкі, наведаныя ва ўкладках інкогніта, не будуць заставацца ў гісторыі браўзера, сховішчы файлаў cookie або гісторыі пошуку, пасля таго як вы закрыеце ўсе ўкладкі інкогніта. Усе спампаваныя файлы і створаныя закладкі будуць захаваны.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Востраў</translation>
 <translation id="3176929007561373547">Праверце налады проксі або звярніцеся да адміністратара сеткі, каб
@@ -623,7 +620,6 @@
 <translation id="3676592649209844519">Ідэнтыфікатар прылады:</translation>
 <translation id="3677008721441257057">Вы мелі на ўвазе &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Не ўдалося падпісаць запыт</translation>
-<translation id="3678529606614285348">Адкрыйце старонку ва ўкладцы інкогніта (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Інфармацыя аб сертыфікаце</translation>
 <translation id="3701427423622901115">Скідванне пацверджана.</translation>
 <translation id="3704162925118123524">Сетка, якую вы выкарыстоўваеце, можа запатрабаваць ад вас наведаць яе старонку ўваходу.</translation>
@@ -780,7 +776,7 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Зламыснікі на гэтым сайце могуць імкнуцца ўсталяваць небяспечныя праграмы на вашым камп'ютары, якія крадуць або выдаляюць вашу інфармацыю (напрыклад, фота, паролі, паведамленні, даныя крэдытных картак).</translation>
 <translation id="4358059973562876591">Зададзеныя вамі шаблоны могуць не прымяніцца з-за памылкі палітыкі DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">Наладзіць аўтазапаўненне для спосабаў аплаты...</translation>
+<translation id="327628984294957152">Наладзіць аўтазапаўненне для спосабаў аплаты...</translation>
 <translation id="4367563149485757821">Number-12 (канверт)</translation>
 <translation id="437058704415269440">Баланс уліковага запісу</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -944,7 +940,7 @@
 <translation id="5123063207673082822">Выхадныя</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Спраўджанне карткі</translation>
-<translation id="5135404736266831032">Кіраваць адрасамі...</translation>
+<translation id="6291230311289558881">Кіраваць адрасамі...</translation>
 <translation id="5138227688689900538">Паказаць менш</translation>
 <translation id="7186167407612593632">Шыфраваць сінхранізаваныя паролі з дапамогай уліковых даных Brave</translation>
 <translation id="5145883236150621069">Код памылкі, указаны ў адказе, атрыманым ад палітыкі</translation>
@@ -952,7 +948,6 @@
 <translation id="5148809049217731050">Рабочым бокам уверх</translation>
 <translation id="515292512908731282">C4 (канверт)</translation>
 <translation id="5158275234811857234">Вокладка</translation>
-<translation id="5159010409087891077">Адкрыйце старонку ў акне ў рэжыме інкогніта (⇧⌘N).</translation>
 <translation id="5161506081086828129">Укладчык 9</translation>
 <translation id="9016458749696512983">Увядзіце CVC-код карткі <ph name="CREDIT_CARD"/>. Пасля вашага пацвярджэння даныя карткі з Уліковага запісу Brave будуць абагулены з гэтым сайтам.</translation>
 <translation id="8515152881111950319">Вы можаце страціць доступ да ўліковага запісу арганізацыі, або ў вас могуць скрасці асабістыя даныя. Brave рэкамендуе змяніць пароль.</translation>
@@ -960,7 +955,6 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Машына</translation>
 <translation id="5179510805599951267">Мова старонкі – не <ph name="ORIGINAL_LANGUAGE"/>? Паведаміце пра памылку</translation>
-<translation id="5190835502935405962">Панэль закладак</translation>
 <translation id="519422657042045905">Анатацыя недаступная</translation>
 <translation id="5201306358585911203">Убудаваная старонка на гэтай старонцы паведамляе</translation>
 <translation id="5205222826937269299">Увядзіце імя</translation>
@@ -1091,7 +1085,7 @@
 <translation id="5689516760719285838">Месцазнаходжанне</translation>
 <translation id="569000877158168851">Калі для палітыкі DnsOverHttpsMode не зададзены параметр "<ph name="SECURE_DNS_MODE_AUTOMATIC"/>" або "<ph name="SECURE_DNS_MODE_SECURE"/>", значэнне DnsOverHttpsTemplates будзе лічыцца нерэлевантным і выкарыстоўвацца не будзе.</translation>
 <translation id="5701381305118179107">У цэнтры</translation>
-<translation id="570530837424789914">Кіраваць...</translation>
+<translation id="3655851112780233803">Кіраваць...</translation>
 <translation id="57094364128775171">Прапанаваць надзейны пароль…</translation>
 <translation id="5710435578057952990">Сапраўднасць гэтага вэб-сайта не была спраўджана.</translation>
 <translation id="5720705177508910913">Бягучы карыстальнік</translation>
@@ -1270,7 +1264,7 @@
 <translation id="6447842834002726250">Файлы cookie</translation>
 <translation id="6451458296329894277">Пацвердзіце паўторную адпраўку формы</translation>
 <translation id="6457206614190510200">Брашуроўка скобамі па спінцы</translation>
-<translation id="6465306955648956876">Кіраваць паролямі...</translation>
+<translation id="2275235756919172538">Кіраваць паролямі...</translation>
 <translation id="647261751007945333">Палітыкі прылады</translation>
 <translation id="6476284679642588870">Наладзіць спосабы аплаты</translation>
 <translation id="6489534406876378309">Пачаць запампоўку збояў</translation>
@@ -1586,7 +1580,6 @@
 <translation id="782886543891417279">Сетка Wi-Fi, якую вы выкарыстоўваеце (<ph name="WIFI_NAME"/>), можа запатрабаваць ад вас наведаць яе старонку ўваходу.</translation>
 <translation id="7836231406687464395">Postfix (канверт)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Няма}=1{1 праграма (<ph name="EXAMPLE_APP_1"/>)}=2{2 праграмы (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}one{# праграма (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}few{# праграмы (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}many{# праграм (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}other{# праграмы (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">Але памятайце, што вы не становіцеся нябачнымі. Праца ў рэжыме інкогніта не дазволіць вам схаваць свае дзеянні ў інтэрнэце ад працадаўцы, інтэрнэт-правайдара і наведаных вэб-сайтаў.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="7862185352068345852">Закрыць сайт?</translation>
 <translation id="7865448901209910068">Найлепшая хуткасць</translation>
@@ -1669,10 +1662,8 @@
 <translation id="8220146938470311105">C7/C6 (канверт)</translation>
 <translation id="8220639454292072926">Карпаратыўныя справаздачы</translation>
 <translation id="3272614036080146686">Вы толькі што ўвялі свой пароль на сайце, вядомым падманнымі паводзінамі. Brave рэкамендуе неадкладна змяніць пароль на сайце <ph name="WEBSITE_1"/> і на іншых сайтах, дзе выкарыстоўваецца гэты пароль.</translation>
-<translation id="8225771182978767009">Карыстальнік, які наладжваў гэты камп'ютар, вырашыў заблакіраваць гэты сайт.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Тэмпература платформы</translation>
-<translation id="8238581221633243064">Адкрыйце старонку ва ўкладцы інкогніта</translation>
 <translation id="8241707690549784388">Старонка, на якую вы спрабуеце перайсці, выкарыстоўвала ўведзеныя вамі звесткі. Калі вярнуцца на яе, у выніку можа быць паўторна зробленае вамі дзеянне. Працягнуць?</translation>
 <translation id="8241712895048303527">Блакіраваць на гэтым сайце</translation>
 <translation id="8242426110754782860">Працягнуць</translation>
@@ -1684,7 +1675,6 @@
 <translation id="8262952874573525464">Сшыванне па краі знізу</translation>
 <translation id="8267698848189296333">Уваход ва ўліковы запіс <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Асобныя дакументы, разабраныя копіі</translation>
-<translation id="8269981117540303696">Цяпер вы можаце праглядаць вэб-старонкі ў прыватным рэжыме, іншыя карыстальнікі гэтай прылады не будуць бачыць вашы дзеянні. Аднак спампоўкі і закладкі будуць захоўвацца.</translation>
 <translation id="8277900682056760511">Аркуш апрацоўшчыка плацяжоў адкрыты</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Атрымаць доступ да ўнікальнага ідэнтыфікатара прылады</translation>
@@ -1703,7 +1693,6 @@
 <translation id="833262891116910667">Вылучэнне</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Калі вы разумееце рызыкі бяспекі, можаце <ph name="BEGIN_LINK"/>наведаць гэты сайт<ph name="END_LINK"/> да таго, як шкодныя праграмы будуць выдалены.</translation>
-<translation id="8349305172487531364">Панэль закладак</translation>
 <translation id="8355270400102541638">Лакальны ідэнтыфікатар збою:</translation>
 <translation id="8363502534493474904">Выключыць рэжым палёту</translation>
 <translation id="8364627913115013041">Не зададзена</translation>
@@ -1768,7 +1757,6 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, прапанова пошуку</translation>
 <translation id="8719528812645237045">Некалькі дзірак зверху</translation>
 <translation id="8725066075913043281">Паўтарыць спробу</translation>
-<translation id="8728672262656704056">Вы перайшлі ў рэжым інкогніта</translation>
 <translation id="8730621377337864115">Гатова</translation>
 <translation id="6326805297893828864">Для ўстанаўлення бяспечнага злучэння трэба, каб гадзіннік быў наладжаны правільна. Гэта патрабуецца таму, што сертыфікаты, якія выкарыстоўваюцца вэб-сайтамі для іх ідэнтыфікацыі, дзейнічаюць толькі пэўны час. Калі гадзіннік на вашай прыладзе наладжаны няправільна, Brave не зможа спраўдзіць гэтыя сертыфікаты.</translation>
 <translation id="8740359287975076522">&lt;abbr id="dnsDefinition"&gt;Адрас DNS &lt;/abbr&gt; хоста <ph name="HOST_NAME"/> не знойдзены. Дыягностыка праблемы.</translation>
@@ -1801,7 +1789,6 @@
 <translation id="8903921497873541725">Павялічыць маштаб</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Кнопка "Выдаліць прапанову". Каб выдаліць прапанову, націсніце Enter. <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">Вы перайшлі ў рэжым інкогніта</translation>
 <translation id="5713644099811900409">Уліковы запіс Brave</translation>
 <translation id="8918231688545606538">Гэта старонка падазроная</translation>
 <translation id="892588693504540538">Дзірка зверху справа</translation>
@@ -1841,7 +1828,7 @@
 <translation id="9065203028668620118">Змяніць</translation>
 <translation id="9065745800631924235"><ph name="TEXT"/>: пошук у гісторыі</translation>
 <translation id="9069693763241529744">Заблакіравана пашырэннем</translation>
-<translation id="9076630408993835509">Гэты браўзер не знаходзіцца пад кіраваннем кампаніі або іншай арганізацыі. Аднак сама прылада можа знаходзіцца пад знешнім кіраваннем. <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
+<translation id="3777899070797913617">Гэты браўзер не знаходзіцца пад кіраваннем кампаніі або іншай арганізацыі. Аднак сама прылада можа знаходзіцца пад знешнім кіраваннем. <ph name="BEGIN_LINK"/>Даведацца больш<ph name="END_LINK"/></translation>
 <translation id="9078964945751709336">Патрабуецца дадатковая інфармацыя</translation>
 <translation id="9080712759204168376">Звесткі пра заказ</translation>
 <translation id="9089260154716455634">Палітыка для нерабочага часу:</translation>
@@ -1902,7 +1889,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS В1</translation>
 <translation id="6771143571626203666">З Brave Pay</translation>
-<translation id="8820817407110198400">Панэль закладак</translation>
+<translation id="8820817407110198400">Закладкі</translation>
 <translation id="8362995731815961365">Карыстальнік, які наладжваў гэты камп'ютар, вырашыў заблакіраваць гэты сайт.</translation>
 <translation id="4075123085690634698">Адкрыйце старонку ў акне ў рэжыме інкогніта (⇧⌘N).</translation>
 <translation id="2388886110302389394">Адкрыйце старонку ва ўкладцы інкогніта (Ctrl-Shift-N)</translation>

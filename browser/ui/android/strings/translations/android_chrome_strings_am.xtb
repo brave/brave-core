@@ -7,7 +7,6 @@
 <translation id="1036727731225946849"><ph name="WEBAPK_NAME"/>ን በማከል ላይ...</translation>
 <translation id="1041308826830691739">ከድር ጣቢያዎች</translation>
 <translation id="1045899828449635435">ከእነዚህ ጣቢያዎች የመጣ ውሂብም ይጽዳ?</translation>
-<translation id="1049743911850919806">ማንነት የማያሳውቅ</translation>
 <translation id="10614374240317010">በጭራሽ አልተቀመጠም</translation>
 <translation id="5428209950370661546">ሌሎች የBrave አገልግሎቶች</translation>
 <translation id="1068672505746868501">በ<ph name="SOURCE_LANGUAGE"/> ውስጥ ገጾችን በጭራሽ አትተርጉም</translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">የመጀመሪያ የስምረት ማዋቀር አልተጠናቀቀም</translation>
 <translation id="1821253160463689938">የእርስዎን ምርጫዎች ለማስታወስ ኩኪዎችን ይጠቀማል፣ እነዚያን ገጾች ባይጎበኙም እንኳ</translation>
 <translation id="1829244130665387512">በዚህ ገጽ ውስጥ የተገኘ</translation>
-<translation id="1853692000353488670">አዲስ ማንነት የማያሳውቅ ትር</translation>
 <translation id="1856325424225101786">ቀላል ሁነታን ዳግም ያስጀምሩ?</translation>
 <translation id="5817715962196959877">Brave አሁን ፋይሎችን በበለጠ ፍጥነት ያወርዳል</translation>
 <translation id="1883903952484604915">የእኔ ፋይሎች</translation>
@@ -233,15 +231,12 @@
 <translation id="2903493209154104877">አድራሻዎች</translation>
 <translation id="290376772003165898">ገጽ በ<ph name="LANGUAGE"/> አይደለም?</translation>
 <translation id="2904414404539560095">በሙሉ ቁመቱ ላይ የተከፈተ ትር የሚጋሩ የመሣሪያዎች ዝርዝር።</translation>
-<translation id="2905036901251765993">በአቅራቢያ ካሉ ሰዎች ጋር ለማጋራት፣ ይህን QR ኮድ እንዲቃኙ ይፍቀዱላቸው</translation>
 <translation id="7339921667754113786">የBrave ማሳወቂያዎች መሣሪያ ስርዓት</translation>
 <translation id="2923908459366352541">ስም ልክ ያልሆነ ነው</translation>
 <translation id="6355102470683871794">የBrave <ph name="APP_NAME"/> ማከማቻ</translation>
 <translation id="2942036813789421260">የቅድመ-እይታ ትር ተዘግቷል</translation>
 <translation id="2956410042958133412">ይህ መለያ የሚቀናበረው በ<ph name="PARENT_NAME_1"/> እና <ph name="PARENT_NAME_2"/> ነው።</translation>
-<translation id="2962095958535813455">ወደ ማንነት የማያሳውቁ ትሮች ተቀይሯል</translation>
 <translation id="2968755619301702150">የእውቅና ማረጋገጫ መመልከቻ</translation>
-<translation id="2979025552038692506">የተመረጠው ማንነት የማያሳውቅ ትር</translation>
 <translation id="2987620471460279764">ከሌሎች መሣሪያዎች የተጋራ ጽሑፍ</translation>
 <translation id="2989523299700148168">በቅርብ ጊዜ የተጎበኙ</translation>
 <translation id="2996291259634659425">የይለፍ ሐረግ ይፍጠሩ</translation>
@@ -252,16 +247,14 @@
 <translation id="305593374596241526">አካባቢ ጠፍቷል፤ በ<ph name="BEGIN_LINK"/>Android ቅንብሮች<ph name="END_LINK"/> ውስጥ ያብሩት።</translation>
 <translation id="3058498974290601450">ስምረትን በማንኛውም ጊዜ በቅንብሮች ውስጥ ማብራት ይችላሉ።</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> ዕልባት}one{<ph name="BOOKMARKS_COUNT_MANY"/> ዕልባቶች}other{<ph name="BOOKMARKS_COUNT_MANY"/> ዕልባቶች}}</translation>
-<translation id="3089395242580810162">ማንነትን በማያሳውቅ ትር ክፈት</translation>
 <translation id="3114012059975132928">ቪዲዮ ማጫወቻ</translation>
 <translation id="3123734510202723619">ማስታወቂያዎች</translation>
-<translation id="3137521801621304719">ከማንነት የማያሳውቅ ሁነታ ይውጡ</translation>
 <translation id="3143515551205905069">ስምረትን ሰርዝ</translation>
 <translation id="5063487983358782016">የBrave መነሻ ገጽ</translation>
 <translation id="3157842584138209013">ከተጨማሪ አማራጮች አዝራር ላይ ምን ያህል ውሂብ እንዳስቀመጡ ይመልከቱ</translation>
 <translation id="3166827708714933426">የትር እና የመስኮት አቋራጮች</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">ደኅንነቱ የተጠበቀ አሰሳ (እርስዎን እና የእርስዎን መሣሪያ ከአደገኛ ጣቢያዎች ጥበቃ ያደርግላችኋል)</translation>
+<translation id="3201899458094819285">ደኅንነቱ የተጠበቀ አሰሳ (እርስዎን እና የእርስዎን መሣሪያ ከአደገኛ ጣቢያዎች ጥበቃ ያደርግላችኋል)</translation>
 <translation id="3205824638308738187">በቃ ሊያልቅ ነው!</translation>
 <translation id="3207960819495026254">ዕልባት ተደርጎበታል</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> ተሰርዟል</translation>
@@ -285,7 +278,6 @@
 <translation id="3333961966071413176">ሁሉም እውቂያዎች</translation>
 <translation id="3334729583274622784">የፋይል ቅጥያ ይቀየር?</translation>
 <translation id="3341058695485821946">ምን ያህል ውሂብ እንዳስቀመጡ ይመልከቱ</translation>
-<translation id="3350687908700087792">ሁሉንም ማንነት የማያሳውቅ ትሮችን ይዝጉ</translation>
 <translation id="8134317863207426198">ቀላል ገጽ በBrave ቀርቧል። ኦርጂናሉን ገጽ ለመጫን ኦርጂናል ጫን የሚለውን አዝራር መታ ያድርጉ።</translation>
 <translation id="3367813778245106622">ስምረትን ለመጀመር እንደገና ይግቡ</translation>
 <translation id="2746024117903470217">ይህን ገጽ ለሌላ መሣሪያ ለማጋራት በሌላኛው መሣሪያ የBrave ቅንብሮች ውስጥ ስምረትን ያብሩ</translation>
@@ -298,7 +290,6 @@
 <translation id="3443221991560634068">የአሁኑን ገጽ ዳግም ጫን</translation>
 <translation id="3445014427084483498">ልክ አሁን</translation>
 <translation id="3478363558367712427">የፍለጋ ፕሮግራምዎን መምረጥ ይችላሉ</translation>
-<translation id="3492207499832628349">አዲስ ማንነት የማያሳውቅ ትር</translation>
 <translation id="3493531032208478708">ስለሚጠቆም ይዘት <ph name="BEGIN_LINK"/>የበለጠ ለመረዳት<ph name="END_LINK"/></translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">ትክክለኛ እውነታ</translation>
@@ -329,7 +320,6 @@
 <translation id="3749259744154402564">የማይደገፍ</translation>
 <translation id="3763247130972274048">10 ሴ ለመዝለል ቪዲዮ ወደ ግራ ወይም ቀኝ ላይ ሁለቴ መታ ያድርጉ</translation>
 <translation id="3771001275138982843">ዝማኔውን ማውረድ አልተቻለምም</translation>
-<translation id="3771033907050503522">ማንነት የማያሳውቁ ትሮች</translation>
 <translation id="1138681184697033370">የBrave የአገልግሎት ውል</translation>
 <translation id="3773755127849930740">ማጣመርን ለመፍቀድ <ph name="BEGIN_LINK"/>ብሉቱዝን ያብሩ<ph name="END_LINK"/></translation>
 <translation id="3775705724665058594">ወደ መሣሪያዎችዎ ይላኩ</translation>
@@ -495,7 +485,6 @@
 <translation id="5040262127954254034">ግላዊነት</translation>
 <translation id="5087580092889165836">ካርድ አክል</translation>
 <translation id="510275257476243843">1 ሰዓት ይቀራል</translation>
-<translation id="5123685120097942451">ማንነት የማያሳውቅ ትር</translation>
 <translation id="5127805178023152808">አመሳስል ጠፍቷል</translation>
 <translation id="5129038482087801250">የድር መተግበሪያን ጫን</translation>
 <translation id="5132942445612118989">የእርስዎን የይለፍ ቃላት፣ ታሪክ እና ተጨማሪ ነገሮች በሁሉም መሣሪያዎች ላይ ያስምሩ</translation>
@@ -547,14 +536,12 @@
 <translation id="5517095782334947753">ከ<ph name="FROM_ACCOUNT"/> የመጡ ዕልባቶች፣ ታሪክ፣ የይለፍ ቃላት  እና ሌሎች ቅንብሮች አለዎት።</translation>
 <translation id="5524843473235508879">አቅጣጫ ማዞር ታግዷል።</translation>
 <translation id="2367014990350929709">Brave መሣሪያዎችን መቃኘት እንዲችል የአካባቢ መዳረሻ ያስፈልገዋል። <ph name="BEGIN_LINK1"/>ፈቃዶችን ያዘምኑ<ph name="END_LINK1"/>። የአካባቢ መዳረሻ እንዲሁም <ph name="BEGIN_LINK2"/>ለዚህ መዳረሻ ጠፍቷል<ph name="END_LINK2"/>።</translation>
-<translation id="5530766185686772672">ማንነት የማያሳውቁ ትሮችን ዝጋ</translation>
 <translation id="5534640966246046842">ጣቢያ ተቀድቷል</translation>
 <translation id="5561549206367097665">አውታረ መረብን በመጠበቅ ላይ…</translation>
 <translation id="55737423895878184">አካባቢ እና ማሳወቂያዎች ይፈቀዳሉ</translation>
 <translation id="5578795271662203820">ይህንን ምስል <ph name="SEARCH_ENGINE"/> ላይ ይፈልጉት</translation>
 <translation id="5581519193887989363">በማንኛውም ጊዜ ምን እንደሚያሰምሩ በ<ph name="BEGIN_LINK1"/>ቅንብሮች<ph name="END_LINK1"/> ውስጥ መምረጥ ይችላሉ።</translation>
 <translation id="5595485650161345191">አድራሻ አርትዕ</translation>
-<translation id="5599455543593328020">ማንነት የማያሳውቅ ሁነታ</translation>
 <translation id="5620928963363755975">ከተጨማሪ አማራጮች አዝራር ሆነው የእርስዎን ፋይሎች እና ገጾች በውርዶች ውስጥ ያግኙ</translation>
 <translation id="5626134646977739690">ስም፦</translation>
 <translation id="5639724618331995626">ሁሉንም ጣቢያዎች ፍቀድ</translation>
@@ -572,7 +559,6 @@
 <translation id="5726692708398506830">በገጹ ላይ ያለውን ሁሉንም ነገር ይበልጥ አተልቅ</translation>
 <translation id="5748802427693696783">ወደ መደበኛ ትሮች ቀይር</translation>
 <translation id="3088191967551450609">Brave ፋይሎችን ለማውረድ የማከማቻ መዳረሻ ያስፈልገዋል።</translation>
-<translation id="5763382633136178763">ማንነት የማያሳውቁ ትሮች</translation>
 <translation id="5763514718066511291">የዚህ መተግበሪያ ዩአርኤል ለመቅዳት መታ ያድርጉ</translation>
 <translation id="5765780083710877561">መግለጫ</translation>
 <translation id="5793665092639000975"><ph name="SPACE_USED"/> ከ<ph name="SPACE_AVAILABLE"/> በመጠቀም ላይ</translation>
@@ -858,7 +844,6 @@
 <translation id="8073388330009372546">ምስሉን በአዲስ ትር ውስጥ ክፈት</translation>
 <translation id="8076492880354921740">ትሮች</translation>
 <translation id="8084114998886531721">የተቀመጠ ይለፍ ቃል</translation>
-<translation id="8103578431304235997">ማንነት የማያሳውቅ ትር</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">የእርስዎን ዕልባቶች በሁሉም መሣሪያዎችዎ ላይ ስምረትን ማብራት ለማግኘት</translation>
 <translation id="4565206163201411670">በዲጂታል ብቁ መሆን ውስጥ የBrave እንቅስቃሴዎ ይታይ?</translation>
@@ -909,7 +894,6 @@
 <translation id="230699814587342492">የBrave ይለፍ ቃላት</translation>
 <translation id="8503813439785031346">የተጣቃሚ ስም</translation>
 <translation id="133012818630824069">ከBrave ጋር የተከማቹ የይለፍ ቃሎችን ወደ ውጭ ላክ</translation>
-<translation id="8514577642972634246">ማንነት ወደ ማያሳውቅ ሁነታ ይግቡ</translation>
 <translation id="8516012719330875537">የምስል አርታዒ</translation>
 <translation id="8523928698583292556">የተከማቸ የይለፍ ቃል ሰርዝ</translation>
 <translation id="854522910157234410">ይህን ገጽ ክፈት</translation>
@@ -955,7 +939,6 @@
 <translation id="8970887620466824814">የሆነ ችግር ተፈጥሯል።</translation>
 <translation id="8972098258593396643">ወደ ነባሪው አቃፊ ይውረድ?</translation>
 <translation id="8988028529677883095">እንደ ደህንነት ቁልፍ ስልክን ይጠቀሙ</translation>
-<translation id="8993760627012879038">አዲስ ትር በማንነት የማያሳውቅ ሁነታ ውስጥ ክፈት</translation>
 <translation id="2689656545739939160">በ<ph name="MANAGED_DOMAIN"/> ወደሚተዳደር መለያ እየገቡና ሙሉውን የBrave ውሂብዎ ቁጥጥር ለአስተዳዳሪው እየሰጡ ነው። የእርስዎ ውሂብ እስከመጨረሻው ከዚህ መለያ ጋር ይተሳሰራል። ከBrave ዘግቶ መውጣት ውሂብዎን ከዚህ መሣሪያ ይሰርዘዋል፣ ነገር ግን በእርስዎ የBrave መለያ ላይ እንደተከማቸ ይቆያል።</translation>
 <translation id="9028914725102941583">በተለያዩ መሣሪያዎች ላይ ለማጋራት ስምረትን ያብሩ</translation>
 <translation id="9040142327097499898">ማሳወቂያዎች ይፈቀዳሉ። አካባቢ ለዚህ መሣሪያ ጠፍቷል።</translation>

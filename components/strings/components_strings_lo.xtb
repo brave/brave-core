@@ -233,7 +233,6 @@
 <translation id="1919367280705858090">ຂໍຄວາມຊ່ວຍເຫຼືອເລື່ອງຂໍ້ຄວາມສະແດງຂໍ້ຜິດພາດສະເພາະ</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{ບໍ່ມີ}=1{1 ເວັບໄຊ}other{# ເວັບໄຊ}}</translation>
 <translation id="194030505837763158">ໄປທີ່ <ph name="LINK"/></translation>
-<translation id="1945968466830820669">ທ່ານອາດຈະສູນເສຍການເຂົ້າເຖິງບັນຊີຂອງອົງການຂອງທ່ານ ຫຼື ປະສົບກັບການລັກໃຊ້ຕົວຕົນ.</translation>
 <translation id="1947454675006758438">ໜີບກະຫຼັບເຟີຢູ່ເທິງສຸດເບື້ອງຂວາ</translation>
 <translation id="1962204205936693436">ບຸກມາກສ໌ ່<ph name="DOMAIN"/></translation>
 <translation id="1973335181906896915">ຄວາມ​ຜິດ​ພາດການສ້າງລໍາດັບ</translation>
@@ -438,7 +437,6 @@
 <translation id="2824775600643448204">ແຖບ​ທີ່​ຢູ່​ ແລະ​ຄົ້ນ​ຫາ</translation>
 <translation id="2826760142808435982">ການເຊື່ອມຕໍ່ມີລະຫັດ ແລະໄດ້ຮັບຮອງແລ້ວດ້ວຍການໃຊ້ <ph name="CIPHER"/> ແລະໃຊ້ <ph name="KX"/> ເປັນກົນໄກແລກປ່ຽນປຸ່ມ.</translation>
 <translation id="2835170189407361413">ລຶບແບບຟອມ</translation>
-<translation id="2847118875340931228">ເປີດໜ້າຈໍທີ່ບໍ່ເປີດເຜີຍຕົວຕົນ</translation>
 <translation id="2850739647070081192">Invite (ຊອງຈົດໝາຍ)</translation>
 <translation id="2856444702002559011">ຜູ້ໂຈມຕີອາດຈະກຳລັງພະຍາຍາມລັກເອົາຂໍ້ມູນຂອງທ່ານຈາກ <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (ຕົວຢ່າງ: ລະຫັດຜ່ານ, ຂໍ້ຄວາມ ຫຼື ບັດເຄຣດິດ). <ph name="BEGIN_LEARN_MORE_LINK"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">ພັບແບບໂປສເຕີ</translation>
@@ -488,7 +486,6 @@
 <translation id="3041612393474885105">ຂໍ້ມູນໃບຢັ້ງຢືນ</translation>
 <translation id="3060227939791841287">C9 (ຊອງຈົດໝາຍ)</translation>
 <translation id="3061707000357573562">ການບໍລິການແກ້ບັນຫາ</translation>
-<translation id="3064966200440839136">ກຳລັງອອກຈາກໂໝດບໍ່ເຜີຍຕົນຕົວເພື່ອຈ່າຍຜ່ານແອັບພລິເຄຊັນພາຍນອກ. ສືບຕໍ່ບໍ?</translation>
 <translation id="3080254622891793721">ກຣາບຟິກ</translation>
 <translation id="3086579638707268289">ກຳລັງມີການຕິດຕາມເບິ່ງການເຄື່ອນໄຫວຂອງທ່ານໃນເວັບ</translation>
 <translation id="3087734570205094154">ດ້ານລຸ່ມ</translation>
@@ -508,7 +505,6 @@
 <translation id="3154506275960390542">ໜ້ານີ້ຮວມມີແບບຟອມທີ່ອາດຈະບໍ່ສົ່ງຢ່າງປອດໄພ. ຂໍ້ມູນທີ່ທ່ານສົ່ງສາມາດຖືກເບິ່ງໂດຍຄົນອື່ນໃນຂະນະທີ່ສົ່ງ ຫຼື ສາມາດຖືກປ່ຽນແປງໄດ້ໂດຍຜູ້ໂຈມຕີເພື່ອປ່ຽນສິ່ງທີ່ເຊີບເວີຈະໄດ້ຮັບ.</translation>
 <translation id="3157931365184549694">ເອົາຄືນມາ</translation>
 <translation id="3162559335345991374">Wi-Fi ທີ່​ທ່ານ​ກຳ​ລັງ​ໃຊ້​ອາດ​ຈະ​ຕ້ອງ​ການ​ໃຫ້​ທ່ານ​ເຂົ້າ​ເບິ່ງ​ໜ້າ​ເຂົ້າ​ສູ່ລະ​ບົບ​ຂອງ​ມັນ.</translation>
-<translation id="3167968892399408617">ໜ້າເວັບທີ່ທ່ານເບິ່ງໃນແຖບບໍ່ເປີດເຜີຍຕົວຕົນຈະບໍ່ປາກົດຢູ່ໃນປະຫວັດໂປຣແກຣມທ່ອງເວັບ, ຄຸກກີ້ ຫຼືປະຫວັດການຊອກຫາຂອງທ່ານ ຫຼັງຈາກທີ່ທ່ານໄດ້ປິດທຸກແຖບບໍ່ເປີດເຜີຍຕົວຕົນຂອງທ່ານແລ້ວ. ທຸກໄຟລ໌ທີ່ທ່ານດາວໂຫຼດ ຫຼືບຸກມາກທີ່ທ່ານສ້າງຂຶ້ນຈະຖືກເກັບຮັກສາໄວ້.</translation>
 <translation id="3169472444629675720">ຄົ້ນຫາ</translation>
 <translation id="3174168572213147020">ເກາະ</translation>
 <translation id="3176929007561373547">ກວດເບິ່ງການຕັ້ງຄ່າພຣັອກຊີຂອງທ່ານ ຫຼືຕິດຕໍ່ຫາຜູ້ເບິ່ງແຍງລະບົບເຄືອຂ່າຍຂອງທ່ານເພື່ອ
@@ -625,7 +621,6 @@
 <translation id="3676592649209844519">ID ອຸປະກອນ:</translation>
 <translation id="3677008721441257057">ທ່ານໝາຍເຖິງ &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt; ບໍ?</translation>
 <translation id="3678029195006412963">ບໍ່ສາມາດເຊັນຄຳຮ້ອງຂໍໄດ້</translation>
-<translation id="3678529606614285348">ເປີດໜ້າເວັບໃນໜ້າຈໍແບບບໍ່ເປີດເຜີຍຕົວຕົນໃໝ່ (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">ຂໍ້ມູນໃບຢັ້ງຢືນ</translation>
 <translation id="3701427423622901115">ຮັບຮູ້ການຣີເຊັດແລ້ວ.</translation>
 <translation id="3704162925118123524">ເຄືອ​ຂ່າຍ​ທີ່​ທ່ານ​ກຳ​ລັງ​ໃຊ້​ອາດ​ຈະ​ຕ້ອງ​ການ​ໃຫ້​ທ່ານ​ເຂົ້າ​ເບິ່ງ​ໜ້າ​ເຂົ້າ​ລະ​ບົບ​ຂອງ​ມັນ.</translation>
@@ -782,7 +777,7 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">ຜູ້ໂຈມຕີຢູ່ໃນເວັບໄຊນີ້ອາດຈະພະຍາຍາມຕິດຕັ້ງໂປຣແກຣມອັນຕະລາຍຢູ່ໃນຄອມພິວເຕີຂອງທ່ານທີ່ລັກເອົາ ຫຼື ລຶບຂໍ້ມູນຂອງທ່ານຖິ້ມ (ຕົວຢ່າງ: ຮູບພາບ, ລະຫັດຜ່ານ, ຂໍ້ຄວາມ ແລະ ບັດເຄຣດິດ).</translation>
 <translation id="4358059973562876591">ແມ່ແບບທີ່ທ່ານລະບຸອາດຈະນຳໃຊ້ບໍ່ໄດ້ຍ້ອນມີຂໍ້ຜິດພາດກັບນະໂຍບາຍ DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">ຈັດການວິທີການຈ່າຍເງິນ...</translation>
+<translation id="327628984294957152">ຈັດການວິທີການຈ່າຍເງິນ...</translation>
 <translation id="4367563149485757821">Number-12 (ຊອງຈົດໝາຍ)</translation>
 <translation id="437058704415269440">ຍອດເງິນໃນບັນຊີ</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -946,7 +941,7 @@
 <translation id="5123063207673082822">ທ້າຍອາທິດ</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">ຢືນຢັນບັດຂອງທ່ານ</translation>
-<translation id="5135404736266831032">ຈັດການທີ່ຢູ່...</translation>
+<translation id="6291230311289558881">ຈັດການທີ່ຢູ່...</translation>
 <translation id="5138227688689900538">ຫຍໍ້ລົງ</translation>
 <translation id="7186167407612593632">ໃສ່ລະຫັດລະຫັດຜ່ານທີ່ຊິງຄ໌ແລ້ວກັບໃບຢັ້ງຢືນ Brave ຂອງທ່ານ</translation>
 <translation id="5145883236150621069">ລະຫັດຄວາມຜິດພາດມີຢູ່ໃນການຕອບຮັບນະໂຍບາຍ</translation>
@@ -954,7 +949,6 @@
 <translation id="5148809049217731050">ປີ້ນໜ້າຂຶ້ນ</translation>
 <translation id="515292512908731282">C4 (ຊອງຈົດໝາຍ)</translation>
 <translation id="5158275234811857234">ໜ້າປົກ</translation>
-<translation id="5159010409087891077">ເປີດໜ້າເວັບໃນໜ້າຈໍທີ່ບໍ່ເປີດເຜີຍຕົວຕົນໃໝ່ (⇧⌘N)</translation>
 <translation id="5161506081086828129">ສະແຕັກເກີ້ 9</translation>
 <translation id="9016458749696512983">ປ້ອນ CVC ສຳລັບ <ph name="CREDIT_CARD"/>. ຫຼັງຈາກທີ່ທ່ານຢືນຢັນ, ລະບົບຈະແບ່ງປັນລາຍລະອຽດບັດຈາກບັນຊີ Brave ຂອງທ່ານກັບເວັບໄຊນີ້.</translation>
 <translation id="8515152881111950319">ທ່ານອາດຈະສູນເສຍການເຂົ້າເຖິງບັນຊີຂອງອົງການຂອງທ່ານ ຫຼື ປະສົບກັບການລັກໃຊ້ຕົວຕົນ. Brave ແນະນຳໃຫ້ປ່ຽນລະຫັດຜ່ານຂອງທ່ານດຽວນີ້.</translation>
@@ -962,7 +956,6 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">ເຄື່ອງຈັກ</translation>
 <translation id="5179510805599951267">ບໍ່ເປັນ <ph name="ORIGINAL_LANGUAGE"/> ບໍ? ລາຍງານຄວາມຜິດພາດນີ້</translation>
-<translation id="5190835502935405962">ແຖບບຸກມາກສ໌</translation>
 <translation id="519422657042045905">ຄຳອະທິບາຍປະກອບບໍ່ສາມາດໃຊ້ໄດ້</translation>
 <translation id="5201306358585911203">ໜ້າຝັງຕິດໃນໜ້ານີ້ບອກວ່າ</translation>
 <translation id="5205222826937269299">ຈຳເປັນຕ້ອງມີຊື່</translation>
@@ -1093,7 +1086,7 @@
 <translation id="5689516760719285838">ສະຖານທີ່</translation>
 <translation id="569000877158168851">ຄ່າ DnsOverHttpsTemplates ບໍ່ກ່ຽວຂ້ອງ ແລະ ຈະບໍ່ຖືກນຳໃຊ້, ເວັ້ນເສຍແຕ່ວ່າໄດ້ຕັ້ງຄ່ານະໂຍບາຍ DnsOverHttpsMode ເປັນ <ph name="SECURE_DNS_MODE_AUTOMATIC"/> ຫຼື <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">ໃຈກາງ</translation>
-<translation id="570530837424789914">ຈັດການ...</translation>
+<translation id="3655851112780233803">ຈັດການ...</translation>
 <translation id="57094364128775171">ແນະນຳລະຫັດຜ່ານທີ່ເດົາຍາກ…</translation>
 <translation id="5710435578057952990">ເອກະລັກຂອງເວັບໄຊທ໌ນີ້ບໍ່ໄດ້ຮັບການກວດສອບ.</translation>
 <translation id="5720705177508910913">ຜູ້​ໃຊ້​ປະ​ຈຸ​ບັນ</translation>
@@ -1272,7 +1265,7 @@
 <translation id="6447842834002726250">ຄຸກກີ້</translation>
 <translation id="6451458296329894277">ຢືນຢັນການສົ່ງແບບຟອມຄືນໃໝ່</translation>
 <translation id="6457206614190510200">ຫຍິບທີ່ສັນປຶ້ມ</translation>
-<translation id="6465306955648956876">ຈັດການລະຫັດຜ່ານ...</translation>
+<translation id="2275235756919172538">ຈັດການລະຫັດຜ່ານ...</translation>
 <translation id="647261751007945333">ນະ​ໂຍ​ບາຍ​ຂອງອຸ​ປະ​ກອນ</translation>
 <translation id="6476284679642588870">ຈັດການວິທີການຈ່າຍເງິນ</translation>
 <translation id="6489534406876378309">ການເລີ່ມຕົ້ນອັບໂຫຼດ​ເກີດ​ຂັດຂ້ອງ</translation>
@@ -1587,7 +1580,6 @@
 <translation id="782886543891417279">Wi-Fi ທີ່​ທ່ານ​ກຳ​ລັງ​ໃຊ້​ຢູ່ (<ph name="WIFI_NAME"/>) ອາດ​ຈະ​ຕ້ອງ​ການ​ໃຫ້​ທ່ານ​ເຂົ້າ​ຫາໜ້າລັອກອິນ​ເຂົ້າ​​ລະ​ບົບ​ຂອງ​ມັນ.</translation>
 <translation id="7836231406687464395">Postfix (ຊອງຈົດໝາຍ)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{ບໍ່ມີ}=1{1 ແອັບ (<ph name="EXAMPLE_APP_1"/>)}=2{2 ແອັບ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# ແອັບ (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">ແນວໃດກໍຕາມ, ທ່ານຈະບໍ່ຫາຍໄປໃສ. ການໃຊ້ໂໝດບໍ່ເຜີຍຕົວຕົນ ຈະບໍ່ເຊື່ອງການທ່ອງເວັບຂອງທ່ານຈາກນາຍຈ້າງ, ຜູ້ໃຫ້ບໍລິການອິນເຕີເນັດ ຫຼືເວັບໄຊທີ່ທ່ານເຂົ້າເບິ່ງ.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">ອອກຈາກເວັບໄຊບໍ?</translation>
 <translation id="7865448901209910068">ຄວາມໄວດີສຸດ</translation>
@@ -1670,10 +1662,8 @@
 <translation id="8220146938470311105">C7/C6 (ຊອງຈົດໝາຍ)</translation>
 <translation id="8220639454292072926">ການລາຍງານລະດັບວິສາຫະກິດ</translation>
 <translation id="3272614036080146686">ທ່ານຫາກໍປ້ອນລະຫັດຜ່ານຂອງທ່ານໃສ່ເວັບໄຊຫຼອກລວງ. Brave ຂໍແນະນຳໃຫ້ໄປທີ່ <ph name="WEBSITE_1"/> ແລະ ເວັບໄຊອື່ນໆທີ່ທ່ານໃຊ້ລະຫັດຜ່ານນີ້ ແລ້ວປ່ຽນມັນຕອນນີ້ເລີຍ.</translation>
-<translation id="8225771182978767009">ບຸກຄົນຜູ້ທີ່ຕັ້ງຄ່າຄອມພິວເຕີນີ້ໄດ້ເລືອກບລັອກເວັບໄຊນີ້ໄວ້.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">ອຸນຫະພູມຂອງແພລດຟອມ</translation>
-<translation id="8238581221633243064">ເປີດໜ້າເວັບໃນແຖບບໍ່ເປີດເຜີຍຕົວຕົນໃໝ່</translation>
 <translation id="8241707690549784388">ໜ້າທີ່ທ່ານກໍາລັງຊອກຫາຂໍ້ມູນໃຊ້ແລ້ວທີ່ທ່ານປ້ອນເຂົ້າໄປ. ການກັບຄືນມາຫາໜ້ານັ້ນອາດຈະເຮັດໃຫ້ການກະທໍາໃດໜຶ່ງທີ່ທ່ານເຮັດແລ້ວຖືກເຮັດຊໍ້າຄືນ. ທ່ານຕ້ອງການສືບຕໍ່ບໍ?</translation>
 <translation id="8241712895048303527">ບລັອກໄວ້ໃນເວັບໄຊນີ້</translation>
 <translation id="8242426110754782860">ດຳ​ເນີນ​ຕໍ່</translation>
@@ -1685,7 +1675,6 @@
 <translation id="8262952874573525464">ຫຍິບຂອບລຸ່ມສຸດ</translation>
 <translation id="8267698848189296333">ກຳ​ລັງ​ລົງຊື່ເຂົ້າໃຊ້​ເປັນ <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">ເອກະສານແຍກກັນ/ຈັດຊຸດສຳເນົາ</translation>
-<translation id="8269981117540303696">ຕອນນີ້ທ່ານສາມາດທ່ອງເວັບແບບສ່ວນຕົວໄດ້ແລ້ວ ແລະ ຄົນອື່ນທີ່ໃຊ້ອຸປະກອນນີ້ຈະບໍ່ເຫັນການເຄື່ອນໄຫວຂອງທ່ານ. ແນວໃດກໍຕາມ, ການດາວໂຫຼດ ແລະ ບຸກມາກຈະຖືກບັນທຶກໄວ້.</translation>
 <translation id="8277900682056760511">ແຜ່ນວຽກຂອງເຄື່ອງຈັດການການຈ່າຍເງິນເປີດຢູ່</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">ຮູ້​ຈັກ​ຕົວ​ລະ​ບຸ​ອຸ​ປະ​ກອນ​ສະ​ເພາະ​ຂອງ​ທ່ານ</translation>
@@ -1704,7 +1693,6 @@
 <translation id="833262891116910667">ໄຮໄລ</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">ຖ້າທ່ານເຂົ້າໃຈຄວາມສ່ຽງຕໍ່ຄວາມປອດໄພຂອງທ່ານ, ທ່ານອາດຈະ <ph name="BEGIN_LINK"/>ເຂົ້າເບິ່ງເວັບໄຊທ໌ນີ້<ph name="END_LINK"/> ກ່ອນໂປຣແກຣມອັນຕະລາຍຈະຖືກຍ້າຍອອກໄປ.</translation>
-<translation id="8349305172487531364">ແຖບບຸກມາກສ໌</translation>
 <translation id="8355270400102541638">ບໍລິບົດການຂັດຂ້ອງພາຍໃນເຄື່ອງ:</translation>
 <translation id="8363502534493474904">ກຳລັງປິດໂໝດເຮືອບິນ</translation>
 <translation id="8364627913115013041">ບໍ່​ໄດ້ຕັ້ງ​.</translation>
@@ -1769,7 +1757,6 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, ການແນະນຳການຊອກຫາ</translation>
 <translation id="8719528812645237045">ເຈາະຮູຢູ່ເທິງສຸດຫຼາຍຮູ</translation>
 <translation id="8725066075913043281">ລອງໃໝ່ອີກ</translation>
-<translation id="8728672262656704056">ທ່ານໄດ້ເຂົ້າສູ່ໂໝດ incognito ແລ້ວ</translation>
 <translation id="8730621377337864115">ສໍາເລັດ</translation>
 <translation id="6326805297893828864">ເພື່ອ​ຕັ້ງ​ການ​ເຊື່ອມ​ຕໍ່​ທີ່​ປອດ​ໄພ, ຈຳ​ເປັນ​ຕ້ອງ​ໄດ້​ຕັ້ງ​ໂມງ​ຂອງ​ທ່ານ​ໃຫ້​ຖືກ​ຕ້ອງ. ອັນ​ນີ້​ເພາະ​ວ່າ​ໃບ​ຢັ້ງ​ຢືນ​ທີ່​ເວັບ​ໄຊ​ທ໌​ໃຊ້​ລະ​ບຸ​ຕົວ​ມັນ​ເອງ​ແມ່ນ​ຈະ​ໃຊ້​ໄດ້​ເປັນ​ໄລ​ຍະ​ເວ​ລາ​ສະ​ເພາະ​ເທົ່າ​ນັ້ນ. ເນື່ອງ​ຈາກ​ໂມງ​ຂອງ​ອຸ​ປະ​ກອນ​ຂອງ​ທ່ານ​ບໍ່​ຖືກ​ຕ້ອງ, Brave ບໍ່​ສາ​ມາດກວດ​ສອບ​ໃບ​ຢັ້ງ​ຢືນ​ເຫຼົ່າ​ນີ້​ໄດ້.</translation>
 <translation id="8740359287975076522">ບໍ່ສາມາດຊອກພົບ &lt;abbr id="dnsDefinition"&gt;ທີ່ຢູ່ DNS&lt;/abbr&gt; ຂອງ <ph name="HOST_NAME"/> ໄດ້. ກຳລັງວິເຄາະບັນຫາຢູ່.</translation>
@@ -1802,7 +1789,6 @@
 <translation id="8903921497873541725">ຊຸມເຂົ້າ</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">ລຶບປຸ່ມການແນະນຳອອກ, ກົດ Enter ເພື່ອລຶບອອກ, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">ທ່ານໄດ້ເຂົ້າສູ່ໂໝດບໍ່ເປີດເຜີຍຕົວຕົນແລ້ວ</translation>
 <translation id="5713644099811900409">ບັນຊີ Brave</translation>
 <translation id="8918231688545606538">ໜ້ານີ້ໜ້າສົງໄສ</translation>
 <translation id="892588693504540538">ເຈາະຮູເທິງສຸດເບື້ອງຊ້າຍ</translation>
@@ -1904,7 +1890,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">ຈາກ Brave Pay</translation>
-<translation id="8820817407110198400">ແຖບບຸກມາກສ໌</translation>
+<translation id="8820817407110198400">ບຸກມາກສ໌</translation>
 <translation id="8362995731815961365">ບຸກຄົນຜູ້ທີ່ຕັ້ງຄ່າຄອມພິວເຕີນີ້ໄດ້ເລືອກບລັອກເວັບໄຊນີ້ໄວ້.</translation>
 <translation id="4075123085690634698">ເປີດໜ້າເວັບໃນໜ້າຈໍທີ່ບໍ່ເປີດເຜີຍຕົວຕົນໃໝ່ (⇧⌘N)</translation>
 <translation id="2388886110302389394">ເປີດໜ້າເວັບໃນໜ້າຈໍແບບບໍ່ເປີດເຜີຍຕົວຕົນໃໝ່ (Ctrl-Shift-N)</translation>

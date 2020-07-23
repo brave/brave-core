@@ -7,7 +7,6 @@
 <translation id="1036727731225946849">S'està afegint <ph name="WEBAPK_NAME"/>...</translation>
 <translation id="1041308826830691739">De llocs web</translation>
 <translation id="1045899828449635435">Vols esborrar també les dades d'aquests llocs web?</translation>
-<translation id="1049743911850919806">Incògnit</translation>
 <translation id="10614374240317010">Contrasenyes que no es desen mai</translation>
 <translation id="5428209950370661546">Altres serveis de Brave</translation>
 <translation id="1068672505746868501">No tradueixis mai les pàgines en <ph name="SOURCE_LANGUAGE"/></translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">La configuració de la sincronització inicial no ha finalitzat</translation>
 <translation id="1821253160463689938">Utilitza galetes per recordar les teves preferències, fins i tot si no visites aquestes pàgines</translation>
 <translation id="1829244130665387512">Cerca a la pàgina</translation>
-<translation id="1853692000353488670">Pestanya d'incògnit nova</translation>
 <translation id="1856325424225101786">Vols restablir el mode bàsic?</translation>
 <translation id="5817715962196959877">Ara Brave baixa els fitxers més ràpid</translation>
 <translation id="1883903952484604915">Els meus fitxers</translation>
@@ -233,15 +231,12 @@ Mantén premuda qualsevol paraula per cercar-la. Per definir millor la cerca, se
 <translation id="2903493209154104877">Adreces</translation>
 <translation id="290376772003165898">La pàgina no està en <ph name="LANGUAGE"/>?</translation>
 <translation id="2904414404539560095">La llista de dispositius amb què es compartirà una pestanya ocupa tota la pantalla.</translation>
-<translation id="2905036901251765993">Per compartir contingut amb persones del teu entorn, permet-los que escanegin aquest codi QR</translation>
 <translation id="7339921667754113786">Plataforma de notificacions de Brave</translation>
 <translation id="2923908459366352541">El nom no és vàlid</translation>
 <translation id="6355102470683871794">Emmagatzematge de Brave <ph name="APP_NAME"/></translation>
 <translation id="2942036813789421260">La pestanya de previsualització està tancada</translation>
 <translation id="2956410042958133412"><ph name="PARENT_NAME_1"/> i <ph name="PARENT_NAME_2"/> gestionen aquest compte.</translation>
-<translation id="2962095958535813455">S'ha canviat a les pestanyes d'incògnit</translation>
 <translation id="2968755619301702150">Lector de certificats</translation>
-<translation id="2979025552038692506">Pestanya d'incògnit seleccionada</translation>
 <translation id="2987620471460279764">Text compartit d'un altre dispositiu</translation>
 <translation id="2989523299700148168">Visitats últimament</translation>
 <translation id="2996291259634659425">Creeu una frase de contrasenya</translation>
@@ -252,16 +247,14 @@ Mantén premuda qualsevol paraula per cercar-la. Per definir millor la cerca, se
 <translation id="305593374596241526">La ubicació està desactivada; activa-la a la <ph name="BEGIN_LINK"/>configuració d'Android<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">Pots activar la sincronització en qualsevol moment des de la configuració</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> adreça d'interès}other{<ph name="BOOKMARKS_COUNT_MANY"/> adreces d'interès}}</translation>
-<translation id="3089395242580810162">Obre en pestanya d'incògnit</translation>
 <translation id="3114012059975132928">Reproductor de vídeo</translation>
 <translation id="3123734510202723619">Anuncis</translation>
-<translation id="3137521801621304719">Surt del mode d'incògnit</translation>
 <translation id="3143515551205905069">Cancel·la la sincronització</translation>
 <translation id="5063487983358782016">Pàgina d'inici de Brave</translation>
 <translation id="3157842584138209013">Consulta la quantitat de dades que has estalviat des del botó Més opcions</translation>
 <translation id="3166827708714933426">Dreceres per a pestanyes i finestres</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">Navegació segura (et protegeix a tu i al teu dispositiu de llocs web perillosos)</translation>
+<translation id="3201899458094819285">Navegació segura (et protegeix a tu i al teu dispositiu de llocs web perillosos)</translation>
 <translation id="3205824638308738187">Falta poc per acabar.</translation>
 <translation id="3207960819495026254">S'ha afegit a les adreces d'interès.</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/> s'ha suprimit</translation>
@@ -285,7 +278,6 @@ Mantén premuda qualsevol paraula per cercar-la. Per definir millor la cerca, se
 <translation id="3333961966071413176">Tots els contactes</translation>
 <translation id="3334729583274622784">Vols canviar l'extensió del fitxer?</translation>
 <translation id="3341058695485821946">Consulta la quantitat de dades que has estalviat</translation>
-<translation id="3350687908700087792">Tanca totes les pestanyes d'incògnit</translation>
 <translation id="8134317863207426198">Pàgina en mode bàsic oferida per Brave. Toca el botó Carrega la versió original per carregar la pàgina original.</translation>
 <translation id="3367813778245106622">Torna a iniciar la sessió per començar la sincronització</translation>
 <translation id="2746024117903470217">Per compartir aquesta pàgina amb un altre dispositiu, activa la sincronització a la configuració de Brave de l'altre dispositiu</translation>
@@ -298,7 +290,6 @@ Mantén premuda qualsevol paraula per cercar-la. Per definir millor la cerca, se
 <translation id="3443221991560634068">Torna a carregar la pàgina actual</translation>
 <translation id="3445014427084483498">Ara mateix</translation>
 <translation id="3478363558367712427">Pots triar el motor de cerca que prefereixis</translation>
-<translation id="3492207499832628349">Pestanya d'incògnit nova</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/> sobre el contingut suggerit</translation>
 <translation id="3499246418971111862">chrome_codiqr_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Realitat augmentada</translation>
@@ -329,7 +320,6 @@ Mantén premuda qualsevol paraula per cercar-la. Per definir millor la cerca, se
 <translation id="3749259744154402564">No s'admet</translation>
 <translation id="3763247130972274048">Fes doble toc a l'esquerra o a la dreta del vídeo per saltar 10 s</translation>
 <translation id="3771001275138982843">No s'ha pogut baixar l'actualització</translation>
-<translation id="3771033907050503522">Pestanyes d'incògnit</translation>
 <translation id="1138681184697033370">Condicions del servei de Brave</translation>
 <translation id="3773755127849930740">Per permetre la vinculació, <ph name="BEGIN_LINK"/>activa el Bluetooth<ph name="END_LINK"/></translation>
 <translation id="3775705724665058594">Envia als teus dispositius</translation>
@@ -495,7 +485,6 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="5040262127954254034">Privadesa</translation>
 <translation id="5087580092889165836">Afegeix una targeta</translation>
 <translation id="510275257476243843">Queda 1 hora</translation>
-<translation id="5123685120097942451">Pestanya d'incògnit</translation>
 <translation id="5127805178023152808">Sincronització desactivada</translation>
 <translation id="5129038482087801250">Instal·la l'aplicació web</translation>
 <translation id="5132942445612118989">Sincronitza les contrasenyes, l'historial i altres elements en tots els dispositius</translation>
@@ -547,14 +536,12 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="5517095782334947753">Tens les adreces d'interès, l'historial, les contrasenyes i altres opcions de configuració de l'adreça <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">S'ha bloquejat la redirecció.</translation>
 <translation id="2367014990350929709">Brave necessita accedir a la ubicació per poder cercar dispositius. <ph name="BEGIN_LINK1"/>Actualitza els permisos<ph name="END_LINK1"/>. L'accés a la ubicació també està <ph name="BEGIN_LINK2"/>desactivat en aquest dispositiu<ph name="END_LINK2"/>.</translation>
-<translation id="5530766185686772672">Tanca pestanyes d'incògnit</translation>
 <translation id="5534640966246046842">S'ha copiat el lloc web</translation>
 <translation id="5561549206367097665">S'està esperant la xarxa…</translation>
 <translation id="55737423895878184">Es permeten la ubicació i les notificacions</translation>
 <translation id="5578795271662203820">Cerca aquesta imatge a <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Sempre pots anar a la <ph name="BEGIN_LINK1"/>configuració<ph name="END_LINK1"/> per decidir què vols sincronitzar.</translation>
 <translation id="5595485650161345191">Edita l'adreça</translation>
-<translation id="5599455543593328020">Mode d'incògnit</translation>
 <translation id="5620928963363755975">Per veure els teus fitxers i les teves pàgines, toca el botó Més opcions i ves a la secció Baixades</translation>
 <translation id="5626134646977739690">Nom:</translation>
 <translation id="5639724618331995626">Permet tots els llocs</translation>
@@ -572,7 +559,6 @@ Per canviar aquesta opció, <ph name="BEGIN_LINK"/>restableix la sincronització
 <translation id="5726692708398506830">Augmenta la mida de tots els elements de la pàgina</translation>
 <translation id="5748802427693696783">S'ha canviat a les pestanyes estàndard</translation>
 <translation id="3088191967551450609">Brave necessita accedir a l'emmagatzematge per poder baixar fitxers.</translation>
-<translation id="5763382633136178763">Pestanyes d'incògnit</translation>
 <translation id="5763514718066511291">Toca per copiar l'URL d'aquesta aplicació</translation>
 <translation id="5765780083710877561">Descripció:</translation>
 <translation id="5793665092639000975">S'estan utilitzant <ph name="SPACE_USED"/> de <ph name="SPACE_AVAILABLE"/></translation>
@@ -858,7 +844,6 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="8073388330009372546">Obre en una pestanya nova</translation>
 <translation id="8076492880354921740">Pestanyes</translation>
 <translation id="8084114998886531721">Contrasenya desada</translation>
-<translation id="8103578431304235997">Pestanya d'incògnit</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Per accedir a les adreces d'interès des de tots els dispositius, activa la sincronització</translation>
 <translation id="4565206163201411670">Vols veure l'activitat de Brave a Benestar digital?</translation>
@@ -909,7 +894,6 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="230699814587342492">Contrasenyes de Brave</translation>
 <translation id="8503813439785031346">Nom d'usuari</translation>
 <translation id="133012818630824069">Exporta les contrasenyes emmagatzemades a Brave</translation>
-<translation id="8514577642972634246">Entra al mode d'incògnit</translation>
 <translation id="8516012719330875537">Editor d'imatges</translation>
 <translation id="8523928698583292556">Suprimeix la contrasenya emmagatzemada</translation>
 <translation id="854522910157234410">Obre aquesta pàgina</translation>
@@ -955,7 +939,6 @@ Per exemple, és possible que alguns llocs web responguin a aquesta sol·licitud
 <translation id="8970887620466824814">S'ha produït un error.</translation>
 <translation id="8972098258593396643">Vols baixar el fitxer a la carpeta predeterminada?</translation>
 <translation id="8988028529677883095">Fes servir el telèfon com a clau de seguretat</translation>
-<translation id="8993760627012879038">Obre una pestanya nova en mode d'incògnit</translation>
 <translation id="2689656545739939160">Estàs iniciant la sessió amb un compte gestionat per <ph name="MANAGED_DOMAIN"/> i estàs donant a l'administrador el control de les teves dades de Brave. Les dades passaran a estar vinculades a aquest compte permanentment. Si tanques la sessió de Brave, se suprimiran les teves dades d'aquest dispositiu, però continuaran emmagatzemades al teu compte de Brave.</translation>
 <translation id="9028914725102941583">Activa la sincronització per compartir elements entre dispositius</translation>
 <translation id="9040142327097499898">Es permeten les notificacions. La ubicació està desactivada en aquest dispositiu.</translation>

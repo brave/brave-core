@@ -431,7 +431,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="2824775600643448204">Shiriti i adresës dhe i kërkimit</translation>
 <translation id="2826760142808435982">Lidhja është e enkriptuar dhe e vërtetuar me <ph name="CIPHER"/> dhe përdor <ph name="KX"/> si mekanizëm kryesor shkëmbimi.</translation>
 <translation id="2835170189407361413">Pastro formularin</translation>
-<translation id="2847118875340931228">Hap dritaren "e fshehtë"</translation>
 <translation id="2850739647070081192">Invite (Zarf)</translation>
 <translation id="2856444702002559011">Sulmuesit mund të përpiqen të vjedhin informacionet e tua nga <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (për shembull, fjalëkalimet, mesazhet ose kartat e kreditit). <ph name="BEGIN_LEARN_MORE_LINK"/>Mëso më shumë<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Palosje posteri</translation>
@@ -481,7 +480,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3041612393474885105">Informacioni i certifikatës</translation>
 <translation id="3060227939791841287">C9 (Zarf)</translation>
 <translation id="3061707000357573562">Shërbimi i korrigjimit</translation>
-<translation id="3064966200440839136">Po del nga modaliteti "i fshehur" për të paguar nëpërmjet një aplikacioni të jashtëm. Do të vazhdosh?</translation>
 <translation id="3080254622891793721">Grafika</translation>
 <translation id="3086579638707268289">Aktiviteti yt në ueb po monitorohet</translation>
 <translation id="3087734570205094154">Në fund</translation>
@@ -501,7 +499,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3154506275960390542">Kjo faqe përfshin një formular që mund të mos paraqitet në mënyrë të sigurt. Të dhënat që dërgon mund të shihen nga të tjerët ndërkohë që po transmetohen ose mund të modifikohen nga një sulmues për të ndryshuar atë që merr serveri.</translation>
 <translation id="3157931365184549694">Restauro</translation>
 <translation id="3162559335345991374">Lidhja Wi-Fi që po përdor mund të të kërkojë që të vizitosh faqen e saj të identifikimit.</translation>
-<translation id="3167968892399408617">Faqet që shikon në skedat "e fshehta" nuk do të ruhen në historikun e shfletuesit tënd, vendin e ruajtjes të kukive apo historikun e kërkimeve pasi të kesh mbyllur të gjitha skedat e tua "të fshehta". Çdo skedar që shkarkon ose faqeshënues që krijon do të mbahet.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">Ishulli</translation>
 <translation id="3176929007561373547">Kontrollo cilësimet e përfaqësuesit ose kontakto me administratorin e rrjetit
@@ -618,7 +615,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="3676592649209844519">ID-ja e pajisjes:</translation>
 <translation id="3677008721441257057">Mos dëshiron të thuash &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Kërkesa nuk mund të nënshkruhej</translation>
-<translation id="3678529606614285348">Hape faqen në një dritare të re "të fshehtë" (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Informacioni i certifikatës</translation>
 <translation id="3701427423622901115">Rivendosja u pranua.</translation>
 <translation id="3704162925118123524">Rrjeti që po përdor mund të kërkojë që të vizitosh faqen e tij të lidhjes.</translation>
@@ -775,7 +771,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Sulmuesit në këtë sajt mund të përpiqen të instalojnë programe të rrezikshme në kompjuterin tënd që vjedhin ose fshijnë informacionet e tua (për shembull, fotografi, fjalëkalime, mesazhe dhe karta krediti).</translation>
 <translation id="4358059973562876591">Shabllonet që ke specifikuar mund të mos zbatohen për shkak të një gabimi me politikën DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">Menaxho mënyrat e pagesës...</translation>
+<translation id="327628984294957152">Menaxho mënyrat e pagesës...</translation>
 <translation id="4367563149485757821">Number-12 (Zarf)</translation>
 <translation id="437058704415269440">Balanca e llogarisë</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -938,7 +934,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5123063207673082822">Fundjavë</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Verifiko kartën tënde</translation>
-<translation id="5135404736266831032">Menaxho adresat...</translation>
+<translation id="6291230311289558881">Menaxho adresat...</translation>
 <translation id="5138227688689900538">Shfaq më pak</translation>
 <translation id="7186167407612593632">Enkripto fjalëkalimet e sinkronizuara me kredencialet e tua të Brave</translation>
 <translation id="5145883236150621069">Një kod gabimi i pranishëm në përgjigjen e politikës</translation>
@@ -946,7 +942,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5148809049217731050">E kthyer lart</translation>
 <translation id="515292512908731282">C4 (Zarf)</translation>
 <translation id="5158275234811857234">Kapak</translation>
-<translation id="5159010409087891077">Hape faqen në një dritare të re "të fshehtë" (⇧⌘N)</translation>
 <translation id="5161506081086828129">Stivuesi 9</translation>
 <translation id="9016458749696512983">Shkruaj kodin CVC për <ph name="CREDIT_CARD"/>. Pasi t'i konfirmosh, detajet e kartës nga "Llogaria jote e Brave" do të ndahen me këtë sajt.</translation>
 <translation id="8515152881111950319">Mund të humbasësh qasjen në llogarinë e organizatës ose mund të pësosh vjedhje të identitetit. Brave rekomandon që ta ndryshosh fjalëkalimin tani.</translation>
@@ -954,7 +949,6 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Pajisja</translation>
 <translation id="5179510805599951267">Jo në <ph name="ORIGINAL_LANGUAGE"/>? Raportoje këtë gabim</translation>
-<translation id="5190835502935405962">Shiriti i faqeshënuesve</translation>
 <translation id="519422657042045905">Shënimi nuk ofrohet</translation>
 <translation id="5201306358585911203">Një faqe e integruar në këtë faqe thotë</translation>
 <translation id="5205222826937269299">Emri është i detyrueshëm</translation>
@@ -1084,7 +1078,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="5689516760719285838">Vendndodhja</translation>
 <translation id="569000877158168851">Vlera e DnsOverHttpsTemplates nuk është e përshtatshme dhe nuk do të përdoret, përveçse nëse politika DnsOverHttpsMode është caktuar te <ph name="SECURE_DNS_MODE_AUTOMATIC"/> ose <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">Qendër</translation>
-<translation id="570530837424789914">Menaxho...</translation>
+<translation id="3655851112780233803">Menaxho...</translation>
 <translation id="57094364128775171">Sugjero fjalëkalim të fortë…</translation>
 <translation id="5710435578057952990">Identiteti i këtij sajti uebi nuk është verifikuar.</translation>
 <translation id="5720705177508910913">Përdoruesi aktual</translation>
@@ -1262,7 +1256,7 @@ Ndryshe kjo do të bllokohet nga cilësimet e tua të privatësisë. Kjo do ta l
 <translation id="6447842834002726250">Kukit</translation>
 <translation id="6451458296329894277">Konfirmo ridërgimin e formularit</translation>
 <translation id="6457206614190510200">Qepje në kurrizin e palosjes</translation>
-<translation id="6465306955648956876">Menaxho fjalëkalimet...</translation>
+<translation id="2275235756919172538">Menaxho fjalëkalimet...</translation>
 <translation id="647261751007945333">Politikat e pajisjes</translation>
 <translation id="6476284679642588870">Menaxho mënyrat e pagesës</translation>
 <translation id="6489534406876378309">Nis ngarkimin e ndërprerjeve aksidentale</translation>
@@ -1577,7 +1571,6 @@ Detaje shtesë:
 <translation id="782886543891417279">Lidhja Wi-Fi që po përdor (<ph name="WIFI_NAME"/>) mund të kërkojë që të vizitosh faqen e saj të lidhjes.</translation>
 <translation id="7836231406687464395">Postfix (Zarf)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Asnjë}=1{1 aplikacion (<ph name="EXAMPLE_APP_1"/>)}=2{2 aplikacione (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# aplikacione (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">Sidoqoftë, ti nuk je i padukshëm. Kalimi në modalitetin "e fshehtë" nuk e fsheh shfletimin tënd nga punëdhënësi yt, ofruesi i shërbimit të internetit apo sajtet e uebit që viziton.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">Dëshiron të largohesh nga sajti?</translation>
 <translation id="7865448901209910068">Shpejtësia më e mirë</translation>
@@ -1660,10 +1653,8 @@ Detaje shtesë:
 <translation id="8220146938470311105">C7/C6 (Zarf)</translation>
 <translation id="8220639454292072926">Raportimi i ndërmarrjes</translation>
 <translation id="3272614036080146686">Sapo fute fjalëkalimin tënd në një sajt mashtrues. Brave rekomandon që të shkosh te <ph name="WEBSITE_1"/> dhe sajte të tjera ku e përdor këtë fjalëkalim dhe ta ndryshosh atë.</translation>
-<translation id="8225771182978767009">Personi që ka konfiguruar këtë kompjuter ka zgjedhur ta bllokojë këtë sajt.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Temperatura e platformës</translation>
-<translation id="8238581221633243064">Hape faqen në një skedë të re "të fshehtë"</translation>
 <translation id="8241707690549784388">Faqja që po kërkon i përdori informacionet që fute. Kthimi tek ajo faqe mund të bëjë që çdo veprim që bëre të përsëritet përsëri. Dëshiron që të vazhdosh?</translation>
 <translation id="8241712895048303527">Blloko në këtë sajt</translation>
 <translation id="8242426110754782860">Vazhdo</translation>
@@ -1675,7 +1666,6 @@ Detaje shtesë:
 <translation id="8262952874573525464">Qepje anësore poshtë</translation>
 <translation id="8267698848189296333">Po identifikohet si <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Dokumente të ndara/kopje të renditura</translation>
-<translation id="8269981117540303696">Tani mund të shfletosh në mënyrë private dhe personat e tjerë që përdorin këtë pajisje nuk do ta shikojnë aktivitetin tënd. Sidoqoftë, shkarkimet dhe faqeshënuesit do të ruhen.</translation>
 <translation id="8277900682056760511">Fleta e përpunuesit të pagesës është hapur</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Njihu me identifikuesin unik të pajisjes tënde</translation>
@@ -1694,7 +1684,6 @@ Detaje shtesë:
 <translation id="833262891116910667">Thekso</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Nëse i kupton rreziqet për sigurinë tënde, mund <ph name="BEGIN_LINK"/>ta vizitosh këtë sajt<ph name="END_LINK"/> para se të jenë hequr programet e dëmshme.</translation>
-<translation id="8349305172487531364">Shiriti i faqeshënuesve</translation>
 <translation id="8355270400102541638">Konteksti lokal i ndërprerjes aksidentale:</translation>
 <translation id="8363502534493474904">Të çaktivizosh modalitetin e aeroplanit</translation>
 <translation id="8364627913115013041">Nuk është caktuar.</translation>
@@ -1759,7 +1748,6 @@ Detaje shtesë:
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, sugjerim kërkimi</translation>
 <translation id="8719528812645237045">Shumë shpime lart</translation>
 <translation id="8725066075913043281">Provo sërish</translation>
-<translation id="8728672262656704056">Ke kaluar në modalitetin "e fshehtë"</translation>
 <translation id="8730621377337864115">U krye</translation>
 <translation id="6326805297893828864">Për të krijuar një lidhje të sigurt, ora duhet të vendoset në mënyrë të saktë. Kjo ndodh sepse certifikatat që përdorin sajtet e internetit për t'u identifikuar janë të vlefshme vetëm për periudha specifike kohore. Meqenëse ora e pajisjes është e pasaktë, Brave nuk mund t'i verifikojë këto certifikata.</translation>
 <translation id="8740359287975076522">&lt;abbr id="dnsDefinition"&gt;Adresa DNS&lt;/abbr&gt; e <ph name="HOST_NAME"/> nuk mund të gjendej. Problemi po diagnostikohet.</translation>
@@ -1792,7 +1780,6 @@ Detaje shtesë:
 <translation id="8903921497873541725">Zmadho</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Butoni "Hiq sugjerimin", shtyp Enter për ta hequr, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">Ke kaluar në modalitetin "e fshehtë"</translation>
 <translation id="5713644099811900409">Llogaria e Brave</translation>
 <translation id="8918231688545606538">Kjo faqe është e dyshimtë</translation>
 <translation id="892588693504540538">Shpim lart djathtas</translation>
@@ -1894,19 +1881,19 @@ Detaje shtesë:
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Nga Brave Pay</translation>
-<translation id="8820817407110198400">Shiriti i faqeshënuesve</translation>
-<translation id="8362995731815961365">Personi që ka konfiguruar këtë kompjuter ka zgjedhur ta bllokojë këtë sajt.</translation>
-<translation id="4075123085690634698">Hape faqen në një dritare të re "të fshehtë" (⇧⌘N)</translation>
-<translation id="2388886110302389394">Hape faqen në një dritare të re "të fshehtë" (Ctrl-Shift-N)</translation>
-<translation id="6957624206566198865">Hape faqen në një skedë të re "të fshehtë"</translation>
-<translation id="2378238891085281592">Ke kaluar në modalitetin "e fshehtë"</translation>
-<translation id="3774752171665127360">Faqet që shikon në skedat "e fshehta" nuk do të ruhen në historikun e shfletuesit tënd, vendin e ruajtjes të kukive apo historikun e kërkimeve pasi të kesh mbyllur të gjitha skedat e tua "të fshehta". Çdo skedar që shkarkon ose faqeshënues që krijon do të mbahet.</translation>
-<translation id="9177896974490719854">Sidoqoftë, ti nuk je i padukshëm. Kalimi në modalitetin "e fshehtë" nuk e fsheh shfletimin tënd nga punëdhënësi yt, ofruesi i shërbimit të internetit apo sajtet e uebit që viziton.</translation>
-<translation id="2227116904818538760">Ke kaluar në modalitetin "e fshehtë"</translation>
-<translation id="2007417459975034427">Tani mund të shfletosh në mënyrë private dhe personat e tjerë që përdorin këtë pajisje nuk do ta shikojnë aktivitetin tënd. Sidoqoftë, shkarkimet dhe faqeshënuesit do të ruhen.</translation>
-<translation id="2586968635953373425">Hap dritaren "e fshehtë"</translation>
-<translation id="3489858312836205593">Hap një dritare të re "të fshehtë" të Brave</translation>
-<translation id="6984479912851154518">Po del nga modaliteti "i fshehur" për të paguar nëpërmjet një aplikacioni të jashtëm. Do të vazhdosh?</translation>
+<translation id="8820817407110198400">Faqerojtës</translation>
+<translation id="8362995731815961365">Profili që ka ngritur këtë kompjuter ka zgjedhur ta bllokojë këtë faqe interneti.</translation>
+<translation id="4075123085690634698">Hap faqen në një dritare të re Private (⇧⌘N)</translation>
+<translation id="2388886110302389394">Hap faqen në një dritare të re Private (Ctrl-Shift-N)</translation>
+<translation id="6957624206566198865">Hap faqen në një skedë të re Private</translation>
+<translation id="2378238891085281592">Ti’ kalove privat</translation>
+<translation id="3774752171665127360">Faqet që ti shikon në skeda private nuk’ ngjiten në ndonjë vend në historinë e shfletuesit’ tënd, në vendin e ruajtjes së gjurmëve  apo në historinë e kërkimit, pasi të kesh’ mbyllur të gjitha skedat private. Ndërsa çdo skedar që do shkarkosh apo faqeruajtës që do krijosh do të ruhet.</translation>
+<translation id="9177896974490719854">Sidoqoftë ti nuk’ je i padukshëm. Kalimi në privat nuk’ fsheh shfletimin tënd nga punëdhënësi, ofrues yt i sherbimit internet apo faqet e internetit që ti viziton.</translation>
+<translation id="2227116904818538760">Ti kalove privat</translation>
+<translation id="2007417459975034427">Tani ti mund të shfletosh në mënyrë private dhe profilet e tjera që përdorin këtë pajisje nuk do ta shohin aktivitetin tënd. Gjithsesi shkarkimet dhe faqeruajtësit do të ruhen.</translation>
+<translation id="2586968635953373425">Hap Dritare Private</translation>
+<translation id="3489858312836205593">Hap dritare të re private Brave</translation>
+<translation id="6984479912851154518">Po lihet mënyra private për të paguar me një aplikacion të jashtëm. Të vazhdohet?</translation>
 <translation id="1426112902089905810">&lt;h4&gt;Hapi 1: Identifikohu në portal&lt;/h4&gt;
     &lt;p&gt;Rrjetet Wi-Fi në vende të tilla si kafenetë apo aeroportet kërkojnë që të identifikohesh. Për të parë faqen e identifikimit, vizito një faqe që përdor &lt;code&gt;http://&lt;/code&gt;.&lt;/p&gt;
     &lt;ol&gt;

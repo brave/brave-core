@@ -437,7 +437,6 @@
 <translation id="2824775600643448204">Лента за адреса и за пребарување</translation>
 <translation id="2826760142808435982">Поврзувањето е шифрирано и автентицирано со употреба на <ph name="CIPHER"/> и користи <ph name="KX"/> како клучен механизам за размена.</translation>
 <translation id="2835170189407361413">Исчисти формулар</translation>
-<translation id="2847118875340931228">Отвори инкогнито прозорец</translation>
 <translation id="2850739647070081192">Invite (плик)</translation>
 <translation id="2856444702002559011">Напаѓачите можеби се обидуваат да ги украдат вашите информации од <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (на пример, лозинки, пораки или кредитни картички). <ph name="BEGIN_LEARN_MORE_LINK"/>Дознајте повеќе<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Превиткување постер</translation>
@@ -487,7 +486,6 @@
 <translation id="3041612393474885105">Информации за сертификат</translation>
 <translation id="3060227939791841287">C9 (плик)</translation>
 <translation id="3061707000357573562">Услуга за поправање грешки</translation>
-<translation id="3064966200440839136">Ќе го напуштите режимот „Инкогнито“ за да платите преку надворешна апликација. Ќе продолжите?</translation>
 <translation id="3080254622891793721">Графика</translation>
 <translation id="3086579638707268289">Вашата активност на интернет е под надзор</translation>
 <translation id="3087734570205094154">Дно</translation>
@@ -507,7 +505,6 @@
 <translation id="3154506275960390542">Формуларот што го содржи страницава може да не се испрати безбедно. При преносот, податоците што ги испраќате може да ги гледаат други лица или да ги менува напаѓач за да го измени она што треба да го добие серверот.</translation>
 <translation id="3157931365184549694">Обнови</translation>
 <translation id="3162559335345991374">Wi-Fi што го користите може да бара да ја посетите страницата за најавување.</translation>
-<translation id="3167968892399408617">Страниците што ги гледате во инкогнито-картичките нема да се задржат во историјата на прелистувачот, во продавницата на колачиња или во историјата на пребарување откако ќе ги затворите сите ваши инкогнито-картички. Сите преземени датотеки или создадени обележувачи ќе се задржат.</translation>
 <translation id="3169472444629675720">Откриј</translation>
 <translation id="3174168572213147020">Остров</translation>
 <translation id="3176929007561373547">Проверете ги поставките на прокси или контактирајте со администраторот
@@ -624,7 +621,6 @@
 <translation id="3676592649209844519">ID на уред:</translation>
 <translation id="3677008721441257057">Дали мислевте на &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Барањето не можеше да се потпише</translation>
-<translation id="3678529606614285348">Отворете ја страницата во нов инкогнито прозорец (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Информации за сертификат</translation>
 <translation id="3701427423622901115">Ресетирањето е потврдено.</translation>
 <translation id="3704162925118123524">Мрежата што ја користите може да бара да ја посетите страницата за најавување.</translation>
@@ -781,7 +777,7 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Напаѓачите што се наоѓаат на сајтов можеби ќе се обидат да инсталираат опасни програми на вашиот компјутер што ги крадат или бришат вашите информации (на пример фотографии, лозинки, пораки и кредитни картички).</translation>
 <translation id="4358059973562876591">Шаблоните што ги назначивте не може да се применат поради грешка со правилото на DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">Управувајте со начините на плаќање…</translation>
+<translation id="327628984294957152">Управувајте со начините на плаќање…</translation>
 <translation id="4367563149485757821">Number-12 (плик)</translation>
 <translation id="437058704415269440">Состојба на сметката</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -945,7 +941,7 @@
 <translation id="5123063207673082822">Викенд</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Потврдете ја картичката</translation>
-<translation id="5135404736266831032">Управувајте со адресите…</translation>
+<translation id="6291230311289558881">Управувајте со адресите…</translation>
 <translation id="5138227688689900538">Прикажи помалку</translation>
 <translation id="7186167407612593632">Шифрирај синхронизирани лозинки со акредитиви на Brave</translation>
 <translation id="5145883236150621069">Присутен е код на грешка во одговорот на правилото</translation>
@@ -953,7 +949,6 @@
 <translation id="5148809049217731050">Со лицето нагоре</translation>
 <translation id="515292512908731282">C4 (плик)</translation>
 <translation id="5158275234811857234">Корица</translation>
-<translation id="5159010409087891077">Отворете ја страницата во нов инкогнито прозорец (⇧⌘N)</translation>
 <translation id="5161506081086828129">Фиока за складирање 9</translation>
 <translation id="9016458749696512983">Внесете го CVC за <ph name="CREDIT_CARD"/>. Откако ќе потврдите, деталите за картичката од вашата сметка на Brave ќе се споделат со сајтов.</translation>
 <translation id="8515152881111950319">Може да го изгубите пристапот до сметката на вашата организација или да ви го украдат идентитетот. Brave препорачува да ја смените лозинката веднаш.</translation>
@@ -961,7 +956,6 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Машина</translation>
 <translation id="5179510805599951267">Не е на <ph name="ORIGINAL_LANGUAGE"/>? Пријави ја грешката.</translation>
-<translation id="5190835502935405962">Лента со обележувачи</translation>
 <translation id="519422657042045905">Прибелешката не е достапна</translation>
 <translation id="5201306358585911203">Вметнатата страница во страницава вели</translation>
 <translation id="5205222826937269299">Потребно е име</translation>
@@ -1092,7 +1086,7 @@
 <translation id="5689516760719285838">Локација</translation>
 <translation id="569000877158168851">Вредноста DnsOverHttpsTemplates не е важна и нема да се користи, освен ако правилото DnsOverHttpsMode не е поставено на<ph name="SECURE_DNS_MODE_AUTOMATIC"/> или <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">Центар</translation>
-<translation id="570530837424789914">Управувајте…</translation>
+<translation id="3655851112780233803">Управувајте…</translation>
 <translation id="57094364128775171">Предложи силна лозинка…</translation>
 <translation id="5710435578057952990">Идентитетот на сајтот не е потврден.</translation>
 <translation id="5720705177508910913">Тековен корисник</translation>
@@ -1271,7 +1265,7 @@
 <translation id="6447842834002726250">Колачиња</translation>
 <translation id="6451458296329894277">Потврди повторно поднесување на формулар</translation>
 <translation id="6457206614190510200">Шиење на работ од превиткувањето</translation>
-<translation id="6465306955648956876">Управувајте со лозинките…</translation>
+<translation id="2275235756919172538">Управувајте со лозинките…</translation>
 <translation id="647261751007945333">Политики на уред</translation>
 <translation id="6476284679642588870">Управувајте со начините на плаќање</translation>
 <translation id="6489534406876378309">Започни поставување падови</translation>
@@ -1586,7 +1580,6 @@
 <translation id="782886543891417279">Wi-Fi што го користите (<ph name="WIFI_NAME"/>) може да бара да ја посетите страницата за најавување.</translation>
 <translation id="7836231406687464395">Postfix (плик)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Ништо}=1{1 апликација (<ph name="EXAMPLE_APP_1"/>)}=2{2 апликации (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}one{# апликација (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}other{# апликации (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">Но, не сте невидливи. Инкогнито не го сокрива вашето прелистување од работодавецот, интернет операторот или веб-сајтовите што ги посетувате.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="7862185352068345852">Да се напушти ли сајтот?</translation>
 <translation id="7865448901209910068">Најдобра брзина</translation>
@@ -1669,10 +1662,8 @@
 <translation id="8220146938470311105">C7/C6 (плик)</translation>
 <translation id="8220639454292072926">Регистар на деловни субјекти</translation>
 <translation id="3272614036080146686">Тукушто ја внесовте својата лозинка на измамнички сајт. Brave препорачува да одите на <ph name="WEBSITE_1"/> и на други сајтови каде што ја користите лозинката и да ја промените веднаш.</translation>
-<translation id="8225771182978767009">Лицето кое го поставило компјутерот избрало да се блокира сајтов.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Температура на платформата</translation>
-<translation id="8238581221633243064">Отворете ја страницата во нова инкогнито картичка</translation>
 <translation id="8241707690549784388">Страницата што ја барате ги искористи информациите што ги внесовте. Враќањето на страницата може да предизвика да се повтори некое дејство. Дали сакате да продолжитe?</translation>
 <translation id="8241712895048303527">Блокирај ги на сајтов</translation>
 <translation id="8242426110754782860">Продолжи</translation>
@@ -1684,7 +1675,6 @@
 <translation id="8262952874573525464">Шиење на работ долу</translation>
 <translation id="8267698848189296333">Се најавувате како <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">Одделни документи/подредени примероци</translation>
-<translation id="8269981117540303696">Сега може да прелистувате приватно, а другите луѓе кои го користат уредов нема да ја видат вашата активност. Сепак, преземањата и обележувачите ќе се зачуваат.</translation>
 <translation id="8277900682056760511">Листот на ракувачот со плаќања е отворен</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Знајте го својот уникатен идентификатор на уредот</translation>
@@ -1703,7 +1693,6 @@
 <translation id="833262891116910667">Нагласување</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Доколку ги разбирате ризиците по безбедноста, може да ја <ph name="BEGIN_LINK"/>посетите локацијата<ph name="END_LINK"/> пред да се отстранат штетните програми.</translation>
-<translation id="8349305172487531364">Лента со обележувачи</translation>
 <translation id="8355270400102541638">Контекст на локален пад:</translation>
 <translation id="8363502534493474904">Да го исклучите авионскиот режим</translation>
 <translation id="8364627913115013041">Не е поставено.</translation>
@@ -1768,7 +1757,6 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, предлог за пребарување</translation>
 <translation id="8719528812645237045">Повеќе дупки горе</translation>
 <translation id="8725066075913043281">Обидете се повторно</translation>
-<translation id="8728672262656704056">Се наоѓате во режим инкогнито</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="6326805297893828864">За воспоставување безбедна врска, вашиот часовник треба да биде правилно поставен. Ова е така затоа што сертификатите кои веб-локациите ги користат за да се идентификуваат важат само определени периоди на време. Бидејќи часовникот на вашиот уред не е точен, Brave не може да ги потврди овие сертификати.</translation>
 <translation id="8740359287975076522">&lt;abbr id="dnsDefinition"&gt;DNS-адресата&lt;/abbr&gt; на <ph name="HOST_NAME"/> не може да се пронајде. Го дијагностицираме проблемот.</translation>
@@ -1801,7 +1789,6 @@
 <translation id="8903921497873541725">Зумирај</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">Копче за отстранување предлог, притиснете Enter за да отстраните, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">Се наоѓате во режим инкогнито</translation>
 <translation id="5713644099811900409">Сметка на Brave</translation>
 <translation id="8918231688545606538">Страницава е сомнителна</translation>
 <translation id="892588693504540538">Дупка горе десно</translation>
@@ -1903,7 +1890,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">Од Brave Pay</translation>
-<translation id="8820817407110198400">Лента со обележувачи</translation>
+<translation id="8820817407110198400">Обележувачи</translation>
 <translation id="8362995731815961365">Лицето кое го поставило компјутерот избрало да се блокира сајтов.</translation>
 <translation id="4075123085690634698">Отворете ја страницата во нов инкогнито прозорец (⇧⌘N)</translation>
 <translation id="2388886110302389394">Отворете ја страницата во нов инкогнито прозорец (Ctrl-Shift-N)</translation>

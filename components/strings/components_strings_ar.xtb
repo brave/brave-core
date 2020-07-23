@@ -437,7 +437,6 @@
 <translation id="2824775600643448204">شريط العناوين والبحث</translation>
 <translation id="2826760142808435982">تم ترميز الاتصال ومصادقته باستخدام <ph name="CIPHER"/>، ويستخدم <ph name="KX"/> كآلية التبادل الرئيسية.</translation>
 <translation id="2835170189407361413">محو النموذج</translation>
-<translation id="2847118875340931228">فتح نافذة التصفُّح المتخفي</translation>
 <translation id="2850739647070081192">دعوة (مغلف)</translation>
 <translation id="2856444702002559011">قد يحاول المهاجمون سرقة معلوماتك من <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> (مثل كلمات المرور أو الرسائل أو بطاقات الائتمان). <ph name="BEGIN_LEARN_MORE_LINK"/>مزيد من المعلومات<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">الطي على شكل ملصق</translation>
@@ -487,7 +486,6 @@
 <translation id="3041612393474885105">معلومات الشهادة</translation>
 <translation id="3060227939791841287">‏C9 (مغلف)</translation>
 <translation id="3061707000357573562">خدمة رمز التصحيح</translation>
-<translation id="3064966200440839136">ستتم مغادرة وضع التصفح المتخفي للدفع عبر تطبيق خارجي. هل تريد المتابعة؟</translation>
 <translation id="3080254622891793721">الرسم البياني</translation>
 <translation id="3086579638707268289">تتم مراقبة نشاطك على الويب.</translation>
 <translation id="3087734570205094154">أسفل</translation>
@@ -507,7 +505,6 @@
 <translation id="3154506275960390542">تتضمّن هذه الصفحة نموذجًا قد لا يتم إرساله بصورة آمنة، ويستطيع الآخرون مشاهدة البيانات التي ترسلها أثناء نقلها، كما يستطيع أي مهاجم تعديلها لتغيير ما يتلقاه الخادم.</translation>
 <translation id="3157931365184549694">استعادة</translation>
 <translation id="3162559335345991374">‏قد يتطلب Wi-Fi الذي تستخدمه زيارة صفحة تسجيل الدخول.</translation>
-<translation id="3167968892399408617">لن يتم تسجيل الصفحات التي تعرضها في علامات تبويب التصفح المتخفي في سجل المتصفح أو مخزن ملفات تعريف الارتباط أو سجل البحث بعد إغلاق جميع علامات التبويب في وضع التصفح المتخفي. ولكن سيتم الاحتفاظ بأي ملفات تنزلها أو إشارات مرجعية تنشئها.</translation>
 <translation id="3169472444629675720">Discover</translation>
 <translation id="3174168572213147020">جزيرة</translation>
 <translation id="3176929007561373547">تحقق من إعدادات الخادم الوكيل أو اتصل بمشرف الشبكة
@@ -624,7 +621,6 @@
 <translation id="3676592649209844519">معرِّف الجهاز:</translation>
 <translation id="3677008721441257057">‏هل كنت تقصد &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;؟</translation>
 <translation id="3678029195006412963">تعذر توقيع الطلب</translation>
-<translation id="3678529606614285348">‏يمكنك فتح الصفحة في نافذة جديدة للتصفح المتخفي (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">معلومات الشهادة</translation>
 <translation id="3701427423622901115">تمت الموافقة على إعادة الضبط.</translation>
 <translation id="3704162925118123524">قد تتطلب الشبكة التي تستخدمها زيارة صفحة تسجيل الدخول.</translation>
@@ -781,7 +777,7 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">قد يحاول المهاجمون الموجودون على هذا الموقع تثبيت برامج خطيرة على الكمبيوتر التابع لك تسرق معلوماتك أو تحذفها (على سبيل المثال، الصور وكلمات المرور والرسائل وبطاقات الائتمان).</translation>
 <translation id="4358059973562876591">‏قد لا يتم تطبيق النماذج التي حدّدتها بسبب حدوث خطأ في سياسة DnsOverHttpsMode.</translation>
-<translation id="4358461427845829800">إدارة طرق الدفع...</translation>
+<translation id="327628984294957152">إدارة طرق الدفع...</translation>
 <translation id="4367563149485757821">‏Number-12 (مغلف)</translation>
 <translation id="437058704415269440">رصيد الحساب</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -850,7 +846,7 @@
 <translation id="4731638775147756694">حظَر مشرفك هذا التطبيق.</translation>
 <translation id="4731967714531604179">‏Prc2 (مغلف)</translation>
 <translation id="4733082559415072992">يريد <ph name="URL"/> استخدام الموقع الجغرافي لجهازك.</translation>
-<translation id="4880298864945336181">‏فعَّل المشرف Brave Enterprise Connectors على متصفّحك. لدى هذه الموصلات إذن بالوصول إلى بعض بياناتك.</translation>
+<translation id="4880298864945336181">‏فعَّل المشرف "وصلات Brave Enterprise" على متصفّحك. لدى هذه الوصلات إذن بالوصول إلى بعض بياناتك.</translation>
 <translation id="473775607612524610">تحديث</translation>
 <translation id="4738601419177586157"><ph name="TEXT"/> اقتراحات البحث</translation>
 <translation id="4742407542027196863">إدارة كلمات المرور…</translation>
@@ -945,7 +941,7 @@
 <translation id="5123063207673082822">نهاية الأسبوع</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">التحقق من بطاقتك</translation>
-<translation id="5135404736266831032">إدارة العناوين...</translation>
+<translation id="6291230311289558881">إدارة العناوين...</translation>
 <translation id="5138227688689900538">عرض أقل</translation>
 <translation id="7186167407612593632">‏ترميز كلمات المرور المتزامنة باستخدام بيانات اعتماد Brave</translation>
 <translation id="5145883236150621069">يوجد رمز خطأ في استجابة السياسة</translation>
@@ -953,7 +949,6 @@
 <translation id="5148809049217731050">الوجه للأعلى</translation>
 <translation id="515292512908731282">‏C4 (مغلف)</translation>
 <translation id="5158275234811857234">غلاف</translation>
-<translation id="5159010409087891077">‏يمكنك فتح الصفحة في نافذة جديدة للتصفح المتخفي (⇧⌘N)</translation>
 <translation id="5161506081086828129">المكدِّس 9</translation>
 <translation id="9016458749696512983">‏يمكنك إدخال رمز التحقُّق من البطاقة (CVC) لبطاقة <ph name="CREDIT_CARD"/>. وبعد التأكيد، ستتم مشاركة تفاصيل البطاقة من حسابك على Brave مع هذا الموقع الإلكتروني.</translation>
 <translation id="8515152881111950319">‏قد تفقد إمكانية الوصول إلى حساب مؤسستك أو تتعرَّض لسرقة هويتك. لذا، يوصي Brave بتغيير كلمة مرورك الآن.</translation>
@@ -961,7 +956,6 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">الجهاز</translation>
 <translation id="5179510805599951267">هل الصفحة ليست باللغة <ph name="ORIGINAL_LANGUAGE"/>؟ الإبلاغ عن هذا الخطأ</translation>
-<translation id="5190835502935405962">شريط الإشارات</translation>
 <translation id="519422657042045905">التعليق التوضيحي غير متوفِّر</translation>
 <translation id="5201306358585911203">تعرض صفحة مضمّنة في هذه الصفحة</translation>
 <translation id="5205222826937269299">الاسم مطلوب</translation>
@@ -1092,7 +1086,7 @@
 <translation id="5689516760719285838">الموقع الجغرافي</translation>
 <translation id="569000877158168851">‏قيمة DnsOverHttpsTemplates ليست مناسبة ولن يتم استخدامها ما لم يتم ضبط سياسة DnsOverHttpsMode على <ph name="SECURE_DNS_MODE_AUTOMATIC"/> أو <ph name="SECURE_DNS_MODE_SECURE"/>.</translation>
 <translation id="5701381305118179107">توسيط</translation>
-<translation id="570530837424789914">إدارة...</translation>
+<translation id="3655851112780233803">إدارة...</translation>
 <translation id="57094364128775171">اقتراح كلمة مرور قوية…</translation>
 <translation id="5710435578057952990">لم  يتمّ التحقق من هوية هذا الموقع.</translation>
 <translation id="5720705177508910913">المستخدم الحالي</translation>
@@ -1271,7 +1265,7 @@
 <translation id="6447842834002726250">ملفّات تعريف الارتباط</translation>
 <translation id="6451458296329894277">تأكيد إعادة إرسال النموذج</translation>
 <translation id="6457206614190510200">خزم من المنتصف</translation>
-<translation id="6465306955648956876">إدارة كلمات المرور...</translation>
+<translation id="2275235756919172538">إدارة كلمات المرور...</translation>
 <translation id="647261751007945333">سياسات الأجهزة</translation>
 <translation id="6476284679642588870">إدارة طرق الدفع</translation>
 <translation id="6489534406876378309">بدء تحميل الأعطال</translation>
@@ -1586,7 +1580,6 @@
 <translation id="782886543891417279">‏قد يتطلب Wi-Fi الذي تستخدمه (<ph name="WIFI_NAME"/>) زيارة صفحة تسجيل الدخول.</translation>
 <translation id="7836231406687464395">‏Postfix (مغلف)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{لا تتوفَّر تطبيقات}=1{تطبيق واحد (<ph name="EXAMPLE_APP_1"/>)}=2{تطبيقان (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>)}few{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}many{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}other{# تطبيقات (<ph name="EXAMPLE_APP_1"/>، و<ph name="EXAMPLE_APP_2"/>، و<ph name="AND_MORE"/> من التطبيقات الأخرى)}}</translation>
-<translation id="785549533363645510">ومع ذلك، أنت غير مرئي. لا يخفي الانتقال إلى وضع التخفي التصفح من صاحب العمل أو مزود خدمة الإنترنت أو المواقع التي تزورها.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">هل تريد مغادرة الموقع؟</translation>
 <translation id="7865448901209910068">أفضل سرعة</translation>
@@ -1669,10 +1662,8 @@
 <translation id="8220146938470311105">‏C7/C6 (مغلف)</translation>
 <translation id="8220639454292072926">إعداد التقارير للمؤسسة</translation>
 <translation id="3272614036080146686">‏لقد أدخلت للتو كلمة مرورك في موقع إلكتروني مريب. لذا ينصح Brave بالانتقال إلى <ph name="WEBSITE_1"/>، وأيّ مواقع إلكترونية أخرى تستخدم فيها كلمة المرور هذه، وبتغيير الكلمة الآن.</translation>
-<translation id="8225771182978767009">اختار الشخص الذي أعد جهاز الكمبيوتر حظر الموقع الإلكتروني هذا.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>، <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">درجة حرارة النظام الأساسي</translation>
-<translation id="8238581221633243064">يمكنك فتح الصفحة في علامة تبويب جديدة للتصفح المتخفي</translation>
 <translation id="8241707690549784388">استخدمت الصفحة التي تبحث عنها المعلومات التي أدخلتها وقد يؤدّي الرجوع إليها  إلى تكرار  جميع الإجراءات السابقة. هل تريد المتابعة؟</translation>
 <translation id="8241712895048303527">الحظر على هذا الموقع</translation>
 <translation id="8242426110754782860">متابعة</translation>
@@ -1684,7 +1675,6 @@
 <translation id="8262952874573525464">خزم الحواف من الأسفل</translation>
 <translation id="8267698848189296333">تسجيل الدخول باسم <ph name="USERNAME"/></translation>
 <translation id="8269242089528251720">مستندات مفصولة/نُسخ مُجمّعة</translation>
-<translation id="8269981117540303696">يمكنك الآن التصفّح بخصوصية تامّة، ولن يتمكّن الأشخاص الآخرون الذين يستخدمون هذا الجهاز من الاطّلاع على نشاطك، ولكن سيتم حفظ عمليات التنزيل والإشارات المرجعيّة.</translation>
 <translation id="8277900682056760511">جدول بيانات معالج الدفع مفتوح</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">معرفة معرّف جهازك الفريد</translation>
@@ -1703,7 +1693,6 @@
 <translation id="833262891116910667">تمييز</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">إذا كنت على دراية بالمخاطر التي تهدد أمانك، يمكنك <ph name="BEGIN_LINK"/>زيارة هذا الموقع<ph name="END_LINK"/> قبل أن تتم إزالة البرامج الضارة.</translation>
-<translation id="8349305172487531364">شريط الإشارات</translation>
 <translation id="8355270400102541638">سياق التعطّل على جهاز المستخدِم:</translation>
 <translation id="8363502534493474904">إيقاف "وضع الطائرة"</translation>
 <translation id="8364627913115013041">لم يتم تعيينها.</translation>
@@ -1711,7 +1700,7 @@
 <translation id="8371889962595521444">شهادات الجذر المُخصَّصة</translation>
 <translation id="8380941800586852976">ضارة</translation>
 <translation id="8381674639488873545">قد يتم تحصيل هذه الرسوم لمرة واحدة أو بشكل متكرِّر، وقد تكون غير واضحة. <ph name="BEGIN_LINK"/>عرض على أي حال<ph name="END_LINK"/></translation>
-<translation id="4111760344196328921">‏فعَّل <ph name="ENROLLMENT_DOMAIN"/> Brave Enterprise Connectors على متصفّحك. لدى هذه الموصلات إذن بالوصول إلى بعض بياناتك.</translation>
+<translation id="4111760344196328921">‏فعَّل <ph name="ENROLLMENT_DOMAIN"/> "وصلات Brave Enterprise" على متصفّحك. لدى هذه الوصلات إذن بالوصول إلى بعض بياناتك.</translation>
 <translation id="8412145213513410671">الأعطال (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">يجب إدخال عبارة المرور نفسها مرتين.</translation>
 <translation id="8416694386774425977">تهيئة الشبكة غير صالحة ويتعذّر استيرادها.
@@ -1769,7 +1758,6 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>، <ph name="DESCRIPTION"/>، اقتراح البحث</translation>
 <translation id="8719528812645237045">عمل عدة ثقوب بالأعلى</translation>
 <translation id="8725066075913043281">أعد المحاولة</translation>
-<translation id="8728672262656704056">لقد انتقلت إلى التصفّح المتخفي</translation>
 <translation id="8730621377337864115">تم</translation>
 <translation id="6326805297893828864">‏لإنشاء اتصال آمن، فإنك بحاجة إلى ضبط ساعتك بشكل صحيح. وذلك لأن الشهادات التي تستخدمها المواقع الإلكترونية لتعريف نفسها تكون صالحة فقط لفترات محددة من الوقت. فإذا كانت ساعة جهازك غير صحيحة، فلن يتمكن Brave من التحقق من هذه الشهادات.</translation>
 <translation id="8740359287975076522">‏تعذر العثور على &lt;/abbr&gt;عنوان نظام أسماء النطاقات (DNS)‏&lt;abbr id="dnsDefinition"&gt; لـ <ph name="HOST_NAME"/>. جارٍ تشخيص المشكلة.</translation>
@@ -1802,7 +1790,6 @@
 <translation id="8903921497873541725">تكبير</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">‏إزالة زر "الاقتراحات"، اضغط على مفتاح Enter لإزالة، <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">لقد انتقلت إلى وضع التصفّح المتخفي</translation>
 <translation id="5713644099811900409">‏حساب Brave‏</translation>
 <translation id="8918231688545606538">هذه الصفحة مريبة</translation>
 <translation id="892588693504540538">عمل ثقب أعلى اليمين</translation>
@@ -1904,7 +1891,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1</translation>
 <translation id="6771143571626203666">‏من Brave Pay</translation>
-<translation id="8820817407110198400">شريط الإشارات</translation>
+<translation id="8820817407110198400">الإشارات المرجعية</translation>
 <translation id="8362995731815961365">اختار الشخص الذي أعد جهاز الكمبيوتر حظر موقع الويب هذا.</translation>
 <translation id="4075123085690634698">‏يمكنك فتح الصفحة في نافذة جديدة للتصفح المتخفي (⇧⌘N)</translation>
 <translation id="2388886110302389394">‏يمكنك فتح الصفحة في نافذة جديدة للتصفح المتخفي (Ctrl-Shift-N)</translation>

@@ -228,7 +228,7 @@
 <translation id="1914326953223720820">Файлдарды архивден чыгаруу кызматы</translation>
 <translation id="1915697529809968049">CVC'нин ордуна Touch ID колдонулсунбу?</translation>
 <translation id="1916770123977586577">Бул сайттагы жаңыртылган жөндөөлөрдү колдонуп баштоо үчүн баракты жаңыртыңыз</translation>
-<translation id="1917876262703816781">Сайттагы же колдонмодогу сырсөзүңүздү кимдир-бирөө билип алды. <ph name="ORIGIN"/> сайтында колдонгон сырсөзүңүздү токтоосуз өзгөртүңүз.</translation>
+<translation id="688541908229382784">Сайттагы же колдонмодогу сырсөзүңүздү кимдир-бирөө билип алды. <ph name="ORIGIN"/> сайтында колдонгон сырсөзүңүздү токтоосуз өзгөртүңүз.</translation>
 <translation id="1919345977826869612">Жарнамалар</translation>
 <translation id="1919367280705858090">Белгилүү бир каталар боюнча жардам алуу</translation>
 <translation id="192020519938775529">{COUNT,plural, =0{Бирөө да жок}=1{1 сайт}other{# сайт}}</translation>
@@ -437,7 +437,6 @@
 <translation id="2824775600643448204">Дарек жана издөө тилкеси</translation>
 <translation id="2826760142808435982">Бул туташуу <ph name="CIPHER"/> аркылуу шифрленип, аныктыгы текшерилген жана муну <ph name="KX"/> алмаштыруу механизми катары колдонот.</translation>
 <translation id="2835170189407361413">Форманы тазалоо</translation>
-<translation id="2847118875340931228">Жашыруун терезени ачуу</translation>
 <translation id="2850739647070081192">Invite (Конверт)</translation>
 <translation id="2856444702002559011">Чабуулчулар <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> дарегинен маалыматыңызды (мисалы, сырсөздөр, билдирүүлөр же насыя карталары) уурдоого аракет кылып жатышы мүмкүн. <ph name="BEGIN_LEARN_MORE_LINK"/>Кеңири маалымат<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="2878197950673342043">Постер формасында бүктөө</translation>
@@ -487,7 +486,6 @@
 <translation id="3041612393474885105">Тастыктама маалыматы</translation>
 <translation id="3060227939791841287">C9 (Конверт)</translation>
 <translation id="3061707000357573562">Оңдоо кызматы</translation>
-<translation id="3064966200440839136">Тышкы колдонмо аркылуу төлөө үчүн жашыруун режимден чыкканы жатасыз. Уланта берелиби?</translation>
 <translation id="3080254622891793721">Графика</translation>
 <translation id="3086579638707268289">Интернеттеги аракеттериңиз көзөмөлдөнүүдө</translation>
 <translation id="3087734570205094154">Аягы</translation>
@@ -507,7 +505,6 @@
 <translation id="3154506275960390542">Бул барактагы формалар корголбогон болушу мүмкүн. Дайындарды өткөрүү учурунда аларды башкалар көрүп же серверге жеткенче, чабуулчулар өзгөртүп коюшу мүмкүн.</translation>
 <translation id="3157931365184549694">Калыбына келтирүү</translation>
 <translation id="3162559335345991374">Сиз колдонуп жаткан Wi-Fi башкы кирүү барагына өтүшүңүздү талап кылышы мүмкүн.</translation>
-<translation id="3167968892399408617">Бардык жашыруун өтмөктөрүңүз жабылгандан кийин, аларда каралган беттер серептөө таржымалында, куки-файлдарынын сактагычында же издөө таржымалында калбайт. Бирок жүктөлүп алынган файлдар же кыстарылган вебсайттар сакталып кала берет.</translation>
 <translation id="3169472444629675720">Аныктоо</translation>
 <translation id="3174168572213147020">Арал</translation>
 <translation id="3176929007561373547">Прокси серверинин иштеп жатканын такташ үчүн, прокси жөндөөлөрүңүздү
@@ -623,7 +620,6 @@
 <translation id="3676592649209844519">Түзмөктүн идентификатору:</translation>
 <translation id="3677008721441257057">Төмөнкү шилтеме эмес беле: &lt;a href="#" id="dont-proceed-link"&gt;<ph name="DOMAIN"/>&lt;/a&gt;?</translation>
 <translation id="3678029195006412963">Суроо-талапка кол коюлбай калды</translation>
-<translation id="3678529606614285348">Баракчаны жаңы жашыруун терезеде ачуу (Ctrl-Shift-N)</translation>
 <translation id="3681007416295224113">Тастыктама маалыматы</translation>
 <translation id="3701427423622901115">Баштапкы абалга келтирүү аракети ырасталды.</translation>
 <translation id="3704162925118123524">Сиз колдонуп жаткан тармак, анын кирүү барагына баш багууңузду талап кылышы мүмкүн.</translation>
@@ -780,7 +776,7 @@
 <translation id="4346833872170306413">Roc-16K</translation>
 <translation id="4356973930735388585">Бул сайттагы бүлдүргүчтөр түзмөгүңүздөгү маалыматыңызды (мисалы, сүрөттөр, сырсөздөр, билдирүүлөр жана насыя карталары) уурдап же жок кыла турган коркунучтуу программаларды орнотууга аракет кылышы мүмкүн.</translation>
 <translation id="4358059973562876591">Сиз көрсөткөн үлгүлөрдү колдонууга болбойт, анткени DnsOverHttpsMode саясатында ката кетти.</translation>
-<translation id="4358461427845829800">Төлөм ыкмаларын башкаруу...</translation>
+<translation id="327628984294957152">Төлөм ыкмаларын башкаруу...</translation>
 <translation id="4367563149485757821">Number-12 (Конверт)</translation>
 <translation id="437058704415269440">Аккаунттун балансы</translation>
 <translation id="4372516964750095882">Fanfold-Us</translation>
@@ -944,7 +940,7 @@
 <translation id="5123063207673082822">Дем алыш</translation>
 <translation id="5125394840236832993">B-Plus</translation>
 <translation id="5126510351761255129">Картаны ырастаңыз</translation>
-<translation id="5135404736266831032">Даректерди башкаруу...</translation>
+<translation id="6291230311289558881">Даректерди башкаруу...</translation>
 <translation id="5138227688689900538">Азыраак көрсөтүү</translation>
 <translation id="7186167407612593632">Шайкештештирилген сырсөздөрдү Brave далдаштырма дайындары менен шифрлеңиз</translation>
 <translation id="5145883236150621069">Саясат жообунда ката коду бар</translation>
@@ -952,7 +948,6 @@
 <translation id="5148809049217731050">Өйдө каратып</translation>
 <translation id="515292512908731282">C4 (Конверт)</translation>
 <translation id="5158275234811857234">Мукаба</translation>
-<translation id="5159010409087891077">Баракчаны жаңы жашыруун терезеде ачуу (⇧⌘N)</translation>
 <translation id="5161506081086828129">9-төшөгүч</translation>
 <translation id="9016458749696512983"><ph name="CREDIT_CARD"/> картаңыздын CVC кодун киргизиңиз. Сиз ырастагандан кийин, Brave аккаунтуңуздагы картанын реквизиттери бул сайтка жөнөтүлөт.</translation>
 <translation id="8515152881111950319">Кимдир бирөө сиздин жеке дайындарыңызга же уюмуңуздун аккаунтуна кирип алган окшойт. Brave сырсөзүңүздү азыр өзгөртүүнү сунуштайт.</translation>
@@ -960,7 +955,6 @@
 <translation id="5171689220826475070">Fanfold-European</translation>
 <translation id="5172758083709347301">Шайман</translation>
 <translation id="5179510805599951267"><ph name="ORIGINAL_LANGUAGE"/> тилинде эмеспи? Бул ката тууралуу кабарлаңыз</translation>
-<translation id="5190835502935405962">Кыстармалар тилкеси</translation>
 <translation id="519422657042045905">Аннотация жеткиликсиз</translation>
 <translation id="5201306358585911203">Бул веб баракчада кыстарылган барак мындай дейт:</translation>
 <translation id="5205222826937269299">Атын киргизиңиз</translation>
@@ -989,7 +983,7 @@
 <translation id="5287456746628258573">Бул сайт эскирген коопсуздук конфигурациясын колдонуп жатат. Маалыматыңыз (мисалы, сырсөздөр же насыя карталарынын номерлер) ушул сайтка жөнөтүлгөндө ачык көрүнүп калышы мүмкүн.</translation>
 <translation id="5288108484102287882">Саясатта коюлган маанилерди ырастоодо эскертүүлөр берилди</translation>
 <translation id="5289384342738547352">Бир нече документти тейлөө</translation>
-<translation id="5295292838686006428">Сайттагы же колдонмодогу сырсөзүңүздү кимдир-бирөө билип алды. Сакталган сырсөздөрүңүздү текшерип коюңуз.</translation>
+<translation id="3764885446986388155">Сайттагы же колдонмодогу сырсөзүңүздү кимдир-бирөө билип алды. Сакталган сырсөздөрүңүздү текшерип коюңуз.</translation>
 <translation id="5299298092464848405">Саясатты талдоо катасы</translation>
 <translation id="5300589172476337783">Көрсөтүү</translation>
 <translation id="5306593769196050043">Эки барак тең</translation>
@@ -1091,7 +1085,7 @@
 <translation id="5689516760719285838">Жайгашкан жер</translation>
 <translation id="569000877158168851">DnsOverHttpsTemplates мааниси ылайыксыз, андыктан DnsOverHttpsMode саясаты <ph name="SECURE_DNS_MODE_AUTOMATIC"/> же <ph name="SECURE_DNS_MODE_SECURE"/> деп коюлмайынча, ал колдонулбайт.</translation>
 <translation id="5701381305118179107">Борбор</translation>
-<translation id="570530837424789914">Башкаруу…</translation>
+<translation id="3655851112780233803">Башкаруу…</translation>
 <translation id="57094364128775171">Татаал сырсөз сунушталсын…</translation>
 <translation id="5710435578057952990">Бул сайттын аныктыгы ырасталбай жатат.</translation>
 <translation id="5720705177508910913">Учурдагы колдонуучу</translation>
@@ -1270,7 +1264,7 @@
 <translation id="6447842834002726250">Кукилер</translation>
 <translation id="6451458296329894277">Форманы кайра тапшырууну ырастоо</translation>
 <translation id="6457206614190510200">Теринин тигиши</translation>
-<translation id="6465306955648956876">Сырсөздөрдү башкаруу...</translation>
+<translation id="2275235756919172538">Сырсөздөрдү башкаруу...</translation>
 <translation id="647261751007945333">Түзмөк саясаттары</translation>
 <translation id="6476284679642588870">Төлөм ыкмаларын башкаруу</translation>
 <translation id="6489534406876378309">Бузуктарды жүктөп баштоо</translation>
@@ -1491,7 +1485,7 @@
 <translation id="7473891865547856676">Жок, рахмат</translation>
 <translation id="7481312909269577407">Багыттоо</translation>
 <translation id="7485870689360869515">Дайындар табылган жок.</translation>
-<translation id="7495290002932347110">Сайттагы же колдонмодогу сырсөзүңүздү кимдир-бирөө билип алды. Сакталган сырсөздөрүңүздү текшерип коюңуз же <ph name="ORIGIN"/> сайтында колдонгон сырсөзүңүздү өзгөртүңүз.</translation>
+<translation id="3692186536781145635">Сайттагы же колдонмодогу сырсөзүңүздү кимдир-бирөө билип алды. Сакталган сырсөздөрүңүздү текшерип коюңуз же <ph name="ORIGIN"/> сайтында колдонгон сырсөзүңүздү өзгөртүңүз.</translation>
 <translation id="7498234416455752244">Түзөтүүнү улантуу</translation>
 <translation id="7508255263130623398">Кайтарылган саясат түзмөгүнүн id'си бош же учурдагы түзмөктүн id'сине дал келбейт</translation>
 <translation id="7508870219247277067">Жашыл (авокадо)</translation>
@@ -1585,7 +1579,6 @@
 <translation id="782886543891417279">Сиз колдонуп жаткан Wi-Fi (<ph name="WIFI_NAME"/>), башкы кирүү барагына өтүшүңүздү талап кылышы мүмкүн.</translation>
 <translation id="7836231406687464395">Postfix (Конверт)</translation>
 <translation id="7844689747373518809">{COUNT,plural, =0{Эч бири}=1{1 колдонмо (<ph name="EXAMPLE_APP_1"/>)}=2{2 колдонмо (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>)}other{# колдонмо (<ph name="EXAMPLE_APP_1"/>, <ph name="EXAMPLE_APP_2"/>, <ph name="AND_MORE"/>)}}</translation>
-<translation id="785549533363645510">Ошентсе да, сиз көрүнбөй калбайсыз. Жашыруун серептөө аракеттериңизди иш берүүчүңүздөн, интернет кызматын камсыздоочудан же каралган вебсайттардан жашыра албайсыз.</translation>
 <translation id="7855695075675558090"><ph name="TOTAL_LABEL"/> <ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="7862185352068345852">Сайттан чыгасызбы?</translation>
 <translation id="7865448901209910068">Мыкты ылдамдык</translation>
@@ -1668,10 +1661,8 @@
 <translation id="8220146938470311105">C7/C6 (Конверт)</translation>
 <translation id="8220639454292072926">Ишканалык кабарлоо</translation>
 <translation id="3272614036080146686">Сырсөзүңүздү жаңы эле адаштыруучу сайтта киргиздиңиз. Brave ушул сырсөздү колдонгон <ph name="WEBSITE_1"/> жана башка сайттарга өтүп, аны азыр өзгөртүүнү сунуштайт.</translation>
-<translation id="8225771182978767009">Бул компьютерди жөндөгөн адам ушул сайтты бөгөттөп салган.</translation>
 <translation id="822964464349305906"><ph name="TYPE_1"/>, <ph name="TYPE_2"/></translation>
 <translation id="8232343881378637145">Платформанын температурасы</translation>
-<translation id="8238581221633243064">Баракчаны жаңы жашыруун өтмөктө ачуу</translation>
 <translation id="8241707690549784388">Изделип жаткан бет сиз жазган маалыматты колдонгон. Ал бетке кайтып барсаңыз, жасалган аракеттердин бардыгы кайталанышы мүмкүн. Улантасызбы?</translation>
 <translation id="8241712895048303527">Бул сайтта бөгөттөлсүн</translation>
 <translation id="8242426110754782860">Улантуу</translation>
@@ -1683,7 +1674,6 @@
 <translation id="8262952874573525464">Төмөнкү четин жамоо</translation>
 <translation id="8267698848189296333"><ph name="USERNAME"/> катары кирүүдө</translation>
 <translation id="8269242089528251720">Өзүнчө документ/Иреттелген көчүрмөлөр</translation>
-<translation id="8269981117540303696">Жашыруун режимдеги аракеттериңиз ушул түзмөктүн башка колдонуучуларына көрүнбөйт. Бирок жүктөп алынган файлдар жана кыстармалар сакталып кала берет.</translation>
 <translation id="8277900682056760511">Төлөм иштетүүчү барак ачылды</translation>
 <translation id="8281084378435768645">Large-Photo</translation>
 <translation id="8282947398454257691">Түзмөктүн уникалдуу далдаштырма кодун билүү</translation>
@@ -1702,7 +1692,6 @@
 <translation id="833262891116910667">Бөлүп көрсөтүү</translation>
 <translation id="8340095855084055290"><ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
 <translation id="834457929814110454">Эгер коопсуздугуңузга кандай коркунуч келтирилип жаткандыгын жакшы түшүнсөңүз, зыянкеч программалар алынып салынаардан мурун, <ph name="BEGIN_LINK"/>бул сайтка кирип көрсөңүз<ph name="END_LINK"/> болот.</translation>
-<translation id="8349305172487531364">Кыстармалар тилкеси</translation>
 <translation id="8355270400102541638">Компьютердин бузулуу идентификатору:</translation>
 <translation id="8363502534493474904">Учак режимин өчүрүп көрүңүз</translation>
 <translation id="8364627913115013041">Коюлган эмес.</translation>
@@ -1767,7 +1756,6 @@
 <translation id="8719263113926255150"><ph name="ENTITY"/>, <ph name="DESCRIPTION"/>, издөө сунушу</translation>
 <translation id="8719528812645237045">Муштум менен өйдө жакка эки жолу уруу</translation>
 <translation id="8725066075913043281">Кайра аракет кылып көрүү</translation>
-<translation id="8728672262656704056">Жашыруун кирдиңиз</translation>
 <translation id="8730621377337864115">Бүттү</translation>
 <translation id="6326805297893828864">Коопсуз туташууну орнотуу үчүн, саатыңыз туура коюлушу керек. Себеби вебсайттардын аныктыгын текшере турган тастыктамалар белгилүү бир убакыт аралыгында гана жарактуу болот. Түзмөгүңүздүн сааты туура эмес болгондуктан, Brave бул тастыктамаларды текшере албайт.</translation>
 <translation id="8740359287975076522"><ph name="HOST_NAME"/> сайтынын &lt;abbr id="dnsDefinition"&gt;DNS дареги&lt;/abbr&gt; табылбай койду. Көйгөйдүн себеби аныкталууда.</translation>
@@ -1800,7 +1788,6 @@
 <translation id="8903921497873541725">Чоңойтуу</translation>
 <translation id="890485472659500557">Engineering-C</translation>
 <translation id="890493561996401738">"Сунушту өчүрүү" баскычы. Өчүрүү үчүн "Enter" баскычын басыңыз, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
-<translation id="8910670906166981838">Жашыруун режимге өттүңүз</translation>
 <translation id="5713644099811900409">Brave аккаунту</translation>
 <translation id="8918231688545606538">Бул шектүү баракча</translation>
 <translation id="892588693504540538">Жогорку оң жагын тешүү</translation>
@@ -1902,7 +1889,7 @@
     &lt;/ul&gt;</translation>
 <translation id="994346157028146140">JIS B1 (728mm x 1030mm)</translation>
 <translation id="6771143571626203666">Brave Pay'ден</translation>
-<translation id="8820817407110198400">Кыстармалар тилкеси</translation>
+<translation id="8820817407110198400">Кыстармалар</translation>
 <translation id="8362995731815961365">Бул компьютерди жөндөгөн адам ушул сайтты бөгөттөп салган.</translation>
 <translation id="4075123085690634698">Баракчаны жаңы жашыруун терезеде ачуу (⇧⌘N)</translation>
 <translation id="2388886110302389394">Баракчаны жаңы жашыруун терезеде ачуу (Ctrl-Shift-N)</translation>

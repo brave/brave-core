@@ -7,7 +7,6 @@
 <translation id="1036727731225946849">Додається <ph name="WEBAPK_NAME"/>…</translation>
 <translation id="1041308826830691739">З веб-сайтів</translation>
 <translation id="1045899828449635435">Видалити дані з цих сайтів?</translation>
-<translation id="1049743911850919806">Анонімний перегляд</translation>
 <translation id="10614374240317010">Ніколи не зберігалося</translation>
 <translation id="5428209950370661546">Інші сервіси Brave</translation>
 <translation id="1068672505746868501">Ніколи не перекладати сторінки такою мовою: <ph name="SOURCE_LANGUAGE"/></translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">Початкове налаштування синхронізації не завершено</translation>
 <translation id="1821253160463689938">Використовує файли cookie, щоб зберігати налаштування, навіть якщо ви не відвідуєте ці сторінки</translation>
 <translation id="1829244130665387512">Знайти на сторінці</translation>
-<translation id="1853692000353488670">Нова анонімна вкладка</translation>
 <translation id="1856325424225101786">Скинути спрощений режим?</translation>
 <translation id="5817715962196959877">Тепер Brave завантажує файли швидше</translation>
 <translation id="1883903952484604915">Мої файли</translation>
@@ -233,15 +231,12 @@
 <translation id="2903493209154104877">Адреси</translation>
 <translation id="290376772003165898">Ця сторінка відображається не такою мовою: <ph name="LANGUAGE"/>?</translation>
 <translation id="2904414404539560095">Список пристроїв, на які можна надіслати вкладку, відкрито на всю висоту екрана.</translation>
-<translation id="2905036901251765993">Щоб ділитися даними з людьми поблизу, дозвольте їм зісканувати цей QR-код</translation>
 <translation id="7339921667754113786">Brave Notifications Platform</translation>
 <translation id="2923908459366352541">Недійсна назва</translation>
 <translation id="6355102470683871794">Дані додатка Brave <ph name="APP_NAME"/></translation>
 <translation id="2942036813789421260">Вкладку "Попередній перегляд" закрито</translation>
 <translation id="2956410042958133412">Цим обліковим записом керують <ph name="PARENT_NAME_1"/> і <ph name="PARENT_NAME_2"/>.</translation>
-<translation id="2962095958535813455">Ви перейшли на анонімні вкладки</translation>
 <translation id="2968755619301702150">Перегляд сертифікатів</translation>
-<translation id="2979025552038692506">Вибрана анонімна вкладка</translation>
 <translation id="2987620471460279764">Текст, яким поділилися з іншого пристрою</translation>
 <translation id="2989523299700148168">Нещодавно відвідані</translation>
 <translation id="2996291259634659425">Створити парольну фразу</translation>
@@ -252,16 +247,14 @@
 <translation id="305593374596241526">Геодані вимкнено. Увімкніть їх у <ph name="BEGIN_LINK"/>налаштуваннях Android<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">Ви можете будь-коли ввімкнути синхронізацію в налаштуваннях</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> закладка}one{<ph name="BOOKMARKS_COUNT_MANY"/> закладка}few{<ph name="BOOKMARKS_COUNT_MANY"/> закладки}many{<ph name="BOOKMARKS_COUNT_MANY"/> закладок}other{<ph name="BOOKMARKS_COUNT_MANY"/> закладки}}</translation>
-<translation id="3089395242580810162">Відкрити в анонімній вкладці</translation>
 <translation id="3114012059975132928">Відеопрогравач</translation>
 <translation id="3123734510202723619">Оголошення</translation>
-<translation id="3137521801621304719">Вийти з режиму анонімного перегляду</translation>
 <translation id="3143515551205905069">Скасувати синхронізацію</translation>
 <translation id="5063487983358782016">Головна сторінка Brave</translation>
 <translation id="3157842584138209013">Перевірте обсяг збережених даних за допомогою кнопки "Більше опцій"</translation>
 <translation id="3166827708714933426">Комбінації клавіш для роботи з вкладками та вікнами</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">Безпечний перегляд (захищає вас і ваш пристрій від небезпечних сайтів)</translation>
+<translation id="3201899458094819285">Безпечний перегляд (захищає вас і ваш пристрій від небезпечних сайтів)</translation>
 <translation id="3205824638308738187">Майже готово.</translation>
 <translation id="3207960819495026254">Створено закладку</translation>
 <translation id="3211426585530211793">Елемент "<ph name="ITEM_TITLE"/>" видалено</translation>
@@ -285,7 +278,6 @@
 <translation id="3333961966071413176">Усі контакти</translation>
 <translation id="3334729583274622784">Змінити розширення файлу?</translation>
 <translation id="3341058695485821946">Перевірте обсяг збережених даних</translation>
-<translation id="3350687908700087792">Закрити всі анонімні вікна</translation>
 <translation id="8134317863207426198">Спрощену сторінку надає Brave. Торкніться кнопки завантаження оригіналу, щоб отримати вихідну сторінку.</translation>
 <translation id="3367813778245106622">Увійдіть знову, щоб почати синхронізацію</translation>
 <translation id="2746024117903470217">Щоб ця сторінка була доступна на іншому пристрої, увімкніть на ньому синхронізацію в налаштуваннях Brave.</translation>
@@ -298,7 +290,6 @@
 <translation id="3443221991560634068">Оновити поточну сторінку</translation>
 <translation id="3445014427084483498">Щойно</translation>
 <translation id="3478363558367712427">Ви можете вибрати пошукову систему</translation>
-<translation id="3492207499832628349">Нова анонімна вкладка</translation>
 <translation id="3493531032208478708"><ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/> про рекомендований контент</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Доповнена реальність</translation>
@@ -329,7 +320,6 @@
 <translation id="3749259744154402564">Не підтримується</translation>
 <translation id="3763247130972274048">Двічі торкніться відео ліворуч або праворуч, щоб пропустити 10 с</translation>
 <translation id="3771001275138982843">Не вдалося завантажити оновлення</translation>
-<translation id="3771033907050503522">Анонімні вкладки</translation>
 <translation id="1138681184697033370">Загальні положення та умови Brave</translation>
 <translation id="3773755127849930740"><ph name="BEGIN_LINK"/>Увімкніть Bluetooth<ph name="END_LINK"/>, щоб підключити</translation>
 <translation id="3775705724665058594">Надіслати на пристрої</translation>
@@ -381,7 +371,7 @@
 <translation id="4170011742729630528">Служба не доступна. Повторіть спробу пізніше.</translation>
 <translation id="4179980317383591987">Використано <ph name="AMOUNT"/></translation>
 <translation id="4181841719683918333">Мови</translation>
-<translation id="4183868528246477015">Пошук з Об'єктивом <ph name="BEGIN_NEW"/>Новинка<ph name="END_NEW"/></translation>
+<translation id="3845332215609790146">Пошук з Об'єктивом <ph name="BEGIN_NEW"/>Новинка<ph name="END_NEW"/></translation>
 <translation id="4195643157523330669">Відкрити в новій вкладці</translation>
 <translation id="4198423547019359126">Немає доступних місць для завантаження</translation>
 <translation id="6003646045106347985">Щоб отримувати персоналізовані пропозиції від Brave, увімкніть синхронізацію</translation>
@@ -495,7 +485,6 @@
 <translation id="5040262127954254034">Конфіденційність</translation>
 <translation id="5087580092889165836">Додати картку</translation>
 <translation id="510275257476243843">Залишилась 1 година</translation>
-<translation id="5123685120097942451">Анонімна вкладка</translation>
 <translation id="5127805178023152808">Синхронізацію вимкнено</translation>
 <translation id="5129038482087801250">Установити веб-додаток</translation>
 <translation id="5132942445612118989">Синхронізуйте свої паролі, історію тощо на всіх пристроях</translation>
@@ -547,14 +536,12 @@
 <translation id="5517095782334947753">У вас є закладки, історія, паролі й інші налаштування з облікового запису <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">Переспрямування заблоковано.</translation>
 <translation id="2367014990350929709">Щоб шукати пристрої, Brave потрібен доступ до геоданих. <ph name="BEGIN_LINK1"/>Оновити дозволи<ph name="END_LINK1"/>. Доступ до геоданих також <ph name="BEGIN_LINK2"/>вимкнено на цьому пристрої<ph name="END_LINK2"/>.</translation>
-<translation id="5530766185686772672">Закрити анонімні вкладки</translation>
 <translation id="5534640966246046842">URL-адресу сайту скопійовано</translation>
 <translation id="5561549206367097665">Очікується мережа…</translation>
 <translation id="55737423895878184">Геодані та сповіщення дозволено</translation>
 <translation id="5578795271662203820">Шукати зображення в <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Ви можете будь-коли вибрати дані для синхронізації в <ph name="BEGIN_LINK1"/>налаштуваннях<ph name="END_LINK1"/>.</translation>
 <translation id="5595485650161345191">Редагувати адресу</translation>
-<translation id="5599455543593328020">Режим анонімного перегляду</translation>
 <translation id="5620928963363755975">Знаходьте свої файли та сторінки в розділі "Завантаження", натиснувши кнопку "Більше опцій"</translation>
 <translation id="5626134646977739690">Ім'я:</translation>
 <translation id="5639724618331995626">Дозволити всі сайти</translation>
@@ -572,7 +559,6 @@
 <translation id="5726692708398506830">Збільшити всі елементи на сторінці</translation>
 <translation id="5748802427693696783">Ви перейшли на стандартні вкладки</translation>
 <translation id="3088191967551450609">Щоб завантажувати файли, Brave потребує доступу до пам’яті.</translation>
-<translation id="5763382633136178763">Анонімні вкладки</translation>
 <translation id="5763514718066511291">Торкніться, щоб скопіювати URL-адресу цього додатка</translation>
 <translation id="5765780083710877561">Опис:</translation>
 <translation id="5793665092639000975">Використано <ph name="SPACE_USED"/> з <ph name="SPACE_AVAILABLE"/></translation>
@@ -858,7 +844,6 @@
 <translation id="8073388330009372546">Відкрити в новій вкладці</translation>
 <translation id="8076492880354921740">Вкладки</translation>
 <translation id="8084114998886531721">Збережений пароль</translation>
-<translation id="8103578431304235997">Анонімна вкладка</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Щоб мати доступ до закладок на всіх своїх пристроях, увімкніть синхронізацію</translation>
 <translation id="4565206163201411670">Показувати активність у Brave у Цифровому добробуті?</translation>
@@ -909,7 +894,6 @@
 <translation id="230699814587342492">Паролі Brave</translation>
 <translation id="8503813439785031346">Ім’я користувача</translation>
 <translation id="133012818630824069">Експортувати паролі, збережені в Brave</translation>
-<translation id="8514577642972634246">Перейти в режим анонімного перегляду</translation>
 <translation id="8516012719330875537">Редактор зображень</translation>
 <translation id="8523928698583292556">Видалити збережений пароль</translation>
 <translation id="854522910157234410">Відкрити цю сторінку</translation>
@@ -955,7 +939,6 @@
 <translation id="8970887620466824814">Сталася помилка.</translation>
 <translation id="8972098258593396643">Завантажити в папку за умовчанням?</translation>
 <translation id="8988028529677883095">Використовувати телефон як ключ безпеки</translation>
-<translation id="8993760627012879038">Відкрити нове вікно в режимі анонімного перегляду</translation>
 <translation id="2689656545739939160">Ви входите в обліковий запис, зареєстрований у домені <ph name="MANAGED_DOMAIN"/>, і надаєте його адміністратору доступ до своїх даних Brave. Ваші дані буде назавжди зв’язано з цим обліковим записом. Якщо ви вийдете з облікового запису в Brave, дані буде видалено з цього пристрою, але вони залишаться у вашому обліковому записі Brave.</translation>
 <translation id="9028914725102941583">Увімкніть синхронізацію, щоб файли були доступними на всіх ваших пристроях</translation>
 <translation id="9040142327097499898">На цьому пристрої вимкнено геодані. Сповіщення дозволено.</translation>
@@ -1000,7 +983,7 @@
 <translation id="4243710787042215766">Відкрити у приватній вкладці</translation>
 <translation id="3110967157686007724">Приватна вкладка</translation>
 <translation id="4526803704855831732">Приватні вкладки</translation>
-<translation id="7465104139234185284">Закрити усі приватні вкладки</translation>
+<translation id="7465104139234185284">Закрити всі приватні вкладки</translation>
 <translation id="6336451774241870485">Нова приватна вкладка</translation>
 <translation id="3234355010754616171">Нова приватна вкладка</translation>
 <translation id="6610147964972079463">Закрити приватні вкладки</translation>

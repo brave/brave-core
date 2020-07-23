@@ -7,7 +7,6 @@
 <translation id="1036727731225946849">Добавление файла "<ph name="WEBAPK_NAME"/>"…</translation>
 <translation id="1041308826830691739">От сайтов</translation>
 <translation id="1045899828449635435">Удалить эти данные?</translation>
-<translation id="1049743911850919806">Инкогнито</translation>
 <translation id="10614374240317010">Сайты, пароли для которых не сохраняются</translation>
 <translation id="5428209950370661546">Другие сервисы Brave</translation>
 <translation id="1068672505746868501">Не переводить страницы на этом языке: <ph name="SOURCE_LANGUAGE"/></translation>
@@ -100,7 +99,6 @@
 <translation id="1810845389119482123">Синхронизация не настроена</translation>
 <translation id="1821253160463689938">Использовать файлы cookie, чтобы запомнить ваши предпочтения, даже если вы не открываете эти страницы</translation>
 <translation id="1829244130665387512">Найти на странице</translation>
-<translation id="1853692000353488670">Новая вкладка инкогнито</translation>
 <translation id="1856325424225101786">Сбросить упрощенный режим?</translation>
 <translation id="5817715962196959877">Теперь файлы в Brave будут скачиваться ещё быстрее</translation>
 <translation id="1883903952484604915">Скачанные</translation>
@@ -195,7 +193,7 @@
 <translation id="2546283357679194313">Файлы сookie и данные сайтов</translation>
 <translation id="2567385386134582609">ИЗОБРАЖЕНИЕ</translation>
 <translation id="257088987046510401">Темы</translation>
-<translation id="2581165646603367611">Будет очищен кеш, а также удалены файлы cookie и другие данные, которые система сочтет маловажными.</translation>
+<translation id="2324920234469020158">Будет очищен кеш, а также удалены файлы cookie и другие данные, которые система сочтет маловажными.</translation>
 <translation id="2587052924345400782">Доступна новая версия</translation>
 <translation id="2593272815202181319">Моноширинный</translation>
 <translation id="2612676031748830579">Номер карты</translation>
@@ -233,15 +231,12 @@
 <translation id="2903493209154104877">Адреса</translation>
 <translation id="290376772003165898">Язык страницы не <ph name="LANGUAGE"/>?</translation>
 <translation id="2904414404539560095">Список устройств для отправки вкладки развернут на весь экран.</translation>
-<translation id="2905036901251765993">Чтобы предоставить доступ пользователю поблизости, попросите его отсканировать этот QR-код.</translation>
 <translation id="7339921667754113786">Платформа уведомлений Brave</translation>
 <translation id="2923908459366352541">Имя недействительно</translation>
 <translation id="6355102470683871794">Хранилище Brave <ph name="APP_NAME"/></translation>
 <translation id="2942036813789421260">Вкладка предпросмотра закрыта</translation>
 <translation id="2956410042958133412">Этим аккаунтом управляют <ph name="PARENT_NAME_1"/> и <ph name="PARENT_NAME_2"/>.</translation>
-<translation id="2962095958535813455">Переключено на вкладки в режиме инкогнито</translation>
 <translation id="2968755619301702150">Просмотр сертификатов</translation>
-<translation id="2979025552038692506">Выбранная вкладка инкогнито</translation>
 <translation id="2987620471460279764">Текст, полученный с другого устройства</translation>
 <translation id="2989523299700148168">Недавние</translation>
 <translation id="2996291259634659425">Придумайте кодовую фразу</translation>
@@ -252,16 +247,14 @@
 <translation id="305593374596241526">Определение местоположения отключено. Включите его в <ph name="BEGIN_LINK"/>настройках Android<ph name="END_LINK"/>.</translation>
 <translation id="3058498974290601450">Ее можно включить в настройках в любой момент.</translation>
 <translation id="3060635849835183725">{BOOKMARKS_COUNT,plural, =1{<ph name="BOOKMARKS_COUNT_ONE"/> закладка}one{<ph name="BOOKMARKS_COUNT_MANY"/> закладка}few{<ph name="BOOKMARKS_COUNT_MANY"/> закладки}many{<ph name="BOOKMARKS_COUNT_MANY"/> закладок}other{<ph name="BOOKMARKS_COUNT_MANY"/> закладки}}</translation>
-<translation id="3089395242580810162">Открыть в режиме инкогнито</translation>
 <translation id="3114012059975132928">Видеопроигрыватель</translation>
 <translation id="3123734510202723619">Оповещения</translation>
-<translation id="3137521801621304719">Выключить режим инкогнито</translation>
 <translation id="3143515551205905069">Отмена</translation>
 <translation id="5063487983358782016">Главная страница Brave</translation>
 <translation id="3157842584138209013">Чтобы узнать, сколько трафика вы сэкономили, нажмите кнопку "Ещё"</translation>
 <translation id="3166827708714933426">Работа с вкладками и окнами</translation>
 <translation id="3169472444629675720">Discover</translation>
-<translation id="3181954750937456830">Безопасный просмотр (защищает вас и ваше устройство от опасных сайтов)</translation>
+<translation id="3201899458094819285">Безопасный просмотр (защищает вас и ваше устройство от опасных сайтов)</translation>
 <translation id="3205824638308738187">Почти готово!</translation>
 <translation id="3207960819495026254">Добавлено в закладки.</translation>
 <translation id="3211426585530211793">Удалено: <ph name="ITEM_TITLE"/></translation>
@@ -285,7 +278,6 @@
 <translation id="3333961966071413176">Все контакты</translation>
 <translation id="3334729583274622784">Изменить расширение имени файла?</translation>
 <translation id="3341058695485821946">Узнайте, сколько трафика вы сэкономили.</translation>
-<translation id="3350687908700087792">Закрыть все вкладки инкогнито</translation>
 <translation id="8134317863207426198">Lite-версия страницы получена с помощью Brave. Нажмите кнопку "Полная версия", чтобы загрузить оригинал.</translation>
 <translation id="3367813778245106622">Чтобы начать синхронизацию, снова войдите в аккаунт</translation>
 <translation id="2746024117903470217">Чтобы открыть доступ к этой странице другому устройству, откройте на нем настройки Brave и включите синхронизацию.</translation>
@@ -298,7 +290,6 @@
 <translation id="3443221991560634068">Обновить страницу</translation>
 <translation id="3445014427084483498">Только что</translation>
 <translation id="3478363558367712427">Вы можете выбрать другую поисковую систему.</translation>
-<translation id="3492207499832628349">Новая вкладка инкогнито</translation>
 <translation id="3493531032208478708">Подробнее <ph name="BEGIN_LINK"/>о рекомендованном контенте<ph name="END_LINK"/>…</translation>
 <translation id="3499246418971111862">chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS"/></translation>
 <translation id="3513704683820682405">Дополненная реальность</translation>
@@ -312,9 +303,9 @@
 <translation id="1908301351964700579">Подготовка для VR ещё не завершена. Перезапустите Brave позже.</translation>
 <translation id="3568688522516854065">Чтобы получить доступ к вкладкам на всех устройствах, войдите в аккаунт и включите синхронизацию.</translation>
 <translation id="3587482841069643663">Все</translation>
-<translation id="3590487821116122040">Маловажные данные сайтов (например, сайты, которые вы редко посещаете или на которых не сохранили настройки)</translation>
+<translation id="9205995714227143200">Маловажные данные сайтов (например, сайты, которые вы редко посещаете или на которых не сохранили настройки)</translation>
 <translation id="3594780231884063836">Выключить звук для видео</translation>
-<translation id="3599863153486145794">Удаление истории со всех устройств, на которых выполнен вход в аккаунт. Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="8122693181154564064">Удаление истории со всех устройств, на которых выполнен вход в аккаунт. Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="3616113530831147358">Аудио</translation>
 <translation id="3631987586758005671">Отправка на устройство "<ph name="DEVICE_NAME"/>"…</translation>
 <translation id="3632295766818638029">Показать пароль</translation>
@@ -323,13 +314,12 @@
 <translation id="3692944402865947621">Не удалось скачать файл <ph name="FILE_NAME"/>, так как хранилище недоступно.</translation>
 <translation id="3701167022068948696">Исправить</translation>
 <translation id="3714981814255182093">Открыть панель поиска</translation>
-<translation id="3716182511346448902">Эта страница расходовала слишком много памяти, поэтому работа ее скриптов была приостановлена.</translation>
+<translation id="5805364706385912897">Эта страница расходовала слишком много памяти, поэтому работа ее скриптов была приостановлена.</translation>
 <translation id="3738139272394829648">Быстрый поиск</translation>
 <translation id="3739899004075612870"><ph name="PRODUCT_NAME"/>: добавлена закладка</translation>
 <translation id="3749259744154402564">Действие не поддерживается.</translation>
 <translation id="3763247130972274048">Чтобы пропустить 10 секунд, дважды нажмите слева или справа.</translation>
 <translation id="3771001275138982843">Не удалось скачать обновление.</translation>
-<translation id="3771033907050503522">Вкладки инкогнито</translation>
 <translation id="1138681184697033370">Условия использования Brave</translation>
 <translation id="3773755127849930740">Чтобы разрешить подключение, <ph name="BEGIN_LINK"/>включите Bluetooth<ph name="END_LINK"/></translation>
 <translation id="3775705724665058594">Отправка на свои устройства</translation>
@@ -353,7 +343,7 @@
 <translation id="3928666092801078803">Объединить данные</translation>
 <translation id="393697183122708255">Голосовой поиск недоступен</translation>
 <translation id="395206256282351086">Подсказки запросов и сайтов отключены</translation>
-<translation id="396192773038029076">{NUM_IN_PROGRESS,plural, =1{Страница будет загружена при подключении к сети}one{Страницы будут загружены при подключении к сети}few{Страницы будут загружены при подключении к сети}many{Страницы будут загружены при подключении к сети}other{Страницы будут загружены при подключении к сети}}</translation>
+<translation id="6945986954012067786">{NUM_IN_PROGRESS,plural, =1{Страница будет загружена при подключении к сети}one{Страницы будут загружены при подключении к сети}few{Страницы будут загружены при подключении к сети}many{Страницы будут загружены при подключении к сети}other{Страницы будут загружены при подключении к сети}}</translation>
 <translation id="8997474919031554666">Шифрование с помощью кодовой фразы не применяется к способам оплаты и адресам из Brave Pay. Доступ к зашифрованным данным будет только у тех, кто знает кодовую фразу. Она не пересылается и не хранится в Brave. Если вы забудете фразу или решите изменить эту настройку, вам придется сбросить параметры синхронизации. <ph name="BEGIN_LINK"/>Подробнее…<ph name="END_LINK"/></translation>
 <translation id="3967822245660637423">Скачивание завершено.</translation>
 <translation id="8725391159384120485">Приложение "<ph name="APP_NAME"/>" откроется в Brave. Продолжая, вы принимаете <ph name="BEGIN_LINK1"/>Условия использования Brave<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Дополнительные условия использования Brave и Chrome OS<ph name="END_LINK2"/>. Кроме этих документов, также действует <ph name="BEGIN_LINK3"/>Примечание о конфиденциальности данных в аккаунтах Brave, управляемых с помощью Family Link<ph name="END_LINK3"/>.</translation>
@@ -384,7 +374,7 @@
 <translation id="3845332215609790146">Найти через Brave Объектив <ph name="BEGIN_NEW"/>Новинка<ph name="END_NEW"/></translation>
 <translation id="4195643157523330669">Открыть в новой вкладке</translation>
 <translation id="4198423547019359126">Нет доступных мест для скачивания</translation>
-<translation id="4209895695669353772">Чтобы мы могли рекомендовать вам интересный контент, включите синхронизацию.</translation>
+<translation id="6003646045106347985">Чтобы мы могли рекомендовать вам интересный контент, включите синхронизацию.</translation>
 <translation id="7810580217418711046">Шифровать синхронизированные данные, используя пароль аккаунта Brave от <ph name="TIME"/></translation>
 <translation id="4242533952199664413">Открыть настройки</translation>
 <translation id="4250229828105606438">Скриншот</translation>
@@ -495,7 +485,6 @@
 <translation id="5040262127954254034">Личные данные</translation>
 <translation id="5087580092889165836">Добавить карту</translation>
 <translation id="510275257476243843">Остался 1 час</translation>
-<translation id="5123685120097942451">Вкладка инкогнито</translation>
 <translation id="5127805178023152808">Синхронизация выключена</translation>
 <translation id="5129038482087801250">Установить веб-приложение</translation>
 <translation id="5132942445612118989">Синхронизируйте пароли, историю и другие данные на всех ваших устройствах</translation>
@@ -547,14 +536,12 @@
 <translation id="5517095782334947753">Вам доступны закладки, история, пароли и другие настройки пользователя <ph name="FROM_ACCOUNT"/>.</translation>
 <translation id="5524843473235508879">Попытка переадресации заблокирована.</translation>
 <translation id="2367014990350929709">Чтобы выполнить поиск устройств, браузеру Brave нужен доступ к геоданным. <ph name="BEGIN_LINK2"/>Включите доступ<ph name="END_LINK2"/> и <ph name="BEGIN_LINK1"/>обновите разрешения<ph name="END_LINK1"/>.</translation>
-<translation id="5530766185686772672">Закрыть вкладки инкогнито</translation>
 <translation id="5534640966246046842">Адрес сайта скопирован</translation>
 <translation id="5561549206367097665">Поиск сети…</translation>
 <translation id="55737423895878184">Может определять местоположение и отправлять уведомления</translation>
 <translation id="5578795271662203820">Найти это изображение в <ph name="SEARCH_ENGINE"/></translation>
 <translation id="5581519193887989363">Вы всегда можете выбрать, что синхронизировать, в <ph name="BEGIN_LINK1"/>настройках<ph name="END_LINK1"/>.</translation>
 <translation id="5595485650161345191">Изменить адрес</translation>
-<translation id="5599455543593328020">Режим инкогнито</translation>
 <translation id="5620928963363755975">Чтобы найти скачанные файлы и веб-страницы, нажмите кнопку "Ещё" и выберите соответствующий пункт</translation>
 <translation id="5626134646977739690">Имя:</translation>
 <translation id="5639724618331995626">Разрешить доступ ко всем сайтам</translation>
@@ -572,7 +559,6 @@
 <translation id="5726692708398506830">Увеличить масштаб страницы</translation>
 <translation id="5748802427693696783">Переключено на обычные вкладки</translation>
 <translation id="3088191967551450609">Для скачивания файлов браузеру Brave требуется доступ к хранилищу.</translation>
-<translation id="5763382633136178763">Вкладки в режиме инкогнито</translation>
 <translation id="5763514718066511291">Нажмите, чтобы скопировать URL этого приложения.</translation>
 <translation id="5765780083710877561">Описание:</translation>
 <translation id="5793665092639000975">Использовано: <ph name="SPACE_USED"/> из <ph name="SPACE_AVAILABLE"/></translation>
@@ -586,7 +572,7 @@
 <translation id="3888648114124182147">Скачивание обновлений для Brave…</translation>
 <translation id="5853623416121554550">пауза</translation>
 <translation id="5854790677617711513">Сохраненные более 30 дней назад</translation>
-<translation id="5858741533101922242">Не удалось включить адаптер Bluetooth</translation>
+<translation id="998321811308652668">Не удалось включить адаптер Bluetooth</translation>
 <translation id="5860491529813859533">Включить</translation>
 <translation id="5862731021271217234">Чтобы получить доступ к вкладкам на всех устройствах, включите синхронизацию.</translation>
 <translation id="5864174910718532887">Сортировка по названию сайта</translation>
@@ -732,7 +718,7 @@
 <translation id="7063006564040364415">Не удалось связаться с сервером синхронизации</translation>
 <translation id="7071521146534760487">Настройки аккаунта</translation>
 <translation id="7077143737582773186">SD-карта</translation>
-<translation id="7121362699166175603">Удаление истории и вариантов автозаполнения в адресной строке. Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="8096327394278038498">Удаление истории и вариантов автозаполнения в адресной строке. Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="7128355412245153445">Нужные сайты и недавние статьи – одним нажатием кнопки.</translation>
 <translation id="7138678301420049075">Другое</translation>
 <translation id="7146622961999026732">Кажется, следующие сайты и приложения важны для вас:</translation>
@@ -789,11 +775,11 @@
 <translation id="7577900504646297215">Управление интересами</translation>
 <translation id="757855969265046257">{FILES,plural, =1{Скачан <ph name="FILES_DOWNLOADED_ONE"/> файл}one{Скачан <ph name="FILES_DOWNLOADED_MANY"/> файл}few{Скачано <ph name="FILES_DOWNLOADED_MANY"/> файла}many{Скачано <ph name="FILES_DOWNLOADED_MANY"/> файлов}other{Скачано <ph name="FILES_DOWNLOADED_MANY"/> файла}}</translation>
 <translation id="7588219262685291874">Использовать тёмную тему, когда включен режим энергосбережения</translation>
-<translation id="7593557518625677601">Откройте настройки Android и снова включите синхронизацию системы</translation>
+<translation id="3235722914093408050">Откройте настройки Android и снова включите синхронизацию системы</translation>
 <translation id="7596558890252710462">Операционная система</translation>
 <translation id="7605594153474022051">Ошибка синхронизации</translation>
 <translation id="7606077192958116810">Включен упрощенный режим. Вы можете отключить его в настройках.</translation>
-<translation id="7612619742409846846">Вы вошли в аккаунт</translation>
+<translation id="649070405679044769">Вы вошли в аккаунт</translation>
 <translation id="7614971007231847352">QR-код скачан</translation>
 <translation id="7619072057915878432">Не удалось скачать файл <ph name="FILE_NAME"/> из-за сбоев сети.</translation>
 <translation id="7624880197989616768"><ph name="BEGIN_LINK1"/>Справка<ph name="END_LINK1"/> или <ph name="BEGIN_LINK2"/>повторное сканирование<ph name="END_LINK2"/></translation>
@@ -850,7 +836,7 @@
 <translation id="804335162455518893">SD-карта не найдена</translation>
 <translation id="805047784848435650">На основе вашей истории просмотров</translation>
 <translation id="8051695050440594747">Доступно <ph name="MEGABYTES"/> МБ</translation>
-<translation id="8058746566562539958">Открыть в новой вкладке</translation>
+<translation id="2317945146070194624">Открыть в новой вкладке</translation>
 <translation id="8063895661287329888">Не удалось добавить закладку.</translation>
 <translation id="806745655614357130">Не объединять данные</translation>
 <translation id="8067883171444229417">Смотреть видео</translation>
@@ -858,7 +844,6 @@
 <translation id="8073388330009372546">Открыть в новой вкладке</translation>
 <translation id="8076492880354921740">Вкладки</translation>
 <translation id="8084114998886531721">Сохраненный пароль</translation>
-<translation id="8103578431304235997">Вкладка инкогнито</translation>
 <translation id="8105893657415066307"><ph name="DESCRIPTION"/> <ph name="SEPARATOR"/> <ph name="FILE_SIZE"/></translation>
 <translation id="8109613176066109935">Чтобы получить доступ к закладкам на всех устройствах, включите синхронизацию.</translation>
 <translation id="4565206163201411670">Показать данные о ваших действиях в Brave в сервисе "Цифровое благополучие"?</translation>
@@ -877,7 +862,7 @@
 <translation id="8232956427053453090">Не удалять данные</translation>
 <translation id="8233540874193135768">Для сканирования QR-кодов требуется устройство с камерой.</translation>
 <translation id="8250920743982581267">Документы</translation>
-<translation id="825412236959742607">Эта страница расходовала слишком много памяти, поэтому часть контента была удалена.</translation>
+<translation id="5138664332909611586">Эта страница расходовала слишком много памяти, поэтому часть контента была удалена.</translation>
 <translation id="8260126382462817229">Снова войдите в аккаунт</translation>
 <translation id="8261506727792406068">Удалить</translation>
 <translation id="8266862848225348053">Расположение скачиваемых файлов</translation>
@@ -909,7 +894,6 @@
 <translation id="230699814587342492">Пароли Brave</translation>
 <translation id="8503813439785031346">Имя пользователя</translation>
 <translation id="133012818630824069">Экспорт паролей, сохраненных в Brave</translation>
-<translation id="8514577642972634246">Включить режим инкогнито</translation>
 <translation id="8516012719330875537">Редактор изображений</translation>
 <translation id="8523928698583292556">Удалить сохраненный пароль</translation>
 <translation id="854522910157234410">Открыть эту страницу</translation>
@@ -920,7 +904,7 @@
 <translation id="8571213806525832805">Последние 4 недели</translation>
 <translation id="8583805026567836021">Удаление данных аккаунта</translation>
 <translation id="860043288473659153">Имя владельца карты</translation>
-<translation id="8616006591992756292">Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
+<translation id="3245261285041759672">Информация о других ваших действиях в Интернете может также храниться на странице <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="8617240290563765734">Открыть предложенный URL из скачанного контента?</translation>
 <translation id="8636825310635137004">Чтобы получить доступ к вкладкам на всех ваших устройствах, включите синхронизацию.</translation>
 <translation id="8641930654639604085">Блокировать сайты для взрослых</translation>
@@ -955,7 +939,6 @@
 <translation id="8970887620466824814">Произошла ошибка</translation>
 <translation id="8972098258593396643">Скачать в папку по умолчанию?</translation>
 <translation id="8988028529677883095">Использовать телефон в качестве электронного ключа</translation>
-<translation id="8993760627012879038">Открыть новое окно в режиме инкогнито</translation>
 <translation id="2689656545739939160">Вы входите в аккаунт, которым управляет администратор домена <ph name="MANAGED_DOMAIN"/>. Он может контролировать ваши данные Brave, которые теперь будут связаны с управляемым аккаунтом. При выходе из системы все данные Brave, хранящиеся на этом устройстве, будут удалены, но останутся в вашем аккаунте Brave.</translation>
 <translation id="9028914725102941583">Включите синхронизацию</translation>
 <translation id="9040142327097499898">Отправка уведомлений разрешена, но определение местоположения отключено.</translation>
@@ -964,7 +947,7 @@
 <translation id="9063523880881406963">Выключить полную версию сайта</translation>
 <translation id="9065203028668620118">Изменить</translation>
 <translation id="9070377983101773829">Голосовой поиск</translation>
-<translation id="9074336505530349563">Чтобы мы могли рекомендовать вам интересный контент, войдите в аккаунт и включите синхронизацию.</translation>
+<translation id="8494430740943879273">Чтобы мы могли рекомендовать вам интересный контент, войдите в аккаунт и включите синхронизацию.</translation>
 <translation id="9086302186042011942">Выполняется синхронизация</translation>
 <translation id="9086455579313502267">Нет доступа к сети</translation>
 <translation id="9100505651305367705">Предлагать упрощенный просмотр статей, если он поддерживается</translation>
@@ -1001,7 +984,7 @@
 <translation id="3110967157686007724">Личная вкладка</translation>
 <translation id="4526803704855831732">Личные вкладки</translation>
 <translation id="7465104139234185284">Закройте все личные вкладки</translation>
-<translation id="6336451774241870485">Новая личная вкладка</translation>
+<translation id="6336451774241870485">Новая приватная вкладка</translation>
 <translation id="3234355010754616171">Новая личная вкладка</translation>
 <translation id="6610147964972079463">Закрыть личные вкладки</translation>
 <translation id="4968908871398201967">Приватный режим</translation>
