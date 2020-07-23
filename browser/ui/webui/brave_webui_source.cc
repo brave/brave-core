@@ -849,6 +849,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "contributionStepRewardsOff", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_REWARDS_OFF },        // NOLINT
         { "contributionStepAutoContributeOff", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_AUTO_CONTRIBUTE_OFF },        // NOLINT
         { "contributionStepRetryCount", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_RETRY_COUNT },        // NOLINT
+        { "mainDisclaimer", IDS_BRAVE_REWARDS_INTERNALS_MAIN_DISCLAIMER },
         { "rewardsNotEnabled", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED },                // NOLINT
         { "rewardsTypeAuto", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO },                    // NOLINT
         { "rewardsTypeOneTimeTip", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP },      // NOLINT
