@@ -27,11 +27,14 @@ class DAUTests: XCTestCase {
         let externalBetaExpected = URLQueryItem(name: "channel", value: "beta")
         XCTAssertEqual(dau.channelParam(for: .beta), externalBetaExpected)
         
-        let internalBetaExpected = URLQueryItem(name: "channel", value: "developer")
-        XCTAssertEqual(dau.channelParam(for: .enterprise), internalBetaExpected)
+        let devExpected = URLQueryItem(name: "channel", value: "developer")
+        XCTAssertEqual(dau.channelParam(for: .dev), devExpected)
         
-        let devExpected = URLQueryItem(name: "channel", value: "invalid")
-        XCTAssertEqual(dau.channelParam(for: .developer), devExpected)
+        let debugExpected = URLQueryItem(name: "channel", value: "invalid")
+        XCTAssertEqual(dau.channelParam(for: .debug), debugExpected)
+        
+        let enterpriseExpected = URLQueryItem(name: "channel", value: "invalid")
+        XCTAssertEqual(dau.channelParam(for: .enterprise), enterpriseExpected)
     }
     
     func testVersionParam() {
@@ -300,7 +303,7 @@ class DAUTests: XCTestCase {
     }
     
     func testNoPingOnDevelopmentBuild() {
-        XCTAssertTrue(AppConstants.buildChannel == .developer)
+        XCTAssertTrue(AppConstants.buildChannel == .debug)
         
         let dau = DAU()
         XCTAssertFalse(dau.sendPingToServer())

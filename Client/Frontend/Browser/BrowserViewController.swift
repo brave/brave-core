@@ -168,7 +168,7 @@ class BrowserViewController: UIViewController {
                     configuration = .staging
                 }
             } else {
-                configuration = AppConstants.buildChannel == .developer ? .staging : .production
+                configuration = AppConstants.buildChannel == .debug ? .staging : .production
             }
         }
         rewards = BraveRewards(configuration: configuration)
