@@ -20,9 +20,9 @@ import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationPublisher;
-import org.chromium.components.browser_ui.notifications.ChromeNotification;
 import org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl;
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
+import org.chromium.components.browser_ui.notifications.NotificationWrapper;
 import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
 import org.chromium.chrome.browser.BraveActivity;
 
@@ -57,7 +57,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
         .setContentIntent(getDeepLinkIntent(context))
         .setOrigin(getNotificationUrl());
 
-        ChromeNotification notification = notificationBuilder.build(new NotificationMetadata(
+        NotificationWrapper notification = notificationBuilder.build(new NotificationMetadata(
                                               NotificationUmaTracker.SystemNotificationType
                                               .UNKNOWN /* Underlying code doesn't track UNKNOWN */,
                                               BRAVE_ONBOARDING_NOTIFICATION_TAG /* notificationTag */,

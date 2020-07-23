@@ -15,12 +15,13 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
 import android.view.TouchDelegate;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
