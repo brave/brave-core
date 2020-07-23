@@ -123,7 +123,8 @@ def main():
         logging.info("Running command: \"{}\"".format(log_cmd))
         try:
             p1 = subprocess.Popen(['echo'], stdout=subprocess.PIPE)
-            env['GNUPGHOME'] = "$HOME/.gnupg-release"
+            env = {}
+            env['GNUPGHOME'] = "/home/ubuntu/.gnupg-release"
             p2 = subprocess.Popen(cmd, stdin=p1.stdout, stdout=subprocess.PIPE, shell=True, env=env)
             p1.stdout.close()
             (stdoutdata, stderrdata) = p2.communicate()
