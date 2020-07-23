@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // Feature-specific components
 import * as Card from './style'
+// import CardImage from '../CardImage'
 import { Debugger } from '../../default'
 
 interface Props {
@@ -59,7 +60,7 @@ class CardBrandedList extends React.PureComponent<Props, {}> {
                       </Card.Heading>
                       <Card.Time>{item.relative_time}</Card.Time>
                     </Card.Content>
-                    <Card.Image src={item.img} alt='' />
+                    {/* <CardImage imageUrl={item.img} size={null} /> */}
                   </a>
                 </Card.ListItem>
             )

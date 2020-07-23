@@ -4,19 +4,31 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import { createReducer } from 'redux-act'
+import { init } from '../../actions/new_tab_actions'
 import * as Actions from '../../actions/today_actions'
 
 const defaultState: NewTab.BraveTodayState = {
-  isLoaded: false,
-  isLoading: true
+  isFetching: true,
 }
 
 const reducer = createReducer<NewTab.BraveTodayState>({}, defaultState)
 
 export default reducer
 
-reducer.on(Actions.init, (state, payload) => ({
+reducer.on(init, (state, payload) => ({
   ...state,
-  isLoading: true
+  isFetching: true
 }))
 
+reducer.on(Actions.errorGettingDataFromBackground, (state, payload) => ({
+  ...state,
+  isFetching: (payload && payload.error && payload.error.message) || 'Unknown error.',
+}))
+
+reducer.on(Actions.dataReceived, (state, payload) => {
+  return {
+    ...state,
+    isFetching: false,
+    feed: payload.feed
+  }
+})

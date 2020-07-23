@@ -10,6 +10,7 @@ import * as geminiActions from '../actions/gemini_actions'
 import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
 import * as cryptoDotComActions from '../actions/cryptoDotCom_actions'
 import * as stackWidgetActions from '../actions/stack_widget_actions'
+import * as todayActions from '../actions/today_actions'
 
 export const enum types {
   NEW_TAB_STATS_UPDATED = '@@newtab/NEW_TAB_STATS_UPDATED',
@@ -36,4 +37,5 @@ export type NewTabActions =
   typeof geminiActions &
   typeof bitcoinDotComActions &
   typeof cryptoDotComActions &
-  typeof stackWidgetActions
+  typeof stackWidgetActions &
+  typeof todayActions

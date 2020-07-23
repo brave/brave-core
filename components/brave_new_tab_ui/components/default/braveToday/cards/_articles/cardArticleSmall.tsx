@@ -6,8 +6,6 @@
 import * as React from 'react'
 
 // Feature-specific components
-// Utils
-import { generateRelativeTimeFormat } from '../../../../helpers/braveTodayUtils'
 import * as Card from '../../cardSizes'
 import { Debugger } from '../../default'
 
@@ -44,7 +42,7 @@ class CardSingleArticleSmall extends React.PureComponent<Props, {}> {
                   <Card.Content>
                     <Card.Text>
                       {item.title}
-                      <Card.Time>{generateRelativeTimeFormat(item.publish_time)}</Card.Time>
+                      <Card.Time>{item.relative_time}</Card.Time>
                     </Card.Text>
                   </Card.Content>
                 </a>

@@ -25,7 +25,7 @@ class CardMedia extends React.PureComponent<Props, {}> {
         <Card.MediaLink>
           <Debugger>this is a MEDIA type</Debugger>
           <a href={content.url} rel='nofererrer noopener'>
-            <img src={content.img} alt='' />
+            <img alt='' />
           </a>
         </Card.MediaLink>
     )

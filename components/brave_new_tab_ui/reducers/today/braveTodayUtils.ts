@@ -1,4 +1,7 @@
-import { formatDistanceToNow } from 'date-fns'
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 export function chunknizer (arr: any[], chunkSize: number) {
   return arr.reduce((acc, _, i) => {
@@ -53,11 +56,3 @@ export function shuffleCategorynames () {
   // TODO return storted out category names in a array
 }
 
-export function generateRelativeTimeFormat (publishTime: string) {
-  if (!publishTime) {
-    return
-  }
-  return formatDistanceToNow(
-    new Date(publishTime)
-  ) + ' ago'
-}

@@ -20,6 +20,7 @@ import * as geminiActions from '../actions/gemini_actions'
 import * as bitcoinDotComActions from '../actions/bitcoin_dot_com_actions'
 import * as cryptoDotComActions from '../actions/cryptoDotCom_actions'
 import * as stackWidgetActions from '../actions/stack_widget_actions'
+import * as todayActions from '../actions/today_actions'
 import * as PreferencesAPI from '../api/preferences'
 
 // Types
@@ -29,11 +30,12 @@ interface Props {
   actions: NewTabActions
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
+  braveTodayData: NewTab.BraveTodayState
 }
 
 class DefaultPage extends React.Component<Props, {}> {
   render () {
-    const { newTabData, gridSitesData, actions } = this.props
+    const { newTabData, braveTodayData, gridSitesData, actions } = this.props
 
     // don't render if user prefers an empty page
     if (this.props.newTabData.showEmptyPage && !this.props.newTabData.isIncognito) {
@@ -45,6 +47,7 @@ class DefaultPage extends React.Component<Props, {}> {
       : (
         <NewTabPage
           newTabData={newTabData}
+          todayData={braveTodayData}
           gridSitesData={gridSitesData}
           actions={actions}
           saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
@@ -62,13 +65,14 @@ class DefaultPage extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: NewTab.ApplicationState) => ({
+const mapStateToProps = (state: NewTab.ApplicationState): Partial<Props> => ({
   newTabData: state.newTabData,
-  gridSitesData: state.gridSitesData
+  gridSitesData: state.gridSitesData,
+  braveTodayData: state.today
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  const allActions = Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions)
+const mapDispatchToProps = (dispatch: Dispatch): Partial<Props> => {
+  const allActions = Object.assign({}, newTabActions, stackWidgetActions, gridSitesActions, binanceActions, rewardsActions, geminiActions, bitcoinDotComActions, cryptoDotComActions, todayActions)
   return {
     actions: bindActionCreators(allActions, dispatch)
   }
