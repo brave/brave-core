@@ -386,6 +386,7 @@
 		27A9068B23D65E0E005D7609 /* PendingContributionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27A9068A23D65E0E005D7609 /* PendingContributionCell.swift */; };
 		27AC169323834175004BE19C /* MonthlyAdsGrantReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AC168F23833A16004BE19C /* MonthlyAdsGrantReminder.swift */; };
 		27AC169823834510004BE19C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27AC169623834510004BE19C /* UserNotifications.framework */; };
+		27AC7CFA24C77EBC00441317 /* FeedActionAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27AC7CF924C77EBC00441317 /* FeedActionAlertView.swift */; };
 		27B0C7B523D24BAA00B9EA3D /* AutoContributeExclusionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7B323D24BAA00B9EA3D /* AutoContributeExclusionListController.swift */; };
 		27B0C7B823D2555C00B9EA3D /* ExclusionListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7B623D2555C00B9EA3D /* ExclusionListCell.swift */; };
 		27B0C7BC23D604C500B9EA3D /* AutoContributeSupportedListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B0C7BA23D604C500B9EA3D /* AutoContributeSupportedListController.swift */; };
@@ -1764,6 +1765,7 @@
 		27AC168F23833A16004BE19C /* MonthlyAdsGrantReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyAdsGrantReminder.swift; sourceTree = "<group>"; };
 		27AC169623834510004BE19C /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		27AC7CF724C759BE00441317 /* Enterprise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Enterprise.entitlements; sourceTree = "<group>"; };
+		27AC7CF924C77EBC00441317 /* FeedActionAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedActionAlertView.swift; sourceTree = "<group>"; };
 		27B0C7B323D24BAA00B9EA3D /* AutoContributeExclusionListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoContributeExclusionListController.swift; sourceTree = "<group>"; };
 		27B0C7B623D2555C00B9EA3D /* ExclusionListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExclusionListCell.swift; sourceTree = "<group>"; };
 		27B0C7BA23D604C500B9EA3D /* AutoContributeSupportedListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoContributeSupportedListController.swift; sourceTree = "<group>"; };
@@ -3740,6 +3742,7 @@
 				27A1AC0A2485A0CC00344503 /* Composer */,
 				27EF6B7D24BF48B1005E034F /* Source List */,
 				2726637224981B5F0056CFE1 /* BraveTodaySectionHeaderView.swift */,
+				27AC7CF924C77EBC00441317 /* FeedActionAlertView.swift */,
 			);
 			path = "Brave Today";
 			sourceTree = "<group>";
@@ -6834,6 +6837,7 @@
 				D31CF65C1CC1959A001D0BD0 /* PrivilegedRequest.swift in Sources */,
 				0A764F31230EE5CA003A1D9B /* OnboardingState.swift in Sources */,
 				D8D33A7D1FBD080300A20A28 /* SnapKitExtensions.swift in Sources */,
+				27AC7CFA24C77EBC00441317 /* FeedActionAlertView.swift in Sources */,
 				E650755C1E37F747006961AC /* Swizzling.m in Sources */,
 				2719DA09249D37490080AB48 /* SponsorCardView.swift in Sources */,
 				D3B6923D1B9F9444004B87A4 /* FindInPageBar.swift in Sources */,

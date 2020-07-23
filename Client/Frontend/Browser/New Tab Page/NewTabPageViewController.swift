@@ -166,7 +166,15 @@ class NewTabPageViewController: UIViewController, Themeable {
             )
         case .toggleSource:
             feedDataSource.toggleSource(context.item.source, enabled: !context.item.source.enabled)
-            collectionView.reloadItems(at: collectionView.indexPathsForVisibleItems)
+            collectionView.reloadData()
+            if context.item.source.enabled {
+                let alert = FeedActionAlertView(
+                    image: UIImage(imageLiteralResourceName: "disable.feed.source.alert"),
+                    title: "Disabled", // FIXME: Localize
+                    message: "Brave Today will stop showing content from \(context.item.source.name)" // FIXME: Localize
+                )
+                alert.present(on: self)
+            }
         case .longPressed(let context):
             let alertController = UIAlertController(
                 title: context.title,
