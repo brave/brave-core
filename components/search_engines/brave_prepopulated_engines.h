@@ -33,7 +33,7 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_AMAZON = 500,     // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
 #if defined(OS_ANDROID)
-  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
+  PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,  // No longer in defaults (7/2020).
 #endif
   PREPOPULATED_ENGINE_ID_ECOSIA,           // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_FINDX,            // No longer exists (11/2018).
