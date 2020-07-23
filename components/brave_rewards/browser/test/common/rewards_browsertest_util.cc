@@ -38,13 +38,18 @@ double IsRewardsEnabled(Browser* browser, const bool private_window) {
 }
 
 GURL GetRewardsUrl() {
-  GURL rewards_url("brave://rewards");
-  return rewards_url;
+  GURL url("brave://rewards");
+  return url;
+}
+
+GURL GetRewardsInternalsUrl() {
+  GURL url("brave://rewards-internals");
+  return url;
 }
 
 GURL GetNewTabUrl() {
-  GURL new_tab_url("brave://newtab");
-  return new_tab_url;
+  GURL url("brave://newtab");
+  return url;
 }
 
 void EnableRewardsViaCode(

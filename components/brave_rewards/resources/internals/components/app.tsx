@@ -119,6 +119,7 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
       <Wrapper id='rewardsInternalsPage'>
         <MainTitle level={2}>{getLocale('mainTitle')}</MainTitle>
         <Tabs
+          id={'internals-tabs'}
           activeTabId={this.state.currentTabId}
           onChange={this.onTabChange}
         >

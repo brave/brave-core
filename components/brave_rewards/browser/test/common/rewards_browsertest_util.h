@@ -25,6 +25,8 @@ double IsRewardsEnabled(Browser* browser, const bool private_window = false);
 
 GURL GetRewardsUrl();
 
+GURL GetRewardsInternalsUrl();
+
 GURL GetNewTabUrl();
 
 void EnableRewardsViaCode(

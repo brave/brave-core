@@ -95,7 +95,7 @@ export const Contribution = (props: Props) => (
     <div>
       {getLocale('contributionProcessor')} {getProcessorString(props.contribution.processor)}
     </div>
-    <ContributionPublishersWrapper>
+    <ContributionPublishersWrapper data-test-id={'publisher-wrapper'}>
       {props.contribution.publishers.map((item: RewardsInternals.ContributionPublisher) => (
         <ContributionPublisher publisher={item} key={`publisher-${item.publisherKey}`} />
       ))}
