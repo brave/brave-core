@@ -2,48 +2,38 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// clang-format off
-// #import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
-// clang-format on
+import {addSingletonGetter, sendWithPromise} from 'chrome://resources/js/cr.m.js';
 
-cr.define('settings', function() {
-  /** @interface */
-  /* #export */ class BraveAppearanceBrowserProxy {
-    /**
-     * @return {!Promise<Array>}
-     */
-    getBraveThemeList() {}
-    /**
-     * @return {!Promise<Number>}
-     */
-    getBraveThemeType() {}
-    /**
-     * @param {Number} type
-     */
-    setBraveThemeType(value) {}
-  }
-
+/** @interface */
+export class BraveAppearanceBrowserProxy {
   /**
-   * @implements {settings.BraveAppearanceBrowserProxy}
+   * @return {!Promise<Array>}
    */
-  /* #export */ class BraveAppearanceBrowserProxyImpl {
-    /** @override */
-    getBraveThemeList() {
-      return new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))
-    }
-    getBraveThemeType() {
-      return cr.sendWithPromise('getBraveThemeType');
-    }
-    setBraveThemeType(value) {
-      chrome.send('setBraveThemeType', [value]);
-    }
+  getBraveThemeList() {}
+  /**
+   * @return {!Promise<Number>}
+   */
+  getBraveThemeType() {}
+  /**
+   * @param {Number} type
+   */
+  setBraveThemeType(value) {}
+}
+
+/**
+ * @implements {BraveAppearanceBrowserProxy}
+ */
+export class BraveAppearanceBrowserProxyImpl {
+  /** @override */
+  getBraveThemeList() {
+    return new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))
   }
+  getBraveThemeType() {
+    return sendWithPromise('getBraveThemeType');
+  }
+  setBraveThemeType(value) {
+    chrome.send('setBraveThemeType', [value]);
+  }
+}
 
-  cr.addSingletonGetter(BraveAppearanceBrowserProxyImpl);
-
-  // #cr_define_end
-  return {
-    BraveAppearanceBrowserProxy: BraveAppearanceBrowserProxy,
-    BraveAppearanceBrowserProxyImpl: BraveAppearanceBrowserProxyImpl,
-  };
-});
+addSingletonGetter(BraveAppearanceBrowserProxyImpl);

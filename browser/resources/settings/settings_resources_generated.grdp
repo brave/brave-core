@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <grit-part>
   <!-- Polymer 3.0 Elements -->
-  <include name="IDR_SETTINGS_BRAVE_APPEARANCE_BROWSER_PROXY_M_JS"
-          file="${root_gen_dir}/brave/browser/resources/settings/brave_appearance_page/brave_appearance_browser_proxy.m.js"
+  <include name="IDR_SETTINGS_BRAVE_THEME_JS"
+          file="${root_gen_dir}/brave/browser/resources/settings/brave_appearance_page/brave_theme.js"
           use_base_dir="false"
           preprocess="true"
           compress="false"
           type="BINDATA" />
-  <include name="IDR_SETTINGS_BRAVE_THEME_M_JS"
-          file="${root_gen_dir}/brave/browser/resources/settings/brave_appearance_page/brave_theme.m.js"
+  <include name="IDR_SETTINGS_SUPER_REFERRAL_JS"
+          file="${root_gen_dir}/brave/browser/resources/settings/brave_appearance_page/super_referral.js"
           use_base_dir="false"
           preprocess="true"
           compress="false"
           type="BINDATA" />
-  <include name="IDR_SETTINGS_SUPER_REFERRAL_M_JS"
-          file="${root_gen_dir}/brave/browser/resources/settings/brave_appearance_page/super_referral.m.js"
-          use_base_dir="false"
-          preprocess="true"
-          compress="false"
-          type="BINDATA" />
-  <include name="IDR_SETTINGS_TOOLBAR_M_JS"
-          file="${root_gen_dir}/brave/browser/resources/settings/brave_appearance_page/toolbar.m.js"
+  <include name="IDR_SETTINGS_TOOLBAR_JS"
+          file="${root_gen_dir}/brave/browser/resources/settings/brave_appearance_page/toolbar.js"
           use_base_dir="false"
           preprocess="true"
           compress="false"
