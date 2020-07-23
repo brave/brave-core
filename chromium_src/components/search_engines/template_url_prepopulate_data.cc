@@ -77,9 +77,6 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO, &duckduckgo},
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE, &duckduckgo_de},
         {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE, &duckduckgo_au_nz_ie},
-#if defined(OS_ANDROID)
-        {PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE, &duckduckgo_lite},
-#endif
         {PREPOPULATED_ENGINE_ID_QWANT, &qwant},
         {PREPOPULATED_ENGINE_ID_STARTPAGE, &startpage},
 };
@@ -89,9 +86,6 @@ std::vector<BravePrepopulatedEngineID> brave_engines_default = {
     PREPOPULATED_ENGINE_ID_YAHOO,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-#if defined(OS_ANDROID)
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
-#endif
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_BING,
     PREPOPULATED_ENGINE_ID_STARTPAGE,
@@ -101,9 +95,6 @@ std::vector<BravePrepopulatedEngineID> brave_engines_default = {
 std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
     PREPOPULATED_ENGINE_ID_YAHOO,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
-#if defined(OS_ANDROID)
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
-#endif
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_BING,
@@ -115,9 +106,6 @@ std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-#if defined(OS_ANDROID)
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
-#endif
     PREPOPULATED_ENGINE_ID_BING,
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
@@ -125,9 +113,6 @@ std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
 std::vector<BravePrepopulatedEngineID> brave_engines_AU_NZ_IE = {
     PREPOPULATED_ENGINE_ID_YAHOO,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
-#if defined(OS_ANDROID)
-    PREPOPULATED_ENGINE_ID_DUCKDUCKGO_LITE,
-#endif
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_BING,
