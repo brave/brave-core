@@ -12,6 +12,7 @@
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
 #include "brave/components/brave_wayback_machine/wayback_machine_url_fetcher.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
@@ -20,6 +21,7 @@
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/chrome_typography.h"
 #include "components/grit/components_scaled_resources.h"
+#include "components/infobars/core/infobar.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/storage_partition.h"
@@ -50,10 +52,8 @@ constexpr int kSadFolderSize = 22;
 }  // namespace
 
 BraveWaybackMachineInfoBarContentsView::BraveWaybackMachineInfoBarContentsView(
-    infobars::InfoBar* infobar,
     content::WebContents* contents)
-    : infobar_(infobar),
-      contents_(contents),
+    : contents_(contents),
       wayback_machine_url_fetcher_(
           this,
           content::BrowserContext::GetDefaultStoragePartition(
@@ -104,7 +104,22 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
 
   LoadURL(latest_wayback_url);
   // After loading to archived url, don't need to show infobar anymore.
-  InfoBarService::FromWebContents(contents_)->RemoveInfoBar(infobar_);
+  HideInfobar();
+}
+
+void BraveWaybackMachineInfoBarContentsView::HideInfobar() {
+  InfoBarService* infobar_service = InfoBarService::FromWebContents(contents_);
+  if (!infobar_service)
+    return;
+
+  for (size_t i = 0; i < infobar_service->infobar_count(); ++i) {
+    infobars::InfoBar* infobar = infobar_service->infobar_at(i);
+    if (infobar->delegate()->GetIdentifier() ==
+        BraveWaybackMachineInfoBarDelegate::WAYBACK_MACHINE_INFOBAR_DELEGATE) {
+      infobar_service->RemoveInfoBar(infobar);
+      break;
+    }
+  }
 }
 
 void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
