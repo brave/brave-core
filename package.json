@@ -24,9 +24,8 @@
     "chromium_rebase_l10n": "node ./build/commands/scripts/commands.js chromium_rebase_l10n",
     "lint": "node ./build/commands/scripts/commands.js lint",
     "test": "node ./build/commands/scripts/commands.js test",
-    "test:scripts": "jest lib scripts",
+    "test:scripts": "jest build/commands/lib build/commands/scripts",
     "test-security": "npm run audit_deps && node ./build/commands/scripts/commands.js start --enable_brave_update --network_log --user_data_dir_name=brave-network-test",
-
 
     "lint-js": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
     "pep8": "pycodestyle --max-line-length 120 -r script",
