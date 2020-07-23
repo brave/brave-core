@@ -9,9 +9,9 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -116,35 +116,21 @@ void UpholdAuthorization::OnAuthorize(
     ledger::ExternalWalletAuthorizationCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
+  std::string token;
+  const ledger::Result result =
+      braveledger_response_util::ParseUpholdAuthorization(response, &token);
+
+  if (result == ledger::Result::EXPIRED_TOKEN) {
+    BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN, {});
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Couldn't get token");
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
-  }
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_dict()) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, {});
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, {});
-    return;
-  }
-
-  std::string token;
-  const auto* access_token = dictionary->FindStringKey("access_token");
-  if (access_token) {
-    token = *access_token;
   }
 
   if (token.empty()) {

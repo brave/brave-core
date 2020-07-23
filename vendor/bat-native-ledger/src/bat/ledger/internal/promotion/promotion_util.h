@@ -23,11 +23,6 @@ ledger::PromotionType ConvertStringToPromotionType(const std::string& type);
 ledger::ReportType ConvertPromotionTypeToReportType(
     const ledger::PromotionType type);
 
-ledger::Result ParseFetchResponse(
-    const std::string& response,
-    ledger::PromotionList* list,
-    std::vector<std::string>* corrupted_promotions);
-
 std::vector<ledger::PromotionType> GetEligiblePromotions();
 
 }  // namespace braveledger_promotion

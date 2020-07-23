@@ -11,22 +11,22 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/bat_util.h"
-#include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/internal/legacy/wallet_info_properties.h"
-#include "bat/ledger/internal/request/request_promotion.h"
-#include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
-#include "bat/ledger/internal/promotion/promotion_util.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
+#include "bat/ledger/internal/promotion/promotion_util.h"
+#include "bat/ledger/internal/request/request_promotion.h"
+#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/response/response_promotion.h"
+#include "bat/ledger/internal/state/state_keys.h"
+#include "bat/ledger/internal/static_values.h"
 #include "brave_base/random.h"
-#include "net/http/http_status_code.h"
 
 #include "wrapper.hpp"  // NOLINT
 
@@ -174,7 +174,10 @@ void Promotion::OnFetch(
 
   ledger::PromotionList list;
 
-  if (response.status_code == net::HTTP_NOT_FOUND) {
+  const ledger::Result result =
+      braveledger_response_util::CheckFetchPromotions(response);
+
+  if (result == ledger::Result::NOT_FOUND) {
     ProcessFetchedPromotions(
         ledger::Result::NOT_FOUND,
         std::move(list),
@@ -182,7 +185,7 @@ void Promotion::OnFetch(
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
+  if (result != ledger::Result::LEDGER_OK) {
     ProcessFetchedPromotions(
         ledger::Result::LEDGER_ERROR,
         std::move(list),
@@ -193,7 +196,7 @@ void Promotion::OnFetch(
   auto all_callback = std::bind(&Promotion::OnGetAllPromotions,
       this,
       _1,
-      response.body,
+      response,
       callback);
 
   ledger_->GetAllPromotions(all_callback);
@@ -201,16 +204,17 @@ void Promotion::OnFetch(
 
 void Promotion::OnGetAllPromotions(
     ledger::PromotionMap promotions,
-    const std::string& response,
+    const ledger::UrlResponse& response,
     ledger::FetchPromotionCallback callback) {
   HandleExpiredPromotions(ledger_, &promotions);
 
   ledger::PromotionList list;
   std::vector<std::string> corrupted_promotions;
-  ledger::Result result = ParseFetchResponse(
-      response,
-      &list,
-      &corrupted_promotions);
+  const ledger::Result result =
+      braveledger_response_util::ParseFetchPromotions(
+          response,
+          &list,
+          &corrupted_promotions);
 
   if (result == ledger::Result::LEDGER_ERROR) {
     BLOG(0, "Failed to parse promotions");
@@ -728,7 +732,10 @@ void Promotion::OnCheckForCorrupted(
     const std::vector<std::string>& promotion_id_list) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_OK) {
+  const ledger::Result result =
+      braveledger_response_util::CheckCorruptedPromotions(response);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Failed to parse corrupted promotions response");
     return;
   }
 

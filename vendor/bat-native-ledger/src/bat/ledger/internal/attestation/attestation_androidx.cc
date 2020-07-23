@@ -8,10 +8,10 @@
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
-#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/attestation/attestation_androidx.h"
+#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_attestation.h"
-#include "net/http/http_status_code.h"
+#include "bat/ledger/internal/response/response_attestation.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -91,7 +91,10 @@ void AttestationAndroid::OnStart(
     StartCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_OK) {
+  const ledger::Result result =
+      braveledger_response_util::CheckStartAttestation(response);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Failed to start attestation");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -139,8 +142,11 @@ void AttestationAndroid::OnConfirm(
     ConfirmCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR);
+  const ledger::Result result =
+      braveledger_response_util::CheckConfirmAttestation(response);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Failed to confirm attestation");
+    callback(result);
     return;
   }
 

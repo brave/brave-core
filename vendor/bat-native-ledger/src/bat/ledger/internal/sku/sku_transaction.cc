@@ -11,9 +11,9 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_sku.h"
+#include "bat/ledger/internal/response/response_sku.h"
 #include "bat/ledger/internal/sku/sku_transaction.h"
 #include "bat/ledger/internal/sku/sku_util.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -212,9 +212,10 @@ void SKUTransaction::OnSendExternalTransaction(
     ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_CREATED) {
+  const ledger::Result result =
+      braveledger_response_util::CheckSendExternalTransaction(response);
+  if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "External transaction not sent");
-
     callback(ledger::Result::RETRY);
     return;
   }

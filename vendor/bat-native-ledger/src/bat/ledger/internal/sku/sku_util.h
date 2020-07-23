@@ -13,10 +13,6 @@
 
 namespace braveledger_sku {
 
-ledger::SKUOrderPtr ParseOrderCreateResponse(
-    const std::string& response,
-    const std::vector<ledger::SKUOrderItem>& order_items);
-
 std::string ConvertTransactionTypeToString(
     const ledger::SKUTransactionType type);
 

@@ -11,9 +11,9 @@
 #include "base/values.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -67,45 +67,19 @@ void UpholdCard::OnCreateIfNecessary(
     CreateCardCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
+  std::string id;
+  const ledger::Result result =
+      braveledger_response_util::ParseUpholdGetCards(response, kCardName, &id);
+
+  if (result == ledger::Result::EXPIRED_TOKEN) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR, "");
+  if (result == ledger::Result::LEDGER_OK && !id.empty()) {
+    callback(ledger::Result::LEDGER_OK, id);
     return;
-  }
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_list()) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  base::ListValue* list = nullptr;
-  if (!value->GetAsList(&list)) {
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  for (const auto& it : list->GetList()) {
-    const auto* label = it.FindStringKey("label");
-    if (!label) {
-      continue;
-    }
-
-    if (*label == kCardName) {
-      const auto* id = it.FindStringKey("id");
-      if (!id) {
-        continue;
-      }
-
-      callback(ledger::Result::LEDGER_OK, *id);
-      return;
-    }
   }
 
   Create(callback);
@@ -148,34 +122,19 @@ void UpholdCard::OnCreate(
     CreateCardCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
+  std::string id;
+  const ledger::Result result =
+      braveledger_response_util::ParseUpholdGetCard(response, &id);
+
+  if (result == ledger::Result::EXPIRED_TOKEN) {
+    BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_dict()) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR, "");
-    return;
-  }
-
-  const auto* id = dictionary->FindStringKey("id");
-  if (!id) {
-    BLOG(0, "ID not found");
+  if (result != ledger::Result::LEDGER_OK || id.empty()) {
+    BLOG(0, "Couldn't create anon card address");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
@@ -187,7 +146,7 @@ void UpholdCard::OnCreate(
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
-  wallet_ptr->address = *id;
+  wallet_ptr->address = id;
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_ptr->Clone());
 
   auto update_callback = std::bind(&UpholdCard::OnCreateUpdate,
@@ -263,13 +222,19 @@ void UpholdCard::OnUpdate(
     UpdateCardCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
+  std::string id;
+  const ledger::Result result =
+      braveledger_response_util::ParseUpholdCreateCard(response, &id);
+
+  if (result == ledger::Result::EXPIRED_TOKEN) {
+    BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN);
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Couldn't update rewards card");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -307,77 +272,31 @@ void UpholdCard::GetCardAddresses(
       address_callback);
 }
 
-std::map<std::string, std::string> UpholdCard::ParseGetCardAddressResponse(
-    const std::string& response) {
-  std::map<std::string, std::string> results;
-
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
-  if (!dictionary || !dictionary->is_list()) {
-    BLOG(0, "JSON is not correct");
-    return results;
-  }
-
-  base::ListValue* addresses = nullptr;
-  if (!dictionary->GetAsList(&addresses)) {
-    BLOG(0, "JSON is not correct");
-    return results;
-  }
-
-  for (auto& address_item : *addresses) {
-    base::DictionaryValue* address = nullptr;
-    if (!address_item.GetAsDictionary(&address)) {
-      continue;
-    }
-
-    const auto* type_key = address->FindStringKey("type");
-    if (!type_key) {
-      continue;
-    }
-    const std::string type = *type_key;
-
-    auto* formats = address->FindListKey("formats");
-    if (!formats) {
-      continue;
-    }
-
-    if (formats->GetList().size() == 0) {
-      continue;
-    }
-
-    base::DictionaryValue* format = nullptr;
-    if (!formats->GetList()[0].GetAsDictionary(&format)) {
-      continue;
-    }
-
-    const auto* address_value = format->FindStringKey("value");
-    if (!address_value) {
-      continue;
-    }
-
-    results.insert(std::make_pair(type, *address_value));
-  }
-
-  return results;
-}
-
 void UpholdCard::OnGetCardAddresses(
     const ledger::UrlResponse& response,
     GetCardAddressesCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
-    callback(ledger::Result::EXPIRED_TOKEN,  {});
+  std::map<std::string, std::string> addresses;
+  const ledger::Result result =
+      braveledger_response_util::ParseUpholdGetCardAddresses(
+          response,
+          &addresses);
+
+  if (result == ledger::Result::EXPIRED_TOKEN) {
+    BLOG(0, "Expired token");
+    callback(ledger::Result::EXPIRED_TOKEN, {});
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR,  {});
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Couldn't get card addresses");
+    callback(ledger::Result::LEDGER_ERROR, {});
     return;
   }
 
-  auto result = ParseGetCardAddressResponse(response.body);
-  callback(ledger::Result::LEDGER_OK, result);
+  callback(ledger::Result::LEDGER_OK, addresses);
 }
 
 void UpholdCard::CreateAnonAddressIfNecessary(ledger::ResultCallback callback) {
@@ -455,34 +374,18 @@ void UpholdCard::OnCreateAnonAddress(
     ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_UNAUTHORIZED) {
+  std::string id;
+  const ledger::Result result =
+      braveledger_response_util::ParseUpholdCreateCard(response, &id);
+  if (result == ledger::Result::EXPIRED_TOKEN) {
+    BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN);
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_dict()) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Response is not JSON");
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  const auto* id = dictionary->FindStringKey("id");
-  if (!id) {
-    BLOG(0, "ID not found");
+  if (result != ledger::Result::LEDGER_OK || id.empty()) {
+    BLOG(0, "Couldn't create anon address");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
@@ -495,7 +398,7 @@ void UpholdCard::OnCreateAnonAddress(
     return;
   }
 
-  wallet->anon_address = *id;
+  wallet->anon_address = id;
   ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
   callback(ledger::Result::LEDGER_OK);
 }

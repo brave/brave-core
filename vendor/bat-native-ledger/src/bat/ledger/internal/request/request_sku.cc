@@ -61,7 +61,7 @@ std::string GetCreateTransactionURL(
   return BuildUrl(path, PREFIX_V1, ServerTypes::kPayments);
 }
 
-std::string GetReedemSKUUrl() {
+std::string GetRedeemSKUUrl() {
   return BuildUrl("/votes", PREFIX_V1, ServerTypes::kPayments);
 }
 

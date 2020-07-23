@@ -19,6 +19,7 @@
 #include "bat/ledger/internal/legacy/unsigned_tx_state.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/response/response_wallet.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
@@ -27,7 +28,6 @@
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
-#include "net/http/http_status_code.h"
 
 #include "wally_bip39.h"  // NOLINT
 
@@ -152,16 +152,10 @@ void Wallet::OnTransferAnonToExternalWallet(
     ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code == net::HTTP_OK) {
-    callback(ledger::Result::LEDGER_OK);
-    return;
-  }
-  if (response.status_code == net::HTTP_CONFLICT) {
-    callback(ledger::Result::ALREADY_EXISTS);
-    return;
-  }
+  const ledger::Result result =
+      braveledger_response_util::CheckTransferAnonToExternalWallet(response);
 
-  callback(ledger::Result::LEDGER_ERROR);
+  callback(result);
 }
 
 void Wallet::TransferAnonToExternalWallet(

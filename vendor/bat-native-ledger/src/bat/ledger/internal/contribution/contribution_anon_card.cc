@@ -14,9 +14,9 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_sku.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/response/response_sku.h"
 #include "bat/ledger/internal/sku/sku_util.h"
 #include "bat/ledger/internal/state/state_util.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -122,7 +122,9 @@ void ContributionAnonCard::OnSendTransaction(
     ledger::TransactionCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_CREATED) {
+  const ledger::Result result =
+      braveledger_response_util::CheckSendExternalTransaction(response);
+  if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Problem sending transaction");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;

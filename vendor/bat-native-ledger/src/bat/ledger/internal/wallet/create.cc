@@ -16,8 +16,8 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/response/response_wallet.h"
 #include "bat/ledger/internal/state/state_util.h"
-#include "net/http/http_status_code.h"
 
 #include "anon/anon.h"
 
@@ -91,43 +91,6 @@ std::string StringifyRequestCredentials(
   return json;
 }
 
-ledger::Result ParseRegisterPersonaResponse(
-    const std::string& response,
-    std::string* payment_id,
-    std::string* card_id) {
-  DCHECK(payment_id && card_id);
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response);
-  if (!value || !value->is_dict()) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  BLOG(0, response);
-
-  const auto* payment_id_string =
-      dictionary->FindStringPath("wallet.paymentId");
-  if (!payment_id_string || payment_id_string->empty()) {
-    BLOG(0, "Payment id is wrong " << payment_id_string);
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  const auto* card_id_string =
-      dictionary->FindStringPath("wallet.addresses.CARD_ID");
-  if (!card_id_string || card_id_string->empty()) {
-    BLOG(0, "Card id is wrong");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  *payment_id = *payment_id_string;
-  *card_id = *card_id_string;
-  return ledger::Result::LEDGER_OK;
-}
-
 }  // namespace
 
 namespace braveledger_wallet {
@@ -156,7 +119,10 @@ void Create::RequestCredentialsCallback(
       ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_OK) {
+  const ledger::Result result =
+      braveledger_response_util::CheckWalletRequestCredentials(response);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Can't get wallet info");
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
@@ -175,9 +141,11 @@ void Create::RequestCredentialsCallback(
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
+
   DCHECK(!registrar_vk.empty());
+
   std::string pre_flight;
-  std::string proof = GetAnonizeProof(registrar_vk, user_id, &pre_flight);
+  const std::string proof = GetAnonizeProof(registrar_vk, user_id, &pre_flight);
 
   if (proof.empty()) {
     BLOG(0, "Proof is empty");
@@ -253,10 +221,20 @@ void Create::RegisterPersonaCallback(
       ledger::ResultCallback callback) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
 
-  if (response.status_code != net::HTTP_OK) {
+  std::string payment_id;
+  std::string card_id;
+  const ledger::Result result =
+      braveledger_response_util::ParseWalletRegisterPersona(
+          response,
+          &payment_id,
+          &card_id);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Can't get wallet info");
     callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
+
+  BLOG(0, response.body);
 
   std::string verification;
   if (!braveledger_bat_helper::getJSONValue(VERIFICATION_FIELDNAME,
@@ -280,18 +258,6 @@ void Create::RegisterPersonaCallback(
   } else if (!ledger::is_testing) {
     BLOG(0, "Master token error");
     callback(ledger::Result::REGISTRATION_VERIFICATION_FAILED);
-    return;
-  }
-
-  std::string payment_id;
-  std::string card_id;
-  const auto result = ParseRegisterPersonaResponse(
-      response.body,
-      &payment_id,
-      &card_id);
-  if (result == ledger::Result::LEDGER_ERROR) {
-    BLOG(0, "Can't get wallet info");
-    callback(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
 
