@@ -2245,6 +2245,26 @@ static const std::vector<FunnelSiteInfo> _automotive_funnel_sites = {
       "jp trial 4-owned website"},
       "https://www.angfa.jp",
       1),
+  FunnelSiteInfo({
+      "Alpha Influencers", "PC Purists", "Mainstream Enthusiasts"},
+      "https://www.pcgamer.com",
+      1),
+  FunnelSiteInfo({
+      "Alpha Influencers", "PC Purists", "Mainstream Enthusiasts"},
+      "https://www.twitch.tv",
+      1),
+  FunnelSiteInfo({
+      "Alpha Influencers", "PC Purists", "Mainstream Enthusiasts"},
+      "https://www.reddit.com",
+      1),
+  FunnelSiteInfo({
+      "Alpha Influencers"},
+      "https://www.cnet.com",
+      1),
+  FunnelSiteInfo({
+      "PC Purists", "Mainstream Enthusiasts"},
+      "https://www.ign.com",
+      1),
 };
 
 class FunnelSites {
