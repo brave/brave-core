@@ -17,7 +17,7 @@ namespace speedreader {
 
 namespace {
 
-// Note: append-only enumeration! Never remove any existing values, as this enum
+// Note: append-only array! Never remove any existing values, as this array
 // is used to bucket a UMA histogram, and removing values breaks that.
 constexpr std::array<uint64_t, 5> kSpeedReaderToggleBuckets{
     0,   // 0
@@ -28,42 +28,50 @@ constexpr std::array<uint64_t, 5> kSpeedReaderToggleBuckets{
          // 30+ => bucket 5
 };
 
+// Note: append-only enumeration! Never remove any existing values, as this enum
+// is used to bucket a UMA histogram, and removing values breaks that.
+enum class EnabledStatus {
+  kUnused,
+  kEverEnabled,
+  kRecentlyUsed,
+  kMaxValue = kRecentlyUsed
+};
+
 constexpr char kSpeedreaderToggleUMAHistogramName[] =
     "Brave.SpeedReader.ToggleCount";
 
 constexpr char kSpeedreaderEnabledUMAHistogramName[] =
     "Brave.SpeedReader.Enabled";
 
-void storeTogglesHistogram(uint64_t toggles) {
+void StoreTogglesHistogram(uint64_t toggles) {
   int bucket = 0;
-  for (const auto& bucketUpperBound : kSpeedReaderToggleBuckets) {
-    if (toggles > bucketUpperBound)
+  for (const auto& bucket_upper_bound : kSpeedReaderToggleBuckets) {
+    if (toggles > bucket_upper_bound)
       bucket = bucket + 1;
   }
 
   UMA_HISTOGRAM_EXACT_LINEAR(kSpeedreaderToggleUMAHistogramName, bucket, 5);
 }
 
-void storeSpeedReaderEnabledHistogram(PrefService* prefs_,
+void StoreSpeedReaderEnabledHistogram(PrefService* prefs,
                                       bool toggled,
-                                      bool enabledNow) {
-  if (toggled) {
-    WeeklyStorage weekly(prefs_, kSpeedreaderPrefToggleCount);
-    weekly.AddDelta(1);
-    storeTogglesHistogram(weekly.GetWeeklySum());
+                                      bool enabled_now) {
+  WeeklyStorage weekly_toggles(prefs, kSpeedreaderPrefToggleCount);
+  if (toggled)
+    weekly_toggles.AddDelta(1);
+  const uint64_t toggle_count = weekly_toggles.GetWeeklySum();
+  StoreTogglesHistogram(toggle_count);
+
+  // Has been "recently" enabled if currently enabled,
+  // or got disabled this week.
+  EnabledStatus status = EnabledStatus::kUnused;
+  if (enabled_now || toggle_count > 0) {
+    status = EnabledStatus::kRecentlyUsed;
+  } else if (prefs->GetBoolean(kSpeedreaderPrefEverEnabled)) {
+    status = EnabledStatus::kEverEnabled;
   }
 
-  if (toggled && enabledNow) {
-    // Switched on now
-    prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, true);
-    UMA_HISTOGRAM_EXACT_LINEAR(kSpeedreaderEnabledUMAHistogramName, 2, 3);
-  } else {
-    // user has had the feature enabled before pref started getting tracked
-    const bool ever =
-        prefs_->GetBoolean(kSpeedreaderPrefEverEnabled) || enabledNow;
-    UMA_HISTOGRAM_EXACT_LINEAR(kSpeedreaderEnabledUMAHistogramName,
-                               ever ? 1 : 0, 3);
-  }
+  UMA_HISTOGRAM_ENUMERATION(kSpeedreaderEnabledUMAHistogramName, status);
 }
 
 }  // namespace
@@ -82,7 +90,9 @@ void SpeedreaderService::RegisterPrefs(PrefRegistrySimple* registry) {
 void SpeedreaderService::ToggleSpeedreader() {
   const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
   prefs_->SetBoolean(kSpeedreaderPrefEnabled, !enabled);
-  storeSpeedReaderEnabledHistogram(prefs_, true,
+  if (!enabled)
+    prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, true);
+  StoreSpeedReaderEnabledHistogram(prefs_, true,
                                    !enabled);  // toggling - now enabled
 }
 
@@ -92,7 +102,7 @@ bool SpeedreaderService::IsEnabled() {
   }
 
   const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
-  storeSpeedReaderEnabledHistogram(prefs_, false, enabled);
+  StoreSpeedReaderEnabledHistogram(prefs_, false, enabled);
   return enabled;
 }
 
