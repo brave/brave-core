@@ -1,0 +1,12 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java b/chrome/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
+index c75eec91ad42a858e65160a64458ab9df5ac94e4..70709b8c558f9cd5ee7442418b78dae851c9217c 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter.java
+@@ -218,6 +218,7 @@ public class SearchEngineAdapter extends BaseAdapter
+ 
+     public static void sortAndFilterUnnecessaryTemplateUrl(
+             List<TemplateUrl> templateUrls, TemplateUrl defaultSearchEngine) {
++        if(false)
+         Collections.sort(templateUrls, new Comparator<TemplateUrl>() {
+             @Override
+             public int compare(TemplateUrl templateUrl1, TemplateUrl templateUrl2) {
