@@ -25,6 +25,9 @@ class PrefRegistrySyncable;
 
 namespace brave_sync {
 
+extern const char kSyncV2MigrateNoticeDismissed[];
+extern const char kSyncEnabled[];
+
 class Prefs {
  public:
   explicit Prefs(PrefService* pref_service);

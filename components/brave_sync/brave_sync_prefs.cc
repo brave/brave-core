@@ -23,13 +23,9 @@ const char kSyncV1Migrated[] = "brave_sync_v2.v1_migrated";
 // Indicate all meta info set in V1 has been stripped in
 // BraveBookmarkModelLoadedObserver
 const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
-// Has dismissed message about migration to sync v2
-const char kSyncV2MigrateNoticeDismissed[] =
-    "brave_sync_v2.migrate_notice_dismissed";
 // Deprecated
 // ============================================================================
 const char kSyncSeed[] = "brave_sync.seed";
-const char kSyncEnabled[] = "brave_sync.enabled";
 const char kSyncDeviceId[] = "brave_sync.device_id";
 const char kSyncDeviceIdV2[] = "brave_sync.device_id_v2";
 const char kSyncDeviceObjectId[] = "brave_sync.device_object_id";
@@ -57,6 +53,12 @@ const char kDuplicatedBookmarksMigrateVersion[] =
     "brave_sync_duplicated_bookmarks_migrate_version";
 // ============================================================================
 }  // namespace
+
+// Has dismissed message about migration to sync v2
+const char kSyncV2MigrateNoticeDismissed[] =
+    "brave_sync_v2.migrate_notice_dismissed";
+// Meaning: `Sync v1 was enabled`
+const char kSyncEnabled[] = "brave_sync.enabled";
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
