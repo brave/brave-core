@@ -53,7 +53,7 @@ BraveDownloadItemView::BraveDownloadItemView(
     DownloadShelfView* parent,
     views::View* accessible_alert)
     : DownloadItemView(std::move(download), parent, accessible_alert),
-      brave_model_(*model_),
+      brave_model_(model_.get()),
       is_origin_url_secure_(false) {
   // Prepare origin url font.
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
@@ -115,7 +115,7 @@ void BraveDownloadItemView::OnDownloadUpdated() {
     bool needs_repaint = false;
     bool new_is_secure = false;
     base::string16 new_origin_url =
-        brave_model_.GetOriginURLText(new_is_secure);
+        brave_model_.GetOriginURLText(&new_is_secure);
     if (new_origin_url != origin_url_text_ ||
       new_is_secure != is_origin_url_secure_) {
       origin_url_text_ = new_origin_url;

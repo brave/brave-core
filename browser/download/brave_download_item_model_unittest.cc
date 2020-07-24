@@ -46,7 +46,7 @@ const base::FilePath::CharType kDefaultDisplayFileName[] =
 
 class BraveDownloadItemModelTest : public testing::Test {
  public:
-  BraveDownloadItemModelTest() : model_(&item_), brave_model_(model_) {}
+  BraveDownloadItemModelTest() : model_(&item_), brave_model_(&model_) {}
   ~BraveDownloadItemModelTest() override {}
 
  protected:
@@ -112,7 +112,7 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
     bool is_secure = false;
     EXPECT_STREQ(
         test_case.expected_text,
-        base::UTF16ToUTF8(model().GetOriginURLText(is_secure)).c_str());
+        base::UTF16ToUTF8(model().GetOriginURLText(&is_secure)).c_str());
     EXPECT_EQ(is_secure, test_case.expected_is_secure);
     Mock::VerifyAndClearExpectations(&item());
   }
