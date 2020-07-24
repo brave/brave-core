@@ -32,8 +32,9 @@
 
 namespace TemplateURLPrepopulateData {
 
-void LocalizeEngineList(std::vector<BravePrepopulatedEngineID>& engines,
-      int country_id);
+void LocalizeEngineList(
+    std::vector<BravePrepopulatedEngineID>& engines,
+    int country_id);
 
 namespace {
 
@@ -371,8 +372,9 @@ GetBravePrepopulatedEnginesForCountryID(
 // The intention of this function is to find the generic one
 // (ex: PREPOPULATED_ENGINE_ID_YAHOO) and then substitute the
 // country specific version.
-void LocalizeEngineList(std::vector<BravePrepopulatedEngineID>& engines,
-      int country_id) {
+void LocalizeEngineList(
+    std::vector<BravePrepopulatedEngineID>& engines,
+    int country_id) {
   for (size_t i = 0; i < engines.size(); ++i) {
     if (engines[i] == PREPOPULATED_ENGINE_ID_YAHOO) {
       const auto& it = yahoo_engines_by_country_id_map.find(country_id);

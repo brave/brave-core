@@ -21,8 +21,9 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace TemplateURLPrepopulateData {
-  extern void LocalizeEngineList(std::vector<BravePrepopulatedEngineID>& engines,
-      int country_id);
+  extern void LocalizeEngineList(
+    std::vector<BravePrepopulatedEngineID> engines,
+    int country_id);
 }
 
 namespace {

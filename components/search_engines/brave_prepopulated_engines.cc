@@ -156,7 +156,8 @@ const PrepopulatedEngine brave_yahoo = ModifyEngineParams(
   BRAVE_YAHOO_NAME,
   BRAVE_YAHOO_KEYWORD,
   "https://search.yahoo.com/search?p={searchTerms}&fr=brave_yset",
-  "https://search.yahoo.com/sugg/chrome?output=fxjson&appid=brave_yset&command={searchTerms}",
+  "https://search.yahoo.com/sugg/chrome?" \
+  "output=fxjson&appid=brave_yset&command={searchTerms}",
   PREPOPULATED_ENGINE_ID_YAHOO);
 
 const PrepopulatedEngine brave_yahoo_ar = ModifyEngineParams(
