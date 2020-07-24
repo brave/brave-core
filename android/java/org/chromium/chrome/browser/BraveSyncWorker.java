@@ -111,6 +111,7 @@ public class BraveSyncWorker {
                         @Override
                         public void run() {
                             nativeMarkSyncV1WasEnabledAndMigrated();
+                            BraveSyncInformers.show();
                         }
                     });
                 }

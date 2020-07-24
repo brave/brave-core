@@ -33,6 +33,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveHelper;
+import org.chromium.chrome.browser.BraveSyncInformers;
 import org.chromium.chrome.browser.BraveSyncWorkerHolder;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
@@ -221,7 +222,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
 
-        if (PackageUtils.isFirstInstall(this) 
+        if (PackageUtils.isFirstInstall(this)
             && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
@@ -255,6 +256,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             showCrossPromotionalDialog();
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
+        BraveSyncInformers.show();
     }
 
     private void createNotificationChannel() {
