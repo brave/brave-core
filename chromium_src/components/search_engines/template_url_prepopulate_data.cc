@@ -33,7 +33,7 @@
 namespace TemplateURLPrepopulateData {
 
 void LocalizeEngineList(
-    std::vector<BravePrepopulatedEngineID>& engines,
+    std::vector<BravePrepopulatedEngineID>* engines,
     int country_id);
 
 namespace {
@@ -346,7 +346,7 @@ GetBravePrepopulatedEnginesForCountryID(
   }
 
   // Allow for per-country overrides
-  LocalizeEngineList(brave_engines, country_id);
+  LocalizeEngineList(&brave_engines, country_id);
 
   // Build a vector PrepopulatedEngines from BravePrepopulatedEngineIDs and
   // also get the default engine index
@@ -373,13 +373,13 @@ GetBravePrepopulatedEnginesForCountryID(
 // (ex: PREPOPULATED_ENGINE_ID_YAHOO) and then substitute the
 // country specific version.
 void LocalizeEngineList(
-    std::vector<BravePrepopulatedEngineID>& engines,
+    std::vector<BravePrepopulatedEngineID>* engines,
     int country_id) {
-  for (size_t i = 0; i < engines.size(); ++i) {
-    if (engines[i] == PREPOPULATED_ENGINE_ID_YAHOO) {
+  for (size_t i = 0; i < engines->size(); ++i) {
+    if ((*engines)[i] == PREPOPULATED_ENGINE_ID_YAHOO) {
       const auto& it = yahoo_engines_by_country_id_map.find(country_id);
       if (it != yahoo_engines_by_country_id_map.end()) {
-        engines[i] = it->second;
+        (*engines)[i] = it->second;
       }
     }
   }
