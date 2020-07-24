@@ -16,9 +16,9 @@ class ProfileImport;
 }  // namespace brave
 
 template <>
-inline content::SandboxType
+inline sandbox::policy::SandboxType
 content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
-  return content::SandboxType::kNoSandbox;
+  return sandbox::policy::SandboxType::kNoSandbox;
 }
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SERVICE_SANDBOX_TYPE_H_
