@@ -29,6 +29,8 @@ export class App extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    this.actions.checkInitialized()
+
     if (!this.props.rewardsData.walletCreated) {
       this.actions.checkWalletExistence()
     }

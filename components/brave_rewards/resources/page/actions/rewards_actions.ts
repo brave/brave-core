@@ -7,6 +7,8 @@ import { action } from 'typesafe-actions'
 // Constant
 import { types } from '../constants/rewards_types'
 
+export const checkInitialized = () => action(types.CHECK_INITIALIZED)
+
 export const createWallet = () => action(types.CREATE_WALLET)
 
 export const onWalletCreated = () => action(types.WALLET_CREATED)
