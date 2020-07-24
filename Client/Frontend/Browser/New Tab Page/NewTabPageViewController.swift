@@ -604,6 +604,16 @@ extension NewTabPageViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - UISearchControllerDelegate
+extension NewTabPageViewController: UISearchControllerDelegate {
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        sections[indexPath.section].collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+    }
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        sections[indexPath.section].collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+    }
+}
+
 // MARK: - UICollectionViewDataSource
 extension NewTabPageViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
