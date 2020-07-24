@@ -15,4 +15,4 @@ void BraveLaunchOption(base::CommandLine* cmd_line,
 }
 
 }  // namespace
-#include "../../../../../../services/service_manager/sandbox/win/sandbox_win.cc"
+#include "../../../../../sandbox/policy/win/sandbox_win.cc"
