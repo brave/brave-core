@@ -24,6 +24,8 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     var sectionDidChange: (() -> Void)?
     var actionHandler: FeedItemActionHandler
     
+    private var isShowingIntroCard = true // TODO: Handle this however we're supposed to
+    
     init(dataSource: FeedDataSource, actionHandler: @escaping FeedItemActionHandler) {
         self.dataSource = dataSource
         self.actionHandler = actionHandler
@@ -41,6 +43,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     
     func registerCells(to collectionView: UICollectionView) {
         collectionView.register(FeedCardCell<BraveTodayWelcomeView>.self)
+        collectionView.register(FeedCardCell<BraveTodayErrorView>.self)
         collectionView.register(FeedCardCell<HeadlineCardView>.self)
         collectionView.register(FeedCardCell<SmallHeadlinePairCardView>.self)
         collectionView.register(FeedCardCell<VerticalFeedGroupView>.self)
@@ -54,15 +57,23 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return dataSource.cards.count + 1
+        switch dataSource.state {
+        case .failure:
+            return 1
+        case .initial, .loading:
+            return isShowingIntroCard ? 1 : 0
+        case .success(let cards):
+            return cards.count + (isShowingIntroCard ? 1 : 0)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
-        if indexPath.item == 0 {
+        switch dataSource.state {
+        case .failure, .initial, .loading:
             size.height = 300
-        } else if let card = dataSource.cards[safe: indexPath.item - 1] {
-            size.height = card.estimatedHeight(for: size.width)
+        case .success(let cards):
+            size.height = cards[safe: indexPath.item - (isShowingIntroCard ? 1 : 0)]?.estimatedHeight(for: size.width) ?? 300
         }
         return size
     }
@@ -88,11 +99,24 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if indexPath.item == 0 {
+        if case .failure(let error) = dataSource.state {
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayErrorView>
+            if let urlError = error as? URLError, urlError.code == .notConnectedToInternet {
+                cell.content.titleLabel.text = "No Internet" // FIXME: Localize
+                cell.content.errorMessageLabel.text = "Try checking your connection or reconnecting to Wi-Fi." // FIXME: Localize
+            } else {
+                cell.content.titleLabel.text = "Oops…" // FIXME: Localize
+                cell.content.errorMessageLabel.text = "Brave Today is experiencing some issues. Try again." // FIXME: Localize
+            }
+            return cell
+        }
+        
+        if isShowingIntroCard && indexPath.item == 0 {
             return collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayWelcomeView>
         }
         
-        guard let card = dataSource.cards[safe: indexPath.item - 1] else {
+        let indexDisplacement = isShowingIntroCard ? 1 : 0
+        guard let card = dataSource.state.cards?[safe: indexPath.item - indexDisplacement] else {
             assertionFailure()
             return UICollectionViewCell()
         }

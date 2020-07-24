@@ -7,6 +7,7 @@ import Foundation
 import BraveUI
 import Data
 import Shared
+import Deferred
 
 private let logger = Logger.browserLogger
 
@@ -125,47 +126,104 @@ enum FeedSequenceElement {
 
 /// Powers Brave Today's feed.
 class FeedDataSource {
-    private(set) var cards: [FeedCard] = []
+    enum State {
+        case initial
+        case loading
+        case success([FeedCard])
+        case failure(Error)
+        
+        var cards: [FeedCard]? {
+            get {
+                if case .success(let cards) = self {
+                    return cards
+                }
+                return nil
+            }
+            set {
+                if let cards = newValue {
+                    self = .success(cards)
+                }
+            }
+        }
+        
+        var error: Error? {
+            if case .failure(let error) = self {
+                return error
+            }
+            return nil
+        }
+    }
+    
+    private(set) var state: State = .initial
     private(set) var sources: [FeedItem.Source] = []
     
     private let session = NetworkManager(session: URLSession(configuration: .ephemeral))
-    private var feeds: [FeedItem] = []
     
-    init() {
-    }
-    
-    func load(_ completion: @escaping () -> Void) {
-        if !cards.isEmpty {
-            return
-        }
+    private let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(DateFormatter().then {
             $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
             $0.timeZone = TimeZone(secondsFromGMT: 0)
         })
+        return decoder
+    }()
+    
+    init() {
+    }
+    
+    private func loadSources() -> Deferred<Result<[FeedItem.Source], Error>> {
+        let deferred = Deferred<Result<[FeedItem.Source], Error>>(value: nil, defaultQueue: .main)
         session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/sources.json")!) { [weak self] data, response, error in
+            if let error = error {
+                deferred.fill(.failure(error))
+                return
+            }
             guard let self = self, let data = data else { return }
             do {
-                let decodedSources = try decoder.decode([FailableDecodable<FeedItem.Source>].self, from: data).compactMap(\.wrappedValue)
-                self.sources = decodedSources
-                self.session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
-                    guard let self = self, let data = data else { return }
-                    do {
-                        let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem.Content>].self, from: data).compactMap { $0.wrappedValue }
-                        DispatchQueue.main.async {
-                            self.feeds = self.scored(feeds: decodedFeeds, sources: decodedSources).sorted(by: <)
-                            self.generateCards(completion)
-                        }
-                    } catch {
-                        logger.error(error)
-                        DispatchQueue.main.async {
-                            completion()
-                        }
-                    }
-                }
+            let decodedSources = try self.decoder.decode([FailableDecodable<FeedItem.Source>].self, from: data).compactMap(\.wrappedValue)
+                deferred.fill(.success(decodedSources))
             } catch {
-                logger.error(error)
-                DispatchQueue.main.async {
+                deferred.fill(.failure(error))
+            }
+        }
+        return deferred
+    }
+    
+    private func loadFeed() -> Deferred<Result<[FeedItem.Content], Error>> {
+        let deferred = Deferred<Result<[FeedItem.Content], Error>>(value: nil, defaultQueue: .main)
+        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
+            if let error = error {
+                deferred.fill(.failure(error))
+                return
+            }
+            guard let self = self, let data = data else { return }
+            do {
+                let decodedFeeds = try self.decoder.decode([FailableDecodable<FeedItem.Content>].self, from: data).compactMap(\.wrappedValue)
+                deferred.fill(.success(decodedFeeds))
+            } catch {
+                deferred.fill(.failure(error))
+            }
+        }
+        return deferred
+    }
+    
+    func load(_ completion: @escaping () -> Void) {
+        if case .success = state {
+            return
+        }
+        state = .loading
+        loadSources().both(loadFeed()).uponQueue(.main) { [weak self] results in
+            guard let self = self else { return }
+            switch results {
+            case (.failure(let error), _),
+                 (_, .failure(let error)):
+                self.state = .failure(error)
+                completion()
+            case (.success(let sources), .success(let items)):
+                self.sources = sources
+                let feedItems = self.scored(feeds: items, sources: sources).sorted(by: <)
+                self.generateCards(from: feedItems) { [weak self] cards in
+                    self?.state = .success(cards)
                     completion()
                 }
             }
@@ -173,7 +231,7 @@ class FeedDataSource {
     }
     
     func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
-        guard let sourceIndex = sources.firstIndex(where: { $0.id == source.id }) else { return }
+        guard let cards = state.cards, let sourceIndex = sources.firstIndex(where: { $0.id == source.id }) else { return }
         self.sources[sourceIndex].enabled = enabled
         // TODO: Update DB
         
@@ -187,7 +245,7 @@ class FeedDataSource {
             for item in element.items where item.source == source {
                 var alteredItem = item
                 alteredItem.source = self.sources[sourceIndex]
-                self.cards[index] = element.replacing(item: item, with: alteredItem)
+                state.cards?[index] = element.replacing(item: item, with: alteredItem)
             }
         }
     }
@@ -211,14 +269,14 @@ class FeedDataSource {
         }
     }
     
-    private func generateCards(_ completion: @escaping () -> Void) {
+    private func generateCards(from items: [FeedItem], completion: @escaping ([FeedCard]) -> Void) {
         /**
          Beginning of new session:
             Sponsor card
             1st item, Large Card, Latest item from query
             Deals card
          */
-        let feedsFromEnabledSources = feeds.filter(\.source.enabled)
+        let feedsFromEnabledSources = items.filter(\.source.enabled)
         var sponsors = feedsFromEnabledSources.filter { $0.content.contentType == .offer }
         var deals = feedsFromEnabledSources.filter { $0.content.contentType == .product }
         var articles = feedsFromEnabledSources.filter { $0.content.contentType == .article }
@@ -328,8 +386,7 @@ class FeedDataSource {
                 }
             }
             DispatchQueue.main.async {
-                self.cards = generatedCards
-                completion()
+                completion(generatedCards)
             }
         }
     }
