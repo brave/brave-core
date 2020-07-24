@@ -12,7 +12,7 @@ namespace TemplateURLPrepopulateData {
 
 // IMPORTANT! Make sure to bump this value if you make changes to the
 // engines below or add/remove engines.
-const int kBraveCurrentDataVersion = 5;
+const int kBraveCurrentDataVersion = 6;
 
 PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
     const wchar_t* const name,
@@ -279,6 +279,27 @@ const PrepopulatedEngine brave_yahoo_id = ModifyEngineParams(
   BRAVE_YAHOO_SUGGEST_URL("id"),
   PREPOPULATED_ENGINE_ID_YAHOO_ID);
 
+const PrepopulatedEngine brave_yahoo_ie = {
+    BRAVE_YAHOO_NAME,
+    BRAVE_YAHOO_KEYWORD,
+    "https://ie.search.yahoo.com/favicon.ico",
+    BRAVE_YAHOO_SEARCH_URL("ie"),
+    "UTF-8",
+    BRAVE_YAHOO_SUGGEST_URL("ie"),
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
+    0,
+    SEARCH_ENGINE_YAHOO,
+    PREPOPULATED_ENGINE_ID_YAHOO_IE
+};
+
 const PrepopulatedEngine brave_yahoo_in = ModifyEngineParams(
   yahoo_in,
   BRAVE_YAHOO_NAME,
@@ -308,14 +329,6 @@ const PrepopulatedEngine brave_yahoo_it = {
     PREPOPULATED_ENGINE_ID_YAHOO_IT
 };
 
-const PrepopulatedEngine brave_yahoo_jp = ModifyEngineParams(
-  yahoo_jp,
-  BRAVE_YAHOO_NAME,
-  BRAVE_YAHOO_KEYWORD,
-  BRAVE_YAHOO_SEARCH_URL("jp"),
-  BRAVE_YAHOO_SUGGEST_URL("jp"),
-  PREPOPULATED_ENGINE_ID_YAHOO_JP);
-
 const PrepopulatedEngine brave_yahoo_mx = ModifyEngineParams(
   yahoo_mx,
   BRAVE_YAHOO_NAME,
@@ -328,8 +341,8 @@ const PrepopulatedEngine brave_yahoo_my = ModifyEngineParams(
   yahoo_my,
   BRAVE_YAHOO_NAME,
   BRAVE_YAHOO_KEYWORD,
-  BRAVE_YAHOO_SEARCH_URL("my"),
-  BRAVE_YAHOO_SUGGEST_URL("my"),
+  BRAVE_YAHOO_SEARCH_URL("malaysia"),
+  BRAVE_YAHOO_SUGGEST_URL("malaysia"),
   PREPOPULATED_ENGINE_ID_YAHOO_MY);
 
 const PrepopulatedEngine brave_yahoo_nl = ModifyEngineParams(
@@ -385,14 +398,6 @@ const PrepopulatedEngine brave_yahoo_ph = ModifyEngineParams(
   BRAVE_YAHOO_SUGGEST_URL("ph"),
   PREPOPULATED_ENGINE_ID_YAHOO_PH);
 
-const PrepopulatedEngine brave_yahoo_qc = ModifyEngineParams(
-  yahoo_qc,
-  BRAVE_YAHOO_NAME,
-  BRAVE_YAHOO_KEYWORD,
-  BRAVE_YAHOO_SEARCH_URL("qc"),
-  BRAVE_YAHOO_SUGGEST_URL("qc"),
-  PREPOPULATED_ENGINE_ID_YAHOO_QC);
-
 const PrepopulatedEngine brave_yahoo_se = ModifyEngineParams(
   yahoo_se,
   BRAVE_YAHOO_NAME,
@@ -416,14 +421,6 @@ const PrepopulatedEngine brave_yahoo_th = ModifyEngineParams(
   BRAVE_YAHOO_SEARCH_URL("th"),
   BRAVE_YAHOO_SUGGEST_URL("th"),
   PREPOPULATED_ENGINE_ID_YAHOO_TH);
-
-const PrepopulatedEngine brave_yahoo_tr = ModifyEngineParams(
-  yahoo_tr,
-  BRAVE_YAHOO_NAME,
-  BRAVE_YAHOO_KEYWORD,
-  BRAVE_YAHOO_SEARCH_URL("tr"),
-  BRAVE_YAHOO_SUGGEST_URL("tr"),
-  PREPOPULATED_ENGINE_ID_YAHOO_TR);
 
 const PrepopulatedEngine brave_yahoo_tw = ModifyEngineParams(
   yahoo_tw,
