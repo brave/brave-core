@@ -12,11 +12,6 @@
 
 namespace braveledger_request_util {
 
-const char kDevelopment[] = "https://ledger.rewards.brave.software";
-const char kStaging[] =
-    "https://ledger-staging.mercury.basicattentiontoken.org";
-const char kProduction[] = "https://ledger.mercury.basicattentiontoken.org";
-
 namespace publisher {
 const char kDevelopment[] = "https://rewards-dev.brave.software";
 const char kStaging[] = "https://rewards-stg.bravesoftware.com";
@@ -58,23 +53,6 @@ std::string BuildPublisherUrl() {
       break;
     case ledger::Environment::PRODUCTION:
       url = publisher::kProduction;
-      break;
-  }
-
-  return url;
-}
-
-std::string BuildLedgerUrl() {
-  std::string url;
-  switch (ledger::_environment) {
-    case ledger::Environment::DEVELOPMENT:
-      url = kDevelopment;
-      break;
-    case ledger::Environment::STAGING:
-      url = kStaging;
-      break;
-    case ledger::Environment::PRODUCTION:
-      url = kProduction;
       break;
   }
 
@@ -157,10 +135,6 @@ std::string BuildUrl(
   switch (server) {
     case ServerTypes::kPublisher: {
       url = BuildPublisherUrl();
-      break;
-    }
-    case ServerTypes::LEDGER: {
-      url = BuildLedgerUrl();
       break;
     }
     case ServerTypes::kPromotion: {
