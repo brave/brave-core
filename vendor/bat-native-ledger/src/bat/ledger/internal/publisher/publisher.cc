@@ -44,7 +44,7 @@ bool Publisher::ShouldFetchServerPublisherInfo(
 void Publisher::FetchServerPublisherInfo(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
-  return server_publisher_fetcher_->Fetch(publisher_key, callback);
+  server_publisher_fetcher_->Fetch(publisher_key, callback);
 }
 
 void Publisher::RefreshPublisher(
