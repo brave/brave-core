@@ -11,17 +11,9 @@ source_set("infobars") {
     "brave_confirm_p3a_infobar_delegate.h",
   ]
 
-  if (brave_wallet_enabled) {
-    sources += [
-      "crypto_wallets_infobar_delegate.cc",
-      "crypto_wallets_infobar_delegate.h",
-    ]
-  }
-
   deps = [
     "//base",
     "//brave/browser/ui",
-    "//brave/common",
     "//brave/components/p3a",
     "//brave/app:brave_generated_resources_grit",
     "//chrome/app:chromium_strings",
@@ -34,6 +26,20 @@ source_set("infobars") {
     "//url",
   ]
 
+  if (brave_wallet_enabled) {
+    sources += [
+      "crypto_wallets_infobar_delegate.cc",
+      "crypto_wallets_infobar_delegate.h",
+    ]
+
+    deps += [
+      "//brave/browser/brave_wallet:brave_wallet",
+      "//brave/common:pref_names",
+      "//brave/components/brave_wallet/browser:browser",
+      "//components/user_prefs:user_prefs",
+    ]
+  }
+
   if (enable_brave_wayback_machine) {
     sources += [
       "brave_wayback_machine_delegate_impl.cc",
@@ -42,6 +48,7 @@ source_set("infobars") {
 
     deps += [
       "//brave/components/brave_wayback_machine",
+      "//brave/common:switches",
     ]
   }
 
@@ -52,7 +59,9 @@ source_set("infobars") {
     ]
 
     deps += [
-      "//brave/components/brave_sync",
+      "//brave/common:common",
+      "//brave/components/brave_sync:features",
+      "//brave/components/brave_sync:prefs",
     ]
   }
 }
