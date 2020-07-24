@@ -144,10 +144,13 @@ def cargo_install(tool):
     cargo_args = []
     cargo_args.append(cargo_bin)
     cargo_args.append("install")
-    cargo_args.append(tool[0])
-    if len(tool) > 1:
+    cargo_args.append(tool["name"])
+    if "version" in tool:
         cargo_args.append("--version")
-        cargo_args.append(tool[1])
+        cargo_args.append(tool["version"])
+    if "features" in tool:
+        cargo_args.append("--features")
+        cargo_args.append(tool["features"])
 
     try:
         subprocess.check_call(cargo_args, env=env)
@@ -163,7 +166,16 @@ def main():
     if args.platform == 'android':
         make_standalone_toolchain_for_android()
 
-    tools = [["cbindgen", "0.14.2"], ["cargo-audit"]]
+    tools = [
+        {
+            "name": "cbindgen",
+            "version": "0.14.2",
+        },
+        {
+            "name": "cargo-audit",
+            "features": "vendored-openssl",
+        }
+    ]
     for tool in tools:
         cargo_install(tool)
 
