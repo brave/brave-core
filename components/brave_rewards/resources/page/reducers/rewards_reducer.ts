@@ -14,6 +14,10 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
   }
 
   switch (action.type) {
+    case types.IS_INITIALIZED: {
+      chrome.send('brave_rewards.isInitialized')
+      break
+    }
     case types.TOGGLE_ENABLE_MAIN: {
       if (state.initializing) {
         break
