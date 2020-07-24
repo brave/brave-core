@@ -18,6 +18,11 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
         $0.spacing = 16
     }
     
+    let graphicAnimationView = AnimationView(name: "brave-today-welcome-graphic").then {
+        $0.contentMode = .scaleAspectFit
+        $0.loopMode = .loop
+    }
+    
     required init() {
         super.init(frame: .zero)
         
@@ -30,12 +35,8 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(24)
         }
-        
         stackView.addStackViewItems(
-            .view(UIImageView(image: UIImage(imageLiteralResourceName: "brave-today-welcome-graphic")).then {
-                $0.setContentHuggingPriority(.required, for: .vertical)
-                $0.contentMode = .scaleAspectFit
-            }),
+            .view(graphicAnimationView),
             .customSpace(30),
             .view(UILabel().then {
                 $0.text = "Today’s top stories in a completely private feed, just for you."

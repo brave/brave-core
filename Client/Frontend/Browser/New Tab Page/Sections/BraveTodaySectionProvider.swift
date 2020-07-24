@@ -75,6 +75,18 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         return 20
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayWelcomeView> {
+            cell.content.graphicAnimationView.play()
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == 0, let cell = cell as? FeedCardCell<BraveTodayWelcomeView> {
+            cell.content.graphicAnimationView.stop()
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.item == 0 {
             return collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayWelcomeView>
