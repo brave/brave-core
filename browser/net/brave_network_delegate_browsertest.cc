@@ -75,23 +75,23 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
     https_cookie_iframe_url_ =
         https_server_.GetURL("a.com", "/cookie_iframe.html");
 
-    third_party_cookie_url_ =
-        https_server_.GetURL("b.com", "/set-cookie?name=bcom;SameSite=None;Secure");
-    first_party_cookie_url_ =
-        https_server_.GetURL("a.com",
-                                       "/set-cookie?name=acom;SameSite=None;Secure");
-    subdomain_first_party_cookie_url_ =
-        https_server_.GetURL("subdomain.a.com",
-                                       "/set-cookie?name=subdomainacom;SameSite=None;Secure");
+    third_party_cookie_url_ = https_server_.GetURL(
+        "b.com", "/set-cookie?name=bcom;SameSite=None;Secure");
+    first_party_cookie_url_ = https_server_.GetURL(
+        "a.com", "/set-cookie?name=acom;SameSite=None;Secure");
+    subdomain_first_party_cookie_url_ = https_server_.GetURL(
+        "subdomain.a.com",
+        "/set-cookie?name=subdomainacom;SameSite=None;Secure");
 
     domain_registry_url_ = https_server_.GetURL("mobile.twitter.com",
                                                         "/cookie_iframe.html");
     iframe_domain_registry_url_ =
         https_server_.GetURL("blah.twitter.com",
-                          "/set-cookie?name=blahtwittercom;domain=twitter.com;SameSite=None;Secure");
+                             "/set-cookie?name=blahtwittercom;domain=twitter."
+                             "com;SameSite=None;Secure");
 
-    google_oauth_cookie_url_ =
-        https_server_.GetURL("accounts.google.com", "/set-cookie?oauth=true;SameSite=None;Secure");
+    google_oauth_cookie_url_ = https_server_.GetURL(
+        "accounts.google.com", "/set-cookie?oauth=true;SameSite=None;Secure");
 
     top_level_page_pattern_ =
         ContentSettingsPattern::FromString("https://a.com/*");
@@ -100,13 +100,14 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
     wordpress_top_url_ = https_server_
         .GetURL("example.wordpress.com", "/cookie_iframe.html");
-    wordpress_frame_url_ = https_server_
-        .GetURL("example.wordpress.com", "/set-cookie?frame=true;SameSite=None;Secure");
+    wordpress_frame_url_ = https_server_.GetURL(
+        "example.wordpress.com", "/set-cookie?frame=true;SameSite=None;Secure");
     wp_top_url_ = https_server_
         .GetURL("example.wp.com", "/cookie_iframe.html");
-    wp_frame_url_ = https_server_
-        .GetURL("example.wp.com", "/set-cookie?frame=true;SameSite=None;Secure");
-    a_frame_url_ = https_server_.GetURL("a.com", "/set-cookie?frame=true;SameSite=None;Secure");
+    wp_frame_url_ = https_server_.GetURL(
+        "example.wp.com", "/set-cookie?frame=true;SameSite=None;Secure");
+    a_frame_url_ = https_server_.GetURL(
+        "a.com", "/set-cookie?frame=true;SameSite=None;Secure");
   }
 
   HostContentSettingsMap* content_settings() {
@@ -215,16 +216,16 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 // not by javascript. Fetching such cookies is controlled by NetworkDelegate.
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieBlocked) {
   ui_test_utils::NavigateToURL(browser(), url_);
-  const std::string cookie =
-      content::GetCookies(browser()->profile(), https_server_.GetURL("c.com", "/"));
+  const std::string cookie = content::GetCookies(
+      browser()->profile(), https_server_.GetURL("c.com", "/"));
   EXPECT_TRUE(cookie.empty()) << "Actual cookie: " << cookie;
 }
 
 IN_PROC_BROWSER_TEST_F(BraveNetworkDelegateBrowserTest, Iframe3PCookieAllowed) {
   AllowCookies(top_level_page_url_);
   ui_test_utils::NavigateToURL(browser(), url_);
-  const std::string cookie =
-      content::GetCookies(browser()->profile(), https_server_.GetURL("c.com", "/"));
+  const std::string cookie = content::GetCookies(
+      browser()->profile(), https_server_.GetURL("c.com", "/"));
   EXPECT_FALSE(cookie.empty());
 }
 

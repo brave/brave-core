@@ -1,8 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_rewards/browser/publisher_info_backend.h"
+
+#include <codecvt>
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -13,8 +19,6 @@
 #include "third_party/leveldatabase/src/include/leveldb/options.h"
 #include "third_party/leveldatabase/src/include/leveldb/slice.h"
 #include "third_party/leveldatabase/src/include/leveldb/status.h"
-
-#include <codecvt>
 
 namespace brave_rewards {
 
@@ -76,7 +80,6 @@ bool PublisherInfoBackend::Search(const std::vector<std::string>& prefixes,
   uint32_t position = 0;
   for (std::vector<std::string>::const_iterator prefix =
         prefixes.begin(); prefix != prefixes.end(); ++prefix) {
-
     auto slice = leveldb::Slice(*prefix);
     for (db_it->Seek(slice);
           count < limit && db_it->Valid();

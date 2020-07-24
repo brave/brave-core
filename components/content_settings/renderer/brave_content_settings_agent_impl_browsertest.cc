@@ -80,7 +80,6 @@ const char kTitleScript[] = "domAutomationController.send(document.title);";
 
 class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
  public:
-
   BraveContentSettingsAgentImplBrowserTest() :
       https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
@@ -910,7 +909,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, AllowCookies) {
 
   NavigateIframe(cross_site_url());
   Check3PCookie(child_frame(), kTestCookie);
-  EXPECT_EQ(COOKIE_STR, content::GetCookies(browser()->profile(), cross_site_url()));
+  EXPECT_EQ(COOKIE_STR,
+            content::GetCookies(browser()->profile(), cross_site_url()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
