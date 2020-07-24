@@ -46,6 +46,12 @@ void Balance::Fetch(ledger::FetchBalanceCallback callback) {
 
   std::string payment_id = ledger_->GetPaymentId();
 
+  if (payment_id.empty()) {
+    BLOG(0, "Payment ID is empty");
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
   std::string path = base::StringPrintf(
       "/wallet/%s/balance",
       payment_id.c_str());
