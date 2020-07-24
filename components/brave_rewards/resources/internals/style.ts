@@ -67,3 +67,11 @@ export const Publisher = styled<{}, 'div'>('div')`
 export const PublisherKey = styled<{}, 'h4'>('h4')`
   margin: 15px 0 5px;
 `
+
+export const Disclaimer = styled<{}, 'p'>('p')`
+  font-size: 13px;
+  color: ${p => p.theme.palette.grey800};
+  margin: 0 0 10px;
+  padding: 0px;
+  text-align: center;
+`
