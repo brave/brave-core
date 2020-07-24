@@ -141,7 +141,8 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/rate/RateFeedbackUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsMenuObserver.java",
   "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsHandler.java",
-  "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java"
+  "../../brave/android/java/org/chromium/chrome/browser/shields/BraveShieldsUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/CrossPromotionalModalDialogFragment.java"
 ]
 
 if (brave_rewards_enabled || enable_brave_referrals) {

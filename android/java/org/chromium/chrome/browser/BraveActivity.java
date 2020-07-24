@@ -66,6 +66,7 @@ import org.chromium.ui.widget.Toast;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
+import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -88,6 +89,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public static final String OPEN_URL = "open_url";
 
     private static final int DAYS_4 = 4;
+    private static final int DAYS_12 = 12;
 
     /**
      * Settings for sending local notification reminders.
@@ -239,6 +241,20 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 && OnboardingPrefManager.getInstance().showOnboardingForSkip()) {
             OnboardingPrefManager.getInstance().showOnboarding(this);
             OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
+        }
+
+        if (PackageUtils.isFirstInstall(this) 
+            && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
+            Calendar calender = Calendar.getInstance();
+            calender.setTime(new Date());
+            calender.add(Calendar.DATE, DAYS_12);
+            OnboardingPrefManager.getInstance().setNextCrossPromoModalDate(
+                calender.getTimeInMillis());
+        }
+
+        if (OnboardingPrefManager.getInstance().showCrossPromoModal()) {
+            showCrossPromotionalDialog();
+            OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
     }
 
@@ -394,6 +410,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         RateDialogFragment mRateDialogFragment = new RateDialogFragment();
         mRateDialogFragment.setCancelable(false);
         mRateDialogFragment.show(getSupportFragmentManager(), "RateDialogFragment");
+    }
+
+    private void showCrossPromotionalDialog() {
+        CrossPromotionalModalDialogFragment mCrossPromotionalModalDialogFragment = new CrossPromotionalModalDialogFragment();
+        mCrossPromotionalModalDialogFragment.setCancelable(false);
+        mCrossPromotionalModalDialogFragment.show(getSupportFragmentManager(), "CrossPromotionalModalDialogFragment");
     }
 
     private native void nativeRestartStatsUpdater();
