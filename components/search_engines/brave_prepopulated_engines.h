@@ -67,9 +67,9 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_YAHOO_FR,
   PREPOPULATED_ENGINE_ID_YAHOO_HK,
   PREPOPULATED_ENGINE_ID_YAHOO_ID,
+  PREPOPULATED_ENGINE_ID_YAHOO_IE,
   PREPOPULATED_ENGINE_ID_YAHOO_IN,
   PREPOPULATED_ENGINE_ID_YAHOO_IT,
-  PREPOPULATED_ENGINE_ID_YAHOO_JP,
   PREPOPULATED_ENGINE_ID_YAHOO_MX,
   PREPOPULATED_ENGINE_ID_YAHOO_MY,
   PREPOPULATED_ENGINE_ID_YAHOO_NL,
@@ -77,11 +77,9 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_YAHOO_NZ,
   PREPOPULATED_ENGINE_ID_YAHOO_PE,
   PREPOPULATED_ENGINE_ID_YAHOO_PH,
-  PREPOPULATED_ENGINE_ID_YAHOO_QC,
   PREPOPULATED_ENGINE_ID_YAHOO_SE,
   PREPOPULATED_ENGINE_ID_YAHOO_SG,
   PREPOPULATED_ENGINE_ID_YAHOO_TH,
-  PREPOPULATED_ENGINE_ID_YAHOO_TR,
   PREPOPULATED_ENGINE_ID_YAHOO_TW,
   PREPOPULATED_ENGINE_ID_YAHOO_UK,
   PREPOPULATED_ENGINE_ID_YAHOO_VE,
@@ -114,9 +112,9 @@ extern const PrepopulatedEngine brave_yahoo_fi;
 extern const PrepopulatedEngine brave_yahoo_fr;
 extern const PrepopulatedEngine brave_yahoo_hk;
 extern const PrepopulatedEngine brave_yahoo_id;
+extern const PrepopulatedEngine brave_yahoo_ie;
 extern const PrepopulatedEngine brave_yahoo_in;
 extern const PrepopulatedEngine brave_yahoo_it;
-extern const PrepopulatedEngine brave_yahoo_jp;
 extern const PrepopulatedEngine brave_yahoo_mx;
 extern const PrepopulatedEngine brave_yahoo_my;
 extern const PrepopulatedEngine brave_yahoo_nl;
@@ -128,7 +126,6 @@ extern const PrepopulatedEngine brave_yahoo_qc;
 extern const PrepopulatedEngine brave_yahoo_se;
 extern const PrepopulatedEngine brave_yahoo_sg;
 extern const PrepopulatedEngine brave_yahoo_th;
-extern const PrepopulatedEngine brave_yahoo_tr;
 extern const PrepopulatedEngine brave_yahoo_tw;
 extern const PrepopulatedEngine brave_yahoo_uk;
 extern const PrepopulatedEngine brave_yahoo_ve;
