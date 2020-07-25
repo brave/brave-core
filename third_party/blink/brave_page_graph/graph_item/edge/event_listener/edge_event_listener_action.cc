@@ -45,7 +45,7 @@ void EdgeEventListenerAction::AddGraphMLAttributes(xmlDocPtr doc,
       ->AddValueNode(doc, parent_node, event_type_);
   GraphMLAttrDefForType(kGraphMLAttrDefEventListenerId)
       ->AddValueNode(doc, parent_node, listener_id_);
-  GraphMLAttrDefForType(kGraphMLAttrDefScriptId)
+  GraphMLAttrDefForType(kGraphMLAttrDefScriptIdForEdge)
       ->AddValueNode(doc, parent_node, listener_script_id_);
 }
 

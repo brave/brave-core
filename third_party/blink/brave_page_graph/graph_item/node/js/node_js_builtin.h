@@ -22,20 +22,22 @@ friend class PageGraph;
   NodeJSBuiltIn() = delete;
   ~NodeJSBuiltIn() override;
 
+  JSBuiltIn GetBuiltIn() const;
+  const MethodName& GetMethodName() const override;
+
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
   void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
       const override;
 
-  JSBuiltIn GetBuiltIn() const;
-  const MethodName& GetMethodName() const override;
   bool IsNodeJSBuiltIn() const override;
 
  protected:
-  NodeJSBuiltIn(PageGraph* const graph, const JSBuiltIn builtin);
+  NodeJSBuiltIn(PageGraph* const graph, const JSBuiltIn built_in);
 
-  const JSBuiltIn built_in_name_;
+ private:
+  const JSBuiltIn built_in_;
 };
 
 }  // namespace brave_page_graph
@@ -44,8 +46,12 @@ namespace blink {
 
 template <>
 struct DowncastTraits<brave_page_graph::NodeJSBuiltIn> {
+  static bool AllowFrom(const brave_page_graph::NodeJS& js_node) {
+    return js_node.IsNodeJSBuiltIn();
+  }
   static bool AllowFrom(const brave_page_graph::Node& node) {
-    return node.IsNodeJSBuiltIn();
+    return IsA<brave_page_graph::NodeJSBuiltIn>(
+        DynamicTo<brave_page_graph::NodeJS>(node));
   }
   static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
     return IsA<brave_page_graph::NodeJSBuiltIn>(

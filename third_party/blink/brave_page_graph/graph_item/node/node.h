@@ -36,18 +36,16 @@ friend class PageGraph;
   bool IsNode() const override;
 
   virtual bool IsNodeActor() const;
+  virtual bool IsNodeExtensions() const;
   virtual bool IsNodeFilter() const;
   virtual bool IsNodeHTML() const;
-  virtual bool IsNodeExtensions() const;
+  virtual bool IsNodeJS() const;
   virtual bool IsNodeRemoteFrame() const;
   virtual bool IsNodeResource() const;
   virtual bool IsNodeShield() const;
   virtual bool IsNodeShields() const;
   virtual bool IsNodeStorage() const;
   virtual bool IsNodeStorageRoot() const;
-  virtual bool IsNodeJS() const;
-  virtual bool IsNodeJSWebAPI() const;
-  virtual bool IsNodeJSBuiltIn() const;
 
  protected:
   Node(PageGraph* const graph);

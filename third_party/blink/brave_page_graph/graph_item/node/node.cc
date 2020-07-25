@@ -64,6 +64,10 @@ bool Node::IsNodeActor() const {
   return false;
 }
 
+bool Node::IsNodeExtensions() const {
+  return false;
+}
+
 bool Node::IsNodeFilter() const {
   return false;
 }
@@ -72,7 +76,7 @@ bool Node::IsNodeHTML() const {
   return false;
 }
 
-bool Node::IsNodeExtensions() const {
+bool Node::IsNodeJS() const {
   return false;
 }
 
@@ -97,18 +101,6 @@ bool Node::IsNodeStorage() const {
 }
 
 bool Node::IsNodeStorageRoot() const {
-  return false;
-}
-
-bool Node::IsNodeJS() const {
-  return false;
-}
-
-bool Node::IsNodeJSWebAPI() const {
-  return false;
-}
-
-bool Node::IsNodeJSBuiltIn() const {
   return false;
 }
 

@@ -25,18 +25,20 @@ friend class PageGraph;
   NodeJSWebAPI() = delete;
   ~NodeJSWebAPI() override;
 
+  const MethodName& GetMethodName() const override;
+
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
   void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
       const override;
 
-  const MethodName& GetMethodName() const override;
   bool IsNodeJSWebAPI() const override;
 
  protected:
   NodeJSWebAPI(PageGraph* const graph, const MethodName method);
 
+ private:
   const MethodName method_name_;
 };
 
@@ -46,8 +48,12 @@ namespace blink {
 
 template <>
 struct DowncastTraits<brave_page_graph::NodeJSWebAPI> {
+  static bool AllowFrom(const brave_page_graph::NodeJS& js_node) {
+    return js_node.IsNodeJSWebAPI();
+  }
   static bool AllowFrom(const brave_page_graph::Node& node) {
-    return node.IsNodeJSWebAPI();
+    return IsA<brave_page_graph::NodeJSWebAPI>(
+        DynamicTo<brave_page_graph::NodeJS>(node));
   }
   static bool AllowFrom(const brave_page_graph::GraphItem& graph_item) {
     return IsA<brave_page_graph::NodeJSWebAPI>(

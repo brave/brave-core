@@ -22,7 +22,11 @@ friend class PageGraph;
   ~NodeJS() override;
 
   virtual const MethodName& GetMethodName() const = 0;
+
   bool IsNodeJS() const override;
+
+  virtual bool IsNodeJSBuiltIn() const;
+  virtual bool IsNodeJSWebAPI() const;
 
  protected:
   NodeJS(PageGraph* const graph);
