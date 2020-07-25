@@ -1,30 +1,21 @@
 diff --git a/third_party/blink/renderer/core/loader/frame_loader.cc b/third_party/blink/renderer/core/loader/frame_loader.cc
-index b8f4aa80447cf56d29de438a032096010709c2c5..775c8e11746681d259bda1e49852d9703fa1fa7f 100644
+index b8f4aa80447cf56d29de438a032096010709c2c5..7e073c23c8bdc805f953562a6bfd46ad986cffe2 100644
 --- a/third_party/blink/renderer/core/loader/frame_loader.cc
 +++ b/third_party/blink/renderer/core/loader/frame_loader.cc
-@@ -125,6 +125,12 @@
+@@ -125,6 +125,13 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
  #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +// #include "third_party/blink/renderer/core/dom/document.h"
 +// #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++
 +// #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +// #endif
 +
  namespace blink {
  
  bool IsBackForwardLoadType(WebFrameLoadType type) {
-@@ -788,7 +794,8 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
-     }
-   }
- 
--  if (request.ClientRedirectReason() != ClientNavigationReason::kNone) {
-+  // work around missing code in our snapshot of upstream Chromium
-+  if (1/*request.ClientRedirectReason() != ClientNavigationReason::kNone*/) {
-     probe::FrameRequestedNavigation(frame_, frame_, url,
-                                     request.ClientRedirectReason());
-   }
 @@ -797,6 +804,23 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
        origin_document ? origin_document->GetSecurityContext().AddressSpace()
                        : network::mojom::IPAddressSpace::kUnknown;

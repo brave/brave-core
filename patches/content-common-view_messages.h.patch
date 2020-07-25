@@ -1,0 +1,17 @@
+diff --git a/content/common/view_messages.h b/content/common/view_messages.h
+index b75aee16237cad6043cd6cfbe22a166e10327a16..40486dd96539a42e665230aed21f3cdd4933e887 100644
+--- a/content/common/view_messages.h
++++ b/content/common/view_messages.h
+@@ -147,6 +147,12 @@ IPC_MESSAGE_ROUTED1(ViewHostMsg_UpdateTargetURL,
+ 
+ IPC_MESSAGE_ROUTED0(ViewHostMsg_Focus)
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++IPC_MESSAGE_ROUTED2(ViewHostMsg_FinalPageGraph,
++                    std::string /* frame id */,
++                    std::string /* data */)
++// #endif
++
+ // Get the list of proxies to use for |url|, as a semicolon delimited list
+ // of "<TYPE> <HOST>:<PORT>" | "DIRECT".
+ IPC_SYNC_MESSAGE_CONTROL1_2(ViewHostMsg_ResolveProxy,

@@ -1,0 +1,20 @@
+diff --git a/content/browser/devtools/devtools_instrumentation.cc b/content/browser/devtools/devtools_instrumentation.cc
+index 91da6cb62a504cee3412c6c6a42b65924976f9f6..daaf8ac49896c14fae17a34ca6604efbd6544d36 100644
+--- a/content/browser/devtools/devtools_instrumentation.cc
++++ b/content/browser/devtools/devtools_instrumentation.cc
+@@ -130,6 +130,15 @@ void WillBeginDownload(download::DownloadCreateInfo* info,
+   DispatchToAgents(ftn, &protocol::PageHandler::DownloadWillBegin, ftn, item);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void FinalPageGraph(int frame_tree_node_id,
++                    const std::string& frame_id,
++                    const std::string& data) {
++  DispatchToAgents(frame_tree_node_id, &protocol::PageHandler::FinalPageGraph,
++                   frame_id, data);
++}
++// #endif
++
+ void OnSignedExchangeReceived(
+     FrameTreeNode* frame_tree_node,
+     base::Optional<const base::UnguessableToken> devtools_navigation_token,

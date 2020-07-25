@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_REMOTE_FRAME_H_
 
 #include <libxml/tree.h>
+#include <string>
 
 #include "third_party/blink/renderer/platform/wtf/casting.h"
 
@@ -21,7 +22,7 @@ friend class PageGraph;
   NodeRemoteFrame() = delete;
   ~NodeRemoteFrame() override;
 
-  RequestURL GetURL() const { return url_; }
+  const std::string& GetFrameId() const { return frame_id_; }
 
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
@@ -32,10 +33,10 @@ friend class PageGraph;
   bool IsNodeRemoteFrame() const override;
 
  protected:
-  NodeRemoteFrame(PageGraph* const graph, const RequestURL url);
+  NodeRemoteFrame(PageGraph* const graph, const std::string& frame_id);
 
  private:
-  const RequestURL url_;
+  const std::string frame_id_;
 };
 
 }  // namespace brave_page_graph

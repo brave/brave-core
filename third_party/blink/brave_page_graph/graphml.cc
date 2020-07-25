@@ -41,6 +41,8 @@ namespace {
     kGraphMLAttrForTypeEdge, "edge type");
   const GraphMLAttr* const event_listener_id_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "event listener id", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const frame_id_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeNode, "frame id");
   const GraphMLAttr* const host_attr = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "host");
   const GraphMLAttr* const incognito_attr = new GraphMLAttr(
@@ -102,14 +104,14 @@ namespace {
 
   const vector<const GraphMLAttr* const> _all_graphml_attrs = {
     attr_name_attr, attr_value, before_node_attr, block_type_attr, call_args,
-    edge_type_attr, event_listener_id_attr, host_attr, incognito_attr,
-    is_deleted_attr, is_style_attr, key_attr, method_attr, node_id_attr,
-    node_text, node_type, page_graph_edge_id_attr, page_graph_node_id_attr,
-    page_graph_edge_time_attr, page_graph_node_time_attr,
-    parent_node_attr, primary_pattern_attr, request_id_attr, request_type_attr,
-    resource_type_attr, response_hash_attr, rule_attr, script_id_attr,
-    script_type, secondary_pattern_attr, source_attr, status_type, success_attr,
-    tag_attr, url_attr, value_attr
+    edge_type_attr, event_listener_id_attr, frame_id_attr, host_attr,
+    incognito_attr, is_deleted_attr, is_style_attr, key_attr, method_attr,
+    node_id_attr, node_text, node_type, page_graph_edge_id_attr,
+    page_graph_node_id_attr, page_graph_edge_time_attr,
+    page_graph_node_time_attr, parent_node_attr, primary_pattern_attr,
+    request_id_attr, request_type_attr, resource_type_attr, response_hash_attr,
+    rule_attr, script_id_attr, script_type, secondary_pattern_attr, source_attr,
+    status_type, success_attr, tag_attr, url_attr, value_attr
   };
 }
 
@@ -211,6 +213,8 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return edge_type_attr;
     case kGraphMLAttrDefEventListenerId:
       return event_listener_id_attr;
+    case kGraphMLAttrDefFrameId:
+      return frame_id_attr;
     case kGraphMLAttrDefHost:
       return host_attr;
     case kGraphMLAttrDefIncognito:

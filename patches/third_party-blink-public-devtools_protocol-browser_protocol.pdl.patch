@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/devtools_protocol/browser_protocol.pdl b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
-index f444e470f0ae75405f7504d82135486d01ceb575..e5d33c451e1f0a5249a956d4107794289e552be0 100644
+index f444e470f0ae75405f7504d82135486d01ceb575..9949b0403408f4fbd2dc84001105356f34682c3c 100644
 --- a/third_party/blink/public/devtools_protocol/browser_protocol.pdl
 +++ b/third_party/blink/public/devtools_protocol/browser_protocol.pdl
 @@ -2138,6 +2138,15 @@ domain DOM
@@ -18,18 +18,19 @@ index f444e470f0ae75405f7504d82135486d01ceb575..e5d33c451e1f0a5249a956d410779428
    # Returns iframe node that owns iframe with the given domain.
    experimental command getFrameOwner
      parameters
-@@ -5592,6 +5601,17 @@ domain Page
+@@ -5592,6 +5601,18 @@ domain Page
    # Enables page domain notifications.
    command enable
  
-+  command generatePageGraph
++  experimental command generatePageGraph
 +    returns
 +      # Generated page graph GraphML.
 +      string data
 +
-+  # Page graph is about to become stale/dropped because of top-frame navigation
-+  event finalPageGraph
++  experimental event finalPageGraph
 +    parameters
++      # Frame id the page graph is associated with.
++      string frameId
 +      # Generated page graph GraphML.
 +      string data
 +

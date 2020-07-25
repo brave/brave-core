@@ -1,0 +1,43 @@
+diff --git a/third_party/blink/renderer/core/page/chrome_client_impl.cc b/third_party/blink/renderer/core/page/chrome_client_impl.cc
+index 1b430137301a919f6d7b2bd2c1d7569e9f0bce79..b5214729b6fe56603928421cbf9f404d986103b4 100644
+--- a/third_party/blink/renderer/core/page/chrome_client_impl.cc
++++ b/third_party/blink/renderer/core/page/chrome_client_impl.cc
+@@ -112,6 +112,12 @@
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_concatenate.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/inspector/identifiers_factory.h"
++
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -1248,6 +1254,25 @@ void ChromeClientImpl::DidUpdateTextAutosizerPageInfo(
+ }
+ 
+ void ChromeClientImpl::DocumentDetached(Document& document) {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    WebViewClient* const web_view_client = web_view_->Client();
++    if (web_view_client) {
++      LocalFrame* const frame = document.GetFrame();
++      if (frame && frame->IsLocalRoot()) {
++        const std::string frame_id(
++            IdentifiersFactory::FrameId(frame).Utf8().data());
++        ::brave_page_graph::PageGraph* const page_graph =
++            document.GetPageGraph();
++        if (page_graph) {
++          const std::string data(page_graph->ToGraphML());
++          web_view_client->FinalPageGraph(frame_id, data);
++        }
++      }
++    }
++  }
++// #endif
++
+   for (auto& it : file_chooser_queue_) {
+     if (it->FrameOrNull() == document.GetFrame())
+       it->DisconnectClient();

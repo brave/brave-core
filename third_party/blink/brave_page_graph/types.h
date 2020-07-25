@@ -50,6 +50,7 @@ typedef enum {
   kGraphMLAttrDefCallArgs,
   kGraphMLAttrDefEdgeType,
   kGraphMLAttrDefEventListenerId,
+  kGraphMLAttrDefFrameId,
   kGraphMLAttrDefHost,
   kGraphMLAttrDefIncognito,
   kGraphMLAttrDefIsDeleted,

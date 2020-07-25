@@ -10,6 +10,7 @@
 #include <libxml/tree.h>
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
@@ -20,9 +21,10 @@ using ::std::to_string;
 
 namespace brave_page_graph {
 
-NodeRemoteFrame::NodeRemoteFrame(PageGraph* const graph, const RequestURL url) :
+NodeRemoteFrame::NodeRemoteFrame(PageGraph* const graph,
+    const std::string& frame_id) :
       Node(graph),
-      url_(url) {}
+      frame_id_(frame_id) {}
 
 NodeRemoteFrame::~NodeRemoteFrame() {}
 
@@ -32,20 +34,15 @@ ItemName NodeRemoteFrame::GetItemName() const {
 
 ItemDesc NodeRemoteFrame::GetItemDesc() const {
   stringstream builder;
-  builder << Node::GetItemDesc();
-
-  if (!url_.empty()) {
-    builder << " [" << url_ << "]";
-  }
-
+  builder << Node::GetItemDesc() << " [" << frame_id_ << "]";
   return builder.str();
 }
 
 void NodeRemoteFrame::AddGraphMLAttributes(xmlDocPtr doc,
     xmlNodePtr parent_node) const {
   Node::AddGraphMLAttributes(doc, parent_node);
-  GraphMLAttrDefForType(kGraphMLAttrDefURL)
-      ->AddValueNode(doc, parent_node, url_);
+  GraphMLAttrDefForType(kGraphMLAttrDefFrameId)
+      ->AddValueNode(doc, parent_node, frame_id_);
 }
 
 bool NodeRemoteFrame::IsNodeRemoteFrame() const {

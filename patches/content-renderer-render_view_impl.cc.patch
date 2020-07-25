@@ -1,0 +1,18 @@
+diff --git a/content/renderer/render_view_impl.cc b/content/renderer/render_view_impl.cc
+index f0cb4833442be24dee52e2e172a0d22474d1135b..560cf6d35df1c767e7cc967a7e0b9064cf496373 100644
+--- a/content/renderer/render_view_impl.cc
++++ b/content/renderer/render_view_impl.cc
+@@ -1829,6 +1829,13 @@ void RenderViewImpl::DidFocus(blink::WebLocalFrame* calling_frame) {
+   }
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderViewImpl::FinalPageGraph(const std::string& frame_id,
++                                    const std::string& data) {
++  Send(new ViewHostMsg_FinalPageGraph(GetRoutingID(), frame_id, data));
++}
++// #endif
++
+ #if defined(OS_ANDROID)
+ void RenderViewImpl::SuspendVideoCaptureDevices(bool suspend) {
+   if (!main_render_frame_)
