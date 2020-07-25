@@ -22,4 +22,12 @@ bool NodeJS::IsNodeJS() const {
   return true;
 }
 
+bool NodeJS::IsNodeJSBuiltIn() const {
+  return false;
+}
+
+bool NodeJS::IsNodeJSWebAPI() const {
+  return false;
+}
+
 }  // namespace brave_page_graph

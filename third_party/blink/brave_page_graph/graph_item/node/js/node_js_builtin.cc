@@ -17,33 +17,33 @@ using ::std::string;
 
 namespace brave_page_graph {
 
-NodeJSBuiltIn::NodeJSBuiltIn(PageGraph* const graph, const JSBuiltIn builtin) :
+NodeJSBuiltIn::NodeJSBuiltIn(PageGraph* const graph, const JSBuiltIn built_in) :
       NodeJS(graph),
-      built_in_name_(builtin) {}
+      built_in_(built_in) {}
 
 NodeJSBuiltIn::~NodeJSBuiltIn() {}
+
+JSBuiltIn NodeJSBuiltIn::GetBuiltIn() const {
+  return built_in_;
+}
+
+const MethodName& NodeJSBuiltIn::GetMethodName() const {
+  return JSBuiltInToSting(built_in_);
+}
 
 ItemName NodeJSBuiltIn::GetItemName() const {
   return "JS builtin";
 }
 
 ItemDesc NodeJSBuiltIn::GetItemDesc() const {
-  return Node::GetItemDesc() + " [" + JSBuiltInToSting(built_in_name_) + "]";
+  return Node::GetItemDesc() + " [" + JSBuiltInToSting(built_in_) + "]";
 }
 
 void NodeJSBuiltIn::AddGraphMLAttributes(xmlDocPtr doc,
     xmlNodePtr parent_node) const {
   NodeJS::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
-      ->AddValueNode(doc, parent_node, JSBuiltInToSting(built_in_name_));
-}
-
-JSBuiltIn NodeJSBuiltIn::GetBuiltIn() const {
-  return built_in_name_;
-}
-
-const MethodName& NodeJSBuiltIn::GetMethodName() const {
-  return JSBuiltInToSting(built_in_name_);
+      ->AddValueNode(doc, parent_node, JSBuiltInToSting(built_in_));
 }
 
 bool NodeJSBuiltIn::IsNodeJSBuiltIn() const {

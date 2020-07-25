@@ -42,6 +42,7 @@ friend class PageGraph;
   virtual bool IsEdgeExecute() const;
   virtual bool IsEdgeFilter() const;
   virtual bool IsEdgeHTML() const;
+  virtual bool IsEdgeJS() const;
   virtual bool IsEdgeNode() const;
   virtual bool IsEdgeRequest() const;
   virtual bool IsEdgeResourceBlock() const;
@@ -49,7 +50,6 @@ friend class PageGraph;
   virtual bool IsEdgeStorage() const;
   virtual bool IsEdgeStorageBucket() const;
   virtual bool IsEdgeTextChange() const;
-  virtual bool IsEdgeJS() const;
 
  protected:
   Edge(PageGraph* const graph, Node* const out_node, Node* const in_node);

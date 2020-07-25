@@ -21,6 +21,10 @@ NodeJSWebAPI::NodeJSWebAPI(PageGraph* const graph, const MethodName method) :
 
 NodeJSWebAPI::~NodeJSWebAPI() {}
 
+const MethodName& NodeJSWebAPI::GetMethodName() const {
+  return method_name_;
+}
+
 ItemName NodeJSWebAPI::GetItemName() const {
   return "web API";
 }
@@ -34,10 +38,6 @@ void NodeJSWebAPI::AddGraphMLAttributes(xmlDocPtr doc,
   NodeJS::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
       ->AddValueNode(doc, parent_node, method_name_);
-}
-
-const MethodName& NodeJSWebAPI::GetMethodName() const {
-  return method_name_;
 }
 
 bool NodeJSWebAPI::IsNodeJSWebAPI() const {
