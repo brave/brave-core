@@ -15,6 +15,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveSyncInformers;
+import org.chromium.chrome.browser.BraveSyncWorkerHolder;
 import org.chromium.chrome.browser.infobar.InfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -33,19 +34,20 @@ public class BraveSyncInformers {
     }
 
     public static void showSetupV2IfRequired() {
-        boolean wasV1User = BravePrefServiceBridge.getInstance().getBoolean(BravePref.SYNC_V1_WAS_ENABLED);
+        BraveSyncWorker braveSyncWorker = (BraveSyncWorker)BraveSyncWorkerHolder.get();
+        boolean wasV1User = braveSyncWorker.getSyncV1WasEnabled();
         if (!wasV1User) {
             return;
         }
 
-        boolean infobarDismissed = BravePrefServiceBridge.getInstance().getBoolean(BravePref.SYNC_V2_MIGRATE_NOTICE_DISMISSED);
+        boolean infobarDismissed = braveSyncWorker.getSyncV2MigrateNoticeDismissed();
         if (infobarDismissed) {
             return;
         }
 
         boolean isV2User = ProfileSyncService.get() != null && ProfileSyncService.get().isFirstSetupComplete();
         if (isV2User) {
-            BravePrefServiceBridge.getInstance().setBoolean(BravePref.SYNC_V2_MIGRATE_NOTICE_DISMISSED, true);
+            braveSyncWorker.setSyncV2MigrateNoticeDismissed(true);
             return;
         }
 
@@ -91,6 +93,7 @@ public class BraveSyncInformers {
                 activity.getString(R.string.brave_sync_v2_migrate_infobar_message) /* message */,
                 activity.getString(R.string.brave_sync_v2_migrate_infobar_command) /* primaryText */,
                 null /* secondaryText */, null /* linkText */, false /* autoExpire */);
-        BravePrefServiceBridge.getInstance().setBoolean(BravePref.SYNC_V2_MIGRATE_NOTICE_DISMISSED, true);
+        BraveSyncWorker braveSyncWorker = (BraveSyncWorker)BraveSyncWorkerHolder.get();
+        braveSyncWorker.setSyncV2MigrateNoticeDismissed(true);
     }
 }

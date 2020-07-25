@@ -151,6 +151,18 @@ public class BraveSyncWorker {
         return nativeResetSync(mNativeBraveSyncWorker);
     }
 
+    public boolean getSyncV1WasEnabled() {
+        return nativeGetSyncV1WasEnabled(mNativeBraveSyncWorker);
+    }
+
+    public boolean getSyncV2MigrateNoticeDismissed() {
+        return nativeGetSyncV2MigrateNoticeDismissed(mNativeBraveSyncWorker);
+    }
+
+    public void setSyncV2MigrateNoticeDismissed(boolean isDismissed) {
+        nativeSetSyncV2MigrateNoticeDismissed(mNativeBraveSyncWorker, isDismissed);
+    }
+
     private native void nativeInit();
     private native void nativeDestroy(long nativeBraveSyncWorker);
 
@@ -169,4 +181,8 @@ public class BraveSyncWorker {
     private native boolean nativeIsFirstSetupComplete(long nativeBraveSyncWorker);
 
     private native boolean nativeResetSync(long nativeBraveSyncWorker);
+
+    private native boolean nativeGetSyncV1WasEnabled(long nativeBraveSyncWorker);
+    private native boolean nativeGetSyncV2MigrateNoticeDismissed(long nativeBraveSyncWorker);
+    private native void nativeSetSyncV2MigrateNoticeDismissed(long nativeBraveSyncWorker, boolean isDismissed);
 }
