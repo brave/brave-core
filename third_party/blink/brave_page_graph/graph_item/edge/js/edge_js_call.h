@@ -28,23 +28,30 @@ friend class PageGraph;
   EdgeJSCall() = delete;
   ~EdgeJSCall() override;
 
+  const MethodName& GetMethodName() const override;
+
+  const std::vector<const std::string>& GetArguments() const {
+    return arguments_;
+  }
+
+  int GetScriptPosition() const { return script_position_; }
+
   ItemName GetItemName() const override;
   ItemDesc GetItemDesc() const override;
 
   void AddGraphMLAttributes(xmlDocPtr doc, xmlNodePtr parent_node)
       const override;
 
-  const std::vector<const std::string>& GetArguments() const;
-  std::string GetArgumentsString() const;
-  const MethodName& GetMethodName() const override;
   bool IsEdgeJSCall() const override;
 
  protected:
   EdgeJSCall(PageGraph* const graph, NodeScript* const out_node,
-    NodeJS* const in_node, const std::vector<const std::string>& arguments);
+    NodeJS* const in_node, const std::vector<const std::string>& arguments,
+    const int script_position);
 
  private:
   const std::vector<const std::string> arguments_;
+  const int script_position_;
 };
 
 }  // namespace brave_page_graph

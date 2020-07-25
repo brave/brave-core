@@ -221,9 +221,9 @@ friend NodeHTMLElement;
   NodeHTMLText* GetHTMLTextNode(const blink::DOMNodeId node_id) const;
   NodeScript* GetScriptNode(const ScriptId script_id) const;
 
-  NodeActor* GetCurrentActingNode() const;
+  NodeActor* GetCurrentActingNode(int* out_script_position = nullptr) const;
   NodeActor* GetNodeActorForScriptId(const ScriptId script_id) const;
-  ScriptId GetExecutingScriptId() const;
+  ScriptId GetExecutingScriptId(int* out_script_position = nullptr) const;
 
   NodeResource* GetResourceNodeForUrl(const std::string& url);
 

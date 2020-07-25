@@ -1069,7 +1069,8 @@ void PageGraph::RegisterWebAPICall(const MethodName& method,
   Log("RegisterWebAPICall) method: " + method + ", arguments: "
     + buffer.str());
 
-  NodeActor* const acting_node = GetCurrentActingNode();
+  int script_position;
+  NodeActor* const acting_node = GetCurrentActingNode(&script_position);
   if (!IsA<NodeScript>(acting_node)) {
     // Ignore internal usage.
     return;
@@ -1085,7 +1086,7 @@ void PageGraph::RegisterWebAPICall(const MethodName& method,
   }
 
   AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
-    webapi_node, local_args));
+    webapi_node, local_args, script_position));
 }
 
 void PageGraph::RegisterWebAPIResult(const WebAPI web_api,
@@ -1127,7 +1128,8 @@ void PageGraph::RegisterJSBuiltInCall(const JSBuiltIn built_in,
   Log("RegisterJSBuiltInCall) built in: " + JSBuiltInToSting(built_in)
     + ", arguments: " + buffer.str());
 
-  NodeActor* const acting_node = GetCurrentActingNode();
+  int script_position;
+  NodeActor* const acting_node = GetCurrentActingNode(&script_position);
   if (!IsA<NodeScript>(acting_node)) {
     // Ignore internal usage.
     return;
@@ -1143,7 +1145,7 @@ void PageGraph::RegisterJSBuiltInCall(const JSBuiltIn built_in,
   }
 
   AddEdge(new EdgeJSCall(this, static_cast<NodeScript*>(acting_node),
-    js_built_in_node, local_args));
+    js_built_in_node, local_args, script_position));
 }
 
 void PageGraph::RegisterJSBuiltInResponse(const JSBuiltIn built_in,
@@ -1265,8 +1267,8 @@ const std::chrono::time_point<std::chrono::high_resolution_clock>&
   return start_;
 }
 
-NodeActor* PageGraph::GetCurrentActingNode() const {
-  const ScriptId current_script_id = GetExecutingScriptId();
+NodeActor* PageGraph::GetCurrentActingNode(int* out_script_position) const {
+  const ScriptId current_script_id = GetExecutingScriptId(out_script_position);
 
   static ScriptId last_reported_script_id = 0;
   const bool should_log = last_reported_script_id != current_script_id;
@@ -1287,9 +1289,10 @@ NodeActor* PageGraph::GetNodeActorForScriptId(const ScriptId script_id) const {
   return script_nodes_.at(script_id);
 }
 
-ScriptId PageGraph::GetExecutingScriptId() const {
+ScriptId PageGraph::GetExecutingScriptId(int* out_script_position) const {
   return script_tracker_.ResolveScriptId(
-      execution_context_.GetIsolate()->GetExecutingScriptId());
+      execution_context_.GetIsolate()->GetExecutingScriptId(
+          out_script_position));
 }
 
 NodeResource* PageGraph::GetResourceNodeForUrl(const std::string& url) {

@@ -85,6 +85,8 @@ namespace {
     kGraphMLAttrForTypeNode, "rule");
   const GraphMLAttr* const script_id_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "script id", kGraphMLAttrTypeLong);
+  const GraphMLAttr* const script_position_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "script position", kGraphMLAttrTypeLong);
   const GraphMLAttr* const script_type = new GraphMLAttr(
     kGraphMLAttrForTypeNode, "script type");
   const GraphMLAttr* const secondary_pattern_attr = new GraphMLAttr(
@@ -110,8 +112,9 @@ namespace {
     page_graph_node_id_attr, page_graph_edge_time_attr,
     page_graph_node_time_attr, parent_node_attr, primary_pattern_attr,
     request_id_attr, request_type_attr, resource_type_attr, response_hash_attr,
-    rule_attr, script_id_attr, script_type, secondary_pattern_attr, source_attr,
-    status_type, success_attr, tag_attr, url_attr, value_attr
+    rule_attr, script_id_attr, script_position, script_type,
+    secondary_pattern_attr, source_attr, status_type, success_attr, tag_attr,
+    url_attr, value_attr
   };
 }
 
@@ -259,6 +262,8 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return rule_attr;
     case kGraphMLAttrDefScriptId:
       return script_id_attr;
+    case kGraphMLAttrDefScriptPosition:
+      return script_position_attr;
     case kGraphMLAttrDefScriptType:
       return script_type;
     case kGraphMLAttrDefSecondaryPattern:

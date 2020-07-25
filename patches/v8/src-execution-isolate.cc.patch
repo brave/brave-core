@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.cc b/src/execution/isolate.cc
-index c9c6225eb8fd8b8278c707beb521bde910ab49d9..94436a1e84929f9f12f53836f1e85a1a406f6e92 100644
+index c9c6225eb8fd8b8278c707beb521bde910ab49d9..99b82f086e17cc89d1c616ee74262f41e596342f 100644
 --- a/src/execution/isolate.cc
 +++ b/src/execution/isolate.cc
 @@ -93,6 +93,9 @@
@@ -12,20 +12,15 @@ index c9c6225eb8fd8b8278c707beb521bde910ab49d9..94436a1e84929f9f12f53836f1e85a1a
  extern "C" const uint8_t* v8_Default_embedded_blob_;
  extern "C" uint32_t v8_Default_embedded_blob_size_;
  
-@@ -4403,6 +4406,49 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
+@@ -4403,6 +4406,51 @@ void Isolate::CollectSourcePositionsForAllBytecodeArrays() {
    }
  }
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+int Isolate::GetExecutingScriptId() {
-+  StackTraceFrameIterator it(this);
++int Isolate::GetExecutingScriptId(int* out_script_position) {
++  JavaScriptFrameIterator it(this);
 +  while (!it.done()) {
-+    if (!it.is_javascript() && !it.is_wasm()) {
-+      it.Advance();
-+      continue;
-+    }
-+
-+    JavaScriptFrame* frame = it.javascript_frame();
++    JavaScriptFrame* frame = it.frame();
 +    Handle<JSFunction> function(frame->function(), this);
 +
 +    Object maybe_script = function->shared().script();
@@ -35,11 +30,18 @@ index c9c6225eb8fd8b8278c707beb521bde910ab49d9..94436a1e84929f9f12f53836f1e85a1a
 +    }
 +
 +    Script script = Script::cast(maybe_script);
-+
-+    if (script.id() > 0) {
-+      return script.id();
++    if (script.id() <= 0) {
++      it.Advance();
++      continue;
 +    }
-+    it.Advance();
++
++    if (out_script_position) {
++      Handle<SharedFunctionInfo> shared(function->shared(), this);
++      SharedFunctionInfo::EnsureSourcePositionsAvailable(this, shared);
++      *out_script_position = frame->position();
++    }
++
++    return script.id();
 +  }
 +
 +  return 0;
