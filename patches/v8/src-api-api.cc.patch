@@ -1,5 +1,5 @@
 diff --git a/src/api/api.cc b/src/api/api.cc
-index b2d6db3661a564d20f6d07a67bff627ba2ee75da..f6ce323e5db69fd89aefe4d574cb30a0a4bbf484 100644
+index b2d6db3661a564d20f6d07a67bff627ba2ee75da..c751260d3cdd397dc7aec8d976d4afc4df9c27fd 100644
 --- a/src/api/api.cc
 +++ b/src/api/api.cc
 @@ -2204,6 +2205,13 @@ MaybeLocal<Value> Script::Run(Local<Context> context) {
@@ -142,9 +142,9 @@ index b2d6db3661a564d20f6d07a67bff627ba2ee75da..f6ce323e5db69fd89aefe4d574cb30a0
  }
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+int Isolate::GetExecutingScriptId() {
++int Isolate::GetExecutingScriptId(int* out_script_position) {
 +  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
-+  return internal_isolate->GetExecutingScriptId();
++  return internal_isolate->GetExecutingScriptId(out_script_position);
 +}
 +
 +void Isolate::SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func) {

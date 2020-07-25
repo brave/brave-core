@@ -25,52 +25,50 @@ using ::std::vector;
 
 namespace brave_page_graph {
 
+string BuildArgumentsString(const vector<const string>& arguments) {
+  stringstream builder;
+  const size_t num_args = arguments.size();
+  const size_t last_index = num_args - 1;
+  for (size_t i = 0; i < num_args; i += 1) {
+    if (i == last_index) {
+      builder << arguments.at(i);
+    } else {
+      builder << arguments.at(i) << ", ";
+    }
+  }
+  return builder.str();
+}
+
 EdgeJSCall::EdgeJSCall(PageGraph* const graph,
     NodeScript* const out_node, NodeJS* const in_node,
-    const vector<const string>& arguments) :
+    const vector<const string>& arguments, const int script_position) :
       EdgeJS(graph, out_node, in_node),
-      arguments_(arguments) {}
+      arguments_(arguments),
+      script_position_(script_position) {}
 
 EdgeJSCall::~EdgeJSCall() {}
+
+const MethodName& EdgeJSCall::GetMethodName() const {
+  LOG_ASSERT(GetInNode()->IsNodeJS());
+  return To<NodeJS>(GetInNode())->GetMethodName();
+}
 
 ItemName EdgeJSCall::GetItemName() const {
   return "js call";
 }
 
 ItemDesc EdgeJSCall::GetItemDesc() const {
-  return GetItemName() + " [arguments: " + GetArgumentsString() + "]";
+  return GetItemName() +
+      " [arguments: " + BuildArgumentsString(arguments_) + "]";
 }
 
 void EdgeJSCall::AddGraphMLAttributes(xmlDocPtr doc,
     xmlNodePtr parent_node) const {
   EdgeJS::AddGraphMLAttributes(doc, parent_node);
   GraphMLAttrDefForType(kGraphMLAttrDefCallArgs)
-      ->AddValueNode(doc, parent_node, GetArgumentsString());
-}
-
-const vector<const string>& EdgeJSCall::GetArguments() const {
-  return arguments_;
-}
-
-string EdgeJSCall::GetArgumentsString() const {
-  stringstream builder;
-
-  const size_t num_args = arguments_.size();
-  const size_t last_index = num_args - 1;
-  for (size_t i = 0; i < num_args; i += 1) {
-    if (i == last_index) {
-      builder << arguments_.at(i);
-    } else {
-      builder << arguments_.at(i) << ", ";
-    }
-  }
-
-  return builder.str();
-}
-
-const MethodName& EdgeJSCall::GetMethodName() const {
-  LOG_ASSERT(GetInNode()->IsNodeJS());
-  return To<NodeJS>(GetInNode())->GetMethodName();
+      ->AddValueNode(doc, parent_node, BuildArgumentsString(arguments_));
+  GraphMLAttrDefForType(kGraphMLAttrDefScriptPosition)
+      ->AddValueNode(doc, parent_node, script_position_);
 }
 
 bool EdgeJSCall::IsEdgeJSCall() const {

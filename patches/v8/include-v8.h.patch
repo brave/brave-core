@@ -1,5 +1,5 @@
 diff --git a/include/v8.h b/include/v8.h
-index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..916746b7a589b227836a4c83b1233ceba6cf073b 100644
+index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..2ecb104a6cd26f1dee2bbe4ee9c7379c8d879a8d 100644
 --- a/include/v8.h
 +++ b/include/v8.h
 @@ -28,6 +28,10 @@
@@ -107,7 +107,7 @@ index 9926b308b15cdaee4c76ad6d36adfb051ef9c480..916746b7a589b227836a4c83b1233ceb
    void operator delete[](void*, size_t) = delete;
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  int GetExecutingScriptId();
++  int GetExecutingScriptId(int* out_script_position = nullptr);
 +
 +  void SetEvalScriptCompiledFunc(const EvalScriptCompiledFunc func);
 +  void SetBuiltInFuncCallFunc(const BuiltInFuncCallFunc func);

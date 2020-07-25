@@ -1,5 +1,5 @@
 diff --git a/src/execution/isolate.h b/src/execution/isolate.h
-index 037e6ea7f59d0b917dc766adab3a20a716d025ce..babd0c70d4c0265af9da993dce05aae0e5892832 100644
+index 037e6ea7f59d0b917dc766adab3a20a716d025ce..0e282e17af3d1090939a38607341b9ab5fbaac7e 100644
 --- a/src/execution/isolate.h
 +++ b/src/execution/isolate.h
 @@ -36,6 +36,7 @@
@@ -15,7 +15,7 @@ index 037e6ea7f59d0b917dc766adab3a20a716d025ce..babd0c70d4c0265af9da993dce05aae0
    bool RequiresCodeRange() const;
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  int GetExecutingScriptId();
++  int GetExecutingScriptId(int* out_script_position = nullptr);
 +
 +  EvalScriptCompiledFunc GetEvalScriptCompiledFunc() const {
 +    return eval_script_compiled_func_;
