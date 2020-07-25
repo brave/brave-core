@@ -1,0 +1,18 @@
+diff --git a/content/browser/renderer_host/render_view_host_impl.cc b/content/browser/renderer_host/render_view_host_impl.cc
+index 01a4e3dc134b3cf267ec637dde1066db51ac78e7..7d8d0ce04b4256f18893b7f226df964c1cabcdc1 100644
+--- a/content/browser/renderer_host/render_view_host_impl.cc
++++ b/content/browser/renderer_host/render_view_host_impl.cc
+@@ -922,6 +922,13 @@ void RenderViewHostImpl::OnFocus() {
+   delegate_->Activate();
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderViewHostImpl::OnFinalPageGraph(const std::string& frame_id,
++                                          const std::string& data) {
++  delegate_->FinalPageGraph(frame_id, data);
++}
++// #endif
++
+ const mojo::AssociatedRemote<blink::mojom::PageBroadcast>&
+ RenderViewHostImpl::GetAssociatedPageBroadcast() {
+   return page_broadcast_;

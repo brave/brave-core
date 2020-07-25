@@ -368,17 +368,17 @@ void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
 }
 
 void PageGraph::RegisterRemoteFrameCreated(
-    const blink::DOMNodeId parent_node_id, const GURL& url) {
-  const KURL normalized_url = NormalizeUrl(KURL(url));
-  const string local_url(normalized_url.GetString().Utf8().data());
+    const blink::DOMNodeId parent_node_id, const String& frame_id) {
+  const string local_frame_id(frame_id.Utf8().data());
 
   Log("RegisterRemoteFrameCreated) parent node id: " + to_string(parent_node_id)
-    + ", url: " + local_url);
+    + ", frame id: " + local_frame_id);
 
   LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
 
   // Create the new remote frame node.
-  NodeRemoteFrame* const remote_frame = new NodeRemoteFrame(this, local_url);
+  NodeRemoteFrame* const remote_frame =
+      new NodeRemoteFrame(this, local_frame_id);
   AddNode(remote_frame);
 
   // Add the cross-DOM edge.

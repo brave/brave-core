@@ -1,16 +1,19 @@
 diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
-index 1ff765e6e0e238c713e8235efb4958a96a99eadd..b25599f7f328203aebcc7fdcb7248dc664205c00 100644
+index 1ff765e6e0e238c713e8235efb4958a96a99eadd..7c5610038beb195d644830a75fd6c823aabaf9ba 100644
 --- a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
 +++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
-@@ -85,6 +85,7 @@
+@@ -85,6 +85,10 @@
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  #include "v8/include/v8-inspector.h"
  
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++// #endif
 +
  namespace blink {
  
  using protocol::Response;
-@@ -864,7 +865,7 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+@@ -864,7 +868,7 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
      const String world_name = worlds_to_evaluate_on_load_.Get(key);
      if (world_name.IsEmpty()) {
        frame->GetScriptController().ExecuteScriptInMainWorld(
@@ -19,7 +22,7 @@ index 1ff765e6e0e238c713e8235efb4958a96a99eadd..b25599f7f328203aebcc7fdcb7248dc6
            ScriptController::kExecuteScriptWhenScriptsDisabled);
        continue;
      }
-@@ -878,12 +879,14 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+@@ -878,12 +882,14 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
      // a foreign world.
      v8::HandleScope handle_scope(V8PerIsolateData::MainThreadIsolate());
      frame->GetScriptController().ExecuteScriptInIsolatedWorld(
@@ -36,63 +39,12 @@ index 1ff765e6e0e238c713e8235efb4958a96a99eadd..b25599f7f328203aebcc7fdcb7248dc6
          ScriptController::kExecuteScriptWhenScriptsDisabled);
    }
  }
-@@ -948,9 +951,33 @@ void InspectorPageAgent::FrameRequestedNavigation(
-     Frame* target_frame,
-     const KURL& url,
-     ClientNavigationReason reason) {
-+// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  {
-+    // probably not right once remote frames have PG support
-+    if (target_frame->IsMainFrame()) {
-+      LocalFrame* main_frame = inspected_frames_->Root();
-+      if (main_frame) {
-+        Document* document = main_frame->GetDocument();
-+        if (document) {
-+          ::brave_page_graph::PageGraph* const page_graph =
-+              document->GetPageGraph();
-+          if (page_graph) {
-+            std::string graphml(page_graph->ToGraphML());
-+            GetFrontend()->finalPageGraph(String::FromUTF8(graphml.c_str()));
-+          }
-+        }
-+      }
-+    }
-+  }
-+// #endif
-+  namespace ReasonEnum = protocol::Page::ClientNavigationReasonEnum;
-   GetFrontend()->frameRequestedNavigation(
-       IdentifiersFactory::FrameId(target_frame),
--      ClientNavigationReasonToProtocol(reason), url.GetString());
-+      // work around missing code in our snapshot of upstream Chromium
-+      (reason == ClientNavigationReason::kNone)
-+          ? ReasonEnum::Reload
-+          : ClientNavigationReasonToProtocol(reason),
-+      url.GetString());
-   GetFrontend()->flush();
- }
- 
-@@ -959,9 +986,14 @@ void InspectorPageAgent::FrameScheduledNavigation(
-     const KURL& url,
-     base::TimeDelta delay,
-     ClientNavigationReason reason) {
-+  namespace ReasonEnum = protocol::Page::ClientNavigationReasonEnum;
-   GetFrontend()->frameScheduledNavigation(
-       IdentifiersFactory::FrameId(frame), delay.InSecondsF(),
--      ClientNavigationReasonToProtocol(reason), url.GetString());
-+      // work around missing code in our snapshot of upstream Chromium
-+      (reason == ClientNavigationReason::kNone)
-+          ? ReasonEnum::Reload
-+          : ClientNavigationReasonToProtocol(reason),
-+      url.GetString());
-   GetFrontend()->flush();
- }
- 
-@@ -1393,6 +1425,29 @@ Response InspectorPageAgent::setInterceptFileChooserDialog(bool enabled) {
+@@ -1393,6 +1399,31 @@ Response InspectorPageAgent::setInterceptFileChooserDialog(bool enabled) {
    return Response::Success();
  }
  
-+// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +Response InspectorPageAgent::generatePageGraph(String* data) {
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  LocalFrame* main_frame = inspected_frames_->Root();
 +  if (!main_frame) {
 +    return Response::ServerError("No main frame found");
@@ -111,8 +63,10 @@ index 1ff765e6e0e238c713e8235efb4958a96a99eadd..b25599f7f328203aebcc7fdcb7248dc6
 +  std::string graphml(page_graph->ToGraphML());
 +  *data = String::FromUTF8(graphml.c_str());
 +  return Response::Success();
-+}
++// #else
++//   return Response::ServerError("Browser not built with Page Graph support");
 +// #endif
++}
 +
  Response InspectorPageAgent::generateTestReport(const String& message,
                                                  Maybe<String> group) {

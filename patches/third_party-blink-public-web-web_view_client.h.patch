@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/public/web/web_view_client.h b/third_party/blink/public/web/web_view_client.h
+index 2e572f27aeebce77560f4d31c0d540b536797874..0f1eb8ac4be08a7dd064f8633484805cc3a8f13a 100644
+--- a/third_party/blink/public/web/web_view_client.h
++++ b/third_party/blink/public/web/web_view_client.h
+@@ -148,6 +148,10 @@ class WebViewClient {
+   // Called when the View acquires focus.
+   virtual void DidFocus(WebLocalFrame* calling_frame) {}
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  virtual void FinalPageGraph(const std::string&, const std::string&) {}
++// #endif
++
+   // Session history -----------------------------------------------------
+ 
+   // Returns the number of history items before/after the current

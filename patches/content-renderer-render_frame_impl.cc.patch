@@ -1,16 +1,8 @@
 diff --git a/content/renderer/render_frame_impl.cc b/content/renderer/render_frame_impl.cc
-index 2ab5e79b71cc8d5fa5c5690da0ac4fe3bf9a0def..672b72749a54f5eb5dc0486ff5a4d0020867ef67 100644
+index 2ab5e79b71cc8d5fa5c5690da0ac4fe3bf9a0def..d10dc535d38bf24cd35096b6fa0014fbe06cdcd1 100644
 --- a/content/renderer/render_frame_impl.cc
 +++ b/content/renderer/render_frame_impl.cc
-@@ -222,6 +222,7 @@
- #include "url/url_util.h"
- #include "v8/include/v8.h"
- 
-+
- #if BUILDFLAG(ENABLE_PLUGINS)
- #include "content/renderer/pepper/pepper_browser_connection.h"
- #include "content/renderer/pepper/pepper_plugin_instance_impl.h"
-@@ -2198,6 +2199,10 @@ bool RenderFrameImpl::OnMessageReceived(const IPC::Message& msg) {
+@@ -2198,6 +2198,10 @@ bool RenderFrameImpl::OnMessageReceived(const IPC::Message& msg) {
  #if BUILDFLAG(ENABLE_PLUGINS)
      IPC_MESSAGE_HANDLER(FrameMsg_SetPepperVolume, OnSetPepperVolume)
  #endif
@@ -21,7 +13,7 @@ index 2ab5e79b71cc8d5fa5c5690da0ac4fe3bf9a0def..672b72749a54f5eb5dc0486ff5a4d002
      IPC_MESSAGE_HANDLER(FrameMsg_VisualStateRequest,
                          OnVisualStateRequest)
      IPC_MESSAGE_HANDLER(FrameMsg_Reload, OnReload)
-@@ -2472,6 +2477,20 @@ void RenderFrameImpl::OnClipboardHostError() {
+@@ -2472,6 +2476,20 @@ void RenderFrameImpl::OnClipboardHostError() {
  }
  #endif
  
@@ -42,7 +34,7 @@ index 2ab5e79b71cc8d5fa5c5690da0ac4fe3bf9a0def..672b72749a54f5eb5dc0486ff5a4d002
  void RenderFrameImpl::JavaScriptExecuteRequest(
      const base::string16& javascript,
      bool wants_result,
-@@ -2973,6 +2992,20 @@ void RenderFrameImpl::AddMessageToConsole(
+@@ -2973,6 +2991,20 @@ void RenderFrameImpl::AddMessageToConsole(
    AddMessageToConsoleImpl(level, message, false /* discard_duplicates */);
  }
  
@@ -63,16 +55,3 @@ index 2ab5e79b71cc8d5fa5c5690da0ac4fe3bf9a0def..672b72749a54f5eb5dc0486ff5a4d002
  PreviewsState RenderFrameImpl::GetPreviewsState() {
    WebDocumentLoader* document_loader = frame_->GetDocumentLoader();
    return document_loader ? document_loader->GetPreviewsState()
-@@ -4800,6 +4833,12 @@ void RenderFrameImpl::WillSendRequestInternal(
-   }
- }
- 
-+// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+void RenderFrameImpl::RegisterRemoteFrameCreated(const GURL& url) {
-+  Send(new FrameHostMsg_RegisterRemoteFrameCreated(routing_id_, url));
-+}
-+// #endif
-+
- void RenderFrameImpl::DidLoadResourceFromMemoryCache(
-     const blink::WebURLRequest& request,
-     const blink::WebURLResponse& response) {

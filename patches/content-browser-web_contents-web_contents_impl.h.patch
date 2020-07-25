@@ -1,0 +1,15 @@
+diff --git a/content/browser/web_contents/web_contents_impl.h b/content/browser/web_contents/web_contents_impl.h
+index 33ff20513074aa72e434500abce5fa5ec314b585..cba58e8a4fc74058f9a4a3c5a91b7802e73ed6b0 100644
+--- a/content/browser/web_contents/web_contents_impl.h
++++ b/content/browser/web_contents/web_contents_impl.h
+@@ -759,6 +759,10 @@ class CONTENT_EXPORT WebContentsImpl : public WebContents,
+   bool ShouldIgnoreInputEvents() override;
+   void OnIgnoredUIEvent() override;
+   void Activate() override;
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void FinalPageGraph(const std::string& frame_id,
++                      const std::string& data) override;
++// #endif
+   void UpdatePreferredSize(const gfx::Size& pref_size) override;
+   void ShowCreatedWidget(int process_id,
+                          int widget_route_id,

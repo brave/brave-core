@@ -88,7 +88,7 @@ friend NodeHTMLElement;
     const blink::DOMNodeId parent_node_id, const WTF::String& tag_name,
     const blink::KURL& url);
   void RegisterRemoteFrameCreated(const blink::DOMNodeId parent_node_id,
-    const GURL& url);
+    const WTF::String& frame_id);
 
   void RegisterHTMLElementNodeCreated(const blink::DOMNodeId node_id,
     const WTF::String& tag_name,

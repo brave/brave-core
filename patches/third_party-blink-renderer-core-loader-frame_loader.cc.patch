@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/frame_loader.cc b/third_party/blink/renderer/core/loader/frame_loader.cc
-index b8f4aa80447cf56d29de438a032096010709c2c5..775c8e11746681d259bda1e49852d9703fa1fa7f 100644
+index b8f4aa80447cf56d29de438a032096010709c2c5..7e073c23c8bdc805f953562a6bfd46ad986cffe2 100644
 --- a/third_party/blink/renderer/core/loader/frame_loader.cc
 +++ b/third_party/blink/renderer/core/loader/frame_loader.cc
 @@ -128,6 +128,11 @@
@@ -14,16 +14,6 @@ index b8f4aa80447cf56d29de438a032096010709c2c5..775c8e11746681d259bda1e49852d970
  namespace blink {
  
  namespace {
-@@ -788,7 +795,8 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
-     }
-   }
- 
--  if (request.ClientRedirectReason() != ClientNavigationReason::kNone) {
-+  // work around missing code in our snapshot of upstream Chromium
-+  if (1/*request.ClientRedirectReason() != ClientNavigationReason::kNone*/) {
-     probe::FrameRequestedNavigation(frame_, frame_, url,
-                                     request.ClientRedirectReason());
-   }
 @@ -797,6 +804,23 @@ void FrameLoader::StartNavigation(FrameLoadRequest& request,
        origin_document ? origin_document->GetSecurityContext().AddressSpace()
                        : network::mojom::IPAddressSpace::kUnknown;

@@ -1,0 +1,16 @@
+diff --git a/content/common/view_messages.h b/content/common/view_messages.h
+index b75aee16237cad6043cd6cfbe22a166e10327a16..40486dd96539a42e665230aed21f3cdd4933e887 100644
+--- a/content/common/view_messages.h
++++ b/content/common/view_messages.h
+@@ -146,6 +146,11 @@ IPC_MESSAGE_ROUTED1(ViewHostMsg_UpdateTargetURL,
+ 
+ IPC_MESSAGE_ROUTED0(ViewHostMsg_Focus)
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++IPC_MESSAGE_ROUTED2(ViewHostMsg_FinalPageGraph,
++                    std::string /* frame id */,
++                    std::string /* data */)
++// #endif
+ #if BUILDFLAG(ENABLE_PLUGINS)
+ // A renderer sends this to the browser process when it wants to access a PPAPI
+ // broker. In contrast to FrameHostMsg_OpenChannelToPpapiBroker, this is called

@@ -1,0 +1,17 @@
+diff --git a/content/browser/devtools/devtools_instrumentation.h b/content/browser/devtools/devtools_instrumentation.h
+index 35726bdf43034be86b6388318f83871d70b533dd..18689c4c3057b7755cb661040c9c0155a5c5faba 100644
+--- a/content/browser/devtools/devtools_instrumentation.h
++++ b/content/browser/devtools/devtools_instrumentation.h
+@@ -85,6 +85,12 @@ void OnNavigationRequestFailed(
+ void WillBeginDownload(download::DownloadCreateInfo* info,
+                        download::DownloadItem* item);
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void FinalPageGraph(int frame_tree_node_id,
++                    const std::string& frame_id,
++                    const std::string& data);
++// #endif
++
+ void OnSignedExchangeReceived(
+     FrameTreeNode* frame_tree_node,
+     base::Optional<const base::UnguessableToken> devtools_navigation_token,
