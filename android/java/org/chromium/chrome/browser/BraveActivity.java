@@ -243,8 +243,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
         }
 
-        if (PackageUtils.isFirstInstall(this) 
-            && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
+        if (SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
             calender.add(Calendar.DATE, DAYS_12);
