@@ -786,6 +786,7 @@ if (is_android) {
       "//chrome/test/android:chrome_java_test_support",
       "//components/search_engines/android:java",
       "//components/sync/android:sync_java",
+      "//third_party/android_support_test_runner:runner_java",
       "//third_party/junit",
     ]
   }
