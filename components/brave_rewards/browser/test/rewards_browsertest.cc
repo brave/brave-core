@@ -334,7 +334,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   response_->SetVerifiedWallet(true);
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
-  contribution_->SetUpUpholdWallet(50.0);
+  contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
 
   response_->ClearRequests();
 
