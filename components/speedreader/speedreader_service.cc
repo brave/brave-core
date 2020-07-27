@@ -53,9 +53,7 @@ void StoreTogglesHistogram(uint64_t toggles) {
   UMA_HISTOGRAM_EXACT_LINEAR(kSpeedreaderToggleUMAHistogramName, bucket, 5);
 }
 
-void StoreSpeedReaderEnabledHistogram(PrefService* prefs,
-                                      bool toggled,
-                                      bool enabled_now) {
+void RecordHistograms(PrefService* prefs, bool toggled, bool enabled_now) {
   WeeklyStorage weekly_toggles(prefs, kSpeedreaderPrefToggleCount);
   if (toggled)
     weekly_toggles.AddDelta(1);
@@ -92,8 +90,8 @@ void SpeedreaderService::ToggleSpeedreader() {
   prefs_->SetBoolean(kSpeedreaderPrefEnabled, !enabled);
   if (!enabled)
     prefs_->SetBoolean(kSpeedreaderPrefEverEnabled, true);
-  StoreSpeedReaderEnabledHistogram(prefs_, true,
-                                   !enabled);  // toggling - now enabled
+  RecordHistograms(prefs_, true,
+                   !enabled);  // toggling - now enabled
 }
 
 bool SpeedreaderService::IsEnabled() {
@@ -102,7 +100,7 @@ bool SpeedreaderService::IsEnabled() {
   }
 
   const bool enabled = prefs_->GetBoolean(kSpeedreaderPrefEnabled);
-  StoreSpeedReaderEnabledHistogram(prefs_, false, enabled);
+  RecordHistograms(prefs_, false, enabled);
   return enabled;
 }
 

@@ -9,8 +9,8 @@
 namespace speedreader {
 
 constexpr char kSpeedreaderPrefEnabled[] = "brave.speedreader.enabled";
-constexpr char kSpeedreaderPrefEverEnabled[] = "brave.speedreader.everEnabled";
-constexpr char kSpeedreaderPrefToggleCount[] = "brave.speedreader.toggleCount";
+constexpr char kSpeedreaderPrefEverEnabled[] = "brave.speedreader.ever_enabled";
+constexpr char kSpeedreaderPrefToggleCount[] = "brave.speedreader.toggle_count";
 
 }  // namespace speedreader
 
