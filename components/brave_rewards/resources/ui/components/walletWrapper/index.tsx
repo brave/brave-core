@@ -97,6 +97,7 @@ export interface ActionWallet {
   name: string
   action: () => void
   testId?: string
+  externalWallet: boolean
 }
 
 export type NotificationType =
@@ -175,14 +176,30 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     }
   }
 
-  generateActions (actions: { icon: React.ReactNode, name: string, testId?: string, action: () => void }[], id?: string) {
+  generateActions (actions: ActionWallet[], id?: string) {
     return actions && actions.map((action, i: number) => {
+      let clickAction = action.externalWallet ? this.onActionClick.bind(this, action.action) : action.action
       return (
-        <StyledAction key={`${id}-${i}`} onClick={action.action} data-test-id={action.testId}>
+        <StyledAction key={`${id}-${i}`} onClick={clickAction} data-test-id={action.testId}>
           <StyledActionIcon>{action.icon}</StyledActionIcon>
           <StyledActionText>{action.name}</StyledActionText>
         </StyledAction>
       )
+    })
+  }
+
+  onActionClick = (action: () => void) => {
+    if (!action) {
+      return
+    }
+
+    if (!this.props.showLoginMessage) {
+      action()
+      return
+    }
+
+    this.setState({
+      showLoginMessage: true
     })
   }
 
@@ -323,27 +340,12 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     )
   }
 
-  walletButtonClicked = () => {
-    if (!this.props.onVerifyClick) {
-      return
-    }
-
-    if (!this.props.showLoginMessage) {
-      this.props.onVerifyClick()
-      return
-    }
-
-    this.setState({
-      showLoginMessage: true
-    })
-  }
-
   generateWalletButton = (walletState: WalletState) => {
     const buttonProps: Partial<ButtonProps> = {
       size: 'small',
       level: 'primary',
       brand: 'rewards',
-      onClick: this.walletButtonClicked
+      onClick: this.onActionClick.bind(this, this.props.onVerifyClick)
     }
 
     switch (walletState) {

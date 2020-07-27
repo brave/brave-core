@@ -315,12 +315,14 @@ storiesOf('Rewards/Concepts/Desktop', module)
             {
               name: 'Add funds',
               action: doNothing,
-              icon: <WalletAddIcon />
+              icon: <WalletAddIcon />,
+              externalWallet: true
             },
             {
               name: 'Settings',
               action: doNothing,
-              icon: <BatColorIcon />
+              icon: <BatColorIcon />,
+              externalWallet: false
             }
           ]}
           showSecActions={false}
@@ -451,12 +453,14 @@ storiesOf('Rewards/Concepts/Desktop', module)
             {
               name: 'Add funds',
               action: doNothing,
-              icon: <WalletAddIcon />
+              icon: <WalletAddIcon />,
+              externalWallet: true
             },
             {
               name: 'Settings',
               action: doNothing,
-              icon: <BatColorIcon />
+              icon: <BatColorIcon />,
+              externalWallet: false
             }
           ]}
           showCopy={boolean('Show Uphold', false)}

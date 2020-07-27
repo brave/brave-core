@@ -486,13 +486,15 @@ class PageWallet extends React.Component<Props, State> {
         name: getLocale('panelAddFunds'),
         action: this.onFundsAction.bind(this, 'add'),
         icon: <WalletAddIcon />,
-        testId: 'panel-add-funds'
+        testId: 'panel-add-funds',
+        externalWallet: true
       },
       {
         name: getLocale('panelWithdrawFunds'),
         action: this.onFundsAction.bind(this, 'withdraw'),
         icon: <WalletWithdrawIcon />,
-        testId: 'panel-withdraw-funds'
+        testId: 'panel-withdraw-funds',
+        externalWallet: true
       }
     ]
   }
