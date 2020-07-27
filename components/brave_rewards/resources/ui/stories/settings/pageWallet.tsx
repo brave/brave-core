@@ -231,12 +231,14 @@ class PageWallet extends React.Component<Props, State> {
               name: 'Add funds',
               action: doNothing,
               icon: <WalletAddIcon />,
-              testId: 'panel-add-funds'
+              testId: 'panel-add-funds',
+              externalWallet: true
             },
             {
               name: 'Withdraw Funds',
               action: doNothing,
-              icon: <WalletWithdrawIcon />
+              icon: <WalletWithdrawIcon />,
+              externalWallet: true
             }
           ]}
           compact={false}

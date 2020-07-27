@@ -62,12 +62,14 @@ storiesOf('Rewards/Wallet/Desktop', module)
           {
             name: 'Add funds',
             action: doNothing,
-            icon: <WalletAddIcon />
+            icon: <WalletAddIcon />,
+            externalWallet: true
           },
           {
             name: 'Withdraw Funds',
             action: doNothing,
-            icon: <WalletImportIcon />
+            icon: <WalletImportIcon />,
+            externalWallet: true
           }
         ]}
         grants={showGrant ? [
