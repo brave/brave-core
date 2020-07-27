@@ -118,6 +118,8 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   void CompleteLoading(std::string body);
   void CompleteSending();
   void SendReceivedBodyToClient();
+  // Applies a stylesheet to distilled body.
+  void StyleContent(std::string body);
 
   void Abort();
 

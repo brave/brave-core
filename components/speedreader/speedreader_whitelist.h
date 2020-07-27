@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "base/files/file_path.h"
 #include "base/files/file_path_watcher.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
@@ -38,6 +39,8 @@ class SpeedreaderWhitelist : public brave_component_updater::BraveComponent {
   bool IsWhitelisted(const GURL& url);
   std::unique_ptr<Rewriter> MakeRewriter(const GURL& url);
 
+  const base::FilePath& GetContentStylesheetPath();
+
  private:
   // brave_component_updater::BraveComponent:
   void OnComponentReady(const std::string& component_id,
@@ -53,6 +56,7 @@ class SpeedreaderWhitelist : public brave_component_updater::BraveComponent {
   void OnWhitelistFileReady(const base::FilePath& path, bool error);
 
   std::unique_ptr<speedreader::SpeedReader> speedreader_;
+  base::FilePath stylesheet_path_;
   std::unique_ptr<base::FilePathWatcher> whitelist_path_watcher_;
   base::WeakPtrFactory<SpeedreaderWhitelist> weak_factory_{this};
 };

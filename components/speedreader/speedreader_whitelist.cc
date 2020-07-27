@@ -9,7 +9,6 @@
 
 #include "base/bind.h"
 #include "base/command_line.h"
-#include "base/files/file_path.h"
 #include "base/task/post_task.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
 #include "brave/components/speedreader/speedreader_switches.h"
@@ -23,6 +22,9 @@ constexpr base::FilePath::CharType kDatFileVersion[] = FILE_PATH_LITERAL("1");
 
 constexpr base::FilePath::CharType kDatFileName[] =
     FILE_PATH_LITERAL("speedreader-updater.dat");
+
+constexpr base::FilePath::CharType kStylesheetFileName[] =
+    FILE_PATH_LITERAL("content-stylesheet.css");
 
 constexpr char kComponentName[] = "Brave SpeedReader Updater";
 constexpr char kComponentId[] = "jicbkmdloagakknpihibphagfckhjdih";
@@ -83,6 +85,9 @@ void SpeedreaderWhitelist::OnWhitelistFileReady(const base::FilePath& path,
 void SpeedreaderWhitelist::OnComponentReady(const std::string& component_id,
                                             const base::FilePath& install_dir,
                                             const std::string& manifest) {
+  stylesheet_path_ =
+      install_dir.Append(kDatFileVersion).Append(kStylesheetFileName);
+
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(
@@ -98,6 +103,10 @@ bool SpeedreaderWhitelist::IsWhitelisted(const GURL& url) {
 
 std::unique_ptr<Rewriter> SpeedreaderWhitelist::MakeRewriter(const GURL& url) {
   return speedreader_->MakeRewriter(url.spec());
+}
+
+const base::FilePath& SpeedreaderWhitelist::GetContentStylesheetPath() {
+  return stylesheet_path_;
 }
 
 void SpeedreaderWhitelist::OnGetDATFileData(GetDATFileDataResult result) {

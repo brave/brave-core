@@ -10,6 +10,8 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/task/post_task.h"
 #include "brave/components/speedreader/rust/ffi/speedreader.h"
@@ -26,11 +28,17 @@ namespace {
 
 constexpr uint32_t kReadBufferSize = 32768;
 
-std::string GetDistilledPageResources() {
-  return "<style id=\"brave_speedreader_style\">" +
-         ui::ResourceBundle::GetSharedInstance()
-             .LoadDataResourceString(IDR_SPEEDREADER_STYLE_DESKTOP) +
-         "</style>";
+std::string GetDistilledPageResources(const base::FilePath& stylesheet_path) {
+  std::string stylesheet;
+  const bool success = base::ReadFileToString(stylesheet_path, &stylesheet);
+
+  if (!success || stylesheet.empty()) {
+    VLOG(1) << "Failed to read stylesheet from component: " << stylesheet_path;
+    stylesheet = ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+        IDR_SPEEDREADER_STYLE_DESKTOP);
+  }
+
+  return "<style id=\"brave_speedreader_style\">" + stylesheet + "</style>";
 }
 
 }  // namespace
@@ -272,14 +280,28 @@ void SpeedReaderURLLoader::MaybeLaunchSpeedreader() {
                 return data;
               }
 
-              return GetDistilledPageResources() + transformed;
+              return transformed;
             },
             std::move(buffered_body_), whitelist_->MakeRewriter(response_url_)),
-        base::BindOnce(&SpeedReaderURLLoader::CompleteLoading,
+        base::BindOnce(&SpeedReaderURLLoader::StyleContent,
                        weak_factory_.GetWeakPtr()));
     return;
   }
   CompleteLoading(std::move(buffered_body_));
+}
+
+void SpeedReaderURLLoader::StyleContent(std::string body) {
+  base::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      {base::ThreadPool(), base::MayBlock(), base::TaskPriority::USER_BLOCKING},
+      base::BindOnce(
+          [](const base::FilePath& stylesheet_path, std::string body) {
+            std::string resources = GetDistilledPageResources(stylesheet_path);
+            return resources + body;
+          },
+          whitelist_->GetContentStylesheetPath(), std::move(body)),
+      base::BindOnce(&SpeedReaderURLLoader::CompleteLoading,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void SpeedReaderURLLoader::CompleteLoading(std::string body) {
