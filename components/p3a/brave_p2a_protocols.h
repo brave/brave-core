@@ -15,8 +15,7 @@ class DirectEncodingProtocol {
   DirectEncodingProtocol();
   ~DirectEncodingProtocol();
 
-  static uint64_t Perturb(
-      uint16_t bucket_count, uint64_t value);
+  static uint64_t Perturb(uint16_t bucket_count, uint64_t value);
 };
 
 }  // namespace brave

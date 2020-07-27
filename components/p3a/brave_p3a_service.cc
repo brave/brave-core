@@ -45,8 +45,8 @@ namespace {
 // Receiving this value will effectively prevent the metric from transmission
 // to the backend. For now we consider this as a hack for p2a metrics, which
 // should be refactored in better times.
-constexpr int32_t kSuspendedMetricValue = INT32_MIN;
-constexpr uint64_t kSuspendedMetricBucket = UINT64_MAX;
+constexpr int32_t kSuspendedMetricValue = INT_MAX - 1;
+constexpr uint64_t kSuspendedMetricBucket = INT_MAX - 1;
 
 constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
@@ -84,7 +84,6 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Welcome.InteractionStatus",
 
     // P2A
-    "Brave.P2A.Test",
     "Brave.P2A.ViewConfirmationCount",
 };
 
@@ -97,10 +96,6 @@ base::TimeDelta GetRandomizedUploadInterval(
     base::TimeDelta average_upload_interval) {
   const auto delta = base::TimeDelta::FromSecondsD(
       brave_base::random::Geometric(average_upload_interval.InSecondsF()));
-  UMA_HISTOGRAM_EXACT_LINEAR(
-      "Brave.P2A.Test",
-      kSuspendedMetricValue,
-      1);
   return delta;
 }
 
@@ -332,9 +327,7 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
 
   // Shortcut for the special values, see |kSuspendedMetricValue|
   // description for details.
-  VLOG(2) << "DEBUG 3 " << histogram_name << " - " << sample;
   if (IsSuspendedMetric(histogram_name, sample)) {
-    VLOG(2) << "DEBUG 4";
     base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                    base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
                                   this,
@@ -391,6 +384,7 @@ void BraveP3AService::HandleHistogramChange(base::StringPiece histogram_name,
                                             size_t bucket) {
   if (IsSuspendedMetric(histogram_name, bucket)) {
     log_store_->RemoveValueIfExists(histogram_name.as_string());
+    return;
   }
   log_store_->UpdateValue(histogram_name.as_string(), bucket);
 }

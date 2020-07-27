@@ -1787,8 +1787,9 @@ void AdsServiceImpl::OnPrefsChanged(
       MaybeStart(false);
     } else {
       // Record "special value" to prevent sending this week's data to P2A
-      // server
-      brave_ads::EmitSuspendedMetricValue();
+      // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
+      // |brave_p3a_service.cc|
+      brave_ads::EmitConfirmationsCountMetric(INT_MAX);
       Stop();
     }
 
@@ -1922,8 +1923,9 @@ void AdsServiceImpl::ConfirmAd(
   rewards_service_->ConfirmAd(info.ToJson(), confirmation_type);
 
   if (confirmation_type.value() == ads::ConfirmationType::kViewed) {
-    brave_ads::RecordEventInWeeklyStorage(profile_->GetPrefs(),
-        "brave.weekly_storage.ad_view_confirmation_count");
+    brave_ads::RecordEventInWeeklyStorage(
+        profile_->GetPrefs(),
+        prefs::kAdViewConfirmationCountPrefName);
   }
 }
 

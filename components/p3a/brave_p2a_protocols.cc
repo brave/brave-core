@@ -10,6 +10,7 @@
 #include <numeric>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/rand_util.h"
 
 namespace {
@@ -24,6 +25,8 @@ DirectEncodingProtocol::~DirectEncodingProtocol() = default;
 
 uint64_t DirectEncodingProtocol::Perturb(
     uint16_t bucket_count, uint64_t value) {
+  DCHECK_GT(bucket_count, 1);
+
   uint64_t perturbed_value = value;
   double probability = exp(kEpsilon) / (exp(kEpsilon) + bucket_count - 1);
 

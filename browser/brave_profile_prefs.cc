@@ -265,11 +265,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   BraveOmniboxClientImpl::RegisterPrefs(registry);
 #endif
 
-// TODO(Moritz Haller): Put behind Ads enabled buildflag?
 #if !defined(OS_ANDROID)
   brave_ads::RegisterP2APrefs(registry);
 #endif
-
 
   RegisterProfilePrefsForMigration(registry);
 }

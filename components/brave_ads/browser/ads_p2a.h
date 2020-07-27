@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_P2A_H_
 
-#include <stdint.h>
-
 #include <string>
 
 class PrefService;
@@ -21,7 +19,7 @@ void RecordEventInWeeklyStorage(
     PrefService* prefs,
     const std::string& pref_name);
 
-void EmitSuspendedMetricValue();
+void EmitConfirmationsCountMetric(int answer);
 
 }  // namespace brave_ads
 

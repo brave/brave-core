@@ -8,7 +8,6 @@
 #include <stdint.h>
 
 #include <vector>
-#include <iostream>
 
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -29,8 +28,8 @@ TEST(P2AProtocolsTest, PerturbationTest) {
   size_t true_value_count = 0;
 
   for (size_t i = 0; i < kTrials; i++) {
-    if (kTrueValue == DirectEncodingProtocol::Perturb(kBucketCount,
-        kTrueValue)) {
+    if (kTrueValue == DirectEncodingProtocol::Perturb(
+        kBucketCount, kTrueValue)) {
       true_value_count++;
     }
   }
