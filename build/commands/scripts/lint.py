@@ -15,9 +15,6 @@ import os
 import sys
 import re
 
-scriptpath = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(os.path.realpath(os.path.join(scriptpath, "..", "vendor", "depot_tools")))
-
 import git_cl
 import git_common
 

@@ -540,6 +540,7 @@ const util = {
     }
     let cmd_options = config.defaultOptions
     cmd_options.cwd = config.braveCoreDir
+    cmd_options = mergeWithDefault(cmd_options)
     util.run('vpython', [path.resolve(path.join(__dirname, '..', 'scripts', 'lint.py')),
         '--project_root=' + config.srcDir,
         '--base_branch=' + options.base], cmd_options)
