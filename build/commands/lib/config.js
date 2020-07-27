@@ -3,11 +3,11 @@
 const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
-const util = require('./util')
+const { spawnSync } = require('child_process')
 
 let NpmConfig = null
 
-const rootDir = path.join(path.dirname(__dirname), '..', '..', '..', '..', '..')
+const rootDir = path.join(__dirname, '..', '..', '..', '..', '..')
 
 var packageConfig = function(path){
   const packages = require('../../../../../package')
@@ -21,9 +21,19 @@ var packageConfig = function(path){
   return obj
 }
 
+const run = (cmd, args = []) => {
+  const prog = spawnSync(cmd, args)
+  if (prog.status !== 0) {
+    console.log(prog.stdout && prog.stdout.toString())
+    console.error(prog.stderr && prog.stderr.toString())
+    process.exit(1)
+  }
+  return prog
+}
+
 const getNPMConfig = (path) => {
   if (!NpmConfig) {
-    const list = util.run('npm', ['config', 'list', '--json'], {
+    const list = run('npm', ['config', 'list', '--json'], {
         cwd: rootDir})
     NpmConfig = JSON.parse(list.stdout.toString())
   }
