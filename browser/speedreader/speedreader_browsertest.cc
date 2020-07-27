@@ -24,6 +24,12 @@ const char kTestPage[] = "/guardian.html";
 const base::FilePath::StringPieceType kTestWhitelist =
     FILE_PATH_LITERAL("speedreader_whitelist.json");
 
+constexpr char kSpeedreaderToggleUMAHistogramName[] =
+    "Brave.SpeedReader.ToggleCount";
+
+constexpr char kSpeedreaderEnabledUMAHistogramName[] =
+    "Brave.SpeedReader.Enabled";
+
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
   SpeedReaderBrowserTest()
@@ -83,5 +89,23 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   // Check that disabled speedreader doesn't affect the page.
   chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
   ui_test_utils::NavigateToURL(browser(), url);
+  rfh = contents->GetMainFrame();
   EXPECT_LT(106000, content::EvalJs(rfh, kGetContentLength));
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, P3ATest) {
+  base::HistogramTester tester;
+
+  const GURL url = https_server_.GetURL(kTestHost, kTestPage);
+  ui_test_utils::NavigateToURL(browser(), url);
+
+  // SpeedReader never enabled
+  tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 0, 1);
+  tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 0, 1);
+
+  // SpeedReader recently enabled, toggled once
+  chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
+  tester.ExpectBucketCount(kSpeedreaderEnabledUMAHistogramName, 2, 1);
+  tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 1, 1);
+  tester.ExpectBucketCount(kSpeedreaderToggleUMAHistogramName, 2, 0);
 }
