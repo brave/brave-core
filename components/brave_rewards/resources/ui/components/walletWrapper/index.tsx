@@ -777,7 +777,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         onVerifyClick
                           ? <>
                             {' ('}
-                            <StyledLink onClick={onVerifyClick}>
+                            <StyledLink onClick={this.onActionClick.bind(this, this.props.onVerifyClick)}>
                               {getLocale('rewardsPanelTextVerify')}
                             </StyledLink>
                             {')'}
