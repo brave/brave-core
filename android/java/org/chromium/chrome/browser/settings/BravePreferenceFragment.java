@@ -59,6 +59,7 @@ public class BravePreferenceFragment extends PreferenceFragmentCompat {
         super.onResume();
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
                 || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
+            if (getPreferenceScreen() == null) return;
             Preference braveRewardsDebugPreference =
                     getPreferenceScreen().findPreference(BraveRewardsDebugPreferences.KEY);
             if (braveRewardsDebugPreference != null) {
