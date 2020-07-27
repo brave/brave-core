@@ -88,7 +88,7 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
     }
     braveArgs.push('--user-data-dir=' + user_data_dir);
   }
-  const networkLogFile = path.resolve(path.join(__dirname, '..', 'network_log.json'))
+  const networkLogFile = path.resolve(path.join(config.rootDir, 'network_log.json'))
   if (options.network_log) {
     braveArgs.push(`--log-net-log=${networkLogFile}`)
     braveArgs.push(`--net-log-capture-mode=Everything`)
