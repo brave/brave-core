@@ -42,7 +42,12 @@ void UpholdAuthorization::Authorize(
 
   // we need to generate new string as soon as authorization is triggered
   wallet->one_time_string = GenerateRandomString(ledger::is_testing);
-  ledger_->uphold()->SetWallet(wallet->Clone());
+  const bool success = ledger_->uphold()->SetWallet(wallet->Clone());
+
+  if (!success) {
+    callback(type::Result::LEDGER_ERROR, {});
+    return;
+  }
 
   auto it = args.find("error_description");
   if (it != args.end()) {

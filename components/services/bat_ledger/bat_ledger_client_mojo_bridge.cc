@@ -371,4 +371,19 @@ void BatLedgerClientMojoBridge::DeleteLog(
       base::BindOnce(&OnDeleteLog, std::move(callback)));
 }
 
+bool BatLedgerClientMojoBridge::SetEncryptedStringState(
+    const std::string& name,
+    const std::string& value) {
+  bool success;
+  bat_ledger_client_->SetEncryptedStringState(name, value, &success);
+  return success;
+}
+
+std::string BatLedgerClientMojoBridge::GetEncryptedStringState(
+    const std::string& name) {
+  std::string value;
+  bat_ledger_client_->GetEncryptedStringState(name, &value);
+  return value;
+}
+
 }  // namespace bat_ledger

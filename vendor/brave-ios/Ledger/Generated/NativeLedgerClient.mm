@@ -131,3 +131,9 @@ void NativeLedgerClient::WalletDisconnected(const std::string& wallet_type) {
 void NativeLedgerClient::DeleteLog(ledger::client::ResultCallback callback) {
   [bridge_ deleteLog:callback];
 }
+bool NativeLedgerClient::SetEncryptedStringState(const std::string& key, const std::string& value) {
+  return [bridge_ setEncryptedStringState:key value:value];
+}
+std::string NativeLedgerClient::GetEncryptedStringState(const std::string& key) {
+  return [bridge_ getEncryptedStringState:key];
+}

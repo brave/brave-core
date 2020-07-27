@@ -224,7 +224,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
   const std::string wallet = R"({"payment_id":"eea767c4-cd27-4411-afd4-78a9c6b54dbc","recovery_seed":"PgFfhazUJuf8dX+8ckTjrtK1KMLyrfXmKJFDiS1Ad3I="})";  // NOLINT
   EXPECT_EQ(
-      profile_->GetPrefs()->GetString("brave.rewards.wallets.brave"),
+      rewards_service_->GetEncryptedStringState("wallets.brave"),
       wallet);
   EXPECT_EQ(
       profile_->GetPrefs()->GetUint64("brave.rewards.creation_stamp"),

@@ -163,7 +163,7 @@ TEST_F(UpholdUtilTest, GetSecondStepVerify) {
 
 TEST_F(UpholdUtilTest, GetWallet) {
   // no wallet
-  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(""));
   auto result = uphold::GetWallet(mock_ledger_impl_.get());
   ASSERT_TRUE(!result);
@@ -182,7 +182,7 @@ TEST_F(UpholdUtilTest, GetWallet) {
     "withdraw_url":"https://sandbox.uphold.com/dashboard/cards/asadasdasd/use"
   })";
 
-  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(wallet));
 
   // uphold wallet

@@ -241,4 +241,10 @@ interface BatLedgerClient {
   WalletDisconnected(string wallet_type);
 
   DeleteLog() => (ledger.mojom.Result result);
+
+  [Sync]
+  SetEncryptedStringState(string name, string value) => (bool success);
+
+  [Sync]
+  GetEncryptedStringState(string name) => (string value);
 };

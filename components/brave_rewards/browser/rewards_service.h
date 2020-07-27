@@ -349,6 +349,12 @@ class RewardsService : public KeyedService {
 
   virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 
+  virtual std::string GetEncryptedStringState(const std::string& key) = 0;
+
+  virtual bool SetEncryptedStringState(
+      const std::string& key,
+      const std::string& value) = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 

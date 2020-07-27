@@ -152,6 +152,12 @@ class LEDGER_EXPORT LedgerClient {
   virtual void WalletDisconnected(const std::string& wallet_type) = 0;
 
   virtual void DeleteLog(client::ResultCallback callback) = 0;
+
+  virtual bool SetEncryptedStringState(
+      const std::string& name,
+      const std::string& value) = 0;
+
+  virtual std::string GetEncryptedStringState(const std::string& name) = 0;
 };
 
 }  // namespace ledger

@@ -437,8 +437,10 @@ ledger::type::Result RewardsBrowserTestContribution::GetACStatus() {
 }
 
 void RewardsBrowserTestContribution::SetUpUpholdWallet(
+    brave_rewards::RewardsServiceImpl* rewards_service,
     const double balance,
     const ledger::type::WalletStatus status) {
+  DCHECK(rewards_service);
   external_balance_ = balance;
 
   base::Value wallet(base::Value::Type::DICTIONARY);
@@ -451,9 +453,7 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
-  browser_->profile()->GetPrefs()->SetString(
-      brave_rewards::prefs::kWalletUphold,
-      json);
+  rewards_service->SetEncryptedStringState("wallets.uphold", json);
 }
 
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {

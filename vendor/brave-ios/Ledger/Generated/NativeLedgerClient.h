@@ -55,4 +55,6 @@ private:
   void ClearAllNotifications() override;
   void WalletDisconnected(const std::string& wallet_type) override;
   void DeleteLog(ledger::client::ResultCallback callback) override;
+  bool SetEncryptedStringState(const std::string& key, const std::string& value) override;
+  std::string GetEncryptedStringState(const std::string& key) override;
 };

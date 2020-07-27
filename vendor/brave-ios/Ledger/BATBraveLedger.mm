@@ -1853,4 +1853,16 @@ BATLedgerBridge(BOOL,
   // TODO implement
 }
 
+- (bool)setEncryptedStringState:(const std::string&)key value:(const std::string&)value
+{
+  // TODO implement
+  return false;
+}
+
+- (std::string)getEncryptedStringState:(const std::string&)key
+{
+  // TODO implement
+  return "";
+}
+
 @end

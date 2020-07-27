@@ -96,7 +96,12 @@ void WalletRecover::OnRecover(
   auto wallet = type::BraveWallet::New();
   wallet->payment_id = payment_id;
   wallet->recovery_seed = new_seed;
-  ledger_->wallet()->SetWallet(std::move(wallet));
+  const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
+
+  if (!success) {
+    callback(type::Result::LEDGER_ERROR);
+    return;
+  }
 
   ledger_->state()->SetAnonTransferChecked(false);
   ledger_->state()->SetPromotionLastFetchStamp(0);

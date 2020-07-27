@@ -62,7 +62,12 @@ void WalletCreate::OnCreate(
 
   auto wallet = ledger_->wallet()->GetWallet();
   wallet->payment_id = payment_id;
-  ledger_->wallet()->SetWallet(std::move(wallet));
+  const bool success = ledger_->wallet()->SetWallet(std::move(wallet));
+
+  if (!success) {
+    callback(type::Result::LEDGER_ERROR);
+    return;
+  }
 
   ledger_->state()->SetRewardsMainEnabled(true);
   ledger_->state()->SetAutoContributeEnabled(true);

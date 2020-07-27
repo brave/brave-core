@@ -80,8 +80,9 @@ class RewardsBrowserTestContribution
   std::vector<ledger::type::Result> GetMultipleACStatus();
 
   void SetUpUpholdWallet(
-    const double balance,
-    const ledger::type::WalletStatus status =
+      brave_rewards::RewardsServiceImpl* rewards_service,
+      const double balance,
+      const ledger::type::WalletStatus status =
         ledger::type::WalletStatus::VERIFIED);
 
   std::vector<ledger::type::Result> GetMultipleTipStatus();

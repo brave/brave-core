@@ -233,6 +233,12 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(
       GetEventLogs,
       void(brave_rewards::GetEventLogsCallback callback));
+
+  MOCK_METHOD1(GetEncryptedStringState, std::string(const std::string&));
+
+  MOCK_METHOD2(
+      SetEncryptedStringState,
+      bool(const std::string&, const std::string&));
 };
 
 class AdsServiceTest : public testing::Test {

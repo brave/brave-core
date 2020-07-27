@@ -133,6 +133,15 @@ class LedgerClientMojoBridge :
 
   void DeleteLog(DeleteLogCallback callback) override;
 
+  void SetEncryptedStringState(
+      const std::string& name,
+      const std::string& value,
+      SetEncryptedStringStateCallback callback) override;
+
+  void GetEncryptedStringState(
+      const std::string& name,
+      GetEncryptedStringStateCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>

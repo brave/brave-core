@@ -46,7 +46,7 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
       "address":"address"
       "status":1
     })";
-  ON_CALL(*mock_ledger_client_, GetStringState(state::kWalletUphold))
+  ON_CALL(*mock_ledger_client_, GetEncryptedStringState(state::kWalletUphold))
       .WillByDefault(testing::Return(wallet));
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _)).Times(0);
 

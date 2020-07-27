@@ -380,8 +380,8 @@ void AdsServiceImpl::OnWalletUpdated() {
     return;
   }
 
-  const std::string json = profile_->GetPrefs()->GetString(
-      brave_rewards::prefs::kWalletBrave);
+  const std::string json = rewards_service_->GetEncryptedStringState(
+      "wallets.brave");
 
   if (json.empty()) {
     return;
