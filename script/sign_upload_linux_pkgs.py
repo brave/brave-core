@@ -124,7 +124,7 @@ def main():
         cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
                gpg_passphrase, '--no-tty', '--sign', temp_file]
         log_cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
-                   'NOTAREALPASSWORD', '--sign']
+                   'NOTAREALPASSWORD', '--sign', temp_file]
         logging.info("Running command: \"{}\"".format(log_cmd))
         try:
             p1 = subprocess.Popen(['echo'], stdout=subprocess.PIPE)
