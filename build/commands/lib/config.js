@@ -3,14 +3,14 @@
 const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
-
-const packages = require('../../../../../package')
-const DirConfig = require('../../../../../lib/dirConfig')
-const util = require('../../../../../lib/util')
+const util = require('./util')
 
 let NpmConfig = null
 
+const rootDir = path.join(path.dirname(__dirname), '..', '..', '..', '..', '..')
+
 var packageConfig = function(path){
+  const packages = require('../../../../../package')
   let obj = packages.config
   for (var i = 0, len = path.length; i < len; i++) {
     if (!obj) {
@@ -24,7 +24,7 @@ var packageConfig = function(path){
 const getNPMConfig = (path) => {
   if (!NpmConfig) {
     const list = util.run('npm', ['config', 'list', '--json'], {
-        cwd: DirConfig.rootDir})
+        cwd: rootDir})
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
@@ -52,13 +52,13 @@ const Config = function () {
   this.projects = {}
   this.signTarget = 'sign_app'
   this.buildTarget = 'brave'
-  this.rootDir = DirConfig.rootDir
+  this.rootDir = rootDir
   this.scriptDir = path.join(this.rootDir, 'scripts')
-  this.depotToolsDir = DirConfig.depotToolsDir
-  this.srcDir = DirConfig.srcDir
+  this.depotToolsDir = path.join(this.rootDir, 'vendor', 'depot_tools')
+  this.srcDir = path.join(this.rootDir, 'src')
   this.chromeVersion = this.getProjectVersion('chrome')
   this.chromiumRepo = getNPMConfig(['projects', 'chrome', 'repository', 'url'])
-  this.braveCoreDir = DirConfig.braveCoreDir
+  this.braveCoreDir = path.join(this.srcDir, 'brave')
   this.braveCoreRepo = getNPMConfig(['projects', 'brave-core', 'repository', 'url'])
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
@@ -419,9 +419,8 @@ Config.prototype.getProjectRef = function (projectName) {
 }
 
 Config.prototype.buildProjects = function () {
-  for (let name in packages.config.projects) {
-    this.projectNames.push(name)
-  }
+  this.projectNames.push('chrome')
+  this.projectNames.push('brave-core')
 
   this.projectNames.forEach((projectName) => {
     this.projects[projectName] = {
@@ -429,7 +428,7 @@ Config.prototype.buildProjects = function () {
       url: getNPMConfig(['projects', projectName, 'repository', 'url']),
       gclientName: getNPMConfig(['projects', projectName, 'dir']),
       dir: path.join(this.rootDir, getNPMConfig(['projects', projectName, 'dir'])),
-      custom_deps: packages.config.projects[projectName].custom_deps,
+      custom_deps: packageConfig(['projects', projectName, 'custom_deps']),
       arg_name: projectName.replace('-', '_')
     }
   })
