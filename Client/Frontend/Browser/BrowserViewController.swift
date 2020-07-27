@@ -644,7 +644,7 @@ class BrowserViewController: UIViewController {
         let dropInteraction = UIDropInteraction(delegate: self)
         view.addInteraction(dropInteraction)
         
-        initializeSyncWebView()
+        deprecateSyncV1()
         
         if AppConstants.buildChannel.isPublic && AppReview.shouldRequestReview() {
             // Request Review when the main-queue is free or on the next cycle.
@@ -661,31 +661,27 @@ class BrowserViewController: UIViewController {
         BraveVPN.initialize()
     }
     
-    /// Initialize Sync without connecting. Sync webview needs to be in a "permanent" location
-    /// to continue working predictably. If Sync is not in the view "hierarchy"
-    /// it will behavior extremely unpredictably, often just dying in the middle of a promize chain.
-    /// Added to keyWindow, since it can then be utilized from any VC (e.g. settings modal).
-    /// This also inits sync at app launch.
-    private func initializeSyncWebView() {
+    private func deprecateSyncV1() {
         let sync = Sync.shared
         
-        #if NO_SYNC
         if sync.syncSeedArray == nil { return }
         
-        let msg = """
-            Sync has been disabled, as it will not be included in the next couple of production builds.
-            Your iOS device has been auto-removed from any sync groups.
-        """
+        sync.leaveSyncGroup()
         
-        let alert = UIAlertController(title: "Sync Disabled", message: msg, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-        #endif
-        
-        DispatchQueue.main.async {
-            sync.webView.alpha = CGFloat.leastNormalMagnitude
-            UIApplication.shared.keyWindow?.insertSubview(Sync.shared.webView, at: 0)
+        let alert = UIAlertController(title: "", message: Strings.Sync.syncV1DeprecationText,
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
+        let learnMoreAction = UIAlertAction(title: Strings.learnMore, style: .default) { [weak self] _ in
+            guard let syncDeprecationUrl = URL(string: "https://brave.com/sync-v2-is-coming") else {
+                log.error("Failed to unwrap sync deprecation url")
+                return
+            }
+            
+            self?.tabManager.addTabAndSelect(URLRequest(url: syncDeprecationUrl),
+                                            isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
         }
+        alert.addAction(learnMoreAction)
+        present(alert, animated: true)
     }
     
     fileprivate func setupTabs() {

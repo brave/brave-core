@@ -121,9 +121,7 @@ class SettingsViewController: TableViewController {
         }
         list.append(generalSection)
         list.append(displaySection)
-        #if !NO_SYNC
-            list.append(otherSettingsSection)
-        #endif
+        list.append(otherSettingsSection)
         list.append(contentsOf: [privacySection,
                                  securitySection,
                                  shieldsSection,
@@ -280,28 +278,6 @@ class SettingsViewController: TableViewController {
                 ]
             }
         }
-        section.rows += [
-            Row(text: Strings.sync, selection: { [unowned self] in
-                if Sync.shared.isInSyncGroup {
-                    let syncSettingsVC = SyncSettingsTableViewController(style: .grouped)
-                    syncSettingsVC.dismissHandler = {
-                        self.navigationController?.popToRootViewController(animated: true)
-                    }
-                    
-                    self.navigationController?.pushViewController(syncSettingsVC, animated: true)
-                } else {
-                    let view = SyncWelcomeViewController()
-                    view.dismissHandler = {
-                        view.navigationController?.popToRootViewController(animated: true)
-                    }
-                    self.navigationController?.pushViewController(view, animated: true)
-                }
-                }, accessory: .disclosureIndicator,
-                   cellClass: MultilineValue1Cell.self),
-            
-            //Disabled until 1.13
-            //.boolRow(title: Strings.mediaAutoPlays, option: Preferences.General.mediaAutoPlays)
-        ]
         
         vpnRow = vpnSettingsRow()
         
