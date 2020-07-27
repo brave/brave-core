@@ -68,7 +68,12 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
         })
       } else if (result === RewardsExtension.Result.WALLET_CORRUPT) {
         state.walletCorrupted = true
-      } else if (result !== RewardsExtension.Result.LEDGER_OK) {
+      } else if (result === RewardsExtension.Result.LEDGER_OK) {
+        state.walletCreateFailed = false
+        state.walletCreating = false
+        state.walletCreated = true
+        state.walletCorrupted = false
+      } else {
         state.walletCreateFailed = true
         state.walletCreating = false
         state.walletCreated = false
