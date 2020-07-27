@@ -136,12 +136,12 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
 
 extension FeedItemView {
     func setupWithItem(_ feedItem: FeedItem) {
-        titleLabel.text = feedItem.title
+        titleLabel.text = feedItem.content.title
         if #available(iOS 13, *) {
-            dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.publishTime, relativeTo: Date())
+            dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.content.publishTime, relativeTo: Date())
         }
-        thumbnailImageView.sd_setImage(with: feedItem.imageURL)
-        if let logo = feedItem.publisherLogo {
+        thumbnailImageView.sd_setImage(with: feedItem.content.imageURL)
+        if let logo = feedItem.source.logo {
             brandImageView.sd_setImage(with: logo)
         }
     }
