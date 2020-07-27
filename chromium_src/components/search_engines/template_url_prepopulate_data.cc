@@ -33,8 +33,7 @@
 namespace TemplateURLPrepopulateData {
 
 void LocalizeEngineList(
-    std::vector<BravePrepopulatedEngineID>* engines,
-    int country_id);
+    int country_id, std::vector<BravePrepopulatedEngineID>* engines);
 
 namespace {
 
@@ -84,7 +83,7 @@ const std::map<BravePrepopulatedEngineID, const PrepopulatedEngine*>
 };
 
 // Default order in which engines will appear in the UI.
-std::vector<BravePrepopulatedEngineID> brave_engines_default = {
+const std::vector<BravePrepopulatedEngineID> brave_engines_default = {
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
     PREPOPULATED_ENGINE_ID_QWANT,
@@ -93,7 +92,7 @@ std::vector<BravePrepopulatedEngineID> brave_engines_default = {
 };
 
 // Variations of the order / default options by country.
-std::vector<BravePrepopulatedEngineID> brave_engines_with_yahoo = {
+const std::vector<BravePrepopulatedEngineID> brave_engines_with_yahoo = {
     PREPOPULATED_ENGINE_ID_YAHOO,
     PREPOPULATED_ENGINE_ID_GOOGLE,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
@@ -102,7 +101,7 @@ std::vector<BravePrepopulatedEngineID> brave_engines_with_yahoo = {
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
-std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
+const std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
     PREPOPULATED_ENGINE_ID_YAHOO,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_DE,
     PREPOPULATED_ENGINE_ID_QWANT,
@@ -111,7 +110,7 @@ std::vector<BravePrepopulatedEngineID> brave_engines_DE = {
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
-std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
+const std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
     PREPOPULATED_ENGINE_ID_YAHOO,
     PREPOPULATED_ENGINE_ID_QWANT,
     PREPOPULATED_ENGINE_ID_GOOGLE,
@@ -120,7 +119,7 @@ std::vector<BravePrepopulatedEngineID> brave_engines_FR = {
     PREPOPULATED_ENGINE_ID_STARTPAGE,
 };
 
-std::vector<BravePrepopulatedEngineID> brave_engines_AU_NZ_IE = {
+const std::vector<BravePrepopulatedEngineID> brave_engines_AU_NZ_IE = {
     PREPOPULATED_ENGINE_ID_YAHOO,
     PREPOPULATED_ENGINE_ID_DUCKDUCKGO_AU_NZ_IE,
     PREPOPULATED_ENGINE_ID_GOOGLE,
@@ -130,74 +129,74 @@ std::vector<BravePrepopulatedEngineID> brave_engines_AU_NZ_IE = {
 
 // A map to keep track of a full list of default engines for countries
 // that don't use the default list.
-const std::map<int, std::vector<BravePrepopulatedEngineID>>
+const std::map<int, const std::vector<BravePrepopulatedEngineID>*>
     default_engines_by_country_id_map = {
         {country_codes::CountryCharsToCountryID('A', 'R'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('A', 'T'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('A', 'U'),
-         brave_engines_AU_NZ_IE},
+         &brave_engines_AU_NZ_IE},
         {country_codes::CountryCharsToCountryID('B', 'R'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('C', 'A'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('C', 'H'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('C', 'L'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('C', 'O'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('D', 'E'),
-         brave_engines_DE},
+         &brave_engines_DE},
         {country_codes::CountryCharsToCountryID('D', 'K'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('E', 'S'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('F', 'I'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('F', 'R'),
-         brave_engines_FR},
+         &brave_engines_FR},
         {country_codes::CountryCharsToCountryID('G', 'B'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('H', 'K'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('I', 'D'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('I', 'E'),
-         brave_engines_AU_NZ_IE},
+         &brave_engines_AU_NZ_IE},
         {country_codes::CountryCharsToCountryID('I', 'N'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('I', 'T'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('M', 'X'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('M', 'Y'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('N', 'L'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('N', 'O'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('N', 'Z'),
-         brave_engines_AU_NZ_IE},
+         &brave_engines_AU_NZ_IE},
         {country_codes::CountryCharsToCountryID('P', 'E'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('P', 'H'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('S', 'E'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('S', 'G'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('T', 'H'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('T', 'W'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('U', 'S'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('V', 'E'),
-         brave_engines_with_yahoo},
+         &brave_engines_with_yahoo},
         {country_codes::CountryCharsToCountryID('V', 'N'),
-         brave_engines_with_yahoo}};
+         &brave_engines_with_yahoo}};
 
 // Default search engine. Overridable on a per-country basis.
 const BravePrepopulatedEngineID default_engine =
@@ -329,14 +328,15 @@ std::vector<std::unique_ptr<TemplateURLData>>
 GetBravePrepopulatedEnginesForCountryID(
     int country_id,
     size_t* default_search_provider_index = nullptr) {
-  std::vector<BravePrepopulatedEngineID> brave_engines = brave_engines_default;
+  std::vector<BravePrepopulatedEngineID> brave_engine_ids =
+      brave_engines_default;
 
   // Check for a per-country override of this list
   const auto& it_country = default_engines_by_country_id_map.find(country_id);
   if (it_country != default_engines_by_country_id_map.end()) {
-    brave_engines = it_country->second;
+    brave_engine_ids = *it_country->second;
   }
-  DCHECK_GT(brave_engines.size(), 0ul);
+  DCHECK_GT(brave_engine_ids.size(), 0ul);
 
   // Get the default engine (overridable by country)
   BravePrepopulatedEngineID default_id = default_engine;
@@ -346,14 +346,14 @@ GetBravePrepopulatedEnginesForCountryID(
   }
 
   // Allow for per-country overrides
-  LocalizeEngineList(&brave_engines, country_id);
+  LocalizeEngineList(country_id, &brave_engine_ids);
 
   // Build a vector PrepopulatedEngines from BravePrepopulatedEngineIDs and
   // also get the default engine index
   std::vector<const PrepopulatedEngine*> engines =
-      GetEnginesFromEngineIDs(brave_engines, country_id,
+      GetEnginesFromEngineIDs(brave_engine_ids, country_id,
                               default_id, default_search_provider_index);
-  DCHECK(engines.size() == brave_engines.size());
+  DCHECK(engines.size() == brave_engine_ids.size());
 
   std::vector<std::unique_ptr<TemplateURLData>> t_urls;
   for (const PrepopulatedEngine* engine : engines) {
@@ -373,8 +373,7 @@ GetBravePrepopulatedEnginesForCountryID(
 // (ex: PREPOPULATED_ENGINE_ID_YAHOO) and then substitute the
 // country specific version.
 void LocalizeEngineList(
-    std::vector<BravePrepopulatedEngineID>* engines,
-    int country_id) {
+    int country_id, std::vector<BravePrepopulatedEngineID>* engines) {
   for (size_t i = 0; i < engines->size(); ++i) {
     if ((*engines)[i] == PREPOPULATED_ENGINE_ID_YAHOO) {
       const auto& it = yahoo_engines_by_country_id_map.find(country_id);
