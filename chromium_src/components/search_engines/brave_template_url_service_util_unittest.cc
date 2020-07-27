@@ -21,9 +21,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace TemplateURLPrepopulateData {
-  extern void LocalizeEngineList(
-    std::vector<BravePrepopulatedEngineID>* engines,
-    int country_id);
+extern void LocalizeEngineList(std::vector<BravePrepopulatedEngineID>* engines,
+                               int country_id);
 }
 
 namespace {
@@ -149,26 +148,25 @@ TEST_F(BraveTemplateURLServiceUtilTest,
 TEST_F(BraveTemplateURLServiceUtilTest, LocalizeEngineListMatchFound) {
   std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
       list_with_yahoo = {
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO,
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE
-      };
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO,
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE};
   std::vector<std::string> regions = {
-    "AR", "AT", "AU", "BR", "CA", "CH", "CL", "CO", "DE", "DK",
-    "ES", "FI", "FR", "HK", "ID", "IE", "IN", "IT", "MX", "MY",
-    "NL", "NO", "NZ", "PE", "PH", "SE", "SG", "TH", "TW", "GB",
-    "VE", "VN"
-  };
+      "AR", "AT", "AU", "BR", "CA", "CH", "CL", "CO", "DE", "DK", "ES",
+      "FI", "FR", "HK", "ID", "IE", "IN", "IT", "MX", "MY", "NL", "NO",
+      "NZ", "PE", "PH", "SE", "SG", "TH", "TW", "GB", "VE", "VN"};
   for (size_t i = 0; i < regions.size(); i++) {
     // lookup only takes place if value in list is defaulted
     list_with_yahoo[0] =
         TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO;
-    TemplateURLPrepopulateData::LocalizeEngineList(&list_with_yahoo,
-      country_codes::CountryCharsToCountryID(regions[i][0], regions[i][1]));
+    TemplateURLPrepopulateData::LocalizeEngineList(
+        &list_with_yahoo,
+        country_codes::CountryCharsToCountryID(regions[i][0], regions[i][1]));
     // Compare only works because regions above match the order
     // of the BravePrepopulatedEngineID enum.
     // If this test breaks, check brave_prepopulated_engines.h
-    EXPECT_EQ(list_with_yahoo[0],
+    EXPECT_EQ(
+        list_with_yahoo[0],
         (TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO + (i + 1)));
   }
 }
@@ -176,17 +174,15 @@ TEST_F(BraveTemplateURLServiceUtilTest, LocalizeEngineListMatchFound) {
 TEST_F(BraveTemplateURLServiceUtilTest, LocalizeEngineListMatchNotFound) {
   std::vector<TemplateURLPrepopulateData::BravePrepopulatedEngineID>
       list_with_yahoo = {
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO,
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE
-      };
-  std::vector<std::string> regions = {
-    "JP", "TR", "US"
-  };
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO,
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT,
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_STARTPAGE};
+  std::vector<std::string> regions = {"JP", "TR", "US"};
   for (size_t i = 0; i < regions.size(); i++) {
-    TemplateURLPrepopulateData::LocalizeEngineList(&list_with_yahoo,
-      country_codes::CountryCharsToCountryID(regions[i][0], regions[i][1]));
+    TemplateURLPrepopulateData::LocalizeEngineList(
+        &list_with_yahoo,
+        country_codes::CountryCharsToCountryID(regions[i][0], regions[i][1]));
     EXPECT_EQ(list_with_yahoo[0],
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO);
+              TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_YAHOO);
   }
 }
