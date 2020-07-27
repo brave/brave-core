@@ -1278,3 +1278,13 @@ extension Strings {
                               comment: "Disclaimer for user purchasing the VPN plan.")
     }
 }
+
+extension Strings {
+    public struct Sync {
+        public static let syncV1DeprecationText =
+            NSLocalizedString("sync.syncV1DeprecationText",
+                              bundle: .braveShared,
+                              value: "A new Brave Sync is coming and will affect your setup. Get ready for the upgrade.",
+                              comment: "Text that informs a user about Brave Sync service deprecation.")
+    }
+}
