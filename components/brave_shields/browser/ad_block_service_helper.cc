@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 
@@ -44,6 +45,73 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
                               return lang == adjusted_locale;
                             }) != filter_list.langs.end();
       });
+}
+
+std::vector<FilterList> RegionalCatalogFromJSON(
+    const std::string& catalog_json) {
+  std::vector<adblock::FilterList> catalog = std::vector<adblock::FilterList>();
+
+  base::Optional<base::Value> regional_lists =
+      base::JSONReader::Read(catalog_json);
+  if (!regional_lists) {
+    LOG(ERROR) << "Could not load regional adblock catalog";
+    return catalog;
+  }
+
+  for (auto i = regional_lists->GetList().begin();
+          i < regional_lists->GetList().end(); i++) {
+    const auto* uuid = i->FindKey("uuid");
+    if (!uuid || !uuid->is_string()) {
+      continue;
+    }
+    const auto* url = i->FindKey("url");
+    if (!url || !url->is_string()) {
+      continue;
+    }
+    const auto* title = i->FindKey("title");
+    if (!title || !title->is_string()) {
+      continue;
+    }
+    std::vector<std::string> langs = std::vector<std::string>();
+    const auto* langs_key = i->FindKey("langs");
+    if (!langs_key || !langs_key->is_list()) {
+      continue;
+    }
+    for (auto lang = langs_key->GetList().begin();
+            lang < langs_key->GetList().end(); lang++) {
+      if (!lang->is_string()) {
+        continue;
+      }
+      langs.push_back(lang->GetString());
+    }
+    const auto* support_url = i->FindKey("support_url");
+    if (!support_url || !support_url->is_string()) {
+      continue;
+    }
+    const auto* component_id = i->FindKey("component_id");
+    if (!component_id || !component_id->is_string()) {
+      continue;
+    }
+    const auto* base64_public_key = i->FindKey("base64_public_key");
+    if (!base64_public_key || !base64_public_key->is_string()) {
+      continue;
+    }
+    const auto* desc = i->FindKey("desc");
+    if (!desc || !desc->is_string()) {
+      continue;
+    }
+
+    catalog.push_back(adblock::FilterList(uuid->GetString(),
+                                          url->GetString(),
+                                          title->GetString(),
+                                          langs,
+                                          support_url->GetString(),
+                                          component_id->GetString(),
+                                          base64_public_key->GetString(),
+                                          desc->GetString()));
+  }
+
+  return catalog;
 }
 
 // Merges the contents of the second UrlCosmeticResources Value into the first

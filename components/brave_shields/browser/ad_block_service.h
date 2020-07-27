@@ -49,6 +49,7 @@ class AdBlockService : public AdBlockBaseService {
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
   void OnResourcesFileDataReady(const std::string& resources);
+  void OnRegionalCatalogFileDataReady(const std::string& catalog_json);
 
  private:
   friend class ::AdBlockServiceTest;
