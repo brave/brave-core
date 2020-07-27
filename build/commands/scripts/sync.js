@@ -34,12 +34,6 @@ async function RunCommand () {
     Log.warn('--all, --run_hooks and --run_sync are deprecated. Will behave as if flag was not passed. Please update your command to `npm run sync` in the future.')
   }
 
-  // Perform initial brave-core clone and checkout
-  if (program.init) {
-    Log.progress('Performing initial checkout of brave-core')
-    util.checkoutBraveCore()
-  }
-
   if (program.init || program.submodule_sync) {
     util.submoduleSync()
   }
@@ -75,7 +69,7 @@ async function RunCommand () {
     const braveCoreSha = util.runGit(config.braveCoreDir, ['rev-parse', 'HEAD'])
     Log.progress(`...brave core is now at commit ID ${braveCoreSha}`)
   }
-  
+
   Log.progress('Running gclient sync...')
   const result = util.gclientSync(program.init || program.force, program.init, braveCoreRef)
   const postSyncBraveCoreRef = util.getGitReadableLocalRef(config.braveCoreDir)

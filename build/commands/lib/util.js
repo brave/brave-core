@@ -591,17 +591,6 @@ const util = {
     Log.progress('Done updating submodules...')
   },
 
-  checkoutBraveCore: (options = {}) => {
-    Log.progress('Detecting if brave-core exists already.')
-    if (!fs.existsSync(config.braveCoreDir)) {
-      const braveCoreRef = config.getProjectVersion('brave-core')
-      Log.status(`Cloning brave-core [${braveCoreRef}] into ${config.braveCoreDir}...`)
-      fs.mkdirSync(config.braveCoreDir)
-      util.runGit(config.braveCoreDir, ['clone', config.braveCoreRepo, '.'])
-      util.runGit(config.braveCoreDir, ['checkout', braveCoreRef])
-    }
-  },
-
   shouldUpdateChromium: (chromiumRef = config.getProjectRef('chrome')) => {
     const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
     const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
