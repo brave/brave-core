@@ -185,8 +185,8 @@ public class BraveQAPreferences extends BravePreferenceFragment
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_USE_REWARDS_STAGING_SERVER.equals(preference.getKey())) {
-            BravePrefServiceBridge.getInstance().setUseRewardsStagingServer((boolean) newValue);
             BraveRewardsNativeWorker.getInstance().ResetTheWholeState();
+            BravePrefServiceBridge.getInstance().setUseRewardsStagingServer((boolean) newValue);
             mMaximizeAdsNumber.setEnabled((boolean) newValue);
             enableMaximumAdsNumber(((boolean) newValue) && mMaximizeAdsNumber.isChecked());
             BraveRelaunchUtils.askForRelaunch(getActivity());
