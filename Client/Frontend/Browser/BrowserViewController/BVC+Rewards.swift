@@ -62,10 +62,7 @@ extension BrowserViewController {
         Preferences.Rewards.panelOpened.value = true
         updateRewardsButtonState()
         
-        if UIDevice.current.userInterfaceIdiom != .pad && UIApplication.shared.statusBarOrientation.isLandscape {
-            let value = UIInterfaceOrientation.portrait.rawValue
-            UIDevice.current.setValue(value, forKey: "orientation")
-        }
+        UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
         
         guard let tab = tabManager.selectedTab, let url = tab.webView?.url else { return }
         let braveRewardsPanel = RewardsPanelController(
@@ -157,10 +154,7 @@ extension BrowserViewController {
     // MARK: - SKUS
     
     func paymentRequested(_ request: PaymentRequest, _ completionHandler: @escaping (_ response: PaymentRequestResponse) -> Void) {
-        if UIDevice.current.userInterfaceIdiom != .pad && UIApplication.shared.statusBarOrientation.isLandscape {
-            let value = UIInterfaceOrientation.portrait.rawValue
-            UIDevice.current.setValue(value, forKey: "orientation")
-        }
+        UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
         
         if !rewards.ledger.isEnabled {
             let enableRewards = SKUEnableRewardsViewController(

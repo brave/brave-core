@@ -24,11 +24,11 @@
 import Foundation
 import SystemConfiguration
 
-enum ReachabilityType: CustomStringConvertible {
+public enum ReachabilityType: CustomStringConvertible {
     case wwan
     case wiFi
 
-    var description: String {
+    public var description: String {
         switch self {
         case .wwan: return "WWAN"
         case .wiFi: return "WiFi"
@@ -36,12 +36,12 @@ enum ReachabilityType: CustomStringConvertible {
     }
 }
 
-enum ReachabilityStatus: CustomStringConvertible  {
+public enum ReachabilityStatus: CustomStringConvertible  {
     case offline
     case online(ReachabilityType)
     case unknown
 
-    var description: String {
+    public var description: String {
         switch self {
         case .offline: return "Offline"
         case .online(let type): return "Online (\(type))"
@@ -51,8 +51,10 @@ enum ReachabilityStatus: CustomStringConvertible  {
 }
 
 open class Reach {
+    
+    public init() {}
 
-    func connectionStatus() -> ReachabilityStatus {
+    public func connectionStatus() -> ReachabilityStatus {
         var zeroAddress = sockaddr_in()
         zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)

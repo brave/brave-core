@@ -158,6 +158,237 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Beklager, noe gikk galt";
 
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Kjøp";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave-brannmur + VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxBlockAds" = "Blokkerer uønskede nettverkstilkoblinger";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "Bruker VPN-tunnel trygt kryptert med IKEv2";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFast" = "Støtter hastigheter på opptil 100 Mbit/s";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Holder deg anonym på nettet";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoSellout" = "Vi vil aldri dele eller selge informasjonen din";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectConnections" = "Beskytter alle appene dine (ikke bare Brave)";
+
+/* AppStore Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "AppStore-kvittering";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Appversjon";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "teleselskap";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Ikke rediger informasjonen nedenfor";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Velg informasjonen du vil dele med oss.\n\nJo mer informasjon du deler med oss i første omgang, jo lettere blir det for støttepersonellet å hjelpe deg med å løse problemet.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN-vertsnavn";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Problem";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Ingen internett når du er tilkoblet";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Annet";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Kan ikke koble til VPN (Annen feil)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Treg tilkobling";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Nettstedet fungerer ikke";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Nettverkstype";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Send";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Abonnementstype";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "iOS-tidssone";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Problem med Brave-brannmur + VPN";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Aktiver";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Kunne ikke koble til App Store. Prøv igjen om noen minutter.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Feil i App Store";
+
+/* No comment provided by engineer. */
+"vpn.freeTrial" = "Alle planene kommer med en gratis prøveversjon i 7 dager!";
+
+/* Disclaimer about free trial */
+"vpn.freeTrialDisclaimer" = "Prøv gratis i 7 dager. Etter 7 dager blir du belastet planens pris.";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Alle abonnement fornyes automatisk, men kan avbestilles før fornyelse.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Denne profilen lar VPN automatisk koble til og sikre trafikk over enheten din – i hver app, hele tiden. Denne VPN-tilkoblingen vil krypteres og dirigeres gjennom Braves intelligente brannmur for å blokkere annonser og sporere.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Installer VPN-profil";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave vil nå installere en VPN-profil.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "Brave er nå aktivert";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Installer VPN";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Fornyes månedlig";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Månedlig abonnement";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Utløpt";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Kundestøtte døgnet rundt";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Sikrer alle tilkoblinger";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Drevet av";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Kunne ikke tilbakestille VPN-konfigurasjonen. Prøv igjen senere.";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Feil";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Gjenopprett";
+
+/* No comment provided by engineer. */
+"vpn.settingHeaderBody" = "Beskytt tilkoblingen din og blokker annonser og sporere på tvers av hele enheten.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Kontakt teknisk kundestøtte";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN-kundestøtte";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Administrer abonnement";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Tilbakestill konfigurasjon";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Vert";
+
+/* Table cell title for vpn's server location */
+"vpn.settingsServerLocation" = "Plassering";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Server";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Utløper";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Abonnement";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Status";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Deaktivert";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Aktivert";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Utløpt";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Selv i bakgrunnen vil Brave fortsette å beskytte deg.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave-brannmur + VPN er PÅ";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Det oppstod et problem med å initialisere VPN. Vennligst prøv igjen eller prøv å tilbakestille konfigurasjonen på VPN-innstillingssiden.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Feil";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave-brannmur + VPN krever at det installeres en VPN-profil på enheten din for å fungere.";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Tillatelse nektet";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Kan ikke fullføre kjøpet. Vennligst prøv igjen, eller sjekk betalingsinformasjonen din på Apple og prøv igjen.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Feil";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Prisene kan variere etter sted. Abonnementer belastes kredittkortet ditt via iTunes-kontoen din. Abonnementer tilbys for perioder på enten én måned (9,99 $) eller ett år (99,99 $), og vil automatisk fornyes med mindre de kanselleres minst 24 timer før den nåværende perioden utløper. Du vil ikke kunne kansellere abonnementet når det har blitt aktivert. Du kan administrere abonnementene dine under kontoinnstillinger etter kjøpet. Gratis prøveversjoner kan bare brukes en gang. Ubrukte deler av en gratis prøveversjon går tapt hvis du kjøper et abonnement";
+
+/* Title Brave VPN menu item. */
+"vpn.vpnMenuItemTitle" = "Brave-VPN";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Dette vil tilbakestille Brave-brannmuren + VPN-konfigurasjonen din og fikse eventuelle feil. Denne prosessen kan ta et øyeblikk.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Tilbakestill konfigurasjon";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Tilbakestill";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Månedlig abonnement";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Årlig abonnement";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Forny årlig, spar %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Beste verdi";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Ett år";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";
 

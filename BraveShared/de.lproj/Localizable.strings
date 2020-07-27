@@ -158,6 +158,237 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Entschuldigen Sie, aber ein Fehler ist aufgetreten";
 
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Kaufen";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxBlockAds" = "Blockiert unerwünschte Netzwerkverbindungen";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "Nutzt einen sicheren, IKEv2-verschlüsselten VPN-Tunnel";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFast" = "Unterstützt Geschwindigkeiten bis 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Hilft Ihnen, online anonym zu bleiben";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoSellout" = "Wir teilen und verkaufen Ihre Daten unter keinen Umständen";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectConnections" = "Schützt alle Ihre Apps (nicht nur Brave)";
+
+/* AppStore Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "App Store-Quittung";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "App-Version";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Mobilfunkanbieter";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Bitte nehmen Sie keine Änderungen an den Daten unten vor";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Bitte wählen Sie die Daten, die Sie mit uns teilen möchten.\n\nJe mehr Daten Sie direkt mit uns teilen, umso einfacher fällt es dem Support-Team, Ihr Problem zu lösen.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN-Hostname";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Problem";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Kein Internet auch bei Verbindung";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Anderes";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Keine Verbindung mit dem VPN möglich (anderer Fehler)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Langsame Verbindung";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Die Webseite funktioniert nicht";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Netzwerkart";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Abschicken";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Art des Abonnements";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "iOS-Zeitzone";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Problem mit Brave Firewall + VPN";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Aktivieren";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Es konnte keine Verbindung mit dem App Store hergestellt werden. Bitte versuchen Sie es in ein paar Minuten erneut.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Fehler beim App Store";
+
+/* No comment provided by engineer. */
+"vpn.freeTrial" = "Alle Pakete umfassen einen 7-tägigen Probezeitraum!";
+
+/* Disclaimer about free trial */
+"vpn.freeTrialDisclaimer" = "Probieren Sie den Dienst 7 Tage lang aus. Nach 7 Tagen wird Ihnen der Paketpreis in Rechnung gestellt.";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Alle Abonnements werden automatisch verlängert, können vor der Verlängerung aber storniert werden.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Mit diesem Profil kann das VPN automatisch eine Verbindung herstellen und den Datenverkehr auf Ihrem Gerät schützten – in jeder App und zu jeder Zeit. Diese VPN-Verbindung ist verschlüsselt und wird durch die intelligente Firewall von Brave geleitet, um Werbung und Tracker zu blockieren.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "VPN-Profil installieren";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave wird nun ein VPN-Profil installieren.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN ist jetzt aktiviert";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "VPN installieren";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Wird monatlich verlängert";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Monatliches Abonnement";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Abgelaufen";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "Support rund um die Uhr";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Schützt alle Verbindungen";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Powered by";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Die VPN-Konfiguration konnte nicht zurückgesetzt werden; bitte versuchen Sie es später erneut.";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Fehler";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Wiederherstellen";
+
+/* No comment provided by engineer. */
+"vpn.settingHeaderBody" = "Schützen Sie Ihre Verbindung und blockieren Sie Werbung und Tracker für alle Ihre Apps.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Technischen Support kontaktieren";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN-Support";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Abonnement verwalten";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Konfiguration zurücksetzen";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Host";
+
+/* Table cell title for vpn's server location */
+"vpn.settingsServerLocation" = "Standort";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Server";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Gültig bis";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Abonnement";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Status";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Deaktiviert";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Aktiviert";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Abgelaufen";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Auch im Hintergrund schützt Brave Sie weiter.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN ist AN";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Bei der Initialisierung des VPNs ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder versuchen Sie auf der VPN-Einstellungsseite, die Konfiguration zurückzusetzen.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Fehler";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Für die Nutzung von Brave Firewall + VPN muss ein VPN-Profil auf Ihrem Gerät installiert sein.";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Zugriff verweigert";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Der Kauf konnte nicht abgeschlossen werden. Bitte versuchen Sie es erneut oder überprüfen Sie die bei Apple hinterlegten Zahlungsdaten und versuchen Sie es erneut.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Fehler";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Der Preis kann je nach Region variieren. Das Abonnement wird über Ihr iTunes-Konto Ihrer Kreditkarte in Rechnung gestellt. Ein Abonnement ist entweder für einen Zeitraum von einem Monat (9,99 $) oder von einem Jahr (99,99 $) möglich und verlängert sich automatisch, wenn es nicht bis zu 24 Stunden vor Ablauf des aktuellen Zeitraums storniert wird. Nach Aktivierung kann das Abonnement nicht annulliert werden. Nach dem Kauf können Sie Ihr Abonnement in den Kontoeinstellungen verwalten. Ein kostenloser Probezeitraum ist nur einmal möglich. Wenn Sie ein Abonnement abschließen, verfällt der ggf. ungenutzte Anteil des Probezeitraums.";
+
+/* Title Brave VPN menu item. */
+"vpn.vpnMenuItemTitle" = "Brave VPN";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Hiermit wird Ihre Konfiguration für Brave Firewall + VPN zurückgesetzt, womit Fehler behoben werden können. Dieser Vorgang kann etwa eine Minute dauern.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Konfiguration zurücksetzen";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Zurücksetzen";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Monatsabonnement";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Jahresabonnement";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Verlängern Sie Ihr Abonnement jährlich und sparen Sie %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Bestes Preis-Leistungs-Verhältnis";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Ein Jahr";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ja";
 

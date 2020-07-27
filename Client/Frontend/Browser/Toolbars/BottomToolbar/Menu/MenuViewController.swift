@@ -5,30 +5,54 @@
 import UIKit
 import Storage
 import Shared
+import BraveShared
 import BraveUI
 
 private class MenuCell: UITableViewCell {
-    let iconView = UIImageView()
+    let iconView = UIImageView().then {
+        $0.snp.makeConstraints { make in
+            make.width.equalTo(50)
+        }
+        $0.contentMode = .center
+    }
+    
     let labelView = UILabel()
     let iconLength: CGFloat = 50.0
     
+    let toggleButton = UISwitch().then {
+        $0.isHidden = true
+        $0.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        // At the moment, this toggle is only for visuals, tapping on the cell itself is not different
+        // than tapping on the switch.
+        $0.isUserInteractionEnabled = false
+    }
+    
+    let stackView = UIStackView().then {
+        $0.spacing = 4
+        $0.alignment = .center
+    }
+    
+    convenience init(withToggle: Bool = false, fullLineSeparator: Bool = false) {
+        self.init()
+        toggleButton.isHidden = !withToggle
+        
+        separatorInset = .zero
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(iconView)
-        contentView.addSubview(labelView)
+        contentView.addSubview(stackView)
         
-        iconView.contentMode = .center
-        iconView.snp.makeConstraints {
-            $0.leading.top.bottom.equalTo(self)
-            $0.width.equalTo(iconLength)
+        [iconView, labelView, toggleButton].forEach(stackView.addArrangedSubview(_:))
+        
+        stackView.snp.makeConstraints {
+            $0.leading.top.bottom.equalToSuperview()
+            $0.trailing.equalToSuperview().inset(4)
         }
-        labelView.snp.makeConstraints {
-            $0.centerY.equalTo(self)
-            $0.trailing.equalTo(self).inset(12)
-            $0.leading.equalTo(iconView.snp.trailing)
-        }
+        
         separatorInset = UIEdgeInsets(top: 0, left: iconLength, bottom: 0, right: 0)
     }
+    
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
@@ -52,10 +76,11 @@ class MenuViewController: UITableViewController {
     }
     
     private enum MenuButtons: Int, CaseIterable {
-        case settings, history, bookmarks, downloads, add, share
+        case vpn, settings, history, bookmarks, downloads, add, share
         
         var title: String {
             switch self {
+            case .vpn: return Strings.VPN.vpnMenuItemTitle
             case .bookmarks: return Strings.bookmarksMenuItem
             case .history: return Strings.historyMenuItem
             case .settings: return Strings.settingsMenuItem
@@ -67,6 +92,7 @@ class MenuViewController: UITableViewController {
         
         var icon: UIImage {
             switch self {
+            case .vpn: return #imageLiteral(resourceName: "vpn_menu_icon").template
             case .bookmarks: return #imageLiteral(resourceName: "menu_bookmarks").template
             case .history: return #imageLiteral(resourceName: "menu-history").template
             case .settings: return #imageLiteral(resourceName: "menu-settings").template
@@ -79,6 +105,9 @@ class MenuViewController: UITableViewController {
     
     private let bvc: BrowserViewController
     private let tab: Tab?
+    
+    /// Keeping reference to it to monitor vpn status and set correct `isEnabled` status.
+    private var vpnMenuCell: MenuCell?
     
     private lazy var visibleButtons: [MenuButtons] = {
         let allButtons = MenuButtons.allCases
@@ -136,11 +165,18 @@ class MenuViewController: UITableViewController {
         
         preferredContentSize = CGSize(width: fit.width, height: fit.height + UX.topBottomInset * 2)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged),
+                                               name: .NEVPNStatusDidChange, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - Table view data source
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: false)
         
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         
@@ -150,6 +186,9 @@ class MenuViewController: UITableViewController {
         }
         
         switch button {
+        case .vpn:
+            guard let menuCell = cell as? MenuCell else { return }
+            openVPNAction(menuCell: menuCell)
         case .bookmarks: openBookmarks()
         case .history: openHistory()
         case .settings: openSettings()
@@ -165,7 +204,30 @@ class MenuViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let button = visibleButtons[indexPath.row]
-        let cell = MenuCell()
+        let cell = { () -> MenuCell in
+            guard let button = MenuButtons(rawValue: indexPath.row) else {
+                assertionFailure("No cell with \(indexPath.row) tag.")
+                return MenuCell()
+            }
+            
+            switch button {
+            case .vpn:
+                let menuCell =  MenuCell(withToggle: true, fullLineSeparator: true)
+                
+                switch BraveVPN.vpnState {
+                case .notPurchased, .purchased, .expired:
+                    break
+                case .installed(let enabled):
+                    menuCell.toggleButton.isOn = enabled
+                }
+                
+                vpnMenuCell = menuCell
+                
+                return menuCell
+            default:
+                return MenuCell()
+            }
+        }()
         
         cell.labelView.text = button.title
         cell.iconView.image = button.icon
@@ -197,14 +259,18 @@ class MenuViewController: UITableViewController {
     private func open(_ viewController: UIViewController, doneButton: DoneButton,
                       allowSwipeToDismiss: Bool = true) {
         let nav = SettingsNavigationController(rootViewController: viewController)
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            nav.modalPresentationStyle = .fullScreen
-        } else {
-            nav.modalPresentationStyle = .formSheet
-        }
+        
+        // All menu views should be opened in portrait on iPhones.
+        UIDevice.current.forcePortraitIfIphone(for: UIApplication.shared)
         
         if #available(iOS 13.0, *) {
             nav.isModalInPresentation = !allowSwipeToDismiss
+            
+            nav.modalPresentationStyle =
+                UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
+        } else {
+            nav.modalPresentationStyle =
+                UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .formSheet
         }
         
         let button = UIBarButtonItem(barButtonSystemItem: doneButton.style, target: nav, action: #selector(nav.done))
@@ -216,6 +282,33 @@ class MenuViewController: UITableViewController {
         
         dismissView()
         bvc.present(nav, animated: true)
+    }
+    
+    private func openVPNAction(menuCell: MenuCell) {
+        let enabled = !menuCell.toggleButton.isOn
+        let vpnState = BraveVPN.vpnState
+        
+        if !VPNProductInfo.isComplete {
+            let alert =
+                UIAlertController(title: Strings.VPN.errorCantGetPricesTitle,
+                                  message: Strings.VPN.errorCantGetPricesBody,
+                                  preferredStyle: .alert)
+            alert.addAction(.init(title: Strings.OKString, style: .default))
+            dismissView()
+            bvc.present(alert, animated: true)
+            // Reattempt to connect to the App Store to get VPN prices.
+            bvc.vpnProductInfo.load()
+            return
+        }
+        
+        switch BraveVPN.vpnState {
+        case .notPurchased, .purchased, .expired:
+            guard let vc = vpnState.enableVPNDestinationVC else { return }
+            open(vc, doneButton: DoneButton(style: .cancel, position: .left), allowSwipeToDismiss: true)
+        case .installed:
+            // Do not modify UISwitch state here, update it based on vpn status observer.
+            enabled ? BraveVPN.reconnect() : BraveVPN.disconnect()
+        }
     }
     
     private func openBookmarks() {
@@ -267,6 +360,10 @@ class MenuViewController: UITableViewController {
     
     @objc func dismissView() {
         dismiss(animated: true)
+    }
+    
+    @objc func vpnConfigChanged() {
+        vpnMenuCell?.toggleButton.isOn = BraveVPN.isConnected
     }
 }
 

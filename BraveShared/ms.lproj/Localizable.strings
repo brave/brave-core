@@ -158,6 +158,237 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "Maaf, sesuatu tidak kena";
 
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "Beli";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxBlockAds" = "Blok sambungan rangkaian yang tidak diingini";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "Menggunakan terowong VPN disulitkan IKEv2 dengan selamat";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFast" = "Menyokong kelajuan hingga 100 Mbps";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "Menyimpan anda tanpa nama dalam talian";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoSellout" = "Kami tidak pernah berkongsi atau menjual maklumat anda";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectConnections" = "Lindungi semua aplikasi anda (bukan hanya Berani)";
+
+/* AppStore Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "Resit AppStore";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "Versi Aplikasi";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "Pembawa Selular";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "Jangan edit maklumat di bawah";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "Sila pilih maklumat yang anda selesa berkongsi dengan kami.\n\nSemakin banyak maklumat anda kongsi pada awalnya, semakin mudah kakitangan sokongan kami membantu menyelesaikan masalah anda.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "Nama Hos VPN";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "Isu";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "Tidak ada internet apabila disambungkan";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "Lain";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "Tidak dapat menyambung ke VPN (Kesalahan lain)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "Sambungan perlahan";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "Laman web tidak berfungsi";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "Jenis Rangkaian";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "Hantar";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "Jenis Langganan";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "Zon Masa iOS";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave Firewall + Isu VPN";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "Mendayakan";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "Tidak dapat menyambung ke App Store, sila cuba lagi dalam beberapa minit.";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "Ralat App Store";
+
+/* No comment provided by engineer. */
+"vpn.freeTrial" = "Semua pelan termasuk percubaan 7 hari percuma!";
+
+/* Disclaimer about free trial */
+"vpn.freeTrialDisclaimer" = "Cuba secara percuma selama 7 hari. Selepas 7 hari, anda akan dikenakan harga pelan.";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "Semua langganan diperbaharui secara automatik tetapi boleh dibatalkan sebelum pembaharuan.";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "Profil ini membolehkan VPN kepada lalu lintas secara automatik menyambung dan selamat di seluruh peranti anda - dalam setiap aplikasi, sepanjang masa. Sambungan VPN ini akan disulitkan dan diarahkan melalui firewall pintar Brave untuk menyekat iklan dan pengesan.";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "Pasang Profil VPN";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave kini akan memasang profil VPN.";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN kini didayakan";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "Pasang VPN";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "Diperbaharui setiap bulan";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "Langganan Setiap bulan";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "Tamat tempoh";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "sokongan 24/7";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "Melindungi semua sambungan";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Dikuasakan oleh";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "Gagal untuk menetapkan semula konfigurasi vpn, sila cuba lagi kemudian.";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "Ralat";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "Menyimpan semula";
+
+/* No comment provided by engineer. */
+"vpn.settingHeaderBody" = "Lindungi sambungan anda dan sekat iklan dan pengesan di seluruh peranti anda.";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "Hubungi Sokongan Teknikal";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "Sokongan VPN";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "Urus Langganan";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "Set semula Konfigurasi";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "Hos";
+
+/* Table cell title for vpn's server location */
+"vpn.settingsServerLocation" = "Lokasi";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "Pelayan";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "Tamat tempoh";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "Langganan";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "Status";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "Dinyahdayakan";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "Mendayakan";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "Telah tamat tempoh";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "Walaupun di latar belakang, Brave akan terus melindungi anda.";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN adalah DIHIDUPKAN";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "Terdapat masalah semasa memulakan VPN. Sila cuba lagi atau cuba tetapkan semula konfigurasi di halaman tetapan VPN.";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "Ralat";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN memerlukan profil VPN untuk dipasang pada peranti anda untuk berfungsi.";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "Kebenaran ditolak";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "Tidak dapat menyelesaikan pembelian. Sila cuba lagi atau periksa maklumat pembayaran anda di Apple dan cuba lagi.";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "Ralat";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "Harga mungkin berbeza mengikut lokasi. Langganan akan dikenakan kepada kad kredit anda melalui akaun iTunes anda. Langganan ditawarkan untuk tempoh 1 bulan ($9,99) atau 1 tahun ($99,99) dan akan diperbaharui secara automatik melainkan dibatalkan sekurang-kurangnya 24 jam sebelum akhir tempoh semasa. Anda tidak akan dapat membatalkan langganan selepas diaktifkan. Anda boleh menguruskan langganan anda dalam Tetapan Akaun selepas pembelian. Percubaan percuma hanya boleh digunakan sekali. Sebarang bahagian percubaan percuma yang tidak digunakan akan hilang jika anda membeli langganan";
+
+/* Title Brave VPN menu item. */
+"vpn.vpnMenuItemTitle" = "Brave VPN";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "Ini akan menetapkan semula konfigurasi Brave Firewall + VPN anda dan memperbaiki sebarang kesalahan. Proses ini mungkin mengambil masa sebentar.";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "Set semula konfigurasi";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "Set semula";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "Langganan setiap bulan";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "Langganan setiap tahun";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "Memperbaharui setiap tahun jimat %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "Nilai terbaik";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "Satu tahun";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "Ya";
 

@@ -18,4 +18,15 @@ class NumberExtensionTests: XCTestCase {
         XCTAssertEqual(123_456_7.kFormattedNumber, "1.2M")
         XCTAssertEqual(999_999.kFormattedNumber, "999K")
     }
+    
+    func testFrontSymbolCurrencyFormatted() {
+        let number = NSDecimalNumber(floatLiteral: 12.34)
+        let usFormatted = number.frontSymbolCurrencyFormatted(with: Locale(identifier: "en_US"))
+        let plFormatted = number.frontSymbolCurrencyFormatted(with: Locale(identifier: "pl_PL"))
+        
+        XCTAssertEqual(usFormatted, "$12.34")
+        XCTAssertNotEqual(usFormatted, "12.34$")
+        
+        XCTAssertEqual(plFormatted, "zł12,34")
+    }
 }

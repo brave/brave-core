@@ -134,7 +134,7 @@
 "BlockAdsAndTracking" = "広告と追跡をブロック";
 
 /* Title for setting to block all website cookies. */
-"BlockAllCookies" = "全てのクッキーをブロック";
+"BlockAllCookies" = "すべてのクッキーをブロック";
 
 /* block all cookies settings action title */
 "BlockAllCookiesAction" = "すべてブロック";
@@ -550,6 +550,9 @@
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "表示";
 
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "月";
+
 /* Bookmark title / Device name */
 "Name" = "名前";
 
@@ -582,6 +585,9 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "ワードが足りません";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "サポート";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "報酬を受け取る";
@@ -869,7 +875,7 @@
 "SearchSettingNavTitle" = "検索";
 
 /* Label for search settings button. */
-"SearchSettingsButtonTitle" = "検索設定";
+"SearchSettingsButtonTitle" = "設定の検索";
 
 /* Label for show search suggestions setting. */
 "SearchSettingSuggestionCellTitle" = "検索候補を表示";
@@ -1040,7 +1046,7 @@
 "SyncRemoveDeviceDefaultName" = "デバイス";
 
 /* Message for removing last device from Sync */
-"SyncRemoveLastDeviceMessage" = "現在同期されているデータは残りますが、Brave Syncにキャッシュされた全てのデータは消去されます。もう一度同期をしたい場合は新しいチェーンを開始する必要があります。";
+"SyncRemoveLastDeviceMessage" = "現在同期されているデータは残りますが、Brave Syncにキャッシュされたすべてのデータは消去されます。もう一度同期をしたい場合は新しいチェーンを開始する必要があります。";
 
 /* Button name for removing last device from Sync */
 "SyncRemoveLastDeviceRemoveButtonName" = "同期チェーンを削除";
@@ -1227,6 +1233,9 @@
 
 /* Word count title */
 "WordCount" = "ワード数: %i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "年";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "はい、削除します";

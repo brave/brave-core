@@ -30,3 +30,24 @@ public extension Int {
     }
 }
 
+public extension NSDecimalNumber {
+    
+    /// Returns a currency formatted string where the currency's symbol is in front.
+    /// For example $19.99.
+    func frontSymbolCurrencyFormatted(with locale: Locale) -> String? {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = locale
+        // Hide currency symbol, we append it manually in front of the String.
+        formatter.currencySymbol = ""
+        formatter.currencyCode = ""
+        
+        let currencySymbol = locale.currencySymbol ?? ""
+        
+        // Making currency codes empty adds extra space at the end, trimming it here.
+        guard let formatted = formatter.string(from: self)?
+            .trimmingCharacters(in: .whitespacesAndNewlines) else { return nil }
+        
+        return currencySymbol + formatted
+    }
+}

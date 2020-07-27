@@ -550,6 +550,9 @@
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "Pokazuj";
 
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "mies.";
+
 /* Bookmark title / Device name */
 "Name" = "Nazwa";
 
@@ -582,6 +585,9 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "Niewystarczająca liczba słów";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Wsparcie Brave";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "Odbierz nagrody";
@@ -1227,6 +1233,9 @@
 
 /* Word count title */
 "WordCount" = "Liczba słów: %i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "r.";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "Tak, usuń";

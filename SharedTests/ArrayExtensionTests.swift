@@ -59,4 +59,16 @@ class ArrayExtensionTests: XCTestCase {
         XCTAssertTrue((n?.sameElements(k))!)
     }
 
+    func testSplitEvery() {
+        // Edge cases
+        let emptyArray = [Int]()
+        XCTAssertEqual(emptyArray.splitEvery(3), [])
+        XCTAssertEqual([1, 2, 3].splitEvery(-1), [])
+        XCTAssertEqual([1, 2, 3].splitEvery(100), [[1, 2, 3]])
+        XCTAssertEqual([1].splitEvery(1), [[1]])
+        XCTAssertEqual([1].splitEvery(0), [])
+        
+        XCTAssertEqual([1, 2, 3].splitEvery(1), [[1], [2], [3]])
+        XCTAssertEqual([1, 2, 3, 4, 5].splitEvery(2), [[1, 2], [3, 4], [5]])
+    }
 }

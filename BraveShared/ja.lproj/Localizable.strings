@@ -158,6 +158,240 @@
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "申し訳ございません、うまくいきませんでした。";
 
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "購入";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave ファイアーウォール+VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxBlockAds" = "不要な通信をブロック";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "IKEv2セキュア暗号化VPNトンネルを使用";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFast" = "最大100Mbpsの速度をサポート";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "オンラインでの匿名性を維持";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoSellout" = "あなたの情報を第三者に共有・販売しません";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectConnections" = "Braveに限らず全てのアプリを保護します";
+
+/* AppStore Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "AppStoreレシート";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "アプリバージョン";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "通信キャリア";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "この下の情報は編集・変更しないでください";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "私たちと共有してもよい情報を選択してください。\n\n最初に共有する情報が多ければ多いほど、サポートスタッフがお客様の課題解決をサポートしやすくなります。";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "サポート対応においてGuardian VPNのチームの協力を受けています.";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPNホストネーム";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "イシュー";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "接続時にインターネットに接続できなかった";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "その他";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "VPNに接続できなかった(その他のエラー)";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "接続が遅い";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "ウェブサイトが機能しなかった";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "ネットワークタイプ";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "送信";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "購読タイプ";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "タイムゾーン";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave ファイアーウォール+VPNに関わる問題";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "有効化";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "App Storeに接続できませんでした。少し経ってから再度お試しください。";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "App Storeとの接続時にエラーが発生しました";
+
+/* No comment provided by engineer. */
+"vpn.freeTrial" = "全てのプランに7日間の無料体験期間が含まれます。";
+
+/* Disclaimer about free trial */
+"vpn.freeTrialDisclaimer" = "7日間無料でお試しください。7日目以降はプラン料金が発生します。";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "すべての定期購読は自動更新ですが、更新前に解約することができます。";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "このプロファイルにより、VPNは自動的に接続され、デバイス全体のすべてのアプリにおいて常にトラフィックが保護されます。このVPN接続は暗号化され、Braveのインテリジェントファイアウォールを介してルーティングされ、広告やトラッカーをブロックします。";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "VPNプロファイルをインストール";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "BraveはVPNプロファイルをインストールします";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPNが有効化されました";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "VPNをインストール";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "毎月更新";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "毎月の定期購読";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "期限切れ";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "24時間365日のサポート";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "すべての接続を保護";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "Powered by";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "VPN設定のリセットに失敗しました。もう一度お試しください。";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "エラー";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "復元";
+
+/* No comment provided by engineer. */
+"vpn.settingHeaderBody" = "接続を保護し、デバイス全体で広告やトラッカーをブロックします。";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPNサポート";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "購読の管理";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "設定をリセット";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "ホスト";
+
+/* Table cell title for vpn's server location */
+"vpn.settingsServerLocation" = "ロケーション";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "サーバー";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "有効期限";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "購読";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "ステータス";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "無効";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "有効";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "期限切れ";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "バックグラウンドでもBraveはあなたを保護します";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave ファイアウォール+VPNは有効です";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "VPNの初期化に問題がありました。再度お試しいただくか、VPN設定画面で設定をリセットしてみてください。";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "エラー";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave ファイアウォール+VPNは、動作するためには、お使いのデバイスにVPNプロファイルをインストールする必要があります。";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "パーミッションが拒否されました";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "購入を完了できません。再度お試しいただくか、Appleでお支払い内容をご確認の上、再度お試しください。";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "エラー";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "価格は地域によって異なる場合があります。定期購読は、iTunesアカウントを通じてお客様のクレジットカードに請求されます。購読は、1ヶ月（$9.99）または1年（$99.99）のプランが提供されており、それぞれ期間終了の24時間前までにキャンセルされない限り自動的に更新されます。一度開始されたサブスクリプションをキャンセルすることはできません。ご購入後はアカウント設定からサブスクリプションを管理することができます。無料トライアルは一度しか使用できません。無料トライアルの未使用部分は、サブスクリプションを購入した場合に失効します。";
+
+/* Title Brave VPN menu item. */
+"vpn.vpnMenuItemTitle" = "Brave VPN";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "この操作を実行するとBrave ファイアウォール+ VPNの構成はリセットされ、すべてのエラーが修正されます。このプロセスには1分かかる場合があります。";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "設定リセット";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "リセット";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "定期購読(月払い)";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "定期購読(年払い)";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "年払いを選択すると%@お得です";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "一番お得";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "1年間";
+
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "はい";
 
