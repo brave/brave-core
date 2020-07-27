@@ -27,6 +27,8 @@ void RecordSearchEngineP3A(const GURL& search_engine_url,
     answer = SearchEngineP3A::kBing;
   } else if (type == SEARCH_ENGINE_QWANT) {
     answer = SearchEngineP3A::kQwant;
+  } else if (type == SEARCH_ENGINE_YAHOO) {
+    answer = SearchEngineP3A::kYahoo;
   } else if (type == SEARCH_ENGINE_OTHER) {
     if (base::EndsWith(search_engine_url.host(), "startpage.com",
                        base::CompareCase::INSENSITIVE_ASCII)) {
@@ -34,7 +36,7 @@ void RecordSearchEngineP3A(const GURL& search_engine_url,
     }
   }
 
-  UMA_HISTOGRAM_ENUMERATION("Brave.Search.DefaultEngine", answer);
+  UMA_HISTOGRAM_ENUMERATION("Brave.Search.DefaultEngine.2", answer);
 }
 
 }  // namespace
