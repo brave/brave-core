@@ -35,9 +35,6 @@ void NativeLedgerClient::OnReconcileComplete(ledger::Result result, ledger::Cont
 void NativeLedgerClient::PublisherListNormalized(ledger::PublisherInfoList list) {
   [bridge_ publisherListNormalized:std::move(list)];
 }
-std::string NativeLedgerClient::URIEncode(const std::string & value) {
-  return [bridge_ URIEncode:value];
-}
 void NativeLedgerClient::OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) {
   return [bridge_ onContributeUnverifiedPublishers:result publisherKey:publisher_key publisherName:publisher_name];
 }

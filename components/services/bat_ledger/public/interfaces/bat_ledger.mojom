@@ -168,9 +168,6 @@ interface BatLedgerClient {
   LoadURL(string url, array<string> headers, string content,
       string content_type, ledger.mojom.UrlMethod method) => (ledger.mojom.UrlResponse response);
 
-  [Sync]
-  URIEncode(string value) => (string encoded_value);
-
   PublisherListNormalized(array<ledger.mojom.PublisherInfo> list);
 
   [Sync]

@@ -44,9 +44,6 @@ class MockLedgerClient : public LedgerClient {
       const std::string& favicon_key,
       ledger::FetchIconCallback callback));
 
-  MOCK_METHOD1(URIEncode, std::string(
-      const std::string& value));
-
   MOCK_METHOD6(LoadURL, void(
       const std::string& url,
       const std::vector<std::string>& headers,

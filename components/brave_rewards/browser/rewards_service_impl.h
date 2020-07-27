@@ -161,7 +161,6 @@ class RewardsServiceImpl : public RewardsService,
                   const GURL& first_party_url,
                   const GURL& referrer,
                   const std::string& post_data) override;
-  std::string URIEncode(const std::string& value) override;
   void GetReconcileStamp(const GetReconcileStampCallback& callback) override;
   void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) override;

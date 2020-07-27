@@ -137,8 +137,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& post_data,
       ledger::VisitDataPtr visit_data) override;
 
-  std::string URIEncode(const std::string& value) override;
-
   void GetActivityInfoList(
       uint32_t start,
       uint32_t limit,

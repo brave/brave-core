@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/twitch.h"
+#include "net/base/escape.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -446,8 +447,8 @@ void Twitch::OnMediaPublisherInfo(
                               user_id,
                               _1);
 
-    const std::string url = (std::string)TWITCH_PROVIDER_URL + "?json&url=" +
-        ledger_->ledger_client()->URIEncode(oembed_url);
+    const std::string url = (std::string)TWITCH_PROVIDER_URL +
+        "?json&url=" + net::EscapeQueryParamValue(oembed_url, false);
 
     FetchDataFromUrl(url, callback);
     return;

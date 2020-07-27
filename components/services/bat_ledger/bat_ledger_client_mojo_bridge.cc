@@ -134,15 +134,6 @@ void BatLedgerClientMojoBridge::FetchFavIcon(const std::string& url,
       base::BindOnce(&OnFetchFavIcon, std::move(callback)));
 }
 
-std::string BatLedgerClientMojoBridge::URIEncode(const std::string& value) {
-  if (!Connected())
-    return "";
-
-  std::string encoded_value;
-  bat_ledger_client_->URIEncode(value, &encoded_value);
-  return encoded_value;
-}
-
 void BatLedgerClientMojoBridge::PublisherListNormalized(
     ledger::PublisherInfoList list) {
   if (!Connected()) {

@@ -15,6 +15,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/vimeo.h"
 #include "bat/ledger/internal/static_values.h"
+#include "net/base/escape.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -355,8 +356,7 @@ void Vimeo::ProcessActivityFromUrl(uint64_t window_id,
   }
 
   const std::string url = (std::string)VIMEO_PROVIDER_URL +
-        "?url=" +
-        ledger_->ledger_client()->URIEncode(visit_data.url);
+        "?url=" + net::EscapeQueryParamValue(visit_data.url, false);
 
   auto callback = std::bind(&Vimeo::OnEmbedResponse,
                             this,

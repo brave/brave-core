@@ -100,11 +100,6 @@ void LedgerClientMojoBridge::FetchFavIcon(const std::string& url,
       std::bind(LedgerClientMojoBridge::OnFetchFavIcon, holder, _1, _2));
 }
 
-void LedgerClientMojoBridge::URIEncode(const std::string& value,
-    URIEncodeCallback callback) {
-  std::move(callback).Run(ledger_client_->URIEncode(value));
-}
-
 // static
 void LedgerClientMojoBridge::OnLoadURL(
     CallbackHolder<LoadURLCallback>* holder,

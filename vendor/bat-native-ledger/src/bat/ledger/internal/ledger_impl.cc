@@ -373,10 +373,6 @@ void LedgerImpl::OnPostData(
   }
 }
 
-std::string LedgerImpl::URIEncode(const std::string& value) {
-  return ledger_client_->URIEncode(value);
-}
-
 void LedgerImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,

@@ -73,7 +73,6 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/common/service_manager_connection.h"
-#include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
 #include "net/http/http_status_code.h"
@@ -799,10 +798,6 @@ void RewardsServiceImpl::RestorePublishers() {
   bat_ledger_->RestorePublishers(
     base::BindOnce(&RewardsServiceImpl::OnRestorePublishers,
                    AsWeakPtr()));
-}
-
-std::string RewardsServiceImpl::URIEncode(const std::string& value) {
-  return net::EscapeQueryParamValue(value, false);
 }
 
 void RewardsServiceImpl::Shutdown() {

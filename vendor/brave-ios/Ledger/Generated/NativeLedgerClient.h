@@ -23,7 +23,6 @@ private:
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, ledger::ContributionInfoPtr contribution) override;
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
-  std::string URIEncode(const std::string & value) override;
   void OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) override;
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;

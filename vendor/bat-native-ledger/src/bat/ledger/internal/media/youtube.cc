@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/media/youtube.h"
+#include "net/base/escape.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -420,8 +421,7 @@ void YouTube::OnMediaPublisherInfo(
         _1);
 
     const std::string url = (std::string)YOUTUBE_PROVIDER_URL +
-        "?format=json&url=" +
-        ledger_->ledger_client()->URIEncode(media_url);
+        "?format=json&url=" + net::EscapeQueryParamValue(media_url, false);
 
     FetchDataFromUrl(url, callback);
   } else {

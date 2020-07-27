@@ -88,8 +88,6 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& favicon_key,
       FetchIconCallback callback) = 0;
 
-  virtual std::string URIEncode(const std::string& value) = 0;
-
   virtual void LoadURL(
       const std::string& url,
       const std::vector<std::string>& headers,

@@ -1086,12 +1086,6 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
                                      referrer);
 }
 
-- (NSString *)encodedURI:(NSString *)uri
-{
-  const auto encoded = ledger->URIEncode(std::string(uri.UTF8String));
-  return [NSString stringWithUTF8String:encoded.c_str()];
-}
-
 - (void)rewardsInternalInfo:(void (NS_NOESCAPE ^)(BATRewardsInternalsInfo * _Nullable info))completion
 {
   ledger->GetRewardsInternalsInfo(^(ledger::RewardsInternalsInfoPtr info) {
@@ -1749,15 +1743,6 @@ BATLedgerBridge(BOOL,
 
     callback(url_response);
   }];
-}
-
-- (std::string)URIEncode:(const std::string &)value
-{
-  const auto allowedCharacters = [NSMutableCharacterSet alphanumericCharacterSet];
-  [allowedCharacters addCharactersInString:@"-._~"];
-  const auto string = [NSString stringWithUTF8String:value.c_str()];
-  const auto encoded = [string stringByAddingPercentEncodingWithAllowedCharacters:allowedCharacters];
-  return std::string(encoded.UTF8String);
 }
 
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback

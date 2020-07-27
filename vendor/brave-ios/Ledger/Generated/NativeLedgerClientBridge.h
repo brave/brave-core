@@ -16,7 +16,6 @@
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result contribution:(ledger::ContributionInfoPtr)contribution;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
-- (std::string)URIEncode:(const std::string &)value;
 - (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string&)publisher_key publisherName:(const std::string&)publisher_name;
 - (void)setBooleanState:(const std::string&)name value:(bool)value;
 - (bool)getBooleanState:(const std::string&)name;

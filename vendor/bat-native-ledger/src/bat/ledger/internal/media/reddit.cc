@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/media/reddit.h"
 #include "bat/ledger/internal/static_values.h"
+#include "net/base/escape.h"
 #include "net/http/http_status_code.h"
 #include "url/url_canon.h"
 #include "url/gurl.h"
@@ -289,7 +290,7 @@ void Reddit::OnMediaPublisherInfo(
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
-  GURL url(REDDIT_USER_URL + ledger_->ledger_client()->URIEncode(user_name));
+  GURL url(REDDIT_USER_URL + net::EscapeQueryParamValue(user_name, false));
   if (!url.is_valid()) {
     callback(ledger::Result::TIP_ERROR, nullptr);
     return;
