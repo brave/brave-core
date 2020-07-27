@@ -12,6 +12,7 @@ import re
 import requests
 import subprocess
 import sys
+import tempfile
 import time
 
 from argparse import RawTextHelpFormatter
@@ -108,6 +109,10 @@ def main():
     # If release channel, unlock GPG signing key which has a cache timeout of 30
     # minutes set in the gpg-agent.conf
     if channel in ['release']:
+        (fd, temp_file) = tempfile.mkstemp(text=True)
+        # mkstemp should return an open file descriptor as fd
+        os.write(fd, 'This is a temp file.')
+
         gpgconf_cmd = ['GNUPGHOME=$HOME/.gnupg-release', 'gpgconf', '--kill', 'gpg-agent']
         logging.info("Running command: \"{}\"".format(gpgconf_cmd))
         try:
@@ -117,7 +122,7 @@ def main():
             loggint.error("Error: {}".format(cpe))
             exit(1)
         cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
-               gpg_passphrase, '--sign']
+               gpg_passphrase, '--no-tty', '--sign', temp_file]
         log_cmd = ['gpg2', '--batch', '--pinentry-mode', 'loopback', '--passphrase',
                    'NOTAREALPASSWORD', '--sign']
         logging.info("Running command: \"{}\"".format(log_cmd))
@@ -134,6 +139,7 @@ def main():
         except Exception as e:
             logging.error("Error running command: \"{}\"".format(log_cmd))
             exit(1)
+        os.remove(temp_file)
 
     # Now upload to aptly and rpm repos
 
