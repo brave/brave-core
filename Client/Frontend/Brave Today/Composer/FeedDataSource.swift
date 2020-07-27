@@ -18,7 +18,8 @@ enum FeedCard {
     case numbered(_ feeds: [FeedItem], title: String)
 }
 
-@propertyWrapper struct FailableDecodable<T: Decodable>: Decodable {
+// TODO: Move this to its own file along with `URLString`
+@propertyWrapper private struct FailableDecodable<T: Decodable>: Decodable {
     var wrappedValue: T?
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
@@ -26,22 +27,13 @@ enum FeedCard {
     }
 }
 
-struct ScoredFeedItem: Equatable, Comparable {
-    var score: Double
-    var item: FeedItem
-    
-    static func < (lhs: Self, rhs: Self) -> Bool {
-        return lhs.score < rhs.score
-    }
-}
-
 /// Powers Brave Today's feed.
 class FeedDataSource {
     private(set) var cards: [FeedCard] = []
     
-    private let session = NetworkManager()
-    private var feeds: [ScoredFeedItem] = []
-    private var sources: [String: FeedSource] = [:]
+    private let session = NetworkManager(session: URLSession(configuration: .ephemeral))
+    private var feeds: [FeedItem] = []
+    private var sources: [String: FeedItem.Source] = [:]
     
     init() {
     }
@@ -52,44 +44,51 @@ class FeedDataSource {
             $0.dateFormat = "yyyy-MM-dd HH:mm:ss"
             $0.timeZone = TimeZone(secondsFromGMT: 0)
         })
-//        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/sources.json")!) { [weak self] data, response, error in
-//            guard let self = self, let data = data else { return }
-//            do {
-//                let decodedSources = try decoder.decode([String: FeedSource].self, from: data)
-//                self.sources = decodedSources
+        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/sources.json")!) { [weak self] data, response, error in
+            guard let self = self, let data = data else { return }
+            do {
+                let decodedSources = try decoder.decode([String: FailableDecodable<FeedItem.Source>].self, from: data).compactMapValues({ $0.wrappedValue })
+                self.sources = decodedSources
                 self.session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
                     guard let self = self, let data = data else { return }
                     do {
-                        let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem>].self, from: data).compactMap { $0.wrappedValue }
+                        let decodedFeeds = try decoder.decode([FailableDecodable<FeedItem.Content>].self, from: data).compactMap { $0.wrappedValue }
                         DispatchQueue.main.async {
-                            self.feeds = self.scored(feeds: decodedFeeds).sorted(by: <)
+                            self.feeds = self.scored(feeds: decodedFeeds, sources: decodedSources).sorted(by: <)
                             self.generateCards()
                             completion()
                         }
                     } catch {
                         logger.error(error)
-                        completion()
+                        DispatchQueue.main.async {
+                            completion()
+                        }
                     }
                 }
-//            } catch {
-//                logger.error(error)
-//                completion()
-//            }
-//        }
+            } catch {
+                logger.error(error)
+                DispatchQueue.main.async {
+                    completion()
+                }
+            }
+        }
     }
     
-    private func scored(feeds: [FeedItem]) -> [ScoredFeedItem] {
+    private func scored(feeds: [FeedItem.Content], sources: [String: FeedItem.Source]) -> [FeedItem] {
         let lastVisitedDomains = (try? History.suffix(200)
             .lazy
             .compactMap(\.url)
             .compactMap { URL(string: $0)?.baseDomain }) ?? []
-        return feeds.map {
+        return feeds.compactMap {
             let timeSincePublished = Double($0.publishTime.timeIntervalSinceNow)
             var score = timeSincePublished > 0 ? log(timeSincePublished) : 0
             if let feedBaseDomain = $0.url?.baseDomain, lastVisitedDomains.contains(feedBaseDomain) {
                 score -= 5
             }
-            return ScoredFeedItem(score: score, item: $0)
+            guard let source = sources[$0.publisherID] else {
+                return nil
+            }
+            return FeedItem(score: score, content: $0, source: source)
         }
     }
     
@@ -101,19 +100,19 @@ class FeedDataSource {
             1st item, Large Card, Latest item from query
             Deals card
          */
-        var deals = feeds.filter { $0.item.publisherID == "brave_offers" }
-        var sponsors = feeds.filter { $0.item.contentType == "product" }
-        var articles = feeds.filter { $0.item.contentType == "article" }
-        var media = feeds.lazy.filter { $0.item.contentType == "image" }
+        var deals = feeds.filter { $0.content.contentType == "brave_offers" }
+        var sponsors = feeds.filter { $0.content.contentType == "product" }
+        var articles = feeds.filter { $0.content.contentType == "article" }
+        var media = feeds.lazy.filter { $0.content.contentType == "image" }
         
         if !sponsors.isEmpty {
-            cards.append(.sponsor(sponsors.removeFirst().item))
+            cards.append(.sponsor(sponsors.removeFirst()))
         }
         if !articles.isEmpty {
-            cards.append(.headline(articles.removeFirst().item))
+            cards.append(.headline(articles.removeFirst()))
         }
         if !deals.isEmpty {
-            let items = deals.prefix(3).map(\.item)
+            let items = Array(deals.prefix(3))
             if !items.isEmpty {
                 cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
                 deals.removeFirst(min(3, deals.count))
@@ -139,7 +138,7 @@ class FeedDataSource {
             // Cards 1 to 6: Latest items
             // - 2x Large Headline
             // - 2x Small Headline Pair
-            let items = articles.prefix(6).map(\.item)
+            let items = articles.prefix(6)
             cards.append(.headline(items[0]))
             cards.append(.headline(items[1]))
             cards.append(.headlinePair((items[2], items[3])))
@@ -151,10 +150,10 @@ class FeedDataSource {
             // Card 7: Category of items
             // - Vertical List card, 3 stories from multiple sources of same category
             // - Don't repeat category until all have been used
-            if let category = articles.first?.item.category {
-                let items = Array(articles.lazy.filter({ $0.item.category == category }).prefix(3).map(\.item))
+            if let category = articles.first?.content.category {
+                let items = Array(articles.lazy.filter({ $0.content.category == category }).prefix(3))
                 cards.append(.group(items, title: category, direction: .vertical, displayBrand: false))
-                articles.removeAll(where: { items.contains($0.item) })
+                articles.removeAll(where: { items.contains($0) })
             }
         }
         
@@ -162,12 +161,16 @@ class FeedDataSource {
             // Card 8 and 9: Commercial
             // - 1x sponsored card (large headline)
             // - 1x affiliate deals card
-            cards.append(.sponsor(sponsors.removeFirst().item))
-            let items = deals.prefix(3).map(\.item)
-            if !items.isEmpty {
-                cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
+            if !sponsors.isEmpty {
+                cards.append(.sponsor(sponsors.removeFirst()))
             }
-            deals.removeFirst(min(3, deals.count))
+            if !deals.isEmpty {
+                let items = Array(deals.prefix(3))
+                if !items.isEmpty {
+                    cards.append(.group(items, title: "Deals", direction: .horizontal, displayBrand: false))
+                }
+                deals.removeFirst(min(3, deals.count))
+            }
         }
         
         self.cards = cards

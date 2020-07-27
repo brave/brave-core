@@ -8,39 +8,68 @@ import Foundation
 @propertyWrapper struct URLString: Equatable, Decodable {
     var wrappedValue: URL?
     
+    init(wrappedValue: URL?) {
+        self.wrappedValue = wrappedValue
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        let value = try container.decode(String.self)
-        wrappedValue = URL(string: value)
+        if container.decodeNil() {
+            wrappedValue = nil
+        } else {
+            let value = try container.decode(String.self)
+            wrappedValue = URL(string: value)
+        }
     }
 }
 
-struct FeedItem: Equatable, Decodable {
-    var category: String
-    var publishTime: Date
-    @URLString var url: URL?
-    var domain: String?
-    @URLString var imageURL: URL?
-    var title: String
-    var description: String
-    var contentType: String
-    var publisherID: String
-    var publisherName: String
-    @URLString var publisherLogo: URL?
-    var urlHash: String
+struct FeedItem: Equatable, Comparable {
+    var score: Double
+    var content: Content
+    var source: Source
     
-    enum CodingKeys: String, CodingKey {
-        case category
-        case publishTime = "publish_time"
-        case url
-        case domain
-        case imageURL = "padded_img"
-        case title
-        case description
-        case contentType = "content_type"
-        case publisherID = "publisher_id"
-        case publisherName = "publisher_name"
-        case publisherLogo = "publisher_logo"
-        case urlHash = "url_hash"
+    static func < (lhs: Self, rhs: Self) -> Bool {
+        return lhs.score < rhs.score
+    }
+}
+
+extension FeedItem {
+    
+    struct Source: Equatable, Decodable {
+        var enabled: Bool
+        @URLString var logo: URL?
+        
+        enum CodingKeys: String, CodingKey {
+            case enabled
+            case logo = "publisher_logo_padded"
+        }
+    }
+
+    struct Content: Equatable, Decodable {
+        var category: String
+        var publishTime: Date
+        @URLString var url: URL?
+        var domain: String?
+        @URLString var imageURL: URL?
+        var title: String
+        var description: String
+        var contentType: String
+        var publisherID: String
+        var publisherName: String
+        var urlHash: String
+        
+        enum CodingKeys: String, CodingKey {
+            case category
+            case publishTime = "publish_time"
+            case url
+            case domain
+            case imageURL = "padded_img"
+            case title
+            case description
+            case contentType = "content_type"
+            case publisherID = "publisher_id"
+            case publisherName = "publisher_name"
+            case urlHash = "url_hash"
+        }
     }
 }
