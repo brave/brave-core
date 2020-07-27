@@ -170,6 +170,7 @@ source_set("browser_process") {
     "//components/gcm_driver:gcm_driver",
     "//components/gcm_driver:gcm_buildflags",
     "//components/keyed_service/content",
+    "//components/metrics",
     "//components/password_manager/core/common",
     "//components/permissions",
     "//components/policy/core/browser",
