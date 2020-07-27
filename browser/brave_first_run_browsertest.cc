@@ -17,7 +17,7 @@ void FirstRunMasterPrefsBrowserTestBase::SetUp() {
   ASSERT_TRUE(base::CreateTemporaryFile(&prefs_file_));
   EXPECT_EQ(static_cast<int>(text_->size()),
             base::WriteFile(prefs_file_, text_->c_str(), text_->size()));
-  first_run::SetMasterPrefsPathForTesting(prefs_file_);
+  first_run::SetInitialPrefsPathForTesting(prefs_file_);
 
   // This invokes BrowserMain, and does the import, so must be done last.
   InProcessBrowserTest::SetUp();
