@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/sync/profile_sync_service_factory.cc b/chrome/browser/sync/profile_sync_service_factory.cc
+index dca006daae56b4c31d838304a5b0493b92cd05ec..6bda62f4894b5939939d47774bc9563c3b2133b3 100644
+--- a/chrome/browser/sync/profile_sync_service_factory.cc
++++ b/chrome/browser/sync/profile_sync_service_factory.cc
+@@ -269,7 +269,7 @@ KeyedService* ProfileSyncServiceFactory::BuildServiceInstanceFor(
+   }
+ 
+   auto pss =
+-      std::make_unique<syncer::ProfileSyncService>(std::move(init_params));
++      std::make_unique<syncer::BraveProfileSyncService>(std::move(init_params));
+ 
+ #if defined(OS_WIN)
+   if (!local_sync_backend_enabled)
