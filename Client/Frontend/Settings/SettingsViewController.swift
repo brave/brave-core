@@ -77,8 +77,17 @@ class SettingsViewController: TableViewController {
         navigationItem.title = Strings.settings
         tableView.accessibilityIdentifier = "SettingsViewController.tableView"
         dataSource.sections = sections
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         applyTheme(theme)
+        
+        guard let vpnRow = vpnRow else { return }
+        // This is a dynamic cell that must be updated based on vpn status.
+        if let indexPath = dataSource.indexPath(rowUUID: vpnRow.uuid, sectionUUID: otherSettingsSection.uuid) {
+            dataSource.sections[indexPath.section].rows.remove(at: indexPath.row)
+            dataSource.sections[indexPath.section].rows.append(vpnSettingsRow())
+        }
     }
     
     private func displayRewardsDebugMenu() {
@@ -93,6 +102,23 @@ class SettingsViewController: TableViewController {
     
     private var sections: [Section] {
         var list = [Section]()
+        
+        let shouldShowVPNSection = { () -> Bool in
+            if !VPNProductInfo.isComplete || Preferences.VPN.vpnSettingHeaderWasDismissed.value {
+                return false
+            }
+            
+            switch BraveVPN.vpnState {
+            case .notPurchased, .expired, .purchased:
+                return true
+            case .installed:
+                return false
+            }
+        }()
+        
+        if shouldShowVPNSection {
+            list.append(enableBraveVPNSection)
+        }
         list.append(generalSection)
         list.append(displaySection)
         #if !NO_SYNC
@@ -112,6 +138,46 @@ class SettingsViewController: TableViewController {
     }
     
     // MARK: - Sections
+    
+    private lazy var enableBraveVPNSection: Section = {
+        let header = EnableVPNSettingHeader()
+        header.enableVPNTapped = { [weak self] in
+            self?.enableVPNTapped()
+        }
+        
+        header.dismissHeaderTapped = { [weak self] in
+            self?.dismissVPNHeaderTapped()
+        }
+        
+        let calculatedSize = header.systemLayoutSizeFitting(
+            CGSize(width: navigationController?.navigationBar.frame.width ?? 0, height: 300),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+        
+        header.bounds = CGRect(size: calculatedSize)
+        
+        return Section(header: .view(header))
+    }()
+    
+    private func enableVPNTapped() {
+        let state = BraveVPN.vpnState
+        
+        switch state {
+        case .notPurchased, .purchased, .expired:
+            guard let vc = state.enableVPNDestinationVC else { return }
+            navigationController?.pushViewController(vc, animated: true)
+        case .installed:
+            BraveVPN.reconnect()
+            dismiss(animated: true)
+        }
+    }
+    
+    private func dismissVPNHeaderTapped() {
+        if dataSource.sections.isEmpty { return }
+        dataSource.sections[0] = Section()
+        Preferences.VPN.vpnSettingHeaderWasDismissed.value = true
+    }
     
     private lazy var generalSection: Section = {
         var general = Section(
@@ -236,8 +302,56 @@ class SettingsViewController: TableViewController {
             //Disabled until 1.13
             //.boolRow(title: Strings.mediaAutoPlays, option: Preferences.General.mediaAutoPlays)
         ]
+        
+        vpnRow = vpnSettingsRow()
+        
+        if let row = vpnRow {
+            section.rows.append(row)
+        }
+        
         return section
     }()
+    
+    private var vpnRow: Row?
+    
+    private func vpnSettingsRow() -> Row {
+        
+        let (text, color) = { () -> (String, UIColor) in
+            switch BraveVPN.vpnState {
+            case .notPurchased, .purchased:
+                return ("", UIColor.black)
+            case .installed(let enabled):
+                if enabled {
+                    return (Strings.VPN.settingsVPNEnabled, #colorLiteral(red: 0.1607843137, green: 0.737254902, blue: 0.5647058824, alpha: 1))
+                } else {
+                    return (Strings.VPN.settingsVPNDisabled, BraveUX.red)
+                }
+            case .expired:
+                return (Strings.VPN.settingsVPNExpired, BraveUX.red)
+            }
+        }()
+        
+        return Row(text: Strings.VPN.vpnName, detailText: text, selection: { [unowned self] in
+            
+            let vc = { () -> UIViewController? in
+                switch BraveVPN.vpnState {
+                case .notPurchased, .purchased, .expired:
+                    return BraveVPN.vpnState.enableVPNDestinationVC
+                case .installed:
+                    let vc = BraveVPNSettingsViewController()
+                    vc.faqButtonTapped = { [weak self] in
+                        self?.settingsDelegate?.settingsOpenURLInNewTab(BraveUX.braveVPNFaqURL)
+                        self?.dismiss(animated: true)
+                    }
+                    return vc
+                }
+            }()
+            
+            guard let vcToShow = vc else { return }
+            self.navigationController?.pushViewController(vcToShow, animated: true)
+            }, accessory: .disclosureIndicator,
+               cellClass: ColoredDetailCell.self, context: [ColoredDetailCell.colorKey: color], uuid: "vpnrow")
+    }
     
     private lazy var privacySection: Section = {
         var privacy = Section(
@@ -513,5 +627,7 @@ extension TableViewController: Themeable {
         // exiting menus, so setting explicitly.
         navigationController?.navigationBar.tintColor = UINavigationBar.appearance().tintColor
         navigationController?.navigationBar.barTintColor = UINavigationBar.appearance().appearanceBarTintColor
+        navigationController?.navigationBar.titleTextAttributes =
+            [NSAttributedString.Key.foregroundColor: theme.colors.tints.home]
     }
 }

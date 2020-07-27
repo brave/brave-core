@@ -311,10 +311,10 @@
 "BraveRewardsSettings" = "設定";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "Braveで広告を見ることでポイントを獲得しましょう。広告はあなたのブラウザの利用履歴を元に推測されたものが表示されますが、全ての個人情報や閲覧履歴はブラウザの中だけに保存され外部に出ることはありません。";
+"BraveRewardsSettingsAdsBody" = "Braveで広告を見ることでポイントを獲得しましょう。広告はあなたのブラウザの利用履歴を元に推測されたものが表示されますが、すべての個人情報や閲覧履歴はブラウザの中だけに保存され外部に出ることはありません。";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "Braveで広告を見ることでポイントを獲得しましょう。広告はあなたのブラウザの利用履歴を元に推測されたものが表示されますが、全ての個人情報や閲覧履歴はブラウザの中だけに保存され外部に出ることはありません。";
+"BraveRewardsSettingsAdsBodyJapan" = "Braveで広告を見ることでポイントを獲得しましょう。広告はあなたのブラウザの利用履歴を元に推測されたものが表示されますが、すべての個人情報や閲覧履歴はブラウザの中だけに保存され外部に出ることはありません。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Coming soon.";
@@ -377,7 +377,7 @@
 "BraveRewardsSettingsViewDetails" = "詳細を表示";
 
 /* No comment provided by engineer. */
-"BraveRewardsShowAllPendingContributions" = "全ての保留中の支援を確認する";
+"BraveRewardsShowAllPendingContributions" = "すべての保留中の支援を確認する";
 
 /* No comment provided by engineer. */
 "BraveRewardsSite" = "サイト";
@@ -515,7 +515,7 @@
 "ExclusionListRestore" = "復元";
 
 /* The button that restores all excluded publishers while on the Auto-Contribute excluson list */
-"ExclusionListRestoreAllButton" = "全てのサイトを復元";
+"ExclusionListRestoreAllButton" = "すべてのサイトを復元";
 
 /* The title of the screen that shows a list of excluded sites for Auto-Contribute */
 "ExclusionListTitle" = "除外サイト";
@@ -605,7 +605,7 @@
 "PendingContributionDetailType" = "タイプ";
 
 /* The button that removes all pending contributions while on the Pending Contributions list */
-"PendingContributionListRemoveAllButton" = "全ての支援を中止する";
+"PendingContributionListRemoveAllButton" = "すべての支援を中止する";
 
 /* The button that removes the selected pending contributions while on the Pending Contributions list */
 "PendingContributionListRemoveSelected" = "選択された支援を中止する";

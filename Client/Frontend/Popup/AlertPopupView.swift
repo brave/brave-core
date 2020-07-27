@@ -21,10 +21,14 @@ class AlertPopupView: PopupView {
     fileprivate let kPadding: CGFloat = 20.0
     
     init(imageView: UIView?, title: String, message: String, inputType: UIKeyboardType? = nil,
-         secureInput: Bool = false, inputPlaceholder: String? = nil, titleWeight: UIFont.Weight = UIFont.Weight.bold, titleSize: CGFloat = 24) {
+         secureInput: Bool = false, inputPlaceholder: String? = nil, titleWeight: UIFont.Weight = UIFont.Weight.bold, titleSize: CGFloat = 24, dismissHandler: (() -> Bool)? = nil) {
         super.init(frame: CGRect.zero)
         
-        overlayDismisses = false
+        if let dismissHandler = dismissHandler {
+            overlayDismisses = true
+            overlayDismissHandler = dismissHandler
+        }
+        
         defaultShowType = .normal
         defaultDismissType = .noAnimation
         presentsOverWindow = true
@@ -163,8 +167,8 @@ class AlertPopupView: PopupView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func showWithType(showType: PopupViewShowType) {
-        super.showWithType(showType: showType)
+    override func showWithType(showType: PopupViewShowType, autoDismissTime: TimeInterval? = nil) {
+        super.showWithType(showType: showType, autoDismissTime: autoDismissTime)
         
         textField?.becomeFirstResponder()
     }

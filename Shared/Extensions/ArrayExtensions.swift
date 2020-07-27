@@ -67,6 +67,18 @@ public extension Array {
         }
         return result
     }
+    
+    /// Splits an array into smaller arrays.
+    /// For example `[1, 2, 3 ,4 ,5 ,6].splitEvery(3)`
+    /// results in `[[1, 2, 3], [4, 5, 6]]`
+    func splitEvery(_ n: Int) -> [[Element]] {
+        if n <= 0 || isEmpty { return [] }
+        if n >= count { return [self] }
+        
+        return stride(from: 0, to: self.count, by: n).map {
+            Array(self[$0..<Swift.min($0 + n, self.count)])
+        }
+    }
 }
 
 public extension Sequence {

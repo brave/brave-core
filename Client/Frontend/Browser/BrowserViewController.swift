@@ -21,6 +21,7 @@ import BraveRewards
 import StoreKit
 import SafariServices
 import BraveUI
+import NetworkExtension
 
 private let log = Logger.browserLogger
 
@@ -142,6 +143,8 @@ class BrowserViewController: UIViewController {
     let rewardsObserver: LedgerObserver
     private var notificationsHandler: AdsNotificationHandler?
     private(set) var publisher: PublisherInfo?
+    
+    let vpnProductInfo = VPNProductInfo()
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
@@ -507,6 +510,11 @@ class BrowserViewController: UIViewController {
             presentedViewController?.view.alpha = 0
         }
     }
+    
+    @objc func vpnConfigChanged() {
+        // Load latest changes to the vpn.
+        NEVPNManager.shared().loadFromPreferences { _ in }
+    }
 
     @objc func appDidBecomeActiveNotification() {
         // Re-show any components that might have been hidden because they were being displayed
@@ -536,6 +544,8 @@ class BrowserViewController: UIViewController {
                            name: UIApplication.didEnterBackgroundNotification, object: nil)
             $0.addObserver(self, selector: #selector(resetNTPNotification),
                            name: .adsOrRewardsToggledInSettings, object: nil)
+            $0.addObserver(self, selector: #selector(vpnConfigChanged),
+                           name: .NEVPNConfigurationChange, object: nil)
             
         }
         
@@ -646,6 +656,9 @@ class BrowserViewController: UIViewController {
         Bookmark.restore_1_12_Bookmarks() {
             log.info("Bookmarks from old database were successfully restored")
         }
+        
+        vpnProductInfo.load()
+        BraveVPN.initialize()
     }
     
     /// Initialize Sync without connecting. Sync webview needs to be in a "permanent" location
@@ -783,6 +796,9 @@ class BrowserViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         presentOnboardingIntro()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.presentVPNCallout()
+        }
         
         screenshotHelper.viewIsVisible = true
         screenshotHelper.takePendingScreenshots(tabManager.allTabs)
@@ -936,6 +952,46 @@ class BrowserViewController: UIViewController {
             present(onboarding, animated: true)
             return
         }
+    }
+    
+    private func presentVPNCallout() {
+        let onboardingNotCompleted =
+            Preferences.General.basicOnboardingCompleted.value == OnboardingState.completed.rawValue
+        let notEnoughAppLaunches = Preferences.VPN.appLaunchCountForVPNPopup.value < BraveVPN.appLaunchesToShowVPNPopup
+        let showedPopup = Preferences.VPN.popupShowed
+
+        if onboardingNotCompleted
+            || notEnoughAppLaunches
+            || showedPopup.value
+            || !VPNProductInfo.isComplete {
+            return
+        }
+        
+        let popup = EnableVPNPopupViewController().then {
+            if #available(iOS 13.0, *) {
+                $0.isModalInPresentation = true
+            }
+            $0.modalPresentationStyle = .overFullScreen
+        }
+        
+        popup.enableVPNTapped = { [weak self] in
+            guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
+            let nav = DismissableNavigationViewController(rootViewController: vc)
+            nav.navigationBar.topItem?.leftBarButtonItem =
+                .init(barButtonSystemItem: .cancel, target: nav, action: #selector(nav.dismissViewController))
+            
+            let idiom = UIDevice.current.userInterfaceIdiom
+            if #available(iOS 13.0, *) {
+                nav.modalPresentationStyle = idiom == .phone ? .pageSheet : .formSheet
+            } else {
+                nav.modalPresentationStyle = idiom == .phone ? .fullScreen : .formSheet
+            }
+            self?.present(nav, animated: true)
+        }
+        
+        present(popup, animated: false)
+        
+        showedPopup.value = true
     }
 
     // THe logic for shouldShowWhatsNewTab is as follows: If we do not have the LatestAppVersionProfileKey in

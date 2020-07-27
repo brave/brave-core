@@ -550,6 +550,9 @@
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "공개";
 
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "월";
+
 /* Bookmark title / Device name */
 "Name" = "이름";
 
@@ -582,6 +585,9 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "단어가 충분하지 않음";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Brave 지원";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "내 리워드 받기";
@@ -1227,6 +1233,9 @@
 
 /* Word count title */
 "WordCount" = "단어 수: %i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "년";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "예, 삭제합니다.";
