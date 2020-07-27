@@ -14,10 +14,11 @@ const path = require('path')
 const fs = require('fs')
 const chalk = require('chalk')
 const { JSDOM } = require("jsdom")
+const rootDir = require('./root')
 
 // Change to `true` for verbose console log output of GRD traversal
 const verboseLogFindGrd = false
-const srcDir = path.resolve(path.join(__dirname, '..', '..', '..', '..'))
+const srcDir = path.join(rootDir, 'src')
 
 // chromium_strings.grd and any of its parts files that we track localization for in transifex
 // These map to brave/app/resources/chromium_strings*.xtb

@@ -4,10 +4,9 @@ const path = require('path')
 const fs = require('fs')
 const assert = require('assert')
 const { spawnSync } = require('child_process')
+const rootDir = require('./root')
 
 let NpmConfig = null
-
-const rootDir = path.join(__dirname, '..', '..', '..', '..', '..')
 
 var packageConfig = function(path){
   const packages = require('../../../../../package')
