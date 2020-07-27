@@ -62,7 +62,7 @@ cat <<EOF > "$HOME/.aptly.conf"
   "dependencyFollowSource": false,
   "gpgDisableSign": false,
   "gpgDisableVerify": false,
-  "gpgProvider": "gpg",
+  "gpgProvider": "gpg2",
   "downloadSourcePackages": false,
   "ppaDistributorID": "ubuntu",
   "ppaCodename": "",
