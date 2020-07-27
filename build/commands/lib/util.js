@@ -539,8 +539,8 @@ const util = {
       options.base = 'origin/master';
     }
     let cmd_options = config.defaultOptions
-    cmd_options.cwd = config.projects['brave-core'].dir
-    util.run('vpython', [path.join(config.rootDir, 'scripts', 'lint.py'),
+    cmd_options.cwd = config.braveCoreDir
+    util.run('vpython', [path.join(config.braveCoreDir, 'scripts', 'lint.py'),
         '--project_root=' + config.srcDir,
         '--base_branch=' + options.base], cmd_options)
   },

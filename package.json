@@ -26,7 +26,7 @@
     "test": "node ./build/commands/scripts/commands.js test",
     "test:scripts": "jest build/commands/lib build/commands/scripts",
     "test-security": "npm run audit_deps && node ./build/commands/scripts/commands.js start --enable_brave_update --network_log --user_data_dir_name=brave-network-test",
-    "lint-js": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
+    "tslint": "tslint --project tsconfig-lint.json \"components/**/*.{ts,tsx}\"",
     "pep8": "pycodestyle --max-line-length 120 -r script",
     "web-ui-gen-grd": "node components/webpack/gen-webpack-grd",
     "web-ui": "webpack --config components/webpack/webpack.config.js --progress --colors",
