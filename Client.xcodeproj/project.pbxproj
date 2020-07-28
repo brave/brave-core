@@ -402,6 +402,7 @@
 		27D3155223D7A95C00219462 /* SettingsMonthlyTipsSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D3155123D7A95C00219462 /* SettingsMonthlyTipsSectionView.swift */; };
 		27D3155523D8B0CE00219462 /* MonthlyTipsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D3155423D8B0CE00219462 /* MonthlyTipsDetailViewController.swift */; };
 		27D3155723D8B16200219462 /* SettingsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D3155623D8B16200219462 /* SettingsTableView.swift */; };
+		27D67CED24D07EB800066D83 /* BraveTodaySettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D67CEC24D07EB800066D83 /* BraveTodaySettingsViewController.swift */; };
 		27D87C2E2152B50200FB55C6 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27D87C2D2152B50200FB55C6 /* GradientView.swift */; };
 		27E0652624CB69C700134946 /* brave-today-welcome-graphic.json in Resources */ = {isa = PBXBuildFile; fileRef = 27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */; };
 		27E0652824CB6AE300134946 /* BraveTodayErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0652724CB6AE300134946 /* BraveTodayErrorView.swift */; };
@@ -1778,6 +1779,7 @@
 		27D3155123D7A95C00219462 /* SettingsMonthlyTipsSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsMonthlyTipsSectionView.swift; sourceTree = "<group>"; };
 		27D3155423D8B0CE00219462 /* MonthlyTipsDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyTipsDetailViewController.swift; sourceTree = "<group>"; };
 		27D3155623D8B16200219462 /* SettingsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableView.swift; sourceTree = "<group>"; };
+		27D67CEC24D07EB800066D83 /* BraveTodaySettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveTodaySettingsViewController.swift; sourceTree = "<group>"; };
 		27D87C2D2152B50200FB55C6 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		27D922B221C9830F00345BF3 /* Model9.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model9.xcdatamodel; sourceTree = "<group>"; };
 		27E0652524CB69C700134946 /* brave-today-welcome-graphic.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "brave-today-welcome-graphic.json"; sourceTree = "<group>"; };
@@ -3951,6 +3953,7 @@
 				0AEFB84822244135007AF600 /* AdblockDebugMenuTableViewController.swift */,
 				27D114D32358FBBF00166534 /* BraveRewardsSettingsViewController.swift */,
 				27D114D52358FCA400166534 /* SettingsRowViews.swift */,
+				27D67CEC24D07EB800066D83 /* BraveTodaySettingsViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -6745,6 +6748,7 @@
 				4422D56B21BFFB7F00BF1855 /* prefilter_tree.cc in Sources */,
 				4422D4FC21BFFB7600BF1855 /* version_set.cc in Sources */,
 				4422D4C821BFFB7600BF1855 /* env.cc in Sources */,
+				27D67CED24D07EB800066D83 /* BraveTodaySettingsViewController.swift in Sources */,
 				4422D56321BFFB7F00BF1855 /* compile.cc in Sources */,
 				D3C3696E1CC6B78800348A61 /* LocalRequestHelper.swift in Sources */,
 				2726637324981B600056CFE1 /* BraveTodaySectionHeaderView.swift in Sources */,

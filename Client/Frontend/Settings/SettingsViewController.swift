@@ -56,11 +56,13 @@ class SettingsViewController: TableViewController {
     
     private let profile: Profile
     private let tabManager: TabManager
+    private let feedDataSource: FeedDataSource
     private let rewards: BraveRewards?
     
-    init(profile: Profile, tabManager: TabManager, rewards: BraveRewards? = nil) {
+    init(profile: Profile, tabManager: TabManager, feedDataSource: FeedDataSource, rewards: BraveRewards? = nil) {
         self.profile = profile
         self.tabManager = tabManager
+        self.feedDataSource = feedDataSource
         self.rewards = rewards
         
         super.init(style: .grouped)
@@ -284,6 +286,14 @@ class SettingsViewController: TableViewController {
         if let row = vpnRow {
             section.rows.append(row)
         }
+        
+        section.rows.append(
+            // FIXME: Localize
+            Row(text: "Brave Today", selection: {
+                let todaySettings = BraveTodaySettingsViewController(dataSource: self.feedDataSource)
+                self.navigationController?.pushViewController(todaySettings, animated: true)
+            }, accessory: .disclosureIndicator)
+        )
         
         return section
     }()

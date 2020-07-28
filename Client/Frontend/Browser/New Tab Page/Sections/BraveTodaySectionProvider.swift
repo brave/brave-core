@@ -6,6 +6,7 @@
 import Foundation
 import BraveUI
 import Shared
+import BraveShared
 
 /// Additonal information related to an action performed on a feed item
 struct FeedItemActionContext {
@@ -37,10 +38,6 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         }
     }
     
-    @objc private func tappedBraveTodaySettings() {
-        
-    }
-    
     func registerCells(to collectionView: UICollectionView) {
         collectionView.register(FeedCardCell<BraveTodayWelcomeView>.self)
         collectionView.register(FeedCardCell<BraveTodayErrorView>.self)
@@ -57,6 +54,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if !Preferences.BraveToday.isEnabled.value {
+            return 0
+        }
         switch dataSource.state {
         case .failure:
             return 1
