@@ -433,42 +433,42 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                                      int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP,
                                      List<Animator> animators) {
     Context context = getContext();
-    // if (PackageUtils.isFirstInstall(context) && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
-    //   Intent searchActivityIntent = new Intent(context, SearchActivity.class);
-    //   context.startActivity(searchActivityIntent);
-    // } else {
-    if (mBraveShieldsButton != null) {
-      Animator animator;
-      if (hasFocus) {
-        float density = getContext().getResources().getDisplayMetrics().density;
-        boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
-        float toolbarButtonTranslationX =
-          MathUtils.flipSignIf(urlFocusToolbarButtonsTranslationXDP, isRtl) * density;
-        animator = ObjectAnimator.ofFloat(
-                     mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
-        animator.setDuration(urlFocusToolbarButtonsDuration);
-        animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
-        animators.add(animator);
+    if (PackageUtils.isFirstInstall(context) && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
+      Intent searchActivityIntent = new Intent(context, SearchActivity.class);
+      context.startActivity(searchActivityIntent);
+    } else {
+      if (mBraveShieldsButton != null) {
+        Animator animator;
+        if (hasFocus) {
+          float density = getContext().getResources().getDisplayMetrics().density;
+          boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+          float toolbarButtonTranslationX =
+            MathUtils.flipSignIf(urlFocusToolbarButtonsTranslationXDP, isRtl) * density;
+          animator = ObjectAnimator.ofFloat(
+                       mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
+          animator.setDuration(urlFocusToolbarButtonsDuration);
+          animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
+          animators.add(animator);
 
-        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 0);
-        animator.setDuration(urlFocusToolbarButtonsDuration);
-        animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
-        animators.add(animator);
-      } else {
-        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, TRANSLATION_X, 0);
-        animator.setDuration(urlFocusToolbarButtonsDuration);
-        animator.setStartDelay(urlClearFocusTabStackDelayMs);
-        animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
-        animators.add(animator);
+          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 0);
+          animator.setDuration(urlFocusToolbarButtonsDuration);
+          animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
+          animators.add(animator);
+        } else {
+          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, TRANSLATION_X, 0);
+          animator.setDuration(urlFocusToolbarButtonsDuration);
+          animator.setStartDelay(urlClearFocusTabStackDelayMs);
+          animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
+          animators.add(animator);
 
-        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 1);
-        animator.setDuration(urlFocusToolbarButtonsDuration);
-        animator.setStartDelay(urlClearFocusTabStackDelayMs);
-        animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
-        animators.add(animator);
+          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 1);
+          animator.setDuration(urlFocusToolbarButtonsDuration);
+          animator.setStartDelay(urlClearFocusTabStackDelayMs);
+          animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
+          animators.add(animator);
+        }
       }
     }
-    // }
   }
 
   protected void updateModernLocationBarColor(int color) {
