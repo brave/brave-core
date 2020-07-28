@@ -105,6 +105,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundImagesPreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BackgroundVideoPlaybackPreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveCustomTabsPreference.java",
+  "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveLicensePreferences.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BraveMainPreferencesBase.java",
   "../../brave/android/java/org/chromium/chrome/browser/settings/BravePreferenceFragment.java",
