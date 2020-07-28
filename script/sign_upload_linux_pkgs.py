@@ -160,6 +160,8 @@ def main():
         else:
             upload_cmd = '{} {} {}'.format(
                 upload_script, bucket + channel, gpg_full_key_id)
+        if item in ['upload_to_aptly']:
+            upload_cmd = upload_cmd + " " + gpg_passphrase
         logging.info("Running command: \"{}\"".format(upload_cmd))
         try:
             subprocess.check_output(upload_cmd, shell=True)
