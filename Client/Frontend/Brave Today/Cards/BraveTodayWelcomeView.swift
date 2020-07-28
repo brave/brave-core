@@ -46,7 +46,7 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
                 $0.numberOfLines = 0
             }),
             .view(UILabel().then {
-                $0.text = "Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated every hour."
+                $0.text = "Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated throughout the day."
                 $0.textAlignment = .center
                 $0.appearanceTextColor = .white
                 $0.font = .systemFont(ofSize: 13)
