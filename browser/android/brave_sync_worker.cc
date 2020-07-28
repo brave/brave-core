@@ -237,6 +237,32 @@ bool BraveSyncWorker::ResetSync(
   return true;
 }
 
+bool BraveSyncWorker::GetSyncV1WasEnabled(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller) {
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  bool sync_v1_was_enabled = brave_sync_prefs.IsSyncV1Enabled();
+  return sync_v1_was_enabled;
+}
+
+bool BraveSyncWorker::GetSyncV2MigrateNoticeDismissed(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller) {
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  bool sync_v2_migration_notice_dismissed =
+      brave_sync_prefs.IsSyncMigrateNoticeDismissed();
+  return sync_v2_migration_notice_dismissed;
+}
+
+void BraveSyncWorker::SetSyncV2MigrateNoticeDismissed(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jcaller,
+    bool sync_v2_migration_notice_dismissed) {
+  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
+  brave_sync_prefs.SetDismissSyncMigrateNotice(
+      sync_v2_migration_notice_dismissed);
+}
+
 void BraveSyncWorker::OnSelfDeleted() {
   syncer::SyncService* sync_service = GetSyncService();
   if (sync_service) {

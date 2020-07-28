@@ -1,13 +1,5 @@
--keep public class org.chromium.chrome.browser.BraveSyncWorker$JsObject
--keep public class * implements org.chromium.chrome.browser.BraveSyncWorker$JsObject
--keepclassmembers class org.chromium.chrome.browser.BraveSyncWorker$JsObject {
-    <methods>;
-}
--keep public class org.chromium.chrome.browser.BraveSyncWorker$JsObjectWordsToBytes
--keep public class * implements org.chromium.chrome.browser.BraveSyncWorker$JsObjectWordsToBytes
--keepclassmembers class org.chromium.chrome.browser.BraveSyncWorker$JsObjectWordsToBytes {
-    <methods>;
-}
--keepattributes JavascriptInterface
-
 -keep class com.google.android.material.bottomsheet.BottomSheetBehavior { *; }
+
+-keep class org.chromium.chrome.browser.BraveSyncWorker { *; }
+
+-keep class org.chromium.chrome.browser.BraveSyncInformers { *; }
