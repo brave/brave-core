@@ -54,6 +54,18 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   bool ResetSync(JNIEnv* env,
                  const base::android::JavaParamRef<jobject>& jcaller);
 
+  bool GetSyncV1WasEnabled(JNIEnv* env,
+                           const base::android::JavaParamRef<jobject>& jcaller);
+
+  bool GetSyncV2MigrateNoticeDismissed(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& jcaller);
+
+  void SetSyncV2MigrateNoticeDismissed(
+      JNIEnv* env,
+      const base::android::JavaParamRef<jobject>& jcaller,
+      bool sync_v2_migration_notice_dismissed);
+
  private:
   syncer::SyncService* GetSyncService() const;
   syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
