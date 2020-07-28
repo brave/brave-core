@@ -30,7 +30,7 @@ import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 
 public class RateFeedbackUtils {
-	private static final String TAG = "Rate";
+	private static final String TAG = "Rate_Brave";
 	private static final String RATE_URL = "https://laptop-updates.brave.com/1/feedback";
 
 	public interface RateFeedbackCallback {
@@ -92,7 +92,7 @@ public class RateFeedbackUtils {
 			jsonParam.put("api_key", mNTPBackgroundImagesBridge.getReferralApiKey());
 
 			OutputStream outputStream = urlConnection.getOutputStream();
-			byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.toString());
+			byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8.name());
 			outputStream.write(input, 0, input.length);
 			outputStream.flush();
 			outputStream.close();
@@ -100,7 +100,7 @@ public class RateFeedbackUtils {
 			int HttpResult = urlConnection.getResponseCode();
 			if (HttpResult == HttpURLConnection.HTTP_OK) {
 				BufferedReader br = new BufferedReader(new InputStreamReader(
-				        urlConnection.getInputStream(), StandardCharsets.UTF_8.toString()));
+				        urlConnection.getInputStream(), StandardCharsets.UTF_8.name()));
 				String line = null;
 				while ((line = br.readLine()) != null) {
 					sb.append(line + "\n");
