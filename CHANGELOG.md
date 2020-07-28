@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.19](https://github.com/brave/brave-ios/releases/tag/v1.19)
+
+ - Implemented "Brave Firewall + VPN". ([#2739](https://github.com/brave/brave-ios/issues/2739))
+ - Updated Brave Rewards to display BAT values to three decimal places. ([#2596](https://github.com/brave/brave-ios/issues/2596))
+ - Fixed favorite list not updating on New Tab Page when an existing favorite is deleted. ([#2685](https://github.com/brave/brave-ios/issues/2685))
+
 ## [1.18.1](https://github.com/brave/brave-ios/releases/tag/v1.18.1)
 
  - Fixed pre-roll ads being shown on YouTube videos. ([#511](https://github.com/brave/brave-ios/issues/511))
