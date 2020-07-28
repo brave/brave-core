@@ -18,7 +18,11 @@ source_set("speedreader") {
   sources = [
     "features.cc",
     "features.h",
+    "speedreader_component.cc",
+    "speedreader_component.h",
     "speedreader_pref_names.h",
+    "speedreader_rewriter_service.cc",
+    "speedreader_rewriter_service.h",
     "speedreader_service.cc",
     "speedreader_service.h",
     "speedreader_switches.h",
@@ -28,8 +32,6 @@ source_set("speedreader") {
     "speedreader_throttle.h",
     "speedreader_url_loader.cc",
     "speedreader_url_loader.h",
-    "speedreader_whitelist.cc",
-    "speedreader_whitelist.h",
   ]
 
   deps = [

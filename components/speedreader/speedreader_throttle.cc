@@ -7,8 +7,8 @@
 
 #include <utility>
 
+#include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_url_loader.h"
-#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
@@ -16,9 +16,10 @@
 namespace speedreader {
 
 SpeedReaderThrottle::SpeedReaderThrottle(
-    SpeedreaderWhitelist* whitelist,
+    SpeedreaderRewriterService* rewriter_service,
     scoped_refptr<base::SingleThreadTaskRunner> task_runner)
-    : speedreader_whitelist_(whitelist), task_runner_(std::move(task_runner)) {}
+    : rewriter_service_(rewriter_service),
+      task_runner_(std::move(task_runner)) {}
 
 SpeedReaderThrottle::~SpeedReaderThrottle() = default;
 
@@ -38,7 +39,7 @@ void SpeedReaderThrottle::WillProcessResponse(
   std::tie(new_remote, new_receiver, speedreader_loader) =
       SpeedReaderURLLoader::CreateLoader(weak_factory_.GetWeakPtr(),
                                          response_url, task_runner_,
-                                         speedreader_whitelist_);
+                                         rewriter_service_);
   delegate_->InterceptResponse(std::move(new_remote), std::move(new_receiver),
                                &source_loader, &source_client_receiver);
   speedreader_loader->Start(std::move(source_loader),

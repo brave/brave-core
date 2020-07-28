@@ -9,37 +9,40 @@
 #include <memory>
 #include <string>
 
-#include "base/files/file_path.h"
 #include "base/files/file_path_watcher.h"
 #include "base/memory/weak_ptr.h"
+#include "base/observer_list.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 namespace base {
 class FilePath;
 }
 
-namespace speedreader {
-class SpeedReader;
-class Rewriter;
-}  // namespace speedreader
-
 class GURL;
 
 namespace speedreader {
 
-class SpeedreaderWhitelist : public brave_component_updater::BraveComponent {
+class SpeedreaderComponent
+    : public brave_component_updater::BraveComponent,
+      public base::SupportsWeakPtr<SpeedreaderComponent> {
  public:
-  explicit SpeedreaderWhitelist(Delegate* delegate);
-  ~SpeedreaderWhitelist() override;
+  class Observer : public base::CheckedObserver {
+   public:
+    virtual void OnWhitelistReady(const base::FilePath& path) = 0;
+    virtual void OnStylesheetReady(const base::FilePath& path) = 0;
 
-  SpeedreaderWhitelist(const SpeedreaderWhitelist&) = delete;
-  SpeedreaderWhitelist& operator=(const SpeedreaderWhitelist&) = delete;
+   protected:
+    ~Observer() override = default;
+  };
 
-  bool IsWhitelisted(const GURL& url);
-  std::unique_ptr<Rewriter> MakeRewriter(const GURL& url);
+  explicit SpeedreaderComponent(Delegate* delegate);
+  ~SpeedreaderComponent() override;
 
-  const base::FilePath& GetContentStylesheetPath();
+  SpeedreaderComponent(const SpeedreaderComponent&) = delete;
+  SpeedreaderComponent& operator=(const SpeedreaderComponent&) = delete;
+
+  void AddObserver(Observer* observer);
+  void RemoveObserver(Observer* observer);
 
  private:
   // brave_component_updater::BraveComponent:
@@ -47,18 +50,12 @@ class SpeedreaderWhitelist : public brave_component_updater::BraveComponent {
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
 
-  using GetDATFileDataResult =
-      brave_component_updater::LoadDATFileDataResult<speedreader::SpeedReader>;
-
-  void OnGetDATFileData(GetDATFileDataResult result);
-
   // Used in testing/development with custom rule set for auto-reloading
   void OnWhitelistFileReady(const base::FilePath& path, bool error);
 
-  std::unique_ptr<speedreader::SpeedReader> speedreader_;
-  base::FilePath stylesheet_path_;
+  base::ObserverList<Observer> observers_;
   std::unique_ptr<base::FilePathWatcher> whitelist_path_watcher_;
-  base::WeakPtrFactory<SpeedreaderWhitelist> weak_factory_{this};
+  base::WeakPtrFactory<SpeedreaderComponent> weak_factory_{this};
 };
 
 }  // namespace speedreader

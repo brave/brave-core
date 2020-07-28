@@ -311,7 +311,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       && request.resource_type
           == static_cast<int>(blink::mojom::ResourceType::kMainFrame)) {
     result.push_back(std::make_unique<speedreader::SpeedReaderThrottle>(
-        g_brave_browser_process->speedreader_whitelist(),
+        g_brave_browser_process->speedreader_rewriter_service(),
         base::ThreadTaskRunnerHandle::Get()));
   }
 #endif  // ENABLE_SPEEDREADER

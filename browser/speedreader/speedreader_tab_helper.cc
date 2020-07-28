@@ -7,9 +7,9 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_test_whitelist.h"
-#include "brave/components/speedreader/speedreader_whitelist.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
 
@@ -38,9 +38,10 @@ void SpeedreaderTabHelper::UpdateActiveState(
 
   // Work only with casual main frame navigations.
   if (handle->GetURL().SchemeIsHTTPOrHTTPS()) {
-    auto* whitelist = g_brave_browser_process->speedreader_whitelist();
+    auto* rewriter_service =
+        g_brave_browser_process->speedreader_rewriter_service();
     if (speedreader::IsWhitelistedForTest(handle->GetURL()) ||
-        whitelist->IsWhitelisted(handle->GetURL())) {
+        rewriter_service->IsWhitelisted(handle->GetURL())) {
       VLOG(2) << __func__ << " SpeedReader active for " << handle->GetURL();
       active_ = true;
       return;
