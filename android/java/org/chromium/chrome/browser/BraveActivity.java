@@ -33,7 +33,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveHelper;
-import org.chromium.chrome.browser.BraveSyncWorkerHolder;
+import org.chromium.chrome.browser.BraveSyncReflectionUtils;
 import org.chromium.chrome.browser.bookmarks.BookmarkBridge;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.dependency_injection.ChromeActivityComponent;
@@ -208,7 +208,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         Context app = ContextUtils.getApplicationContext();
         if (null != app && (this instanceof ChromeTabbedActivity)) {
             // Trigger BraveSyncWorker CTOR to make migration from sync v1 if sync is enabled
-            BraveSyncWorkerHolder.get();
+            BraveSyncReflectionUtils.getSyncWorker();
         }
 
         if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
@@ -219,7 +219,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         if (RateUtils.getInstance(this).shouldShowRateDialog())
             showBraveRateDialog();
 
-        if (PackageUtils.isFirstInstall(this) 
+        if (PackageUtils.isFirstInstall(this)
             && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
@@ -240,6 +240,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             OnboardingPrefManager.getInstance().showOnboarding(this);
             OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
         }
+
+        BraveSyncReflectionUtils.showInformers();
     }
 
     private void createNotificationChannel() {
