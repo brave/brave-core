@@ -29,7 +29,6 @@ namespace ledger {
   const char kStateAutoContributeAmount[] = "ac.amount";
   const char kStateNextReconcileStamp[] = "ac.next_reconcile_stamp";
   const char kStateCreationStamp[] = "creation_stamp";
-  const char kStateAnonymousCardId[] = "wallet.anonymous_card_id";
   const char kStateRecoverySeed[] = "wallet.seed";
   const char kStatePaymentId[] = "wallet.payment_id";
   const char kStateInlineTipRedditEnabled[] = "inline_tip.reddit";

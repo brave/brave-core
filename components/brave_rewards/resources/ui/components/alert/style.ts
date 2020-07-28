@@ -82,6 +82,10 @@ export const StyledContent = styled<Props, 'div'>('div')`
   ${getColor};
   color: var(--alert-content-color);
 
+  a {
+    color: var(--alert-content-color);
+  }
+
   b {
     font-weight: 600;
     color: var(--alert-content-bold);

@@ -41,9 +41,6 @@ class ConfirmationsClientMock : public ConfirmationsClient {
   MOCK_METHOD1(LoadPublisherState, void(
       ledger::OnLoadCallback callback));
 
-  MOCK_METHOD1(LoadNicewareList, void(
-      ledger::GetNicewareListCallback callback));
-
   MOCK_METHOD2(SaveActivityInfo, void(
       ledger::PublisherInfoPtr publisher_info,
       ledger::PublisherInfoCallback callback));
@@ -55,10 +52,6 @@ class ConfirmationsClientMock : public ConfirmationsClient {
   MOCK_METHOD0(FetchPromotions, void());
 
   MOCK_METHOD1(ClaimPromotion, void(const std::string& promotion_id));
-
-  MOCK_METHOD2(OnRecoverWallet, void(
-      ledger::Result result,
-      double balance));
 
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,

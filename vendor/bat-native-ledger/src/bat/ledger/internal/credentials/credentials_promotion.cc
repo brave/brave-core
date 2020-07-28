@@ -152,7 +152,7 @@ void CredentialsPromotion::Claim(
     return;
   }
 
-  const std::string payment_id = ledger_->GetPaymentId();
+  const std::string payment_id = braveledger_state::GetPaymentId(ledger_);
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey("paymentId", payment_id);
   body.SetKey("blindedCreds", base::Value(std::move(*blinded_creds)));
@@ -466,12 +466,14 @@ void CredentialsPromotion::RedeemTokens(
   std::string url;
   std::vector<std::string> headers;
   if (redeem.type == ledger::RewardsType::TRANSFER) {
-    payload = GenerateTransferTokensPayload(redeem, ledger_->GetPaymentId());
+    payload = GenerateTransferTokensPayload(
+        redeem,
+        braveledger_state::GetPaymentId(ledger_));
     url = braveledger_request_util::GetTransferTokens();
     headers = braveledger_request_util::BuildSignHeaders(
         "post /v1/suggestions/claim",
         payload,
-        ledger_->GetPaymentId(),
+        braveledger_state::GetPaymentId(ledger_),
         braveledger_state::GetRecoverySeed(ledger_));
   } else {
     if (redeem.publisher_key.empty()) {

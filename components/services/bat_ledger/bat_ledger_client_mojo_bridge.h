@@ -139,8 +139,6 @@ class BatLedgerClientMojoBridge :
 
   void PendingContributionSaved(const ledger::Result result) override;
 
-  void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
-
   void OnLoadLedgerState(ledger::OnLoadCallback callback,
       const ledger::Result result, const std::string& data);
   void OnLoadPublisherState(ledger::OnLoadCallback callback,

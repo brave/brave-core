@@ -927,17 +927,6 @@ void RewardsServiceImpl::GetAutoContributeProperties(
         callback));
 }
 
-void RewardsServiceImpl::OnRecoverWallet(
-    ledger::Result result,
-    double balance) {
-  for (auto& observer : observers_) {
-    observer.OnRecoverWallet(
-      this,
-      static_cast<int>(result),
-      balance);
-  }
-}
-
 void RewardsServiceImpl::OnReconcileComplete(
     const ledger::Result result,
     ledger::ContributionInfoPtr contribution) {
@@ -1012,22 +1001,6 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
       data.empty() ? ledger::Result::NO_PUBLISHER_STATE
                    : ledger::Result::LEDGER_OK,
       data);
-}
-
-void RewardsServiceImpl::LoadNicewareList(
-  ledger::GetNicewareListCallback callback) {
-  if (!Connected()) {
-    return;
-  }
-
-  std::string data = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
-      IDR_BRAVE_REWARDS_NICEWARE_LIST).as_string();
-
-  if (data.empty()) {
-    BLOG(0, "Failed to read in niceware list");
-  }
-  callback(data.empty() ? ledger::Result::LEDGER_ERROR
-                        : ledger::Result::LEDGER_OK, data);
 }
 
 void RewardsServiceImpl::LoadURL(
@@ -1401,6 +1374,12 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
   bat_ledger_->RecoverWallet(passPhrase, base::BindOnce(
       &RewardsServiceImpl::OnRecoverWallet,
       AsWeakPtr()));
+}
+
+void RewardsServiceImpl::OnRecoverWallet(const ledger::Result result) {
+  for (auto& observer : observers_) {
+    observer.OnRecoverWallet(this, static_cast<int>(result));
+  }
 }
 
 void RewardsServiceImpl::AttestPromotion(
@@ -2708,7 +2687,6 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       uphold->status = ledger::WalletStatus::VERIFIED;
       uphold->one_time_string = "";
       uphold->user_name = "Brave Test";
-      uphold->transferred = true;
       SaveExternalWallet(ledger::kWalletUphold, std::move(uphold));
       continue;
     }
@@ -3150,7 +3128,6 @@ void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
   new_wallet.SetIntKey("status", static_cast<int>(wallet->status));
   new_wallet.SetStringKey("one_time_string", wallet->one_time_string);
   new_wallet.SetStringKey("user_name", wallet->user_name);
-  new_wallet.SetBoolKey("transferred", wallet->transferred);
   new_wallet.SetStringKey("verify_url", wallet->verify_url);
   new_wallet.SetStringKey("add_url", wallet->add_url);
   new_wallet.SetStringKey("withdraw_url", wallet->withdraw_url);
@@ -3198,11 +3175,6 @@ RewardsServiceImpl::GetExternalWallets() {
     auto* user_name = it.second.FindStringKey("user_name");
     if (user_name) {
       wallet->user_name = *user_name;
-    }
-
-    auto transferred = it.second.FindBoolKey("transferred");
-    if (transferred) {
-      wallet->transferred = *transferred;
     }
 
     auto* verify_url = it.second.FindStringKey("verify_url");

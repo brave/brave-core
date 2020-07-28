@@ -278,10 +278,9 @@ void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
 // static
 void BatLedgerImpl::OnRecoverWallet(
     CallbackHolder<RecoverWalletCallback>* holder,
-    ledger::Result result,
-    double balance) {
+    ledger::Result result) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(result, balance);
+    std::move(holder->get()).Run(result);
   delete holder;
 }
 
@@ -294,8 +293,7 @@ void BatLedgerImpl::RecoverWallet(
   ledger_->RecoverWallet(pass_phrase, std::bind(
       BatLedgerImpl::OnRecoverWallet,
       holder,
-      _1,
-      _2));
+      _1));
 }
 
 void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {

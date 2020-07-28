@@ -344,7 +344,6 @@ class RewardsServiceImpl : public RewardsService,
                       ledger::Result result);
   void OnLedgerStateLoaded(ledger::OnLoadCallback callback,
                               std::pair<std::string, base::Value> data);
-  void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
   void OnGetRewardsParameters(
@@ -474,10 +473,9 @@ class RewardsServiceImpl : public RewardsService,
       GetAnonWalletStatusCallback callback,
       const ledger::Result result);
 
+  void OnRecoverWallet(const ledger::Result result);
+
   // ledger::LedgerClient
-  void OnRecoverWallet(
-      ledger::Result result,
-      double balance);
   void OnReconcileComplete(
       const ledger::Result result,
       ledger::ContributionInfoPtr contribution) override;

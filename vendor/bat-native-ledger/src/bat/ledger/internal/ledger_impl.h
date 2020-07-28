@@ -183,8 +183,6 @@ class LedgerImpl : public ledger::Ledger {
 
   ledger::AutoContributePropertiesPtr GetAutoContributeProperties() override;
 
-  void LoadNicewareList(ledger::GetNicewareListCallback callback);
-
   void SetConfirmationsWalletInfo();
 
   void LoadLedgerState(ledger::OnLoadCallback callback);
@@ -210,12 +208,11 @@ class LedgerImpl : public ledger::Ledger {
 
   void RecoverWallet(
       const std::string& pass_phrase,
-      ledger::RecoverWalletCallback callback) override;
+      ledger::ResultCallback callback) override;
 
   void OnRecoverWallet(
       const ledger::Result result,
-      double balance,
-      ledger::RecoverWalletCallback callback);
+      ledger::ResultCallback callback);
 
   virtual void LoadURL(
       const std::string& url,
@@ -308,11 +305,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void ResetReconcileStamp();
 
-  virtual std::string GetPaymentId();
-
   uint64_t GetCreationStamp() override;
-
-  void SetCreationStamp(uint64_t stamp);
 
   void SaveContributionInfo(
       ledger::ContributionInfoPtr info,
@@ -410,9 +403,7 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& wallet_type,
       ledger::ResultCallback callback) override;
 
-  void TransferAnonToExternalWallet(
-      ledger::ResultCallback callback,
-      const bool allow_zero_balance = false);
+  void ClaimFunds(ledger::ResultCallback callback);
 
   void ShowNotification(
       const std::string& type,
@@ -462,7 +453,7 @@ class LedgerImpl : public ledger::Ledger {
 
   void SetStringState(const std::string& name, const std::string& value);
 
-  std::string GetStringState(const std::string& name) const;
+  virtual std::string GetStringState(const std::string& name) const;
 
   void SetInt64State(const std::string& name, int64_t value);
 

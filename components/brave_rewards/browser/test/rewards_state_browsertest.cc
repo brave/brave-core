@@ -220,9 +220,6 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
       profile_->GetPrefs()->GetString("brave.rewards.wallet.seed"),
       "PgFfhazUJuf8dX+8ckTjrtK1KMLyrfXmKJFDiS1Ad3I=");
   EXPECT_EQ(
-      profile_->GetPrefs()->GetString("brave.rewards.wallet.anonymous_card_id"),
-      "cf5b388c-eea2-4c98-bec2-f8daf39881a4");
-  EXPECT_EQ(
       profile_->GetPrefs()->GetUint64("brave.rewards.creation_stamp"),
       1590484778ul);
   EXPECT_EQ(

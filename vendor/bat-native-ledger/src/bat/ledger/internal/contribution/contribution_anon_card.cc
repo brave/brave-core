@@ -96,7 +96,7 @@ void ContributionAnonCard::SendTransaction(
       amount,
       order_id,
       destination,
-      ledger_->GetPaymentId(),
+      braveledger_state::GetPaymentId(ledger_),
       braveledger_state::GetRecoverySeed(ledger_));
 
   auto url_callback = std::bind(&ContributionAnonCard::OnSendTransaction,

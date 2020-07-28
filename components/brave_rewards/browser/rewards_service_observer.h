@@ -34,8 +34,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const std::vector<Promotion>& list) {}
   virtual void OnRecoverWallet(
       RewardsService* rewards_service,
-      unsigned int result,
-      double balance) {}
+      const int32_t result) {}
   virtual void OnPromotionFinished(
       RewardsService* rewards_service,
       const uint32_t result,

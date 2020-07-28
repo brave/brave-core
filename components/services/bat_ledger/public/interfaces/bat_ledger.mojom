@@ -62,7 +62,7 @@ interface BatLedger {
   ClaimPromotion(string promotion_id, string payload) => (ledger.mojom.Result result, string response);
   AttestPromotion(string promotion_id, string solution) => (ledger.mojom.Result result, ledger.mojom.Promotion? promotion);
   GetWalletPassphrase() => (string wallet_passphrase);
-  RecoverWallet(string passPhrase) => (ledger.mojom.Result result, double balance);
+  RecoverWallet(string passPhrase) => (ledger.mojom.Result result);
   
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(int32 duration_in_seconds);
@@ -171,8 +171,6 @@ interface BatLedgerClient {
                        uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
-
-  LoadNicewareList() => (ledger.mojom.Result result, string data);
 
   LoadURL(string url, array<string> headers, string content,
       string content_type, ledger.mojom.UrlMethod method) => (ledger.mojom.UrlResponse response);

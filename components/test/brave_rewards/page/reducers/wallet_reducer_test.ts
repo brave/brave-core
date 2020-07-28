@@ -95,9 +95,7 @@ describe('wallet reducer', () => {
       const assertion = reducers({ ...defaultState }, {
         type: types.ON_RECOVER_WALLET_DATA,
         payload: {
-          properties: {
-            result: 2 // non-zero result
-          }
+          result: 2
         }
       })
 
@@ -115,10 +113,7 @@ describe('wallet reducer', () => {
       const assertion = reducers({ ...defaultState }, {
         type: types.ON_RECOVER_WALLET_DATA,
         payload: {
-          properties: {
-            result: 0,
-            balance: 5
-          }
+          result: 0
         }
       })
 
@@ -129,17 +124,14 @@ describe('wallet reducer', () => {
           emptyWallet: false,
           modalBackup: false,
           walletCorrupted: false
-        },
-        balance: {
-          total: 5,
-          wallets: {}
         }
       }
 
-      expect(chromeSpy).toHaveBeenCalledTimes(3)
+      expect(chromeSpy).toHaveBeenCalledTimes(4)
       expect(chromeSpy.mock.calls[0][0]).toEqual('brave_rewards.getWalletPassphrase')
       expect(chromeSpy.mock.calls[1][0]).toEqual('brave_rewards.fetchPromotions')
-      expect(chromeSpy.mock.calls[2][0]).toEqual('brave_rewards.getBalanceReport')
+      expect(chromeSpy.mock.calls[2][0]).toEqual('brave_rewards.fetchBalance')
+      expect(chromeSpy.mock.calls[3][0]).toEqual('brave_rewards.getBalanceReport')
 
       expect(assertion).toEqual({
         rewardsData: expectedState

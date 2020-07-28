@@ -23,18 +23,18 @@ class UpholdWallet {
 
   ~UpholdWallet();
 
-  void Generate(ledger::ExternalWalletCallback callback);
+  void Generate(ledger::ResultCallback callback);
 
  private:
   void OnGenerate(
       const ledger::Result result,
       const User& user,
-      ledger::ExternalWalletCallback callback);
+      ledger::ResultCallback callback);
 
   void OnCreateCard(
       const ledger::Result result,
       const std::string& address,
-      ledger::ExternalWalletCallback callback);
+      ledger::ResultCallback callback);
 
   ledger::WalletStatus GetNewStatus(
       const ledger::WalletStatus old_status,

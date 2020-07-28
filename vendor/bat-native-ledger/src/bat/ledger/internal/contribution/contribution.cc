@@ -28,7 +28,7 @@
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
-#include "bat/ledger/internal/wallet/balance.h"
+#include "bat/ledger/internal/wallet/wallet_balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "brave_base/random.h"
 
@@ -360,7 +360,7 @@ void Contribution::CreateNewEntry(
   }
 
   const double wallet_balance =
-      braveledger_wallet::Balance::GetPerWalletBalance(
+      braveledger_wallet::WalletBalance::GetPerWalletBalance(
           wallet_type,
           balance->wallets);
   if (wallet_balance == 0) {

@@ -444,7 +444,6 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
   wallet->status = status;
   wallet->one_time_string = "";
   wallet->user_name = "Brave Test";
-  wallet->transferred = true;
   rewards_service_->SaveExternalWallet("uphold", std::move(wallet));
 }
 

@@ -3,13 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_WALLET_CREATE_H_
-#define BRAVELEDGER_WALLET_CREATE_H_
+#ifndef BRAVELEDGER_WALLET_WALLET_RECOVER_H_
+#define BRAVELEDGER_WALLET_WALLET_RECOVER_H_
 
 #include <stdint.h>
 
-#include <map>
-#include <memory>
 #include <string>
 #include <vector>
 
@@ -21,28 +19,23 @@ class LedgerImpl;
 
 namespace braveledger_wallet {
 
-class Create {
+class WalletRecover {
  public:
-  explicit Create(bat_ledger::LedgerImpl* ledger);
+  explicit WalletRecover(bat_ledger::LedgerImpl* ledger);
+  ~WalletRecover();
 
-  ~Create();
-
-  void Start(ledger::ResultCallback callback);
-
- private:
-  void RequestCredentialsCallback(
-      const ledger::UrlResponse& response,
+  void Start(
+      const std::string& pass_phrase,
       ledger::ResultCallback callback);
 
-  void RegisterPersonaCallback(
+ private:
+  void OnRecover(
       const ledger::UrlResponse& response,
-      const std::string& user_id,
-      const std::string& pre_flight,
-      const std::string& registrar_vk,
+      const std::vector<uint8_t>& new_seed,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace braveledger_wallet
-#endif  // BRAVELEDGER_WALLET_CREATE_H_
+#endif  // BRAVELEDGER_WALLET_WALLET_RECOVER_H_

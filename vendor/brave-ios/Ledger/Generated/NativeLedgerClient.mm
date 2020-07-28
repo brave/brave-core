@@ -23,9 +23,6 @@ void NativeLedgerClient::KillTimer(const uint32_t timer_id) {
 void NativeLedgerClient::LoadLedgerState(ledger::OnLoadCallback callback) {
   [bridge_ loadLedgerState:callback];
 }
-void NativeLedgerClient::LoadNicewareList(ledger::GetNicewareListCallback callback) {
-  [bridge_ loadNicewareList:callback];
-}
 void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
 }

@@ -115,8 +115,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD0(GetAutoContributeProperties,
       ledger::AutoContributePropertiesPtr());
 
-  MOCK_METHOD1(LoadNicewareList, void(ledger::GetNicewareListCallback));
-
   MOCK_METHOD1(SetConfirmationsWalletInfo,
       void(const ledger::WalletInfoProperties&));
 
@@ -146,10 +144,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_CONST_METHOD0(GetWalletPassphrase, std::string());
 
   MOCK_METHOD2(RecoverWallet,
-      void(const std::string&, ledger::RecoverWalletCallback));
-
-  MOCK_METHOD3(OnRecoverWallet,
-      void(const ledger::Result, double, ledger::RecoverWalletCallback));
+      void(const std::string&, ledger::ResultCallback));
 
   MOCK_METHOD6(LoadURL,
       void(const std::string&,
@@ -239,15 +234,11 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(ResetReconcileStamp, void());
 
-  MOCK_METHOD0(GetPaymentId, std::string());
-
   MOCK_METHOD1(GetConfirmationsWalletInfo,
       const confirmations::WalletInfo(
           const ledger::WalletInfoProperties&));
 
   MOCK_METHOD0(GetCreationStamp, uint64_t());
-
-  MOCK_METHOD1(SetCreationStamp, void(uint64_t));
 
   MOCK_METHOD6(SaveContributionInfo,
       void(const std::string&,
@@ -351,8 +342,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(DisconnectWallet,
       void(const std::string&, ledger::ResultCallback));
 
-  MOCK_METHOD2(TransferAnonToExternalWallet,
-      void(ledger::ResultCallback, const bool));
+  MOCK_METHOD1(ClaimFunds, void(ledger::ResultCallback));
 
   MOCK_METHOD3(ShowNotification,
       void(const std::string&,

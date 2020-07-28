@@ -283,8 +283,7 @@ class BatLedgerImpl :
 
   static void OnRecoverWallet(
       CallbackHolder<RecoverWalletCallback>* holder,
-      ledger::Result result,
-      double balance);
+      ledger::Result result);
 
   static void OnGetRewardsParameters(
       CallbackHolder<GetRewardsParametersCallback>* holder,

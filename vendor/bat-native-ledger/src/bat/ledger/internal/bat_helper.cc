@@ -200,70 +200,6 @@ bool getJSONMessage(const std::string& json,
   return false;
 }
 
-std::vector<uint8_t> generateSeed() {
-  std::vector<uint8_t> vSeed(SEED_LENGTH);
-  std::random_device r;
-  std::seed_seq seed{r(), r(), r(), r(), r(), r(), r(), r()};
-  auto rand = std::bind(std::uniform_int_distribution<>(0, UCHAR_MAX),
-                        std::mt19937(seed));
-
-  std::generate_n(vSeed.begin(), SEED_LENGTH, rand);
-  return vSeed;
-}
-
-std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed) {
-  DCHECK(!seed.empty());
-  std::vector<uint8_t> out(SEED_LENGTH);
-
-  const uint8_t info[] = {0};
-  int hkdfRes = HKDF(&out.front(),
-                     SEED_LENGTH,
-                     EVP_sha512(),
-                     &seed.front(),
-                     seed.size(),
-                     braveledger_ledger::g_hkdfSalt,
-                     SALT_LENGTH,
-                     info,
-                     sizeof(info) / sizeof(info[0]));
-
-  DCHECK(hkdfRes);
-  DCHECK(!seed.empty());
-
-  // We set the key_length to the length of the expected output and then take
-  // the result from the first key, which is the client write key.
-
-  return out;
-}
-
-bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
-                          std::vector<uint8_t>* publicKey,
-                          std::vector<uint8_t>* secretKey) {
-  DCHECK(!seed.empty());
-  if (seed.empty()) {
-    return false;
-  }
-  publicKey->resize(crypto_sign_PUBLICKEYBYTES);
-  *secretKey = seed;
-  secretKey->resize(crypto_sign_SECRETKEYBYTES);
-
-  crypto_sign_keypair(&publicKey->front(), &secretKey->front(), 1);
-
-  DCHECK(!publicKey->empty() && !secretKey->empty());
-  if (publicKey->empty() && secretKey->empty()) {
-    return false;
-  }
-
-  return true;
-}
-
-std::string uint8ToHex(const std::vector<uint8_t>& in) {
-  std::ostringstream res;
-  for (size_t i = 0; i < in.size(); i++) {
-    res << std::setfill('0') << std::setw(sizeof(uint8_t) * 2)
-       << std::hex << static_cast<int>(in[i]);
-  }
-  return res.str();
-}
 
 std::string stringify(std::string* keys,
                       std::string* values,
@@ -378,36 +314,6 @@ bool HasSameDomainAndPath(
 std::string toLowerCase(std::string word) {
   std::transform(word.begin(), word.end(), word.begin(), ::tolower);
   return word;
-}
-
-uint8_t niceware_mnemonic_to_bytes(
-    const std::string& w,
-    std::vector<uint8_t>* bytes_out,
-    size_t* written,
-    std::vector<std::string> wordDictionary) {
-  std::vector<std::string> wordList = base::SplitString(
-      toLowerCase(w),
-      WALLET_PASSPHRASE_DELIM,
-      base::TRIM_WHITESPACE,
-      base::SPLIT_WANT_NONEMPTY);
-
-  std::vector<uint8_t> buffer(wordList.size() * 2);
-
-  for (uint8_t ix = 0; ix < wordList.size(); ix++) {
-    std::vector<std::string>::iterator it =
-      std::find(wordDictionary.begin(),
-      wordDictionary.end(), wordList[ix]);
-    if (it != wordDictionary.end()) {
-      int wordIndex = std::distance(wordDictionary.begin(), it);
-      buffer[2 * ix] = floor(wordIndex / 256);
-      buffer[2 * ix + 1] = wordIndex % 256;
-    } else {
-      return INVALID_LEGACY_WALLET;
-    }
-  }
-  *bytes_out = buffer;
-  *written = NICEWARE_BYTES_WRITTEN;
-  return 0;
 }
 
 }  // namespace braveledger_bat_helper

@@ -196,38 +196,12 @@ void Uphold::WalletAuthorization(
   authorization_->Authorize(args, callback);
 }
 
-void Uphold::TransferAnonToExternalWallet(
-    ledger::ExternalWalletCallback callback) {
-  auto transfer_callback = std::bind(
-      &Uphold::OnTransferAnonToExternalWalletCallback,
-      this,
-      _1,
-      callback);
-
-  // transfer funds from anon wallet to uphold
-  ledger_->TransferAnonToExternalWallet(transfer_callback);
-}
-
-void Uphold::GenerateExternalWallet(ledger::ExternalWalletCallback callback) {
+void Uphold::GenerateExternalWallet(ledger::ResultCallback callback) {
   wallet_->Generate(callback);
 }
 
 void Uphold::CreateCard(CreateCardCallback callback) {
   card_->CreateIfNecessary(callback);
-}
-
-void Uphold::OnTransferAnonToExternalWalletCallback(
-    const ledger::Result result,
-    ledger::ExternalWalletCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
-  auto wallet_ptr = GetWallet(std::move(wallets));
-  if (result == ledger::Result::LEDGER_OK ||
-      result == ledger::Result::ALREADY_EXISTS) {
-    wallet_ptr->transferred = true;
-    ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_ptr->Clone());
-  }
-
-  callback(ledger::Result::LEDGER_OK, std::move(wallet_ptr));
 }
 
 void Uphold::DisconnectWallet() {

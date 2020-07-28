@@ -25,6 +25,7 @@
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_promotion.h"
 #include "bat/ledger/internal/state/state_keys.h"
+#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "brave_base/random.h"
 
@@ -126,7 +127,8 @@ void Promotion::Initialize() {
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   // make sure wallet/client state is sane here as this is the first
   // panel call.
-  const std::string& wallet_payment_id = ledger_->GetPaymentId();
+  const std::string& wallet_payment_id =
+      braveledger_state::GetPaymentId(ledger_);
   const std::string& passphrase = ledger_->GetWalletPassphrase();
   if (wallet_payment_id.empty() || passphrase.empty()) {
     BLOG(0, "Corrupted wallet");

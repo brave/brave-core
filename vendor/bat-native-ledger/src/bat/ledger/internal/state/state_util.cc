@@ -204,18 +204,6 @@ void SetCreationStamp(bat_ledger::LedgerImpl* ledger, const uint64_t stamp) {
   ledger->SetUint64State(ledger::kStateCreationStamp, stamp);
 }
 
-std::string GetAnonymousCardId(bat_ledger::LedgerImpl* ledger) {
-  DCHECK(ledger);
-  return ledger->GetStringState(ledger::kStateAnonymousCardId);
-}
-
-void SetAnonymousCardId(
-    bat_ledger::LedgerImpl* ledger,
-    const std::string& id) {
-  DCHECK(ledger);
-  ledger->SetStringState(ledger::kStateAnonymousCardId, id);
-}
-
 std::vector<uint8_t> GetRecoverySeed(bat_ledger::LedgerImpl* ledger) {
   DCHECK(ledger);
   const std::string& seed = ledger->GetStringState(ledger::kStateRecoverySeed);

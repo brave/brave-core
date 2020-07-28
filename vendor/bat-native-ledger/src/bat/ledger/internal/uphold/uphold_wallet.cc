@@ -25,7 +25,7 @@ UpholdWallet::UpholdWallet(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
 
 UpholdWallet::~UpholdWallet() = default;
 
-void UpholdWallet::Generate(ledger::ExternalWalletCallback callback) {
+void UpholdWallet::Generate(ledger::ResultCallback callback) {
   auto wallets = ledger_->GetExternalWallets();
   ledger::ExternalWalletPtr wallet;
   if (wallets.empty()) {
@@ -67,30 +67,30 @@ void UpholdWallet::Generate(ledger::ExternalWalletCallback callback) {
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, std::move(wallet));
+  callback(ledger::Result::LEDGER_OK);
 }
 
 void UpholdWallet::OnGenerate(
     const ledger::Result result,
     const User& user,
-    ledger::ExternalWalletCallback callback) {
+    ledger::ResultCallback callback) {
   auto wallets = ledger_->GetExternalWallets();
   auto wallet_ptr = GetWallet(std::move(wallets));
   if (result == ledger::Result::EXPIRED_TOKEN) {
     uphold_->DisconnectWallet();
-    callback(result, std::move(wallet_ptr));
+    callback(result);
     return;
   }
 
   if (user.bat_not_allowed) {
     BLOG(0, "BAT not allowed");
-    callback(ledger::Result::BAT_NOT_ALLOWED, std::move(wallet_ptr));
+    callback(ledger::Result::BAT_NOT_ALLOWED);
     return;
   }
 
   if (!wallet_ptr || result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Wallet not generated");
-    callback(result, std::move(wallet_ptr));
+    callback(result);
     return;
   }
 
@@ -114,23 +114,22 @@ void UpholdWallet::OnGenerate(
   }
 
   if (user.verified) {
-    ledger_->TransferTokens([](const ledger::Result){});
-    uphold_->TransferAnonToExternalWallet(callback);
+    ledger_->ClaimFunds(callback);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, std::move(wallet_ptr));
+  callback(ledger::Result::LEDGER_OK);
 }
 
 void UpholdWallet::OnCreateCard(
     const ledger::Result result,
     const std::string& address,
-    ledger::ExternalWalletCallback callback) {
+    ledger::ResultCallback callback) {
   auto wallets = ledger_->GetExternalWallets();
   auto wallet_ptr = GetWallet(std::move(wallets));
   if (result != ledger::Result::LEDGER_OK || !wallet_ptr) {
     BLOG(0, "Card not created");
-    callback(result, std::move(wallet_ptr));
+    callback(result);
     return;
   }
 
@@ -139,12 +138,11 @@ void UpholdWallet::OnCreateCard(
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_ptr->Clone());
 
   if (wallet_ptr->status == ledger::WalletStatus::VERIFIED) {
-    ledger_->TransferTokens([](const ledger::Result){});
-    uphold_->TransferAnonToExternalWallet(callback);
+    ledger_->ClaimFunds(callback);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, std::move(wallet_ptr));
+  callback(ledger::Result::LEDGER_OK);
 }
 
 ledger::WalletStatus UpholdWallet::GetNewStatus(

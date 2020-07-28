@@ -445,6 +445,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletRecoverySuccess",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_SUCCESS },           // NOLINT
         { "walletRestored",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RESTORED },
         { "walletRecoveryFail",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_FAIL },                 // NOLINT
+        { "walletRecoveryOutdated",  IDS_BRAVE_REWARDS_LOCAL_WALLET_RECOVERY_OUTDATED },                 // NOLINT
         { "almostThere",  IDS_BRAVE_REWARDS_LOCAL_ALMOST_THERE },
         { "notQuite",  IDS_BRAVE_REWARDS_LOCAL_NOT_QUITE },
         { "proveHuman",  IDS_BRAVE_REWARDS_LOCAL_PROVE_HUMAN },

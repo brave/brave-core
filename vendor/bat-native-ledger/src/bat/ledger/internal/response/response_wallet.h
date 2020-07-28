@@ -12,27 +12,17 @@
 
 namespace braveledger_response_util {
 
-ledger::BalancePtr ParseWalletFetchBalance(const ledger::UrlResponse& response);
-
-ledger::Result ParseWalletRecoverKey(
+ledger::Result ParseCreateWallet(
     const ledger::UrlResponse& response,
     std::string* payment_id);
 
 ledger::Result ParseRecoverWallet(
     const ledger::UrlResponse& response,
-    std::string* card_id,
-    double* balance);
+    std::string* payment_id);
 
-ledger::Result ParseWalletRegisterPersona(
-    const ledger::UrlResponse& response,
-    std::string* payment_id,
-    std::string* card_id);
+ledger::Result CheckClaimWallet(const ledger::UrlResponse& response);
 
-ledger::Result CheckWalletRequestCredentials(
-    const ledger::UrlResponse& response);
-
-ledger::Result CheckTransferAnonToExternalWallet(
-    const ledger::UrlResponse& response);
+ledger::BalancePtr ParseWalletBalance(const ledger::UrlResponse& response);
 
 }  // namespace braveledger_response_util
 

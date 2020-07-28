@@ -46,16 +46,6 @@ bool getJSONAddresses(const std::string& json,
 bool getJSONMessage(const std::string& json,
                      std::string* message);
 
-std::vector<uint8_t> generateSeed();
-
-std::vector<uint8_t> getHKDF(const std::vector<uint8_t>& seed);
-
-bool getPublicKeyFromSeed(const std::vector<uint8_t>& seed,
-                          std::vector<uint8_t>* publicKey,
-                          std::vector<uint8_t>* secretKey);
-
-std::string uint8ToHex(const std::vector<uint8_t>& in);
-
 std::string stringify(std::string* keys,
                       std::string* values,
                       const unsigned int size);
@@ -72,12 +62,6 @@ std::string sign(
     const std::vector<std::string>& values,
     const std::string& key_id,
     const std::vector<uint8_t>& secretKey);
-
-uint8_t niceware_mnemonic_to_bytes(
-    const std::string& w,
-    std::vector<uint8_t>* bytes_out,
-    size_t* written,
-    std::vector<std::string> wordDictionary);
 
 bool HasSameDomainAndPath(
     const std::string& url,
