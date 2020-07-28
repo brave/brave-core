@@ -260,7 +260,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
         if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
                 && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            showOnboarding();
+            Tab tab = getActivityTab();
+            if (tab == null)
+                return;
+
+            // Check for tests in BravePrivateTabTest
+            if (!tab.isIncognito()) {
+                showOnboarding();
+            }
         }
     }
 
@@ -268,7 +275,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
         FragmentManager fm = getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm
-                .findFragmentByTag(HighlightDialogFragment.TAG_FRAGMENT);
+                                           .findFragmentByTag(HighlightDialogFragment.TAG_FRAGMENT);
         FragmentTransaction transaction = fm.beginTransaction();
 
         if (fragment != null) {
