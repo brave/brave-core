@@ -5,7 +5,7 @@ const upload = (options) => {
   config.update(options)
 
   const cmdOptions = config.defaultOptions
-  cmdOptions.cwd = config.projects['brave-core'].dir
+  cmdOptions.cwd = config.braveCoreDir
   // use system python because depot tools fails on upload with TLS error
   cmdOptions.env = config.addPathToEnv(cmdOptions.env, process.env.PATH, true)
   util.run('python', ['script/upload.py', '-v', 'v' + config.releaseTag, '--target_os', config.targetOS, '--target_arch', config.targetArch, '--target_apk_base', config.targetApkBase], cmdOptions)

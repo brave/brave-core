@@ -34,11 +34,11 @@ async function applyPatches() {
   Log.progress('Applying patches...')
   // Always detect if we need to apply patches, since user may have modified
   // either chromium source files, or .patch files manually
-  const coreRepoPath = config.projects['brave-core'].dir
+  const coreRepoPath = config.braveCoreDir
   const patchesPath = path.join(coreRepoPath, 'patches')
   const v8PatchesPath = path.join(patchesPath, 'v8')
   const devtoolsFrontendSrcPatchesPath = path.join(patchesPath, 'devtools-frontend-src')
-  const chromiumRepoPath = config.projects['chrome'].dir
+  const chromiumRepoPath = config.srcDir
   const v8RepoPath = path.join(chromiumRepoPath, 'v8')
   const devtoolsFrontendSrcRepoPath = path.join(config.srcDir, 'third_party', 'devtools-frontend', 'src')
   const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
@@ -155,15 +155,27 @@ const util = {
       return value;
     }
 
-    let solutions = config.projectNames.filter((projectName) => config.projects[projectName].ref).map((projectName) => {
-      let project = config.projects[projectName]
-      return {
+    const solutions = [
+      {
         managed: "%False%",
-        name: project.gclientName,
-        url: project.url,
-        custom_deps: project.custom_deps
+        name: "src",
+        url: config.chromiumRepo,
+        custom_deps: {
+          "src/third_party/WebKit/LayoutTests": "%None%",
+          "src/chrome_frame/tools/test/reference_build/chrome": "%None%",
+          "src/chrome_frame/tools/test/reference_build/chrome_win": "%None%",
+          "src/chrome/tools/test/reference_build/chrome": "%None%",
+          "src/chrome/tools/test/reference_build/chrome_linux": "%None%",
+          "src/chrome/tools/test/reference_build/chrome_mac": "%None%",
+          "src/chrome/tools/test/reference_build/chrome_win": "%None%"
+        }
+      },
+      {
+        managed: "%False%",
+        name: "src/brave",
+        url: config.braveCoreRepo
       }
-    })
+    ]
 
     let cache_dir = process.env.GIT_CACHE_PATH ? ('\ncache_dir = "' + process.env.GIT_CACHE_PATH + '"\n') : '\n'
 
@@ -202,14 +214,14 @@ const util = {
   updateBranding: () => {
     console.log('update branding...')
     const chromeComponentsDir = path.join(config.srcDir, 'components')
-    const braveComponentsDir = path.join(config.projects['brave-core'].dir, 'components')
+    const braveComponentsDir = path.join(config.braveCoreDir, 'components')
     const chromeAppDir = path.join(config.srcDir, 'chrome', 'app')
-    const braveAppDir = path.join(config.projects['brave-core'].dir, 'app')
+    const braveAppDir = path.join(config.braveCoreDir, 'app')
     const chromeBrowserResourcesDir = path.join(config.srcDir, 'chrome', 'browser', 'resources')
-    const braveBrowserResourcesDir = path.join(config.projects['brave-core'].dir, 'browser', 'resources')
-    const braveAppVectorIconsDir = path.join(config.projects['brave-core'].dir, 'vector_icons', 'chrome', 'app')
+    const braveBrowserResourcesDir = path.join(config.braveCoreDir, 'browser', 'resources')
+    const braveAppVectorIconsDir = path.join(config.braveCoreDir, 'vector_icons', 'chrome', 'app')
     const chromeAndroidJavaStringsTranslationsDir = path.join(config.srcDir, 'chrome', 'browser', 'ui', 'android', 'strings', 'translations')
-    const braveAndroidJavaStringsTranslationsDir = path.join(config.projects['brave-core'].dir, 'browser', 'ui', 'android', 'strings', 'translations')
+    const braveAndroidJavaStringsTranslationsDir = path.join(config.braveCoreDir, 'browser', 'ui', 'android', 'strings', 'translations')
 
     let fileMap = new Set();
     // The following 3 entries we map to the same name, not the chromium equivalent name for copying back
@@ -245,7 +257,7 @@ const util = {
     fileMap.add([path.join(braveBrowserResourcesDir, 'chrome-logo-faded.png'), path.join(chromeBrowserResourcesDir, 'chrome-logo-faded.png')])
     fileMap.add([path.join(braveBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg'), path.join(chromeBrowserResourcesDir, 'downloads', 'images', 'incognito_marker.svg')])
     // Copy to make our ${branding_path_component}_behaviors.cc
-    fileMap.add([path.join(config.projects['brave-core'].dir, 'chromium_src', 'chrome', 'installer', 'setup', 'brave_behaviors.cc'),
+    fileMap.add([path.join(config.braveCoreDir, 'chromium_src', 'chrome', 'installer', 'setup', 'brave_behaviors.cc'),
                  path.join(config.srcDir, 'chrome', 'installer', 'setup', 'brave_behaviors.cc')])
 
     for (const [source, output] of fileMap) {
@@ -324,11 +336,11 @@ const util = {
 
       const androidIconSource = path.join(braveAppDir, 'theme', 'brave', 'android', androidIconSet)
       const androidIconDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_chromium')
-      const androidResSource = path.join(config.projects['brave-core'].dir, 'android', 'java', 'res')
+      const androidResSource = path.join(config.braveCoreDir, 'android', 'java', 'res')
       const androidResDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res')
-      const androidResTemplateSource = path.join(config.projects['brave-core'].dir, 'android', 'java', 'res_template')
+      const androidResTemplateSource = path.join(config.braveCoreDir, 'android', 'java', 'res_template')
       const androidResTemplateDest = path.join(config.srcDir, 'chrome', 'android', 'java', 'res_template')
-      const androidContentPublicResSource = path.join(config.projects['brave-core'].dir, 'content', 'public', 'android', 'java', 'res')
+      const androidContentPublicResSource = path.join(config.braveCoreDir, 'content', 'public', 'android', 'java', 'res')
       const androidContentPublicResDest = path.join(config.srcDir, 'content', 'public', 'android', 'java', 'res')
 
       // Mapping for copying Brave's Android resource into chromium folder.
@@ -367,7 +379,7 @@ const util = {
   // So, this copying in every build doesn't affect compile performance.
   updateOmahaMidlFiles: () => {
     console.log('update omaha midl files...')
-    const srcDir = path.join(config.projects['brave-core'].dir, 'win_build_output', 'midl', 'google_update')
+    const srcDir = path.join(config.braveCoreDir, 'win_build_output', 'midl', 'google_update')
     const dstDir = path.join(config.srcDir, 'third_party', 'win_build_output', 'midl', 'google_update')
     fs.copySync(srcDir, dstDir)
   },
@@ -448,7 +460,7 @@ const util = {
     fs.copySync(path.join(config.outputDir, 'brave.exe'), path.join(dir, 'brave.exe'));
     fs.copySync(path.join(config.outputDir, 'chrome.dll'), path.join(dir, 'chrome.dll'));
 
-     const core_dir = config.projects['brave-core'].dir
+     const core_dir = config.braveCoreDir
     util.run('python', [path.join(core_dir, 'script', 'sign_binaries.py'), '--build_dir=' + dir])
   },
 
@@ -485,7 +497,7 @@ const util = {
     // On Windows copy redirect-cc.py to the output dir so we can execute it
     // from there to shorten the command line in brave/script/redirect-cc.cmd
     console.log('Copying redirect-cc.py...')
-    const src = path.join(config.projects['brave-core'].dir, 'script', 'redirect-cc.py')
+    const src = path.join(config.braveCoreDir, 'script', 'redirect-cc.py')
     const dst = path.join(config.outputDir, 'redirect.py')
     if (!fs.existsSync(config.outputDir)) {
       fs.mkdirSync(config.outputDir);

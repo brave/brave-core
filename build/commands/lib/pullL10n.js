@@ -4,7 +4,7 @@ const {braveTopLevelPaths, ethereumRemoteClientPaths} = require('./l10nUtil')
 
 const pullL10n = (options) => {
   const cmdOptions = config.defaultOptions
-  cmdOptions.cwd = config.projects['brave-core'].dir
+  cmdOptions.cwd = config.braveCoreDir
   if (options.extension) {
     if (options.extension === 'ethereum-remote-client') {
       ethereumRemoteClientPaths.forEach((sourceStringPath) => {

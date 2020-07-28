@@ -23,25 +23,29 @@ const run = (cmd, args = []) => {
 }
 
 // this is a huge hack because the npm config doesn't get passed through from brave-browser .npmrc/package.json
-var packageConfig = function(path){
-  const packages = require('../../../../../package')
-  let obj = packages.config
-  for (var i = 0, len = path.length; i < len; i++) {
+var packageConfig = function(key){
+  let packages = { config: {}}
+  if (fs.existsSync(path.join(rootDir, 'package.json'))) {
+    packages = require(path.relative(__dirname, path.join(rootDir, 'package.json')))
+  }
+
+  let obj = Object.assign({}, packages.config)
+  for (var i = 0, len = key.length; i < len; i++) {
     if (!obj) {
       return obj
     }
-    obj = obj[path[i]]
+    obj = obj[key[i]]
   }
   return obj
 }
 
-const getNPMConfig = (path) => {
+const getNPMConfig = (key) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json'], {cwd: rootDir})
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
-  return NpmConfig[path.join('-').replace(/_/g, '-')] || packageConfig(path)
+  return NpmConfig[key.join('-').replace(/_/g, '-')] || packageConfig(key)
 }
 
 const parseExtraInputs = (inputs, accumulator, callback) => {
@@ -60,8 +64,6 @@ const parseExtraInputs = (inputs, accumulator, callback) => {
 const Config = function () {
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
-  this.projectNames = []
-  this.projects = {}
   this.signTarget = 'sign_app'
   this.buildTarget = 'brave'
   this.rootDir = rootDir
@@ -92,7 +94,7 @@ const Config = function () {
   this.updaterProdEndpoint = getNPMConfig(['updater_prod_endpoint']) || ''
   this.updaterDevEndpoint = getNPMConfig(['updater_dev_endpoint']) || ''
   this.webcompatReportApiEndpoint = getNPMConfig(['webcompat_report_api_endpoint']) || 'https://webcompat.brave.com/1/webcompat'
-  this.buildProjects()
+  // this.buildProjects()
   this.braveVersion = getNPMConfig(['version']) || '0.0.0'
   this.androidOverrideVersionName = this.braveVersion
   this.releaseTag = this.braveVersion.split('+')[0]
@@ -430,27 +432,6 @@ Config.prototype.getProjectRef = function (projectName) {
   return 'origin/master'
 }
 
-Config.prototype.buildProjects = function () {
-  this.projectNames.push('chrome')
-  this.projectNames.push('brave-core')
-
-  this.projectNames.forEach((projectName) => {
-    this.projects[projectName] = {
-      ref: this.getProjectRef(projectName),
-      url: getNPMConfig(['projects', projectName, 'repository', 'url']),
-      gclientName: getNPMConfig(['projects', projectName, 'dir']),
-      dir: path.join(this.rootDir, getNPMConfig(['projects', projectName, 'dir'])),
-      custom_deps: packageConfig(['projects', projectName, 'custom_deps']),
-      arg_name: projectName.replace('-', '_')
-    }
-  })
-
-  // TODO(bridiver) - we don't really need this projects stuff anymore because
-  // we only have two now (chrome and brave-core) and anything else will be
-  // managed by deps
-  this.projects['chrome'].url = this.chromiumRepo
-}
-
 Config.prototype.update = function (options) {
   if (options.target_arch === 'x86') {
     this.targetArch = options.target_arch
@@ -601,18 +582,6 @@ Config.prototype.update = function (options) {
       opts.push(value)
     })
   }
-
-  this.projectNames.forEach((projectName) => {
-    // don't update refs for projects that have them
-    let project = this.projects[projectName]
-    if (!project.ref)
-      return
-
-    let ref = options[project.arg_name + '_ref']
-    if (ref && ref !== 'default' && ref !== '') {
-      project.ref = ref
-    }
-  })
 }
 
 Config.prototype.getCachePath = function () {

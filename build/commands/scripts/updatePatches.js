@@ -16,10 +16,10 @@ const chromiumPathFilter = (s) => s.length > 0 &&
 module.exports = function RunCommand (options) {
   config.update(options)
 
-  const chromiumDir = config.projects.chrome.dir
-  const v8Dir = path.join(config.projects.chrome.dir, 'v8')
+  const chromiumDir = config.srcDir
+  const v8Dir = path.join(config.srcDir, 'v8')
   const devtoolsFrontendSrcDir = path.join(chromiumDir, 'third_party', 'devtools-frontend', 'src')
-  const patchDir = path.join(config.projects['brave-core'].dir, 'patches')
+  const patchDir = path.join(config.braveCoreDir, 'patches')
   const v8PatchDir = path.join(patchDir, 'v8')
   const devtoolsFrontendSrcPatchDir = path.join(patchDir, 'devtools-frontend-src')
 

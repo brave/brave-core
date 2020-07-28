@@ -3,9 +3,9 @@ const util = require('../lib/util')
 const {braveTopLevelPaths, ethereumRemoteClientPaths} = require('./l10nUtil')
 
 const pushL10n = (options) => {
-  const runOptions = { cwd: config.projects.chrome.dir }
+  const runOptions = { cwd: config.srcDir }
   const cmdOptions = config.defaultOptions
-  cmdOptions.cwd = config.projects['brave-core'].dir
+  cmdOptions.cwd = config.braveCoreDir
   if (options.extension) {
     if (options.extension === 'ethereum-remote-client') {
       ethereumRemoteClientPaths.forEach((sourceStringPath) => {
