@@ -1,1 +1,5 @@
 -keep class com.google.android.material.bottomsheet.BottomSheetBehavior { *; }
+
+-keep class org.chromium.chrome.browser.BraveSyncWorker { *; }
+
+-keep class org.chromium.chrome.browser.BraveSyncInformers { *; }

@@ -14,8 +14,7 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveActivity;
-import org.chromium.chrome.browser.BraveSyncInformers;
-import org.chromium.chrome.browser.BraveSyncWorkerHolder;
+import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.infobar.InfoBarIdentifier;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -28,13 +27,14 @@ import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBar
 import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
 
 public class BraveSyncInformers {
-
     public static void show() {
         showSetupV2IfRequired();
     }
 
-    public static void showSetupV2IfRequired() {
-        BraveSyncWorker braveSyncWorker = (BraveSyncWorker)BraveSyncWorkerHolder.get();
+    private static void showSetupV2IfRequired() {
+        if (null == BraveSyncReflectionUtils.getSyncWorker()) return;
+
+        BraveSyncWorker braveSyncWorker = (BraveSyncWorker)BraveSyncReflectionUtils.getSyncWorker();
         boolean wasV1User = braveSyncWorker.getSyncV1WasEnabled();
         if (!wasV1User) {
             return;
@@ -93,7 +93,7 @@ public class BraveSyncInformers {
                 activity.getString(R.string.brave_sync_v2_migrate_infobar_message) /* message */,
                 activity.getString(R.string.brave_sync_v2_migrate_infobar_command) /* primaryText */,
                 null /* secondaryText */, null /* linkText */, false /* autoExpire */);
-        BraveSyncWorker braveSyncWorker = (BraveSyncWorker)BraveSyncWorkerHolder.get();
+        BraveSyncWorker braveSyncWorker = (BraveSyncWorker)BraveSyncReflectionUtils.getSyncWorker();
         braveSyncWorker.setSyncV2MigrateNoticeDismissed(true);
     }
 }
