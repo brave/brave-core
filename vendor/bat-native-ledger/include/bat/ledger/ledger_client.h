@@ -187,6 +187,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void PendingContributionSaved(const ledger::Result result) = 0;
 
   virtual void ClearAllNotifications() = 0;
+
+  virtual void WalletDisconnected(const std::string& wallet_type) = 0;
 };
 
 }  // namespace ledger

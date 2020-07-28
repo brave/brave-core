@@ -3931,4 +3931,8 @@ void RewardsServiceImpl::OnCompleteReset(
   std::move(callback).Run(true);
 }
 
+void RewardsServiceImpl::WalletDisconnected(const std::string& wallet_type) {
+  OnDisconnectWallet(wallet_type, ledger::Result::LEDGER_OK);
+}
+
 }  // namespace brave_rewards

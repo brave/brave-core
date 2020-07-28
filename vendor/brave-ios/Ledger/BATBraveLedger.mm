@@ -1987,4 +1987,14 @@ BATLedgerBridge(BOOL,
   }
 }
 
+- (void)walletDisconnected:(const std::string &)wallet_type
+{
+  const auto bridgedType = static_cast<BATWalletType>([NSString stringWithUTF8String:wallet_type.c_str()]);
+  for (BATBraveLedgerObserver *observer in self.observers) {
+    if (observer.externalWalletDisconnected) {
+      observer.externalWalletDisconnected(bridgedType);
+    }
+  }
+}
+
 @end

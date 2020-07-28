@@ -146,6 +146,8 @@ class BatLedgerClientMojoBridge :
 
   void ClearAllNotifications() override;
 
+  void WalletDisconnected(const std::string& wallet_type) override;
+
  private:
   bool Connected() const;
 

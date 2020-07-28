@@ -158,3 +158,6 @@ void NativeLedgerClient::PendingContributionSaved(const ledger::Result result) {
 void NativeLedgerClient::ClearAllNotifications() {
   [bridge_ clearAllNotifications];
 }
+void NativeLedgerClient::WalletDisconnected(const std::string& wallet_type) {
+  [bridge_ walletDisconnected:wallet_type];
+}

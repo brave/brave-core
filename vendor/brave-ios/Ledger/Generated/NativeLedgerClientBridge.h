@@ -57,5 +57,6 @@
 - (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(const ledger::Result)result;
 - (void)clearAllNotifications;
+- (void)walletDisconnected:(const std::string&)wallet_type;
 
 @end
