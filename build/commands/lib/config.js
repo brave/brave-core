@@ -6,8 +6,23 @@ const assert = require('assert')
 const { spawnSync } = require('child_process')
 const rootDir = require('./root')
 
+let npmCommand = 'npm'
+if (process.platform === 'win32') {
+  npmCommand += '.cmd'
+}
 let NpmConfig = null
 
+const run = (cmd, args = []) => {
+  const prog = spawnSync(cmd, args)
+  if (prog.status !== 0) {
+    console.log(prog.stdout && prog.stdout.toString())
+    console.error(prog.stderr && prog.stderr.toString())
+    process.exit(1)
+  }
+  return prog
+}
+
+// this is a huge hack because the npm config doesn't get passed through from brave-browser .npmrc/package.json
 var packageConfig = function(path){
   const packages = require('../../../../../package')
   let obj = packages.config
@@ -20,20 +35,9 @@ var packageConfig = function(path){
   return obj
 }
 
-const run = (cmd, args = []) => {
-  const prog = spawnSync(cmd, args)
-  if (prog.status !== 0) {
-    console.log(prog.stdout && prog.stdout.toString())
-    console.error(prog.stderr && prog.stderr.toString())
-    process.exit(1)
-  }
-  return prog
-}
-
 const getNPMConfig = (path) => {
   if (!NpmConfig) {
-    const list = run('npm', ['config', 'list', '--json'], {
-        cwd: rootDir})
+    const list = run(npmCommand, ['config', 'list', '--json'], {cwd: rootDir})
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
