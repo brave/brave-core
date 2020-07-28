@@ -35,6 +35,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
         super.prepare()
         if let braveTodaySection = braveTodaySection,
             let collectionView = collectionView,
+            collectionView.numberOfItems(inSection: braveTodaySection) != 0,
             let attribute = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) {
             let diff = collectionView.frame.height - attribute.frame.minY
             gapLength = diff - 32
@@ -114,6 +115,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     
     override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
         guard let braveTodaySection = braveTodaySection,
+            collectionView?.numberOfItems(inSection: braveTodaySection) != 0,
             let item = layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) else {
                 return proposedContentOffset
         }
