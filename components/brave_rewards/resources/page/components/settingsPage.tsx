@@ -169,8 +169,9 @@ class SettingsPage extends React.Component<Props, State> {
     window.open('https://brave.com/privacy#rewards', '_blank')
   }
 
-  onDismissPromo = (promo: PromoType) => {
+  onDismissPromo = (promo: PromoType, event: React.MouseEvent<HTMLDivElement>) => {
     this.actions.dismissPromoPrompt(promo)
+    event.preventDefault()
   }
 
   getPromotionsClaims = () => {
@@ -281,7 +282,7 @@ class SettingsPage extends React.Component<Props, State> {
           const promo = getPromo(key, this.props.rewardsData) as Promo
           const { supportedLocales } = promo
 
-          if (supportedLocales.length && !supportedLocales.includes(currentCountryCode)) {
+          if (supportedLocales && supportedLocales.length && !supportedLocales.includes(currentCountryCode)) {
             return null
           }
 
@@ -290,6 +291,7 @@ class SettingsPage extends React.Component<Props, State> {
               {...promo}
               key={`${key}-promo`}
               onDismissPromo={this.onDismissPromo.bind(this, key)}
+              link={promo.link}
             />
           )
         })}

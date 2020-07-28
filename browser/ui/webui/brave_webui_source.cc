@@ -767,8 +767,10 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 
         { "tapNetworkTitle", IDS_BRAVE_UI_TAP_NETWORK_TITLE },
         { "tapNetworkInfo", IDS_BRAVE_UI_TAP_NETWORK_INFO },
-        { "tapNetworkLink", IDS_BRAVE_UI_TAP_NETWORK_LINK },
         { "tapNetworkDisclaimer", IDS_BRAVE_UI_TAP_NETWORK_DISCLAIMER },
+
+        { "upholdPromoTitle", IDS_BRAVE_UI_UPHOLD_PROMO_TITLE },
+        { "upholdPromoInfo", IDS_BRAVE_UI_UPHOLD_PROMO_INFO },
       }
     }, {
       std::string("adblock"), {
