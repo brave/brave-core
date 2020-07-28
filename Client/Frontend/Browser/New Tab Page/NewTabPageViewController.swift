@@ -666,7 +666,6 @@ extension NewTabPageViewController {
             
             backgroundColor = .clear
             delaysContentTouches = false
-            decelerationRate = .fast
             alwaysBounceVertical = true
             showsHorizontalScrollIndicator = false
             // Needed for some reason, as its not setting safe area insets while in landscape
