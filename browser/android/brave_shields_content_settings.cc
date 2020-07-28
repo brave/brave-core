@@ -57,7 +57,8 @@ void BraveShieldsContentSettings::DispatchBlockedEventToJava(int tab_id,
       base::android::ConvertUTF8ToJavaString(env, subresource));
 }
 
-void BraveShieldsContentSettings::DispatchSavedBandwidthToJava(uint64_t savings) {
+void BraveShieldsContentSettings::DispatchSavedBandwidthToJava(
+  uint64_t savings) {
   JNIEnv* env = base::android::AttachCurrentThread();
   Java_BraveShieldsContentSettings_savedBandwidth(env, jobj_, savings);
 }
