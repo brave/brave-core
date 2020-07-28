@@ -52,7 +52,7 @@ class GeminiService : public KeyedService {
   ~GeminiService() override;
 
   // Callbacks
-  using GetAccessTokenCallback = base::OnceCallback<void(bool)>;
+  using AccessTokenCallback = base::OnceCallback<void(bool)>;
   using GetTickerPriceCallback = base::OnceCallback<void(const std::string&)>;
   using URLRequestCallback =
       base::OnceCallback<void(const int, const std::string&,
@@ -71,7 +71,8 @@ class GeminiService : public KeyedService {
 
   std::string GetOAuthClientUrl();
   void SetAuthToken(const std::string& auth_token);
-  bool GetAccessToken(GetAccessTokenCallback callback);
+  bool GetAccessToken(AccessTokenCallback callback);
+  bool RefreshAccessToken(AccessTokenCallback callback);
   bool GetTickerPrice(const std::string& asset,
                       GetTickerPriceCallback callback);
   bool GetAccountBalances(GetAccountBalancesCallback callback);
@@ -106,7 +107,7 @@ class GeminiService : public KeyedService {
                        const std::string& refresh_token);
   void ResetAccessTokens();
 
-  void OnGetAccessToken(GetAccessTokenCallback callback,
+  void OnGetAccessToken(AccessTokenCallback callback,
                         const int status, const std::string& body,
                         const std::map<std::string, std::string>& headers);
   void OnTickerPrice(GetTickerPriceCallback callback,

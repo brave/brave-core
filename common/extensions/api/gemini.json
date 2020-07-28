@@ -48,6 +48,24 @@
           ]
         },
         {
+          "name": "refreshAccessToken",
+          "type": "function",
+          "description": "Facilitates fetching a new access token",
+          "parameters": [
+            {
+              "type": "function",
+              "name": "callback",
+              "parameters": [
+                {
+                  "name": "success",
+                  "type": "boolean",
+                  "description": "Indicates the access token was refreshed successfully"
+                }
+              ]
+            }
+          ]
+        },
+        {
           "name": "getTickerPrice",
           "type": "function",
           "description": "Retrieves ticker price for a given asset",

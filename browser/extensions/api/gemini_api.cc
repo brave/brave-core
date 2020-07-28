@@ -62,6 +62,24 @@ void GeminiGetAccessTokenFunction::OnCodeResult(bool success) {
 }
 
 ExtensionFunction::ResponseAction
+GeminiRefreshAccessTokenFunction::Run() {
+  auto* service = GetGeminiService(browser_context());
+  bool token_request = service->RefreshAccessToken(base::BindOnce(
+      &GeminiRefreshAccessTokenFunction::OnRefreshResult, this));
+
+  if (!token_request) {
+    return RespondNow(
+        Error("Could not make request to refresh access tokens"));
+  }
+
+  return RespondLater();
+}
+
+void GeminiRefreshAccessTokenFunction::OnRefreshResult(bool success) {
+  Respond(OneArgument(std::make_unique<base::Value>(success)));
+}
+
+ExtensionFunction::ResponseAction
 GeminiGetTickerPriceFunction::Run() {
   std::unique_ptr<gemini::GetTickerPrice::Params> params(
       gemini::GetTickerPrice::Params::Create(*args_));
