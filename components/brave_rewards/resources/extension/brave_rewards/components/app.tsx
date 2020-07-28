@@ -278,14 +278,16 @@ export class RewardsPanel extends React.Component<Props, State> {
       actions.push({
         name: getMessage('addFunds'),
         action: this.openRewardsAddFunds,
-        icon: <WalletAddIcon />
+        icon: <WalletAddIcon />,
+        externalWallet: true
       })
     }
 
     return actions.concat([{
       name:  getMessage('rewardsSettings'),
       action: this.openRewards,
-      icon: <BatColorIcon />
+      icon: <BatColorIcon />,
+      externalWallet: false
     }])
   }
 

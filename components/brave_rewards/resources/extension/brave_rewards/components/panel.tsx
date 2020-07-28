@@ -649,14 +649,16 @@ export class Panel extends React.Component<Props, State> {
       actions.push({
         name: getMessage('addFunds'),
         action: this.onAddFunds,
-        icon: <WalletAddIcon />
+        icon: <WalletAddIcon />,
+        externalWallet: true
       })
     }
 
     return actions.concat([{
       name:  getMessage('rewardsSettings'),
       action: this.openRewardsPage,
-      icon: <BatColorIcon />
+      icon: <BatColorIcon />,
+      externalWallet: false
     }])
   }
 
