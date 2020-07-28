@@ -41,8 +41,7 @@ const getNPMConfig = (path) => {
     NpmConfig = JSON.parse(list.stdout.toString())
   }
 
-  const key = path.join('_').replace('-', '_')
-  return NpmConfig[key] || packageConfig(path)
+  return NpmConfig[path.join('-').replace(/_/g, '-')] || packageConfig(path)
 }
 
 const parseExtraInputs = (inputs, accumulator, callback) => {
