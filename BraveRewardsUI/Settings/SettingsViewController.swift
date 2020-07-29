@@ -41,7 +41,7 @@ class SettingsViewController: UIViewController {
     
     preferredContentSize = CGSize(width: RewardsUX.preferredPanelSize.width, height: 750)
     
-    state.ledger.updateAdsRewards()
+    state.ads.updateAdRewards(false)
     
     settingsView.do {
       $0.rewardsToggleSection.toggleSwitch.addTarget(self, action: #selector(rewardsSwitchValueChanged), for: .valueChanged)
