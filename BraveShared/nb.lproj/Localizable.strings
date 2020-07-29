@@ -137,6 +137,9 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Du surfer på dette nettstedet uten Braves personvernsbeskyttelse. Fungerer det ikke med Skjold oppe?";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "En ny versjon av Brave Sync er på vei, og dette vil påvirke oppsettet ditt. Gjør deg klar for oppgraderingen.";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Slå på søkeforslag?";
 
@@ -197,11 +200,17 @@
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Velg informasjonen du vil dele med oss.\n\nJo mer informasjon du deler med oss i første omgang, jo lettere blir det for støttepersonellet å hjelpe deg med å løse problemet.";
 
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Støtte tilbys ved hjelp av Guardian-teamet.";
+
 /* VPN Hostname field for customer support contact form. */
 "vpn.contactFormHostname" = "VPN-vertsnavn";
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Problem";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Problem med tilkoblingens stabilitet";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Ingen internett når du er tilkoblet";

@@ -137,6 +137,9 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Вы выключили защиту конфиденциальности. Сайт неправильно отображается при включенных щитах?";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "Скоро станет доступна свежая версия функции «Синхронизация Brave». Это повлияет на ваши настройки. Подготовьтесь к обновлению.";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Включить подсказки при поиске?";
 
@@ -197,11 +200,17 @@
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Укажите, какой информацией вы хотели бы с нами поделиться.\n\nЧем больше информации вы изначально нам предоставите, тем легче нашей службе поддержки будет помогать вам в решении возникающих проблем.";
 
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Поддержка обеспечивается при участии команды Guardian.";
+
 /* VPN Hostname field for customer support contact form. */
 "vpn.contactFormHostname" = "Имя хоста VPN";
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Проблема";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Ненадежное подключение";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Отсутствует соединение с Интернетом";

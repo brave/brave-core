@@ -550,6 +550,9 @@
 /* Reveal password text selection menu item */
 "MenuItemRevealPasswordTitle" = "顯示";
 
+/* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
+"monthAbbreviation" = "月";
+
 /* Bookmark title / Device name */
 "Name" = "名稱";
 
@@ -582,6 +585,9 @@
 
 /* Sync Alert */
 "NotEnoughWordsTitle" = "沒有足够詞語";
+
+/* Bookmark title for Brave Support */
+"ntp.braveSupportFavoriteTitle" = "Brave 支援";
 
 /* No comment provided by engineer. */
 "ntp.claimRewards" = "領取我的獎勵";
@@ -1227,6 +1233,9 @@
 
 /* Word count title */
 "WordCount" = "字數：%i";
+
+/* Abbreviation for 'Year', use full word' Yeara' if this word can't be shortened in your language */
+"yearAbbreviation" = "年";
 
 /* Button title to confirm the deletion of a bookmarks folder */
 "YesDeleteButtonTitle" = "是的，刪除";

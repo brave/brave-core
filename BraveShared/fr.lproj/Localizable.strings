@@ -137,6 +137,9 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Vous utilisez ce site sans les protections de confidentialité de Brave. Ne fonctionne-t-il pas correctement avec Shields activé ?";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "Une nouvelle synchronisation Brave sera bientôt effectuée, ce qui affectera votre configuration. Préparez-vous pour la mise à niveau.";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Activer les suggestions de recherche ?";
 
@@ -205,6 +208,9 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Problème";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "La connexion n'est pas stable";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Aucun accès à Internet une fois connecté";
