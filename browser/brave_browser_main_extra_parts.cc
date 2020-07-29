@@ -5,10 +5,13 @@
 
 #include "brave/browser/brave_browser_main_extra_parts.h"
 
+#include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/brave_shields_p3a.h"
 #include "brave/components/p3a/buildflags.h"
 #include "brave/components/p3a/brave_p3a_service.h"
+#include "components/prefs/pref_service.h"
+#include "components/metrics/metrics_pref_names.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
@@ -36,6 +39,12 @@ void RecordInitialP3AValues() {
 
   brave_shields::MaybeRecordShieldsUsageP3A(brave_shields::kNeverClicked,
                                             g_browser_process->local_state());
+
+  // Record crash reporting status stats.
+  const bool crash_reports_enabled = g_browser_process->local_state()->
+      GetBoolean(metrics::prefs::kMetricsReportingEnabled);
+  UMA_HISTOGRAM_BOOLEAN("Brave.Core.CrashReportsEnabled",
+                        crash_reports_enabled);
 }
 
 }  // namespace
