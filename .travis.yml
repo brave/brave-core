@@ -18,7 +18,7 @@ cache:
     - node_modules
 
 env:
-  - TEST_SUITE=lint
+  - TEST_SUITE=tslint
   - TEST_SUITE=build-storybook
   - TEST_SUITE=test-unit
   - TEST_SUITE=pep8
