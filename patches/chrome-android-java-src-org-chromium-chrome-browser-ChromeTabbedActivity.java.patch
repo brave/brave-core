@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 6971eb794320971e5a67df94b10880563290cb67..21f554ce5039846ba54829a892fc1f20790fa624 100644
+index ab8b2d0aedd4ff245380de874a2711ff619816eb..ebc8686e035352701a4b454f6f52cba0f407d78d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -184,7 +184,7 @@ import java.util.Locale;
