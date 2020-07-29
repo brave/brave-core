@@ -145,6 +145,13 @@ class HorizontalFeedGroupView: FeedGroupView, FeedCardContent {
     }
 }
 
+/// A group of deal feed items placed horizontally in a card
+class DealsFeedGroupView: FeedGroupView, FeedCardContent {
+    required init() {
+        super.init(axis: .horizontal, feedLayout: .offer)
+    }
+}
+
 /// A group of feed items placed vertically in a card
 class VerticalFeedGroupView: FeedGroupView, FeedCardContent {
     required init() {

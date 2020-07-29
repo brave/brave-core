@@ -237,6 +237,31 @@ extension FeedItemView {
                 ]
             )
         )
+        /// Defines an offer layout, similar to `vertical` except does not show a date
+        ///
+        /// ```
+        /// ┌───────────┐
+        /// │           │
+        /// │    img    │
+        /// │           │
+        /// ├───────────┤
+        /// ├───────────┤
+        /// │ title     │
+        /// └───────────┘
+        /// ```
+        ///
+        /// This layout does not include any padding around itself, it will be up
+        /// to the parent to provide adequite padding.
+        static let offer = Layout(
+            root: .init(
+                axis: .vertical,
+                spacing: 10,
+                children: [
+                    .thumbnail(.aspectRatio(1)),
+                    .title(4)
+                ]
+            )
+        )
         /// Defines a basic feed item layout without any thumbnail
         ///
         /// ```

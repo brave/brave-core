@@ -494,6 +494,9 @@ class NewTabPageViewController: UIViewController, Themeable {
     // MARK: - Brave Today
     
     private func loadFeedContents() {
+        if !feedDataSource.isFeedContentExpired {
+            return
+        }
         feedLoaderView.isHidden = false
         feedLoaderView.start()
         feedDataSource.load { [weak self] in
