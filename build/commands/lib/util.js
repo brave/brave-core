@@ -167,6 +167,9 @@ const util = {
           "src/chrome/tools/test/reference_build/chrome_linux": "%None%",
           "src/chrome/tools/test/reference_build/chrome_mac": "%None%",
           "src/chrome/tools/test/reference_build/chrome_win": "%None%"
+        },
+        custom_vars: {
+          "checkout_pgo_profiles": "%True%"
         }
       },
       {
@@ -179,7 +182,7 @@ const util = {
     let cache_dir = process.env.GIT_CACHE_PATH ? ('\ncache_dir = "' + process.env.GIT_CACHE_PATH + '"\n') : '\n'
 
     let out = 'solutions = ' + JSON.stringify(solutions, replacer, 2)
-      .replace(/"%None%"/g, "None").replace(/"%False%"/g, "False") + cache_dir
+      .replace(/"%None%"/g, "None").replace(/"%False%"/g, "False").replace(/"%True%"/g, "True") + cache_dir
 
     if (config.targetOS === 'android') {
       out = out + "target_os = [ 'android' ]"
