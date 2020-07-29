@@ -57,7 +57,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         case .failure:
             return 1
         case .initial, .loading:
-            return isShowingIntroCard ? 1 : 0
+            return 0
         case .success(let cards):
             return cards.count + (isShowingIntroCard ? 1 : 0)
         }
