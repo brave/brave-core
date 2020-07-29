@@ -85,7 +85,9 @@ class FeedSourceListViewController: UITableViewController {
         self.dataSource = dataSource
         super.init(style: .plain)
         reloadSections()
-        sectionIndexTitles = ["★"] + sections[1...].compactMap { $0.first?.sectionIndexTitle }
+        if dataSource.sources.count > 1 {
+            sectionIndexTitles = ["★"] + sections[1...].compactMap { $0.first?.sectionIndexTitle }
+        }
     }
     
     @available(*, unavailable)
