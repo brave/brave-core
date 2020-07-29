@@ -24,7 +24,7 @@ std::vector<adblock::FilterList>::const_iterator FindAdBlockFilterListByLocale(
 std::vector<adblock::FilterList> RegionalCatalogFromJSON(
     const std::string& catalog_json);
 
-void MergeResourcesInto(base::Value* into, base::Value* from, bool force_hide);
+void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide);
 
 }  // namespace brave_shields
 
