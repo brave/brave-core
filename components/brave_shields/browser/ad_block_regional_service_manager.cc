@@ -194,19 +194,20 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
 base::Optional<base::Value>
 AdBlockRegionalServiceManager::UrlCosmeticResources(
         const std::string& url) {
-  auto it = this->regional_services_.begin();
-  if (it == this->regional_services_.end()) {
+  base::AutoLock lock(regional_services_lock_);
+  auto it = regional_services_.begin();
+  if (it == regional_services_.end()) {
     return base::Optional<base::Value>();
   }
   base::Optional<base::Value> first_value =
       it->second->UrlCosmeticResources(url);
 
-  for ( ; it != this->regional_services_.end(); it++) {
+  for ( ; it != regional_services_.end(); it++) {
     base::Optional<base::Value> next_value =
         it->second->UrlCosmeticResources(url);
     if (first_value) {
       if (next_value) {
-        MergeResourcesInto(&*first_value, &*next_value, false);
+        MergeResourcesInto(std::move(*next_value), &*first_value, false);
       }
     } else {
       first_value = std::move(next_value);
@@ -221,14 +222,15 @@ AdBlockRegionalServiceManager::HiddenClassIdSelectors(
         const std::vector<std::string>& classes,
         const std::vector<std::string>& ids,
         const std::vector<std::string>& exceptions) {
-  auto it = this->regional_services_.begin();
-  if (it == this->regional_services_.end()) {
+  base::AutoLock lock(regional_services_lock_);
+  auto it = regional_services_.begin();
+  if (it == regional_services_.end()) {
     return base::Optional<base::Value>();
   }
   base::Optional<base::Value> first_value =
       it->second->HiddenClassIdSelectors(classes, ids, exceptions);
 
-  for ( ; it != this->regional_services_.end(); it++) {
+  for ( ; it != regional_services_.end(); it++) {
     base::Optional<base::Value> next_value =
         it->second->HiddenClassIdSelectors(classes, ids, exceptions);
     if (first_value && first_value->is_list()) {
