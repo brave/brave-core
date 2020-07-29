@@ -6885,6 +6885,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the QR code generator's download button.">
         Download
       </message>
+      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR code.">
+        Use <ph name="CHARACTER_LIMIT">$1<ex>300</ex></ph> characters or fewer
+      </message>
+      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
+          Can't create QR code
+      </message>
 
       <!-- Sharing features. -->
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_TITLE_TEXT_CONTENT_UNKNOWN_DEVICE" desc="Title text displayed in a Remote Copy (for text content) notification when the source device name is unknown.">
@@ -9279,11 +9285,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_NAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has been named by the user. Example: 'Brave Search - Part of group MyGroupName'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of group <ph name="GROUP_NAME">$2</ph>
       </message>
-      <message name="IDS_GROUP_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Accessibility label text for a tab group header, when it has not been named by the user. Example: 'Unnamed group - Brave Search and 3 other tabs'">
-        Unnamed group - <ph name="GROUP_CONTENTS">$1<ex>Brave Search and 3 other tabs</ex></ph>
+      <message name="IDS_GROUP_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Spoken by screen readers when a tab group header that has not been named by the user gets focused but is not visually rendered. Example: 'Unnamed group - Brave Search and 3 other tabs - Expanded'">
+      Unnamed group - <ph name="GROUP_CONTENTS">$2<ex>Brave Search and 3 other tabs</ex></ph> - <ph name="COLLAPSED_STATE">$1</ph>
       </message>
-      <message name="IDS_GROUP_AX_LABEL_NAMED_GROUP_FORMAT" desc="Accessibility label text for a tab group header, when it has been named by the user. Example: 'Group MyGroupName - Brave Search and 3 other tabs'">
-        Group <ph name="GROUP_NAME">$1</ph> - <ph name="GROUP_CONTENTS">$2<ex>Brave Search and 3 other tabs</ex></ph>
+      <message name="IDS_GROUP_AX_LABEL_NAMED_GROUP_FORMAT" desc="Spoken by screen readers when a tab group header that has been named by the user gets focused but is not visually rendered. Example: 'Group MyGroupName - Brave Search and 3 other tabs - Collapsed'">
+        Group <ph name="GROUP_NAME">$2</ph> - <ph name="GROUP_CONTENTS">$3<ex>Brave Search and 3 other tabs</ex></ph> - <ph name="COLLAPSED_STATE">$1</ph>
+      </message>
+      <message name="IDS_GROUP_AX_LABEL_COLLAPSED" desc="Used as part of the accessibility label text of a group header for a collapsed tab group.">
+        Collapsed
+      </message>
+      <message name="IDS_GROUP_AX_LABEL_EXPANDED" desc="Used as part of the accessibility label text of a group header for an expanded tab group.">
+        Expanded
       </message>
 
       <!-- ProcessSingleton -->

@@ -308,7 +308,7 @@
     Passwords on this device only
   </message>
   <message name="IDS_SETTINGS_DEVICE_PASSWORDS_ON_DEVICE_AND_ACCOUNT_HEADING" desc="Title of a subsection in the 'device passwords' page displaying passwords/exceptions that are stored both on the device and in the account.">
-    Passwords on this device and in your Brave Account
+    Passwords on this device and in your Brave sync chain
   </message>
   <message name="IDS_SETTINGS_CHECK_PASSWORDS" desc="Name for the check passwords subsection and settings entry used to perform a password bulk check.">
     Check passwords
@@ -428,7 +428,7 @@
     Remove
   </message>
   <message name="IDS_SETTINGS_PASSWORD_MOVE_TO_ACCOUNT" desc="Label for a context menu item that moves the selected password from the device to the user account.">
-    Move to Brave Account
+    Move to Brave sync chain
   </message>
   <message name="IDS_SETTINGS_PASSWORD_SEARCH" desc="Placeholder/label for the text input field that allows a user to filter saved passwords.">
     Search passwords
@@ -511,8 +511,8 @@
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_TITLE" desc="Title for the dialog that asks the user which versions of a password to remove (device, Brave Account or both).">
     Delete password?
   </message>
-  <!-- TODO(crbug.com/1049141): Inject the website in the string and make it translateable. -->
-  <message translateable="false" name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_BODY" desc="Description message for the dialog that asks the user which versions of a password to remove (device, Brave Account or both).">
+  <!-- TODO(crbug.com/1102294): Inject the website in the string. -->
+  <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_BODY" desc="Description message for the dialog that asks the user which versions of a password to remove (device, Brave Account or both).">
     Your password is stored on this device and in your Brave sync chain. Which one do you want to delete?
   </message>
   <message name="IDS_SETTINGS_PASSWORD_REMOVE_DIALOG_REMOVE_BUTTON_TEXT" desc="Text for the button that confirms the action in the dialog that asks the user which versions of a password to remove (device, Brave Account or both).">

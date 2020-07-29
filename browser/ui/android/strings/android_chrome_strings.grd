@@ -3684,6 +3684,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Download
       </message>
 
+      <message name="IDS_QR_CODE_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR code.">
+          Can't create QR code. URL is more than <ph name="CHARACTER_LIMIT">%1$d<ex>300</ex></ph> characters.
+      </message>
+
+      <message name="IDS_QR_CODE_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
+          Can't create QR code
+      </message>
+
       <!-- Sharing Hub -->
       <message name="IDS_SHARING_MORE_ICON_LABEL" desc="Icon label for the More button in the sharing hub.">
         More
