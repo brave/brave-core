@@ -617,9 +617,6 @@ extension NewTabPageViewController {
             let value = scrollView.contentOffset.y
             let alpha = max(0.0, min(1.0, (value - alphaInStart) / (todayStart - alphaInStart)))
             braveTodayHeaderView.alpha = alpha
-            
-            let inset = braveTodayHeaderView.alpha * braveTodayHeaderView.bounds.height
-            collectionView.verticalScrollIndicatorInsets = UIEdgeInsets(top: inset, left: 0, bottom: 0, right: 0)
         }
     }
 }
@@ -726,6 +723,7 @@ extension NewTabPageViewController {
             showsHorizontalScrollIndicator = false
             // Needed for some reason, as its not setting safe area insets while in landscape
             contentInsetAdjustmentBehavior = .always
+            showsVerticalScrollIndicator = false
             // Even on light mode we use a darker background now
             indicatorStyle = .white
         }
