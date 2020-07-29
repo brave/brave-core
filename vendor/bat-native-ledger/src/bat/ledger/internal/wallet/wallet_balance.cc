@@ -41,6 +41,11 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   }
 
   const std::string payment_id = braveledger_state::GetPaymentId(ledger_);
+  if (payment_id.empty()) {
+    BLOG(0, "Payment ID is empty");
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
 
   const std::string url = braveledger_request_util::GetBalanceWalletURL(
       braveledger_state::GetPaymentId(ledger_));
