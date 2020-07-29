@@ -166,6 +166,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
+    public List<BraveStatsTable> getAllStats() {
+        List<BraveStatsTable> braveStats = new ArrayList<>();
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM "
+                             + BraveStatsTable.TABLE_NAME;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                BraveStatsTable braveStat = new BraveStatsTable(
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
+
+                braveStats.add(braveStat);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return braveStats;
+    }
+
     public List<BraveStatsTable> getAllStatsWithDate(String thresholdTime, String currentTime) {
         List<BraveStatsTable> braveStats = new ArrayList<>();
 

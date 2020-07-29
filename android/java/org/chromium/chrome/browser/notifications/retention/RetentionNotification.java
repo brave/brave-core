@@ -11,14 +11,12 @@ public class RetentionNotification {
     private int notificationTime; // In minutes
     private String channelId;
     private String notificationTitle;
-    private String notificationText;
 
-    public RetentionNotification(int notificationId, int notificationTime, String channelId, String notificationTitle, String notificationText) {
+    public RetentionNotification(int notificationId, int notificationTime, String channelId, String notificationTitle) {
         this.notificationId = notificationId;
         this.notificationTime = notificationTime;
         this.channelId = channelId;
         this.notificationTitle = notificationTitle;
-        this.notificationText = notificationText;
     }
 
     public int getNotificationId() {
@@ -35,9 +33,5 @@ public class RetentionNotification {
 
     public String getNotificationTitle() {
         return notificationTitle;
-    }
-
-    public String getNotificationText() {
-        return notificationText;
     }
 }
