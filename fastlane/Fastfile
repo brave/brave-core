@@ -118,12 +118,14 @@ platform :ios do
       xcargs: "-allowProvisioningUpdates BRAVE_API_KEY=\"#{ENV['BRAVE_STATS_API_KEY']}\" BRAVE_VERSION=\"#{git_branch}\" GENERATED_BUILD_ID=\"#{get_build_number_repository}\""
     )
 
-    appcenter_upload(
-      owner_type: "organization",
-      file: "./build/Client.ipa",
-      dsym: "./build/Client.app.dSYM.zip",
-      notify_testers: false
-    )
+    unless options[:skip_upload]
+      appcenter_upload(
+        owner_type: "organization",
+        file: "./build/Client.ipa",
+        dsym: "./build/Client.app.dSYM.zip",
+        notify_testers: false
+      )
+    end
   end
 
   # Private helper methods ---------------------------------------
