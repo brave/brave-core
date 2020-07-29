@@ -137,6 +137,9 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Brave의 개인정보 보호 없이 이 사이트를 브라우징하고 계십니다. Shields 사용 시 제대로 작동하지 않나요?";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "새로운 Brave Sync가 출시되어 설정에 적용될 예정입니다. 곧 업그레이드됩니다.";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "추천 검색어를 사용하시겠습니까?";
 
@@ -197,11 +200,17 @@
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "공유해도 괜찮은 정보를 선택하세요.\n\n초기에 공유해주시는 정보가 많을수록 지원 담당 직원이 문제를 해결해드리기 쉬워집니다.";
 
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "지원은 Guardian 팀의 도움을 받아 제공됩니다.";
+
 /* VPN Hostname field for customer support contact form. */
 "vpn.contactFormHostname" = "VPN 호스트 이름";
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "문제";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "연결 안정성 문제";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "인터넷에 연결되지 않음";

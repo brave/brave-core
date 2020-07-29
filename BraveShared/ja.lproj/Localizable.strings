@@ -137,6 +137,9 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "現在Braveのプライバシー保護機能オフの状態でブラウジングしています。Shieldをオンにした状態では不具合が発生しますか？";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "Brave Syncがリニューアルされます。ご利用の環境にも影響がございますのでアップグレードに向けてご準備ください。";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "検索候補をオンにしますか？";
 
@@ -180,7 +183,7 @@
 "vpn.checkboxNoSellout" = "あなたの情報を第三者に共有・販売しません";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Braveに限らず全てのアプリを保護します";
+"vpn.checkboxProtectConnections" = "Braveに限らず全てのアプリを保護";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStoreレシート";
@@ -205,6 +208,9 @@
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "イシュー";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "接続信頼性の問題";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "接続時にインターネットに接続できなかった";

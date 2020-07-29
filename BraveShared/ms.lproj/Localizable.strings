@@ -137,6 +137,9 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Anda melayari laman web ini tanpa perlindungan privasi Brave. Adakah ia tidak berfungsi dengan betul dengan Pelindung atas?";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "Penyegerakan Brave baharu akan tiba dan akan mempengaruhi persediaan anda. Bersedia untuk naik taraf.";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "Hidupkan cadangan carian?";
 
@@ -162,7 +165,7 @@
 "vpn.buyButton" = "Beli";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+"vpn.buyVPNTitle" = "Tembok Api Berani + VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxBlockAds" = "Blok sambungan rangkaian yang tidak diingini";
@@ -183,7 +186,7 @@
 "vpn.checkboxProtectConnections" = "Lindungi semua aplikasi anda (bukan hanya Berani)";
 
 /* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "Resit AppStore";
+"vpn.contactFormAppStoreReceipt" = "Resit App Store";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "Versi Aplikasi";
@@ -197,11 +200,17 @@
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Sila pilih maklumat yang anda selesa berkongsi dengan kami.\n\nSemakin banyak maklumat anda kongsi pada awalnya, semakin mudah kakitangan sokongan kami membantu menyelesaikan masalah anda.";
 
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Sokongan diberikan dengan bantuan pasukan Guardian.";
+
 /* VPN Hostname field for customer support contact form. */
 "vpn.contactFormHostname" = "Nama Hos VPN";
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Isu";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Masalah keutuhan sambungan";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "Tidak ada internet apabila disambungkan";
@@ -354,7 +363,7 @@
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "Kebenaran ditolak";
 
 /* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "Tidak dapat menyelesaikan pembelian. Sila cuba lagi atau periksa maklumat pembayaran anda di Apple dan cuba lagi.";
+"vpn.vpnErrorPurchaseFailedBody" = "Tidak dapat menghabiskan pembelian. Sila cuba lagi, atau periksa maklumat pembayaran anda di Apple dan cuba lagi.";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "Ralat";

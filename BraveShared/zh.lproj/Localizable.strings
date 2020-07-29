@@ -137,6 +137,9 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "你正在没有 Brave 隐私保护的情况下浏览本网站。Shields 处于开启状态时无法正常工作吗？";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "即将推出新的 Brave Sync，它将影响您的设置。赶快做好升级的准备吧。";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "开启搜索建议功能？";
 
@@ -157,6 +160,243 @@
 
 /* No comment provided by engineer. */
 "UserWalletGenericErrorTitle" = "抱歉，出错了";
+
+/* Button text to buy Brave VPN */
+"vpn.buyButton" = "购买";
+
+/* Title for screen to buy the VPN. */
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxBlockAds" = "阻止不需要的网络连接";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxEncryption" = "使用 IKEv2 安全加密的 VPN 隧道";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxFast" = "最高支持 100 Mbps 的速度";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoIPLog" = "让您匿名在线";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxNoSellout" = "我们绝不会分享或出售您的信息";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.checkboxProtectConnections" = "保护您所有的应用程序（不仅仅是 Brave）";
+
+/* AppStore Receipt field for customer support contact form. */
+"vpn.contactFormAppStoreReceipt" = "AppStore 收据";
+
+/* App Version field for customer support contact form. */
+"vpn.contactFormAppVersion" = "应用程序版本";
+
+/* Cellular Carrier field for customer support contact form. */
+"vpn.contactFormCarrier" = "蜂窝网络提供商";
+
+/* Text to tell user to not modify support info below email's body. */
+"vpn.contactFormDoNotEditText" = "请勿修改以下信息";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooter" = "请选择您愿意与我们分享的信息。\n\n您最初与我们分享的信息越多，我们的支持人员就越容易帮助您解决问题。";
+
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "在 Guardian 团队的帮助下提供的支持。";
+
+/* VPN Hostname field for customer support contact form. */
+"vpn.contactFormHostname" = "VPN 主机名";
+
+/* Specific issue field for customer support contact form. */
+"vpn.contactFormIssue" = "问题";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "连接可靠性问题";
+
+/* No internet problem for contact form issue field. */
+"vpn.contactFormIssueNoInternet" = "连接后没有互联网";
+
+/* Other problem for contact form issue field. */
+"vpn.contactFormIssueOther" = "其他";
+
+/* Other connection problem for contact form issue field. */
+"vpn.contactFormIssueOtherConnectionError" = "无法连接到 VPN（其他错误） ";
+
+/* Slow connection problem for contact form issue field. */
+"vpn.contactFormIssueSlowConnection" = "连接缓慢";
+
+/* Website problem for contact form issue field. */
+"vpn.contactFormIssueWebsiteProblems" = "网站无法正常运作";
+
+/* Network Type field for customer support contact form. */
+"vpn.contactFormNetworkType" = "网络类型";
+
+/* Button name to send contact form. */
+"vpn.contactFormSendButton" = "发送";
+
+/* Subscription Type field for customer support contact form. */
+"vpn.contactFormSubscriptionType" = "订阅类型";
+
+/* iOS Timezone field for customer support contact form. */
+"vpn.contactFormTimezone" = "iOS 时区";
+
+/* Title for contact form email. */
+"vpn.contactFormTitle" = "Brave Firewall + VPN 问题";
+
+/* Button text to enable Brave VPN */
+"vpn.enableButton" = "启用";
+
+/* Message for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesBody" = "无法连接到 App Store，请在几分钟后重试。";
+
+/* Title for an alert when the VPN can't get prices from the App Store */
+"vpn.errorCantGetPricesTitle" = "App Store 错误";
+
+/* No comment provided by engineer. */
+"vpn.freeTrial" = "所有计划均包括 7 天免费试用！";
+
+/* Disclaimer about free trial */
+"vpn.freeTrialDisclaimer" = "免费试用 7 天。 7 天后，我们会向您收取计划费。";
+
+/* Disclaimer about in app subscription */
+"vpn.iapDisclaimer" = "所有订阅都会自动续订，但也可以在续订之前取消。";
+
+/* Text explaining how the VPN works. */
+"vpn.installProfileBody" = "通过此配置文件，VPN 可以始终在每个应用程序中自动连接并保护整个设备上的流量。此 VPN 连接将会被加密，并通过 Brave 的智能防火墙进行路由，以阻止广告和跟踪器。";
+
+/* Text for 'install vpn profile' button */
+"vpn.installProfileButtonText" = "安装 VPN 配置文件";
+
+/* No comment provided by engineer. */
+"vpn.installProfileTitle" = "Brave 现在会安装一个 VPN 配置文件。";
+
+/* Popup that shows after user installs the vpn for the first time. */
+"vpn.installSuccessPopup" = "VPN 已启用";
+
+/* Title for screen to install the VPN. */
+"vpn.installTitle" = "安装 VPN";
+
+/* Used in context: 'Monthly subscription, (it) renews monthly' */
+"vpn.monthlySubDetail" = "每月续约";
+
+/* No comment provided by engineer. */
+"vpn.monthlySubTitle" = "每月订阅";
+
+/* Text to show user when their vpn plan has expired */
+"vpn.planExpired" = "已到期";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmark247Support" = "24/7 支持";
+
+/* Text for a checkbox to present the user benefits for using Brave VPN */
+"vpn.popupCheckmarkSecureConnections" = "保护所有连接";
+
+/* It is used in context: 'Powered by BRAND_NAME' */
+"vpn.poweredBy" = "提供支持方：";
+
+/* Message to show when vpn configuration reset fails. */
+"vpn.resetVPNErrorBody" = "无法重置 VPN 配置，请稍后重试。";
+
+/* Title for error message when vpn configuration reset fails. */
+"vpn.resetVPNErrorTitle" = "错误";
+
+/* No comment provided by engineer. */
+"vpn.restorePurchases" = "恢复";
+
+/* No comment provided by engineer. */
+"vpn.settingHeaderBody" = "保护您的连接并在整个设备上屏蔽广告和跟踪器。";
+
+/* Button to contact tech support */
+"vpn.settingsContactSupport" = "联系技术支持部门";
+
+/* Button for FAQ */
+"vpn.settingsFAQ" = "VPN 支持";
+
+/* Button to manage your VPN subscription */
+"vpn.settingsManageSubscription" = "管理订阅";
+
+/* Button to reset VPN configuration */
+"vpn.settingsResetConfiguration" = "重置配置";
+
+/* Table cell title for vpn's server host */
+"vpn.settingsServerHost" = "主机";
+
+/* Table cell title for vpn's server location */
+"vpn.settingsServerLocation" = "位置";
+
+/* Header title for vpn settings server section. */
+"vpn.settingsServerSection" = "服务器";
+
+/* Table cell title for cell that shows when the VPN subscription expires. */
+"vpn.settingsSubscriptionExpiration" = "过期";
+
+/* Header title for vpn settings subscription section. */
+"vpn.settingsSubscriptionSection" = "订阅";
+
+/* Table cell title for status of current VPN subscription. */
+"vpn.settingsSubscriptionStatus" = "状态";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNDisabled" = "禁用";
+
+/* Whether the VPN is enabled or not */
+"vpn.settingsVPNEnabled" = "启用";
+
+/* Whether the VPN plan has expired */
+"vpn.settingsVPNExpired" = "过期";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationBody" = "即使在后台， Brave 也会继续保护您。";
+
+/* Notification title to tell user that the vpn is turned on even in background */
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 已启用";
+
+/* Message for an alert when the VPN can't be configured. */
+"vpn.vpnConfigGenericErrorBody" = "初始化 VPN 时出现问题。请重试或尝试在 VPN 设置页面中重置配置。";
+
+/* Title for an alert when the VPN can't be configured */
+"vpn.vpnConfigGenericErrorTitle" = "错误";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorBody" = "需要在设备上安装 VPN 配置文件，Brave Firewall + VPN 才能正常工作。";
+
+/* Title for an alert when the user didn't allow to install VPN profile */
+"vpn.vpnConfigPermissionDeniedErrorTitle" = "授权被拒";
+
+/* Message for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedBody" = "无法完成购买。请重试，或在 Apple 网站查看您的付款详细信息，然后重试。";
+
+/* Title for error when VPN could not be purchased. */
+"vpn.vpnErrorPurchaseFailedTitle" = "错误";
+
+/* Disclaimer for user purchasing the VPN plan. */
+"vpn.vpnIAPBoilerPlate" = "价格可能会因位置而异。订阅将通过 iTunes 帐户从您的信用卡中扣除。订阅价格为 1 个月（$ 9.99）或  1 年（$ 99.99）。除非在当前期限结束前至少 24 小时取消，否则订阅将自动续订。激活后，您将无法取消订阅。购买后，您可以在“帐户设置”页面管理您的订阅。免费试用只能使用一次。在免费试用期间未使用的任何部分都会被没收。";
+
+/* Title Brave VPN menu item. */
+"vpn.vpnMenuItemTitle" = "Brave VPN";
+
+/* Message for alert to reset vpn configuration */
+"vpn.vpnResetAlertBody" = "这将重置您的 Brave Firewall + VPN 配置并修复所有错误。此过程可能需要一分钟。";
+
+/* Title for alert to reset vpn configuration */
+"vpn.vpnResetAlertTitle" = "重置配置";
+
+/* Button name to reset vpn configuration */
+"vpn.vpnResetButton" = "重置";
+
+/* Name of monthly subscription in VPN Settings */
+"vpn.vpnSettingsMonthlySubName" = "每月订阅";
+
+/* Name of annual subscription in VPN Settings */
+"vpn.vpnSettingsYearlySubName" = "每年订阅";
+
+/* Used in context: 'yearly subscription, renew annually (to) save 16%'. The placeholder is for percent value */
+"vpn.yearlySubDetail" = "每年续约，可节省 %@";
+
+/* It's like when there's few subscription plans, and one plan has the best value to price ratio, so this label says next to that plan: '(plan) - Best value' */
+"vpn.yearlySubDisclaimer" = "最超值";
+
+/* One year lenght vpn subcription */
+"vpn.yearlySubTitle" = "一年";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "Yes" = "是";

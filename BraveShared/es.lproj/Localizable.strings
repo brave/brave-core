@@ -137,6 +137,9 @@
 /* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "Estás utilizando este sitio web sin la protección de privacidad de Brave. ¿Acaso no funciona bien con los escudos activados?";
 
+/* Text that informs a user about Brave Sync service deprecation. */
+"sync.syncV1DeprecationText" = "Pronto se realizará una nueva sincronización Brave que alterará tu configuración. Prepárate para la actualización.";
+
 /* Prompt shown before enabling provider search queries */
 "Turn on search suggestions?" = "¿Activar las sugerencias de búsqueda?";
 
@@ -197,11 +200,17 @@
 /* Footer for customer support contact form. */
 "vpn.contactFormFooter" = "Selecciona la información que quieres compartir con nosotros.\n\nCuanta más información compartas con nosotros en un primer momento, más fácil lo tendrá nuestro equipo de asistencia para ayudarte a resolver el problema.";
 
+/* Footer for customer support contact form. */
+"vpn.contactFormFooterSharedWithGuardian" = "Asistencia ofrecida con la ayuda del equipo de Guardian.";
+
 /* VPN Hostname field for customer support contact form. */
 "vpn.contactFormHostname" = "Nombre de host de VPN";
 
 /* Specific issue field for customer support contact form. */
 "vpn.contactFormIssue" = "Problema";
+
+/* Connection problems for contact form issue field. */
+"vpn.contactFormIssueConnectionReliability" = "Problema con la fiabilidad de la conexión";
 
 /* No internet problem for contact form issue field. */
 "vpn.contactFormIssueNoInternet" = "No hay Internet cuando me conecto";
