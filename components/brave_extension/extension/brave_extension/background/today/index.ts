@@ -18,7 +18,7 @@ function updateFeed() {
       if (feedResponse.ok) {
         const feedContents: RemoteData = await feedResponse.json()
         console.log('Got feed', feedContents)
-        memoryTodayData = feedToData(feedContents)
+        memoryTodayData = await feedToData(feedContents)
       } else {
         console.error(`Not ok when fetching feed. Status ${feedResponse.status} (${feedResponse.statusText})`)
       }
