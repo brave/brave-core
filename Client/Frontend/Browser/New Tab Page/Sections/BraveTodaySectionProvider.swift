@@ -41,6 +41,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         collectionView.register(FeedCardCell<SmallHeadlinePairCardView>.self)
         collectionView.register(FeedCardCell<VerticalFeedGroupView>.self)
         collectionView.register(FeedCardCell<HorizontalFeedGroupView>.self)
+        collectionView.register(FeedCardCell<DealsFeedGroupView>.self)
         collectionView.register(FeedCardCell<NumberedFeedGroupView>.self)
         collectionView.register(FeedCardCell<SponsorCardView>.self)
     }
@@ -123,6 +124,21 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             cell.content.feedView.setupWithItem(item)
             cell.content.actionHandler = handler(for: item, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(for: item, card: card, indexPath: indexPath)
+            return cell
+        case .deals(let items, let title):
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<DealsFeedGroupView>
+            cell.content.titleLabel.text = title
+            cell.content.titleLabel.isHidden = title.isEmpty
+            zip(cell.content.feedViews, items.indices).forEach { (view, index) in
+                let item = items[index]
+                view.setupWithItem(
+                    item,
+                    isBrandVisible: false
+                )
+            }
+            cell.content.groupBrandImageView.isHidden = true
+            cell.content.actionHandler = handler(from: { items[$0] }, card: card, indexPath: indexPath)
+            cell.content.contextMenu = contextMenu(from: { items[$0] }, card: card, indexPath: indexPath)
             return cell
         case .headline(let item):
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<HeadlineCardView>

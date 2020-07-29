@@ -28,6 +28,8 @@ struct FeedPair: Equatable {
 enum FeedCard: Equatable {
     /// A sponsored image to display
     case sponsor(_ feed: FeedItem)
+    /// A group of deals/offers displayed horizontally
+    case deals(_ feeds: [FeedItem], title: String)
     /// A single item displayed prompinently with an image
     case headline(_ feed: FeedItem)
     /// A pair of `headline` items that should be displayed side by side horizontally with equal sizes
@@ -46,7 +48,7 @@ enum FeedCard: Equatable {
             return FeedItemView.Layout.brandedHeadline.estimatedHeight(for: width)
         case .headlinePair:
             return 300
-        case .group, .numbered:
+        case .group, .numbered, .deals:
             return 400
         }
     }
@@ -58,7 +60,7 @@ enum FeedCard: Equatable {
             return [item]
         case .headlinePair(let pair):
             return [pair.first, pair.second]
-        case .group(let items, _, _, _), .numbered(let items, _):
+        case .group(let items, _, _, _), .numbered(let items, _), .deals(let items, _):
             return items
         }
     }
@@ -89,6 +91,12 @@ enum FeedCard: Equatable {
             if let matchedItemIndex = feeds.firstIndex(of: item) {
                 feeds[matchedItemIndex] = replacementItem
                 return .group(feeds, title: title, direction: direction, displayBrand: displayBrand)
+            }
+            return self
+        case .deals(var feeds, let title):
+            if let matchedItemIndex = feeds.firstIndex(of: item) {
+                feeds[matchedItemIndex] = replacementItem
+                return .deals(feeds, title: title)
             }
             return self
         }
@@ -211,6 +219,14 @@ class FeedDataSource {
         return deferred
     }
     
+    var isFeedContentExpired: Bool {
+        // TODO: Base this off of the last time we downloaded the feed list
+        if case .success = state {
+            return false
+        }
+        return true
+    }
+    
     func load(_ completion: @escaping () -> Void) {
         if case .success = state {
             return
@@ -314,7 +330,7 @@ class FeedDataSource {
                 let items = Array(deals.prefix(3))
                 deals.removeFirst(min(3, items.count))
                 // FIXME: Localize
-                return [.group(items, title: "Deals", direction: .horizontal, displayBrand: false)]
+                return [.deals(items, title: "Deals")]
             case .headline(let paired):
                 if articles.isEmpty { return nil }
                 let imageExists = { (item: FeedItem) -> Bool in
