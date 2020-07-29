@@ -30,6 +30,8 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     }
     
     private var gapLength: CGFloat = 0.0
+    private var extraHeight: CGFloat = 0.0
+    private let gapPadding: CGFloat = 32.0
     
     override func prepare() {
         super.prepare()
@@ -38,7 +40,17 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
             collectionView.numberOfItems(inSection: braveTodaySection) != 0,
             let attribute = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveTodaySection)) {
             let diff = collectionView.frame.height - attribute.frame.minY
-            gapLength = diff - 32
+            gapLength = diff - gapPadding
+            
+            // Obtain the total height of the Brave Today section to calculate any extra height to be added
+            // to the content size. The extra height will ensure that there is always enough space to scroll
+            // the header into full-visibility
+            let numberOfItems = collectionView.numberOfItems(inSection: braveTodaySection)
+            if let lastItemAttribute = super.layoutAttributesForItem(at: IndexPath(item: numberOfItems - 1, section: braveTodaySection)) {
+                if lastItemAttribute.frame.maxY - attribute.frame.minY < collectionView.bounds.height - gapPadding {
+                    extraHeight = (collectionView.bounds.height - gapPadding) - (lastItemAttribute.frame.maxY - attribute.frame.minY)
+                }
+            }
         }
     }
     
@@ -108,7 +120,7 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     override var collectionViewContentSize: CGSize {
         var size = super.collectionViewContentSize
         if braveTodaySection != nil {
-            size.height += gapLength
+            size.height += gapLength + extraHeight
         }
         return size
     }
