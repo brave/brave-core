@@ -137,12 +137,48 @@ bool DatabaseServerPublisherInfo::MigrateToV15(
 bool DatabaseServerPublisherInfo::MigrateToV28(
     ledger::DBTransaction* transaction) {
   DCHECK(transaction);
+  {
+    // Remove all records in existing table that don't have a
+    // corresponding record in publisher_info
+    auto command = ledger::DBCommand::New();
+    command->type = ledger::DBCommand::Type::EXECUTE;
+    command->command = base::StringPrintf(
+        "DELETE FROM %s "
+        "WHERE status = 0 OR publisher_key NOT IN "
+          "(SELECT publisher_id FROM publisher_info)",
+        kTableName);
 
-  if (!DropTable(transaction, kTableName)) {
+    transaction->commands.push_back(std::move(command));
+  }
+
+  const std::string temp_table_name = base::StringPrintf(
+      "%s_temp",
+      kTableName);
+
+  if (!RenameDBTable(transaction, kTableName, temp_table_name)) {
     return false;
   }
 
   if (!CreateTableV28(transaction)) {
+    return false;
+  }
+
+  {
+    // Move records to new table
+    auto command = ledger::DBCommand::New();
+    command->type = ledger::DBCommand::Type::EXECUTE;
+    command->command = base::StringPrintf(
+        "INSERT OR IGNORE INTO %s "
+          "(publisher_key, status, address, updated_at) "
+        "SELECT publisher_key, status, address, 0 "
+        "FROM %s",
+        kTableName,
+        temp_table_name.c_str());
+
+    transaction->commands.push_back(std::move(command));
+  }
+
+  if (!DropTable(transaction, temp_table_name)) {
     return false;
   }
 
