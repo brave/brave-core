@@ -18,6 +18,7 @@
 #include "brave/components/brave_shields/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/content/common/frame_messages.h"
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
