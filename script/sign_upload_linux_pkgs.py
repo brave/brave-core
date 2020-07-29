@@ -59,8 +59,8 @@ def main():
 
     # verify we have the the GPG key we're expecting in the public keyring
     if channel in ['release']:
-        list_keys_cmd = "GNUPGHOME=$HOME/.gnupg-release /usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
-            gpg_full_key_id)
+        list_keys_cmd = ("GNUPGHOME=$HOME/.gnupg-release /usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}"
+                         .format(gpg_full_key_id))
     else:
         list_keys_cmd = "/usr/bin/gpg2 --list-keys --with-subkey-fingerprints | grep {}".format(
             gpg_full_key_id)
