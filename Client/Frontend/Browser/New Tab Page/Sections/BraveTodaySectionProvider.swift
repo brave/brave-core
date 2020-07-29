@@ -32,10 +32,6 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         self.actionHandler = actionHandler
         
         super.init()
-        
-        self.dataSource.load { [weak self] in
-            self?.sectionDidChange?()
-        }
     }
     
     func registerCells(to collectionView: UICollectionView) {

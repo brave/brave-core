@@ -126,12 +126,19 @@ enum FeedSequenceElement {
 
 /// Powers Brave Today's feed.
 class FeedDataSource {
+    /// The current view state of the data source
     enum State {
+        /// Nothing has happened yet
         case initial
+        /// Sources and or feed content items are currently downloading, read from cache, or cards are being
+        /// generated from that data
         case loading
+        /// Cards have been successfully generated from downloaded or cached content.
         case success([FeedCard])
+        /// Some sort of error has occured when attempting to load feed content
         case failure(Error)
         
+        /// The list of generated feed cards, if the state is `success`
         var cards: [FeedCard]? {
             get {
                 if case .success(let cards) = self {
@@ -145,7 +152,7 @@ class FeedDataSource {
                 }
             }
         }
-        
+        /// The error if the state is `failure`
         var error: Error? {
             if case .failure(let error) = self {
                 return error
@@ -167,9 +174,6 @@ class FeedDataSource {
         })
         return decoder
     }()
-    
-    init() {
-    }
     
     private func loadSources() -> Deferred<Result<[FeedItem.Source], Error>> {
         let deferred = Deferred<Result<[FeedItem.Source], Error>>(value: nil, defaultQueue: .main)
@@ -309,6 +313,7 @@ class FeedDataSource {
                 if deals.isEmpty { return nil }
                 let items = Array(deals.prefix(3))
                 deals.removeFirst(min(3, items.count))
+                // FIXME: Localize
                 return [.group(items, title: "Deals", direction: .horizontal, displayBrand: false)]
             case .headline(let paired):
                 if articles.isEmpty { return nil }

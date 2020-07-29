@@ -95,7 +95,12 @@ class NewTabPageViewController: UIViewController, Themeable {
     private var background: NewTabPageBackground
     private let backgroundView = NewTabPageBackgroundView()
     private let backgroundButtonsView = NewTabPageBackgroundButtonsView()
+    
     private let feedDataSource: FeedDataSource
+    private let feedLoaderView = LoaderView(size: .small).then {
+        $0.tintColor = .white
+        $0.isHidden = true
+    }
     
     private let notifications: NewTabPageNotifications
     
@@ -226,6 +231,14 @@ class NewTabPageViewController: UIViewController, Themeable {
                 }
             }
         }
+        
+        collectionView.addSubview(feedLoaderView)
+        feedLoaderView.snp.makeConstraints {
+            $0.centerX.equalTo(collectionView.frameLayoutGuide)
+            $0.bottom.equalTo(collectionView.frameLayoutGuide).inset(16)
+        }
+        
+        loadFeedContents()
     }
     
     override func viewDidLayoutSubviews() {
@@ -478,6 +491,35 @@ class NewTabPageViewController: UIViewController, Themeable {
         notificationController = nil
     }
     
+    // MARK: - Brave Today
+    
+    private func loadFeedContents() {
+        feedLoaderView.isHidden = false
+        feedLoaderView.start()
+        feedDataSource.load { [weak self] in
+            guard let self = self else { return }
+            UIView.animate(withDuration: 0.2, animations: {
+                self.feedLoaderView.alpha = 0.0
+            }, completion: { _ in
+                self.feedLoaderView.stop()
+                self.feedLoaderView.alpha = 1.0
+                self.feedLoaderView.isHidden = true
+            })
+            self.collectionView.reloadData()
+            self.collectionView.layoutIfNeeded()
+            guard let braveTodaySection = self.layout.braveTodaySection else { return }
+            let cells = self.collectionView.indexPathsForVisibleItems
+                .filter { $0.section == braveTodaySection }
+                .compactMap(self.collectionView.cellForItem(at:))
+            cells.forEach { cell in
+                cell.transform = .init(translationX: 0, y: 200)
+                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.beginFromCurrentState], animations: {
+                    cell.transform = .identity
+                }, completion: nil)
+            }
+        }
+    }
+    
     // MARK: - Actions
     
     @objc private func tappedBraveTodaySettings() {
@@ -563,7 +605,8 @@ extension NewTabPageViewController {
             Preferences.BraveToday.isEnabled.value
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if isBraveTodayVisible {
+        guard isBraveTodayVisible, let braveTodaySection = layout.braveTodaySection else { return }
+        if collectionView.numberOfItems(inSection: braveTodaySection) > 0 {
             // Hide the buttons as BraveToday feeds appear
             backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
             // Show the header as BraveToday feeds appear
