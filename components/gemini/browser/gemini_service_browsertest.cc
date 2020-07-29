@@ -182,6 +182,15 @@ class GeminiAPIBrowserTest : public InProcessBrowserTest {
     wait_for_request_->Run();
   }
 
+  void WaitForRefreshAccessToken(bool expected_success) {
+    if (wait_for_request_) {
+      return;
+    }
+    expected_success_ = expected_success;
+    wait_for_request_.reset(new base::RunLoop);
+    wait_for_request_->Run();
+  }
+
   void OnGetOrderQuote(const std::string& quote_id,
       const std::string& quantity, const std::string& fee,
       const std::string& price, const std::string& total_price,
@@ -349,6 +358,44 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetAccessTokenServerError) {
           &GeminiAPIBrowserTest::OnGetAccessToken,
           base::Unretained(this), false)));
   WaitForGetAccessToken(false);
+}
+
+#if !defined(OS_WIN)
+IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, RefreshAccessToken) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetGeminiService();
+  service->SetAuthToken("abc123");
+  ASSERT_TRUE(service->RefreshAccessToken(
+      base::BindOnce(
+          &GeminiAPIBrowserTest::OnGetAccessToken,
+          base::Unretained(this), true)));
+  WaitForRefreshAccessToken(true);
+}
+#endif
+
+IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, RefreshTokenUnauthorized) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestUnauthorized));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetGeminiService();
+  service->SetAuthToken("abc123");
+  ASSERT_TRUE(service->RefreshAccessToken(
+      base::BindOnce(
+          &GeminiAPIBrowserTest::OnGetAccessToken,
+          base::Unretained(this), false)));
+  WaitForRefreshAccessToken(false);
+}
+
+IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, RefreshTokenServerError) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequestServerError));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetGeminiService();
+  service->SetAuthToken("abc123");
+  ASSERT_TRUE(service->RefreshAccessToken(
+      base::BindOnce(
+          &GeminiAPIBrowserTest::OnGetAccessToken,
+          base::Unretained(this), false)));
+  WaitForRefreshAccessToken(false);
 }
 
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuote) {
