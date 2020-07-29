@@ -42,19 +42,38 @@ class BraveTodaySettingsViewController: TableViewController {
                     // FIXME: Localize
                     .boolRow(title: "Show Brave Today", option: Preferences.BraveToday.isEnabled)
                 ]
-            ),
-            .init(
-                rows: [
-                    // FIXME: Localize
-                    Row(text: "Choose Your Sources", selection: {
-                        let controller = FeedSourceListViewController(dataSource: self.feedDataSource)
-                        self.navigationController?.pushViewController(controller, animated: true)
-                    }, accessory: .disclosureIndicator)
-                ]
             )
         ]
+        
+        if !feedDataSource.sources.isEmpty {
+            dataSource.sections.append(
+                .init(
+                    // FIXME: Localize
+                    header: .title("Sources"),
+                    rows: [
+                        // FIXME: Localize
+                        Row(text: "All Sources", selection: {
+                            let controller = FeedSourceListViewController(dataSource: self.feedDataSource, category: nil)
+                            self.navigationController?.pushViewController(controller, animated: true)
+                        }, accessory: .disclosureIndicator)
+                    ] + categoryRows
+                )
+            )
+        }
+        
         if !AppConstants.buildChannel.isPublic {
             // TODO: Add debug settings here
+        }
+    }
+    
+    private var categoryRows: [Row] {
+        Set(feedDataSource.sources.map(\.category))
+            .sorted(by: { $0 == "Top News" ? true : $0 < $1 })
+            .map { category in
+                Row(text: category, selection: {
+                    let controller = FeedSourceListViewController(dataSource: self.feedDataSource, category: category)
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }, accessory: .disclosureIndicator)
         }
     }
     
