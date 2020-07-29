@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import org.chromium.base.Log;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
@@ -70,6 +71,8 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -201,7 +204,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
         SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
@@ -213,6 +215,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             // Trigger BraveSyncWorker CTOR to make migration from sync v1 if sync is enabled
             BraveSyncReflectionUtils.getSyncWorker();
         }
+
+        checkForNotificationData();
 
         if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
             RateUtils.getInstance(this).setPrefRateEnabled(true);
@@ -257,6 +261,44 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
         BraveSyncReflectionUtils.showInformers();
+
+        if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
+                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
+            Tab tab = getActivityTab();
+            if (tab == null)
+                return;
+
+            // Check for tests in BravePrivateTabTest
+            if (!tab.isIncognito()) {
+                showOnboarding();
+            }
+        }
+
+        RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
+    }
+
+    private void checkForNotificationData() {
+        Intent notifIntent = getIntent();
+        if (notifIntent != null && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE) != null) {
+            Log.e("NTP", notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE));
+            String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
+            switch (notificationType) {
+            case RetentionNotificationUtil.HOUR_3:
+                checkForBraveStats();
+                break;
+            case RetentionNotificationUtil.HOUR_24:
+                checkForBraveStats();
+                break;
+            }
+        }
+    }
+
+    private void checkForBraveStats() {
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+            BraveStatsUtil.showBraveStats();
+        } else {
+            showOnboarding();
+        }
     }
 
     public void showOnboarding() {

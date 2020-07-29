@@ -917,6 +917,19 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             break;
         case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT:
         case BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT_ADS:
+            int currentGrantsCount = mBraveRewardsNativeWorker.GetCurrentGrantsCount();
+            Log.e("NTP", "Grant count : "+currentGrantsCount);
+            for (int i = 0; i < currentGrantsCount; i++) {
+                String[] grant = mBraveRewardsNativeWorker.GetCurrentGrant(i);
+                Log.e("NTP", grant[i]);
+            }
+
+            if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
+                Log.e("NTP", "BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT");
+            } else if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT_ADS) {
+                Log.e("NTP", "BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT_ADS");
+            }
+
             btClaimOk.setText(root.getResources().getString(R.string.brave_ui_claim));
 
             int grant_icon_id = (BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT == type ) ?

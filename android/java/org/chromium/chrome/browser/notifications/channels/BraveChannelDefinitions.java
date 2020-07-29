@@ -20,29 +20,33 @@ public class BraveChannelDefinitions {
     public class ChannelId {
         public static final String BRAVE_ADS = "com.brave.browser.ads";
         public static final String BRAVE_ADS_BACKGROUND = "com.brave.browser.ads.background";
-	}
+        public static final String BRAVE_STATS = "com.brave.browser.stats";
+        public static final String BRAVE_REWARDS = "com.brave.browser.rewards";
+    }
 
-    public class ChannelGroupId { public static final String BRAVE_ADS = "com.brave.browser.ads"; }
+    public class ChannelGroupId {
+        public static final String BRAVE_ADS = "com.brave.browser.ads";
+    }
 
     static protected void addBraveChannels(
-            Map<String, PredefinedChannel> map, Set<String> startup) {
+        Map<String, PredefinedChannel> map, Set<String> startup) {
         map.put(ChannelId.BRAVE_ADS,
                 PredefinedChannel.create(ChannelId.BRAVE_ADS,
-                        R.string.notification_category_brave_ads,
-                        NotificationManager.IMPORTANCE_HIGH, ChannelGroupId.BRAVE_ADS));
+                                         R.string.notification_category_brave_ads,
+                                         NotificationManager.IMPORTANCE_HIGH, ChannelGroupId.BRAVE_ADS));
         startup.add(ChannelId.BRAVE_ADS);
 
         map.put(ChannelId.BRAVE_ADS_BACKGROUND,
                 PredefinedChannel.create(ChannelId.BRAVE_ADS_BACKGROUND,
-                       R.string.notification_category_brave_ads_background,
-                       NotificationManager.IMPORTANCE_LOW, ChannelGroupId.BRAVE_ADS));
+                                         R.string.notification_category_brave_ads_background,
+                                         NotificationManager.IMPORTANCE_LOW, ChannelGroupId.BRAVE_ADS));
         startup.add(ChannelId.BRAVE_ADS_BACKGROUND);
     }
 
     static protected void addBraveChannelGroups(
-            Map<String, ChannelDefinitions.PredefinedChannelGroup> map) {
+        Map<String, ChannelDefinitions.PredefinedChannelGroup> map) {
         map.put(ChannelGroupId.BRAVE_ADS,
                 new ChannelDefinitions.PredefinedChannelGroup(
-                        ChannelGroupId.BRAVE_ADS, R.string.notification_category_group_brave_ads));
+                    ChannelGroupId.BRAVE_ADS, R.string.notification_category_group_brave_ads));
     }
 }

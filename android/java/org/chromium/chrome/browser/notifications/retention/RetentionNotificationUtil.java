@@ -16,7 +16,6 @@ import androidx.core.app.NotificationCompat;
 import org.chromium.chrome.R;
 
 import org.chromium.base.Log;
-import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 
@@ -35,14 +34,10 @@ public class RetentionNotificationUtil {
 
     private static Map<String, RetentionNotification> mNotificationMap = new HashMap<String, RetentionNotification>() {
         {
-            put(HOUR_3, new RetentionNotification(3, 1, "Brave Stats", "Brave Stats", "Browse the web faster with Brave.\n" +
-                                                  "You blocked X trackers & ads with Brave browser in the past 3 hours. "));
-            put(HOUR_24, new RetentionNotification(24, 24 * 60, "Brave Stats", "Brave Stats", "Browse the web faster with Brave.\n" +
-                                                   "You blocked X trackers & ads with Brave browser in the past 3 hours. "));
-            put(HOUR_48, new RetentionNotification(48, 48 * 60, "Brave Stats", "Brave Stats", "Browse the web faster with Brave.\n" +
-                                                   "You blocked X trackers & ads with Brave browser in the past 3 hours. "));
-            put(EVERY_SUNDAY, new RetentionNotification(7, -1, "Brave Stats", "Brave Stats", "Browse the web faster with Brave.\n" +
-                    "You blocked X trackers & ads with Brave browser in the past 3 hours. "));
+            put(HOUR_3, new RetentionNotification(3, 1, "Brave Stats", "Brave Stats"));
+            put(HOUR_24, new RetentionNotification(24, 24 * 60, "Brave Stats", "Brave Stats"));
+            put(HOUR_48, new RetentionNotification(48, 48 * 60, "Brave Stats", "Brave Stats"));
+            put(EVERY_SUNDAY, new RetentionNotification(7, -1, "Brave Stats", "Brave Stats"));
         }
     };
 

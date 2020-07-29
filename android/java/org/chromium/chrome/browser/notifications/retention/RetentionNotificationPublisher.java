@@ -15,10 +15,7 @@ import android.net.Uri;
 
 import org.chromium.base.Log;
 import org.chromium.base.ApplicationStatus;
-import org.chromium.components.embedder_support.util.UrlConstants;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.BraveActivity;
-import org.chromium.chrome.browser.ChromeActivity;
 
 public class RetentionNotificationPublisher extends BroadcastReceiver {
     private static final String NOTIFICATION_CHANNEL_NAME = "brave";
@@ -31,34 +28,42 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             if (braveActivity != null) {
                 braveActivity.showOnboarding();
             } else {
-                String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
-                RetentionNotification retentionNotification = RetentionNotificationUtil.getNotificationObject(notificationType);
-                // if (ApplicationStatus.hasVisibleActivities()) {
-                //     return;
-                // }
-                Intent launchIntent =
-                    context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-                if (launchIntent != null) {
-                    launchIntent.setFlags(
-                        Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-                    launchIntent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE, notificationType);
-                    context.startActivity(launchIntent);
-                }
+                backgroundNotificationAction(context, intent);
             }
         } else {
-            String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
-            RetentionNotification retentionNotification = RetentionNotificationUtil.getNotificationObject(notificationType);
-            NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context. NOTIFICATION_SERVICE);
-            Log.e("NTP", "Notification : "+ notificationType);
-            Notification notification = RetentionNotificationUtil.getNotification(context, notificationType);
-            if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
-                int importance = NotificationManager.IMPORTANCE_HIGH ;
-                NotificationChannel notificationChannel = new NotificationChannel(retentionNotification.getChannelId() , NOTIFICATION_CHANNEL_NAME, importance) ;
-                assert notificationManager != null;
-                notificationManager.createNotificationChannel(notificationChannel);
-            }
+            createNotification(context, intent);
+        }
+    }
+
+    private void createNotification(Context context, Intent intent) {
+        String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
+        RetentionNotification retentionNotification = RetentionNotificationUtil.getNotificationObject(notificationType);
+        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context. NOTIFICATION_SERVICE);
+        Log.e("NTP", "Notification : " + notificationType);
+        Notification notification = RetentionNotificationUtil.getNotification(context, notificationType);
+        if (android.os.Build.VERSION. SDK_INT >= android.os.Build.VERSION_CODES. O ) {
+            int importance = NotificationManager.IMPORTANCE_HIGH ;
+            NotificationChannel notificationChannel = new NotificationChannel(retentionNotification.getChannelId() , NOTIFICATION_CHANNEL_NAME, importance) ;
             assert notificationManager != null;
-            notificationManager.notify(retentionNotification.getNotificationId(), notification) ;
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+        assert notificationManager != null;
+        notificationManager.notify(retentionNotification.getNotificationId(), notification) ;
+    }
+
+    private void backgroundNotificationAction(Context context, Intent intent) {
+        String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
+        RetentionNotification retentionNotification = RetentionNotificationUtil.getNotificationObject(notificationType);
+        if (ApplicationStatus.hasVisibleActivities()) {
+            return;
+        }
+        Intent launchIntent =
+            context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+        if (launchIntent != null) {
+            launchIntent.setFlags(
+                Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            launchIntent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE, notificationType);
+            context.startActivity(launchIntent);
         }
     }
 }
