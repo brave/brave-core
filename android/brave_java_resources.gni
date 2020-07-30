@@ -630,7 +630,6 @@ brave_java_resources = [
   "java/res/drawable-xxxhdpi/bat_unverified.png",
   "java/res/drawable-xxxhdpi/share_icon.png",
   "java/res/drawable-xxxhdpi/omnibox_https_valid.png",
-  "java/res/drawable-xxxhdpi/ic_cross_modal.png",
   "java/res/drawable-xxxhdpi/search_engine_yahoo.png",
   "java/res/layout/brave_shields_ads_tracking_switcher.xml",
   "java/res/layout/web_notification_icon_frame_brave.xml",
