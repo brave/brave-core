@@ -7,36 +7,42 @@ import Foundation
 import CoreData
 
 public final class BraveTodaySourceMO: NSManagedObject, CRUD {
-    @NSManaged var enabled: Bool
-    @NSManaged var publisherID: String
-    @NSManaged var publisherLogo: String?
-    @NSManaged var publisherName: String
-    @NSManaged var items: [BraveTodayFeedItemMO]
+    @NSManaged public var enabled: Bool
+    @NSManaged public var publisherID: String
     
-    public class func insert(publisherID: String, publisherLogo: String?, publisherName: String) {
-        insertInternal(publisherID: publisherID, publisherLogo: publisherLogo, publisherName: publisherName)
+    public class func all() -> [BraveTodaySourceMO] {
+        all() ?? []
     }
     
-    public class func insert(from list: [(publisherID: String, publisherLogo: String?, publisherName: String)]) {
-        // TODO: Add batch inserts? There should not be that many publisher to be a performance problem.
-        
-        DataController.perform { context in
-            list.forEach {
-                insertInternal(publisherID: $0.publisherID, publisherLogo: $0.publisherLogo,
-                               publisherName: $0.publisherName, context: .existing(context))
+    public class func setEnabled(forId id: String, enabled: Bool) {
+        setEnabledInternal(forId: id, enabled: enabled)
+    }
+    
+    public class func resetSourceSelection() {
+        deleteAll()
+    }
+    
+    class func getInternal(fromId id: String, context: NSManagedObjectContext = DataController.viewContext) -> BraveTodaySourceMO? {
+        let predicate = NSPredicate(format: "\(#keyPath(BraveTodaySourceMO.publisherID)) == %@", id)
+        return first(where: predicate, context: context)
+    }
+    
+    class func setEnabledInternal(forId id: String, enabled: Bool, context: WriteContext = .new(inMemory: false)) {
+        DataController.perform(context: context) { context in
+            if let source = getInternal(fromId: id, context: context) {
+                source.enabled = enabled
+            } else {
+                insertInternal(publisherID: id, enabled: enabled, context: .existing(context))
             }
         }
     }
     
-    class func insertInternal(enabled: Bool = true, publisherID: String, publisherLogo: String?,
-                              publisherName: String, context: WriteContext = .new(inMemory: false)) {
-        
+    class func insertInternal(publisherID: String, enabled: Bool, context: WriteContext = .new(inMemory: false)) {
         DataController.perform(context: context) { context in
             let source = BraveTodaySourceMO(entity: entity(in: context), insertInto: context)
             
             source.enabled = enabled
             source.publisherID = publisherID
-            source.publisherLogo = publisherLogo
         }
     }
     
