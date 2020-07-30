@@ -73,6 +73,7 @@ import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.ntp.NewTabPage;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -274,7 +275,15 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             }
         }
 
-        RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
+        if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()) {
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_24);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_6);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_10);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_30);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_35);
+            OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
+        }
     }
 
     private void checkForNotificationData() {
@@ -284,20 +293,37 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
             switch (notificationType) {
             case RetentionNotificationUtil.HOUR_3:
+            case RetentionNotificationUtil.HOUR_24:
+            case RetentionNotificationUtil.EVERY_SUNDAY:
                 checkForBraveStats();
                 break;
-            case RetentionNotificationUtil.HOUR_24:
-                checkForBraveStats();
+            case RetentionNotificationUtil.DAY_6:
+            case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
+            case RetentionNotificationUtil.BRAVE_STATS_DATA:
+            case RetentionNotificationUtil.BRAVE_STATS_TIME:
+                if (!NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+                    getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                }
+                break;
+            case RetentionNotificationUtil.DAY_10:
+            case RetentionNotificationUtil.DAY_30:
+            case RetentionNotificationUtil.DAY_35:
+                openRewardsPanel();
                 break;
             }
         }
     }
 
-    private void checkForBraveStats() {
+    public void checkForBraveStats() {
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
-            showOnboarding();
+            if (!NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+                OnboardingPrefManager.getInstance().setFromNotification(true);
+                getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+            } else {
+                showOnboarding();
+            }
         }
     }
 
