@@ -400,6 +400,7 @@ NS_SWIFT_NAME(ExternalWallet)
 @property (nonatomic, copy) NSString * oneTimeString;
 @property (nonatomic, copy) NSString * userName;
 @property (nonatomic, copy) NSString * accountUrl;
+@property (nonatomic, copy) NSString * loginUrl;
 @property (nonatomic) bool transferred;
 @end
 
