@@ -10,25 +10,61 @@ let memoryTodayData: BraveToday.Feed | undefined
 
 let readLock: Promise<void> | null
 
-function updateFeed() {
+const getLocalDataLock = new Promise<void>(resolve => {
+  chrome.storage.local.get('today', (data) => {
+    if (data && data.today) {
+      memoryTodayData = data.today
+    }
+    resolve()
+  })
+})
+
+
+function performUpdateFeed() {
+  // Sanity check
+  if (readLock) {
+    console.error('Asked to update feed but already waiting for another update!')
+    return
+  }
   // Only run this once at a time, otherwise wait for the update
-  readLock = new Promise(async function (resolve) {
+  readLock = new Promise(async function (resolve, reject) {
     try {
       const feedResponse = await fetch(feedUrl)
       if (feedResponse.ok) {
         const feedContents: RemoteData = await feedResponse.json()
         console.log('Got feed', feedContents)
         memoryTodayData = await feedToData(feedContents)
+        resolve()
+        chrome.storage.local.set({ today: memoryTodayData })
       } else {
-        console.error(`Not ok when fetching feed. Status ${feedResponse.status} (${feedResponse.statusText})`)
+        throw new Error(`Not ok when fetching feed. Status ${feedResponse.status} (${feedResponse.statusText})`)
       }
     } catch (e) {
       console.error('Could not process feed contents from ', feedUrl)
-      throw e
+      reject(e)
     } finally {
       readLock = null
     }
   })
+}
+
+
+async function getOrFetchData() {
+  await getLocalDataLock
+  if (memoryTodayData) {
+    return memoryTodayData
+  } else {
+    return await updateFeed()
+  }
+}
+
+async function updateFeed() {
+  // Fetch but only once at a time, and wait.
+  if (!readLock) {
+    performUpdateFeed()
+  }
+  await readLock
+  return memoryTodayData
 }
 
 
@@ -51,20 +87,12 @@ Background.setListener<Messages.GetFeedResponse>(
   MessageTypes.getFeed,
   async function (req, sender, sendResponse) {
     console.log('asked to get feed')
-    if (!memoryTodayData) {
-      // Fetch but only once at a time, and wait. No point returning no data
-      if (!readLock) {
-        updateFeed()
-      }
-      await readLock
-    }
-    await Promise.resolve(true)
+    const feed = await getOrFetchData()
     // Only wait once. If there was an error or no data then return nothing.
     // TODO: return error status
-    console.log('sending', memoryTodayData)
-
+    console.log('sending', feed)
     sendResponse({
-      feed: memoryTodayData
+      feed
     })
   }
 )
@@ -84,14 +112,4 @@ Background.setListener<Messages.GetFeedImageDataResponse, Messages.GetFeedImageD
   }
 )
 
-
-
-
-
-// chrome.runtime.onMessageExternal.addListener(function (req, sender, sendResponse) {
-//   console.log('got something', req, sender);
-//   sendResponse({ got: true });
-// })
-
 // TODO: schedule to update feed
-// updateFeed()
