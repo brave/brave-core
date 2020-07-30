@@ -5,6 +5,13 @@
     </intent-filter>
 </receiver>
 
+<receiver android:name="org.chromium.chrome.browser.notifications.retention.RetentionNotificationPublisher"
+    android:exported="false">
+    <intent-filter>
+          <action android:name="RETENTION_NOTIFICATION_ACTION"/>
+    </intent-filter>
+</receiver>
+
 <activity android:name="org.chromium.chrome.browser.BraveRewardsDonationSentActivity"
     android:theme="@android:style/Theme.Translucent.NoTitleBar"
     android:configChanges="orientation|keyboardHidden|keyboard|screenSize|mcc|mnc|screenLayout|smallestScreenSize" />
