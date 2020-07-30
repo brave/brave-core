@@ -62,6 +62,12 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "getPermissionsLinkMessage"));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "getSearchEngineSourceType"));
+        Assert.assertTrue(methodExists(
+                "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
+                "sortAndFilterUnnecessaryTemplateUrl"));
     }
 
     @Test
