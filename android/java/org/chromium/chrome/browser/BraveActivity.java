@@ -263,18 +263,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
         BraveSyncReflectionUtils.showInformers();
 
-        if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
-                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            Tab tab = getActivityTab();
-            if (tab == null)
-                return;
-
-            // Check for tests in BravePrivateTabTest
-            if (!tab.isIncognito()) {
-                showOnboarding();
-            }
-        }
-
         if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()) {
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
             RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_24);
