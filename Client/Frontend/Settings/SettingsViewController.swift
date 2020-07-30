@@ -347,10 +347,11 @@ class SettingsViewController: TableViewController {
             Row(text: Strings.clearPrivateData,
                 selection: { [unowned self] in
                     // Show Clear private data screen
-                    let clearPrivateData = ClearPrivateDataTableViewController().then {
-                        $0.profile = self.profile
-                        $0.tabManager = self.tabManager
-                    }
+                    let clearPrivateData = ClearPrivateDataTableViewController(
+                        profile: self.profile,
+                        tabManager: self.tabManager,
+                        feedDataSource: self.feedDataSource
+                    )
                     self.navigationController?.pushViewController(clearPrivateData, animated: true)
                 },
                 accessory: .disclosureIndicator,

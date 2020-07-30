@@ -334,6 +334,27 @@ class FeedDataSource {
         }
     }
     
+    /// Clears any cached files from the users device
+    @discardableResult
+    func clearCachedFiles() -> Bool {
+        do {
+            let fileManager = FileManager.default
+            if let braveTodayPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName) {
+                let filePaths = try fileManager.contentsOfDirectory(atPath: braveTodayPath.path)
+                try filePaths.forEach {
+                    var fileUrl = braveTodayPath
+                    fileUrl.appendPathComponent($0)
+                    try fileManager.removeItem(atPath: fileUrl.path)
+                }
+            }
+            // state = .initial
+        } catch {
+            logger.error("Could not remove cached files")
+            return false
+        }
+        return true
+    }
+    
     /// Toggle a source's enabled status
     func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
         guard let cards = state.cards, let sourceIndex = sources.firstIndex(where: { $0.id == source.id }) else { return }
