@@ -144,12 +144,6 @@ CHAR-LIMIT guidelines:
         Close all private tabs
       </message>
 
-      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user (who is currently in private mode) that the site they are currently using is going to share data with an external application." formatter_data="android_java">
-        This site is about to share information with an app outside of private mode.
-      </message>
-      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING_TITLE" desc="Title for dialog asking if the user wants to leave private mode. [CHAR-LIMIT=32]" formatter_data="android_java">
-        Leave private mode?
-      </message>
       <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new private browser tab.">
         New private tab
       </message>

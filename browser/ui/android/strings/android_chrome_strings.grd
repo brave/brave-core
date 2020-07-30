@@ -679,6 +679,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PREFS_PRIVACY" desc="Title for the Privacy preferences. [CHAR-LIMIT=32]">
         Privacy
       </message>
+      <message name="IDS_PREFS_PRIVACY_SECURITY" desc="Title for the Privacy and Security preferences. [CHAR-LIMIT=32]">
+        Privacy and security
+      </message>
       <message name="IDS_SAFE_BROWSING_SCOUT_REPORTING_TITLE" desc="Title for checkbox that controls reporting data to detect bad apps/sites. Please ensure ‘Safe Browsing’ in this message matches the ‘Safe Browsing’ settings title.">
         Help improve Brave security
       </message>
@@ -869,11 +872,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
 
       <!-- Safety check -->
-      <message name="IDS_PREFS_SAFETY_CHECK" desc="Title of the Safety check element in settings, allowing the user to check multiple areas of browser safety. [CHAR-LIMIT=32]">
-        Safety check
+      <message name="IDS_PREFS_SAFETY_CHECK" desc="Title of the Safety check element in settings, allowing the user to check multiple areas of browser safety. The NEW label is displayed when the number of times the user ran the check is less than 3. [CHAR-LIMIT=32]">
+        Safety check <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
       <message name="IDS_SAFETY_CHECK_DESCRIPTION" desc="Introduces the safety check categories to the user. Followed by several items, such as 'Safe Browsing', 'Updates', 'Passwords'.">
-        Brave can check if your settings are protecting you from:
+        Brave can help keep you safe from data breaches, unsafe websites, and more
       </message>
       <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing section.">
         Safe Browsing
@@ -887,17 +890,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_CHECK_BUTTON" desc="Text for the button to start Safety check.">
         Check now
       </message>
-      <message name="IDS_SAFETY_CHECK_UNCHECKED" desc="A given element has not been checked.">
-        Unchecked
-      </message>
-      <message name="IDS_SAFETY_CHECK_CHECKING" desc="A given element is being checked.">
-        Checking
-      </message>
       <message name="IDS_SAFETY_CHECK_ERROR" desc="A generic error state.">
         An error occurred.
       </message>
       <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_DISABLED" desc="Text to display when Safe Browsing is disabled.">
-        Safe Browsing is off. Brave recommends turning it on.
+        Off <ph name="SEPARATOR">•</ph> Not recommended
       </message>
       <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD" desc="Text to display when Safe Browsing is set to standard protection.">
         Standard Protection is on
@@ -906,10 +903,51 @@ Your Brave account may have other forms of browsing history like searches and ac
         Enhanced Protection is on
       </message>
       <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_DISABLED_BY_ADMIN" desc="Text to display when Safe Browsing is disabled by admin.">
-        <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off Safe Browsing
+        Your administrator has turned off Safe Browsing
       </message>
       <message name="IDS_SAFETY_CHECK_PASSWORDS_NO_PASSWORDS" desc="Text to display when no passwords are saved.">
-        No saved passwords. Brave can check your passwords when you save them.
+        No saved passwords
+      </message>
+      <message name="IDS_SAFETY_CHECK_UPDATES_UPDATED" desc="Text to display when the updates check confirms that the latest version is already installed.">
+        You are running the latest version of Brave
+      </message>
+      <message name="IDS_SAFETY_CHECK_UPDATES_OUTDATED" desc="Text to display when the updates check detects a new version.">
+        A newer version of Brave is available. Tap this element to go to the Play Store.
+      </message>
+      <message name="IDS_SAFETY_CHECK_UPDATES_OFFLINE" desc="Text to display when the updates check failed because of no connectivity.">
+        Brave can't check for updates. Try checking your internet connection.
+      </message>
+      <message name="IDS_SAFETY_CHECK_UPDATES_ERROR" desc="Text to display when the updates check failed for some reason.">
+        Brave can’t check for updates
+      </message>
+
+       <!-- Security preferences -->
+      <message name="IDS_PREFS_SECURITY_TITLE" desc="Title for the Security preferences. [CHAR-LIMIT=32]">
+        Security
+      </message>
+      <message name="IDS_PREFS_SECURITY_SUMMARY" desc="Summary for the Security preferences.">
+        Safe Browsing (protection from dangerous sites) and other security settings
+      </message>
+      <message name="IDS_PREFS_SECTION_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing section. [CHAR-LIMIT=32]">
+        Safe Browsing
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_TITLE" desc="Title for Safe Browsing enhanced protection mode. [CHAR-LIMIT=32]">
+        Enhanced protection
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY" desc="Summary for Safe Browsing enhanced protection mode.">
+        Faster, proactive protection against dangerous websites, downloads, and extensions. Warns you about password breaches. Requires browsing data to be sent to Brave.
+      </message>
+      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_TITLE" desc="Title for Safe Browsing standard protection mode. [CHAR-LIMIT=32]">
+        Standard protection
+      </message>
+      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY" desc="Summary for Safe Browsing standard protection mode.">
+        Standard protection against websites, downloads, and extensions that are known to be dangerous.
+      </message>
+      <message name="IDS_SAFE_BROWSING_NO_PROTECTION_TITLE" desc="Title for Safe Browsing no protection mode. [CHAR-LIMIT=32]">
+        No protection (not recommended)
+      </message>
+      <message name="IDS_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
+        Does not protect you against dangerous websites, downloads, and extensions. You’ll still get Safe Browsing protection, where available, in other Brave services, like Gmail and Search.
       </message>
 
       <!-- Accessibility preferences -->
@@ -1604,9 +1642,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- InfoBar -->
-      <message name="IDS_BOTTOM_BAR_SCREEN_POSITION" desc="Accessibility label to inform users about the InfoBar location">
-        Options available near bottom of the screen
-      </message>
       <message name="IDS_TOP_BAR_SCREEN_POSITION" desc="Accessibility label to inform users about the InfoBar location">
         Options available near top of the screen
       </message>
@@ -1709,41 +1744,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Update to get your language in the latest version of Brave
       </message>
 
-      <!-- TranslateInfoBar -->
-      <message name="IDS_TRANSLATE_INFOBAR_ERROR">
-        Oops. This page could not be translated.
-      </message>
-      <message name="IDS_TRANSLATE_BUTTON" desc="Possible texts to display on the translate infobar buttons. [CHAR-LIMIT=24]">
-        Translate
-      </message>
-      <message name="IDS_TRANSLATE_NEVER_TRANSLATE_SITE" desc="Text to display on the never translate site (like www.google.com) button. [CHAR-LIMIT=64]">
-        Never translate this site
-      </message>
-
-      <message name="IDS_TRANSLATE_OPTION_ALWAYS_TRANSLATE" desc="Option in the Brave menu. User can click the 'Always Translate' option to indicate that they want Brave to translate pages in this language automatically. Imperative.">
-        Always translate pages in <ph name="SOURCE_LANGUAGE">%1$s<ex>French</ex></ph>
-      </message>
-      <message name="IDS_TRANSLATE_OPTION_NEVER_TRANSLATE" desc="Option in the Brave menu. User can click the 'Never Translate' option to indicate that they never want Brave to translate pages in this language. The variable SOURCE_LANGUAGE could be any of 50+ languages supported by Brave Translate, like French, Spanish, German, Italian, Japanese, Korean, etc. Imperative.">
-        Never translate pages in <ph name="SOURCE_LANGUAGE">%1$s<ex>French</ex></ph>
-      </message>
-      <message name="IDS_TRANSLATE_OPTION_MORE_LANGUAGE" desc="Option in the Brave menu. Lets the user open a dialog to choose other target languages for translation, from a list of available languages. [CHAR-LIMIT=64]">
-        More languages
-      </message>
-      <message name="IDS_TRANSLATE_OPTION_NOT_SOURCE_LANGUAGE" desc="Option in the Brave menu. Sometimes a web page's source language is not correctly identified by Brave Translate, and this menu option lets the user open a submenu to select another language as the source language to translate. Phrased as a question as if to query the user, 'Is this page not in [source language identified]? If so, click here.' [CHAR-LIMIT=64]">
-        Page is not in <ph name="LANGUAGE">%1$s<ex>French</ex></ph>?
-      </message>
-      <message name="IDS_TRANSLATE_SNACKBAR_ALWAYS_TRANSLATE" desc="After the user selects 'Always translate pages in [LANGUAGE]', this text confirms the user's choice and lets them know that pages in [LANGUAGE] will be translated to their chosen target language automatically. Imperative. [CHAR-LIMIT=64]">
-        Pages in <ph name="SOURCE_LANGUAGE">%1$s<ex>French</ex></ph> will be translated to <ph name="TARGET_LANGUAGE">%2$s<ex>English</ex></ph> from now on
-      </message>
-      <message name="IDS_TRANSLATE_SNACKBAR_LANGUAGE_NEVER" desc="After the user selects 'Never translate pages in [LANGUAGE]', this text confirms the user's choice and lets them know that pages in [LANGUAGE] will not be translated to their chosen target language automatically. Imperative[CHAR-LIMIT=64]">
-        Pages in <ph name="LANGUAGE">%1$s<ex>French</ex></ph> will not be translated
-      </message>
-      <message name="IDS_TRANSLATE_SNACKBAR_SITE_NEVER" desc="Text to be displayed in translate snackbar that lets the user know this site will not be translated. [CHAR-LIMIT=64]">
-        This site will not be translated
-      </message>
-      <message name="IDS_TRANSLATE_SNACKBAR_CANCEL" desc="A text label on the translate snackbar widget to cancel the this selection. [CHAR-LIMIT=16]">
-        Cancel
-      </message>
       <message name="IDS_MENU_TRANSLATE" desc="Menu item for triggering a page translation. The word 'Translate' should match the translation in TC ID 1613971242435858090. [CHAR-LIMIT=27]">
         Translate…
       </message>
@@ -2261,6 +2261,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_ADD_ACCOUNT" desc="Text for adding another Brave sync chain">
         Add account
       </message>
+      <message name="IDS_SIGNIN_ADD_ACCOUNT_TO_DEVICE" desc="Text for adding another Brave Account to device in the web sign-in flow and account picker dialog, users will be asked to add an account to his device when this text is tapped">
+        Add account to device
+      </message>
       <message name="IDS_SIGNIN_GMS_UPDATING" desc="Message notifying user that Google Play Services is still updating.">
         Waiting for Google Play Services to finish updating
       </message>
@@ -2330,18 +2333,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Turn on sync
       </message>
 
-      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user (who is currently in private mode) that the site they are currently using is going to share data with an external application." formatter_data="android_java">
-        This site is about to share information with an app outside of private mode.
-      </message>
-      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING_TITLE" desc="Title for dialog asking if the user wants to leave private mode. [CHAR-LIMIT=32]" formatter_data="android_java">
-        Leave private mode?
-      </message>
-      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_STAY" desc="Label for the dialog button to stay in private mode. [CHAR-LIMIT=20]" formatter_data="android_java">
-        Stay
-      </message>
-      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_LEAVE" desc="Label for the dialog button to leave private mode. [CHAR-LIMIT=20]" formatter_data="android_java">
-        Leave
-      </message>
       <message name="IDS_EXTERNAL_APP_RESTRICTED_ACCESS_ERROR" desc="A message shown to the user if Brave receives a file view request to something Brave does not have access to view." formatter_data="android_java">
         Brave does not have access to the requested resource.
       </message>
@@ -2431,27 +2422,31 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_NTP_TURN_ON_FEED" desc="Content description to turn on the feed from the feed header overflow menu.">
         Turn on
       </message>
-      <message name="IDS_NTP_DISCOVER_ON" desc="Title in the feed header when the feed is turned on. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+      <message name="IDS_NTP_DISCOVER_ON" desc="Title in the feed header when the feed is turned on. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover
       </message>
-      <message name="IDS_NTP_DISCOVER_ON_BRANDED" desc="Title in the feed header when the feed is turned on and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+      <message name="IDS_NTP_DISCOVER_ON_BRANDED" desc="Title in the feed header when the feed is turned on and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover by Brave
       </message>
-      <message name="IDS_NTP_DISCOVER_OFF" desc="Title in the feed header when the feed is turned off. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+      <message name="IDS_NTP_DISCOVER_OFF" desc="Title in the feed header when the feed is turned off. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover - off
       </message>
-      <message name="IDS_NTP_DISCOVER_OFF_BRANDED" desc="Title in the feed header when the feed is turned off and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+      <message name="IDS_NTP_DISCOVER_OFF_BRANDED" desc="Title in the feed header when the feed is turned off and the default search engine is not Brave. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Discover by Brave - off
       </message>
       <message name="IDS_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
         Control your stories and activity here
       </message>
-      <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_BUTTON" desc="Content description for the feed header menu button. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager.">
+      <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_BUTTON" desc="Content description for the feed header menu button. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278).">
         Options for Discover
       </message>
-      <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed.">
+      <message name="IDS_ACCESSIBILITY_NTP_FEED_MENU_IPH" desc="In-product help that points at the menu icon for the news feed on Brave's new tab page. This string instructs the user to open the menu for settings that let them control the content that appears on the feed. Please use the branded term for Discover (TC ID 1799975766543019278).">
         Control your stories from the Options for Discover button
       </message>
+      <message name="IDS_DISCOVER_NO_CARDS" desc="Message title for the article feed on the New Tab Page. Shown when the user is connected to the internet but no new feed content could be fetched. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 7331961212006720987 for the corresponding message in Discover.">No stories available</message>
+      <message name="IDS_DISCOVER_NO_CARDS_INSTRUCTIONS" desc="Message body for the article feed on the New Tab Page. Instructs the user to come back later when new feed content is available. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 7331961212006720987 for the corresponding message in Discover.">Check back later for new stories</message>
+      <message name="IDS_DISCOVER_CANT_REFRESH" desc="Message title for the article feed on the New Tab Page. Shown when feed content is not available because there is no internet connection. Please use the branded term for Discover, as listed under Product Names in the Brave Glossary Manager (TC ID 1799975766543019278). Also see TC ID 6114827482740570724 for the corresponding message in Discover.">Can't refresh Discover</message>
+      <message name="IDS_DISCOVER_CANT_REFRESH_INSTRUCTIONS" desc="Message body for the article feed on the New Tab Page. Instructs the user to wait and try to refresh the feed once the internet connection returns. Please translate 'stories' to match its use in TC ID 792300740424433300. Also see TC ID 6114827482740570724 for the corresponding message in Discover.">Check back later for new stories</message>
 
       <!-- Explore sites strings -->
       <message name="IDS_EXPLORE_SITES_TITLE" desc="Title of a section showing different categories, each with a number of popular websites">
@@ -3684,14 +3679,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Download
       </message>
 
-      <message name="IDS_QR_CODE_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR code.">
-          Can't create QR code. URL is more than <ph name="CHARACTER_LIMIT">%1$d<ex>300</ex></ph> characters.
-      </message>
-
-      <message name="IDS_QR_CODE_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
-          Can't create QR code
-      </message>
-
       <!-- Sharing Hub -->
       <message name="IDS_SHARING_MORE_ICON_LABEL" desc="Icon label for the More button in the sharing hub.">
         More
@@ -3707,6 +3694,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <message name="IDS_SHARING_SCREENSHOT" desc="Label for Screenshot button in the sharing hub.">
         Screenshot
+      </message>
+
+      <message name="IDS_SHARING_HIGHLIGHTS" desc="Label for Link-to-text button in the sharing hub.">
+        Link to text
       </message>
 
       <message name="IDS_LINK_COPIED" desc="Text shown in the toast notification when Copy Link is selected in the sharing hub.">

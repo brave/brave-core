@@ -95,6 +95,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_win">
         </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
       <if expr="not chromeos">
         </if>
       <if expr="chromeos">
