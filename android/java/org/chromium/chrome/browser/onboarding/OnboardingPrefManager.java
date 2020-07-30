@@ -53,7 +53,7 @@ public class OnboardingPrefManager {
     public static boolean isNotification;
 
     private static final String GOOGLE = "Google";
-    private static final String DUCKDUCKGO = "DuckDuckGo";
+    public static final String DUCKDUCKGO = "DuckDuckGo";
     private static final String DUCKDUCKGOLITE = "DuckDuckGo Lite";
     private static final String QWANT = "Qwant";
     private static final String BING = "Bing";
