@@ -48,10 +48,39 @@ export function gridSitesReducerSetDefaultSuperReferralTopSites (
   return state
 }
 
+export function gridSitesReducerUpdateDefaultSuperReferralTopSites (
+  state: NewTab.GridSitesState,
+  defaultSuperReferralTopSites: NewTab.DefaultSuperReferralTopSite[]
+): NewTab.GridSitesState {
+  // If defaultSRTopSite is undefined, this data is used from previous brave version.
+  // Then, set this property.
+  if (state.gridSites.length === 0 || state.gridSites[0].defaultSRTopSite !== undefined) {
+    return state
+  }
+
+  // So far, we don't tag whether this item comes from default SR or not.
+  // W/o this tag, we can't determine whether we should delete this item when
+  // history doesn't have this item. Default top sites from SR should not be
+  // deleted unless user deletes it explicitely.
+  const updatedGridSites: NewTab.Site[] = state.gridSites
+  for (const gridSite of updatedGridSites) {
+    // Tagging whether this site comes from SR data or not only once.
+    if (defaultSuperReferralTopSites.find(site => site.url === gridSite.url)) {
+      gridSite['defaultSRTopSite'] = true
+    } else {
+      gridSite['defaultSRTopSite'] = false
+    }
+  }
+  state = {
+    ...state,
+    gridSites: updatedGridSites
+  }
+  return state
+}
+
 export function gridSitesReducerSetFirstRenderData (
   state: NewTab.GridSitesState,
-  topSites: chrome.topSites.MostVisitedURL[],
-  defaultSuperReferralTopSites: NewTab.DefaultSuperReferralTopSite[]
+  topSites: chrome.topSites.MostVisitedURL[]
 ): NewTab.GridSitesState {
   const topSitesWhitelisted = getTopSitesWhitelist(topSites)
   // |state.gridSites| has lastly used sites data for NTP.
@@ -60,8 +89,7 @@ export function gridSitesReducerSetFirstRenderData (
   const updatedGridSites: NewTab.Site[] = state.gridSites.filter((gridSite: NewTab.Site) => {
     // Don't delete top sites came from SR's default top sites even if they
     // are not in history.
-    if (defaultSuperReferralTopSites &&
-        defaultSuperReferralTopSites.some(site => site.url === gridSite.url)) {
+    if (gridSite.defaultSRTopSite) {
       return true
     }
     return topSitesWhitelisted.some(site => site.url === gridSite.url)

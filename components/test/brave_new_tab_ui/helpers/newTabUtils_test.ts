@@ -158,7 +158,7 @@ describe('new tab util files tests', () => {
       }
       const assertion = newTabUtils.generateGridSiteProperties(1337, newUrl)
       const expected = [
-        'title', 'url', 'id', 'letter', 'favicon', 'pinnedIndex'
+        'title', 'url', 'id', 'letter', 'favicon', 'pinnedIndex', 'defaultSRTopSite'
       ]
       expect(Object.keys(assertion).every(item => expected.includes(item)))
         .toBe(true)
