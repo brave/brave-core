@@ -23,6 +23,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.CommandLine;
@@ -67,11 +69,10 @@ import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
+import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import java.util.Calendar;
 
 /**
  * Brave's extension for ChromeActivity
@@ -256,6 +257,22 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
         BraveSyncReflectionUtils.showInformers();
+    }
+
+    public void showOnboarding() {
+        OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
+        FragmentManager fm = getSupportFragmentManager();
+        HighlightDialogFragment fragment = (HighlightDialogFragment) fm
+                                           .findFragmentByTag(HighlightDialogFragment.TAG_FRAGMENT);
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        if (fragment != null) {
+            transaction.remove(fragment);
+        }
+
+        fragment = new HighlightDialogFragment();
+        transaction.add(fragment, HighlightDialogFragment.TAG_FRAGMENT);
+        transaction.commit();
     }
 
     private void createNotificationChannel() {
@@ -499,9 +516,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
 
     @Override
     protected @LaunchIntentDispatcher.Action int maybeDispatchLaunchIntent(
-            Intent intent, Bundle savedInstanceState) {
+        Intent intent, Bundle savedInstanceState) {
         boolean notificationUpdate = IntentUtils.safeGetBooleanExtra(
-                intent, BravePreferenceKeys.BRAVE_UPDATE_EXTRA_PARAM, false);
+                                         intent, BravePreferenceKeys.BRAVE_UPDATE_EXTRA_PARAM, false);
         if (notificationUpdate) {
             SetUpdatePreferences();
         }

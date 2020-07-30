@@ -47,7 +47,6 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_ACCESSIBILITY = "accessibility";
     private static final String PREF_CONTENT_SETTINGS = "content_settings";
     private static final String PREF_ABOUT_CHROME = "about_chrome";
-    private static final String PREF_WELCOME_TOUR = "welcome_tour";
     private static final String PREF_BACKGROUND_IMAGES = "backgroud_images";
     private static final String PREF_BRAVE_REWARDS = "brave_rewards";
     private static final String PREF_HOMEPAGE = "homepage";
@@ -98,7 +97,6 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) ||
                 BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             removePreferenceIfPresent(PREF_BRAVE_REWARDS);
-            removePreferenceIfPresent(PREF_WELCOME_TOUR);
         }
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M 

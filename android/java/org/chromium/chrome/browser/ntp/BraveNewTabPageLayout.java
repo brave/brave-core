@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -23,13 +24,20 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.ContextUtils;
+import org.chromium.base.Log;
+import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.base.TraceEvent;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
@@ -71,6 +79,8 @@ import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 
 import java.util.List;
 
@@ -128,16 +138,32 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats);
+        mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
 
-        ViewGroup braveStatsView = (ViewGroup) findViewById(R.id.brave_stats);
-        mAdsBlockedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads_count);
-        mDataSavedValueTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_data_saved_value);
-        mEstTimeSavedCountTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time_count);
+        mAdsBlockedCountTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_ads_count);
+        mDataSavedValueTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_value);
+        mEstTimeSavedCountTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time_count);
 
-        mAdsBlockedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_ads);
-        mDataSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_data_saved_text);
-        mEstTimeSavedTextView = (TextView) braveStatsView.findViewById(R.id.brave_stats_text_time);
+        mAdsBlockedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_ads);
+        mDataSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_text);
+        mEstTimeSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time);
+
+        FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
+        ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
+        mBadgeImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                    BraveStatsUtil.showBraveStats();
+                } else {
+                    ((BraveActivity)mActivity).showOnboarding();
+                }
+            }
+        });
+
+        if (OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
+            mBadgeLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     protected void insertSiteSectionView() {
@@ -183,6 +209,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
+        if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
+                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
+            ((BraveActivity)mActivity).showOnboarding();
+        }
     }
 
     @Override
@@ -228,14 +258,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     @Override
     public void initialize(NewTabPageManager manager, Activity activity,
-            TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
-            boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
-            ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
-            ActivityLifecycleDispatcher lifecycleDispatcher,
-            @Nullable OverviewModeBehavior overviewModeBehavior, NewTabPageUma uma) {
+                           TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
+                           boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
+                           ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
+                           ActivityLifecycleDispatcher lifecycleDispatcher,
+                           @Nullable OverviewModeBehavior overviewModeBehavior, NewTabPageUma uma) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
-                searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
-                lifecycleDispatcher, overviewModeBehavior, uma);
+                         searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
+                         lifecycleDispatcher, overviewModeBehavior, uma);
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
@@ -259,77 +289,28 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
         long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
 
-        mAdsBlockedCountTextView.setText(getBraveStatsStringFormNumber(adsBlockedCount, false));
-        mDataSavedValueTextView.setText(getBraveStatsStringFormNumber(dataSaved, true));
-        mEstTimeSavedCountTextView.setText(getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+        Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
+        Pair<String, String> dataSavedPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
+
+        mAdsBlockedCountTextView.setText(String.format(getResources().getString(R.string.ntp_stat_text), adsTrackersPair.first, adsTrackersPair.second));
+        mDataSavedValueTextView.setText(String.format(getResources().getString(R.string.ntp_stat_text), dataSavedPair.first, dataSavedPair.second));
+        mEstTimeSavedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
         if ((BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-                    || NTPUtil.isReferralEnabled())
+                || NTPUtil.isReferralEnabled())
                 && sponsoredTab != null
                 && NTPUtil.shouldEnableNTPFeature()) {
             mAdsBlockedTextView.setTextColor(
-                    getResources().getColor(android.R.color.white));
+                getResources().getColor(android.R.color.white));
             mDataSavedTextView.setTextColor(
-                    getResources().getColor(android.R.color.white));
+                getResources().getColor(android.R.color.white));
             mEstTimeSavedTextView.setTextColor(
-                    getResources().getColor(android.R.color.white));
+                getResources().getColor(android.R.color.white));
             mEstTimeSavedCountTextView.setTextColor(
-                    getResources().getColor(android.R.color.white));
+                getResources().getColor(android.R.color.white));
         }
 
         TraceEvent.end(TAG + ".updateBraveStats()");
-    }
-
-    /*
-    * Gets string view of specific number for Brave stats
-    */
-    private String getBraveStatsStringFormNumber(long number, boolean isBytes) {
-        String result = "";
-        String suffix = "";
-        long base = isBytes ? 1024L : 1000L;
-        if (number >= base * base * base) {
-            result = result + (number / (base * base * base));
-            number = number % (base * base * base);
-            result = result + "." + (number / (10L * base * base));
-            suffix = isBytes ? "GB" : "B";
-        } else if (number >= (10L * base * base) && number < (base * base * base)) {
-            result = result + (number / (base * base));
-            suffix = isBytes ? "MB" : "M";
-        } else if (number >= (base * base) && number < (10L * base * base)) {
-            result = result + (number / (base * base));
-            number = number % (base * base);
-            result = result + "." + (number / (100L * base));
-            suffix = isBytes ? "MB" : "M";
-        } else if (number >= (10L * base) && number < (base * base)) {
-            result = result + (number / base);
-            suffix = isBytes ? "KB" : "K";
-        } else if (number >= base && number < (10L * base)) {
-            result = result + (number / base);
-            number = number % base;
-            result = result + "." + (number / 100L);
-            suffix = isBytes ? "KB" : "K";
-        } else {
-            result = result + number;
-        }
-        result = result + suffix;
-        return result;
-    }
-
-    /*
-    * Gets string view of specific time in seconds for Brave stats
-    */
-    private String getBraveStatsStringFromTime(long seconds) {
-        String result = "";
-        if (seconds > 24 * 60 * 60) {
-            result = result + (seconds / (24 * 60 * 60)) + "d";
-        } else if (seconds > 60 * 60) {
-            result = result + (seconds / (60 * 60)) + "h";
-        } else if (seconds > 60) {
-            result = result + (seconds / 60) + "m";
-        } else {
-            result = result + seconds + "s";
-        }
-        return result;
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -344,24 +325,24 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             mSuperReferralLogo.setVisibility(View.VISIBLE);
             mCreditText.setVisibility(View.GONE);
             int floatingButtonIcon =
-                    GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                    ? R.drawable.qrcode_dark
-                    : R.drawable.qrcode_light;
+                GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
+                ? R.drawable.qrcode_dark
+                : R.drawable.qrcode_light;
             mSuperReferralLogo.setImageResource(floatingButtonIcon);
             mSuperReferralLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     SuperReferralShareDialogFragment mSuperReferralShareDialogFragment =
-                            new SuperReferralShareDialogFragment();
+                        new SuperReferralShareDialogFragment();
                     mSuperReferralShareDialogFragment.show(
-                            ((BraveActivity) mActivity).getSupportFragmentManager(),
-                            "SuperReferralShareDialogFragment");
+                        ((BraveActivity) mActivity).getSupportFragmentManager(),
+                        "SuperReferralShareDialogFragment");
                 }
             });
         } else if (BravePrefServiceBridge.getInstance().getBoolean(
-                           BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-                && sponsoredTab != null
-                && NTPUtil.shouldEnableNTPFeature()) {
+                       BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+                   && sponsoredTab != null
+                   && NTPUtil.shouldEnableNTPFeature()) {
             setBackgroundImage(ntpImage);
             if (ntpImage instanceof BackgroundImage) {
                 BackgroundImage backgroundImage = (BackgroundImage) ntpImage;
@@ -372,10 +353,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
                     SpannableStringBuilder spannableString = new SpannableStringBuilder(imageCreditStr);
                     spannableString.setSpan(
-                            new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
-                            ((imageCreditStr.length() - 1)
-                                    - (backgroundImage.getImageCredit().getName().length() - 1)),
-                            imageCreditStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        new android.text.style.StyleSpan(android.graphics.Typeface.BOLD),
+                        ((imageCreditStr.length() - 1)
+                         - (backgroundImage.getImageCredit().getName().length() - 1)),
+                        imageCreditStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
                     mCreditText.setText(spannableString);
                     mCreditText.setVisibility(View.VISIBLE);
@@ -412,7 +393,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         int brOption = NTPUtil.checkForNonDistruptiveBanner(ntpImage, sponsoredTab);
         if (SponsoredImageUtil.BR_INVALID_OPTION != brOption && !NTPUtil.isReferralEnabled()) {
             NTPUtil.showNonDistruptiveBanner((BraveActivity) mActivity, this, brOption,
-                    sponsoredTab, newTabPageListener);
+                                             sponsoredTab, newTabPageListener);
         }
     }
 
@@ -437,8 +418,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
         sponsoredTab = TabAttributes.from(getTab()).get(String.valueOf((getTabImpl()).getId()));
         if (mNTPBackgroundImagesBridge.isSuperReferral()
-            && NTPBackgroundImagesBridge.enableSponsoredImages()
-            && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+                && NTPBackgroundImagesBridge.enableSponsoredImages()
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             mNTPBackgroundImagesBridge.getTopSites();
     }
 
@@ -461,7 +442,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             new AsyncTask<Void>() {
                 @Override
                 protected Void doInBackground() {
-                    for(TopSite topSite : topSites) {
+                    for (TopSite topSite : topSites) {
                         mDatabaseHelper.insertTopSite(topSite);
                     }
                     return null;
@@ -475,7 +456,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     List<TopSiteTable> topSites = mDatabaseHelper.getAllTopSites();
                     loadTopSites(topSites);
                 }
-            }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         }
     };
 
@@ -502,7 +483,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         @Override
         public void logoRetrieved(Wallpaper mWallpaper, Bitmap logoWallpaper) {
-            if(!NTPUtil.isReferralEnabled()) {
+            if (!NTPUtil.isReferralEnabled()) {
                 FloatingActionButton mSuperReferralLogo = (FloatingActionButton) findViewById(R.id.super_referral_logo);
                 mSuperReferralLogo.setVisibility(View.GONE);
 
@@ -525,15 +506,15 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         LinearLayout superReferralSitesLayout = (LinearLayout) findViewById(R.id.ntp_super_referral_sites_layout);
         LayoutInflater inflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        for(TopSiteTable topSite : topSites) {
+        for (TopSiteTable topSite : topSites) {
             final View view = inflater.inflate(R.layout.suggestions_tile_view, null);
 
             TextView tileViewTitleTv = view.findViewById(R.id.tile_view_title);
             tileViewTitleTv.setText(topSite.getName());
 
             if (!GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-                && !NTPUtil.isReferralEnabled()) {
+                    && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+                    && !NTPUtil.isReferralEnabled()) {
                 tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.black));
             } else {
                 tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.white));
@@ -585,7 +566,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                                         OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, topSite.getDestinationUrl(), DownloadUiActionFlags.ALL);
                             } else {
                                 RequestCoordinatorBridge.getForProfile(mProfile).savePageLater(
-                                        topSite.getDestinationUrl(), OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, true /* userRequested */);
+                                    topSite.getDestinationUrl(), OfflinePageBridge.NTP_SUGGESTIONS_NAMESPACE, true /* userRequested */);
                             }
                             return true;
                         }

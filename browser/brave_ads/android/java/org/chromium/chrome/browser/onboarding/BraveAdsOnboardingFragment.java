@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.onboarding.OnViewPagerAction;
@@ -29,6 +31,8 @@ public class BraveAdsOnboardingFragment extends Fragment {
 
     private int progress;
     private int endTime = 3;
+
+    private LottieAnimationView animatedView;
 
     private TextView tvTitle;
     private TextView tvTimer;
@@ -69,6 +73,9 @@ public class BraveAdsOnboardingFragment extends Fragment {
             btnDidntSeeAd.setVisibility(View.GONE);
             startCountdown();
             OnboardingPrefManager.isNotification = true;
+            if (animatedView != null) {
+                animatedView.playAnimation();
+            }
         }
     }
 
@@ -91,6 +98,8 @@ public class BraveAdsOnboardingFragment extends Fragment {
     }
 
     private void initializeViews(View root) {
+        animatedView = root.findViewById(R.id.bg_image);
+
         tvTitle = root.findViewById(R.id.section_title);
 
         countDownLayout = root.findViewById(R.id.count_down_layout);

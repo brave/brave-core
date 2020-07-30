@@ -148,6 +148,7 @@ public class NTPUtil {
 
     public static int checkForNonDistruptiveBanner(NTPImage ntpImage, SponsoredTab sponsoredTab) {
         BraveRewardsNativeWorker mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
+
         if (sponsoredTab.shouldShowBanner()) {
             if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)) {
                 if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())) {

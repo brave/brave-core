@@ -26,17 +26,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Provides information regarding onboarding enabled states.
+ * Provides information regarding onboarding.
  */
 public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING = "onboarding";
     private static final String PREF_CROSS_PROMO_MODAL = "cross_promo_modal";
+    private static final String PREF_ONBOARDING_V2 = "onboarding_v2";
     private static final String PREF_NEXT_ONBOARDING_DATE = "next_onboarding_date";
     private static final String PREF_NEXT_CROSS_PROMO_MODAL_DATE = "next_cross_promo_modal_date";
     private static final String PREF_ONBOARDING_FOR_SKIP = "onboarding_for_skip";
     private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
     private static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
+    private static final String PREF_BRAVE_STATS = "brave_stats";
     public static final String ONBOARDING_TYPE = "onboarding_type";
     public static final String FROM_SETTINGS = "from_settings";
 
@@ -90,8 +92,38 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
+    /**
+     * Returns the user preference for whether the onboarding is shown.
+     */
+    public boolean isNewOnboardingShown() {
+        return mSharedPreferences.getBoolean(PREF_ONBOARDING_V2, false);
+    }
+
+    /**
+     * Sets the user preference for whether the onboarding is shown.
+     */
+    public void setNewOnboardingShown(boolean isShown) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_ONBOARDING_V2, isShown);
+        sharedPreferencesEditor.apply();
+    }
+
     public boolean isOnboardingNotificationShown() {
         return isOnboardingNotificationShown;
+    }
+
+    public boolean isBraveStatsEnabled() {
+        return mSharedPreferences.getBoolean(PREF_BRAVE_STATS, false);
+    }
+
+    public void setBraveStatsEnabled(boolean enabled) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_BRAVE_STATS, enabled);
+        sharedPreferencesEditor.apply();
+    }
+
+    public long getPrefNextOnboardingDate() {
+        return mSharedPreferences.getLong(PREF_NEXT_ONBOARDING_DATE, 0);
     }
 
     public void setOnboardingNotificationShown(boolean isShown) {

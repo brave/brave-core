@@ -36,8 +36,6 @@ import org.chromium.chrome.browser.BraveRewardsHelper;
 public class BraveRewardsOnboardingFragment extends Fragment {
     private OnViewPagerAction onViewPagerAction;
 
-    private ImageView bgImage;
-
     private TextView tvTitle;
     private TextView tvText;
     private TextView tvAgree;
@@ -74,8 +72,6 @@ public class BraveRewardsOnboardingFragment extends Fragment {
     }
 
     private void initializeViews(View root) {
-        bgImage = root.findViewById(R.id.bg_image);
-
         tvTitle = root.findViewById(R.id.section_title);
         tvText = root.findViewById(R.id.section_text);
 

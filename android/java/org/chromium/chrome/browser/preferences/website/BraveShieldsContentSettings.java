@@ -19,6 +19,7 @@ public class BraveShieldsContentSettings {
     static public final String RESOURCE_IDENTIFIER_ADS = "ads";
     static public final String RESOURCE_IDENTIFIER_TRACKERS = "trackers";
     static public final String RESOURCE_IDENTIFIER_ADS_TRACKERS = "ads_trackers";
+    static public final String RESOURCE_IDENTIFIER_DATA_SAVED = "data_saved";
     static public final String RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES = "httpUpgradableResources";
     static public final String RESOURCE_IDENTIFIER_BRAVE_SHIELDS = "braveShields";
     static public final String RESOURCE_IDENTIFIER_FINGERPRINTING = "fingerprinting";
@@ -130,6 +131,13 @@ public class BraveShieldsContentSettings {
     private void blockedEvent(int tabId, String block_type, String subresource) {
         for (BraveShieldsContentSettingsObserver observer : mBraveShieldsContentSettingsObservers) {
             observer.blockEvent(tabId, block_type, subresource);
+        }
+    }
+
+    @CalledByNative
+    private void savedBandwidth(long savings) {
+        for (BraveShieldsContentSettingsObserver observer : mBraveShieldsContentSettingsObservers) {
+            observer.savedBandwidth(savings);
         }
     }
 
