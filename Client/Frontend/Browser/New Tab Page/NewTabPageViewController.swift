@@ -238,6 +238,8 @@ class NewTabPageViewController: UIViewController, Themeable {
             $0.bottom.equalTo(collectionView.frameLayoutGuide).inset(16)
         }
         
+        // Only load feed contents once per tab.
+        // TODO: Possibly revisit to make it once per NTP visibility (viewWillAppear)
         loadFeedContents()
     }
     
@@ -494,7 +496,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     // MARK: - Brave Today
     
     private func loadFeedContents() {
-        if !feedDataSource.isFeedContentExpired {
+        if !feedDataSource.shouldLoadContent {
             return
         }
         feedLoaderView.isHidden = false
