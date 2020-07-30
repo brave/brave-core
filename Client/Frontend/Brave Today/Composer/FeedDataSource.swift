@@ -8,7 +8,9 @@ import BraveUI
 import Data
 import Shared
 import Deferred
+import BraveShared
 
+// Named `logger` because we are using math function `log`
 private let logger = Logger.browserLogger
 
 /// A set of 2 items
@@ -183,54 +185,128 @@ class FeedDataSource {
         return decoder
     }()
     
-    private func loadSources() -> Deferred<Result<[FeedItem.Source], Error>> {
-        let deferred = Deferred<Result<[FeedItem.Source], Error>>(value: nil, defaultQueue: .main)
-        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/sources.json")!) { [weak self] data, response, error in
-            if let error = error {
-                deferred.fill(.failure(error))
-                return
-            }
-            guard let self = self, let data = data else { return }
-            do {
-            let decodedSources = try self.decoder.decode([FailableDecodable<FeedItem.Source>].self, from: data).compactMap(\.wrappedValue)
-                deferred.fill(.success(decodedSources))
-            } catch {
-                deferred.fill(.failure(error))
-            }
-        }
-        return deferred
+    private struct TodayResource {
+        var filename: String
+        var cacheLifetime: TimeInterval
+        
+        static let sources = TodayResource(filename: "sources.json", cacheLifetime: 1.days)
+        static let feed = TodayResource(filename: "feed.json", cacheLifetime: 1.hours)
     }
     
-    private func loadFeed() -> Deferred<Result<[FeedItem.Content], Error>> {
-        let deferred = Deferred<Result<[FeedItem.Content], Error>>(value: nil, defaultQueue: .main)
-        session.dataRequest(with: URL(string: "https://pcdn.brave.software/brave-today/feed.json")!) { [weak self] data, response, error in
-            if let error = error {
-                deferred.fill(.failure(error))
-                return
-            }
-            guard let self = self, let data = data else { return }
-            do {
-                let decodedFeeds = try self.decoder.decode([FailableDecodable<FeedItem.Content>].self, from: data).compactMap(\.wrappedValue)
-                deferred.fill(.success(decodedFeeds))
-            } catch {
-                deferred.fill(.failure(error))
-            }
-        }
-        return deferred
-    }
+    private static let cacheFolderName = "brave-today"
+    private static let baseURL = URL(string: "https://pcdn.brave.software/brave-today")!
     
-    var isFeedContentExpired: Bool {
-        // TODO: Base this off of the last time we downloaded the feed list
-        if case .success = state {
-            return false
+    /// Determine whether or not some cached resource is expired
+    ///
+    /// - Note: If no file can be found, this returns `true`
+    private func isResourceExpired(_ resource: TodayResource) -> Bool {
+        let fileManager = FileManager.default
+        let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(resource.filename).path
+        if let cachedPath = cachedPath,
+            let attributes = try? fileManager.attributesOfItem(atPath: cachedPath),
+            let date = attributes[.modificationDate] as? Date {
+            return Date().timeIntervalSince(date) > resource.cacheLifetime
         }
         return true
     }
     
-    func load(_ completion: @escaping () -> Void) {
-        if case .success = state {
-            return
+    /// Load a Brave Today resource either from a file cache or the web
+    ///
+    /// The `filename` provided will be appended as a path component to the request URL, and be used to
+    /// fetch the cache and save the response so it should include the full path for the endpoint (For
+    /// example: `sources.json`)
+    ///
+    /// Cache lifetime will be based on the modification date of the cached file. Data downloaded from the web
+    /// will only be cached if it is successfully decoded into the given `DataType`.
+    private func loadResource<DataType>(
+        _ resource: TodayResource,
+        decodedTo: DataType.Type
+    ) -> Deferred<Result<DataType, Error>> where DataType: Decodable {
+        let filename = resource.filename
+        let fileManager = FileManager.default
+        let deferred = Deferred<Result<Data, Error>>(value: nil, defaultQueue: .main)
+        let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(filename).path
+        if let cachedPath = cachedPath,
+            !isResourceExpired(resource),
+            let cachedContents = fileManager.contents(atPath: cachedPath) {
+            deferred.fill(.success(cachedContents))
+        } else {
+            session.dataRequest(with: Self.baseURL.appendingPathComponent(filename)) { data, response, error in
+                if let error = error {
+                    deferred.fill(.failure(error))
+                    return
+                }
+                guard let data = data else { return }
+                deferred.fill(.success(data))
+            }
         }
+        return deferred.map { result in
+            switch result {
+            case .success(let data):
+                do {
+                    let decodedSources = try self.decoder.decode(DataType.self, from: data)
+                    if !FileManager.default.writeToDiskInFolder(data, fileName: filename, folderName: Self.cacheFolderName) {
+                        logger.error("Failed to write sources to disk")
+                    }
+                    return .success(decodedSources)
+                } catch {
+                    return .failure(error)
+                }
+            case .failure(let error):
+                return .failure(error)
+            }
+        }
+    }
+    
+    private func loadSources() -> Deferred<Result<[FeedItem.Source], Error>> {
+        loadResource(.sources, decodedTo: [FailableDecodable<FeedItem.Source>].self).map { result in
+            result.map {
+                $0.compactMap(\.wrappedValue)
+            }
+        }
+    }
+    
+    private func loadFeed() -> Deferred<Result<[FeedItem.Content], Error>> {
+        loadResource(.feed, decodedTo: [FailableDecodable<FeedItem.Content>].self).map { result in
+            result.map {
+                $0.compactMap(\.wrappedValue)
+            }
+        }
+    }
+    
+    /// Whether or not we should load content or just use what's in `state`.
+    ///
+    /// If the data source is already loading, returns `false`
+    var shouldLoadContent: Bool {
+        switch state {
+        case .initial:
+            return true
+        case .loading:
+            return false
+        default:
+            return isFeedContentExpired || isSourcesExpired
+        }
+    }
+    
+    /// Whether or not the feed content is currently expired and needs to be reloaded
+    var isFeedContentExpired: Bool {
+        isResourceExpired(.feed)
+    }
+    
+    /// Whether or not the sources are currently expired and needs to be reloaded
+    var isSourcesExpired: Bool {
+        isResourceExpired(.sources)
+    }
+    
+    /// Loads Brave Today resources and generates cards for the loaded data. The result will be placed in
+    /// the `state` property.
+    ///
+    /// Resources are loaded either from cache (if the cache is valid for said resource) or from the web,
+    /// scored, and then used to generate a list of `FeedCard` objects.
+    ///
+    /// Given the nature of async card regeneration, calling this method will always set the state to
+    /// `loading` initially.
+    func load(_ completion: @escaping () -> Void) {
         state = .loading
         loadSources().both(loadFeed()).uponQueue(.main) { [weak self] results in
             guard let self = self else { return }
@@ -258,6 +334,7 @@ class FeedDataSource {
         }
     }
     
+    /// Toggle a source's enabled status
     func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
         guard let cards = state.cards, let sourceIndex = sources.firstIndex(where: { $0.id == source.id }) else { return }
         self.sources[sourceIndex].enabled = enabled
