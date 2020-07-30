@@ -16,27 +16,40 @@ class BraveTodaySourceMOTests: CoreDataTestCase {
         return NSEntityDescription.entity(forEntityName: String(describing: BraveTodaySourceMO.self), in: context)!
     }
     
-    func testSimpleInsert() {
-        XCTAssertEqual(BraveTodaySourceMO.all()!.count, 0)
-        createAndWait()
-        XCTAssertEqual(BraveTodaySourceMO.all()!.count, 1)
+    func testSimpleInsert() throws {
+        XCTAssertEqual(try XCTUnwrap(BraveTodaySourceMO.all()).count, 0)
+        try createAndWait()
+        XCTAssertEqual(try XCTUnwrap(BraveTodaySourceMO.all()).count, 1)
+    }
+    
+    func testResetSources() throws {
+        try createAndWait(enabled: true, publisherID: "123456")
+        try createAndWait(enabled: true, publisherID: "654321")
+        try createAndWait(enabled: true, publisherID: "456124")
+        XCTAssertEqual(try XCTUnwrap(BraveTodaySourceMO.all()).count, 3)
+        backgroundSaveAndWaitForExpectation {
+            BraveTodaySourceMO.resetSourceSelection()
+        }
+        XCTAssertEqual(try XCTUnwrap(BraveTodaySourceMO.all()).count, 0)
+    }
+    
+    func testSetEnabled() throws {
+        let source = try createAndWait(enabled: true)
+        XCTAssertTrue(try XCTUnwrap(BraveTodaySourceMO.getInternal(fromId: source.publisherID)).enabled)
+        backgroundSaveAndWaitForExpectation {
+            BraveTodaySourceMO.setEnabled(forId: source.publisherID, enabled: false)
+        }
+        XCTAssertFalse(try XCTUnwrap(BraveTodaySourceMO.getInternal(fromId: source.publisherID)).enabled)
     }
     
     @discardableResult
     private func createAndWait(enabled: Bool = true,
-                               publisherID: String = "BravePub",
-                               publisherLogo: String? = nil,
-                               publisherName: String = "Pub Name") -> BraveTodaySourceMO {
+                               publisherID: String = "BravePub") throws -> BraveTodaySourceMO {
         
         backgroundSaveAndWaitForExpectation {
-            BraveTodaySourceMO.insertInternal(enabled: enabled, publisherID: publisherID,
-                                              publisherLogo: publisherLogo, publisherName: publisherName)
+            BraveTodaySourceMO.insertInternal(publisherID: publisherID, enabled: enabled)
         }
         
-        
-        
-        let predicate = NSPredicate(format: "\(#keyPath(BraveTodaySourceMO.publisherID)) == %@", publisherID)
-        
-        return BraveTodaySourceMO.first(where: predicate)!
+        return try XCTUnwrap(BraveTodaySourceMO.getInternal(fromId: publisherID))
     }
 }

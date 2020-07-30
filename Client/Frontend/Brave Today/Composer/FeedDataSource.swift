@@ -240,8 +240,16 @@ class FeedDataSource {
                 self.state = .failure(error)
                 completion()
             case (.success(let sources), .success(let items)):
-                self.sources = sources
-                let feedItems = self.scored(feeds: items, sources: sources).sorted(by: <)
+                let overridenSources = BraveTodaySourceMO.all()
+                self.sources = sources.map { source in
+                    if let overridenSource = overridenSources.first(where: { $0.publisherID == source.id }) {
+                        var copy = source
+                        copy.enabled = overridenSource.enabled
+                        return copy
+                    }
+                    return source
+                }
+                let feedItems = self.scored(feeds: items, sources: self.sources).sorted(by: <)
                 self.generateCards(from: feedItems) { [weak self] cards in
                     self?.state = .success(cards)
                     completion()
@@ -253,7 +261,8 @@ class FeedDataSource {
     func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
         guard let cards = state.cards, let sourceIndex = sources.firstIndex(where: { $0.id == source.id }) else { return }
         self.sources[sourceIndex].enabled = enabled
-        // TODO: Update DB
+        
+        BraveTodaySourceMO.setEnabled(forId: source.id, enabled: enabled)
         
         // Propigate source toggle to cards list
         let cardsWithItemsFromSources = cards.enumerated().filter {

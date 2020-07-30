@@ -130,7 +130,10 @@ extension FeedSourceListViewController {
         cell.accessoryView = cell.enabledToggle
         cell.enabledToggle.isOn = source.enabled
         cell.enabledToggleValueChanged = { isOn in
+            // Update data source + DB
             self.dataSource.toggleSource(source, enabled: isOn)
+            // Update current state
+            self.sections[indexPath.section][indexPath.row].enabled = isOn
         }
         return cell
     }
