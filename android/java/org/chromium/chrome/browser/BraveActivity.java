@@ -257,18 +257,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
         BraveSyncReflectionUtils.showInformers();
-
-        if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
-                && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            Tab tab = getActivityTab();
-            if (tab == null)
-                return;
-
-            // Check for tests in BravePrivateTabTest
-            if (!tab.isIncognito()) {
-                showOnboarding();
-            }
-        }
     }
 
     public void showOnboarding() {
