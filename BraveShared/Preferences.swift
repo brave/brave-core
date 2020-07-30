@@ -53,6 +53,7 @@ extension Preferences {
     
     public final class BraveToday {
         public static let isEnabled = Option<Bool>(key: "brave-today.enabled", default: true)
+        public static let languageChecked = Option<Bool>(key: "brave-today.language-checked", default: false)
     }
     
     public final class Review {
