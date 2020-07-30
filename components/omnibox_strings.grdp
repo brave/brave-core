@@ -69,15 +69,6 @@
   <message name="IDS_OMNIBOX_TAB_SUGGEST_SHORT_HINT" desc="A shortened, one word version of button text to say that this suggestion will switch to another tab.">
     Switch
   </message>
-  <message name="IDS_PHYSICAL_WEB_OVERFLOW_DESCRIPTION" desc="The description in the omnibox dropdown indicating that multiple nearby devices are broadcasting URLs.">
-    Physical Web suggestions
-  </message>
-  <message name="IDS_PHYSICAL_WEB_OVERFLOW" desc="A label in the omnibox dropdown indicating the number of additional nearby devices broadcasting URLs.">
-    {URL_count, plural, =1 {and 1 more web page} other {and # more web pages}}
-  </message>
-  <message name="IDS_PHYSICAL_WEB_OVERFLOW_EMPTY_TITLE" desc="A label in the omnibox dropdown indicating the number of additional nearby devices broadcasting URLs. This version is used when the title of the top result is empty.">
-    {URL_count, plural, =1 {1 web page nearby} other {# web pages nearby}}
-  </message>
   <message name="IDS_OMNIBOX_FILE" desc="Text shown in the omnibox to indicate a user is viewing a file.">
     File
   </message>

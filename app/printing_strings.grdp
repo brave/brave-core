@@ -320,49 +320,49 @@
         End User License Agreement
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_CONNECTING_TO_DEVICE" desc="Error label to show under the destination dropdown when the device can't connect to the printer.">
-         Error connecting to <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>
+         Connection error
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DEVICE_ERROR" desc="Error label to show under the destination dropdown when the printer has a device error.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> has a device error
+         Printer device error
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DOOR_OPEN" desc="Error label to show under the destination dropdown when the printer has an open door.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s door is open
+         Printer door is open
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_LOW_ON_INK" desc="Error label to show under the destination dropdown when the printer is low on ink.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is low on ink
+         Low on ink
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_LOW_ON_PAPER" desc="Error label to show under the destination dropdown when the printer is low on paper">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is low on paper
+         Low on paper
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUT_OF_INK" desc="Error label to show under the destination dropdown when the printer is out of ink.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is out of ink
+         Out of ink
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUT_OF_PAPER" desc="Error label to show under the destination dropdown when the printer is out of paper.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is out of paper
+         Out of paper
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_ALMOST_FULL" desc="Error label to show under the destination dropdown when the printer's output area is almost full.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s output area is almost full
+         Output area is almost full
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_FULL" desc="Error label to show under the destination dropdown when the printer's output area is full.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s output area is full
+         Output area is full
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAPER_JAM" desc="Error label to show under the destination dropdown when the printer has a paper jam.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s paper is jammed
+         Paper is jammed
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAUSED" desc="Error label to show under the destination dropdown when the printer is paused.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is paused
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAUSED" desc="Error label to show under the destination dropdown when the printer is in a paused state.">
+         Printer is paused
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_QUEUE_FULL" desc="Error label to show under the destination dropdown when the printer has a full queue.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s queue is full
+         Printer queue is full
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_UNREACHABLE" desc="Error label to show under the destination dropdown when the printer is unreachable.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is unreachable
+         Printer is unreachable
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_STOPPED" desc="Error label to show under the destination dropdown when the printer is stopped.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is stopped
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_STOPPED" desc="Error label to show under the destination dropdown when the printer is in a stopped state.">
+         Printer is stopped
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_TRAY_MISSING" desc="Error label to show under the destination dropdown when the printer is missing a tray.">
-         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is missing a tray
+         Tray is missing
       </message>
       <message name="IDS_PRINT_PREVIEW_SHEETS_LIMIT_ERROR_MESSAGE" desc="Sheets limit error message, explaining to the user why printing is blocked.">
       {COUNT, plural,

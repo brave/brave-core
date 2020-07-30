@@ -87,6 +87,9 @@
   <message name="IDS_LOOKALIKE_URL_BACK_TO_SAFETY" desc="The text for the button that takes the user back to the new tab page.">
     Back to safety
   </message>
+  <message name="IDS_LOOKALIKE_URL_CLOSE_PAGE" desc="The text for the button that closes the tab.">
+    Close page
+  </message>
 
 
   <!-- Clock errors -->

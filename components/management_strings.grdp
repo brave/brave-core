@@ -124,6 +124,17 @@
     <message name="IDS_MANAGEMENT_REPORT_PROXY_SERVER" desc="Message stating that administrators can see user's traffic when connected to a proxy server.">
       Websites you visit and the contents of not secure pages
     </message>
+    <message name="IDS_MANAGEMENT_REPORT_PLUGIN_VM" desc="Message telling users that Plugin VM can collect data.">
+      <ph name="APP_NAME">$1<ex>Plugin VM</ex></ph> collects diagnostics data to improve the product experience. See <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://www.parallels.com/pcep"&gt;</ph>https://www.parallels.com/pcep<ph name="END_LINK">&lt;/a&gt;</ph> for more information.
+    </message>
+
+    <!-- Chrome OS update required end-of-life reached section -->
+    <message name="IDS_MANAGEMENT_UPDATE_REQUIRED_EOL_MESSAGE" desc="Message indicating that the device needs to be returned back before the deadline because the device has reached end-of-life and an update is required as per policy.">
+      <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this device.
+    </message>
+    <message name="IDS_MANAGEMENT_UPDATE_REQUIRED_EOL_ADMIN_MESSAGE_TITLE" desc="Message indicating return instructions from the device administrator because the device cannot be updated as it has reached its end of life.">
+      Instructions from your device administrator:
+    </message>
   </if>
 
   <!-- Strings related to extension reporting section of the management page -->
@@ -203,6 +214,9 @@
   <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_EVENT" desc="Event for the enterprise reporting feature">
     Unsafe event occurs
   </message>
+  <message name="IDS_MANAGEMENT_PAGE_VISITED_EVENT" desc="Event for the real time URL check feature.">
+    Page is visited
+  </message>
   <message name="IDS_MANAGEMENT_FILE_ATTACHED_VISIBLE_DATA" desc="Description of the visible data for the file attachment scanning feature.">
     Files you upload or attach are sent to Brave Cloud or third parties for analysis. For example, they might be scanned for sensitive data or malware.
   </message>
@@ -213,6 +227,9 @@
     Text you paste or attach is sent to Brave Cloud or third parties for analysis. For example, it might be scanned for sensitive data.
   </message>
   <message name="IDS_MANAGEMENT_ENTERPRISE_REPORTING_VISIBLE_DATA" desc="Description of the visible data for the Connectors reporting feature">
-    When security events are flagged by Brave Enterprise Connectors, relevant data about the event is sent to your administrator. This can include URLs of pages you visit in Brave, file names or metadata, and the username that you use to sign in to your device and Brave.
+    When security events are flagged by Brave Enterprise Connectors, relevant data about the events is sent to your administrator. This can include URLs of pages you visit in Brave, file names or metadata, and the username that you use to sign in to your device and Brave.
+  </message>
+  <message name="IDS_MANAGEMENT_PAGE_VISITED_VISIBLE_DATA" desc="Description of the visible data for the real time URL check feature.">
+    URLs of pages you visit are sent to Brave Cloud or third parties for analysis. For example, they might be scanned to detect unsafe websites.
   </message>
 </grit-part>

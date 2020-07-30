@@ -47,15 +47,6 @@
     </message>
   </if>
 
-  <message name="IDS_ERRORPAGES_SUGGESTION_VISIT_GOOGLE_CACHE" desc="When a page fails to load, sometimes we viewing a version of the page cached on Brave's servers.">
-    Access a <ph name="BEGIN_LINK">&lt;a jsvalues="href:urlCorrection;.jstdata:$this" onmousedown="linkClicked(this.jstdata)"&gt;</ph>cached copy<ph name="END_LINK">&lt;/a&gt;</ph> of <ph name="URL">&lt;span jscontent="originalUrlForDisplay"&gt;&lt;/span&gt;<ex>www.hats-for-goats.com/shiny</ex></ph>
-  </message>
-  <message name="IDS_ERRORPAGES_SUGGESTION_CORRECTED_URL" desc="When a page fails to load, sometimes we suggest different URL because we think the one the user entered had a typo.">
-    Did you mean <ph name="LINK">&lt;a jsvalues="href:urlCorrection;.jstdata:$this" onmousedown="linkClicked(this.jstdata)" jscontent="urlCorrectionForDisplay"&gt;&lt;/a&gt;<ex>www.somewhere-spelled-correctly.com</ex></ph>?
-  </message>
-  <message name="IDS_ERRORPAGES_SUGGESTION_ALTERNATE_URL" desc="When a page fails to load, sometimes we suggest different URL (maybe a different page on the same site, or a site with similar content, for example).">
-    Go to <ph name="LINK">&lt;a jsvalues="href:urlCorrection;.jstdata:$this" onmousedown="linkClicked(this.jstdata)" jscontent="urlCorrectionForDisplay"&gt;&lt;/a&gt;<ex>www.somewhere.com</ex></ph>
-  </message>
   <message name="IDS_ERRORPAGES_SUGGESTION_RELOAD_REPOST_SUMMARY" desc="When a page fails to load, sometimes we suggest reloading a page.  In the case that reloading the page requires resubmitting data to a website, this is displayed in a list.">
     Press the reload button to resubmit the data needed to load the page.
   </message>
@@ -136,8 +127,8 @@
   <message name="IDS_ERRORPAGES_HEADING_NOT_FOUND" desc="Heading in the error page when the server returns a 404 or 410.">
     This <ph name="HOST_NAME">&lt;span jscontent="hostName"&gt;&lt;/span&gt;<ex>www.whatever.com</ex></ph> page can’t be found
   </message>
-  <message name="IDS_ERRORPAGES_HEADING_FILE_NOT_FOUND" desc="Heading in the error page when the local file was not found.">
-    Your file was not found
+  <message name="IDS_ERRORPAGES_HEADING_FILE_NOT_FOUND" desc="Heading in the error page when the local file could not be accessed.">
+    Your file couldn’t be accessed
   </message>
   <message name="IDS_ERRORPAGES_HEADING_BLOCKED" desc="Heading of the error page when a request is blocked by the administrator policy, extension or the browser itself.">
     <ph name="HOST_NAME">&lt;span jscontent="hostName"&gt;&lt;/span&gt;<ex>www.example.com</ex></ph> is blocked
@@ -199,8 +190,8 @@
   <message name="IDS_ERRORPAGES_SUMMARY_NOT_FOUND" desc="Summary in the error page when the server returns a 404.">
     No webpage was found for the web address: <ph name="URL">&lt;strong jscontent="failedUrl"&gt;&lt;/strong&gt;</ph>
   </message>
-  <message name="IDS_ERRORPAGES_SUMMARY_FILE_NOT_FOUND" desc="Summary in the error page when a local file is not found.">
-    It may have been moved or deleted.
+  <message name="IDS_ERRORPAGES_SUMMARY_FILE_NOT_FOUND" desc="Summary in the error page when a local file could not be accessed.">
+    It may have been moved, edited, or deleted.
   </message>
   <message name="IDS_ERRORPAGES_SUMMARY_TOO_MANY_REDIRECTS" desc="Summary in the error page when there are too many URL redirects.">
     <ph name="HOST_NAME">&lt;strong jscontent="hostName"&gt;&lt;/strong&gt;<ex>www.whatever.com</ex></ph> redirected you too many times.
@@ -340,9 +331,6 @@
   </message>
   <message name="IDS_ERRORPAGES_SUGGESTION_DISABLE_EXTENSION_SUMMARY" desc="When a page fails to load, we provide a suggestion that the user try disabling the extension that's blocking it.">
     Try disabling your extensions.
-  </message>
-  <message name="IDS_ERRORPAGES_SUGGESTION_GOOGLE_SEARCH_SUMMARY" desc="When a page fails to load, sometimes we suggest a specific Brave search.">
-    Search Brave for <ph name="LINK">&lt;a jsvalues="href:searchUrl;.jstdata:$this" onclick="linkClicked(this.jstdata)" jscontent="searchTerms" id="search-link"&gt;<ex>Example search terms</ex>&lt;/a&gt;</ph>
   </message>
   <if expr="is_macosx">
     <message name="IDS_ERRORPAGES_SUGGESTION_DIAGNOSE" desc="Label for the link that invokes the connection diagnostic tool on the error page displayed in a list of suggestions. The suggestions list is prefixed with 'Try:'.">

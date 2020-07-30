@@ -122,7 +122,7 @@ This will otherwise be blocked by your privacy settings. This will allow the con
 
   <if expr="not is_android">
     <message name="IDS_GEOLOCATION_PERMISSION_CHIP" desc="Button text representing a request for the user's physical location from a website. When clicked, shows a permission prompt bubble with more information.">
-      Share location?
+      Use your location?
     </message>
     <message name="IDS_NOTIFICATION_PERMISSIONS_CHIP" desc="Button text representing a request for showing notifications from a website. When clicked, shows a permission prompt bubble with more information.">
       Get notifications?
