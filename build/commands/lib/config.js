@@ -29,7 +29,8 @@ var packageConfig = function(key){
     packages = require(path.relative(__dirname, path.join(rootDir, 'package.json')))
   }
 
-  let obj = Object.assign({}, packages.config)
+  // packages.config should include version string.
+  let obj = Object.assign({}, packages.config, { version: packages.version })
   for (var i = 0, len = key.length; i < len; i++) {
     if (!obj) {
       return obj

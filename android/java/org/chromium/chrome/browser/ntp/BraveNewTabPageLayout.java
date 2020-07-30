@@ -90,7 +90,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
     private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
     private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
-    private static final short MILLISECONDS_PER_ITEM = 50;
+    public static final short MILLISECONDS_PER_ITEM = 50;
 
     private ViewGroup mBraveStatsView;
 
@@ -153,11 +153,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mBadgeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                    BraveStatsUtil.showBraveStats();
-                } else {
-                    ((BraveActivity)mActivity).showOnboarding();
-                }
+                ((BraveActivity)mActivity).checkForBraveStats();
             }
         });
 
@@ -212,6 +208,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
                 && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
             ((BraveActivity)mActivity).showOnboarding();
+        }
+        if (OnboardingPrefManager.getInstance().isFromNotification() ) {
+            ((BraveActivity)mActivity).showOnboarding();
+            OnboardingPrefManager.getInstance().setFromNotification(false);
         }
     }
 

@@ -28,6 +28,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -155,6 +156,7 @@ public class HighlightDialogFragment extends DialogFragment {
             if (viewpager != null) {
                 if (!OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
                     OnboardingPrefManager.getInstance().setBraveStatsEnabled(true);
+                    RetentionNotificationUtil.scheduleNotificationForEverySunday(getActivity(), RetentionNotificationUtil.EVERY_SUNDAY);
                     if (onboardingV2PagerAdapter != null) {
                         onboardingV2PagerAdapter.notifyDataSetChanged();
                     }
