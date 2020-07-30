@@ -6,9 +6,9 @@
       "startpage",
       "google"
     ]
-  }, 
+  },
   "default": {
-    "searchDefault": "Google", 
+    "searchDefault": "Google",
     "visibleDefaultEngines": [
       "yahoo",
       "bing"
@@ -102,5 +102,41 @@
       }
     }
   }, 
-  "regionOverrides": {}
+  "regionOverrides": {},
+  "priorityEngines": {
+      "GB": "yahoo",
+      "US": "yahoo",
+      "AR": "yahoo",
+      "AT": "yahoo",
+      "AU": "yahoo",
+      "BR": "yahoo",
+      "CA": "yahoo",
+      "CH": "yahoo",
+      "CL": "yahoo",
+      "CO": "yahoo",
+      "DE": "yahoo",
+      "DK": "yahoo",
+      "ES": "yahoo",
+      "FI": "yahoo",
+      "FR": "yahoo",
+      "HK": "yahoo",
+      "ID": "yahoo",
+      "IE": "yahoo",
+      "IN": "yahoo",
+      "IT": "yahoo",
+      "MX": "yahoo",
+      "MY": "yahoo",
+      "NL": "yahoo",
+      "NO": "yahoo",
+      "NZ": "yahoo",
+      "PE": "yahoo",
+      "PH": "yahoo",
+      "SE": "yahoo",
+      "SG": "yahoo",
+      "TH": "yahoo",
+      "TW": "yahoo",
+      "VE": "yahoo",
+      "VN": "yahoo",
+
+  }
 }

@@ -269,7 +269,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         
         if isFirstLaunch {
-            profile?.searchEngines.regionalSearchEngineSetup()
+            profile?.searchEngines.searchEngineSetup()
             Preferences.DAU.installationDate.value = Date()
             
             // VPN credentials are kept in keychain and persist between app reinstalls.

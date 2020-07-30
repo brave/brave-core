@@ -1806,7 +1806,7 @@ class BrowserViewController: UIViewController {
             self.duckDuckGoPopup = nil
             
             Preferences.Popups.duckDuckGoPrivateSearch.value = true
-            self.profile.searchEngines.setDefaultEngine(OpenSearchEngine.EngineNames.duckDuckGo, forType: .privateMode)
+            self.profile.searchEngines.updateDefaultEngine(OpenSearchEngine.EngineNames.duckDuckGo, forType: .privateMode)
             
             self.tabManager.selectedTab?.newTabPageViewController?.updateDuckDuckGoVisibility()
             

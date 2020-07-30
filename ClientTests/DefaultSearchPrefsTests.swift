@@ -18,13 +18,13 @@ class DefaultSearchPrefsTests: XCTestCase {
         let allEngines = ["yahoo", "bing", "duckduckgo", "qwant", "startpage", "google"]
         let us = (lang: ["en-US", "en"], region: "US", resultList: allEngines, resultDefault: "Google")
         let england = (lang: ["en-GB"], region: "GB", resultList: allEngines, resultDefault: "Google")
-        let france = (lang: ["fr-FR", "fr"], region: "FR", resultList: allEngines, resultDefault: "Google")
+        let france = (lang: ["fr-FR", "fr"], region: "FR", resultList: allEngines, resultDefault: "Qwant")
         let japan = (lang: ["ja-JP", "ja"], region: "JP", resultList: ["yahoo-jp", "bing", "duckduckgo", "qwant", "startpage", "google"], resultDefault: "Google")
         let canada = (lang: ["en-CA", "en"], region: "CA", resultList: allEngines, resultDefault: "Google")
         let russia = (lang: ["ru-RU", "ru"], region: "RU", resultList: ["yandex-ru", "duckduckgo", "qwant", "startpage", "google"], resultDefault: "Яндекс")
         let taiwan = (lang: ["zh-TW", "zh"], region: "TW", resultList: allEngines, resultDefault: "Google")
         let china = (lang: ["zh-hans-CN", "zh-CN", "zh"], region: "CN", resultList: allEngines, resultDefault: "Google")
-        let germany = (lang: ["de-DE", "de"], region: "DE", resultList: allEngines, resultDefault: "Google")
+        let germany = (lang: ["de-DE", "de"], region: "DE", resultList: allEngines, resultDefault: "DuckDuckGo")
         let southAfrica = (lang: ["en-SA", "en"], region: "SA", resultList: allEngines, resultDefault: "Google")
         let testLocales = [us, england, france, japan, canada, russia, taiwan, china, germany, southAfrica]
 
