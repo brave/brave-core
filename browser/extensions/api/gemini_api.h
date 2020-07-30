@@ -39,6 +39,18 @@ class GeminiGetAccessTokenFunction :
   ResponseAction Run() override;
 };
 
+class GeminiRefreshAccessTokenFunction :
+    public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("gemini.refreshAccessToken", UNKNOWN)
+
+ protected:
+  ~GeminiRefreshAccessTokenFunction() override {}
+  void OnRefreshResult(bool success);
+
+  ResponseAction Run() override;
+};
+
 class GeminiGetTickerPriceFunction :
     public ExtensionFunction {
  public:
