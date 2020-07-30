@@ -136,13 +136,23 @@ class SearchSettingsTableViewController: UITableViewController {
             return model.orderedEngines.count - 1
         }
     }
+    
+    private var searchPickerEngines: [OpenSearchEngine] {
+        let orderedEngines = model.orderedEngines.sorted { $0.shortName < $1.shortName }
+        
+        guard let priorityEngine = SearchEngines.defaultSearchPrefs?.priorityEngine(for: Locale.current) else {
+            return orderedEngines
+        }
+        
+        return orderedEngines.sorted { e, _ in e.engineID == priorityEngine }
+    }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if indexPath.section == SectionDefault && indexPath.item == ItemDefaultEngine {
             let searchEnginePicker = SearchEnginePicker(type: .standard)
             // Order alphabetically, so that picker is always consistently ordered.
             // Every engine is a valid choice for the default engine, even the current default engine.
-            searchEnginePicker.engines = model.orderedEngines.sorted { $0.shortName < $1.shortName }
+            searchEnginePicker.engines = searchPickerEngines
             searchEnginePicker.delegate = self
             searchEnginePicker.selectedSearchEngineName = model.defaultEngine(forType: .standard).shortName
             navigationController?.pushViewController(searchEnginePicker, animated: true)
@@ -150,7 +160,7 @@ class SearchSettingsTableViewController: UITableViewController {
             let searchEnginePicker = SearchEnginePicker(type: .privateMode)
             // Order alphabetically, so that picker is always consistently ordered.
             // Every engine is a valid choice for the default engine, even the current default engine.
-            searchEnginePicker.engines = model.orderedEngines.sorted { $0.shortName < $1.shortName }
+            searchEnginePicker.engines = searchPickerEngines
             searchEnginePicker.delegate = self
             searchEnginePicker.selectedSearchEngineName = model.defaultEngine(forType: .privateMode).shortName
             navigationController?.pushViewController(searchEnginePicker, animated: true)
@@ -277,7 +287,7 @@ extension SearchSettingsTableViewController: SearchEnginePickerDelegate {
     func searchEnginePicker(_ searchEnginePicker: SearchEnginePicker?,
                             didSelectSearchEngine searchEngine: OpenSearchEngine?, forType: DefaultEngineType?) {
         if let engine = searchEngine, let type = forType {
-            model.setDefaultEngine(engine.shortName, forType: type)
+            model.updateDefaultEngine(engine.shortName, forType: type)
             self.tableView.reloadData()
         }
         _ = navigationController?.popViewController(animated: true)

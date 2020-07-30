@@ -18,6 +18,10 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         profile.searchEngines
     }
     
+    private lazy var availableEngines: [OpenSearchEngine] = {
+        SearchEngines.getUnorderedBundledEnginesFor(locale: Locale.current)
+    }()
+    
     private var contentView: View {
         return view as! View // swiftlint:disable:this force_cast
     }
@@ -44,23 +48,25 @@ class OnboardingSearchEnginesViewController: OnboardingViewController {
         // This selection should only ever happen once.
         // We initially select the default search engine's cell
         DispatchQueue.main.async {
-            for searchEngine in self.searchEngines.orderedEngines.enumerated() where
-                searchEngine.element == self.searchEngines.defaultEngine() {
-                let indexPath = IndexPath(row: searchEngine.offset, section: 0)
-                self.contentView.searchEnginesTable.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+            for searchEngine in self.availableEngines.enumerated() {
+                if searchEngine.element.shortName == self.searchEngines.defaultEngine().shortName {
+                    let indexPath = IndexPath(row: 0, section: searchEngine.offset)
+                    self.contentView.searchEnginesTable.selectRow(at: indexPath, animated: false,
+                                                                  scrollPosition: .none)
+                    break
+                }
             }
         }
     }
     
     @objc override func continueTapped() {
         guard let selectedRow = contentView.searchEnginesTable.indexPathForSelectedRow?.section,
-            let selectedEngine = searchEngines.orderedEngines[safe: selectedRow]?.shortName else {
+            let selectedEngine = availableEngines[safe: selectedRow]?.shortName else {
                 return
             log.error("Failed to unwrap selected row or selected engine.")
         }
         
-        searchEngines.setDefaultEngine(selectedEngine, forType: .standard)
-        searchEngines.setDefaultEngine(selectedEngine, forType: .privateMode)
+        searchEngines.setInitialDefaultEngine(selectedEngine)
         
         delegate?.presentNextScreen(current: self)
     }
@@ -92,7 +98,7 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
     // Sections are used for data instead of rows.
     // This gives us an easy way to add spacing between each row.
     func numberOfSections(in tableView: UITableView) -> Int {
-        return searchEngines.orderedEngines.count
+        return availableEngines.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -104,7 +110,7 @@ extension OnboardingSearchEnginesViewController: UITableViewDataSource {
             return SearchEngineCell()
         }
         
-        guard let searchEngine = searchEngines.orderedEngines[safe: indexPath.section] else {
+        guard let searchEngine = availableEngines[safe: indexPath.section] else {
             log.error("Can't find search engine at index: \(indexPath.section)")
             assertionFailure()
             return cell

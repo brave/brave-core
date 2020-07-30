@@ -15,6 +15,7 @@ class DefaultSearchPrefs {
     fileprivate let locales: JSON
     fileprivate let regionOverrides: JSON
     fileprivate let globalDefaultEngine: String
+    let priorityEngines: [String: JSON]?
 
     public init?(with filePath: URL) {
         guard let searchManifest = try? String(contentsOf: filePath) else {
@@ -27,7 +28,7 @@ class DefaultSearchPrefs {
         // Split up the JSON into useful parts
         locales = json["locales"]
         regionOverrides = json["regionOverrides"]
-
+        priorityEngines = json["priorityEngines"].dictionary
         // These are the fallback defaults
         guard let searchList = json["default"]["visibleDefaultEngines"].array?.compactMap({ $0.string }),
             let engine = json["default"]["searchDefault"].string else {
@@ -44,6 +45,13 @@ class DefaultSearchPrefs {
         self.allLocalesSearchList = allLocalesSearchList
 
         globalDefaultEngine = engine
+    }
+    
+    /// Priority engine is placed at the top of search engines list, it has higher priority than currently selected engine.
+    func priorityEngine(for locale: Locale) -> String? {
+        guard let priorityEngines = priorityEngines else { return nil }
+        let region = locale.regionCode ?? "US"
+        return priorityEngines[region]?.string
     }
 
     /*
@@ -96,6 +104,11 @@ class DefaultSearchPrefs {
      Create a list of these and return the last one. The globalDefault acts as the fallback in case the list is empty.
      */
     open func searchDefault(for possibileLocales: [String], and region: String) -> String {
+        
+        if let regionalEngine = SearchEngines.defaultRegionSearchEngines[region] {
+            return regionalEngine
+        }
+        
         return possibileLocales.compactMap({ locales[$0].dictionary }).reduce(globalDefaultEngine) { (defaultEngine, localeJSON) -> String in
             return localeJSON[region]?["searchDefault"].string ?? defaultEngine
         }

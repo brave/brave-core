@@ -45,7 +45,9 @@ class SearchEnginesTests: XCTestCase {
         // Different search engine options might apply to certain regions.
         // Default locale for running tests should be en_US.
         XCTAssertEqual(engines.defaultEngine(forType: .privateMode).shortName, DefaultSearchEngineName)
-        XCTAssertEqual(engines.orderedEngines[0].shortName, DefaultSearchEngineName)
+        
+        let orderedEngines = engines.orderedEngines.compactMap { $0.shortName }
+        XCTAssert(orderedEngines.contains(DefaultSearchEngineName))
     }
 
     func testAddingAndDeletingCustomEngines() {
@@ -65,13 +67,13 @@ class SearchEnginesTests: XCTestCase {
         let engines = SearchEngines(files: profile.files)
         let engineSet = engines.orderedEngines
         
-        engines.setDefaultEngine((engineSet?[0])!.shortName, forType: .standard)
+        engines.updateDefaultEngine((engineSet?[0])!.shortName, forType: .standard)
         XCTAssertTrue(engines.isEngineDefault((engineSet?[0])!))
         XCTAssertFalse(engines.isEngineDefault((engineSet?[1])!))
         // The first ordered engine is the default.
         XCTAssertEqual(engines.orderedEngines[0].shortName, engineSet?[0].shortName)
 
-        engines.setDefaultEngine((engineSet?[1])!.shortName, forType: .standard)
+        engines.updateDefaultEngine((engineSet?[1])!.shortName, forType: .standard)
         XCTAssertFalse(engines.isEngineDefault((engineSet?[0])!))
         XCTAssertTrue(engines.isEngineDefault((engineSet?[1])!))
         // The first ordered engine is the default.
@@ -92,7 +94,7 @@ class SearchEnginesTests: XCTestCase {
         let firstEngine = engineSet[0]
         let secondEngine = engineSet[1]
         
-        engines.setDefaultEngine(firstEngine.shortName, forType: .standard)
+        engines.updateDefaultEngine(firstEngine.shortName, forType: .standard)
         XCTAssertTrue(engines.isEngineDefault(firstEngine, type: .privateMode))
         XCTAssertFalse(engines.isEngineDefault(secondEngine, type: .privateMode))
     }
@@ -127,7 +129,7 @@ class SearchEnginesTests: XCTestCase {
         let engineSet = engines.orderedEngines
 
         // You can't disable the default engine.
-        engines.setDefaultEngine((engineSet?[1])!.shortName, forType: .standard)
+        engines.updateDefaultEngine((engineSet?[1])!.shortName, forType: .standard)
         engines.disableEngine((engineSet?[1])!)
         XCTAssertTrue(engines.isEngineEnabled((engineSet?[1])!))
 
@@ -144,7 +146,7 @@ class SearchEnginesTests: XCTestCase {
         XCTAssertEqual(0, engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }.count)
 
         // Setting the default engine enables it.
-        engines.setDefaultEngine((engineSet?[0])!.shortName, forType: .standard)
+        engines.updateDefaultEngine((engineSet?[0])!.shortName, forType: .standard)
         XCTAssertTrue(engines.isEngineEnabled((engineSet?[1])!))
 
         // Setting the order may change the default engine, which enables it.
@@ -177,14 +179,24 @@ class SearchEnginesTests: XCTestCase {
         XCTAssertTrue(engines2.shouldShowSearchSuggestions)
     }
 
-    func testUnorderedSearchEngines() {
-        let unorderedList = ["Google", "Yahoo", "Bing", "DuckDuckGo", "Qwant", "StartPage"]
-        ["zh-TW", "en-CA", "de-DE", "en-US"].forEach {
+    func testUnorderedSearchEnginesNoPriorityEngine() {
+        let unorderedList = ["Google", "Bing", "DuckDuckGo", "Qwant", "StartPage", "Yahoo"]
+        ["pl-PL", "el-GR", "ar-EG"].forEach {
             XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: $0)).compactMap({$0.shortName}), unorderedList)
         }
         
-        let russianList = ["Google", "Яндекс", "DuckDuckGo", "Qwant", "StartPage"]
+        let russianList = ["Google", "DuckDuckGo", "Qwant", "StartPage", "Яндекс"]
         XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "ru")).compactMap({$0.shortName}), russianList)
+    }
+    
+    func testUnorderedSearchEnginesWithPriorityEngine() {
+        let unorderedList = ["Yahoo", "Google", "Bing", "DuckDuckGo", "Qwant", "StartPage"]
+        ["zh-HK", "it-IT", "hi-IN", "en-US"].forEach {
+            XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: $0)).compactMap({$0.shortName}), unorderedList)
+        }
+        
+        let nonGoogleDefault = ["Yahoo", "DuckDuckGo", "Bing", "Google", "Qwant", "StartPage"]
+        XCTAssertEqual(SearchEngines.getUnorderedBundledEnginesFor(locale: Locale(identifier: "de-DE")).compactMap({$0.shortName}), nonGoogleDefault)
     }
 
     func testGetOrderedEngines() {
@@ -193,14 +205,15 @@ class SearchEnginesTests: XCTestCase {
         profile.prefs.setObject(["Google"], forKey: "search.orderedEngineNames")
         let engines = SearchEngines(files: profile.files)
         XCTAssert(engines.orderedEngines.count > 1, "There should be more than one search engine")
-        XCTAssertEqual(engines.orderedEngines.first!.shortName, "Google", "Google should be the first search engine")
+        // default engine should be on second place if a priority engine is present.
+        XCTAssertEqual(engines.orderedEngines[1].shortName, "Google", "Google should be the first search engine")
     }
 
     func testSearchEngineParamsNewUser() {
         Preferences.General.isFirstLaunch.value = true
         
         let profile = MockProfile()
-        profile.searchEngines.regionalSearchEngineSetup(for: Locale(identifier: "de-DE"))
+        profile.searchEngines.searchEngineSetup(for: Locale(identifier: "de-DE"))
         
         expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
         expectddgClientName(locales: ["en-IE", "en-AU", "en-NZ"], expectedClientName: "braveed", profile: profile)

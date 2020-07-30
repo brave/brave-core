@@ -156,7 +156,15 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
             .replacingOccurrences(of: LocaleTermComponent, with: localeString, options: .literal, range: nil)
             .replacingOccurrences(of: RegionalClientComponent, with: regionalClientParam(locale),
                                   options: .literal, range: nil)
-        return URL(string: urlString)
+        
+        let url = URL(string: urlString)
+        
+        // Yahoo uses many subdomains for queries, handling this special case here.
+        if engineID == "yahoo", let yahooRegionalUrl = url?.appendYahooRegionalSubdomain() {
+            return yahooRegionalUrl
+        }
+        
+        return url
     }
     
     private func regionalClientParam(_ locale: Locale) -> String {
@@ -169,6 +177,37 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
         }
         
         return OpenSearchEngine.defaultSearchClientName
+    }
+}
+
+private extension URL {
+    func appendYahooRegionalSubdomain(for locale: Locale = .current) -> URL? {
+        guard let prefs = SearchEngines.defaultSearchPrefs,
+            let priorityEngines = prefs.priorityEngines else { return nil }
+        
+        var region = locale.regionCode ?? "US"
+        
+        // Default search, no need to append the region code.
+        if region == "US" { return nil }
+        
+        let supportedRegions = priorityEngines.compactMap { $0.key }
+        
+        // Region is not supported by yahoo, fallback to default url.
+        if !supportedRegions.contains(region) { return nil }
+        
+        // Special case for malaysia region. Needs to be done after supported regions check.
+        if region == "MY" { region = "malaysia" }
+        
+        var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
+        
+        guard let host = components?.host else { return nil }
+        
+        components?.host = "\(region.lowercased()).\(host)"
+        if components?.url == nil {
+            assertionFailure("Incorrect url parsing, failed to add subdomain for yahoo search")
+        }
+        
+        return components?.url
     }
 }
 
