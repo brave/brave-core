@@ -513,7 +513,11 @@ class NewTabPage extends React.Component<Props, State> {
   fetchGeminiBalances = () => {
     chrome.gemini.getAccountBalances((balances: Record<string, string>, authInvalid: boolean) => {
       if (authInvalid) {
-        this.setGeminiAuthInvalid()
+        chrome.gemini.refreshAccessToken((success: boolean) => {
+          if (!success) {
+            this.setGeminiAuthInvalid()
+          }
+        })
         return
       }
 
