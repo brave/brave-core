@@ -136,6 +136,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         if let clazz = NSClassFromString("WKCont" + "ent" + "View"), let swizzledMethod = class_getInstanceMethod(TabWebViewMenuHelper.self, #selector(TabWebViewMenuHelper.swizzledMenuHelperFindInPage)) {
             class_addMethod(clazz, MenuHelper.selectorFindInPage, method_getImplementation(swizzledMethod), method_getTypeEncoding(swizzledMethod))
         }
+        
+        if !Preferences.BraveToday.languageChecked.value {
+            Preferences.BraveToday.languageChecked.value = true
+            Preferences.BraveToday.isEnabled.value = Locale.preferredLanguages.first?.prefix(2) == "en"
+        }
 
         self.tabManager = TabManager(prefs: profile.prefs, imageStore: imageStore)
 
