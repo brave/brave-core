@@ -1124,11 +1124,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 if (grant.length < 3) {
                     continue;
                 }
-
-                DecimalFormat df = new DecimalFormat("#.###");
-                df.setRoundingMode(RoundingMode.FLOOR);
-                df.setMinimumFractionDigits(3);
-                String toInsert = "<b><font color=#ffffff>" + df.format(grant[0]) + " " + batPointsText + "</font></b> ";
+                String toInsert = "<b><font color=#ffffff>" + String.format(Locale.getDefault(), "%.3f", Double.parseDouble(grant[0])) + " " + batPointsText + "</font></b> ";
 
                 if (grant[2].equals(BraveRewardsPanelPopup.ADS_GRANT_TYPE) == false) {
                     Calendar calTime = Calendar.getInstance();
