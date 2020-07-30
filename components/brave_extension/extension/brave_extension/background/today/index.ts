@@ -35,7 +35,8 @@ function performUpdateFeed() {
         console.log('Got feed', feedContents)
         memoryTodayData = await feedToData(feedContents)
         resolve()
-        chrome.storage.local.set({ today: memoryTodayData })
+        // console.log('setting today feed data', memoryTodayData)
+        // chrome.storage.local.set({ today: memoryTodayData })
       } else {
         throw new Error(`Not ok when fetching feed. Status ${feedResponse.status} (${feedResponse.statusText})`)
       }
@@ -68,10 +69,9 @@ async function updateFeed() {
 }
 
 
-
-// function on(messageType: string)
 // TODO: make this a common thing and do explicit types for payloads like
 // we do with redux action payloads.
+
 import MessageTypes = Background.MessageTypes.Today
 import Messages = BraveToday.Messages
 
@@ -100,6 +100,7 @@ Background.setListener<Messages.GetFeedResponse>(
 Background.setListener<Messages.GetFeedImageDataResponse, Messages.GetFeedImageDataPayload>(
   MessageTypes.getFeedImageData,
   async function (req, sender, sendResponse) {
+    console.log('asked for image')
     const blob = await fetch(req.url).then(r => r.blob());
     const dataUrl: string = await new Promise(resolve => {
       let reader = new FileReader();

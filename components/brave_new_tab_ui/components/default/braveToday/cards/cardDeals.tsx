@@ -11,7 +11,7 @@ import CardSmallest from './_deals/cardDealSmall'
 import CardMedium from './_deals/cardDealLarge'
 
 interface Props {
-  content: (BraveToday.Deal | undefined)[]
+  content?: BraveToday.Deal[]
 }
 
 class CardDeals extends React.PureComponent<Props, {}> {
@@ -19,7 +19,7 @@ class CardDeals extends React.PureComponent<Props, {}> {
     const { content }: Props = this.props
 
     // no full content no render®
-    if (content.length === 0) {
+    if (!content || content.length === 0) {
       return null
     }
 

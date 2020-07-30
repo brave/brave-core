@@ -4,7 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 import { formatDistanceToNow } from 'date-fns'
 
-
 function shuffleArray(array: Array<any>) {
   for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -48,50 +47,157 @@ function generateFeedProperties (
 
 export default async function getBraveTodayData (
   feedContent: BraveToday.ContentFromFeed[]
-): Promise<BraveToday.Feed> {
+): Promise<BraveToday.Feed | undefined> {
   // const BraveTodayWhitelist = getBraveTodayWhitelist(topSites)
   const sponsors: (BraveToday.Article)[] = []
   const deals: (BraveToday.Deal)[] = []
-  const media: (BraveToday.Media)[] = []
   let articles: (BraveToday.Article)[] = []
 
   for (const feedItem of feedContent) {
-    if ('partner_id' in feedItem) {
-      deals.push(feedItem)
-    } else {
-      if (feedItem.content_type === 'product') {
+    switch (feedItem.content_type) {
+      case 'offer':
         sponsors.push(generateFeedProperties(feedItem) as BraveToday.Article)
-      }
-      if (feedItem.content_type === 'article') {
+        break
+      case 'product':
+        deals.push(generateFeedProperties(feedItem) as BraveToday.Deal)
+        break
+      case 'article':
         articles.push(generateFeedProperties(feedItem) as BraveToday.Article)
-      }
-      if (feedItem.content_type === 'image') {
-        media.push(generateFeedProperties(feedItem) as BraveToday.Article)
-      }
+        break
     }
   }
 
   articles = await weightArticles(articles)
 
-  const featuredDeals = []
-  if (deals.length > 0) {
-    featuredDeals.push(deals[0])
-    if (deals.length > 1) {
-      featuredDeals.push(deals[1])
+  // Get unique categories present
+  // const categoryCounts = new Map<string, number>()
+  // for (const article of articles) {
+  //   if (article.category) {
+  //     const existingCount = categoryCounts.get(article.category) || 0
+  //     categoryCounts.set(article.category, existingCount + 1)
+  //   }
+  // }
+  // Ordered by # of occurrences
+  // const categoriesByPriority = Array.from(categoryCounts.keys()).sort((a, b) =>
+  //   categoryCounts[a] - categoryCounts[b])
+
+  // .sponsor,
+  // .headline(paired: false),
+  // .deals,
+  const firstSponsors = sponsors.splice(0, 1) // Featured sponsor is the first sponsor
+  const firstHeadlines = sponsors.splice(0, 1) // Featured article is the first sponsor
+  const firstDeals = deals.splice(0, 3)
+
+  // generate as many pages of content as possible
+  const pages: BraveToday.Page[] = []
+  let canGenerateAnotherPage = true
+  // Sanity check: arbitrary max pages so we don't end up
+  // in infinite loop.
+  const maxPages = 4000;
+  let curPage = 0;
+  while (canGenerateAnotherPage) {
+    curPage++
+    if (curPage > maxPages) break
+    const nextPage = generateNextPage(articles, deals)
+    if (!nextPage) {
+      canGenerateAnotherPage = false
+      continue
     }
+    pages.push(nextPage)
   }
 
   return {
-    featuredSponsor: sponsors[0], // Featured sponsor is the first sponsor
-    featuredArticle: articles[0], // Featured article is the first sponsor
-    featuredDeals,
-    scrollingList: {
-      sponsors: sponsors.slice(0), // Remove the first item which is used as a featured sponsor
-      deals: deals.slice(1), // Remove the first two items which are used as featured deals
-      media, // TBD
-      articles: articles.slice(1) // Remove the first item which is used as a featured article
+    featuredSponsor: firstSponsors.length ? firstSponsors[0] : undefined,
+    featuredArticle: firstHeadlines.length ? firstHeadlines[0] : undefined,
+    featuredDeals: firstDeals,
+    pages
+  }
+}
+
+function getArticleHasImage (article: BraveToday.Article) {
+  return !!article.img
+}
+
+function generateNextPage (articles: BraveToday.Article[], allDeals: BraveToday.Deal[]): BraveToday.Page | null {
+  // .repeating([.headline(paired: false)], times: 2),
+  // .repeating([.headline(paired: true)], times: 2),
+  // .categoryGroup,
+  // .headline(paired: false),
+  // .deals,
+  // .headline(paired: false),
+  // .headline(paired: true),
+  // .brandedGroup(numbered: true),
+  // .group,
+  // .headline(paired: false),
+  // .headline(paired: true),
+
+  // Collect headlines
+  const headlines = take(articles, getArticleHasImage, 16)
+  if (!headlines) {
+    return null
+  }
+  const categoryInfo = generateArticleCategoryGroup(articles)
+  const deals = allDeals.splice(0, 3)
+  const publisherInfo = generateArticleSourceGroup(articles)
+  return {
+    headlines,
+    deals,
+    itemsByCategory: categoryInfo ? { categoryName: categoryInfo[0], items: categoryInfo[1] } : undefined,
+    itemsByPublisher: publisherInfo ? { name: publisherInfo[0], items: publisherInfo[1] } : undefined,
+  }
+}
+
+function generateArticleCategoryGroup (articles: BraveToday.Article[]): [string, BraveToday.Article[]] | undefined {
+  const firstArticleWithCategory = articles.find(a => !!a.category)
+  if (firstArticleWithCategory) {
+    return [
+      firstArticleWithCategory.category,
+      take(
+        articles,
+        a => a.category === firstArticleWithCategory.category,
+        3
+      )
+    ]
+  }
+  return undefined
+}
+
+function generateArticleSourceGroup (articles: BraveToday.Article[]): [string, BraveToday.Article[]] | undefined {
+  const firstArticleWithSource = articles.find(a => !!a.publisher_id)
+  if (firstArticleWithSource) {
+    return [
+      firstArticleWithSource.publisher_id,
+      take(
+        articles,
+        a => a.publisher_id === firstArticleWithSource.publisher_id,
+        3
+      )
+    ]
+  }
+  return undefined
+}
+
+function take<T>(items: T[], matching: (item: T) => boolean, count?: number): T[] {
+  let indicesToTake: number[] = []
+  for (const [i, item] of items.entries())  {
+    const shouldTake = matching(item)
+    if (!shouldTake) {
+      continue
+    }
+    // Take item
+    indicesToTake.push(i)
+    // Stop, if we're limiting the count
+    if (count && indicesToTake.length === count) {
+      break
     }
   }
+  // Get items and remove from array
+  indicesToTake = indicesToTake.reverse()
+  const takenItems: T[] = []
+  for (const i of indicesToTake) {
+    takenItems.push(...items.splice(i, 1))
+  }
+  return takenItems
 }
 
 function domainFromUrlString(urlString: string): string {

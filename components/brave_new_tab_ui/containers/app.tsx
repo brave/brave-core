@@ -25,12 +25,14 @@ import * as PreferencesAPI from '../api/preferences'
 
 // Types
 import { NewTabActions } from '../constants/new_tab_types'
+import { ApplicationState } from '../reducers'
+import { BraveTodayState } from '../reducers/today'
 
 interface Props {
   actions: NewTabActions
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
-  braveTodayData: NewTab.BraveTodayState
+  braveTodayData: BraveTodayState
 }
 
 class DefaultPage extends React.Component<Props, {}> {
@@ -65,7 +67,7 @@ class DefaultPage extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: NewTab.ApplicationState): Partial<Props> => ({
+const mapStateToProps = (state: ApplicationState): Partial<Props> => ({
   newTabData: state.newTabData,
   gridSitesData: state.gridSitesData,
   braveTodayData: state.today

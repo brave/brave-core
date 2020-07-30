@@ -40,6 +40,7 @@ import { getLocale } from '../../../common/locale'
 import currencyData from '../../components/default/binance/data'
 import geminiData from '../../components/default/gemini/data'
 import { NewTabActions } from '../../constants/new_tab_types'
+import { BraveTodayState } from '../../reducers/today'
 
 // NTP features
 import Settings from './settings'
@@ -47,7 +48,7 @@ import Settings from './settings'
 interface Props {
   newTabData: NewTab.State
   gridSitesData: NewTab.GridSitesState
-  todayData: NewTab.BraveTodayState
+  todayData: BraveTodayState
   actions: NewTabActions
   saveShowBackgroundImage: (value: boolean) => void
   saveShowStats: (value: boolean) => void
@@ -1088,6 +1089,8 @@ class NewTabPage extends React.Component<Props, State> {
         <BraveToday
           setOpacityForItems={this.setOpacityForItems}
           feed={this.props.todayData.feed}
+          onAnotherPageNeeded={this.props.actions.anotherPageNeeded}
+          displayedPageCount={this.props.todayData.currentPageIndex}
         />
         }
         <Settings

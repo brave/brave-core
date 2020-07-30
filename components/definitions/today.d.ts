@@ -21,10 +21,24 @@ declare namespace BraveToday {
   export type ContentFromFeed = (Article | Deal | Media)
 
   export interface Feed {
-    featuredSponsor: Article
-    featuredArticle: Article
-    featuredDeals: Deal[]
-    scrollingList: ScrollingList
+    featuredSponsor?: Article
+    featuredArticle?: Article
+    featuredDeals?: Deal[]
+    pages: Page[]
+  }
+
+  export interface Page {
+    headlines: Article[] // 16
+    itemsByCategory?: {
+      categoryName: string
+      items: Article[] // 3
+    }
+    itemsByPublisher?: {
+      name: string,
+      items: Article[] // 3
+    }
+    deals: Deal[] // 3
+
   }
 
   export interface ScrollingList {

@@ -22,12 +22,6 @@ declare namespace NewTab {
   export interface ApplicationState {
     newTabData: State | undefined
     gridSitesData: GridSitesState | undefined
-    today: BraveTodayState
-  }
-
-  export interface BraveTodayState {
-    isFetching: boolean | string // string if error state
-    feed?: BraveToday.Feed
   }
 
   export interface Image {

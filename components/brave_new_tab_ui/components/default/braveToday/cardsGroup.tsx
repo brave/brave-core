@@ -14,14 +14,31 @@ import CardDeals from './cards/cardDeals'
 
 import * as BraveTodayElement from './default'
 
-// Helpers
-import { chunknizer, filterFeedFromFeaturedTypes, filterFeedByInclusion } from '../../../reducers/today/braveTodayUtils'
+enum CardType {
+  Headline,
+  HeadlinePaired,
+  CategoryGroup,
+  Deals,
+  PublisherGroup,
+}
+
+const PageContentOrder = [
+  CardType.Headline,
+  CardType.Headline,
+  CardType.HeadlinePaired,
+  CardType.HeadlinePaired,
+  CardType.CategoryGroup,
+  CardType.Headline,
+  CardType.Deals,
+  CardType.Headline,
+  CardType.HeadlinePaired,
+  CardType.PublisherGroup,
+  CardType.Headline,
+  CardType.HeadlinePaired,
+]
 
 interface Props {
-  content: BraveToday.ScrollingList
-  featuredPublisher: BraveToday.OneOfPublishers
-  featuredCategory: string // TODO: have a list
-  parentIndex: number
+  content: BraveToday.Page
 }
 
 interface State {
@@ -32,136 +49,48 @@ class CardsGroup extends React.PureComponent<Props, State> {
   state = {
     setFocusOnBraveToday: false
   }
-  get currentFeed () {
-    // TODO: move all this to backend
-    const { content, featuredPublisher, featuredCategory } = this.props
-    return {
-      sponsors: chunknizer(content.sponsors, 4),
-      deals: chunknizer(content.deals, 3),
-      media: chunknizer(content.media, 3),
-      articlesRandom: chunknizer(
-        filterFeedFromFeaturedTypes(
-          content.articles,
-          featuredPublisher,
-          featuredCategory
-        ),
-      3),
-      articlesByPublisher: chunknizer(
-        filterFeedByInclusion(
-          content.articles, { publisher_id: featuredPublisher }
-        ),
-      3),
-      articlesByCategory: chunknizer(
-        filterFeedByInclusion(
-          content.articles, { category: featuredCategory }
-        ),
-      3),
-      // TODO: delete
-      articles: chunknizer(content.articles, 3),
+
+  renderCard (cardType: CardType, headlines: BraveToday.Article[]) {
+    switch (cardType) {
+      case CardType.Headline:
+        // TODO: article card should handle any number of articles and
+        // adapt accordingly.
+        return <CardLarge
+                content={headlines.splice(0, 1)}
+              />
+      case CardType.HeadlinePaired:
+        // TODO: handle content length < 2
+        return <CardSmall
+                content={headlines.splice(0, 2)}
+              />
+      case CardType.CategoryGroup:
+        if (!this.props.content.itemsByCategory) {
+          return null
+        }
+        return <CardBrandedList
+          content={this.props.content.itemsByCategory.items}
+        />
+      case CardType.PublisherGroup:
+        if (!this.props.content.itemsByPublisher) {
+          return null
+        }
+        return <CardOrderedList
+          content={this.props.content.itemsByPublisher.items}
+        />
+      case CardType.Deals:
+        return <CardDeals content={this.props.content.deals} />
     }
+    console.error('Asked to render unknown card type', cardType)
+    return null
   }
 
   render () {
-    const { parentIndex } = this.props
-    // 1. random, 1
-    // 2. random, 2
-    // 3. same source, 3
-    // 4. same category (dont repeat), 3
-    // 5. deals, 3
-    // 6. sponsored, 1
-    // 7. sponsored, 3
-    // 8. video cards?
+    // Duplicate array so we can splice without affecting state
+    const headlines = [...this.props.content.headlines]
+
     return (
       <BraveTodayElement.ArticlesGroup>
-        {
-          // RANDOM FEATURED ARTICLE
-          this.currentFeed.articlesRandom[parentIndex] &&
-          this.currentFeed.articlesRandom[parentIndex].length >= 1
-            ? (
-              <CardLarge
-                content={[this.currentFeed.articlesRandom[parentIndex][0]]}
-              />
-            ) : null
-        }
-        {
-          // RANDOM ARTICLE
-          this.currentFeed.articlesRandom[parentIndex] &&
-          this.currentFeed.articlesRandom[parentIndex].length >= 2
-            ? (
-              <CardSmall
-                content={[
-                  this.currentFeed.articlesRandom[parentIndex][1] || [],
-                  this.currentFeed.articlesRandom[parentIndex][2] || []
-                ]}
-              />
-            ) : null
-        }
-        {
-          // FEATURED PUBLISHER
-          this.currentFeed.articlesByPublisher[parentIndex] &&
-          this.currentFeed.articlesByPublisher[parentIndex].length >= 3
-            ? (
-              <CardBrandedList
-                content={[
-                  this.currentFeed.articlesByPublisher[parentIndex][0] || [],
-                  this.currentFeed.articlesByPublisher[parentIndex][1] || [],
-                  this.currentFeed.articlesByPublisher[parentIndex][2] || []
-                ]}
-              />
-            ) : null
-        }
-        {
-          // FEATURED CATEGORY
-          this.currentFeed.articlesByCategory[parentIndex] &&
-          this.currentFeed.articlesByCategory[parentIndex].length >= 3
-            ? (
-              <CardOrderedList
-                content={[
-                  this.currentFeed.articlesByCategory[parentIndex][0] || [],
-                  this.currentFeed.articlesByCategory[parentIndex][1] || [],
-                  this.currentFeed.articlesByCategory[parentIndex][2] || []
-                ]}
-              />
-            ) : null
-        }
-        {
-          // DEALS
-          this.currentFeed.deals[parentIndex] &&
-          this.currentFeed.deals[parentIndex].length >= 3
-            ? (
-              <CardDeals
-                content={[
-                  this.currentFeed.deals[parentIndex][0] || [],
-                  this.currentFeed.deals[parentIndex][1] || [],
-                  this.currentFeed.deals[parentIndex][2] || []
-                ]}
-              />
-            ) : null
-        }
-        {
-          // FEATURED SPONSOR
-          this.currentFeed.sponsors[parentIndex] &&
-          this.currentFeed.sponsors[parentIndex].length >= 1
-            ? (
-              <CardLarge
-                content={[this.currentFeed.sponsors[parentIndex][0]]}
-              />
-            ) : null
-        }
-        {
-          // SPONSORS LIST
-          this.currentFeed.sponsors[parentIndex] &&
-          this.currentFeed.sponsors[parentIndex].length >= 4
-            ? (
-              <CardOrderedList
-                content={[
-                  this.currentFeed.sponsors[parentIndex][1] || [],
-                  this.currentFeed.sponsors[parentIndex][2] || [],
-                  this.currentFeed.sponsors[parentIndex][3] || []
-                ]}
-              />
-            ) : null
-        }
+        { PageContentOrder.map(cardType => this.renderCard(cardType, headlines)) }
       </BraveTodayElement.ArticlesGroup>
     )
   }

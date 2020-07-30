@@ -41,7 +41,7 @@ class CardOrderedList extends React.PureComponent<Props, {}> {
               {
                 // @ts-ignore
                 content && content[0] && content[0].content_type === 'product'
-                ? <Debugger style={{ top: '60px' }}>THIS COMES FROM A SPONSOR</Debugger>
+                ? <Debugger style={{ top: '60px' }}>THIS COMES FROM A DEAL</Debugger>
                 : null
               }
               <Card.PublisherLogo
