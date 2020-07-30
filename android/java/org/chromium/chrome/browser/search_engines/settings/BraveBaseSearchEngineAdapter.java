@@ -61,8 +61,8 @@ public class BraveBaseSearchEngineAdapter extends BaseAdapter {
         }
     }
 
-    private static @SearchEngineAdapter.TemplateUrlSourceType int getSearchEngineSourceType(
-        TemplateUrl templateUrl, TemplateUrl defaultSearchEngine) {
+    public static @SearchEngineAdapter.TemplateUrlSourceType int getSearchEngineSourceType(
+            TemplateUrl templateUrl, TemplateUrl defaultSearchEngine) {
         if (templateUrl.getIsPrepopulated()) {
             return SearchEngineAdapter.TemplateUrlSourceType.PREPOPULATED;
         } else if (templateUrl.equals(defaultSearchEngine)) {
