@@ -50,8 +50,8 @@ class SpeedreaderRewriterService : public SpeedreaderComponent::Observer {
   using GetDATFileDataResult =
       brave_component_updater::LoadDATFileDataResult<speedreader::SpeedReader>;
 
-  void OnGetDATFileData(GetDATFileDataResult result);
-  void OnGetStylesheet(std::string stylesheet);
+  void OnLoadDATFileData(GetDATFileDataResult result);
+  void OnLoadStylesheet(std::string stylesheet);
 
   std::string content_stylesheet_;
   std::unique_ptr<speedreader::SpeedreaderComponent> component_;

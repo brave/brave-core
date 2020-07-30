@@ -39,12 +39,24 @@ SpeedreaderRewriterService::SpeedreaderRewriterService(
     brave_component_updater::BraveComponent::Delegate* delegate)
     : component_(new speedreader::SpeedreaderComponent(delegate)),
       speedreader_(new speedreader::SpeedReader) {
-  component_->AddObserver(this);
+  // Load the built-in stylesheet as the default
   content_stylesheet_ =
       "<style id=\"brave_speedreader_style\">" +
       ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
           IDR_SPEEDREADER_STYLE_DESKTOP) +
       "</style>";
+
+  // Check the paths from the component as observer may register
+  // later than the paths were available in the component.
+  const auto stylesheet_path = component_->GetStylesheetPath();
+  if (!stylesheet_path.empty())
+    OnStylesheetReady(stylesheet_path);
+
+  const auto whitelist_path = component_->GetWhitelistPath();
+  if (!whitelist_path.empty())
+    OnWhitelistReady(whitelist_path);
+
+  component_->AddObserver(this);
 }
 
 SpeedreaderRewriterService::~SpeedreaderRewriterService() {
@@ -58,7 +70,7 @@ void SpeedreaderRewriterService::OnWhitelistReady(const base::FilePath& path) {
       base::BindOnce(
           &brave_component_updater::LoadDATFileData<speedreader::SpeedReader>,
           path),
-      base::BindOnce(&SpeedreaderRewriterService::OnGetDATFileData,
+      base::BindOnce(&SpeedreaderRewriterService::OnLoadDATFileData,
                      weak_factory_.GetWeakPtr()));
 }
 
@@ -66,7 +78,7 @@ void SpeedreaderRewriterService::OnStylesheetReady(const base::FilePath& path) {
   base::PostTaskAndReplyWithResult(
       FROM_HERE, {base::ThreadPool(), base::MayBlock()},
       base::BindOnce(&GetDistilledPageStylesheet, path),
-      base::BindOnce(&SpeedreaderRewriterService::OnGetStylesheet,
+      base::BindOnce(&SpeedreaderRewriterService::OnLoadStylesheet,
                      weak_factory_.GetWeakPtr()));
 }
 
@@ -83,12 +95,13 @@ const std::string& SpeedreaderRewriterService::GetContentStylesheet() {
   return content_stylesheet_;
 }
 
-void SpeedreaderRewriterService::OnGetStylesheet(std::string stylesheet) {
+void SpeedreaderRewriterService::OnLoadStylesheet(std::string stylesheet) {
   VLOG(2) << "Speedreader stylesheet loaded";
   content_stylesheet_ = stylesheet;
 }
 
-void SpeedreaderRewriterService::OnGetDATFileData(GetDATFileDataResult result) {
+void SpeedreaderRewriterService::OnLoadDATFileData(
+    GetDATFileDataResult result) {
   VLOG(2) << "Speedreader loaded from DAT file";
   if (result.first)
     speedreader_ = std::move(result.first);

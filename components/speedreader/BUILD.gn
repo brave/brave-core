@@ -36,8 +36,9 @@ source_set("speedreader") {
 
   deps = [
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/resources",
     "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources",
+    "//brave/components/weekly_storage",
     "//components/keyed_service/core:core",
     "//components/prefs:prefs",
     "//services/network/public/cpp",

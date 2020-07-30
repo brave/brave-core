@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_WHITELIST_H_
-#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_WHITELIST_H_
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_COMPONENT_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_COMPONENT_H_
 
 #include <memory>
 #include <string>
@@ -44,6 +44,9 @@ class SpeedreaderComponent
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  const base::FilePath& GetWhitelistPath() { return whitelist_path_; }
+  const base::FilePath& GetStylesheetPath() { return stylesheet_path_; }
+
  private:
   // brave_component_updater::BraveComponent:
   void OnComponentReady(const std::string& component_id,
@@ -55,9 +58,11 @@ class SpeedreaderComponent
 
   base::ObserverList<Observer> observers_;
   std::unique_ptr<base::FilePathWatcher> whitelist_path_watcher_;
+  base::FilePath whitelist_path_;
+  base::FilePath stylesheet_path_;
   base::WeakPtrFactory<SpeedreaderComponent> weak_factory_{this};
 };
 
 }  // namespace speedreader
 
-#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_WHITELIST_H_
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_COMPONENT_H_

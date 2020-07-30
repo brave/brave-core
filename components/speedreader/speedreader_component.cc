@@ -9,7 +9,6 @@
 
 #include "base/bind.h"
 #include "base/command_line.h"
-#include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/components/speedreader/speedreader_switches.h"
 #include "url/gurl.h"
 
@@ -49,11 +48,8 @@ SpeedreaderComponent::SpeedreaderComponent(Delegate* delegate)
     VLOG(2) << "Speedreader whitelist from " << whitelist_path;
 
     // Notify the `OnWhitelistFileReady` method asynchronously.
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(&SpeedreaderComponent::OnWhitelistFileReady, AsWeakPtr(),
-                       whitelist_path, false /* no error */),
-        base::TimeDelta::FromMilliseconds(100));
+    whitelist_path_ = whitelist_path;
+    OnWhitelistFileReady(whitelist_path, false /* no error */);
 
     // Watch the provided file for changes.
     whitelist_path_watcher_ = std::make_unique<base::FilePathWatcher>();
@@ -86,21 +82,22 @@ void SpeedreaderComponent::OnWhitelistFileReady(const base::FilePath& path,
     return;
   }
 
+  whitelist_path_ = path;
   for (Observer& observer : observers_)
-    observer.OnWhitelistReady(path);
+    observer.OnWhitelistReady(whitelist_path_);
 }
 
 void SpeedreaderComponent::OnComponentReady(const std::string& component_id,
                                             const base::FilePath& install_dir,
                                             const std::string& manifest) {
-  auto stylesheet_path =
+  stylesheet_path_ =
       install_dir.Append(kDatFileVersion).Append(kStylesheetFileName);
-  auto whitelist_path =
+  whitelist_path_ =
       install_dir.Append(kDatFileVersion).Append(kDatFileName);
 
   for (Observer& observer : observers_) {
-    observer.OnWhitelistReady(whitelist_path);
-    observer.OnStylesheetReady(stylesheet_path);
+    observer.OnWhitelistReady(whitelist_path_);
+    observer.OnStylesheetReady(stylesheet_path_);
   }
 }
 
