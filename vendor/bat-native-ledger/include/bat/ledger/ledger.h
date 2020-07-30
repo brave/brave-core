@@ -123,8 +123,6 @@ class LEDGER_EXPORT Ledger {
       const std::string& post_data,
       VisitDataPtr visit_data) = 0;
 
-  virtual void OnTimer(uint32_t timer_id) = 0;
-
   virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,

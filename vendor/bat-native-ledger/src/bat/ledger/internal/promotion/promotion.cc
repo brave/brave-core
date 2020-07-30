@@ -27,7 +27,6 @@
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/static_values.h"
-#include "brave_base/random.h"
 
 #include "wrapper.hpp"  // NOLINT
 
@@ -473,26 +472,11 @@ void Promotion::ProcessFetchedPromotions(
     ledger::FetchPromotionCallback callback) {
   const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
   ledger_->SetUint64State(ledger::kStatePromotionLastFetchStamp, now);
-  last_check_timer_id_ = 0;
+  last_check_timer_.Stop();
   const bool retry = result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND;
   Refresh(retry);
   callback(result, std::move(promotions));
-}
-
-void Promotion::OnTimer(const uint32_t timer_id) {
-  if (timer_id == last_check_timer_id_) {
-    last_check_timer_id_ = 0;
-    Fetch([](ledger::Result _, ledger::PromotionList __){});
-    return;
-  }
-
-  if (timer_id == retry_timer_id_) {
-    auto claim_callback = std::bind(&Promotion::Retry,
-      this,
-      _1);
-    ledger_->GetAllPromotions(claim_callback);
-  }
 }
 
 void Promotion::GetCredentials(
@@ -523,7 +507,9 @@ void Promotion::CredentialsProcessed(
     const std::string& promotion_id,
     ledger::ResultCallback callback) {
   if (result == ledger::Result::RETRY) {
-    ledger_->SetTimer(5, &retry_timer_id_);
+    retry_timer_.Start(FROM_HERE, base::TimeDelta::FromSeconds(5),
+        base::BindOnce(&Promotion::OnRetryTimerElapsed,
+            base::Unretained(this)));
     callback(ledger::Result::LEDGER_OK);
     return;
   }
@@ -566,13 +552,15 @@ void Promotion::Retry(ledger::PromotionMap promotions) {
 }
 
 void Promotion::Refresh(const bool retry_after_error) {
-  uint64_t start_timer_in = 0ull;
-  if (last_check_timer_id_ != 0) {
+  if (last_check_timer_.IsRunning()) {
     return;
   }
 
+  base::TimeDelta start_timer_in;
+
   if (retry_after_error) {
-    start_timer_in = brave_base::random::Geometric(300);
+    start_timer_in = braveledger_time_util::GetRandomizedDelay(
+        base::TimeDelta::FromSeconds(300));
 
     BLOG(1, "Failed to refresh promotion, will try again in "
         << start_timer_in);
@@ -589,14 +577,17 @@ void Promotion::Refresh(const bool retry_after_error) {
     }
 
     if (now == last_promo_stamp) {
-      start_timer_in = default_time;
+      start_timer_in = base::TimeDelta::FromSeconds(default_time);
     } else if (time_since_last_promo_check > 0 &&
         default_time > time_since_last_promo_check) {
-      start_timer_in = default_time - time_since_last_promo_check;
+      start_timer_in = base::TimeDelta::FromSeconds(
+          default_time - time_since_last_promo_check);
     }
   }
 
-  ledger_->SetTimer(start_timer_in, &last_check_timer_id_);
+  last_check_timer_.Start(FROM_HERE, start_timer_in,
+      base::BindOnce(&Promotion::OnLastCheckTimerElapsed,
+          base::Unretained(this)));
 }
 
 void Promotion::CheckForCorrupted(const ledger::PromotionMap& promotions) {
@@ -788,6 +779,14 @@ void Promotion::ErrorCredsStatusSaved(const ledger::Result result) {
 
 void Promotion::TransferTokens(ledger::ResultCallback callback) {
   transfer_->Start(callback);
+}
+
+void Promotion::OnRetryTimerElapsed() {
+  ledger_->GetAllPromotions(std::bind(&Promotion::Retry, this, _1));
+}
+
+void Promotion::OnLastCheckTimerElapsed() {
+  Fetch([](ledger::Result, ledger::PromotionList) {});
 }
 
 }  // namespace braveledger_promotion

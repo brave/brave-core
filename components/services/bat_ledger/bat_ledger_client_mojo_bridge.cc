@@ -117,23 +117,6 @@ void BatLedgerClientMojoBridge::LoadPublisherState(
           std::move(callback)));
 }
 
-void BatLedgerClientMojoBridge::SetTimer(uint64_t time_offset,
-    uint32_t* timer_id) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_client_->SetTimer(time_offset, timer_id);  // sync
-}
-
-void BatLedgerClientMojoBridge::KillTimer(const uint32_t timer_id) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_client_->KillTimer(timer_id);  // sync
-}
-
 void BatLedgerClientMojoBridge::OnPanelPublisherInfo(
     ledger::Result result,
     ledger::PublisherInfoPtr info,

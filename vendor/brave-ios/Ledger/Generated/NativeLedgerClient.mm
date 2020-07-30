@@ -17,9 +17,6 @@ void NativeLedgerClient::ConfirmationsTransactionHistoryDidChange() {
 void NativeLedgerClient::FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) {
   [bridge_ fetchFavIcon:url faviconKey:favicon_key callback:callback];
 }
-void NativeLedgerClient::KillTimer(const uint32_t timer_id) {
-  [bridge_ killTimer:timer_id];
-}
 void NativeLedgerClient::LoadLedgerState(ledger::OnLoadCallback callback) {
   [bridge_ loadLedgerState:callback];
 }
@@ -52,9 +49,6 @@ void NativeLedgerClient::SaveState(const std::string & name, const std::string &
 }
 void NativeLedgerClient::SetConfirmationsIsReady(const bool is_ready) {
   [bridge_ setConfirmationsIsReady:is_ready];
-}
-void NativeLedgerClient::SetTimer(uint64_t time_offset, uint32_t * timer_id) {
-  [bridge_ setTimer:time_offset timerId:timer_id];
 }
 std::string NativeLedgerClient::URIEncode(const std::string & value) {
   return [bridge_ URIEncode:value];

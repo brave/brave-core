@@ -17,7 +17,6 @@ private:
 
   void ConfirmationsTransactionHistoryDidChange() override;
   void FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) override;
-  void KillTimer(const uint32_t timer_id) override;
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
@@ -29,7 +28,6 @@ private:
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
   void SaveState(const std::string & name, const std::string & value, ledger::ResultCallback callback) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
-  void SetTimer(uint64_t time_offset, uint32_t * timer_id) override;
   std::string URIEncode(const std::string & value) override;
   void OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) override;
   void SetBooleanState(const std::string& name, bool value) override;

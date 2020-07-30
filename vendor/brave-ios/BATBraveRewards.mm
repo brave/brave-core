@@ -6,6 +6,11 @@
 #import "DataController.h"
 #import "RewardsLogging.h"
 
+#include "base/message_loop/message_loop_current.h"
+#include "base/task/single_thread_task_executor.h"
+
+base::SingleThreadTaskExecutor* g_task_executor = nullptr;
+
 @implementation BATBraveRewardsConfiguration
 
 + (BATBraveRewardsConfiguration *)defaultConfiguration
@@ -86,6 +91,10 @@
                              adsClass:(nullable Class)adsClass
 {
   if ((self = [super init])) {
+    if (!base::MessageLoopCurrent::Get()) {
+      g_task_executor = new base::SingleThreadTaskExecutor(base::MessagePumpType::UI);
+    }
+
     rewards::set_rewards_client_for_logging(self);
     
     self.configuration = configuration;

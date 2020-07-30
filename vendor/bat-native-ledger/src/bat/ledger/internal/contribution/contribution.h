@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
+#include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -45,9 +46,6 @@ class Contribution {
 
   void ProcessContributionQueue();
 
-  // Called when timer is triggered
-  void OnTimer(uint32_t timer_id);
-
   // Sets new reconcile timer for monthly contribution in 30 days
   void SetReconcileTimer();
 
@@ -64,8 +62,6 @@ class Contribution {
   // This is called from global timer in impl.
   // Can be also called manually
   void StartMonthlyContribution();
-
-  void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 
   // Reset reconcile stamps
   void ResetReconcileStamp();
@@ -165,7 +161,9 @@ class Contribution {
 
   void SetRetryTimer(
       const std::string& contribution_id,
-      const uint64_t start_timer_in = 0);
+      base::TimeDelta delay);
+
+  void OnRetryTimerElapsed(const std::string& contribution_id);
 
   void SetRetryCounter(ledger::ContributionInfoPtr contribution);
 
@@ -187,9 +185,9 @@ class Contribution {
   std::unique_ptr<ContributionTip> tip_;
   std::unique_ptr<ContributionExternalWallet> external_wallet_;
   std::unique_ptr<ContributionAnonCard> anon_card_;
-  uint32_t last_reconcile_timer_id_;
-  std::map<std::string, uint32_t> retry_timers_;
-  uint32_t queue_timer_id_;
+  base::OneShotTimer last_reconcile_timer_;
+  std::map<std::string, base::OneShotTimer> retry_timers_;
+  base::OneShotTimer queue_timer_;
   bool queue_in_progress_ = false;
 };
 

@@ -10,7 +10,6 @@
 
 - (void)confirmationsTransactionHistoryDidChange;
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback;
-- (void)killTimer:(const uint32_t)timer_id;
 - (void)loadLedgerState:(ledger::OnLoadCallback)callback;
 - (void)loadPublisherState:(ledger::OnLoadCallback)callback;
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback;
@@ -22,7 +21,6 @@
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
 - (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::ResultCallback)callback;
 - (void)setConfirmationsIsReady:(const bool)is_ready;
-- (void)setTimer:(uint64_t)time_offset timerId:(uint32_t *)timer_id;
 - (std::string)URIEncode:(const std::string &)value;
 - (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string&)publisher_key publisherName:(const std::string&)publisher_name;
 - (void)setBooleanState:(const std::string&)name value:(bool)value;

@@ -18,8 +18,7 @@ namespace braveledger_contribution {
 Unverified::Unverified(bat_ledger::LedgerImpl* ledger,
     Contribution* contribution) :
     ledger_(ledger),
-    contribution_(contribution),
-    unverified_publishers_timer_id_(0u) {
+    contribution_(contribution) {
 }
 
 Unverified::~Unverified() {
@@ -144,11 +143,15 @@ void Unverified::QueueSaved(
     BLOG(1, "Queue was not saved");
   }
 
-  if (ledger::is_testing) {
-    contribution_->SetTimer(&unverified_publishers_timer_id_, 2);
-  } else {
-    contribution_->SetTimer(&unverified_publishers_timer_id_);
-  }
+  base::TimeDelta delay = ledger::is_testing
+      ? base::TimeDelta::FromSeconds(2)
+      : braveledger_time_util::GetRandomizedDelay(
+          base::TimeDelta::FromSeconds(45));
+
+  BLOG(1, "Unverified contribution timer set for " << delay);
+
+  unverified_publishers_timer_.Start(FROM_HERE, delay,
+      base::BindOnce(&Unverified::Contribute, base::Unretained(this)));
 }
 
 void Unverified::WasPublisherProcessed(
@@ -193,14 +196,6 @@ void Unverified::OnRemovePendingContribution(
 
   ledger_->OnContributeUnverifiedPublishers(
       ledger::Result::PENDING_PUBLISHER_REMOVED);
-}
-
-void Unverified::OnTimer(uint32_t timer_id) {
-  if (timer_id == unverified_publishers_timer_id_) {
-    unverified_publishers_timer_id_ = 0;
-    Contribute();
-    return;
-  }
 }
 
 }  // namespace braveledger_contribution

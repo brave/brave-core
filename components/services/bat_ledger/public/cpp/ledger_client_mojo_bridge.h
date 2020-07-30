@@ -39,8 +39,6 @@ class LedgerClientMojoBridge :
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
 
-  void SetTimer(uint64_t time_offset, SetTimerCallback callback) override;
-  void KillTimer(const uint32_t timer_id) override;
   void OnPanelPublisherInfo(
       const ledger::Result result,
       ledger::PublisherInfoPtr info,

@@ -98,8 +98,6 @@ class BatLedgerImpl :
   void SetAutoContributeEnabled(bool enabled) override;
   void UpdateAdsRewards() override;
 
-  void OnTimer(uint32_t timer_id) override;
-
   void GetBalanceReport(ledger::ActivityMonth month, int32_t year,
       GetBalanceReportCallback callback) override;
 

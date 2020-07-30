@@ -25,8 +25,6 @@ class API {
 
   void Initialize();
 
-  void OnTimer(const uint32_t timer_id);
-
   void FetchParameters(ledger::GetRewardsParametersCallback callback);
 
  private:

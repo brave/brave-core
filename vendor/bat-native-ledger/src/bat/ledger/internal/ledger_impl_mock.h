@@ -253,8 +253,6 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::PublisherInfoList*,
           uint32_t));
 
-  MOCK_CONST_METHOD2(SetTimer, void(uint64_t, uint32_t*));
-
   MOCK_METHOD1(HasSufficientBalanceToReconcile,
       void(ledger::HasSufficientBalanceToReconcileCallback));
 
