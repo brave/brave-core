@@ -15,7 +15,12 @@ import android.net.Uri;
 
 import org.chromium.base.Log;
 import org.chromium.base.ApplicationStatus;
+import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.chrome.browser.ntp.NewTabPage;
+import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
 public class RetentionNotificationPublisher extends BroadcastReceiver {
     private static final String NOTIFICATION_CHANNEL_NAME = "brave";
@@ -23,14 +28,35 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
 
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
         if (action != null && action.equals(RETENTION_NOTIFICATION_ACTION)) {
             BraveActivity braveActivity = BraveActivity.getBraveActivity();
             if (braveActivity != null) {
-                braveActivity.showOnboarding();
+                switch (notificationType) {
+                case RetentionNotificationUtil.HOUR_3:
+                case RetentionNotificationUtil.HOUR_24:
+                case RetentionNotificationUtil.EVERY_SUNDAY:
+                    braveActivity.checkForBraveStats();
+                    break;
+                case RetentionNotificationUtil.DAY_6:
+                case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
+                case RetentionNotificationUtil.BRAVE_STATS_DATA:
+                case RetentionNotificationUtil.BRAVE_STATS_TIME:
+                    if (!NewTabPage.isNTPUrl(braveActivity.getActivityTab().getUrlString())) {
+                        braveActivity.getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                    }
+                    break;
+                case RetentionNotificationUtil.DAY_10:
+                case RetentionNotificationUtil.DAY_30:
+                case RetentionNotificationUtil.DAY_35:
+                    braveActivity.openRewardsPanel();
+                    break;
+                }
             } else {
                 backgroundNotificationAction(context, intent);
             }
         } else {
+            // Can't check for rewards code in background
             createNotification(context, intent);
         }
     }
@@ -48,12 +74,11 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             notificationManager.createNotificationChannel(notificationChannel);
         }
         assert notificationManager != null;
-        notificationManager.notify(retentionNotification.getNotificationId(), notification) ;
+        notificationManager.notify(retentionNotification.getNotificationId(), notification);
     }
 
     private void backgroundNotificationAction(Context context, Intent intent) {
         String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
-        RetentionNotification retentionNotification = RetentionNotificationUtil.getNotificationObject(notificationType);
         if (ApplicationStatus.hasVisibleActivities()) {
             return;
         }

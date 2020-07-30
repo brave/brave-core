@@ -40,6 +40,7 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 
 import java.util.List;
 import java.util.Arrays;
@@ -49,7 +50,6 @@ import java.util.Date;
 import static org.chromium.ui.base.ViewUtils.dpToPx;
 
 public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragment {
-    private static final short MILLISECONDS_PER_ITEM = 50;
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
     private static final int WEBSITES = 0;
@@ -155,7 +155,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         long totalSavedBandwidth = mDatabaseHelper.getTotalSavedBandwidthWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
 
         long adsTrackersCount = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0)).size();
-        long timeSavedCount = adsTrackersCount * MILLISECONDS_PER_ITEM;
+        long timeSavedCount = adsTrackersCount * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
 
         Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
         adsTrackersCountText.setText(String.format(getResources().getString(R.string.ntp_stat_text), adsTrackersPair.first, adsTrackersPair.second));

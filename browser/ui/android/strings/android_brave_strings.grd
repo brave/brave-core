@@ -1266,14 +1266,14 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NOTIFICATION_REWARDS" desc="Rewards notification text">
         Earn tokens by viewing privacy-respecting ads and support your favorite websites.
       </message>
-      <message name="IDS_NOTIFICATION_BBRAVE_STATS_TRACKERS" desc="Rewards notification text">
-        Nice! You've blocked <ph name="COUNT">%1$s</ph> trackers &amp; ads with Brave browser.
+      <message name="IDS_NOTIFICATION_BRAVE_STATS_TRACKERS" desc="Rewards notification text">
+        Nice! You've blocked 250 trackers &amp; ads with Brave browser.
       </message>
-      <message name="IDS_NOTIFICATION_BBRAVE_STATS_DATA" desc="Rewards notification text">
-        Nice! You've saved <ph name="COUNT">%1$s</ph> with Brave browser.
+      <message name="IDS_NOTIFICATION_BRAVE_STATS_DATA" desc="Rewards notification text">
+        Nice! You've saved 10MB with Brave browser.
       </message>
-      <message name="IDS_NOTIFICATION_BBRAVE_STATS_TIME" desc="Rewards notification text">
-        Nice! You've saved <ph name="COUNT">%1$s</ph> of loading time with Brave browser.
+      <message name="IDS_NOTIFICATION_BRAVE_STATS_TIME" desc="Rewards notification text">
+        Nice! You've saved 10 Mins of loading time with Brave browser.
       </message>
     </messages>
   </release>

@@ -75,6 +75,8 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 
 import java.net.URL;
 import java.util.List;
@@ -86,6 +88,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   BraveRewardsObserver,
   BraveRewardsNativeWorker.PublisherObserver {
   public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
+
+  private static final long MB_10 = 10000000;
+  private static final long MINUTES_10 = 10 * 60 * 1000;
 
   private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
@@ -269,6 +274,31 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         if (getToolbarDataProvider().getTab() == tab) {
           mBraveShieldsHandler.updateHost(url);
           updateBraveShieldsButtonState(tab);
+
+          Profile mProfile = Profile.getLastUsedProfile();
+          long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
+          long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
+          long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
+          long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
+
+          if (!OnboardingPrefManager.getInstance().isAdsTrackersNotificationStarted()
+              && (trackersBlockedCount + adsBlockedCount) > 250) {
+            RetentionNotificationUtil.scheduleNotification(getContext(), RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS);
+            OnboardingPrefManager.getInstance().setAdsTrackersNotificationStarted(true);
+          }
+
+          if (!OnboardingPrefManager.getInstance().isDataSavedNotificationStarted()
+              && dataSaved > MB_10) {
+            RetentionNotificationUtil.scheduleNotification(getContext(), RetentionNotificationUtil.BRAVE_STATS_DATA);
+            OnboardingPrefManager.getInstance().setDataSavedNotificationStarted(true);
+          }
+
+          if (!OnboardingPrefManager.getInstance().isTimeSavedNotificationStarted()
+              && estimatedMillisecondsSaved > MINUTES_10) {
+            RetentionNotificationUtil.scheduleNotification(getContext(), RetentionNotificationUtil.BRAVE_STATS_TIME);
+            OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
+          }
+
           if (!NewTabPage.isNTPUrl(tab.getUrlString())
               && !OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
               && PackageUtils.isFirstInstall(getContext())
