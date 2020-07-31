@@ -63,7 +63,7 @@ SkColor GetOmniboxResultBackground(int id, bool dark, bool priv) {
   }
   return color_utils::BlendTowardMaxContrast(
       color,
-      base::Round(GetOmniboxStateOpacity(state) * 0xff));
+      base::ClampRound(GetOmniboxStateOpacity(state) * 0xff));
 }
 
 #if defined(OS_LINUX)
