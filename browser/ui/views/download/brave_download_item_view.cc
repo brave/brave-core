@@ -83,7 +83,7 @@ gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
                      kBraveVerticalTextPadding + status_font_list_.GetHeight();
   if (IsShowingWarningDialog()) {
     child_height = std::max(
-        {child_height, GetButtonSize().height(), GetWarningIconSize()});
+        {child_height, GetButtonSize().height(), GetIcon().Size().width()});
   }
   size.set_height(
       std::max(kDefaultHeight, 2 * kMinimumVerticalPadding + child_height));
