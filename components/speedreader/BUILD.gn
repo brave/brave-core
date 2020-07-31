@@ -10,8 +10,6 @@ buildflag_header("buildflags") {
 }
 
 source_set("speedreader") {
-  # Remove when https://github.com/brave/brave-browser/issues/10638 is resolved
-  check_includes = false
   public_deps = [
     ":buildflags",
     "rust/ffi:speedreader_ffi_lib",
@@ -37,8 +35,12 @@ source_set("speedreader") {
   deps = [
     "//brave/components/brave_component_updater/browser",
     "//brave/components/resources",
+    "//brave/components/resources:static_resources_grit",
+    "//components/keyed_service/core:core",
+    "//components/prefs:prefs",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//third_party/blink/public/common",
     "//ui/base",  # For ResourceBundle, consider getting rid of this?
     "//url",
     "rust/ffi:speedreader_ffi",
