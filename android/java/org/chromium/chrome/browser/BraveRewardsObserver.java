@@ -33,4 +33,5 @@ public interface BraveRewardsObserver {
           String wallet_type, String action, String json_args ) {};
   default public void OnClaimPromotion(int error_code) {};
   default public void OnRecoverWallet(int errorCode) {};
+  default public void OnRefreshPublisher(int status, String publisherKey){};
 }

@@ -443,6 +443,19 @@ public class BraveRewardsNativeWorker {
         }
     }
 
+    public void RefreshPublisher(String publisherKey) {
+        synchronized (lock) {
+            nativeRefreshPublisher(mNativeBraveRewardsNativeWorker, publisherKey);
+        }
+    }
+
+    @CalledByNative
+    public void OnRefreshPublisher(int status, String publisherKey) {
+        for (BraveRewardsObserver observer : mObservers) {
+            observer.OnRefreshPublisher(status, publisherKey);
+        }
+    }
+
     @CalledByNative
     public void OnGetRewardsMainEnabled(boolean enabled) {
         int oldRewardsStatus = rewardsStatus;
@@ -685,5 +698,6 @@ public class BraveRewardsNativeWorker {
     private native void nativeDisconnectWallet(long nativeBraveRewardsNativeWorker, String wallet_type);
     private native void nativeProcessRewardsPageUrl(long nativeBraveRewardsNativeWorker, String path, String query);
     private native void nativeRecoverWallet(long nativeBraveRewardsNativeWorker, String passPhrase);
+    private native void nativeRefreshPublisher(long nativeBraveRewardsNativeWorker, String publisherKey);
     private native void nativeGetRewardsParameters(long nativeBraveRewardsNativeWorker);
 }
