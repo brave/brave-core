@@ -93,7 +93,7 @@ std::string BinanceService::GetOAuthClientUrl() {
   // Step 4 of the oauth process uess the code_verifer_.
   // We never need to persist these values, they are just used to get an
   // access token.
-  code_verifier_ = ::crypto_exchange::GetCryptoRandomString(true);
+  code_verifier_ = crypto_exchange::GetCryptoRandomString(true);
   code_challenge_ = crypto_exchange::GetCodeChallenge(code_verifier_, true);
 
   GURL url(oauth_url);
