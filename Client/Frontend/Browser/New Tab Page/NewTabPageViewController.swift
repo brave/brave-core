@@ -136,7 +136,8 @@ class NewTabPageViewController: UIViewController, Themeable {
             sections.append(
                 BraveTodaySectionProvider(
                     dataSource: feedDataSource,
-                    actionHandler: handleBraveTodayAction
+                    welcomeCardActionHandler: handleBraveTodayIntroCardAction,
+                    itemActionHandler: handleBraveTodayAction
                 )
             )
             layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
@@ -160,6 +161,20 @@ class NewTabPageViewController: UIViewController, Themeable {
     
     private let braveTodayHeaderView = BraveTodaySectionHeaderView().then {
         $0.alpha = 0.0
+    }
+    
+    private func handleBraveTodayIntroCardAction(_ action: WelcomeCardAction) {
+        switch action {
+        case .closedButtonTapped:
+            Preferences.BraveToday.isShowingIntroCard.value = false
+            if let section = layout.braveTodaySection, collectionView.numberOfItems(inSection: section) != 0 {
+                collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
+            }
+        case .learnMoreButtonTapped:
+            delegate?.navigateToInput("https://brave.com/privacy/#brave-today", inNewTab: false, switchingToPrivateMode: false)
+        case .settingsButtonTapped:
+            tappedBraveTodaySettings()
+        }
     }
     
     private func handleBraveTodayAction(_ action: FeedItemAction, _ context: FeedItemActionContext) {
