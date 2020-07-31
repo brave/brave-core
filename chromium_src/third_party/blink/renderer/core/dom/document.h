@@ -32,7 +32,6 @@ typedef base::RepeatingCallback<float(float, size_t)> AudioFarblingCallback;
 class CORE_EXPORT BraveSessionCache final
     : public GarbageCollected<BraveSessionCache>,
       public Supplement<Document> {
-  USING_GARBAGE_COLLECTED_MIXIN(BraveSessionCache);
 
  public:
   static const char kSupplementName[];
