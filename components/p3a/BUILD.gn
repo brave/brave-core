@@ -9,6 +9,8 @@ buildflag_header("buildflags") {
 }
 
 source_set("p3a") {
+  # Remove when https://github.com/brave/brave-browser/issues/10640 is resolved
+  check_includes = false
   sources = [
     "brave_histogram_rewrite.cc",
     "brave_histogram_rewrite.h",
@@ -26,10 +28,7 @@ source_set("p3a") {
   ]
 
   deps = [
-    "//brave/browser:stats_updater",
-    "//brave/browser:version_info",
     "//brave/common",
-    "//brave/common:pref_names",
     "//brave/components/p3a:buildflags",
     "//brave/components/brave_prochlo",
     "//brave/components/brave_prochlo:prochlo_proto",
