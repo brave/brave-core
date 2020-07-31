@@ -41,6 +41,7 @@
 #include "components/translate/core/browser/translate_prefs.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
+#include "google_apis/gaia/gaia_switches.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -90,6 +91,8 @@ base::LazyInstance<BraveContentBrowserClient>::DestructorAtExit
 const char kBraveOriginTrialsPublicKey[] =
     "bYUKPJoPnCxeNvu72j4EmPuK7tr1PAC7SHh8ld9Mw3E=,"
     "fMS4mpO6buLQ/QMd+zJmxzty/VQ6B1EUZqoCU04zoRU=";
+
+const char kDummyUrl[] = "https://no-thanks.invalid";
 
 BraveMainDelegate::BraveMainDelegate()
     : ChromeMainDelegate() {}
@@ -191,6 +194,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   // Brave's sync protocol does not use the sync service url
   command_line.AppendSwitchASCII(switches::kSyncServiceURL,
                                  brave_sync_service_url.c_str());
+
+  command_line.AppendSwitchASCII(switches::kLsoUrl, kDummyUrl);
 
   // Enabled features.
   std::unordered_set<const char*> enabled_features = {

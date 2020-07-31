@@ -86,6 +86,8 @@ const Config = function () {
   this.targetApkBase ='classic'
   this.braveGoogleApiKey = getNPMConfig(['brave_google_api_key']) || 'AIzaSyAQfxPJiounkhOjODEO5ZieffeBv6yft2Q'
   this.googleApiEndpoint = getNPMConfig(['brave_google_api_endpoint']) || 'https://www.googleapis.com/geolocation/v1/geolocate?key='
+  this.googleDefaultClientId = getNPMConfig(['google_default_client_id']) || ''
+  this.googleDefaultClientSecret = getNPMConfig(['google_default_client_secret']) || ''
   this.braveServicesKey = getNPMConfig(['brave_services_key']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
   this.binanceClientId = getNPMConfig(['binance_client_id']) || ''
@@ -186,6 +188,8 @@ Config.prototype.buildArgs = function () {
     brave_channel: this.channel,
     brave_google_api_key: this.braveGoogleApiKey,
     brave_google_api_endpoint: this.googleApiEndpoint,
+    google_default_client_id: this.googleDefaultClientId,
+    google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
     binance_client_id: this.binanceClientId,
     gemini_client_id: this.geminiClientId,

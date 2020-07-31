@@ -13,6 +13,7 @@ import("../settings.gni")
 group("web_modules") {
   public_deps = [
     ":social_blocking_page_module",
+    ":modules",
   ]
 }
 
@@ -20,6 +21,15 @@ polymer_modulizer("social_blocking_page") {
   js_file = "social_blocking_page.js"
   html_file = "social_blocking_page.html"
   html_type = "dom-module"
-  auto_imports = settings_auto_imports
+  auto_imports = settings_auto_imports + [
+    "brave/browser/resources/settings/social_blocking_page/social_blocking_page_proxy.html|SocialBlockingPageProxy, SocialBlockingPageProxyImpl",
+  ]
+  namespace_rewrites = settings_namespace_rewrites
+}
+
+js_modulizer("modules") {
+  input_files = [
+    "social_blocking_page_proxy.js",
+  ]
   namespace_rewrites = settings_namespace_rewrites
 }

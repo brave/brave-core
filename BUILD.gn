@@ -37,6 +37,7 @@ if (!is_ios) {
     deps = [
       "browser",
       "chromium_src:browser",
+      "chromium_src/chrome/app",
       "common",
       "//components/omnibox/common",
       "//services/device/public/cpp:device_features",
