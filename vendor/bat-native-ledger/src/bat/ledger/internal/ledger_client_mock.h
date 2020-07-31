@@ -192,6 +192,8 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(PendingContributionSaved, void(const ledger::Result result));
 
   MOCK_METHOD0(ClearAllNotifications, void());
+
+  MOCK_METHOD1(WalletDisconnected, void(const std::string& wallet_type));
 };
 
 }  // namespace ledger
