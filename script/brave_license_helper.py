@@ -139,6 +139,9 @@ def AddBraveCredits(prune_paths, special_cases, prune_dirs, additional_paths):
 
 def CheckBraveMissingLicense(target_os, path, error):
     if path.startswith('brave'):
+        if 'autoplay-whitelist' in path:
+            return # this has been removed upstream, so we can ignore it
+                   # in our pagegraph branch
         if (target_os == 'android'):
             if path in DESKTOP_ONLY_PATHS:
                 return  # Desktop failures are not relevant on Android.
