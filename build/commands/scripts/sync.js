@@ -8,6 +8,7 @@ const program = require('commander')
 const config = require('../lib/config')
 const util = require('../lib/util')
 const Log = require('../lib/sync/logging')
+const os = require('os')
 
 program
   .version(process.env.npm_package_version)
