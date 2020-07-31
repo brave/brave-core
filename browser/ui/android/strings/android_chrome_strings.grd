@@ -263,6 +263,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PREFS_SECTION_ACCOUNT" desc="Title for the group of account-related entries in Settings. [CHAR-LIMIT=32]">
         Account
       </message>
+      <message name="IDS_PREFS_SECTION_ACCOUNT_AND_GOOGLE_SERVICES" desc="Title for the group of account-related entries and google services in Settings. [CHAR-LIMIT=32]">
+        You and Brave
+      </message>
       <message name="IDS_SIGN_IN_TO_CHROME" desc="Title for the button to sign in to Brave using one's Brave account. [CHAR-LIMIT=27]">
         Sign in to Brave
       </message>
@@ -920,6 +923,27 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_CHECK_UPDATES_ERROR" desc="Text to display when the updates check failed for some reason.">
         Brave can’t check for updates
       </message>
+      <message name="IDS_SAFETY_CHECK_TIMESTAMP_AFTER" desc="A message shown on the safety check page, explaining to the user that it ran a moment ago.">
+        Checked just now
+      </message>
+      <message name="IDS_SAFETY_CHECK_TIMESTAMP_AFTER_MINS" desc="A message shown on the safety check page, explaining to the user that it ran minutes ago.">
+        {NUM_MINS, plural,
+        =1 {Checked 1 minute ago}
+        other {Checked # minutes ago}}
+      </message>
+      <message name="IDS_SAFETY_CHECK_TIMESTAMP_AFTER_HOURS" desc="A message shown on the safety check page, explaining to the user that it ran hours ago.">
+        {NUM_HOURS, plural,
+        =1 {Checked 1 hour ago}
+        other {Checked # hours ago}}
+      </message>
+      <message name="IDS_SAFETY_CHECK_TIMESTAMP_AFTER_YESTERDAY" desc="A message shown on the safety check page, showing to the user that it ran yesterday.">
+        Checked yesterday
+      </message>
+      <message name="IDS_SAFETY_CHECK_TIMESTAMP_AFTER_DAYS" desc="A message shown on the safety check page, showing to the user how many days ago it ran.">
+        {NUM_DAYS, plural,
+        =1 {Checked 1 day ago}
+        other {Checked # days ago}}
+      </message>
 
        <!-- Security preferences -->
       <message name="IDS_PREFS_SECURITY_TITLE" desc="Title for the Security preferences. [CHAR-LIMIT=32]">
@@ -934,11 +958,15 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_TITLE" desc="Title for Safe Browsing enhanced protection mode. [CHAR-LIMIT=32]">
         Enhanced protection
       </message>
+
       <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUMMARY" desc="Summary for Safe Browsing enhanced protection mode.">
         Faster, proactive protection against dangerous websites, downloads, and extensions. Warns you about password breaches. Requires browsing data to be sent to Brave.
       </message>
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_TITLE" desc="Title for Safe Browsing standard protection mode. [CHAR-LIMIT=32]">
         Standard protection
+      </message>
+      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUBTITLE" desc="Subtitle for Safe Browsing standard protection mode.">
+        Standard protection:
       </message>
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_SUMMARY" desc="Summary for Safe Browsing standard protection mode.">
         Standard protection against websites, downloads, and extensions that are known to be dangerous.
@@ -948,6 +976,26 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for Safe Browsing no protection mode.">
         Does not protect you against dangerous websites, downloads, and extensions. You’ll still get Safe Browsing protection, where available, in other Brave services, like Gmail and Search.
+      </message>
+
+      <!-- Safe Browsing enhanced protection preferences -->
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_SUBTITLE" desc="Subtitle for Safe Browsing enhanced protection mode.">
+        Enhanced protection:
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_ONE" desc="First bullet point under the Safe Browsing enhanced protection mode">
+        Predicts and warns you about dangerous events before they happen.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_TWO" desc="Second bullet point under the Safe Browsing enhanced protection mode">
+        Keeps you safe on Brave and may be used to improve your security in other Brave apps when you are signed in.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_THREE" desc="Third bullet point under the Safe Browsing enhanced protection mode">
+        Improves security for you and everyone on the web.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_FOUR" desc="Fourth bullet point under the Safe Browsing enhanced protection mode">
+        Warns you if passwords are exposed in a data breach.
+      </message>
+      <message name="IDS_SAFE_BROWSING_ENHANCED_PROTECTION_BULLET_FIVE" desc="Fifth bullet point under the Safe Browsing enhanced protection mode">
+        Sends URLs to Safe Browsing to check them. Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats. Temporarily links this data to your Brave Account when you’re signed in, to protect you across Brave apps.
       </message>
 
       <!-- Accessibility preferences -->
@@ -1428,6 +1476,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SYNC_SETTINGS" desc="Title for preference which enables sync'ing of settings. [CHAR-LIMT=32]">
         Settings
+      </message>
+      <message name="IDS_TURN_OFF_SYNC" desc="Button that user can press to turn off sync and sign out. [CHAR-LIMT=32]">
+        Sign out and turn off sync
       </message>
       <message name="IDS_SYNC_PAYMENTS_INTEGRATION" desc="Title for preference which enables import of Brave Pay data for Autofill. 'Brave Pay' should not be translated as it is the product name.">
         Credit cards and addresses using Brave Pay
@@ -2264,6 +2315,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_ADD_ACCOUNT_TO_DEVICE" desc="Text for adding another Brave Account to device in the web sign-in flow and account picker dialog, users will be asked to add an account to his device when this text is tapped">
         Add account to device
       </message>
+      <message name="IDS_SIGNIN_INCOGNITO_MODE_PRIMARY" desc="Text for signing in private mode.">
+        Go Private mode
+      </message>
+      <message name="IDS_SIGNIN_INCOGNITO_MODE_SECONDARY" desc="Secondary text for signing in private mode.">
+        To sign in temporarily
+      </message>
       <message name="IDS_SIGNIN_GMS_UPDATING" desc="Message notifying user that Google Play Services is still updating.">
         Waiting for Google Play Services to finish updating
       </message>
@@ -2289,6 +2346,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_DIALOG_TITLE" desc="The title for the dialog that shows the list of accounts on the device and asks the user to select one of these accounts. [CHAR-LIMIT=27]">
         Choose an account
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE" desc="The subtitle for the account picker bottom sheet that tells the user what happens if the button 'Continue as John Doe' is clicked">
+        You’ll be signed in with your Brave Account\n(this won’t turn on Brave Sync)
       </message>
 
       <!-- Personalized Signin Promos Strings -->
@@ -2741,6 +2801,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_LOCATION_BAR_PREVIEW_LITE_PAGE_STATUS" desc="An indication in the location bar that the page the user is viewing has been modified in order to speed up the page load or decrease the amount of data used to load the page. [CHAR-LIMIT=10]">
         Lite
+      </message>
+      <message name="IDS_LOCATION_BAR_PAINT_PREVIEW_PAGE_STATUS" desc="An indication in the location bar that the page the user is viewing is a paint preview of the original page. [CHAR-LIMIT=10]" translateable="false">
+        Preview
       </message>
 
       <!-- Voice search -->
@@ -3679,6 +3742,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Download
       </message>
 
+      <message name="IDS_QR_CODE_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR code.">
+          Can't create QR code. URL is more than <ph name="CHARACTER_LIMIT">%1$d<ex>300</ex></ph> characters.
+      </message>
+
+      <message name="IDS_QR_CODE_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
+          Can't create QR code
+      </message>
+
       <!-- Sharing Hub -->
       <message name="IDS_SHARING_MORE_ICON_LABEL" desc="Icon label for the More button in the sharing hub.">
         More
@@ -3798,6 +3869,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PAINT_PREVIEW_DEMO_PLAYBACK_FAILURE" desc="Toast message displayed when there is a failure in playing back a paint preview for the demo. Used in paint preview demo mode." translateable="false">
         Paint Preview playback failed.
+      </message>
+
+      <!-- Paint Preview Startup Experiment -->
+      <message name="IDS_PAINT_PREVIEW_STARTUP_UPGRADE_SNACKBAR_MESSAGE" desc="Message displayed on a snackbar when a paint preview is shown on startup, telling the user that this is a preview of the page" translateable="false">
+        This is a preview
+      </message>
+      <message name="IDS_PAINT_PREVIEW_STARTUP_UPGRADE_SNACKBAR_ACTION" desc="Text displayed on the action button of snackbar, promting user to switch to the live page and exist paint preivew." translateable="false">
+        View live page
       </message>
 
       <!-- Default Browser Promo Strings-->

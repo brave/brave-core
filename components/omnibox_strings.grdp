@@ -111,16 +111,6 @@
     Clear Brave's browsing history data
   </message>
 
-  <message name="IDS_OMNIBOX_PEDAL_CHANGE_SEARCH_ENGINE_HINT" desc="The button text contents to suggest pedal action, change search engine.">
-    Change Search Engine
-  </message>
-  <message name="IDS_OMNIBOX_PEDAL_CHANGE_SEARCH_ENGINE_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, change search engine.">
-    Change
-  </message>
-  <message name="IDS_OMNIBOX_PEDAL_CHANGE_SEARCH_ENGINE_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, change search engine.">
-    Change Search Engine settings in Brave
-  </message>
-
   <message name="IDS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_HINT" desc="The button text contents to suggest pedal action, manage passwords.">
     Manage Passwords
   </message>
@@ -129,16 +119,6 @@
   </message>
   <message name="IDS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, change language.">
     Manage passwords in Brave settings
-  </message>
-
-  <message name="IDS_OMNIBOX_PEDAL_CHANGE_HOME_PAGE_HINT" desc="The button text contents to suggest pedal action, change home page.">
-    Change Home Page
-  </message>
-  <message name="IDS_OMNIBOX_PEDAL_CHANGE_HOME_PAGE_HINT_SHORT" desc="The short one-word button text contents to suggest pedal action, change home page.">
-    Change
-  </message>
-  <message name="IDS_OMNIBOX_PEDAL_CHANGE_HOME_PAGE_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, change home page.">
-    Change home page in Brave settings
   </message>
 
   <message name="IDS_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD_HINT" desc="The button text contents to suggest pedal action, update credit card.">
@@ -252,5 +232,12 @@
   </message>
   <message name="IDS_ACC_HEADER_HIDE_SUGGESTIONS_BUTTON" desc="Announcement for the Hide Suggestions button on section headers.">
     Hide the "<ph name="SECTION">$1<ex>related to recent searches</ex></ph>" section
+  </message>
+  <!-- Accessibility announcements made when suggestion sections are shown or hidden. -->
+  <message name="IDS_ACC_HEADER_SECTION_SHOWN" desc="Announcement that lets the user know the suggestions section has been Shown.">
+    "<ph name="SECTION">$1<ex>Related to recent searches</ex></ph>" section shown
+  </message>
+  <message name="IDS_ACC_HEADER_SECTION_HIDDEN" desc="Announcement that lets the user know the suggestions section has been Hidden.">
+    "<ph name="SECTION">$1<ex>Related to recent searches</ex></ph>" section hidden
   </message>
 </grit-part>

@@ -84,13 +84,18 @@
   </message>
 
   <!-- Lookalike URL without a suggested hostname -->
+  <message name="IDS_LOOKALIKE_URL_HEADING_NO_SUGGESTED_URL" desc="Large heading. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks fake. This interstitial warns the user to not visit the site but doesn't suggest a safe site.">
+    Fake site ahead
+  </message>
+  <message name="IDS_LOOKALIKE_URL_PRIMARY_PARAGRAPH_NO_SUGGESTED_URL" desc="Main paragraph of an error message. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks fake. This interstitial warns the user to not visit the site but doesn't suggest a safe site.">
+    Attackers sometimes mimic sites by making small, hard-to-see changes to the URL.
+  </message>
   <message name="IDS_LOOKALIKE_URL_BACK_TO_SAFETY" desc="The text for the button that takes the user back to the new tab page.">
     Back to safety
   </message>
   <message name="IDS_LOOKALIKE_URL_CLOSE_PAGE" desc="The text for the button that closes the tab.">
     Close page
   </message>
-
 
   <!-- Clock errors -->
   <message name="IDS_CLOCK_ERROR_TITLE" desc="Tab title. Context: the browser can't load a page because the device's clock is wrong.">

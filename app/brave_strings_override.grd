@@ -187,6 +187,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="not chromeos">
         </if>
 
+      <if expr="not chromeos and not is_android">
+        </if>
+
       <if expr="is_win">
         </if>
 
@@ -293,6 +296,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="not is_android">
         </if>
       <if expr="chromeos">
+        </if>
+
+      <if expr="not chromeos and not is_android">
         </if>
 
     </messages>

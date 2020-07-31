@@ -144,6 +144,9 @@ CHAR-LIMIT guidelines:
         Close all private tabs
       </message>
 
+      <message name="IDS_SIGNIN_INCOGNITO_MODE_PRIMARY" desc="Text for signing in private mode.">
+        Go Private mode
+      </message>
       <message name="IDS_BUTTON_NEW_INCOGNITO_TAB" desc="Tooltip for the button to open a new private browser tab.">
         New private tab
       </message>
