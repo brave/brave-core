@@ -293,8 +293,7 @@ void BraveWidevineBundleManager::DeleteDeprecatedWidevineCdmLib() {
                   deprecated_widevine_cdm_lib
                       .Append(kWidevineCdmBaseDirectory)
                       .Append(base::GetNativeLibraryName(
-                          kWidevineCdmLibraryName)),
-                  false);
+                          kWidevineCdmLibraryName)));
             }
           }));
 }

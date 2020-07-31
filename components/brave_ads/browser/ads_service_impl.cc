@@ -173,7 +173,9 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
     recursive = false;
   }
 
-  return base::DeleteFile(path, recursive);
+  if (recursive)
+    return base::DeletePathRecursively(path);
+  return base::DeleteFile(path);
 }
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
@@ -582,7 +584,7 @@ bool MigrateConfirmationsStateOnFileTaskRunner(
   if (base::PathExists(rewards_service_base_path)) {
     VLOG(1) << "Deleting " << rewards_service_base_path.value();
 
-    if (!base::DeleteFile(rewards_service_base_path, /* recursive */ false)) {
+    if (!base::DeleteFile(rewards_service_base_path)) {
       VLOG(0) << "Failed to delete " << rewards_service_base_path.value();
     }
   }

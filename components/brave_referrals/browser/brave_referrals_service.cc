@@ -439,7 +439,7 @@ void BraveReferralsService::ReadPromoCode() {
 
 void BraveReferralsService::DeletePromoCodeFile() const {
   base::FilePath promo_code_file = GetPromoCodeFileName();
-  if (!base::DeleteFile(promo_code_file, false)) {
+  if (!base::DeleteFile(promo_code_file)) {
     LOG(ERROR) << "Failed to delete referral promo code file "
                << promo_code_file.value().c_str();
     return;

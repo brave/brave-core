@@ -1518,7 +1518,7 @@ bool RewardsServiceImpl::ResetOnFilesTaskRunner() {
 
   bool res = true;
   for (size_t i = 0; i < paths.size(); i++) {
-    if (!base::DeleteFileRecursively(paths[i])) {
+    if (!base::DeletePathRecursively(paths[i])) {
       res = false;
     }
   }
@@ -2443,7 +2443,7 @@ bool RewardsServiceImpl::ClearDiagnosticLogOnFileTaskRunner(
 
   diagnostic_log_.Close();
 
-  return base::DeleteFile(path, false);
+  return base::DeleteFile(path);
 }
 
 void RewardsServiceImpl::OnClearDiagnosticLogOnFileTaskRunner(

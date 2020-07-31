@@ -141,7 +141,7 @@ bool PublisherInfoBackend::EnsureInitialized() {
 
   if (status.IsCorruption()) {
     LOG(ERROR) << "Deleting corrupt database";
-    base::DeleteFile(path_, true);
+    base::DeletePathRecursively(path_);
     status = leveldb_env::OpenDB(options, path, &db_);
   }
   if (status.ok()) {

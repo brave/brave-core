@@ -135,10 +135,10 @@ std::string BraveWidevineBundleUnzipper::MoveUnzippedLibFromTempToTargetDir() {
     }
   }
 
-  base::DeleteFile(temp_unzip_dir_, true);
+  base::DeletePathRecursively(temp_unzip_dir_);
 
   if (delete_zip_file_)
-    base::DeleteFile(zipped_bundle_file_, false);
+    base::DeleteFile(zipped_bundle_file_);
 
   return error;
 }

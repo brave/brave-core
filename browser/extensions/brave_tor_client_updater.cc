@@ -26,7 +26,8 @@ using brave_component_updater::BraveComponent;
 
 namespace {
 void DeleteDir(const base::FilePath& path) {
-  base::DeleteFile(path, true);
+
+  base::DeletePathRecursively(path);
 }
 }  // namespace
 
