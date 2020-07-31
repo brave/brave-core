@@ -23,7 +23,7 @@ CreativeAdNotificationList EligibleAdsPacingFilter::Apply(
   CreativeAdNotificationList paced_ads;
 
   for (const auto& ad : ads) {
-    const int rand = base::RandDouble();
+    const double rand = base::RandDouble();
     if (rand <= ad.ptr)
       paced_ads.emplace_back(ad);
   }
