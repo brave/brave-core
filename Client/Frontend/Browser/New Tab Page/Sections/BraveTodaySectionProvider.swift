@@ -259,7 +259,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 var children: [UIMenu] = [
                     UIMenu(title: "", options: [.displayInline], children: openActions),
                 ]
-                if context.item.content.contentType == .article {
+                if context.item.content.contentType != .sponsor {
                     children.append(UIMenu(title: "", options: [.displayInline], children: manageActions))
                 }
                 return UIMenu(title: item.content.title, children: children)

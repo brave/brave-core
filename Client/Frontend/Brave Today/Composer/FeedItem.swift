@@ -55,14 +55,17 @@ extension FeedItem {
         }
     }
     
-    struct FeedContentType: RawRepresentable, Decodable, Equatable {
+    struct FeedContentType: Decodable, Equatable {
         var rawValue: String
-        init?(rawValue: String) {
+        init(rawValue: String) {
             self.rawValue = rawValue
         }
+        init(from decoder: Decoder) throws {
+            rawValue = try decoder.singleValueContainer().decode(String.self)
+        }
         static let article = FeedContentType(rawValue: "article")
-        static let product = FeedContentType(rawValue: "product")
-        static let offer = FeedContentType(rawValue: "brave_offers")
+        static let deals = FeedContentType(rawValue: "product")
+        static let sponsor = FeedContentType(rawValue: "brave_offers")
     }
 
     struct Content: Equatable, Decodable {
