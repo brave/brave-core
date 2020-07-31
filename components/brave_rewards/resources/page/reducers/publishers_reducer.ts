@@ -8,6 +8,10 @@ import { Reducer } from 'redux'
 import { types } from '../constants/rewards_types'
 
 const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
+  if (!state) {
+    return
+  }
+
   switch (action.type) {
     case types.ON_CONTRIBUTE_LIST:
       state = { ...state }
