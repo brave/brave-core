@@ -413,7 +413,7 @@ void BraveActionsContainer::OnExtensionUnloaded(
 
 // ExtensionActionAPI::Observer
 void BraveActionsContainer::OnExtensionActionUpdated(
-    ExtensionAction* extension_action,
+    extensions::ExtensionAction* extension_action,
     content::WebContents* web_contents,
     content::BrowserContext* browser_context) {
   if (IsContainerAction(extension_action->extension_id()))
