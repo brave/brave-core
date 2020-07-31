@@ -96,7 +96,8 @@ void CreativeAdNotifications::GetCreativeAdNotifications(
           "gt.geo_target, "
           "can.target_url, "
           "can.title, "
-          "can.body "
+          "can.body, "
+          "can.ptr "
       "FROM %s AS can "
           "INNER JOIN categories AS c "
               "ON c.creative_instance_id = can.creative_instance_id "
@@ -134,7 +135,8 @@ void CreativeAdNotifications::GetCreativeAdNotifications(
     DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
     DBCommand::RecordBindingType::STRING_TYPE,  // target_url
     DBCommand::RecordBindingType::STRING_TYPE,  // title
-    DBCommand::RecordBindingType::STRING_TYPE   // body
+    DBCommand::RecordBindingType::STRING_TYPE,  // body
+    DBCommand::RecordBindingType::DOUBLE_TYPE   // ptr
   };
 
   DBTransactionPtr transaction = DBTransaction::New();
@@ -164,7 +166,8 @@ void CreativeAdNotifications::GetAllCreativeAdNotifications(
           "gt.geo_target, "
           "can.target_url, "
           "can.title, "
-          "can.body "
+          "can.body, "
+          "can.ptr "
       "FROM %s AS can "
           "INNER JOIN categories AS c "
               "ON c.creative_instance_id = can.creative_instance_id "
@@ -194,7 +197,8 @@ void CreativeAdNotifications::GetAllCreativeAdNotifications(
     DBCommand::RecordBindingType::STRING_TYPE,  // geo_target
     DBCommand::RecordBindingType::STRING_TYPE,  // target_url
     DBCommand::RecordBindingType::STRING_TYPE,  // title
-    DBCommand::RecordBindingType::STRING_TYPE   // body
+    DBCommand::RecordBindingType::STRING_TYPE,  // body
+    DBCommand::RecordBindingType::DOUBLE_TYPE   // ptr
   };
 
   DBTransactionPtr transaction = DBTransaction::New();
@@ -275,6 +279,7 @@ int CreativeAdNotifications::BindParameters(
     BindString(command, index++, creative_ad_notification.target_url);
     BindString(command, index++, creative_ad_notification.title);
     BindString(command, index++, creative_ad_notification.body);
+    BindDouble(command, index++, creative_ad_notification.ptr);
 
     count++;
   }
@@ -302,9 +307,10 @@ std::string CreativeAdNotifications::BuildInsertOrUpdateQuery(
           "total_max, "
           "target_url, "
           "title, "
-          "body) VALUES %s",
+          "body, "
+          "ptr) VALUES %s",
       get_table_name().c_str(),
-      BuildBindingParameterPlaceholders(14, count).c_str());
+      BuildBindingParameterPlaceholders(15, count).c_str());
 }
 
 void CreativeAdNotifications::OnGetCreativeAdNotifications(
@@ -380,6 +386,7 @@ CreativeAdNotifications::GetCreativeAdNotificationFromRecord(
   info.target_url = ColumnString(record, 13);
   info.title = ColumnString(record, 14);
   info.body = ColumnString(record, 15);
+  info.ptr = ColumnDouble(record, 16);
 
   return info;
 }
@@ -411,6 +418,7 @@ void CreativeAdNotifications::CreateTableV1(
           "target_url TEXT NOT NULL, "
           "title TEXT NOT NULL, "
           "body TEXT NOT NULL, "
+          "ptr DOUBLE NOT NULL DEFAULT 1, "
           "PRIMARY KEY(creative_instance_id))",
       get_table_name().c_str());
 

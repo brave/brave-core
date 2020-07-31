@@ -27,6 +27,7 @@ struct CreativeAdInfo {
   unsigned int daily_cap = 0;
   std::string advertiser_id;
   unsigned int priority = 0;
+  double ptr = 1.0;
   bool conversion = false;
   unsigned int per_day = 0;
   unsigned int total_max = 0;
