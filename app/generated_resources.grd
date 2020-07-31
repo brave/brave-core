@@ -5831,7 +5831,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Move to Brave sync chain?
         </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_HINT" desc="Label describing the effect of moving an existing credential to the user's account store">
-          Move your password to your Brave account to access it securely wherever you're signed in
+          Move your password to your Brave Account to access it securely wherever you're signed in
         </message>
         <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_TITLE" desc="The title of the 'save unsynced credentials' bubble.">
           Passwords not saved
@@ -6926,6 +6926,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_DOWNLOAD_BUTTON_LABEL" desc="Button text for the QR code generator's download button.">
         Download
       </message>
+      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR code.">
+        Use <ph name="CHARACTER_LIMIT">$1<ex>300</ex></ph> characters or fewer
+      </message>
+      <message name="IDS_BROWSER_SHARING_QR_CODE_DIALOG_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
+          Can't create QR code
+      </message>
 
       <!-- Sharing features. -->
       <message name="IDS_SHARING_REMOTE_COPY_NOTIFICATION_TITLE_TEXT_CONTENT_UNKNOWN_DEVICE" desc="Title text displayed in a Remote Copy (for text content) notification when the source device name is unknown.">
@@ -7481,6 +7487,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Cancel sign in
       </message>
 
+      <!-- Dice Web Signin Interception Bubble-->
+      <if expr="not chromeos and not is_android">
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
+          Create Work Profile?
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
+          New Profile
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
+          Cancel
+        </message>
+      </if>
 
       <!-- Signin Error tab modal dialog -->
       <message name="IDS_SIGNIN_ERROR_TITLE" desc="Title of the signin error tab modal dialog.">
@@ -7955,9 +7973,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <if expr="toolkit_views">
         <message name="IDS_TRANSLATE_BUBBLE_BEFORE_TRANSLATE_TITLE" desc="Title text for the translate bubble when asking to translate a page.">
           Translate this page?
-        </message>
-        <message name="IDS_TRANSLATE_BUBBLE_ADVANCED_TITLE" desc="Title text for the options panel.">
-          Options
         </message>
         <message name="IDS_TRANSLATE_BUBBLE_TRANSLATED_TITLE" desc="Title text for the translate bubble label when the page has been translated from one language to another">
           Translated
@@ -8962,6 +8977,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_LIVE_CAPTION_BUBBLE_CLOSE" desc="Tooltip for the Live Caption close button">
         Turn off Live Caption for now
+      </message>
+      <message name="IDS_LIVE_CAPTION_BUBBLE_EXPAND" desc="Tooltip for the Live Caption expand button">
+        Show more lines
+      </message>
+      <message name="IDS_LIVE_CAPTION_BUBBLE_COLLAPSE" desc="Tooltip for the Live Caption collapse button">
+        Show fewer lines
       </message>
       <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
         Live Caption is not available right now

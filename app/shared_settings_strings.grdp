@@ -97,6 +97,21 @@
   <message name="IDS_SETTINGS_NEARBY_SHARE_TITLE" desc="Name of the settings page for the Nearby Share feature">
     Nearby Share
   </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_ROW_TITLE" desc="Text for the row in settings which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
+    Device name
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_DIALOG_TITLE" desc="Title for the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
+    Device Name
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_INPUT_LABEL" desc="Label for the input field which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
+    New device name
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_EDIT_DEVICE_NAME" desc="Label for the button that opens the dialog which allows a user to set the name of their device which is shown to other devices for the Nearby Share feature.">
+    Change name
+  </message>
+  <message name="IDS_SETTINGS_NEARBY_SHARE_DEVICE_NAME_ARIA_DESCRIPTION" desc="Description for screen readers, not displayed in UI, specifying the current device name which is shown to other devices for the Nearby Share feature.">
+    Current device name is <ph name="DEVICE_NAME">$1<ex>Michael's Bravebook</ex></ph>
+  </message>
 
  <!-- Personalization Options SubPage (strings used by the <settings-personalization-options> element) -->
   <message name="IDS_SETTINGS_ENABLE_URL_KEYED_ANONYMIZED_DATA_COLLECTION" desc="The label of the checkbox to enable/disable url keyed anonymized data collection.">

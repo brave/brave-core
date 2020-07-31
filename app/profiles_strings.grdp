@@ -661,4 +661,11 @@
       Don't see your name?
     </message>
   </if>
+
+  <!-- Profile Picker -->
+  <if expr="not chromeos and not is_android">
+    <message name="IDS_PROFILE_PICKER_BACK_BUTTON_LABEL" desc="Label for a button that navigates user to the previous page">
+      Back
+    </message>
+  </if>
 </grit-part>

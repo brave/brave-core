@@ -114,4 +114,7 @@
       </if>
 
     </if>
+
+  <if expr="not chromeos and not is_android">
+    </if>
 </grit-part>
