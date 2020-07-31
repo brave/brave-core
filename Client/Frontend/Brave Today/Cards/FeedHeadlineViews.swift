@@ -61,7 +61,6 @@ class SmallHeadlineCardView: HeadlineCardView {
         super.init()
         
         feedView.titleLabel.font = .systemFont(ofSize: 14, weight: .semibold)
-        feedView.titleLabel.numberOfLines = 4
     }
     
     @available(*, unavailable)

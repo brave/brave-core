@@ -156,7 +156,7 @@ extension FeedItemView {
                         return width / ratio
                     }
                 case .title(let numberOfLines):
-                    return UIFont.systemFont(ofSize: 14.0, weight: .semibold).lineHeight * CGFloat(numberOfLines)
+                    return UIFont.systemFont(ofSize: 14.0, weight: .semibold).lineHeight * (numberOfLines == 0 ? 3 : CGFloat(numberOfLines))
                 case .date:
                     return UIFont.systemFont(ofSize: 11.0, weight: .semibold).lineHeight
                 case .brand(let viewingMode):
@@ -199,7 +199,7 @@ extension FeedItemView {
                             spacing: 4,
                             padding: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
                             children: [
-                                .title(),
+                                .title(5),
                                 .date,
                                 .flexibleSpace(minHeight: 12),
                                 .brand()
