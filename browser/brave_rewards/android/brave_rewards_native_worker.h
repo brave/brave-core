@@ -179,6 +179,11 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
                        const base::android::JavaParamRef<jobject>& obj,
                        const base::android::JavaParamRef<jstring>& pass_phrase);
 
+    void RefreshPublisher(
+        JNIEnv* env,
+        const base::android::JavaParamRef<jobject>& obj,
+        const base::android::JavaParamRef<jstring>& publisher_key);
+
     void OnResetTheWholeState(const bool success);
 
     void OnGetGetReconcileStamp(uint64_t timestamp);
@@ -255,6 +260,8 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void OnRecoverWallet(
         brave_rewards::RewardsService* rewards_service,
         const int32_t result) override;
+
+    void OnRefreshPublisher(uint32_t status, const std::string& publisher_key);
 
  private:
     std::string StdStrStrMapToJsonString(
