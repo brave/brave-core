@@ -6,9 +6,11 @@
 #include "brave/app/brave_main_delegate.h"
 
 #include <memory>
+#include <string>
 #include <unordered_set>
 
 #include "base/base_switches.h"
+#include "base/files/file_util.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
@@ -53,9 +55,15 @@
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #endif
 
+#if defined(OS_ANDROID)
+#include "base/android/path_utils.h"
+#endif
+
 namespace {
 // staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
 // switches::kSyncServiceURL manually
+const char kBraveSyncServiceStagingURL[] =
+    "https://sync-v2.bravesoftware.com/v2";
 #if defined(OFFICIAL_BUILD)
 // production
 const char kBraveSyncServiceURL[] = "https://sync-v2.brave.com/v2";
@@ -174,9 +182,14 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
                                    kBraveOriginTrialsPublicKey);
   }
 
+  std::string brave_sync_service_url = kBraveSyncServiceURL;
+#if defined(OS_ANDROID)
+  AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
+#endif  // defined(OS_ANDROID)
+
   // Brave's sync protocol does not use the sync service url
   command_line.AppendSwitchASCII(switches::kSyncServiceURL,
-                                 kBraveSyncServiceURL);
+                                 brave_sync_service_url.c_str());
 
   // Enabled features.
   std::unordered_set<const char*> enabled_features = {
@@ -235,3 +248,40 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   return ret;
 }
+
+#if defined(OS_ANDROID)
+void BraveMainDelegate::AdjustSyncServiceUrlForAndroid(
+    std::string* brave_sync_service_url) {
+  DCHECK_NE(brave_sync_service_url, nullptr);
+  const char kProcessTypeHost[] = "host";
+  const char kProcessTypeSwitchName[] = "type";
+
+  // On Android we can detect data dir only on host process, and we cannot
+  // for example on renderer or gpu-process, because JNI is not initialized
+  // And no sense to override sync service url for them in anyway
+  std::string process_type = kProcessTypeHost;
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          kProcessTypeSwitchName)) {
+    process_type = base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
+        kProcessTypeSwitchName);
+  }
+
+  if (process_type != kProcessTypeHost) {
+    return;
+  }
+
+  base::FilePath data_directory;
+  bool get_dir_result = base::android::GetDataDirectory(&data_directory);
+  if (!get_dir_result) {
+    return;
+  }
+
+  const char kStagingSyncServerMarkerName[] = "use_staging_sync_server";
+  base::FilePath staging_marker_path =
+      data_directory.Append(kStagingSyncServerMarkerName);
+  if (base::PathExists(staging_marker_path)) {
+    // we have found marker file
+    *brave_sync_service_url = kBraveSyncServiceStagingURL;
+  }
+}
+#endif  // defined(OS_ANDROID)
