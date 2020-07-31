@@ -524,6 +524,10 @@ class FeedDataSource {
             ])
         ]
         
+        var nextCategory = "Top News" // FIXME: Magic string should be defined somewhere
+        let allCategories = Set(articles.map(\.source.category))
+        var categories: Set<String> = allCategories
+        
         func _cards(for element: FeedSequenceElement, fillStrategy: FillStrategy) -> [FeedCard]? {
             switch element {
             case .sponsor:
@@ -553,20 +557,33 @@ class FeedDataSource {
                     }
                 }
             case .categoryGroup:
-                guard let category = articles.first?.source.category else { return nil }
-                let items = Array(articles.lazy.filter({ $0.source.category == category }).prefix(3))
-                articles.removeAll(where: { items.contains($0) })
-                return [.group(items, title: category, direction: .vertical, displayBrand: false)]
-            case .brandedGroup(let numbered):
-                if articles.isEmpty { return nil }
-                guard let source = articles.first?.source else { return nil }
-                let items = Array(articles.lazy.filter({ $0.source == source }).prefix(3))
-                articles.removeAll(where: { items.contains($0) })
-                if numbered {
-                    return [.numbered(items, title: items.first?.source.name ?? "")]
-                } else {
-                    return [.group(items, title: "", direction: .vertical, displayBrand: true)]
+                let items: [FeedCard]? = fillStrategy.next(3, from: &articles, where: { $0.source.category == nextCategory }).map {
+                    [.group($0, title: nextCategory, direction: .vertical, displayBrand: false)]
                 }
+                // Ensure the next category card does not use the same categories until all categories have
+                // been shown
+                categories.remove(nextCategory)
+                if categories.isEmpty {
+                    // All categories have now been shown, reset back to the start
+                    categories = allCategories
+                    // FIXME: Magic string should be defined somewhere
+                    nextCategory = "Top News"
+                } else {
+                    nextCategory = categories.randomElement()!
+                }
+                return items
+            case .brandedGroup(let numbered):
+                if let item = fillStrategy.next(from: &articles) {
+                    return fillStrategy.next(2, from: &articles, where: { $0.source == item.source }).map {
+                        let items = [item] + $0
+                        if numbered {
+                            return [.numbered(items, title: item.source.name)]
+                        } else {
+                            return [.group(items, title: "", direction: .vertical, displayBrand: true)]
+                        }
+                    }
+                }
+                return nil
             case .group:
                 return fillStrategy.next(3, from: &articles).map {
                     [.group($0, title: "", direction: .vertical, displayBrand: false)]
