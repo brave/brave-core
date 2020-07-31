@@ -350,14 +350,7 @@ extension FeedItemView {
         /// The current viewing mode for this brand container
         var viewingMode: ViewingMode = .automatic {
             didSet {
-                switch viewingMode {
-                case .automatic:
-                    updateAutomaticVisibleView()
-                case .alwaysText:
-                    visibleView = textLabel
-                case .alwaysLogo:
-                    visibleView = logoImageView
-                }
+                updateVisibleViewForViewingMode()
             }
         }
         /// An image view for setting the brands logo
@@ -394,6 +387,8 @@ extension FeedItemView {
         override init(frame: CGRect) {
             super.init(frame: frame)
             
+            updateVisibleViewForViewingMode()
+            
             imageObservervation = logoImageView.observe(\.image, options: [.new]) { [weak self] _, _ in
                 guard let self = self else { return }
                 if self.viewingMode == .automatic {
@@ -414,5 +409,17 @@ extension FeedItemView {
                 visibleView = textLabel
             }
         }
+        
+        private func updateVisibleViewForViewingMode() {
+            switch viewingMode {
+            case .automatic:
+                updateAutomaticVisibleView()
+            case .alwaysText:
+                visibleView = textLabel
+            case .alwaysLogo:
+                visibleView = logoImageView
+            }
+        }
+        
     }
 }

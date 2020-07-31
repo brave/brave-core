@@ -466,8 +466,8 @@ class FeedDataSource {
                     return [.headline(item)]
                 }
             case .categoryGroup:
-                guard let category = articles.first?.content.category else { return nil }
-                let items = Array(articles.lazy.filter({ $0.content.category == category }).prefix(3))
+                guard let category = articles.first?.source.category else { return nil }
+                let items = Array(articles.lazy.filter({ $0.source.category == category }).prefix(3))
                 articles.removeAll(where: { items.contains($0) })
                 return [.group(items, title: category, direction: .vertical, displayBrand: false)]
             case .brandedGroup(let numbered):
@@ -476,7 +476,7 @@ class FeedDataSource {
                 let items = Array(articles.lazy.filter({ $0.source == source }).prefix(3))
                 articles.removeAll(where: { items.contains($0) })
                 if numbered {
-                    return [.numbered(items, title: items.first?.content.publisherName ?? "")]
+                    return [.numbered(items, title: items.first?.source.name ?? "")]
                 } else {
                     return [.group(items, title: "", direction: .vertical, displayBrand: true)]
                 }

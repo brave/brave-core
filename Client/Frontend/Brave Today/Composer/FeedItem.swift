@@ -66,7 +66,6 @@ extension FeedItem {
     }
 
     struct Content: Equatable, Decodable {
-        var category: String
         var publishTime: Date
         @URLString var url: URL?
         @URLString var imageURL: URL?
@@ -74,11 +73,9 @@ extension FeedItem {
         var description: String
         var contentType: FeedContentType
         var publisherID: String
-        var publisherName: String
         var urlHash: String
         
         enum CodingKeys: String, CodingKey {
-            case category
             case publishTime = "publish_time"
             case url
             case imageURL = "padded_img"
@@ -86,7 +83,6 @@ extension FeedItem {
             case description
             case contentType = "content_type"
             case publisherID = "publisher_id"
-            case publisherName = "publisher_name"
             case urlHash = "url_hash"
         }
     }
