@@ -147,7 +147,9 @@ export const getUIMessages = (): Record<string, string> => {
     'cancel',
     'login',
     'loginMessageTitle',
-    'loginMessageText'
+    'loginMessageText',
+    'walletPending',
+    'walletConnected'
   ]
 
   let translations = {}

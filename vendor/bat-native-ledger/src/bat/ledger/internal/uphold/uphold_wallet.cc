@@ -99,12 +99,14 @@ void UpholdWallet::OnGenerate(
 
   if (user.status != UserStatus::OK) {
     wallet_ptr->status = ledger::WalletStatus::PENDING;
+  } else {
+    wallet_ptr->status = GetNewStatus(wallet_ptr->status, user);
   }
 
-  wallet_ptr->status = GetNewStatus(wallet_ptr->status, user);
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_ptr->Clone());
 
-  if (wallet_ptr->address.empty()) {
+  if (wallet_ptr->status != ledger::WalletStatus::PENDING &&
+      wallet_ptr->address.empty()) {
     auto card_callback = std::bind(&UpholdWallet::OnCreateCard,
         this,
         _1,
@@ -177,7 +179,15 @@ ledger::WalletStatus UpholdWallet::GetNewStatus(
         break;
       }
 
-      new_status = ledger::WalletStatus::CONNECTED;
+      if (user.verified) {
+        new_status = ledger::WalletStatus::VERIFIED;
+        ledger_->ShowNotification(
+           "wallet_new_verified",
+           [](ledger::Result _){},
+           {"Uphold"});
+      } else {
+        new_status = ledger::WalletStatus::CONNECTED;
+      }
       break;
     }
     case ledger::WalletStatus::NOT_CONNECTED:
