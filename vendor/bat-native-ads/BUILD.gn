@@ -224,6 +224,8 @@ source_set("ads") {
     "src/bat/ads/internal/eligible_ads/eligible_ads_filter_factory.cc",
     "src/bat/ads/internal/eligible_ads/eligible_ads_filter_factory.h",
     "src/bat/ads/internal/eligible_ads/eligible_ads_filter.h",
+    "src/bat/ads/internal/eligible_ads/eligible_ads_pacing_filter.cc",
+    "src/bat/ads/internal/eligible_ads/eligible_ads_pacing_filter.h",
     "src/bat/ads/internal/eligible_ads/eligible_ads_priority_filter.cc",
     "src/bat/ads/internal/eligible_ads/eligible_ads_priority_filter.h",
     "src/bat/ads/internal/filters/ads_history_confirmation_filter.cc",
