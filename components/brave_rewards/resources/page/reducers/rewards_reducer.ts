@@ -9,6 +9,10 @@ import { types } from '../constants/rewards_types'
 import { defaultState } from '../storage'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
+  if (!state) {
+    return
+  }
+
   switch (action.type) {
     case types.TOGGLE_ENABLE_MAIN: {
       if (state.initializing) {

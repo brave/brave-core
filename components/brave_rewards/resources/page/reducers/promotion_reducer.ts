@@ -39,6 +39,10 @@ const updatePromotion = (newPromotion: Rewards.Promotion, promotions: Rewards.Pr
 }
 
 const promotionReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
+  if (!state) {
+    return
+  }
+
   const payload = action.payload
   switch (action.type) {
     case types.FETCH_PROMOTIONS: {

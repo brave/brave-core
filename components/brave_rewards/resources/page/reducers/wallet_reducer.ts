@@ -22,6 +22,10 @@ const createWallet = (state: Rewards.State) => {
 }
 
 const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
+  if (!state) {
+    return
+  }
+
   switch (action.type) {
     case types.CREATE_WALLET:
       state = { ...state }
