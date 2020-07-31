@@ -1223,7 +1223,17 @@ void LedgerImpl::OnServerPublisherInfoLoaded(
     ledger::GetServerPublisherInfoCallback callback) {
   if (ShouldFetchServerPublisherInfo(server_info.get())) {
     BLOG(1, "Server publisher info  is expired for " << publisher_key);
-    bat_publisher_->FetchServerPublisherInfo(publisher_key, callback);
+
+    // Store the current server publisher info so that if fetching fails
+    // we can execute the callback with the last known valid data.
+    auto shared_info = std::make_shared<ledger::ServerPublisherInfoPtr>(
+        std::move(server_info));
+
+    bat_publisher_->FetchServerPublisherInfo(
+        publisher_key,
+        [shared_info, callback](ledger::ServerPublisherInfoPtr info) {
+          callback(std::move(info ? info : *shared_info));
+        });
   } else {
     callback(std::move(server_info));
   }
