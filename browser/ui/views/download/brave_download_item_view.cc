@@ -26,6 +26,7 @@
 #include "ui/gfx/text_elider.h"
 #include "ui/gfx/text_utils.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/controls/styled_label.h"
 
 using download::DownloadItem;
 
@@ -86,9 +87,9 @@ gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   // Call base class to get the width.
   gfx::Size size = DownloadItemView::CalculatePreferredSize();
   // Calculate the height accounting for the extra line.
-  int child_height = font_list_.GetHeight() + kBraveVerticalTextPadding +
+  int child_height = file_name_label_->GetLineHeight() + kBraveVerticalTextPadding +
                      origin_url_font_list_.GetHeight() +
-                     kBraveVerticalTextPadding + status_font_list_.GetHeight();
+                     kBraveVerticalTextPadding + status_label_->GetLineHeight();
   if (IsShowingWarningDialog()) {
     child_height = std::max(
         {child_height, GetButtonSize().height(), GetIcon().Size().width()});
@@ -151,18 +152,18 @@ void BraveDownloadItemView::OnDownloadUpdated() {
 // Positioning routines.
 
 int BraveDownloadItemView::GetYForFilenameText() const {
-  int text_height = font_list_.GetHeight();
+  int text_height = file_name_label_->GetLineHeight();
   if (!origin_url_text_.empty())
     text_height +=
         kBraveVerticalTextPadding + origin_url_font_list_.GetHeight();
   if (status_label_ && !status_label_->GetText().empty())
-    text_height += kBraveVerticalTextPadding + status_font_list_.GetHeight();
+    text_height += kBraveVerticalTextPadding + status_label_->GetLineHeight();
   return (height() - text_height) / 2;
 }
 
 int BraveDownloadItemView::GetYForOriginURLText() const {
   int y = GetYForFilenameText();
-  y += (font_list_.GetHeight() + kBraveVerticalTextPadding);
+  y += (file_name_label_->GetLineHeight() + kBraveVerticalTextPadding);
   return y;
 }
 
