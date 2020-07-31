@@ -195,8 +195,9 @@ private extension URL {
         // Region is not supported by yahoo, fallback to default url.
         if !supportedRegions.contains(region) { return nil }
         
-        // Special case for malaysia region. Needs to be done after supported regions check.
+        // Handling non direct region translations.
         if region == "MY" { region = "malaysia" }
+        if region == "GB" { region = "uk" }
         
         var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
         
