@@ -36,6 +36,8 @@ source_set("browser_process") {
     "//brave/test:*",
   ]
 
+  defines = [ "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"" ]
+
   sources = [
     "autocomplete/brave_autocomplete_scheme_classifier.cc",
     "autocomplete/brave_autocomplete_scheme_classifier.h",
@@ -55,6 +57,12 @@ source_set("browser_process") {
     "brave_local_state_prefs.h",
     "brave_profile_prefs.cc",
     "brave_profile_prefs.h",
+    "brave_stats_updater.cc",
+    "brave_stats_updater.h",
+    "brave_stats_updater_params.cc",
+    "brave_stats_updater_params.h",
+    "brave_stats_updater_util.cc",
+    "brave_stats_updater_util.h",
     "brave_tab_helpers.cc",
     "brave_tab_helpers.h",
     "browser_context_keyed_service_factories.cc",
@@ -104,7 +112,6 @@ source_set("browser_process") {
 
   deps = [
     ":sparkle_buildflags",
-    ":stats_updater",
     ":version_info",
     "autoplay",
     "content_settings",
@@ -145,6 +152,7 @@ source_set("browser_process") {
     "//brave/components/speedreader:buildflags",
     "//brave/components/weekly_storage",
     "//brave/services/network/public/cpp",
+    "//chrome/common",
     "//components/autofill/core/common",
     "//components/browsing_data/core",
     "//components/component_updater",
@@ -450,23 +458,6 @@ source_set("version_info") {
   sources = [
     "version_info.cc",
     "version_info.h",
-  ]
-}
-
-source_set("stats_updater") {
-  defines = [ "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"" ]
-
-  sources = [
-    "brave_stats_updater.cc",
-    "brave_stats_updater.h",
-    "brave_stats_updater_params.cc",
-    "brave_stats_updater_params.h",
-    "brave_stats_updater_util.cc",
-    "brave_stats_updater_util.h",
-  ]
-
-  deps = [
-    "//chrome/common",
   ]
 }
 
