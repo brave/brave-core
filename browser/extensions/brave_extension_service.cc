@@ -46,7 +46,7 @@ void BraveExtensionService::AddComponentExtension(const Extension* extension) {
       (profile_->IsGuestSession() || brave::IsTorProfile(profile_))) {
     extensions::ExtensionActionManager* extension_action_manager =
         ExtensionActionManager::Get(profile_);
-    ExtensionAction* action =
+    extensions::ExtensionAction* action =
         extension_action_manager->GetExtensionAction(*extension);
     action->SetIsVisible(ExtensionAction::kDefaultTabId, false);
   }
