@@ -1,0 +1,14 @@
+source_set("browser") {
+  # Remove when https://github.com/brave/brave-browser/issues/10640 is resolved
+  check_includes = false
+
+  sources = [
+    "crypto_exchange_oauth_util.cc",
+    "crypto_exchange_oauth_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//crypto",
+  ]
+}

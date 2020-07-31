@@ -312,6 +312,12 @@ source_set("browser_process") {
     ]
   }
 
+  if (gemini_enabled || binance_enabled) {
+    deps += [
+      "//brave/components/crypto_exchange/browser",
+    ]
+  }
+
   if (brave_together_enabled) {
     sources += [
       "brave_together/brave_together_util.cc",
