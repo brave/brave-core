@@ -37,7 +37,7 @@ namespace {
   const char oauth_host[] = "exchange.gemini.com";
   const char api_host[] = "api.gemini.com";
   const char oauth_callback[] = "com.brave.gemini://authorization";
-  const char oauth_scope[] = "trader";
+  const char oauth_scope[] = "addresses:read,balances:read,orders:create";
   const char oauth_url[] = "https://exchange.gemini.com/auth";
   const unsigned int kRetriesCountOnNetworkChange = 1;
 
