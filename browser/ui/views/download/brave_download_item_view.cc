@@ -223,8 +223,8 @@ gfx::ImageSkia BraveDownloadItemView::GetLockIcon(int height) {
 }
 
 // Update accessible name with origin URL.
-void BraveDownloadItemView::UpdateAccessibleName() {
-  DownloadItemView::UpdateAccessibleName();
+void BraveDownloadItemView::UpdateMode(Mode mode) {
+  DownloadItemView::UpdateMode(mode);
   if (IsShowingWarningDialog())
     return;
 
@@ -234,7 +234,6 @@ void BraveDownloadItemView::UpdateAccessibleName() {
       extra += base::char16(' ')
                    + l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE);
     extra += base::char16(' ') + origin_url_text_;
-
     accessible_name_ += extra;
   }
 }
