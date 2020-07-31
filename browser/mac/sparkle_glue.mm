@@ -373,7 +373,7 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
   // Caching update candidate version.
   // See the comments of |currentlyInstalledVersion|.
-  new_version_ = GetVersionFromAppcastItem(item);
+  new_version_ = [GetVersionFromAppcastItem(item) retain];
 
   [self updateStatus:kAutoupdateAvailable
              version:GetVersionFromAppcastItem(item)
