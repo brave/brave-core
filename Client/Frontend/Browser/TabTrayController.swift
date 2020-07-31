@@ -341,7 +341,16 @@ class TabTrayController: UIViewController, Themeable {
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .dynamicFontChanged, object: nil)
         
-        applyTheme(Theme.of(tabManager.selectedTab))
+        if #available(iOS 13.0, *) {
+            /// At this point in time the `UITraitCollection.current` is not correct so the theme
+            /// that `Theme.of(_:)` gets does not get the current theme in automatic-theme mode
+            let oldTraitCollection = UITraitCollection.current
+            UITraitCollection.current = traitCollection
+            applyTheme(Theme.of(tabManager.selectedTab))
+            UITraitCollection.current = oldTraitCollection
+        } else {
+            applyTheme(Theme.of(tabManager.selectedTab))
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -357,6 +366,12 @@ class TabTrayController: UIViewController, Themeable {
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
+        
+        if #available(iOS 13.0, *) {
+            if traitCollection.userInterfaceStyle != previousTraitCollection?.userInterfaceStyle {
+                applyTheme(Theme.of(tabManager.selectedTab))
+            }
+        }
 
         // Update the trait collection we reference in our layout delegate
         tabLayoutDelegate.traitCollection = traitCollection
@@ -404,6 +419,7 @@ class TabTrayController: UIViewController, Themeable {
     
     func applyTheme(_ theme: Theme) {
         styleChildren(theme: theme)
+        view.backgroundColor = theme.colors.home
         collectionView?.backgroundColor = theme.colors.home
     }
     
@@ -1186,7 +1202,6 @@ class TrayToolbar: UIView, Themeable {
         styleChildren(theme: theme)
         
         backgroundColor = theme.colors.home
-        UIApplication.shared.windows.first?.backgroundColor = backgroundColor
         
         addTabButton.tintColor = theme.colors.tints.footer
         doneButton.tintColor = addTabButton.tintColor
