@@ -129,9 +129,103 @@ enum FeedSequenceElement {
     case brandedGroup(numbered: Bool = false)
     /// Displays a list of `article` typed items that can have different categories and different sources.
     case group
+    /// Displays the sequence element provided using a specific fill strategy to obtain feed items from the
+    /// feed list
+    indirect case fillUsing(_ strategy: FillStrategy, _ elements: [FeedSequenceElement])
     /// Displays the provided elements a number of times. Passing in `.max` for `times` means it will repeat
     /// until there is no more content available
     indirect case repeating([FeedSequenceElement], times: Int = .max)
+}
+
+/// Defines a ruleset for getting the next set of items from a list of `FeedItem`'s
+protocol FillStrategy {
+    /// Obtain the next `length` number of feed items from a list. If exactly `length` items can be queried,
+    /// then those items are removed from `list` and returned.
+    ///
+    /// You can optionally provide some `predicate` to determine what items are valid in `list`
+    ///
+    /// - Returns: A set of feed items if `list` (or the filtered variant given some `predicate`) contains at
+    ///            least `length` items.
+    func next(
+        _ length: Int,
+        from list: inout [FeedItem],
+        where predicate: ((FeedItem) -> Bool)?
+    ) -> [FeedItem]?
+}
+
+extension FillStrategy {
+    func next(
+        _ length: Int,
+        from list: inout [FeedItem],
+        where predicate: ((FeedItem) -> Bool)? = nil
+    ) -> [FeedItem]? {
+        next(length, from: &list, where: predicate)
+    }
+    /// Obtain the next feed item from `list`. If that item can be queried successfully, then that item is
+    /// removed from `list` and returned.
+    func next(
+        from list: inout [FeedItem],
+        where predicate: ((FeedItem) -> Bool)? = nil
+    ) -> FeedItem? {
+        next(1, from: &list, where: predicate)?.first
+    }
+}
+
+/// A fill strategy that always pulls from the beginning of the list
+struct DefaultFillStrategy: FillStrategy {
+    func next(
+        _ length: Int,
+        from list: inout [FeedItem],
+        where predicate: ((FeedItem) -> Bool)? = nil
+    ) -> [FeedItem]? {
+        if let predicate = predicate {
+            let filteredItems = list.filter(predicate)
+            if filteredItems.count < length { return nil }
+            let items = Array(filteredItems.prefix(upTo: length))
+            items.forEach { item in
+                if let index = list.firstIndex(of: item) {
+                    list.remove(at: index)
+                }
+            }
+            return items
+        } else {
+            if list.count < length { return nil }
+            let items = Array(list.prefix(upTo: length))
+            list.removeFirst(items.count)
+            return items
+        }
+    }
+}
+
+/// A fill strategy that pulls random items from the list
+struct RandomizedFillStrategy: FillStrategy {
+    /// A global predicate to determine what random items are valid to pull from. For example, only pulling
+    /// random items that are less than 48 hours old
+    var isIncluded: ((FeedItem) -> Bool)?
+    
+    func next(
+        _ length: Int,
+        from list: inout [FeedItem],
+        where predicate: ((FeedItem) -> Bool)? = nil
+    ) -> [FeedItem]? {
+        var workingList = list
+        if predicate != nil || isIncluded != nil {
+            workingList = workingList.filter {
+                (predicate?($0) ?? true) && (isIncluded?($0) ?? true)
+            }
+        }
+        if workingList.count < length { return nil }
+        return (0..<length).compactMap { _ in
+            if let index = workingList.indices.randomElement() {
+                let item = workingList.remove(at: index)
+                if let index = list.firstIndex(of: item) {
+                    list.remove(at: index)
+                }
+                return item
+            }
+            return nil
+        }
+    }
 }
 
 /// Powers Brave Today's feed.
@@ -383,7 +477,7 @@ class FeedDataSource {
             .compactMap(\.url)
             .compactMap { URL(string: $0)?.baseDomain }) ?? []
         return feeds.compactMap { content in
-            let timeSincePublished = Double(content.publishTime.timeIntervalSinceNow)
+            let timeSincePublished = Date().timeIntervalSince(content.publishTime)
             var score = timeSincePublished > 0 ? log(timeSincePublished) : 0
             if let feedBaseDomain = content.url?.baseDomain,
                 lastVisitedDomains.contains(feedBaseDomain) {
@@ -404,8 +498,8 @@ class FeedDataSource {
             Deals card
          */
         let feedsFromEnabledSources = items.filter(\.source.enabled)
-        var sponsors = feedsFromEnabledSources.filter { $0.content.contentType == .offer }
-        var deals = feedsFromEnabledSources.filter { $0.content.contentType == .product }
+        var sponsors = feedsFromEnabledSources.filter { $0.content.contentType == .sponsor }
+        var deals = feedsFromEnabledSources.filter { $0.content.contentType == .deals }
         var articles = feedsFromEnabledSources.filter { $0.content.contentType == .article }
         
         let rules: [FeedSequenceElement] = [
@@ -422,22 +516,25 @@ class FeedDataSource {
                 .headline(paired: true),
                 .brandedGroup(numbered: true),
                 .group,
-                .headline(paired: false),
-                .headline(paired: true),
+                .fillUsing(RandomizedFillStrategy(isIncluded: { Date().timeIntervalSince($0.content.publishTime) < 48.hours }), [
+                    .headline(paired: false),
+                    .headline(paired: true),
+                    .headline(paired: false),
+                ])
             ])
         ]
         
-        func _cards(for element: FeedSequenceElement) -> [FeedCard]? {
+        func _cards(for element: FeedSequenceElement, fillStrategy: FillStrategy) -> [FeedCard]? {
             switch element {
             case .sponsor:
-                if sponsors.isEmpty { return nil }
-                return [.sponsor(sponsors.removeFirst())]
+                return fillStrategy.next(from: &sponsors).map {
+                    [.sponsor($0)]
+                }
             case .deals:
-                if deals.isEmpty { return nil }
-                let items = Array(deals.prefix(3))
-                deals.removeFirst(min(3, items.count))
-                // FIXME: Localize
-                return [.deals(items, title: "Deals")]
+                return fillStrategy.next(3, from: &deals).map {
+                    // FIXME: Localize
+                    [.deals($0, title: "Deals")]
+                }
             case .headline(let paired):
                 if articles.isEmpty { return nil }
                 let imageExists = { (item: FeedItem) -> Bool in
@@ -447,23 +544,13 @@ class FeedDataSource {
                     if articles.count < 2 {
                         return nil
                     }
-                    guard
-                        let firstIndex = articles.firstIndex(where: imageExists),
-                        let secondIndex = articles[(firstIndex+1)...].firstIndex(where: imageExists) else {
-                        return nil
+                    return fillStrategy.next(2, from: &articles, where: imageExists).map {
+                        [.headlinePair(.init($0[0], $0[1]))]
                     }
-                    let item1 = articles[firstIndex]
-                    let item2 = articles[secondIndex]
-                    articles.remove(at: firstIndex)
-                    articles.remove(at: secondIndex - 1)
-                    return [.headlinePair(.init(item1, item2))]
                 } else {
-                    guard let index = articles.firstIndex(where: imageExists) else {
-                        return nil
+                    return fillStrategy.next(from: &articles, where: imageExists).map {
+                        [.headline($0)]
                     }
-                    let item = articles[index]
-                    articles.remove(at: index)
-                    return [.headline(item)]
                 }
             case .categoryGroup:
                 guard let category = articles.first?.source.category else { return nil }
@@ -481,17 +568,24 @@ class FeedDataSource {
                     return [.group(items, title: "", direction: .vertical, displayBrand: true)]
                 }
             case .group:
-                if articles.isEmpty { return nil }
-                let items = Array(articles.prefix(3))
-                articles.removeFirst(min(3, items.count))
-                return [.group(items, title: "", direction: .vertical, displayBrand: false)]
+                return fillStrategy.next(3, from: &articles).map {
+                    [.group($0, title: "", direction: .vertical, displayBrand: false)]
+                }
+            case .fillUsing(let strategy, let elements):
+                var cards: [FeedCard] = []
+                for element in elements {
+                    if let elementCards = _cards(for: element, fillStrategy: strategy) {
+                        cards.append(contentsOf: elementCards)
+                    }
+                }
+                return cards
             case .repeating(let elements, let times):
                 var index = 0
                 var cards: [FeedCard] = []
                 repeat {
                     var repeatedCards: [FeedCard] = []
                     for element in elements {
-                        if let elementCards = _cards(for: element) {
+                        if let elementCards = _cards(for: element, fillStrategy: fillStrategy) {
                             repeatedCards.append(contentsOf: elementCards)
                         }
                     }
@@ -509,7 +603,7 @@ class FeedDataSource {
         DispatchQueue.global(qos: .default).async {
             var generatedCards: [FeedCard] = []
             for rule in rules {
-                if let elementCards = _cards(for: rule) {
+                if let elementCards = _cards(for: rule, fillStrategy: DefaultFillStrategy()) {
                     generatedCards.append(contentsOf: elementCards)
                 }
             }
