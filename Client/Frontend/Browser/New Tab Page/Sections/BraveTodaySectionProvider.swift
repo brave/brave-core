@@ -135,6 +135,8 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                     item,
                     isBrandVisible: false
                 )
+                // Force thumbnail to show up for deals even if the data source has none for UI purposes
+                view.thumbnailImageView.isHidden = false
             }
             cell.content.groupBrandImageView.isHidden = true
             cell.content.actionHandler = handler(from: { items[$0] }, card: card, indexPath: indexPath)
