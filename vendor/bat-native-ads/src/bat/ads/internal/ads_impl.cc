@@ -475,6 +475,8 @@ void AdsImpl::OnTabClosed(
 
   OnMediaStopped(tab_id);
 
+  sustained_ad_notifications_.erase(tab_id);
+
   const Reports reports(this);
   DestroyInfo destroy_info;
   destroy_info.tab_id = tab_id;
@@ -701,65 +703,34 @@ void AdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
 }
 
 void AdsImpl::OnPageLoaded(
+    const int32_t tab_id,
+    const std::string& original_url,
     const std::string& url,
     const std::string& content) {
+  DCHECK(!original_url.empty());
   DCHECK(!url.empty());
 
   if (!IsInitialized()) {
-    BLOG(1, "Failed to classify page as not initialized");
+    BLOG(1, "OnPageLoaded failed as not initialized");
     return;
   }
 
-  const bool is_supported_url = IsSupportedUrl(url);
+  MaybeSustainAdNotification(tab_id, original_url);
 
-  if (is_supported_url) {
-    ad_conversions_->Check(url);
-  }
+  ad_conversions_->Check(url);
 
   ExtractPurchaseIntentSignal(url);
-
-  if (SameSite(url, last_shown_ad_notification_.target_url)) {
-    BLOG(1, "Visited URL matches the last shown ad notification");
-
-    if (last_sustained_ad_notification_.creative_instance_id !=
-        last_shown_ad_notification_.creative_instance_id) {
-      last_sustained_ad_notification_ = AdNotificationInfo();
-    }
-
-    if (!SameSite(url, last_sustained_ad_notification_.target_url)) {
-      last_sustained_ad_notification_ = last_shown_ad_notification_;
-
-      StartSustainingAdNotificationInteraction();
-    } else {
-      if (sustain_ad_notification_interaction_timer_.IsRunning()) {
-        BLOG(1, "Already sustaining ad for visited URL");
-      } else {
-        BLOG(1, "Already sustained ad for visited URL");
-      }
-    }
-
-    return;
-  }
-
-  if (!last_shown_ad_notification_.target_url.empty()) {
-    BLOG(1, "Visited URL does not match the last shown ad notification");
-  }
-
-  if (!is_supported_url) {
-    BLOG(1, "Page not classified as visited URL is not supported");
-    return;
-  }
-
-  if (SearchProviders::IsSearchEngine(url)) {
-    BLOG(1, "Page not classified as visited URL is a search engine");
-    return;
-  }
 
   MaybeClassifyPage(url, content);
 }
 
 void AdsImpl::ExtractPurchaseIntentSignal(
     const std::string& url) {
+  if (!UrlHasScheme(url)) {
+    BLOG(1, "URL not supported for extracting purchase intent");
+    return;
+  }
+
   if (!SearchProviders::IsSearchEngine(url) &&
       SameSite(url, previous_tab_url_)) {
     return;
@@ -788,15 +759,44 @@ void AdsImpl::GeneratePurchaseIntentSignalHistoryEntry(
   }
 }
 
+void AdsImpl::MaybeSustainAdNotification(
+    const int32_t tab_id,
+    const std::string& url) {
+  if (!UrlHasScheme(url)) {
+    return;
+  }
+
+  if (!SameSite(url, last_shown_ad_notification_.target_url)) {
+    BLOG(1, "Visited URL does not match the last shown ad notification");
+    return;
+  }
+
+  BLOG(1, "Visited URL matches the last shown ad notification");
+
+  MaybeStartSustainingAdNotificationInteraction(tab_id,
+      last_shown_ad_notification_.target_url);
+}
+
 void AdsImpl::MaybeClassifyPage(
     const std::string& url,
     const std::string& content) {
+  if (!UrlHasScheme(url)) {
+    BLOG(1, "URL not supported for page classification");
+    return;
+  }
+
+  if (SearchProviders::IsSearchEngine(url)) {
+    BLOG(1, "Page not classified as a search engine");
+    return;
+  }
+
   std::string page_classification;
 
   if (page_classifier_->ShouldClassifyPages()) {
     page_classification = page_classifier_->ClassifyPage(url, content);
     if (page_classification.empty()) {
       BLOG(1, "Page not classified as not enough content");
+      return;
     } else {
       const classification::CategoryList winning_categories =
           page_classifier_->GetWinningCategories();
@@ -1419,34 +1419,51 @@ void AdsImpl::set_last_shown_ad_notification(
   last_shown_ad_notification_ = info;
 }
 
-void AdsImpl::StartSustainingAdNotificationInteraction() {
+void AdsImpl::MaybeStartSustainingAdNotificationInteraction(
+    const int32_t tab_id,
+    const std::string& url) {
+  const auto sustained_ad_notifications_iter =
+      std::find(sustained_ad_notifications_.begin(),
+          sustained_ad_notifications_.end(), tab_id);
+  if (sustained_ad_notifications_iter != sustained_ad_notifications_.end()) {
+    BLOG(1, "Already sustained ad for visited URL");
+    return;
+  }
+
+  const auto sustaining_ad_notifications_iter =
+      std::find(sustaining_ad_notifications_.begin(),
+          sustaining_ad_notifications_.end(), tab_id);
+  if (sustaining_ad_notifications_iter != sustaining_ad_notifications_.end()) {
+    BLOG(1, "Already sustaining ad for visited URL");
+    return;
+  }
+
   const uint64_t delay = kSustainAdNotificationInteractionAfterSeconds;
 
   const base::Time time = sustain_ad_notification_interaction_timer_.Start(
       delay, base::BindOnce(&AdsImpl::SustainAdNotificationInteractionIfNeeded,
-          base::Unretained(this)));
+          base::Unretained(this), tab_id, url));
 
-  BLOG(1, "Start timer to sustain ad for "
-      << last_shown_ad_notification_.target_url << " which will trigger "
-          << FriendlyDateAndTime(time));
+  sustaining_ad_notifications_.insert(tab_id);
+
+  BLOG(1, "Start timer to sustain ad for " << url << " which will trigger "
+      << FriendlyDateAndTime(time));
 }
 
-void AdsImpl::SustainAdNotificationInteractionIfNeeded() {
-  if (!IsStillViewingAdNotification()) {
-    BLOG(1, "Failed to sustain ad. The domain for the focused tab does not "
-        "match " << last_shown_ad_notification_.target_url << " for the last "
-            "shown ad notification");
+void AdsImpl::SustainAdNotificationInteractionIfNeeded(
+    const int32_t tab_id,
+    const std::string& url) {
+  sustained_ad_notifications_.insert(tab_id);
+  sustaining_ad_notifications_.erase(tab_id);
 
+  if (tab_id != active_tab_id_) {
+    BLOG(1, "Failed to sustain ad as the focused tab does not match " << url);
     return;
   }
 
-  BLOG(1, "Sustained ad for " << last_shown_ad_notification_.target_url);
+  BLOG(1, "Sustained ad for " << url);
 
   ConfirmAd(last_shown_ad_notification_, ConfirmationType::kLanded);
-}
-
-bool AdsImpl::IsStillViewingAdNotification() const {
-  return SameSite(active_tab_url_, last_shown_ad_notification_.target_url);
 }
 
 void AdsImpl::ConfirmAd(
@@ -1491,13 +1508,6 @@ void AdsImpl::AppendAdNotificationToHistory(
   ad_history.category_content.category = info.category;
 
   client_->AppendAdHistoryToAdsHistory(ad_history);
-}
-
-bool AdsImpl::IsSupportedUrl(
-    const std::string& url) const {
-  DCHECK(!url.empty()) << "Invalid URL";
-
-  return GURL(url).SchemeIsHTTPOrHTTPS();
 }
 
 }  // namespace ads

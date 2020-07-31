@@ -69,7 +69,7 @@ interface BatAds {
   SetConfirmationsIsReady(bool is_ready);
   ChangeLocale(string locale);
   OnAdsSubdivisionTargetingCodeHasChanged();
-  OnPageLoaded(string url, string html);
+  OnPageLoaded(int32 tab_id, string original_url, string url, string html);
   OnUnIdle();
   OnIdle();
   OnForeground();

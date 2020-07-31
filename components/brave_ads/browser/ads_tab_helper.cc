@@ -35,8 +35,9 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
       is_browser_active_(true),
       run_distiller_(false),
       weak_factory_(this) {
-  if (!tab_id_.is_valid())
+  if (!tab_id_.is_valid()) {
     return;
+  }
 
   Profile* profile = Profile::FromBrowserContext(
       web_contents->GetBrowserContext());
@@ -55,88 +56,116 @@ AdsTabHelper::~AdsTabHelper() {
 #endif
 }
 
-void AdsTabHelper::DidFinishNavigation(
-    content::NavigationHandle* navigation_handle) {
-  if (navigation_handle->IsInMainFrame()) {
-    bool was_restored =
-        navigation_handle->GetRestoreType() != content::RestoreType::NONE;
-    run_distiller_ = !was_restored;
-  }
-}
-
-void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
-  // Do not start distilling if the ad service isn't enabled
-  if (!ads_service_ || !ads_service_->IsEnabled() || !run_distiller_) {
+void AdsTabHelper::TabUpdated() {
+  if (!ads_service_) {
     return;
   }
 
-  auto source_page_handle =
-      std::make_unique<dom_distiller::SourcePageHandleWebContents>(
-          web_contents(), false);
+  ads_service_->OnTabUpdated(tab_id_, web_contents()->GetURL(),
+      is_active_ && is_browser_active_);
+}
 
-  content::RenderFrameHost* render_frame_host =
-      source_page_handle->web_contents()->GetMainFrame();
+void AdsTabHelper::RunIsolatedJavaScript(
+    content::RenderFrameHost* render_frame_host) {
   DCHECK(render_frame_host);
 
   dom_distiller::RunIsolatedJavaScript(render_frame_host,
       "document.body.innerText",
-          base::BindOnce(&AdsTabHelper::OnWebContentsDistillationDone,
-              weak_factory_.GetWeakPtr(),
-                  source_page_handle->web_contents()->GetLastCommittedURL(),
-                      base::TimeTicks::Now()));
+          base::BindOnce(&AdsTabHelper::OnJavaScriptResult,
+              weak_factory_.GetWeakPtr()));
 }
 
-void AdsTabHelper::OnWebContentsDistillationDone(
-    const GURL& url,
-    const base::TimeTicks& javascript_start,
+void AdsTabHelper::OnJavaScriptResult(
     base::Value value) {
   if (!ads_service_) {
     return;
   }
 
+  const GURL original_url = urls_.front();
+  const GURL url = urls_.back();
+
   DCHECK(value.is_string());
   std::string content;
   value.GetAsString(&content);
 
-  ads_service_->OnPageLoaded(url.spec(), content);
+  ads_service_->OnPageLoaded(tab_id_, original_url, url, content);
+}
+
+void AdsTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInMainFrame() ||
+      !navigation_handle->HasCommitted() ||
+      !tab_id_.is_valid()) {
+    return;
+  }
+
+  urls_ = navigation_handle->GetRedirectChain();
+
+  if (navigation_handle->IsSameDocument()) {
+    if (!ads_service_ || !ads_service_->IsEnabled()) {
+      // Do not call the ads service if the ad service isn't enabled
+      return;
+    }
+
+    content::RenderFrameHost* render_frame_host =
+        navigation_handle->GetRenderFrameHost();
+
+    RunIsolatedJavaScript(render_frame_host);
+
+    return;
+  }
+
+  bool was_restored =
+      navigation_handle->GetRestoreType() != content::RestoreType::NONE;
+
+  run_distiller_ = !was_restored;
+}
+
+void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
+  if (!ads_service_ || !ads_service_->IsEnabled() || !run_distiller_) {
+    // Do not start distilling if the ad service isn't enabled
+    return;
+  }
+
+  std::unique_ptr<dom_distiller::SourcePageHandleWebContents> handle =
+      std::make_unique<dom_distiller::SourcePageHandleWebContents>(
+          web_contents(), false);
+
+  content::RenderFrameHost* render_frame_host =
+      handle->web_contents()->GetMainFrame();
+
+  RunIsolatedJavaScript(render_frame_host);
 }
 
 void AdsTabHelper::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
-  if (render_frame_host->GetParent())
+  if (render_frame_host->GetParent()) {
     return;
+  }
 
   TabUpdated();
-}
-
-void AdsTabHelper::DidAttachInterstitialPage() {
-  TabUpdated();
-}
-
-void AdsTabHelper::TabUpdated() {
-  if (!ads_service_)
-    return;
-
-  ads_service_->OnTabUpdated(
-      tab_id_,
-      web_contents()->GetURL(),
-      is_active_ && is_browser_active_);
 }
 
 void AdsTabHelper::MediaStartedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id) {
-  if (ads_service_)
-    ads_service_->OnMediaStart(tab_id_);
+  if (!ads_service_) {
+    return;
+  }
+
+  ads_service_->OnMediaStart(tab_id_);
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
-  if (ads_service_)
-    ads_service_->OnMediaStop(tab_id_);
+  if (!ads_service_) {
+    return;
+  }
+
+  ads_service_->OnMediaStop(tab_id_);
 }
 
 void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
@@ -149,22 +178,26 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
     is_active_ = true;
   }
 
-  if (old_active != is_active_)
+  if (old_active != is_active_) {
     TabUpdated();
-}
-
-void AdsTabHelper::WebContentsDestroyed() {
-  if (ads_service_) {
-    ads_service_->OnTabClosed(tab_id_);
-    ads_service_ = nullptr;
   }
 }
 
-// TODO(bridiver) - what is the android equivalent of this?
-#if !defined(OS_ANDROID)
-void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
-  if (!browser)
+void AdsTabHelper::WebContentsDestroyed() {
+  if (!ads_service_) {
     return;
+  }
+
+  ads_service_->OnTabClosed(tab_id_);
+  ads_service_ = nullptr;
+}
+
+#if !defined(OS_ANDROID)
+// components/brave_ads/browser/background_helper_android.cc handles Android
+void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
+  if (!browser) {
+    return;
+  }
 
   bool old_active = is_browser_active_;
   if (browser->tab_strip_model()->GetIndexOfWebContents(web_contents()) !=
@@ -172,8 +205,9 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
     is_browser_active_ = true;
   }
 
-  if (old_active != is_browser_active_)
+  if (old_active != is_browser_active_) {
     TabUpdated();
+  }
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
@@ -183,8 +217,9 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
     is_browser_active_ = false;
   }
 
-  if (old_active != is_browser_active_)
+  if (old_active != is_browser_active_) {
     TabUpdated();
+  }
 }
 #endif
 

@@ -342,13 +342,15 @@ void AdsServiceImpl::ChangeLocale(
 }
 
 void AdsServiceImpl::OnPageLoaded(
-    const std::string& url,
+    const SessionID& tab_id,
+    const GURL& original_url,
+    const GURL& url,
     const std::string& content) {
   if (!connected()) {
     return;
   }
 
-  bat_ads_->OnPageLoaded(url, content);
+  bat_ads_->OnPageLoaded(tab_id.id(), original_url.spec(), url.spec(), content);
 }
 
 void AdsServiceImpl::OnMediaStart(

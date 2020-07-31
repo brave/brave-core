@@ -84,7 +84,9 @@ class AdsService : public KeyedService {
       const std::string& locale) = 0;
 
   virtual void OnPageLoaded(
-      const std::string& url,
+      const SessionID& tab_id,
+      const GURL& original_url,
+      const GURL& url,
       const std::string& html) = 0;
 
   virtual void OnMediaStart(
