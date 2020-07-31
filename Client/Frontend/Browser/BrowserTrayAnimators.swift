@@ -49,7 +49,7 @@ private extension TrayToBrowserAnimator {
         let tabCollectionViewSnapshot = tabTray.collectionView.snapshotView(afterScreenUpdates: false)!
         tabTray.collectionView.alpha = 0
         tabCollectionViewSnapshot.frame = tabTray.collectionView.frame
-        container.insertSubview(tabCollectionViewSnapshot, at: 0)
+        container.addSubview(tabCollectionViewSnapshot)
 
         // Create a fake cell to use for the upscaling animation
         let startingFrame = calculateCollapsedCellFrameUsingCollectionView(tabTray.collectionView, atIndex: expandFromIndex)
@@ -82,7 +82,6 @@ private extension TrayToBrowserAnimator {
             cell.layer.borderWidth = 0.0
 
             bvc.tabTrayDidDismiss(tabTray)
-            UIApplication.shared.windows.first?.backgroundColor = tabTray.collectionView.backgroundColor
             tabTray.navigationController?.setNeedsStatusBarAppearanceUpdate()
             tabTray.toolbar.transform = CGAffineTransform(translationX: 0, y: UIConstants.bottomToolbarHeight)
             tabCollectionViewSnapshot.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
@@ -214,7 +213,6 @@ private extension BrowserToTrayAnimator {
                 cell.frame = finalFrame
                 cell.titleBackgroundView.transform = .identity
                 cell.layoutIfNeeded()
-                UIApplication.shared.windows.first?.backgroundColor = tabTray.collectionView.backgroundColor
                 tabTray.navigationController?.setNeedsStatusBarAppearanceUpdate()
                     
                 cell.layer.borderWidth = TabTrayControllerUX.defaultBorderWidth
