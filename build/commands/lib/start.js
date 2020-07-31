@@ -139,7 +139,13 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
       outputPath = path.join(config.outputDir, 'brave')
     }
   }
-  util.run(outputPath, braveArgs, cmdOptions)
+  let prog = util.run(outputPath, braveArgs, cmdOptions)
+
+  // logging for failure when continueOnFail === true
+  if (prog.status !== 0) {
+    console.log(prog.stdout && prog.stdout.toString())
+    console.error(prog.stderr && prog.stderr.toString())
+  }
 
   if (options.network_log) {
     let exitCode = 0
