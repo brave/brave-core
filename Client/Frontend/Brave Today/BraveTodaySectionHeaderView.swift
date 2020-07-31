@@ -27,7 +27,7 @@ class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusa
         }
         
         super.init(frame: frame)
-        backgroundView.contentView.backgroundColor = UIColor.white.withAlphaComponent(0.17)
+        backgroundView.contentView.backgroundColor = UIColor.white.withAlphaComponent(0.05)
         
         addSubview(backgroundView)
         let stackView = UIStackView(arrangedSubviews: [label, settingsButton]).then {
