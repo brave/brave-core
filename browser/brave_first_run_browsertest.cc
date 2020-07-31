@@ -24,7 +24,7 @@ void FirstRunMasterPrefsBrowserTestBase::SetUp() {
 }
 
 void FirstRunMasterPrefsBrowserTestBase::TearDown() {
-  EXPECT_TRUE(base::DeleteFile(prefs_file_, false));
+  EXPECT_TRUE(base::DeleteFile(prefs_file_));
   InProcessBrowserTest::TearDown();
 }
 

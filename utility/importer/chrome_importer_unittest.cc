@@ -45,7 +45,7 @@ class ChromeImporterTest : public ::testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     base::FilePath test_path =
         temp_dir_.GetPath().AppendASCII("ChromeImporterTest");
-    base::DeleteFile(test_path, true);
+    base::DeletePathRecursively(test_path);
     base::CreateDirectory(test_path);
     profile_dir_ = test_path.AppendASCII("profile");
 
