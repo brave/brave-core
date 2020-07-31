@@ -225,11 +225,9 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
 base::Optional<service_manager::Manifest>
 BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
-  auto manifest = ChromeContentBrowserClient::GetServiceManifestOverlay(name);
-  if (name == content::mojom::kBrowserServiceName) {
-    manifest->Amend(GetBraveContentBrowserOverlayManifest());
-  }
-  return manifest;
+  if (name == content::mojom::kBrowserServiceName)
+    return GetBraveContentBrowserOverlayManifest();
+  return base::nullopt;
 }
 
 std::vector<service_manager::Manifest>
