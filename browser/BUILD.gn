@@ -94,13 +94,6 @@ source_set("browser_process") {
     ]
   }
 
-  if (enable_tor) {
-    sources += [
-      # TODO(bridiver) - change the directory for these
-      "extensions/brave_tor_client_updater.cc",
-      "extensions/brave_tor_client_updater.h",
-    ]
-  }
   if (enable_sparkle) {
     sources += [
       "mac/sparkle_glue.h",
@@ -189,6 +182,17 @@ source_set("browser_process") {
     "//third_party/widevine/cdm:buildflags",
     "//ui/base",
   ]
+
+  if (enable_tor) {
+    sources += [
+      # TODO(bridiver) - change the directory for these
+      "extensions/brave_tor_client_updater.cc",
+      "extensions/brave_tor_client_updater.h",
+    ]
+    deps += [
+      "//third_party/re2",
+    ]
+  }
 
   if (brave_wallet_enabled) {
     deps += [
