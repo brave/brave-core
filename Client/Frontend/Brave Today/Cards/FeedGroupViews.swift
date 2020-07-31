@@ -27,6 +27,7 @@ class FeedGroupView: UIView {
     /// Set `isHidden` to true if you want to hide the brand image for a given
     /// card
     let groupBrandImageView = UIImageView().then {
+        $0.isHidden = true
         $0.contentMode = .left
         $0.snp.makeConstraints {
             $0.height.equalTo(20)

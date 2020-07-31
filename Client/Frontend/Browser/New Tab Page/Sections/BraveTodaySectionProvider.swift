@@ -153,7 +153,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             cell.content.actionHandler = handler(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(from: { $0 == 0 ? pair.first : pair.second }, card: card, indexPath: indexPath)
             return cell
-        case .group(let items, let title, let direction, let displayBrand):
+        case .group(let items, let title, let direction, _):
             let groupView: FeedGroupView
             let cell: UICollectionViewCell
             switch direction {
@@ -172,36 +172,10 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             groupView.titleLabel.text = title
             groupView.titleLabel.isHidden = title.isEmpty
             
-            let isItemsAllSameSource = Set(items.map(\.content.publisherID)).count == 1
-            
             zip(groupView.feedViews, items.indices).forEach { (view, index) in
                 let item = items[index]
-                view.setupWithItem(
-                    item,
-                    isBrandVisible: (isItemsAllSameSource && displayBrand) ? false : true
-                )
+                view.setupWithItem(item)
             }
-            if displayBrand {
-                if let logo = items.first?.source.logo {
-                    groupView.groupBrandImageView.sd_setImage(with: logo, placeholderImage: nil, options: .avoidAutoSetImage) { (image, _, cacheType, _) in
-                        if cacheType == .none {
-                            UIView.transition(
-                                with: groupView.groupBrandImageView,
-                                duration: 0.35,
-                                options: [.transitionCrossDissolve, .curveEaseInOut],
-                                animations: {
-                                    groupView.groupBrandImageView.image = image
-                            }
-                            )
-                        } else {
-                            groupView.groupBrandImageView.image = image
-                        }
-                    }
-                }
-            } else {
-                groupView.groupBrandImageView.image = nil
-            }
-            groupView.groupBrandImageView.isHidden = !displayBrand
             groupView.actionHandler = handler(from: { items[$0] }, card: card, indexPath: indexPath)
             groupView.contextMenu = contextMenu(from: { items[$0] }, card: card, indexPath: indexPath)
             return cell
@@ -378,27 +352,10 @@ extension FeedItemView {
                 }
             })
         }
-        brandContainerView.textLabel.text = nil
-        brandContainerView.logoImageView.image = nil
         
+        brandContainerView.textLabel.text = nil
         if isBrandVisible {
-            brandContainerView.textLabel.text = feedItem.content.publisherName
-            if let logo = feedItem.source.logo {
-                brandContainerView.logoImageView.sd_setImage(with: logo, placeholderImage: nil, options: .avoidAutoSetImage) { (image, _, cacheType, _) in
-                    if cacheType == .none {
-                        UIView.transition(
-                            with: self.brandContainerView.logoImageView,
-                            duration: 0.35,
-                            options: [.transitionCrossDissolve, .curveEaseInOut],
-                            animations: {
-                                self.brandContainerView.logoImageView.image = image
-                        }
-                        )
-                    } else {
-                        self.brandContainerView.logoImageView.image = image
-                    }
-                }
-            }
+            brandContainerView.textLabel.text = feedItem.source.name
         }
     }
 }
