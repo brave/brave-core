@@ -1,7 +1,7 @@
 const path = require('path')
 const config = require('../lib/config')
 const util = require('../lib/util')
-const {braveTopLevelPaths, getEthereumRemoteClientPaths, getGreaselionScriptPaths} = require('./l10nUtil')
+const l10nUtil = require('./l10nUtil')
 
 const pullL10n = (options) => {
   const cmdOptions = config.defaultOptions
@@ -9,12 +9,12 @@ const pullL10n = (options) => {
   if (options.extension) {
     const extensionPath = options.extension_path
     if (options.extension === 'ethereum-remote-client') {
-      getEthereumRemoteClientPaths(extensionPath).forEach((sourceStringPath) => {
+      l10nUtil.getEthereumRemoteClientPaths(extensionPath).forEach((sourceStringPath) => {
         util.run('python', ['script/pull-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
       })
       return
     } else if (options.extension === 'greaselion') {
-      getGreaselionScriptPaths(extensionPath).forEach((sourceStringPath) => {
+      l10nUtil.getGreaselionScriptPaths(extensionPath).forEach((sourceStringPath) => {
         util.run('python', ['script/pull-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
       })
       return
@@ -31,7 +31,7 @@ const pullL10n = (options) => {
     util.run('git', ['checkout', '--', targetFile], { cwd: srcDir })
   })
 
-  braveTopLevelPaths.forEach((sourceStringPath) => {
+  l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath) => {
     if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path))
       util.run('python', ['script/pull-l10n.py', '--source_string_path', sourceStringPath], cmdOptions)
   })
