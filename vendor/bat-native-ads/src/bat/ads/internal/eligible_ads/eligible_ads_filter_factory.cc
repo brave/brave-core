@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/eligible_ads/eligible_ads_filter_factory.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_priority_filter.h"
+#include "bat/ads/internal/eligible_ads/eligible_ads_pacing_filter.h"
 
 namespace ads {
 
@@ -13,6 +14,9 @@ std::unique_ptr<EligibleAdsFilter> EligibleAdsFilterFactory::Build(
   switch (type) {
     case EligibleAdsFilter::Type::kPriority: {
       return std::make_unique<EligibleAdsPriorityFilter>();
+    }
+    case EligibleAdsFilter::Type::kPacing: {
+      return std::make_unique<EligibleAdsPacingFilter>();
     }
   }
 }

@@ -13,7 +13,8 @@ namespace ads {
 class EligibleAdsFilter {
  public:
   enum class Type {
-    kPriority
+    kPriority,
+    kPacing
   };
 
   virtual ~EligibleAdsFilter() = default;

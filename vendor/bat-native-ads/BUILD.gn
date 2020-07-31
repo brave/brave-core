@@ -207,6 +207,8 @@ source_set("ads") {
     "src/bat/ads/internal/eligible_ads/eligible_ads_filter.h",
     "src/bat/ads/internal/eligible_ads/eligible_ads_priority_filter.cc",
     "src/bat/ads/internal/eligible_ads/eligible_ads_priority_filter.h",
+    "src/bat/ads/internal/eligible_ads/eligible_ads_pacing_filter.cc",
+    "src/bat/ads/internal/eligible_ads/eligible_ads_pacing_filter.h",
     "src/bat/ads/internal/error_helper.cc",
     "src/bat/ads/internal/error_helper.h",
     "src/bat/ads/internal/event_type_blur_info.h",

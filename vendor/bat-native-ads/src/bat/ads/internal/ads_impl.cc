@@ -1001,11 +1001,16 @@ void AdsImpl::OnServeUntargetedAdNotification(
 
 void AdsImpl::ServeAdNotificationWithPacing(
     const CreativeAdNotificationList& ads) {
-  const auto filter = EligibleAdsFilterFactory::Build(
-      EligibleAdsFilter::Type::kPriority);
-  DCHECK(filter);
+  const auto pacing_filter =
+      EligibleAdsFilterFactory::Build(EligibleAdsFilter::Type::kPacing);
+  DCHECK(pacing_filter);
 
-  const CreativeAdNotificationList eligible_ads = filter->Apply(ads);
+  const auto priority_filter =
+      EligibleAdsFilterFactory::Build(EligibleAdsFilter::Type::kPriority);
+  DCHECK(priority_filter);
+
+  const CreativeAdNotificationList eligible_ads =
+      priority_filter->Apply(pacing_filter->Apply(ads));
   if (eligible_ads.empty()) {
     FailedToServeAdNotification("No eligible ads found");
     return;
@@ -1015,20 +1020,6 @@ void AdsImpl::ServeAdNotificationWithPacing(
 
   const int rand = base::RandInt(0, eligible_ads.size() - 1);
   const CreativeAdNotificationInfo ad = eligible_ads.at(rand);
-
-  if (ad.priority == 0) {
-    FailedToServeAdNotification("Pacing ad delivery [0]");
-    return;
-  }
-
-  const int rand_priority = base::RandInt(1, ad.priority);
-  if (rand_priority != 1) {
-    const std::string message = base::StringPrintf("Pacing ad delivery "
-        "[Roll(%d):%d]", ad.priority, rand_priority);
-
-    FailedToServeAdNotification(message);
-    return;
-  }
 
   ShowAdNotification(ad);
 
