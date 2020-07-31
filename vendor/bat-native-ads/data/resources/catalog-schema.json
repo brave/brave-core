@@ -61,6 +61,9 @@
           "priority": {
             "type": "number"
           },
+          "ptr": {
+            "type": "number"
+          },
           "advertiserId": {
             "type": "string"
           },
