@@ -393,10 +393,6 @@ void RewardsServiceImpl::StartLedger() {
     return;
   }
 
-  file_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
-                                rewards_base_path_));
-
   rewards_database_ =
       std::make_unique<RewardsDatabase>(publisher_info_db_path_);
 

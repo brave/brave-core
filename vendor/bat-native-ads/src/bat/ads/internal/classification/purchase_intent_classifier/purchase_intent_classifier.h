@@ -91,9 +91,9 @@ class PurchaseIntentClassifier {
   uint16_t signal_level_ = 0;
   uint16_t classification_threshold_ = 0;
   uint64_t signal_decay_time_window_in_seconds_ = 0;
-  std::vector<SiteInfo> sites_;  // sites2segments
-  std::vector<SegmentKeywordInfo> segment_keywords_;  // keywords2segments
-  std::vector<FunnelKeywordInfo> funnel_keywords_;  // keywords2funnelstages
+  std::vector<SiteInfo> sites_;
+  std::vector<SegmentKeywordInfo> segment_keywords_;
+  std::vector<FunnelKeywordInfo> funnel_keywords_;
 
   AdsImpl* ads_;  // NOT OWNED
 };

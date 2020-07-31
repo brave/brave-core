@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_signal_history.h"
 
-#include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 

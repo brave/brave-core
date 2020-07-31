@@ -60,7 +60,6 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     state_(new State(this)),
     bat_api_(new API(this)),
     initialized_task_scheduler_(false),
-    initialized_(false),
     initializing_(false),
     last_tab_active_time_(0),
     last_shown_tab_id_(-1) {
@@ -106,7 +105,6 @@ void LedgerImpl::OnInitialized(
   initializing_ = false;
   callback(result);
   if (result == ledger::Result::LEDGER_OK) {
-    initialized_ = true;
     StartServices();
   } else {
     BLOG(0, "Failed to initialize wallet " << result);

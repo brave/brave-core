@@ -703,7 +703,6 @@ class LedgerImpl : public ledger::Ledger {
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 
-  bool initialized_;
   bool initializing_;
   bool shutting_down_ = false;
 

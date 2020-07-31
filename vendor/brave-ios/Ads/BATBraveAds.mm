@@ -918,7 +918,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)onAdRewardsChanged
 {
-  // TODO(brave): Refresh Brave Ads UI
+  // Not needed on iOS because ads do not show unless you are viewing a tab
 }
 
 #pragma mark - User Model Paths
