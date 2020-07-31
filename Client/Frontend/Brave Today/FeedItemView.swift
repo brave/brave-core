@@ -278,7 +278,7 @@ extension FeedItemView {
                 axis: .vertical,
                 spacing: 6,
                 children: [
-                    .title(2),
+                    .title(4),
                     .date
                 ]
             )
@@ -308,7 +308,7 @@ extension FeedItemView {
                             spacing: 4,
                             children: [
                                 .brand(viewingMode: .alwaysText),
-                                .title(3),
+                                .title(4),
                                 .date
                             ]
                         )
