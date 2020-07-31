@@ -103,6 +103,9 @@ ledger::Result ParseParameters(
   }
 
   for (const auto& choice : ac_choices->GetList()) {
+    if (!choice.is_double() && !choice.is_int()) {
+      continue;
+    }
     parameters->auto_contribute_choices.push_back(choice.GetDouble());
   }
 
@@ -113,6 +116,9 @@ ledger::Result ParseParameters(
   }
 
   for (const auto& choice : tip_choices->GetList()) {
+    if (!choice.is_double() && !choice.is_int()) {
+      continue;
+    }
     parameters->tip_choices.push_back(choice.GetDouble());
   }
 
@@ -124,6 +130,9 @@ ledger::Result ParseParameters(
   }
 
   for (const auto& choice : monthly_tip_choices->GetList()) {
+    if (!choice.is_double() && !choice.is_int()) {
+      continue;
+    }
     parameters->monthly_tip_choices.push_back(choice.GetDouble());
   }
 
