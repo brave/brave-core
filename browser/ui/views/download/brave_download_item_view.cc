@@ -31,6 +31,14 @@ using download::DownloadItem;
 
 namespace {
 
+constexpr int kTextWidth = 140;
+
+// Padding before the icon and at end of the item.
+constexpr int kStartPadding = 12;
+
+// Horizontal padding between progress indicator and filename/status text.
+constexpr int kProgressTextPadding = 8;
+
 // Size of the space used for the progress indicator.
 constexpr int kProgressIndicatorSize = 25;
 
