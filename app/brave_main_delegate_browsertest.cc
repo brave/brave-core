@@ -46,7 +46,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   const content::WebPreferences prefs =
-      contents->GetRenderViewHost()->GetWebkitPreferences();
+      contents->GetOrCreateWebPreferences();
   EXPECT_FALSE(prefs.hyperlink_auditing_enabled);
 }
 
