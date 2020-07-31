@@ -23,13 +23,15 @@ typealias FeedItemActionHandler = (FeedItemAction, _ context: FeedItemActionCont
 class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     let dataSource: FeedDataSource
     var sectionDidChange: (() -> Void)?
-    var actionHandler: FeedItemActionHandler
+    var welcomeCardActionHandler: (WelcomeCardAction) -> Void
+    var itemActionHandler: FeedItemActionHandler
     
-    private var isShowingIntroCard = true // TODO: Handle this however we're supposed to
-    
-    init(dataSource: FeedDataSource, actionHandler: @escaping FeedItemActionHandler) {
+    init(dataSource: FeedDataSource,
+         welcomeCardActionHandler: @escaping (WelcomeCardAction) -> Void,
+         itemActionHandler: @escaping FeedItemActionHandler) {
         self.dataSource = dataSource
-        self.actionHandler = actionHandler
+        self.welcomeCardActionHandler = welcomeCardActionHandler
+        self.itemActionHandler = itemActionHandler
         
         super.init()
     }
@@ -48,6 +50,10 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     
     var landscapeBehavior: NTPLandscapeSizingBehavior {
         .fullWidth
+    }
+    
+    private var isShowingIntroCard: Bool {
+        Preferences.BraveToday.isShowingIntroCard.value
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -109,7 +115,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         }
         
         if isShowingIntroCard && indexPath.item == 0 {
-            return collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayWelcomeView>
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayWelcomeView>
+            cell.content.introCardActionHandler = welcomeCardActionHandler
+            return cell
         }
         
         let indexDisplacement = isShowingIntroCard ? 1 : 0
@@ -196,7 +204,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     
     private func handler(from feedList: @escaping (Int) -> FeedItem, card: FeedCard, indexPath: IndexPath) -> (Int, FeedItemAction) -> Void {
         return { [weak self] index, action in
-            self?.actionHandler(action, .init(item: feedList(index), card: card, indexPath: indexPath))
+            self?.itemActionHandler(action, .init(item: feedList(index), card: card, indexPath: indexPath))
         }
     }
     
@@ -208,13 +216,13 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         typealias MenuActionHandler = (_ context: FeedItemActionContext) -> Void
         
         let openInNewTabHandler: MenuActionHandler = { context in
-            self.actionHandler(.opened(inNewTab: true), context)
+            self.itemActionHandler(.opened(inNewTab: true), context)
         }
         let openInNewPrivateTabHandler: MenuActionHandler = { context in
-            self.actionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
+            self.itemActionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
         }
         let toggleSourceHandler: MenuActionHandler = { context in
-            self.actionHandler(.toggleSource, context)
+            self.itemActionHandler(.toggleSource, context)
         }
         
         if #available(iOS 13.0, *) {

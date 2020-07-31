@@ -5,11 +5,15 @@
 
 import Foundation
 import Lottie
+import BraveUI
+
+enum WelcomeCardAction {
+    case closedButtonTapped
+    case settingsButtonTapped
+    case learnMoreButtonTapped
+}
 
 class BraveTodayWelcomeView: UIView, FeedCardContent {
-    var actionHandler: ((Int, FeedItemAction) -> Void)?
-    var contextMenu: FeedItemMenu?
-    
     private let backgroundView = FeedCardBackgroundView()
     
     private let stackView = UIStackView().then {
@@ -23,11 +27,35 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
         $0.loopMode = .loop
     }
     
+    var introCardActionHandler: ((WelcomeCardAction) -> Void)?
+    
+    private let closeButton = UIButton(type: .system).then {
+        $0.setImage(#imageLiteral(resourceName: "card_close").withRenderingMode(.alwaysOriginal), for: .normal)
+    }
+    
+    private let sourcesAndSettingsButton = ActionButton(type: .system).then {
+        $0.layer.borderWidth = 0
+        $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
+        // FIXME: Localize
+        $0.setTitle("Sources & Settings", for: .normal)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+        $0.backgroundColor = UIColor.white.withAlphaComponent(0.2)
+    }
+    
+    private let learnMoreButton = UIButton(type: .system).then {
+        // FIXME: Localize
+        $0.setTitle("Learn more about your data", for: .normal)
+        $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
+        $0.titleLabel?.appearanceTextColor = .white
+        $0.setTitleColor(.white, for: .normal)
+    }
+    
     required init() {
         super.init(frame: .zero)
         
         addSubview(backgroundView)
         addSubview(stackView)
+        addSubview(closeButton)
         
         backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -39,24 +67,64 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
             .view(graphicAnimationView),
             .customSpace(30),
             .view(UILabel().then {
+                // FIXME: Localize
                 $0.text = "Today’s top stories in a completely private feed, just for you."
                 $0.textAlignment = .center
                 $0.appearanceTextColor = .white
-                $0.font = .systemFont(ofSize: 22, weight: .semibold)
+                $0.font = .systemFont(ofSize: 18, weight: .semibold)
                 $0.numberOfLines = 0
             }),
             .view(UILabel().then {
+                // FIXME: Localize
                 $0.text = "Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated throughout the day."
                 $0.textAlignment = .center
                 $0.appearanceTextColor = .white
-                $0.font = .systemFont(ofSize: 13)
+                $0.font = .systemFont(ofSize: 14)
                 $0.numberOfLines = 0
-            })
+            }),
+            .customSpace(24),
+            .view(sourcesAndSettingsButton),
+            .view(learnMoreButton)
         )
+        
+        closeButton.snp.makeConstraints {
+            $0.top.right.equalToSuperview().inset(8)
+        }
+        
+        closeButton.addTarget(self, action: #selector(tappedCloseButton), for: .touchUpInside)
+        learnMoreButton.addTarget(self, action: #selector(tappedLearnMoreButton), for: .touchUpInside)
+        sourcesAndSettingsButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func tappedCloseButton() {
+        introCardActionHandler?(.closedButtonTapped)
+    }
+    
+    @objc private func tappedLearnMoreButton() {
+        introCardActionHandler?(.learnMoreButtonTapped)
+    }
+    
+    @objc private func tappedSettingsButton() {
+        introCardActionHandler?(.settingsButtonTapped)
     }
     
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
+    }
+    
+    // MARK: - FeedCardContent
+    
+    var actionHandler: ((Int, FeedItemAction) -> Void)? {
+        didSet {
+            fatalError("Unused for welcome card")
+        }
+    }
+    var contextMenu: FeedItemMenu? {
+        didSet {
+            fatalError("Unused for welcome card")
+        }
     }
 }
