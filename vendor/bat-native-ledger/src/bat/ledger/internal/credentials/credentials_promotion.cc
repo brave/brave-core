@@ -15,7 +15,6 @@
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_promotion.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -152,7 +151,7 @@ void CredentialsPromotion::Claim(
     return;
   }
 
-  const std::string payment_id = braveledger_state::GetPaymentId(ledger_);
+  const std::string payment_id = ledger_->state()->GetPaymentId();
   base::Value body(base::Value::Type::DICTIONARY);
   body.SetStringKey("paymentId", payment_id);
   body.SetKey("blindedCreds", base::Value(std::move(*blinded_creds)));
@@ -164,7 +163,7 @@ void CredentialsPromotion::Claim(
       "post /v1/promotions/" + trigger.id,
       json,
       payment_id,
-      braveledger_state::GetRecoverySeed(ledger_));
+      ledger_->state()->GetRecoverySeed());
 
   const std::string url = braveledger_request_util::ClaimCredsUrl(trigger.id);
   auto url_callback = std::bind(&CredentialsPromotion::OnClaim,
@@ -438,7 +437,7 @@ void CredentialsPromotion::Completed(
   }
 
   ledger_->PromotionCredentialCompleted(trigger.id, callback);
-  ledger_->UnblindedTokensReady();
+  ledger_->ledger_client()->UnblindedTokensReady();
 }
 
 void CredentialsPromotion::RedeemTokens(
@@ -468,13 +467,13 @@ void CredentialsPromotion::RedeemTokens(
   if (redeem.type == ledger::RewardsType::TRANSFER) {
     payload = GenerateTransferTokensPayload(
         redeem,
-        braveledger_state::GetPaymentId(ledger_));
+        ledger_->state()->GetPaymentId());
     url = braveledger_request_util::GetTransferTokens();
     headers = braveledger_request_util::BuildSignHeaders(
         "post /v1/suggestions/claim",
         payload,
-        braveledger_state::GetPaymentId(ledger_),
-        braveledger_state::GetRecoverySeed(ledger_));
+        ledger_->state()->GetPaymentId(),
+        ledger_->state()->GetRecoverySeed());
   } else {
     if (redeem.publisher_key.empty()) {
       BLOG(0, "Publisher key is empty");

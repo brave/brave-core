@@ -397,7 +397,7 @@ void CredentialsSKU::Completed(
     return;
   }
 
-  ledger_->UnblindedTokensReady();
+  ledger_->ledger_client()->UnblindedTokensReady();
   callback(result);
 }
 

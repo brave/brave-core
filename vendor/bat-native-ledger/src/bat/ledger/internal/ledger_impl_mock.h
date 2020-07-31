@@ -115,12 +115,7 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD0(GetAutoContributeProperties,
       ledger::AutoContributePropertiesPtr());
 
-  MOCK_METHOD1(SetConfirmationsWalletInfo,
-      void(const ledger::WalletInfoProperties&));
-
-  MOCK_METHOD1(LoadLedgerState, void(ledger::OnLoadCallback));
-
-  MOCK_METHOD1(LoadPublisherState, void(ledger::OnLoadCallback));
+  MOCK_METHOD0(SetConfirmationsWalletInfo, void());
 
   MOCK_METHOD2(OnWalletInitializedInternal,
       void(ledger::Result, ledger::ResultCallback));
@@ -157,8 +152,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(ContributionCompleted, void(
       const ledger::Result,
       ledger::ContributionInfoPtr contribution));
-
-  MOCK_METHOD1(URIEncode, std::string(const std::string&));
 
   MOCK_METHOD5(SaveVisit,
       void(const std::string&,
@@ -197,19 +190,11 @@ class MockLedgerImpl : public LedgerImpl {
           const std::string&,
           const std::string&));
 
-  MOCK_METHOD3(OnPanelPublisherInfo,
-      void(ledger::Result, ledger::PublisherInfoPtr, uint64_t));
-
   MOCK_METHOD4(SetBalanceReportItem, void(
       const ledger::ActivityMonth,
       const int,
       const ledger::ReportType,
       const double));
-
-  MOCK_METHOD3(FetchFavIcon,
-      void(const std::string&,
-          const std::string&,
-          ledger::FetchIconCallback));
 
   MOCK_METHOD2(GetPublisherBanner,
       void(const std::string&, ledger::PublisherBannerCallback));
@@ -233,10 +218,6 @@ class MockLedgerImpl : public LedgerImpl {
           bool));
 
   MOCK_METHOD0(ResetReconcileStamp, void());
-
-  MOCK_METHOD1(GetConfirmationsWalletInfo,
-      const confirmations::WalletInfo(
-          const ledger::WalletInfoProperties&));
 
   MOCK_METHOD0(GetCreationStamp, uint64_t());
 
@@ -272,8 +253,6 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(GetTransactionHistory,
       void(ledger::GetTransactionHistoryCallback));
-
-  MOCK_METHOD0(GetTaskRunner, scoped_refptr<base::SequencedTaskRunner>());
 
   MOCK_METHOD1(GetRewardsInternalsInfo,
       void(ledger::RewardsInternalsInfoCallback));
@@ -313,24 +292,14 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(ContributeUnverifiedPublishers, void());
 
-  MOCK_METHOD3(OnContributeUnverifiedPublishers,
-      void(ledger::Result, const std::string&, const std::string&));
-
   MOCK_METHOD2(WasPublisherProcessed, void(
       const std::string&,
       ledger::ResultCallback));
 
   MOCK_METHOD1(FetchBalance, void(ledger::FetchBalanceCallback));
 
-  MOCK_METHOD0(
-      GetExternalWallets,
-      std::map<std::string, ledger::ExternalWalletPtr>());
-
   MOCK_METHOD2(GetExternalWallet,
       void(const std::string&, ledger::ExternalWalletCallback));
-
-  MOCK_METHOD2(SaveExternalWallet,
-      void(const std::string&, ledger::ExternalWalletPtr));
 
   MOCK_METHOD3(ExternalWalletAuthorization,
       void(const std::string&,
@@ -341,11 +310,6 @@ class MockLedgerImpl : public LedgerImpl {
       void(const std::string&, ledger::ResultCallback));
 
   MOCK_METHOD1(ClaimFunds, void(ledger::ResultCallback));
-
-  MOCK_METHOD3(ShowNotification,
-      void(const std::string&,
-          ledger::ResultCallback,
-          const std::vector<std::string>&));
 
   MOCK_METHOD2(DeleteActivityInfo,
       void(const std::string&, ledger::ResultCallback));
@@ -366,52 +330,6 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(IsPublisherConnectedOrVerified,
       bool(const ledger::PublisherStatus));
-
-  MOCK_METHOD2(SetBooleanState, void(const std::string&, bool));
-
-  MOCK_CONST_METHOD1(GetBooleanState, bool(const std::string&));
-
-  MOCK_METHOD2(SetIntegerState, void(const std::string&, int));
-
-  MOCK_CONST_METHOD1(GetIntegerState, int(const std::string&));
-
-  MOCK_METHOD2(SetDoubleState, void(const std::string&, double));
-
-  MOCK_CONST_METHOD1(GetDoubleState, double(const std::string&));
-
-  MOCK_METHOD2(SetStringState, void(const std::string&, const std::string&));
-
-  MOCK_CONST_METHOD1(GetStringState, std::string(const std::string&));
-
-  MOCK_METHOD2(SetInt64State, void(const std::string&, int64_t));
-
-  MOCK_CONST_METHOD1(GetInt64State, int64_t(const std::string&));
-
-  MOCK_METHOD2(SetUint64State, void(const std::string&, uint64_t));
-
-  MOCK_CONST_METHOD1(GetUint64State, uint64_t(const std::string&));
-
-  MOCK_METHOD1(ClearState, void(const std::string&));
-
-  MOCK_CONST_METHOD1(GetBooleanOption, bool(const std::string&));
-
-  MOCK_CONST_METHOD1(GetIntegerOption, int(const std::string&));
-
-  MOCK_CONST_METHOD1(GetDoubleOption, double(const std::string&));
-
-  MOCK_CONST_METHOD1(GetStringOption, std::string(const std::string&));
-
-  MOCK_CONST_METHOD1(GetInt64Option, int64_t(const std::string&));
-
-  MOCK_CONST_METHOD1(GetUint64Option, uint64_t(const std::string&));
-
-  MOCK_METHOD2(SetTransferFee,
-      void(const std::string&, ledger::TransferFeePtr));
-
-  MOCK_CONST_METHOD1(GetTransferFees,
-      ledger::TransferFeeList(const std::string&));
-
-  MOCK_METHOD2(RemoveTransferFee, void(const std::string&, const std::string&));
 
   MOCK_METHOD2(SaveContributionQueue,
       void(ledger::ContributionQueuePtr, ledger::ResultCallback));
@@ -439,10 +357,6 @@ class MockLedgerImpl : public LedgerImpl {
       const std::string&,
       ledger::ResultCallback));
 
-  MOCK_METHOD0(GetClientInfo, ledger::ClientInfoPtr());
-
-  MOCK_METHOD0(UnblindedTokensReady, void());
-
   MOCK_METHOD1(GetAnonWalletStatus, void(ledger::ResultCallback));
 
   MOCK_METHOD2(GetSpendableUnblindedTokensByTriggerIds, void(
@@ -463,12 +377,6 @@ class MockLedgerImpl : public LedgerImpl {
       const ledger::ContributionStep step,
       const int32_t retry_count,
       ledger::ResultCallback callback));
-
-  MOCK_METHOD2(RunDBTransaction, void(
-      ledger::DBTransactionPtr,
-      ledger::RunDBTransactionCallback));
-
-  MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback callback));
 
   MOCK_METHOD2(GetReservedUnblindedTokens, void(
       const std::string&,

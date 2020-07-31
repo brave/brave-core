@@ -424,7 +424,7 @@ void YouTube::OnMediaPublisherInfo(
 
     const std::string url = (std::string)YOUTUBE_PROVIDER_URL +
         "?format=json&url=" +
-        ledger_->URIEncode(media_url);
+        ledger_->ledger_client()->URIEncode(media_url);
 
     FetchDataFromUrl(url, callback);
   } else {
@@ -672,7 +672,10 @@ void YouTube::OnPublisherPanleInfo(
                                is_custom_path,
                                _1));
   } else {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
+    ledger_->ledger_client()->OnPanelPublisherInfo(
+        result,
+        std::move(info),
+        window_id);
   }
 }
 

@@ -8,7 +8,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration_v1.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 
@@ -37,37 +36,37 @@ void StateMigrationV1::OnLoadState(
     ledger::ResultCallback callback) {
   if (result == ledger::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
-    ledger_->CalcScoreConsts(
-        ledger_->GetIntegerState(ledger::kStateMinVisitTime));
+    ledger_->CalcScoreConsts(ledger_->ledger_client()->GetIntegerState(
+        ledger::kStateMinVisitTime));
 
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
   if (result != ledger::Result::LEDGER_OK) {
-    ledger_->CalcScoreConsts(
-        ledger_->GetIntegerState(ledger::kStateMinVisitTime));
+    ledger_->CalcScoreConsts(ledger_->ledger_client()->GetIntegerState(
+        ledger::kStateMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
-  ledger_->SetIntegerState(
+  ledger_->ledger_client()->SetIntegerState(
       ledger::kStateMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
   ledger_->CalcScoreConsts(
-      ledger_->GetIntegerState(ledger::kStateMinVisitTime));
+      ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
 
-  ledger_->SetIntegerState(
+  ledger_->ledger_client()->SetIntegerState(
       ledger::kStateMinVisits,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisits()));
 
-  ledger_->SetBooleanState(
+  ledger_->ledger_client()->SetBooleanState(
       ledger::kStateAllowNonVerified,
       legacy_publisher_->GetPublisherAllowNonVerified());
 
-  ledger_->SetBooleanState(
+  ledger_->ledger_client()->SetBooleanState(
       ledger::kStateAllowVideoContribution,
       legacy_publisher_->GetPublisherAllowVideos());
 

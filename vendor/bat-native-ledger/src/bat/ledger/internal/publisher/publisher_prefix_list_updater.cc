@@ -12,7 +12,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
 #include "bat/ledger/internal/request/request_publisher.h"
-#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/option_keys.h"
 #include "net/http/http_status_code.h"
 
@@ -113,9 +112,8 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
   // successful fetch time for calculation of next refresh interval.
   // In order to avoid unecessary server load, do not attempt to retry
   // using a failure delay if the database insert was unsuccessful.
-  ledger_->SetUint64State(
-      ledger::kStateServerPublisherListStamp,
-      static_cast<uint64_t>(base::Time::Now().ToDoubleT()));
+  ledger_->state()->SetServerPublisherListStamp(
+      braveledger_time_util::GetCurrentTimeStamp());
 
   if (auto_update_) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
@@ -132,10 +130,9 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
 }
 
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
-  uint64_t last_fetch_sec =
-      ledger_->GetUint64State(ledger::kStateServerPublisherListStamp);
-  uint64_t interval_sec =
-      ledger_->GetUint64Option(ledger::kOptionPublisherListRefreshInterval);
+  uint64_t last_fetch_sec = ledger_->state()->GetServerPublisherListStamp();
+  uint64_t interval_sec = ledger_->ledger_client()->GetUint64Option(
+      ledger::kOptionPublisherListRefreshInterval);
 
   auto now = base::Time::Now();
   auto fetch_time = base::Time::FromDoubleT(

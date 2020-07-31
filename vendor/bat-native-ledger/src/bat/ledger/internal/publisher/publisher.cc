@@ -18,7 +18,6 @@
 #include "bat/ledger/internal/publisher/publisher_prefix_list_updater.h"
 #include "bat/ledger/internal/publisher/server_publisher_fetcher.h"
 #include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -69,8 +68,8 @@ void Publisher::RefreshPublisher(
       });
 }
 
-void Publisher::SetPublisherServerListTimer(const bool rewards_enabled) {
-  if (rewards_enabled) {
+void Publisher::SetPublisherServerListTimer() {
+  if (ledger_->state()->GetRewardsMainEnabled()) {
     prefix_list_updater_->StartAutoUpdate(
         std::bind(&Publisher::OnPublisherPrefixListUpdated, this));
   } else {
@@ -87,7 +86,7 @@ void Publisher::CalcScoreConsts(const int min_duration_seconds) {
   const double a = (1.0 / (d * 2.0)) - min_duration_big;
   const double b = min_duration_big - a;
 
-  braveledger_state::SetScoreValues(ledger_, a, b);
+  ledger_->state()->SetScoreValues(a, b);
 }
 
 // courtesy of @dimitry-xyz:
@@ -95,7 +94,7 @@ void Publisher::CalcScoreConsts(const int min_duration_seconds) {
 double Publisher::concaveScore(const uint64_t& duration_seconds) {
   uint64_t duration_big = duration_seconds * 100;
   double a, b;
-  braveledger_state::GetScoreValues(ledger_, &a, &b);
+  ledger_->state()->GetScoreValues(&a, &b);
   return (-b + std::sqrt((b * b) + (a * 4 * duration_big))) / (a * 2);
 }
 
@@ -126,7 +125,7 @@ void Publisher::SaveVisit(
     const uint64_t& duration,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback) {
-  if (!ledger_->GetRewardsMainEnabled()) {
+  if (!ledger_->state()->GetRewardsMainEnabled()) {
     return;
   }
 
@@ -160,12 +159,12 @@ ledger::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
   filter->id = publisher_id;
   filter->excluded = excluded;
   filter->min_duration = min_duration
-      ? braveledger_state::GetPublisherMinVisitTime(ledger_)
+      ? ledger_->state()->GetPublisherMinVisitTime()
       : 0;
   filter->reconcile_stamp = current_reconcile_stamp;
   filter->non_verified = non_verified;
   filter->min_visits = min_visits
-      ? braveledger_state::GetPublisherMinVisits(ledger_)
+      ? ledger_->state()->GetPublisherMinVisits()
       : 0;
 
   return filter;
@@ -236,14 +235,15 @@ void Publisher::SaveVisitInternal(
   std::string fav_icon = visit_data.favicon_url;
   if (is_verified && !fav_icon.empty()) {
     if (fav_icon.find(".invalid") == std::string::npos) {
-    ledger_->FetchFavIcon(fav_icon,
-                          "https://" + base::GenerateGUID() + ".invalid",
-                          std::bind(&Publisher::onFetchFavIcon,
-                                    this,
-                                    publisher_info->id,
-                                    window_id,
-                                    _1,
-                                    _2));
+    ledger_->ledger_client()->FetchFavIcon(
+        fav_icon,
+        "https://" + base::GenerateGUID() + ".invalid",
+        std::bind(&Publisher::onFetchFavIcon,
+            this,
+            publisher_info->id,
+            window_id,
+            _1,
+            _2));
     } else {
         publisher_info->favicon_url = fav_icon;
     }
@@ -266,21 +266,18 @@ void Publisher::SaveVisitInternal(
   ledger::PublisherInfoPtr panel_info = nullptr;
 
   uint64_t min_visit_time = static_cast<uint64_t>(
-      braveledger_state::GetPublisherMinVisitTime(ledger_));
+      ledger_->state()->GetPublisherMinVisitTime());
 
   // for new visits that are excluded or are not long enough or ac is off
+  bool allow_non_verified = ledger_->state()->GetPublisherAllowNonVerified();
   bool min_duration_new = duration < min_visit_time && !ignore_time;
   bool min_duration_ok = duration > min_visit_time || ignore_time;
-  bool verified_new =
-      !braveledger_state::GetPublisherAllowNonVerified(ledger_) && !is_verified;
-  bool verified_old =
-      (!braveledger_state::GetPublisherAllowNonVerified(ledger_) &&
-          is_verified) ||
-      braveledger_state::GetPublisherAllowNonVerified(ledger_);
+  bool verified_new = !allow_non_verified && !is_verified;
+  bool verified_old = allow_non_verified || is_verified;
 
   if (new_visit &&
       (excluded ||
-       !ledger_->GetAutoContributeEnabled() ||
+       !ledger_->state()->GetAutoContributeEnabled() ||
        min_duration_new ||
        verified_new)) {
     panel_info = publisher_info->Clone();
@@ -291,7 +288,7 @@ void Publisher::SaveVisitInternal(
 
     ledger_->SavePublisherInfo(std::move(publisher_info), callback);
   } else if (!excluded &&
-             ledger_->GetAutoContributeEnabled() &&
+             ledger_->state()->GetAutoContributeEnabled() &&
              min_duration_ok &&
              verified_old) {
     publisher_info->visits += 1;
@@ -526,8 +523,8 @@ void Publisher::SynopsisNormalizer() {
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
       ledger_->GetReconcileStamp(),
-      braveledger_state::GetPublisherAllowNonVerified(ledger_),
-      braveledger_state::GetPublisherMinVisits(ledger_));
+      ledger_->state()->GetPublisherAllowNonVerified(),
+      ledger_->state()->GetPublisherMinVisits());
   ledger_->GetActivityInfoList(
       0,
       0,
@@ -551,7 +548,7 @@ void Publisher::getPublisherActivityFromUrl(
     uint64_t windowId,
     const ledger::VisitData& visit_data,
     const std::string& publisher_blob) {
-  if (!ledger_->GetRewardsMainEnabled()) {
+  if (!ledger_->state()->GetRewardsMainEnabled()) {
     return;
   }
 
@@ -627,7 +624,10 @@ void Publisher::OnPanelPublisherInfo(
     uint64_t windowId,
     const ledger::VisitData& visit_data) {
   if (result == ledger::Result::LEDGER_OK) {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), windowId);
+    ledger_->ledger_client()->OnPanelPublisherInfo(
+        result,
+        std::move(info),
+        windowId);
     return;
   }
 

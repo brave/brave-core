@@ -66,7 +66,9 @@ void DatabaseSKUOrder::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseSKUOrder::UpdateStatus(
@@ -98,7 +100,9 @@ void DatabaseSKUOrder::UpdateStatus(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseSKUOrder::GetRecord(
@@ -139,7 +143,9 @@ void DatabaseSKUOrder::GetRecord(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseSKUOrder::OnGetRecord(
@@ -228,7 +234,9 @@ void DatabaseSKUOrder::GetRecordByContributionId(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
@@ -261,7 +269,9 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 }  // namespace braveledger_database

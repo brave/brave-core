@@ -56,19 +56,19 @@ class PublisherTest : public testing::Test {
   }
 
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_, GetDoubleState(ledger::kStateScoreA))
+    ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::kStateScoreA))
       .WillByDefault(
           Invoke([this](const std::string& key) {
             return a_;
           }));
 
-    ON_CALL(*mock_ledger_impl_, GetDoubleState(ledger::kStateScoreB))
+    ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::kStateScoreB))
       .WillByDefault(
           Invoke([this](const std::string& key) {
             return b_;
           }));
 
-    ON_CALL(*mock_ledger_impl_, SetDoubleState(_, _))
+    ON_CALL(*mock_ledger_client_, SetDoubleState(_, _))
       .WillByDefault(
         Invoke([this](
             const std::string& key,

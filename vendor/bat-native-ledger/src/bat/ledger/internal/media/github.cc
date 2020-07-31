@@ -335,7 +335,10 @@ void GitHub::OnPublisherPanelInfo(
         _1);
     FetchDataFromUrl(url, url_callback);
   } else {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
+    ledger_->ledger_client()->OnPanelPublisherInfo(
+        result,
+        std::move(info),
+        window_id);
   }
 }
 

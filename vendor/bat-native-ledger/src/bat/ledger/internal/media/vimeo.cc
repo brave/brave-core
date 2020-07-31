@@ -356,7 +356,7 @@ void Vimeo::ProcessActivityFromUrl(uint64_t window_id,
 
   const std::string url = (std::string)VIMEO_PROVIDER_URL +
         "?url=" +
-        ledger_->URIEncode(visit_data.url);
+        ledger_->ledger_client()->URIEncode(visit_data.url);
 
   auto callback = std::bind(&Vimeo::OnEmbedResponse,
                             this,
@@ -523,7 +523,10 @@ void Vimeo::OnPublisherPanleInfo(
                       publisher_url,
                       window_id);
   } else {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
+    ledger_->ledger_client()->OnPanelPublisherInfo(
+        result,
+        std::move(info),
+        window_id);
   }
 }
 

@@ -57,8 +57,10 @@ void Unverified::OnContributeUnverifiedPublishers(
 
   if (balance == 0) {
     BLOG(0, "Not enough funds");
-    ledger_->OnContributeUnverifiedPublishers(
-        ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
+    ledger_->ledger_client()->OnContributeUnverifiedPublishers(
+        ledger::Result::PENDING_NOT_ENOUGH_FUNDS,
+        "",
+        "");
     return;
   }
 
@@ -102,8 +104,10 @@ void Unverified::OnContributeUnverifiedPublishers(
 
   if (balance < current->amount) {
     BLOG(0, "Not enough funds");
-    ledger_->OnContributeUnverifiedPublishers(
-        ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
+    ledger_->ledger_client()->OnContributeUnverifiedPublishers(
+        ledger::Result::PENDING_NOT_ENOUGH_FUNDS,
+        "",
+        "");
     return;
   }
 
@@ -181,7 +185,7 @@ void Unverified::ProcessedPublisherSaved(
     const ledger::Result result,
     const std::string& publisher_key,
     const std::string& name) {
-  ledger_->OnContributeUnverifiedPublishers(
+  ledger_->ledger_client()->OnContributeUnverifiedPublishers(
       ledger::Result::VERIFIED_PUBLISHER,
       publisher_key,
       name);
@@ -194,8 +198,10 @@ void Unverified::OnRemovePendingContribution(
     return;
   }
 
-  ledger_->OnContributeUnverifiedPublishers(
-      ledger::Result::PENDING_PUBLISHER_REMOVED);
+  ledger_->ledger_client()->OnContributeUnverifiedPublishers(
+      ledger::Result::PENDING_PUBLISHER_REMOVED,
+      "",
+      "");
 }
 
 }  // namespace braveledger_contribution

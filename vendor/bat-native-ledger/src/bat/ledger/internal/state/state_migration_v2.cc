@@ -9,7 +9,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration_v2.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 
@@ -48,46 +47,46 @@ void StateMigrationV2::OnLoadState(
     return;
   }
 
-  ledger_->SetBooleanState(
+  ledger_->ledger_client()->SetBooleanState(
       ledger::kStateEnabled,
       legacy_state_->GetRewardsMainEnabled());
 
-  ledger_->SetBooleanState(
+  ledger_->ledger_client()->SetBooleanState(
       ledger::kStateAutoContributeEnabled,
       legacy_state_->GetAutoContributeEnabled());
 
   if (legacy_state_->GetUserChangedContribution()) {
-    ledger_->SetDoubleState(
+    ledger_->ledger_client()->SetDoubleState(
       ledger::kStateAutoContributeAmount,
       legacy_state_->GetAutoContributionAmount());
   }
 
-  ledger_->SetUint64State(
+  ledger_->ledger_client()->SetUint64State(
       ledger::kStateNextReconcileStamp,
       legacy_state_->GetReconcileStamp());
 
-  ledger_->SetUint64State(
+  ledger_->ledger_client()->SetUint64State(
       ledger::kStateCreationStamp,
       legacy_state_->GetCreationStamp());
 
   const auto seed = legacy_state_->GetRecoverySeed();
-  ledger_->SetStringState(
+  ledger_->ledger_client()->SetStringState(
       ledger::kStateRecoverySeed,
       base::Base64Encode(seed));
 
-  ledger_->SetStringState(
+  ledger_->ledger_client()->SetStringState(
       ledger::kStatePaymentId,
       legacy_state_->GetPaymentId());
 
-  ledger_->SetBooleanState(
+  ledger_->ledger_client()->SetBooleanState(
       ledger::kStateInlineTipRedditEnabled,
       legacy_state_->GetInlineTipSetting("reddit"));
 
-  ledger_->SetBooleanState(
+  ledger_->ledger_client()->SetBooleanState(
       ledger::kStateInlineTipTwitterEnabled,
       legacy_state_->GetInlineTipSetting("twitter"));
 
-  ledger_->SetBooleanState(
+  ledger_->ledger_client()->SetBooleanState(
       ledger::kStateInlineTipGithubEnabled,
       legacy_state_->GetInlineTipSetting("github"));
 

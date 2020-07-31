@@ -14,7 +14,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/response/response_wallet.h"
-#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 
@@ -33,14 +32,14 @@ WalletBalance::~WalletBalance() = default;
 void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   // if we don't have user funds in anon card anymore
   // we can skip balance server ping
-  if (!braveledger_state::GetFetchOldBalanceEnabled(ledger_)) {
+  if (!ledger_->state()->GetFetchOldBalanceEnabled()) {
     auto balance = ledger::Balance::New();
     balance->user_funds = "0";
     GetUnblindedTokens(std::move(balance), callback);
     return;
   }
 
-  const std::string payment_id = braveledger_state::GetPaymentId(ledger_);
+  const std::string payment_id = ledger_->state()->GetPaymentId();
   if (payment_id.empty()) {
     BLOG(0, "Payment ID is empty");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
@@ -48,12 +47,12 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   }
 
   const std::string url = braveledger_request_util::GetBalanceWalletURL(
-      braveledger_state::GetPaymentId(ledger_));
+      ledger_->state()->GetPaymentId());
 
   auto load_callback = std::bind(&WalletBalance::OnFetch,
-                            this,
-                            _1,
-                            callback);
+      this,
+      _1,
+      callback);
   ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, load_callback);
 }
 
@@ -71,7 +70,7 @@ void WalletBalance::OnFetch(
   }
 
   if (balance->total == 0.0) {
-    braveledger_state::SetFetchOldBalanceEnabled(ledger_, false);
+    ledger_->state()->SetFetchOldBalanceEnabled(false);
   }
 
   GetUnblindedTokens(std::move(balance), callback);
@@ -119,7 +118,7 @@ void WalletBalance::ExternalWallets(
     return;
   }
 
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
 
   if (wallets.empty()) {
     callback(ledger::Result::LEDGER_OK, std::move(balance));

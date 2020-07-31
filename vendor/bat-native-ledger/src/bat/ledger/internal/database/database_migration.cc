@@ -130,7 +130,9 @@ void DatabaseMigration::Start(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseMigration::GenerateCommand(

@@ -18,8 +18,6 @@
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_wallet.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using std::placeholders::_1;
@@ -108,14 +106,14 @@ void WalletClaim::OnBalance(
     return;
   }
 
-  if (ledger_->GetBooleanState(ledger::kStateAnonTransferChecked) &&
+  if (ledger_->state()->GetAnonTransferChecked() &&
       balance->user_funds == "0") {
     BLOG(1, "Second ping with zero balance");
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
 
   if (!wallet_ptr) {
@@ -146,7 +144,7 @@ void WalletClaim::TransferFunds(
     const ledger::Result result,
     const std::string user_funds,
     ledger::ResultCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
@@ -167,13 +165,13 @@ void WalletClaim::TransferFunds(
       callback);
 
   const std::string url = braveledger_request_util::GetClaimWalletURL(
-      braveledger_state::GetPaymentId(ledger_));
+      ledger_->state()->GetPaymentId());
 
   const std::string payload = GeneratePayload(
       user_funds,
       wallet_ptr->address,
       wallet_ptr->anon_address,
-      braveledger_state::GetRecoverySeed(ledger_));
+      ledger_->state()->GetRecoverySeed());
 
   ledger_->LoadURL(
       url,
@@ -193,13 +191,13 @@ void WalletClaim::OnTransferFunds(
       response);
 
   if (result == ledger::Result::LEDGER_OK) {
-    ledger_->SetBooleanState(ledger::kStateAnonTransferChecked, true);
+    ledger_->state()->SetAnonTransferChecked(true);
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
   if (result == ledger::Result::ALREADY_EXISTS) {
-    ledger_->SetBooleanState(ledger::kStateAnonTransferChecked, true);
+    ledger_->state()->SetAnonTransferChecked(true);
     callback(ledger::Result::ALREADY_EXISTS);
     return;
   }

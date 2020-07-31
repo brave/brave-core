@@ -7,7 +7,6 @@
 
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_migration.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 
@@ -30,7 +29,7 @@ StateMigration::StateMigration(bat_ledger::LedgerImpl* ledger) :
 StateMigration::~StateMigration() = default;
 
 void StateMigration::Migrate(ledger::ResultCallback callback) {
-  const int current_version = GetVersion(ledger_);
+  const int current_version = ledger_->state()->GetVersion();
   const int new_version = current_version + 1;
 
   if (current_version == kCurrentVersionNumber) {
@@ -76,7 +75,7 @@ void StateMigration::OnMigration(
 
   BLOG(1, "State: Migrated to version " << version);
 
-  SetVersion(ledger_, version);
+  ledger_->state()->SetVersion(version);
   Migrate(callback);
 }
 

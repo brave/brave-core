@@ -43,7 +43,7 @@ void LegacyPublisherState::Load(ledger::ResultCallback callback) {
       _1,
       _2,
       callback);
-  ledger_->LoadPublisherState(load_callback);
+  ledger_->ledger_client()->LoadPublisherState(load_callback);
 }
 
 void LegacyPublisherState::OnLoad(

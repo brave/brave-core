@@ -65,7 +65,9 @@ void DatabaseCredsBatch::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseCredsBatch::GetRecordByTrigger(
@@ -108,7 +110,9 @@ void DatabaseCredsBatch::GetRecordByTrigger(
           _1,
           callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseCredsBatch::OnGetRecordByTrigger(
@@ -180,7 +184,9 @@ void DatabaseCredsBatch::SaveSignedCreds(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseCredsBatch::GetAllRecords(
@@ -216,7 +222,9 @@ void DatabaseCredsBatch::GetAllRecords(
           _1,
           callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseCredsBatch::OnGetRecords(
@@ -283,7 +291,9 @@ void DatabaseCredsBatch::UpdateStatus(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseCredsBatch::UpdateRecordsStatus(
@@ -317,7 +327,9 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseCredsBatch::GetRecordsByTriggers(
@@ -356,7 +368,9 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
           _1,
           callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 }  // namespace braveledger_database

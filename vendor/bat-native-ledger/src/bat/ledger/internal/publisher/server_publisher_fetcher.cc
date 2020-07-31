@@ -38,7 +38,8 @@ int64_t GetCacheExpiryInSeconds(bat_ledger::LedgerImpl* ledger) {
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
   // time we may want to introduce an additional option for this value.
-  return ledger->GetUint64Option(ledger::kOptionPublisherListRefreshInterval);
+  return ledger->ledger_client()->GetUint64Option(
+      ledger::kOptionPublisherListRefreshInterval);
 }
 
 ledger::PublisherStatus PublisherStatusFromMessage(

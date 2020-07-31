@@ -195,7 +195,10 @@ void Reddit::OnPublisherPanelInfo(
 
     FetchDataFromUrl(visit_data.url, url_callback);
   } else {
-    ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
+    ledger_->ledger_client()->OnPanelPublisherInfo(
+        result,
+        std::move(info),
+        window_id);
   }
 }
 
@@ -286,7 +289,7 @@ void Reddit::OnMediaPublisherInfo(
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
-  GURL url(REDDIT_USER_URL + ledger_->URIEncode(user_name));
+  GURL url(REDDIT_USER_URL + ledger_->ledger_client()->URIEncode(user_name));
   if (!url.is_valid()) {
     callback(ledger::Result::TIP_ERROR, nullptr);
     return;

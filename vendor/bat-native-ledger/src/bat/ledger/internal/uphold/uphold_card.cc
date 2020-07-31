@@ -40,7 +40,7 @@ UpholdCard::UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
 UpholdCard::~UpholdCard() = default;
 
 void UpholdCard::CreateIfNecessary(CreateCardCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -87,7 +87,7 @@ void UpholdCard::OnCreateIfNecessary(
 
 void UpholdCard::Create(
     CreateCardCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -139,7 +139,7 @@ void UpholdCard::OnCreate(
     return;
   }
 
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet_ptr = GetWallet(std::move(wallets));
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
@@ -147,7 +147,9 @@ void UpholdCard::OnCreate(
     return;
   }
   wallet_ptr->address = id;
-  ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_ptr->Clone());
+  ledger_->ledger_client()->SaveExternalWallet(
+      ledger::kWalletUphold,
+      wallet_ptr->Clone());
 
   auto update_callback = std::bind(&UpholdCard::OnCreateUpdate,
       this,
@@ -176,7 +178,7 @@ void UpholdCard::OnCreateUpdate(
 void UpholdCard::Update(
     const UpdateCard& card,
     UpdateCardCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -244,7 +246,7 @@ void UpholdCard::OnUpdate(
 
 void UpholdCard::GetCardAddresses(
     GetCardAddressesCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -316,7 +318,7 @@ void UpholdCard::OnCreateAnonAddressIfNecessary(
   if (result == ledger::Result::LEDGER_OK && addresses.size() > 0) {
     auto iter = addresses.find(kAnonID);
     if (iter != addresses.end() && !iter->second.empty()) {
-      auto wallets = ledger_->GetExternalWallets();
+      auto wallets = ledger_->ledger_client()->GetExternalWallets();
       auto wallet = GetWallet(std::move(wallets));
       if (!wallet) {
         BLOG(0, "Wallet is null");
@@ -325,7 +327,9 @@ void UpholdCard::OnCreateAnonAddressIfNecessary(
       }
 
       wallet->anon_address = iter->second;
-      ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
+      ledger_->ledger_client()->SaveExternalWallet(
+          ledger::kWalletUphold,
+          std::move(wallet));
       callback(ledger::Result::LEDGER_OK);
       return;
     }
@@ -335,7 +339,7 @@ void UpholdCard::OnCreateAnonAddressIfNecessary(
 }
 
 void UpholdCard::CreateAnonAddress(ledger::ResultCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -390,7 +394,7 @@ void UpholdCard::OnCreateAnonAddress(
     return;
   }
 
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -399,7 +403,9 @@ void UpholdCard::OnCreateAnonAddress(
   }
 
   wallet->anon_address = id;
-  ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
+  ledger_->ledger_client()->SaveExternalWallet(
+      ledger::kWalletUphold,
+      std::move(wallet));
   callback(ledger::Result::LEDGER_OK);
 }
 

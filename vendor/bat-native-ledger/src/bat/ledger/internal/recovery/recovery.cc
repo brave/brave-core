@@ -5,12 +5,11 @@
 
 #include "bat/ledger/internal/recovery/recovery.h"
 #include "bat/ledger/internal/recovery/recovery_empty_balance.h"
-#include "bat/ledger/internal/state/state_keys.h"
 
 namespace braveledger_recovery {
 
 void Check(bat_ledger::LedgerImpl* ledger) {
-  if (!ledger->GetBooleanState(ledger::kStateEmptyBalanceChecked)) {
+  if (!ledger->state()->GetEmptyBalanceChecked()) {
     BLOG(1, "Running empty balance check...")
     EmptyBalance::Check(ledger);
   }

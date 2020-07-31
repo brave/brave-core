@@ -98,7 +98,7 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
     callback(std::move(response));
   };
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(Invoke(on_run_db_transaction));
 
   database_prefix_list_->Reset(

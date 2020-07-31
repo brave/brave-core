@@ -14,7 +14,6 @@
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_wallet.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 
@@ -26,8 +25,8 @@ WalletCreate::WalletCreate(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 WalletCreate::~WalletCreate() = default;
 
 void WalletCreate::Start(ledger::ResultCallback callback) {
-  const auto payment_id = braveledger_state::GetPaymentId(ledger_);
-  const auto stamp = ledger_->GetCreationStamp();
+  const auto payment_id = ledger_->state()->GetPaymentId();
+  const auto stamp = ledger_->state()->GetCreationStamp();
 
   if (!payment_id.empty() && stamp != 0) {
     BLOG(1, "Wallet already exists");
@@ -36,7 +35,7 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
   }
 
   auto key_info_seed = braveledger_helper::Security::GenerateSeed();
-  braveledger_state::SetRecoverySeed(ledger_, key_info_seed);
+  ledger_->state()->SetRecoverySeed(key_info_seed);
 
   const std::string public_key_hex =
       braveledger_helper::Security::GetPublicKeyHexFromSeed(key_info_seed);
@@ -50,7 +49,7 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
       "post /v3/wallet/brave",
       "",
       public_key_hex,
-      braveledger_state::GetRecoverySeed(ledger_));
+      ledger_->state()->GetRecoverySeed());
 
   const std::string url = braveledger_request_util::GetCreateWalletURL();
   ledger_->LoadURL(
@@ -77,27 +76,23 @@ void WalletCreate::OnCreate(
     return;
   }
 
-  braveledger_state::SetPaymentId(ledger_, payment_id);
+  ledger_->state()->SetPaymentId(payment_id);
 
-  ledger_->SetRewardsMainEnabled(true);
-  ledger_->SetAutoContributeEnabled(true);
+  ledger_->state()->SetRewardsMainEnabled(true);
+  ledger_->state()->SetAutoContributeEnabled(true);
   ledger_->ResetReconcileStamp();
   if (!ledger::is_testing) {
-    braveledger_state::SetFetchOldBalanceEnabled(ledger_, false);
+    ledger_->state()->SetFetchOldBalanceEnabled(false);
   }
-  braveledger_state::SetCreationStamp(
-      ledger_,
+  ledger_->state()->SetCreationStamp(
       braveledger_time_util::GetCurrentTimeStamp());
-  braveledger_state::SetInlineTippingPlatformEnabled(
-      ledger_,
+  ledger_->state()->SetInlineTippingPlatformEnabled(
       ledger::InlineTipsPlatforms::REDDIT,
       true);
-  braveledger_state::SetInlineTippingPlatformEnabled(
-      ledger_,
+  ledger_->state()->SetInlineTippingPlatformEnabled(
       ledger::InlineTipsPlatforms::TWITTER,
       true);
-  braveledger_state::SetInlineTippingPlatformEnabled(
-      ledger_,
+  ledger_->state()->SetInlineTippingPlatformEnabled(
       ledger::InlineTipsPlatforms::GITHUB,
       true);
   callback(ledger::Result::WALLET_CREATED);

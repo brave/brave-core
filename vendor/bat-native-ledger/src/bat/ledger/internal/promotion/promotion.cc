@@ -24,8 +24,6 @@
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_promotion.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/static_values.h"
 
 #include "wrapper.hpp"  // NOLINT
@@ -107,7 +105,7 @@ Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
 Promotion::~Promotion() = default;
 
 void Promotion::Initialize() {
-  if (!ledger_->GetBooleanState(ledger::kStatePromotionCorruptedMigrated)) {
+  if (!ledger_->state()->GetPromotionCorruptedMigrated()) {
     BLOG(1, "Migrating corrupted promotions");
     auto check_callback = std::bind(&Promotion::CheckForCorrupted,
         this,
@@ -126,8 +124,7 @@ void Promotion::Initialize() {
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   // make sure wallet/client state is sane here as this is the first
   // panel call.
-  const std::string& wallet_payment_id =
-      braveledger_state::GetPaymentId(ledger_);
+  const std::string& wallet_payment_id = ledger_->state()->GetPaymentId();
   const std::string& passphrase = ledger_->GetWalletPassphrase();
   if (wallet_payment_id.empty() || passphrase.empty()) {
     BLOG(0, "Corrupted wallet");
@@ -140,7 +137,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   // database instead of querying the server again
   if (!ledger::is_testing) {
     const uint64_t last_promo_stamp =
-        ledger_->GetUint64State(ledger::kStatePromotionLastFetchStamp);
+        ledger_->state()->GetPromotionLastFetchStamp();
     const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
     if (now - last_promo_stamp < kFetchPromotionsThresholdInSeconds) {
       auto all_callback = std::bind(
@@ -158,7 +155,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
       _1,
       std::move(callback));
 
-  auto client_info = ledger_->GetClientInfo();
+  auto client_info = ledger_->ledger_client()->GetClientInfo();
   const std::string client = ParseClientInfoToString(std::move(client_info));
 
   const std::string url = braveledger_request_util::GetFetchPromotionUrl(
@@ -471,7 +468,7 @@ void Promotion::ProcessFetchedPromotions(
     ledger::PromotionList promotions,
     ledger::FetchPromotionCallback callback) {
   const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
-  ledger_->SetUint64State(ledger::kStatePromotionLastFetchStamp, now);
+  ledger_->state()->SetPromotionLastFetchStamp(now);
   last_check_timer_.Stop();
   const bool retry = result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND;
@@ -568,7 +565,7 @@ void Promotion::Refresh(const bool retry_after_error) {
     const auto default_time = braveledger_ledger::_promotion_load_interval;
     const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
     const uint64_t last_promo_stamp =
-        ledger_->GetUint64State(ledger::kStatePromotionLastFetchStamp);
+        ledger_->state()->GetPromotionLastFetchStamp();
 
     uint64_t time_since_last_promo_check = 0ull;
 
@@ -639,7 +636,7 @@ void Promotion::CorruptedPromotionFixed(const ledger::Result result) {
 void Promotion::CheckForCorruptedCreds(ledger::CredsBatchList list) {
   if (list.empty()) {
     BLOG(1, "Creds list is empty");
-    ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
+    ledger_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
 
@@ -667,7 +664,7 @@ void Promotion::CheckForCorruptedCreds(ledger::CredsBatchList list) {
 
   if (corrupted_promotions.empty()) {
     BLOG(1, "No corrupted creds");
-    ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
+    ledger_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
 
@@ -694,7 +691,7 @@ void Promotion::CorruptedPromotions(
 
   if (corrupted_claims.GetList().empty()) {
     BLOG(1, "No corrupted creds");
-    ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
+    ledger_->state()->SetPromotionCorruptedMigrated(true);
     return;
   }
 
@@ -732,7 +729,7 @@ void Promotion::OnCheckForCorrupted(
     return;
   }
 
-  ledger_->SetBooleanState(ledger::kStatePromotionCorruptedMigrated, true);
+  ledger_->state()->SetPromotionCorruptedMigrated(true);
 
   auto update_callback = std::bind(&Promotion::ErrorStatusSaved,
       this,
