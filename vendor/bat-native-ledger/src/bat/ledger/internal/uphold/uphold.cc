@@ -215,6 +215,7 @@ void Uphold::DisconnectWallet() {
     [](ledger::Result _){});
 
   ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
+  ledger_->GetLedgerClient()->WalletDisconnected(ledger::kWalletUphold);
 }
 
 void Uphold::GetUser(GetUserCallback callback) {

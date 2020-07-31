@@ -159,6 +159,8 @@ class LedgerClientMojoBridge :
 
   void ClearAllNotifications() override;
 
+  void WalletDisconnected(const std::string& wallet_type) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>

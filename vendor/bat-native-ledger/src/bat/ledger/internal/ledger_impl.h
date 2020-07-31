@@ -90,6 +90,8 @@ class LedgerImpl : public ledger::Ledger {
   LedgerImpl(const LedgerImpl&) = delete;
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
+  ledger::LedgerClient* GetLedgerClient() const;
+
   void Initialize(
       const bool execute_create_script,
       ledger::ResultCallback callback) override;

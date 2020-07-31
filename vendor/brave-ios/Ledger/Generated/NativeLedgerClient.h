@@ -62,4 +62,5 @@ private:
   void GetCreateScript(ledger::GetCreateScriptCallback callback) override;
   void PendingContributionSaved(const ledger::Result result) override;
   void ClearAllNotifications() override;
+  void WalletDisconnected(const std::string& wallet_type) override;
 };

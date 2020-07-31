@@ -456,4 +456,9 @@ void LedgerClientMojoBridge::ClearAllNotifications() {
   ledger_client_->ClearAllNotifications();
 }
 
+void LedgerClientMojoBridge::WalletDisconnected(
+    const std::string& wallet_type) {
+  ledger_client_->WalletDisconnected(wallet_type);
+}
+
 }  // namespace bat_ledger

@@ -642,6 +642,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void ClearAllNotifications() override;
 
+  void WalletDisconnected(const std::string& wallet_type) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods

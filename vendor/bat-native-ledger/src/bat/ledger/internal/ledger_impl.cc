@@ -101,6 +101,10 @@ LedgerImpl::~LedgerImpl() {
   }
 }
 
+ledger::LedgerClient* LedgerImpl::GetLedgerClient() const {
+  return ledger_client_;
+}
+
 void LedgerImpl::OnInitialized(
     const ledger::Result result,
     ledger::ResultCallback callback) {
