@@ -919,8 +919,8 @@
       <message name="IDS_GEMINI_WIDGET_BOUGHT" desc="">You bought</message>
       <message name="IDS_GEMINI_WIDGET_SOLD" desc="">You sold</message>
       <message name="IDS_GEMINI_WIDGET_UNIT_PRICE" desc="">Unit Price</message>
-      <message name="IDS_GEMINI_WIDGET_TOTAL_PRICE" desc="">Total Price</message>
-      <message name="IDS_GEMINI_WIDGET_TOTAL_AMOUNT" desc="">Total Amount</message>
+      <message name="IDS_GEMINI_WIDGET_TOTAL_PRICE" desc="">Total Spent</message>
+      <message name="IDS_GEMINI_WIDGET_TOTAL_AMOUNT" desc="">Total Received</message>
 
       <!-- WebUI Brave Toolbar resources -->
       <message name="IDS_WALLETS_TITLE" desc="The toolbar title for the brave://wallets page">Crypto Wallets</message>
