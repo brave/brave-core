@@ -12,7 +12,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/request/request_api.h"
 #include "bat/ledger/internal/response/response_api.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 
@@ -26,7 +25,7 @@ APIParameters::APIParameters(bat_ledger::LedgerImpl* ledger) :
 APIParameters::~APIParameters() = default;
 
 void APIParameters::Initialize() {
-  if (braveledger_state::GetRewardsMainEnabled(ledger_)) {
+  if (ledger_->state()->GetRewardsMainEnabled()) {
     Fetch([](ledger::RewardsParametersPtr) {});
   }
 }
@@ -68,7 +67,7 @@ void APIParameters::OnFetch(const ledger::UrlResponse& response) {
     return;
   }
 
-  braveledger_state::SetRewardsParameters(ledger_, parameters);
+  ledger_->state()->SetRewardsParameters(parameters);
   RunCallbacks();
   SetRefreshTimer(
       base::TimeDelta::FromMinutes(10),
@@ -79,7 +78,7 @@ void APIParameters::RunCallbacks() {
   // Execute callbacks with the current parameters stored in state.
   // If the last fetch failed, callbacks will be run with the last
   // successfully fetched parameters or a default set of parameters.
-  auto parameters = braveledger_state::GetRewardsParameters(ledger_);
+  auto parameters = ledger_->state()->GetRewardsParameters();
   DCHECK(parameters);
 
   auto callbacks = std::move(callbacks_);

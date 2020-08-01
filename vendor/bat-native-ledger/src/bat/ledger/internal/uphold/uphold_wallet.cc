@@ -8,7 +8,6 @@
 #include "base/json/json_reader.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
 
@@ -26,7 +25,7 @@ UpholdWallet::UpholdWallet(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
 UpholdWallet::~UpholdWallet() = default;
 
 void UpholdWallet::Generate(ledger::ResultCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   ledger::ExternalWalletPtr wallet;
   if (wallets.empty()) {
     wallet = ledger::ExternalWallet::New();
@@ -53,7 +52,9 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) {
   }
 
   wallet = GenerateLinks(std::move(wallet));
-  ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
+  ledger_->ledger_client()->SaveExternalWallet(
+      ledger::kWalletUphold,
+      wallet->Clone());
 
   if (wallet->status == ledger::WalletStatus::CONNECTED ||
       wallet->status == ledger::WalletStatus::VERIFIED ||
@@ -74,7 +75,7 @@ void UpholdWallet::OnGenerate(
     const ledger::Result result,
     const User& user,
     ledger::ResultCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet_ptr = GetWallet(std::move(wallets));
   if (result == ledger::Result::EXPIRED_TOKEN) {
     uphold_->DisconnectWallet();
@@ -102,7 +103,9 @@ void UpholdWallet::OnGenerate(
     wallet_ptr->status = GetNewStatus(wallet_ptr->status, user);
   }
 
-  ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_ptr->Clone());
+  ledger_->ledger_client()->SaveExternalWallet(
+      ledger::kWalletUphold,
+      wallet_ptr->Clone());
 
   if (wallet_ptr->status != ledger::WalletStatus::PENDING &&
       wallet_ptr->address.empty()) {
@@ -127,7 +130,7 @@ void UpholdWallet::OnCreateCard(
     const ledger::Result result,
     const std::string& address,
     ledger::ResultCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet_ptr = GetWallet(std::move(wallets));
   if (result != ledger::Result::LEDGER_OK || !wallet_ptr) {
     BLOG(0, "Card not created");
@@ -137,7 +140,9 @@ void UpholdWallet::OnCreateCard(
 
   wallet_ptr->address = address;
   wallet_ptr = GenerateLinks(std::move(wallet_ptr));
-  ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet_ptr->Clone());
+  ledger_->ledger_client()->SaveExternalWallet(
+      ledger::kWalletUphold,
+      wallet_ptr->Clone());
 
   if (wallet_ptr->status == ledger::WalletStatus::VERIFIED) {
     ledger_->ClaimFunds(callback);
@@ -157,10 +162,10 @@ ledger::WalletStatus UpholdWallet::GetNewStatus(
         break;
       }
       new_status = ledger::WalletStatus::VERIFIED;
-      ledger_->ShowNotification(
-         "wallet_new_verified",
-         [](ledger::Result _){},
-         {"Uphold"});
+      ledger_->ledger_client()->ShowNotification(
+          "wallet_new_verified",
+          {"Uphold"},
+          [](ledger::Result _){});
       break;
     }
     case ledger::WalletStatus::VERIFIED: {
@@ -178,10 +183,10 @@ ledger::WalletStatus UpholdWallet::GetNewStatus(
 
       if (user.verified) {
         new_status = ledger::WalletStatus::VERIFIED;
-        ledger_->ShowNotification(
-           "wallet_new_verified",
-           [](ledger::Result _){},
-           {"Uphold"});
+        ledger_->ledger_client()->ShowNotification(
+            "wallet_new_verified",
+            {"Uphold"},
+            [](ledger::Result _){});
       } else {
         new_status = ledger::WalletStatus::CONNECTED;
       }

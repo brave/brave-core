@@ -448,7 +448,7 @@ void Twitch::OnMediaPublisherInfo(
                               _1);
 
     const std::string url = (std::string)TWITCH_PROVIDER_URL + "?json&url=" +
-        ledger_->URIEncode(oembed_url);
+        ledger_->ledger_client()->URIEncode(oembed_url);
 
     FetchDataFromUrl(url, callback);
     return;
@@ -556,7 +556,10 @@ void Twitch::OnMediaPublisherActivity(
       }
     }
 
-    ledger_->OnPanelPublisherInfo(result, std::move(info), window_id);
+    ledger_->ledger_client()->OnPanelPublisherInfo(
+        result,
+        std::move(info),
+        window_id);
   }
 }
 
@@ -595,9 +598,10 @@ void Twitch::OnPublisherInfo(
                       publisher_favicon_url,
                       media_id);
   } else {
-    ledger_->OnPanelPublisherInfo(result,
-                                  std::move(publisher_info),
-                                  window_id);
+    ledger_->ledger_client()->OnPanelPublisherInfo(
+        result,
+        std::move(publisher_info),
+        window_id);
   }
 }
 

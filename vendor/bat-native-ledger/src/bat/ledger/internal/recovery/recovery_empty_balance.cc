@@ -12,8 +12,6 @@
 #include "bat/ledger/internal/recovery/recovery_empty_balance.h"
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/state/state_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -114,7 +112,7 @@ void EmptyBalance::OnCreds(
     bat_ledger::LedgerImpl* ledger) {
   if (list.empty()) {
     BLOG(1, "Creds batch list is emtpy");
-    ledger->SetBooleanState(ledger::kStateEmptyBalanceChecked, true);
+    ledger->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
@@ -149,7 +147,7 @@ void EmptyBalance::OnCreds(
 
   if (token_list.empty()) {
     BLOG(1, "Unblinded token list is emtpy");
-    ledger->SetBooleanState(ledger::kStateEmptyBalanceChecked, true);
+    ledger->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
@@ -164,7 +162,7 @@ void EmptyBalance::OnSaveUnblindedCreds(
     const ledger::Result result,
     bat_ledger::LedgerImpl* ledger) {
   BLOG(1, "Finished empty balance migration with result: " << result);
-  ledger->SetBooleanState(ledger::kStateEmptyBalanceChecked, true);
+  ledger->state()->SetEmptyBalanceChecked(true);
 }
 
 void EmptyBalance::GetAllTokens(
@@ -206,7 +204,7 @@ void EmptyBalance::ReportResults(
 
   if (total <= 0) {
     BLOG(1, "Unblinded token total is OK");
-    ledger->SetBooleanState(ledger::kStateEmptyBalanceChecked, true);
+    ledger->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
@@ -216,7 +214,7 @@ void EmptyBalance::ReportResults(
       R"({"amount": %f})",
       total);
 
-  const std::string payment_id = braveledger_state::GetPaymentId(ledger);
+  const std::string payment_id = ledger->state()->GetPaymentId();
   auto url_callback = std::bind(&EmptyBalance::Sent,
       _1,
       ledger);
@@ -230,7 +228,7 @@ void EmptyBalance::ReportResults(
       header_url,
       json,
       payment_id,
-      braveledger_state::GetRecoverySeed(ledger));
+      ledger->state()->GetRecoverySeed());
 
   const std::string url = braveledger_request_util::GetBatlossURL(
       payment_id,
@@ -254,7 +252,7 @@ void EmptyBalance::Sent(
   }
 
   BLOG(1, "Finished empty balance migration!");
-  ledger->SetBooleanState(ledger::kStateEmptyBalanceChecked, true);
+  ledger->state()->SetEmptyBalanceChecked(true);
 }
 
 }  // namespace braveledger_recovery

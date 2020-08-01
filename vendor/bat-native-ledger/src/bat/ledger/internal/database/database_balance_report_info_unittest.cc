@@ -56,7 +56,7 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
       "tip_recurring, tip) "
       "VALUES (?, ?, ?, ?, ?, ?)";
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
@@ -76,14 +76,14 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
     "SELECT balance_report_id, grants_ugp, grants_ads, "
     "auto_contribute, tip_recurring, tip "
     "FROM balance_report_info";
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
@@ -102,7 +102,7 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
     "SELECT balance_report_id, grants_ugp, grants_ads, "
@@ -110,7 +110,7 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
     "FROM balance_report_info "
     "WHERE balance_report_id = ?";
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
@@ -132,12 +132,12 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
     "DELETE FROM balance_report_info";
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,

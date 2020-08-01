@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <map>
+#include <memory>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -166,11 +167,23 @@ void DatabaseActivityInfo::NormalizeList(
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
+  auto shared_list = std::make_shared<ledger::PublisherInfoList>(
+      std::move(list));
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      [this, shared_list, callback](ledger::DBCommandResponsePtr response) {
+        if (!response || response->status !=
+              ledger::DBCommandResponse::Status::RESPONSE_OK) {
+          callback(ledger::Result::LEDGER_ERROR);
+          return;
+        }
+
+        ledger_->ledger_client()->PublisherListNormalized(
+            std::move(*shared_list));
+
+        callback(ledger::Result::LEDGER_OK);
+      });
 }
 
 void DatabaseActivityInfo::InsertOrUpdate(
@@ -207,7 +220,9 @@ void DatabaseActivityInfo::InsertOrUpdate(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseActivityInfo::GetRecordsList(
@@ -267,7 +282,9 @@ void DatabaseActivityInfo::GetRecordsList(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseActivityInfo::OnGetRecordsList(
@@ -334,7 +351,9 @@ void DatabaseActivityInfo::DeleteRecord(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 }  // namespace braveledger_database

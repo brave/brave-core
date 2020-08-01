@@ -33,7 +33,7 @@ void DatabaseInitialize::Start(
   command->type = ledger::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(
+  ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
       std::bind(&DatabaseInitialize::OnInitialize,
           this,
@@ -77,7 +77,7 @@ void DatabaseInitialize::GetCreateScript(ledger::ResultCallback callback) {
       _1,
       _2,
       callback);
-  ledger_->GetCreateScript(script_callback);
+  ledger_->ledger_client()->GetCreateScript(script_callback);
 }
 
 void DatabaseInitialize::ExecuteCreateScript(
@@ -90,7 +90,7 @@ void DatabaseInitialize::ExecuteCreateScript(
     return;
   }
 
-  ledger_->ClearState(ledger::kStateServerPublisherListStamp);
+  ledger_->ledger_client()->ClearState(ledger::kStateServerPublisherListStamp);
 
   auto script_callback = std::bind(&DatabaseInitialize::OnExecuteCreateScript,
       this,
@@ -104,7 +104,9 @@ void DatabaseInitialize::ExecuteCreateScript(
   command->command = script;
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction), script_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      script_callback);
 }
 
 void DatabaseInitialize::OnExecuteCreateScript(

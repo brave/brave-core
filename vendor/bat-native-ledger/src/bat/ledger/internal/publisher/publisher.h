@@ -40,7 +40,7 @@ class Publisher {
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
 
-  void SetPublisherServerListTimer(const bool rewards_enabled);
+  void SetPublisherServerListTimer();
 
   void SaveVisit(const std::string& publisher_key,
                  const ledger::VisitData& visit_data,

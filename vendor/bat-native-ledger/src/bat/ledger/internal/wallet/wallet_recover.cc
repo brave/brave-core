@@ -14,8 +14,6 @@
 #include "bat/ledger/internal/request/request_promotion.h"
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_wallet.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 #include "wally_bip39.h"  // NOLINT
 
@@ -101,11 +99,11 @@ void WalletRecover::OnRecover(
     return;
   }
 
-  braveledger_state::SetRecoverySeed(ledger_, new_seed);
-  braveledger_state::SetPaymentId(ledger_, payment_id);
-  braveledger_state::SetFetchOldBalanceEnabled(ledger_, true);
-  ledger_->SetBooleanState(ledger::kStateAnonTransferChecked, false);
-  ledger_->SetUint64State(ledger::kStatePromotionLastFetchStamp, 0);
+  ledger_->state()->SetRecoverySeed(new_seed);
+  ledger_->state()->SetPaymentId(payment_id);
+  ledger_->state()->SetFetchOldBalanceEnabled(true);
+  ledger_->state()->SetAnonTransferChecked(false);
+  ledger_->state()->SetPromotionLastFetchStamp(0);
   ledger_->SetConfirmationsWalletInfo();
 
   callback(ledger::Result::LEDGER_OK);

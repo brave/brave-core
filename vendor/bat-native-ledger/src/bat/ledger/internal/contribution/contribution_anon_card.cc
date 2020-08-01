@@ -16,7 +16,6 @@
 #include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/response/response_sku.h"
 #include "bat/ledger/internal/sku/sku_util.h"
-#include "bat/ledger/internal/state/state_util.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -96,8 +95,8 @@ void ContributionAnonCard::SendTransaction(
       amount,
       order_id,
       destination,
-      braveledger_state::GetPaymentId(ledger_),
-      braveledger_state::GetRecoverySeed(ledger_));
+      ledger_->state()->GetPaymentId(),
+      ledger_->state()->GetRecoverySeed());
 
   auto url_callback = std::bind(&ContributionAnonCard::OnSendTransaction,
       this,

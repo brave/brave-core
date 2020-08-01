@@ -67,7 +67,9 @@ void DatabasePendingContribution::InsertOrUpdateList(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabasePendingContribution::GetReservedAmount(
@@ -93,7 +95,9 @@ void DatabasePendingContribution::GetReservedAmount(
           _1,
           callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabasePendingContribution::OnGetReservedAmount(
@@ -156,7 +160,9 @@ void DatabasePendingContribution::GetAllRecords(
           _1,
           callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabasePendingContribution::OnGetAllRecords(
@@ -224,7 +230,9 @@ void DatabasePendingContribution::DeleteRecord(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabasePendingContribution::DeleteAllRecords(
@@ -242,7 +250,9 @@ void DatabasePendingContribution::DeleteAllRecords(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 }  // namespace braveledger_database

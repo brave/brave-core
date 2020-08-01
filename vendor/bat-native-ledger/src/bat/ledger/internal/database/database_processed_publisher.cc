@@ -57,7 +57,9 @@ void DatabaseProcessedPublisher::InsertOrUpdateList(
       _1,
       callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseProcessedPublisher::WasProcessed(
@@ -93,7 +95,9 @@ void DatabaseProcessedPublisher::WasProcessed(
           _1,
           callback);
 
-  ledger_->RunDBTransaction(std::move(transaction), transaction_callback);
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseProcessedPublisher::OnWasProcessed(

@@ -26,7 +26,6 @@
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/contribution/unverified.h"
-#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -166,7 +165,7 @@ void Contribution::StartMonthlyContribution() {
   const auto reconcile_stamp = ledger_->GetReconcileStamp();
   ResetReconcileStamp();
 
-  if (!ledger_->GetRewardsMainEnabled()) {
+  if (!ledger_->state()->GetRewardsMainEnabled()) {
     return;
   }
 
@@ -244,6 +243,12 @@ void Contribution::ContributionCompleted(
     BLOG(0, "Contribution is null");
     return;
   }
+
+  // TODO(https://github.com/brave/brave-browser/issues/7717)
+  // rename to ContributionCompleted
+  ledger_->ledger_client()->OnReconcileComplete(
+      result,
+      contribution->Clone());
 
   if (result == ledger::Result::LEDGER_OK) {
     ledger_->SetBalanceReportItem(
@@ -732,7 +737,7 @@ void Contribution::Retry(
     return;
   }
 
-  if (!braveledger_state::GetRewardsMainEnabled(ledger_)) {
+  if (!ledger_->state()->GetRewardsMainEnabled()) {
     BLOG(1, "Rewards is disabled, completing contribution");
     ledger_->ContributionCompleted(
         ledger::Result::REWARDS_OFF,
@@ -741,7 +746,7 @@ void Contribution::Retry(
   }
 
   if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE &&
-      !braveledger_state::GetAutoContributeEnabled(ledger_)) {
+      !ledger_->state()->GetAutoContributeEnabled()) {
     BLOG(1, "AC is disabled, completing contribution");
     ledger_->ContributionCompleted(
         ledger::Result::AC_OFF,

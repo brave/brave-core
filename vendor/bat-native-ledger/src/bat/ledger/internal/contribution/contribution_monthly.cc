@@ -108,7 +108,7 @@ void ContributionMonthly::OnSavePendingContribution(
     BLOG(0, "Problem saving pending");
   }
 
-  ledger_->PendingContributionSaved(result);
+  ledger_->ledger_client()->PendingContributionSaved(result);
 }
 
 void ContributionMonthly::HasSufficientBalance(

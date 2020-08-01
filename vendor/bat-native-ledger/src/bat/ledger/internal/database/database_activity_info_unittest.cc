@@ -41,7 +41,7 @@ class DatabaseActivityInfoTest : public ::testing::Test {
 };
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(0);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(0);
 
   ledger::PublisherInfoList list;
   list.push_back(nullptr);
@@ -64,7 +64,7 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
       "weight, reconcile_stamp, visits) "
       "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
@@ -84,13 +84,13 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListNull) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(0);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(0);
 
   activity_->GetRecordsList(0, 0, nullptr, [](ledger::PublisherInfoList){});
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
       "SELECT ai.publisher_id, ai.duration, ai.score, "
@@ -104,7 +104,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
       "ON spi.publisher_key = pi.publisher_id "
       "WHERE 1 = 1 AND pi.excluded = ?";
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
@@ -129,7 +129,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
 }
 
 TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
       "SELECT ai.publisher_id, ai.duration, ai.score, "
@@ -143,7 +143,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
       "ON spi.publisher_key = pi.publisher_id "
       "WHERE 1 = 1 AND ai.publisher_id = ? AND pi.excluded = ?";
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
@@ -169,7 +169,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(0);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(0);
 
   const std::string query =
       "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?";
@@ -178,13 +178,13 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
-  EXPECT_CALL(*mock_ledger_impl_, RunDBTransaction(_, _)).Times(1);
+  EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
 
   const std::string query =
       "DELETE FROM activity_info "
       "WHERE publisher_id = ? AND reconcile_stamp = ?";
 
-  ON_CALL(*mock_ledger_impl_, RunDBTransaction(_, _))
+  ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,

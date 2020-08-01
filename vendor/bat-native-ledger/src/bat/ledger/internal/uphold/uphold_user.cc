@@ -38,7 +38,7 @@ UpholdUser::UpholdUser(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 UpholdUser::~UpholdUser() = default;
 
 void UpholdUser::Get(GetUserCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
 
   if (!wallet) {

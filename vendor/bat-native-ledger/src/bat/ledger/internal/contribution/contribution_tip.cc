@@ -122,7 +122,7 @@ void ContributionTip::OnSavePending(
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Pending tip save failed");
   } else {
-    ledger_->PendingContributionSaved(result);
+    ledger_->ledger_client()->PendingContributionSaved(result);
   }
 
   callback(result);

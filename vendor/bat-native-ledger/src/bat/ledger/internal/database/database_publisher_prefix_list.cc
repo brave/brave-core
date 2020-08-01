@@ -13,7 +13,6 @@
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/state/state_keys.h"
 
 using std::placeholders::_1;
 using braveledger_publisher::PrefixIterator;
@@ -78,18 +77,20 @@ void DatabasePublisherPrefixList::Search(
   auto transaction = ledger::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
-  ledger_->RunDBTransaction(std::move(transaction), [callback](
-      ledger::DBCommandResponsePtr response) {
-    if (!response || !response->result ||
-        response->status != ledger::DBCommandResponse::Status::RESPONSE_OK ||
-        response->result->get_records().empty()) {
-      BLOG(0, "Unexpected database result while searching "
-          "publisher prefix list.");
-      callback(false);
-      return;
-    }
-    callback(GetBoolColumn(response->result->get_records()[0].get(), 0));
-  });
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      [callback](ledger::DBCommandResponsePtr response) {
+        if (!response || !response->result ||
+            response->status !=
+              ledger::DBCommandResponse::Status::RESPONSE_OK ||
+            response->result->get_records().empty()) {
+          BLOG(0, "Unexpected database result while searching "
+              "publisher prefix list.");
+          callback(false);
+          return;
+        }
+        callback(GetBoolColumn(response->result->get_records()[0].get(), 0));
+      });
 }
 
 void DatabasePublisherPrefixList::Reset(
@@ -140,23 +141,25 @@ void DatabasePublisherPrefixList::InsertNext(
 
   auto iter = std::get<PrefixIterator>(insert_tuple);
 
-  ledger_->RunDBTransaction(std::move(transaction), [this, iter, callback](
-      ledger::DBCommandResponsePtr response) {
-    if (!response ||
-        response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
-      reader_ = nullptr;
-      callback(ledger::Result::LEDGER_ERROR);
-      return;
-    }
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      [this, iter, callback](ledger::DBCommandResponsePtr response) {
+        if (!response ||
+            response->status !=
+              ledger::DBCommandResponse::Status::RESPONSE_OK) {
+          reader_ = nullptr;
+          callback(ledger::Result::LEDGER_ERROR);
+          return;
+        }
 
-    if (iter == reader_->end()) {
-      reader_ = nullptr;
-      callback(ledger::Result::LEDGER_OK);
-      return;
-    }
+        if (iter == reader_->end()) {
+          reader_ = nullptr;
+          callback(ledger::Result::LEDGER_OK);
+          return;
+        }
 
-    InsertNext(iter, callback);
-  });
+        InsertNext(iter, callback);
+      });
 }
 
 }  // namespace braveledger_database

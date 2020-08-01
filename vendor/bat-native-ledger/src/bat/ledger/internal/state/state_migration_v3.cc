@@ -9,7 +9,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration_v3.h"
-#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 namespace braveledger_state {
@@ -21,11 +20,11 @@ StateMigrationV3::StateMigrationV3(bat_ledger::LedgerImpl* ledger) :
 StateMigrationV3::~StateMigrationV3() = default;
 
 void StateMigrationV3::Migrate(ledger::ResultCallback callback) {
-    const std::string anon_address =
-      ledger_->GetStringState(ledger::kStateUpholdAnonAddress);
+    const std::string anon_address = ledger_->ledger_client()->GetStringState(
+        ledger::kStateUpholdAnonAddress);
 
   if (!anon_address.empty()) {
-    auto wallets = ledger_->GetExternalWallets();
+    auto wallets = ledger_->ledger_client()->GetExternalWallets();
     auto wallet = braveledger_uphold::GetWallet(std::move(wallets));
     if (!wallet) {
       BLOG(0, "Wallet is null, but we can't recover");
@@ -34,8 +33,10 @@ void StateMigrationV3::Migrate(ledger::ResultCallback callback) {
     }
 
     wallet->anon_address = anon_address;
-    ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
-    ledger_->ClearState(ledger::kStateUpholdAnonAddress);
+    ledger_->ledger_client()->SaveExternalWallet(
+        ledger::kWalletUphold,
+        std::move(wallet));
+    ledger_->ledger_client()->ClearState(ledger::kStateUpholdAnonAddress);
   }
 
   callback(ledger::Result::LEDGER_OK);

@@ -11,8 +11,6 @@
 #include "base/values.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/state/state_keys.h"
-#include "bat/ledger/internal/state/state_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 
@@ -36,7 +34,7 @@ void Wallet::CreateWalletIfNecessary(ledger::ResultCallback callback) {
 }
 
 std::string Wallet::GetWalletPassphrase() const {
-  const auto seed = braveledger_state::GetRecoverySeed(ledger_);
+  const auto seed = ledger_->state()->GetRecoverySeed();
   std::string pass_phrase;
   if (seed.empty()) {
     BLOG(0, "Seed is empty");
@@ -92,7 +90,7 @@ void Wallet::GetExternalWallet(
             return;
           }
 
-          auto wallets = ledger_->GetExternalWallets();
+          auto wallets = ledger_->ledger_client()->GetExternalWallets();
           auto wallet = GetWallet(wallet_type, std::move(wallets));
           callback(ledger::Result::LEDGER_OK, std::move(wallet));
         });
@@ -107,7 +105,7 @@ void Wallet::ExternalWalletAuthorization(
     const std::string& wallet_type,
     const std::map<std::string, std::string>& args,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
 
   if (wallets.empty()) {
     BLOG(0, "No wallets");
@@ -127,7 +125,7 @@ void Wallet::ExternalWalletAuthorization(
 void Wallet::DisconnectWallet(
       const std::string& wallet_type,
       ledger::ResultCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
 
   if (wallets.empty()) {
     BLOG(0, "No wallets");
@@ -144,7 +142,9 @@ void Wallet::DisconnectWallet(
   }
 
   wallet_ptr = ResetWallet(std::move(wallet_ptr));
-  ledger_->SaveExternalWallet(wallet_type, std::move(wallet_ptr));
+  ledger_->ledger_client()->SaveExternalWallet(
+      wallet_type,
+      std::move(wallet_ptr));
   callback(ledger::Result::LEDGER_OK);
 }
 
@@ -172,9 +172,9 @@ void Wallet::ClaimFunds(ledger::ResultCallback callback) {
 }
 
 void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
-  const std::string payment_id = braveledger_state::GetPaymentId(ledger_);
+  const std::string payment_id = ledger_->state()->GetPaymentId();
   const std::string passphrase = GetWalletPassphrase();
-  const uint64_t stamp = ledger_->GetCreationStamp();
+  const uint64_t stamp = ledger_->state()->GetCreationStamp();
 
   if (!payment_id.empty() && stamp != 0) {
     callback(ledger::Result::WALLET_CREATED);
@@ -191,7 +191,7 @@ void Wallet::GetAnonWalletStatus(ledger::ResultCallback callback) {
 }
 
 void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
 
   if (wallets.empty()) {
     BLOG(1, "No wallets");
@@ -205,7 +205,9 @@ void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
       continue;
     }
 
-    ledger_->SaveExternalWallet(wallet.first, std::move(wallet_new));
+    ledger_->ledger_client()->SaveExternalWallet(
+        wallet.first,
+        std::move(wallet_new));
   }
 
   callback(ledger::Result::LEDGER_OK);

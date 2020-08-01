@@ -28,7 +28,7 @@ UpholdTransfer::~UpholdTransfer() = default;
 void UpholdTransfer::Start(
     const Transaction& transaction,
     ledger::TransactionCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
@@ -92,7 +92,7 @@ void UpholdTransfer::OnCreateTransaction(
 void UpholdTransfer::CommitTransaction(
     const std::string& transaction_id,
     ledger::TransactionCallback callback) {
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");

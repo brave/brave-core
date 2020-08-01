@@ -30,7 +30,7 @@ void LegacyBatState::Load(ledger::ResultCallback callback) {
       _1,
       _2,
       callback);
-  ledger_->LoadLedgerState(load_callback);
+  ledger_->ledger_client()->LoadLedgerState(load_callback);
 }
 
 void LegacyBatState::OnLoad(

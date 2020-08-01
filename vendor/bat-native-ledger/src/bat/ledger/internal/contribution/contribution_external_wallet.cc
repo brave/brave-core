@@ -35,7 +35,7 @@ void ContributionExternalWallet::Process(
     return;
   }
 
-  auto wallets = ledger_->GetExternalWallets();
+  auto wallets = ledger_->ledger_client()->GetExternalWallets();
 
   if (wallets.empty()) {
     BLOG(0, "No external wallets");
@@ -119,7 +119,7 @@ void ContributionExternalWallet::OnSavePendingContribution(
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Problem saving pending");
   }
-  ledger_->PendingContributionSaved(result);
+  ledger_->ledger_client()->PendingContributionSaved(result);
 }
 
 void ContributionExternalWallet::OnServerPublisherInfo(
