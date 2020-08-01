@@ -212,12 +212,11 @@ bool BraveSyncWorker::ResetSync(
     const base::android::JavaParamRef<jobject>& jcaller) {
   syncer::SyncService* sync_service = GetSyncService();
 
-  if (!sync_service ||
-      !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
-    VLOG(1) << __func__
-            << " sync service is not available or first setup isn't complete, "
-               "cannot reset sync now";
-    return false;
+  // Do not send self deleted commit if engine is not up and running
+  if (!sync_service || sync_service->GetTransportState() !=
+      syncer::SyncService::TransportState::ACTIVE) {
+    OnSelfDeleted();
+    return true;
   }
 
   syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
