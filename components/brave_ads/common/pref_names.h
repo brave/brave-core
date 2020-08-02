@@ -38,6 +38,8 @@ extern const int kSupportedCountryCodesSchemaVersionNumber;
 extern const char kVersion[];
 extern const int kCurrentVersionNumber;
 
+extern const char kAdViewConfirmationCountPrefName[];
+
 }  // namespace prefs
 
 }  // namespace brave_ads

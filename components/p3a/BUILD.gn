@@ -14,6 +14,8 @@ source_set("p3a") {
   sources = [
     "brave_histogram_rewrite.cc",
     "brave_histogram_rewrite.h",
+    "brave_p2a_protocols.cc",
+    "brave_p2a_protocols.h",
     "brave_p3a_log_store.cc",
     "brave_p3a_log_store.h",
     "brave_p3a_service.cc",

@@ -44,6 +44,8 @@ class BraveP3ALogStore : public metrics::LogStore {
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
   void UpdateValue(const std::string& histogram_name, uint64_t value);
+  // Removes and also unstages the metric value if it is known and/or staged.
+  void RemoveValueIfExists(const std::string& histogram_name);
   // Marks all saved values as unsent.
   void ResetUploadStamps();
 
@@ -51,6 +53,7 @@ class BraveP3ALogStore : public metrics::LogStore {
   bool has_unsent_logs() const override;
   bool has_staged_log() const override;
   const std::string& staged_log() const override;
+  std::string staged_log_type() const;
   const std::string& staged_log_hash() const override;
   const std::string& staged_log_signature() const override;
   void StageNextLog() override;

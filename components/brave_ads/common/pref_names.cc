@@ -69,6 +69,9 @@ const char kVersion[] = "brave.brave_ads.prefs.version";
 
 const int kCurrentVersionNumber = 7;
 
+const char kAdViewConfirmationCountPrefName[] =
+    "brave.weekly_storage.p2a_ad_view_confirmation_count";
+
 }  // namespace prefs
 
 }  // namespace brave_ads

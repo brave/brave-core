@@ -32,6 +32,7 @@
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
+#include "brave/components/brave_ads/browser/ads_p2a.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
@@ -1785,6 +1786,10 @@ void AdsServiceImpl::OnPrefsChanged(
 
       MaybeStart(false);
     } else {
+      // Record "special value" to prevent sending this week's data to P2A
+      // server. Matches INT_MAX - 1 for |kSuspendedMetricValue| in
+      // |brave_p3a_service.cc|
+      brave_ads::EmitConfirmationsCountMetric(INT_MAX);
       Stop();
     }
 
@@ -1916,6 +1921,12 @@ void AdsServiceImpl::ConfirmAd(
     const ads::AdInfo& info,
     const ads::ConfirmationType confirmation_type) {
   rewards_service_->ConfirmAd(info.ToJson(), confirmation_type);
+
+  if (confirmation_type.value() == ads::ConfirmationType::kViewed) {
+    brave_ads::RecordEventInWeeklyStorage(
+        profile_->GetPrefs(),
+        prefs::kAdViewConfirmationCountPrefName);
+  }
 }
 
 void AdsServiceImpl::ConfirmAction(

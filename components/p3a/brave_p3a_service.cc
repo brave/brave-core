@@ -10,8 +10,10 @@
 
 #include "base/command_line.h"
 #include "base/i18n/timezone.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/metrics/histogram_samples.h"
 #include "base/metrics/metrics_hashes.h"
+#include "base/metrics/sample_vector.h"
 #include "base/metrics/statistics_recorder.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -23,6 +25,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
+#include "brave/components/p3a/brave_p2a_protocols.h"
 #include "brave/components/p3a/brave_p3a_log_store.h"
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
@@ -39,9 +42,16 @@ namespace brave {
 
 namespace {
 
+// Receiving this value will effectively prevent the metric from transmission
+// to the backend. For now we consider this as a hack for p2a metrics, which
+// should be refactored in better times.
+constexpr int32_t kSuspendedMetricValue = INT_MAX - 1;
+constexpr uint64_t kSuspendedMetricBucket = INT_MAX - 1;
+
 constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
-constexpr char kDefaultUploadServerUrl[] = "https://p3a.brave.com/";
+constexpr char kP3AServerUrl[] = "https://p3a.brave.com/";
+constexpr char kP2AServerUrl[] = "https://p2a.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60;  // 1 minute.
 
@@ -72,12 +82,21 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Sync.Status",
     "Brave.Uptime.BrowserOpenMinutes",
     "Brave.Welcome.InteractionStatus",
+
+    // P2A
+    "Brave.P2A.ViewConfirmationCount",
 };
+
+bool IsSuspendedMetric(base::StringPiece metric_name,
+                       uint64_t value_or_bucket) {
+  return value_or_bucket == kSuspendedMetricBucket;
+}
 
 base::TimeDelta GetRandomizedUploadInterval(
     base::TimeDelta average_upload_interval) {
-  return base::TimeDelta::FromSecondsD(
+  const auto delta = base::TimeDelta::FromSecondsD(
       brave_base::random::Geometric(average_upload_interval.InSecondsF()));
+  return delta;
 }
 
 base::TimeDelta TimeDeltaTillMonday(base::Time time) {
@@ -109,8 +128,6 @@ void BraveP3AService::RegisterPrefs(PrefRegistrySimple* registry,
   registry->RegisterTimePref(kLastRotationTimeStampPref, {});
   registry->RegisterBooleanPref(kP3AEnabled, true);
 
-  // first_run::IsChromeFirstRun() is not available on Android and also
-  // we don't have infobars on android.
 #if !defined(OS_ANDROID)
   // New users are shown the P3A notice via the welcome page.
   registry->RegisterBooleanPref(kP3ANoticeAcknowledged, first_run);
@@ -134,7 +151,7 @@ void BraveP3AService::Init(
   average_upload_interval_ =
       base::TimeDelta::FromSeconds(kDefaultUploadIntervalSeconds);
 
-  upload_server_url_ = GURL(kDefaultUploadServerUrl);
+  upload_server_url_ = GURL(kP3AServerUrl);
   MaybeOverrideSettingsFromCommandLine();
 
   VLOG(2) << "BraveP3AService::Init() Done!";
@@ -151,7 +168,7 @@ void BraveP3AService::Init(
   log_store_->LoadPersistedUnsentLogs();
   // Store values that were recorded between calling constructor and |Init()|.
   for (const auto& entry : histogram_values_) {
-    log_store_->UpdateValue(entry.first.as_string(), entry.second);
+    HandleHistogramChange(entry.first.as_string(), entry.second);
   }
   histogram_values_ = {};
   // Do rotation if needed.
@@ -170,7 +187,7 @@ void BraveP3AService::Init(
 
   // Init other components.
   uploader_.reset(new BraveP3AUploader(
-      url_loader_factory, upload_server_url_,
+      url_loader_factory, upload_server_url_, GURL(kP2AServerUrl),
       base::Bind(&BraveP3AService::OnLogUploadComplete, this)));
 
   upload_scheduler_.reset(new BraveP3AScheduler(
@@ -295,8 +312,10 @@ void BraveP3AService::StartScheduledUpload() {
   bool p3a_enabled = local_state_->GetBoolean(brave::kP3AEnabled);
   if (p3a_enabled) {
     const std::string log = log_store_->staged_log();
-    VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes";
-    uploader_->UploadLog(log, "", "", {});
+    const std::string log_type = log_store_->staged_log_type();
+    VLOG(2) << "StartScheduledUpload - Uploading " << log.size() << " bytes "
+            << "of type " << log_type;
+    uploader_->UploadLog(log, log_type);
   }
 }
 
@@ -306,6 +325,18 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
   DCHECK(!samples->Iterator()->Done());
 
+  // Shortcut for the special values, see |kSuspendedMetricValue|
+  // description for details.
+  if (IsSuspendedMetric(histogram_name, sample)) {
+    base::PostTask(FROM_HERE, {content::BrowserThread::UI},
+                   base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
+                                  this,
+                                  histogram_name,
+                                  kSuspendedMetricValue,
+                                  kSuspendedMetricBucket));
+    return;
+  }
+
   // Note that we store only buckets, not actual values.
   size_t bucket = 0u;
   const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
@@ -313,6 +344,22 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
     LOG(ERROR) << "Only linear histograms are supported at the moment!";
     NOTREACHED();
     return;
+  }
+
+  // Special handling of P2A histograms.
+  if (base::StartsWith(histogram_name, "Brave.P2A.",
+                       base::CompareCase::SENSITIVE)) {
+    // We need the bucket count to make proper perturbation.
+    // All P2A metrics should be implemented as linear histograms.
+    base::SampleVector* vector =
+        static_cast<base::SampleVector*>(samples.get());
+    DCHECK(vector);
+    const size_t bucket_count = vector->bucket_ranges()->bucket_count() - 1;
+    VLOG(2) << "P2A metric " << histogram_name << " has bucket count "
+            << bucket_count;
+
+    // Perturb the bucket.
+    bucket = DirectEncodingProtocol::Perturb(bucket_count, bucket);
   }
 
   base::PostTask(FROM_HERE, {content::BrowserThread::UI},
@@ -326,10 +373,20 @@ void BraveP3AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
   VLOG(2) << "BraveP3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << sample << " bucket = " << bucket;
   if (!initialized_) {
+    // Will handle it later when ready.
     histogram_values_[histogram_name] = bucket;
   } else {
-    log_store_->UpdateValue(histogram_name.as_string(), bucket);
+    HandleHistogramChange(histogram_name, bucket);
   }
+}
+
+void BraveP3AService::HandleHistogramChange(base::StringPiece histogram_name,
+                                            size_t bucket) {
+  if (IsSuspendedMetric(histogram_name, bucket)) {
+    log_store_->RemoveValueIfExists(histogram_name.as_string());
+    return;
+  }
+  log_store_->UpdateValue(histogram_name.as_string(), bucket);
 }
 
 void BraveP3AService::OnLogUploadComplete(int response_code,
