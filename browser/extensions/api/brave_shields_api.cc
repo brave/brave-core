@@ -5,8 +5,6 @@
 
 #include "brave/browser/extensions/api/brave_shields_api.h"
 
-#include <memory>
-#include <string>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"

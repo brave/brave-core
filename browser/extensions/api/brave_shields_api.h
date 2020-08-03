@@ -6,6 +6,10 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SHIELDS_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SHIELDS_API_H_
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "extensions/browser/extension_function.h"
 
 namespace extensions {
