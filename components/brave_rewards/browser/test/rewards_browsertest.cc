@@ -238,7 +238,8 @@ IN_PROC_BROWSER_TEST_F(
   rewards_browsertest_helper::EnableRewards(browser(), true);
 }
 
-IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, NotVerifiedWallet) {
+// Disabled in https://github.com/brave/brave-browser/issues/10789
+IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
   rewards_browsertest_helper::EnableRewards(browser());
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
   contribution_->IsBalanceCorrect();
