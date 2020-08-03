@@ -9,7 +9,9 @@ import { types } from '../constants/rewards_panel_types'
 
 export const createWallet = () => action(types.CREATE_WALLET, {})
 
-export const onWalletInitialized = (result: RewardsExtension.Result) => action(types.ON_WALLET_INITIALIZED, {
+export const walletCreated = () => action(types.WALLET_CREATED)
+
+export const walletCreationFailed = (result: RewardsExtension.Result) => action(types.WALLET_CREATION_FAILED, {
   result
 })
 
@@ -152,4 +154,14 @@ export const onAllNotificationsDeleted = () => action(types.ON_ALL_NOTIFICATIONS
 
 export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
   success
+})
+
+export const toggleEnableMain = (enable: boolean) => action(types.TOGGLE_ENABLE_MAIN, {
+  enable
+})
+
+export const initialized = () => action(types.INITIALIZED)
+
+export const walletExists = (exists: boolean) => action(types.WALLET_EXISTS, {
+  exists
 })

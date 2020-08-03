@@ -19,17 +19,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.TOGGLE_ENABLE_MAIN: {
-      if (state.initializing) {
+      if (state.initializing && state.enabledMain) {
         break
       }
 
       state = { ...state }
       const key = 'enabledMain'
       const enable = action.payload.enable
-
-      if (enable) {
-        state.initializing = true
-      }
+      state.initializing = true
 
       state[key] = enable
       chrome.send('brave_rewards.saveSetting', [key, enable.toString()])
@@ -250,6 +247,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         state.walletCreated = true
         state.firstLoad = false
         break
+      }
+
+      if (!enabled) {
+        state.balance = defaultState.balance
+        state.promotions = []
       }
 
       state.enabledMain = enabled

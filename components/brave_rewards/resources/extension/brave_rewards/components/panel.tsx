@@ -62,6 +62,40 @@ export class Panel extends React.Component<Props, State> {
       })
     }
 
+    if (!this.props.rewardsPanelData.initializing) {
+      this.startRewards()
+    }
+  }
+
+  componentDidUpdate (prevProps: Props, prevState: State) {
+    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+    const newKey = publisher && publisher.publisher_key
+
+    if (!prevState.publisherKey && newKey) {
+      this.setState({
+        showSummary: false,
+        publisherKey: newKey
+      })
+    } else if (prevState.publisherKey && !newKey) {
+      this.setState({
+        showSummary: true,
+        publisherKey: null
+      })
+    }
+
+    if (!prevProps.rewardsPanelData.enabledMain &&
+        this.props.rewardsPanelData.enabledMain &&
+        !this.props.rewardsPanelData.initializing) {
+      this.actions.fetchPromotions()
+    }
+
+    if (prevProps.rewardsPanelData.initializing &&
+        !this.props.rewardsPanelData.initializing) {
+      this.startRewards()
+    }
+  }
+
+  startRewards () {
     chrome.braveRewards.getACEnabled((enabled: boolean) => {
       this.props.actions.onEnabledAC(enabled)
     })
@@ -84,28 +118,6 @@ export class Panel extends React.Component<Props, State> {
     chrome.braveRewards.getRewardsParameters((parameters: RewardsExtension.RewardsParameters) => {
       this.props.actions.onRewardsParameters(parameters)
     })
-  }
-
-  componentDidUpdate (prevProps: Props, prevState: State) {
-    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const newKey = publisher && publisher.publisher_key
-
-    if (!prevState.publisherKey && newKey) {
-      this.setState({
-        showSummary: false,
-        publisherKey: newKey
-      })
-    } else if (prevState.publisherKey && !newKey) {
-      this.setState({
-        showSummary: true,
-        publisherKey: null
-      })
-    }
-
-    if (!prevProps.rewardsPanelData.enabledMain &&
-        this.props.rewardsPanelData.enabledMain) {
-      this.actions.fetchPromotions()
-    }
   }
 
   componentWillUnmount () {

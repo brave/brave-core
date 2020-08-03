@@ -71,7 +71,10 @@ declare namespace chrome.braveRewards {
   const tipGitHubUser: (tabId: number, githubMetaData: RewardsTip.MediaMetaData) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getBalanceReport: (month: number, year: number, callback: (properties: RewardsExtension.BalanceReport) => void) => {}
-  const onWalletInitialized: {
+  const walletCreated: {
+    addListener: (callback: () => void) => void
+  }
+  const walletCreationFailed: {
     addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const onPublisherData: {
@@ -151,6 +154,10 @@ declare namespace chrome.braveRewards {
   const onCompleteReset: {
     addListener: (callback: (properties: { success: boolean }) => void) => void
   }
+  const initialized: {
+    addListener: (callback: (result: RewardsExtension.Result) => void) => void
+  }
+  const isInitialized: (callback: (initialized: boolean) => void) => {}
 }
 
 declare namespace chrome.binance {

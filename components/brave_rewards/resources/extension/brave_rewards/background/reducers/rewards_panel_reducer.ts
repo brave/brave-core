@@ -38,8 +38,25 @@ const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: Rew
 }
 
 export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = (state: RewardsExtension.State, action: any) => {
+  if (!state) {
+    return
+  }
   const payload = action.payload
   switch (action.type) {
+    case types.TOGGLE_ENABLE_MAIN: {
+      if (state.initializing && state.enabledMain) {
+        break
+      }
+
+      state = { ...state }
+      const key = 'enabledMain'
+      const enable = action.payload.enable
+      state.initializing = true
+
+      state[key] = enable
+      chrome.braveRewards.saveSetting(key, enable ? '1' : '0')
+      break
+    }
     case types.CREATE_WALLET:
       chrome.braveRewards.createWallet()
       state = { ...state }
@@ -47,28 +64,34 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
       state.walletCreateFailed = false
       state.walletCreated = false
       state.walletCorrupted = false
+      state.initializing = true
       break
-    case types.ON_WALLET_INITIALIZED: {
-      const result: RewardsExtension.Result = payload.result
+    case types.WALLET_CREATED: {
       state = { ...state }
-      if (result === RewardsExtension.Result.WALLET_CREATED) {
-        state.walletCreated = true
-        state.walletCreateFailed = false
-        state.walletCreating = false
-        state.walletCorrupted = false
-        state.enabledMain = true
-        chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
-        chrome.storage.local.get(['is_dismissed'], function (result) {
-          if (result && result['is_dismissed'] === 'false') {
-            chrome.browserAction.setBadgeText({
-              text: ''
-            })
-            chrome.storage.local.remove(['is_dismissed'])
-          }
-        })
-      } else if (result === RewardsExtension.Result.WALLET_CORRUPT) {
+      state.initializing = false
+      state.walletCreated = true
+      state.walletCreateFailed = false
+      state.walletCreating = false
+      state.walletCorrupted = false
+      state.enabledMain = true
+      chrome.braveRewards.saveAdsSetting('adsEnabled', 'true')
+      chrome.storage.local.get(['is_dismissed'], function (result) {
+        if (result && result['is_dismissed'] === 'false') {
+          chrome.browserAction.setBadgeText({
+            text: ''
+          })
+          chrome.storage.local.remove(['is_dismissed'])
+        }
+      })
+      break
+    }
+    case types.WALLET_CREATION_FAILED: {
+      state = { ...state }
+      const result: RewardsExtension.Result = payload.result
+      state.initializing = false
+      if (result === RewardsExtension.Result.WALLET_CORRUPT) {
         state.walletCorrupted = true
-      } else if (result !== RewardsExtension.Result.LEDGER_OK) {
+      } else {
         state.walletCreateFailed = true
         state.walletCreating = false
         state.walletCreated = false
@@ -504,6 +527,20 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
     case types.ON_COMPLETE_RESET: {
       if (payload.success) {
         return undefined
+      }
+      break
+    }
+    case types.INITIALIZED: {
+      state = {
+        ...state,
+        initializing: false
+      }
+      break
+    }
+    case types.WALLET_EXISTS: {
+      state = {
+        ...state,
+        walletCreated: payload.exists
       }
       break
     }

@@ -34,13 +34,38 @@ void ExtensionRewardsServiceObserver::OnWalletInitialized(
     return;
   }
 
+  // ledger::Result::WALLET_CREATED
+  if (result == 12) {
+    auto args = std::make_unique<base::ListValue>();
+    std::unique_ptr<extensions::Event> event(new extensions::Event(
+        extensions::events::BRAVE_START,
+        extensions::api::brave_rewards::WalletCreated::kEventName,
+        std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+    return;
+  }
+
+  if (result != 3 && result != 0) {
+    // Report back all errors except when ledger_state is missing
+    std::unique_ptr<base::ListValue> args(
+        extensions::api::brave_rewards::WalletCreationFailed::Create(
+          result).release());
+
+    std::unique_ptr<extensions::Event> event(new extensions::Event(
+        extensions::events::BRAVE_START,
+        extensions::api::brave_rewards::WalletCreationFailed::kEventName,
+        std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+    return;
+  }
+
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnWalletInitialized::Create(
+      extensions::api::brave_rewards::Initialized::Create(
         result).release());
 
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnWalletInitialized::kEventName,
+      extensions::api::brave_rewards::Initialized::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }

@@ -61,3 +61,7 @@ export const onPromotionFinish = (result: NewTab.RewardsResult, promotion: NewTa
 export const setOnlyAnonWallet = (onlyAnonWallet: boolean) => action(types.SET_ONLY_ANON_WALLET, {
   onlyAnonWallet
 })
+
+export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
+  success
+})
