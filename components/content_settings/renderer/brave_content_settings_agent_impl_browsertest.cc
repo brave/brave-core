@@ -52,7 +52,8 @@ const char kGetImageDataScript[] =
 
 const int kExpectedImageDataHashFarblingBalanced = 85;
 const int kExpectedImageDataHashFarblingOff = 0;
-const int kExpectedImageDataHashFarblingMaximum = 127574;
+const int kExpectedImageDataHashFarblingMaximum =
+    kExpectedImageDataHashFarblingBalanced;
 
 const char kEmptyCookie[] = "";
 
