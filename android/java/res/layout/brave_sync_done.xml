@@ -49,8 +49,7 @@
         <LinearLayout android:id="@+id/brave_sync_devices"
             android:orientation="vertical"
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="@android:color/white" />
+            android:layout_width="match_parent"/>
 
         <TextView android:id="@+id/brave_sync_fake"
             android:layout_height="0dp"
