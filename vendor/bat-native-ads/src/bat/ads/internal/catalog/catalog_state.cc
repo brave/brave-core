@@ -43,7 +43,7 @@ Result CatalogState::FromJson(
   new_catalog_id = document["catalogId"].GetString();
 
   new_version = document["version"].GetUint64();
-  if (new_version != 3) {
+  if (new_version != 4) {
     return SUCCESS;
   }
 

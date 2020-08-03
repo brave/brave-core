@@ -11,7 +11,7 @@
 #include "base/test/task_environment.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/unittest_utils.h"
+#include "bat/ads/internal/unittest_util.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -48,11 +48,15 @@ class BatAdsPacingTest : public ::testing::Test {
         ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
         ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
         locale_helper_mock_(
-            std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>()) {
+            std::make_unique<NiceMock<brave_l10n::LocaleHelperMock>>()),
+        platform_helper_mock_(
+            std::make_unique<NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
         locale_helper_mock_.get());
+
+    PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
   }
 
   ~BatAdsPacingTest() override {
@@ -71,7 +75,17 @@ class BatAdsPacingTest : public ::testing::Test {
 
     ON_CALL(*ads_client_mock_, IsEnabled()).WillByDefault(Return(true));
 
+    ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
+        .WillByDefault(Return(true));
+
+    SetBuildChannel(false, "test");
+
     ON_CALL(*locale_helper_mock_, GetLocale()).WillByDefault(Return("en-US"));
+
+    MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+
+    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+                          "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
 
     MockLoad(ads_client_mock_);
     MockLoadUserModelForId(ads_client_mock_);
@@ -82,40 +96,49 @@ class BatAdsPacingTest : public ::testing::Test {
     MockRunDBTransaction(ads_client_mock_, database_);
 
     Initialize(ads_);
+    SetupTestAds();
+  }
 
-    info_1_.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
-    info_1_.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
-    info_1_.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
-    info_1_.start_at_timestamp = DistantPast();
-    info_1_.end_at_timestamp = DistantFuture();
-    info_1_.daily_cap = 1;
-    info_1_.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
-    info_1_.priority = 1;
-    info_1_.per_day = 3;
-    info_1_.total_max = 4;
-    info_1_.category = "Technology & Computing-Software";
-    info_1_.geo_targets = {"US"};
-    info_1_.target_url = "https://brave.com";
-    info_1_.title = "Test Ad 1 Title";
-    info_1_.body = "Test Ad 1 Body";
-    info_1_.ptr = 1.0;
+  void SetupTestAds() {
+    CreativeAdNotificationInfo ad_creative;
 
-    info_2_.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
-    info_2_.creative_set_id = "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
-    info_2_.campaign_id = "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
-    info_2_.start_at_timestamp = DistantPast();
-    info_2_.end_at_timestamp = DistantFuture();
-    info_2_.daily_cap = 1;
-    info_2_.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
-    info_2_.priority = 2;
-    info_2_.per_day = 3;
-    info_2_.total_max = 4;
-    info_2_.category = "Food & Drink";
-    info_2_.geo_targets = {"US"};
-    info_2_.target_url = "https://brave.com";
-    info_2_.title = "Test Ad 2 Title";
-    info_2_.body = "Test Ad 2 Body";
-    info_2_.ptr = 1.0;
+    ad_creative.creative_instance_id = "3519f52c-46a4-4c48-9c2b-c264c0067f04";
+    ad_creative.creative_set_id = "c2ba3e7d-f688-4bc4-a053-cbe7ac1e6123";
+    ad_creative.campaign_id = "84197fc8-830a-4a8e-8339-7a70c2bfa104";
+    ad_creative.start_at_timestamp = DistantPast();
+    ad_creative.end_at_timestamp = DistantFuture();
+    ad_creative.daily_cap = 1;
+    ad_creative.advertiser_id = "5484a63f-eb99-4ba5-a3b0-8c25d3c0e4b2";
+    ad_creative.priority = 1;
+    ad_creative.per_day = 3;
+    ad_creative.total_max = 4;
+    ad_creative.category = "Technology & Computing-Software";
+    ad_creative.geo_targets = {"US"};
+    ad_creative.target_url = "https://brave.com";
+    ad_creative.title = "Test Ad 1 Title";
+    ad_creative.body = "Test Ad 1 Body";
+    ad_creative.ptr = 1.0;
+
+    test_creative_notifications_.push_back(ad_creative);
+
+    ad_creative.creative_instance_id = "a1ac44c2-675f-43e6-ab6d-500614cafe63";
+    ad_creative.creative_set_id = "5800049f-cee5-4bcb-90c7-85246d5f5e7c";
+    ad_creative.campaign_id = "3d62eca2-324a-4161-a0c5-7d9f29d10ab0";
+    ad_creative.start_at_timestamp = DistantPast();
+    ad_creative.end_at_timestamp = DistantFuture();
+    ad_creative.daily_cap = 1;
+    ad_creative.advertiser_id = "9a11b60f-e29d-4446-8d1f-318311e36e0a";
+    ad_creative.priority = 2;
+    ad_creative.per_day = 3;
+    ad_creative.total_max = 4;
+    ad_creative.category = "Food & Drink";
+    ad_creative.geo_targets = {"US"};
+    ad_creative.target_url = "https://brave.com";
+    ad_creative.title = "Test Ad 2 Title";
+    ad_creative.body = "Test Ad 2 Body";
+    ad_creative.ptr = 1.0;
+
+    test_creative_notifications_.push_back(ad_creative);
   }
 
   void TearDown() override {
@@ -132,15 +155,16 @@ class BatAdsPacingTest : public ::testing::Test {
   std::unique_ptr<AdsClientMock> ads_client_mock_;
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
   std::unique_ptr<Database> database_;
 
-  CreativeAdNotificationInfo info_1_, info_2_;
+  std::vector<CreativeAdNotificationInfo> test_creative_notifications_;
 };
 
 TEST_F(BatAdsPacingTest, PacingDisableDelivery) {
   CreativeAdNotificationList creative_ad_notifications;
-  info_1_.ptr = 0;
-  creative_ad_notifications.push_back(info_1_);
+  test_creative_notifications_[0].ptr = 0;
+  creative_ad_notifications.push_back(test_creative_notifications_[0]);
 
   int iterations = 1000;
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(0);
@@ -152,8 +176,8 @@ TEST_F(BatAdsPacingTest, PacingDisableDelivery) {
 
 TEST_F(BatAdsPacingTest, NoPacing) {
   CreativeAdNotificationList creative_ad_notifications;
-  info_1_.ptr = 1.0;
-  creative_ad_notifications.push_back(info_1_);
+  test_creative_notifications_[0].ptr = 1.0;
+  creative_ad_notifications.push_back(test_creative_notifications_[0]);
 
   int iterations = 1000;
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_)).Times(iterations);
@@ -165,13 +189,13 @@ TEST_F(BatAdsPacingTest, NoPacing) {
 
 TEST_F(BatAdsPacingTest, SimplePacing) {
   CreativeAdNotificationList creative_ad_notifications;
-  info_1_.ptr = 0.2;
-  creative_ad_notifications.push_back(info_1_);
+  test_creative_notifications_[0].ptr = 0.2;
+  creative_ad_notifications.push_back(test_creative_notifications_[0]);
 
   int iterations = 1000;
   EXPECT_CALL(*ads_client_mock_, ShowNotification(_))
-      .Times(Between(iterations * info_1_.ptr * 0.8,
-                     iterations * info_1_.ptr * 1.2));
+      .Times(Between(iterations * test_creative_notifications_[0].ptr * 0.8,
+                     iterations * test_creative_notifications_[0].ptr * 1.2));
 
   for (int i = 0; i < iterations; i++) {
     ads_->ServeAdNotificationWithPacing(creative_ad_notifications);
@@ -180,12 +204,12 @@ TEST_F(BatAdsPacingTest, SimplePacing) {
 
 TEST_F(BatAdsPacingTest, NoPacingPrioritized) {
   CreativeAdNotificationList creative_ad_notifications;
-  creative_ad_notifications.push_back(info_1_);
-  creative_ad_notifications.push_back(info_2_);
+  creative_ad_notifications.push_back(test_creative_notifications_[0]);
+  creative_ad_notifications.push_back(test_creative_notifications_[1]);
 
-  EXPECT_CALL(
-      *ads_client_mock_,
-      ShowNotification(Pointee(IsNotification(info_1_.creative_instance_id))))
+  EXPECT_CALL(*ads_client_mock_,
+              ShowNotification(Pointee(IsNotification(
+                  test_creative_notifications_[0].creative_instance_id))))
       .Times(1);
 
   ads_->ServeAdNotificationWithPacing(creative_ad_notifications);
@@ -193,13 +217,13 @@ TEST_F(BatAdsPacingTest, NoPacingPrioritized) {
 
 TEST_F(BatAdsPacingTest, PacingDisableDeliveryPrioritized) {
   CreativeAdNotificationList creative_ad_notifications;
-  info_1_.ptr = 0;
-  creative_ad_notifications.push_back(info_1_);
-  creative_ad_notifications.push_back(info_2_);
+  test_creative_notifications_[0].ptr = 0;
+  creative_ad_notifications.push_back(test_creative_notifications_[0]);
+  creative_ad_notifications.push_back(test_creative_notifications_[1]);
 
-  EXPECT_CALL(
-      *ads_client_mock_,
-      ShowNotification(Pointee(IsNotification(info_2_.creative_instance_id))))
+  EXPECT_CALL(*ads_client_mock_,
+              ShowNotification(Pointee(IsNotification(
+                  test_creative_notifications_[1].creative_instance_id))))
       .Times(1);
 
   ads_->ServeAdNotificationWithPacing(creative_ad_notifications);
@@ -207,26 +231,28 @@ TEST_F(BatAdsPacingTest, PacingDisableDeliveryPrioritized) {
 
 TEST_F(BatAdsPacingTest, PacingAndPrioritization) {
   CreativeAdNotificationList creative_ad_notifications;
-  info_1_.ptr = 0.5;
-  creative_ad_notifications.push_back(info_1_);
-  info_2_.ptr = 0.5;
-  creative_ad_notifications.push_back(info_2_);
+  test_creative_notifications_[0].ptr = 0.5;
+  creative_ad_notifications.push_back(test_creative_notifications_[0]);
+  test_creative_notifications_[1].ptr = 0.5;
+  creative_ad_notifications.push_back(test_creative_notifications_[1]);
 
   int iterations = 1000;
 
-  EXPECT_CALL(
-      *ads_client_mock_,
-      ShowNotification(Pointee(IsNotification(info_1_.creative_instance_id))))
-      .Times(Between(iterations * info_1_.ptr * 0.8,
-                     iterations * info_1_.ptr * 1.2));
+  EXPECT_CALL(*ads_client_mock_,
+              ShowNotification(Pointee(IsNotification(
+                  test_creative_notifications_[0].creative_instance_id))))
+      .Times(Between(iterations * test_creative_notifications_[0].ptr * 0.8,
+                     iterations * test_creative_notifications_[0].ptr * 1.2));
 
-  // info_2_ ad would be shown probabilistically when info_1_ gets dropped due
-  // to pacing.
-  EXPECT_CALL(
-      *ads_client_mock_,
-      ShowNotification(Pointee(IsNotification(info_2_.creative_instance_id))))
-      .Times(Between(iterations * info_1_.ptr * 0.8 * info_2_.ptr,
-                     iterations * info_1_.ptr * 1.2 * info_2_.ptr));
+  // test_creative_notifications_[1] ad would be shown probabilistically when
+  // test_creative_notifications_[0] gets dropped due to pacing.
+  EXPECT_CALL(*ads_client_mock_,
+              ShowNotification(Pointee(IsNotification(
+                  test_creative_notifications_[1].creative_instance_id))))
+      .Times(Between(iterations * test_creative_notifications_[0].ptr * 0.8 *
+                         test_creative_notifications_[1].ptr,
+                     iterations * test_creative_notifications_[0].ptr * 1.2 *
+                         test_creative_notifications_[1].ptr));
 
   for (int i = 0; i < iterations; i++) {
     ads_->ServeAdNotificationWithPacing(creative_ad_notifications);

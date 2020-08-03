@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/eligible_ads/eligible_ads_filter_factory.h"
 
-#include "bat/ads/internal/eligible_ads/eligible_ads_priority_filter.h"
 #include "bat/ads/internal/eligible_ads/eligible_ads_pacing_filter.h"
+#include "bat/ads/internal/eligible_ads/eligible_ads_priority_filter.h"
 
 namespace ads {
 
