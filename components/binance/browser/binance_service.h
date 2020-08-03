@@ -91,7 +91,6 @@ class BinanceService : public KeyedService {
 
   std::string GetBinanceTLD();
   std::string GetOAuthClientUrl();
-  static std::string GetCodeChallenge(const std::string& code_verifier);
   void SetAuthToken(const std::string& auth_token);
 
  private:

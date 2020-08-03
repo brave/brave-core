@@ -23,6 +23,7 @@ source_set("browser") {
 
   deps = [
     "//base",
+    "//brave/components/crypto_exchange/browser",
     "//components/prefs:prefs",
     "//components/keyed_service/content",
     "//components/keyed_service/core",

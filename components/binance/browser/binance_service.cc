@@ -14,7 +14,6 @@
 #include "base/containers/flat_set.h"
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
@@ -22,14 +21,13 @@
 #include "base/token.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/binance_json_parser.h"
+#include "brave/components/crypto_exchange/browser/crypto_exchange_oauth_util.h"
 #include "components/country_codes/country_codes.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
-#include "crypto/random.h"
-#include "crypto/sha2.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -72,15 +70,6 @@ GURL GetURLWithPath(const std::string& host, const std::string& path) {
   return GURL(std::string(url::kHttpsScheme) + "://" + host).Resolve(path);
 }
 
-std::string GetHexEncodedCryptoRandomSeed() {
-  const size_t kSeedByteLength = 32;
-  // crypto::RandBytes is fail safe.
-  uint8_t random_seed_bytes[kSeedByteLength];
-  crypto::RandBytes(random_seed_bytes, kSeedByteLength);
-  return base::HexEncode(
-      reinterpret_cast<char*>(random_seed_bytes), kSeedByteLength);
-}
-
 }  // namespace
 
 BinanceService::BinanceService(content::BrowserContext* context)
@@ -98,36 +87,14 @@ BinanceService::BinanceService(content::BrowserContext* context)
 BinanceService::~BinanceService() {
 }
 
-// static
-std::string BinanceService::GetCodeChallenge(const std::string& code_verifier) {
-  std::string code_challenge;
-  char raw[crypto::kSHA256Length] = {0};
-  crypto::SHA256HashString(code_verifier,
-                           raw,
-                           crypto::kSHA256Length);
-  base::Base64Encode(base::StringPiece(raw,
-                                       crypto::kSHA256Length),
-                                       &code_challenge);
-
-  // Binance expects the following conversions for the base64 encoded value:
-  std::replace(code_challenge.begin(), code_challenge.end(), '+', '-');
-  std::replace(code_challenge.begin(), code_challenge.end(), '/', '_');
-  code_challenge.erase(std::find_if(code_challenge.rbegin(),
-      code_challenge.rend(), [](int ch) {
-    return ch != '=';
-  }).base(), code_challenge.end());
-
-  return code_challenge;
-}
-
 std::string BinanceService::GetOAuthClientUrl() {
   // The code_challenge_ value is derived from the code_verifier value.
   // Step 1 of the oauth process uses the code_challenge_ value.
   // Step 4 of the oauth process uess the code_verifer_.
   // We never need to persist these values, they are just used to get an
   // access token.
-  code_verifier_ = GetHexEncodedCryptoRandomSeed();
-  code_challenge_ = GetCodeChallenge(code_verifier_);
+  code_verifier_ = crypto_exchange::GetCryptoRandomString(true);
+  code_challenge_ = crypto_exchange::GetCodeChallenge(code_verifier_, true);
 
   GURL url(oauth_url);
   url = net::AppendQueryParameter(url, "response_type", "code");

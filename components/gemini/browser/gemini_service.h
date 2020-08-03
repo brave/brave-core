@@ -142,6 +142,8 @@ class GeminiService : public KeyedService {
   std::string auth_token_;
   std::string access_token_;
   std::string refresh_token_;
+  std::string code_challenge_;
+  std::string code_verifier_;
   std::string client_id_;
   std::string client_secret_;
   std::string oauth_host_;

@@ -1,0 +1,7 @@
+import("//brave/build/config.gni")
+import("//brave/components/binance/browser/buildflags/buildflags.gni")
+import("//brave/components/gemini/browser/buildflags/buildflags.gni")
+
+declare_args() {
+  crypto_exchanges_enabled = binance_enabled || gemini_enabled
+}

@@ -14,12 +14,12 @@
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
 #include "base/json/json_writer.h"
-#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/token.h"
+#include "brave/components/crypto_exchange/browser/crypto_exchange_oauth_util.h"
 #include "brave/components/gemini/browser/gemini_json_parser.h"
 #include "brave/components/gemini/browser/pref_names.h"
 #include "components/os_crypt/os_crypt.h"
@@ -27,7 +27,6 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
-#include "crypto/random.h"
 #include "net/base/load_flags.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -106,15 +105,6 @@ namespace {
     return encoded_payload;
   }
 
-  std::string GetEncodedCryptoRandomCSRF() {
-    uint8_t random_seed_bytes[24];
-    crypto::RandBytes(random_seed_bytes, 24);
-    std::string encoded_csrf;
-    base::Base64Encode(
-      reinterpret_cast<char*>(random_seed_bytes), &encoded_csrf);
-    return encoded_csrf;
-  }
-
 }  // namespace
 
 GeminiService::GeminiService(content::BrowserContext* context)
@@ -135,11 +125,16 @@ GeminiService::~GeminiService() {
 
 std::string GeminiService::GetOAuthClientUrl() {
   GURL url(oauth_url);
+  code_verifier_ = crypto_exchange::GetCryptoRandomString(false);
+  code_challenge_ = crypto_exchange::GetCodeChallenge(code_verifier_, false);
   url = net::AppendQueryParameter(url, "response_type", "code");
   url = net::AppendQueryParameter(url, "client_id", client_id_);
   url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
   url = net::AppendQueryParameter(url, "scope", oauth_scope);
-  url = net::AppendQueryParameter(url, "state", GetEncodedCryptoRandomCSRF());
+  url = net::AppendQueryParameter(url, "code_challenge", code_challenge_);
+  url = net::AppendQueryParameter(url, "code_challenge_method", "S256");
+  url = net::AppendQueryParameter(
+      url, "state", ::crypto_exchange::GetCryptoRandomString(false));
   return url.spec();
 }
 
@@ -157,6 +152,7 @@ bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
   dict.SetStringKey("client_secret", client_secret_);
   dict.SetStringKey("code", auth_token_);
   dict.SetStringKey("redirect_uri", oauth_callback);
+  dict.SetStringKey("code_verifier", code_verifier_);
   dict.SetStringKey("grant_type", "authorization_code");
   std::string request_body = CreateJSONRequestBody(dict);
 
@@ -260,6 +256,8 @@ void GeminiService::OnRevokeAccessToken(
     const std::map<std::string, std::string>& headers) {
   bool success = status >= 200 && status <= 299;
   if (success) {
+    code_challenge_ = "";
+    code_verifier_ = "";
     ResetAccessTokens();
   }
   std::move(callback).Run(success);
