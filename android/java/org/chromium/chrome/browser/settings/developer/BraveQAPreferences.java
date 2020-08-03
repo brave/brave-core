@@ -28,7 +28,7 @@ import androidx.preference.Preference.OnPreferenceChangeListener;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.FileUtils;
 import org.chromium.base.Log;
-import org.chromium.base.PathUtils;
+import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -200,23 +200,31 @@ public class BraveQAPreferences extends BravePreferenceFragment
             mUseRewardsStagingServer = (boolean) newValue;
             mMaximizeAdsNumber.setEnabled((boolean) newValue);
             enableMaximumAdsNumber(((boolean) newValue) && mMaximizeAdsNumber.isChecked());
-        } else if (PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())) {
-            changeSyncServer((boolean) newValue);
-            BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER.equals(preference.getKey())) {
             enableMaximumAdsNumber((boolean) newValue);
-        } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey())) {
+        } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey()) ||
+            PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())) {
             setOnPreferenceValue(preference.getKey(), (boolean)newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         }
         return true;
     }
 
-    private void setOnPreferenceValue(String preferenceName, boolean newValue) {
+    private static void setOnPreferenceValue(String preferenceName, boolean newValue) {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(preferenceName, newValue);
         sharedPreferencesEditor.apply();
+    }
+
+    private static boolean getPreferenceValue(String preferenceName) {
+        SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
+        return sharedPreferences.getBoolean(preferenceName, false);
+    }
+
+    @CalledByNative
+    public static boolean isSyncStagingUsed() {
+        return getPreferenceValue(PREF_USE_SYNC_STAGING_SERVER);
     }
 
     private void checkQACode() {
@@ -343,33 +351,6 @@ public class BraveQAPreferences extends BravePreferenceFragment
                 return;
             }
             requestRestart(true);
-        }
-    }
-
-    private String getSyncStagingServerMarkerPath() {
-        String dataDirectory = PathUtils.getDataDirectory();
-        String markerPath = dataDirectory + "/"
-                + "use_staging_sync_server";
-        return markerPath;
-    }
-
-    private boolean isSyncStagingUsed() {
-        File file = new File(getSyncStagingServerMarkerPath());
-        return file.exists();
-    }
-
-    private void changeSyncServer(boolean useStaging) {
-        File file = new File(getSyncStagingServerMarkerPath());
-        if (useStaging) {
-            // Create marker file
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                Log.w("SYNC", "cannot create sync staging server marker file", e);
-            }
-        } else {
-            // Remove marker file
-            file.delete();
         }
     }
 

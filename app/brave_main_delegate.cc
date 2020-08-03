@@ -10,7 +10,6 @@
 #include <unordered_set>
 
 #include "base/base_switches.h"
-#include "base/files/file_util.h"
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
 #include "base/task/post_task.h"
@@ -56,7 +55,8 @@
 #endif
 
 #if defined(OS_ANDROID)
-#include "base/android/path_utils.h"
+#include "base/android/jni_android.h"
+#include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
 #endif
 
 namespace {
@@ -253,34 +253,21 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 void BraveMainDelegate::AdjustSyncServiceUrlForAndroid(
     std::string* brave_sync_service_url) {
   DCHECK_NE(brave_sync_service_url, nullptr);
-  const char kProcessTypeHost[] = "host";
   const char kProcessTypeSwitchName[] = "type";
 
   // On Android we can detect data dir only on host process, and we cannot
   // for example on renderer or gpu-process, because JNI is not initialized
   // And no sense to override sync service url for them in anyway
-  std::string process_type = kProcessTypeHost;
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
           kProcessTypeSwitchName)) {
-    process_type = base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-        kProcessTypeSwitchName);
-  }
-
-  if (process_type != kProcessTypeHost) {
+    // This is something other than browser process
     return;
   }
 
-  base::FilePath data_directory;
-  bool get_dir_result = base::android::GetDataDirectory(&data_directory);
-  if (!get_dir_result) {
-    return;
-  }
-
-  const char kStagingSyncServerMarkerName[] = "use_staging_sync_server";
-  base::FilePath staging_marker_path =
-      data_directory.Append(kStagingSyncServerMarkerName);
-  if (base::PathExists(staging_marker_path)) {
-    // we have found marker file
+  JNIEnv* env = base::android::AttachCurrentThread();
+  bool b_use_staging_sync_server =
+      Java_BraveQAPreferences_isSyncStagingUsed(env);
+  if (b_use_staging_sync_server) {
     *brave_sync_service_url = kBraveSyncServiceStagingURL;
   }
 }
