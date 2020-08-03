@@ -64,6 +64,7 @@ brave_java_resources = [
   "java/res/drawable/rect_up_round_corners_12.xml",
   "java/res/drawable/enable_rewards_button.xml",
   "java/res/drawable/shields_tooltip_background.xml",
+  "java/res/drawable/sync_icon.xml",
   "java/res/drawable-hdpi/check.png",
   "java/res/drawable-hdpi/btn_bookmark.png",
   "java/res/drawable-hdpi/arrow_forward.png",

@@ -8,6 +8,7 @@
 #include <cstddef>
 
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "build/build_config.h"
@@ -33,7 +34,7 @@ const char* const kBravePrefsExposedToJava[] = {
     ntp_background_images::prefs::kNewTabPageShowBackgroundImage,
     kTopSiteSuggestionsEnabled,
     kBraveSuggestedSiteSuggestionsEnabled,
-    brave_rewards::prefs::kBraveRewardsEnabled
+    brave_rewards::prefs::kBraveRewardsEnabled,
 };
 
 static const int kBravePrefOffset = 10000;
