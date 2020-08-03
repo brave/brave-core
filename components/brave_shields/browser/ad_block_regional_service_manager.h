@@ -40,7 +40,6 @@ class AdBlockRegionalServiceManager {
   explicit AdBlockRegionalServiceManager(BraveComponent::Delegate* delegate);
   ~AdBlockRegionalServiceManager();
 
-  bool IsSupportedLocale(const std::string& locale);
   std::unique_ptr<base::ListValue> GetRegionalLists();
 
   void SetRegionalCatalog(std::vector<adblock::FilterList> catalog);
