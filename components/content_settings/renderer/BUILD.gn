@@ -1,6 +1,8 @@
 import("//build/config/features.gni")
 
 source_set("renderer") {
+  # Remove when https://github.com/brave/brave-browser/issues/10637 is resolved
+  check_includes = false
   visibility = [
     "//chrome/renderer/*",
     "//components/content_settings/renderer/*",
@@ -18,7 +20,6 @@ source_set("renderer") {
     "//base",
     "//brave/common",
     "//brave/components/brave_shields/common",
-    "//brave/third_party/blink/renderer:renderer",
     "//chrome/common",
     "//components/content_settings/core/common",
     "//components/content_settings/renderer",
@@ -26,7 +27,6 @@ source_set("renderer") {
     "//mojo/public/cpp/bindings",
     "//services/service_manager/public/cpp",
     "//third_party/blink/public:blink",
-    "//third_party/blink/public/mojom:mojom_platform_blink",
     "//brave/content:common",
     "//url",
   ]
