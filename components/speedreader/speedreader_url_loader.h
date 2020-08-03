@@ -27,7 +27,7 @@
 namespace speedreader {
 
 class SpeedReaderThrottle;
-class SpeedreaderWhitelist;
+class SpeedreaderRewriterService;
 
 // Loads the whole response body and tries to Speedreader-distill it.
 // Cargoculted from |`SniffingURLLoader|.
@@ -72,7 +72,7 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   CreateLoader(base::WeakPtr<SpeedReaderThrottle> throttle,
                const GURL& response_url,
                scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-               SpeedreaderWhitelist* whitelist);
+               SpeedreaderRewriterService* rewriter_service);
 
  private:
   SpeedReaderURLLoader(base::WeakPtr<SpeedReaderThrottle> throttle,
@@ -80,7 +80,7 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
                        mojo::PendingRemote<network::mojom::URLLoaderClient>
                            destination_url_loader_client,
                        scoped_refptr<base::SingleThreadTaskRunner> task_runner,
-                       SpeedreaderWhitelist* whitelist);
+                       SpeedreaderRewriterService* rewriter_service);
 
   // network::mojom::URLLoaderClient implementation (called from the source of
   // the response):
@@ -148,7 +148,7 @@ class SpeedReaderURLLoader : public network::mojom::URLLoaderClient,
   mojo::SimpleWatcher body_producer_watcher_;
 
   // Not Owned
-  SpeedreaderWhitelist* whitelist_;
+  SpeedreaderRewriterService* rewriter_service_;
 
   base::WeakPtrFactory<SpeedReaderURLLoader> weak_factory_{this};
 };

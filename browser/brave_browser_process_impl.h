@@ -59,7 +59,7 @@ class BraveTorClientUpdater;
 }
 
 namespace speedreader {
-class SpeedreaderWhitelist;
+class SpeedreaderRewriterService;
 }
 
 namespace brave_user_model {
@@ -100,9 +100,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 #endif
   brave::BraveStatsUpdater* brave_stats_updater();
   ntp_background_images::NTPBackgroundImagesService*
-      ntp_background_images_service();
+  ntp_background_images_service();
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader::SpeedreaderWhitelist* speedreader_whitelist();
+  speedreader::SpeedreaderRewriterService* speedreader_rewriter_service();
 #endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   brave_user_model::UserModelFileService* user_model_file_service();
@@ -123,7 +123,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   void OnBraveDarkModeChanged();
 
   brave_component_updater::BraveComponent::Delegate*
-      brave_component_updater_delegate();
+  brave_component_updater_delegate();
 
   // local_data_files_service_ should always be first because it needs
   // to be destroyed last
@@ -163,7 +163,8 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       ntp_background_images_service_;
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  std::unique_ptr<speedreader::SpeedreaderWhitelist> speedreader_whitelist_;
+  std::unique_ptr<speedreader::SpeedreaderRewriterService>
+      speedreader_rewriter_service_;
 #endif
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)

@@ -75,7 +75,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-#include "brave/components/speedreader/speedreader_whitelist.h"
+#include "brave/components/speedreader/speedreader_rewriter_service.h"
 #endif
 
 #if defined(OS_ANDROID)
@@ -198,7 +198,7 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   greaselion_download_service();
 #endif
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-  speedreader_whitelist();
+  speedreader_rewriter_service();
 #endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   user_model_file_service();
@@ -397,13 +397,14 @@ void BraveBrowserProcessImpl::CreateNotificationPlatformBridge() {
 }
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
-speedreader::SpeedreaderWhitelist*
-BraveBrowserProcessImpl::speedreader_whitelist() {
-  if (!speedreader_whitelist_) {
-    speedreader_whitelist_.reset(new speedreader::SpeedreaderWhitelist(
-        brave_component_updater_delegate()));
+speedreader::SpeedreaderRewriterService*
+BraveBrowserProcessImpl::speedreader_rewriter_service() {
+  if (!speedreader_rewriter_service_) {
+    speedreader_rewriter_service_.reset(
+        new speedreader::SpeedreaderRewriterService(
+            brave_component_updater_delegate()));
   }
-  return speedreader_whitelist_.get();
+  return speedreader_rewriter_service_.get();
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
 
