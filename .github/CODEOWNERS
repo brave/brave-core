@@ -55,3 +55,16 @@ components/brave_sync/ @darkdh
 components/sync/driver/ @darkdh
 chromium_src/components/sync/ @darkdh
 chromium_src/components/sync_device_info/device_info_sync_bridge.cc @darkdh
+
+# Speedreader
+browser/speedreader/ @iefremov
+components/speedreader/ @iefremov
+
+# P3A
+browser/p3a/ @iefremov
+components/brave_prochlo/ @iefremov
+components/p3a/ @iefremov
+components/weekly_storage/ @iefremov
+
+# Perf predictor
+components/brave_perf_predictor/ @iefremov
