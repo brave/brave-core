@@ -268,8 +268,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             Preferences.VPN.appLaunchCountForVPNPopup.value += 1
         }
         
-        if isFirstLaunch {
+        // Search engine setup must be checked outside of 'firstLaunch' loop because of #2770.
+        // There was a bug that when you skipped onboarding, default search engine preference
+        // was not set.
+        if Preferences.Search.defaultEngineName.value == nil {
             profile?.searchEngines.searchEngineSetup()
+        }
+        
+        if isFirstLaunch {
             Preferences.DAU.installationDate.value = Date()
             
             // VPN credentials are kept in keychain and persist between app reinstalls.
