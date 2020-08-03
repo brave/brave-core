@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/crypto_exchange/browser/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "CRYPTO_EXCHANGES_ENABLED=$crypto_exchanges_enabled",
+  ]
+}

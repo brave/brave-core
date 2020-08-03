@@ -21,6 +21,7 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/common:pref_names",
+    "//brave/components/crypto_exchange/browser",
     "//components/country_codes:country_codes",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
