@@ -52,6 +52,7 @@ fixup_replacements = [
      r'Google Safe Browsing (protects you and your device from dangerous sites)'),
     (r'Sends URLs of some pages you visit to Brave', r'Sends URLs of some pages you visit to Google'),
     (r'Google Google', r'Google'),
+    (r'Brave Account', r'Brave sync chain'),
 ]
 
 

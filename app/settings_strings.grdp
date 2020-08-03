@@ -246,7 +246,7 @@
     Edit card
   </message>
   <message name="IDS_SETTINGS_PAYMENTS_MANAGE_CREDIT_CARDS" desc="Shown in the payments section of settings. Descriptive text to inform the user that credit cards can be accessed online. Has a link.">
-   To add or manage Brave Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave Account<ph name="END_LINK">&lt;/a&gt;</ph>
+   To add or manage Brave Pay payment methods, visit your <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
     <message name="IDS_SETTINGS_PAYMENTS_SAVED_TO_THIS_DEVICE_ONLY" desc="Shown in the payments section of settings. Descriptive text to inform the user that this credit card will be saved to local device only.">
    This card will be saved to this device only
@@ -255,7 +255,7 @@
     Add card
   </message>
   <message name="IDS_SETTINGS_MIGRATABLE_CARDS_LABEL" desc="Label for the field to migrate the locally cached credit card to Brave Payments. Clicking this will upload migratable credit cards to Brave Payments.">
-    Save cards in your Brave Account
+    Save cards in your Brave sync chain
   </message>
   <message name="IDS_SETTINGS_SINGLE_MIGRATABLE_CARD_INFO" desc="Display text under the save cards to Brave Pay label. This text indicates one of local cards can only be used on this device.">
     Right now, you have one card that can only be used on this device
@@ -393,7 +393,7 @@
     Warn you if passwords are exposed in a data breach
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_LEAK_DETECTION_SIGNED_OUT_ENABLED_DESC" desc="Text that describes the 'Password Leak Detection' functionality to signed-out users who have not disabled the feature.">
-    When you sign in to your Brave Account, this feature is turned on
+    When you sign in to your Brave sync chain, this feature is turned on
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_SAVED_HEADING" desc="The title for a list of username/site/password items. These items are already saved by the browser and can be deleted/edited.">
     Saved Passwords
@@ -457,14 +457,14 @@
   </message>
   <!-- TODO(crbug.com/1062344): Make it translateable and add translation screenshots once final mocks are available. -->
   <message translateable="false" name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_ACCOUNT" desc="Label for an undo tooltip following deletion of a password from the account.">
-    Password deleted from your Brave Account
+    Password deleted from your Brave sync chain
   </message>
   <!-- TODO(crbug.com/1062344): Make it translateable and add translation screenshots once final mocks are available. -->
   <message translateable="false" name="IDS_SETTINGS_PASSWORD_DELETED_PASSWORD_FROM_DEVICE" desc="Label for an undo tooltip following deletion of a password from the device.">
     Password deleted from this device
   </message>
   <message name="IDS_SETTINGS_PASSWORDS_MANAGE_PASSWORDS" desc="Shown in the passwords section of settings. Descriptive text to inform that passwords can be accessed online. Has a link.">
-    View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave Account<ph name="END_LINK">&lt;/a&gt;</ph>
+    View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
   <!-- TODO(crbug.com/1062344): Make it translateable and use definitive label once final mocks are available. -->
   <message translateable="false" name="IDS_SETTINGS_PASSWORDS_OPT_IN_ACCOUNT_STORAGE_LABEL" desc="Label for a button in the passwords section of settings triggering opt in to passwords account storage.">
@@ -754,16 +754,16 @@
     Time range
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC" desc="Description in the footer of the Clear Browsing Data dialog when the user is syncing.">
-    To clear browsing data from this device only, while keeping it in your Brave Account, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from this device only, while keeping it in your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign out<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_ERROR" desc="Description in the footer of the Clear Browsing Data dialog when there is a sync error.">
-    To clear browsing data from all of your synced devices and your Brave Account, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>visit sync settings<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>visit sync settings<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_PASSPHRASE_ERROR" desc="Description in the footer of the Clear Browsing Data dialog when there is a sync passphrase error.">
-    To clear browsing data from all of your synced devices and your Brave Account, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>enter your passphrase<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>enter your passphrase<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_DATA_WITH_SYNC_PAUSED" desc="Description in the footer of the Clear Browsing Data dialog when sync is paused.">
-    To clear browsing data from all of your synced devices and your Brave Account, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign in<ph name="END_LINK">&lt;/a&gt;</ph>.
+    To clear browsing data from all of your synced devices and your Brave sync chain, <ph name="BEGIN_LINK">&lt;a href="#" target="_blank"&gt;</ph>sign in<ph name="END_LINK">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY" desc="Checkbox for deleting Browsing History">
     Browsing history
@@ -772,16 +772,16 @@
     Signs you out of most sites.
   </message>
   <message name="IDS_SETTINGS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_WITH_EXCEPTION" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but your Brave sign in will stay.">
-    Signs you out of most sites. You'll stay signed in to your Brave Account so your synced data can be cleared.
+    Signs you out of most sites. You'll stay signed in to your Brave sync chain so your synced data can be cleared.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A subtext for the basic tab explaining browsing history.">
     Clears history and autocompletions in the address bar.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A description explaining other forms of activity for signed in users.">
-    Clears history and autocompletions in the address bar. Your Brave Account may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Clears history and autocompletions in the address bar. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED" desc="A description for the basic tab explaining browsing history for users with history sync.">
-    Clears history from all signed-in devices. Your Brave Account may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;a target='_blank' href='$1'&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_CLEAR_DOWNLOAD_HISTORY" desc="Checkbox for deleting Download History">
     Download history
@@ -1193,7 +1193,7 @@
     Warns you if passwords are exposed in a data breach
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENHANCED_BULLET_FIVE" desc="Fourth bullet point under the safe browsing enhanced protection mode">
-    Sends URLs to Safe Browsing to check them. Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats. Temporarily links this data to your Brave Account when you're signed in, to protect you across Brave apps.
+    Sends URLs to Safe Browsing to check them. Also sends a small sample of pages, downloads, extension activity, and system information to help discover new threats. Temporarily links this data to your Brave sync chain when you're signed in, to protect you across Brave apps.
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_STANDARD" desc="Label for safe browsing standard protection mode">
     Standard protection
@@ -1250,7 +1250,7 @@
     Brave Advanced Protection Program
   </message>
   <message name="IDS_SETTINGS_ADVANCED_PROTECTION_PROGRAM_DESC" desc="Description of the Brave     Advanced Protection Program">
-    Safeguards the personal Brave Accounts of anyone at risk of targeted attacks
+    Safeguards the personal Brave sync chains of anyone at risk of targeted attacks
   </message>
   <message name="IDS_SETTINGS_MANAGE_CERTIFICATES" desc="Text for manage certificates button in Privacy options">
     Manage certificates
@@ -2314,7 +2314,7 @@
     Sign in
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_MANAGED_PROFILE_EXPLANATION" desc="The text to display in the 'Sign out of Brave' dialog to stop syncing for managed profiles.">
-    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Because this account is managed by <ph name="DOMAIN">$1<ex>example.com</ex></ph>, your bookmarks, history, passwords, and other settings will be cleared from this device. However, your data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$2" target="_blank"&gt;<ex>&lt;a href="$2" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_EDIT_PERSON" desc="Title of the edit profile subpage. This is a subpage to edit the name and icon of a Brave Profile.">
     Edit profile
@@ -2342,10 +2342,10 @@
   </if>
 
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing for non-managed profiles.">
-    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave Account. However, your existing data will remain stored in your Brave Account and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
+    Changes to your bookmarks, history, passwords, and other settings will no longer be synced to your Brave sync chain. However, your existing data will remain stored in your Brave sync chain and can be managed on <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;<ex>&lt;a href="$1" target="_blank"&gt;</ex></ph>Brave Dashboard<ph name="END_LINK">&lt;/a&gt;<ex>&lt;/a&gt;</ex></ph>.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_AND_SIGN_OUT_EXPLANATION" desc="The text to display in the Sign out of Brave dialog to stop syncing and sign-out for non-managed profiles.">
-    This will sign you out of your Brave Accounts. Your bookmarks, history, passwords, and more will no longer be synced.
+    This will sign you out of your Brave sync chains. Your bookmarks, history, passwords, and more will no longer be synced.
   </message>
   <message name="IDS_SETTINGS_SYNC_DISCONNECT_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button in the Sign out of Brave dialog that toggles showing the profile stats. Only visible by screen reader software.">
     Show profile stats
@@ -2356,8 +2356,8 @@
   <message name="IDS_SETTINGS_SYNC_WILL_START" desc="The message to tell users that sync will start once they leave the sync setup page.">
     Sync will start once you leave sync settings
   </message>
-  <message name="IDS_SETTINGS_MANAGE_GOOGLE_ACCOUNT" desc="Label for the button that takes the user to the Brave Account website.">
-    Manage your Brave Account
+  <message name="IDS_SETTINGS_MANAGE_GOOGLE_ACCOUNT" desc="Label for the button that takes the user to the Brave sync chain website.">
+    Manage your Brave sync chain
   </message>
   <message name="IDS_SETTINGS_USER_EVENTS_CHECKBOX_LABEL" desc="Label for the checkbox which enables or disables recording user events.">
     Activity and interactions

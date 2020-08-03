@@ -370,7 +370,7 @@ Brave is unable to recover your settings.
       </if>
       <!-- Password generation strings -->
       <message name="IDS_PASSWORD_GENERATION_PROMPT" desc="Autofill dropdown text describing password generation.">
-        Brave will save this password in your Brave Account. You won’t have to remember it.
+        Brave will save this password in your Brave sync chain. You won’t have to remember it.
       </message>
       <!-- Password manager onboarding strings -->
       <message name="IDS_PASSWORD_MANAGER_ONBOARDING_DETAILS_C" desc="The explanation text that is shown below the title in the password manager onboarding dialog.">
@@ -663,10 +663,10 @@ Brave is unable to recover your settings.
           Link your Brave data to this account?
         </message>
         <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITHOUT_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. This message is followed by a 'Learn more' link.">
-          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave Accounts Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
+          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
         </message>
         <message name="IDS_ENTERPRISE_SIGNIN_EXPLANATION_WITH_PROFILE_CREATION" desc="The warning message displayed to an enterprise user about to link their profile to their Brave account. Additionally notifies the user that they can create a new profile instead. This message is followed by a 'Learn more' link.">
-          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave Accounts Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
+          You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords, and other settings will become permanently tied to <ph name="USER_NAME">$1<ex>pat@example.com</ex></ph>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE">$2<ex>Learn more</ex></ph>
         </message>
       </if>
 
@@ -795,7 +795,7 @@ Brave is unable to recover your settings.
           Brave just got better
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_INTRO_TEXT" desc="Main text of the tutorial introduction slide">
-          Now it's easier to use Brave with your Brave Account and on shared computers.
+          Now it's easier to use Brave with your Brave sync chain and on shared computers.
         </message>
         <message name="IDS_USER_MANAGER_TUTORIAL_SLIDE_YOUR_CHROME_TITLE" desc="Title of the slide about personalizing the browser">
           This is your Brave

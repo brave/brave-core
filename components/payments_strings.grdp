@@ -341,7 +341,7 @@
   </message>
   <if expr="is_android">
     <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_IN" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is signed in." formatter_data="android_java">
-      Cards and addresses are from Brave and your Brave Account (<ph name="ACCOUNT_EMAIL">%1$s<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
+      Cards and addresses are from Brave and your Brave sync chain (<ph name="ACCOUNT_EMAIL">%1$s<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
     </message>
     <message name="IDS_PAYMENT_TOUCH_SENSOR_TO_PAY" desc="A prompt for the user to place the finger on the fingerprint scanner, which will confirm payment transaction." formatter_data="android_java">
       Touch sensor to pay
@@ -352,7 +352,7 @@
   </if>
   <if expr="not is_android">
     <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_IN" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is signed in.">
-      Cards and addresses are from Brave and your Brave Account (<ph name="ACCOUNT_EMAIL">$1<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
+      Cards and addresses are from Brave and your Brave sync chain (<ph name="ACCOUNT_EMAIL">$1<ex>johndoe@gmail.com</ex></ph>). You can manage them in <ph name="BEGIN_LINK">BEGIN_LINK</ph>Settings<ph name="END_LINK">END_LINK</ph>.
     </message>
   </if>
   <message name="IDS_PAYMENTS_CARD_AND_ADDRESS_SETTINGS_SIGNED_OUT" desc="Label of the section containing the origin description and the link to go to the settings page for card and address options. This label is used when the user is not signed in." formatter_data="android_java">
