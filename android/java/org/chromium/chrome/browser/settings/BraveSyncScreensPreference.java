@@ -72,7 +72,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveSyncWorker;
-import org.chromium.chrome.browser.BraveSyncWorkerHolder;
+import org.chromium.chrome.browser.BraveSyncReflectionUtils;
 import org.chromium.chrome.browser.qrreader.BarcodeTracker;
 import org.chromium.chrome.browser.qrreader.BarcodeTrackerFactory;
 import org.chromium.chrome.browser.qrreader.CameraSource;
@@ -163,7 +163,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private FrameLayout mLayoutLaptop;
 
     BraveSyncWorker getBraveSyncWorker() {
-        Object object = BraveSyncWorkerHolder.get();
+        Object object = BraveSyncReflectionUtils.getSyncWorker();
         if (object == null) {
             return null;
         }

@@ -5,7 +5,7 @@
 
 package org.chromium.chrome.browser;
 
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
@@ -13,13 +13,13 @@ import org.chromium.chrome.browser.BraveConfig;
 
 // The purpose of this class is to hide BraveSyncWorker object under `enable_brave_sync`
 // and create it without explict import
-public class BraveSyncWorkerHolder {
+public class BraveSyncReflectionUtils {
 
     private static Object sBraveSyncWorker = null;
     private static boolean sInitialized = false;
     private static String TAG = "SYNC";
 
-    public static Object get() {
+    public static Object getSyncWorker() {
         // May be invoked in non-UI thread when we do validation for camera QR in callback
         if (!sInitialized) {
             if (BraveConfig.SYNC_ENABLED) {
@@ -28,20 +28,25 @@ public class BraveSyncWorkerHolder {
                         Class.forName("org.chromium.chrome.browser.BraveSyncWorker")
                              .getConstructor()
                              .newInstance();
-                } catch (ClassNotFoundException e) {
-                    Log.e(TAG, "Cannot create BraveSyncWorker ClassNotFoundException", e);
-                } catch (NoSuchMethodException e) {
-                    Log.e(TAG, "Cannot create BraveSyncWorker NoSuchMethodException", e);
-                } catch (IllegalAccessException e) {
-                    Log.e(TAG, "Cannot create BraveSyncWorker IllegalAccessException", e);
-                } catch (InstantiationException e) {
-                    Log.e(TAG, "Cannot create BraveSyncWorker InstantiationException", e);
-                } catch (InvocationTargetException e) {
-                    Log.e(TAG, "Cannot create BraveSyncWorker InvocationTargetException", e);
+                } catch (Exception e) {
+                    Log.e(TAG, "Cannot create BraveSyncWorker ", e);
                 }
             }
             sInitialized = true;
         }
         return sBraveSyncWorker;
+    }
+
+    public static void showInformers() {
+        if (!BraveConfig.SYNC_ENABLED) {
+            return;
+        }
+
+        try {
+            Method method = Class.forName("org.chromium.chrome.browser.BraveSyncInformers").getDeclaredMethod("show");
+            method.invoke(null);
+        } catch (Exception e) {
+            Log.e(TAG, "Cannot show sync informers with reflection ", e);
+        }
     }
 }
