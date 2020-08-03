@@ -133,7 +133,8 @@ class AdsService : public KeyedService {
       const bool flagged,
       OnToggleFlagAdCallback callback) = 0;
 
-  virtual void ResetAllState() = 0;
+  virtual void ResetAllState(
+      const bool should_shutdown) = 0;
 };
 
 }  // namespace brave_ads

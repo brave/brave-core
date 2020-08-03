@@ -363,9 +363,6 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       rewards_base_path_(profile_->GetPath().Append(kRewardsStatePath)),
       notification_service_(new RewardsNotificationServiceImpl(profile)),
       next_timer_id_(0) {
-  file_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
-                                rewards_base_path_));
   // Set up the rewards data source
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));
@@ -417,6 +414,10 @@ void RewardsServiceImpl::StartLedger() {
     BLOG(1, "Ledger process is already running");
     return;
   }
+
+  file_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
+                                rewards_base_path_));
 
   rewards_database_ =
       std::make_unique<RewardsDatabase>(publisher_info_db_path_);
@@ -3952,7 +3953,7 @@ void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
 
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service) {
-    ads_service->ResetAllState();
+    ads_service->ResetAllState(/* should_shutdown */ true);
   }
 
   StopNotificationTimers();

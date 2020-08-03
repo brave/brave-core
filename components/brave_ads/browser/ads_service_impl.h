@@ -138,6 +138,9 @@ class AdsServiceImpl : public AdsService,
       const bool flagged,
       OnToggleFlagAdCallback callback) override;
 
+  void ResetAllState(
+      const bool should_shutdown) override;
+
   // AdsClient implementation
   bool IsEnabled() const override;
 
@@ -182,7 +185,9 @@ class AdsServiceImpl : public AdsService,
   void Start();
   void Stop();
 
-  void ResetAllState() override;
+  void ResetState();
+  void OnShutdownAndResetBatAds(
+      const int32_t result);
   void OnResetAllState(
       const bool success);
 
