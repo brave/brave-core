@@ -51,10 +51,6 @@ class SettingsPage extends React.Component<Props, State> {
 
   onToggle = () => {
     this.setState({ mainToggle: !this.state.mainToggle })
-    if (this.props.rewardsData.initializing) {
-      return
-    }
-
     this.actions.toggleEnableMain(!this.props.rewardsData.enabledMain)
   }
 

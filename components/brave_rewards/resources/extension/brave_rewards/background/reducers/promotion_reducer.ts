@@ -35,6 +35,10 @@ const updatePromotion = (newPromotion: RewardsExtension.Promotion, promotions: R
 }
 
 export const promotionPanelReducer: Reducer<RewardsExtension.State | undefined> = (state: RewardsExtension.State, action: any) => {
+  if (!state) {
+    return
+  }
+
   const payload = action.payload
   switch (action.type) {
     case types.FETCH_PROMOTIONS: {
