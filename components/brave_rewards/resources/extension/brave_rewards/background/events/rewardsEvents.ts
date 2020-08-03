@@ -5,8 +5,11 @@
 import rewardsPanelActions from '../actions/rewardsPanelActions'
 
 // Handle all rewards events and pass to actions
-chrome.braveRewards.onWalletInitialized.addListener((result: RewardsExtension.Result) => {
-  rewardsPanelActions.onWalletInitialized(result)
+chrome.braveRewards.walletCreated.addListener(() => {
+  rewardsPanelActions.walletCreated()
+})
+chrome.braveRewards.walletCreationFailed.addListener((result: RewardsExtension.Result) => {
+  rewardsPanelActions.walletCreationFailed(result)
 })
 
 chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: RewardsExtension.Publisher) => {
@@ -116,6 +119,10 @@ chrome.braveRewards.onPromotionFinish.addListener((result: RewardsExtension.Resu
 
 chrome.braveRewards.onCompleteReset.addListener((properties: { success: boolean }) => {
   rewardsPanelActions.onCompleteReset(properties.success)
+})
+
+chrome.braveRewards.initialized.addListener((result: RewardsExtension.Result) => {
+  rewardsPanelActions.initialized()
 })
 
 // Fetch initial data required to refresh state, keeping in mind
