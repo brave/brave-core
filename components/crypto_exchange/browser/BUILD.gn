@@ -1,3 +1,4 @@
+import("//brave/build/config.gni")
 import("//brave/components/crypto_exchange/browser/buildflags/buildflags.gni")
 
 assert(crypto_exchanges_enabled)
@@ -6,13 +7,28 @@ source_set("browser") {
   # Remove when https://github.com/brave/brave-browser/issues/10640 is resolved
   check_includes = false
 
+  public_deps = [
+    "buildflags"
+  ]
+
   sources = [
     "crypto_exchange_oauth_util.cc",
     "crypto_exchange_oauth_util.h",
+    "crypto_exchange_region_util.cc",
+    "crypto_exchange_region_util.h",
   ]
 
   deps = [
     "//base",
+    "//components/country_codes",
     "//crypto",
+  ]
+
+  configs += [ ":crypto_exchange_config" ]
+}
+
+config("crypto_exchange_config") {
+  defines = [
+    "CRYPTO_EXCHANGES_ENABLED=\"crypto_exchanges_enabled\"",
   ]
 }
