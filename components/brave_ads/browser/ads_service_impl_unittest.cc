@@ -34,6 +34,7 @@ class MockRewardsService : public RewardsService {
   MockRewardsService() {}
   ~MockRewardsService() {}
 
+  MOCK_METHOD0(IsInitialized, bool());
   MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
   MOCK_METHOD1(
       GetRewardsParameters,
