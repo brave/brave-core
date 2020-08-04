@@ -231,7 +231,8 @@ void BraveReferralsService::OnReferralHeadersLoadComplete(
   base::JSONReader::ValueWithError root =
       base::JSONReader::ReadAndReturnValueWithError(*response_body);
   if (!root.value || !root.value->is_list()) {
-    LOG(ERROR) << "Failed to parse referral headers response";
+    LOG(ERROR) << "Failed to parse referral headers response: "
+               << (!root.value ? root.error_message : "not a list");
     return;
   }
   pref_service_->Set(kReferralHeaders, root.value.value());
@@ -267,7 +268,8 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   base::JSONReader::ValueWithError root =
       base::JSONReader::ReadAndReturnValueWithError(*response_body);
   if (!root.value || !root.value->is_dict()) {
-    LOG(ERROR) << "Failed to parse referral initialization response";
+    LOG(ERROR) << "Failed to parse referral initialization response: "
+               << (!root.value ? root.error_message : "not a dictionary");
     return;
   }
   if (!root.value->FindKey("download_id")) {
@@ -338,7 +340,8 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
   base::JSONReader::ValueWithError root =
       base::JSONReader::ReadAndReturnValueWithError(*response_body);
   if (!root.value) {
-    LOG(ERROR) << "Failed to parse referral finalization check response";
+    LOG(ERROR) << "Failed to parse referral finalization check response: "
+               << root.error_message;
     return;
   }
   const base::Value* finalized = root.value->FindKey("finalized");
