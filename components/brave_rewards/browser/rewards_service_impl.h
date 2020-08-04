@@ -105,6 +105,8 @@ class RewardsServiceImpl : public RewardsService,
   // KeyedService:
   void Shutdown() override;
 
+  bool IsInitialized() override;
+
   void Init(
       std::unique_ptr<RewardsServiceObserver> extension_observer,
       std::unique_ptr<RewardsServicePrivateObserver> private_observer,

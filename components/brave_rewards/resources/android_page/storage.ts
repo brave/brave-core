@@ -79,7 +79,7 @@ export const defaultState: Rewards.State = {
     autoContributeChoices: [],
     rate: 0
   },
-  initializing: false
+  initializing: true
 }
 
 const cleanData = (state: Rewards.State) => {
@@ -100,6 +100,7 @@ export const load = (): Rewards.State => {
   if (data) {
     try {
       state = JSON.parse(data)
+      state.initializing = true
     } catch (e) {
       console.error('Could not parse local storage data: ', e)
     }

@@ -401,6 +401,10 @@ void RewardsServiceImpl::ConnectionClosed() {
       base::TimeDelta::FromSeconds(1));
 }
 
+bool RewardsServiceImpl::IsInitialized() {
+  return Connected() && ready_->is_signaled();
+}
+
 void RewardsServiceImpl::Init(
     std::unique_ptr<RewardsServiceObserver> extension_observer,
     std::unique_ptr<RewardsServicePrivateObserver> private_observer,
