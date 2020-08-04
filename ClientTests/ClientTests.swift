@@ -52,7 +52,9 @@ class ClientTests: XCTestCase {
 
     fileprivate func hostIsValid(_ host: String) -> Bool {
         let expectation = self.expectation(description: "Validate host for \(host)")
-        var request = URLRequest(url: URL(string: "http://\(host):6571/about/license")!)
+        let port = WebServer.sharedInstance.port
+        
+        var request = URLRequest(url: URL(string: "http://\(host):\(port)/about/license")!)
         var response: HTTPURLResponse?
         
         let username = WebServer.sharedInstance.credentials.user ?? ""
