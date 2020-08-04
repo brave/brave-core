@@ -16,9 +16,9 @@ enum TabType: Int, CustomDebugStringConvertible {
     var debugDescription: String {
         switch self {
         case .regular:
-            return "Regular tab"
+            return "Regular Tab"
         case .private:
-            return "Private tab"
+            return "Private Tab"
         }
     }
     
