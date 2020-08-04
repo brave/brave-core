@@ -27,8 +27,11 @@ class NetworkManager {
         }
     }
     
+    /// - parameter checkLastServerSideModification: If true, the `CachedNetworkResource` will contain a timestamp
+    /// when the file was last time modified on the server.
     func downloadResource(with url: URL, resourceType: NetworkResourceType,
-                          retryTimeout: TimeInterval? = 60) -> Deferred<CachedNetworkResource> {
+                          retryTimeout: TimeInterval? = 60,
+                          checkLastServerSideModification: Bool = false) -> Deferred<CachedNetworkResource> {
         let completion = Deferred<CachedNetworkResource>()
         
         var request = URLRequest(url: url)
@@ -55,7 +58,7 @@ class NetworkManager {
                 log.error(err.localizedDescription)
                 if let retryTimeout = retryTimeout {
                     DispatchQueue.main.asyncAfter(deadline: .now() + retryTimeout) {
-                        self.downloadResource(with: url, resourceType: resourceType, retryTimeout: retryTimeout).upon { resource in
+                        self.downloadResource(with: url, resourceType: resourceType, retryTimeout: retryTimeout, checkLastServerSideModification: checkLastServerSideModification).upon { resource in
                             completion.fill(resource)
                         }
                     }
@@ -80,7 +83,20 @@ class NetworkManager {
                 let responseEtag = resourceType.isCached() ?
                     response.allHeaderFields[etagHeader] as? String : nil
                 
-                completion.fill(CachedNetworkResource(data: data, etag: responseEtag))
+                var lastModified: TimeInterval?
+                
+                if checkLastServerSideModification,
+                    let lastModifiedHeaderValue = response.allHeaderFields["Last-Modified"] as? String {
+                    let formatter = DateFormatter().then {
+                        $0.timeZone = TimeZone(abbreviation: "GMT")
+                        $0.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
+                        $0.locale = Locale(identifier: "en_US")
+                    }
+                    
+                    lastModified = formatter.date(from: lastModifiedHeaderValue)?.timeIntervalSince1970
+                }
+                
+                completion.fill(.init(data: data, etag: responseEtag, lastModifiedTimestamp: lastModified))
             }
         }
         

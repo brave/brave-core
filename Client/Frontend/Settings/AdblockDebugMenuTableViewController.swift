@@ -12,16 +12,24 @@ import BraveShared
 private let log = Logger.browserLogger
 
 class AdblockDebugMenuTableViewController: TableViewController {
+    
+    private let fm = FileManager.default
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        listSection.uponQueue(.main) { list in
-            self.dataSource.sections = [self.actionsSection, list]
+        ContentBlockerHelper.ruleStore.getAvailableContentRuleListIdentifiers { lists in
+            let listNames = lists ?? []
+            if listNames.isEmpty { return }
+            
+            self.dataSource.sections = [self.actionsSection,
+                                        self.datesSection,
+                                        self.bundledListsSection(names: listNames),
+                                        self.downloadedListsSection(names: listNames)]
         }
     }
-
-    var actionsSection: Section {
+    
+    private var actionsSection: Section {
         var section = Section(header: .title("Actions"))
         section.rows = [
             Row(text: "Recompile Content Blockers", selection: { [weak self] in
@@ -37,82 +45,135 @@ class AdblockDebugMenuTableViewController: TableViewController {
         return section
     }
     
-    var listSection: Deferred<Section> {
-        let completion = Deferred<Section>()
-        
-        let footerNote = """
-            Lists without rule count below them are single rule lists to do a certain action \
-            on a website(block cookies, images, upgrade to https etc.)
-            """
-        
-        var section = Section(header: .title("Available lists"), footer: .title(footerNote))
-        let store = ContentBlockerHelper.ruleStore
+    private var datesSection: Section {
+        var section = Section(header: "Last time updated",
+                              footer: "When the lists were last time updated on the device")
         var rows = [Row]()
         
-        func bundleOrDocumentsData(for name: String) -> Data? {
-            let fm = FileManager.default
-            
-            // Search in bundle
-            if let bundlePath = Bundle.main.path(forResource: name, ofType: "json") {
-                return fm.contents(atPath: bundlePath)
-            }
-            
-            // Search in application support directory otherwise
-            let folderName = AdblockResourceDownloader.folderName
-            guard let folderUrl = fm.getOrCreateFolder(name: folderName) else { return nil }
-            
-            let fileUrl = folderUrl.appendingPathComponent(name + ".json")
-            return fm.contents(atPath: fileUrl.path)
+        let dateFormatter = DateFormatter().then {
+            $0.dateStyle = .short
+            $0.timeStyle = .short
         }
         
-        func getEtag(name: String) -> String? {
-            let fm = FileManager.default
+        var generalDateString = "-"
+        if let generalDate = Preferences.Debug.lastGeneralAdblockUpdate.value {
+            generalDateString = dateFormatter.string(from: generalDate)
+            rows.append(.init(text: "General blocklist", detailText: generalDateString))
+        }
+        
+        var regionalDateString = "-"
+        if let regionalDate = Preferences.Debug.lastRegionalAdblockUpdate.value {
+            regionalDateString = dateFormatter.string(from: regionalDate)
+            rows.append(.init(text: "Regional blocklist", detailText: regionalDateString))
+        }
+        
+        section.rows = rows
+        return section
+    }
+
+    private func bundledListsSection(names: [String]) -> Section {
+        var section = Section(header: "Preinstalled lists",
+                              footer: "Lists bundled within the iOS app.")
+        
+        var rows = [Row]()
+        
+        names.forEach {
+            if let bundlePath = Bundle.main.path(forResource: $0, ofType: "json") {
+                guard let jsonData = fm.contents(atPath: bundlePath),
+                    let json = try? JSONSerialization.jsonObject(with: jsonData, options: JSONSerialization.ReadingOptions.allowFragments) as? [[String: Any]] else { return }
+                
+                var text = $0 + ".json"
+                
+                // Rules with count = 1 don't have to be shown, they are static rules for cookie control
+                // tracking protection and httpse.
+                if json.count > 1 {
+                    text += ": \(json.count) rules"
+                }
+                
+                let hashText = "sha1: \(jsonData.sha1.hexEncodedString)"
+                rows.append(.init(text: text, detailText: hashText, cellClass: ShrinkingSubtitleCell.self))
+            }
             
+            if $0 == "block-ads", let bundlePath = Bundle.main.path(forResource: "ABPFilterParserData",
+                                                                    ofType: "dat"),
+                let data = fm.contents(atPath: bundlePath) {
+                let hashText = "sha1: \(data.sha1.hexEncodedString)"
+                rows.append(.init(text: "ABPFilterParserData.dat", detailText: hashText, cellClass: ShrinkingSubtitleCell.self))
+            }
+        }
+    
+        section.rows = rows
+        return section
+    }
+    
+    private func downloadedListsSection(names: [String]) -> Section {
+        var section = Section(header: "Downloaded lists",
+                              footer: "Lists downloaded from the internet at app launch.")
+        
+        var rows = [Row]()
+        
+        func getEtag(name: String) -> String? {
             guard let folderUrl = fm.getOrCreateFolder(name: AdblockResourceDownloader.folderName) else {
                 return nil
             }
-            let etagUrl = folderUrl.appendingPathComponent(name + ".json.etag")
+            let etagUrl = folderUrl.appendingPathComponent(name + ".etag")
             guard let data = fm.contents(atPath: etagUrl.path) else { return nil }
             return String(data: data, encoding: .utf8)
         }
         
-        store.getAvailableContentRuleListIdentifiers { list in
-            list?.forEach {
-                var row = Row(text: $0, cellClass: ShrinkingSubtitleCell.self)
-                
-                if let data = bundleOrDocumentsData(for: $0) {
-                    do {
-                        let json = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [[String: Any]]
-                        
-                        // Rules with count 1 don't have to be shown, they are static rules for cookie control
-                        // tracking protection and httpse.
-                        if let count = json?.count, count != 1 {
-                            var detailText = "Rules count: \(count)"
-                            
-                            if let etag = getEtag(name: $0) {
-                                detailText += ", etag: \(etag)"
-                            }
-                            
-                            row.detailText = detailText
-                        }
-                    } catch {
-                        log.error(error)
-                        row.detailText = "Failed to get rule count for: \($0)"
-                    }
-                } else {
-                    row.detailText = "Failed to get rule count for: \($0)"
-                }
-                
-                rows.append(row)
+        func getLastModified(name: String) -> String? {
+            let dateFormatter = DateFormatter().then {
+                $0.dateStyle = .short
+                $0.timeStyle = .short
+                $0.timeZone = TimeZone(abbreviation: "GMT")
             }
             
-            section.rows = rows
-            completion.fill(section)
+            guard let folderUrl = fm.getOrCreateFolder(name: AdblockResourceDownloader.folderName) else {
+                return nil
+            }
+            let etagUrl = folderUrl.appendingPathComponent(name + ".lastmodified")
+            guard let data = fm.contents(atPath: etagUrl.path),
+                let stringData = String(data: data, encoding: .utf8) else { return nil }
+            
+            let timeInterval = (stringData as NSString).doubleValue
+            let date = Date(timeIntervalSince1970: timeInterval)
+            
+            return dateFormatter.string(from: date)
         }
         
-        return completion
+        let folderName = AdblockResourceDownloader.folderName
+        guard let folderUrl = fm.getOrCreateFolder(name: folderName) else { return section }
+        
+        names.forEach {
+            if let data = fm.contents(atPath: folderUrl.appendingPathComponent($0 + ".json").path),
+                let json = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [[String: Any]] {
+                
+                let text = "\($0).json: \(json.count) rules"
+                let name = $0 + ".json"
+                
+                let etag = getEtag(name: name) ?? "-"
+                let lastModified = getLastModified(name: name) ?? "-"
+                
+                let detail = "\(lastModified), etag: \(etag)"
+                
+                rows.append(.init(text: text, detailText: detail, cellClass: ShrinkingSubtitleCell.self))
+            }
+            
+            if fm.contents(atPath: folderUrl.appendingPathComponent($0 + ".dat").path) != nil {
+                let name = $0 + ".dat"
+                
+                let etag = getEtag(name: name) ?? "-"
+                let lastModified = getLastModified(name: name) ?? "-"
+                
+                let detail = "\(lastModified), etag: \(etag)"
+                
+                rows.append(.init(text: $0 + ".dat", detailText: detail, cellClass: ShrinkingSubtitleCell.self))
+            }
+        }
+        
+        section.rows = rows
+        return section
     }
-
 }
 
 fileprivate class ShrinkingSubtitleCell: SubtitleCell {
