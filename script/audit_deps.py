@@ -81,7 +81,8 @@ def npm_audit_deps(path, args):
     try:
         # results from audit
         result = json.loads(output.decode('UTF-8'))
-    except ValueError:
+        assert 'actions' in result
+    except (ValueError, AssertionError):
         # This can happen in the case of an NPM network error
         print('Audit failed to return valid json')
         return 1
