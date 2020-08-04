@@ -1,22 +1,24 @@
 diff --git a/third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.cc b/third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.cc
-index 2976543643783cbd6d413c192d3da783810100cb..0cbbe1f623d6e41456c3c174bbf12791cc54ed4b 100644
+index 2976543643783cbd6d413c192d3da783810100cb..06c58b9c9681653540169db872148d929d5cdd30 100644
 --- a/third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.cc
 +++ b/third_party/blink/renderer/core/loader/modulescript/document_module_script_fetcher.cc
-@@ -9,6 +9,13 @@
+@@ -9,6 +9,15 @@
  #include "third_party/blink/renderer/platform/heap/heap.h"
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/loader/resource/script_resource.h"
++
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
++
 +#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 +// #endif
 +
  namespace blink {
  
  DocumentModuleScriptFetcher::DocumentModuleScriptFetcher(
-@@ -18,14 +25,31 @@ DocumentModuleScriptFetcher::DocumentModuleScriptFetcher(
+@@ -18,14 +27,31 @@ DocumentModuleScriptFetcher::DocumentModuleScriptFetcher(
  void DocumentModuleScriptFetcher::Fetch(
      FetchParameters& fetch_params,
      ResourceFetcher* fetch_client_settings_object_fetcher,
@@ -50,7 +52,7 @@ index 2976543643783cbd6d413c192d3da783810100cb..0cbbe1f623d6e41456c3c174bbf12791
  }
  
  void DocumentModuleScriptFetcher::NotifyFinished(Resource* resource) {
-@@ -45,6 +69,23 @@ void DocumentModuleScriptFetcher::NotifyFinished(Resource* resource) {
+@@ -45,6 +71,22 @@ void DocumentModuleScriptFetcher::NotifyFinished(Resource* resource) {
        script_resource->GetResponse().CurrentRequestUrl(), module_type,
        script_resource->SourceText(), script_resource->CacheHandler(),
        script_resource->GetResourceRequest().GetCredentialsMode());
@@ -65,8 +67,7 @@ index 2976543643783cbd6d413c192d3da783810100cb..0cbbe1f623d6e41456c3c174bbf12791
 +        page_graph_->RegisterRequestError(resource->InspectorId(), metadata);
 +      } else {
 +        page_graph_->RegisterRequestComplete(resource->InspectorId(),
-+            resource->GetType(), metadata,
-+            ::brave_page_graph::ResourceDigest(resource));
++            resource->GetType(), metadata, ResourceDigest(resource));
 +      }
 +    }
 +  }
