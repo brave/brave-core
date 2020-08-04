@@ -123,6 +123,7 @@ class GeminiService : public KeyedService {
                           const int status, const std::string& body,
                           const std::map<std::string, std::string>& headers);
   void OnGetOrderQuote(GetOrderQuoteCallback callback,
+                       const std::string& side,
                        const int status, const std::string& body,
                        const std::map<std::string, std::string>& headers);
   void OnOrderExecuted(ExecuteOrderCallback callback,
