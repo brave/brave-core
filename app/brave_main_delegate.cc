@@ -6,6 +6,7 @@
 #include "brave/app/brave_main_delegate.h"
 
 #include <memory>
+#include <string>
 #include <unordered_set>
 
 #include "base/base_switches.h"
@@ -53,9 +54,16 @@
 #include "components/dom_distiller/core/dom_distiller_switches.h"
 #endif
 
+#if defined(OS_ANDROID)
+#include "base/android/jni_android.h"
+#include "brave/build/android/jni_headers/BraveQAPreferences_jni.h"
+#endif
+
 namespace {
 // staging "https://sync-v2.bravesoftware.com/v2" can be overriden by
 // switches::kSyncServiceURL manually
+const char kBraveSyncServiceStagingURL[] =
+    "https://sync-v2.bravesoftware.com/v2";
 #if defined(OFFICIAL_BUILD)
 // production
 const char kBraveSyncServiceURL[] = "https://sync-v2.brave.com/v2";
@@ -174,9 +182,14 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
                                    kBraveOriginTrialsPublicKey);
   }
 
+  std::string brave_sync_service_url = kBraveSyncServiceURL;
+#if defined(OS_ANDROID)
+  AdjustSyncServiceUrlForAndroid(&brave_sync_service_url);
+#endif  // defined(OS_ANDROID)
+
   // Brave's sync protocol does not use the sync service url
   command_line.AppendSwitchASCII(switches::kSyncServiceURL,
-                                 kBraveSyncServiceURL);
+                                 brave_sync_service_url.c_str());
 
   // Enabled features.
   std::unordered_set<const char*> enabled_features = {
@@ -235,3 +248,27 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   return ret;
 }
+
+#if defined(OS_ANDROID)
+void BraveMainDelegate::AdjustSyncServiceUrlForAndroid(
+    std::string* brave_sync_service_url) {
+  DCHECK_NE(brave_sync_service_url, nullptr);
+  const char kProcessTypeSwitchName[] = "type";
+
+  // On Android we can detect data dir only on host process, and we cannot
+  // for example on renderer or gpu-process, because JNI is not initialized
+  // And no sense to override sync service url for them in anyway
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          kProcessTypeSwitchName)) {
+    // This is something other than browser process
+    return;
+  }
+
+  JNIEnv* env = base::android::AttachCurrentThread();
+  bool b_use_staging_sync_server =
+      Java_BraveQAPreferences_isSyncStagingUsed(env);
+  if (b_use_staging_sync_server) {
+    *brave_sync_service_url = kBraveSyncServiceStagingURL;
+  }
+}
+#endif  // defined(OS_ANDROID)
