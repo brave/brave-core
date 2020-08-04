@@ -632,8 +632,8 @@ extension Strings {
 
 // MARK: - Ads Notifications
 extension Strings {
-    public static let monthlyAdsClaimNotificationTitle = NSLocalizedString("MonthlyAdsClaimNotificationTitle", bundle: Bundle.braveShared, value: "Claim your Brave ads rewards", comment: "The title of the notification that goes out monthly to users who can claim an ads grant")
-    public static let monthlyAdsClaimNotificationBody = NSLocalizedString("MonthlyAdsClaimNotificationBody", bundle: Bundle.braveShared, value: "Time to get rewarded for those ads you've been seeing in Brave.", comment: "The body of the notification that goes out monthly to users who can claim an ads grant")
+    public static let monthlyAdsClaimNotificationTitle = NSLocalizedString("MonthlyAdsClaimNotificationTitle", bundle: Bundle.braveShared, value: "Brave Rewards 💵🎁", comment: "The title of the notification that goes out monthly to users who can claim an ads grant")
+    public static let monthlyAdsClaimNotificationBody = NSLocalizedString("MonthlyAdsClaimNotificationBody", bundle: Bundle.braveShared, value: "Tap to claim your free tokens.", comment: "The body of the notification that goes out monthly to users who can claim an ads grant")
 }
 
 // MARK: - Bookmark restoration
