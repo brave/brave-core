@@ -40,6 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     var receivedURLs: [URL]?
     
     var authenticator: AppAuthenticator?
+    var shutdownWebServer: DispatchSourceTimer?
     
     /// Object used to handle server pings
     let dau = DAU()
@@ -360,6 +361,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
     // We sync in the foreground only, to avoid the possibility of runaway resource usage.
     // Eventually we'll sync in response to notifications.
     func applicationDidBecomeActive(_ application: UIApplication) {
+        shutdownWebServer?.cancel()
+        shutdownWebServer = nil
         authenticator?.hideBackgroundedBlur()
         
         Preferences.AppState.backgroundedCleanly.value = false
@@ -404,15 +407,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             application.endBackgroundTask(taskId)
         }
 
-//        if profile.hasSyncableAccount() {
-//            profile.syncManager.syncEverything(why: .backgrounded).uponQueue(.main) { _ in
-//                self.shutdownProfileWhenNotActive(application)
-//                application.endBackgroundTask(taskId)
-//            }
-//        } else {
-            profile.shutdown()
-            application.endBackgroundTask(taskId)
-//        }
+        profile.shutdown()
+        application.endBackgroundTask(taskId)
+        
+        let singleShotTimer = DispatchSource.makeTimerSource(queue: DispatchQueue.main)
+        // 2 seconds is ample for a localhost request to be completed by GCDWebServer. <500ms is expected on newer devices.
+        singleShotTimer.schedule(deadline: .now() + 2.0, repeating: .never)
+        singleShotTimer.setEventHandler {
+            WebServer.sharedInstance.server.stop()
+            self.shutdownWebServer = nil
+        }
+        singleShotTimer.resume()
+        shutdownWebServer = singleShotTimer
     }
 
     fileprivate func shutdownProfileWhenNotActive(_ application: UIApplication) {
@@ -454,6 +460,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
 
     fileprivate func setUpWebServer(_ profile: Profile) {
         let server = WebServer.sharedInstance
+        if server.server.isRunning { return }
+        
         ReaderModeHandlers.register(server, profile: profile)
         ErrorPageHelper.register(server, certStore: profile.certStore)
         SafeBrowsingHandler.register(server)

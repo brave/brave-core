@@ -23,6 +23,10 @@ class WebServer {
 
     /// The private credentials for accessing resources on this Web server.
     let credentials: URLCredential
+    
+    // For development builds, random host is used in case of working with multiple instances of the app.
+    // For safety we keep static port number for public builds.
+    let port = AppConstants.buildChannel.isPublic ? 6571 : Int.random(in: 6572..<6600)
 
     /// A random, transient token used for authenticating requests.
     /// Other apps are able to make requests to our local Web server,
@@ -36,9 +40,9 @@ class WebServer {
     @discardableResult func start() throws -> Bool {
         if !server.isRunning {
             try server.start(options: [
-                GCDWebServerOption_Port: 6571,
+                GCDWebServerOption_Port: port,
                 GCDWebServerOption_BindToLocalhost: true,
-                GCDWebServerOption_AutomaticallySuspendInBackground: true,
+                GCDWebServerOption_AutomaticallySuspendInBackground: false, // done by the app in AppDelegate
                 GCDWebServerOption_AuthenticationMethod: GCDWebServerAuthenticationMethod_Basic,
                 GCDWebServerOption_AuthenticationAccounts: [sessionToken: ""]
             ])
