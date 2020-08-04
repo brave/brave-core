@@ -11,6 +11,8 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/notification_source.h"
 
 #if !defined(OS_ANDROID)
@@ -56,7 +58,7 @@ BraveProfileImpl::BraveProfileImpl(
     notification_registrar_.Add(this, chrome::NOTIFICATION_PROFILE_DESTROYED,
                                 content::Source<Profile>(parent_profile));
     base::PostTaskAndReply(
-        FROM_HERE, {base::ThreadPool()}, base::DoNothing(),
+        FROM_HERE, {content::BrowserThread::UI}, base::DoNothing(),
         base::BindOnce(&ProfileImpl::OnPrefsLoaded,
                        weak_ptr_factory_.GetWeakPtr(), create_mode, true));
   }
