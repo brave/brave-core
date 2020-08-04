@@ -13,7 +13,7 @@
 #include "brave/common/extensions/api/gemini.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/browser/gemini/gemini_service_factory.h"
-#include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "brave/components/gemini/browser/gemini_service.h"
 #include "brave/components/gemini/browser/regions.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
@@ -238,7 +238,7 @@ void GeminiExecuteOrderFunction::OnOrderExecuted(bool success) {
 ExtensionFunction::ResponseAction
 GeminiIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = crypto_exchange::IsRegionSupported(
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), ::gemini::supported_regions, true);
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));

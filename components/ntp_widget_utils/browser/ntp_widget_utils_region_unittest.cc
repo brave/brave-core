@@ -5,7 +5,7 @@
 
 #include <memory>
 
-#include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
@@ -14,9 +14,9 @@
 #include "components/prefs/pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=CryptoExchangeRegionUtilTest.*
+// npm run test -- brave_unit_tests --filter=NTPWidgetUtilsRegionUtilTest.*
 
-class CryptoExchangeRegionUtilTest : public testing::Test {
+class NTPWidgetUtilsRegionUtilTest : public testing::Test {
  protected:
   void SetUp() override {
     profile_.reset(new TestingProfile());
@@ -30,7 +30,7 @@ class CryptoExchangeRegionUtilTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
 };
 
-TEST_F(CryptoExchangeRegionUtilTest, TestRegionAllowedAllowList) {
+TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionAllowedAllowList) {
   std::vector<std::string> supported_regions = {
     "US",
     "CA",
@@ -45,12 +45,12 @@ TEST_F(CryptoExchangeRegionUtilTest, TestRegionAllowedAllowList) {
   profile->GetPrefs()->SetInteger(
       country_codes::kCountryIDAtInstall, id);
 
-  bool is_supported = ::crypto_exchange::IsRegionSupported(
+  bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), supported_regions, true);
   ASSERT_TRUE(is_supported);
 }
 
-TEST_F(CryptoExchangeRegionUtilTest, TestRegionUnAllowedAllowList) {
+TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionUnAllowedAllowList) {
   std::vector<std::string> supported_regions = {
     "US",
     "CA",
@@ -65,12 +65,12 @@ TEST_F(CryptoExchangeRegionUtilTest, TestRegionUnAllowedAllowList) {
   profile->GetPrefs()->SetInteger(
       country_codes::kCountryIDAtInstall, id);
 
-  bool is_supported = ::crypto_exchange::IsRegionSupported(
+  bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), supported_regions, true);
   ASSERT_FALSE(is_supported);
 }
 
-TEST_F(CryptoExchangeRegionUtilTest, TestRegionAllowedDenyList) {
+TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionAllowedDenyList) {
   std::vector<std::string> unsupported_regions = {
     "US",
     "CA",
@@ -85,12 +85,12 @@ TEST_F(CryptoExchangeRegionUtilTest, TestRegionAllowedDenyList) {
   profile->GetPrefs()->SetInteger(
       country_codes::kCountryIDAtInstall, id);
 
-  bool is_supported = ::crypto_exchange::IsRegionSupported(
+  bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), unsupported_regions, false);
   ASSERT_TRUE(is_supported);
 }
 
-TEST_F(CryptoExchangeRegionUtilTest, TestRegionUnAllowedDenyList) {
+TEST_F(NTPWidgetUtilsRegionUtilTest, TestRegionUnAllowedDenyList) {
   std::vector<std::string> unsupported_regions = {
     "US",
     "CA",
@@ -105,7 +105,7 @@ TEST_F(CryptoExchangeRegionUtilTest, TestRegionUnAllowedDenyList) {
   profile->GetPrefs()->SetInteger(
       country_codes::kCountryIDAtInstall, id);
 
-  bool is_supported = ::crypto_exchange::IsRegionSupported(
+  bool is_supported = ::ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), unsupported_regions, false);
   ASSERT_FALSE(is_supported);
 }

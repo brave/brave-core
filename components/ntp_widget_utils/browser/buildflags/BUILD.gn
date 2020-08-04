@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "NTP_WIDGET_UTILS_ENABLED=$ntp_widget_utils_enabled",
+  ]
+}

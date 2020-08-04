@@ -1,0 +1,35 @@
+import("//brave/build/config.gni")
+import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
+
+assert(ntp_widget_utils_enabled)
+
+source_set("browser") {
+  # Remove when https://github.com/brave/brave-browser/issues/10640 is resolved
+  check_includes = false
+
+  public_deps = [
+    "buildflags"
+  ]
+
+  sources = [
+    "ntp_widget_utils_oauth.cc",
+    "ntp_widget_utils_oauth.h",
+    "ntp_widget_utils_region.cc",
+    "ntp_widget_utils_region.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/country_codes",
+    "//components/prefs",
+    "//crypto",
+  ]
+
+  configs += [ ":ntp_widget_utils_config" ]
+}
+
+config("ntp_widget_utils_config") {
+  defines = [
+    "NTP_WIDGET_UTILS_ENABLED=\"ntp_widget_utils_enabled\"",
+  ]
+}

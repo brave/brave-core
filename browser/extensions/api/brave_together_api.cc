@@ -11,7 +11,7 @@
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_together/browser/regions.h"
-#include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/profiles/profile.h"
 
 namespace extensions {
@@ -25,7 +25,7 @@ BraveTogetherIsSupportedFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  bool is_supported = crypto_exchange::IsRegionSupported(
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), brave_together::supported_regions, true);
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));

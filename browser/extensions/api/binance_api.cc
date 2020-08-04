@@ -19,7 +19,7 @@
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/components/binance/browser/binance_service.h"
 #include "brave/components/binance/browser/regions.h"
-#include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/infobars/infobar_service.h"
@@ -172,7 +172,7 @@ BinanceIsSupportedRegionFunction::Run() {
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = crypto_exchange::IsRegionSupported(
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile->GetPrefs(), ::binance::unsupported_regions, false);
 
   return RespondNow(OneArgument(

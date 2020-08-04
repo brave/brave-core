@@ -4,7 +4,7 @@ import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/binance/browser/buildflags/buildflags.gni")
-import("//brave/components/crypto_exchange/browser/buildflags/buildflags.gni")
+import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
@@ -275,13 +275,13 @@ test("brave_unit_tests") {
     ]
   }
 
-  if (crypto_exchanges_enabled) {
+  if (ntp_widget_utils_enabled) {
     sources += [
-      "//brave/components/crypto_exchange/browser/crypto_exchange_region_util_unittest.cc",
-      "//brave/components/crypto_exchange/browser/crypto_exchange_oauth_util_unittest.cc"
+      "//brave/components/ntp_widget_utils/browser/ntp_widget_utils_region_unittest.cc",
+      "//brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth_unittest.cc"
     ]
     deps += [
-      "//brave/components/crypto_exchange/browser"
+      "//brave/components/ntp_widget_utils/browser"
     ]
   }
 

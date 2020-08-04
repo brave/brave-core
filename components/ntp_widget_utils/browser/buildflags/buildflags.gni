@@ -4,5 +4,5 @@ import("//brave/components/brave_together/buildflags/buildflags.gni")
 import("//brave/components/gemini/browser/buildflags/buildflags.gni")
 
 declare_args() {
-  crypto_exchanges_enabled = binance_enabled || gemini_enabled || brave_together_enabled
+  ntp_widget_utils_enabled = binance_enabled || gemini_enabled || brave_together_enabled
 }

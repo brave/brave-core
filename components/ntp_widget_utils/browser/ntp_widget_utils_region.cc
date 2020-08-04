@@ -6,15 +6,15 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 
 #include "components/prefs/pref_service.h"
 #include "components/country_codes/country_codes.h"
 
-namespace crypto_exchange {
+namespace ntp_widget_utils {
 
 bool IsRegionSupported(PrefService* pref_service,
-    std::vector<std::string> regions,
+    const std::vector<std::string>& regions,
     bool allow_list)  {
   bool is_supported = !allow_list;
   const int32_t user_region_id =
@@ -32,4 +32,4 @@ bool IsRegionSupported(PrefService* pref_service,
   return is_supported;
 }
 
-}  // namespace crypto_exchange
+}  // namespace ntp_widget_utils
