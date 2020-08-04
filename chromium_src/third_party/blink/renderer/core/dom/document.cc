@@ -29,8 +29,9 @@ namespace {
 //  are disconnect, remote or local to the top level frame.
 std::string TopETLDPlusOneForDoc(const Document& doc) {
   const auto host = doc.TopFrameOrigin()->Host();
-  return blink::network_utils::GetDomainAndRegistry(host,
-      blink::network_utils::kIncludePrivateRegistries).Utf8();
+  return blink::network_utils::GetDomainAndRegistry(
+             host, blink::network_utils::kIncludePrivateRegistries)
+      .Utf8();
 }
 
 const uint64_t zero = 0;
@@ -117,7 +118,7 @@ AudioFarblingCallback BraveSessionCache::GetAudioFarblingCallback(
       }
       case BraveFarblingLevel::MAXIMUM: {
         uint64_t seed = *reinterpret_cast<uint64_t*>(domain_key_);
-       return base::BindRepeating(&PseudoRandomSequence, seed);
+        return base::BindRepeating(&PseudoRandomSequence, seed);
       }
     }
   }
@@ -133,12 +134,9 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
   switch (frame->GetContentSettingsClient()->GetBraveFarblingLevel()) {
     case BraveFarblingLevel::OFF:
       break;
-    case BraveFarblingLevel::BALANCED: {
-      image_bitmap = PerturbBalanced(image_bitmap);
-      break;
-    }
+    case BraveFarblingLevel::BALANCED:
     case BraveFarblingLevel::MAXIMUM: {
-      image_bitmap = PerturbMax(image_bitmap);
+      image_bitmap = PerturbPixelsInternal(image_bitmap);
       break;
     }
     default:
@@ -147,7 +145,8 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbPixels(
   return image_bitmap;
 }
 
-scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbBalanced(
+scoped_refptr<blink::StaticBitmapImage>
+BraveSessionCache::PerturbPixelsInternal(
     scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
   DCHECK(image_bitmap);
   if (image_bitmap->IsNull())
@@ -189,31 +188,6 @@ scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbBalanced(
       // find next pixel to perturb
       v = lfsr_next(v);
     }
-  }
-  // convert back to a StaticBitmapImage to return to the caller
-  scoped_refptr<blink::StaticBitmapImage> perturbed_bitmap =
-      blink::UnacceleratedStaticBitmapImage::Create(
-          data_buffer->RetainedImage());
-  return perturbed_bitmap;
-}
-
-scoped_refptr<blink::StaticBitmapImage> BraveSessionCache::PerturbMax(
-    scoped_refptr<blink::StaticBitmapImage> image_bitmap) {
-  DCHECK(image_bitmap);
-  if (image_bitmap->IsNull())
-    return image_bitmap;
-  // convert to an ImageDataBuffer to normalize the pixel data to RGBA, 4 bytes
-  // per pixel
-  std::unique_ptr<blink::ImageDataBuffer> data_buffer =
-      blink::ImageDataBuffer::Create(image_bitmap);
-  uint8_t* pixels = const_cast<uint8_t*>(data_buffer->Pixels());
-  const uint64_t count = 4 * data_buffer->Width() * data_buffer->Height();
-  // initial seed based on domain key
-  uint64_t v = *reinterpret_cast<uint64_t*>(domain_key_);
-  // iterate through pixel data and overwrite with next value in PRNG sequence
-  for (uint64_t i = 0; i < count; i++) {
-    pixels[i] = v % 256;
-    v = lfsr_next(v);
   }
   // convert back to a StaticBitmapImage to return to the caller
   scoped_refptr<blink::StaticBitmapImage> perturbed_bitmap =
