@@ -92,9 +92,12 @@ class GreaselionServiceWaiter : public GreaselionService::Observer {
 class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
  public:
   GreaselionServiceTest(): https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    brave::RegisterPathProvider();
     response_ =
         std::make_unique<rewards_browsertest::RewardsBrowserTestResponse>();
+  }
+
+  void SetUpOnMainThread() override {
+    BaseLocalDataFilesBrowserTest::SetUpOnMainThread();
     base::ScopedAllowBlockingForTesting allow_blocking;
     response_->LoadMocks();
   }
@@ -138,7 +141,6 @@ class GreaselionServiceTest : public BaseLocalDataFilesBrowserTest {
     ASSERT_TRUE(https_server_.Start());
 
     // Rewards service
-    brave::RegisterPathProvider();
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(profile()));
 
