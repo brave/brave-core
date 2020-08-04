@@ -140,6 +140,8 @@ class RewardsService : public KeyedService {
   RewardsService();
   ~RewardsService() override;
 
+  virtual bool IsInitialized() = 0;
+
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
   virtual void GetContentSiteList(
