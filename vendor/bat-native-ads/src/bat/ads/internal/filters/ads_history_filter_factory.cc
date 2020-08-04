@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/filters/ads_history_filter_factory.h"
-#include "bat/ads/internal/filters/ads_history_date_range_filter.h"
+
 #include "bat/ads/internal/filters/ads_history_confirmation_filter.h"
 #include "bat/ads/internal/filters/ads_history_conversion_filter.h"
 

@@ -10,15 +10,18 @@ source_set("browser") {
   ]
 
   sources = [
+    "ads_service.cc",
     "ads_service.h",
     "ads_service_factory.cc",
     "ads_service_factory.h",
+    "ads_service_observer.h",
     "ads_tab_helper.cc",
     "ads_tab_helper.h",
   ]
 
   deps = [
     "//base",
+    "//brave/common",
     "//brave/components/brave_ads/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/browser",
@@ -133,16 +136,6 @@ source_set("testutil") {
     "//chrome/test:test_support",
     "//testing/gtest",
   ]
-
-  if (brave_rewards_enabled) {
-    deps += [
-      "//brave/vendor/bat-native-ledger:headers",
-    ]
-
-    configs += [
-      "//brave/vendor/bat-native-ledger:internal_config"
-    ]
-  }
 
   if (brave_ads_enabled) {
     deps += [

@@ -8,19 +8,14 @@
 @protocol NativeLedgerClientBridge
 @required
 
-- (void)confirmationsTransactionHistoryDidChange;
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback;
 - (void)loadLedgerState:(ledger::OnLoadCallback)callback;
 - (void)loadPublisherState:(ledger::OnLoadCallback)callback;
-- (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback;
 - (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::UrlMethod)method callback:(ledger::LoadURLCallback)callback;
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result contribution:(ledger::ContributionInfoPtr)contribution;
-- (void)resetState:(const std::string &)name callback:(ledger::ResultCallback)callback;
 - (void)publisherListNormalized:(ledger::PublisherInfoList)list;
-- (void)saveState:(const std::string &)name value:(const std::string &)value callback:(ledger::ResultCallback)callback;
-- (void)setConfirmationsIsReady:(const bool)is_ready;
 - (std::string)URIEncode:(const std::string &)value;
 - (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string&)publisher_key publisherName:(const std::string&)publisher_name;
 - (void)setBooleanState:(const std::string&)name value:(bool)value;

@@ -16,9 +16,13 @@
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_signal_info.h"
 #include "bat/ads/internal/classification/purchase_intent_classifier/segment_keyword_info.h"
 #include "bat/ads/internal/classification/purchase_intent_classifier/site_info.h"
-#include "bat/ads/internal/search_providers.h"
+#include "bat/ads/internal/search_engine/search_providers.h"
+#include "bat/ads/result.h"
 
 namespace ads {
+
+class AdsImpl;
+
 namespace classification {
 
 using PurchaseIntentWinningCategoryList = std::vector<std::string>;
@@ -26,7 +30,8 @@ using PurchaseIntentSegmentList = std::vector<std::string>;
 
 class PurchaseIntentClassifier {
  public:
-  PurchaseIntentClassifier();
+  explicit PurchaseIntentClassifier(
+      AdsImpl* ads);
 
   ~PurchaseIntentClassifier();
 
@@ -35,7 +40,12 @@ class PurchaseIntentClassifier {
   bool Initialize(
       const std::string& json);
 
-  PurchaseIntentSignalInfo ExtractIntentSignal(
+  void LoadUserModelForLocale(
+      const std::string& locale);
+  void LoadUserModelForId(
+      const std::string& id);
+
+  PurchaseIntentSignalInfo MaybeExtractIntentSignal(
       const std::string& url);
 
   PurchaseIntentWinningCategoryList GetWinningCategories(
@@ -45,6 +55,17 @@ class PurchaseIntentClassifier {
  private:
   bool FromJson(
       const std::string& json);
+
+  void OnLoadUserModelForId(
+      const std::string& id,
+      const Result result,
+      const std::string& json);
+
+  PurchaseIntentSignalInfo ExtractIntentSignal(
+      const std::string& url);
+
+  void AppendIntentSignalToHistory(
+      const classification::PurchaseIntentSignalInfo& purchase_intent_signal);
 
   uint16_t GetIntentScoreForHistory(
       const PurchaseIntentSignalSegmentHistoryList& segment_history);
@@ -66,13 +87,15 @@ class PurchaseIntentClassifier {
       const std::vector<std::string>& set_b);
 
   bool is_initialized_;
-  uint16_t version_;
-  uint16_t signal_level_;
-  uint16_t classification_threshold_;
-  uint64_t signal_decay_time_window_in_seconds_;
+  uint16_t version_ = 0;
+  uint16_t signal_level_ = 0;
+  uint16_t classification_threshold_ = 0;
+  uint64_t signal_decay_time_window_in_seconds_ = 0;
   std::vector<SiteInfo> sites_;  // sites2segments
   std::vector<SegmentKeywordInfo> segment_keywords_;  // keywords2segments
   std::vector<FunnelKeywordInfo> funnel_keywords_;  // keywords2funnelstages
+
+  AdsImpl* ads_;  // NOT OWNED
 };
 
 }  // namespace classification

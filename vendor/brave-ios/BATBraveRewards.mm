@@ -104,6 +104,9 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 
     BATBraveAds.debug = configuration.environment != BATEnvironmentProduction;
     BATBraveAds.environment = configuration.environment;
+    if (configuration.buildChannel != nil) {
+      BATBraveAds.buildChannel = configuration.buildChannel;
+    }
 
     BATBraveLedger.debug = configuration.environment != BATEnvironmentProduction;
     BATBraveLedger.environment = configuration.environment;

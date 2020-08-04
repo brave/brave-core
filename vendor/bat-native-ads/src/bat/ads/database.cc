@@ -3,7 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
+#include "bat/ads/database.h"
+
 #include <utility>
 #include <vector>
 
@@ -11,7 +12,6 @@
 #include "base/files/file_util.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
-#include "bat/ads/database.h"
 #include "bat/ads/internal/logging.h"
 
 namespace ads {

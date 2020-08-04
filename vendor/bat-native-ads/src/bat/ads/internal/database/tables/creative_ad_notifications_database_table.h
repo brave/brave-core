@@ -12,7 +12,7 @@
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/internal/classification/page_classifier/page_classifier.h"
-#include "bat/ads/internal/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/internal/database/tables/categories_database_table.h"
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"

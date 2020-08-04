@@ -25,16 +25,12 @@ std::string AdsHistory::ToJson() const {
 }
 
 Result AdsHistory::FromJson(
-    const std::string& json,
-    std::string* error_description) {
+    const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
-    if (error_description != nullptr) {
-      *error_description = helper::JSON::GetLastError(&document);
-    }
-
+    BLOG(1, helper::JSON::GetLastError(&document));
     return FAILED;
   }
 

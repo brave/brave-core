@@ -20,6 +20,7 @@
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -505,21 +506,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherMinVisits(int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
-  void UpdateAdsRewards() const override;
-  void SetCatalogIssuers(
-      const std::string& json) override;
-  void ConfirmAd(
-      const std::string& json,
-      const std::string& confirmation_type) override;
-  void ConfirmAction(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const std::string& confirmation_type) override;
-  void SetConfirmationsIsReady(const bool is_ready) override;
-  void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) override;
-  void ConfirmationsTransactionHistoryDidChange() override;
-
   void OnPanelPublisherInfo(const ledger::Result result,
                             ledger::PublisherInfoPtr info,
                             uint64_t window_id) override;
@@ -583,13 +569,6 @@ class RewardsServiceImpl : public RewardsService,
       const int verbose_level,
       const std::string& message) override;
 
-  void SaveState(const std::string& name,
-                 const std::string& value,
-                 ledger::ResultCallback callback) override;
-  void LoadState(const std::string& name,
-                 ledger::OnLoadCallback callback) override;
-  void ResetState(const std::string& name,
-                  ledger::ResultCallback callback) override;
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;
   void SetIntegerState(const std::string& name, int value) override;
@@ -658,9 +637,6 @@ class RewardsServiceImpl : public RewardsService,
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
-  void OnGetTransactionHistory(
-      GetTransactionHistoryCallback callback,
-      const std::string& json);
   void OnGetAutoContributeProperties(
       const GetAutoContributePropertiesCallback& callback,
       ledger::AutoContributePropertiesPtr props);
@@ -754,7 +730,6 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
   const base::FilePath publisher_list_path_;
-  const base::FilePath rewards_base_path_;
   std::unique_ptr<RewardsDatabase> rewards_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;

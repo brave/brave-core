@@ -6,12 +6,12 @@
 #ifndef BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATION_EVENT_CLICKED_H_
 #define BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATION_EVENT_CLICKED_H_
 
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_events/ad_event.h"
 
 namespace ads {
 
 class AdsImpl;
-struct AdNotificationInfo;
 
 class AdNotificationEventClicked : public AdEvent<AdNotificationInfo> {
  public:

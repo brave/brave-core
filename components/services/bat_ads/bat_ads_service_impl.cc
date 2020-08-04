@@ -34,15 +34,24 @@ void BatAdsServiceImpl::Create(
 void BatAdsServiceImpl::SetEnvironment(
     const ads::Environment environment,
     SetEnvironmentCallback callback) {
-  DCHECK(!is_initialized_|| ads::_environment == environment);
+  DCHECK(!is_initialized_);
   ads::_environment = environment;
+  std::move(callback).Run();
+}
+
+void BatAdsServiceImpl::SetBuildChannel(
+    ads::BuildChannelPtr build_channel,
+    SetBuildChannelCallback callback) {
+  DCHECK(!is_initialized_);
+  ads::_build_channel.is_release = build_channel->is_release;
+  ads::_build_channel.name = build_channel->name;
   std::move(callback).Run();
 }
 
 void BatAdsServiceImpl::SetDebug(
     const bool is_debug,
     SetDebugCallback callback) {
-  DCHECK(!is_initialized_ || ads::_is_debug == is_debug);
+  DCHECK(!is_initialized_);
   ads::_is_debug = is_debug;
   std::move(callback).Run();
 }

@@ -6,7 +6,6 @@
 #ifndef BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
 #define BAT_ADS_INTERNAL_CONTAINER_UTIL_H_
 
-#include <iterator>
 #include <vector>
 
 #include "bat/ads/internal/logging.h"

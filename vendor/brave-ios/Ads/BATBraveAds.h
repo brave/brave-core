@@ -4,6 +4,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UserNotifications/UserNotifications.h>
+#import "ads.mojom.objc.h"
 
 typedef NS_ENUM(NSInteger, BATAdNotificationEventType) {
   BATAdNotificationEventTypeViewed,       // = ads::AdNotificationEventType::kViewed
@@ -57,6 +58,8 @@ NS_SWIFT_NAME(BraveAds)
 /// The environment that ads is communicating with. See ledger's BATEnvironment
 /// for appropriate values.
 @property (nonatomic, class) int environment;
+/// The build channel that ads is configured for
+@property (nonatomic, class) BATBraveAdsBuildChannel *buildChannel;
 
 #pragma mark - Initialization / Shutdown
 
@@ -94,9 +97,6 @@ NS_SWIFT_NAME(BraveAds)
 
 #pragma mark - Confirmations
 
-// Should be called to inform Ads if Confirmations is ready
-- (void)setConfirmationsIsReady:(BOOL)isReady;
-
 #pragma mark - Notificiations
 
 - (nullable BATAdNotification *)adsNotificationForIdentifier:(NSString *)identifier;
@@ -130,6 +130,12 @@ NS_SWIFT_NAME(BraveAds)
 /// Report that a notification event type was triggered for a given id
 - (void)reportAdNotificationEvent:(NSString *)notificationUuid
                         eventType:(BATAdNotificationEventType)eventType;
+
+/// Update ad totals on month roll over, optionally reconcile with server
+- (void)updateAdRewards:(BOOL)shouldReconcile;
+
+/// Get the number of ads received and the estimated earnings of viewing said ads for this cycle
+- (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate * _Nullable nextPaymentDate))completion NS_SWIFT_NAME(detailsForCurrentCycle(_:));
 
 /// Toggle that the user liked the given ad and more like it should be shown
 - (void)toggleThumbsUpForAd:(NSString *)creativeInstanceId

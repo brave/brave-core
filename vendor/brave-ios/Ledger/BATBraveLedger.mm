@@ -7,7 +7,6 @@
 #import "bat/ledger/global_constants.h"
 #import "bat/ledger/option_keys.h"
 
-#import "Records+Private.h"
 #import "ledger.mojom.objc+private.h"
 
 #import "BATBraveLedger.h"
@@ -905,6 +904,10 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     for (BATPromotion *promotion in promos) {
       if (promotion.status == BATPromotionStatusFinished) {
         [self.mFinishedPromotions addObject:promotion];
+
+        if (promotion.type == BATPromotionTypeAds) {
+          [self.ads updateAdRewards:true];
+        }
       } else if (promotion.status == BATPromotionStatusActive ||
                  promotion.status == BATPromotionStatusAttested) {
         [self.mPendingPromotions addObject:promotion];
@@ -1420,59 +1423,6 @@ BATLedgerBridge(BOOL,
   DCHECK(it != kUInt64Options.end());
   
   return kUInt64Options.at(name);
-}
-
-#pragma mark - Ads & Confirmations
-
-- (void)confirmAd:(NSString *)json confirmationType:(NSString *)confirmationType
-{
-  ledger->ConfirmAd(json.UTF8String, confirmationType.UTF8String);
-}
-
-- (void)confirmAction:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID confirmationType:(NSString *)confirmationType
-{
-  ledger->ConfirmAction(creativeInstanceId.UTF8String, creativeSetID.UTF8String, confirmationType.UTF8String);
-}
-
-- (void)setCatalogIssuers:(NSString *)issuers
-{
-  ledger->SetCatalogIssuers(issuers.UTF8String);
-}
-
-- (void)updateAdsRewards
-{
-  ledger->UpdateAdsRewards(false);
-}
-
-- (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
-{
-  ledger->GetTransactionHistory(^(std::unique_ptr<ledger::TransactionsInfo> list) {
-    if (list == nullptr) {
-      completion(0, 0.0, nil);
-    } else {
-      NSDate *nextPaymentDate = nil;
-      if (list->next_payment_date_in_seconds > 0) {
-        nextPaymentDate = [NSDate dateWithTimeIntervalSince1970:list->next_payment_date_in_seconds];
-      }
-      completion(list->ad_notifications_received_this_month,
-                 list->estimated_pending_rewards,
-                 nextPaymentDate);
-    }
-  });
-}
-
-- (void)setConfirmationsIsReady:(const bool)is_ready
-{
-   [self.ads setConfirmationsIsReady:is_ready];
-}
-
-- (void)confirmationsTransactionHistoryDidChange
-{
-  for (BATBraveLedgerObserver *observer in [self.observers copy]) {
-    if (observer.confirmationsTransactionHistoryDidChange) {
-      observer.confirmationsTransactionHistoryDidChange();
-    }
-  }
 }
 
 #pragma mark - Notifications

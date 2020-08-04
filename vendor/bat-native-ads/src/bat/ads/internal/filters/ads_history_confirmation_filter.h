@@ -8,12 +8,10 @@
 
 #include <deque>
 
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/filters/ads_history_filter.h"
 
 namespace ads {
-
-struct AdsHistory;
-class ConfirmationType;
 
 class AdsHistoryConfirmationFilter : public AdsHistoryFilter {
  public:

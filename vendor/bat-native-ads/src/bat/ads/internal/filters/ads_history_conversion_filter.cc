@@ -3,12 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
-#include <map>
-#include <string>
-
 #include "bat/ads/internal/filters/ads_history_conversion_filter.h"
-#include "bat/ads/ads_history.h"
 
 namespace ads {
 

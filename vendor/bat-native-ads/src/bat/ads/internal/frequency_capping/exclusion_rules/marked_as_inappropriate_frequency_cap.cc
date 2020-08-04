@@ -5,12 +5,9 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap.h"
 
-#include <algorithm>
-
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/creative_ad_info.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/flagged_ad.h"
+#include "bat/ads/internal/client/preferences/flagged_ad.h"
 
 namespace ads {
 

@@ -5,23 +5,22 @@
 
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
 
-#include <stdint.h>
-
 #include <memory>
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
-#include "base/time/time.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/creative_ad_info.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping_unittest_utils.h"
-#include "bat/ads/internal/unittest_utils.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_unittest_util.h"
+#include "bat/ads/internal/platform/platform_helper_mock.h"
+#include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -46,13 +45,17 @@ class BatAdsPerDayFrequencyCapTest : public ::testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
         ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
-        locale_helper_mock_(std::make_unique<NiceMock<
-            brave_l10n::LocaleHelperMock>>()),
+        locale_helper_mock_(std::make_unique<
+            NiceMock<brave_l10n::LocaleHelperMock>>()),
+        platform_helper_mock_(std::make_unique<
+            NiceMock<PlatformHelperMock>>()),
         frequency_cap_(std::make_unique<PerDayFrequencyCap>(ads_.get())) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
         locale_helper_mock_.get());
+
+    PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
   }
 
   ~BatAdsPerDayFrequencyCapTest() override {
@@ -72,8 +75,18 @@ class BatAdsPerDayFrequencyCapTest : public ::testing::Test {
     ON_CALL(*ads_client_mock_, IsEnabled())
         .WillByDefault(Return(true));
 
+    ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
+        .WillByDefault(Return(true));
+
+    SetBuildChannel(false, "test");
+
     ON_CALL(*locale_helper_mock_, GetLocale())
         .WillByDefault(Return("en-US"));
+
+    MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+
+    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+        "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
 
     MockLoad(ads_client_mock_);
     MockLoadUserModelForId(ads_client_mock_);
@@ -100,6 +113,7 @@ class BatAdsPerDayFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsClientMock> ads_client_mock_;
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
   std::unique_ptr<PerDayFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };

@@ -106,19 +106,6 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void PublisherListNormalized(ledger::PublisherInfoList list) = 0;
 
-  virtual void SaveState(
-      const std::string& name,
-      const std::string& value,
-      ledger::ResultCallback callback) = 0;
-
-  virtual void LoadState(
-      const std::string& name,
-      ledger::OnLoadCallback callback) = 0;
-
-  virtual void ResetState(
-      const std::string& name,
-      ledger::ResultCallback callback) = 0;
-
   virtual void SetBooleanState(const std::string& name, bool value) = 0;
 
   virtual bool GetBooleanState(const std::string& name) const = 0;
@@ -158,10 +145,6 @@ class LEDGER_EXPORT LedgerClient {
   virtual int64_t GetInt64Option(const std::string& name) const = 0;
 
   virtual uint64_t GetUint64Option(const std::string& name) const = 0;
-
-  virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
-
-  virtual void ConfirmationsTransactionHistoryDidChange() = 0;
 
   virtual void OnContributeUnverifiedPublishers(
       Result result,

@@ -58,6 +58,7 @@ namespace {
 
 // The handler for Javascript messages for Brave about: pages
 class RewardsDOMHandler : public WebUIMessageHandler,
+    public brave_ads::AdsServiceObserver,
     public brave_rewards::RewardsNotificationServiceObserver,
     public brave_rewards::RewardsServiceObserver {
  public:
@@ -81,7 +82,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RecoverWallet(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
-  void UpdateAdsRewards(const base::ListValue* args);
+  void UpdateAdRewards(const base::ListValue* args);
   void OnContentSiteList(
       std::unique_ptr<brave_rewards::ContentSiteList>);
   void OnExcludedSiteList(
@@ -305,8 +306,11 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
           notifications_list) override;
 
+  // AdsServiceObserver implementation
+  void OnAdRewardsChanged() override;
+
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-  brave_ads::AdsService* ads_service_;
+  brave_ads::AdsService* ads_service_;  // NOT OWNED
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsDOMHandler);
@@ -327,8 +331,13 @@ const char kAutomaticallyDetectedAdsSubdivisionTargeting[] =
 RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 
 RewardsDOMHandler::~RewardsDOMHandler() {
-  if (rewards_service_)
+  if (rewards_service_) {
     rewards_service_->RemoveObserver(this);
+  }
+
+  if (ads_service_) {
+    ads_service_->RemoveObserver(this);
+  }
 }
 
 void RewardsDOMHandler::RegisterMessages() {
@@ -373,8 +382,8 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.saveSetting",
       base::BindRepeating(&RewardsDOMHandler::SaveSetting,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.updateAdsRewards",
-      base::BindRepeating(&RewardsDOMHandler::UpdateAdsRewards,
+  web_ui()->RegisterMessageCallback("brave_rewards.updateAdRewards",
+      base::BindRepeating(&RewardsDOMHandler::UpdateAdRewards,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.excludePublisher",
       base::BindRepeating(&RewardsDOMHandler::ExcludePublisher,
@@ -496,13 +505,17 @@ void RewardsDOMHandler::RegisterMessages() {
 
 void RewardsDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
+
   rewards_service_ =
       brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  ads_service_ =
-      brave_ads::AdsServiceFactory::GetForProfile(profile);
-
-  if (rewards_service_)
+  if (rewards_service_) {
     rewards_service_->AddObserver(this);
+  }
+
+  ads_service_ = brave_ads::AdsServiceFactory::GetForProfile(profile);
+  if (ads_service_) {
+    ads_service_->AddObserver(this);
+  }
 }
 
 void RewardsDOMHandler::IsInitialized(
@@ -923,12 +936,12 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
   }
 }
 
-void RewardsDOMHandler::UpdateAdsRewards(const base::ListValue* args) {
-  if (!rewards_service_) {
+void RewardsDOMHandler::UpdateAdRewards(const base::ListValue* args) {
+  if (!ads_service_) {
     return;
   }
 
-  rewards_service_->UpdateAdsRewards();
+  ads_service_->UpdateAdRewards(/*should_reconcile*/false);
 }
 
 void RewardsDOMHandler::ExcludePublisher(const base::ListValue *args) {
@@ -1439,7 +1452,7 @@ void RewardsDOMHandler::OnPublisherListNormalized(
 
 void RewardsDOMHandler::GetTransactionHistory(
     const base::ListValue* args) {
-  rewards_service_->GetTransactionHistory(base::Bind(
+  ads_service_->GetTransactionHistory(base::Bind(
       &RewardsDOMHandler::OnTransactionHistory,
       weak_factory_.GetWeakPtr()));
 }
@@ -1479,11 +1492,17 @@ void RewardsDOMHandler::OnTransactionHistoryChanged(
   }
 }
 
+void RewardsDOMHandler::OnAdRewardsChanged() {
+  ads_service_->GetTransactionHistory(base::Bind(
+      &RewardsDOMHandler::OnTransactionHistory,
+      weak_factory_.GetWeakPtr()));
+}
+
 void RewardsDOMHandler::GetRewardsMainEnabled(
     const base::ListValue* args) {
   rewards_service_->GetRewardsMainEnabled(base::Bind(
-          &RewardsDOMHandler::OnGetRewardsMainEnabled,
-          weak_factory_.GetWeakPtr()));
+      &RewardsDOMHandler::OnGetRewardsMainEnabled,
+      weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::OnGetRewardsMainEnabled(

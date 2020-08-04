@@ -6,12 +6,11 @@
 #include "bat/ads/internal/filters/ads_history_confirmation_filter.h"
 
 #include <deque>
-#include <memory>
 
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/ad_history.h"
 #include "bat/ads/internal/container_util.h"
-#include "bat/ads/internal/unittest_utils.h"
+#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

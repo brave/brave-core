@@ -5,16 +5,16 @@
 
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
 
+#include <stdint.h>
+
 #include <memory>
+#include <string>
+#include <vector>
 
-#include "base/time/time.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/ads_client_mock.h"
-#include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/time_util.h"
-
-using ::testing::_;
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
@@ -23,12 +23,11 @@ namespace classification {
 
 class BatAdsPurchaseIntentClassifierTest : public ::testing::Test {
  protected:
-  std::unique_ptr<AdsClientMock> ads_client_mock_;
-  std::unique_ptr<AdsImpl> ads_;
-
   BatAdsPurchaseIntentClassifierTest() :
       ads_client_mock_(std::make_unique<AdsClientMock>()),
-      ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())) {
+      ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
+      purchase_intent_classifier_(std::make_unique<
+          PurchaseIntentClassifier>(ads_.get())) {
     // You can do set-up work for each test here
   }
 
@@ -80,7 +79,6 @@ class BatAdsPurchaseIntentClassifierTest : public ::testing::Test {
           ]
         })";
 
-    purchase_intent_classifier_ = std::make_unique<PurchaseIntentClassifier>();
     purchase_intent_classifier_->Initialize(json);
   }
 
@@ -91,6 +89,8 @@ class BatAdsPurchaseIntentClassifierTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  std::unique_ptr<AdsClientMock> ads_client_mock_;
+  std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<PurchaseIntentClassifier> purchase_intent_classifier_;
 };
 
@@ -106,7 +106,7 @@ TEST_F(BatAdsPurchaseIntentClassifierTest,
 
   // Act
   const PurchaseIntentSignalInfo info =
-      purchase_intent_classifier_->ExtractIntentSignal(url);
+      purchase_intent_classifier_->MaybeExtractIntentSignal(url);
 
   // Assert
   const PurchaseIntentSegmentList expected_segments({
@@ -125,7 +125,7 @@ TEST_F(BatAdsPurchaseIntentClassifierTest,
 
   // Act
   const PurchaseIntentSignalInfo info =
-      purchase_intent_classifier_->ExtractIntentSignal(url);
+      purchase_intent_classifier_->MaybeExtractIntentSignal(url);
 
   // Assert
   const PurchaseIntentSegmentList expected_segments({
@@ -143,7 +143,7 @@ TEST_F(BatAdsPurchaseIntentClassifierTest,
 
   // Act
   const PurchaseIntentSignalInfo info =
-      purchase_intent_classifier_->ExtractIntentSignal(url);
+      purchase_intent_classifier_->MaybeExtractIntentSignal(url);
 
   // Assert
   const PurchaseIntentSegmentList expected_segments({

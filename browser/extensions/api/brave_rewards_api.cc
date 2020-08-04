@@ -1085,14 +1085,14 @@ BraveRewardsGetAdsEstimatedEarningsFunction::
 ExtensionFunction::ResponseAction
 BraveRewardsGetAdsEstimatedEarningsFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  RewardsService* rewards_service =
-    RewardsServiceFactory::GetForProfile(profile);
+  AdsService* ads_service_ =
+      AdsServiceFactory::GetForProfile(profile);
 
-  if (!rewards_service) {
-    return RespondNow(Error("Rewards service is not initialized"));
+  if (!ads_service_) {
+    return RespondNow(Error("Ads service is not initialized"));
   }
 
-  rewards_service->GetTransactionHistory(base::Bind(
+  ads_service_->GetTransactionHistory(base::Bind(
         &BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings,
         this));
   return RespondLater();

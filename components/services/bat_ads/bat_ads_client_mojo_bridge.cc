@@ -11,28 +11,11 @@
 
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "mojo/public/cpp/bindings/sync_call_restrictions.h"
-#include "base/containers/flat_map.h"
 #include "base/logging.h"
 
 namespace bat_ads {
 
 namespace {
-
-int32_t ToMojomURLRequestMethod(
-    const ads::URLRequestMethod method) {
-  return (int32_t)method;
-}
-
-std::map<std::string, std::string> ToStdMap(
-    const base::flat_map<std::string, std::string>& map) {
-  std::map<std::string, std::string> std_map;
-
-  for (const auto& it : map) {
-    std_map[it.first] = it.second;
-  }
-
-  return std_map;
-}
 
 ads::Result ToAdsResult(
     const int32_t result) {
@@ -181,17 +164,6 @@ bool BatAdsClientMojoBridge::IsNetworkConnectionAvailable() const {
   return is_available;
 }
 
-void BatAdsClientMojoBridge::GetClientInfo(
-    ads::ClientInfo* info) const {
-  if (!connected()) {
-    return;
-  }
-
-  std::string client_info;
-  bat_ads_client_->GetClientInfo(info->ToJson(), &client_info);
-  info->FromJson(client_info);
-}
-
 bool BatAdsClientMojoBridge::IsForeground() const {
   if (!connected()) {
     return false;
@@ -230,60 +202,37 @@ void BatAdsClientMojoBridge::CloseNotification(
   bat_ads_client_->CloseNotification(uuid);
 }
 
-void BatAdsClientMojoBridge::SetCatalogIssuers(
-    std::unique_ptr<ads::IssuersInfo> info) {
-  if (!connected()) {
+void OnUrlRequest(
+    const ads::UrlRequestCallback& callback,
+    const ads::UrlResponsePtr response_ptr) {
+  ads::UrlResponse response;
+
+  if (!response_ptr) {
+    response.status_code = 418;  // I'm a teapot
+    callback(response);
     return;
   }
 
-  bat_ads_client_->SetCatalogIssuers(info->ToJson());
+  response.url = response_ptr->url;
+  response.status_code = response_ptr->status_code;
+  response.body = response_ptr->body;
+  response.headers = response_ptr->headers;
+  callback(response);
 }
 
-void BatAdsClientMojoBridge::ConfirmAd(
-    const ads::AdInfo& info,
-    const ads::ConfirmationType confirmation_type) {
+void BatAdsClientMojoBridge::UrlRequest(
+    ads::UrlRequestPtr url_request,
+    ads::UrlRequestCallback callback) {
   if (!connected()) {
+    ads::UrlResponse response;
+    response.url = url_request->url;
+    response.status_code = 418;  // I'm a teapot
+    callback(response);
     return;
   }
 
-  bat_ads_client_->ConfirmAd(info.ToJson(), confirmation_type);
-}
-
-void BatAdsClientMojoBridge::ConfirmAction(
-    const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const ads::ConfirmationType confirmation_type) {
-  if (!connected()) {
-    return;
-  }
-
-  bat_ads_client_->ConfirmAction(creative_instance_id, creative_set_id,
-      confirmation_type);
-}
-
-void OnURLRequest(
-    const ads::URLRequestCallback& callback,
-    const int32_t response_status_code,
-    const std::string& content,
-    const base::flat_map<std::string, std::string>& headers) {
-  callback(response_status_code, content, ToStdMap(headers));
-}
-
-void BatAdsClientMojoBridge::URLRequest(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    const ads::URLRequestMethod method,
-    ads::URLRequestCallback callback) {
-  if (!connected()) {
-    callback(418, "", {});
-    return;
-  }
-
-  bat_ads_client_->URLRequest(url, headers, content, content_type,
-      ToMojomURLRequestMethod(method), base::BindOnce(&OnURLRequest,
-          std::move(callback)));
+  bat_ads_client_->UrlRequest(std::move(url_request),
+      base::BindOnce(&OnUrlRequest, std::move(callback)));
 }
 
 void OnSave(
@@ -342,23 +291,6 @@ void BatAdsClientMojoBridge::Load(
   bat_ads_client_->Load(name, base::BindOnce(&OnLoad, std::move(callback)));
 }
 
-void OnReset(
-    const ads::ResultCallback& callback,
-    const int32_t result) {
-  callback(ToAdsResult(result));
-}
-
-void BatAdsClientMojoBridge::Reset(
-    const std::string& name,
-    ads::ResultCallback callback) {
-  if (!connected()) {
-    callback(ads::Result::FAILED);
-    return;
-  }
-
-  bat_ads_client_->Reset(name, base::BindOnce(&OnReset, std::move(callback)));
-}
-
 std::string BatAdsClientMojoBridge::LoadResourceForId(
     const std::string& id) {
   std::string value;
@@ -382,6 +314,14 @@ void BatAdsClientMojoBridge::RunDBTransaction(
     ads::RunDBTransactionCallback callback) {
   bat_ads_client_->RunDBTransaction(std::move(transaction),
       base::BindOnce(&OnRunDBTransaction, std::move(callback)));
+}
+
+void BatAdsClientMojoBridge::OnAdRewardsChanged() {
+  if (!connected()) {
+    return;
+  }
+
+  bat_ads_client_->OnAdRewardsChanged();
 }
 
 void BatAdsClientMojoBridge::Log(

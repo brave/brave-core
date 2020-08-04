@@ -15,20 +15,6 @@
 
 namespace bat_ledger {
 
-namespace {
-
-void OnResultCallback(ledger::ResultCallback callback, ledger::Result result) {
-  callback(result);
-}
-
-void OnLoadState(const ledger::OnLoadCallback& callback,
-                 const ledger::Result result,
-                 const std::string& value) {
-  callback(result, value);
-}
-
-}  // namespace
-
 BatLedgerClientMojoBridge::BatLedgerClientMojoBridge(
       mojo::PendingAssociatedRemote<mojom::BatLedgerClient> client_info) {
   bat_ledger_client_.Bind(std::move(client_info));
@@ -166,44 +152,6 @@ void BatLedgerClientMojoBridge::PublisherListNormalized(
   bat_ledger_client_->PublisherListNormalized(std::move(list));
 }
 
-void BatLedgerClientMojoBridge::SaveState(
-    const std::string& name,
-    const std::string& value,
-    ledger::ResultCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bat_ledger_client_->SaveState(
-      name, value,
-      base::BindOnce(&OnResultCallback, std::move(callback)));
-}
-
-void BatLedgerClientMojoBridge::LoadState(
-    const std::string& name,
-    ledger::OnLoadCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR, std::string());
-    return;
-  }
-
-  bat_ledger_client_->LoadState(
-      name, base::BindOnce(&OnLoadState, std::move(callback)));
-}
-
-void BatLedgerClientMojoBridge::ResetState(
-    const std::string& name,
-    ledger::ResultCallback callback) {
-  if (!Connected()) {
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  bat_ledger_client_->ResetState(
-      name, base::BindOnce(&OnResultCallback, std::move(callback)));
-}
-
 void BatLedgerClientMojoBridge::SetBooleanState(const std::string& name,
                                                bool value) {
   bat_ledger_client_->SetBooleanState(name, value);
@@ -317,20 +265,6 @@ uint64_t BatLedgerClientMojoBridge::GetUint64Option(
   uint64_t value;
   bat_ledger_client_->GetUint64Option(name, &value);
   return value;
-}
-
-void BatLedgerClientMojoBridge::SetConfirmationsIsReady(const bool is_ready) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->SetConfirmationsIsReady(is_ready);
-}
-
-void BatLedgerClientMojoBridge::ConfirmationsTransactionHistoryDidChange() {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
 bool BatLedgerClientMojoBridge::Connected() const {

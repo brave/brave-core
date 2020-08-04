@@ -20,6 +20,7 @@
 #import <UIKit/UIKit.h>
 
 #import "base/strings/sys_string_conversions.h"
+#import "brave/base/containers/utils.h"
 
 #import "RewardsLogging.h"
 
@@ -145,6 +146,21 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 + (void)setEnvironment:(int)environment
 {
   ads::_environment = static_cast<ads::Environment>(environment);
+}
+
++ (BATBraveAdsBuildChannel *)buildChannel
+{
+  auto build_channel = [[BATBraveAdsBuildChannel alloc] init];
+  build_channel.isRelease = ads::_build_channel.is_release;
+  build_channel.name = [NSString stringWithUTF8String: ads::_build_channel.name.c_str()];
+
+  return build_channel;
+}
+
++ (void)setBuildChannel:(BATBraveAdsBuildChannel *)buildChannel
+{
+  ads::_build_channel.is_release = buildChannel.isRelease;
+  ads::_build_channel.name = buildChannel.name.UTF8String;
 }
 
 #pragma mark - Initialization / Shutdown
@@ -320,14 +336,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   ads->RemoveAllHistory(completion);
 }
 
-#pragma mark - Confirmations
-
-- (void)setConfirmationsIsReady:(BOOL)isReady
-{
-  if (![self isAdsServiceRunning]) { return; }
-  ads->SetConfirmationsIsReady(isReady);
-}
-
 #pragma mark - Observers
 
 - (void)applicationDidBecomeActive
@@ -421,6 +429,25 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
                              static_cast<ads::AdNotificationEventType>(eventType));
 }
 
+- (void)updateAdRewards:(BOOL)shouldReconcile
+{
+  if (![self isAdsServiceRunning]) { return; }
+  ads->UpdateAdRewards(shouldReconcile);
+}
+
+- (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
+{
+  ads->GetTransactionHistory(^(ads::StatementInfo list) {
+    NSDate *nextPaymentDate = nil;
+    if (list.next_payment_date_in_seconds > 0) {
+      nextPaymentDate = [NSDate dateWithTimeIntervalSince1970:list.next_payment_date_in_seconds];
+    }
+    completion(list.ad_notifications_received_this_month,
+               list.estimated_pending_rewards,
+               nextPaymentDate);
+  });
+}
+
 - (void)toggleThumbsUpForAd:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID
 {
   if (![self isAdsServiceRunning]) { return; }
@@ -437,25 +464,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
                          ads::AdContent::LikeAction::kThumbsDown);
 }
 
-- (void)confirmAd:(const ads::AdInfo &)info confirmationType:(const ads::ConfirmationType)confirmationType
-{
-  [self.ledger confirmAd:[NSString stringWithUTF8String:info.ToJson().c_str()]
-        confirmationType:[NSString stringWithUTF8String:std::string(confirmationType).c_str()]];
-}
-
-- (void)confirmAction:(const std::string &)creative_instance_id creativeSetId:(const std::string &)creative_set_id confirmationType:(const ads::ConfirmationType &)confirmationType
-{
-  [self.ledger confirmAction:[NSString stringWithUTF8String:creative_instance_id.c_str()]
-               creativeSetID:[NSString stringWithUTF8String:creative_set_id.c_str()]
-            confirmationType:[NSString stringWithUTF8String:std::string(confirmationType).c_str()]];
-}
-
-- (void)setCatalogIssuers:(std::unique_ptr<ads::IssuersInfo>)info
-{
-  if (![self isAdsServiceRunning]) { return; }
-  [self.ledger setCatalogIssuers:[NSString stringWithUTF8String:info->ToJson().c_str()]];
-}
-
 #pragma mark - Configuration
 
 - (uint64_t)getAdsPerDay
@@ -466,11 +474,6 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 - (uint64_t)getAdsPerHour
 {
   return self.numberOfAllowableAdsPerHour;
-}
-
-- (void)getClientInfo:(ads::ClientInfo *)info
-{
-  info->platform = ads::ClientInfoPlatformType::IOS;
 }
 
 - (bool)isAdsEnabled
@@ -485,7 +488,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (bool)canShowBackgroundNotifications
 {
-    return false;
+  return false;
 }
 
 - (bool)isNetworkConnectionAvailable
@@ -500,14 +503,23 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 #pragma mark - Network
 
-- (void)URLRequest:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)content_type method:(const ads::URLRequestMethod)method callback:(ads::URLRequestCallback)callback {
-  std::map<ads::URLRequestMethod, std::string> methodMap {
-    {ads::URLRequestMethod::GET, "GET"},
-    {ads::URLRequestMethod::POST, "POST"},
-    {ads::URLRequestMethod::PUT, "PUT"}
+- (void)UrlRequest:(ads::UrlRequestPtr)url_request  callback:(ads::UrlRequestCallback)callback {
+  std::map<ads::UrlRequestMethod, std::string> methodMap {
+    {ads::UrlRequestMethod::GET, "GET"},
+    {ads::UrlRequestMethod::POST, "POST"},
+    {ads::UrlRequestMethod::PUT, "PUT"}
   };
-  return [self.commonOps loadURLRequest:url headers:headers content:content content_type:content_type method:methodMap[method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
-    callback(statusCode, response, headers);
+
+  const auto copiedURL = [NSString stringWithUTF8String:url_request->url.c_str()];
+
+  return [self.commonOps loadURLRequest:url_request->url headers:url_request->headers content:url_request->content content_type:url_request->content_type method:methodMap[url_request->method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+    ads::UrlResponse url_response;
+    url_response.url = copiedURL.UTF8String;
+    url_response.status_code = statusCode;
+    url_response.body = response;
+    url_response.headers = base::MapToFlatMap(headers);
+
+    callback(url_response);
   }];
 }
 
@@ -886,8 +898,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
   self.automaticallyDetectedSubdivisionTargetingCode = [NSString stringWithCString:subdivision_targeting_code.c_str() encoding:[NSString defaultCStringEncoding]];
 }
 
-- (void)runDBTransaction:(ads::DBTransactionPtr)transaction
-                callback:(ads::RunDBTransactionCallback)callback
+- (void)runDBTransaction:(ads::DBTransactionPtr)transaction callback:(ads::RunDBTransactionCallback)callback
 {
   if (!adsDatabase || transaction.get() == nullptr) {
     auto response = ads::DBCommandResponse::New();
@@ -903,6 +914,11 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
       });
     });
   }
+}
+
+- (void)onAdRewardsChanged
+{
+  // TODO(brave): Refresh Brave Ads UI
 }
 
 #pragma mark - User Model Paths

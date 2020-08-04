@@ -27,8 +27,7 @@ struct ADS_EXPORT AdContent {
 
   std::string ToJson() const;
   Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
+      const std::string& json);
 
   enum class LikeAction {
     kNone = 0,

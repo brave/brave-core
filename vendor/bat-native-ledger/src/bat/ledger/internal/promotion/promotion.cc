@@ -454,10 +454,6 @@ void Promotion::OnComplete(
         braveledger_time_util::GetCurrentYear(),
         ConvertPromotionTypeToReportType(promotion->type),
         promotion->approximate_value);
-
-    if (promotion->type == ledger::PromotionType::ADS) {
-      ledger_->UpdateAdsRewards(true);
-    }
   }
 
   callback(result, std::move(promotion));

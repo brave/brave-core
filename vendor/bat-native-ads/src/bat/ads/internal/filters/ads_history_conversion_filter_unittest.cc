@@ -9,7 +9,7 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/ad_history.h"
-#include "bat/ads/internal/unittest_utils.h"
+#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 

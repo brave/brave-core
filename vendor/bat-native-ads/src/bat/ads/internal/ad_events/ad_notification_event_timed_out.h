@@ -6,12 +6,12 @@
 #ifndef BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATION_EVENT_TIMED_OUT_H_
 #define BAT_ADS_INTERNAL_AD_EVENTS_AD_NOTIFICATION_EVENT_TIMED_OUT_H_
 
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_events/ad_event.h"
 
 namespace ads {
 
 class AdsImpl;
-struct AdNotificationInfo;
 
 class AdNotificationEventTimedOut : public AdEvent<AdNotificationInfo> {
  public:

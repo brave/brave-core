@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/eligible_ads/eligible_ads_filter_factory.h"
+
 #include "bat/ads/internal/eligible_ads/eligible_ads_priority_filter.h"
 
 namespace ads {

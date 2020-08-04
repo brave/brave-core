@@ -5,10 +5,13 @@
 
 #include "bat/ads/internal/logging_util.h"
 
-#include "bat/ads/internal/url_util.h"
+#include <map>
+#include <vector>
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/base/containers/utils.h"
+#include "bat/ads/internal/url_util.h"
 
 namespace ads {
 
@@ -30,19 +33,15 @@ bool ShouldAllowHeader(const std::string& header) {
 }
 
 std::string UrlRequestToString(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    const URLRequestMethod method) {
+    const UrlRequestPtr& request) {
   std::string log = "URL Request:\n";
 
-  log += base::StringPrintf("  URL: %s\n", url.c_str());
+  log += base::StringPrintf("  URL: %s\n", request->url.c_str());
 
-  if (!headers.empty()) {
+  if (!request->headers.empty()) {
     log += "  Headers:\n";
 
-    for (const auto& header : headers) {
+    for (const auto& header : request->headers) {
       if (!ShouldAllowHeader(header)) {
         continue;
       }
@@ -51,16 +50,19 @@ std::string UrlRequestToString(
     }
   }
 
-  if (!content.empty()) {
-    log += base::StringPrintf("  Content: %s\n", content.c_str());
+  if (!request->content.empty()) {
+    log += base::StringPrintf("  Content: %s\n", request->content.c_str());
   }
 
-  if (!content_type.empty()) {
-    log += base::StringPrintf("  Content Type: %s\n", content_type.c_str());
+  if (!request->content_type.empty()) {
+    log += base::StringPrintf("  Content Type: %s\n",
+        request->content_type.c_str());
   }
 
-  const std::string url_method_name = GetUrlMethodName(method);
-  log += base::StringPrintf("  Method: %s", url_method_name.c_str());
+  std::ostringstream ss;
+  ss << request->method;
+
+  log += base::StringPrintf("  Method: %s", ss.str().c_str());
 
   return log;
 }
@@ -83,15 +85,14 @@ std::string HeadersToString(
 }
 
 std::string UrlResponseToString(
-    const std::string& url,
-    const int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers) {
-  const std::string formatted_headers = HeadersToString(headers);
+    const UrlResponse& response) {
+  const std::string formatted_headers =
+      HeadersToString(base::FlatMapToMap(response.headers));
 
   return base::StringPrintf("URL Response:\n  URL: %s\n  Response "
-      "Status Code: %d\n  Response: %s\n  Headers:\n%s", url.c_str(),
-          response_status_code, response.c_str(), formatted_headers.c_str());
+      "Status Code: %d\n  Response: %s\n  Headers:\n%s", response.url.c_str(),
+          response.status_code, response.body.c_str(),
+              formatted_headers.c_str());
 }
 
 }  // namespace ads

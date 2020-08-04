@@ -523,7 +523,8 @@ IN_PROC_BROWSER_TEST_F(BraveAdsBrowserTest,
     BraveAdsLocaleIsNewlySupportedForLatestSchemaVersion) {
   // IMPORTANT: When adding new schema versions |newly_supported_locale_| must
   // be updated in |BraveAdsBrowserTest| to reflect a locale from the latest
-  // schema in "bat-native-ads/src/bat/ads/internal/supported_country_codes.h"
+  // "bat-native-ads/src/bat/ads/internal/locale/supported_country_codes.h"
+  // schema
 
   GetPrefs()->SetInteger(
       brave_ads::prefs::kSupportedCountryCodesLastSchemaVersion,

@@ -7,6 +7,7 @@
 #define BAT_ADS_INTERNAL_CLASSIFICATION_PURCHASE_INTENT_CLASSIFIER_FUNNEL_KEYWORD_INFO_H_  // NOLINT
 
 #include <stdint.h>
+
 #include <string>
 
 namespace ads {

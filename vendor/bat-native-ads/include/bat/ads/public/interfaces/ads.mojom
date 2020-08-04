@@ -4,15 +4,41 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module ads.mojom;
 
-enum Environment {
+enum BraveAdsEnvironment {
   STAGING = 0,
-  PRODUCTION = 1,
-  DEVELOPMENT = 2
+  PRODUCTION,
+  DEVELOPMENT
 };
 
-enum AdNotificationEventType {
+struct BraveAdsBuildChannel {
+  bool is_release;
+  string name;
+};
+
+enum BraveAdsAdNotificationEventType {
   kViewed = 0,
   kClicked,
   kDismissed,
   kTimedOut
+};
+
+enum BraveAdsUrlRequestMethod {
+  GET = 0,
+  PUT,
+  POST
+};
+
+struct BraveAdsUrlRequest {
+  string url;
+  array<string> headers;
+  string content;
+  string content_type;
+  BraveAdsUrlRequestMethod method;
+};
+
+struct BraveAdsUrlResponse {
+  string url;
+  int32 status_code;
+  string body;
+  map<string, string> headers;
 };

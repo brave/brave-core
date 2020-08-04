@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <stdint.h>
 #include "bat/ads/internal/classification/purchase_intent_classifier/funnel_keyword_info.h"
 
 namespace ads {

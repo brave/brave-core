@@ -6,20 +6,19 @@ Public facing API documentation can be found in `ads.h` and `ads_client.h`
 
 ## Command-line Switches
 
-Use production Ads Serve as defined by `PRODUCTION_SERVER` in `static_values.h`. Default for official builds, i.e. Release
+Use production Ads server. Default for official builds, i.e. Release
 
 ```
 --brave-ads-production
 ```
 
-Use staging Ads Serve as defined by `STAGING_SERVER` in `static_values.h`.
-Default for non official builds, i.e. Debug
+Use staging Ads server. Default for non official builds, i.e. Debug
 
 ```
 --brave-ads-staging
 ```
 
-Use development Ads Serve as defined by `DEVELOPMENT_SERVER` in `static_values.h`.
+Use development Ads server.
 
 ```
 --brave-ads-development

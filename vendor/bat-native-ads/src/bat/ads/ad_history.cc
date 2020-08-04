@@ -5,9 +5,6 @@
 
 #include "bat/ads/ad_history.h"
 
-#include "bat/ads/ad_content.h"
-#include "bat/ads/category_content.h"
-
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_util.h"
@@ -42,16 +39,12 @@ std::string AdHistory::ToJson() const {
 }
 
 Result AdHistory::FromJson(
-    const std::string& json,
-    std::string* error_description) {
+    const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
-    if (error_description != nullptr) {
-      *error_description = helper::JSON::GetLastError(&document);
-    }
-
+    BLOG(1, helper::JSON::GetLastError(&document));
     return FAILED;
   }
 

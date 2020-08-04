@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+#include "base/values.h"
 #include "bat/ledger/internal/attestation/attestation.h"
 
 namespace bat_ledger {

@@ -7,13 +7,12 @@
 #define BAT_ADS_INTERNAL_FILTERS_ADS_HISTORY_DATE_RANGE_FILTER_H_
 
 #include <stdint.h>
+
 #include <deque>
 
 #include "bat/ads/ad_history.h"
 
 namespace ads {
-
-struct AdsHistory;
 
 class AdsHistoryDateRangeFilter {
  public :

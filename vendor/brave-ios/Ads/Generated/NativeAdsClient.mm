@@ -31,10 +31,6 @@ uint64_t NativeAdsClient::GetAdsPerHour() const {
   return [bridge_ getAdsPerHour];
 }
 
-void NativeAdsClient::GetClientInfo(ads::ClientInfo * info) const {
-  [bridge_ getClientInfo:info];
-}
-
 bool NativeAdsClient::IsNetworkConnectionAvailable() const {
   return [bridge_ isNetworkConnectionAvailable];
 }
@@ -63,20 +59,8 @@ void NativeAdsClient::CloseNotification(const std::string & uuid) {
   [bridge_ closeNotification:uuid];
 }
 
-void NativeAdsClient::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
-  [bridge_ setCatalogIssuers:std::move(info)];
-}
-
-void NativeAdsClient::ConfirmAd(const ads::AdInfo & info, const ads::ConfirmationType confirmation_type) {
-  [bridge_ confirmAd:info confirmationType:confirmation_type];
-}
-
-void NativeAdsClient::ConfirmAction(const std::string & uuid, const std::string & creative_set_id, const ads::ConfirmationType confirmation_type) {
-  [bridge_ confirmAction:uuid creativeSetId:creative_set_id confirmationType:confirmation_type];
-}
-
-void NativeAdsClient::URLRequest(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & content_type, const ads::URLRequestMethod method, ads::URLRequestCallback callback) {
-  [bridge_ URLRequest:url headers:headers content:content contentType:content_type method:method callback:callback];
+void NativeAdsClient::UrlRequest(ads::UrlRequestPtr url_request, ads::UrlRequestCallback callback) {
+  [bridge_ UrlRequest:std::move(url_request) callback:callback];
 }
 
 void NativeAdsClient::Save(const std::string & name, const std::string & value, ads::ResultCallback callback) {
@@ -89,10 +73,6 @@ void NativeAdsClient::LoadUserModelForId(const std::string & id, ads::LoadCallba
 
 void NativeAdsClient::Load(const std::string & name, ads::LoadCallback callback) {
   [bridge_ load:name callback:callback];
-}
-
-void NativeAdsClient::Reset(const std::string & name, ads::ResultCallback callback) {
-  [bridge_ reset:name callback:callback];
 }
 
 std::string NativeAdsClient::LoadResourceForId(const std::string & id) {
@@ -129,4 +109,8 @@ void NativeAdsClient::SetAutomaticallyDetectedAdsSubdivisionTargetingCode(const 
 
 void NativeAdsClient::RunDBTransaction(ads::DBTransactionPtr transaction, ads::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction) callback:callback];
+}
+
+void NativeAdsClient::OnAdRewardsChanged() {
+  [bridge_ onAdRewardsChanged];
 }

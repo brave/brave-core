@@ -9,7 +9,7 @@
 #include <string>
 
 #include "bat/ads/ads_client.h"
-#include "bat/ads/internal/ad_conversion_info.h"
+#include "bat/ads/internal/ad_conversions/ad_conversion_info.h"
 #include "bat/ads/internal/database/database_table.h"
 #include "bat/ads/mojom.h"
 #include "bat/ads/result.h"

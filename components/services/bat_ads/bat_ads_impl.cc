@@ -22,10 +22,6 @@ namespace bat_ads {
 
 namespace {
 
-ads::Result ToMojomResult(int32_t result) {
-  return (ads::Result)result;
-}
-
 ads::AdContent::LikeAction ToAdsLikeAction(
     const int action) {
   return static_cast<ads::AdContent::LikeAction>(action);
@@ -62,11 +58,6 @@ void BatAdsImpl::Shutdown(
 
   auto shutdown_callback = std::bind(BatAdsImpl::OnShutdown, holder, _1);
   ads_->Shutdown(shutdown_callback);
-}
-
-void BatAdsImpl::SetConfirmationsIsReady(
-    const bool is_ready) {
-  ads_->SetConfirmationsIsReady(is_ready);
 }
 
 void BatAdsImpl::ChangeLocale(
@@ -149,6 +140,17 @@ void BatAdsImpl::RemoveAllHistory(
   ads_->RemoveAllHistory(remove_all_history_callback);
 }
 
+void BatAdsImpl::OnWalletUpdated(
+    const std::string& payment_id,
+    const std::string& recovery_seed_base64) {
+  ads_->OnWalletUpdated(payment_id, recovery_seed_base64);
+}
+
+void BatAdsImpl::UpdateAdRewards(
+      const bool should_reconcile) {
+  ads_->UpdateAdRewards(should_reconcile);
+}
+
 void BatAdsImpl::GetAdsHistory(
     const uint64_t from_timestamp,
     const uint64_t to_timestamp,
@@ -159,6 +161,15 @@ void BatAdsImpl::GetAdsHistory(
               to_timestamp);
 
   std::move(callback).Run(history.ToJson());
+}
+
+void BatAdsImpl::GetTransactionHistory(
+    GetTransactionHistoryCallback callback) {
+  auto* holder = new CallbackHolder<GetTransactionHistoryCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ads_->GetTransactionHistory(std::bind(BatAdsImpl::OnGetTransactionHistory,
+      holder, _1));
 }
 
 void BatAdsImpl::ToggleAdThumbUp(
@@ -230,7 +241,7 @@ void BatAdsImpl::OnInitialize(
     CallbackHolder<InitializeCallback>* holder,
     const int32_t result) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result));
+    std::move(holder->get()).Run((ads::Result)result);
   }
 
   delete holder;
@@ -240,7 +251,7 @@ void BatAdsImpl::OnShutdown(
     CallbackHolder<ShutdownCallback>* holder,
     const int32_t result) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result));
+    std::move(holder->get()).Run((ads::Result)result);
   }
 
   delete holder;
@@ -250,7 +261,18 @@ void BatAdsImpl::OnRemoveAllHistory(
     CallbackHolder<RemoveAllHistoryCallback>* holder,
     const int32_t result) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(ToMojomResult(result));
+    std::move(holder->get()).Run((ads::Result)result);
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::OnGetTransactionHistory(
+    CallbackHolder<GetTransactionHistoryCallback>* holder,
+    const ads::StatementInfo& statement) {
+  if (holder->is_valid()) {
+    const std::string json = statement.ToJson();
+    std::move(holder->get()).Run(json);
   }
 
   delete holder;

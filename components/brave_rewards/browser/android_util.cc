@@ -5,7 +5,6 @@
 
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
-#include "brave/common/brave_channel_info.h"
 
 namespace android_util {
 
@@ -13,7 +12,6 @@ ledger::ClientInfoPtr GetAndroidClientInfo() {
   auto info = ledger::ClientInfo::New();
   info->platform = ledger::Platform::ANDROID_R;
   info->os = ledger::OperatingSystem::UNDEFINED;
-  info->channel = brave::GetChannelName();
   return info;
 }
 

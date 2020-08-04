@@ -5,26 +5,139 @@
 
 #include "bat/ads/internal/classification/page_classifier/page_classifier.h"
 
-#include <algorithm>
+#include <functional>
 
-#include "base/logging.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/classification/classification_util.h"
+#include "bat/ads/internal/classification/page_classifier/page_classifier_user_models.h"
 #include "bat/ads/internal/classification/page_classifier/page_classifier_util.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/reports/event_type_load_info.h"
+#include "bat/ads/internal/reports/reports.h"
+#include "bat/ads/internal/url_util.h"
 
 namespace ads {
 namespace classification {
 
+using std::placeholders::_1;
+using std::placeholders::_2;
+
+namespace {
+const int kTopWinningCategoryCount = 3;
+}  // namespace
+
 PageClassifier::PageClassifier(
-    const AdsImpl* const ads)
+    AdsImpl* ads)
     : ads_(ads) {
   DCHECK(ads_);
 }
 
 PageClassifier::~PageClassifier() = default;
+
+void PageClassifier::LoadUserModelForLocale(
+    const std::string& locale) {
+  const std::string language_code = brave_l10n::GetLanguageCode(locale);
+
+  const auto iter = kPageClassificationLanguageCodes.find(language_code);
+  if (iter == kPageClassificationLanguageCodes.end()) {
+    BLOG(1, locale << " locale does not support page classification");
+    user_model_.reset(usermodel::UserModel::CreateInstance());
+    return;
+  }
+
+  LoadUserModelForId(iter->second);
+}
+
+void PageClassifier::LoadUserModelForId(
+    const std::string& id) {
+  auto callback =
+      std::bind(&PageClassifier::OnLoadUserModelForId, this, id, _1, _2);
+  ads_->get_ads_client()->LoadUserModelForId(id, callback);
+}
+
+std::string PageClassifier::MaybeClassifyPage(
+    const std::string& url,
+    const std::string& content) {
+  if (!UrlHasScheme(url)) {
+    BLOG(1, "Visited URL is not supported for page classification");
+    return "";
+  }
+
+  if (SearchProviders::IsSearchEngine(url)) {
+    BLOG(1, "Search engine pages are not supported for page classification");
+    return "";
+  }
+
+  const std::string page_classification =
+      ShouldClassifyPages() ? ClassifyPage(url, content) : kUntargeted;
+
+  LoadInfo load_info;
+  load_info.tab_id = ads_->get_active_tab_id();
+  load_info.tab_url = ads_->get_active_tab_url();
+  load_info.tab_classification = page_classification;
+
+  const Reports reports(ads_);
+  const std::string report = reports.GenerateLoadEventReport(load_info);
+  BLOG(3, "Event log: " << report);
+
+  if (page_classification == kUntargeted) {
+    const std::string locale =
+        brave_l10n::LocaleHelper::GetInstance()->GetLocale();
+    BLOG(1, locale << " locale does not support page classification");
+    return page_classification;
+  }
+
+  if (page_classification.empty()) {
+    BLOG(1, "Page not classified as not enough content");
+    return "";
+  }
+
+  BLOG(1, "Classified page as " << page_classification);
+
+  const CategoryList winning_categories = GetWinningCategories();
+  if (winning_categories.empty()) {
+    return page_classification;
+  }
+
+  BLOG(1, "Winning page classification over time is "
+      << winning_categories.front());
+
+  return page_classification;
+}
+
+CategoryList PageClassifier::GetWinningCategories() const {
+  CategoryList winning_categories;
+
+  if (!ShouldClassifyPages()) {
+    return winning_categories;
+  }
+
+  const PageProbabilitiesList page_probabilities =
+      ads_->get_client()->GetPageProbabilitiesHistory();
+  if (page_probabilities.empty()) {
+    return winning_categories;
+  }
+
+  const CategoryProbabilitiesMap category_probabilities =
+      GetCategoryProbabilities(page_probabilities);
+
+  const CategoryProbabilitiesList winning_category_probabilities =
+      GetWinningCategoryProbabilities(category_probabilities,
+          kTopWinningCategoryCount);
+
+  winning_categories = ToCategoryList(winning_category_probabilities);
+
+  return winning_categories;
+}
+
+const PageProbabilitiesCacheMap&
+PageClassifier::get_page_probabilities_cache() const {
+  return page_probabilities_cache_;
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 bool PageClassifier::IsInitialized() const {
   return user_model_ && user_model_->IsInitialized();
@@ -34,6 +147,28 @@ bool PageClassifier::Initialize(
     const std::string& json) {
   user_model_.reset(usermodel::UserModel::CreateInstance());
   return user_model_->InitializePageClassifier(json);
+}
+
+void PageClassifier::OnLoadUserModelForId(
+    const std::string& id,
+    const Result result,
+    const std::string& json) {
+  if (result != SUCCESS) {
+    BLOG(1, "Failed to load " << id << " page classification user model");
+    user_model_.reset(usermodel::UserModel::CreateInstance());
+    return;
+  }
+
+  BLOG(1, "Successfully loaded " << id << " page classification user model");
+
+  if (!Initialize(json)) {
+    BLOG(1, "Failed to initialize " << id << " page classification user model");
+    user_model_.reset(usermodel::UserModel::CreateInstance());
+    return;
+  }
+
+  BLOG(1, "Successfully initialized " << id << " page classification user "
+      "model");
 }
 
 bool PageClassifier::ShouldClassifyPages() const {
@@ -62,38 +197,6 @@ std::string PageClassifier::ClassifyPage(
 
   return page_classification;
 }
-
-CategoryList PageClassifier::GetWinningCategories() const {
-  CategoryList winning_categories;
-
-  if (!ShouldClassifyPages()) {
-    return winning_categories;
-  }
-
-  const PageProbabilitiesList page_probabilities =
-      ads_->get_client()->GetPageProbabilitiesHistory();
-  if (page_probabilities.empty()) {
-    return winning_categories;
-  }
-
-  const CategoryProbabilitiesMap category_probabilities =
-      GetCategoryProbabilities(page_probabilities);
-
-  const CategoryProbabilitiesList winning_category_probabilities =
-      GetWinningCategoryProbabilities(category_probabilities,
-          kTopWinningCategoryCountForServingAds);
-
-  winning_categories = ToCategoryList(winning_category_probabilities);
-
-  return winning_categories;
-}
-
-const PageProbabilitiesCacheMap&
-PageClassifier::get_page_probabilities_cache() const {
-  return page_probabilities_cache_;
-}
-
-//////////////////////////////////////////////////////////////////////////////
 
 std::string PageClassifier::GetPageClassification(
     const PageProbabilitiesMap& page_probabilities) const {

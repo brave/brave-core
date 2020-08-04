@@ -9,7 +9,7 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/database/database_statement_util.h"
 #include "bat/ads/internal/database/database_table_util.h"
 #include "bat/ads/internal/database/database_util.h"
@@ -69,7 +69,7 @@ void GeoTargets::Migrate(
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 int GeoTargets::BindParameters(
     DBCommand* command,

@@ -104,7 +104,6 @@ void WalletRecover::OnRecover(
   ledger_->state()->SetFetchOldBalanceEnabled(true);
   ledger_->state()->SetAnonTransferChecked(false);
   ledger_->state()->SetPromotionLastFetchStamp(0);
-  ledger_->SetConfirmationsWalletInfo();
 
   callback(ledger::Result::LEDGER_OK);
 }

@@ -49,46 +49,15 @@ source_set("brave_rewards_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/ledger_impl_mock.h",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/logging_util_unittest.cc",
       "//brave/components/brave_rewards/browser/rewards_service_impl_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/ad_grants_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_client_mock.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_client_mock.h",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/create_confirmation_request_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/fetch_payment_token_request_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/get_signed_tokens_request_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/payments_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/platform_helper_mock.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/platform_helper_mock.h",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/privacy_utils_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_unblinded_payment_tokens_request_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_unblinded_token_delegate_mock.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_unblinded_token_delegate_mock.h",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/redeem_unblinded_token_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/request_signed_tokens_request_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/security_utils_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/string_utils_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/unblinded_tokens_unittest.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/unittest_utils.cc",
-      "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/unittest_utils.h",
     ]
-
-    if (!is_android) {
-      sources += [
-        # TODO(https://github.com/brave-intl/bat-native-usermodel/issues/26):
-        # Fix bat-native-user-model unittests fail to load data files from
-        # 'brave/vendor/bat-native-usermodel/test/data'
-        "//brave/vendor/bat-native-usermodel/test/usermodel_unittest.cc",
-      ]
-    }
 
     deps = [
       "//brave/browser:browser_process",
       "//brave/components/brave_rewards/browser:browser",
       "//brave/components/brave_rewards/browser:testutil",
       "//brave/components/brave_rewards/resources:static_resources_grit",
-      "//brave/vendor/bat-native-confirmations",
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-rapidjson",
-      "//brave/vendor/bat-native-usermodel",
       "//brave/vendor/challenge_bypass_ristretto_ffi",
       "//chrome/browser:browser",
       "//content/test:test_support",
@@ -98,9 +67,5 @@ source_set("brave_rewards_unit_tests") {
     ]
 
     configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
-    configs += [ "//brave/vendor/bat-native-confirmations:internal_config" ]
-
-    data = [ "//brave/vendor/bat-native-confirmations/data/" ]
-
   }  # if (brave_rewards_enabled)
 }  # source_set("brave_rewards_unit_tests")

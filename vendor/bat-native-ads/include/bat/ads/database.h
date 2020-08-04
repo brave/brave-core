@@ -6,6 +6,8 @@
 #ifndef BAT_ADS_DATABASE_H_
 #define BAT_ADS_DATABASE_H_
 
+#include <stdint.h>
+
 #include <memory>
 
 #include "base/files/file_path.h"
@@ -14,8 +16,8 @@
 #include "sql/database.h"
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
-#include "bat/ads/ads_client.h"
 #include "bat/ads/export.h"
+#include "bat/ads/mojom.h"
 
 namespace ads {
 

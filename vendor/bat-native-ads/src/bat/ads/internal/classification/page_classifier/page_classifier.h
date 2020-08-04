@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "bat/ads/result.h"
 #include "bat/usermodel/user_model.h"
 
 namespace ads {
@@ -31,21 +32,21 @@ using CategoryProbabilitiesMap = std::map<std::string, double>;
 
 using CategoryList = std::vector<std::string>;
 
+const char kUntargeted[] = "untargeted";
+
 class PageClassifier {
  public:
   PageClassifier(
-      const AdsImpl* const ads);
+     AdsImpl* ads);
 
   ~PageClassifier();
 
-  bool IsInitialized() const;
+  void LoadUserModelForLocale(
+      const std::string& locale);
+  void LoadUserModelForId(
+      const std::string& id);
 
-  bool Initialize(
-      const std::string& json);
-
-  bool ShouldClassifyPages() const;
-
-  std::string ClassifyPage(
+  std::string MaybeClassifyPage(
       const std::string& url,
       const std::string& content);
 
@@ -54,9 +55,25 @@ class PageClassifier {
   const PageProbabilitiesCacheMap& get_page_probabilities_cache() const;
 
  private:
-  const AdsImpl* const ads_;  // NOT OWNED
+  AdsImpl* ads_;  // NOT OWNED
 
   PageProbabilitiesCacheMap page_probabilities_cache_;
+
+  bool IsInitialized() const;
+
+  bool Initialize(
+      const std::string& json);
+
+  void OnLoadUserModelForId(
+      const std::string& id,
+      const Result result,
+      const std::string& json);
+
+  bool ShouldClassifyPages() const;
+
+  std::string ClassifyPage(
+      const std::string& url,
+      const std::string& content);
 
   std::string GetPageClassification(
       const PageProbabilitiesMap& page_probabilities) const;

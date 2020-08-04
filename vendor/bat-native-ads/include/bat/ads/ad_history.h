@@ -7,6 +7,7 @@
 #define BAT_ADS_AD_HISTORY_H_
 
 #include <stdint.h>
+
 #include <string>
 
 #include "bat/ads/ad_content.h"
@@ -29,8 +30,7 @@ struct ADS_EXPORT AdHistory {
 
   std::string ToJson() const;
   Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
+      const std::string& json);
 
   uint64_t timestamp_in_seconds = 0;
   std::string uuid;
