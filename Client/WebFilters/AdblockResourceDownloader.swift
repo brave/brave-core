@@ -48,7 +48,8 @@ class AdblockResourceDownloader {
         
         downloadResources(type: .regional(locale: locale),
                           queueName: "Regional adblock setup").uponQueue(.main) {
-            log.debug("Regional blocklists download and setup completed.")
+                            log.debug("Regional blocklists download and setup completed.")
+                            Preferences.Debug.lastRegionalAdblockUpdate.value = Date()
         }
     }
     
@@ -56,6 +57,7 @@ class AdblockResourceDownloader {
         downloadResources(type: .general,
                           queueName: "General adblock setup").uponQueue(.main) {
                             log.debug("General blocklists download and setup completed.")
+                            Preferences.Debug.lastGeneralAdblockUpdate.value = Date()
         }
     }
     
@@ -82,7 +84,8 @@ class AdblockResourceDownloader {
             url.appendPathExtension(fileExtension)
             
             let etag = fileFromDocumentsAsString("\(fileName).\(etagExtension)", inFolder: folderName)
-            let request = nm.downloadResource(with: url, resourceType: .cached(etag: etag))
+            let request = nm.downloadResource(with: url, resourceType: .cached(etag: etag),
+                                              checkLastServerSideModification: !AppConstants.buildChannel.isPublic)
                 .mapQueue(queue) { resource in
                     AdBlockNetworkResource(resource: resource, fileType: fileType, type: type)
             }
@@ -150,6 +153,13 @@ class AdblockResourceDownloader {
                 let etagFileName = fileName + ".etag"
                 fileSaveCompletions.append(fm.writeToDiskInFolder(data, fileName: etagFileName,
                                                                   folderName: folderName))
+            }
+            
+            if let lastModified = $0.resource.lastModifiedTimestamp,
+                let data = String(lastModified).data(using: .utf8) {
+                let lastModifiedFileName = fileName + ".lastmodified"
+                fileSaveCompletions.append(fm.writeToDiskInFolder(data, fileName: lastModifiedFileName,
+                        folderName: folderName))
             }
             
         }

@@ -153,5 +153,12 @@ extension Preferences {
         static let vpnSettingHeaderWasDismissed =
             Option<Bool>(key: "vpn.vpn-header-dismissed", default: false)
     }
+    
+    final class Debug {
+        /// When general blocklists were last time updated on the device.
+        static let lastGeneralAdblockUpdate = Option<Date?>(key: "last-general-adblock-update", default: nil)
+        /// When regional blocklists were last time updated on the device.
+        static let lastRegionalAdblockUpdate = Option<Date?>(key: "last-regional-adblock-update", default: nil)
+    }
 }
 
