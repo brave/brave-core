@@ -752,8 +752,7 @@ class Gemini extends React.PureComponent<Props, State> {
     const tradeLabel = isBuy ? 'geminiWidgetBuying' : 'geminiWidgetSelling'
     const quantity = this.formatCryptoBalance(currentTradeQuantityLive)
     const fee = this.formatCryptoBalance(currentTradeFee)
-    const total = this.formatCryptoBalance(currentTradeTotalPrice, (isBuy ? 2 : 3))
-    const totalAssetLabel = isBuy ? 'USD' : currentTradeAsset
+    const total = this.formatCryptoBalance(currentTradeTotalPrice, 2)
     const totalLabel = isBuy ? 'geminiWidgetTotalPrice' : 'geminiWidgetTotalAmount'
 
     return (
@@ -776,7 +775,7 @@ class Gemini extends React.PureComponent<Props, State> {
           </TradeInfoItem>
           <TradeInfoItem isLast={true}>
             <TradeItemLabel>{getLocale(totalLabel)}</TradeItemLabel>
-            <TradeValue>{`${total} ${totalAssetLabel}`}</TradeValue>
+            <TradeValue>{`${total} USD`}</TradeValue>
           </TradeInfoItem>
         </TradeInfoWrapper>
         <ActionsWrapper>

@@ -58,6 +58,23 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       "totalSpend": "100",
       "totalSpendCurrency": "USD"
     })");
+  } else if (request_path == std::string(api_path_get_quote) + "/sell/batusd") {
+    http_response->set_content(R"({
+      "quoteId": 1328,
+      "maxAgeMs": 60000,
+      "pair": "BATUSD",
+      "price": "0.25635",
+      "priceCurrency": "USD",
+      "side": "sell",
+      "quantity": "20.00",
+      "quantityCurrency": "BAT",
+      "fee": "0.99",
+      "feeCurrency": "USD",
+      "depositFee": "0",
+      "depositFeeCurrency": "BAT",
+      "totalSpend": "20",
+      "totalSpendCurrency": "BAT"
+    })");
   } else if (request_path == api_path_account_balances) {
     http_response->set_content(R"(
       [
@@ -404,7 +421,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, RefreshTokenServerError) {
   WaitForRefreshAccessToken(false);
 }
 
-IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuote) {
+IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuoteBuy) {
   ResetHTTPSServer(base::BindRepeating(&HandleRequest));
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetGeminiService();
@@ -413,6 +430,17 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuote) {
           &GeminiAPIBrowserTest::OnGetOrderQuote,
           base::Unretained(this))));
   WaitForGetOrderQuote("1328", "0.01505181", "2.9900309233", "6445.07", "100");
+}
+
+IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuoteSell) {
+  ResetHTTPSServer(base::BindRepeating(&HandleRequest));
+  EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
+  auto* service = GetGeminiService();
+  ASSERT_TRUE(service->GetOrderQuote("sell", "batusd", "20",
+      base::BindOnce(
+          &GeminiAPIBrowserTest::OnGetOrderQuote,
+          base::Unretained(this))));
+  WaitForGetOrderQuote("1328", "20.00", "0.99", "0.25635", "4.137000");
 }
 
 IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOrderQuoteUnauthorized) {
