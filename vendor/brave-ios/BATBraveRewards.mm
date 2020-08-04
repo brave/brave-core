@@ -160,7 +160,7 @@ base::SingleThreadTaskExecutor* g_task_executor = nullptr;
 {
   [self onTabRetrieved:tabId url:url faviconURL:faviconURL html:html];
   if (adsInnerText != nil) {
-    [self.ads reportLoadedPageWithURL:url innerText:adsInnerText];
+    [self.ads reportLoadedPageWithURL:url innerText:adsInnerText tabId:tabId];
   }
   [self.ledger reportLoadedPageWithURL:url tabId:tabId];
 }

@@ -79,9 +79,11 @@ void BatAdsImpl::OnAdsSubdivisionTargetingCodeHasChanged() {
 }
 
 void BatAdsImpl::OnPageLoaded(
+    const int32_t tab_id,
+    const std::string& original_url,
     const std::string& url,
     const std::string& content) {
-  ads_->OnPageLoaded(url, content);
+  ads_->OnPageLoaded(tab_id, original_url, url, content);
 }
 
 void BatAdsImpl::OnUnIdle() {

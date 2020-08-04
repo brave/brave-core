@@ -6,8 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_TAB_HELPER_H_
 
-#include <memory>
 #include <string>
+#include <vector>
 
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
@@ -17,6 +17,7 @@
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "url/gurl.h"
 
 class Browser;
 
@@ -51,13 +52,18 @@ class AdsTabHelper : public content::WebContentsObserver,
 
   void TabUpdated();
 
-  // content::WebContentsObserver overrides.
+  void RunIsolatedJavaScript(
+      content::RenderFrameHost* render_frame_host);
+
+  void OnJavaScriptResult(
+      base::Value value);
+
+  // content::WebContentsObserver overrides
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInMainFrame() override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
-  void DidAttachInterstitialPage() override;
   void MediaStartedPlaying(const MediaPlayerInfo& video_type,
                            const content::MediaPlayerId& id) override;
   void MediaStoppedPlaying(
@@ -73,15 +79,12 @@ class AdsTabHelper : public content::WebContentsObserver,
   void OnBrowserNoLongerActive(Browser* browser) override;
 #endif
 
-  void OnWebContentsDistillationDone(
-      const GURL& url,
-      const base::TimeTicks& javascript_start,
-      base::Value value);
-
   SessionID tab_id_;
   AdsService* ads_service_;  // NOT OWNED
   bool is_active_;
   bool is_browser_active_;
+  std::vector<GURL> urls_;
+
   bool run_distiller_;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;
