@@ -1,24 +1,27 @@
 diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..d7d22a27cbd71b0d790b99d4617e8edbf2f2a4f0 100644
+index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..38eb494022589775e30934d1a264a551e7cbf615 100644
 --- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
 +++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-@@ -100,6 +100,15 @@
+@@ -100,6 +100,18 @@
  #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
++
++#include "third_party/blink/renderer/core/loader/resource/css_style_sheet_resource.h"
++
 +#include "third_party/blink/renderer/platform/loader/fetch/raw_resource.h"
++
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
 +#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 +// #endif
 +
  namespace blink {
  
  namespace {
-@@ -1156,6 +1165,25 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+@@ -1156,6 +1168,25 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
    loader_->SetTimeout(timeout_);
    base::TimeTicks start_time = base::TimeTicks::Now();
    loader_->Start(std::move(request));
@@ -44,7 +47,7 @@ index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..d7d22a27cbd71b0d790b99d4617e8edb
  
    if (!async_) {
      base::TimeDelta blocking_time = base::TimeTicks::Now() - start_time;
-@@ -1346,6 +1374,23 @@ void XMLHttpRequest::HandleRequestError(DOMExceptionCode exception_code,
+@@ -1346,6 +1377,23 @@ void XMLHttpRequest::HandleRequestError(DOMExceptionCode exception_code,
  
    probe::DidFinishXHR(GetExecutionContext(), this);
  
@@ -68,7 +71,7 @@ index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..d7d22a27cbd71b0d790b99d4617e8edb
    send_flag_ = false;
    if (!async_) {
      DCHECK_NE(exception_code, DOMExceptionCode::kNoError);
-@@ -1790,6 +1835,25 @@ void XMLHttpRequest::NotifyParserStopped() {
+@@ -1790,6 +1838,25 @@ void XMLHttpRequest::NotifyParserStopped() {
  void XMLHttpRequest::EndLoading() {
    probe::DidFinishXHR(GetExecutionContext(), this);
  
@@ -84,7 +87,7 @@ index 721fc7b15f85c9af3e2ae1e7b72095e6834c05ec..d7d22a27cbd71b0d790b99d4617e8edb
 +          const ::brave_page_graph::ResponseMetadata response_metadata(response_);
 +          page_graph->RegisterRequestComplete(raw_resource->InspectorId(), raw_resource->GetType(),
 +                                              response_metadata,
-+                                              ::brave_page_graph::ResourceDigest(raw_resource));
++                                              ResourceDigest(raw_resource));
 +        }
 +      }
 +    }

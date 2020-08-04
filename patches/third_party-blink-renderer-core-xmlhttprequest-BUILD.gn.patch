@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/core/xmlhttprequest/BUILD.gn b/third_party/blink/renderer/core/xmlhttprequest/BUILD.gn
+index 973876b484f29479867ef1d6ef1dc138a80673cb..c2375c81fb3ea6d011efe072213af2df1fbd7611 100644
+--- a/third_party/blink/renderer/core/xmlhttprequest/BUILD.gn
++++ b/third_party/blink/renderer/core/xmlhttprequest/BUILD.gn
+@@ -5,6 +5,10 @@
+ import("//third_party/blink/renderer/core/core.gni")
+ 
+ blink_core_sources("xmlhttprequest") {
++  deps = [
++    "//third_party/blink/renderer/core/loader",
++  ]
++
+   sources = [
+     "main_thread_disallow_synchronous_xhr_scope.cc",
+     "main_thread_disallow_synchronous_xhr_scope.h",

@@ -5,6 +5,7 @@ import("//third_party/blink/renderer/platform/platform.gni")
 
 source_set("brave_page_graph") {
   deps = [
+    "//base",
     "//third_party/blink/renderer/platform/wtf",
     "//third_party/boringssl",
     "//third_party/icu",
@@ -156,8 +157,6 @@ source_set("brave_page_graph") {
     "scripts/script_tracker.h",
     "types.cc",
     "types.h",
-    "utilities/digest.cc",
-    "utilities/digest.h",
     "utilities/dispatchers.cc",
     "utilities/dispatchers.h",
     "utilities/response_metadata.cc",

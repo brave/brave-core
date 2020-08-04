@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/style/BUILD.gn b/third_party/blink/renderer/core/style/BUILD.gn
+index 3c0bba4f189dbd2e121260ca734702a88bd17ce4..41fe935308e87d290282b0b918582a5d10c20fb0 100644
+--- a/third_party/blink/renderer/core/style/BUILD.gn
++++ b/third_party/blink/renderer/core/style/BUILD.gn
+@@ -94,6 +94,8 @@ blink_core_sources("rendering") {
+     "text_decoration_thickness.h",
+     "text_size_adjust.h",
+   ]
++
++  deps = [ "//third_party/blink/renderer/core/loader" ]
+ }
+ 
+ blink_core_sources("svg_style") {

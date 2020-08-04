@@ -1,0 +1,65 @@
+diff --git a/third_party/blink/renderer/core/loader/resource/text_resource.cc b/third_party/blink/renderer/core/loader/resource/text_resource.cc
+index 8da9c8489ce5474f8e14efed67cfe8f9d5e2c9b2..c08fa654e278adb7a23e324ac4ae561a91ba5973 100644
+--- a/third_party/blink/renderer/core/loader/resource/text_resource.cc
++++ b/third_party/blink/renderer/core/loader/resource/text_resource.cc
+@@ -10,6 +10,15 @@
+ #include "third_party/blink/renderer/platform/wtf/shared_buffer.h"
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED
++#include "base/logging.h"
++
++#include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
++#include "third_party/blink/renderer/platform/wtf/text/base64.h"
++#include "third_party/blink/renderer/platform/wtf/text/string_utf8_adaptor.h"
++#include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
++// #endif
++
+ namespace blink {
+ 
+ namespace {
+@@ -39,4 +48,44 @@ String TextResource::DecodedText() const {
+   return builder.ToString();
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED
++void MaybeEncodeTextContent(const String& text_content,
++                            const char* buffer_data,
++                            wtf_size_t buffer_size,
++                            String* result,
++                            bool* base64_encoded) {
++  if (!text_content.IsNull()) {
++    *result = text_content;
++    *base64_encoded = false;
++  } else if (buffer_data) {
++    *result = WTF::Base64Encode(
++        base::as_bytes(base::make_span(buffer_data, buffer_size)));
++    *base64_encoded = true;
++  } else if (text_content.IsNull()) {
++    *result = "";
++    *base64_encoded = false;
++  } else {
++    DCHECK(!text_content.Is8Bit());
++    *result = WTF::Base64Encode(
++        base::as_bytes(base::make_span(StringUTF8Adaptor(text_content))));
++    *base64_encoded = true;
++  }
++}
++
++void MaybeEncodeTextContent(const String& text_content,
++                            scoped_refptr<const WTF::SharedBuffer> buffer,
++                            String* result,
++                            bool* base64_encoded) {
++  if (!buffer) {
++    return MaybeEncodeTextContent(text_content, nullptr, 0, result,
++                                  base64_encoded);
++  }
++
++  const WTF::SharedBuffer::DeprecatedFlatData flat_buffer(std::move(buffer));
++  return MaybeEncodeTextContent(text_content, flat_buffer.Data(),
++                                WTF::SafeCast<wtf_size_t>(flat_buffer.size()),
++                                result, base64_encoded);
++}
++// #endif
++
+ }  // namespace blink

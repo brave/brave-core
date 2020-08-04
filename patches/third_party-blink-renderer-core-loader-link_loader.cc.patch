@@ -1,26 +1,28 @@
 diff --git a/third_party/blink/renderer/core/loader/link_loader.cc b/third_party/blink/renderer/core/loader/link_loader.cc
-index 755214834dac03dff6b0b0d34860b05dafba0959..abc3a8b0dbec68546bca4c2d709a16a86c7e8b53 100644
+index 755214834dac03dff6b0b0d34860b05dafba0959..3a11f2d0d8bd9b9be9b53a427d3f4b5aec88ef1b 100644
 --- a/third_party/blink/renderer/core/loader/link_loader.cc
 +++ b/third_party/blink/renderer/core/loader/link_loader.cc
-@@ -50,6 +50,17 @@
+@@ -50,6 +50,19 @@
  #include "third_party/blink/renderer/platform/loader/subresource_integrity.h"
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include <string>
++
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
++
 +#include "third_party/blink/renderer/core/html/html_link_element.h"
++
 +#include "brave/third_party/blink/brave_page_graph/logging.h"
 +#include "brave/third_party/blink/brave_page_graph/types.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#include "brave/third_party/blink/brave_page_graph/utilities/digest.h"
 +#include "brave/third_party/blink/brave_page_graph/utilities/response_metadata.h"
 +// #endif
 +
  namespace blink {
  
  class WebPrescientNetworking;
-@@ -133,6 +144,27 @@ void LinkLoader::NotifyFinished() {
+@@ -133,6 +146,26 @@ void LinkLoader::NotifyFinished() {
    } else {
      client_->LinkLoaded();
    }
@@ -38,8 +40,7 @@ index 755214834dac03dff6b0b0d34860b05dafba0959..abc3a8b0dbec68546bca4c2d709a16a8
 +          page_graph->RegisterRequestError(resource->InspectorId(), metadata);
 +        } else {
 +          page_graph->RegisterRequestComplete(resource->InspectorId(),
-+              resource->GetType(), metadata,
-+              ::brave_page_graph::ResourceDigest(resource));
++              resource->GetType(), metadata, ResourceDigest(resource));
 +        }
 +      }
 +    }
@@ -48,7 +49,7 @@ index 755214834dac03dff6b0b0d34860b05dafba0959..abc3a8b0dbec68546bca4c2d709a16a8
  }
  
  // https://html.spec.whatwg.org/C/#link-type-modulepreload
-@@ -264,8 +296,26 @@ void LinkLoader::LoadStylesheet(const LinkLoadParameters& params,
+@@ -264,8 +297,26 @@ void LinkLoader::LoadStylesheet(const LinkLoadParameters& params,
          integrity_attr);
    }
  
@@ -77,7 +78,7 @@ index 755214834dac03dff6b0b0d34860b05dafba0959..abc3a8b0dbec68546bca4c2d709a16a8
  }
  
  void LinkLoader::Abort() {
-@@ -283,8 +333,17 @@ void LinkLoader::Trace(Visitor* visitor) {
+@@ -283,8 +334,17 @@ void LinkLoader::Trace(Visitor* visitor) {
    visitor->Trace(finish_observer_);
    visitor->Trace(client_);
    visitor->Trace(prerender_);
