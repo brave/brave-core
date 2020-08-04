@@ -5,8 +5,6 @@
 
 #include "brave/browser/extensions/api/brave_shields_api.h"
 
-#include <memory>
-#include <string>
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
@@ -54,42 +52,55 @@ BraveShieldsUrlCosmeticResourcesFunction::Run() {
   std::unique_ptr<brave_shields::UrlCosmeticResources::Params> params(
       brave_shields::UrlCosmeticResources::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
+  g_brave_browser_process->ad_block_service()->GetTaskRunner()
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
+          base::BindOnce(&BraveShieldsUrlCosmeticResourcesFunction::
+                             GetUrlCosmeticResourcesOnTaskRunner,
+                         this, params->url),
+          base::BindOnce(&BraveShieldsUrlCosmeticResourcesFunction::
+                             GetUrlCosmeticResourcesOnUI,
+                         this));
+  return RespondLater();
+}
 
+std::unique_ptr<base::ListValue> BraveShieldsUrlCosmeticResourcesFunction::
+    GetUrlCosmeticResourcesOnTaskRunner(const std::string& url) {
   base::Optional<base::Value> resources = g_brave_browser_process->
-      ad_block_service()->UrlCosmeticResources(params->url);
+      ad_block_service()->UrlCosmeticResources(url);
 
   if (!resources || !resources->is_dict()) {
-    return RespondNow(Error(
-        "Url-specific cosmetic resources could not be returned"));
+    return std::unique_ptr<base::ListValue>();
   }
 
   base::Optional<base::Value> regional_resources = g_brave_browser_process->
-      ad_block_regional_service_manager()->
-          UrlCosmeticResources(params->url);
+      ad_block_regional_service_manager()->UrlCosmeticResources(url);
 
   if (regional_resources && regional_resources->is_dict()) {
     ::brave_shields::MergeResourcesInto(
-            &*resources,
-            &*regional_resources,
-            false);
+        std::move(*regional_resources), &*resources, /*force_hide=*/false);
   }
 
   base::Optional<base::Value> custom_resources = g_brave_browser_process->
-      ad_block_custom_filters_service()->
-          UrlCosmeticResources(params->url);
+      ad_block_custom_filters_service()->UrlCosmeticResources(url);
 
   if (custom_resources && custom_resources->is_dict()) {
     ::brave_shields::MergeResourcesInto(
-            &*resources,
-            &*custom_resources,
-            true);
+        std::move(*custom_resources), &*resources, /*force_hide=*/true);
   }
 
   auto result_list = std::make_unique<base::ListValue>();
-
   result_list->Append(std::move(*resources));
+  return result_list;
+}
 
-  return RespondNow(ArgumentList(std::move(result_list)));
+void BraveShieldsUrlCosmeticResourcesFunction::GetUrlCosmeticResourcesOnUI(
+    std::unique_ptr<base::ListValue> resources) {
+  if (!resources) {
+    Respond(Error("Url-specific cosmetic resources could not be returned"));
+    return;
+  }
+  Respond(ArgumentList(std::move(resources)));
 }
 
 ExtensionFunction::ResponseAction
@@ -97,17 +108,34 @@ BraveShieldsHiddenClassIdSelectorsFunction::Run() {
   std::unique_ptr<brave_shields::HiddenClassIdSelectors::Params> params(
       brave_shields::HiddenClassIdSelectors::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
+  g_brave_browser_process->ad_block_service()->GetTaskRunner()
+      ->PostTaskAndReplyWithResult(
+          FROM_HERE,
+          base::BindOnce(&BraveShieldsHiddenClassIdSelectorsFunction::
+                             GetHiddenClassIdSelectorsOnTaskRunner,
+                         this, params->classes, params->ids,
+                         params->exceptions),
+          base::BindOnce(&BraveShieldsHiddenClassIdSelectorsFunction::
+                             GetHiddenClassIdSelectorsOnUI,
+                         this));
+  return RespondLater();
+}
 
+std::unique_ptr<base::ListValue> BraveShieldsHiddenClassIdSelectorsFunction::
+    GetHiddenClassIdSelectorsOnTaskRunner(
+        const std::vector<std::string>& classes,
+        const std::vector<std::string>& ids,
+        const std::vector<std::string>& exceptions) {
   base::Optional<base::Value> hide_selectors = g_brave_browser_process->
-      ad_block_service()->HiddenClassIdSelectors(params->classes,
-                                                 params->ids,
-                                                 params->exceptions);
+      ad_block_service()->HiddenClassIdSelectors(classes, ids, exceptions);
 
   base::Optional<base::Value> regional_selectors = g_brave_browser_process->
       ad_block_regional_service_manager()->
-        HiddenClassIdSelectors(params->classes,
-                               params->ids,
-                               params->exceptions);
+          HiddenClassIdSelectors(classes, ids, exceptions);
+
+  base::Optional<base::Value> custom_selectors = g_brave_browser_process->
+      ad_block_custom_filters_service()->
+          HiddenClassIdSelectors(classes, ids, exceptions);
 
   if (hide_selectors && hide_selectors->is_list()) {
     if (regional_selectors && regional_selectors->is_list()) {
@@ -121,18 +149,20 @@ BraveShieldsHiddenClassIdSelectorsFunction::Run() {
     hide_selectors = std::move(regional_selectors);
   }
 
-  base::Optional<base::Value> custom_selectors = g_brave_browser_process->
-      ad_block_custom_filters_service()->
-          HiddenClassIdSelectors(params->classes,
-                                 params->ids,
-                                 params->exceptions);
-
   auto result_list = std::make_unique<base::ListValue>();
+  if (hide_selectors && hide_selectors->is_list()) {
+    result_list->Append(std::move(*hide_selectors));
+  }
+  if (custom_selectors && custom_selectors->is_list()) {
+    result_list->Append(std::move(*custom_selectors));
+  }
 
-  result_list->Append(std::move(*hide_selectors));
-  result_list->Append(std::move(*custom_selectors));
+  return result_list;
+}
 
-  return RespondNow(ArgumentList(std::move(result_list)));
+void BraveShieldsHiddenClassIdSelectorsFunction::
+    GetHiddenClassIdSelectorsOnUI(std::unique_ptr<base::ListValue> selectors) {
+  Respond(ArgumentList(std::move(selectors)));
 }
 
 

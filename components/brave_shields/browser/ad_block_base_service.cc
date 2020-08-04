@@ -195,18 +195,17 @@ bool AdBlockBaseService::TagExists(const std::string& tag) {
 
 base::Optional<base::Value> AdBlockBaseService::UrlCosmeticResources(
         const std::string& url) {
-  return base::JSONReader::Read(
-          this->ad_block_client_->urlCosmeticResources(url));
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
+  return base::JSONReader::Read(ad_block_client_->urlCosmeticResources(url));
 }
 
 base::Optional<base::Value> AdBlockBaseService::HiddenClassIdSelectors(
         const std::vector<std::string>& classes,
         const std::vector<std::string>& ids,
         const std::vector<std::string>& exceptions) {
+  DCHECK(GetTaskRunner()->RunsTasksInCurrentSequence());
   return base::JSONReader::Read(
-          this->ad_block_client_->hiddenClassIdSelectors(classes,
-                                                         ids,
-                                                         exceptions));
+      ad_block_client_->hiddenClassIdSelectors(classes, ids, exceptions));
 }
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
