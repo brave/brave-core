@@ -66,6 +66,7 @@ class TorLauncherFactory : public tor::TorControlObserver {
   void OnTorLaunched(bool result, int64_t pid);
 
   void GotVersion(bool error, const std::string& version);
+  void GotSOCKSListeners(bool error, const std::vector<std::string>& listeners);
   void Loggerific(
       bool error, const std::string& status, const std::string& reply);
 

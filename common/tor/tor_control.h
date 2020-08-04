@@ -48,6 +48,10 @@ class TorControl : public base::RefCounted<TorControl> {
       base::OnceCallback<void(
           bool error, const std::string& version)> callback) = 0;
 
+  virtual void GetSOCKSListeners(
+      base::OnceCallback<void(
+          bool error, const std::vector<std::string>& listeners)> callback) = 0;
+
  protected:
   friend class base::RefCounted<TorControl>;
 

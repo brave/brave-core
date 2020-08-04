@@ -167,6 +167,9 @@ void TorLauncherFactory::OnTorControlReady() {
   LOG(ERROR) << "TOR CONTROL: Ready!";
   control_->GetVersion(
       base::BindOnce(&TorLauncherFactory::GotVersion, base::Unretained(this)));
+  control_->GetSOCKSListeners(
+      base::BindOnce(&TorLauncherFactory::GotSOCKSListeners,
+                     base::Unretained(this)));
   control_->Subscribe(tor::TorControlEvent::NETWORK_LIVENESS,
                       base::DoNothing::Once<bool>());
   control_->Subscribe(tor::TorControlEvent::STATUS_CLIENT,
@@ -183,6 +186,18 @@ void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
     return;
   }
   LOG(ERROR) << "Tor version: " << version;
+}
+
+void TorLauncherFactory::GotSOCKSListeners(
+    bool error, const std::vector<std::string>& listeners) {
+  if (error) {
+    LOG(ERROR) << "Failed to get SOCKS listeners!";
+    return;
+  }
+  LOG(ERROR) << "Tor SOCKS listeners: ";
+  for (auto& listener : listeners) {
+    LOG(ERROR) << listener;
+  }
 }
 
 void TorLauncherFactory::OnTorClosed() {
