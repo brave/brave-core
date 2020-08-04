@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
 
 #include "chrome/test/base/testing_browser_process.h"
@@ -44,7 +46,7 @@ TEST_F(CryptoExchangeRegionUtilTest, TestRegionAllowedAllowList) {
       country_codes::kCountryIDAtInstall, id);
 
   bool is_supported = ::crypto_exchange::IsRegionSupported(
-      profile, supported_regions, true);
+      profile->GetPrefs(), supported_regions, true);
   ASSERT_TRUE(is_supported);
 }
 
@@ -64,7 +66,7 @@ TEST_F(CryptoExchangeRegionUtilTest, TestRegionUnAllowedAllowList) {
       country_codes::kCountryIDAtInstall, id);
 
   bool is_supported = ::crypto_exchange::IsRegionSupported(
-      profile, supported_regions, true);
+      profile->GetPrefs(), supported_regions, true);
   ASSERT_FALSE(is_supported);
 }
 
@@ -84,7 +86,7 @@ TEST_F(CryptoExchangeRegionUtilTest, TestRegionAllowedDenyList) {
       country_codes::kCountryIDAtInstall, id);
 
   bool is_supported = ::crypto_exchange::IsRegionSupported(
-      profile, unsupported_regions, false);
+      profile->GetPrefs(), unsupported_regions, false);
   ASSERT_TRUE(is_supported);
 }
 
@@ -104,6 +106,6 @@ TEST_F(CryptoExchangeRegionUtilTest, TestRegionUnAllowedDenyList) {
       country_codes::kCountryIDAtInstall, id);
 
   bool is_supported = ::crypto_exchange::IsRegionSupported(
-      profile, unsupported_regions, false);
+      profile->GetPrefs(), unsupported_regions, false);
   ASSERT_FALSE(is_supported);
 }

@@ -9,11 +9,12 @@
 #include <string>
 #include <vector>
 
-class Profile;
+class PrefService;
 
 namespace crypto_exchange {
 
-bool IsRegionSupported(Profile* profile, std::vector<std::string> regions,
+bool IsRegionSupported(PrefService* pref_service,
+    std::vector<std::string> regions,
     bool allow_list);
 
 }  // namespace crypto_exchange

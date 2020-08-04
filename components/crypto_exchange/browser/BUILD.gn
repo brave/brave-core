@@ -21,6 +21,7 @@ source_set("browser") {
   deps = [
     "//base",
     "//components/country_codes",
+    "//components/prefs",
     "//crypto",
   ]
 

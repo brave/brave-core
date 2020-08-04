@@ -158,7 +158,7 @@ std::string GeminiService::GetOAuthClientUrl() {
   url = net::AppendQueryParameter(url, "code_challenge", code_challenge_);
   url = net::AppendQueryParameter(url, "code_challenge_method", "S256");
   url = net::AppendQueryParameter(
-      url, "state", ::crypto_exchange::GetCryptoRandomString(false));
+      url, "state", crypto_exchange::GetCryptoRandomString(false));
   return url.spec();
 }
 

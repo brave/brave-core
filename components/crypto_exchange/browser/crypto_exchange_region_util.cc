@@ -8,16 +8,17 @@
 
 #include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
 
-#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "components/country_codes/country_codes.h"
 
 namespace crypto_exchange {
 
-bool IsRegionSupported(Profile* profile, std::vector<std::string> regions,
+bool IsRegionSupported(PrefService* pref_service,
+    std::vector<std::string> regions,
     bool allow_list)  {
   bool is_supported = !allow_list;
   const int32_t user_region_id =
-      country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
+      country_codes::GetCountryIDFromPrefs(pref_service);
 
   for (const auto& region : regions) {
     const int32_t region_id = country_codes::CountryCharsToCountryID(

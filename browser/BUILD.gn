@@ -278,9 +278,6 @@ source_set("browser_process") {
       "binance/binance_service_factory.h",
       "binance/binance_protocol_handler.cc",
       "binance/binance_protocol_handler.h",
-      "binance/binance_util.cc",
-      "binance/binance_util.h",
-      "binance/static_values.h",
     ]
 
     deps += [
@@ -295,8 +292,6 @@ source_set("browser_process") {
       "gemini/gemini_service_factory.h",
       "gemini/gemini_protocol_handler.cc",
       "gemini/gemini_protocol_handler.h",
-      "gemini/gemini_util.cc",
-      "gemini/gemini_util.h",
     ]
 
     deps += [
@@ -320,14 +315,8 @@ source_set("browser_process") {
   }
 
   if (brave_together_enabled) {
-    sources += [
-      "brave_together/brave_together_util.cc",
-      "brave_together/brave_together_util.h",
-    ]
-
     deps += [
       "//brave/components/brave_together/browser",
-      "//components/country_codes",
     ]
   }
 

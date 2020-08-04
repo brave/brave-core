@@ -12,13 +12,14 @@
 
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/binance/binance_util.h"
 
 #include "brave/common/extensions/api/binance.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/binance/binance_service_factory.h"
 #include "brave/components/binance/browser/binance_service.h"
+#include "brave/components/binance/browser/regions.h"
+#include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
 #include "chrome/browser/extensions/api/tabs/tabs_constants.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/infobars/infobar_service.h"
@@ -171,7 +172,8 @@ BinanceIsSupportedRegionFunction::Run() {
   }
 
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ::binance::IsBinanceSupported(profile);
+  bool is_supported = crypto_exchange::IsRegionSupported(
+      profile->GetPrefs(), ::binance::unsupported_regions, false);
 
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));

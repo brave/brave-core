@@ -11,6 +11,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_together/buildflags/buildflags.h"
+#include "brave/components/crypto_exchange/browser/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -19,12 +20,16 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 
+#if BUILDFLAG(CRYPTO_EXCHANGES_ENABLED)
+#include "brave/components/crypto_exchange/browser/crypto_exchange_region_util.h"
+#endif
+
 #if BUILDFLAG(BINANCE_ENABLED)
-#include "brave/browser/binance/binance_util.h"
+#include "brave/components/binance/browser/regions.h"
 #endif
 
 #if BUILDFLAG(BRAVE_TOGETHER_ENABLED)
-#include "brave/browser/brave_together/brave_together_util.h"
+#include "brave/components/brave_together/browser/regions.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -126,7 +131,8 @@ void BraveAppearanceHandler::GetIsBinanceSupported(
 #if !BUILDFLAG(BINANCE_ENABLED)
   bool is_supported = false;
 #else
-  bool is_supported = binance::IsBinanceSupported(profile_);
+  bool is_supported = crypto_exchange::IsRegionSupported(
+      profile_->GetPrefs(), binance::unsupported_regions, false);
 #endif
 
   ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));
@@ -141,7 +147,8 @@ void BraveAppearanceHandler::GetIsBraveTogetherSupported(
 #if !BUILDFLAG(BRAVE_TOGETHER_ENABLED)
   bool is_supported = false;
 #else
-  bool is_supported = brave_together::IsBraveTogetherSupported(profile_);
+  bool is_supported = crypto_exchange::IsRegionSupported(
+      profile_->GetPrefs(), brave_together::supported_regions, true);
 #endif
 
   ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));

@@ -277,6 +277,7 @@ test("brave_unit_tests") {
 
   if (crypto_exchanges_enabled) {
     sources += [
+      "//brave/components/crypto_exchange/browser/crypto_exchange_region_util_unittest.cc",
       "//brave/components/crypto_exchange/browser/crypto_exchange_oauth_util_unittest.cc"
     ]
     deps += [

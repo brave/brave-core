@@ -6,6 +6,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
+import("//brave/components/crypto_exchange/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
 
@@ -107,6 +108,12 @@ source_set("extensions") {
     "//url",
   ]
 
+  if (crypto_exchanges_enabled) {
+    deps += [
+      "//brave/components/crypto_exchange/browser",
+    ]    
+  }
+
   if (brave_rewards_enabled) {
     deps += [
       "//brave/components/brave_rewards/browser",
@@ -138,7 +145,6 @@ source_set("extensions") {
     deps += [
       "//brave/common",
       "//brave/components/gemini/browser",
-      "//components/country_codes",
       "//extensions/browser",
     ]
   }
