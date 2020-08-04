@@ -128,13 +128,15 @@ class ADS_EXPORT Ads {
 
   // Should be called to report user activity on a browser tab specified by
   // |tab_id|. |is_active| should be set to |true| if |tab_id| refers to the
-  // currently active tab; otherwise, should be set to |false|. |is_incognito|
-  // should be set to |true| if the tab is private; otherwise, should be set to
-  // |false|
+  // currently active tab; otherwise, should be set to |false|.
+  // |is_browser_active| should be set to |true| if the current browser window
+  // is active; otherwise, should be set to |false|. |is_incognito| should be
+  // set to |true| if the tab is private; otherwise, should be set to |false|
   virtual void OnTabUpdated(
       const int32_t tab_id,
       const std::string& url,
       const bool is_active,
+      const bool is_browser_active,
       const bool is_incognito) = 0;
 
   // Should be called to report when a browser tab has been closed as specified

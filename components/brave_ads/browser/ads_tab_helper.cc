@@ -56,13 +56,21 @@ AdsTabHelper::~AdsTabHelper() {
 #endif
 }
 
+bool AdsTabHelper::IsAdsEnabled() const {
+  if (!ads_service_ || !ads_service_->IsEnabled()) {
+    return false;
+  }
+
+  return true;
+}
+
 void AdsTabHelper::TabUpdated() {
-  if (!ads_service_) {
+  if (!IsAdsEnabled()) {
     return;
   }
 
   ads_service_->OnTabUpdated(tab_id_, web_contents()->GetURL(),
-      is_active_ && is_browser_active_);
+      is_active_, is_browser_active_);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
@@ -77,9 +85,7 @@ void AdsTabHelper::RunIsolatedJavaScript(
 
 void AdsTabHelper::OnJavaScriptResult(
     base::Value value) {
-  if (!ads_service_) {
-    return;
-  }
+  DCHECK(ads_service_ && ads_service_->IsEnabled());
 
   const GURL original_url = urls_.front();
   const GURL url = urls_.back();
@@ -102,7 +108,7 @@ void AdsTabHelper::DidFinishNavigation(
   urls_ = navigation_handle->GetRedirectChain();
 
   if (navigation_handle->IsSameDocument()) {
-    if (!ads_service_ || !ads_service_->IsEnabled()) {
+    if (!IsAdsEnabled()) {
       // Do not call the ads service if the ad service isn't enabled
       return;
     }
@@ -122,7 +128,7 @@ void AdsTabHelper::DidFinishNavigation(
 }
 
 void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
-  if (!ads_service_ || !ads_service_->IsEnabled() || !run_distiller_) {
+  if (!IsAdsEnabled() || !run_distiller_) {
     // Do not start distilling if the ad service isn't enabled
     return;
   }
@@ -150,7 +156,7 @@ void AdsTabHelper::DidFinishLoad(
 void AdsTabHelper::MediaStartedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id) {
-  if (!ads_service_) {
+  if (!IsAdsEnabled()) {
     return;
   }
 
@@ -161,7 +167,7 @@ void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
-  if (!ads_service_) {
+  if (!IsAdsEnabled()) {
     return;
   }
 
@@ -178,13 +184,15 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
     is_active_ = true;
   }
 
-  if (old_active != is_active_) {
-    TabUpdated();
+  if (old_active == is_active_) {
+    return;
   }
+
+  TabUpdated();
 }
 
 void AdsTabHelper::WebContentsDestroyed() {
-  if (!ads_service_) {
+  if (!IsAdsEnabled()) {
     return;
   }
 
@@ -205,9 +213,11 @@ void AdsTabHelper::OnBrowserSetLastActive(Browser* browser) {
     is_browser_active_ = true;
   }
 
-  if (old_active != is_browser_active_) {
-    TabUpdated();
+  if (old_active == is_browser_active_) {
+    return;
   }
+
+  TabUpdated();
 }
 
 void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
@@ -217,9 +227,11 @@ void AdsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
     is_browser_active_ = false;
   }
 
-  if (old_active != is_browser_active_) {
-    TabUpdated();
+  if (old_active == is_browser_active_) {
+    return;
   }
+
+  TabUpdated();
 }
 #endif
 

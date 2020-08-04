@@ -102,7 +102,8 @@ class AdsServiceImpl : public AdsService,
   void OnTabUpdated(
       const SessionID& tab_id,
       const GURL& url,
-      const bool is_active) override;
+      const bool is_active,
+      const bool is_browser_active) override;
   void OnTabClosed(
       const SessionID& tab_id) override;
 

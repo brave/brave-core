@@ -107,8 +107,9 @@ void BatAdsImpl::OnTabUpdated(
     const int32_t tab_id,
     const std::string& url,
     const bool is_active,
+    const bool is_browser_active,
     const bool is_incognito) {
-  ads_->OnTabUpdated(tab_id, url, is_active, is_incognito);
+  ads_->OnTabUpdated(tab_id, url, is_active, is_browser_active, is_incognito);
 }
 
 void BatAdsImpl::OnTabClosed(
