@@ -52,10 +52,7 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
 // If `force_hide` is true, the contents of `from`'s `hide_selectors` field
 // will be moved into a possibly new field of `into` called
 // `force_hide_selectors`.
-void MergeResourcesInto(
-        base::Value* into,
-        base::Value* from,
-        bool force_hide) {
+void MergeResourcesInto(base::Value from, base::Value* into, bool force_hide) {
   base::Value* resources_hide_selectors = nullptr;
   if (force_hide) {
     resources_hide_selectors = into->FindKey("force_hide_selectors");
@@ -67,7 +64,7 @@ void MergeResourcesInto(
     resources_hide_selectors = into->FindKey("hide_selectors");
   }
   base::Value* from_resources_hide_selectors =
-      from->FindKey("hide_selectors");
+      from.FindKey("hide_selectors");
   if (resources_hide_selectors && from_resources_hide_selectors) {
     for (auto i = from_resources_hide_selectors->GetList().begin();
             i < from_resources_hide_selectors->GetList().end();
@@ -78,7 +75,7 @@ void MergeResourcesInto(
 
   base::Value* resources_style_selectors = into->FindKey("style_selectors");
   base::Value* from_resources_style_selectors =
-      from->FindKey("style_selectors");
+      from.FindKey("style_selectors");
   if (resources_style_selectors && from_resources_style_selectors) {
     for (auto i : from_resources_style_selectors->DictItems()) {
       base::Value* resources_entry =
@@ -96,7 +93,7 @@ void MergeResourcesInto(
   }
 
   base::Value* resources_exceptions = into->FindKey("exceptions");
-  base::Value* from_resources_exceptions = from->FindKey("exceptions");
+  base::Value* from_resources_exceptions = from.FindKey("exceptions");
   if (resources_exceptions && from_resources_exceptions) {
     for (auto i = from_resources_exceptions->GetList().begin();
             i < from_resources_exceptions->GetList().end();
@@ -107,7 +104,7 @@ void MergeResourcesInto(
 
   base::Value* resources_injected_script = into->FindKey("injected_script");
   base::Value* from_resources_injected_script =
-      from->FindKey("injected_script");
+      from.FindKey("injected_script");
   if (resources_injected_script && from_resources_injected_script) {
     *resources_injected_script = base::Value(
             resources_injected_script->GetString()
@@ -117,7 +114,7 @@ void MergeResourcesInto(
 
   base::Value* resources_generichide = into->FindKey("generichide");
   base::Value* from_resources_generichide =
-      from->FindKey("generichide");
+      from.FindKey("generichide");
   if (from_resources_generichide) {
     if (from_resources_generichide->GetBool()) {
       *resources_generichide = base::Value(true);
