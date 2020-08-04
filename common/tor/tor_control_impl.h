@@ -50,6 +50,10 @@ class TorControlImpl : public TorControl {
       base::OnceCallback<void(
           bool error, const std::string& version)> callback)
     override;
+  void GetSOCKSListeners(
+      base::OnceCallback<void(
+          bool error, const std::vector<std::string>& listeners)> callback)
+    override;
 
  protected:
   friend class TorControlTest;
@@ -132,6 +136,14 @@ class TorControlImpl : public TorControl {
       base::OnceCallback<void(
           bool error, const std::string& version)> callback,
       bool error, const std::string& status, const std::string& reply);
+  void GetSOCKSListenersLine(std::vector<std::string>* listeners,
+                             const std::string& status,
+                             const std::string& reply);
+  void GetSOCKSListenersDone(
+      std::unique_ptr<std::vector<std::string>> listeners,
+      base::OnceCallback<void(bool error,
+                            const std::vector<std::string>& listeners)> callback,
+    bool error, const std::string& status, const std::string& reply);
 
   void DoSubscribe(
       TorControlEvent event, base::OnceCallback<void(bool error)> callback);

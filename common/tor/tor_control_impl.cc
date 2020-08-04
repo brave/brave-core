@@ -647,6 +647,47 @@ void TorControlImpl::GetVersionDone(
   std::move(callback).Run(false, *version);
 }
 
+void TorControlImpl::GetSOCKSListeners(
+    base::OnceCallback<void(
+        bool error, const std::vector<std::string>& listeners)> callback) {
+  std::unique_ptr<std::vector<std::string>> listeners =
+    std::make_unique<std::vector<std::string>>();
+  std::vector<std::string>* listeners_p = listeners.get();
+  Cmd("GETINFO net/listeners/socks",
+      base::BindRepeating(&TorControlImpl::GetSOCKSListenersLine,
+                          base::Unretained(this), listeners_p),
+      base::BindOnce(&TorControlImpl::GetSOCKSListenersDone,
+                     base::Unretained(this),
+                     std::move(listeners), std::move(callback)));
+}
+
+void TorControlImpl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
+                                           const std::string& status,
+                                           const std::string& reply) {
+  const char prefix[] = "net/listeners/socks=";
+  if (status != "250" ||
+      !base::StartsWith(reply, prefix, base::CompareCase::SENSITIVE)) {
+    LOG(ERROR) << "tor: unexpected `GETINFO net/listeners/socks' reply";
+    return;
+  }
+  listeners->push_back(reply.substr(strlen(prefix)));
+}
+
+void TorControlImpl::GetSOCKSListenersDone(
+    std::unique_ptr<std::vector<std::string>> listeners,
+    base::OnceCallback<void(bool error,
+                            const std::vector<std::string>& listeners)> callback,
+    bool error, const std::string& status, const std::string& reply) {
+  if (error ||
+      status != "250" ||
+      reply != "OK" ||
+      listeners->empty()) {
+    std::move(callback).Run(true, std::vector<std::string>());
+    return;
+  }
+  std::move(callback).Run(false, *listeners);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Writing state machine
 
