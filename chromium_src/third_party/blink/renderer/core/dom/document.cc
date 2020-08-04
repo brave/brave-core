@@ -22,18 +22,6 @@
 
 namespace {
 
-//  Returns the eTLD+1 for the top level frame the document is in.
-//
-//  Returns the eTLD+1 (effective registrable domain) for the top level
-//  frame that the given document is in. This includes frames that
-//  are disconnect, remote or local to the top level frame.
-std::string TopETLDPlusOneForDoc(const Document& doc) {
-  const auto host = doc.TopFrameOrigin()->Host();
-  return blink::network_utils::GetDomainAndRegistry(
-             host, blink::network_utils::kIncludePrivateRegistries)
-      .Utf8();
-}
-
 const uint64_t zero = 0;
 
 inline uint64_t lfsr_next(uint64_t v) {
@@ -77,18 +65,28 @@ const size_t kLettersForRandomStringsLength = 64;
 
 BraveSessionCache::BraveSessionCache(Document& document)
     : Supplement<Document>(document) {
-  const std::string domain = TopETLDPlusOneForDoc(document);
-  farbling_enabled_ = !domain.empty();
-  if (farbling_enabled_) {
-    base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
-    DCHECK(cmd_line->HasSwitch(kBraveSessionToken));
-    base::StringToUint64(cmd_line->GetSwitchValueASCII(kBraveSessionToken),
-                         &session_key_);
-    crypto::HMAC h(crypto::HMAC::SHA256);
-    CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
-                 sizeof session_key_));
-    CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
-  }
+  farbling_enabled_ = false;
+  const auto origin = document.TopFrameOrigin();
+  if (!origin || origin->IsOpaque())
+    return;
+  const auto host = origin->Host();
+  if (host.IsNull() || host.IsEmpty())
+    return;
+  const std::string domain =
+      blink::network_utils::GetDomainAndRegistry(
+          host, blink::network_utils::kIncludePrivateRegistries)
+          .Utf8();
+  if (domain.empty())
+    return;
+  base::CommandLine* cmd_line = base::CommandLine::ForCurrentProcess();
+  DCHECK(cmd_line->HasSwitch(kBraveSessionToken));
+  base::StringToUint64(cmd_line->GetSwitchValueASCII(kBraveSessionToken),
+                       &session_key_);
+  crypto::HMAC h(crypto::HMAC::SHA256);
+  CHECK(h.Init(reinterpret_cast<const unsigned char*>(&session_key_),
+               sizeof session_key_));
+  CHECK(h.Sign(domain, domain_key_, sizeof domain_key_));
+  farbling_enabled_ = true;
 }
 
 BraveSessionCache& BraveSessionCache::From(Document& document) {
