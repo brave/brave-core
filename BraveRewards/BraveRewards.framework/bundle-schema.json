@@ -35,6 +35,9 @@
               "advertiserId": {
                 "type": "string"
               },
+              "priority": {
+                "type": "number"
+              },
               "perDay": {
                 "type": "number"
               },
@@ -77,7 +80,8 @@
           "creativeSetId",
           "urlPattern",
           "type",
-          "observationWindow"
+          "observationWindow",
+          "expiryTimestamp"
         ],
         "properties": {
           "creativeSetId": {
@@ -90,6 +94,9 @@
             "type": "string"
           },
           "observationWindow": {
+            "type": "number"
+          },
+          "expiryTimestamp": {
             "type": "number"
           }
         }

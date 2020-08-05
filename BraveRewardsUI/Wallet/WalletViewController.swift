@@ -216,8 +216,8 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
         self.showServerErrorNotification()
       }
     }
-    state.ledger.fetchWalletDetails { properties in
-      if properties == nil && self.state.ledger.walletInfo == nil {
+    state.ledger.getRewardsParameters { properties in
+      if properties == nil && self.state.ledger.rewardsParameters == nil {
         // No wallet properties to display: Error
         self.showServerErrorNotification()
       }
@@ -566,7 +566,7 @@ extension WalletViewController {
       }
       if path.status == .satisfied {
         if self.state.ledger.balance != nil &&
-          self.state.ledger.walletInfo != nil {
+          self.state.ledger.rewardsParameters != nil {
           //hide network not available banner
           self.walletView.setNotificationView(nil, animated: true)
           self.loadNextNotification()
@@ -598,7 +598,7 @@ extension WalletViewController {
   }
   
   private func loadNextNotification() {
-    if state.ledger.balance == nil || state.ledger.walletInfo == nil {
+    if state.ledger.balance == nil || state.ledger.rewardsParameters == nil {
       // Showing error
       return
     }

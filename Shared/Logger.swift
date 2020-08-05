@@ -34,12 +34,10 @@ public extension Logger {
             systemDestination.showLogIdentifier = true
             systemDestination.showLevel = true
             
-            // Since we redirect from Rewards framework we can't show proper filenames and threads.
-            // Rewards logs do that already for us.
+            // Since we redirect from Rewards framework we don't have function
+            // name's or thread names
             systemDestination.showFunctionName = false
             systemDestination.showThreadName = false
-            systemDestination.showFileName = false
-            systemDestination.showLineNumber = false
             
             logger.add(destination: systemDestination)
         }

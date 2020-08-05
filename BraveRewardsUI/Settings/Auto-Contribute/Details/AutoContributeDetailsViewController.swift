@@ -69,7 +69,7 @@ class AutoContributeDetailViewController: UIViewController {
     let dateFormatter = DateFormatter().then {
       $0.dateFormat = Strings.autoContributeDateFormat
     }
-    let reconcileDate = Date(timeIntervalSince1970: TimeInterval(state.ledger.autoContributeProps.reconcileStamp))
+    let reconcileDate = Date(timeIntervalSince1970: TimeInterval(state.ledger.autoContributeProperties.reconcileStamp))
     view.label.text = dateFormatter.string(from: reconcileDate)
     view.bounds = CGRect(origin: .zero, size: view.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize))
     return view
@@ -175,9 +175,9 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       switch row {
       case .monthlyPayment:
         // Monthly payment
-        guard let wallet = state.ledger.walletInfo else { break }
+        guard let wallet = state.ledger.rewardsParameters else { break }
         let monthlyPayment = state.ledger.contributionAmount
-        let choices = wallet.parametersChoices.map { BATValue($0.doubleValue) }
+        let choices = wallet.autoContributeChoices.map { BATValue($0.doubleValue) }
         let selectedIndex = choices.map({ $0.doubleValue }).firstIndex(of: monthlyPayment) ?? 0
         
         let controller = BATValueOptionsSelectionViewController(

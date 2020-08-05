@@ -154,7 +154,6 @@ class BrowserViewController: UIViewController {
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
         
-        RewardsHelper.configureRewardsLogs()
         let configuration: BraveRewardsConfiguration
         if AppConstants.buildChannel.isPublic {
             configuration = .production
@@ -186,6 +185,8 @@ class BrowserViewController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
         didInit()
+        
+        rewards.delegate = self
     }
 
     required init?(coder aDecoder: NSCoder) {

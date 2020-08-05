@@ -24,7 +24,7 @@ extension BraveLedger {
       $0.percent = 1 //exclude 0% sites.
       $0.orderBy = [sort]
       $0.nonVerified = self.allowUnverifiedPublishers
-      $0.reconcileStamp = self.autoContributeProps.reconcileStamp
+      $0.reconcileStamp = self.autoContributeProperties.reconcileStamp
     }
     return filter
   }
@@ -34,7 +34,7 @@ extension BraveLedger {
       $0.id = ""
       $0.excluded = .filterExcluded
       $0.nonVerified = self.allowUnverifiedPublishers
-      $0.reconcileStamp = self.autoContributeProps.reconcileStamp
+      $0.reconcileStamp = self.autoContributeProperties.reconcileStamp
     }
   }
   
@@ -77,10 +77,8 @@ extension BraveLedger {
   /// Gets the dollar string for some BAT amount using rates from the users wallet with the
   /// currency code appended (i.e. "6.42 USD")
   func dollarStringForBATAmount(_ amount: Double, currencyCode: String = "USD", includeCurrencyCode: Bool = true) -> String? {
-    guard let balance = balance,
-          let conversionRate = balance.rates[currencyCode]?.doubleValue else {
-      return nil
-    }
+    guard let parameters = rewardsParameters else { return nil }
+    let conversionRate = parameters.rate
     
     let currencyFormatter = NumberFormatter()
     currencyFormatter.currencySymbol = ""
@@ -107,7 +105,7 @@ extension BraveLedger {
   }
   
   /// Options around minimum visits for publisher relavancy
-  enum MinimumVisitsOptions: UInt32, CaseIterable, DisplayableOption {
+  enum MinimumVisitsOptions: Int32, CaseIterable, DisplayableOption {
     case one = 1
     case five = 5
     case ten = 10
@@ -122,7 +120,7 @@ extension BraveLedger {
   }
   
   /// Options around minimum page time before logging a visit (in seconds)
-  enum MinimumVisitDurationOptions: UInt64, CaseIterable, DisplayableOption {
+  enum MinimumVisitDurationOptions: Int32, CaseIterable, DisplayableOption {
     case fiveSeconds = 5
     case eightSeconds = 8
     case oneMinute = 60
@@ -153,7 +151,7 @@ extension BraveLedger {
       let group = DispatchGroup()
       var success = true
       group.enter()
-      self.fetchWalletDetails { details in
+      self.getRewardsParameters { details in
         if details == nil {
           success = false
         }
