@@ -28,7 +28,6 @@
 #include "net/http/http_status_code.h"
 
 using namespace braveledger_database; //  NOLINT
-using namespace braveledger_sku; //  NOLINT
 using namespace braveledger_api; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -66,10 +65,10 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
       {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
-  bat_sku_ = braveledger_sku::SKUFactory::Create(
+  sku_ = braveledger_sku::SKUFactory::Create(
       this,
       braveledger_sku::SKUType::kMerchant);
-  DCHECK(bat_sku_);
+  DCHECK(sku_);
 }
 
 LedgerImpl::~LedgerImpl() {
@@ -109,6 +108,10 @@ braveledger_wallet::Wallet* LedgerImpl::wallet() const {
 
 braveledger_report::Report* LedgerImpl::report() const {
   return report_.get();
+}
+
+braveledger_sku::SKU* LedgerImpl::sku() const {
+  return sku_.get();
 }
 
 void LedgerImpl::OnInitialized(
@@ -1208,7 +1211,7 @@ void LedgerImpl::ProcessSKU(
     const std::vector<ledger::SKUOrderItem>& items,
     ledger::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
-  bat_sku_->Process(items, std::move(wallet), callback);
+  sku()->Process(items, std::move(wallet), callback);
 }
 
 void LedgerImpl::GetSKUOrderByContributionId(
