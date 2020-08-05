@@ -187,9 +187,10 @@ class NewTabPageViewController: UIViewController, Themeable {
                 switchingToPrivateMode: switchingToPrivateMode
             )
         case .toggleSource:
-            feedDataSource.toggleSource(context.item.source, enabled: !context.item.source.enabled)
+            let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
+            feedDataSource.toggleSource(context.item.source, enabled: !isEnabled)
             collectionView.reloadData()
-            if context.item.source.enabled {
+            if isEnabled {
                 let alert = FeedActionAlertView(
                     image: UIImage(imageLiteralResourceName: "disable.feed.source.alert"),
                     title: "Disabled", // FIXME: Localize

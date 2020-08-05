@@ -52,12 +52,20 @@ class BraveTodaySettingsViewController: TableViewController {
                     header: .title("Sources"),
                     rows: [
                         // FIXME: Localize
-                        Row(text: "All Sources", selection: {
+                        Row(text: "All Sources", selection: { [unowned self] in
                             let controller = FeedSourceListViewController(dataSource: self.feedDataSource, category: nil)
                             self.navigationController?.pushViewController(controller, animated: true)
                         }, accessory: .disclosureIndicator)
                     ] + categoryRows
                 )
+            )
+            dataSource.sections.append(
+                .init(rows: [
+                    // FIXME: Localize
+                    Row(text: "Reset Source Settings to Default", selection: { [unowned self] in
+                        self.feedDataSource.resetSourcesToDefault()
+                    }, cellClass: ButtonCell.self)
+                ])
             )
         }
         

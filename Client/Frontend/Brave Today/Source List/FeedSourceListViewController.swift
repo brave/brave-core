@@ -17,6 +17,7 @@ class FeedSourceListViewController: UITableViewController {
     private var searchQuery: String = ""
     private var sections: [[FeedItem.Source]] = []
     private var sectionIndexTitles: [String] = []
+    private var customizedSources: [String: Bool] = [:]
     
     init(dataSource: FeedDataSource, category: String?) {
         self.dataSource = dataSource
@@ -26,6 +27,7 @@ class FeedSourceListViewController: UITableViewController {
         if dataSource.sources.count > 1 {
             sectionIndexTitles = sections.compactMap { $0.first?.sectionIndexTitle }
         }
+        customizedSources = dataSource.customizedSources
     }
     
     @available(*, unavailable)
@@ -128,12 +130,12 @@ extension FeedSourceListViewController {
         cell.selectionStyle = .none
         cell.textLabel?.text = source.name
         cell.accessoryView = cell.enabledToggle
-        cell.enabledToggle.isOn = source.enabled
+        cell.enabledToggle.isOn = customizedSources[source.id] ?? source.isDefault
         cell.enabledToggleValueChanged = { isOn in
             // Update data source + DB
             self.dataSource.toggleSource(source, enabled: isOn)
-            // Update current state
-            self.sections[indexPath.section][indexPath.row].enabled = isOn
+            // Update local state
+            self.customizedSources[source.id] = isOn
         }
         return cell
     }
