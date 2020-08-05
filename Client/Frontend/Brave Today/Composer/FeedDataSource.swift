@@ -197,6 +197,32 @@ struct DefaultFillStrategy: FillStrategy {
     }
 }
 
+/// A fill strategy that always pulls from the beginning of the list after said list has been filtered
+/// by some given predicate
+struct FilteredFillStrategy: FillStrategy {
+    /// A global predicate to determine what items are valid to pull from. For example, only pulling items
+    /// that are in a given category
+    var isIncluded: ((FeedItem) -> Bool)
+    
+    func next(
+        _ length: Int,
+        from list: inout [FeedItem],
+        where predicate: ((FeedItem) -> Bool)? = nil
+    ) -> [FeedItem]? {
+        let workingList = list.filter {
+            (predicate?($0) ?? true) && isIncluded($0)
+        }
+        if workingList.count < length { return nil }
+        let items = Array(workingList.prefix(upTo: length))
+        items.forEach { item in
+            if let index = list.firstIndex(of: item) {
+                list.remove(at: index)
+            }
+        }
+        return items
+    }
+}
+
 /// A fill strategy that pulls random items from the list
 struct RandomizedFillStrategy: FillStrategy {
     /// A global predicate to determine what random items are valid to pull from. For example, only pulling
@@ -504,7 +530,9 @@ class FeedDataSource {
         
         let rules: [FeedSequenceElement] = [
             .sponsor,
-            .headline(paired: false),
+            .fillUsing(FilteredFillStrategy(isIncluded: { $0.source.category == "Top News" }), [
+                .headline(paired: false)
+            ]),
             .deals,
             .repeating([
                 .repeating([.headline(paired: false)], times: 2),
