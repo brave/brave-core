@@ -15,13 +15,14 @@ source_set("browser") {
     "binance_json_parser.cc",
     "binance_json_parser.h",
     "binance_service.cc",
-    "binance_service.h"
+    "binance_service.h",
+    "regions.h"
   ]
 
   deps = [
     "//base",
     "//brave/common:pref_names",
-    "//brave/components/crypto_exchange/browser",
+    "//brave/components/ntp_widget_utils/browser",
     "//components/country_codes:country_codes",
     "//components/keyed_service/content",
     "//components/keyed_service/core",

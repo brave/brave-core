@@ -21,7 +21,7 @@
 #include "base/token.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/binance/browser/binance_json_parser.h"
-#include "brave/components/crypto_exchange/browser/crypto_exchange_oauth_util.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 #include "components/country_codes/country_codes.h"
 #include "components/os_crypt/os_crypt.h"
 #include "components/prefs/pref_service.h"
@@ -93,8 +93,8 @@ std::string BinanceService::GetOAuthClientUrl() {
   // Step 4 of the oauth process uess the code_verifer_.
   // We never need to persist these values, they are just used to get an
   // access token.
-  code_verifier_ = crypto_exchange::GetCryptoRandomString(true);
-  code_challenge_ = crypto_exchange::GetCodeChallenge(code_verifier_, true);
+  code_verifier_ = ntp_widget_utils::GetCryptoRandomString(true);
+  code_challenge_ = ntp_widget_utils::GetCodeChallenge(code_verifier_, true);
 
   GURL url(oauth_url);
   url = net::AppendQueryParameter(url, "response_type", "code");

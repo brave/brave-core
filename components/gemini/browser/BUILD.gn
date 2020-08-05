@@ -19,11 +19,12 @@ source_set("browser") {
     "gemini_json_parser.h",
     "pref_names.cc",
     "pref_names.h",
+    "regions.h",
   ]
 
   deps = [
     "//base",
-    "//brave/components/crypto_exchange/browser",
+    "//brave/components/ntp_widget_utils/browser",
     "//components/prefs:prefs",
     "//components/keyed_service/content",
     "//components/keyed_service/core",

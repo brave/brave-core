@@ -20,7 +20,7 @@
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/token.h"
-#include "brave/components/crypto_exchange/browser/crypto_exchange_oauth_util.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 #include "brave/components/gemini/browser/gemini_json_parser.h"
 #include "brave/components/gemini/browser/pref_names.h"
 #include "components/os_crypt/os_crypt.h"
@@ -149,8 +149,8 @@ GeminiService::~GeminiService() {
 
 std::string GeminiService::GetOAuthClientUrl() {
   GURL url(oauth_url);
-  code_verifier_ = crypto_exchange::GetCryptoRandomString(false);
-  code_challenge_ = crypto_exchange::GetCodeChallenge(code_verifier_, false);
+  code_verifier_ = ntp_widget_utils::GetCryptoRandomString(false);
+  code_challenge_ = ntp_widget_utils::GetCodeChallenge(code_verifier_, false);
   url = net::AppendQueryParameter(url, "response_type", "code");
   url = net::AppendQueryParameter(url, "client_id", client_id_);
   url = net::AppendQueryParameter(url, "redirect_uri", oauth_callback);
@@ -158,7 +158,7 @@ std::string GeminiService::GetOAuthClientUrl() {
   url = net::AppendQueryParameter(url, "code_challenge", code_challenge_);
   url = net::AppendQueryParameter(url, "code_challenge_method", "S256");
   url = net::AppendQueryParameter(
-      url, "state", ::crypto_exchange::GetCryptoRandomString(false));
+      url, "state", ntp_widget_utils::GetCryptoRandomString(false));
   return url.spec();
 }
 

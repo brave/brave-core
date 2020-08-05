@@ -5,14 +5,14 @@
 
 #include <string>
 
-#include "brave/components/crypto_exchange/browser/crypto_exchange_oauth_util.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_oauth.h"
 
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "crypto/random.h"
 #include "crypto/sha2.h"
 
-namespace crypto_exchange {
+namespace ntp_widget_utils {
 
 std::string GetCryptoRandomString(bool hex_encode) {
   const size_t kSeedByteLength = 32;
@@ -54,4 +54,4 @@ std::string GetCodeChallenge(
   return code_challenge;
 }
 
-}  // namespace crypto_exchange
+}  // namespace ntp_widget_utils

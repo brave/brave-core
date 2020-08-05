@@ -10,9 +10,9 @@
 
 #include "base/environment.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/browser/brave_together/brave_together_util.h"
+#include "brave/components/brave_together/browser/regions.h"
+#include "brave/components/ntp_widget_utils/browser/ntp_widget_utils_region.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/country_codes/country_codes.h"
 
 namespace extensions {
 namespace api {
@@ -25,7 +25,8 @@ BraveTogetherIsSupportedFunction::Run() {
     return RespondNow(Error("Not available in Tor profile"));
   }
 
-  bool is_supported = ::brave_together::IsBraveTogetherSupported(profile);
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
+      profile->GetPrefs(), brave_together::supported_regions, true);
   return RespondNow(OneArgument(
       std::make_unique<base::Value>(is_supported)));
 }
