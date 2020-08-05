@@ -17,6 +17,7 @@ class FeedGroupView: UIView {
     let titleLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 21, weight: .bold)
         $0.appearanceTextColor = .white
+        $0.numberOfLines = 0
     }
     /// The buttons that contain each feed view
     private let buttons: [SpringButton]
