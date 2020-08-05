@@ -49,11 +49,13 @@ class TipsDetailViewController: UIViewController {
   }
   
   private func loadData() {
-    _ = getTipsThisMonth().then {
-      totalBatTips = $0.oneTimeDonation + $0.recurringDonation
+    getTipsThisMonth { [weak self] report in
+      guard let self = self else { return }
+      self.totalBatTips = report.oneTimeDonation + report.recurringDonation
+      (self.view as? SettingsTableView)?.tableView.reloadData()
     }
     
-    state.ledger.listOneTimeTips {[weak self] infoList in
+    state.ledger.listOneTimeTips { [weak self] infoList in
       guard let self = self else { return }
       infoList.forEach({$0.category = Int32(RewardsType.oneTimeTip.rawValue)})
       self.tipsList.append(contentsOf: infoList)
@@ -163,14 +165,12 @@ extension TipsDetailViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension TipsDetailViewController {
-  fileprivate func getTipsThisMonth() -> BalanceReportInfo {
+  fileprivate func getTipsThisMonth(_ completion: @escaping (BalanceReportInfo) -> Void) {
     let month = Date().currentMonthNumber
     let year = Date().currentYear
-    var report = BalanceReportInfo()
     state.ledger.balanceReport(for: ActivityMonth(rawValue: month) ?? .any, year: Int32(year)) {
-      if let balance = $0 { report = balance }
+      completion($0 ?? .init())
     }
-    return report
   }
   
   func setupLedgerObservers() {

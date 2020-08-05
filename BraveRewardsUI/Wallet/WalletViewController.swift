@@ -102,7 +102,9 @@ class WalletViewController: UIViewController, RewardsSummaryProtocol {
     updateExternalWallet()
     
     rewardsSummaryView.monthYearLabel.text = summaryPeriod
-    rewardsSummaryView.rows = summaryRows
+    summaryRows { [weak self] rows in
+      self?.rewardsSummaryView.rows = rows
+    }
     
     reloadUIState()
     setupPublisherView(publisherSummaryView)
@@ -719,24 +721,26 @@ extension WalletViewController {
       guard let self = self, self.isViewLoaded else {
         return
       }
-      let rows = self.summaryRows.map({ row -> RowView in
-        row.isHidden = true
-        return row
-      })
-      UIView.animate(withDuration: 0.15, animations: {
-        self.rewardsSummaryView.stackView.arrangedSubviews.forEach({
+      self.summaryRows { [weak self] rows in
+        guard let self = self else { return }
+        rows.forEach {
           $0.isHidden = true
-          $0.alpha = 0
-        })
-      }, completion: { _ in
-        self.rewardsSummaryView.rows = rows
+        }
         UIView.animate(withDuration: 0.15, animations: {
           self.rewardsSummaryView.stackView.arrangedSubviews.forEach({
-            $0.isHidden = false
-            $0.alpha = 1
+            $0.isHidden = true
+            $0.alpha = 0
+          })
+        }, completion: { _ in
+          self.rewardsSummaryView.rows = rows
+          UIView.animate(withDuration: 0.15, animations: {
+            self.rewardsSummaryView.stackView.arrangedSubviews.forEach({
+              $0.isHidden = false
+              $0.alpha = 1
+            })
           })
         })
-      })
+      }
     }
     ledgerObserver.pendingContributionAdded = { [weak self] in
       self?.updatePendingContributionsState()
