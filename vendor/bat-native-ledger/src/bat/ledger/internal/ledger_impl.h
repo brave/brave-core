@@ -18,16 +18,13 @@
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/internal/state/state.h"
+#include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
 
 namespace base {
 class SequencedTaskRunner;
-}
-
-namespace braveledger_promotion {
-class Promotion;
 }
 
 namespace braveledger_media {
@@ -83,6 +80,8 @@ class LedgerImpl : public ledger::Ledger {
   ledger::LedgerClient* ledger_client() const;
 
   braveledger_state::State* state() const;
+
+  braveledger_promotion::Promotion* promotion() const;
 
   void Initialize(
       const bool execute_create_script,
@@ -475,8 +474,6 @@ class LedgerImpl : public ledger::Ledger {
   void GetAllMonthlyReportIds(
       ledger::GetAllMonthlyReportIdsCallback callback) override;
 
-  void TransferTokens(ledger::ResultCallback callback);
-
   void SaveCredsBatch(
       ledger::CredsBatchPtr info,
       ledger::ResultCallback callback);
@@ -690,7 +687,7 @@ class LedgerImpl : public ledger::Ledger {
       ledger::ResultCallback callback);
 
   ledger::LedgerClient* ledger_client_;
-  std::unique_ptr<braveledger_promotion::Promotion> bat_promotion_;
+  std::unique_ptr<braveledger_promotion::Promotion> promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;

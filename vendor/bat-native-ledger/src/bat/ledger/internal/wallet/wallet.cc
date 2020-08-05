@@ -159,15 +159,16 @@ void Wallet::ClaimFunds(ledger::ResultCallback callback) {
     }
 
     // tokens claim
-    ledger_->TransferTokens([callback](const ledger::Result result) {
-      if (result != ledger::Result::LEDGER_OK) {
-        BLOG(0, "Claiming tokens failed");
-        callback(ledger::Result::CONTINUE);
-        return;
-      }
+    ledger_->promotion()->TransferTokens(
+        [callback](const ledger::Result result) {
+          if (result != ledger::Result::LEDGER_OK) {
+            BLOG(0, "Claiming tokens failed");
+            callback(ledger::Result::CONTINUE);
+            return;
+          }
 
-      callback(ledger::Result::LEDGER_OK);
-    });
+          callback(ledger::Result::LEDGER_OK);
+        });
   });
 }
 

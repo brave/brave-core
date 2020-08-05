@@ -21,7 +21,6 @@
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/bat_helper.h"
-#include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/recovery/recovery.h"
 #include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -31,7 +30,6 @@
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
-using namespace braveledger_promotion; //  NOLINT
 using namespace braveledger_publisher; //  NOLINT
 using namespace braveledger_media; //  NOLINT
 using namespace braveledger_contribution; //  NOLINT
@@ -50,7 +48,7 @@ namespace bat_ledger {
 
 LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     ledger_client_(client),
-    bat_promotion_(new Promotion(this)),
+    promotion_(new braveledger_promotion::Promotion(this)),
     bat_publisher_(new Publisher(this)),
     bat_media_(new Media(this)),
     bat_contribution_(new Contribution(this)),
@@ -99,6 +97,10 @@ braveledger_state::State* LedgerImpl::state() const {
   return state_.get();
 }
 
+braveledger_promotion::Promotion* LedgerImpl::promotion() const {
+  return promotion_.get();
+}
+
 void LedgerImpl::OnInitialized(
     const ledger::Result result,
     ledger::ResultCallback callback) {
@@ -118,9 +120,9 @@ void LedgerImpl::StartServices() {
 
   bat_publisher_->SetPublisherServerListTimer();
   bat_contribution_->SetReconcileTimer();
-  bat_promotion_->Refresh(false);
+  promotion()->Refresh(false);
   bat_contribution_->Initialize();
-  bat_promotion_->Initialize();
+  promotion()->Initialize();
   bat_api_->Initialize();
   braveledger_recovery::Check(this);
 }
@@ -597,14 +599,14 @@ void LedgerImpl::ClaimPromotion(
     const std::string& promotion_id,
     const std::string& payload,
     ledger::ClaimPromotionCallback callback) const {
-  bat_promotion_->Claim(promotion_id, payload, std::move(callback));
+  promotion()->Claim(promotion_id, payload, std::move(callback));
 }
 
 void LedgerImpl::AttestPromotion(
     const std::string& promotion_id,
     const std::string& solution,
     ledger::AttestPromotionCallback callback) const {
-  bat_promotion_->Attest(promotion_id, solution, callback);
+  promotion()->Attest(promotion_id, solution, callback);
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {
@@ -1007,7 +1009,7 @@ void LedgerImpl::GetFirstContributionQueue(
 
 void LedgerImpl::FetchPromotions(
     ledger::FetchPromotionCallback callback) const {
-  bat_promotion_->Fetch(callback);
+  promotion()->Fetch(callback);
 }
 
 void LedgerImpl::SavePromotion(
@@ -1140,10 +1142,6 @@ void LedgerImpl::GetMonthlyReport(
 void LedgerImpl::GetAllMonthlyReportIds(
     ledger::GetAllMonthlyReportIdsCallback callback) {
   bat_report_->GetAllMonthlyIds(callback);
-}
-
-void LedgerImpl::TransferTokens(ledger::ResultCallback callback) {
-  bat_promotion_->TransferTokens(callback);
 }
 
 void LedgerImpl::SaveCredsBatch(
