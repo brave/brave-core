@@ -40,6 +40,16 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   componentDidMount () {
+    chrome.braveRewards.getWalletExists((exists: boolean) => {
+      this.props.actions.walletExists(exists)
+    })
+
+    chrome.braveRewards.isInitialized((initialized: boolean) => {
+      if (initialized) {
+        this.props.actions.initialized()
+      }
+    })
+
     chrome.braveRewards.onlyAnonWallet((only: boolean) => {
       this.setState({
         onlyAnonWallet: !!only
@@ -49,11 +59,10 @@ export class RewardsPanel extends React.Component<Props, State> {
     chrome.braveRewards.getRewardsMainEnabled(((enabled: boolean) => {
       this.props.actions.onEnabledMain(enabled)
 
-      if (enabled) {
+      if (enabled && !this.props.rewardsPanelData.initializing) {
         this.startRewards()
       }
     }))
-
   }
 
   startRewards = () => {
@@ -94,8 +103,15 @@ export class RewardsPanel extends React.Component<Props, State> {
       this.getTabData()
     }
 
+    if (this.props.rewardsPanelData.enabledMain &&
+        prevProps.rewardsPanelData.initializing &&
+        !this.props.rewardsPanelData.initializing) {
+      this.startRewards()
+    }
+
     if (!prevProps.rewardsPanelData.enabledMain &&
-        this.props.rewardsPanelData.enabledMain) {
+        this.props.rewardsPanelData.enabledMain &&
+        !this.props.rewardsPanelData.initializing) {
       this.startRewards()
     }
   }
@@ -237,7 +253,7 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   enableRewards = () => {
-    this.props.actions.onSettingSave('enabledMain', '1')
+    this.props.actions.toggleEnableMain(true)
   }
 
   openRewardsAddFunds = () => {

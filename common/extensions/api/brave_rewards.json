@@ -11,11 +11,26 @@
     },
     "events": [
       {
-        "name": "onWalletInitialized",
+        "name": "walletCreated",
+        "type": "function",
+        "description": "Fired when wallet is created",
+        "parameters": []
+      },
+      {
+        "name": "walletCreationFailed",
+        "type": "function",
+        "description": "Fired when wallet creation failed",
+        "parameters": [{
+            "name": "result",
+            "type": "integer"
+          }
+        ]
+      },
+      {
+        "name": "initialized",
         "type": "function",
         "description": "Fired when wallet is initialized",
-        "parameters": [
-          {
+        "parameters": [{
             "name": "result",
             "type": "integer"
           }
@@ -1099,6 +1114,23 @@
               {
                 "name": "result",
                 "type": "integer"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "isInitialized",
+        "type": "function",
+        "description": "Is ledger process initialized",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "initialized",
+                "type": "boolean"
               }
             ]
           }

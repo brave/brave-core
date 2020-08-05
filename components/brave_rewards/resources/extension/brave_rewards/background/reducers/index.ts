@@ -22,8 +22,9 @@ const mergeReducers = (state: RewardsExtension.State | undefined, action: any) =
 
   if (!state) {
     state = storage.defaultState
-    storage.save(state)
-  } else if (state !== startingState) {
+  }
+
+  if (state !== startingState) {
     storage.debouncedSave(state)
   }
 
