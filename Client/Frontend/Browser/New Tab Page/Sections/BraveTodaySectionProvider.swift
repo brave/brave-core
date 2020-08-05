@@ -226,7 +226,8 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         }
         
         if #available(iOS 13.0, *) {
-            return .init { index -> UIMenu? in
+            return .init { [weak self] index -> UIMenu? in
+                guard let self = self else { return nil }
                 let item = feedList(index)
                 let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
                 
@@ -263,7 +264,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                     ].compactMap({ $0 })
                 
                 let manageActions = [
-                    item.source.enabled ? disableSource : enableSource
+                    self.dataSource.isSourceEnabled(item.source) ? disableSource : enableSource
                 ]
                 
                 var children: [UIMenu] = [
@@ -275,7 +276,8 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 return UIMenu(title: item.content.title, children: children)
             }
         }
-        return .init { index -> FeedItemMenu.LegacyContext? in
+        return .init { [weak self] index -> FeedItemMenu.LegacyContext? in
+            guard let self = self else { return nil }
             let item = feedList(index)
             let context = FeedItemActionContext(item: item, card: card, indexPath: indexPath)
             
@@ -315,7 +317,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             ]
             
             if context.item.content.contentType == .article {
-                if context.item.source.enabled {
+                if self.dataSource.isSourceEnabled(context.item.source) {
                     actions.append(disableSource)
                 } else {
                     actions.append(enableSource)

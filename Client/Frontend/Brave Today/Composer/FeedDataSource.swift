@@ -256,12 +256,6 @@ struct RandomizedFillStrategy: FillStrategy {
 
 /// Powers Brave Today's feed.
 class FeedDataSource {
-    /// A set of Brave Today specific errors that could occur outside of JSON decoding or network errors
-    enum BraveTodayError: Error {
-        /// The resource data that was loaded was empty after parsing
-        case resourceEmpty
-    }
-    
     /// The current view state of the data source
     enum State {
         /// Nothing has happened yet
@@ -300,6 +294,8 @@ class FeedDataSource {
     private(set) var state: State = .initial
     private(set) var sources: [FeedItem.Source] = []
     
+    // MARK: - Resource Managment
+    
     private let session = NetworkManager(session: URLSession(configuration: .ephemeral))
     
     private let decoder: JSONDecoder = {
@@ -334,6 +330,12 @@ class FeedDataSource {
             return Date().timeIntervalSince(date) > resource.cacheLifetime
         }
         return true
+    }
+    
+    /// A set of Brave Today specific errors that could occur outside of JSON decoding or network errors
+    enum BraveTodayError: Error {
+        /// The resource data that was loaded was empty after parsing
+        case resourceEmpty
     }
     
     /// Load a Brave Today resource either from a file cache or the web
@@ -371,8 +373,10 @@ class FeedDataSource {
             case .success(let data):
                 do {
                     let decodedSources = try self.decoder.decode(DataType.self, from: data)
-                    if !FileManager.default.writeToDiskInFolder(data, fileName: filename, folderName: Self.cacheFolderName) {
-                        logger.error("Failed to write sources to disk")
+                    if !data.isEmpty {
+                        if !FileManager.default.writeToDiskInFolder(data, fileName: filename, folderName: Self.cacheFolderName) {
+                            logger.error("Failed to write sources to disk")
+                        }
                     }
                     return .success(decodedSources)
                 } catch {
@@ -448,15 +452,7 @@ class FeedDataSource {
                 self.state = .failure(error)
                 completion()
             case (.success(let sources), .success(let items)):
-                let overridenSources = BraveTodaySourceMO.all()
-                self.sources = sources.map { source in
-                    if let overridenSource = overridenSources.first(where: { $0.publisherID == source.id }) {
-                        var copy = source
-                        copy.enabled = overridenSource.enabled
-                        return copy
-                    }
-                    return source
-                }
+                self.sources = sources
                 let feedItems = self.scored(feeds: items, sources: self.sources).sorted(by: <)
                 self.generateCards(from: feedItems) { [weak self] cards in
                     self?.state = .success(cards)
@@ -487,27 +483,42 @@ class FeedDataSource {
         return true
     }
     
-    /// Toggle a source's enabled status
-    func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
-        guard let cards = state.cards, let sourceIndex = sources.firstIndex(where: { $0.id == source.id }) else { return }
-        self.sources[sourceIndex].enabled = enabled
-        
-        BraveTodaySourceMO.setEnabled(forId: source.id, enabled: enabled)
-        
-        // Propigate source toggle to cards list
-        let cardsWithItemsFromSources = cards.enumerated().filter {
-            $0.element.items.contains(where: {
-                $0.source == source
-            })
-        }
-        for (index, element) in cardsWithItemsFromSources {
-            for item in element.items where item.source == source {
-                var alteredItem = item
-                alteredItem.source = self.sources[sourceIndex]
-                state.cards?[index] = element.replacing(item: item, with: alteredItem)
-            }
+    // MARK: - Sources
+    
+    /// Get a map of customized sources IDs and their overridden enabled states
+    var customizedSources: [String: Bool] {
+        let all = BraveTodaySourceMO.all()
+        return all.reduce(into: [:]) { (result, source) in
+            result[source.publisherID] = source.enabled
         }
     }
+    
+    /// Whether or not a source is currently enabled (whether or not by default or by a user changing
+    /// said default)
+    func isSourceEnabled(_ source: FeedItem.Source) -> Bool {
+        BraveTodaySourceMO.get(fromId: source.id)?.enabled ?? source.isDefault
+    }
+    
+    /// Toggle a source's enabled status
+    func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
+        BraveTodaySourceMO.setEnabled(forId: source.id, enabled: enabled)
+    }
+    
+    /// Toggle an entire category on or off
+    func toggleCategory(_ category: String, enabled: Bool) {
+        let sourcesInCategory = sources.filter { $0.category == category }
+        if sourcesInCategory.isEmpty {
+            return
+        }
+        BraveTodaySourceMO.setEnabled(forIds: sourcesInCategory.map(\.id), enabled: enabled)
+    }
+    
+    /// Reset all source settings back to default
+    func resetSourcesToDefault() {
+        BraveTodaySourceMO.resetSourceSelection()
+    }
+    
+    // MARK: - Card Generation
     
     private func scored(feeds: [FeedItem.Content], sources: [FeedItem.Source]) -> [FeedItem] {
         let lastVisitedDomains = (try? History.suffix(200)
@@ -535,7 +546,12 @@ class FeedDataSource {
             1st item, Large Card, Latest item from query
             Deals card
          */
-        let feedsFromEnabledSources = items.filter(\.source.enabled)
+        let overridenSources = BraveTodaySourceMO.all()
+        let feedsFromEnabledSources = items.filter { item in
+            overridenSources.first(where: {
+                $0.publisherID == item.source.id
+            })?.enabled ?? item.source.isDefault
+        }
         var sponsors = feedsFromEnabledSources.filter { $0.content.contentType == .sponsor }
         var deals = feedsFromEnabledSources.filter { $0.content.contentType == .deals }
         var articles = feedsFromEnabledSources.filter { $0.content.contentType == .article }

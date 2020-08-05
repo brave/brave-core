@@ -10,12 +10,24 @@ public final class BraveTodaySourceMO: NSManagedObject, CRUD {
     @NSManaged public var enabled: Bool
     @NSManaged public var publisherID: String
     
+    public class func get(fromId id: String) -> BraveTodaySourceMO? {
+        getInternal(fromId: id)
+    }
+    
     public class func all() -> [BraveTodaySourceMO] {
         all() ?? []
     }
     
     public class func setEnabled(forId id: String, enabled: Bool) {
         setEnabledInternal(forId: id, enabled: enabled)
+    }
+    
+    public class func setEnabled(forIds ids: [String], enabled: Bool) {
+        DataController.perform(context: .new(inMemory: false)) { context in
+            ids.forEach {
+                setEnabledInternal(forId: $0, enabled: enabled, context: .existing(context))
+            }
+        }
     }
     
     public class func resetSourceSelection() {

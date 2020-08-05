@@ -37,14 +37,14 @@ extension FeedItem {
     
     struct Source: Equatable, Decodable {
         var id: String
-        var enabled: Bool
+        var isDefault: Bool
         var category: String
         @URLString var logo: URL?
         var name: String
         
         enum CodingKeys: String, CodingKey {
             case id = "publisher_id"
-            case enabled
+            case isDefault = "enabled"
             case category
             case logo = "publisher_logo_padded"
             case name = "publisher_name"
