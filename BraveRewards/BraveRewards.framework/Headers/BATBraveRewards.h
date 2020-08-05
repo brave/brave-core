@@ -50,6 +50,11 @@ NS_SWIFT_NAME(BraveRewardsDelegate)
 @protocol BATBraveRewardsDelegate <NSObject>
 @required
 
+- (void)logMessageWithFilename:(NSString *)file
+                    lineNumber:(int)lineNumber
+                     verbosity:(int)verbosity
+                       message:(NSString *)message;
+
 /// Obtain the favicon URL given some page's URL. The client can then choose
 /// to download said favicon and cache it for later when `retrieveFavicon` is
 /// called.

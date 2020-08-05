@@ -207,7 +207,7 @@ class TippingViewController: UIViewController, UIViewControllerTransitioningDele
       }
       
       if self.tippingView.optionSelectionView.isMonthly {
-        let date = Date(timeIntervalSince1970: TimeInterval(self.state.ledger.autoContributeProps.reconcileStamp))
+        let date = Date(timeIntervalSince1970: TimeInterval(self.state.ledger.autoContributeProperties.reconcileStamp))
         let dateString = DateFormatter().then {
           $0.dateStyle = .short
           $0.timeStyle = .none

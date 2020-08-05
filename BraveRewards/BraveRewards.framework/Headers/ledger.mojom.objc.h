@@ -12,6 +12,8 @@
 
 
 typedef NS_ENUM(NSInteger, BATContributionStep) {
+  BATContributionStepStepAcOff = -6,
+  BATContributionStepStepRewardsOff = -5,
   BATContributionStepStepAcTableEmpty = -4,
   BATContributionStepStepNotEnoughFunds = -3,
   BATContributionStepStepFailed = -2,
@@ -91,6 +93,8 @@ typedef NS_ENUM(NSInteger, BATResult) {
   BATResultRetryLong = 31,
   BATResultContinue = 32,
   BATResultInProgress = 33,
+  BATResultRewardsOff = 34,
+  BATResultAcOff = 35,
 } NS_SWIFT_NAME(Result);
 
 
@@ -113,7 +117,6 @@ typedef NS_ENUM(NSInteger, BATRewardsType) {
 typedef NS_ENUM(NSInteger, BATReportType) {
   BATReportTypeGrantUgp = 0,
   BATReportTypeAutoContribution = 1,
-  BATReportTypeDeposit = 2,
   BATReportTypeGrantAd = 3,
   BATReportTypeTipRecurring = 4,
   BATReportTypeTip = 5,
@@ -247,8 +250,16 @@ typedef NS_ENUM(NSInteger, BATSKUTransactionStatus) {
 } NS_SWIFT_NAME(SKUTransactionStatus);
 
 
+typedef NS_ENUM(NSInteger, BATInlineTipsPlatforms) {
+  BATInlineTipsPlatformsNone = 0,
+  BATInlineTipsPlatformsReddit = 1,
+  BATInlineTipsPlatformsTwitter = 2,
+  BATInlineTipsPlatformsGithub = 3,
+} NS_SWIFT_NAME(InlineTipsPlatforms);
 
-@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATWalletProperties, BATBalance, BATAutoContributeProps, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATReconcileInfo, BATRewardsInternalsInfo, BATServerPublisherInfo, BATServerPublisherPartial, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch, BATSKUOrder, BATSKUOrderItem, BATSKUTransaction;
+
+
+@class BATContributionInfo, BATContributionPublisher, BATPublisherInfo, BATPublisherBanner, BATPendingContribution, BATPendingContributionInfo, BATVisitData, BATRewardsParameters, BATBalance, BATAutoContributeProperties, BATMediaEventInfo, BATExternalWallet, BATBalanceReportInfo, BATActivityInfoFilterOrderPair, BATActivityInfoFilter, BATRewardsInternalsInfo, BATServerPublisherInfo, BATServerPublisherPartial, BATTransferFee, BATContributionQueue, BATContributionQueuePublisher, BATPromotion, BATUnblindedToken, BATClientInfo, BATRecurringTip, BATTransactionReportInfo, BATContributionReportInfo, BATMonthlyReportInfo, BATCredsBatch, BATSKUOrder, BATSKUOrderItem, BATSKUTransaction, BATUrlResponse;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -341,24 +352,24 @@ NS_SWIFT_NAME(VisitData)
 @property (nonatomic, copy) NSString * faviconUrl;
 @end
 
-NS_SWIFT_NAME(WalletProperties)
-@interface BATWalletProperties : NSObject <NSCopying>
-@property (nonatomic) double feeAmount;
-@property (nonatomic, copy) NSArray<NSNumber *> * parametersChoices;
-@property (nonatomic, copy) NSArray<NSNumber *> * defaultTipChoices;
-@property (nonatomic, copy) NSArray<NSNumber *> * defaultMonthlyTipChoices;
+NS_SWIFT_NAME(RewardsParameters)
+@interface BATRewardsParameters : NSObject <NSCopying>
+@property (nonatomic) double rate;
+@property (nonatomic) double autoContributeChoice;
+@property (nonatomic, copy) NSArray<NSNumber *> * autoContributeChoices;
+@property (nonatomic, copy) NSArray<NSNumber *> * tipChoices;
+@property (nonatomic, copy) NSArray<NSNumber *> * monthlyTipChoices;
 @end
 
 NS_SWIFT_NAME(Balance)
 @interface BATBalance : NSObject <NSCopying>
 @property (nonatomic) double total;
 @property (nonatomic, copy) NSString * userFunds;
-@property (nonatomic, copy) NSDictionary<NSString *, NSNumber *> * rates;
 @property (nonatomic, copy) NSDictionary<NSString *, NSNumber *> * wallets;
 @end
 
-NS_SWIFT_NAME(AutoContributeProps)
-@interface BATAutoContributeProps : NSObject <NSCopying>
+NS_SWIFT_NAME(AutoContributeProperties)
+@interface BATAutoContributeProperties : NSObject <NSCopying>
 @property (nonatomic) bool enabledContribute;
 @property (nonatomic) uint64_t contributionMinTime;
 @property (nonatomic) int32_t contributionMinVisits;
@@ -391,6 +402,7 @@ NS_SWIFT_NAME(ExternalWallet)
 
 NS_SWIFT_NAME(BalanceReportInfo)
 @interface BATBalanceReportInfo : NSObject <NSCopying>
+@property (nonatomic, copy) NSString * id;
 @property (nonatomic) double grants;
 @property (nonatomic) double earningFromAds;
 @property (nonatomic) double autoContribute;
@@ -416,22 +428,11 @@ NS_SWIFT_NAME(ActivityInfoFilter)
 @property (nonatomic) uint32_t minVisits;
 @end
 
-NS_SWIFT_NAME(ReconcileInfo)
-@interface BATReconcileInfo : NSObject <NSCopying>
-@property (nonatomic, copy) NSString * viewingId;
-@property (nonatomic, copy) NSString * amount;
-@property (nonatomic) BATContributionRetry retryStep;
-@property (nonatomic) int32_t retryLevel;
-@end
-
 NS_SWIFT_NAME(RewardsInternalsInfo)
 @interface BATRewardsInternalsInfo : NSObject <NSCopying>
 @property (nonatomic, copy) NSString * paymentId;
 @property (nonatomic) bool isKeyInfoSeedValid;
-@property (nonatomic, copy) NSString * personaId;
-@property (nonatomic, copy) NSString * userId;
 @property (nonatomic) uint64_t bootStamp;
-@property (nonatomic, copy) NSDictionary<NSString *, BATReconcileInfo *> * currentReconciles;
 @end
 
 NS_SWIFT_NAME(ServerPublisherInfo)
@@ -461,10 +462,12 @@ NS_SWIFT_NAME(TransferFee)
 
 NS_SWIFT_NAME(ContributionQueue)
 @interface BATContributionQueue : NSObject <NSCopying>
-@property (nonatomic) uint64_t id;
+@property (nonatomic, copy) NSString * id;
 @property (nonatomic) BATRewardsType type;
 @property (nonatomic) double amount;
 @property (nonatomic) bool partial;
+@property (nonatomic) uint64_t createdAt;
+@property (nonatomic) uint64_t completedAt;
 @property (nonatomic, copy) NSArray<BATContributionQueuePublisher *> * publishers;
 @end
 
@@ -497,6 +500,9 @@ NS_SWIFT_NAME(UnblindedToken)
 @property (nonatomic) double value;
 @property (nonatomic, copy) NSString * credsId;
 @property (nonatomic) uint64_t expiresAt;
+@property (nonatomic) uint64_t redeemedAt;
+@property (nonatomic, copy) NSString * redeemId;
+@property (nonatomic) BATRewardsType redeemType;
 @end
 
 NS_SWIFT_NAME(ClientInfo)
@@ -587,6 +593,14 @@ NS_SWIFT_NAME(SKUTransaction)
 @property (nonatomic) double amount;
 @property (nonatomic) BATSKUTransactionStatus status;
 @property (nonatomic) uint64_t createdAt;
+@end
+
+NS_SWIFT_NAME(UrlResponse)
+@interface BATUrlResponse : NSObject <NSCopying>
+@property (nonatomic, copy) NSString * url;
+@property (nonatomic) int32_t statusCode;
+@property (nonatomic, copy) NSString * body;
+@property (nonatomic, copy) NSDictionary<NSString *, NSString *> * headers;
 @end
 
 NS_ASSUME_NONNULL_END

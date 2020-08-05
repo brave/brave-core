@@ -78,7 +78,11 @@ npm run build -- $release_flag --target_os=ios --target_arch=arm64
 rsync -a --delete "$device_dir/BraveRewards.framework" "$framework_drop_point/"
 if [ -d "$device_dir/BraveRewards.dSYM" ]; then
   # Copy the dSYM if available
-  rsync -a --delete "$device_dir/BraveRewards.dSYM" "$framework_drop_point/"
+  pushd $device_dir > /dev/null
+  # zip up the dSYM since its too big to upload
+  zip -FSr "BraveRewards.dSYM.zip" "BraveRewards.dSYM"
+  popd > /dev/null
+  rsync -a --delete "$device_dir/BraveRewards.dSYM.zip" "$framework_drop_point/"
 fi
 
 # Create universal binary file using lipo and place the combined executable in the copied framework directory

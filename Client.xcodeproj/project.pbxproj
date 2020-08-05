@@ -1684,6 +1684,7 @@
 		275218FB23E0BB7500E416B4 /* PendingContributionDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingContributionDetailController.swift; sourceTree = "<group>"; };
 		2755AB7C23107BC600F0721F /* AdsReporting.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = AdsReporting.js; sourceTree = "<group>"; };
 		2755AB8523107DBD00F0721F /* AdsMediaReporting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdsMediaReporting.swift; sourceTree = "<group>"; };
+		2757538424D9F20500DF54EC /* BraveRewards.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = BraveRewards.dSYM; path = BraveRewards/BraveRewards.dSYM; sourceTree = "<group>"; };
 		2760D2BE215ACCE20068E131 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		2765825C2171263A00754B2F /* UserReferralProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReferralProgram.swift; sourceTree = "<group>"; };
 		276582652171266900754B2F /* ReferralData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralData.swift; sourceTree = "<group>"; };
@@ -5002,6 +5003,7 @@
 		F84B21B51A090F8100AAB793 = {
 			isa = PBXGroup;
 			children = (
+				2757538424D9F20500DF54EC /* BraveRewards.dSYM */,
 				0A60A1882358AF9E00953CA8 /* Brave.xctestplan */,
 				0A66550D23E9EA540047EF2A /* Brave_iPad.xctestplan */,
 				0A24F7DE233E8EF2004D2F3A /* Config */,
@@ -5644,7 +5646,7 @@
 				28CE83DE1A1D1E7C00576538 /* Frameworks */,
 				F84B22531A0920C600AAB793 /* Embed App Extensions */,
 				E6B09CD31C74EEDB00C63FA1 /* Copy Frameworks */,
-				0AF8E5332100E1A400DBB280 /* ShellScript */,
+				2757538624D9F27100DF54EC /* Copy BraveRewards dSYM */,
 			);
 			buildRules = (
 			);
@@ -6075,19 +6077,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0AF8E5332100E1A400DBB280 /* ShellScript */ = {
+		2757538624D9F27100DF54EC /* Copy BraveRewards dSYM */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
+			inputFileListPaths = (
+			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/ObjcExceptionBridging.framework",
+			);
+			name = "Copy BraveRewards dSYM";
+			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+			shellScript = "sh \"$SRCROOT/BraveRewards/copy_rewards_dsym.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		2779B7052159297D0044A102 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6128,6 +6135,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/OnePasswordExtension.framework",
 				"$(SRCROOT)/BraveRewards/BraveRewards.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Lottie.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/ObjcExceptionBridging.framework",
 			);
 			name = "Copy Carthage Dependencies";
 			outputPaths = (
