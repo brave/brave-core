@@ -39,7 +39,10 @@ void CredentialsPromotion::Start(
           trigger,
           callback);
 
-  ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+  ledger_->database()->GetCredsBatchByTrigger(
+      trigger.id,
+      trigger.type,
+      get_callback);
 }
 
 void CredentialsPromotion::OnStart(
@@ -62,7 +65,10 @@ void CredentialsPromotion::OnStart(
           _1,
           trigger,
           callback);
-      ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+      ledger_->database()->GetCredsBatchByTrigger(
+          trigger.id,
+          trigger.type,
+          get_callback);
       break;
     }
     case ledger::CredsBatchStatus::CLAIMED: {
@@ -71,7 +77,7 @@ void CredentialsPromotion::OnStart(
           _1,
           trigger,
           callback);
-      ledger_->GetPromotion(trigger.id, get_callback);
+      ledger_->database()->GetPromotion(trigger.id, get_callback);
       break;
     }
     case ledger::CredsBatchStatus::SIGNED: {
@@ -80,7 +86,10 @@ void CredentialsPromotion::OnStart(
           _1,
           trigger,
           callback);
-      ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+      ledger_->database()->GetCredsBatchByTrigger(
+          trigger.id,
+          trigger.type,
+          get_callback);
       break;
     }
     case ledger::CredsBatchStatus::FINISHED: {
@@ -120,7 +129,10 @@ void CredentialsPromotion::OnBlind(
       _1,
       trigger,
       callback);
-  ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+  ledger_->database()->GetCredsBatchByTrigger(
+      trigger.id,
+      trigger.type,
+      get_callback);
 }
 
 void CredentialsPromotion::Claim(
@@ -143,7 +155,7 @@ void CredentialsPromotion::Claim(
             _1,
             callback);
 
-    ledger_->UpdateCredsBatchStatus(
+    ledger_->database()->UpdateCredsBatchStatus(
         trigger.id,
         trigger.type,
         ledger::CredsBatchStatus::NONE,
@@ -202,7 +214,10 @@ void CredentialsPromotion::OnClaim(
       trigger,
       callback);
 
-  ledger_->SavePromotionClaimId(trigger.id, claim_id, save_callback);
+  ledger_->database()->SavePromotionClaimId(
+      trigger.id,
+      claim_id,
+      save_callback);
 }
 
 void CredentialsPromotion::ClaimedSaved(
@@ -221,7 +236,7 @@ void CredentialsPromotion::ClaimedSaved(
       trigger,
       callback);
 
-  ledger_->UpdateCredsBatchStatus(
+  ledger_->database()->UpdateCredsBatchStatus(
       trigger.id,
       trigger.type,
       ledger::CredsBatchStatus::CLAIMED,
@@ -243,7 +258,7 @@ void CredentialsPromotion::ClaimStatusSaved(
       _1,
       trigger,
       callback);
-  ledger_->GetPromotion(trigger.id, get_callback);
+  ledger_->database()->GetPromotion(trigger.id, get_callback);
 }
 
 void CredentialsPromotion::RetryPreviousStepSaved(
@@ -277,7 +292,7 @@ void CredentialsPromotion::FetchSignedCreds(
             _1,
             callback);
 
-    ledger_->UpdateCredsBatchStatus(
+    ledger_->database()->UpdateCredsBatchStatus(
         trigger.id,
         trigger.type,
         ledger::CredsBatchStatus::BLINDED,
@@ -334,7 +349,10 @@ void CredentialsPromotion::SignedCredsSaved(
       _1,
       trigger,
       callback);
-  ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+  ledger_->database()->GetCredsBatchByTrigger(
+      trigger.id,
+      trigger.type,
+      get_callback);
 }
 
 void CredentialsPromotion::Unblind(
@@ -353,7 +371,7 @@ void CredentialsPromotion::Unblind(
       trigger,
       *creds,
       callback);
-  ledger_->GetPromotion(trigger.id, get_callback);
+  ledger_->database()->GetPromotion(trigger.id, get_callback);
 }
 
 void CredentialsPromotion::VerifyPublicKey(
@@ -436,7 +454,7 @@ void CredentialsPromotion::Completed(
     return;
   }
 
-  ledger_->PromotionCredentialCompleted(trigger.id, callback);
+  ledger_->database()->PromotionCredentialCompleted(trigger.id, callback);
   ledger_->ledger_client()->UnblindedTokensReady();
 }
 
@@ -514,7 +532,11 @@ void CredentialsPromotion::OnRedeemTokens(
     id = redeem.contribution_id;
   }
 
-  ledger_->MarkUnblindedTokensAsSpent(token_id_list, redeem.type, id, callback);
+  ledger_->database()->MarkUnblindedTokensAsSpent(
+      token_id_list,
+      redeem.type,
+      id,
+      callback);
 }
 
 }  // namespace braveledger_credentials

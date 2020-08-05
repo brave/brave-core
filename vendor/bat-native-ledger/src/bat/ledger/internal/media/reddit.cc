@@ -64,7 +64,7 @@ void Reddit::UserPath(
   }
 
   const std::string media_key = (std::string)REDDIT_MEDIA_TYPE + "_" + user;
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&Reddit::OnUserActivity,
           this,
@@ -170,7 +170,7 @@ void Reddit::GetPublisherPanelInfo(
     ledger_->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(std::move(filter),
+  ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Reddit::OnPublisherPanelInfo,
               this,
               window_id,
@@ -338,7 +338,7 @@ void Reddit::SavePublisherInfo(
       callback);
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
         [](const ledger::Result) {});
@@ -357,7 +357,7 @@ void Reddit::SaveMediaInfo(
   const std::string media_key =
       braveledger_media::GetMediaKey(user_name->second, REDDIT_MEDIA_TYPE);
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&Reddit::OnMediaPublisherInfo,
                 this,

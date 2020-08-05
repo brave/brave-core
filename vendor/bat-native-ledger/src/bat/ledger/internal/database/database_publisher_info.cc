@@ -282,13 +282,20 @@ void DatabasePublisherInfo::RestorePublishers(ledger::ResultCallback callback) {
 
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
-      transaction_callback);
+      [this, callback](ledger::DBCommandResponsePtr response) {
+        if (!response ||
+            response->status !=
+              ledger::DBCommandResponse::Status::RESPONSE_OK) {
+          callback(ledger::Result::LEDGER_ERROR);
+          return;
+        }
+
+        ledger_->publisher()->OnRestorePublishers(
+            ledger::Result::LEDGER_OK,
+            callback);
+      });
 }
 
 void DatabasePublisherInfo::GetExcludedList(

@@ -8,6 +8,7 @@
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
+#include "bat/ledger/internal/database/database_mock.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
 
@@ -30,16 +31,22 @@ class UnblindedTest : public ::testing::Test {
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
   std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Unblinded> unblinded_;
+  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
 
   UnblindedTest() {
       mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
       mock_ledger_impl_ = std::make_unique<bat_ledger::MockLedgerImpl>
           (mock_ledger_client_.get());
       unblinded_ = std::make_unique<Unblinded>(mock_ledger_impl_.get());
+      mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+        mock_ledger_impl_.get());
   }
 
   void SetUp() override {
-    ON_CALL(*mock_ledger_impl_, GetContributionInfo(contribution_id, _))
+    ON_CALL(*mock_ledger_impl_, database())
+      .WillByDefault(testing::Return(mock_database_.get()));
+
+    ON_CALL(*mock_database_, GetContributionInfo(contribution_id, _))
     .WillByDefault(
       Invoke([](
           const std::string& id,
@@ -57,7 +64,7 @@ class UnblindedTest : public ::testing::Test {
 };
 
 TEST_F(UnblindedTest, NotEnoughFunds) {
-  ON_CALL(*mock_ledger_impl_, GetReservedUnblindedTokens(_, _))
+  ON_CALL(*mock_database_, GetReservedUnblindedTokens(_, _))
     .WillByDefault(
       Invoke([](
           const std::string&,

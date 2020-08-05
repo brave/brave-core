@@ -26,6 +26,8 @@ class MockLedgerImpl : public LedgerImpl {
 
   ~MockLedgerImpl() override;
 
+  MOCK_CONST_METHOD0(database, braveledger_database::Database*());
+
   MOCK_METHOD2(Initialize, void(
       const bool,
       ledger::ResultCallback));
@@ -35,27 +37,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(SavePublisherInfo, void(
       ledger::PublisherInfoPtr,
       ledger::ResultCallback));
-
-  MOCK_METHOD2(SaveActivityInfo, void(
-      ledger::PublisherInfoPtr,
-      ledger::ResultCallback));
-
-  MOCK_METHOD2(GetPublisherInfo,
-      void(const std::string&, ledger::PublisherInfoCallback));
-
-  MOCK_METHOD2(GetActivityInfo,
-      void(ledger::ActivityInfoFilterPtr, ledger::PublisherInfoCallback));
-
-  MOCK_METHOD2(GetPanelPublisherInfo,
-      void(ledger::ActivityInfoFilterPtr, ledger::PublisherInfoCallback));
-
-  MOCK_METHOD2(GetMediaPublisherInfo,
-      void(const std::string&, ledger::PublisherInfoCallback));
-
-  MOCK_METHOD3(SaveMediaPublisherInfo,
-      void(const std::string&,
-          const std::string&,
-          ledger::ResultCallback));
 
   MOCK_METHOD4(GetActivityInfoList,
       void(uint32_t,
@@ -81,10 +62,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(SetAutoContributionAmount, void(double));
 
   MOCK_METHOD1(SetAutoContributeEnabled, void(bool));
-
-  MOCK_METHOD2(SavePendingContribution,
-      void(ledger::PendingContributionList,
-          ledger::ResultCallback));
 
   MOCK_METHOD0(GetReconcileStamp, uint64_t());
 
@@ -170,12 +147,6 @@ class MockLedgerImpl : public LedgerImpl {
           ledger::VisitDataPtr,
           const std::string&));
 
-  MOCK_METHOD4(SetBalanceReportItem, void(
-      const ledger::ActivityMonth,
-      const int,
-      const ledger::ReportType,
-      const double));
-
   MOCK_METHOD2(GetPublisherBanner,
       void(const std::string&, ledger::PublisherBannerCallback));
 
@@ -193,18 +164,8 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD0(GetCreationStamp, uint64_t());
 
-  MOCK_METHOD6(SaveContributionInfo,
-      void(const std::string&,
-          const ledger::ActivityMonth,
-          const int,
-          const uint32_t,
-          const std::string&,
-          const ledger::RewardsType));
-
   MOCK_METHOD1(HasSufficientBalanceToReconcile,
       void(ledger::HasSufficientBalanceToReconcileCallback));
-
-  MOCK_METHOD1(SaveNormalizedPublisherList, void(ledger::PublisherInfoList));
 
   MOCK_METHOD0(GetTaskRunner, scoped_refptr<base::SequencedTaskRunner>());
 
@@ -244,10 +205,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD1(GetPendingContributionsTotal,
       void(ledger::PendingContributionsTotalCallback));
 
-  MOCK_METHOD2(WasPublisherProcessed, void(
-      const std::string&,
-      ledger::ResultCallback));
-
   MOCK_METHOD1(FetchBalance, void(ledger::FetchBalanceCallback));
 
   MOCK_METHOD2(GetExternalWallet,
@@ -261,77 +218,13 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(DisconnectWallet,
       void(const std::string&, ledger::ResultCallback));
 
-  MOCK_METHOD2(DeleteActivityInfo,
-      void(const std::string&, ledger::ResultCallback));
-
-  MOCK_METHOD2(SearchPublisherPrefixList,
-      void(const std::string&, ledger::SearchPublisherPrefixListCallback));
-
-  MOCK_METHOD2(ResetPublisherPrefixList, void(
-      std::unique_ptr<braveledger_publisher::PrefixListReader>,
-      ledger::ResultCallback));
-
-  MOCK_METHOD2(InsertServerPublisherInfo,
-      void(const ledger::ServerPublisherInfo&, ledger::ResultCallback));
-
   MOCK_METHOD2(GetServerPublisherInfo, void(
       const std::string&,
       ledger::GetServerPublisherInfoCallback));
 
-  MOCK_METHOD2(SaveContributionQueue,
-      void(ledger::ContributionQueuePtr, ledger::ResultCallback));
-
-  MOCK_METHOD2(MarkContributionQueueAsComplete,
-      void(const uint64_t, ledger::ResultCallback));
-
-  MOCK_METHOD1(GetFirstContributionQueue,
-      void(ledger::GetFirstContributionQueueCallback));
-
-  MOCK_METHOD2(SavePromotion,
-      void(ledger::PromotionPtr, ledger::ResultCallback));
-
-  MOCK_METHOD2(GetPromotion,
-      void(const std::string&, ledger::GetPromotionCallback));
-
   MOCK_METHOD1(GetAllPromotions, void(ledger::GetAllPromotionsCallback));
 
-  MOCK_METHOD2(SaveUnblindedTokenList, void(
-    ledger::UnblindedTokenList, ledger::ResultCallback));
-
-  MOCK_METHOD4(MarkUnblindedTokensAsSpent, void(
-      const std::vector<std::string>&,
-      ledger::RewardsType,
-      const std::string&,
-      ledger::ResultCallback));
-
   MOCK_METHOD1(GetAnonWalletStatus, void(ledger::ResultCallback));
-
-  MOCK_METHOD2(GetSpendableUnblindedTokensByTriggerIds, void(
-      const std::vector<std::string>& trigger_ids,
-      ledger::GetUnblindedTokenListCallback));
-
-  MOCK_METHOD2(GetContributionInfo, void(
-      const std::string& contribution_id,
-      ledger::GetContributionInfoCallback callback));
-
-  MOCK_METHOD3(UpdateContributionInfoStep, void(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      ledger::ResultCallback callback));
-
-  MOCK_METHOD4(UpdateContributionInfoStepAndCount, void(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count,
-      ledger::ResultCallback callback));
-
-  MOCK_METHOD2(GetReservedUnblindedTokens, void(
-      const std::string&,
-      ledger::GetUnblindedTokenListCallback));
-
-  MOCK_METHOD2(GetSpendableUnblindedTokensByBatchTypes, void(
-      const std::vector<ledger::CredsBatchType>&,
-      ledger::GetUnblindedTokenListCallback));
 };
 
 }  // namespace bat_ledger

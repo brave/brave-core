@@ -284,7 +284,7 @@ void Twitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
     publisher_name = name->second;
   }
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
           media_key,
           std::bind(&Twitter::OnMediaPublisherInfo,
                     this,
@@ -389,7 +389,7 @@ void Twitter::SavePublisherInfo(
       callback);
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
         [](const ledger::Result) {});
@@ -436,7 +436,7 @@ void Twitter::ProcessActivityFromUrl(
     return;
   }
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&Twitter::OnMediaPublisherActivity,
                 this,
@@ -490,7 +490,7 @@ void Twitter::GetPublisherPanelInfo(
     ledger_->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(std::move(filter),
+  ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Twitter::OnPublisherPanelInfo,
               this,
               window_id,

@@ -15,7 +15,6 @@
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/common/time_util.h"
-#include "bat/ledger/internal/publisher/prefix_list_reader.h"
 #include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/recovery/recovery.h"
@@ -26,7 +25,6 @@
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
-using namespace braveledger_database; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -40,7 +38,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     media_(new braveledger_media::Media(this)),
     contribution_(new braveledger_contribution::Contribution(this)),
     wallet_(new braveledger_wallet::Wallet(this)),
-    bat_database_(new Database(this)),
+    database_(new braveledger_database::Database(this)),
     report_(new braveledger_report::Report(this)),
     state_(new braveledger_state::State(this)),
     api_(new braveledger_api::API(this)),
@@ -116,6 +114,10 @@ braveledger_api::API* LedgerImpl::api() const {
   return api_.get();
 }
 
+braveledger_database::Database* LedgerImpl::database() const {
+  return database_.get();
+}
+
 void LedgerImpl::OnInitialized(
     const ledger::Result result,
     ledger::ResultCallback callback) {
@@ -169,7 +171,7 @@ void LedgerImpl::InitializeDatabase(
       this,
       _1,
       finish_callback);
-  bat_database_->Initialize(execute_create_script, database_callback);
+  database()->Initialize(execute_create_script, database_callback);
 }
 
 void LedgerImpl::OnDatabaseInitialized(
@@ -386,20 +388,7 @@ std::string LedgerImpl::URIEncode(const std::string& value) {
 void LedgerImpl::SavePublisherInfo(
     ledger::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
-  bat_database_->SavePublisherInfo(std::move(info), callback);
-}
-
-void LedgerImpl::SaveActivityInfo(
-    ledger::PublisherInfoPtr info,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveActivityInfo(std::move(info), callback);
-}
-
-void LedgerImpl::SaveMediaPublisherInfo(
-    const std::string& media_key,
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveMediaPublisherInfo(media_key, publisher_key, callback);
+  database()->SavePublisherInfo(std::move(info), callback);
 }
 
 void LedgerImpl::SaveVideoVisit(
@@ -427,61 +416,7 @@ void LedgerImpl::SetPublisherExclude(
 }
 
 void LedgerImpl::RestorePublishers(ledger::ResultCallback callback) {
-  bat_database_->RestorePublishers(
-      [this, callback](const ledger::Result result) {
-        publisher()->OnRestorePublishers(result, callback);
-      });
-}
-
-void LedgerImpl::GetPublisherInfo(
-    const std::string& publisher_key,
-    ledger::PublisherInfoCallback callback) {
-  bat_database_->GetPublisherInfo(publisher_key, callback);
-}
-
-void LedgerImpl::OnGetActivityInfo(
-    ledger::PublisherInfoList list,
-    ledger::PublisherInfoCallback callback,
-    const std::string& publisher_key) {
-  if (list.empty()) {
-    GetPublisherInfo(publisher_key, callback);
-    return;
-  }
-
-  if (list.size() > 1) {
-    callback(ledger::Result::TOO_MANY_RESULTS, nullptr);
-    return;
-  }
-
-  callback(ledger::Result::LEDGER_OK, std::move(list[0]));
-}
-
-void LedgerImpl::GetActivityInfo(
-    ledger::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoCallback callback) {
-  auto list_callback = std::bind(&LedgerImpl::OnGetActivityInfo,
-      this,
-      _1,
-      callback,
-      filter->id);
-
-  bat_database_->GetActivityInfoList(
-      0,
-      2,
-      std::move(filter),
-      list_callback);
-}
-
-void LedgerImpl::GetPanelPublisherInfo(
-    ledger::ActivityInfoFilterPtr filter,
-    ledger::PublisherInfoCallback callback) {
-  bat_database_->GetPanelPublisherInfo(std::move(filter), callback);
-}
-
-void LedgerImpl::GetMediaPublisherInfo(
-    const std::string& media_key,
-    ledger::PublisherInfoCallback callback) {
-  bat_database_->GetMediaPublisherInfo(media_key, callback);
+  database()->RestorePublishers(callback);
 }
 
 void LedgerImpl::GetActivityInfoList(
@@ -489,7 +424,7 @@ void LedgerImpl::GetActivityInfoList(
     uint32_t limit,
     ledger::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoListCallback callback) {
-  bat_database_->GetActivityInfoList(
+  database()->GetActivityInfoList(
       start,
       limit,
       std::move(filter),
@@ -497,7 +432,7 @@ void LedgerImpl::GetActivityInfoList(
 }
 
 void LedgerImpl::GetExcludedList(ledger::PublisherInfoListCallback callback) {
-  bat_database_->GetExcludedList(callback);
+  database()->GetExcludedList(callback);
 }
 
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
@@ -606,41 +541,19 @@ std::string LedgerImpl::GetWalletPassphrase() const {
 void LedgerImpl::RecoverWallet(
     const std::string& pass_phrase,
     ledger::ResultCallback callback) {
-  auto on_recover = std::bind(&LedgerImpl::OnRecoverWallet,
-      this,
-      _1,
-      std::move(callback));
-  wallet()->RecoverWallet(pass_phrase, std::move(on_recover));
-}
-
-void LedgerImpl::OnRecoverWallet(
-    const ledger::Result result,
-    ledger::ResultCallback callback) {
-  BLOG_IF(0, result != ledger::Result::LEDGER_OK, "Failed to recover wallet");
-
-  if (result == ledger::Result::LEDGER_OK) {
-    bat_database_->DeleteAllBalanceReports([](const ledger::Result _) {});
-  }
-
-  callback(result);
+  wallet()->RecoverWallet(pass_phrase, callback);
 }
 
 void LedgerImpl::GetBalanceReport(
     const ledger::ActivityMonth month,
     const int year,
     ledger::GetBalanceReportCallback callback) const {
-  bat_database_->GetBalanceReportInfo(month, year, callback);
+  database()->GetBalanceReportInfo(month, year, callback);
 }
 
 void LedgerImpl::GetAllBalanceReports(
     ledger::GetBalanceReportListCallback callback) const {
-  return bat_database_->GetAllBalanceReports(callback);
-}
-
-void LedgerImpl::SavePendingContribution(
-    ledger::PendingContributionList list,
-    ledger::ResultCallback callback) {
-  bat_database_->SavePendingContribution(std::move(list), callback);
+  database()->GetAllBalanceReports(callback);
 }
 
 void LedgerImpl::OneTimeTip(
@@ -653,13 +566,11 @@ void LedgerImpl::OneTimeTip(
 void LedgerImpl::SaveRecurringTip(
     ledger::RecurringTipPtr info,
     ledger::ResultCallback callback) {
-  bat_database_->SaveRecurringTip(
-      std::move(info),
-      callback);
+  database()->SaveRecurringTip(std::move(info), callback);
 }
 
 void LedgerImpl::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
-  bat_database_->GetRecurringTips([this, callback](
+  database()->GetRecurringTips([this, callback](
       ledger::PublisherInfoList list) {
     // The publisher status field may be expired. Attempt to refresh
     // expired publisher status values before executing callback.
@@ -671,7 +582,7 @@ void LedgerImpl::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
 }
 
 void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
-  bat_database_->GetOneTimeTips(
+  database()->GetOneTimeTips(
       braveledger_time_util::GetCurrentMonth(),
       braveledger_time_util::GetCurrentYear(),
       callback);
@@ -692,19 +603,6 @@ void LedgerImpl::GetPublisherActivityFromUrl(
       publisher_blob);
 }
 
-void LedgerImpl::SetBalanceReportItem(
-    const ledger::ActivityMonth month,
-    const int year,
-    const ledger::ReportType type,
-    const double amount) {
-  bat_database_->SaveBalanceReportInfoItem(
-      month,
-      year,
-      type,
-      amount,
-      [](const ledger::Result _) {});
-}
-
 void LedgerImpl::GetPublisherBanner(
     const std::string& publisher_id,
     ledger::PublisherBannerCallback callback) {
@@ -714,7 +612,7 @@ void LedgerImpl::GetPublisherBanner(
 void LedgerImpl::RemoveRecurringTip(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
-  bat_database_->RemoveRecurringTip(publisher_key, callback);
+  database()->RemoveRecurringTip(publisher_key, callback);
 }
 
 void LedgerImpl::ResetReconcileStamp() {
@@ -758,26 +656,9 @@ uint64_t LedgerImpl::GetCreationStamp() {
   return state()->GetCreationStamp();
 }
 
-void LedgerImpl::SaveContributionInfo(
-    ledger::ContributionInfoPtr info,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveContributionInfo(std::move(info), callback);
-}
-
 void LedgerImpl::HasSufficientBalanceToReconcile(
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   contribution()->HasSufficientBalance(callback);
-}
-
-void LedgerImpl::SaveNormalizedPublisherList(ledger::PublisherInfoList list) {
-  ledger::PublisherInfoList save_list;
-  for (auto& item : list) {
-    save_list.push_back(item.Clone());
-  }
-
-  bat_database_->NormalizeActivityInfoList(
-      std::move(save_list),
-      [](const ledger::Result){});
 }
 
 void LedgerImpl::RefreshPublisher(
@@ -811,7 +692,7 @@ std::string LedgerImpl::GetShareURL(
 
 void LedgerImpl::GetPendingContributions(
     ledger::PendingContributionInfoListCallback callback) {
-  bat_database_->GetPendingContributions([this, callback](
+  database()->GetPendingContributions([this, callback](
       ledger::PendingContributionInfoList list) {
     // The publisher status field may be expired. Attempt to refresh
     // expired publisher status values before executing callback.
@@ -825,23 +706,17 @@ void LedgerImpl::GetPendingContributions(
 void LedgerImpl::RemovePendingContribution(
     const uint64_t id,
     ledger::ResultCallback callback) {
-  bat_database_->RemovePendingContribution(id, callback);
+  database()->RemovePendingContribution(id, callback);
 }
 
 void LedgerImpl::RemoveAllPendingContributions(
     ledger::ResultCallback callback) {
-  bat_database_->RemoveAllPendingContributions(callback);
+  database()->RemoveAllPendingContributions(callback);
 }
 
 void LedgerImpl::GetPendingContributionsTotal(
     ledger::PendingContributionsTotalCallback callback) {
-  bat_database_->GetPendingContributionsTotal(callback);
-}
-
-void LedgerImpl::WasPublisherProcessed(
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
-  bat_database_->WasPublisherProcessed(publisher_key, callback);
+  database()->GetPendingContributionsTotal(callback);
 }
 
 void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
@@ -869,34 +744,10 @@ void LedgerImpl::DisconnectWallet(
   wallet()->DisconnectWallet(wallet_type, callback);
 }
 
-void LedgerImpl::DeleteActivityInfo(
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
-  bat_database_->DeleteActivityInfo(publisher_key, callback);
-}
-
-void LedgerImpl::SearchPublisherPrefixList(
-    const std::string& publisher_key,
-    ledger::SearchPublisherPrefixListCallback callback) {
-  bat_database_->SearchPublisherPrefixList(publisher_key, callback);
-}
-
-void LedgerImpl::ResetPublisherPrefixList(
-    std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
-    ledger::ResultCallback callback) {
-  bat_database_->ResetPublisherPrefixList(std::move(reader), callback);
-}
-
-void LedgerImpl::InsertServerPublisherInfo(
-    const ledger::ServerPublisherInfo& server_info,
-    ledger::ResultCallback callback) {
-  bat_database_->InsertServerPublisherInfo(server_info, callback);
-}
-
 void LedgerImpl::GetServerPublisherInfo(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
-  bat_database_->GetServerPublisherInfo(
+  database()->GetServerPublisherInfo(
       publisher_key,
       std::bind(&LedgerImpl::OnServerPublisherInfoLoaded,
           this, _1, publisher_key, callback));
@@ -924,86 +775,14 @@ void LedgerImpl::OnServerPublisherInfoLoaded(
   }
 }
 
-void LedgerImpl::DeleteExpiredServerPublisherInfo(
-    const int64_t max_age_seconds,
-    ledger::ResultCallback callback) {
-  bat_database_->DeleteExpiredServerPublisherInfo(max_age_seconds, callback);
-}
-
-void LedgerImpl::SaveContributionQueue(
-    ledger::ContributionQueuePtr info,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveContributionQueue(std::move(info), callback);
-}
-
-void LedgerImpl::MarkContributionQueueAsComplete(
-    const std::string& id,
-    ledger::ResultCallback callback) {
-  bat_database_->MarkContributionQueueAsComplete(id, callback);
-}
-
-void LedgerImpl::GetFirstContributionQueue(
-    ledger::GetFirstContributionQueueCallback callback) {
-  bat_database_->GetFirstContributionQueue(callback);
-}
-
 void LedgerImpl::FetchPromotions(
     ledger::FetchPromotionCallback callback) const {
   promotion()->Fetch(callback);
 }
 
-void LedgerImpl::SavePromotion(
-    ledger::PromotionPtr info,
-    ledger::ResultCallback callback) {
-  bat_database_->SavePromotion(std::move(info), callback);
-}
-
-void LedgerImpl::GetPromotion(
-    const std::string& id,
-    ledger::GetPromotionCallback callback) {
-  bat_database_->GetPromotion(id, callback);
-}
-
 void LedgerImpl::GetAllPromotions(
     ledger::GetAllPromotionsCallback callback) {
-  bat_database_->GetAllPromotions(callback);
-}
-
-void LedgerImpl::SaveUnblindedTokenList(
-    ledger::UnblindedTokenList list,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveUnblindedTokenList(std::move(list), callback);
-}
-
-void LedgerImpl::MarkUnblindedTokensAsSpent(
-    const std::vector<std::string>& ids,
-    ledger::RewardsType redeem_type,
-    const std::string& redeem_id,
-    ledger::ResultCallback callback) {
-  bat_database_->MarkUnblindedTokensAsSpent(
-      ids,
-      redeem_type,
-      redeem_id,
-      callback);
-}
-
-void LedgerImpl::MarkUnblindedTokensAsReserved(
-    const std::vector<std::string>& ids,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
-  bat_database_->MarkUnblindedTokensAsReserved(ids, contribution_id, callback);
-}
-
-void LedgerImpl::MarkUnblindedTokensAsSpendable(
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
-  bat_database_->MarkUnblindedTokensAsSpendable(contribution_id, callback);
-}
-
-void LedgerImpl::GetSpendableUnblindedTokensByTriggerIds(
-    const std::vector<std::string>& trigger_ids,
-    ledger::GetUnblindedTokenListCallback callback) {
-  bat_database_->GetSpendableUnblindedTokensByTriggerIds(trigger_ids, callback);
+  database()->GetAllPromotions(callback);
 }
 
 void LedgerImpl::GetAnonWalletStatus(ledger::ResultCallback callback) {
@@ -1014,62 +793,19 @@ void LedgerImpl::GetTransactionReport(
     const ledger::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
-  bat_database_->GetTransactionReport(month, year, callback);
+  database()->GetTransactionReport(month, year, callback);
 }
 
 void LedgerImpl::GetContributionReport(
     const ledger::ActivityMonth month,
     const int year,
     ledger::GetContributionReportCallback callback) {
-  bat_database_->GetContributionReport(month, year, callback);
-}
-
-void LedgerImpl::GetNotCompletedContributions(
-    ledger::ContributionInfoListCallback callback) {
-  bat_database_->GetNotCompletedContributions(callback);
-}
-
-void LedgerImpl::GetContributionInfo(
-    const std::string& contribution_id,
-    ledger::GetContributionInfoCallback callback) {
-  bat_database_->GetContributionInfo(contribution_id, callback);
-}
-
-void LedgerImpl::UpdateContributionInfoStep(
-    const std::string& contribution_id,
-    const ledger::ContributionStep step,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdateContributionInfoStep(
-      contribution_id,
-      step,
-      callback);
-}
-
-void LedgerImpl::UpdateContributionInfoStepAndCount(
-    const std::string& contribution_id,
-    const ledger::ContributionStep step,
-    const int32_t retry_count,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdateContributionInfoStepAndCount(
-      contribution_id,
-      step,
-      retry_count,
-      callback);
-}
-
-void LedgerImpl::UpdateContributionInfoContributedAmount(
-    const std::string& contribution_id,
-    const std::string& publisher_key,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdateContributionInfoContributedAmount(
-      contribution_id,
-      publisher_key,
-      callback);
+  database()->GetContributionReport(month, year, callback);
 }
 
 void LedgerImpl::GetAllContributions(
     ledger::ContributionInfoListCallback callback) {
-  bat_database_->GetAllContributions(callback);
+  database()->GetAllContributions(callback);
 }
 
 void LedgerImpl::GetMonthlyReport(
@@ -1084,192 +820,11 @@ void LedgerImpl::GetAllMonthlyReportIds(
   report()->GetAllMonthlyIds(callback);
 }
 
-void LedgerImpl::SaveCredsBatch(
-    ledger::CredsBatchPtr info,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveCredsBatch(std::move(info), callback);
-}
-
-void LedgerImpl::SavePromotionClaimId(
-    const std::string& promotion_id,
-    const std::string& claim_id,
-    ledger::ResultCallback callback) {
-  bat_database_->SavePromotionClaimId(promotion_id, claim_id, callback);
-}
-
-void LedgerImpl::GetCredsBatchByTrigger(
-    const std::string& trigger_id,
-    const ledger::CredsBatchType trigger_type,
-    ledger::GetCredsBatchCallback callback) {
-  bat_database_->GetCredsBatchByTrigger(trigger_id, trigger_type, callback);
-}
-
-void LedgerImpl::SaveSignedCreds(
-    ledger::CredsBatchPtr info,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveSignedCreds(std::move(info), callback);
-}
-
-void LedgerImpl::UpdatePromotionStatus(
-    const std::string& promotion_id,
-    const ledger::PromotionStatus status,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdatePromotionStatus(promotion_id, status, callback);
-}
-
-void LedgerImpl::UpdatePromotionsStatus(
-    const std::vector<std::string>& promotion_ids,
-    const ledger::PromotionStatus status,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdatePromotionsStatus(promotion_ids, status, callback);
-}
-
-void LedgerImpl::PromotionCredentialCompleted(
-    const std::string& promotion_id,
-    ledger::ResultCallback callback) {
-  bat_database_->PromotionCredentialCompleted(promotion_id, callback);
-}
-
-void LedgerImpl::GetAllCredsBatches(
-    ledger::GetCredsBatchListCallback callback) {
-  bat_database_->GetAllCredsBatches(callback);
-}
-
-void LedgerImpl::GetPromotionList(
-    const std::vector<std::string>& ids,
-    ledger::GetPromotionListCallback callback) {
-  bat_database_->GetPromotionList(ids, callback);
-}
-
-void LedgerImpl::GetPromotionListByType(
-    const std::vector<ledger::PromotionType>& types,
-    ledger::GetPromotionListCallback callback) {
-  bat_database_->GetPromotionListByType(types, callback);
-}
-
-void LedgerImpl::UpdateCredsBatchStatus(
-    const std::string& trigger_id,
-    const ledger::CredsBatchType trigger_type,
-    const ledger::CredsBatchStatus status,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdateCredsBatchStatus(
-      trigger_id,
-      trigger_type,
-      status,
-      callback);
-}
-
-void LedgerImpl::UpdateCredsBatchesStatus(
-    const std::vector<std::string>& trigger_ids,
-    const ledger::CredsBatchType trigger_type,
-    const ledger::CredsBatchStatus status,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdateCredsBatchesStatus(
-      trigger_ids,
-      trigger_type,
-      status,
-      callback);
-}
-
-void LedgerImpl::SaveSKUOrder(
-    ledger::SKUOrderPtr order,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveSKUOrder(std::move(order), callback);
-}
-
-void LedgerImpl::SaveSKUTransaction(
-    ledger::SKUTransactionPtr transaction,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveSKUTransaction(std::move(transaction), callback);
-}
-
-void LedgerImpl::SaveSKUExternalTransaction(
-    const std::string& transaction_id,
-    const std::string& external_transaction_id,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveSKUExternalTransaction(
-      transaction_id,
-      external_transaction_id,
-      callback);
-}
-
-void LedgerImpl::UpdateSKUOrderStatus(
-    const std::string& order_id,
-    const ledger::SKUOrderStatus status,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdateSKUOrderStatus(
-      order_id,
-      status,
-      callback);
-}
-
-void LedgerImpl::GetSKUOrder(
-    const std::string& order_id,
-    ledger::GetSKUOrderCallback callback) {
-  bat_database_->GetSKUOrder(order_id, callback);
-}
-
 void LedgerImpl::ProcessSKU(
     const std::vector<ledger::SKUOrderItem>& items,
     ledger::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
   sku()->Process(items, std::move(wallet), callback);
-}
-
-void LedgerImpl::GetSKUOrderByContributionId(
-    const std::string& contribution_id,
-    ledger::GetSKUOrderCallback callback) {
-  bat_database_->GetSKUOrderByContributionId(contribution_id, callback);
-}
-
-void LedgerImpl::SaveContributionIdForSKUOrder(
-    const std::string& order_id,
-    const std::string& contribution_id,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveContributionIdForSKUOrder(
-      order_id,
-      contribution_id,
-      callback);
-}
-
-void LedgerImpl::GetSKUTransactionByOrderId(
-    const std::string& order_id,
-    ledger::GetSKUTransactionCallback callback) {
-  bat_database_->GetSKUTransactionByOrderId(order_id, callback);
-}
-
-void LedgerImpl::GetReservedUnblindedTokens(
-    const std::string& redeem_id,
-    ledger::GetUnblindedTokenListCallback callback) {
-  bat_database_->GetReservedUnblindedTokens(
-      redeem_id,
-      callback);
-}
-
-void LedgerImpl::GetSpendableUnblindedTokensByBatchTypes(
-    const std::vector<ledger::CredsBatchType>& batch_types,
-    ledger::GetUnblindedTokenListCallback callback) {
-  bat_database_->GetSpendableUnblindedTokensByBatchTypes(
-      batch_types,
-      callback);
-}
-
-void LedgerImpl::UpdatePromotionsBlankPublicKey(
-    const std::vector<std::string>& ids,
-    ledger::ResultCallback callback) {
-  bat_database_->UpdatePromotionsBlankPublicKey(ids, callback);
-}
-
-void LedgerImpl::SaveBalanceReportInfoList(
-    ledger::BalanceReportInfoList list,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveBalanceReportInfoList(std::move(list), callback);
-}
-
-void LedgerImpl::SaveProcessedPublisherList(
-    const std::vector<std::string>& list,
-    ledger::ResultCallback callback) {
-  bat_database_->SaveProcessedPublisherList(list, callback);
 }
 
 void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
@@ -1291,13 +846,7 @@ void LedgerImpl::ShutdownWallets(
       1,
       result != ledger::Result::LEDGER_OK,
       "Not all wallets were disconnected");
-  bat_database_->FinishAllInProgressContributions(callback);
-}
-
-void LedgerImpl::GetCredsBatchesByTriggers(
-    const std::vector<std::string>& trigger_ids,
-    ledger::GetCredsBatchListCallback callback) {
-  bat_database_->GetCredsBatchesByTriggers(trigger_ids, callback);
+  database()->FinishAllInProgressContributions(callback);
 }
 
 }  // namespace bat_ledger

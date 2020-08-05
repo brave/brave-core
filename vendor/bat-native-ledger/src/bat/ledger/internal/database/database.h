@@ -46,7 +46,7 @@ class DatabaseUnblindedToken;
 class Database {
  public:
   explicit Database(bat_ledger::LedgerImpl* ledger);
-  ~Database();
+  virtual ~Database();
 
   void Initialize(
       const bool execute_create_script,
@@ -246,7 +246,7 @@ class Database {
   /**
    * PROMOTION
    */
-  void SavePromotion(
+  virtual void SavePromotion(
       ledger::PromotionPtr info,
       ledger::ResultCallback callback);
 
@@ -254,7 +254,7 @@ class Database {
       const std::string& id,
       ledger::GetPromotionCallback callback);
 
-  void GetAllPromotions(ledger::GetAllPromotionsCallback callback);
+  virtual void GetAllPromotions(ledger::GetAllPromotionsCallback callback);
 
   void SavePromotionClaimId(
       const std::string& promotion_id,

@@ -86,7 +86,7 @@ void SKUOrder::OnCreate(
       order->order_id,
       callback);
 
-  ledger_->SaveSKUOrder(order->Clone(), save_callback);
+  ledger_->database()->SaveSKUOrder(order->Clone(), save_callback);
 }
 
 void SKUOrder::OnCreateSave(

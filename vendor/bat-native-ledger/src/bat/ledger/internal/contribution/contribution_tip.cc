@@ -84,7 +84,7 @@ void ContributionTip::ServerPublisher(
       _1,
       callback);
 
-  ledger_->SaveContributionQueue(std::move(queue), save_callback);
+  ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
 void ContributionTip::QueueSaved(
@@ -111,7 +111,7 @@ void ContributionTip::SavePending(
   ledger::PendingContributionList list;
   list.push_back(std::move(contribution));
 
-  ledger_->SavePendingContribution(std::move(list), callback);
+  ledger_->database()->SavePendingContribution(std::move(list), callback);
 }
 
 void ContributionTip::OnSavePending(

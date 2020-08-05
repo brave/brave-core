@@ -90,7 +90,7 @@ void WalletBalance::GetUnblindedTokens(
       *balance,
       callback,
       _1);
-  ledger_->GetSpendableUnblindedTokensByBatchTypes(
+  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
       {ledger::CredsBatchType::PROMOTION},
       tokens_callback);
 }

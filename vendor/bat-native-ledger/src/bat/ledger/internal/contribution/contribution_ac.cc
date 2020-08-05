@@ -42,7 +42,11 @@ void ContributionAC::Process(const uint64_t reconcile_stamp) {
       this,
       _1);
 
-  ledger_->GetActivityInfoList(0, 0, std::move(filter), get_callback);
+  ledger_->database()->GetActivityInfoList(
+      0,
+      0,
+      std::move(filter),
+      get_callback);
 }
 
 void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
@@ -84,7 +88,7 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
       this,
       _1);
 
-  ledger_->SaveContributionQueue(std::move(queue), save_callback);
+  ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
 void ContributionAC::QueueSaved(const ledger::Result result) {

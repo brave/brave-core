@@ -105,10 +105,10 @@ void Uphold::ContributionCompleted(
     SaveTransferFee(std::move(transfer_fee));
 
     if (!publisher_key.empty()) {
-      ledger_->UpdateContributionInfoContributedAmount(
-        contribution_id,
-        publisher_key,
-        callback);
+      ledger_->database()->UpdateContributionInfoContributedAmount(
+          contribution_id,
+          publisher_key,
+          callback);
       return;
     }
   }

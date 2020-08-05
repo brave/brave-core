@@ -105,7 +105,7 @@ void Contribution::ProcessContributionQueue() {
   const auto callback = std::bind(&Contribution::OnProcessContributionQueue,
       this,
       _1);
-  ledger_->GetFirstContributionQueue(callback);
+  ledger_->database()->GetFirstContributionQueue(callback);
 }
 
 void Contribution::OnProcessContributionQueue(
@@ -124,7 +124,7 @@ void Contribution::CheckNotCompletedContributions() {
       this,
       _1);
 
-  ledger_->GetNotCompletedContributions(get_callback);
+  ledger_->database()->GetNotCompletedContributions(get_callback);
 }
 
 void Contribution::NotCompletedContributions(
@@ -242,11 +242,12 @@ void Contribution::ContributionCompleted(
       contribution->Clone());
 
   if (result == ledger::Result::LEDGER_OK) {
-    ledger_->SetBalanceReportItem(
+    ledger_->database()->SaveBalanceReportInfoItem(
         braveledger_time_util::GetCurrentMonth(),
         braveledger_time_util::GetCurrentYear(),
         GetReportTypeFromRewardsType(contribution->type),
-        contribution->amount);
+        contribution->amount,
+        [](const ledger::Result){});
   }
 
   auto save_callback = std::bind(&Contribution::ContributionCompletedSaved,
@@ -254,7 +255,7 @@ void Contribution::ContributionCompleted(
       _1,
       contribution->contribution_id);
 
-  ledger_->UpdateContributionInfoStepAndCount(
+  ledger_->database()->UpdateContributionInfoStepAndCount(
       contribution->contribution_id,
       ConvertResultIntoContributionStep(result),
       -1,
@@ -272,7 +273,7 @@ void Contribution::ContributionCompletedSaved(
       this,
       _1,
       contribution_id);
-  ledger_->MarkUnblindedTokensAsSpendable(
+  ledger_->database()->MarkUnblindedTokensAsSpendable(
       contribution_id,
       callback);
 }
@@ -304,7 +305,7 @@ void Contribution::MarkContributionQueueAsComplete(const std::string& id) {
       this,
       _1);
 
-  ledger_->MarkContributionQueueAsComplete(id, callback);
+  ledger_->database()->MarkContributionQueueAsComplete(id, callback);
 }
 
 void Contribution::CreateNewEntry(
@@ -383,7 +384,7 @@ void Contribution::CreateNewEntry(
       *balance,
       braveledger_bind_util::FromContributionQueueToString(queue->Clone()));
 
-  ledger_->SaveContributionInfo(
+  ledger_->database()->SaveContributionInfo(
       contribution->Clone(),
       save_callback);
 }
@@ -444,7 +445,7 @@ void Contribution::OnEntrySaved(
       balance,
       braveledger_bind_util::FromContributionQueueToString(queue->Clone()));
 
-    ledger_->SaveContributionQueue(queue->Clone(), save_callback);
+    ledger_->database()->SaveContributionQueue(queue->Clone(), save_callback);
   } else {
     MarkContributionQueueAsComplete(queue->id);
   }
@@ -578,7 +579,7 @@ void Contribution::RetryUnblinded(
       types,
       callback);
 
-  ledger_->GetContributionInfo(contribution_id, get_callback);
+  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void Contribution::RetryUnblindedContribution(
@@ -608,7 +609,7 @@ void Contribution::Result(
       _1,
       result);
 
-  ledger_->GetContributionInfo(contribution_id, get_callback);
+  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void Contribution::OnResult(
@@ -667,7 +668,7 @@ void Contribution::OnRetryTimerElapsed(const std::string& contribution_id) {
       this,
       _1);
 
-  ledger_->GetContributionInfo(contribution_id, callback);
+  ledger_->database()->GetContributionInfo(contribution_id, callback);
 }
 
 void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
@@ -690,7 +691,7 @@ void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
       _1,
       braveledger_bind_util::FromContributionToString(contribution->Clone()));
 
-  ledger_->UpdateContributionInfoStepAndCount(
+  ledger_->database()->UpdateContributionInfoStepAndCount(
       contribution->contribution_id,
       contribution->step,
       contribution->retry_count + 1,

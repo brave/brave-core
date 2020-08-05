@@ -214,7 +214,7 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
     return;
   }
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&GitHub::OnMediaPublisherActivity,
                 this,
@@ -307,7 +307,7 @@ void GitHub::GetPublisherPanelInfo(
     ledger_->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(std::move(filter),
+  ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&GitHub::OnPublisherPanelInfo,
               this,
               window_id,
@@ -406,7 +406,7 @@ void GitHub::SavePublisherInfo(
       callback);
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
         [](const ledger::Result) {});
@@ -457,7 +457,7 @@ void GitHub::OnMetaDataGet(
   const std::string publisher_name = GetPublisherName(response.body);
   const std::string profile_picture = GetProfileImageURL(response.body);
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
           media_key,
           std::bind(&GitHub::OnMediaPublisherInfo,
                     this,

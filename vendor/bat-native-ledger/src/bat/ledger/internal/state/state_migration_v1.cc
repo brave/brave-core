@@ -78,7 +78,9 @@ void StateMigrationV1::OnLoadState(
       _1,
       callback);
 
-    ledger_->SaveBalanceReportInfoList(std::move(reports), save_callback);
+    ledger_->database()->SaveBalanceReportInfoList(
+        std::move(reports),
+        save_callback);
     return;
   }
 
@@ -104,7 +106,7 @@ void StateMigrationV1::SaveProcessedPublishers(
     _1,
     callback);
 
-  ledger_->SaveProcessedPublisherList(
+  ledger_->database()->SaveProcessedPublisherList(
       legacy_publisher_->GetAlreadyProcessedPublishers(),
       save_callback);
 }

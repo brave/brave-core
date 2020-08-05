@@ -53,7 +53,7 @@ void ContributionMonthly::PrepareTipList(
     queue->partial = false;
     queue->publishers = std::move(queue_list);
 
-    ledger_->SaveContributionQueue(
+    ledger_->database()->SaveContributionQueue(
         std::move(queue),
         [](const ledger::Result _){});
   }
@@ -97,7 +97,9 @@ void ContributionMonthly::GetVerifiedTipList(
       &ContributionMonthly::OnSavePendingContribution,
       this,
       _1);
-  ledger_->SavePendingContribution(std::move(non_verified), save_callback);
+  ledger_->database()->SavePendingContribution(
+      std::move(non_verified),
+      save_callback);
 }
 
 void ContributionMonthly::OnSavePendingContribution(

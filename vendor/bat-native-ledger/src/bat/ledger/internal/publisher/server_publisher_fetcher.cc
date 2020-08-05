@@ -200,7 +200,7 @@ void ServerPublisherFetcher::OnFetchCompleted(
       std::move(server_info));
 
   // Store the result for subsequent lookups.
-  ledger_->InsertServerPublisherInfo(**shared_info,
+  ledger_->database()->InsertServerPublisherInfo(**shared_info,
       [this, publisher_key, shared_info](ledger::Result result) {
         if (result != ledger::Result::LEDGER_OK) {
           BLOG(0, "Error saving server publisher info record");
@@ -273,7 +273,9 @@ bool ServerPublisherFetcher::IsExpired(
 void ServerPublisherFetcher::PurgeExpiredRecords() {
   BLOG(1, "Purging expired server publisher info records");
   int64_t max_age = GetCacheExpiryInSeconds(ledger_) * 2;
-  ledger_->DeleteExpiredServerPublisherInfo(max_age, [](auto result) {});
+  ledger_->database()->DeleteExpiredServerPublisherInfo(
+      max_age,
+      [](auto result) {});
 }
 
 ledger::ServerPublisherInfoPtr

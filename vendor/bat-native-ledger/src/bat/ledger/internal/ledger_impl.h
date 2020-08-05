@@ -32,14 +32,6 @@ namespace base {
 class SequencedTaskRunner;
 }
 
-namespace braveledger_publisher {
-class PrefixListReader;
-}
-
-namespace braveledger_database {
-class Database;
-}
-
 namespace bat_ledger {
 
 class LedgerImpl : public ledger::Ledger {
@@ -74,6 +66,8 @@ class LedgerImpl : public ledger::Ledger {
 
   braveledger_api::API* api() const;
 
+  virtual braveledger_database::Database* database() const;
+
   void Initialize(
       const bool execute_create_script,
       ledger::ResultCallback callback) override;
@@ -83,29 +77,6 @@ class LedgerImpl : public ledger::Ledger {
   void SavePublisherInfo(
       ledger::PublisherInfoPtr publisher_info,
       ledger::ResultCallback callback) override;
-
-  void SaveActivityInfo(
-      ledger::PublisherInfoPtr publisher_info,
-      ledger::ResultCallback callback);
-
-  void GetPublisherInfo(
-      const std::string& publisher_key,
-      ledger::PublisherInfoCallback callback);
-
-  void GetActivityInfo(ledger::ActivityInfoFilterPtr filter,
-                       ledger::PublisherInfoCallback callback);
-
-  void GetPanelPublisherInfo(ledger::ActivityInfoFilterPtr filter,
-                             ledger::PublisherInfoCallback callback);
-
-  void GetMediaPublisherInfo(
-      const std::string& media_key,
-      ledger::PublisherInfoCallback callback);
-
-  void SaveMediaPublisherInfo(
-      const std::string& media_key,
-      const std::string& publisher_key,
-      ledger::ResultCallback callback);
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
@@ -132,10 +103,6 @@ class LedgerImpl : public ledger::Ledger {
   void SetAutoContributionAmount(double amount) override;
 
   void SetAutoContributeEnabled(bool enabled) override;
-
-  void SavePendingContribution(
-      ledger::PendingContributionList list,
-      ledger::ResultCallback callback);
 
   uint64_t GetReconcileStamp() override;
 
@@ -184,10 +151,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& pass_phrase,
       ledger::ResultCallback callback) override;
 
-  void OnRecoverWallet(
-      const ledger::Result result,
-      ledger::ResultCallback callback);
-
   virtual void LoadURL(
       const std::string& url,
       const std::vector<std::string>& headers,
@@ -219,12 +182,6 @@ class LedgerImpl : public ledger::Ledger {
       ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) override;
 
-  void SetBalanceReportItem(
-      const ledger::ActivityMonth month,
-      const int year,
-      const ledger::ReportType type,
-      const double amount);
-
   void GetPublisherBanner(const std::string& publisher_id,
                           ledger::PublisherBannerCallback callback) override;
 
@@ -250,8 +207,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void HasSufficientBalanceToReconcile(
       ledger::HasSufficientBalanceToReconcileCallback callback) override;
-
-  void SaveNormalizedPublisherList(ledger::PublisherInfoList list);
 
   void GetRewardsInternalsInfo(
       ledger::RewardsInternalsInfoCallback callback) override;
@@ -289,10 +244,6 @@ class LedgerImpl : public ledger::Ledger {
   void GetPendingContributionsTotal(
       ledger::PendingContributionsTotalCallback callback) override;
 
-  void WasPublisherProcessed(
-      const std::string& publisher_key,
-      ledger::ResultCallback callback);
-
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
   void GetExternalWallet(const std::string& wallet_type,
@@ -307,74 +258,12 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& wallet_type,
       ledger::ResultCallback callback) override;
 
-  void DeleteActivityInfo(
-      const std::string& publisher_key,
-      ledger::ResultCallback callback);
-
-  void SearchPublisherPrefixList(
-      const std::string& publisher_key,
-      ledger::SearchPublisherPrefixListCallback callback);
-
-  void ResetPublisherPrefixList(
-      std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
-      ledger::ResultCallback callback);
-
-  void InsertServerPublisherInfo(
-      const ledger::ServerPublisherInfo& server_info,
-      ledger::ResultCallback callback);
-
   void GetServerPublisherInfo(
       const std::string& publisher_key,
       ledger::GetServerPublisherInfoCallback callback);
 
-  void DeleteExpiredServerPublisherInfo(
-      const int64_t max_age_seconds,
-      ledger::ResultCallback callback);
-
-  void SaveContributionQueue(
-    ledger::ContributionQueuePtr info,
-    ledger::ResultCallback callback);
-
-  void MarkContributionQueueAsComplete(
-    const std::string& id,
-    ledger::ResultCallback callback);
-
-  void GetFirstContributionQueue(
-    ledger::GetFirstContributionQueueCallback callback);
-
-  virtual void SavePromotion(
-    ledger::PromotionPtr info,
-    ledger::ResultCallback callback);
-
-  void GetPromotion(
-    const std::string& id,
-    ledger::GetPromotionCallback callback);
-
   void GetAllPromotions(
     ledger::GetAllPromotionsCallback callback) override;
-
-  void SaveUnblindedTokenList(
-    ledger::UnblindedTokenList list,
-    ledger::ResultCallback callback);
-
-  virtual void MarkUnblindedTokensAsSpent(
-      const std::vector<std::string>& ids,
-      ledger::RewardsType redeem_type,
-      const std::string& redeem_id,
-      ledger::ResultCallback callback);
-
-  void MarkUnblindedTokensAsReserved(
-      const std::vector<std::string>& ids,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
-
-  void MarkUnblindedTokensAsSpendable(
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
-
-  void GetSpendableUnblindedTokensByTriggerIds(
-      const std::vector<std::string>& trigger_ids,
-      ledger::GetUnblindedTokenListCallback callback);
 
   void GetAnonWalletStatus(ledger::ResultCallback callback) override;
 
@@ -388,29 +277,6 @@ class LedgerImpl : public ledger::Ledger {
       const int year,
       ledger::GetContributionReportCallback callback) override;
 
-  void GetNotCompletedContributions(
-      ledger::ContributionInfoListCallback callback);
-
-  virtual void GetContributionInfo(
-      const std::string& contribution_id,
-      ledger::GetContributionInfoCallback callback);
-
-  virtual void UpdateContributionInfoStep(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      ledger::ResultCallback callback);
-
-  virtual void UpdateContributionInfoStepAndCount(
-      const std::string& contribution_id,
-      const ledger::ContributionStep step,
-      const int32_t retry_count,
-      ledger::ResultCallback callback);
-
-  void UpdateContributionInfoContributedAmount(
-      const std::string& contribution_id,
-      const std::string& publisher_key,
-      ledger::ResultCallback callback);
-
   void GetAllContributions(
       ledger::ContributionInfoListCallback callback) override;
 
@@ -422,80 +288,6 @@ class LedgerImpl : public ledger::Ledger {
   void GetAllMonthlyReportIds(
       ledger::GetAllMonthlyReportIdsCallback callback) override;
 
-  void SaveCredsBatch(
-      ledger::CredsBatchPtr info,
-      ledger::ResultCallback callback);
-
-  void SavePromotionClaimId(
-      const std::string& promotion_id,
-      const std::string& claim_id,
-      ledger::ResultCallback callback);
-
-  void GetCredsBatchByTrigger(
-      const std::string& trigger_id,
-      const ledger::CredsBatchType trigger_type,
-      ledger::GetCredsBatchCallback callback);
-
-  void SaveSignedCreds(
-      ledger::CredsBatchPtr info,
-      ledger::ResultCallback callback);
-
-  void UpdatePromotionStatus(
-      const std::string& promotion_id,
-      const ledger::PromotionStatus status,
-      ledger::ResultCallback callback);
-
-  void UpdatePromotionsStatus(
-      const std::vector<std::string>& promotion_ids,
-      const ledger::PromotionStatus status,
-      ledger::ResultCallback callback);
-
-  void PromotionCredentialCompleted(
-      const std::string& promotion_id,
-      ledger::ResultCallback callback);
-
-  void GetAllCredsBatches(ledger::GetCredsBatchListCallback callback);
-
-  void GetPromotionList(
-      const std::vector<std::string>& ids,
-      ledger::GetPromotionListCallback callback);
-
-  void GetPromotionListByType(
-      const std::vector<ledger::PromotionType>& types,
-      ledger::GetPromotionListCallback callback);
-
-  void UpdateCredsBatchStatus(
-      const std::string& trigger_id,
-      const ledger::CredsBatchType trigger_type,
-      const ledger::CredsBatchStatus status,
-      ledger::ResultCallback callback);
-
-  void UpdateCredsBatchesStatus(
-      const std::vector<std::string>& trigger_ids,
-      const ledger::CredsBatchType trigger_type,
-      const ledger::CredsBatchStatus status,
-      ledger::ResultCallback callback);
-
-  void SaveSKUOrder(ledger::SKUOrderPtr order, ledger::ResultCallback callback);
-
-  void SaveSKUTransaction(
-      ledger::SKUTransactionPtr transaction,
-      ledger::ResultCallback callback);
-
-  void SaveSKUExternalTransaction(
-      const std::string& transaction_id,
-      const std::string& external_transaction_id,
-      ledger::ResultCallback callback);
-
-  void UpdateSKUOrderStatus(
-      const std::string& order_id,
-      const ledger::SKUOrderStatus status,
-      ledger::ResultCallback callback);
-
-  void GetSKUOrder(
-      const std::string& order_id,
-      ledger::GetSKUOrderCallback callback);
-
   void ProcessSKU(
       const std::vector<ledger::SKUOrderItem>& items,
       ledger::ExternalWalletPtr wallet,
@@ -506,44 +298,7 @@ class LedgerImpl : public ledger::Ledger {
       ledger::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback);
 
-  void GetSKUOrderByContributionId(
-      const std::string& contribution_id,
-      ledger::GetSKUOrderCallback callback);
-
-  void SaveContributionIdForSKUOrder(
-      const std::string& order_id,
-      const std::string& contribution_id,
-      ledger::ResultCallback callback);
-
-  void GetSKUTransactionByOrderId(
-      const std::string& order_id,
-      ledger::GetSKUTransactionCallback callback);
-
-  virtual void GetReservedUnblindedTokens(
-      const std::string& redeem_id,
-      ledger::GetUnblindedTokenListCallback callback);
-
-  virtual void GetSpendableUnblindedTokensByBatchTypes(
-      const std::vector<ledger::CredsBatchType>& batch_types,
-      ledger::GetUnblindedTokenListCallback callback);
-
-  void UpdatePromotionsBlankPublicKey(
-      const std::vector<std::string>& ids,
-      ledger::ResultCallback callback);
-
-  void SaveBalanceReportInfoList(
-      ledger::BalanceReportInfoList list,
-      ledger::ResultCallback callback);
-
-  void SaveProcessedPublisherList(
-      const std::vector<std::string>& list,
-      ledger::ResultCallback callback);
-
   void Shutdown(ledger::ResultCallback callback) override;
-
-  void GetCredsBatchesByTriggers(
-      const std::vector<std::string>& trigger_ids,
-      ledger::GetCredsBatchListCallback callback);
 
  private:
   void OnInitialized(
@@ -615,11 +370,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
 
-  void OnGetActivityInfo(
-      ledger::PublisherInfoList list,
-      ledger::PublisherInfoCallback callback,
-      const std::string& publisher_key);
-
   void ShutdownWallets(
       const ledger::Result result,
       ledger::ResultCallback callback);
@@ -630,7 +380,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_media::Media> media_;
   std::unique_ptr<braveledger_contribution::Contribution> contribution_;
   std::unique_ptr<braveledger_wallet::Wallet> wallet_;
-  std::unique_ptr<braveledger_database::Database> bat_database_;
+  std::unique_ptr<braveledger_database::Database> database_;
   std::unique_ptr<braveledger_report::Report> report_;
   std::unique_ptr<braveledger_sku::SKU> sku_;
   std::unique_ptr<braveledger_state::State> state_;

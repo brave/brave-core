@@ -37,7 +37,7 @@ void Report::GetMonthly(
       year,
       callback);
 
-  ledger_->GetBalanceReport(month, year, balance_callback);
+  ledger_->database()->GetBalanceReportInfo(month, year, balance_callback);
 }
 
 void Report::OnBalance(
@@ -67,7 +67,7 @@ void Report::OnBalance(
       monthly_report_string,
       callback);
 
-  ledger_->GetTransactionReport(month, year, transaction_callback);
+  ledger_->database()->GetTransactionReport(month, year, transaction_callback);
 }
 
 void Report::OnTransactions(
@@ -97,7 +97,10 @@ void Report::OnTransactions(
       callback_monthly_string,
       callback);
 
-  ledger_->GetContributionReport(month, year, contribution_callback);
+  ledger_->database()->GetContributionReport(
+      month,
+      year,
+      contribution_callback);
 }
 
 void Report::OnContributions(
@@ -152,7 +155,7 @@ void Report::GetAllMonthlyIds(ledger::GetAllMonthlyReportIdsCallback callback) {
       _1,
       callback);
 
-  ledger_->GetAllBalanceReports(balance_reports_callback);
+  ledger_->database()->GetAllBalanceReports(balance_reports_callback);
 }
 
 void Report::OnGetAllBalanceReports(

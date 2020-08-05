@@ -30,7 +30,7 @@ void EmptyBalance::Check(bat_ledger::LedgerImpl* ledger) {
       _1,
       ledger);
 
-  ledger->GetAllContributions(get_callback);
+  ledger->database()->GetAllContributions(get_callback);
 }
 
 void EmptyBalance::OnAllContributions(
@@ -70,7 +70,7 @@ void EmptyBalance::GetPromotions(
     _1,
     callback);
 
-  ledger->GetAllPromotions(get_callback);
+  ledger->database()->GetAllPromotions(get_callback);
 }
 
 void EmptyBalance::OnPromotions(
@@ -104,7 +104,7 @@ void EmptyBalance::GetCredsByPromotions(
     _1,
     ledger);
 
-  ledger->GetCredsBatchesByTriggers(promotion_ids, get_callback);
+  ledger->database()->GetCredsBatchesByTriggers(promotion_ids, get_callback);
 }
 
 void EmptyBalance::OnCreds(
@@ -155,7 +155,9 @@ void EmptyBalance::OnCreds(
       _1,
       ledger);
 
-  ledger->SaveUnblindedTokenList(std::move(token_list), save_callback);
+  ledger->database()->SaveUnblindedTokenList(
+      std::move(token_list),
+      save_callback);
 }
 
 void EmptyBalance::OnSaveUnblindedCreds(
@@ -184,7 +186,7 @@ void EmptyBalance::GetAllTokens(
       contribution_sum,
       promotion_sum);
 
-  ledger->GetSpendableUnblindedTokensByBatchTypes(
+  ledger->database()->GetSpendableUnblindedTokensByBatchTypes(
       {ledger::CredsBatchType::PROMOTION},
       tokens_callback);
 }

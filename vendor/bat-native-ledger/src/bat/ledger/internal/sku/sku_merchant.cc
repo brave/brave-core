@@ -62,7 +62,7 @@ void SKUMerchant::OrderCreated(
       wallet,
       callback);
 
-  ledger_->GetSKUOrder(order_id, get_callback);
+  ledger_->database()->GetSKUOrder(order_id, get_callback);
 }
 
 void SKUMerchant::OnOrder(

@@ -158,7 +158,7 @@ void ContributionSKU::Start(
       *wallet,
       callback);
 
-  ledger_->GetContributionInfo(contribution_id, get_callback);
+  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionSKU::GetContributionInfo(
@@ -218,7 +218,7 @@ void ContributionSKU::GetOrder(
       _1,
       contribution_id,
       callback);
-  ledger_->GetSKUOrder(order_id, get_callback);
+  ledger_->database()->GetSKUOrder(order_id, get_callback);
 }
 
 void ContributionSKU::OnGetOrder(
@@ -237,7 +237,7 @@ void ContributionSKU::OnGetOrder(
       braveledger_bind_util::FromSKUOrderToString(std::move(order)),
       callback);
 
-  ledger_->UpdateContributionInfoStep(
+  ledger_->database()->UpdateContributionInfoStep(
       contribution_id,
       ledger::ContributionStep::STEP_EXTERNAL_TRANSACTION,
       save_callback);
@@ -284,7 +284,7 @@ void ContributionSKU::Completed(
       contribution_id,
       callback);
 
-  ledger_->UpdateContributionInfoStep(
+  ledger_->database()->UpdateContributionInfoStep(
       contribution_id,
       ledger::ContributionStep::STEP_CREDS,
       save_callback);
@@ -315,7 +315,7 @@ void ContributionSKU::Merchant(
       transaction,
       callback);
 
-  ledger_->GetSpendableUnblindedTokensByBatchTypes(
+  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
       {ledger::CredsBatchType::PROMOTION},
       get_callback);
 }
@@ -359,7 +359,7 @@ void ContributionSKU::GetUnblindedTokens(
       redeem,
       callback);
 
-  ledger_->GetSKUOrder(transaction.order_id, get_callback);
+  ledger_->database()->GetSKUOrder(transaction.order_id, get_callback);
 }
 
 void ContributionSKU::GetOrderMerchant(
@@ -410,7 +410,7 @@ void ContributionSKU::Retry(
       braveledger_bind_util::FromContributionToString(contribution->Clone()),
       callback);
 
-  ledger_->GetSKUOrderByContributionId(
+  ledger_->database()->GetSKUOrderByContributionId(
       contribution->contribution_id,
       get_callback);
 }

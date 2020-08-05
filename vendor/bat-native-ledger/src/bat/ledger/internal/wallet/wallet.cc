@@ -67,6 +67,8 @@ void Wallet::RecoverWallet(
       pass_phrase,
       [this, callback](const ledger::Result result) {
         if (result == ledger::Result::LEDGER_OK) {
+          ledger_->database()->DeleteAllBalanceReports(
+              [](const ledger::Result _) {});
           DisconnectAllWallets(callback);
           return;
         }

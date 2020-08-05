@@ -69,7 +69,7 @@ void Unverified::OnContributeUnverifiedPublishers(
   for (const auto& item : list) {
     // remove pending contribution if it's over expiration date
     if (now > item->expiration_date) {
-      ledger_->RemovePendingContribution(
+      ledger_->database()->RemovePendingContribution(
           item->id,
           std::bind(&Unverified::OnRemovePendingContribution,
                     this,
@@ -98,7 +98,9 @@ void Unverified::OnContributeUnverifiedPublishers(
       current->publisher_key,
       current->name);
 
-  ledger_->WasPublisherProcessed(current->publisher_key, get_callback);
+  ledger_->database()->WasPublisherProcessed(
+      current->publisher_key,
+      get_callback);
 
   if (balance < current->amount) {
     BLOG(0, "Not enough funds");
@@ -127,14 +129,14 @@ void Unverified::OnContributeUnverifiedPublishers(
       _1,
       current->id);
 
-  ledger_->SaveContributionQueue(std::move(queue), save_callback);
+  ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
 void Unverified::QueueSaved(
     const ledger::Result result,
     const uint64_t pending_contribution_id) {
   if (result == ledger::Result::LEDGER_OK) {
-    ledger_->RemovePendingContribution(
+    ledger_->database()->RemovePendingContribution(
       pending_contribution_id,
       std::bind(&Unverified::OnRemovePendingContribution,
                 this,
@@ -176,7 +178,9 @@ void Unverified::WasPublisherProcessed(
       _1,
       publisher_key,
       name);
-  ledger_->SaveProcessedPublisherList({publisher_key}, save_callback);
+  ledger_->database()->SaveProcessedPublisherList(
+      {publisher_key},
+      save_callback);
 }
 
 void Unverified::ProcessedPublisherSaved(

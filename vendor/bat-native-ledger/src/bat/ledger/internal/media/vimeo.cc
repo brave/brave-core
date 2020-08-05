@@ -336,7 +336,7 @@ void Vimeo::ProcessMedia(const std::map<std::string, std::string>& parts) {
     event_info.time = iter->second;
   }
 
-  ledger_->GetMediaPublisherInfo(media_key,
+  ledger_->database()->GetMediaPublisherInfo(media_key,
       std::bind(&Vimeo::OnMediaPublisherInfo,
                 this,
                 media_id,
@@ -544,7 +544,7 @@ void Vimeo::GetPublisherPanleInfo(
     ledger_->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(std::move(filter),
+  ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Vimeo::OnPublisherPanleInfo,
               this,
               media_key,
@@ -679,7 +679,7 @@ void Vimeo::SavePublisherInfo(
       [](ledger::Result, ledger::PublisherInfoPtr) {});
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         key,
         [](const ledger::Result) {});

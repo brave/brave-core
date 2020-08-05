@@ -67,7 +67,7 @@ void HandleExpiredPromotions(
 
     if (item.second->expires_at > 0 &&
         item.second->expires_at <= current_time)  {
-      ledger_impl->UpdatePromotionStatus(
+      ledger_impl->database()->UpdatePromotionStatus(
           item.second->id,
           ledger::PromotionStatus::OVER,
           [](const ledger::Result _){});
@@ -111,14 +111,14 @@ void Promotion::Initialize() {
         this,
         _1);
 
-    ledger_->GetAllPromotions(check_callback);
+    ledger_->database()->GetAllPromotions(check_callback);
   }
 
   auto retry_callback = std::bind(&Promotion::Retry,
       this,
       _1);
 
-  ledger_->GetAllPromotions(retry_callback);
+  ledger_->database()->GetAllPromotions(retry_callback);
 }
 
 void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
@@ -145,7 +145,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
           this,
           _1,
           callback);
-      ledger_->GetAllPromotions(all_callback);
+      ledger_->database()->GetAllPromotions(all_callback);
       return;
     }
   }
@@ -197,7 +197,7 @@ void Promotion::OnFetch(
       response,
       callback);
 
-  ledger_->GetAllPromotions(all_callback);
+  ledger_->database()->GetAllPromotions(all_callback);
 }
 
 void Promotion::OnGetAllPromotions(
@@ -248,13 +248,13 @@ void Promotion::OnGetAllPromotions(
           this,
           _1,
           braveledger_bind_util::FromPromotionToString(item->Clone()));
-      ledger_->SavePromotion(item->Clone(), legacy_callback);
+      ledger_->database()->SavePromotion(item->Clone(), legacy_callback);
       continue;
     }
 
     promotions.insert(std::make_pair(item->id, item->Clone()));
 
-    ledger_->SavePromotion(
+    ledger_->database()->SavePromotion(
         item->Clone(),
         [](const ledger::Result _){});
   }
@@ -300,7 +300,7 @@ void Promotion::Claim(
       payload,
       callback);
 
-  ledger_->GetPromotion(promotion_id, promotion_callback);
+  ledger_->database()->GetPromotion(promotion_id, promotion_callback);
 }
 
 void Promotion::OnClaimPromotion(
@@ -332,7 +332,7 @@ void Promotion::Attest(
       solution,
       callback);
 
-  ledger_->GetPromotion(promotion_id, promotion_callback);
+  ledger_->database()->GetPromotion(promotion_id, promotion_callback);
 }
 
 void Promotion::OnAttestPromotion(
@@ -374,7 +374,7 @@ void Promotion::OnAttestedPromotion(
       _1,
       callback);
 
-  ledger_->GetPromotion(promotion_id, promotion_callback);
+  ledger_->database()->GetPromotion(promotion_id, promotion_callback);
 }
 
 void Promotion::OnCompletedAttestation(
@@ -400,7 +400,7 @@ void Promotion::OnCompletedAttestation(
       braveledger_bind_util::FromPromotionToString(promotion->Clone()),
       callback);
 
-  ledger_->SavePromotion(promotion->Clone(), save_callback);
+  ledger_->database()->SavePromotion(promotion->Clone(), save_callback);
 }
 
 void Promotion::AttestedSaved(
@@ -440,7 +440,7 @@ void Promotion::Complete(
       _1,
       result,
       callback);
-  ledger_->GetPromotion(promotion_id, promotion_callback);
+  ledger_->database()->GetPromotion(promotion_id, promotion_callback);
 }
 
 void Promotion::OnComplete(
@@ -449,11 +449,12 @@ void Promotion::OnComplete(
     ledger::AttestPromotionCallback callback) {
     BLOG(1, "Promotion completed with result " << result);
   if (promotion && result == ledger::Result::LEDGER_OK) {
-    ledger_->SetBalanceReportItem(
+    ledger_->database()->SaveBalanceReportInfoItem(
         braveledger_time_util::GetCurrentMonth(),
         braveledger_time_util::GetCurrentYear(),
         ConvertPromotionTypeToReportType(promotion->type),
-        promotion->approximate_value);
+        promotion->approximate_value,
+        [](const ledger::Result){});
   }
 
   callback(result, std::move(promotion));
@@ -513,7 +514,7 @@ void Promotion::CredentialsProcessed(
     return;
   }
 
-  ledger_->UpdatePromotionStatus(
+  ledger_->database()->UpdatePromotionStatus(
       promotion_id,
       ledger::PromotionStatus::FINISHED,
       callback);
@@ -613,7 +614,9 @@ void Promotion::CheckForCorrupted(const ledger::PromotionMap& promotions) {
       this,
       _1);
 
-  ledger_->UpdatePromotionsBlankPublicKey(corrupted_promotions, get_callback);
+  ledger_->database()->UpdatePromotionsBlankPublicKey(
+      corrupted_promotions,
+      get_callback);
 }
 
 void Promotion::CorruptedPromotionFixed(const ledger::Result result) {
@@ -626,7 +629,7 @@ void Promotion::CorruptedPromotionFixed(const ledger::Result result) {
         this,
         _1);
 
-  ledger_->GetAllCredsBatches(check_callback);
+  ledger_->database()->GetAllCredsBatches(check_callback);
 }
 
 void Promotion::CheckForCorruptedCreds(ledger::CredsBatchList list) {
@@ -669,7 +672,7 @@ void Promotion::CheckForCorruptedCreds(ledger::CredsBatchList list) {
       _1,
       corrupted_promotions);
 
-  ledger_->GetPromotionList(corrupted_promotions, get_callback);
+  ledger_->database()->GetPromotionList(corrupted_promotions, get_callback);
 }
 
 void Promotion::CorruptedPromotions(
@@ -732,7 +735,7 @@ void Promotion::OnCheckForCorrupted(
       _1,
       promotion_id_list);
 
-  ledger_->UpdatePromotionsStatus(
+  ledger_->database()->UpdatePromotionsStatus(
       promotion_id_list,
       ledger::PromotionStatus::CORRUPTED,
       update_callback);
@@ -750,7 +753,7 @@ void Promotion::ErrorStatusSaved(
       this,
       _1);
 
-  ledger_->UpdateCredsBatchesStatus(
+  ledger_->database()->UpdateCredsBatchesStatus(
       promotion_id_list,
       ledger::CredsBatchType::PROMOTION,
       ledger::CredsBatchStatus::CORRUPTED,
@@ -767,7 +770,7 @@ void Promotion::ErrorCredsStatusSaved(const ledger::Result result) {
     this,
     _1);
 
-  ledger_->GetAllPromotions(retry_callback);
+  ledger_->database()->GetAllPromotions(retry_callback);
 }
 
 void Promotion::TransferTokens(ledger::ResultCallback callback) {
@@ -775,7 +778,7 @@ void Promotion::TransferTokens(ledger::ResultCallback callback) {
 }
 
 void Promotion::OnRetryTimerElapsed() {
-  ledger_->GetAllPromotions(std::bind(&Promotion::Retry, this, _1));
+  ledger_->database()->GetAllPromotions(std::bind(&Promotion::Retry, this, _1));
 }
 
 void Promotion::OnLastCheckTimerElapsed() {

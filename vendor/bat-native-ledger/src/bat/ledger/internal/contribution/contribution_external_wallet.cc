@@ -54,7 +54,7 @@ void ContributionExternalWallet::Process(
       _1,
       *wallet,
       callback);
-  ledger_->GetContributionInfo(contribution_id, get_callback);
+  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionExternalWallet::ContributionInfo(
@@ -149,7 +149,9 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     ledger::PendingContributionList list;
     list.push_back(std::move(contribution));
 
-    ledger_->SavePendingContribution(std::move(list), save_callback);
+    ledger_->database()->SavePendingContribution(
+        std::move(list),
+        save_callback);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

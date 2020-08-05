@@ -87,10 +87,16 @@ class Publisher {
   void CalcScoreConsts(const int min_duration_seconds);
 
  private:
-  void onPublisherActivitySave(uint64_t windowId,
-                               const ledger::VisitData& visit_data,
-                               ledger::Result result,
-                               ledger::PublisherInfoPtr info);
+  void onPublisherActivitySave(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      ledger::Result result,
+      ledger::PublisherInfoPtr info);
+
+  void OnGetActivityInfo(
+      ledger::PublisherInfoList list,
+      ledger::PublisherInfoCallback callback,
+      const std::string& publisher_key);
 
   void SaveVisitInternal(
       const ledger::PublisherStatus,
