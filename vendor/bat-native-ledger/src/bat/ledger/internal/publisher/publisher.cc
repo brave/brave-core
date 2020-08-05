@@ -223,7 +223,8 @@ void Publisher::SaveVisitInternal(
     return;
   }
 
-  bool is_verified = ledger_->IsPublisherConnectedOrVerified(status);
+  bool is_verified = ledger_->publisher()->IsConnectedOrVerified(
+      status);
 
   bool new_visit = false;
   if (!publisher_info) {
@@ -544,72 +545,68 @@ bool Publisher::IsConnectedOrVerified(const ledger::PublisherStatus status) {
          status == ledger::PublisherStatus::VERIFIED;
 }
 
-void Publisher::getPublisherActivityFromUrl(
+void Publisher::GetPublisherActivityFromUrl(
     uint64_t windowId,
-    const ledger::VisitData& visit_data,
+    ledger::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
-  if (!ledger_->state()->GetRewardsMainEnabled()) {
+  if (!ledger_->state()->GetRewardsMainEnabled() || !visit_data) {
     return;
   }
 
-  const bool is_media = visit_data.domain == YOUTUBE_TLD ||
-                        visit_data.domain == TWITCH_TLD ||
-                        visit_data.domain == TWITTER_TLD ||
-                        visit_data.domain == REDDIT_TLD ||
-                        visit_data.domain == VIMEO_TLD ||
-                        visit_data.domain == GITHUB_TLD;
+  const bool is_media =
+      visit_data->domain == YOUTUBE_TLD ||
+      visit_data->domain == TWITCH_TLD ||
+      visit_data->domain == TWITTER_TLD ||
+      visit_data->domain == REDDIT_TLD ||
+      visit_data->domain == VIMEO_TLD ||
+      visit_data->domain == GITHUB_TLD;
 
-  if (is_media &&
-      visit_data.path != "" && visit_data.path != "/") {
+  if (is_media && visit_data->path != "" && visit_data->path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
-    if (visit_data.domain == TWITCH_TLD) {
+    if (visit_data->domain == TWITCH_TLD) {
       type = TWITCH_MEDIA_TYPE;
-    } else if (visit_data.domain == TWITTER_TLD) {
+    } else if (visit_data->domain == TWITTER_TLD) {
       type = TWITTER_MEDIA_TYPE;
-    } else if (visit_data.domain == REDDIT_TLD) {
+    } else if (visit_data->domain == REDDIT_TLD) {
       type = REDDIT_MEDIA_TYPE;
-    } else if (visit_data.domain == VIMEO_TLD) {
+    } else if (visit_data->domain == VIMEO_TLD) {
       type = VIMEO_MEDIA_TYPE;
-    } else if (visit_data.domain == GITHUB_TLD) {
+    } else if (visit_data->domain == GITHUB_TLD) {
       type = GITHUB_MEDIA_TYPE;
     }
 
-    ledger::VisitDataPtr new_visit_data = ledger::VisitData::New(visit_data);
-
-    if (!new_visit_data->url.empty()) {
-      new_visit_data->url.pop_back();
+    if (!visit_data->url.empty()) {
+      visit_data->url.pop_back();
     }
 
-    new_visit_data->url += new_visit_data->path;
+    visit_data->url += visit_data->path;
 
-    ledger_->GetMediaActivityFromUrl(windowId,
-                                     std::move(new_visit_data),
-                                     type,
-                                     publisher_blob);
+    ledger_->GetMediaActivityFromUrl(
+        windowId,
+        std::move(visit_data),
+        type,
+        publisher_blob);
     return;
   }
 
-  auto filter = CreateActivityFilter(visit_data.domain,
-        ledger::ExcludeFilter::FILTER_ALL,
-        false,
-        ledger_->GetReconcileStamp(),
-        true,
-        false);
+  auto filter = CreateActivityFilter(
+      visit_data->domain,
+      ledger::ExcludeFilter::FILTER_ALL,
+      false,
+      ledger_->GetReconcileStamp(),
+      true,
+      false);
 
-  ledger::VisitData new_data;
-  new_data.domain = visit_data.domain;
-  new_data.path = visit_data.path;
-  new_data.name = visit_data.name;
-  new_data.url = visit_data.url;
-  new_data.favicon_url = "";
+  visit_data->favicon_url = "";
 
-  ledger_->GetPanelPublisherInfo(std::move(filter),
-        std::bind(&Publisher::OnPanelPublisherInfo,
-                  this,
-                  _1,
-                  _2,
-                  windowId,
-                  new_data));
+  ledger_->GetPanelPublisherInfo(
+      std::move(filter),
+      std::bind(&Publisher::OnPanelPublisherInfo,
+          this,
+          _1,
+          _2,
+          windowId,
+          *visit_data));
 }
 
 void Publisher::OnSaveVisitInternal(

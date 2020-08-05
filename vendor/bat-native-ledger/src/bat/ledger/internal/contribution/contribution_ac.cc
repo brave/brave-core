@@ -32,7 +32,7 @@ void ContributionAC::Process(const uint64_t reconcile_stamp) {
 
   BLOG(1, "Starting auto contribution");
 
-  auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->publisher()->CreateActivityFilter(
       "",
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
@@ -50,7 +50,7 @@ void ContributionAC::Process(const uint64_t reconcile_stamp) {
 void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
   ledger::PublisherInfoList normalized_list;
 
-  ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
+  ledger_->publisher()->NormalizeContributeWinners(&normalized_list, &list, 0);
 
   if (normalized_list.empty()) {
     BLOG(1, "AC list is empty");

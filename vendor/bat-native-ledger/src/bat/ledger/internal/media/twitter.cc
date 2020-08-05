@@ -381,7 +381,7 @@ void Twitter::SavePublisherInfo(
   visit_data->favicon_url = favicon_url;
   visit_data->name = publisher_name;
 
-  ledger_->SaveVisit(
+  ledger_->publisher()->SaveVisit(
       publisher_key,
       *visit_data,
       duration,
@@ -415,7 +415,7 @@ void Twitter::OnMediaActivityError(const ledger::VisitData& visit_data,
   new_visit_data.path = "/";
   new_visit_data.name = name;
 
-  ledger_->GetPublisherActivityFromUrl(
+  ledger_->publisher()->GetPublisherActivityFromUrl(
       window_id, ledger::VisitData::New(new_visit_data), std::string());
 }
 
@@ -483,7 +483,7 @@ void Twitter::GetPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key) {
-  auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,

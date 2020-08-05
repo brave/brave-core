@@ -50,7 +50,8 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
         ledger::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;
-        return task_info->ledger->ShouldFetchServerPublisherInfo(&server_info);
+        return task_info->ledger->publisher()->ShouldFetchServerPublisherInfo(
+            &server_info);
       });
 
   // Execute the callback if no more expired elements are found.

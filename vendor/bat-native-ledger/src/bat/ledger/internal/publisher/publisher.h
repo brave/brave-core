@@ -55,9 +55,9 @@ class Publisher {
 
   void OnPublisherInfoSaved(const ledger::Result result);
 
-  void getPublisherActivityFromUrl(
+  void GetPublisherActivityFromUrl(
       uint64_t windowId,
-      const ledger::VisitData& visit_data,
+      ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob);
 
   void GetPublisherBanner(const std::string& publisher_key,
@@ -71,9 +71,10 @@ class Publisher {
       bool non_verified,
       bool min_visits);
 
-  void NormalizeContributeWinners(ledger::PublisherInfoList* newList,
-                                  const ledger::PublisherInfoList* list,
-                                  uint32_t /* next_record */);
+  void NormalizeContributeWinners(
+      ledger::PublisherInfoList* newList,
+      const ledger::PublisherInfoList* list,
+      uint32_t /* next_record */);
 
   void OnRestorePublishers(
       const ledger::Result result,

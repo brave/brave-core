@@ -18,6 +18,7 @@
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/internal/promotion/promotion.h"
+#include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger.h"
@@ -33,7 +34,6 @@ class Media;
 
 namespace braveledger_publisher {
 class PrefixListReader;
-class Publisher;
 }
 
 namespace braveledger_contribution {
@@ -78,6 +78,8 @@ class LedgerImpl : public ledger::Ledger {
   braveledger_state::State* state() const;
 
   braveledger_promotion::Promotion* promotion() const;
+
+  braveledger_publisher::Publisher* publisher() const;
 
   void Initialize(
       const bool execute_create_script,
@@ -207,13 +209,6 @@ class LedgerImpl : public ledger::Ledger {
 
   std::string URIEncode(const std::string& value) override;
 
-  void SaveVisit(
-      const std::string& publisher_id,
-      const ledger::VisitData& visit_data,
-      uint64_t duration,
-      uint64_t window_id,
-      ledger::PublisherInfoCallback callback);
-
   void SaveVideoVisit(
       const std::string& publisher_id,
       const ledger::VisitData& visit_data,
@@ -227,10 +222,6 @@ class LedgerImpl : public ledger::Ledger {
       ledger::ResultCallback callback) override;
 
   void RestorePublishers(ledger::ResultCallback callback) override;
-
-  void OnRestorePublishers(
-    const ledger::Result result,
-    ledger::ResultCallback callback);
 
   bool IsWalletCreated() override;
 
@@ -266,14 +257,6 @@ class LedgerImpl : public ledger::Ledger {
     const std::string& publisher_key,
     ledger::ResultCallback callback) override;
 
-  ledger::ActivityInfoFilterPtr CreateActivityFilter(
-      const std::string& publisher_id,
-      ledger::ExcludeFilter excluded,
-      bool min_duration,
-      const uint64_t& currentReconcileStamp,
-      bool non_verified,
-      bool min_visits);
-
   void ResetReconcileStamp();
 
   uint64_t GetCreationStamp() override;
@@ -281,11 +264,6 @@ class LedgerImpl : public ledger::Ledger {
   void SaveContributionInfo(
       ledger::ContributionInfoPtr info,
       ledger::ResultCallback callback);
-
-  void NormalizeContributeWinners(
-      ledger::PublisherInfoList* newList,
-      const ledger::PublisherInfoList* list,
-      uint32_t /* next_record */);
 
   void HasSufficientBalanceToReconcile(
       ledger::HasSufficientBalanceToReconcileCallback callback) override;
@@ -354,9 +332,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::string& publisher_key,
       ledger::ResultCallback callback);
 
-  bool ShouldFetchServerPublisherInfo(
-      ledger::ServerPublisherInfo* server_info);
-
   void SearchPublisherPrefixList(
       const std::string& publisher_key,
       ledger::SearchPublisherPrefixListCallback callback);
@@ -376,8 +351,6 @@ class LedgerImpl : public ledger::Ledger {
   void DeleteExpiredServerPublisherInfo(
       const int64_t max_age_seconds,
       ledger::ResultCallback callback);
-
-  bool IsPublisherConnectedOrVerified(const ledger::PublisherStatus status);
 
   void SaveContributionQueue(
     ledger::ContributionQueuePtr info,
@@ -585,10 +558,6 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<std::string>& ids,
       ledger::ResultCallback callback);
 
-  void SynopsisNormalizer();
-
-  void CalcScoreConsts(const int min_duration_seconds);
-
   void SaveBalanceReportInfoList(
       ledger::BalanceReportInfoList list,
       ledger::ResultCallback callback);
@@ -684,7 +653,7 @@ class LedgerImpl : public ledger::Ledger {
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_promotion::Promotion> promotion_;
-  std::unique_ptr<braveledger_publisher::Publisher> bat_publisher_;
+  std::unique_ptr<braveledger_publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;

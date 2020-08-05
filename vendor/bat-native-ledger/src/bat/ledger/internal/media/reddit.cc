@@ -49,7 +49,7 @@ void Reddit::OnMediaActivityError(
   new_visit_data.path = "/";
   new_visit_data.name = REDDIT_MEDIA_TYPE;
 
-  ledger_->GetPublisherActivityFromUrl(
+  ledger_->publisher()->GetPublisherActivityFromUrl(
       window_id, ledger::VisitData::New(new_visit_data), std::string());
 }
 
@@ -163,7 +163,7 @@ void Reddit::GetPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key) {
-  auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
@@ -330,7 +330,7 @@ void Reddit::SavePublisherInfo(
   visit_data->favicon_url = favicon_url;
   visit_data->name = user_name;
 
-  ledger_->SaveVisit(
+  ledger_->publisher()->SaveVisit(
       publisher_key,
       *visit_data,
       0,

@@ -284,7 +284,7 @@ void Twitch::OnMediaActivityError(const ledger::VisitData& visit_data,
     new_visit_data.path = "/";
     new_visit_data.name = name;
 
-    ledger_->GetPublisherActivityFromUrl(
+    ledger_->publisher()->GetPublisherActivityFromUrl(
         window_id, ledger::VisitData::New(new_visit_data), std::string());
   } else {
       BLOG(0, "Media activity error for " << TWITCH_MEDIA_TYPE << " (name: "
@@ -534,7 +534,8 @@ void Twitch::OnMediaPublisherActivity(
                   _1,
                   _2));
   } else {
-    const auto add = ledger_->IsPublisherConnectedOrVerified(info->status);
+    const auto add = ledger_->publisher()->IsConnectedOrVerified(
+        info->status);
     if (add && info->favicon_url.empty()) {
       std::string publisher_name;
       std::string publisher_favicon_url;

@@ -99,8 +99,8 @@ void State::SetPublisherMinVisitTime(const int duration) {
   ledger_->ledger_client()->SetIntegerState(
       ledger::kStateMinVisitTime,
       duration);
-  ledger_->CalcScoreConsts(duration);
-  ledger_->SynopsisNormalizer();
+  ledger_->publisher()->CalcScoreConsts(duration);
+  ledger_->publisher()->SynopsisNormalizer();
 }
 
 int State::GetPublisherMinVisitTime() {
@@ -109,7 +109,7 @@ int State::GetPublisherMinVisitTime() {
 
 void State::SetPublisherMinVisits(const int visits) {
   ledger_->ledger_client()->SetIntegerState(ledger::kStateMinVisits, visits);
-  ledger_->SynopsisNormalizer();
+  ledger_->publisher()->SynopsisNormalizer();
 }
 
 int State::GetPublisherMinVisits() {
@@ -120,7 +120,7 @@ void State::SetPublisherAllowNonVerified(const bool allow) {
   ledger_->ledger_client()->SetBooleanState(
       ledger::kStateAllowNonVerified,
       allow);
-  ledger_->SynopsisNormalizer();
+  ledger_->publisher()->SynopsisNormalizer();
 }
 
 bool State::GetPublisherAllowNonVerified() {
@@ -132,7 +132,7 @@ void State::SetPublisherAllowVideos(const bool allow) {
   ledger_->ledger_client()->SetBooleanState(
       ledger::kStateAllowVideoContribution,
       allow);
-  ledger_->SynopsisNormalizer();
+  ledger_->publisher()->SynopsisNormalizer();
 }
 
 bool State::GetPublisherAllowVideos() {

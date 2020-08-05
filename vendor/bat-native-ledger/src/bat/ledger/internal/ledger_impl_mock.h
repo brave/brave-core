@@ -153,13 +153,6 @@ class MockLedgerImpl : public LedgerImpl {
       const ledger::Result,
       ledger::ContributionInfoPtr contribution));
 
-  MOCK_METHOD5(SaveVisit,
-      void(const std::string&,
-          const ledger::VisitData&,
-          uint64_t,
-          uint64_t,
-          ledger::PublisherInfoCallback));
-
   MOCK_METHOD5(SaveVideoVisit,
       void(const std::string&,
           const ledger::VisitData&,
@@ -173,9 +166,6 @@ class MockLedgerImpl : public LedgerImpl {
           ledger::ResultCallback));
 
   MOCK_METHOD1(RestorePublishers, void(ledger::ResultCallback));
-
-  MOCK_METHOD2(OnRestorePublishers,
-      void(const ledger::Result, ledger::ResultCallback));
 
   MOCK_METHOD0(IsWalletCreated, bool());
 
@@ -209,14 +199,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(RemoveRecurringTip,
       void(const std::string&, ledger::ResultCallback));
 
-  MOCK_METHOD6(CreateActivityFilter,
-      ledger::ActivityInfoFilterPtr(const std::string&,
-          ledger::ExcludeFilter,
-          bool,
-          const uint64_t&,
-          bool,
-          bool));
-
   MOCK_METHOD0(ResetReconcileStamp, void());
 
   MOCK_METHOD0(GetCreationStamp, uint64_t());
@@ -228,11 +210,6 @@ class MockLedgerImpl : public LedgerImpl {
           const uint32_t,
           const std::string&,
           const ledger::RewardsType));
-
-  MOCK_METHOD3(NormalizeContributeWinners,
-      void(ledger::PublisherInfoList*,
-          const ledger::PublisherInfoList*,
-          uint32_t));
 
   MOCK_METHOD1(HasSufficientBalanceToReconcile,
       void(ledger::HasSufficientBalanceToReconcileCallback));
@@ -314,9 +291,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(GetServerPublisherInfo, void(
       const std::string&,
       ledger::GetServerPublisherInfoCallback));
-
-  MOCK_METHOD1(IsPublisherConnectedOrVerified,
-      bool(const ledger::PublisherStatus));
 
   MOCK_METHOD2(SaveContributionQueue,
       void(ledger::ContributionQueuePtr, ledger::ResultCallback));

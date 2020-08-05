@@ -296,7 +296,7 @@ void Vimeo::OnMediaActivityError(uint64_t window_id) {
   new_data.path = "/";
   new_data.name = name;
 
-  ledger_->GetPublisherActivityFromUrl(window_id,
+  ledger_->publisher()->GetPublisherActivityFromUrl(window_id,
                                        ledger::VisitData::New(new_data),
                                        "");
 }
@@ -537,7 +537,7 @@ void Vimeo::GetPublisherPanleInfo(
     const std::string& publisher_key,
     const std::string& publisher_name,
     const std::string& user_id) {
-  auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
