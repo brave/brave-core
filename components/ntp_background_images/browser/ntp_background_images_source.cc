@@ -71,8 +71,8 @@ void NTPBackgroundImagesSource::StartDataRequest(
   auto* images_data =
       service_->GetBackgroundImagesData(IsSuperReferralPath(path));
   if (!images_data) {
-    base::PostTask(FROM_HERE, {content::BrowserThread::UI},
-                   base::BindOnce(std::move(callback),
+    content::GetUIThreadTaskRunner({})->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback),
                                   scoped_refptr<base::RefCountedMemory>()));
     return;
   }

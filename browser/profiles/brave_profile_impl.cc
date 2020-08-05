@@ -57,8 +57,8 @@ BraveProfileImpl::BraveProfileImpl(
 
     notification_registrar_.Add(this, chrome::NOTIFICATION_PROFILE_DESTROYED,
                                 content::Source<Profile>(parent_profile));
-    base::PostTaskAndReply(
-        FROM_HERE, {content::BrowserThread::UI}, base::DoNothing(),
+    content::GetUIThreadTaskRunner({})->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(),
         base::BindOnce(&ProfileImpl::OnPrefsLoaded,
                        weak_ptr_factory_.GetWeakPtr(), create_mode, true));
   }
