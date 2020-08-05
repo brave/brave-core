@@ -466,6 +466,16 @@ class BraveRewardsGetAnonWalletStatusFunction
   void OnGetAnonWalletStatus(const uint32_t result);
 };
 
+class BraveRewardsIsInitializedFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.isInitialized", UNKNOWN)
+
+ protected:
+  ~BraveRewardsIsInitializedFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

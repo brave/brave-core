@@ -17,6 +17,7 @@ declare namespace RewardsExtension {
     recurringTips: Record<string, number>[]
     tipAmounts: Record<string, number[]>
     externalWallet?: ExternalWallet
+    initializing: boolean
   }
 
   interface ApplicationState {

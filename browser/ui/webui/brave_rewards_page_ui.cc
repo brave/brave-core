@@ -70,6 +70,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RegisterMessages() override;
 
  private:
+  void IsInitialized(const base::ListValue* args);
   void HandleCreateWalletRequested(const base::ListValue* args);
   void GetRewardsParameters(const base::ListValue* args);
   void GetAutoContributeProperties(const base::ListValue* args);
@@ -339,6 +340,9 @@ void RewardsDOMHandler::RegisterMessages() {
                    profile, chrome::FaviconUrlFormat::kFaviconLegacy));
 #endif
 
+  web_ui()->RegisterMessageCallback("brave_rewards.isInitialized",
+      base::BindRepeating(&RewardsDOMHandler::IsInitialized,
+      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.createWalletRequested",
       base::BindRepeating(&RewardsDOMHandler::HandleCreateWalletRequested,
       base::Unretained(this)));
@@ -499,6 +503,19 @@ void RewardsDOMHandler::Init() {
 
   if (rewards_service_)
     rewards_service_->AddObserver(this);
+}
+
+void RewardsDOMHandler::IsInitialized(
+    const base::ListValue* args) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  if (rewards_service_ && rewards_service_->IsInitialized()) {
+    web_ui()->CallJavascriptFunctionUnsafe(
+        "brave_rewards.initialized",
+        base::Value(0));
+  }
 }
 
 void RewardsDOMHandler::HandleCreateWalletRequested(
