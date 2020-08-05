@@ -157,7 +157,7 @@ void BraveP3ALogStore::StageNextLog() {
   VLOG(2) << "BraveP3ALogStore::StageNextLog: staged " << staged_entry_key_;
 }
 
-void BraveP3ALogStore::MarkStagedLogAsSent() {
+void BraveP3ALogStore::DiscardStagedLog() {
   if (!has_staged_log()) {
     return;
   }
@@ -166,15 +166,8 @@ void BraveP3ALogStore::MarkStagedLogAsSent() {
   auto log_iter = log_.find(staged_entry_key_);
   DCHECK(log_iter != log_.end());
   log_iter->second.MarkAsSent();
-}
-
-void BraveP3ALogStore::DiscardStagedLog() {
-  if (!has_staged_log()) {
-    return;
-  }
 
   // Update the persistent value.
-  auto log_iter = log_.find(staged_entry_key_);
   DictionaryPrefUpdate update(local_state_, kPrefName);
   update->SetPath({log_iter->first, kLogSentKey},
                   base::Value(log_iter->second.sent));
@@ -189,6 +182,8 @@ void BraveP3ALogStore::DiscardStagedLog() {
   staged_entry_key_.clear();
   staged_log_.clear();
 }
+
+void BraveP3ALogStore::MarkStagedLogAsSent() {}
 
 void BraveP3ALogStore::PersistUnsentLogs() const {
   NOTREACHED();
