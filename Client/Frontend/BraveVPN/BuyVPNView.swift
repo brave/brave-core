@@ -122,7 +122,6 @@ extension BuyVPNViewController {
             $0.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
             $0.numberOfLines = 0
             $0.lineBreakMode = .byWordWrapping
-            $0.textAlignment = .center
             $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.6)
         }
         

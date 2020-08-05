@@ -1274,7 +1274,7 @@ extension Strings {
         public static let vpnIAPBoilerPlate =
             NSLocalizedString("vpn.vpnIAPBoilerPlate",
                               bundle: .braveShared,
-                              value: "Price may vary by location. Subscriptions will be charged to your credit card through your iTunes account. Subscriptions are offered for either 1 month ($9.99) or 1-year ($99.99) periods, and will automatically renew unless canceled at least 24 hours before the end of the current period. You will not be able to cancel the subscription once activated. You can manage your subscriptions in Account Settings after purchase. Free trials may only be used once. Any unused portion of a free trial will be forfeited if you purchase a subscription",
+                              value: "Subscriptions will be charged via your iTunes account.\n\nAny unused portion of the free trial, if offered, is forfeited when you buy a subscription.\n\nYour subscription will renew automatically unless it is cancelled at least at least 24 hours before the end of the current period.\n\nYou can manage your subscriptions in Settings.\n\nBy using Brave, you agree to the Terms of Use and Privacy Policy.",
                               comment: "Disclaimer for user purchasing the VPN plan.")
     }
 }
