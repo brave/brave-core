@@ -203,7 +203,7 @@
     Wi-Fi networks
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SUBMENU_LABEL" desc="Label of Account Manager submenu in Settings page.">
-    Brave Accounts
+    Brave sync chains
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_PAGE_TITLE" desc="Title of Account Manager Settings page.">
     My accounts
@@ -826,10 +826,10 @@
     School Account
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_TEXT" desc="Text for 'secondary accounts disabled' message in Settings page.">
-    Your administrator has disabled the addition of more Brave Accounts
+    Your administrator has disabled the addition of more Brave sync chains
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SECONDARY_ACCOUNTS_DISABLED_CHILD_TEXT" desc="Text for 'secondary accounts disabled' message for child accounts in Settings page.">
-    Addition of more Brave Accounts is disabled
+    Addition of more Brave sync chains is disabled
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_SIGNED_OUT_ACCOUNT_PLACEHOLDER" desc="Placeholder text for the full name of a signed out account in Account Manager.">
     Sign in again
@@ -1672,7 +1672,7 @@
     Get data connection
   </message>
   <message name="IDS_SETTINGS_INTERNET_TOGGLE_TETHER_SUBTEXT" desc="Settings &gt; Internet: Description for Tether enable/disable toggle .">
-    Let this device find other devices with your Brave Account that have a mobile data connection
+    Let this device find other devices with your Brave sync chain that have a mobile data connection
   </message>
   <message name="IDS_SETTINGS_INTERNET_TOGGLE_WIFI_ACCESSIBILITY_LABEL" desc="Accessibility only label for WiFi enable/disable toggle .">
     Wi-Fi enable
@@ -2448,7 +2448,7 @@
     Unlock device only
   </message>
   <message name="IDS_SETTINGS_EASY_UNLOCK_UNLOCK_DEVICE_AND_ALLOW_SIGNIN" desc="This option lets the user unlock their Bravebook from their phone as well as log into their Bravebook without a password if their phone is nearby and unlocked.">
-    Unlock device and sign in to Brave Account
+    Unlock device and sign in to Brave sync chain
   </message>
 
   <!-- Fingerprint Page (OS settings) -->
