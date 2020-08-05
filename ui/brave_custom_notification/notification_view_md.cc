@@ -478,7 +478,7 @@ void NotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
   button_->SetImage(
       views::Button::STATE_NORMAL,
       // gfx::CreateVectorIcon(kNotificationInlineReplyIcon, kInputReplyButtonSize,
-      gfx::CreateVectorIcon(kSadFolderIcon, kInputReplyButtonSize,
+      gfx::CreateVectorIcon(kCloseIcon, kInputReplyButtonSize,
                             textfield_->GetText().empty()
                                 ? kTextfieldPlaceholderIconColorMD
                                 : SK_ColorWHITE));
@@ -542,14 +542,13 @@ class NotificationViewMD::NotificationViewMDPathGenerator
       const NotificationViewMDPathGenerator&) = delete;
 
   // views::HighlightPathGenerator:
-  base::Optional<RoundRect> GetRoundRect(const gfx::RectF& rect) override {
-    RoundRect round_rect;
-    round_rect.bounds = rect;
+  base::Optional<gfx::RRectF> GetRoundRect(const gfx::RectF& rect) override {
+    gfx::RectF bounds = rect;
     if (!preferred_size_.IsEmpty())
-      round_rect.bounds.set_size(gfx::SizeF(preferred_size_));
-    round_rect.corner_radius = gfx::RoundedCornersF(
-        top_radius_, top_radius_, bottom_radius_, bottom_radius_);
-    return round_rect;
+      bounds.set_size(gfx::SizeF(preferred_size_));
+    gfx::RoundedCornersF corner_radius(top_radius_, top_radius_, bottom_radius_,
+                                       bottom_radius_);
+    return gfx::RRectF(bounds, corner_radius);
   }
 
   void set_top_radius(int val) { top_radius_ = val; }

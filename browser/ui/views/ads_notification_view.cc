@@ -27,7 +27,7 @@
 
 namespace {
   AdsNotificationView* g_active_ads_window = nullptr;
-  views::WebView* wv = nullptr;
+  // views::WebView* wv = nullptr;
 constexpr gfx::Size kContainerSize(328, 200);
 // constexpr gfx::Size kBigContainerSize(328, 500);
 constexpr gfx::Size kSmallContainerSize(328, 50);
@@ -73,11 +73,13 @@ views::Widget* AdsNotificationView::Show(Profile* profile,
   container->AddChildView(tv);
 
    wv_container->SetLayoutManager(std::make_unique<views::FillLayout>());
-  wv = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
   wv_container->SetSize(kContainerSize);
   wv_container->SetPreferredSize(kContainerSize);
   wv_container->SizeToPreferredSize();
+  /* needsto add back TODO
+  wv = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
   wv_container->AddChildView(wv);
+  */
   // container->AddChildView(wv_container);
   // container->AddChildView(wv);
  // views::TextField* tf2 = new views::TextField();
