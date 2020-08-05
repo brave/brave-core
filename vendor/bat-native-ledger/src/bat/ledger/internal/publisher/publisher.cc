@@ -581,7 +581,7 @@ void Publisher::GetPublisherActivityFromUrl(
 
     visit_data->url += visit_data->path;
 
-    ledger_->GetMediaActivityFromUrl(
+    ledger_->media()->GetMediaActivityFromUrl(
         windowId,
         std::move(visit_data),
         type,

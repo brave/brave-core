@@ -174,12 +174,6 @@ class MockLedgerImpl : public LedgerImpl {
           ledger::VisitDataPtr,
           const std::string&));
 
-  MOCK_METHOD4(GetMediaActivityFromUrl,
-      void(uint64_t,
-          ledger::VisitDataPtr,
-          const std::string&,
-          const std::string&));
-
   MOCK_METHOD4(SetBalanceReportItem, void(
       const ledger::ActivityMonth,
       const int,

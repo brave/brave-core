@@ -142,7 +142,10 @@ void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
   visit_data->path = "/";
   visit_data->name = name;
 
-  ledger_->publisher()->GetPublisherActivityFromUrl(window_id, std::move(visit_data), "");
+  ledger_->publisher()->GetPublisherActivityFromUrl(
+      window_id,
+      std::move(visit_data),
+      "");
 }
 
 void Media::SaveMediaInfo(const std::string& type,

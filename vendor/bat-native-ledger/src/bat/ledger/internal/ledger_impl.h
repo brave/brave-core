@@ -17,6 +17,7 @@
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/state/state.h"
@@ -26,10 +27,6 @@
 
 namespace base {
 class SequencedTaskRunner;
-}
-
-namespace braveledger_media {
-class Media;
 }
 
 namespace braveledger_publisher {
@@ -80,6 +77,8 @@ class LedgerImpl : public ledger::Ledger {
   braveledger_promotion::Promotion* promotion() const;
 
   braveledger_publisher::Publisher* publisher() const;
+
+  braveledger_media::Media* media() const;
 
   void Initialize(
       const bool execute_create_script,
@@ -229,12 +228,6 @@ class LedgerImpl : public ledger::Ledger {
       uint64_t windowId,
       ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) override;
-
-  void GetMediaActivityFromUrl(
-      uint64_t windowId,
-      ledger::VisitDataPtr visit_data,
-      const std::string& providerType,
-      const std::string& publisher_blob);
 
   void SetBalanceReportItem(
       const ledger::ActivityMonth month,
@@ -654,7 +647,7 @@ class LedgerImpl : public ledger::Ledger {
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_promotion::Promotion> promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> publisher_;
-  std::unique_ptr<braveledger_media::Media> bat_media_;
+  std::unique_ptr<braveledger_media::Media> media_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
