@@ -125,7 +125,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   // make sure wallet/client state is sane here as this is the first
   // panel call.
   const std::string& wallet_payment_id = ledger_->state()->GetPaymentId();
-  const std::string& passphrase = ledger_->GetWalletPassphrase();
+  const std::string& passphrase = ledger_->wallet()->GetWalletPassphrase();
   if (wallet_payment_id.empty() || passphrase.empty()) {
     BLOG(0, "Corrupted wallet");
     ledger::PromotionList empty_list;

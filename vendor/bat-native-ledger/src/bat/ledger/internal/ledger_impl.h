@@ -33,10 +33,6 @@ namespace braveledger_publisher {
 class PrefixListReader;
 }
 
-namespace braveledger_wallet {
-class Wallet;
-}
-
 namespace braveledger_database {
 class Database;
 }
@@ -77,6 +73,8 @@ class LedgerImpl : public ledger::Ledger {
   braveledger_media::Media* media() const;
 
   braveledger_contribution::Contribution* contribution() const;
+
+  braveledger_wallet::Wallet* wallet() const;
 
   void Initialize(
       const bool execute_create_script,
@@ -310,8 +308,6 @@ class LedgerImpl : public ledger::Ledger {
   void DisconnectWallet(
       const std::string& wallet_type,
       ledger::ResultCallback callback) override;
-
-  void ClaimFunds(ledger::ResultCallback callback);
 
   void DeleteActivityInfo(
       const std::string& publisher_key,
@@ -635,7 +631,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> media_;
   std::unique_ptr<braveledger_contribution::Contribution> contribution_;
-  std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
+  std::unique_ptr<braveledger_wallet::Wallet> wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<braveledger_report::Report> bat_report_;
   std::unique_ptr<braveledger_sku::SKU> bat_sku_;

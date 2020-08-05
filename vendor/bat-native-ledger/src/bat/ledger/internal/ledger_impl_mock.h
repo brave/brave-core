@@ -261,8 +261,6 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD2(DisconnectWallet,
       void(const std::string&, ledger::ResultCallback));
 
-  MOCK_METHOD1(ClaimFunds, void(ledger::ResultCallback));
-
   MOCK_METHOD2(DeleteActivityInfo,
       void(const std::string&, ledger::ResultCallback));
 

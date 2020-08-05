@@ -72,8 +72,9 @@ class PromotionTest : public testing::Test {
     ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStatePaymentId))
       .WillByDefault(testing::Return(payment_id));
 
-    const std::string wallet_passphrase = "phrase";
-    ON_CALL(*mock_ledger_impl_, GetWalletPassphrase())
+    const std::string wallet_passphrase =
+        "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=";
+    ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStateRecoverySeed))
       .WillByDefault(testing::Return(wallet_passphrase));
 
     ON_CALL(*mock_ledger_impl_, LoadURL(_, _, _, _, _, _))
@@ -93,7 +94,6 @@ class PromotionTest : public testing::Test {
         }));
   }
 };
-
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   ledger::FetchPromotionCallback fetch_promotion_callback =
       std::bind(

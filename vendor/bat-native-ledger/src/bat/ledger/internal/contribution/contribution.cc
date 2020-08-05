@@ -199,7 +199,7 @@ void Contribution::OnBalance(
 void Contribution::Start(ledger::ContributionQueuePtr info) {
   const auto info_converted =
       braveledger_bind_util::FromContributionQueueToString(std::move(info));
-  ledger_->FetchBalance(
+  ledger_->wallet()->FetchBalance(
       std::bind(&Contribution::OnBalance,
                 this,
                 info_converted,

@@ -118,7 +118,7 @@ void ContributionMonthly::HasSufficientBalance(
           _2,
           callback);
 
-  ledger_->FetchBalance(fetch_callback);
+  ledger_->wallet()->FetchBalance(fetch_callback);
 }
 
 void ContributionMonthly::OnSufficientBalanceWallet(

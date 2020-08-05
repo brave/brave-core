@@ -492,7 +492,7 @@ void ContributionSKU::RetryStartStep(
         order_id,
         contribution->contribution_id,
         callback);
-    ledger_->GetExternalWallet(ledger::kWalletUphold, get_callback);
+    ledger_->wallet()->GetExternalWallet(ledger::kWalletUphold, get_callback);
     return;
   }
 

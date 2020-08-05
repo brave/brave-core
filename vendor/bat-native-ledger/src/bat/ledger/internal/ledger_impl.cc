@@ -28,7 +28,6 @@
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
-using namespace braveledger_wallet; //  NOLINT
 using namespace braveledger_database; //  NOLINT
 using namespace braveledger_report; //  NOLINT
 using namespace braveledger_sku; //  NOLINT
@@ -45,7 +44,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     publisher_(new braveledger_publisher::Publisher(this)),
     media_(new braveledger_media::Media(this)),
     contribution_(new braveledger_contribution::Contribution(this)),
-    bat_wallet_(new Wallet(this)),
+    wallet_(new braveledger_wallet::Wallet(this)),
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
     state_(new braveledger_state::State(this)),
@@ -104,6 +103,10 @@ braveledger_media::Media* LedgerImpl::media() const {
 
 braveledger_contribution::Contribution* LedgerImpl::contribution() const {
   return contribution_.get();
+}
+
+braveledger_wallet::Wallet* LedgerImpl::wallet() const {
+  return wallet_.get();
 }
 
 void LedgerImpl::OnInitialized(
@@ -196,7 +199,7 @@ void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
       _1,
       callback);
 
-  bat_wallet_->CreateWalletIfNecessary(create_callback);
+  wallet()->CreateWalletIfNecessary(create_callback);
 }
 
 void LedgerImpl::OnCreateWallet(
@@ -590,7 +593,7 @@ void LedgerImpl::AttestPromotion(
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {
-  return bat_wallet_->GetWalletPassphrase();
+  return wallet()->GetWalletPassphrase();
 }
 
 void LedgerImpl::RecoverWallet(
@@ -600,7 +603,7 @@ void LedgerImpl::RecoverWallet(
       this,
       _1,
       std::move(callback));
-  bat_wallet_->RecoverWallet(pass_phrase, std::move(on_recover));
+  wallet()->RecoverWallet(pass_phrase, std::move(on_recover));
 }
 
 void LedgerImpl::OnRecoverWallet(
@@ -835,19 +838,19 @@ void LedgerImpl::WasPublisherProcessed(
 }
 
 void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
-  bat_wallet_->FetchBalance(callback);
+  wallet()->FetchBalance(callback);
 }
 
 void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
                                    ledger::ExternalWalletCallback callback) {
-  bat_wallet_->GetExternalWallet(wallet_type, callback);
+  wallet()->GetExternalWallet(wallet_type, callback);
 }
 
 void LedgerImpl::ExternalWalletAuthorization(
       const std::string& wallet_type,
       const std::map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback) {
-  bat_wallet_->ExternalWalletAuthorization(
+  wallet()->ExternalWalletAuthorization(
       wallet_type,
       args,
       callback);
@@ -856,11 +859,7 @@ void LedgerImpl::ExternalWalletAuthorization(
 void LedgerImpl::DisconnectWallet(
       const std::string& wallet_type,
       ledger::ResultCallback callback) {
-  bat_wallet_->DisconnectWallet(wallet_type, callback);
-}
-
-void LedgerImpl::ClaimFunds(ledger::ResultCallback callback) {
-  bat_wallet_->ClaimFunds(callback);
+  wallet()->DisconnectWallet(wallet_type, callback);
 }
 
 void LedgerImpl::DeleteActivityInfo(
@@ -1001,7 +1000,7 @@ void LedgerImpl::GetSpendableUnblindedTokensByTriggerIds(
 }
 
 void LedgerImpl::GetAnonWalletStatus(ledger::ResultCallback callback) {
-  bat_wallet_->GetAnonWalletStatus(callback);
+  wallet()->GetAnonWalletStatus(callback);
 }
 
 void LedgerImpl::GetTransactionReport(
@@ -1275,7 +1274,7 @@ void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
       _1,
       callback);
 
-  bat_wallet_->DisconnectAllWallets(disconnect_callback);
+  wallet()->DisconnectAllWallets(disconnect_callback);
 }
 
 void LedgerImpl::ShutdownWallets(

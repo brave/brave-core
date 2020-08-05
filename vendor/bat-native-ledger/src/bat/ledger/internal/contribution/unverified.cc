@@ -23,7 +23,7 @@ Unverified::~Unverified() {
 }
 
 void Unverified::Contribute() {
-  ledger_->FetchBalance(
+  ledger_->wallet()->FetchBalance(
       std::bind(&Unverified::OnContributeUnverifiedBalance,
                 this,
                 _1,

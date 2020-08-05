@@ -89,7 +89,7 @@ WalletClaim::WalletClaim(bat_ledger::LedgerImpl* ledger) :
 WalletClaim::~WalletClaim() = default;
 
 void WalletClaim::Start(ledger::ResultCallback callback) {
-  ledger_->FetchBalance(std::bind(&WalletClaim::OnBalance,
+  ledger_->wallet()->FetchBalance(std::bind(&WalletClaim::OnBalance,
       this,
       _1,
       _2,
