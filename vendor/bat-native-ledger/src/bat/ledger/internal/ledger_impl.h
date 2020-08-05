@@ -17,8 +17,8 @@
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
-#include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/promotion/promotion.h"
+#include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
@@ -54,10 +54,6 @@ class Report;
 
 namespace braveledger_sku {
 class SKU;
-}
-
-namespace braveledger_state {
-class State;
 }
 namespace braveledger_api {
 class API;

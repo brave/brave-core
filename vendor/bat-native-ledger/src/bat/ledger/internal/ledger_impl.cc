@@ -37,11 +37,9 @@ using namespace braveledger_wallet; //  NOLINT
 using namespace braveledger_database; //  NOLINT
 using namespace braveledger_report; //  NOLINT
 using namespace braveledger_sku; //  NOLINT
-using namespace braveledger_state; //  NOLINT
 using namespace braveledger_api; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
-using std::placeholders::_3;
 using std::placeholders::_3;
 
 namespace bat_ledger {
@@ -55,7 +53,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_wallet_(new Wallet(this)),
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
-    state_(new State(this)),
+    state_(new braveledger_state::State(this)),
     bat_api_(new API(this)),
     initialized_task_scheduler_(false),
     initializing_(false),
@@ -171,7 +169,7 @@ void LedgerImpl::OnDatabaseInitialized(
       _1,
       callback);
 
-  state_->Initialize(state_callback);
+  state()->Initialize(state_callback);
 }
 
 void LedgerImpl::OnStateInitialized(
