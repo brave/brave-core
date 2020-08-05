@@ -20,6 +20,7 @@
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/publisher/publisher.h"
+#include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger.h"
@@ -35,10 +36,6 @@ class PrefixListReader;
 
 namespace braveledger_database {
 class Database;
-}
-
-namespace braveledger_report {
-class Report;
 }
 
 namespace braveledger_sku {
@@ -75,6 +72,8 @@ class LedgerImpl : public ledger::Ledger {
   braveledger_contribution::Contribution* contribution() const;
 
   braveledger_wallet::Wallet* wallet() const;
+
+  braveledger_report::Report* report() const;
 
   void Initialize(
       const bool execute_create_script,
@@ -633,7 +632,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_contribution::Contribution> contribution_;
   std::unique_ptr<braveledger_wallet::Wallet> wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
-  std::unique_ptr<braveledger_report::Report> bat_report_;
+  std::unique_ptr<braveledger_report::Report> report_;
   std::unique_ptr<braveledger_sku::SKU> bat_sku_;
   std::unique_ptr<braveledger_state::State> state_;
   std::unique_ptr<braveledger_api::API> bat_api_;
