@@ -15,6 +15,7 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/statement_info.h"
 
 namespace ads {
 class Ads;
@@ -40,9 +41,6 @@ class BatAdsImpl :
       InitializeCallback callback) override;
   void Shutdown(
       ShutdownCallback callback) override;
-
-  void SetConfirmationsIsReady(
-      const bool is_ready) override;
 
   void ChangeLocale(
       const std::string& locale) override;
@@ -84,10 +82,20 @@ class BatAdsImpl :
   void RemoveAllHistory(
       RemoveAllHistoryCallback callback) override;
 
+  void OnWalletUpdated(
+      const std::string& payment_id,
+      const std::string& recovery_seed_base64) override;
+
+  void UpdateAdRewards(
+      const bool should_reconcile) override;
+
   void GetAdsHistory(
       const uint64_t from_timestamp,
       const uint64_t to_timestamp,
       GetAdsHistoryCallback callback) override;
+
+  void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -155,6 +163,10 @@ class BatAdsImpl :
   static void OnRemoveAllHistory(
       CallbackHolder<RemoveAllHistoryCallback>* holder,
       const int32_t result);
+
+  static void OnGetTransactionHistory(
+    CallbackHolder<GetTransactionHistoryCallback>* holder,
+    const ads::StatementInfo& statement);
 
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
   std::unique_ptr<ads::Ads> ads_;

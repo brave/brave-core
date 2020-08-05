@@ -5,11 +5,10 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/minimum_wait_time_frequency_cap.h"
 
-#include "bat/ads/ad_history.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping_utils.h"
-
-#include "base/time/time.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
+#include "bat/ads/internal/platform/platform_helper.h"
+#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -22,7 +21,7 @@ MinimumWaitTimeFrequencyCap::MinimumWaitTimeFrequencyCap(
 MinimumWaitTimeFrequencyCap::~MinimumWaitTimeFrequencyCap() = default;
 
 bool MinimumWaitTimeFrequencyCap::IsAllowed() {
-  if (ads_->IsMobile()) {
+  if (PlatformHelper::GetInstance()->IsMobile()) {
     return true;
   }
 

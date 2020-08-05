@@ -6,18 +6,21 @@
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier.h"
 
 #include <algorithm>
+#include <functional>
 #include <map>
 #include <utility>
 
 #include "base/json/json_reader.h"
-#include "base/strings/string_util.h"
-#include "base/time/time.h"
+#include "brave/components/l10n/common/locale_util.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "third_party/re2/src/re2/re2.h"
 #include "url/gurl.h"
+#include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier_user_models.h"
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_classifier_util.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/search_engine/search_providers.h"
 #include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/url_util.h"
 
 namespace ads {
 namespace classification {
@@ -26,7 +29,14 @@ const uint16_t kExpectedPurchaseIntentModelVersion = 1;
 const uint16_t kPurchaseIntentDefaultSignalWeight = 1;
 const uint16_t kPurchaseIntentWordCountLimit = 1000;
 
-PurchaseIntentClassifier::PurchaseIntentClassifier() = default;
+using std::placeholders::_1;
+using std::placeholders::_2;
+
+PurchaseIntentClassifier::PurchaseIntentClassifier(
+    AdsImpl* ads)
+    : ads_(ads) {
+  DCHECK(ads_);
+}
 
 PurchaseIntentClassifier::~PurchaseIntentClassifier() = default;
 
@@ -40,37 +50,56 @@ bool PurchaseIntentClassifier::Initialize(
   return is_initialized_;
 }
 
-PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
-    const std::string& url) {
-  PurchaseIntentSignalInfo signal_info;
-  const std::string search_query =
-      SearchProviders::ExtractSearchQueryKeywords(url);
+void PurchaseIntentClassifier::LoadUserModelForLocale(
+    const std::string& locale) {
+  const std::string country_code = brave_l10n::GetCountryCode(locale);
 
-  if (!search_query.empty()) {
-    auto keyword_segments = GetSegments(search_query);
-
-    if (!keyword_segments.empty()) {
-      uint16_t keyword_weight = GetFunnelWeight(search_query);
-
-      signal_info.timestamp_in_seconds =
-          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-      signal_info.segments = keyword_segments;
-      signal_info.weight = keyword_weight;
-      return signal_info;
-    }
-  } else {
-    SiteInfo info = GetSite(url);
-
-    if (!info.url_netloc.empty()) {
-      signal_info.timestamp_in_seconds =
-          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-      signal_info.segments = info.segments;
-      signal_info.weight = info.weight;
-      return signal_info;
-    }
+  const auto iter = kPurchaseIntentCountryCodes.find(country_code);
+  if (iter == kPurchaseIntentCountryCodes.end()) {
+    BLOG(1, country_code << " does not support purchase intent");
+    is_initialized_ = false;
+    return;
   }
 
-  return signal_info;
+  LoadUserModelForId(iter->second);
+}
+
+void PurchaseIntentClassifier::LoadUserModelForId(
+    const std::string& id) {
+  auto callback = std::bind(&PurchaseIntentClassifier::OnLoadUserModelForId,
+      this, id, _1, _2);
+
+  ads_->get_ads_client()->LoadUserModelForId(id, callback);
+}
+
+PurchaseIntentSignalInfo PurchaseIntentClassifier::MaybeExtractIntentSignal(
+    const std::string& url) {
+  PurchaseIntentSignalInfo purchase_intent_signal;
+
+  if (!UrlHasScheme(url)) {
+    BLOG(1, "Visited URL is not supported for extracting purchase intent");
+    return purchase_intent_signal;
+  }
+
+  if (!SearchProviders::IsSearchEngine(url) &&
+      SameSite(url, ads_->get_previous_tab_url())) {
+    BLOG(1, "Visited URL is not supported for extracting purchase intent");
+    return purchase_intent_signal;
+  }
+
+  BLOG(1, "Extracting purchase intent signal from visited URL");
+
+  purchase_intent_signal = ExtractIntentSignal(url);
+  if (purchase_intent_signal.segments.empty()) {
+    BLOG(1, "No purchase intent matches found for visited URL");
+    return purchase_intent_signal;
+  }
+
+  BLOG(1, "Extracted purchase intent signal from visited URL");
+
+  AppendIntentSignalToHistory(purchase_intent_signal);
+
+  return purchase_intent_signal;
 }
 
 PurchaseIntentWinningCategoryList
@@ -102,125 +131,7 @@ PurchaseIntentClassifier::GetWinningCategories(
   return winning_categories;
 }
 
-uint16_t PurchaseIntentClassifier::GetIntentScoreForHistory(
-    const PurchaseIntentSignalSegmentHistoryList& history) {
-  uint16_t intent_score = 0;
-
-  for (const auto& signal_segment : history) {
-    const base::Time signal_decayed_at_in_seconds =
-        base::Time::FromDoubleT(signal_segment.timestamp_in_seconds) +
-            base::TimeDelta::FromSeconds(signal_decay_time_window_in_seconds_);
-
-    const base::Time now_in_seconds = base::Time::Now();
-
-    if (now_in_seconds > signal_decayed_at_in_seconds) {
-      continue;
-    }
-
-    intent_score += signal_level_ * signal_segment.weight;
-  }
-
-  return intent_score;
-}
-
-SiteInfo PurchaseIntentClassifier::GetSite(
-    const std::string& url) {
-  const GURL visited_url = GURL(url);
-  SiteInfo info;
-
-  if (!visited_url.has_host()) {
-    return info;
-  }
-
-  for (const auto& site : sites_) {
-    const GURL site_url = GURL(site.url_netloc);
-
-    if (!site_url.is_valid()) {
-      continue;
-    }
-
-    if (SameDomainOrHost(visited_url, site_url,
-        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-      info = site;
-      return info;
-    }
-  }
-
-  return info;
-}
-
-PurchaseIntentSegmentList PurchaseIntentClassifier::GetSegments(
-    const std::string& search_query) {
-  PurchaseIntentSegmentList segment_list;
-  auto search_query_keyword_set = TransformIntoSetOfWords(search_query);
-
-  for (const auto& keyword : segment_keywords_) {
-    auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
-
-    // Intended behaviour relies on early return from list traversal and
-    // implicitely on the ordering of |segment_keywords_| to ensure
-    // specific segments are matched over general segments, e.g. "audi a6"
-    // segments should be returned over "audi" segments if possible.
-    if (IsSubset(search_query_keyword_set, list_keyword_set)) {
-      segment_list = keyword.segments;
-      return segment_list;
-    }
-  }
-
-  return segment_list;
-}
-
-uint16_t PurchaseIntentClassifier::GetFunnelWeight(
-    const std::string& search_query) {
-  auto search_query_keyword_set = TransformIntoSetOfWords(search_query);
-
-  uint16_t max_weight = kPurchaseIntentDefaultSignalWeight;
-  for (const auto& keyword : funnel_keywords_) {
-    auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
-
-    if (IsSubset(search_query_keyword_set, list_keyword_set) &&
-        keyword.weight > max_weight) {
-      max_weight = keyword.weight;
-    }
-  }
-
-  return max_weight;
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/8495): Implement Brave
-// Ads Purchase Intent keyword matching with std::sets
-bool PurchaseIntentClassifier::IsSubset(
-    const std::vector<std::string>& keyword_set_a,
-    const std::vector<std::string>& keyword_set_b) {
-  std::vector<std::string> sorted_keyword_set_a = keyword_set_a;
-  std::sort(sorted_keyword_set_a.begin(), sorted_keyword_set_a.end());
-
-  std::vector<std::string> sorted_keyword_set_b = keyword_set_b;
-  std::sort(sorted_keyword_set_b.begin(), sorted_keyword_set_b.end());
-
-  return std::includes(sorted_keyword_set_a.begin(), sorted_keyword_set_a.end(),
-      sorted_keyword_set_b.begin(), sorted_keyword_set_b.end());
-}
-
-// TODO(https://github.com/brave/brave-browser/issues/8495): Implement Brave
-// Ads Purchase Intent keyword matching with std::sets
-std::vector<std::string> PurchaseIntentClassifier::TransformIntoSetOfWords(
-    const std::string& text) {
-  std::string lowercase_text = StripHtmlTagsAndNonAlphaNumericCharacters(text);
-  std::transform(lowercase_text.begin(), lowercase_text.end(),
-  lowercase_text.begin(), ::tolower);
-
-  std::stringstream sstream(lowercase_text);
-  std::vector<std::string> set_of_words;
-  std::string word;
-  uint16_t word_count = 0;
-  while (sstream >> word && word_count < kPurchaseIntentWordCountLimit) {
-    set_of_words.push_back(word);
-    word_count++;
-  }
-
-  return set_of_words;
-}
+///////////////////////////////////////////////////////////////////////////////
 
 bool PurchaseIntentClassifier::FromJson(
     const std::string& json) {
@@ -398,6 +309,191 @@ bool PurchaseIntentClassifier::FromJson(
   }
 
   return true;
+}
+
+void PurchaseIntentClassifier::OnLoadUserModelForId(
+    const std::string& id,
+    const Result result,
+    const std::string& json) {
+  if (result != SUCCESS) {
+    BLOG(1, "Failed to load " << id << " purchase intent user model");
+    is_initialized_ = false;
+    return;
+  }
+
+  BLOG(1, "Successfully loaded " << id << " purchase intent user model");
+
+  if (!Initialize(json)) {
+    BLOG(1, "Failed to initialize " << id << " purchase intent user model");
+    is_initialized_ = false;
+    return;
+  }
+
+  BLOG(1, "Successfully initialized " << id << " purchase intent user model");
+}
+
+PurchaseIntentSignalInfo PurchaseIntentClassifier::ExtractIntentSignal(
+    const std::string& url) {
+  PurchaseIntentSignalInfo signal_info;
+  const std::string search_query =
+      SearchProviders::ExtractSearchQueryKeywords(url);
+
+  if (!search_query.empty()) {
+    auto keyword_segments = GetSegments(search_query);
+
+    if (!keyword_segments.empty()) {
+      uint16_t keyword_weight = GetFunnelWeight(search_query);
+
+      signal_info.timestamp_in_seconds =
+          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+      signal_info.segments = keyword_segments;
+      signal_info.weight = keyword_weight;
+      return signal_info;
+    }
+  } else {
+    SiteInfo info = GetSite(url);
+
+    if (!info.url_netloc.empty()) {
+      signal_info.timestamp_in_seconds =
+          static_cast<uint64_t>(base::Time::Now().ToDoubleT());
+      signal_info.segments = info.segments;
+      signal_info.weight = info.weight;
+      return signal_info;
+    }
+  }
+
+  return signal_info;
+}
+
+void PurchaseIntentClassifier::AppendIntentSignalToHistory(
+    const PurchaseIntentSignalInfo& purchase_intent_signal) {
+  for (const auto& segment : purchase_intent_signal.segments) {
+    PurchaseIntentSignalHistory history;
+    history.timestamp_in_seconds = purchase_intent_signal.timestamp_in_seconds;
+    history.weight = purchase_intent_signal.weight;
+    ads_->get_client()->AppendToPurchaseIntentSignalHistoryForSegment(
+        segment, history);
+  }
+}
+
+uint16_t PurchaseIntentClassifier::GetIntentScoreForHistory(
+    const PurchaseIntentSignalSegmentHistoryList& history) {
+  uint16_t intent_score = 0;
+
+  for (const auto& signal_segment : history) {
+    const base::Time signal_decayed_at_in_seconds =
+        base::Time::FromDoubleT(signal_segment.timestamp_in_seconds) +
+            base::TimeDelta::FromSeconds(signal_decay_time_window_in_seconds_);
+
+    const base::Time now_in_seconds = base::Time::Now();
+
+    if (now_in_seconds > signal_decayed_at_in_seconds) {
+      continue;
+    }
+
+    intent_score += signal_level_ * signal_segment.weight;
+  }
+
+  return intent_score;
+}
+
+SiteInfo PurchaseIntentClassifier::GetSite(
+    const std::string& url) {
+  const GURL visited_url = GURL(url);
+  SiteInfo info;
+
+  if (!visited_url.has_host()) {
+    return info;
+  }
+
+  for (const auto& site : sites_) {
+    const GURL site_url = GURL(site.url_netloc);
+
+    if (!site_url.is_valid()) {
+      continue;
+    }
+
+    if (SameDomainOrHost(visited_url, site_url,
+        net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+      info = site;
+      return info;
+    }
+  }
+
+  return info;
+}
+
+PurchaseIntentSegmentList PurchaseIntentClassifier::GetSegments(
+    const std::string& search_query) {
+  PurchaseIntentSegmentList segment_list;
+  auto search_query_keyword_set = TransformIntoSetOfWords(search_query);
+
+  for (const auto& keyword : segment_keywords_) {
+    auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
+
+    // Intended behaviour relies on early return from list traversal and
+    // implicitely on the ordering of |segment_keywords_| to ensure
+    // specific segments are matched over general segments, e.g. "audi a6"
+    // segments should be returned over "audi" segments if possible.
+    if (IsSubset(search_query_keyword_set, list_keyword_set)) {
+      segment_list = keyword.segments;
+      return segment_list;
+    }
+  }
+
+  return segment_list;
+}
+
+uint16_t PurchaseIntentClassifier::GetFunnelWeight(
+    const std::string& search_query) {
+  auto search_query_keyword_set = TransformIntoSetOfWords(search_query);
+
+  uint16_t max_weight = kPurchaseIntentDefaultSignalWeight;
+  for (const auto& keyword : funnel_keywords_) {
+    auto list_keyword_set = TransformIntoSetOfWords(keyword.keywords);
+
+    if (IsSubset(search_query_keyword_set, list_keyword_set) &&
+        keyword.weight > max_weight) {
+      max_weight = keyword.weight;
+    }
+  }
+
+  return max_weight;
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/8495): Implement Brave
+// Ads Purchase Intent keyword matching with std::sets
+bool PurchaseIntentClassifier::IsSubset(
+    const std::vector<std::string>& keyword_set_a,
+    const std::vector<std::string>& keyword_set_b) {
+  std::vector<std::string> sorted_keyword_set_a = keyword_set_a;
+  std::sort(sorted_keyword_set_a.begin(), sorted_keyword_set_a.end());
+
+  std::vector<std::string> sorted_keyword_set_b = keyword_set_b;
+  std::sort(sorted_keyword_set_b.begin(), sorted_keyword_set_b.end());
+
+  return std::includes(sorted_keyword_set_a.begin(), sorted_keyword_set_a.end(),
+      sorted_keyword_set_b.begin(), sorted_keyword_set_b.end());
+}
+
+// TODO(https://github.com/brave/brave-browser/issues/8495): Implement Brave
+// Ads Purchase Intent keyword matching with std::sets
+std::vector<std::string> PurchaseIntentClassifier::TransformIntoSetOfWords(
+    const std::string& text) {
+  std::string lowercase_text = StripHtmlTagsAndNonAlphaNumericCharacters(text);
+  std::transform(lowercase_text.begin(), lowercase_text.end(),
+  lowercase_text.begin(), ::tolower);
+
+  std::stringstream sstream(lowercase_text);
+  std::vector<std::string> set_of_words;
+  std::string word;
+  uint16_t word_count = 0;
+  while (sstream >> word && word_count < kPurchaseIntentWordCountLimit) {
+    set_of_words.push_back(word);
+    word_count++;
+  }
+
+  return set_of_words;
 }
 
 }  // namespace classification

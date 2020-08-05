@@ -11,9 +11,6 @@ NativeLedgerClient::~NativeLedgerClient() {
   bridge_ = nil;
 }
 
-void NativeLedgerClient::ConfirmationsTransactionHistoryDidChange() {
-  [bridge_ confirmationsTransactionHistoryDidChange];
-}
 void NativeLedgerClient::FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) {
   [bridge_ fetchFavIcon:url faviconKey:favicon_key callback:callback];
 }
@@ -22,9 +19,6 @@ void NativeLedgerClient::LoadLedgerState(ledger::OnLoadCallback callback) {
 }
 void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
-}
-void NativeLedgerClient::LoadState(const std::string & name, ledger::OnLoadCallback callback) {
-  [bridge_ loadState:name callback:callback];
 }
 void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) {
   [bridge_ loadURL:url headers:headers content:content contentType:contentType method:method callback:callback];
@@ -38,17 +32,8 @@ void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::Pub
 void NativeLedgerClient::OnReconcileComplete(ledger::Result result, ledger::ContributionInfoPtr contribution) {
   [bridge_ onReconcileComplete:result contribution:std::move(contribution)];
 }
-void NativeLedgerClient::ResetState(const std::string & name, ledger::ResultCallback callback) {
-  [bridge_ resetState:name callback:callback];
-}
 void NativeLedgerClient::PublisherListNormalized(ledger::PublisherInfoList list) {
   [bridge_ publisherListNormalized:std::move(list)];
-}
-void NativeLedgerClient::SaveState(const std::string & name, const std::string & value, ledger::ResultCallback callback) {
-  [bridge_ saveState:name value:value callback:callback];
-}
-void NativeLedgerClient::SetConfirmationsIsReady(const bool is_ready) {
-  [bridge_ setConfirmationsIsReady:is_ready];
 }
 std::string NativeLedgerClient::URIEncode(const std::string & value) {
   return [bridge_ URIEncode:value];

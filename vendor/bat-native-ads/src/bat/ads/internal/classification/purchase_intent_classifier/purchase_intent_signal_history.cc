@@ -5,8 +5,8 @@
 
 #include "bat/ads/internal/classification/purchase_intent_classifier/purchase_intent_signal_history.h"
 
-#include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/json_helper.h"
 
 namespace ads {
 
@@ -35,16 +35,12 @@ std::string PurchaseIntentSignalHistory::ToJson() const {
 }
 
 Result PurchaseIntentSignalHistory::FromJson(
-    const std::string& json,
-    std::string* error_description) {
+    const std::string& json) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
   if (document.HasParseError()) {
-    if (error_description != nullptr) {
-      *error_description = helper::JSON::GetLastError(&document);
-    }
-
+    BLOG(1, helper::JSON::GetLastError(&document));
     return FAILED;
   }
 

@@ -7,34 +7,20 @@
 #define BAT_ADS_ADS_CLIENT_H_
 
 #include <stdint.h>
-#include <string>
-#include <vector>
-#include <map>
-#include <memory>
-#include <functional>
 
-#include "bat/ads/issuers_info.h"
-#include "bat/ads/client_info.h"
-#include "bat/ads/export.h"
+#include <memory>
+#include <string>
+
 #include "bat/ads/ad_notification_info.h"
-#include "bat/ads/result.h"
+#include "bat/ads/export.h"
 #include "bat/ads/mojom.h"
+#include "bat/ads/result.h"
 
 namespace ads {
 
-enum URLRequestMethod {
-  GET = 0,
-  PUT = 1,
-  POST = 2
-};
-
 using ResultCallback = std::function<void(const Result)>;
-
 using LoadCallback = std::function<void(const Result, const std::string&)>;
-
-using URLRequestCallback = std::function<void(const int, const std::string&,
-    const std::map<std::string, std::string>&)>;
-
+using UrlRequestCallback = std::function<void(const UrlResponse&)>;
 using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
 
 class ADS_EXPORT AdsClient {
@@ -86,10 +72,6 @@ class ADS_EXPORT AdsClient {
   // otherwise, should return |false|
   virtual bool IsNetworkConnectionAvailable() const = 0;
 
-  // Should get information about the client, i.e. Platform. returned in |info|
-  virtual void GetClientInfo(
-      ClientInfo* info) const = 0;
-
   // Should return |true| if the browser is active in the foreground; otherwise,
   // should return |false|
   virtual bool IsForeground() const = 0;
@@ -109,36 +91,13 @@ class ADS_EXPORT AdsClient {
   virtual void CloseNotification(
       const std::string& uuid) = 0;
 
-  // Should pass-through to Confirmations that the catalog issuers have changed
-  virtual void SetCatalogIssuers(
-      const std::unique_ptr<IssuersInfo> info) = 0;
-
-  // Should pass-through to Confirmations that an ad was viewed, clicked or
-  // landed
-  virtual void ConfirmAd(
-      const AdInfo& info,
-      const ConfirmationType confirmation_type) = 0;
-
-  // Should pass-through to Confirmations that an ad was flagged, upvoted,
-  // downvoted or converted
-  virtual void ConfirmAction(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const ConfirmationType confirmation_type) = 0;
-
   // Should fetch and return data. Loading should be performed asynchronously,
   // so that the app remains responsive and should handle incoming data or
-  // errors as they arrive. The callback takes 4 arguments — |url| should
-  // contain the Uniform Resource Locator. |response_status_code| should convey
-  // the result of the request. |response| should contain the HTTP response
-  // message. |headers| should contain the HTTP headers.
-  virtual void URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const URLRequestMethod method,
-      URLRequestCallback callback) = 0;
+  // errors as they arrive. The callback takes 1 argument — |URLResponse| should
+  // contain the url, status code, HTTP body and HTTP headers
+  virtual void UrlRequest(
+      UrlRequestPtr url_request,
+      UrlRequestCallback callback) = 0;
 
   // Should save a value to persistent storage. The callback takes one argument
   // — |Result| should be set to |SUCCESS| if successful; otherwise, should be
@@ -164,15 +123,14 @@ class ADS_EXPORT AdsClient {
   virtual std::string LoadResourceForId(
       const std::string& id) = 0;
 
-  // Should reset a previously persisted value. The callback takes one argument
-  // — |Result| should be set to |SUCCESS| if successful; otherwise, should be
-  // set to |FAILED|
-  virtual void Reset(
-      const std::string& name, ResultCallback callback) = 0;
-
+  // Should run a database transaction. The callback takes one argument -
+  // |DBCommandResponsePtr|
   virtual void RunDBTransaction(
       DBTransactionPtr transaction,
       RunDBTransactionCallback callback) = 0;
+
+  // Should be called when ad rewards has changed
+  virtual void OnAdRewardsChanged() = 0;
 
   // Verbose level logging
   virtual void Log(

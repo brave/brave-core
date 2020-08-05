@@ -7,16 +7,16 @@
 #define BAT_ADS_INTERNAL_CLASSIFICATION_PURCHASE_INTENT_CLASSIFIER_PURCHASE_INTENT_SIGNAL_HISTORY_H_  // NOLINT
 
 #include <stdint.h>
-#include <string>
-#include <map>
-#include <deque>
 
-#include "bat/ads/export.h"
+#include <deque>
+#include <map>
+#include <string>
+
 #include "bat/ads/result.h"
 
 namespace ads {
 
-struct ADS_EXPORT PurchaseIntentSignalHistory {
+struct PurchaseIntentSignalHistory {
   PurchaseIntentSignalHistory();
   PurchaseIntentSignalHistory(
       const PurchaseIntentSignalHistory& properties);
@@ -29,8 +29,7 @@ struct ADS_EXPORT PurchaseIntentSignalHistory {
 
   std::string ToJson() const;
   Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
+      const std::string& json);
 
   uint64_t timestamp_in_seconds;
   uint16_t weight = 0;

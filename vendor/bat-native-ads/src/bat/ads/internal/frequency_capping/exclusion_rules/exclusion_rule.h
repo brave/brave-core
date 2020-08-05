@@ -3,14 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULE_H_
-#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULE_H_
+#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_EXCLUSION_RULE_H_
+#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_EXCLUSION_RULE_H_
 
 #include <string>
 
-namespace ads {
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 
-struct CreativeAdInfo;
+namespace ads {
 
 class ExclusionRule {
  public:
@@ -24,4 +24,4 @@ class ExclusionRule {
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULE_H_
+#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_EXCLUSION_RULE_H_

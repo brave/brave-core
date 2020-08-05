@@ -8,8 +8,8 @@
 
 #include <memory>
 
-#include "bat/ads/internal/filters/ads_history_filter.h"
 #include "bat/ads/ads_history.h"
+#include "bat/ads/internal/filters/ads_history_filter.h"
 
 namespace ads {
 

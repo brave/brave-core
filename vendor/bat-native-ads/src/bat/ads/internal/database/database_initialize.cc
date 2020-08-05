@@ -5,8 +5,7 @@
 
 #include "bat/ads/internal/database/database_initialize.h"
 
-#include <stdint.h>
-
+#include <functional>
 #include <utility>
 
 #include "bat/ads/internal/ads_impl.h"
@@ -14,10 +13,10 @@
 #include "bat/ads/internal/database/database_version.h"
 #include "bat/ads/internal/logging.h"
 
-using std::placeholders::_1;
-
 namespace ads {
 namespace database {
+
+using std::placeholders::_1;
 
 Initialize::Initialize(
     AdsImpl* ads)
@@ -46,7 +45,7 @@ std::string Initialize::get_last_message() const {
   return last_message_;
 }
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 void Initialize::OnCreateOrOpen(
     DBCommandResponsePtr response,

@@ -3,7 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import <Foundation/Foundation.h>
-#import "Records.h"
 #import "ledger.mojom.objc.h"
 #import "BATRewardsNotification.h"
 #import "BATBraveLedgerObserver.h"
@@ -292,24 +291,6 @@ NS_SWIFT_NAME(BraveLedger)
 @property (nonatomic, assign, getter=isAutoContributeEnabled) BOOL autoContributeEnabled;
 /// A custom user agent for network operations on ledger
 @property (nonatomic, copy, nullable) NSString *customUserAgent;
-
-#pragma mark - Ads & Confirmations
-
-/// Confirm an ad and update confirmations (called from the ads layer)
-- (void)confirmAd:(NSString *)json confirmationType:(NSString *)confirmationType;
-
-/// Confirm an action on an ad and update confirmations was sustained (called from ads layer)
-- (void)confirmAction:(NSString *)creativeInstanceId creativeSetID:(NSString *)creativeSetID confirmationType:(NSString *)confirmationType;
-
-/// Set catalog issuers ad and update confirmations (called from the ads layer)
-- (void)setCatalogIssuers:(NSString *)issuers;
-
-/// Update ad totals on month roll over without fetching latest balances from
-/// server
-- (void)updateAdsRewards;
-
-/// Get the number of ads received and the estimated earnings of viewing said ads for this cycle
-- (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate * _Nullable nextPaymentDate))completion NS_SWIFT_NAME(adsDetailsForCurrentCycle(_:));
 
 #pragma mark - Notifications
 

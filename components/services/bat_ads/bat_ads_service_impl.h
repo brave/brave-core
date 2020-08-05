@@ -39,6 +39,10 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
       const ads::Environment environment,
       SetEnvironmentCallback callback) override;
 
+  void SetBuildChannel(
+      ads::BuildChannelPtr build_channel,
+      SetBuildChannelCallback callback) override;
+
   void SetDebug(
       const bool is_debug,
       SetDebugCallback callback) override;

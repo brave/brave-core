@@ -10,8 +10,6 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/ads_client.h"
-
 namespace ads {
 
 bool UrlMatchesPattern(
@@ -25,10 +23,7 @@ bool SameSite(
     const std::string& url1,
     const std::string& url2);
 
-std::string GetUrlMethodName(
-    const URLRequestMethod method);
-
-std::map<std::string, std::string> NormalizeHeaders(
+std::map<std::string, std::string> HeadersToMap(
     const std::vector<std::string>& headers);
 
 }  // namespace ads

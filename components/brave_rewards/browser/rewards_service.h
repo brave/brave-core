@@ -34,11 +34,6 @@
 class PrefRegistrySimple;
 class Profile;
 
-namespace ads {
-struct IssuersInfo;
-struct AdNotificationInfo;
-}
-
 namespace content {
 class NavigationHandle;
 }
@@ -68,8 +63,6 @@ using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
-using GetTransactionHistoryCallback =
-    base::OnceCallback<void(double, uint64_t, uint64_t)>;
 using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
 using SaveRecurringTipCallback = base::OnceCallback<void(bool)>;
@@ -205,7 +198,6 @@ class RewardsService : public KeyedService {
   virtual void GetAutoContributeEnabled(
       GetAutoContributeEnabledCallback callback) = 0;
   virtual void SetAutoContributeEnabled(bool enabled) = 0;
-  virtual void UpdateAdsRewards() const = 0;
   virtual void GetBalanceReport(
       const uint32_t month,
       const uint32_t year,
@@ -246,25 +238,12 @@ class RewardsService : public KeyedService {
     const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;
-  // TODO(Terry Mancey): remove this hack when ads is moved to the same process
-  // as ledger
-  virtual void SetCatalogIssuers(
-      const std::string& json) = 0;
-  virtual void ConfirmAd(
-      const std::string& json,
-      const std::string& confirmation_type) = 0;
-  virtual void ConfirmAction(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const std::string& confirmation_type) = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
   virtual void AddPrivateObserver(
       RewardsServicePrivateObserver* observer) = 0;
   virtual void RemovePrivateObserver(
       RewardsServicePrivateObserver* observer) = 0;
-  virtual void GetTransactionHistory(
-      GetTransactionHistoryCallback callback) = 0;
   virtual void OnAdsEnabled(bool ads_enabled) = 0;
 
   virtual void RefreshPublisher(

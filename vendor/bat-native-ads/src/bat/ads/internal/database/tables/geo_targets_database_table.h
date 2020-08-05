@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "bat/ads/internal/creative_ad_notification_info.h"
+#include "bat/ads/internal/bundle/creative_ad_notification_info.h"
 #include "bat/ads/internal/database/database_table.h"
 
 namespace ads {

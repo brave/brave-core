@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/database/database_migration.h"
 
+#include <functional>
 #include <utility>
 
 #include "bat/ads/internal/ads_impl.h"
@@ -16,10 +17,10 @@
 #include "bat/ads/internal/database/tables/geo_targets_database_table.h"
 #include "bat/ads/internal/logging.h"
 
-using std::placeholders::_1;
-
 namespace ads {
 namespace database {
+
+using std::placeholders::_1;
 
 Migration::Migration(
     AdsImpl* ads)

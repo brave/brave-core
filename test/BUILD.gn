@@ -686,13 +686,11 @@ test("brave_browser_tests") {
 
     deps += [
       "//brave/vendor/bat-native-ads",
-      "//brave/vendor/bat-native-confirmations",
       "//brave/vendor/bat-native-ledger",
     ]
 
-    configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
     configs += [ "//brave/vendor/bat-native-ads:internal_config" ]
-    configs += [ "//brave/vendor/bat-native-confirmations:internal_config" ]
+    configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
   }
 
   if (enable_tor) {

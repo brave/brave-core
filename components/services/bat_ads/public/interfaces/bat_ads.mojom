@@ -13,7 +13,8 @@ const string kServiceName = "bat_ads";
 interface BatAdsService {
   Create(pending_associated_remote<BatAdsClient> bat_ads_client,
          pending_associated_receiver<BatAds> database) => ();
-  SetEnvironment(ads.mojom.Environment environment) => ();
+  SetEnvironment(ads.mojom.BraveAdsEnvironment environment) => ();
+  SetBuildChannel(ads.mojom.BraveAdsBuildChannel build_channel) => ();
   SetDebug(bool is_debug) => ();
 };
 
@@ -28,8 +29,6 @@ interface BatAdsClient {
   GetAdsPerDay() => (uint64 ads_per_day);
   [Sync]
   IsNetworkConnectionAvailable() => (bool available);
-  [Sync]
-  GetClientInfo(string client_info) => (string client_info);
   [Sync]
   IsForeground() => (bool is_foreground);
   [Sync]
@@ -51,22 +50,18 @@ interface BatAdsClient {
   SetIdleThreshold(int32 threshold);
   ShowNotification(string notification_info);
   CloseNotification(string uuid);
-  SetCatalogIssuers(string issuers_info);
-  ConfirmAd(string json, string confirmation_type);
-  ConfirmAction(string creative_instance_id, string creative_set_id, string confirmation_type);
-  URLRequest(string url, array<string> headers, string content, string content_type, int32 method) => (int32 status_code, string content, map<string, string> headers);
+  UrlRequest(ads.mojom.BraveAdsUrlRequest request) => (ads.mojom.BraveAdsUrlResponse response);
   Save(string name, string value) => (int32 result);
   LoadUserModelForId(string id) => (int32 result, string value);
   Load(string name) => (int32 result, string value);
-  Reset(string name) => (int32 result);
   RunDBTransaction(ads_database.mojom.DBTransaction transaction) => (ads_database.mojom.DBCommandResponse response);
+  OnAdRewardsChanged();
   Log(string file, int32 line, int32 verbose_level, string message);
 };
 
 interface BatAds {
   Initialize() => (int32 result);
   Shutdown() => (int32 result);
-  SetConfirmationsIsReady(bool is_ready);
   ChangeLocale(string locale);
   OnAdsSubdivisionTargetingCodeHasChanged();
   OnPageLoaded(int32 tab_id, string original_url, string url, string html);
@@ -79,9 +74,12 @@ interface BatAds {
   OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
   OnTabClosed(int32 tab_id);
   GetAdNotification(string uuid) => (string json);
-  OnAdNotificationEvent(string uuid, ads.mojom.AdNotificationEventType event_type);
+  OnAdNotificationEvent(string uuid, ads.mojom.BraveAdsAdNotificationEventType event_type);
   RemoveAllHistory() => (int32 result);
+  OnWalletUpdated(string payment_id, string recovery_seed_base64);
+  UpdateAdRewards(bool should_reconcile);
   GetAdsHistory(uint64 from_timestamp, uint64 to_timestamp) => (string json);
+  GetTransactionHistory() => (string json);
   ToggleAdThumbUp(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
   ToggleAdThumbDown(string creative_instance_id, string creative_set_id, int32 action) => (string creative_instance_id, int32 action);
   ToggleAdOptInAction(string category, int32 action) => (string category, int32 action);

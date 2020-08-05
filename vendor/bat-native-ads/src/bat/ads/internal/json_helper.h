@@ -14,46 +14,57 @@
 
 #include <string>
 
-#include "bat/ads/result.h"
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/schema.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
+#include "bat/ads/internal/logging.h"
+#include "bat/ads/result.h"
 
 namespace ads {
 
 struct AdContent;
 struct AdHistory;
-struct AdInfo;
 struct AdNotificationInfo;
 struct AdPreferences;
 struct AdsHistory;
 struct CategoryContent;
-struct ClientInfo;
 struct ClientState;
-struct IssuersInfo;
 struct PurchaseIntentSignalHistory;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
-void SaveToJson(JsonWriter* writer, const AdContent& content);
-void SaveToJson(JsonWriter* writer, const AdHistory& history);
-void SaveToJson(JsonWriter* writer, const AdInfo& info);
-void SaveToJson(JsonWriter* writer, const AdNotificationInfo& info);
-void SaveToJson(JsonWriter* writer, const AdPreferences& prefs);
-void SaveToJson(JsonWriter* writer, const AdsHistory& history);
-void SaveToJson(JsonWriter* writer, const CategoryContent& content);
-void SaveToJson(JsonWriter* writer, const ClientInfo& info);
-void SaveToJson(JsonWriter* writer, const ClientState& state);
-void SaveToJson(JsonWriter* writer, const IssuersInfo& info);
-void SaveToJson(JsonWriter* writer, const PurchaseIntentSignalHistory& info);
+void SaveToJson(
+    JsonWriter* writer,
+    const AdContent& content);
+void SaveToJson(
+    JsonWriter* writer,
+    const AdHistory& history);
+void SaveToJson(
+    JsonWriter* writer,
+    const AdNotificationInfo& info);
+void SaveToJson(
+    JsonWriter* writer,
+    const AdPreferences& prefs);
+void SaveToJson(
+    JsonWriter* writer,
+    const AdsHistory& history);
+void SaveToJson(
+    JsonWriter* writer,
+    const CategoryContent& content);
+void SaveToJson(
+    JsonWriter* writer,
+    const ClientState& state);
+void SaveToJson(
+    JsonWriter* writer,
+    const PurchaseIntentSignalHistory& info);
 
 template <typename T>
-void SaveToJson(const T& t, std::string* json) {
-  if (!json) {
-    return;
-  }
+void SaveToJson(
+    const T& t,
+    std::string* json) {
+  DCHECK(json);
 
   rapidjson::StringBuffer buffer;
   JsonWriter writer(buffer);
@@ -65,18 +76,18 @@ void SaveToJson(const T& t, std::string* json) {
 template <typename T>
 Result LoadFromJson(
     T* t,
-    const std::string& json,
-    std::string* error_description) {
-  return t->FromJson(json, error_description);
+    const std::string& json) {
+  DCHECK(t);
+  return t->FromJson(json);
 }
 
 template <typename T>
 Result LoadFromJson(
     T* t,
     const std::string& json,
-    const std::string& json_schema,
-    std::string* error_description) {
-  return t->FromJson(json, json_schema, error_description);
+    const std::string& json_schema) {
+  DCHECK(t);
+  return t->FromJson(json, json_schema);
 }
 
 }  // namespace ads

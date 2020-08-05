@@ -85,9 +85,6 @@ class AdsServiceImpl : public AdsService,
   void SetAdsPerHour(
       const uint64_t ads_per_hour) override;
 
-  void SetConfirmationsIsReady(
-      const bool is_ready) override;
-
   void ChangeLocale(
       const std::string& locale) override;
 
@@ -109,10 +106,18 @@ class AdsServiceImpl : public AdsService,
   void OnTabClosed(
       const SessionID& tab_id) override;
 
+  void OnWalletUpdated();
+
+  void UpdateAdRewards(
+      const bool should_reconcile) override;
+
   void GetAdsHistory(
       const uint64_t from_timestamp,
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) override;
+
+  void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) override;
 
   void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -178,6 +183,11 @@ class AdsServiceImpl : public AdsService,
   // AdsService implementation
   friend class AdsNotificationHandler;
 
+  void MaybeInitialize();
+  void Initialize();
+  void OnMigrateConfirmationsState(
+      const bool success);
+
   void OnCreate();
 
   void OnInitialize(
@@ -205,6 +215,8 @@ class AdsServiceImpl : public AdsService,
       const bool success);
 
   void SetEnvironment();
+
+  void SetBuildChannel();
 
   void UpdateIsDebugFlag();
   bool IsDebug() const;
@@ -251,11 +263,15 @@ class AdsServiceImpl : public AdsService,
 
   void OnURLRequestComplete(
       network::SimpleURLLoader* loader,
-      ads::URLRequestCallback callback,
+      ads::UrlRequestCallback callback,
       const std::unique_ptr<std::string> response_body);
 
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
+      const std::string& json);
+
+  void OnGetTransactionHistory(
+      GetTransactionHistoryCallback callback,
       const std::string& json);
 
   void OnRemoveAllHistory(
@@ -290,9 +306,6 @@ class AdsServiceImpl : public AdsService,
       const ads::LoadCallback& callback,
       const std::string& value);
   void OnSaved(
-      const ads::ResultCallback& callback,
-      const bool success);
-  void OnReset(
       const ads::ResultCallback& callback,
       const bool success);
 
@@ -379,9 +392,6 @@ class AdsServiceImpl : public AdsService,
   bool connected();
 
   // AdsClient implementation
-  void GetClientInfo(
-      ads::ClientInfo* info) const override;
-
   bool IsNetworkConnectionAvailable() const override;
 
   void SetIdleThreshold(
@@ -399,27 +409,11 @@ class AdsServiceImpl : public AdsService,
   void CloseNotification(
       const std::string& uuid) override;
 
-  void SetCatalogIssuers(
-      std::unique_ptr<ads::IssuersInfo> info) override;
-
-  void ConfirmAd(
-      const ads::AdInfo& info,
-      const ads::ConfirmationType confirmation_type) override;
-
-  void ConfirmAction(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const ads::ConfirmationType confirmation_type) override;
-
   bool CanShowBackgroundNotifications() const override;
 
-  void URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const ads::URLRequestMethod method,
-      ads::URLRequestCallback callback) override;
+  void UrlRequest(
+      ads::UrlRequestPtr url_request,
+      ads::UrlRequestCallback callback) override;
 
   void Save(
       const std::string& name,
@@ -431,9 +425,6 @@ class AdsServiceImpl : public AdsService,
   void Load(
       const std::string& name,
       ads::LoadCallback callback) override;
-  void Reset(
-      const std::string& name,
-      ads::ResultCallback callback) override;
 
   std::string LoadResourceForId(
       const std::string& id) override;
@@ -441,6 +432,8 @@ class AdsServiceImpl : public AdsService,
   void RunDBTransaction(
       ads::DBTransactionPtr transaction,
       ads::RunDBTransactionCallback callback) override;
+
+  void OnAdRewardsChanged() override;
 
   void DiagnosticLog(
       const std::string& file,

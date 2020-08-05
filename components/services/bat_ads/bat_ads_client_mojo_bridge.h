@@ -51,9 +51,6 @@ class BatAdsClientMojoBridge
   void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) override;
 
-  void GetClientInfo(
-      ads::ClientInfo* info) const override;
-
   bool IsNetworkConnectionAvailable() const override;
 
   void SetIdleThreshold(
@@ -67,24 +64,9 @@ class BatAdsClientMojoBridge
   void CloseNotification(
       const std::string& uuid) override;
 
-  void SetCatalogIssuers(
-      std::unique_ptr<ads::IssuersInfo> info) override;
-
-  void ConfirmAd(
-      const ads::AdInfo& info,
-      const ads::ConfirmationType confirmation_type) override;
-  void ConfirmAction(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const ads::ConfirmationType confirmation_type) override;
-
-  void URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const ads::URLRequestMethod method,
-      ads::URLRequestCallback callback) override;
+  void UrlRequest(
+      ads::UrlRequestPtr url_request,
+      ads::UrlRequestCallback callback) override;
 
   void Save(
       const std::string& name,
@@ -96,9 +78,6 @@ class BatAdsClientMojoBridge
   void Load(
       const std::string& name,
       ads::LoadCallback callback) override;
-  void Reset(
-      const std::string& name,
-      ads::ResultCallback callback) override;
 
   std::string LoadResourceForId(
       const std::string& id) override;
@@ -106,6 +85,8 @@ class BatAdsClientMojoBridge
   void RunDBTransaction(
       ads::DBTransactionPtr transaction,
       ads::RunDBTransactionCallback callback) override;
+
+  void OnAdRewardsChanged() override;
 
   void Log(
       const char* file,

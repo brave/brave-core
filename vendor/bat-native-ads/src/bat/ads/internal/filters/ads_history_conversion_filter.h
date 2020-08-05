@@ -8,12 +8,10 @@
 
 #include <deque>
 
+#include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/filters/ads_history_filter.h"
 
 namespace ads {
-
-struct AdsHistory;
-class ConfirmationType;
 
 class AdsHistoryConversionFilter : public AdsHistoryFilter {
  public:
@@ -25,7 +23,7 @@ class AdsHistoryConversionFilter : public AdsHistoryFilter {
 
  private:
   bool ShouldFilterConfirmationType(
-    const ConfirmationType& type) const;
+      const ConfirmationType& type) const;
 };
 
 }  // namespace ads

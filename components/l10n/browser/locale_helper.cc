@@ -5,6 +5,8 @@
 
 #include "brave/components/l10n/browser/locale_helper.h"
 
+#include "base/logging.h"
+
 namespace brave_l10n {
 
 LocaleHelper* g_locale_helper_for_testing = nullptr;
@@ -15,6 +17,8 @@ LocaleHelper::~LocaleHelper() = default;
 
 void LocaleHelper::set_for_testing(
     LocaleHelper* locale_helper) {
+  DCHECK(locale_helper);
+
   g_locale_helper_for_testing = locale_helper;
 }
 

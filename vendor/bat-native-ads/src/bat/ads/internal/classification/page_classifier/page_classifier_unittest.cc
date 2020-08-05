@@ -19,12 +19,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "bat/ads/internal/ads_client_mock.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/unittest_utils.h"
+#include "bat/ads/internal/platform/platform_helper_mock.h"
+#include "bat/ads/internal/unittest_util.h"
 
 // npm run test -- brave_unit_tests --filter=BatAds*
 
-using ::testing::_;
-using ::testing::Invoke;
 using ::testing::NiceMock;
 using ::testing::Return;
 
@@ -34,14 +33,19 @@ namespace classification {
 class BatAdsPageClassifierTest : public ::testing::Test {
  protected:
   BatAdsPageClassifierTest()
-      : ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
+        ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
         ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
-        locale_helper_mock_(std::make_unique<NiceMock<
-            brave_l10n::LocaleHelperMock>>()) {
+        locale_helper_mock_(std::make_unique<
+            NiceMock<brave_l10n::LocaleHelperMock>>()),
+        platform_helper_mock_(std::make_unique<
+            NiceMock<PlatformHelperMock>>()) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
         locale_helper_mock_.get());
+
+    PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
   }
 
   ~BatAdsPageClassifierTest() override {
@@ -63,8 +67,18 @@ class BatAdsPageClassifierTest : public ::testing::Test {
     ON_CALL(*ads_client_mock_, IsEnabled())
         .WillByDefault(Return(true));
 
+    ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
+        .WillByDefault(Return(true));
+
+    SetBuildChannel(false, "test");
+
     ON_CALL(*locale_helper_mock_, GetLocale())
         .WillByDefault(Return(locale));
+
+    MockPlatformHelper(platform_helper_mock_, PlatformType::kMacOS);
+
+    ads_->OnWalletUpdated("c387c2d8-a26d-4451-83e4-5c0c6fd942be",
+        "5BEKM1Y7xcRSg/1q8in/+Lki2weFZQB+UMYZlRw8ql8=");
 
     MockLoad(ads_client_mock_);
     MockLoadUserModelForId(ads_client_mock_);
@@ -76,7 +90,7 @@ class BatAdsPageClassifierTest : public ::testing::Test {
 
     Initialize(ads_);
 
-    ads_->ChangeLocale(locale);
+    ads_->ChangeLocale("en-US");
   }
 
   void TearDown() override {
@@ -86,6 +100,10 @@ class BatAdsPageClassifierTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  classification::PageClassifier* get_page_classifier() {
+    return ads_->get_page_classifier();
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -93,11 +111,12 @@ class BatAdsPageClassifierTest : public ::testing::Test {
   std::unique_ptr<AdsClientMock> ads_client_mock_;
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
+  std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
   std::unique_ptr<Database> database_;
 };
 
 TEST_F(BatAdsPageClassifierTest,
-    ShouldClassifyPagesForUntargetedLocale) {
+    DoNotClassifyPageForUntargetedLocale) {
   // Arrange
   const std::string locale = "ja-JP";
 
@@ -106,24 +125,16 @@ TEST_F(BatAdsPageClassifierTest,
 
   ads_->ChangeLocale(locale);
 
-  // Act
-  const bool should_classify_pages =
-      ads_->get_page_classifier()->ShouldClassifyPages();
-
-  // Assert
-  EXPECT_FALSE(should_classify_pages);
-}
-
-TEST_F(BatAdsPageClassifierTest,
-    ShouldClassifyPagesForTargetedLocale) {
-  // Arrange
+  const std::string content = "一部のコンテンツ";
 
   // Act
-  const bool should_classify_pages =
-      ads_->get_page_classifier()->ShouldClassifyPages();
+  const std::string page_classification =
+      get_page_classifier()->MaybeClassifyPage("https://foobar.com", content);
 
   // Assert
-  EXPECT_TRUE(should_classify_pages);
+  const std::string expected_page_classification = "untargeted";
+
+  EXPECT_EQ(expected_page_classification, page_classification);
 }
 
 TEST_F(BatAdsPageClassifierTest,
@@ -133,7 +144,7 @@ TEST_F(BatAdsPageClassifierTest,
 
   // Act
   const std::string page_classification =
-      ads_->get_page_classifier()->ClassifyPage("https://foobar.com", content);
+      get_page_classifier()->MaybeClassifyPage("https://foobar.com", content);
 
   // Assert
   const std::string expected_page_classification = "";
@@ -148,7 +159,7 @@ TEST_F(BatAdsPageClassifierTest,
 
   // Act
   const std::string page_classification =
-      ads_->get_page_classifier()->ClassifyPage("https://foobar.com", content);
+      get_page_classifier()->MaybeClassifyPage("https://foobar.com", content);
 
   // Assert
   const std::string expected_page_classification =
@@ -167,12 +178,12 @@ TEST_F(BatAdsPageClassifierTest,
   };
 
   for (const auto& content : contents) {
-    ads_->get_page_classifier()->ClassifyPage("https://foobar.com", content);
+    get_page_classifier()->MaybeClassifyPage("https://foobar.com", content);
   }
 
   // Act
   const CategoryList winning_categories =
-      ads_->get_page_classifier()->GetWinningCategories();
+      get_page_classifier()->GetWinningCategories();
 
   // Assert
   const CategoryList expected_winning_categories = {
@@ -190,7 +201,7 @@ TEST_F(BatAdsPageClassifierTest,
 
   // Act
   const CategoryList winning_categories =
-      ads_->get_page_classifier()->GetWinningCategories();
+      get_page_classifier()->GetWinningCategories();
 
   // Assert
   EXPECT_TRUE(winning_categories.empty());
@@ -201,11 +212,11 @@ TEST_F(BatAdsPageClassifierTest,
   // Arrange
   const std::string content = "Technology & computing content";
   const std::string page_classification =
-      ads_->get_page_classifier()->ClassifyPage("https://foobar.com", content);
+      get_page_classifier()->MaybeClassifyPage("https://foobar.com", content);
 
   // Act
   const PageProbabilitiesCacheMap page_probabilities_cache =
-      ads_->get_page_classifier()->get_page_probabilities_cache();
+      get_page_classifier()->get_page_probabilities_cache();
 
   // Assert
   const int count = page_probabilities_cache.size();

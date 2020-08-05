@@ -82,8 +82,6 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SetAutoContributeEnabled, void(bool));
 
-  MOCK_METHOD1(UpdateAdsRewards, void(const bool));
-
   MOCK_METHOD2(SavePendingContribution,
       void(ledger::PendingContributionList,
           ledger::ResultCallback));
@@ -115,7 +113,9 @@ class MockLedgerImpl : public LedgerImpl {
   MOCK_METHOD0(GetAutoContributeProperties,
       ledger::AutoContributePropertiesPtr());
 
-  MOCK_METHOD0(SetConfirmationsWalletInfo, void());
+  MOCK_METHOD1(LoadLedgerState, void(ledger::OnLoadCallback));
+
+  MOCK_METHOD1(LoadPublisherState, void(ledger::OnLoadCallback));
 
   MOCK_METHOD2(OnWalletInitializedInternal,
       void(ledger::Result, ledger::ResultCallback));
@@ -239,20 +239,7 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(SaveNormalizedPublisherList, void(ledger::PublisherInfoList));
 
-  MOCK_METHOD1(SetCatalogIssuers, void(
-      const std::string&));
-
-  MOCK_METHOD2(ConfirmAd, void(
-      const std::string&,
-      const std::string&));
-
-  MOCK_METHOD3(ConfirmAction, void(
-      const std::string&,
-      const std::string&,
-      const std::string&));
-
-  MOCK_METHOD1(GetTransactionHistory,
-      void(ledger::GetTransactionHistoryCallback));
+  MOCK_METHOD0(GetTaskRunner, scoped_refptr<base::SequencedTaskRunner>());
 
   MOCK_METHOD1(GetRewardsInternalsInfo,
       void(ledger::RewardsInternalsInfoCallback));

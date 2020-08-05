@@ -5,20 +5,11 @@
 
 #include "bat/ads/internal/frequency_capping/permission_rules/ads_per_day_frequency_cap.h"
 
-#include "bat/ads/ad_history.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/frequency_capping/frequency_capping_utils.h"
-
-#include "base/time/time.h"
+#include "bat/ads/internal/frequency_capping/frequency_capping_util.h"
+#include "bat/ads/internal/time_util.h"
 
 namespace ads {
-
-namespace {
-
-const uint64_t kSecondsPerDay = base::Time::kSecondsPerHour *
-    base::Time::kHoursPerDay;
-
-}  // namespace
 
 AdsPerDayFrequencyCap::AdsPerDayFrequencyCap(
     const AdsImpl* const ads)
@@ -47,7 +38,8 @@ std::string AdsPerDayFrequencyCap::get_last_message() const {
 
 bool AdsPerDayFrequencyCap::DoesRespectCap(
     const std::deque<uint64_t>& history) const {
-  const uint64_t day_window = kSecondsPerDay;
+  const uint64_t day_window = base::Time::kSecondsPerHour *
+      base::Time::kHoursPerDay;
 
   const uint64_t day_allowed = ads_->get_ads_client()->GetAdsPerDay();
 

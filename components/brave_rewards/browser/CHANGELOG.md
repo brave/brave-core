@@ -2,6 +2,12 @@
 
 ---
 
+### Changed API (28th July 2020)
+##### Related issue
+[https://github.com/brave/brave-browser/issues/9870](https://github.com/brave/brave-browser/issues/9870)
+##### Description
+Moved bat-native-confirmations from ledger to ads process
+
 ### Changed API (5th June 2020)
 ##### Related PR
 [https://github.com/brave/brave-core/pull/5748](https://github.com/brave/brave-core/pull/5748)

@@ -324,10 +324,6 @@ void BatLedgerImpl::SetAutoContributeEnabled(bool enabled) {
   ledger_->SetAutoContributeEnabled(enabled);
 }
 
-void BatLedgerImpl::UpdateAdsRewards() {
-  ledger_->UpdateAdsRewards(false);
-}
-
 // static
 void BatLedgerImpl::OnGetBalanceReport(
     CallbackHolder<GetBalanceReportCallback>* holder,
@@ -454,46 +450,6 @@ void BatLedgerImpl::HasSufficientBalanceToReconcile(
       AsWeakPtr(), std::move(callback));
   ledger_->HasSufficientBalanceToReconcile(
       std::bind(BatLedgerImpl::OnHasSufficientBalanceToReconcile, holder, _1));
-}
-
-void BatLedgerImpl::SetCatalogIssuers(
-    const std::string& info) {
-  ledger_->SetCatalogIssuers(info);
-}
-
-void BatLedgerImpl::ConfirmAd(
-    const std::string& json,
-    const std::string& confirmation_type) {
-  ledger_->ConfirmAd(json, confirmation_type);
-}
-
-void BatLedgerImpl::ConfirmAction(
-    const std::string& creative_instance_id,
-    const std::string& creative_set_id,
-    const std::string& confirmation_type) {
-  ledger_->ConfirmAction(creative_instance_id, creative_set_id,
-      confirmation_type);
-}
-
-// static
-void BatLedgerImpl::OnGetTransactionHistory(
-    CallbackHolder<GetTransactionHistoryCallback>* holder,
-    std::unique_ptr<ledger::TransactionsInfo> history) {
-  std::string json_transactions = history.get() ? history->ToJson() : "";
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(json_transactions);
-  delete holder;
-}
-
-void BatLedgerImpl::GetTransactionHistory(
-    GetTransactionHistoryCallback callback) {
-  auto* holder = new CallbackHolder<GetTransactionHistoryCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_->GetTransactionHistory(
-      std::bind(BatLedgerImpl::OnGetTransactionHistory,
-          holder, _1));
 }
 
 void BatLedgerImpl::OnGetRewardsInternalsInfo(

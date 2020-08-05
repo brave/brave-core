@@ -7,36 +7,44 @@
 #define BAT_ADS_ADS_H_
 
 #include <stdint.h>
-#include <string>
+
 #include <memory>
+#include <string>
 
 #include "bat/ads/ad_content.h"
+#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/ads_history.h"
 #include "bat/ads/category_content.h"
 #include "bat/ads/export.h"
 #include "bat/ads/mojom.h"
-#include "bat/ads/ad_notification_info.h"
-#include "bat/ads/ads_history.h"
+#include "bat/ads/result.h"
+#include "bat/ads/statement_info.h"
 
 namespace ads {
 
-using Environment = mojom::Environment;
-
 using InitializeCallback = std::function<void(const Result)>;
 using ShutdownCallback = std::function<void(const Result)>;
+
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
+
+using GetTransactionHistoryCallback =
+    std::function<void(const StatementInfo&)>;
 
 // |_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments
 extern Environment _environment;
 
-// |_is_debug| indicates that the next catalogue download should be reduced from
+// |_build_channel| indicates the build channel
+extern BuildChannel _build_channel;
+
+// |_is_debug| indicates that the next catalog download should be reduced from
 // ~1 hour to ~25 seconds. This value should be set to |false| on production
 // builds and |true| on debug builds but can be overridden via command-line
 // arguments
 extern bool _is_debug;
 
-// Catalog schema resource name
+// Catalog schema resource id
 extern const char _catalog_schema_resource_id[];
 
 // Returns |true| if the locale is supported; otherwise returns |false|
@@ -70,11 +78,6 @@ class ADS_EXPORT Ads {
   // to |FAILED|
   virtual void Shutdown(
       ShutdownCallback callback) = 0;
-
-  // Should be called from Ledger to inform ads when Confirmations is ready. ads
-  // will not be served until |is_ready| is set to |true|
-  virtual void SetConfirmationsIsReady(
-      const bool is_ready) = 0;
 
   // Should be called when the user implicitly changes the locale of their
   // operating system. This call is not required if the operating system
@@ -139,6 +142,11 @@ class ADS_EXPORT Ads {
   virtual void OnTabClosed(
       const int32_t tab_id) = 0;
 
+  // Should be called to report when the wallet has been updated
+  virtual void OnWalletUpdated(
+      const std::string& payment_id,
+      const std::string& recovery_seed_base64) = 0;
+
   // Should be called to get the notification specified by |uuid|. Returns
   // |true| and |info| if the notification exists; otherwise, should return
   // |false|
@@ -158,12 +166,23 @@ class ADS_EXPORT Ads {
   virtual void RemoveAllHistory(
       RemoveAllHistoryCallback callback) = 0;
 
+  // Should be called to update the ad rewards UI. |should_reconcile| should be
+  // set to |true| to reconcile with the server, i.e. after a grant is claimed
+  virtual void UpdateAdRewards(
+      const bool should_reconcile) = 0;
+
   // Should be called to get ads history. Returns |AdsHistory|
   virtual AdsHistory GetAdsHistory(
       const AdsHistory::FilterType filter_type,
       const AdsHistory::SortType sort_type,
       const uint64_t from_timestamp,
       const uint64_t to_timestamp) = 0;
+
+  // Should be called to get transaction history. The callback takes one
+  // argument — |StatementInfo| which contains a list of |TransactionInfo|
+  // transactions and associated earned ad rewards
+  virtual void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) = 0;
 
   // Should be called to indicate interest in the specified ad. This is a
   // toggle, so calling it again returns the setting to the neutral state

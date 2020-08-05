@@ -5,6 +5,7 @@
 
 #include "bat/ads/internal/database/tables/ad_conversions_database_table.h"
 
+#include <functional>
 #include <utility>
 
 #include "base/strings/stringprintf.h"
@@ -15,11 +16,11 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_util.h"
 
-using std::placeholders::_1;
-
 namespace ads {
 namespace database {
 namespace table {
+
+using std::placeholders::_1;
 
 namespace {
 const char kTableName[] = "ad_conversions";
@@ -123,7 +124,7 @@ void AdConversions::Migrate(
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 void AdConversions::InsertOrUpdate(
     DBTransaction* transaction,

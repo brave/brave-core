@@ -11,12 +11,12 @@
 #include <deque>
 #include <string>
 
+#include "bat/ads/ad_history.h"
 #include "bat/ads/internal/frequency_capping/permission_rules/permission_rule.h"
 
 namespace ads {
 
 class AdsImpl;
-struct AdHistory;
 
 class AdsPerHourFrequencyCap : public PermissionRule {
  public:

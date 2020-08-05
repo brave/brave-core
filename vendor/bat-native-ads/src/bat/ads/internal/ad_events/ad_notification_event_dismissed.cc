@@ -3,14 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ads/internal/ad_events/ad_notification_event_dismissed.h"
+
 #include <string>
 
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/ad_events/ad_notification_event_dismissed.h"
+#include "bat/ads/internal/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/reports.h"
+#include "bat/ads/internal/reports/reports.h"
 
 namespace ads {
 
@@ -31,7 +34,7 @@ void AdNotificationEventDismissed::Trigger(
       AdNotificationEventType::kDismissed);
   BLOG(3, "Event log: " << report);
 
-  ads_->ConfirmAd(info, ConfirmationType::kDismissed);
+  ads_->get_confirmations()->ConfirmAd(info, ConfirmationType::kDismissed);
 
   ads_->AppendAdNotificationToHistory(info, ConfirmationType::kDismissed);
 }

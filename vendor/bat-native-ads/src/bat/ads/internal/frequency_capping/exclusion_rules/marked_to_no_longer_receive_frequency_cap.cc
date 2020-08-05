@@ -8,9 +8,8 @@
 #include <algorithm>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ads/internal/creative_ad_info.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/filtered_ad.h"
+#include "bat/ads/internal/client/preferences/filtered_ad.h"
 
 namespace ads {
 

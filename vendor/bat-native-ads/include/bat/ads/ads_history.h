@@ -9,9 +9,9 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/ad_history.h"
 #include "bat/ads/export.h"
 #include "bat/ads/result.h"
-#include "bat/ads/ad_history.h"
 
 namespace ads {
 
@@ -35,8 +35,7 @@ struct ADS_EXPORT AdsHistory {
 
   std::string ToJson() const;
   Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
+      const std::string& json);
 
   std::vector<AdHistory> entries;
 };

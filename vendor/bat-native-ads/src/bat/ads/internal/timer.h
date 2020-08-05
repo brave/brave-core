@@ -10,9 +10,9 @@
 
 #include <memory>
 
-#include "base/bind.h"
-#include "base/time/time.h"
+#include "base/callback_forward.h"
 #include "base/timer/timer.h"
+#include "bat/ads/internal/time_util.h"
 
 namespace ads {
 
@@ -32,15 +32,15 @@ class Timer {
   // running, it will be replaced to call the given |user_task|. Returns the
   // time the delayed task will be fired
   base::Time Start(
-      const uint64_t delay,
+      const base::TimeDelta& delay,
       base::OnceClosure user_task);
 
   // Start a timer to run at a geometrically distributed number of seconds
-  // |~delay| from now for privacy-focused events. If the timer is already
-  // running, it will be replaced to call the given |user_task|. Returns the
-  // time the delayed task will be fired
+  // |~delay| from now backing off exponentially for each call. If the timer is
+  // already running, it will be replaced to call the given |user_task|. Returns
+  // the time the delayed task will be fired
   base::Time StartWithPrivacy(
-      const uint64_t delay,
+      const base::TimeDelta& delay,
       base::OnceClosure user_task);
 
   // Returns true if the timer is running (i.e., not stopped)

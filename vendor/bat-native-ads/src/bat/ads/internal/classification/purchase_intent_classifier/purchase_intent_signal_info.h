@@ -7,6 +7,7 @@
 #define BAT_ADS_INTERNAL_CLASSIFICATION_PURCHASE_INTENT_CLASSIFIER_PURCHASE_INTENT_SIGNAL_INFO_H_  // NOLINT
 
 #include <stdint.h>
+
 #include <string>
 #include <vector>
 

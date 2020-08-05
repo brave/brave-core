@@ -61,13 +61,6 @@ class BatLedgerClientMojoBridge :
 
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
 
-  void SaveState(const std::string& name,
-                 const std::string& value,
-                 ledger::ResultCallback callback) override;
-  void LoadState(const std::string& name,
-                 ledger::OnLoadCallback callback) override;
-  void ResetState(const std::string& name,
-                  ledger::ResultCallback callback) override;
   void SetBooleanState(const std::string& name, bool value) override;
   bool GetBooleanState(const std::string& name) const override;
   void SetIntegerState(const std::string& name, int value) override;
@@ -89,10 +82,6 @@ class BatLedgerClientMojoBridge :
   std::string GetStringOption(const std::string& name) const override;
   int64_t GetInt64Option(const std::string& name) const override;
   uint64_t GetUint64Option(const std::string& name) const override;
-
-  void SetConfirmationsIsReady(const bool is_ready) override;
-
-  void ConfirmationsTransactionHistoryDidChange() override;
 
   void OnContributeUnverifiedPublishers(
       ledger::Result result,

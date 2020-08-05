@@ -10,10 +10,6 @@
 namespace ads {
 namespace classification {
 
-namespace {
-const char kCategorySeparator[] = "-";
-}  // namespace
-
 std::vector<std::string> SplitCategory(
     const std::string& category) {
   return base::SplitString(category, kCategorySeparator, base::KEEP_WHITESPACE,

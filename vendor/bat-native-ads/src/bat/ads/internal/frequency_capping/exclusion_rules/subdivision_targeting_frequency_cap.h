@@ -8,12 +8,12 @@
 
 #include <string>
 
+#include "bat/ads/internal/bundle/creative_ad_info.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
 
 namespace ads {
 
 class AdsImpl;
-struct CreativeAdnfo;
 
 class SubdivisionTargetingFrequencyCap : public ExclusionRule {
  public:

@@ -5,7 +5,7 @@
 
 #include "bat/ads/internal/database/tables/creative_ad_notifications_database_table.h"
 
-#include <iostream>
+#include <functional>
 #include <set>
 #include <utility>
 
@@ -19,11 +19,11 @@
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/time_util.h"
 
-using std::placeholders::_1;
-
 namespace ads {
 namespace database {
 namespace table {
+
+using std::placeholders::_1;
 
 namespace {
 
@@ -233,7 +233,7 @@ void CreativeAdNotifications::Migrate(
   }
 }
 
-//////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 void CreativeAdNotifications::InsertOrUpdate(
     DBTransaction* transaction,

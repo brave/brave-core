@@ -11,7 +11,9 @@
 #include <vector>
 
 #include "base/macros.h"
+#include "base/observer_list.h"
 #include "build/build_config.h"
+#include "brave/components/brave_ads/browser/ads_service_observer.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
@@ -41,10 +43,13 @@ using OnToggleSaveAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
 using OnToggleFlagAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
+using GetTransactionHistoryCallback =
+    base::OnceCallback<void(double, uint64_t, uint64_t)>;
 
 class AdsService : public KeyedService {
  public:
-  AdsService() = default;
+  AdsService();
+  ~AdsService() override;
 
   AdsService(const AdsService&) = delete;
   AdsService& operator=(const AdsService&) = delete;
@@ -77,9 +82,6 @@ class AdsService : public KeyedService {
   virtual void SetAutomaticallyDetectedAdsSubdivisionTargetingCode(
       const std::string& subdivision_targeting_code) = 0;
 
-  virtual void SetConfirmationsIsReady(
-      const bool is_ready) = 0;
-
   virtual void ChangeLocale(
       const std::string& locale) = 0;
 
@@ -101,10 +103,16 @@ class AdsService : public KeyedService {
   virtual void OnTabClosed(
       const SessionID& tab_id) = 0;
 
+  virtual void UpdateAdRewards(
+      const bool should_reconcile) = 0;
+
   virtual void GetAdsHistory(
       const uint64_t from_timestamp,
       const uint64_t to_timestamp,
       OnGetAdsHistoryCallback callback) = 0;
+
+  virtual void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) = 0;
 
   virtual void ToggleAdThumbUp(
       const std::string& creative_instance_id,
@@ -140,6 +148,14 @@ class AdsService : public KeyedService {
 
   virtual void OnUserModelUpdated(
       const std::string& id) = 0;
+
+  void AddObserver(
+      AdsServiceObserver* observer);
+  void RemoveObserver(
+      AdsServiceObserver* observer);
+
+ protected:
+  base::ObserverList<AdsServiceObserver> observers_;
 };
 
 }  // namespace brave_ads

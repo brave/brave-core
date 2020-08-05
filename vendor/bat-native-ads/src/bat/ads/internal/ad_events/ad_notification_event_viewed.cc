@@ -3,14 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ads/internal/ad_events/ad_notification_event_viewed.h"
+
 #include <string>
 
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/ad_events/ad_notification_event_viewed.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/reports.h"
+#include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/reports/reports.h"
 
 namespace ads {
 
@@ -31,7 +33,7 @@ void AdNotificationEventViewed::Trigger(
       AdNotificationEventType::kViewed);
   BLOG(3, "Event log: " << report);
 
-  ads_->ConfirmAd(info, ConfirmationType::kViewed);
+  ads_->get_confirmations()->ConfirmAd(info, ConfirmationType::kViewed);
 
   ads_->AppendAdNotificationToHistory(info, ConfirmationType::kViewed);
 }

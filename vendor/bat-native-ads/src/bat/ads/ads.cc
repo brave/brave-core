@@ -3,19 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
-#include <set>
-
 #include "bat/ads/ads.h"
 
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/supported_country_codes.h"
+#include "bat/ads/internal/locale/supported_country_codes.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace ads {
 
-bool _is_debug = false;
 Environment _environment = Environment::DEVELOPMENT;
+
+BuildChannel _build_channel;
+
+bool _is_debug = false;
 
 const char _catalog_schema_resource_id[] = "catalog-schema.json";
 
@@ -24,7 +24,7 @@ bool IsSupportedLocale(
   const std::string country_code = brave_l10n::GetCountryCode(locale);
 
   for (const auto& schema : kSupportedCountryCodes) {
-    const std::set<std::string> country_codes = schema.second;
+    const SupportedCountryCodesSet country_codes = schema.second;
     const auto iter =
         std::find(country_codes.begin(), country_codes.end(), country_code);
     if (iter != country_codes.end()) {
@@ -46,7 +46,7 @@ bool IsNewlySupportedLocale(
       continue;
     }
 
-    const std::set<std::string> country_codes = schema.second;
+    const SupportedCountryCodesSet country_codes = schema.second;
     const auto iter =
         std::find(country_codes.begin(), country_codes.end(), country_code);
     if (iter != country_codes.end()) {

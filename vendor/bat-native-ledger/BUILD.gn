@@ -3,7 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//third_party/protobuf/proto_library.gni")
 
 if (is_android) {
@@ -62,13 +61,11 @@ static_library("bat-native-ledger-standalone") {
 source_set("headers") {
   visibility = [
     ":*",
-    rebase_path("bat-native-confirmations", dep_base),
     # add this only when ads is in the same process
     # rebase_path("bat-native-ads", dep_base),
     "//brave/browser:browser_process",
     "//brave/components/brave_rewards/browser:browser",
     "//brave/components/brave_rewards/browser:testutil",
-    "//brave/components/brave_ads/browser:testutil",
     "//brave/vendor/brave-ios:rewards_db",
   ]
 
@@ -81,8 +78,6 @@ source_set("headers") {
     "include/bat/ledger/ledger_client.h",
     "include/bat/ledger/mojom_structs.h",
     "include/bat/ledger/option_keys.h",
-    "include/bat/ledger/transaction_info.h",
-    "include/bat/ledger/transactions_info.h",
   ]
 
   public_deps = [
@@ -398,8 +393,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/media/github.h",
     "src/bat/ledger/internal/media/github.cc",
     "src/bat/ledger/ledger.cc",
-    "src/bat/ledger/transaction_info.cc",
-    "src/bat/ledger/transactions_info.cc",
   ]
 
   deps = [
@@ -414,13 +407,11 @@ source_set("ledger") {
     "//third_party/protobuf:protobuf_lite",
     "//third_party/re2",
     "//url",
-    rebase_path("bat-native-ads", dep_base),
-    rebase_path("bat-native-confirmations", dep_base),
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
-    rebase_path("challenge_bypass_ristretto_ffi", dep_base),
     rebase_path("brave_base", dep_base),
+    rebase_path("challenge_bypass_ristretto_ffi", dep_base),
   ]
 
   public_deps = [

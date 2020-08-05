@@ -67,19 +67,6 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD1(PublisherListNormalized, void(ledger::PublisherInfoList list));
 
-  MOCK_METHOD3(SaveState, void(
-      const std::string& name,
-      const std::string& value,
-      ledger::ResultCallback callback));
-
-  MOCK_METHOD2(LoadState, void(
-      const std::string& name,
-      ledger::OnLoadCallback callback));
-
-  MOCK_METHOD2(ResetState, void(
-      const std::string& name,
-      ledger::ResultCallback callback));
-
   MOCK_METHOD2(SetBooleanState, void(
       const std::string& name,
       bool value));
@@ -142,11 +129,6 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_CONST_METHOD1(GetUint64Option, uint64_t(
       const std::string& name));
-
-  MOCK_METHOD1(SetConfirmationsIsReady, void(
-      const bool is_ready));
-
-  MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
 
   MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
       ledger::Result result,

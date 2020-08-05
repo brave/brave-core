@@ -135,74 +135,6 @@ void LedgerClientMojoBridge::PublisherListNormalized(
   ledger_client_->PublisherListNormalized(std::move(list));
 }
 
-// static
-void LedgerClientMojoBridge::OnSaveState(
-    CallbackHolder<SaveStateCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoBridge::SaveState(
-    const std::string& name,
-    const std::string& value,
-    SaveStateCallback callback) {
-  // deleted in OnSaveState
-  auto* holder = new CallbackHolder<SaveStateCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_client_->SaveState(
-      name, value,
-      std::bind(LedgerClientMojoBridge::OnSaveState, holder, _1));
-}
-
-// static
-void LedgerClientMojoBridge::OnLoadState(
-    CallbackHolder<LoadStateCallback>* holder,
-    const ledger::Result result,
-    const std::string& value) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result, value);
-  delete holder;
-}
-
-void LedgerClientMojoBridge::LoadState(
-    const std::string& name,
-    LoadStateCallback callback) {
-  // deleted in OnSaveState
-  auto* holder = new CallbackHolder<LoadStateCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_client_->LoadState(
-      name, std::bind(LedgerClientMojoBridge::OnLoadState, holder,
-                      _1, _2));
-}
-
-// static
-void LedgerClientMojoBridge::OnResetState(
-    CallbackHolder<ResetStateCallback>* holder,
-    const ledger::Result result) {
-  DCHECK(holder);
-  if (holder->is_valid())
-    std::move(holder->get()).Run(result);
-  delete holder;
-}
-
-void LedgerClientMojoBridge::ResetState(
-    const std::string& name,
-    ResetStateCallback callback) {
-  // deleted in OnResetState
-  auto* holder = new CallbackHolder<ResetStateCallback>(
-      AsWeakPtr(), std::move(callback));
-
-  ledger_client_->ResetState(
-      name,
-      std::bind(LedgerClientMojoBridge::OnResetState, holder, _1));
-}
-
 void LedgerClientMojoBridge::SetBooleanState(const std::string& name,
                                             bool value) {
   ledger_client_->SetBooleanState(name, value);
@@ -301,14 +233,6 @@ void LedgerClientMojoBridge::GetUint64Option(
     const std::string& name,
     GetUint64OptionCallback callback) {
   std::move(callback).Run(ledger_client_->GetUint64Option(name));
-}
-
-void LedgerClientMojoBridge::SetConfirmationsIsReady(const bool is_ready) {
-  ledger_client_->SetConfirmationsIsReady(is_ready);
-}
-
-void LedgerClientMojoBridge::ConfirmationsTransactionHistoryDidChange() {
-  ledger_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
 void LedgerClientMojoBridge::OnContributeUnverifiedPublishers(

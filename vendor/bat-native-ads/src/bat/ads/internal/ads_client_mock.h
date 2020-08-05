@@ -12,7 +12,6 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -54,9 +53,6 @@ class AdsClientMock : public AdsClient {
 
   MOCK_CONST_METHOD0(IsNetworkConnectionAvailable, bool());
 
-  MOCK_CONST_METHOD1(GetClientInfo, void(
-      ClientInfo* info));
-
   MOCK_CONST_METHOD0(IsForeground, bool());
 
   MOCK_CONST_METHOD0(CanShowBackgroundNotifications, bool());
@@ -69,25 +65,9 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD1(CloseNotification, void(
       const std::string& uuid));
 
-  MOCK_METHOD1(SetCatalogIssuers, void(
-      std::unique_ptr<IssuersInfo> info));
-
-  MOCK_METHOD2(ConfirmAd, void(
-      const AdInfo& info,
-      const ConfirmationType confirmation_type));
-
-  MOCK_METHOD3(ConfirmAction, void(
-      const std::string& creative_instance_id,
-      const std::string& creative_set_id,
-      const ConfirmationType confirmation_type));
-
-  MOCK_METHOD6(URLRequest, void(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const URLRequestMethod method,
-      URLRequestCallback callback));
+  MOCK_METHOD2(UrlRequest, void(
+      UrlRequestPtr url_request,
+      UrlRequestCallback callback));
 
   MOCK_METHOD3(Save, void(
       const std::string& name,
@@ -105,13 +85,11 @@ class AdsClientMock : public AdsClient {
   MOCK_METHOD1(LoadResourceForId, std::string(
       const std::string& id));
 
-  MOCK_METHOD2(Reset, void(
-      const std::string& name,
-      ResultCallback callback));
-
   MOCK_METHOD2(RunDBTransaction, void(
       DBTransactionPtr,
       RunDBTransactionCallback));
+
+  MOCK_METHOD0(OnAdRewardsChanged, void());
 
   MOCK_METHOD4(Log, void(
       const char* file,

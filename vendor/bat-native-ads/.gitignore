@@ -3,3 +3,8 @@ build/*
 .gn
 .DS_Store
 desktop.ini
+deps/challenge-bypass-ristretto-ffi
+/target
+**/*.rs.bk
+Cargo.lock
+.gdb_history

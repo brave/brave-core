@@ -9,6 +9,8 @@
 #include <string>
 
 #include "bat/ads/ad_info.h"
+#include "bat/ads/export.h"
+#include "bat/ads/result.h"
 
 namespace ads {
 
@@ -20,8 +22,7 @@ struct ADS_EXPORT AdNotificationInfo : AdInfo {
 
   std::string ToJson() const;
   Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
+      const std::string& json);
 
   std::string uuid;
   std::string parent_uuid;
