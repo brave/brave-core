@@ -67,14 +67,25 @@ class BraveTodaySettingsViewController: TableViewController {
     }
     
     private var categoryRows: [Row] {
-        Set(feedDataSource.sources.map(\.category))
-            .sorted(by: { $0 == "Top News" ? true : $0 < $1 })
-            .map { category in
-                Row(text: category, selection: {
-                    let controller = FeedSourceListViewController(dataSource: self.feedDataSource, category: category)
-                    self.navigationController?.pushViewController(controller, animated: true)
-                }, accessory: .disclosureIndicator)
+        var rows: [Row] = []
+        var categories = Set(feedDataSource.sources.map(\.category))
+        let topNewsCategory = "Top News"
+        func row(for category: String) -> Row {
+            Row(text: category, selection: {
+                let controller = FeedSourceListViewController(dataSource: self.feedDataSource, category: category)
+                self.navigationController?.pushViewController(controller, animated: true)
+            }, accessory: .disclosureIndicator)
         }
+        if categories.contains(topNewsCategory) {
+            categories.remove(topNewsCategory)
+            rows.append(row(for: topNewsCategory))
+        }
+        rows.append(contentsOf:
+            categories
+                .sorted()
+                .map(row(for:))
+        )
+        return rows
     }
     
     @objc private func tappedDone() {
