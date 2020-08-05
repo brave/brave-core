@@ -13,7 +13,6 @@
 
 #include "base/task/post_task.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
-#include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
@@ -28,7 +27,6 @@
 #include "net/http/http_status_code.h"
 
 using namespace braveledger_database; //  NOLINT
-using namespace braveledger_api; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -45,7 +43,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_database_(new Database(this)),
     report_(new braveledger_report::Report(this)),
     state_(new braveledger_state::State(this)),
-    bat_api_(new API(this)),
+    api_(new braveledger_api::API(this)),
     initialized_task_scheduler_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -114,6 +112,10 @@ braveledger_sku::SKU* LedgerImpl::sku() const {
   return sku_.get();
 }
 
+braveledger_api::API* LedgerImpl::api() const {
+  return api_.get();
+}
+
 void LedgerImpl::OnInitialized(
     const ledger::Result result,
     ledger::ResultCallback callback) {
@@ -136,7 +138,7 @@ void LedgerImpl::StartServices() {
   promotion()->Refresh(false);
   contribution()->Initialize();
   promotion()->Initialize();
-  bat_api_->Initialize();
+  api()->Initialize();
   braveledger_recovery::Check(this);
 }
 
@@ -577,7 +579,7 @@ void LedgerImpl::GetRewardsParameters(
     // A rate of zero indicates that the rewards parameters have
     // not yet been successfully initialized from the server.
     BLOG(1, "Rewards parameters not set - fetching from server");
-    bat_api_->FetchParameters(callback);
+    api()->FetchParameters(callback);
   } else {
     callback(std::move(params));
   }

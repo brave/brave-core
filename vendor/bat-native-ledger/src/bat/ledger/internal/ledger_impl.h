@@ -14,6 +14,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
+#include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/logging.h"
@@ -37,10 +38,6 @@ class PrefixListReader;
 
 namespace braveledger_database {
 class Database;
-}
-
-namespace braveledger_api {
-class API;
 }
 
 namespace bat_ledger {
@@ -74,6 +71,8 @@ class LedgerImpl : public ledger::Ledger {
   braveledger_report::Report* report() const;
 
   braveledger_sku::SKU* sku() const;
+
+  braveledger_api::API* api() const;
 
   void Initialize(
       const bool execute_create_script,
@@ -635,7 +634,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_report::Report> report_;
   std::unique_ptr<braveledger_sku::SKU> sku_;
   std::unique_ptr<braveledger_state::State> state_;
-  std::unique_ptr<braveledger_api::API> bat_api_;
+  std::unique_ptr<braveledger_api::API> api_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 
