@@ -256,6 +256,12 @@ struct RandomizedFillStrategy: FillStrategy {
 
 /// Powers Brave Today's feed.
 class FeedDataSource {
+    /// A set of Brave Today specific errors that could occur outside of JSON decoding or network errors
+    enum BraveTodayError: Error {
+        /// The resource data that was loaded was empty after parsing
+        case resourceEmpty
+    }
+    
     /// The current view state of the data source
     enum State {
         /// Nothing has happened yet
@@ -380,7 +386,10 @@ class FeedDataSource {
     
     private func loadSources() -> Deferred<Result<[FeedItem.Source], Error>> {
         loadResource(.sources, decodedTo: [FailableDecodable<FeedItem.Source>].self).map { result in
-            result.map {
+            if case .success(let sources) = result, sources.isEmpty {
+                return .failure(BraveTodayError.resourceEmpty)
+            }
+            return result.map {
                 $0.compactMap(\.wrappedValue)
             }
         }
@@ -388,7 +397,10 @@ class FeedDataSource {
     
     private func loadFeed() -> Deferred<Result<[FeedItem.Content], Error>> {
         loadResource(.feed, decodedTo: [FailableDecodable<FeedItem.Content>].self).map { result in
-            result.map {
+            if case .success(let sources) = result, sources.isEmpty {
+                return .failure(BraveTodayError.resourceEmpty)
+            }
+            return result.map {
                 $0.compactMap(\.wrappedValue)
             }
         }
