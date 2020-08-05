@@ -15,11 +15,9 @@ using std::placeholders::_2;
 
 namespace braveledger_contribution {
 
-ContributionMonthly::ContributionMonthly(bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution) :
-    ledger_(ledger),
-    contribution_(contribution) {
-  DCHECK(ledger_ && contribution_);
+ContributionMonthly::ContributionMonthly(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
+  DCHECK(ledger_);
 }
 
 ContributionMonthly::~ContributionMonthly() = default;
@@ -62,7 +60,7 @@ void ContributionMonthly::PrepareTipList(
 
   // TODO(https://github.com/brave/brave-browser/issues/8804):
   // we should change this logic and do batch insert with callback
-  contribution_->CheckContributionQueue();
+  ledger_->contribution()->CheckContributionQueue();
   callback(ledger::Result::LEDGER_OK);
 }
 

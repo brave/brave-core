@@ -33,10 +33,6 @@ namespace braveledger_publisher {
 class PrefixListReader;
 }
 
-namespace braveledger_contribution {
-class Contribution;
-}
-
 namespace braveledger_wallet {
 class Wallet;
 }
@@ -79,6 +75,8 @@ class LedgerImpl : public ledger::Ledger {
   braveledger_publisher::Publisher* publisher() const;
 
   braveledger_media::Media* media() const;
+
+  braveledger_contribution::Contribution* contribution() const;
 
   void Initialize(
       const bool execute_create_script,
@@ -202,10 +200,6 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::UrlMethod method,
       ledger::LoadURLCallback callback);
 
-  virtual void ContributionCompleted(
-      const ledger::Result result,
-      ledger::ContributionInfoPtr contribution);
-
   std::string URIEncode(const std::string& value) override;
 
   void SaveVideoVisit(
@@ -298,8 +292,6 @@ class LedgerImpl : public ledger::Ledger {
 
   void GetPendingContributionsTotal(
       ledger::PendingContributionsTotalCallback callback) override;
-
-  void ContributeUnverifiedPublishers();
 
   void WasPublisherProcessed(
       const std::string& publisher_key,
@@ -506,12 +498,6 @@ class LedgerImpl : public ledger::Ledger {
       const ledger::SKUOrderStatus status,
       ledger::ResultCallback callback);
 
-  void TransferFunds(
-      const ledger::SKUTransaction& transaction,
-      const std::string& destination,
-      ledger::ExternalWalletPtr wallet,
-      ledger::TransactionCallback callback);
-
   void GetSKUOrder(
       const std::string& order_id,
       ledger::GetSKUOrderCallback callback);
@@ -648,7 +634,7 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_promotion::Promotion> promotion_;
   std::unique_ptr<braveledger_publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> media_;
-  std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
+  std::unique_ptr<braveledger_contribution::Contribution> contribution_;
   std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<braveledger_database::Database> bat_database_;
   std::unique_ptr<braveledger_report::Report> bat_report_;

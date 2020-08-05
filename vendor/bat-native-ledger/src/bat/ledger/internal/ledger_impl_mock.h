@@ -149,10 +149,6 @@ class MockLedgerImpl : public LedgerImpl {
           const ledger::UrlMethod,
           ledger::LoadURLCallback));
 
-  MOCK_METHOD2(ContributionCompleted, void(
-      const ledger::Result,
-      ledger::ContributionInfoPtr contribution));
-
   MOCK_METHOD5(SaveVideoVisit,
       void(const std::string&,
           const ledger::VisitData&,
@@ -247,8 +243,6 @@ class MockLedgerImpl : public LedgerImpl {
 
   MOCK_METHOD1(GetPendingContributionsTotal,
       void(ledger::PendingContributionsTotalCallback));
-
-  MOCK_METHOD0(ContributeUnverifiedPublishers, void());
 
   MOCK_METHOD2(WasPublisherProcessed, void(
       const std::string&,

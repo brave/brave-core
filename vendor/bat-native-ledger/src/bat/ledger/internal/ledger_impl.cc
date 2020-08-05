@@ -28,7 +28,6 @@
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
-using namespace braveledger_contribution; //  NOLINT
 using namespace braveledger_wallet; //  NOLINT
 using namespace braveledger_database; //  NOLINT
 using namespace braveledger_report; //  NOLINT
@@ -45,7 +44,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     promotion_(new braveledger_promotion::Promotion(this)),
     publisher_(new braveledger_publisher::Publisher(this)),
     media_(new braveledger_media::Media(this)),
-    bat_contribution_(new Contribution(this)),
+    contribution_(new braveledger_contribution::Contribution(this)),
     bat_wallet_(new Wallet(this)),
     bat_database_(new Database(this)),
     bat_report_(new Report(this)),
@@ -103,6 +102,10 @@ braveledger_media::Media* LedgerImpl::media() const {
   return media_.get();
 }
 
+braveledger_contribution::Contribution* LedgerImpl::contribution() const {
+  return contribution_.get();
+}
+
 void LedgerImpl::OnInitialized(
     const ledger::Result result,
     ledger::ResultCallback callback) {
@@ -121,9 +124,9 @@ void LedgerImpl::StartServices() {
   }
 
   publisher()->SetPublisherServerListTimer();
-  bat_contribution_->SetReconcileTimer();
+  contribution()->SetReconcileTimer();
   promotion()->Refresh(false);
-  bat_contribution_->Initialize();
+  contribution()->Initialize();
   promotion()->Initialize();
   bat_api_->Initialize();
   braveledger_recovery::Check(this);
@@ -559,14 +562,6 @@ uint64_t LedgerImpl::GetReconcileStamp() {
   return state()->GetReconcileStamp();
 }
 
-void LedgerImpl::ContributionCompleted(
-    const ledger::Result result,
-    ledger::ContributionInfoPtr contribution) {
-  bat_contribution_->ContributionCompleted(
-      result,
-      contribution->Clone());
-}
-
 void LedgerImpl::GetRewardsParameters(
     ledger::GetRewardsParametersCallback callback) {
   auto params = state()->GetRewardsParameters();
@@ -642,7 +637,7 @@ void LedgerImpl::OneTimeTip(
     const std::string& publisher_key,
     const double amount,
     ledger::ResultCallback callback) {
-  bat_contribution_->OneTimeTip(publisher_key, amount, callback);
+  contribution()->OneTimeTip(publisher_key, amount, callback);
 }
 
 void LedgerImpl::SaveRecurringTip(
@@ -746,7 +741,7 @@ void LedgerImpl::GetRewardsInternalsInfo(
 }
 
 void LedgerImpl::StartMonthlyContribution() {
-  bat_contribution_->StartMonthlyContribution();
+  contribution()->StartMonthlyContribution();
 }
 
 uint64_t LedgerImpl::GetCreationStamp() {
@@ -761,7 +756,7 @@ void LedgerImpl::SaveContributionInfo(
 
 void LedgerImpl::HasSufficientBalanceToReconcile(
     ledger::HasSufficientBalanceToReconcileCallback callback) {
-  bat_contribution_->HasSufficientBalance(callback);
+  contribution()->HasSufficientBalance(callback);
 }
 
 void LedgerImpl::SaveNormalizedPublisherList(ledger::PublisherInfoList list) {
@@ -831,10 +826,6 @@ void LedgerImpl::RemoveAllPendingContributions(
 void LedgerImpl::GetPendingContributionsTotal(
     ledger::PendingContributionsTotalCallback callback) {
   bat_database_->GetPendingContributionsTotal(callback);
-}
-
-void LedgerImpl::ContributeUnverifiedPublishers() {
-  bat_contribution_->ContributeUnverifiedPublishers();
 }
 
 void LedgerImpl::WasPublisherProcessed(
@@ -1203,18 +1194,6 @@ void LedgerImpl::UpdateSKUOrderStatus(
   bat_database_->UpdateSKUOrderStatus(
       order_id,
       status,
-      callback);
-}
-
-void LedgerImpl::TransferFunds(
-    const ledger::SKUTransaction& transaction,
-    const std::string& destination,
-    ledger::ExternalWalletPtr wallet,
-    ledger::TransactionCallback callback) {
-  bat_contribution_->TransferFunds(
-      transaction,
-      destination,
-      std::move(wallet),
       callback);
 }
 

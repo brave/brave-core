@@ -85,11 +85,8 @@ void GetCredentialTrigger(
 
 namespace braveledger_contribution {
 
-ContributionSKU::ContributionSKU(
-    bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution):
-    ledger_(ledger),
-    contribution_(contribution) {
+ContributionSKU::ContributionSKU(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
   DCHECK(ledger_);
   credentials_ = braveledger_credentials::CredentialsFactory::Create(
       ledger_,
@@ -303,7 +300,7 @@ void ContributionSKU::CredsStepSaved(
     return;
   }
 
-  contribution_->StartUnblinded(
+  ledger_->contribution()->StartUnblinded(
       {ledger::CredsBatchType::SKU},
       contribution_id,
       callback);
@@ -449,7 +446,7 @@ void ContributionSKU::OnOrder(
     case ledger::ContributionStep::STEP_PREPARE:
     case ledger::ContributionStep::STEP_RESERVE:
     case ledger::ContributionStep::STEP_CREDS: {
-      contribution_->RetryUnblinded(
+      ledger_->contribution()->RetryUnblinded(
           {ledger::CredsBatchType::SKU},
           contribution->contribution_id,
           callback);

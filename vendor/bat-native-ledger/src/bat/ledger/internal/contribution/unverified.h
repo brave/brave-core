@@ -15,7 +15,6 @@
 
 #include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/contribution/contribution.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -25,9 +24,7 @@ namespace braveledger_contribution {
 
 class Unverified {
  public:
-  explicit Unverified(
-      bat_ledger::LedgerImpl* ledger,
-      Contribution* contribution);
+  explicit Unverified(bat_ledger::LedgerImpl* ledger);
 
   ~Unverified();
 
@@ -59,7 +56,6 @@ class Unverified {
       const uint64_t pending_contribution_id);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  Contribution* contribution_;   // NOT OWNED
   base::OneShotTimer unverified_publishers_timer_;
 };
 

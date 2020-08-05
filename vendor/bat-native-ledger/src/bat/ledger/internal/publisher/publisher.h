@@ -92,8 +92,6 @@ class Publisher {
                                ledger::Result result,
                                ledger::PublisherInfoPtr info);
 
-  void OnPublisherPrefixListUpdated();
-
   void SaveVisitInternal(
       const ledger::PublisherStatus,
       const std::string& publisher_key,

@@ -17,15 +17,7 @@
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
-#include "bat/ledger/internal/contribution/contribution_ac.h"
-#include "bat/ledger/internal/contribution/contribution_anon_card.h"
-#include "bat/ledger/internal/contribution/contribution_external_wallet.h"
-#include "bat/ledger/internal/contribution/contribution_monthly.h"
-#include "bat/ledger/internal/contribution/contribution_tip.h"
-#include "bat/ledger/internal/contribution/contribution_sku.h"
-#include "bat/ledger/internal/contribution/contribution_unblinded.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
-#include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -70,18 +62,17 @@ namespace braveledger_contribution {
 
 Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
-    unverified_(std::make_unique<Unverified>(ledger, this)),
+    unverified_(std::make_unique<Unverified>(ledger)),
     unblinded_(std::make_unique<Unblinded>(ledger)),
-    sku_(std::make_unique<ContributionSKU>(ledger, this)),
+    sku_(std::make_unique<ContributionSKU>(ledger)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
-    monthly_(std::make_unique<ContributionMonthly>(ledger, this)),
-    ac_(std::make_unique<ContributionAC>(ledger, this)),
-    tip_(std::make_unique<ContributionTip>(ledger, this)),
-    anon_card_(std::make_unique<ContributionAnonCard>(ledger, this)) {
+    monthly_(std::make_unique<ContributionMonthly>(ledger)),
+    ac_(std::make_unique<ContributionAC>(ledger)),
+    tip_(std::make_unique<ContributionTip>(ledger)),
+    anon_card_(std::make_unique<ContributionAnonCard>(ledger)) {
   DCHECK(ledger_ && uphold_);
   external_wallet_ = std::make_unique<ContributionExternalWallet>(
       ledger,
-      this,
       uphold_.get());
 }
 
@@ -643,7 +634,7 @@ void Contribution::OnResult(
     return;
   }
 
-  ledger_->ContributionCompleted(
+  ledger_->contribution()->ContributionCompleted(
       result,
       std::move(contribution));
 }
@@ -688,7 +679,7 @@ void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
   if (contribution->retry_count == 3 &&
       contribution->step != ledger::ContributionStep::STEP_PREPARE) {
     BLOG(0, "Contribution failed after 3 retries");
-    ledger_->ContributionCompleted(
+    ledger_->contribution()->ContributionCompleted(
         ledger::Result::TOO_MANY_RESULTS,
         std::move(contribution));
     return;
@@ -739,7 +730,7 @@ void Contribution::Retry(
 
   if (!ledger_->state()->GetRewardsMainEnabled()) {
     BLOG(1, "Rewards is disabled, completing contribution");
-    ledger_->ContributionCompleted(
+    ledger_->contribution()->ContributionCompleted(
         ledger::Result::REWARDS_OFF,
         std::move(contribution));
     return;
@@ -748,7 +739,7 @@ void Contribution::Retry(
   if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE &&
       !ledger_->state()->GetAutoContributeEnabled()) {
     BLOG(1, "AC is disabled, completing contribution");
-    ledger_->ContributionCompleted(
+    ledger_->contribution()->ContributionCompleted(
         ledger::Result::AC_OFF,
         std::move(contribution));
     return;

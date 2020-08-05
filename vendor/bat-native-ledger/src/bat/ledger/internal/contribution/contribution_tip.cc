@@ -14,11 +14,9 @@ using std::placeholders::_2;
 
 namespace braveledger_contribution {
 
-ContributionTip::ContributionTip(bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution) :
-    ledger_(ledger),
-    contribution_(contribution) {
-  DCHECK(ledger_ && contribution_);
+ContributionTip::ContributionTip(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
+  DCHECK(ledger_);
 }
 
 ContributionTip::~ContributionTip() = default;
@@ -93,7 +91,7 @@ void ContributionTip::QueueSaved(
     const ledger::Result result,
     ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
-    contribution_->ProcessContributionQueue();
+    ledger_->contribution()->ProcessContributionQueue();
   } else {
     BLOG(0, "Queue was not saved");
   }

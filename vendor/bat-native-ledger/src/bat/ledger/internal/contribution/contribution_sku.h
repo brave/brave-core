@@ -10,7 +10,6 @@
 #include <string>
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 
@@ -22,9 +21,7 @@ namespace braveledger_contribution {
 
 class ContributionSKU {
  public:
-  explicit ContributionSKU(
-      bat_ledger::LedgerImpl* ledger,
-      Contribution* contribution);
+  explicit ContributionSKU(bat_ledger::LedgerImpl* ledger);
   ~ContributionSKU();
 
   void AutoContribution(
@@ -122,7 +119,6 @@ class ContributionSKU {
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  Contribution* contribution_;   // NOT OWNED
   std::unique_ptr<braveledger_credentials::Credentials> credentials_;
   std::unique_ptr<braveledger_sku::SKU> sku_;
 };

@@ -98,7 +98,7 @@ void SKUTransaction::OnTransactionSaved(
       transaction,
       callback);
 
-  ledger_->TransferFunds(
+  ledger_->contribution()->TransferFunds(
       transaction,
       destination,
       ledger::ExternalWallet::New(wallet),

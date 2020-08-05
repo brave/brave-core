@@ -61,7 +61,7 @@ void Publisher::RefreshPublisher(
         // attempt to process any pending contributions for
         // unverified publishers.
         if (status == ledger::PublisherStatus::VERIFIED) {
-          ledger_->ContributeUnverifiedPublishers();
+          ledger_->contribution()->ContributeUnverifiedPublishers();
         }
 
         callback(status);
@@ -70,8 +70,11 @@ void Publisher::RefreshPublisher(
 
 void Publisher::SetPublisherServerListTimer() {
   if (ledger_->state()->GetRewardsMainEnabled()) {
-    prefix_list_updater_->StartAutoUpdate(
-        std::bind(&Publisher::OnPublisherPrefixListUpdated, this));
+    prefix_list_updater_->StartAutoUpdate([this]() {
+      // Attempt to reprocess any contributions for previously
+      // unverified publishers that are now verified.
+      ledger_->contribution()->ContributeUnverifiedPublishers();
+    });
   } else {
     prefix_list_updater_->StopAutoUpdate();
   }
@@ -705,12 +708,6 @@ void Publisher::OnGetPublisherBannerPublisher(
   }
 
   callback(std::move(new_banner));
-}
-
-void Publisher::OnPublisherPrefixListUpdated() {
-  // Attempt to reprocess any contributions for previously
-  // unverified publishers that are now verified.
-  ledger_->ContributeUnverifiedPublishers();
 }
 
 }  // namespace braveledger_publisher

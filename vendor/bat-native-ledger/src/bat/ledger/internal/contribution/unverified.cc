@@ -15,10 +15,8 @@ using std::placeholders::_2;
 
 namespace braveledger_contribution {
 
-Unverified::Unverified(bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution) :
-    ledger_(ledger),
-    contribution_(contribution) {
+Unverified::Unverified(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
 }
 
 Unverified::~Unverified() {
@@ -142,7 +140,7 @@ void Unverified::QueueSaved(
                 this,
                 _1));
 
-    contribution_->ProcessContributionQueue();
+    ledger_->contribution()->ProcessContributionQueue();
   } else {
     BLOG(1, "Queue was not saved");
   }

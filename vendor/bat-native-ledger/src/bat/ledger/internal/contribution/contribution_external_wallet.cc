@@ -16,12 +16,10 @@ namespace braveledger_contribution {
 
 ContributionExternalWallet::ContributionExternalWallet(
     bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution,
     braveledger_uphold::Uphold* uphold) :
     ledger_(ledger),
-    contribution_(contribution),
     uphold_(uphold) {
-  DCHECK(ledger_ && contribution_ && uphold_);
+  DCHECK(ledger_ && uphold_);
 }
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
@@ -82,7 +80,7 @@ void ContributionExternalWallet::ContributionInfo(
   }
 
   if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    contribution_->SKUAutoContribution(
+    ledger_->contribution()->SKUAutoContribution(
         contribution->contribution_id,
         ledger::ExternalWallet::New(wallet),
         callback);
