@@ -419,8 +419,30 @@ class SettingsViewController: TableViewController {
                         }))
 
                         alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
+                            let spinner = SpinnerView().then {
+                                $0.present(on: self.view)
+                            }
+                            
                             Preferences.Privacy.privateBrowsingOnly.value = value
-                            applyThemeBlock()
+                            
+                            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.1) {
+                                let clearables: [Clearable] = [CookiesAndCacheClearable()]
+                                ClearPrivateDataTableViewController.clearPrivateData(clearables).uponQueue(.main) { [weak self] in
+                                    guard let self = self else { return }
+                                    
+                                    //First remove all tabs so that only a blank tab exists.
+                                    self.tabManager.removeAll()
+                                    
+                                    //Reset tab configurations and delete all webviews..
+                                    self.tabManager.reset()
+                                    
+                                    //Restore all existing tabs by removing the blank tabs and recreating new ones..
+                                    self.tabManager.removeAll()
+                                    
+                                    spinner.dismiss()
+                                    applyThemeBlock()
+                                }
+                            }
                         }))
 
                         self.present(alert, animated: true, completion: nil)

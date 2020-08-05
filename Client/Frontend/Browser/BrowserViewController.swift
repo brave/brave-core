@@ -3617,15 +3617,6 @@ extension BrowserViewController: PreferencesObserver {
             setupTabs()
             updateTabsBarVisibility()
             updateApplicationShortcuts()
-            if isPrivate { //When PBO is turned ON, we remove all tabs and configurations.
-                tabManager.removeAll()
-                tabManager.resetConfiguration()
-                
-                // Clear ALL data when going from normal mode to private
-                // The other way around is handled in `removeTab`
-                let clearables: [Clearable] = [CookiesAndCacheClearable()]
-                _ = ClearPrivateDataTableViewController.clearPrivateData(clearables)
-            }
         case Preferences.General.alwaysRequestDesktopSite.key:
             tabManager.reset()
             self.tabManager.reloadSelectedTab()

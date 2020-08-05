@@ -411,6 +411,7 @@ extension Strings {
 
 extension Strings {
     public static let home = NSLocalizedString("Home", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Home", comment: "")
+    public static let clearingData = NSLocalizedString("ClearData", tableName: "BraveShared", bundle: Bundle.braveShared, value: "Clearing Data", comment: "")
 }
 
 extension Strings {

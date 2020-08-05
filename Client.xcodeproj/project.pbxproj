@@ -730,6 +730,7 @@
 		5E0FCD212342526700AC831E /* FullscreenHelper.js in Resources */ = {isa = PBXBuildFile; fileRef = 5EB57D0122FDC0CB00A07325 /* FullscreenHelper.js */; };
 		5E0FCD23234253DC00AC831E /* CertificatePinning.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0FCD22234253DC00AC831E /* CertificatePinning.swift */; };
 		5E0FCD252342544C00AC831E /* URLSession+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0FCD242342544C00AC831E /* URLSession+Requests.swift */; };
+		5E1645A824ABA35B0003C3B2 /* SpinnerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E1645A724ABA35B0003C3B2 /* SpinnerView.swift */; };
 		5E3477E922D7771700B0D5F8 /* ResourceDownloader.js in Resources */ = {isa = PBXBuildFile; fileRef = 5E3477E822D7771700B0D5F8 /* ResourceDownloader.js */; };
 		5E34781022D7A1D200B0D5F8 /* ResourceDownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E34780F22D7A1D200B0D5F8 /* ResourceDownloadManager.swift */; };
 		5E46C371234FACC600ACA8C1 /* root.cer in Resources */ = {isa = PBXBuildFile; fileRef = 5E46C36D234FACC600ACA8C1 /* root.cer */; };
@@ -2276,6 +2277,7 @@
 		5E0FCD22234253DC00AC831E /* CertificatePinning.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CertificatePinning.swift; sourceTree = "<group>"; };
 		5E0FCD242342544C00AC831E /* URLSession+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Requests.swift"; sourceTree = "<group>"; };
 		5E11C3FF23314D970003C363 /* onboarding-ads.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "onboarding-ads.json"; sourceTree = "<group>"; };
+		5E1645A724ABA35B0003C3B2 /* SpinnerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpinnerView.swift; sourceTree = "<group>"; };
 		5E1D8C66232BE43100BDE662 /* OnboardingAdsAvailableController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdsAvailableController.swift; sourceTree = "<group>"; };
 		5E1D8C68232BE47A00BDE662 /* OnboardingAdsAvailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingAdsAvailableView.swift; sourceTree = "<group>"; };
 		5E1D8C6A232BF95200BDE662 /* OnboardingRewardsAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingRewardsAgreementViewController.swift; sourceTree = "<group>"; };
@@ -4691,6 +4693,7 @@
 				59A68B1F857A8638598A63A0 /* TwoLineCell.swift */,
 				D863C8E31F68BFC20058D95F /* GradientProgressBar.swift */,
 				27D87C2D2152B50200FB55C6 /* GradientView.swift */,
+				5E1645A724ABA35B0003C3B2 /* SpinnerView.swift */,
 			);
 			path = Widgets;
 			sourceTree = "<group>";
@@ -6893,6 +6896,7 @@
 				0A8C6993225BC7B100988715 /* ToolbarUrlActionsProtocol.swift in Sources */,
 				0AFC8F9523D1DF6500941895 /* TranslucentBottomSheet.swift in Sources */,
 				E68E7ADA1CAC207400FDCA76 /* ChangePasscodeViewController.swift in Sources */,
+				5E1645A824ABA35B0003C3B2 /* SpinnerView.swift in Sources */,
 				E640E85E1C73A45A00C5F072 /* PasscodeEntryViewController.swift in Sources */,
 				4422D4BF21BFFB7600BF1855 /* logging.cc in Sources */,
 				A1AD4BD420BF4757007A6EA1 /* ImageCache.swift in Sources */,
