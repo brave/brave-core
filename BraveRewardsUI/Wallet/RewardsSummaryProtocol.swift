@@ -20,7 +20,7 @@ protocol RewardsSummaryProtocol {
   var summaryPeriod: String { get }
   
   /// Rows showing different types of earnings, tips etc.
-  var summaryRows: [RowView] { get }
+  func summaryRows(_ completion: @escaping ([RowView]) -> Void)
   
   /// A view informing users about contributing to unverified publishers.
   func disclaimerLabels(for pendingContributionTotal: Double) -> [LinkLabel]
@@ -49,33 +49,35 @@ extension RewardsSummaryProtocol {
     return "\(now.currentMonthName().uppercased()) \(now.currentYear)"
   }
   
-  var summaryRows: [RowView] {
+  func summaryRows(_ completion: @escaping ([RowView]) -> Void) {
     let now = Date()
     guard let activityMonth = ActivityMonth(rawValue: now.currentMonthNumber) else {
-      return []
+      completion([])
+      return
     }
     
     let ledger = state.ledger
-    var activities: [Activity] = []
     ledger.balanceReport(for: activityMonth, year: Int32(now.currentYear)) { balance in
       guard let balance = balance else { return }
-      activities = [
+      let rows: [RowView] = [
         Activity(balance.grants, title: Strings.totalGrantsClaimed, color: BraveUX.adsTintColor),
         Activity(balance.earningFromAds, title: Strings.earningFromAds, color: BraveUX.adsTintColor),
         Activity(balance.autoContribute, title: Strings.autoContribute, color: BraveUX.autoContributeTintColor),
         Activity(balance.oneTimeDonation, title: Strings.oneTimeTips, color: BraveUX.tipsTintColor),
         Activity(balance.recurringDonation, title: Strings.monthlyTips, color: BraveUX.tipsTintColor)
-      ].compactMap { $0 }
-    }
-    return activities.map {
-      let bat = $0.value.displayString
-      let usd = ledger.dollarStringForBATAmount(bat)
-      return RowView(
-        title: $0.title,
-        cryptoValueColor: $0.color,
-        batValue: bat,
-        usdDollarValue: usd
-      )
+      ]
+      .compactMap { $0 }
+      .map {
+        let bat = $0.value.displayString
+        let usd = ledger.dollarStringForBATAmount(bat)
+        return RowView(
+          title: $0.title,
+          cryptoValueColor: $0.color,
+          batValue: bat,
+          usdDollarValue: usd
+        )
+      }
+      completion(rows)
     }
   }
   
