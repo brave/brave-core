@@ -89,6 +89,8 @@ using ExternalWalletAuthorizationCallback =
         const ledger::Result,
         const std::map<std::string, std::string>&)>;
 
+using StopLedgerCallback = base::OnceCallback<void(ledger::Result)>;
+
 class RewardsServiceImpl : public RewardsService,
                            public ledger::LedgerClient,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
@@ -330,11 +332,18 @@ class RewardsServiceImpl : public RewardsService,
 
   void EnableGreaseLion(const bool enabled);
 
-  void StopLedger();
+  void StopLedger(StopLedgerCallback callback);
 
-  void OnStopLedger(const ledger::Result result);
+  void OnStopLedger(
+      StopLedgerCallback callback,
+      const ledger::Result result);
+  void OnStopLedgerForCompleteReset(
+      SuccessCallback callback,
+      const ledger::Result result);
 
   void Reset();
+
+  bool ResetOnFilesTaskRunner();
 
   void OnCreate();
 
@@ -767,6 +776,7 @@ class RewardsServiceImpl : public RewardsService,
   bool reset_states_;
   bool is_wallet_initialized_ = false;
   bool ledger_for_testing_ = false;
+  bool resetting_rewards_ = false;
 
   GetTestResponseCallback test_response_callback_;
 

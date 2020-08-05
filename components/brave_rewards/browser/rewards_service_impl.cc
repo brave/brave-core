@@ -216,17 +216,6 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
   return base::DeleteFile(path, false);
 }
 
-bool ResetOnFilesTaskRunner(const std::vector<base::FilePath>& paths) {
-  bool res = true;
-  for (size_t i = 0; i < paths.size(); i++) {
-    if (!base::DeleteFileRecursively(paths[i])) {
-      res = false;
-    }
-  }
-
-  return res;
-}
-
 void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
   if (!DirectoryExists(path))
     base::CreateDirectory(path);
@@ -374,9 +363,6 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       rewards_base_path_(profile_->GetPath().Append(kRewardsStatePath)),
       notification_service_(new RewardsNotificationServiceImpl(profile)),
       next_timer_id_(0) {
-  file_task_runner_->PostTask(
-      FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
-                                rewards_base_path_));
   // Set up the rewards data source
   content::URLDataSource::Add(profile_,
                               std::make_unique<BraveRewardsSource>(profile_));
@@ -428,6 +414,10 @@ void RewardsServiceImpl::StartLedger() {
     BLOG(1, "Ledger process is already running");
     return;
   }
+
+  file_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&EnsureRewardsBaseDirectoryExists,
+                                rewards_base_path_));
 
   rewards_database_ =
       std::make_unique<RewardsDatabase>(publisher_info_db_path_);
@@ -1475,7 +1465,7 @@ void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
 
   if (!enabled) {
     RecordRewardsDisabledForSomeMetrics();
-    StopLedger();
+    StopLedger(base::DoNothing());
   }
 }
 
@@ -1488,7 +1478,7 @@ void RewardsServiceImpl::EnableGreaseLion(const bool enabled) {
   #endif
 }
 
-void RewardsServiceImpl::StopLedger() {
+void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
   if (!Connected()) {
     BLOG(1, "Ledger process not running");
@@ -1496,17 +1486,62 @@ void RewardsServiceImpl::StopLedger() {
     return;
   }
 
-  bat_ledger_->Shutdown(
-      base::BindOnce(&RewardsServiceImpl::OnStopLedger, AsWeakPtr()));
+  bat_ledger_->Shutdown(base::BindOnce(
+      &RewardsServiceImpl::OnStopLedger,
+      AsWeakPtr(),
+      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnStopLedger(const ledger::Result result) {
+void RewardsServiceImpl::OnStopLedger(
+    StopLedgerCallback callback,
+    const ledger::Result result) {
   BLOG_IF(
       1,
       result != ledger::Result::LEDGER_OK,
       "Ledger process was not shut down successfully");
   Reset();
   BLOG(1, "Successfully shutdown ledger");
+  std::move(callback).Run(result);
+}
+
+void RewardsServiceImpl::OnStopLedgerForCompleteReset(
+    SuccessCallback callback,
+    const ledger::Result result) {
+  profile_->GetPrefs()->ClearPrefsWithPrefixSilently(pref_prefix);
+
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::BindOnce(
+          &RewardsServiceImpl::ResetOnFilesTaskRunner,
+          base::Unretained(this)),
+      base::BindOnce(
+          &RewardsServiceImpl::OnCompleteReset,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+bool RewardsServiceImpl::ResetOnFilesTaskRunner() {
+  // Close any open files before deleting them (required on Windows)
+  diagnostic_log_.Close();
+
+  const std::vector<base::FilePath> paths = {
+    ledger_state_path_,
+    publisher_state_path_,
+    publisher_info_db_path_,
+    diagnostic_log_path_,
+    publisher_list_path_,
+    rewards_base_path_
+  };
+
+  bool res = true;
+  for (size_t i = 0; i < paths.size(); i++) {
+    if (!base::DeleteFileRecursively(paths[i])) {
+      res = false;
+    }
+  }
+
+  return res;
 }
 
 void RewardsServiceImpl::Reset() {
@@ -2476,6 +2511,10 @@ void RewardsServiceImpl::DiagnosticLog(
     const int verbose_level,
     const std::string& message) {
   if (ledger_for_testing_) {
+    return;
+  }
+
+  if (resetting_rewards_) {
     return;
   }
 
@@ -3910,41 +3949,33 @@ void RewardsServiceImpl::ClearAllNotifications() {
 }
 
 void RewardsServiceImpl::CompleteReset(SuccessCallback callback) {
-  notification_service_->DeleteAllNotifications(true);
-  std::vector<base::FilePath> paths;
-  paths.push_back(ledger_state_path_);
-  paths.push_back(publisher_state_path_);
-  paths.push_back(publisher_info_db_path_);
-  paths.push_back(diagnostic_log_path_);
-  paths.push_back(publisher_list_path_);
-  paths.push_back(rewards_base_path_);
+  resetting_rewards_ = true;
 
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::BindOnce(&ResetOnFilesTaskRunner, paths),
+  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
+  if (ads_service) {
+    ads_service->ResetAllState(/* should_shutdown */ true);
+  }
+
+  StopNotificationTimers();
+  notification_service_->DeleteAllNotifications(true);
+
+  auto stop_callback =
       base::BindOnce(
-          &RewardsServiceImpl::OnCompleteReset,
+          &RewardsServiceImpl::OnStopLedgerForCompleteReset,
           AsWeakPtr(),
-          std::move(callback)));
+          std::move(callback));
+  StopLedger(std::move(stop_callback));
 }
 
 void RewardsServiceImpl::OnCompleteReset(
     SuccessCallback callback,
     const bool success) {
-  profile_->GetPrefs()->ClearPrefsWithPrefixSilently(pref_prefix);
-
-  auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
-  if (ads_service) {
-    ads_service->ResetAllState();
-  }
+  resetting_rewards_ = false;
 
   for (auto& observer : observers_) {
     observer.OnCompleteReset(success);
   }
 
-  StopLedger();
-  StopNotificationTimers();
   std::move(callback).Run(true);
 }
 
