@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.19.1](https://github.com/brave/brave-ios/releases/tag/v1.19.1)
+ 
+ - Removed Sync UI from settings. ([#2718](https://github.com/brave/brave-ios/issues/2718))
+
 ## [1.19](https://github.com/brave/brave-ios/releases/tag/v1.19)
 
  - Implemented "Brave Firewall + VPN". ([#2739](https://github.com/brave/brave-ios/issues/2739))
