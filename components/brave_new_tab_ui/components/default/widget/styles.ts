@@ -66,7 +66,8 @@ interface WidgetMenuProps {
 
 export const StyledWidgetMenu = styled<WidgetVisibilityProps & WidgetMenuProps, 'div'>('div')`
   position absolute;
-  width: 166px;
+  width: max-content;
+  min-width: 166px;
   padding: 8px 0;
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
@@ -178,5 +179,6 @@ export const StyledWidgetIcon = styled<WidgetIconProps, 'div'>('div')`
   }
 `
 export const StyledSpan = styled<{}, 'span'>('span')`
-  height: 13px;
+  text-align: left;
+  margin-right: 10px;
 `
