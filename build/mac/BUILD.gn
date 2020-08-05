@@ -20,7 +20,24 @@ declare_args() {
   notarize_argument = "False"
 }
 
-group("brave") {}
+if (!skip_signing) {
+  target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
+  packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
+  unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
+  keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
+}
+
+group("brave") {
+  if (skip_signing) {
+    app_path = "$root_out_dir/$chrome_product_full_name.app"
+  } else {
+    app_path = target_sign_app_path
+  }
+
+  exe_path = "$app_path/Contents/MacOS/$chrome_product_full_name"
+
+  write_file("$root_out_dir/brave_helper", [ string_replace(rebase_path(exe_path), " ", "\\ ") + " \$@" ])
+}
 
 ds_store_file_name = "DS_Store"
 dmg_icon_file_name = "dmg"
@@ -111,11 +128,6 @@ if (skip_signing) {
     }
   }
 } else {
-  packaging_dir = "$root_out_dir/" + string_replace("$chrome_product_full_name Packaging", " ", "_")
-  target_sign_app_path = "$root_out_dir/$mac_signing_output_prefix/" + string_replace("$chrome_product_full_name", " ", "") + "-$chrome_version_full/$brave_exe"
-  unsigned_pkg_path = "$root_out_dir/unsigned/$brave_pkg"
-  keychain_db = getenv("HOME") + "/Library/Keychains/${mac_signing_keychain}.keychain-db"
-
   action("sign_app") {
     script = "//build/gn_run_binary.py"
     shell_script = "//brave/build/mac/sign_app.sh"

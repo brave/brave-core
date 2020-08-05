@@ -118,25 +118,12 @@ const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options
 
   let outputPath = options.output_path
   if (!outputPath) {
-    if (process.platform === 'darwin') {
-      let outputDir = config.outputDir
-      if (config.shouldSign()) {
-        outputDir = path.join(outputDir, config.mac_signing_output_prefix)
-      }
-
-      let appName = 'Brave\\ Browser\\ Development'
-
-      if (buildConfig === 'Release') {
-        appName = 'Brave\\ Browser'
-      }
-
-      outputPath = path.join(outputDir,
-                             appName + '.app', 'Contents', 'MacOS',
-                             appName)
-    } else if (process.platform === 'win32') {
-      outputPath = path.join(config.outputDir, 'brave.exe')
-    } else {
-      outputPath = path.join(config.outputDir, 'brave')
+    outputPath = path.join(config.outputDir, 'brave')
+    if (process.platform === 'win32') {
+      outputPath = outputPath + '.exe'
+    } else if (process.platform === 'darwin') {
+      outputPath = outputPath + '_helper'
+      fs.chmodSync(outputPath, 0755)
     }
   }
   util.run(outputPath, braveArgs, cmdOptions)
