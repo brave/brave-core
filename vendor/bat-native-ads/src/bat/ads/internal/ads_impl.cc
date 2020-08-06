@@ -228,12 +228,14 @@ void AdsImpl::InitializeStep6(
   client_->UpdateAdUUID();
 
   if (IsMobile()) {
+    /*
     if (client_->GetNextCheckServeAdNotificationTimestampInSeconds() == 0) {
       StartDeliveringAdNotificationsAfterSeconds(
           2 * base::Time::kSecondsPerMinute);
     } else {
+    */
       StartDeliveringAdNotifications();
-    }
+    // }
   }
 
   ads_serve_->DownloadCatalog();
@@ -1324,6 +1326,7 @@ bool AdsImpl::IsAllowedToServeAdNotifications() {
 }
 
 void AdsImpl::StartDeliveringAdNotifications() {
+  /*
   auto now_in_seconds = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
   auto next_check_serve_ad_timestamp_in_seconds =
       client_->GetNextCheckServeAdNotificationTimestampInSeconds();
@@ -1335,6 +1338,8 @@ void AdsImpl::StartDeliveringAdNotifications() {
   } else {
     delay = next_check_serve_ad_timestamp_in_seconds - now_in_seconds;
   }
+  */
+  uint64_t delay = 30;
 
   const base::Time time = deliver_ad_notification_timer_.Start(delay,
       base::BindOnce(&AdsImpl::DeliverAdNotification, base::Unretained(this)));
@@ -1407,7 +1412,7 @@ void AdsImpl::MaybeServeAdNotification(
     return;
   }
 
-  ServeAdNotificationIfReady(false);
+  ServeAdNotificationIfReady(true);
 }
 
 const AdNotificationInfo& AdsImpl::get_last_shown_ad_notification() const {

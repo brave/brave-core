@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 
+#include "base/logging.h"
 #include <memory>
 #include <utility>
 
@@ -35,6 +36,7 @@ AdsNotificationHandler::~AdsNotificationHandler() {
 void AdsNotificationHandler::OnShow(
     Profile* profile,
     const std::string& id) {
+  LOG(INFO) << "albert AdsNH::OnShow";
 
   if (!ads_service_) {
     auto notification = base::BindOnce(&AdsNotificationHandler::OnShow,

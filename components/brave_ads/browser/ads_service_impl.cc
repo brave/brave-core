@@ -49,6 +49,7 @@
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
+#include "brave/browser/notifications/notification_platform_bridge_brave_custom_notification.h"
 #if !defined(OS_ANDROID)
 #include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "chrome/browser/ui/browser.h"
@@ -230,7 +231,11 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
   MaybeShowOnboarding();
 #endif
 
+<<<<<<< HEAD
   g_brave_browser_process->user_model_file_service()->AddObserver(this);
+=======
+  // NotificationPlatformBridgeBraveCustomNotification* brave_custom_notification_bridge_ = new NotificationPlatformBridgeBraveCustomNotification>(profile);
+>>>>>>> c784ca67bc... Record onView
 
   MaybeStart(false);
 }
@@ -1881,8 +1886,12 @@ void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
   brave_custom_notification::Notification* notification = (brave_custom_notification::Notification*) CreateAdNotification(*info);
 
- //  display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification, /*metadata=*/nullptr);
-  brave_custom_notification::MessagePopupView::Show(*notification);
+  // Call NotificationPlatformBridgeBraveCustomNotification
+  NotificationPlatformBridgeBraveCustomNotification* platform_bridge = new NotificationPlatformBridgeBraveCustomNotification(profile_);
+  platform_bridge->Display(NotificationHandler::Type::BRAVE_ADS, profile_, *notification, /*metadata=*/nullptr);
+  //
+  // display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification, /*metadata=*/nullptr);
+  // brave_custom_notification::MessagePopupView::Show(*notification);
   StartNotificationTimeoutTimer(info->uuid);
 }
 
