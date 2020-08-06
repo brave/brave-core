@@ -80,7 +80,7 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
   auto queue = ledger::ContributionQueue::New();
   queue->id = base::GenerateGUID();
   queue->type = ledger::RewardsType::AUTO_CONTRIBUTE;
-  queue->amount = ledger_->GetAutoContributionAmount();
+  queue->amount = ledger_->state()->GetAutoContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
 

@@ -435,7 +435,7 @@ void YouTube::OnMediaPublisherInfo(
     new_visit_data.favicon_url = publisher_info->favicon_url;
     std::string id = publisher_info->id;
 
-    ledger_->SaveVideoVisit(
+    ledger_->publisher()->SaveVideoVisit(
         id,
         new_visit_data,
         duration,
@@ -561,7 +561,7 @@ void YouTube::SavePublisherInfo(const uint64_t duration,
   new_visit_data.name = publisher_name;
   new_visit_data.url = url;
 
-  ledger_->SaveVideoVisit(
+  ledger_->publisher()->SaveVideoVisit(
       publisher_id,
       new_visit_data,
       duration,
@@ -642,7 +642,7 @@ void YouTube::GetPublisherPanleInfo(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
-    ledger_->GetReconcileStamp(),
+    ledger_->state()->GetReconcileStamp(),
     true,
     false);
   ledger_->database()->GetPanelPublisherInfo(std::move(filter),

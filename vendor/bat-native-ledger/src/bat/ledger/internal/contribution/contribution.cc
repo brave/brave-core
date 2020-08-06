@@ -18,9 +18,10 @@
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/publisher/publisher_status_helper.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/wallet_balance.h"
-#include "bat/ledger/internal/ledger_impl.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -148,12 +149,12 @@ void Contribution::HasSufficientBalance(
 }
 
 void Contribution::ResetReconcileStamp() {
-  ledger_->ResetReconcileStamp();
+  ledger_->state()->ResetReconcileStamp();
   SetReconcileTimer();
 }
 
 void Contribution::StartMonthlyContribution() {
-  const auto reconcile_stamp = ledger_->GetReconcileStamp();
+  const auto reconcile_stamp = ledger_->state()->GetReconcileStamp();
   ResetReconcileStamp();
 
   if (!ledger_->state()->GetRewardsMainEnabled()) {
@@ -213,7 +214,7 @@ void Contribution::SetReconcileTimer() {
   }
 
   uint64_t now = std::time(nullptr);
-  uint64_t next_reconcile_stamp = ledger_->GetReconcileStamp();
+  uint64_t next_reconcile_stamp = ledger_->state()->GetReconcileStamp();
 
   base::TimeDelta delay;
   if (next_reconcile_stamp > now) {
@@ -780,6 +781,19 @@ void Contribution::Retry(
       return;
     }
   }
+}
+
+void Contribution::GetRecurringTips(
+    ledger::PublisherInfoListCallback callback) {
+  ledger_->database()->GetRecurringTips([this, callback](
+      ledger::PublisherInfoList list) {
+    // The publisher status field may be expired. Attempt to refresh
+    // expired publisher status values before executing callback.
+    braveledger_publisher::RefreshPublisherStatus(
+        ledger_,
+        std::move(list),
+        callback);
+  });
 }
 
 }  // namespace braveledger_contribution

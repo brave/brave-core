@@ -487,7 +487,7 @@ void Twitter::GetPublisherPanelInfo(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
-    ledger_->GetReconcileStamp(),
+    ledger_->state()->GetReconcileStamp(),
     true,
     false);
   ledger_->database()->GetPanelPublisherInfo(std::move(filter),

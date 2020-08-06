@@ -541,7 +541,7 @@ void Vimeo::GetPublisherPanleInfo(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
-    ledger_->GetReconcileStamp(),
+    ledger_->state()->GetReconcileStamp(),
     true,
     false);
   ledger_->database()->GetPanelPublisherInfo(std::move(filter),
@@ -671,7 +671,7 @@ void Vimeo::SavePublisherInfo(
   visit_data.favicon_url = icon;
   visit_data.name = publisher_name;
 
-  ledger_->SaveVideoVisit(
+  ledger_->publisher()->SaveVideoVisit(
       key,
       visit_data,
       duration,

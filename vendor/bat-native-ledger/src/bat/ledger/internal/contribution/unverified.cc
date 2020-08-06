@@ -38,7 +38,7 @@ void Unverified::OnContributeUnverifiedBalance(
     return;
   }
 
-  ledger_->GetPendingContributions(
+  ledger_->database()->GetPendingContributions(
       std::bind(&Unverified::OnContributeUnverifiedPublishers,
                 this,
                 properties->total,

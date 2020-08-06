@@ -74,7 +74,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
         }
         // Fetch current publisher info.
         auto& key = task_info->current->first;
-        task_info->ledger->GetServerPublisherInfo(key, [task_info](
+        task_info->ledger->publisher()->GetServerPublisherInfo(key, [task_info](
             ledger::ServerPublisherInfoPtr server_info) {
           // Update status map and continue looking for expired entries.
           task_info->current->second.status = server_info->status;

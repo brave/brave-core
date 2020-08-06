@@ -32,8 +32,7 @@ Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
         std::make_unique<ServerPublisherFetcher>(ledger)) {
 }
 
-Publisher::~Publisher() {
-}
+Publisher::~Publisher() = default;
 
 bool Publisher::ShouldFetchServerPublisherInfo(
     ledger::ServerPublisherInfo* server_info) {
@@ -144,11 +143,26 @@ void Publisher::SaveVisit(
       publisher_key,
       [this, publisher_key, on_server_info](bool publisher_exists) {
         if (publisher_exists) {
-          ledger_->GetServerPublisherInfo(publisher_key, on_server_info);
+          ledger_->publisher()->GetServerPublisherInfo(
+              publisher_key,
+              on_server_info);
         } else {
           on_server_info(nullptr);
         }
       });
+}
+
+void Publisher::SaveVideoVisit(
+    const std::string& publisher_id,
+    const ledger::VisitData& visit_data,
+    uint64_t duration,
+    uint64_t window_id,
+    ledger::PublisherInfoCallback callback) {
+  if (!ledger_->state()->GetPublisherAllowVideos()) {
+    duration = 0;
+  }
+
+  SaveVisit(publisher_id, visit_data, duration, window_id, callback);
 }
 
 ledger::ActivityInfoFilterPtr Publisher::CreateActivityFilter(
@@ -184,7 +198,7 @@ void Publisher::OnSaveVisitServerPublisher(
       publisher_key,
       ledger::ExcludeFilter::FILTER_ALL,
       false,
-      ledger_->GetReconcileStamp(),
+      ledger_->state()->GetReconcileStamp(),
       true,
       false);
 
@@ -325,7 +339,7 @@ void Publisher::SaveVisitInternal(
     publisher_info->visits += 1;
     publisher_info->duration += duration;
     publisher_info->score += concaveScore(duration);
-    publisher_info->reconcile_stamp = ledger_->GetReconcileStamp();
+    publisher_info->reconcile_stamp = ledger_->state()->GetReconcileStamp();
 
     panel_info = publisher_info->Clone();
 
@@ -555,7 +569,7 @@ void Publisher::SynopsisNormalizer() {
   auto filter = CreateActivityFilter("",
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED,
       true,
-      ledger_->GetReconcileStamp(),
+      ledger_->state()->GetReconcileStamp(),
       ledger_->state()->GetPublisherAllowNonVerified(),
       ledger_->state()->GetPublisherMinVisits());
   ledger_->database()->GetActivityInfoList(
@@ -632,7 +646,7 @@ void Publisher::GetPublisherActivityFromUrl(
       visit_data->domain,
       ledger::ExcludeFilter::FILTER_ALL,
       false,
-      ledger_->GetReconcileStamp(),
+      ledger_->state()->GetReconcileStamp(),
       true,
       false);
 
@@ -693,7 +707,7 @@ void Publisher::GetPublisherBanner(
   // requested this information by interacting with the UI, we should
   // make a best effort to return correct and updated information even
   // if the prefix list is incorrect.
-  ledger_->GetServerPublisherInfo(publisher_key, banner_callback);
+  GetServerPublisherInfo(publisher_key, banner_callback);
 }
 
 void Publisher::OnGetPublisherBanner(
@@ -744,6 +758,41 @@ void Publisher::OnGetPublisherBannerPublisher(
   }
 
   callback(std::move(new_banner));
+}
+
+void Publisher::GetServerPublisherInfo(
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  ledger_->database()->GetServerPublisherInfo(
+      publisher_key,
+      std::bind(&Publisher::OnServerPublisherInfoLoaded,
+          this,
+          _1,
+          publisher_key,
+          callback));
+}
+
+void Publisher::OnServerPublisherInfoLoaded(
+    ledger::ServerPublisherInfoPtr server_info,
+    const std::string& publisher_key,
+    ledger::GetServerPublisherInfoCallback callback) {
+  if (ShouldFetchServerPublisherInfo(server_info.get())) {
+    BLOG(1, "Server publisher info  is expired for " << publisher_key);
+
+    // Store the current server publisher info so that if fetching fails
+    // we can execute the callback with the last known valid data.
+    auto shared_info = std::make_shared<ledger::ServerPublisherInfoPtr>(
+        std::move(server_info));
+
+    FetchServerPublisherInfo(
+        publisher_key,
+        [shared_info, callback](ledger::ServerPublisherInfoPtr info) {
+          callback(std::move(info ? info : *shared_info));
+        });
+    return;
+  }
+
+  callback(std::move(server_info));
 }
 
 }  // namespace braveledger_publisher

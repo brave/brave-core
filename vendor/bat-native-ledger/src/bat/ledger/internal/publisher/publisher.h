@@ -48,6 +48,13 @@ class Publisher {
                  uint64_t window_id,
                  const ledger::PublisherInfoCallback callback);
 
+  void SaveVideoVisit(
+      const std::string& publisher_id,
+      const ledger::VisitData& visit_data,
+      uint64_t duration,
+      uint64_t window_id,
+      ledger::PublisherInfoCallback callback);
+
   void SetPublisherExclude(
       const std::string& publisher_id,
       const ledger::PublisherExclude& exclude,
@@ -85,6 +92,10 @@ class Publisher {
   void SynopsisNormalizer();
 
   void CalcScoreConsts(const int min_duration_seconds);
+
+  void GetServerPublisherInfo(
+      const std::string& publisher_key,
+      ledger::GetServerPublisherInfoCallback callback);
 
  private:
   void onPublisherActivitySave(
@@ -162,6 +173,11 @@ class Publisher {
       ledger::PublisherInfoPtr publisher_info);
 
   ledger::PublisherStatus ParsePublisherStatus(const std::string& status);
+
+  void OnServerPublisherInfoLoaded(
+      ledger::ServerPublisherInfoPtr server_info,
+      const std::string& publisher_key,
+      ledger::GetServerPublisherInfoCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PublisherPrefixListUpdater> prefix_list_updater_;

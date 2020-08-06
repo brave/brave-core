@@ -38,7 +38,9 @@ void ContributionTip::Process(
       amount,
       callback);
 
-  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
+  ledger_->publisher()->GetServerPublisherInfo(
+      publisher_key,
+      server_callback);
 }
 
 void ContributionTip::ServerPublisher(

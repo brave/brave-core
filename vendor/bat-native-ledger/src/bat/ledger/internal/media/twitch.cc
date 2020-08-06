@@ -644,7 +644,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
   new_visit_data.name = publisher_name;
   new_visit_data.url = url;
 
-  ledger_->SaveVideoVisit(
+  ledger_->publisher()->SaveVideoVisit(
       key,
       new_visit_data,
       duration,

@@ -191,7 +191,7 @@ uint64_t State::GetReconcileStamp() {
   auto stamp = ledger_->ledger_client()->GetUint64State(
       ledger::kStateNextReconcileStamp);
   if (stamp == 0) {
-    ledger_->ResetReconcileStamp();
+    ResetReconcileStamp();
     stamp = ledger_->ledger_client()->GetUint64State(
         ledger::kStateNextReconcileStamp);
   }
@@ -211,6 +211,9 @@ void State::SetReconcileStamp(const int reconcile_interval) {
       ledger::kStateNextReconcileStamp,
       reconcile_stamp);
   ledger_->ledger_client()->ReconcileStampReset();
+}
+void State::ResetReconcileStamp() {
+  SetReconcileStamp(ledger::reconcile_interval);
 }
 
 uint64_t State::GetCreationStamp() {

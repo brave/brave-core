@@ -95,6 +95,8 @@ class Contribution {
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
+  void GetRecurringTips(ledger::PublisherInfoListCallback callback);
+
  private:
   // Start point for contribution
   // In this step we get balance from the server

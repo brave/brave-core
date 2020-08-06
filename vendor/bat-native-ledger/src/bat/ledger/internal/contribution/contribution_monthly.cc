@@ -28,7 +28,7 @@ void ContributionMonthly::Process(ledger::ResultCallback callback) {
       _1,
       callback);
 
-  ledger_->GetRecurringTips(get_callback);
+  ledger_->contribution()->GetRecurringTips(get_callback);
 }
 
 void ContributionMonthly::PrepareTipList(
@@ -138,7 +138,7 @@ void ContributionMonthly::OnSufficientBalanceWallet(
       info->total,
       callback);
 
-  ledger_->GetRecurringTips(tips_callback);
+  ledger_->contribution()->GetRecurringTips(tips_callback);
 }
 
 void ContributionMonthly::OnHasSufficientBalance(

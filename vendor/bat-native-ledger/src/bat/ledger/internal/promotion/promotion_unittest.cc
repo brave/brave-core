@@ -84,7 +84,7 @@ class PromotionTest : public testing::Test {
     ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(testing::Return(mock_database_.get()));
 
-    ON_CALL(*mock_ledger_impl_, LoadURL(_, _, _, _, _, _))
+    ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
       .WillByDefault(
         Invoke([](
             const std::string& url,

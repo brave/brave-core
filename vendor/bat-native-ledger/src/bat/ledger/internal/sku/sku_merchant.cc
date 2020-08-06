@@ -84,7 +84,9 @@ void SKUMerchant::OnOrder(
           wallet,
           callback);
 
-    ledger_->GetServerPublisherInfo(order->merchant_id, publisher_callback);
+    ledger_->publisher()->GetServerPublisherInfo(
+        order->merchant_id,
+        publisher_callback);
     return;
   }
 

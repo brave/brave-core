@@ -65,6 +65,8 @@ class State {
 
   void SetReconcileStamp(const int reconcile_interval);
 
+  void ResetReconcileStamp();
+
   uint64_t GetCreationStamp();
 
   void SetCreationStamp(const uint64_t stamp);

@@ -104,7 +104,9 @@ void ContributionExternalWallet::ContributionInfo(
           single_publisher,
           callback);
 
-    ledger_->GetServerPublisherInfo(publisher->publisher_key, get_callback);
+    ledger_->publisher()->GetServerPublisherInfo(
+        publisher->publisher_key,
+        get_callback);
     return;
   }
 
