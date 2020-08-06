@@ -17,6 +17,7 @@ export interface WidgetProps {
   isCryptoTab?: boolean
   widgetTitle?: string
   hideMenu?: boolean
+  isForeground?: boolean
   onLearnMore?: () => void
   onDisconnect?: () => void
   onRefreshData?: () => void
@@ -31,19 +32,15 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
     constructor (props: P & WidgetProps) {
       super(props)
       this.state = {
-        widgetMenuPersist: false
+        widgetMenuPersist: !!props.isForeground
       }
     }
 
-    toggleWidgetHover = () => {
-      this.setState({ widgetMenuPersist: !this.state.widgetMenuPersist })
-    }
-
-    persistWidgetHover = () => {
+    persistWidget = () => {
       this.setState({ widgetMenuPersist: true })
     }
 
-    unpersistWidgetHover = () => {
+    unpersistWidget = () => {
       this.setState({ widgetMenuPersist: false })
     }
 
@@ -57,6 +54,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
         isCryptoTab,
         widgetTitle,
         hideMenu,
+        isForeground,
         onLearnMore,
         onDisconnect,
         onRefreshData
@@ -67,7 +65,6 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
         <StyledWidgetContainer
           menuPosition={menuPosition}
           textDirection={textDirection}
-          onMouseLeave={this.unpersistWidgetHover}
         >
           <StyledWidget
             isCrypto={isCrypto}
@@ -75,7 +72,7 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
             widgetMenuPersist={widgetMenuPersist}
             preventFocus={preventFocus}
           >
-              <WrappedComponent {...this.props as P}/>
+            <WrappedComponent {...this.props as P}/>
           </StyledWidget>
           {hideWidget && !hideMenu && !preventFocus &&
           <WidgetMenu
@@ -83,13 +80,13 @@ const createWidget = <P extends object>(WrappedComponent: React.ComponentType<P>
             onLearnMore={onLearnMore}
             onDisconnect={onDisconnect}
             onRefreshData={onRefreshData}
+            isForeground={isForeground}
             widgetMenuPersist={widgetMenuPersist}
-            toggleWidgetHover={this.toggleWidgetHover}
             textDirection={textDirection}
             menuPosition={menuPosition}
             hideWidget={hideWidget as HideWidgetFunction}
-            unpersistWidgetHover={this.unpersistWidgetHover}
-            onMouseEnter={this.persistWidgetHover}
+            persistWidget={this.persistWidget}
+            unpersistWidget={this.unpersistWidget}
           />
           }
         </StyledWidgetContainer>

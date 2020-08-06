@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 
-import { StyledWidgetMenuContainer, StyledWidgetMenu, StyledWidgetButton, StyledWidgetIcon, StyledSpan, StyledWidgetLink } from './styles'
+import { StyledWidgetMenuContainer, StyledWidgetMenu, StyledWidgetButton, StyledWidgetIcon, StyledSpan, StyledWidgetLink, StyledEllipsis } from './styles'
 import { IconButton } from '../../default'
 import EllipsisIcon from './assets/ellipsis'
 import HideIcon from './assets/hide'
@@ -18,12 +18,12 @@ interface Props {
   menuPosition: 'right' | 'left'
   hideWidget: () => void
   textDirection: string
-  toggleWidgetHover: () => void
   widgetMenuPersist: boolean
-  unpersistWidgetHover: () => void
+  persistWidget: () => void
+  unpersistWidget: () => void
   widgetTitle?: string
+  isForeground?: boolean
   onLearnMore?: () => void
-  onMouseEnter: () => void
   onDisconnect?: () => void
   onRefreshData?: () => void
 }
@@ -44,7 +44,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
 
   handleClickOutsideMenu = (event: Event) => {
     if (this.settingsMenuRef && !this.settingsMenuRef.current.contains(event.target)) {
-      this.props.unpersistWidgetHover()
+      this.props.unpersistWidget()
       this.closeMenu()
     }
   }
@@ -58,6 +58,10 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
   }
 
   toggleMenu = () => {
+    if (!this.state.showMenu) {
+      this.props.persistWidget()
+    }
+
     this.setState({ showMenu: !this.state.showMenu })
   }
 
@@ -67,7 +71,7 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
 
   unmountWidget = () => {
     this.props.hideWidget()
-    this.props.unpersistWidgetHover()
+    this.props.unpersistWidget()
     this.closeMenu()
   }
 
@@ -82,8 +86,8 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
       textDirection,
       widgetMenuPersist,
       widgetTitle,
+      isForeground,
       onLearnMore,
-      onMouseEnter,
       onDisconnect,
       onRefreshData
     } = this.props
@@ -91,16 +95,16 @@ export default class WidgetMenu extends React.PureComponent<Props, State> {
     const hideString = widgetTitle ? `${getLocale('hide')} ${widgetTitle}` : getLocale('hide')
 
     return (
-      <StyledWidgetMenuContainer
-        menuPosition={menuPosition}
-        innerRef={this.settingsMenuRef}
-        widgetMenuPersist={widgetMenuPersist}
-        onMouseEnter={onMouseEnter}
-      >
-        <IconButton isClickMenu={true} onClick={this.toggleMenu}><EllipsisIcon/></IconButton>
+      <StyledWidgetMenuContainer innerRef={this.settingsMenuRef}>
+        <StyledEllipsis widgetMenuPersist={widgetMenuPersist} isForeground={isForeground}>
+          <IconButton isClickMenu={true} onClick={this.toggleMenu}>
+            <EllipsisIcon/>
+          </IconButton>
+        </StyledEllipsis>
         {showMenu && <StyledWidgetMenu
           textDirection={textDirection}
           menuPosition={menuPosition}
+          widgetMenuPersist={widgetMenuPersist}
         >
           <StyledWidgetButton
             onClick={this.unmountWidget}
