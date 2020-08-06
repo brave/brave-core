@@ -67,8 +67,7 @@ class PassThroughDelegate : public brave_custom_notification::NotificationDelega
              const base::Optional<base::string16>& reply) override {
     LOG(INFO) << "albert NPBBCN::Click";
     brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile_));
-    base::RunLoop run_loop;
-    handler->OnClick(profile_, notification_.origin_url(), notification_.id(), button_index, reply, run_loop.QuitClosure());
+    handler->OnClick(profile_, notification_.origin_url(), notification_.id(), button_index, reply, base::OnceClosure());
     /*
     NotificationDisplayServiceImpl::GetForProfile(profi  ->ProcessNotificationOperation(
             NotificationCommon::OPERATION_CLICK, notification_type_,

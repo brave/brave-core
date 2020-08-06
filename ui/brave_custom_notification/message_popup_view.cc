@@ -35,6 +35,7 @@ constexpr gfx::Size kSmallContainerSize(328, 50);
 namespace {
 static MessagePopupView* g_message_popup_view = nullptr;
 static Notification* g_notification = nullptr;
+static scoped_refptr<NotificationDelegate> delegate_ = nullptr;
 }
 
 // static
@@ -42,20 +43,16 @@ void MessagePopupView::Show(Notification& notification) {
   if (g_message_popup_view == nullptr) {
     g_message_popup_view = new MessagePopupView(notification);
   }
-//  g_notification = &notification;
+  g_notification = &notification;
   
-  NotificationDelegate* delegate = g_notification->delegate();
-  if (delegate){
-    LOG(INFO) << "albert delegate found for MPV::Show";
-  }
+  delegate_ = g_notification->delegate();
 }
 
 void MessagePopupView::Clicked(const std::string& notification_id) {
   LOG(INFO) << "albert MPV::Clicked";
-  NotificationDelegate* delegate = g_notification->delegate();
-  if (delegate){
+  if (delegate_){
     LOG(INFO) << "albert delegate found for MPV::Clicked";
-    delegate->Click(base::nullopt, base::nullopt);
+    delegate_->Click(base::nullopt, base::nullopt);
   }
 }
 

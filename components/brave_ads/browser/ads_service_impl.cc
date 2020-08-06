@@ -1884,6 +1884,7 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 
 void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
+  LOG(INFO) << "albert AdsServiceImpl::ShowNotification";
   brave_custom_notification::Notification* notification = (brave_custom_notification::Notification*) CreateAdNotification(*info);
 
   // Call NotificationPlatformBridgeBraveCustomNotification
