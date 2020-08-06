@@ -2,13 +2,59 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
+  preset: "ts-jest/presets/default",
+  moduleFileExtensions: [
+    "js",
+    "tsx",
+    "ts",
+    "json"
+  ],
+  globals: {
+    "ts-jest": {
+      "tsConfig": "tsconfig-jest.json",
+      "isolatedModules": true
+    }
+  },
+  transform: {
+    ".(jsx|js|ts|tsx)": "ts-jest"
+  },
   clearMocks: true,
-  roots: [
-    "build/commands/lib",
-    "build/commands/scripts"
+  resetMocks: true,
+  resetModules: true,
+  collectCoverage: true,
+  collectCoverageFrom: [
+    "<rootDir>/build/commands/lib/*",
+    "<rootDir>/components/**/**/*.ts",
+    "<rootDir>/components/**/**/*.tsx",
+    "!<rootDir>/components/definitions/*",
+    "!<rootDir>/components/**/constants/*",
+    "!<rootDir>/components/**/reducers/index.ts",
+    "!<rootDir>/components/**/store.ts",
+    "!<rootDir>/components/test/*",
+    "!<rootDir>/build/commands/lib/start.js",
+    "!<rootDir>/build/commands/lib/jsconfig.json"
+  ],
+  testURL: "http://localhost/",
+  testMatch: [
+    "<rootDir>/build/commands/**/**/?(*\.)(test).js",
+    "<rootDir>/components/test/**/**/?(*_)(test).{ts,tsx}"
   ],
   testPathIgnorePatterns: [
-    'lib/test.js'
+    "lib/test.js"
   ],
-  testEnvironment: "node"
+  transformIgnorePatterns: [
+    "<rootDir>/node_modules/(?!(brave-ui)/)"
+  ],
+  setupFilesAfterEnv: [
+    "<rootDir>/components/test/testSetup.ts"
+  ],
+  setupFiles: [
+    "<rootDir>/components/test/testPolyfills.ts"
+  ],
+  moduleNameMapper: {
+    "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
+    "\\.(css|less)$": "identity-obj-proxy",
+    "^brave-ui$": "<rootDir>/node_modules/brave-ui/src",
+    "^brave-ui\\/(.*)": "<rootDir>/node_modules/brave-ui/src/$1"
+  }
 }
