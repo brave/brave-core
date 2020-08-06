@@ -122,7 +122,7 @@ void TorLauncherImpl::Launch(const TorConfig& config,
   args.AppendArg("--defaults-torrc");
   args.AppendArg("/nonexistent");
   args.AppendArg("--SocksPort");
-  args.AppendArg(config.proxy_host() + ":" + config.proxy_port());
+  args.AppendArg("auto");
   args.AppendArg("--TruncateLogFile");
   args.AppendArg("1");
   base::FilePath tor_data_path = config.tor_data_path();

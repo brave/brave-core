@@ -16,6 +16,7 @@
 using content::BrowserThread;
 
 namespace {
+constexpr char kTorProxyScheme[] = "socks5://";
 bool g_prevent_tor_launch_for_tests = false;
 }
 
@@ -163,6 +164,11 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
     observer.NotifyTorLaunched(result, pid);
 }
 
+void TorLauncherFactory::OnTorNewProxyURI(std::string uri) {
+  for (auto& observer : observers_)
+    observer.NotifyTorNewProxyURI(uri);
+}
+
 void TorLauncherFactory::OnTorControlReady() {
   LOG(ERROR) << "TOR CONTROL: Ready!";
   control_->GetVersion(
@@ -198,6 +204,16 @@ void TorLauncherFactory::GotSOCKSListeners(
   for (auto& listener : listeners) {
     LOG(ERROR) << listener;
   }
+  std::string tor_proxy_uri = kTorProxyScheme + listeners[0];
+  // Remove extra quotes
+  tor_proxy_uri.erase(
+      std::remove(tor_proxy_uri.begin(), tor_proxy_uri.end(), '\"'),
+      tor_proxy_uri.end());
+  content::GetUIThreadTaskRunner({})
+    ->PostTask(FROM_HERE,
+               base::BindOnce(&TorLauncherFactory::OnTorNewProxyURI,
+                              base::Unretained(this),
+                              std::move(tor_proxy_uri)));
 }
 
 void TorLauncherFactory::OnTorClosed() {

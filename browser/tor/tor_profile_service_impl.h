@@ -47,6 +47,7 @@ class TorProfileServiceImpl : public TorProfileService,
   void NotifyTorLauncherCrashed();
   void NotifyTorCrashed(int64_t pid);
   void NotifyTorLaunched(bool result, int64_t pid);
+  void NotifyTorNewProxyURI(const std::string& uri);
 
  private:
   void LaunchTor();

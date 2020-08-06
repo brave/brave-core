@@ -7,9 +7,6 @@ import "mojo/public/mojom/base/file_path.mojom";
 
 struct TorConfig {
   mojo_base.mojom.FilePath binary_path;
-  string proxy_string;
-  string proxy_host;
-  string proxy_port;
   mojo_base.mojom.FilePath tor_data_path;
   mojo_base.mojom.FilePath tor_watch_path;
 };

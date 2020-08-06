@@ -21,18 +21,6 @@ struct StructTraits<tor::mojom::TorConfigDataView,
     return config.binary_path();
   }
 
-  static std::string proxy_string(const tor::TorConfig& config) {
-    return config.proxy_string();
-  }
-
-  static std::string proxy_host(const tor::TorConfig& config) {
-    return config.proxy_host();
-  }
-
-  static std::string proxy_port(const tor::TorConfig& config) {
-    return config.proxy_port();
-  }
-
   static const base::FilePath& tor_data_path(const tor::TorConfig& config) {
     return config.tor_data_path();
   }
