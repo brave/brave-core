@@ -531,6 +531,7 @@ test("brave_browser_tests") {
     "//brave/browser/extensions/brave_extension_provider_browsertest.cc",
     "//brave/browser/extensions/brave_theme_event_router_browsertest.cc",
     "//brave/browser/farbling/brave_navigator_plugins_farbling_browsertest.cc",
+    "//brave/browser/farbling/brave_offscreencanvas_farbling_browsertest.cc",
     "//brave/browser/farbling/brave_webaudio_farbling_browsertest.cc",
     "//brave/browser/farbling/brave_webgl_farbling_browsertest.cc",
     "//brave/browser/net/brave_network_delegate_browsertest.cc",
