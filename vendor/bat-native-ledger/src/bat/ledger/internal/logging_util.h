@@ -23,7 +23,12 @@ std::string UrlRequestToString(
     const std::string& content_type,
     const UrlMethod method);
 
+// DEPRECATED (use LogUrlResponse)
 std::string UrlResponseToString(
+    const char* func,
+    const ledger::UrlResponse& response);
+
+void LogUrlResponse(
     const char* func,
     const ledger::UrlResponse& response);
 

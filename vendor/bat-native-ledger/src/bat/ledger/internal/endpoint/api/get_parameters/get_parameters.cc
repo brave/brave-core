@@ -3,23 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/response/response_api.h"
-
 #include "base/json/json_reader.h"
-#include "base/values.h"
-#include "bat/ledger/internal/logging.h"
+#include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/endpoint/api/api_util.h"
+#include "bat/ledger/internal/endpoint/api/get_parameters/get_parameters.h"
 #include "net/http/http_status_code.h"
 
-namespace braveledger_response_util {
+using std::placeholders::_1;
 
-// Request Url:
 // GET /v1/parameters
 // GET /v1/parameters?currency={currency}
 //
 // Success:
-// OK (200)
+// HTTP_OK (200)
 //
-// Response Format:
+// Error codes:
+// HTTP_BAD_REQUEST (400)
+// HTTP_INTERNAL_SERVER_ERROR (500)
+//
+// Response body:
 // {
 //   "batRate": 0.2476573499489187,
 //   "autocontribute": {
@@ -48,28 +51,54 @@ namespace braveledger_response_util {
 //   }
 // }
 
-ledger::Result ParseParameters(
-    const ledger::UrlResponse& response,
-    ledger::RewardsParameters* parameters) {
-  DCHECK(parameters);
+namespace ledger {
+namespace endpoint {
+namespace api {
 
-  // Bad Request (400)
-  if (response.status_code == net::HTTP_BAD_REQUEST) {
+GetParameters::GetParameters(bat_ledger::LedgerImpl* ledger):
+    ledger_(ledger) {
+  DCHECK(ledger_);
+}
+
+GetParameters::~GetParameters() = default;
+
+std::string GetParameters::GetUrl(const std::string& currency) {
+  std::string query;
+  if (!currency.empty()) {
+    query = base::StringPrintf("?currency=%s", currency.c_str());
+  }
+
+  const std::string path = base::StringPrintf(
+      "/v1/parameters%s",
+      query.c_str());
+
+  return GetServerUrl(path);
+}
+
+ledger::Result GetParameters::CheckStatusCode(const int status_code) {
+  if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
     return ledger::Result::RETRY_SHORT;
   }
 
-  // Internal Server Error (500)
-  if (response.status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
+  if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
     return ledger::Result::RETRY_SHORT;
   }
 
-  if (response.status_code != net::HTTP_OK) {
-    return ledger::Result::RETRY_SHORT;
+  if (status_code != net::HTTP_OK) {
+    return ledger::Result::LEDGER_ERROR;
   }
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
+  return ledger::Result::LEDGER_OK;
+}
+
+ledger::Result GetParameters::ParseBody(
+    const std::string& body,
+    ledger::RewardsParameters* parameters) {
+  DCHECK(parameters);
+
+  base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return ledger::Result::LEDGER_ERROR;
@@ -139,4 +168,31 @@ ledger::Result ParseParameters(
   return ledger::Result::LEDGER_OK;
 }
 
-}  // namespace braveledger_response_util
+void GetParameters::Request(GetParametersCallback callback) {
+  auto url_callback = std::bind(&GetParameters::OnRequest,
+      this,
+      _1,
+      callback);
+  ledger_->LoadURL(GetUrl(), {}, "", "", ledger::UrlMethod::GET, url_callback);
+}
+
+void GetParameters::OnRequest(
+    const ledger::UrlResponse& response,
+    GetParametersCallback callback) {
+  ledger::LogUrlResponse(__func__, response);
+
+  ledger::RewardsParameters parameters;
+  ledger::Result result = CheckStatusCode(response.status_code);
+
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(result, parameters);
+    return;
+  }
+
+  result = ParseBody(response.body, &parameters);
+  callback(result, parameters);
+}
+
+}  // namespace api
+}  // namespace endpoint
+}  // namespace ledger

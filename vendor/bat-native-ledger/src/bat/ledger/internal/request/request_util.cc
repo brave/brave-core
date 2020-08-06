@@ -30,12 +30,6 @@ const char kStaging[] = "http://payment.rewards.bravesoftware.com";
 const char kProduction[] = "http://payment.rewards.brave.com";
 }  // namespace payment
 
-namespace api {
-const char kDevelopment[] = "https://api.rewards.brave.software";
-const char kStaging[] = "https://api.rewards.bravesoftware.com";
-const char kProduction[] = "https://api.rewards.brave.com";
-}  // namespace api
-
 namespace cdn {
 const char kDevelopment[] = "https://pcdn.brave.software";
 const char kStaging[] = "https://pcdn.bravesoftware.com";
@@ -93,23 +87,6 @@ std::string BuildPaymentsUrl() {
   return url;
 }
 
-std::string BuildApiUrl() {
-  std::string url;
-  switch (ledger::_environment) {
-    case ledger::Environment::DEVELOPMENT:
-      url = api::kDevelopment;
-      break;
-    case ledger::Environment::STAGING:
-      url = api::kStaging;
-      break;
-    case ledger::Environment::PRODUCTION:
-      url = api::kProduction;
-      break;
-  }
-
-  return url;
-}
-
 std::string BuildPrivateCdnUrl() {
   std::string url;
   switch (ledger::_environment) {
@@ -143,10 +120,6 @@ std::string BuildUrl(
     }
     case ServerTypes::kPayments: {
       url = BuildPaymentsUrl();
-      break;
-    }
-    case ServerTypes::kAPI: {
-      url = BuildApiUrl();
       break;
     }
     case ServerTypes::kPrivateCDN: {
