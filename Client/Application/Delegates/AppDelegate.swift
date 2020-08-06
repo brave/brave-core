@@ -313,6 +313,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
                 }
                 
                 urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
+                    // Attempting to send ping after first urp lookup.
+                    // This way we can grab the referral code if it exists, see issue #2586.
+                    self.dau.sendPingToServer()
                     if let code = referralCode {
                         let retryTime = AppConstants.buildChannel.isPublic ? 1.days : 10.minutes
                         let retryDeadline = Date() + retryTime
@@ -384,8 +387,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         }
         
         // We try to send DAU ping each time the app goes to foreground to work around network edge cases
-        // (offline, bad connection etc.)
-        dau.sendPingToServer()
+        // (offline, bad connection etc.).
+        // Also send the ping only after the URP lookup has processed.
+        if Preferences.URP.referralLookupOutstanding.value == false {
+            dau.sendPingToServer()
+        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
