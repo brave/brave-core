@@ -7,9 +7,9 @@ import Foundation
 import BraveUI
 import BraveShared
 
-class BraveTodayErrorView: UIView, FeedCardContent {
+class BraveTodayEmptyFeedView: UIView, FeedCardContent {
     
-    var refreshButtonTapped: (() -> Void)?
+    var sourcesAndSettingsButtonTapped: (() -> Void)?
     
     private let backgroundView = FeedCardBackgroundView()
     
@@ -19,26 +19,31 @@ class BraveTodayErrorView: UIView, FeedCardContent {
         $0.spacing = 8
     }
     
-    let refreshButton = ActionButton(type: .system).then {
-        $0.backgroundColor = BraveUX.braveOrange
-        $0.setTitle("Refresh", for: .normal) // FIXME: Localize
-        $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
+    private let sourcesAndSettingsButton = ActionButton(type: .system).then {
         $0.layer.borderWidth = 0
-        $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+        $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
+        // FIXME: Localize
+        $0.setTitle("Sources & Settings", for: .normal)
+        $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
+        $0.backgroundColor = UIColor.white.withAlphaComponent(0.2)
     }
     
-    let titleLabel = UILabel().then {
+    private let titleLabel = UILabel().then {
         $0.textAlignment = .center
         $0.appearanceTextColor = .white
         $0.font = .systemFont(ofSize: 22, weight: .semibold)
         $0.numberOfLines = 0
+        // FIXME: Localize
+        $0.text = "No articles to show"
     }
     
-    let errorMessageLabel = UILabel().then {
+    private let messageLabel = UILabel().then {
         $0.textAlignment = .center
         $0.appearanceTextColor = .white
         $0.font = .systemFont(ofSize: 16)
         $0.numberOfLines = 0
+        // FIXME: Localize
+        $0.text = "Try turning on some news sources"
     }
     
     required init() {
@@ -56,14 +61,14 @@ class BraveTodayErrorView: UIView, FeedCardContent {
         
         stackView.addStackViewItems(
             .view(UIImageView(image: UIImage(imageLiteralResourceName: "brave-today-error"))),
-            .customSpace(12),
+            .customSpace(16),
             .view(titleLabel),
-            .view(errorMessageLabel),
+            .view(messageLabel),
             .customSpace(20),
-            .view(refreshButton)
+            .view(sourcesAndSettingsButton)
         )
         
-        refreshButton.addTarget(self, action: #selector(tappedRefreshButton), for: .touchUpInside)
+        sourcesAndSettingsButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
     }
     
     @available(*, unavailable)
@@ -71,8 +76,8 @@ class BraveTodayErrorView: UIView, FeedCardContent {
         fatalError()
     }
     
-    @objc private func tappedRefreshButton() {
-        refreshButtonTapped?()
+    @objc private func tappedSettingsButton() {
+        sourcesAndSettingsButtonTapped?()
     }
     
     // unused

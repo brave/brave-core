@@ -136,8 +136,7 @@ class NewTabPageViewController: UIViewController, Themeable {
             sections.append(
                 BraveTodaySectionProvider(
                     dataSource: feedDataSource,
-                    welcomeCardActionHandler: handleBraveTodayIntroCardAction,
-                    itemActionHandler: handleBraveTodayAction
+                    actionHandler: handleBraveTodayAction
                 )
             )
             layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
@@ -163,30 +162,28 @@ class NewTabPageViewController: UIViewController, Themeable {
         $0.alpha = 0.0
     }
     
-    private func handleBraveTodayIntroCardAction(_ action: WelcomeCardAction) {
+    private func handleBraveTodayAction(_ action: BraveTodaySectionProvider.Action) {
         switch action {
-        case .closedButtonTapped:
+        case .welcomeCardAction(.closedButtonTapped):
             Preferences.BraveToday.isShowingIntroCard.value = false
             if let section = layout.braveTodaySection, collectionView.numberOfItems(inSection: section) != 0 {
                 collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
             }
-        case .learnMoreButtonTapped:
+        case .welcomeCardAction(.learnMoreButtonTapped):
             delegate?.navigateToInput("https://brave.com/privacy/#brave-today", inNewTab: false, switchingToPrivateMode: false)
-        case .settingsButtonTapped:
+        case .welcomeCardAction(.settingsButtonTapped),
+             .emptyCardTappedSourcesAndSettings:
             tappedBraveTodaySettings()
-        }
-    }
-    
-    private func handleBraveTodayAction(_ action: FeedItemAction, _ context: FeedItemActionContext) {
-        switch action {
-        case .opened(let inNewTab, let switchingToPrivateMode):
+        case .errorCardTappedRefresh:
+            break
+        case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
             guard let url = context.item.content.url else { return }
             delegate?.navigateToInput(
                 url.absoluteString,
                 inNewTab: inNewTab,
                 switchingToPrivateMode: switchingToPrivateMode
             )
-        case .toggleSource:
+        case .itemAction(.toggleSource, let context):
             let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
             feedDataSource.toggleSource(context.item.source, enabled: !isEnabled)
             collectionView.reloadData()
@@ -198,7 +195,7 @@ class NewTabPageViewController: UIViewController, Themeable {
                 )
                 alert.present(on: self)
             }
-        case .longPressed(let context):
+        case .itemAction(.longPressed(let context), _):
             let alertController = UIAlertController(
                 title: context.title,
                 message: context.message,

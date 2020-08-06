@@ -55,6 +55,16 @@ enum FeedItemAction: Equatable {
     case longPressed(_ legacyContext: FeedItemMenu.LegacyContext)
 }
 
+/// Additonal information related to an action performed on a feed item
+struct FeedItemActionContext {
+    /// The feed item actioned upon
+    var item: FeedItem
+    /// The card that this item is displayed in
+    var card: FeedCard
+    /// The index path of the card in the collection view
+    var indexPath: IndexPath
+}
+
 /// The content of a card placed in the Brave Today section on the NTP
 protocol FeedCardContent {
     /// The content's view
