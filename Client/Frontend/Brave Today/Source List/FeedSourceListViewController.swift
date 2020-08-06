@@ -27,6 +27,7 @@ class FeedSourceListViewController: UITableViewController {
         if dataSource.sources.count > 1 {
             sectionIndexTitles = sections.compactMap { $0.first?.sectionIndexTitle }
         }
+        tableView.tableFooterView = UIView()
         customizedSources = dataSource.customizedSources
     }
     
