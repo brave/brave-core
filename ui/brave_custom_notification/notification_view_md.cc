@@ -48,6 +48,7 @@
 #include "brave/ui/brave_custom_notification/notification_header_view.h"
 #include "brave/ui/brave_custom_notification/padded_button.h"
 #include "brave/ui/brave_custom_notification/proportional_image_view.h"
+#include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "ui/strings/grit/ui_strings.h"
 #include "ui/views/animation/flood_fill_ink_drop_ripple.h"
 #include "ui/views/animation/ink_drop_highlight.h"
@@ -771,6 +772,7 @@ void NotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
   if (settings_row_ && settings_row_->GetVisible())
     return;
 
+  MessagePopupView::Clicked(notification_id());
   MessageView::OnMouseReleased(event);
 }
 

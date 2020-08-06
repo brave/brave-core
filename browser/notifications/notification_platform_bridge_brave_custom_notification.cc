@@ -4,6 +4,7 @@
 
 #include "brave/browser/notifications/notification_platform_bridge_brave_custom_notification.h"
 
+#include "base/run_loop.h"
 #include "base/bind.h"
 #include "base/callback.h"
 #include "base/memory/scoped_refptr.h"
@@ -64,11 +65,16 @@ class PassThroughDelegate : public brave_custom_notification::NotificationDelega
 
   void Click(const base::Optional<int>& button_index,
              const base::Optional<base::string16>& reply) override {
-    NotificationDisplayServiceImpl::GetForProfile(profile_)
-        ->ProcessNotificationOperation(
+    LOG(INFO) << "albert NPBBCN::Click";
+    brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile_));
+    base::RunLoop run_loop;
+    handler->OnClick(profile_, notification_.origin_url(), notification_.id(), button_index, reply, run_loop.QuitClosure());
+    /*
+    NotificationDisplayServiceImpl::GetForProfile(profi  ->ProcessNotificationOperation(
             NotificationCommon::OPERATION_CLICK, notification_type_,
             notification_.origin_url(), notification_.id(), button_index, reply,
-            base::nullopt /* by_user */);
+            base::nullopt);
+            */
   }
 
  protected:
@@ -110,7 +116,7 @@ void NotificationPlatformBridgeBraveCustomNotification::Display(
   brave_custom_notification::Notification notification_with_delegate(notification);
   notification_with_delegate.set_delegate(base::WrapRefCounted(
       new PassThroughDelegate(profile_, notification, notification_type)));
-  brave_custom_notification::MessagePopupView::Show(notification);
+  brave_custom_notification::MessagePopupView::Show(notification_with_delegate);
   brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile));
   handler->OnShow(profile_, notification.id());
 }

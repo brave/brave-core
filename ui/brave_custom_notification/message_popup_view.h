@@ -19,8 +19,9 @@ class Notification;
 class MessagePopupView : public views::WidgetDelegateView,
                          public views::WidgetObserver {
  public:
-  static void Show(const Notification& notification); // Returns static reference
+  static void Show(Notification& notification); // Returns static reference
   static void ClosePopup(); // Destroys the widget
+  static void Clicked(const std::string& notification_id);
   MessagePopupView();
    MessagePopupView(const Notification& notification);
   ~MessagePopupView() override;
