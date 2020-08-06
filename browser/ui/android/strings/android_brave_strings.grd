@@ -1278,6 +1278,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NOTIFICATION_BRAVE_STATS_TIME" desc="Rewards notification text">
         Nice! You've saved 10 Mins of loading time with Brave browser.
       </message>
+      <message name="IDS_START_BROWSING_TO_SEE" desc="Brave stats empty text">
+        Start browsing to see privacy reporting
+      </message>
     </messages>
   </release>
 </grit>

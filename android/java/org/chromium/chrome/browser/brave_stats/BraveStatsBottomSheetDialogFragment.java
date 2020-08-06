@@ -68,6 +68,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     private TextView timeSavedCountText;
     private TextView timeSavedText;
     private TextView noDataText;
+    private TextView emptyDataText;
     private LinearLayout websitesLayout;
     private LinearLayout trackersLayout;
 
@@ -128,6 +129,8 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        emptyDataText = view.findViewById(R.id.brave_stats_empty_text);
 
         // view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
         //     @Override
@@ -214,6 +217,12 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
 
         showWebsitesTrackers();
+
+        if (adsTrackersCount > 0) {
+            emptyDataText.setVisibility(View.GONE);
+        } else {
+            emptyDataText.setVisibility(View.VISIBLE);
+        }
     }
 
     private void showWebsitesTrackers() {

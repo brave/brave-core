@@ -72,6 +72,7 @@ brave_java_resources = [
   "java/res/drawable/indicator_selector.xml",
   "java/res/drawable/ic_stats_icon.xml",
   "java/res/drawable/brave_stats_rounded_bg.xml",
+  "java/res/drawable/brave_stats_ui_empty_bg.xml",
   "java/res/drawable/brave_stats_radio_button_selector.xml",
   "java/res/drawable/brave_stats_radio_button_normal.xml",
   "java/res/drawable/brave_stats_radio_button_selected.xml",
