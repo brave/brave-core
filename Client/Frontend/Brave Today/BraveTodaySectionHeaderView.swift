@@ -19,6 +19,10 @@ class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusa
         $0.setContentHuggingPriority(.required, for: .horizontal)
     }
     
+    private let shadowLine = UIView().then {
+        $0.backgroundColor = UIColor(white: 0.0, alpha: 0.5)
+    }
+    
     override init(frame: CGRect) {
         if #available(iOS 13.0, *) {
             backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterialDark))
@@ -27,9 +31,10 @@ class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusa
         }
         
         super.init(frame: frame)
-        backgroundView.contentView.backgroundColor = UIColor.white.withAlphaComponent(0.05)
         
         addSubview(backgroundView)
+        addSubview(shadowLine)
+        
         let stackView = UIStackView(arrangedSubviews: [label, settingsButton]).then {
             $0.spacing = 20
             $0.alignment = .center
@@ -42,7 +47,13 @@ class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusa
         backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        shadowLine.snp.makeConstraints {
+            $0.top.equalTo(backgroundView.snp.bottom)
+            $0.leading.trailing.equalToSuperview()
+            $0.height.equalTo(1.0 / UIScreen.main.scale)
+        }
     }
+    
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
