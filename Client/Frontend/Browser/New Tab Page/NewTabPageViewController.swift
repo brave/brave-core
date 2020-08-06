@@ -375,6 +375,8 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         switch notification {
         case .brandedImages(let state):
+            if Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value { return }
+            
             guard let notificationVC = NTPNotificationViewController(state: state, rewards: rewards) else { return }
             
             notificationVC.closeHandler = { [weak self] in
