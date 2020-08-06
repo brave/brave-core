@@ -20,34 +20,32 @@
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_panel_generated_map.h"
 #endif
 
-#define BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA \
-  void AddBraveResources();
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#define BRAVE_REWARDS_EXTENSION_RESOURCES                           \
+  AddComponentResourceEntries(kBraveRewardsExtensionResources,      \
+                              kBraveRewardsExtensionResourcesSize); \
+  AddComponentResourceEntries(kBraveRewardsPanelGenerated,          \
+                              kBraveRewardsPanelGeneratedSize);
+#else
+#define BRAVE_REWARDS_EXTENSION_RESOURCES
+#endif
 
-#define BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA \
-  AddBraveResources();
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#define BRAVE_WEBTORRENT_RESOURCES                            \
+  AddComponentResourceEntries(kBraveWebtorrentResources,      \
+                              kBraveWebtorrentResourcesSize); \
+  AddComponentResourceEntries(kBraveWebtorrentGenerated,      \
+                              kBraveWebtorrentGeneratedSize);
+#else
+#define BRAVE_WEBTORRENT_RESOURCES
+#endif
+
+#define BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA  \
+  AddComponentResourceEntries(kBraveExtension, kBraveExtensionSize); \
+  AddComponentResourceEntries(kBraveExtensionGenerated,              \
+                              kBraveExtensionGeneratedSize);         \
+  BRAVE_REWARDS_EXTENSION_RESOURCES                                  \
+  BRAVE_WEBTORRENT_RESOURCES
 
 #include "../../../../../chrome/browser/extensions/chrome_component_extension_resource_manager.cc"
 #undef BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA_DATA
-#undef BRAVE_CHROME_COMPONENT_EXTENSION_RESOURCE_MANAGER_DATA
-
-namespace extensions {
-
-void ChromeComponentExtensionResourceManager::Data::AddBraveResources() {
-  AddComponentResourceEntries(kBraveExtension, kBraveExtensionSize);
-  AddComponentResourceEntries(kBraveExtensionGenerated,
-                              kBraveExtensionGeneratedSize);
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  AddComponentResourceEntries(kBraveRewardsExtensionResources,
-                              kBraveRewardsExtensionResourcesSize);
-  AddComponentResourceEntries(kBraveRewardsPanelGenerated,
-                              kBraveRewardsPanelGeneratedSize);
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  AddComponentResourceEntries(kBraveWebtorrentResources,
-                              kBraveWebtorrentResourcesSize);
-  AddComponentResourceEntries(kBraveWebtorrentGenerated,
-                              kBraveWebtorrentGeneratedSize);
-#endif
-}
-
-}  // namespace extensions
