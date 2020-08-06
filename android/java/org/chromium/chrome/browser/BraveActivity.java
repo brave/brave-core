@@ -228,7 +228,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             showBraveRateDialog();
 
         if (PackageUtils.isFirstInstall(this)
-            && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
+                && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
             calender.add(Calendar.DATE, DAYS_4);
@@ -310,12 +310,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 OnboardingPrefManager.getInstance().setFromNotification(true);
                 getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
             } else {
-                showOnboardingV2();
+                showOnboardingV2(false);
             }
         }
     }
 
-    public void showOnboardingV2() {
+    public void showOnboardingV2(boolean fromStats) {
         OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
         FragmentManager fm = getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm
@@ -327,6 +327,9 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         fragment = new HighlightDialogFragment();
+        Bundle fragmentBundle = new Bundle();
+        fragmentBundle.putBoolean(OnboardingPrefManager.FROM_STATS, fromStats);
+        fragment.setArguments(fragmentBundle);
         transaction.add(fragment, HighlightDialogFragment.TAG_FRAGMENT);
         transaction.commit();
     }

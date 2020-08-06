@@ -153,12 +153,29 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mBadgeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((BraveActivity)mActivity).checkForBraveStats();
+                checkForBraveStats();
+                OnboardingPrefManager.getInstance().setShowBadgeAnimation(false);
             }
         });
 
-        if (OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            mBadgeLayout.setVisibility(View.VISIBLE);
+        LottieAnimationView mBadgeAnimationView = (LottieAnimationView) findViewById(R.id.badge_image);
+        if (OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
+            // mBadgeAnimationView.setVisibility(View.VISIBLE);
+        }
+
+        mBraveStatsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkForBraveStats();
+            }
+        });
+    }
+
+    private void checkForBraveStats() {
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+            BraveStatsUtil.showBraveStats();
+        } else {
+            ((BraveActivity)mActivity).showOnboarding(true);
         }
     }
 
@@ -200,17 +217,18 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (sponsoredTab == null) {
             initilizeSponsoredTab();
         }
-        if (getPlaceholder() != null) {
-            getPlaceholder().setVisibility(View.GONE);
+        if (getPlaceholder() != null
+                && ((ViewGroup)getPlaceholder().getParent()) != null) {
+            ((ViewGroup)getPlaceholder().getParent()).removeView(getPlaceholder());
         }
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
         if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
                 && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            ((BraveActivity)mActivity).showOnboardingV2();
+            ((BraveActivity)mActivity).showOnboardingV2(false);
         }
         if (OnboardingPrefManager.getInstance().isFromNotification() ) {
-            ((BraveActivity)mActivity).showOnboardingV2();
+            ((BraveActivity)mActivity).showOnboardingV2(false);
             OnboardingPrefManager.getInstance().setFromNotification(false);
         }
     }

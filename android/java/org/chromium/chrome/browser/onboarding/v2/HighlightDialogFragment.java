@@ -28,6 +28,7 @@ import org.chromium.base.Log;
 import org.chromium.chrome.browser.onboarding.v2.OnboardingV2PagerAdapter;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 
 import java.util.Arrays;
@@ -38,6 +39,7 @@ public class HighlightDialogFragment extends DialogFragment {
 
     public interface HighlightDialogListener {
         void onNextPage();
+        void onLearnMore();
     }
 
     private static final List<Integer> highlightViews = Arrays.asList(
@@ -50,6 +52,7 @@ public class HighlightDialogFragment extends DialogFragment {
     private HighlightItem item;
     private HighlightView highlightView;
     private ViewPager viewpager;
+    private boolean isFromStats;
 
     private OnboardingV2PagerAdapter onboardingV2PagerAdapter;
 
@@ -68,6 +71,7 @@ public class HighlightDialogFragment extends DialogFragment {
 
         onboardingV2PagerAdapter = new OnboardingV2PagerAdapter(getChildFragmentManager());
         onboardingV2PagerAdapter.setHighlightListener(highlightDialogListener);
+        onboardingV2PagerAdapter.setFromStats(isFromStats);
 
         // Set up the ViewPager with the sections adapter.
         viewpager = view.findViewById(R.id.viewpager);
@@ -76,7 +80,7 @@ public class HighlightDialogFragment extends DialogFragment {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 if (positionOffset == 0) {
-                    highlightView(position);
+                    highlightView(isFromStats ? 3 : position);
                 }
             }
 
@@ -123,6 +127,11 @@ public class HighlightDialogFragment extends DialogFragment {
         // Fragment locked in portrait screen orientation
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            isFromStats = bundle.getBoolean(OnboardingPrefManager.FROM_STATS, false);
+        }
+
         // setCancelable(false);
         // setHasOptionsMenu(false);
     }
@@ -163,13 +172,21 @@ public class HighlightDialogFragment extends DialogFragment {
                 }
                 int currentPage = viewpager.getCurrentItem();
                 if ((OnboardingPrefManager.getInstance().isBraveStatsEnabled() && currentPage == 2)
-                        || currentPage == 3) {
+                        || currentPage == 3
+                        || isFromStats) {
                     dismiss();
                     BraveStatsUtil.showBraveStats();
                 } else {
                     viewpager.setCurrentItem(currentPage + 1);
                 }
             }
+        }
+
+        @Override
+        public void onLearnMore() {
+            dismiss();
+            //Start from beginning
+            ((BraveActivity)getActivity()).showOnboarding(false);
         }
     };
 }

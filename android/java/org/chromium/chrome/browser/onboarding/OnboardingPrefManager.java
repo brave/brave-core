@@ -42,10 +42,12 @@ public class OnboardingPrefManager {
     private static final String PREF_BRAVE_STATS = "brave_stats";
     public static final String ONBOARDING_TYPE = "onboarding_type";
     public static final String FROM_NOTIFICATION = "from_notification";
+    public static final String FROM_STATS = "from_stats";
     public static final String ONE_TIME_NOTIFICATION = "one_time_notification";
     public static final String ADS_TRACKERS_NOTIFICATION = "ads_trackers_notification";
     public static final String DATA_SAVED_NOTIFICATION = "data_saved_notification";
     public static final String TIME_SAVED_NOTIFICATION = "time_saved_notification";
+    public static final String SHOW_BADGE_ANIMATION = "show_badge_animation";
 
     private static OnboardingPrefManager sInstance;
 
@@ -287,6 +289,16 @@ public class OnboardingPrefManager {
     public void setTimeSavedNotificationStarted(boolean isTimeSavedNotificationStarted) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(TIME_SAVED_NOTIFICATION, isTimeSavedNotificationStarted);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean shouldShowBadgeAnimation() {
+        return mSharedPreferences.getBoolean(SHOW_BADGE_ANIMATION, true);
+    }
+
+    public void setShowBadgeAnimation(boolean shouldShowBadgeAnimation) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(SHOW_BADGE_ANIMATION, shouldShowBadgeAnimation);
         sharedPreferencesEditor.apply();
     }
 }

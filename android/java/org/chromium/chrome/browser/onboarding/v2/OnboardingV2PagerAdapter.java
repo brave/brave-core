@@ -17,6 +17,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 public class OnboardingV2PagerAdapter extends FragmentPagerAdapter {
 
     private HighlightDialogListener highlightDialogListener;
+    private boolean isFromStats;
 
     public OnboardingV2PagerAdapter(FragmentManager fm) {
         super(fm);
@@ -24,15 +25,23 @@ public class OnboardingV2PagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        if (isFromStats)
+            position = 3;
+
         OnboardingV2Fragment onboardingV2Fragment = new OnboardingV2Fragment();
         onboardingV2Fragment.setPosition(position);
         onboardingV2Fragment.setHighlightListener(highlightDialogListener);
+        onboardingV2Fragment.setFromStats(isFromStats);
 
         return onboardingV2Fragment;
     }
 
     @Override
     public int getCount() {
+        if (isFromStats) {
+            return 1;
+        }
+
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             return 3;
         } else {
@@ -42,5 +51,9 @@ public class OnboardingV2PagerAdapter extends FragmentPagerAdapter {
 
     public void setHighlightListener(HighlightDialogListener highlightDialogListener) {
         this.highlightDialogListener = highlightDialogListener;
+    }
+
+    public void setFromStats(boolean isFromStats) {
+        this.isFromStats = isFromStats;
     }
 }
