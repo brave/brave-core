@@ -18,7 +18,11 @@ class BraveTodaySettingsViewController: TableViewController {
     
     init(dataSource: FeedDataSource) {
         feedDataSource = dataSource
-        super.init(style: .grouped)
+        if #available(iOS 13.0, *) {
+            super.init(style: .insetGrouped)
+        } else {
+            super.init(style: .grouped)
+        }
     }
     
     @available(*, unavailable)
