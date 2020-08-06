@@ -57,6 +57,7 @@ export interface RewardsProps {
   showBrandedWallpaperNotification: boolean
   brandedWallpaperData?: NewTab.BrandedWallpaper
   showContent: boolean
+  stackPosition: number
   onShowContent: () => void
   onCreateWallet: () => void
   onEnableAds: () => void
@@ -330,10 +331,10 @@ class Rewards extends React.PureComponent<RewardsProps, {}> {
   }
 
   renderTitleTab = () => {
-    const { onShowContent } = this.props
+    const { onShowContent, stackPosition } = this.props
 
     return (
-      <StyledTitleTab onClick={onShowContent}>
+      <StyledTitleTab onClick={onShowContent} stackPosition={stackPosition}>
         {this.renderTitle()}
       </StyledTitleTab>
     )

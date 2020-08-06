@@ -137,6 +137,7 @@ interface Props {
   disconnectInProgress: boolean
   authInvalid: boolean
   selectedView: string
+  stackPosition: number
   onShowContent: () => void
   onBuyCrypto: (coin: string, amount: string, fiat: string) => void
   onBinanceUserTLD: (userTLD: NewTab.BinanceTLD) => void
@@ -605,10 +606,10 @@ class Binance extends React.PureComponent<Props, State> {
   }
 
   renderTitleTab () {
-    const { onShowContent } = this.props
+    const { onShowContent, stackPosition } = this.props
 
     return (
-      <StyledTitleTab onClick={onShowContent}>
+      <StyledTitleTab onClick={onShowContent} stackPosition={stackPosition}>
         {this.renderTitle()}
       </StyledTitleTab>
     )
