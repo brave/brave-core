@@ -34,8 +34,11 @@ class ProxyResolutionService;
 // Implementation of ProxyConfigService that returns a tor specific result.
 class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
  public:
-  explicit ProxyConfigServiceTor(const std::string& proxy_uri);
+  ProxyConfigServiceTor();
+  ProxyConfigServiceTor(const std::string& proxy_uri);
   ~ProxyConfigServiceTor() override;
+
+  void UpdateProxyURI(const std::string& proxy_uri);
 
   static std::string CircuitIsolationKey(const GURL& url);
   void SetNewTorCircuit(const GURL& url);

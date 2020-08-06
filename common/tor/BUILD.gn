@@ -21,9 +21,7 @@ source_set("tor") {
     ":pref_names",
     "//base",
     "//brave/components/services/tor/public/interfaces",
-    "//chrome/common:channel_info",
     "//chrome/common:constants",
-    "//components/version_info",
     "//url:url",
   ]
 }

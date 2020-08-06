@@ -54,7 +54,6 @@ class TorProfileService : public KeyedService {
   void RemoveObserver(TorLauncherServiceObserver* observer);
 
  protected:
-  std::string GetTorProxyURI();
   base::FilePath GetTorExecutablePath();
   base::ObserverList<TorLauncherServiceObserver> observers_;
 

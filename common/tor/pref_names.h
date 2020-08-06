@@ -9,7 +9,6 @@
 namespace tor {
 namespace prefs {
 
-extern const char kTorProxyString[];
 extern const char kTorDisabled[];
 
 }  // namespace prefs
