@@ -8,30 +8,27 @@ import BraveUI
 import Shared
 import BraveShared
 
-/// Additonal information related to an action performed on a feed item
-struct FeedItemActionContext {
-    /// The feed item actioned upon
-    var item: FeedItem
-    /// The card that this item is displayed in
-    var card: FeedCard
-    /// The index path of the card in the collection view
-    var indexPath: IndexPath
-}
-
-typealias FeedItemActionHandler = (FeedItemAction, _ context: FeedItemActionContext) -> Void
-
 class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
+    /// Set of actions that can occur from the Brave Today section
+    enum Action {
+        /// The user interacted with the welcome card
+        case welcomeCardAction(WelcomeCardAction)
+        /// The user tapped sources & settings on the empty card
+        case emptyCardTappedSourcesAndSettings
+        /// The user tapped refresh on the error card
+        case errorCardTappedRefresh
+        /// The user performed an action on a feed item
+        case itemAction(FeedItemAction, context: FeedItemActionContext)
+    }
+    
     let dataSource: FeedDataSource
     var sectionDidChange: (() -> Void)?
-    var welcomeCardActionHandler: (WelcomeCardAction) -> Void
-    var itemActionHandler: FeedItemActionHandler
+    var actionHandler: (Action) -> Void
     
     init(dataSource: FeedDataSource,
-         welcomeCardActionHandler: @escaping (WelcomeCardAction) -> Void,
-         itemActionHandler: @escaping FeedItemActionHandler) {
+         actionHandler: @escaping (Action) -> Void) {
         self.dataSource = dataSource
-        self.welcomeCardActionHandler = welcomeCardActionHandler
-        self.itemActionHandler = itemActionHandler
+        self.actionHandler = actionHandler
         
         super.init()
     }
@@ -39,6 +36,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     func registerCells(to collectionView: UICollectionView) {
         collectionView.register(FeedCardCell<BraveTodayWelcomeView>.self)
         collectionView.register(FeedCardCell<BraveTodayErrorView>.self)
+        collectionView.register(FeedCardCell<BraveTodayEmptyFeedView>.self)
         collectionView.register(FeedCardCell<HeadlineCardView>.self)
         collectionView.register(FeedCardCell<SmallHeadlinePairCardView>.self)
         collectionView.register(FeedCardCell<VerticalFeedGroupView>.self)
@@ -66,6 +64,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         case .initial, .loading:
             return 0
         case .success(let cards):
+            if cards.isEmpty {
+                return 1
+            }
             return cards.count + (isShowingIntroCard ? 1 : 0)
         }
     }
@@ -76,7 +77,11 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         case .failure, .initial, .loading:
             size.height = 300
         case .success(let cards):
-            size.height = cards[safe: indexPath.item - (isShowingIntroCard ? 1 : 0)]?.estimatedHeight(for: size.width) ?? 300
+            if cards.isEmpty {
+                size.height = 300
+            } else {
+                size.height = cards[safe: indexPath.item - (isShowingIntroCard ? 1 : 0)]?.estimatedHeight(for: size.width) ?? 300
+            }
         }
         return size
     }
@@ -111,12 +116,25 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 cell.content.titleLabel.text = "Oops…" // FIXME: Localize
                 cell.content.errorMessageLabel.text = "Brave Today is experiencing some issues. Try again." // FIXME: Localize
             }
+            cell.content.refreshButtonTapped = { [weak self] in
+                self?.actionHandler(.errorCardTappedRefresh)
+            }
+            return cell
+        }
+        
+        if let cards = dataSource.state.cards, cards.isEmpty {
+            let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayEmptyFeedView>
+            cell.content.sourcesAndSettingsButtonTapped = { [weak self] in
+                self?.actionHandler(.emptyCardTappedSourcesAndSettings)
+            }
             return cell
         }
         
         if isShowingIntroCard && indexPath.item == 0 {
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayWelcomeView>
-            cell.content.introCardActionHandler = welcomeCardActionHandler
+            cell.content.introCardActionHandler = { [weak self] action in
+                self?.actionHandler(.welcomeCardAction(action))
+            }
             return cell
         }
         
@@ -204,7 +222,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     
     private func handler(from feedList: @escaping (Int) -> FeedItem, card: FeedCard, indexPath: IndexPath) -> (Int, FeedItemAction) -> Void {
         return { [weak self] index, action in
-            self?.itemActionHandler(action, .init(item: feedList(index), card: card, indexPath: indexPath))
+            self?.actionHandler(.itemAction(action, context: .init(item: feedList(index), card: card, indexPath: indexPath)))
         }
     }
     
@@ -215,14 +233,18 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     private func contextMenu(from feedList: @escaping (Int) -> FeedItem, card: FeedCard, indexPath: IndexPath) -> FeedItemMenu {
         typealias MenuActionHandler = (_ context: FeedItemActionContext) -> Void
         
+        func itemActionHandler(_ action: FeedItemAction, _ context: FeedItemActionContext) {
+            self.actionHandler(.itemAction(action, context: context))
+        }
+        
         let openInNewTabHandler: MenuActionHandler = { context in
-            self.itemActionHandler(.opened(inNewTab: true), context)
+            itemActionHandler(.opened(inNewTab: true), context)
         }
         let openInNewPrivateTabHandler: MenuActionHandler = { context in
-            self.itemActionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
+            itemActionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
         }
         let toggleSourceHandler: MenuActionHandler = { context in
-            self.itemActionHandler(.toggleSource, context)
+            itemActionHandler(.toggleSource, context)
         }
         
         if #available(iOS 13.0, *) {
