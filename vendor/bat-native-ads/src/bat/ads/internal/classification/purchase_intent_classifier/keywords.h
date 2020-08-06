@@ -2073,6 +2073,51 @@ static const std::vector<SegmentKeywordInfo>& _segment_keywords = {
   SegmentKeywordInfo({
       "jp trial 4-search related word"},
       "発毛剤 おすすめ"),
+  SegmentKeywordInfo({
+      "Alpha Influencers", "PC Purists"},
+     "Gaming Technology"),
+  SegmentKeywordInfo({
+      "Alpha Influencers"},
+      "Gaming eSports Content"),
+  SegmentKeywordInfo({
+      "Alpha Influencers"},
+      "Latest Console or Handheld Device"),
+  SegmentKeywordInfo({
+      "Alpha Influencers"},
+      "Latest Gaming Technology"),
+  SegmentKeywordInfo({
+      "Alpha Influencers"},
+      "New Gaming Computers"),
+  SegmentKeywordInfo({
+      "Alpha Influencers", "PC Purists", "Mainstream Enthusiasts"},
+      "AMD"),
+  SegmentKeywordInfo({
+      "PC Purists"},
+      "Customized PC"),
+  SegmentKeywordInfo({
+      "PC Purists"},
+      "Powerful PCs"),
+  SegmentKeywordInfo({
+      "PC Purists"},
+      "Gaming Laptops"),
+  SegmentKeywordInfo({
+      "PC Purists"},
+      "Gaming Computers"),
+  SegmentKeywordInfo({
+      "Mainstream Enthusiasts"},
+      "Gaming Entertainment"),
+  SegmentKeywordInfo({
+      "Mainstream Enthusiasts"},
+      "Mobile Games"),
+  SegmentKeywordInfo({
+      "Mainstream Enthusiasts"},
+      "Gaming Advice"),
+  SegmentKeywordInfo({
+      "Mainstream Enthusiasts"},
+      "Gaming Reviews"),
+  SegmentKeywordInfo({
+      "Mainstream Enthusiasts"},
+      "Gaming Tips & Tricks"),
 };
 
 static const std::vector<FunnelKeywordInfo>& _automotive_funnel_keywords = {
