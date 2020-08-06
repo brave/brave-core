@@ -16,7 +16,6 @@
 namespace extensions {
 
 BraveExtensionsBrowserClientImpl::BraveExtensionsBrowserClientImpl() {
-  BraveExtensionsBrowserClient::Set(this);
   AddAPIProvider(std::make_unique<BraveExtensionsBrowserAPIProvider>());
   // ChromeComponentExtensionResourceManager's Data needs to be LazyInit'ed on
   // the UI thread (due to pdf_extension_util::AddStrings calling
