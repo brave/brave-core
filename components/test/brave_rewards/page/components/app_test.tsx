@@ -48,7 +48,8 @@ describe('rewardsPage component', () => {
         <App
           actions={{
             checkWalletExistence: () => false,
-            onlyAnonWallet: () => false
+            onlyAnonWallet: () => false,
+            isInitialized: () => false
           }}
           rewardsData={rewardsInitialState.rewardsData as Rewards.State}
         />
