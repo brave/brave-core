@@ -39,7 +39,7 @@ class FeedItemView: UIView {
     /// The date of when the article was posted
     lazy var dateLabel = UILabel().then {
         $0.font = .systemFont(ofSize: 11.0, weight: .semibold)
-        $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.6)
+        $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.5)
     }
     /// The branding information (if applicable)
     lazy var brandContainerView = BrandContainerView()
@@ -365,7 +365,8 @@ extension FeedItemView {
         /// A label view for setting the brands name in plain text
         private(set) var textLabel = UILabel().then {
             $0.font = .systemFont(ofSize: 13.0, weight: .semibold)
-            $0.appearanceTextColor = .white
+            $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.7)
+            $0.numberOfLines = 0
         }
         /// The currently visible view in the container based on `viewingMode`.
         private var visibleView: UIView? {
