@@ -88,6 +88,23 @@
 
             </RadioGroup>
 
+            <TextView
+                android:id="@+id/brave_stats_empty_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginBottom="8dp"
+                android:padding="24dp"
+                android:gravity="center_horizontal"
+                android:fontFamily="sans-serif" 
+                android:text="@string/start_browsing_to_see"
+                android:background="@drawable/brave_stats_ui_empty_bg"
+                android:visibility="gone"
+                android:textColor="@color/brave_stats_empty_text_color"/>
+
             <include layout="@layout/brave_stats_pager_layout"/>
 
     </LinearLayout>
