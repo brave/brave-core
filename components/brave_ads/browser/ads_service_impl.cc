@@ -41,6 +41,7 @@
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "chrome/browser/browser_process.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "chrome/browser/notifications/notification_display_service.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -542,6 +543,10 @@ void AdsServiceImpl::OnInitialize(
 }
 
 void AdsServiceImpl::ShutdownBatAds() {
+  if (!connected()) {
+    return;
+  }
+
   VLOG(1) << "Shutting down ads";
 
   const bool success = file_task_runner_->DeleteSoon(FROM_HERE,
@@ -627,10 +632,6 @@ void AdsServiceImpl::Start() {
 }
 
 void AdsServiceImpl::Stop() {
-  if (!connected()) {
-    return;
-  }
-
   ShutdownBatAds();
 }
 
@@ -860,10 +861,14 @@ void AdsServiceImpl::OnViewAdNotification(
   ads::AdNotificationInfo notification;
   notification.FromJson(json);
 
+  OpenNewTabWithUrl(notification.target_url);
+
+  if (!connected()) {
+    return;
+  }
+
   bat_ads_->OnAdNotificationEvent(notification.uuid,
       ads::AdNotificationEventType::kClicked);
-
-  OpenNewTabWithUrl(notification.target_url);
 }
 
 void AdsServiceImpl::RetryViewingAdNotification(
@@ -888,6 +893,10 @@ void AdsServiceImpl::ClearAdsServiceForNotificationHandler() {
 
 void AdsServiceImpl::OpenNewTabWithUrl(
     const std::string& url) {
+  if (g_brave_browser_process->IsShuttingDown()) {
+    return;
+  }
+
   GURL gurl(url);
   if (!gurl.is_valid()) {
     VLOG(0) << "Failed to open new tab due to invalid URL: " << url;
