@@ -525,6 +525,7 @@ class FeedDataSource {
             .lazy
             .compactMap(\.url)
             .compactMap { URL(string: $0)?.baseDomain }) ?? []
+        var domainCount: [String: Int] = [:]
         return feeds.compactMap { content in
             let timeSincePublished = Date().timeIntervalSince(content.publishTime)
             var score = timeSincePublished > 0 ? log(timeSincePublished) : 0
@@ -532,6 +533,9 @@ class FeedDataSource {
                 lastVisitedDomains.contains(feedBaseDomain) {
                 score -= 5
             }
+            let variety = 1.0 / Double(1 << domainCount[content.publisherID, default: 0])
+            score *= variety
+            domainCount[content.publisherID, default: 0] += 1
             guard let source = sources.first(where: { $0.id == content.publisherID }) else {
                 return nil
             }
