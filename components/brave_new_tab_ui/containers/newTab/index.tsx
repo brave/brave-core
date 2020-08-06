@@ -719,6 +719,7 @@ class NewTabPage extends React.Component<Props, State> {
         menuPosition={'left'}
         isCrypto={true}
         isCryptoTab={!showContent}
+        isForeground={showContent}
         textDirection={textDirection}
         preventFocus={false}
         hideWidget={this.toggleShowRewards}
@@ -781,6 +782,7 @@ class NewTabPage extends React.Component<Props, State> {
         isCryptoTab={!showContent}
         menuPosition={'left'}
         widgetTitle={'Binance'}
+        isForeground={showContent}
         textDirection={textDirection}
         preventFocus={false}
         hideWidget={this.toggleShowBinance}
@@ -828,6 +830,7 @@ class NewTabPage extends React.Component<Props, State> {
         isCryptoTab={!showContent}
         menuPosition={'left'}
         widgetTitle={'Gemini'}
+        isForeground={showContent}
         textDirection={textDirection}
         preventFocus={false}
         hideWidget={this.toggleShowGemini}

@@ -23,23 +23,10 @@ export const StyledWidgetContainer = styled<WidgetContainerProps, 'div'>('div')`
   position: relative;
 `
 
-export const StyledWidgetMenuContainer = styled<WidgetVisibilityProps & WidgetPositionProps, 'div'>('div')`
-  visibility: hidden;
-  pointer-events: none;
+export const StyledWidgetMenuContainer = styled<{}, 'div'>('div')`
   position: absolute;
   top: 5px;
   right: 5px;
-
-  ${StyledWidgetContainer}:hover & {
-    visibility: visible;
-    pointer-events: auto;
-  }
-
-  // Also hover when menu button has been clicked
-  ${ p => p.widgetMenuPersist && `
-    visibility: visible;
-    pointer-events: auto;
-  `}
 `
 
 interface WidgetVisibilityProps {
@@ -47,6 +34,7 @@ interface WidgetVisibilityProps {
   preventFocus?: boolean
   isCrypto?: boolean
   isCryptoTab?: boolean
+  isForeground?: boolean
 }
 
 export const StyledWidget = styled<WidgetVisibilityProps, 'div'>('div')`
@@ -76,9 +64,10 @@ interface WidgetMenuProps {
   textDirection: string
 }
 
-export const StyledWidgetMenu = styled<WidgetMenuProps, 'div'>('div')`
+export const StyledWidgetMenu = styled<WidgetVisibilityProps & WidgetMenuProps, 'div'>('div')`
   position absolute;
-  width: 166px;
+  width: max-content;
+  min-width: 166px;
   padding: 8px 0;
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
@@ -86,6 +75,13 @@ export const StyledWidgetMenu = styled<WidgetMenuProps, 'div'>('div')`
   border-radius: 4px;
   top: 48px;
   z-index: 4;
+  visibility: hidden;
+  pointer-events: none;
+
+  ${p => p.widgetMenuPersist && `
+    visibility: visible;
+    pointer-events: auto;
+  `}
 
   @media screen and (min-width: 1150px) {
     ${p => (p.menuPosition === 'right' && p.textDirection === 'ltr') || (p.menuPosition === 'left' && p.textDirection === 'rtl')
@@ -157,6 +153,21 @@ interface WidgetIconProps {
   isBinance?: boolean
 }
 
+export const StyledEllipsis = styled<WidgetVisibilityProps, 'div'>('div')`
+  visibility: hidden;
+  pointer-events: none;
+
+  ${p => (p.widgetMenuPersist || p.isForeground) && `
+    visibility: visible;
+    pointer-events: auto;
+  `}
+
+  ${StyledWidgetContainer}:hover & {
+    visibility: visible;
+    pointer-events: auto;
+  }
+`
+
 export const StyledWidgetIcon = styled<WidgetIconProps, 'div'>('div')`
   height: 13px;
   width: 13px;
@@ -168,5 +179,6 @@ export const StyledWidgetIcon = styled<WidgetIconProps, 'div'>('div')`
   }
 `
 export const StyledSpan = styled<{}, 'span'>('span')`
-  height: 13px;
+  text-align: left;
+  margin-right: 10px;
 `
