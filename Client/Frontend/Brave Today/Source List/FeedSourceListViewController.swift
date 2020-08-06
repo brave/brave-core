@@ -6,6 +6,7 @@
 import UIKit
 import BraveUI
 import BraveShared
+import Shared
 
 /// Displays a list of sources that may be optionally filtered down to a specific category
 class FeedSourceListViewController: UITableViewController {
@@ -74,7 +75,15 @@ class FeedSourceListViewController: UITableViewController {
         tableView.sectionIndexColor = BraveUX.braveOrange
         
         title = category ?? "All Sources" // FIXME: Localize
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
+        if category != nil {
+            // TODO(iOS14): Replace with context menu primary action
+            navigationItem.rightBarButtonItem = .init(
+                image: UIImage(imageLiteralResourceName: "menu_more"),
+                style: .plain,
+                target: self,
+                action: #selector(tappedMenu(_:))
+            )
+        }
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
@@ -84,8 +93,36 @@ class FeedSourceListViewController: UITableViewController {
         navigationItem.searchController = searchController
     }
     
-    @objc private func tappedDone() {
-        dismiss(animated: true)
+    @objc private func tappedMenu(_ sender: UIBarButtonItem) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.popoverPresentationController?.barButtonItem = sender
+        // FIXME: Localize
+        alert.addAction(UIAlertAction(title: "Enable All", style: .default, handler: { [weak self] _ in
+            self?.toggleCategory(enabled: true)
+        }))
+        // FIXME: Localize
+        alert.addAction(UIAlertAction(title: "Disable All", style: .destructive, handler: { [weak self] _ in
+            self?.toggleCategory(enabled: false)
+        }))
+        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
+    
+    private func toggleCategory(enabled: Bool) {
+        guard let category = category else { return }
+        // Update DB
+        dataSource.toggleCategory(category, enabled: enabled)
+        // Update local state
+        for section in sections {
+            for source in section {
+                customizedSources[source.id] = enabled
+            }
+        }
+        for cell in tableView.visibleCells {
+            if let cell = cell as? SourceTableViewCell {
+                cell.enabledToggle.setOn(enabled, animated: true)
+            }
+        }
     }
 }
 
