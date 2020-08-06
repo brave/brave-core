@@ -276,7 +276,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveShieldsHandler.updateHost(url);
           updateBraveShieldsButtonState(tab);
 
-          Profile mProfile = Profile.getLastUsedProfile();
+          Profile mProfile = Profile.getLastUsedRegularProfile();
           long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
           long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
           long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
