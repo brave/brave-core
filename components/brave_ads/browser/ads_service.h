@@ -99,7 +99,8 @@ class AdsService : public KeyedService {
   virtual void OnTabUpdated(
       const SessionID& tab_id,
       const GURL& url,
-      const bool is_active) = 0;
+      const bool is_active,
+      const bool is_browser_active) = 0;
   virtual void OnTabClosed(
       const SessionID& tab_id) = 0;
 

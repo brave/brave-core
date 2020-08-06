@@ -442,12 +442,13 @@ void AdsImpl::OnTabUpdated(
     const int32_t tab_id,
     const std::string& url,
     const bool is_active,
+    const bool is_browser_active,
     const bool is_incognito) {
   if (is_incognito) {
     return;
   }
 
-  if (is_active) {
+  if (is_active && is_browser_active) {
     BLOG(2, "Tab id " << tab_id << " is visible");
 
     active_tab_id_ = tab_id;
@@ -467,6 +468,16 @@ void AdsImpl::OnTabUpdated(
     blur_info.tab_id = tab_id;
     const std::string report = reports.GenerateBlurEventReport(blur_info);
     BLOG(3, "Event log: " << report);
+  }
+
+  if (is_browser_active) {
+    if (!is_foreground_) {
+      OnForeground();
+    }
+  } else {
+    if (is_foreground_) {
+      OnBackground();
+    }
   }
 }
 

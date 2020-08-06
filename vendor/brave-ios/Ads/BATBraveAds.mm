@@ -413,7 +413,7 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 {
   if (![self isAdsServiceRunning]) { return; }
   const auto urlString = std::string(url.absoluteString.UTF8String);
-  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected, isPrivate);
+  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected, [self isForeground], isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId

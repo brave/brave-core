@@ -32,6 +32,7 @@
 #include "bat/ads/mojom.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "bat/ads/statement_info.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
@@ -350,13 +351,17 @@ void AdsServiceImpl::OnMediaStop(
 void AdsServiceImpl::OnTabUpdated(
     const SessionID& tab_id,
     const GURL& url,
-    const bool is_active) {
+    const bool is_active,
+    const bool is_browser_active) {
   if (!connected()) {
     return;
   }
 
+  const bool is_incognito = profile_->IsOffTheRecord() ||
+      brave::IsTorProfile(profile_);
+
   bat_ads_->OnTabUpdated(tab_id.id(), url.spec(), is_active,
-      profile_->IsOffTheRecord());
+      is_browser_active, is_incognito);
 }
 
 void AdsServiceImpl::OnTabClosed(
@@ -1979,8 +1984,8 @@ void AdsServiceImpl::SetIdleThreshold(const int threshold) {
 }
 
 bool AdsServiceImpl::IsForeground() const {
-  Profile* profile = ProfileManager::GetActiveUserProfile();
-  if (!profile_->IsSameProfile(profile)) {
+  Profile* profile = ProfileManager::GetLastUsedProfile();
+  if (!profile_->IsSameProfileAndType(profile)) {
     return false;
   }
 

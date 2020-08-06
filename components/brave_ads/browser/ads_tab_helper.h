@@ -50,6 +50,8 @@ class AdsTabHelper : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
+  bool IsAdsEnabled() const;
+
   void TabUpdated();
 
   void RunIsolatedJavaScript(
