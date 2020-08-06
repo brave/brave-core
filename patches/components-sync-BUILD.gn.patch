@@ -1,0 +1,12 @@
+diff --git a/components/sync/BUILD.gn b/components/sync/BUILD.gn
+index db5a9d0154d0c1e1390e4af6272d7d6cebe24b57..3cde948c91c4aa13297de70dafa86ee33db32906 100644
+--- a/components/sync/BUILD.gn
++++ b/components/sync/BUILD.gn
+@@ -413,6 +413,7 @@ jumbo_static_library("rest_of_sync") {
+     "syncable/write_transaction_info.cc",
+     "syncable/write_transaction_info.h",
+   ]
++  sources += brave_components_sync_sources
+ 
+   configs += [ "//build/config:precompiled_headers" ]
+ 
