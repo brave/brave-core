@@ -169,7 +169,7 @@ const util = {
           "src/chrome/tools/test/reference_build/chrome_win": "%None%"
         },
         custom_vars: {
-          "checkout_pgo_profiles": "%True%"
+          "checkout_pgo_profiles": "%False%"
         }
       },
       {
