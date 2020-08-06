@@ -237,55 +237,6 @@
     "url": "https://github.com/brave/brave-browser/issues"
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
-  "jest": {
-    "preset": "ts-jest/presets/default",
-    "moduleFileExtensions": [
-      "js",
-      "tsx",
-      "ts",
-      "json"
-    ],
-    "globals": {
-      "ts-jest": {
-        "tsConfig": "tsconfig-jest.json",
-        "isolatedModules": true
-      }
-    },
-    "transform": {
-      ".(jsx|js|ts|tsx)": "ts-jest"
-    },
-    "resetMocks": true,
-    "resetModules": true,
-    "collectCoverage": true,
-    "collectCoverageFrom": [
-      "<rootDir>/components/**/**/*.ts",
-      "<rootDir>/components/**/**/*.tsx",
-      "!<rootDir>/components/definitions/*",
-      "!<rootDir>/components/**/constants/*",
-      "!<rootDir>/components/**/reducers/index.ts",
-      "!<rootDir>/components/**/store.ts",
-      "!<rootDir>/components/test/*"
-    ],
-    "testURL": "http://localhost/",
-    "testMatch": [
-      "<rootDir>/components/test/**/**/?(*_)(test).{ts,tsx}"
-    ],
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!(brave-ui)/)"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/components/test/testSetup.ts"
-    ],
-    "setupFiles": [
-      "<rootDir>/components/test/testPolyfills.ts"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|svg|ttf|woff|woff2)$": "<rootDir>/components/test/fileMock.ts",
-      "\\.(css|less)$": "identity-obj-proxy",
-      "^brave-ui$": "<rootDir>/node_modules/brave-ui/src",
-      "^brave-ui\\/(.*)": "<rootDir>/node_modules/brave-ui/src/$1"
-    }
-  },
   "devDependencies": {
     "@babel/core": "^7.5.0",
     "@dump247/storybook-state": "^1.6.1",
