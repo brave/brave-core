@@ -56,7 +56,7 @@ public class HighlightView extends FrameLayout {
         Bitmap overlay = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas overlayCanvas = new Canvas(overlay);
-        overlayCanvas.drawColor(0xcc1E2029);// 0x3333B5E5);
+        overlayCanvas.drawColor(0xcc1E2029);
         eraserPaint.setAlpha(ALPHA_60_PERCENT);
         if (shouldShowHighlight) {
             int width = item.getScreenRight() - item.getScreenLeft();

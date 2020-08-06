@@ -55,6 +55,7 @@ brave_java_resources = [
   "java/res/drawable/bat_rewards_summary_gradient.xml",
   "java/res/drawable/ic_chevron_right.xml",
   "java/res/drawable/rounded_holo.xml",
+  "java/res/drawable/rounded_holo_button.xml",
   "java/res/drawable/wallet_verify_button.xml",
   "java/res/drawable/ic_help.xml",
   "java/res/drawable/plain_checkbox.xml",

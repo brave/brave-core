@@ -14,11 +14,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.LinearLayout;
+import android.content.res.Resources;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
+import android.util.DisplayMetrics;
 import android.content.res.Configuration;
 import android.widget.RadioGroup;
 import android.util.Pair;
@@ -94,6 +96,30 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+        if (isTablet || (!isTablet && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)) {
+            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
+        } else {
+            getDialog().getWindow().setLayout(-1, -1);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+        if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
+            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
+        } else {
+            getDialog().getWindow().setLayout(-1, -1);
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         super.onDestroyView();
@@ -102,6 +128,21 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        //     @Override
+        //     public void onGlobalLayout() {
+        //         BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
+        //         // FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+        //         BottomSheetBehavior behavior = BottomSheetBehavior.from((View) view.getParent());
+        //         // behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        //         DisplayMetrics metrics = new DisplayMetrics();
+        //         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        //         int bottomSheetHeight = (int) (metrics.heightPixels * (2/3));
+        //         Log.e("NTP", "" + bottomSheetHeight);
+        //         behavior.setPeekHeight(bottomSheetHeight);
+        //     }
+        // });
 
         RadioGroup durationRadioGroup = view.findViewById(R.id.duration_radio_group);
         durationRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -117,6 +158,11 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 updateBraveStatsLayout();
             }
         });
+
+        view.findViewById(R.id.month_radio).setEnabled(false);
+        view.findViewById(R.id.month_radio).setAlpha(0.2f);
+        view.findViewById(R.id.months_radio).setEnabled(false);
+        view.findViewById(R.id.months_radio).setAlpha(0.2f);
 
         LinearLayout layout = view.findViewById(R.id.brave_stats_layout);
         adsTrackersCountText = layout.findViewById(R.id.ads_trackers_count_text);

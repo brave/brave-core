@@ -224,10 +224,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Trackers &amp; Ads Blocked
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_DATA_SAVED" desc="Title for the data saved stats">
-        Data Saved
+        Data\nSaved
       </message>
       <message name="IDS_BRAVE_STATS_TEXT_TIME" desc="Title for the estimated saved time">
-        Est. Time Saved
+        Est. Time\nSaved
       </message>
       <message name="IDS_SETTINGS_DESKTOP_MODE_TITLE" desc="Title for desktop mode in site settings">
         Desktop Mode
@@ -1204,7 +1204,10 @@ until they verify, or until 90 days have passed.
         Be informed about which websites you visit are the most privacy invasive.\n\nOnly you can see these privacy statistics. No personal data or browsing history ever leaves the Brave browser on your device.
       </message>
       <message name="IDS_TURN_ON_PRIVACY_STATS" desc="Button text for onboading bottomsheet.">
-        Turn on privacy stats
+        Turn on privacy reports
+      </message>
+      <message name="IDS_LEARN_MORE" desc="Button text for onboading bottomsheet.">
+        Learn more
       </message>
       <message name="IDS_WEEK" desc="Tab title text">
         Week
