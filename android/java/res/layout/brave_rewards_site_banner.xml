@@ -310,7 +310,7 @@
 
                 <ToggleButton
                     android:id="@+id/one_bat_option"
-                    android:layout_width="86dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     app:layout_row="0"
                     app:layout_rowWeight="2"
@@ -345,7 +345,7 @@
 
                 <ToggleButton
                     android:id="@+id/five_bat_option"
-                    android:layout_width="86dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     app:layout_row="0"
                     app:layout_rowWeight="2"
@@ -379,7 +379,7 @@
 
                 <ToggleButton
                     android:id="@+id/ten_bat_option"
-                    android:layout_width="86dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="34dp"
                     app:layout_row="0"
                     app:layout_rowWeight="2"
