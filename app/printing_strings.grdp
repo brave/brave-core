@@ -107,20 +107,15 @@
     <message name="IDS_PRINT_PREVIEW_PRINT_TO_GOOGLE_DRIVE" desc="Option shown on printer drop-down list for saving previewed document to Google Drive.">
       Save to Google Drive
     </message>
-    <message name="IDS_PRINT_PREVIEW_SUMMARY_FORMAT_SHORT" desc="Print summary, explaining to the user how many pages will be printed.">
-      <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph>
+    <message name="IDS_PRINT_PREVIEW_SHEET_SUMMARY_LABEL" desc="Print summary, explaining to the user how many pages will be printed.">
+    {COUNT, plural,
+      =1 {1 sheet of paper}
+      other {{COUNT} sheets of paper}}
     </message>
-    <message name="IDS_PRINT_PREVIEW_SHEETS_LABEL_PLURAL" desc="Label shown in the print preview summary.">
-      sheets of paper
-    </message>
-    <message name="IDS_PRINT_PREVIEW_SHEETS_LABEL_SINGULAR" desc="Label shown in the print preview summary.">
-      sheet of paper
-    </message>
-    <message name="IDS_PRINT_PREVIEW_PAGE_LABEL_SINGULAR" desc="Label shown in the print preview summary.">
-      page
-    </message>
-    <message name="IDS_PRINT_PREVIEW_PAGE_LABEL_PLURAL" desc="Label shown in the print preview summary.">
-      pages
+    <message name="IDS_PRINT_PREVIEW_PAGE_SUMMARY_LABEL" desc="Print summary, explaining to the user how many pages will be saved.">
+    {COUNT, plural,
+      =1 {1 page}
+      other {{COUNT} pages}}
     </message>
     <message name="IDS_PRINT_PREVIEW_PAGE_RANGE_SYNTAX_INSTRUCTION" desc="Instruction shown when the user enters an invalid page range.">
       Invalid page range, use <ph name="EXAMPLE_PAGE_RANGE">$1<ex>e.g. 1-5, 8, 11-13</ex></ph>
@@ -324,16 +319,56 @@
       <message name="IDS_PRINT_PREVIEW_EULA_URL" desc="Message shown to user when their printer has a EULA associated with its PPD. This message is hyperlinked to the EULA.">
         End User License Agreement
       </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_CONNECTING_TO_DEVICE" desc="Error label to show under the destination dropdown when the device can't connect to the printer.">
+         Error connecting to <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DEVICE_ERROR" desc="Error label to show under the destination dropdown when the printer has a device error.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> has a device error
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DOOR_OPEN" desc="Error label to show under the destination dropdown when the printer has an open door.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s door is open
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_LOW_ON_INK" desc="Error label to show under the destination dropdown when the printer is low on ink.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is low on ink
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_LOW_ON_PAPER" desc="Error label to show under the destination dropdown when the printer is low on paper">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is low on paper
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUT_OF_INK" desc="Error label to show under the destination dropdown when the printer is out of ink.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is out of ink
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUT_OF_PAPER" desc="Error label to show under the destination dropdown when the printer is out of paper.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is out of paper
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_ALMOST_FULL" desc="Error label to show under the destination dropdown when the printer's output area is almost full.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s output area is almost full
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_FULL" desc="Error label to show under the destination dropdown when the printer's output area is full.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s output area is full
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAPER_JAM" desc="Error label to show under the destination dropdown when the printer has a paper jam.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s paper is jammed
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAUSED" desc="Error label to show under the destination dropdown when the printer is paused.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is paused
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_QUEUE_FULL" desc="Error label to show under the destination dropdown when the printer has a full queue.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph>'s queue is full
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_UNREACHABLE" desc="Error label to show under the destination dropdown when the printer is unreachable.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is unreachable
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_STOPPED" desc="Error label to show under the destination dropdown when the printer is stopped.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is stopped
+      </message>
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_TRAY_MISSING" desc="Error label to show under the destination dropdown when the printer is missing a tray.">
+         <ph name="PRINTER_NAME">$1<ex>Home Office Printer</ex></ph> is missing a tray
+      </message>
       <message name="IDS_PRINT_PREVIEW_SHEETS_LIMIT_ERROR_MESSAGE" desc="Sheets limit error message, explaining to the user why printing is blocked.">
-        Exceeds limit of <ph name="NUMBER_OF_SHEETS">$1<ex>10</ex></ph> <ph name="SHEETS_LABEL">$2<ex>sheets of paper</ex></ph>
+      {COUNT, plural,
+        =1 {Exceeds limit of 1 sheet of paper}
+        other {Exceeds limit of {COUNT} sheets of paper}}
       </message>
-      <message name="IDS_PRINT_PREVIEW_SHEETS_LIMIT_LABEL_SINGULAR" desc="Label shown in the sheets limit error message.">
-        sheet of paper
-      </message>
-      <message name="IDS_PRINT_PREVIEW_SHEETS_LIMIT_LABEL_PLURAL" desc="Label shown in the sheets limit error message.">
-        sheets of paper
-      </message>
-
     </if>
     <if expr="not chromeos">
       <message name="IDS_PRINT_PREVIEW_SYSTEM_DIALOG_OPTION" desc="Option allowing the user to access advanced printer settings using the native print system dialog instead of printing through the print preview mechanism. Shortcut key is not translated">

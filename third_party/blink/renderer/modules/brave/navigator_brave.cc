@@ -37,7 +37,7 @@ Brave* NavigatorBrave::brave() {
   return brave_;
 }
 
-void NavigatorBrave::Trace(blink::Visitor* visitor) {
+void NavigatorBrave::Trace(blink::Visitor* visitor) const {
   visitor->Trace(brave_);
   Supplement<Navigator>::Trace(visitor);
 }

@@ -65,6 +65,7 @@ source_set("browser") {
     "//components/prefs",
     "//components/sessions",
     "//content/public/browser",
+    "//mojo/public/cpp/bindings",
     "//net",
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/leveldatabase",

@@ -9,6 +9,7 @@
 
 #include "base/bind.h"
 #include "base/command_line.h"
+#include "base/logging.h"
 #include "brave/components/speedreader/speedreader_switches.h"
 #include "url/gurl.h"
 

@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 3d00fae9dc14418a6363bda08c3abcbcc0f94757..9e9efa8cd09d39ee7921edc4c1bec90ed2f06b73 100644
+index 6dc80ff464ee4e29411f874b269298a99936a7de..234dab9d4d1f9e71bb6da0610ce836ab25baec88 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -829,6 +829,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -850,6 +850,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #if defined(TOOLKIT_VIEWS)
    RegisterBrowserViewLocalPrefs(registry);
  #endif
 +  brave::RegisterLocalStatePrefs(registry);
  
+   // This is intentionally last.
    RegisterLocalStatePrefsForMigration(registry);
- }
-@@ -1097,6 +1098,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+@@ -1122,6 +1123,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
  #endif
  
    RegisterProfilePrefsForMigration(registry);

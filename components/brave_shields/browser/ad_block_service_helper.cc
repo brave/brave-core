@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
 

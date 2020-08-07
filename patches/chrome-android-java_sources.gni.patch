@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java_sources.gni b/chrome/android/java_sources.gni
-index b2f24064da7e3cd7b0283009c2d8c4ddd6fe6cd9..88911a437321cc7fc83cde137b2b5b2510f3bee1 100644
+index d71e9f6da63f3c8384ac85fbe6e2baa81baac49b..a2b6910f95633fc86a9ed0df292751b360306763 100644
 --- a/chrome/android/java_sources.gni
 +++ b/chrome/android/java_sources.gni
 @@ -20,6 +20,7 @@ import("//components/offline_pages/buildflags/features.gni")

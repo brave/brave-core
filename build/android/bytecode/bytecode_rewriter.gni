@@ -1,0 +1,41 @@
+import("//build/config/python.gni")
+
+brave_bytecode_jars = [
+  "obj/chrome/android/chrome_java.javac.jar",
+  "obj/components/sync/android/sync_java.javac.jar",
+  "obj/components/external_intents/android/java.javac.jar",
+]
+
+template("brave_bytecode_rewriter") {
+  _rebased_build_config = invoker._rebased_build_config
+  _java_bytecode_rewriter_input_jar = invoker._previous_output_jar
+
+  action_with_pydeps(target_name) {
+      script = "//brave/build/android/gyp/bytecode_processor.py"
+      _bytecode_rewriter_script =
+          "$root_build_dir/bin/helper/java_bytecode_rewriter"
+      deps = invoker._deps + [ "//brave/build/android/bytecode:java_bytecode_rewriter($default_toolchain)" ]
+      if (defined(invoker.deps)) {
+          deps += invoker.deps
+      }
+      inputs = [
+          _bytecode_rewriter_script,
+          _java_bytecode_rewriter_input_jar,
+      ]
+      outputs = [ invoker._bytecode_rewriter_output_jar ]
+      args = [
+          "--script",
+          rebase_path(_bytecode_rewriter_script, root_build_dir),
+          "--input-jar",
+          rebase_path(_java_bytecode_rewriter_input_jar, root_build_dir),
+          "--output-jar",
+          rebase_path(invoker._bytecode_rewriter_output_jar, root_build_dir),
+          "--direct-classpath-jars",
+          "@FileArg($_rebased_build_config:javac:classpath)",
+          "--sdk-classpath-jars",
+          "@FileArg($_rebased_build_config:android:sdk_jars)",
+          "--extra-classpath-jars",
+          "@FileArg($_rebased_build_config:deps_info:javac_full_classpath)",
+      ]
+  }
+}

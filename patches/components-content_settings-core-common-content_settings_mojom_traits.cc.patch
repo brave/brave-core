@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/common/content_settings_mojom_traits.cc b/components/content_settings/core/common/content_settings_mojom_traits.cc
-index 7db7683e5a8544f29772c2676a4298230494ab53..300d7aaaf78d8b0c6dc5f7680f8517df22a2eec1 100644
+index 3cdb9450d8329a9955f7c3f8359075f604a91224..f4d355b1c7cd9f4d2d72a69a3c7991e5c23c9929 100644
 --- a/components/content_settings/core/common/content_settings_mojom_traits.cc
 +++ b/components/content_settings/core/common/content_settings_mojom_traits.cc
 @@ -101,6 +101,7 @@ bool StructTraits<content_settings::mojom::RendererContentSettingRulesDataView,

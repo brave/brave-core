@@ -54,7 +54,7 @@ public class SuperReferralShareDialogFragment extends DialogFragment implements 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-        Profile mProfile = Profile.getLastUsedProfile();
+        Profile mProfile = Profile.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
 		return inflater.inflate(R.layout.fragment_super_referral_share, container);
 	}

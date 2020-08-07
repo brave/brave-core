@@ -11,6 +11,7 @@
 #include "base/auto_reset.h"
 #include "base/strings/string16.h"
 #include "brave/app/vector_icons/vector_icons.h"
+#include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/views/download/download_shelf_view.h"
 #include "components/strings/grit/components_strings.h"
 #include "components/vector_icons/vector_icons.h"
@@ -18,6 +19,7 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/paint_vector_icon.h"
@@ -28,6 +30,9 @@
 using download::DownloadItem;
 
 namespace {
+
+// Size of the space used for the progress indicator.
+constexpr int kProgressIndicatorSize = 25;
 
 // The minimum vertical padding above and below contents of the download item.
 constexpr int kMinimumVerticalPadding = 6;
@@ -48,7 +53,7 @@ BraveDownloadItemView::BraveDownloadItemView(
     DownloadShelfView* parent,
     views::View* accessible_alert)
     : DownloadItemView(std::move(download), parent, accessible_alert),
-      brave_model_(*model_),
+      brave_model_(model_.get()),
       is_origin_url_secure_(false) {
   // Prepare origin url font.
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
@@ -110,7 +115,7 @@ void BraveDownloadItemView::OnDownloadUpdated() {
     bool needs_repaint = false;
     bool new_is_secure = false;
     base::string16 new_origin_url =
-        brave_model_.GetOriginURLText(new_is_secure);
+        brave_model_.GetOriginURLText(&new_is_secure);
     if (new_origin_url != origin_url_text_ ||
       new_is_secure != is_origin_url_secure_) {
       origin_url_text_ = new_origin_url;
@@ -127,8 +132,7 @@ void BraveDownloadItemView::OnDownloadUpdated() {
   }
 
   // Update tooltip.
-  base::string16 new_tip =
-      brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
+  base::string16 new_tip = brave_model_.GetTooltipText();
   if (new_tip != tooltip_text_) {
     tooltip_text_ = new_tip;
     TooltipTextChanged();
@@ -166,8 +170,7 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   if (origin_url_text_.empty() || IsShowingWarningDialog())
     return;
 
-  int x = kStartPadding + DownloadShelf::kProgressIndicatorSize +
-          kProgressTextPadding;
+  int x = kStartPadding + kProgressIndicatorSize + kProgressTextPadding;
   int text_width = kTextWidth;
 
   if (!is_origin_url_secure_) {
@@ -181,7 +184,8 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
       origin_url_text_, origin_url_font_list_, text_width, gfx::ELIDE_TAIL);
   int mirrored_x = GetMirroredXWithWidthInView(x, text_width);
 
-  SkColor dimmed_text_color = SkColorSetA(GetTextColor(), 0xC7);
+  SkColor dimmed_text_color = SkColorSetA(
+      GetThemeProvider()->GetColor(ThemeProperties::COLOR_BOOKMARK_TEXT), 0xC7);
   canvas->DrawStringRect(
       originURL, origin_url_font_list_, dimmed_text_color,
       gfx::Rect(mirrored_x, GetYForOriginURLText(), text_width,
@@ -193,8 +197,7 @@ void BraveDownloadItemView::DrawLockIcon(gfx::Canvas* canvas) {
     return;
 
   int mirrored_x = GetMirroredXWithWidthInView(
-      kStartPadding + DownloadShelf::kProgressIndicatorSize +
-          kProgressTextPadding,
+      kStartPadding + kProgressIndicatorSize + kProgressTextPadding,
       kTextWidth);
 
   // Get lock icon of the needed height.

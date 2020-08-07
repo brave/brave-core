@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/renderer/platform/graphics/image_data_buffer.h b/third_party/blink/renderer/platform/graphics/image_data_buffer.h
-index 37f8263c8b7176382bb0ac9480348809533f5389..5dcf4efad3ce96b2a57007a32b8f8abe9b8bdc6a 100644
+index cc8dc19e87bee3e2db9cc86bfc3d5bd1f0097208..23bc89a4fa77e50f636c83c3c3e24514587264b9 100644
 --- a/third_party/blink/renderer/platform/graphics/image_data_buffer.h
 +++ b/third_party/blink/renderer/platform/graphics/image_data_buffer.h
-@@ -60,6 +60,7 @@ class PLATFORM_EXPORT ImageDataBuffer {
-   const IntSize& size() const { return size_; }
+@@ -61,6 +61,7 @@ class PLATFORM_EXPORT ImageDataBuffer {
    int Height() const { return size_.Height(); }
    int Width() const { return size_.Width(); }
+   size_t ComputeByteSize() const { return pixmap_.computeByteSize(); }
 +  BRAVE_IMAGE_DATA_BUFFER_H
  
   private:

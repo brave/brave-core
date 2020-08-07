@@ -14,7 +14,6 @@
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "chrome/browser/android/preferences/pref_service_bridge.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -45,9 +44,6 @@ Profile* GetOriginalProfile() {
 }
 
 const char* GetPrefNameExposedToJava(int pref_index) {
-  if (pref_index < kBravePrefOffset)
-    return PrefServiceBridge::GetPrefNameExposedToJava(pref_index);
-
   DCHECK_GE(pref_index, kBravePrefOffset);
   DCHECK_LT(pref_index, BravePref::BRAVE_PREF_NUM_PREFS);
   return kBravePrefsExposedToJava[pref_index - kBravePrefOffset];

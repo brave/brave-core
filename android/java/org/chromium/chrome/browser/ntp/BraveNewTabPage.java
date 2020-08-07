@@ -10,17 +10,18 @@ import android.app.Activity;
 import androidx.annotation.Nullable;
 
 import org.chromium.base.supplier.Supplier;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedProcessScopeFactory;
 import org.chromium.chrome.browser.feed.shared.FeedSurfaceProvider;
-import org.chromium.chrome.browser.fullscreen.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePageHost;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 
 public class BraveNewTabPage extends NewTabPage {
     private NewTabPageLayout mNewTabPageLayout;
@@ -31,10 +32,11 @@ public class BraveNewTabPage extends NewTabPage {
             Supplier<Tab> activityTabProvider, @Nullable OverviewModeBehavior overviewModeBehavior,
             SnackbarManager snackbarManager, ActivityLifecycleDispatcher lifecycleDispatcher,
             TabModelSelector tabModelSelector, boolean isTablet, NewTabPageUma uma,
-            boolean isInNightMode, NativePageHost nativePageHost, Tab tab) {
+            boolean isInNightMode, NativePageHost nativePageHost, Tab tab,
+            BottomSheetController bottomSheetController) {
         super(activity, browserControlsStateProvider, activityTabProvider, overviewModeBehavior,
                 snackbarManager, lifecycleDispatcher, tabModelSelector, isTablet, uma,
-                isInNightMode, nativePageHost, tab);
+                isInNightMode, nativePageHost, tab, bottomSheetController);
 
         assert mNewTabPageLayout instanceof BraveNewTabPageLayout;
         if (mNewTabPageLayout instanceof BraveNewTabPageLayout) {
@@ -45,17 +47,17 @@ public class BraveNewTabPage extends NewTabPage {
     @Override
     protected void initializeMainView(Activity activity, Supplier<Tab> tabProvider,
             SnackbarManager snackbarManager, TabModelSelector tabModelSelector, NewTabPageUma uma,
-            boolean isInNightMode) {
-        super.initializeMainView(
-                activity, tabProvider, snackbarManager, tabModelSelector, uma, isInNightMode);
+            boolean isInNightMode, BottomSheetController bottomSheetController) {
+        super.initializeMainView(activity, tabProvider, snackbarManager, tabModelSelector, uma,
+                isInNightMode, bottomSheetController);
         // Override surface provider
         Profile profile = Profile.fromWebContents(mTab.getWebContents());
 
         assert !FeedProcessScopeFactory.isFeedProcessEnabled();
-        mFeedSurfaceProvider =
-                new BraveFeedSurfaceCoordinator(activity, snackbarManager, tabModelSelector,
-                        tabProvider, new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout),
-                        mNewTabPageLayout, null, null, isInNightMode, this,
-                        mNewTabPageManager.getNavigationDelegate(), profile);
+        mFeedSurfaceProvider = new BraveFeedSurfaceCoordinator(activity, snackbarManager,
+                tabModelSelector, tabProvider,
+                new SnapScrollHelper(mNewTabPageManager, mNewTabPageLayout), mNewTabPageLayout,
+                null, null, isInNightMode, this, mNewTabPageManager.getNavigationDelegate(),
+                profile, false, bottomSheetController);
     }
 }

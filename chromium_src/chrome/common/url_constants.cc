@@ -229,6 +229,7 @@ const char kUpgradeHelpCenterBaseURL[] =
 
 const char kWhoIsMyAdministratorHelpURL[] =
     "https://support.brave.com/";
+const char kChromeFlashRoadmapURL[] = "https://support.brave.com/";
 
 #if defined(OS_ANDROID)
 const char kAndroidAppScheme[] = "android-app";

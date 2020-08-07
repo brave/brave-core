@@ -116,7 +116,7 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(
         // Default (lock-only in omnibox)
         SecurityIndicatorTestParams{true, net::CERT_STATUS_IS_EV,
-                                    security_state::EV_SECURE, false,
+                                    security_state::SECURE, false,
                                     kEmptyString},
         SecurityIndicatorTestParams{true, 0, security_state::SECURE, false,
                                     kEmptyString},

@@ -4,6 +4,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/notification_helper_linux.h"
+
+#include "base/logging.h"
 #include "chrome/browser/fullscreen.h"
 
 namespace brave_ads {

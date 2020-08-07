@@ -27,9 +27,8 @@ public class BytecodeTest {
     @SmallTest
     public void testClassesExist() throws Exception {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/MainSettings"));
-        Assert.assertTrue(classExists("org/chromium/components/sync/AndroidSyncSettings"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/sync/AndroidSyncSettings"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge"));
-        Assert.assertTrue(classExists("org/chromium/components/external_intents/ExternalNavigationHandler"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/LaunchIntentDispatcher"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ntp/NewTabPageLayout"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator"));
@@ -45,16 +44,14 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testMethodsExist() throws Exception {
-        Assert.assertTrue(methodExists("org/chromium/components/sync/AndroidSyncSettings", "notifyObservers"));
-        Assert.assertTrue(methodExists("org/chromium/components/sync/AndroidSyncSettings", "updateCachedSettings"));
-        Assert.assertTrue(methodExists("org/chromium/components/sync/AndroidSyncSettings", "setChromeSyncEnabled"));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings", "notifyObservers"));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings", "updateCachedSettings"));
+        Assert.assertTrue(methodExists("org/chromium/chrome/browser/sync/AndroidSyncSettings", "setChromeSyncEnabled"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge",
                 "extensiveBookmarkChangesBeginning"));
         Assert.assertTrue(
                 methodExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge", "extensiveBookmarkChangesEnded"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/bookmarks/BookmarkBridge", "createBookmarkItem"));
-        Assert.assertTrue(methodExists("org/chromium/components/external_intents/ExternalNavigationHandler",
-                "clobberCurrentTabWithFallbackUrl"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/LaunchIntentDispatcher", "isCustomTabIntent"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/homepage/HomepageManager", "shouldCloseAppWithZeroTabs"));
         Assert.assertTrue(methodExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "insertSiteSectionView"));
@@ -73,9 +70,9 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testFieldsExist() throws Exception {
-        Assert.assertTrue(fieldExists("org/chromium/components/sync/AndroidSyncSettings", "mIsSyncable"));
-        Assert.assertTrue(fieldExists("org/chromium/components/sync/AndroidSyncSettings", "mChromeSyncEnabled"));
-        Assert.assertTrue(fieldExists("org/chromium/components/sync/AndroidSyncSettings", "mMasterSyncEnabled"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/sync/AndroidSyncSettings", "mIsSyncable"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/sync/AndroidSyncSettings", "mChromeSyncEnabled"));
+        Assert.assertTrue(fieldExists("org/chromium/chrome/browser/sync/AndroidSyncSettings", "mMasterSyncEnabled"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/ntp/NewTabPageLayout", "mSiteSectionView"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mActivity"));
         Assert.assertTrue(fieldExists("org/chromium/chrome/browser/feed/FeedSurfaceCoordinator", "mScrollViewForPolicy"));

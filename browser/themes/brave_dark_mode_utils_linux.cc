@@ -5,6 +5,7 @@
 
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 
+#include "base/notreached.h"
 #include "brave/browser/themes/brave_dark_mode_utils_internal.h"
 
 namespace dark_mode {

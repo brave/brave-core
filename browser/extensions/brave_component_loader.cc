@@ -34,10 +34,9 @@
 
 namespace extensions {
 
-BraveComponentLoader::BraveComponentLoader(
-    ExtensionServiceInterface* extension_service,
-    Profile* profile)
-    : ComponentLoader(extension_service, profile),
+BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
+                                           Profile* profile)
+    : ComponentLoader(extension_system, profile),
       profile_(profile),
       profile_prefs_(profile->GetPrefs()) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)

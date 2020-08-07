@@ -32,7 +32,7 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_theme_preferences);
         getActivity().setTitle(getResources().getString(R.string.theme_settings));
 
-        Profile mProfile = Profile.getLastUsedProfile();
+        Profile mProfile = Profile.getLastUsedRegularProfile();
         NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         if (!NTPBackgroundImagesBridge.enableSponsoredImages()
                 || (mNTPBackgroundImagesBridge != null

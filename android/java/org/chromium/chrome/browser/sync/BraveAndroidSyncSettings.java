@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.components.sync;
+package org.chromium.chrome.browser.sync;
+
+import org.chromium.components.sync.SyncContentResolverDelegate;
 
 // see org.brave.bytecode.BraveAndroidSyncSettingsAdapter
 public class BraveAndroidSyncSettings extends AndroidSyncSettings {

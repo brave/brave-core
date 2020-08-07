@@ -8,8 +8,9 @@
 package org.chromium.chrome.browser.toolbar;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+
+import androidx.core.content.ContextCompat;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.homepage.HomepageManager;

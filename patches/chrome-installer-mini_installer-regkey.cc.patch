@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/mini_installer/regkey.cc b/chrome/installer/mini_installer/regkey.cc
-index d6ae1654db280755711d3534c7d0b10e197512ed..864cd22ca5028faed8209cd11219edae0c3bda9b 100644
+index ab0f8ab7acc306556add738c97f31a70bc2724d1..39ea0b50fbea4437ccf7d27f23583554d16a738b 100644
 --- a/chrome/installer/mini_installer/regkey.cc
 +++ b/chrome/installer/mini_installer/regkey.cc
-@@ -90,7 +90,7 @@ LONG OpenClientsKey(HKEY root_key,
+@@ -89,7 +89,7 @@ LONG OpenClientsKey(HKEY root_key,
    StackString<MAX_PATH> clients_key;
    if (!clients_key.assign(kClientsKeyBase))
      return ERROR_BUFFER_OVERFLOW;
@@ -11,7 +11,7 @@ index d6ae1654db280755711d3534c7d0b10e197512ed..864cd22ca5028faed8209cd11219edae
    if (!clients_key.append(app_guid))
      return ERROR_BUFFER_OVERFLOW;
  #endif
-@@ -105,7 +105,7 @@ LONG OpenClientStateKey(HKEY root_key,
+@@ -104,7 +104,7 @@ LONG OpenClientStateKey(HKEY root_key,
    StackString<MAX_PATH> client_state_key;
    if (!client_state_key.assign(kClientStateKeyBase))
      return ERROR_BUFFER_OVERFLOW;

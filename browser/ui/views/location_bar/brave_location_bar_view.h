@@ -20,7 +20,7 @@ class BraveLocationBarView : public LocationBarView {
   using LocationBarView::LocationBarView;
   void Init() override;
   void Layout() override;
-  void Update(const content::WebContents* contents) override;
+  void Update(content::WebContents* contents) override;
   void OnChanged() override;
   BraveActionsContainer* GetBraveActionsContainer() { return brave_actions_; }
 

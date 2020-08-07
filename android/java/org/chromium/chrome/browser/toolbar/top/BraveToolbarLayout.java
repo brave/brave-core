@@ -218,8 +218,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     // shown and loading state is changed.
     updateBraveShieldsButtonState(null);
     if (this instanceof ToolbarPhone) {
-      if (getMenuButtonWrapper() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-        getMenuButtonWrapper().setVisibility(View.GONE);
+      if (super.getMenuButtonWrapper() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+        super.getMenuButtonWrapper().setVisibility(View.GONE);
       }
     }
   }
@@ -276,7 +276,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveShieldsHandler.updateHost(url);
           updateBraveShieldsButtonState(tab);
 
-          Profile mProfile = Profile.getLastUsedProfile();
+          Profile mProfile = Profile.getLastUsedRegularProfile();
           long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
           long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
           long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
@@ -401,7 +401,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
       Context context = getContext();
       if ((PackageUtils.isFirstInstall(context)
-           || (!PackageUtils.isFirstInstall(context) && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())))
+           || (!PackageUtils.isFirstInstall(context) && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())))
           && !OnboardingPrefManager.getInstance().isOnboardingShown()) {
         OnboardingPrefManager.getInstance().showOnboarding(context);
       } else {
@@ -625,7 +625,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       }
     } else if (error_code == BraveRewardsNativeWorker.WALLET_CREATED) { // Wallet created code
       // Make sure that flag is set as panel can be closed before wallet is created
-      BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+      BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
       // Check and set flag to show Brave Rewards icon if enabled
       SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
       SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -831,19 +831,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   }
 
   @Override
-  boolean isShowingAppMenuUpdateBadge() {
-    if (this instanceof ToolbarPhone &&
-        BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-      // Just to avoid drawing menu button on transition animation
-      return true;
-    }
-    return super.isShowingAppMenuUpdateBadge();
-  }
-
-  @Override
   public void onBottomToolbarVisibilityChanged(boolean isVisible) {
-    if (this instanceof ToolbarPhone && getMenuButtonWrapper() != null) {
-      getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    if (this instanceof ToolbarPhone && super.getMenuButtonWrapper() != null) {
+      super.getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
   }
 
@@ -860,4 +850,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
     updateModernLocationBarColor(mCurrentToolbarColor);
   }
+
+    @Override
+    View getMenuButtonWrapper() {
+        if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+            return null;
+        }
+        return super.getMenuButtonWrapper();
+    }
 }

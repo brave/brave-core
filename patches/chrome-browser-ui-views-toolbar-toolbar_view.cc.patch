@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 5f7d135c0912074204e84d8716717e88ab46ec4e..4dfb07fcd77d03a404bf92c8ca731fd75fbf1365 100644
+index bb07dd6f1b445be81d31319a738f1b058e8b5e3c..bcae1d7023465bed030fc00da9bd285b8548198f 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
 @@ -242,7 +242,7 @@ void ToolbarView::Init() {
@@ -9,5 +9,5 @@ index 5f7d135c0912074204e84d8716717e88ab46ec4e..4dfb07fcd77d03a404bf92c8ca731fd7
 -    avatar = std::make_unique<AvatarToolbarButton>(browser_);
 +    avatar = std::make_unique<BraveAvatarToolbarButton>(browser_);
  
-   auto app_menu_button = std::make_unique<BrowserAppMenuButton>(this);
-   app_menu_button->EnableCanvasFlippingForRTLUI(true);
+   // Always add children in order from left to right, for accessibility.
+   back_ = AddChildView(std::move(back));

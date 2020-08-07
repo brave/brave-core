@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref.cc b/components/content_settings/core/browser/content_settings_pref.cc
-index 9e8c7bf15d7ed4f0dcaf9094c85e1c1ea45af9c0..936382d1505aed27f32e8b341949ffd42eba6171 100644
+index cd57f1a2a0b352df389b41fa85d6c35286a0f0f5..37297345a3b15f411bfd91a8a891b9cf5c351ac0 100644
 --- a/components/content_settings/core/browser/content_settings_pref.cc
 +++ b/components/content_settings/core/browser/content_settings_pref.cc
-@@ -140,7 +140,7 @@ ContentSettingsPref::ContentSettingsPref(
+@@ -141,7 +141,7 @@ ContentSettingsPref::ContentSettingsPref(
        restore_session_(restore_session),
        updating_preferences_(false),
        notify_callback_(notify_callback),

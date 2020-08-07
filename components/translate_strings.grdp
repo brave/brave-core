@@ -41,9 +41,6 @@
   <message name="IDS_TRANSLATE_INFOBAR_ALWAYS_TRANSLATE" desc="Button label shown to always translate a specific language in the translate infobar">
     Always translate <ph name="language">$1<ex>English</ex></ph>
   </message>
-  <message name="IDS_TRANSLATE_INFOBAR_TRANSLATING_TO" desc="Text shown when page is currently being translated by servers">
-    Translating page to <ph name="language">$1<ex>English</ex></ph>...
-  </message>
   <message name="IDS_TRANSLATE_INFOBAR_AFTER_MESSAGE" desc="Message that page has been translated from one language to another">
     This page has been translated from<ph name="original_language">$1<ex>French</ex></ph>to<ph name="language_language">$2<ex>German</ex></ph>
   </message>
@@ -55,21 +52,6 @@
   </message>
   <message name="IDS_TRANSLATE_INFOBAR_RETRY" desc="Text to show for translate infobar to retry translation of page">
     Try again
-  </message>
-  <message name="IDS_TRANSLATE_INFOBAR_ERROR_CANT_CONNECT" desc="Error message to show for translate infobar when unable to connec to translate server">
-    The translation failed because of a problem with the network connection.
-  </message>
-  <message name="IDS_TRANSLATE_INFOBAR_ERROR_CANT_TRANSLATE" desc="Error message to show for translate infobar when translate server is unable to translate page">
-    The translation failed because of a server error.
-  </message>
-  <message name="IDS_TRANSLATE_INFOBAR_UNKNOWN_PAGE_LANGUAGE" desc="Error message to show for translate infobar when the page language could not be determined.">
-    The translation failed because the page's language could not be determined.
-  </message>
-  <message name="IDS_TRANSLATE_INFOBAR_ERROR_SAME_LANGUAGE" desc="Error message to show for translate infobar when the original and target languages are identical">
-    The translation failed because the page is already in <ph name="language">$1<ex>English</ex></ph>.
-  </message>
-  <message name="IDS_TRANSLATE_INFOBAR_UNSUPPORTED_PAGE_LANGUAGE" desc="Error message shown when the translate server translated the page and returned the page was in a language the browser does not know.">
-    This page has been translated from an unknown language to <ph name="language_language">$1<ex>English</ex></ph>
   </message>
 
   <!-- Translate Notifications -->
