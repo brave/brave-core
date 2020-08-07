@@ -11,7 +11,7 @@ class BraveWebView: WKWebView {
     private(set) var lastHitPoint = CGPoint(x: 0, y: 0)
     
     private static var nonPersistentDataStore: WKWebsiteDataStore?
-    private static func sharedNonPersistentStore() -> WKWebsiteDataStore {
+    static func sharedNonPersistentStore() -> WKWebsiteDataStore {
         if let dataStore = nonPersistentDataStore {
             return dataStore
         }
