@@ -13,7 +13,7 @@ namespace brave {
 namespace mojom {
 class ProfileImport;
 }
-}  // namespace chrome
+}  // namespace brave
 
 template <>
 inline content::SandboxType
