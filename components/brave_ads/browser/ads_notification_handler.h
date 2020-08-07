@@ -107,7 +107,6 @@ class AdsNotificationHandler : public NotificationHandler {
 
   std::map<std::string, base::OnceClosure> pending_close_callbacks_;
   content::BrowserContext* browser_context_;
-  brave_ads::AdsServiceImpl* ads_service_;
   base::queue<base::OnceClosure> pending_notifications_;
 };
 
