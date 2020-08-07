@@ -642,7 +642,7 @@ class NewTabPage extends React.Component<Props, State> {
           const isForeground = i === widgetList.length - 1
           return (
             <div key={`widget-${widget}`}>
-              {lookup[widget].render(isForeground)}
+              {lookup[widget].render(isForeground, (i + 1))}
             </div>
           )
         })}
@@ -689,6 +689,7 @@ class NewTabPage extends React.Component<Props, State> {
             hideWidget={this.disableAddCard}
             onAddCard={this.toggleSettingsAddCard}
             isAlone={allHidden}
+            stackPosition={0}
           />
         }
         {this.getCryptoContent()}
@@ -696,7 +697,7 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderRewardsWidget (showContent: boolean) {
+  renderRewardsWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
     const {
       rewardsState,
@@ -720,6 +721,7 @@ class NewTabPage extends React.Component<Props, State> {
         isCrypto={true}
         isCryptoTab={!showContent}
         isForeground={showContent}
+        stackPosition={position}
         textDirection={textDirection}
         preventFocus={false}
         hideWidget={this.toggleShowRewards}
@@ -739,7 +741,7 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderTogetherWidget (showContent: boolean) {
+  renderTogetherWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
     const { showTogether, textDirection, togetherSupported } = newTabData
 
@@ -752,6 +754,8 @@ class NewTabPage extends React.Component<Props, State> {
         isCrypto={true}
         menuPosition={'left'}
         widgetTitle={getLocale('togetherWidgetTitle')}
+        isForeground={showContent}
+        stackPosition={position}
         textDirection={textDirection}
         hideWidget={this.toggleShowTogether}
         showContent={showContent}
@@ -760,7 +764,7 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderBinanceWidget (showContent: boolean) {
+  renderBinanceWidget (showContent: boolean, position: number) {
     const { newTabData } = this.props
     const { binanceState, showBinance, textDirection } = newTabData
     const menuActions = { onLearnMore: this.learnMoreBinance }
@@ -783,6 +787,7 @@ class NewTabPage extends React.Component<Props, State> {
         menuPosition={'left'}
         widgetTitle={'Binance'}
         isForeground={showContent}
+        stackPosition={position}
         textDirection={textDirection}
         preventFocus={false}
         hideWidget={this.toggleShowBinance}
@@ -808,7 +813,7 @@ class NewTabPage extends React.Component<Props, State> {
     )
   }
 
-  renderGeminiWidget (showContent: boolean) {
+  renderGeminiWidget (showContent: boolean, position: number) {
     const menuActions = {}
     const { newTabData } = this.props
     const { geminiState, showGemini, textDirection, geminiSupported } = newTabData
@@ -831,6 +836,7 @@ class NewTabPage extends React.Component<Props, State> {
         menuPosition={'left'}
         widgetTitle={'Gemini'}
         isForeground={showContent}
+        stackPosition={position}
         textDirection={textDirection}
         preventFocus={false}
         hideWidget={this.toggleShowGemini}

@@ -24,6 +24,7 @@ import getRandomBase64 from '../../../getRandomBytes'
 
 interface Props {
   showContent: boolean
+  stackPosition: number
   onShowContent: () => void
 }
 
@@ -49,10 +50,10 @@ class Together extends React.PureComponent<Props, {}> {
   }
 
   renderTitleTab () {
-    const { onShowContent } = this.props
+    const { onShowContent, stackPosition } = this.props
 
     return (
-      <StyledTitleTab onClick={onShowContent}>
+      <StyledTitleTab onClick={onShowContent} stackPosition={stackPosition}>
         {this.renderTitle()}
       </StyledTitleTab>
     )

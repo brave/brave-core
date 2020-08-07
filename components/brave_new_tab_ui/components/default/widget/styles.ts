@@ -53,10 +53,6 @@ export const StyledWidget = styled<WidgetVisibilityProps, 'div'>('div')`
   ${ p => (p.widgetMenuPersist && !p.isCryptoTab) && `
     background: rgba(33, 37, 41, 0.48);
   `}
-
-  &:hover {
-    box-shadow: ${p => p.isCrypto && !p.isCryptoTab ? '0px 0px 16px 0px rgba(0, 0, 0, 0.5)' : 'initial'};
-  }
 `
 
 interface WidgetMenuProps {
