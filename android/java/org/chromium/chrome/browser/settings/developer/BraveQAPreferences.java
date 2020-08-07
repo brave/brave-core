@@ -76,6 +76,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private Preference mExportRewardsDb;
     private BraveDbUtil mDbUtil;
     private String mFileToImport;
+    private boolean mUseRewardsStagingServer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -196,10 +197,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (PREF_USE_REWARDS_STAGING_SERVER.equals(preference.getKey())) {
             BraveRewardsNativeWorker.getInstance().ResetTheWholeState();
-            BravePrefServiceBridge.getInstance().setUseRewardsStagingServer((boolean) newValue);
+            mUseRewardsStagingServer = (boolean) newValue;
             mMaximizeAdsNumber.setEnabled((boolean) newValue);
             enableMaximumAdsNumber(((boolean) newValue) && mMaximizeAdsNumber.isChecked());
-            BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER.equals(preference.getKey())) {
             enableMaximumAdsNumber((boolean) newValue);
         } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey()) ||
@@ -301,7 +301,10 @@ public class BraveQAPreferences extends BravePreferenceFragment
             sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_GRANTS_NOTIFICATION_RECEIVED, false);
             sharedPreferencesEditor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_BRAVE_REWARDS_TURNED_ON, false);
             sharedPreferencesEditor.apply();
+
             BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
+            BravePrefServiceBridge.getInstance().setUseRewardsStagingServer(mUseRewardsStagingServer);
+
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else {
             BraveRelaunchUtils.askForRelaunchCustom(getActivity());
