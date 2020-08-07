@@ -70,11 +70,13 @@
             label="$i18n{braveNewTabBinance}">
         </settings-toggle-button>
       </template>
-      <settings-toggle-button
-          class="cr-row"
-          pref="{{prefs.brave.new_tab_page.show_gemini}}"
-          label="$i18n{braveNewTabGemini}">
-      </settings-toggle-button>
+      <template is="dom-if" if="[[isGeminiSupported_]]">
+        <settings-toggle-button
+            class="cr-row"
+            pref="{{prefs.brave.new_tab_page.show_gemini}}"
+            label="$i18n{braveNewTabGemini}">
+        </settings-toggle-button>
+      </template>
       <settings-toggle-button
           class="cr-row"
           pref="{{prefs.brave.new_tab_page.show_top_sites}}"
