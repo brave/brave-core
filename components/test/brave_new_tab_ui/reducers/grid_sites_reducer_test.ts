@@ -60,7 +60,7 @@ describe('gridSitesReducer', () => {
 
       expect(gridSitesReducerSetFirstRenderDataStub).toBeCalledTimes(1)
       expect(gridSitesReducerSetFirstRenderDataStub)
-        .toBeCalledWith(storage.initialGridSitesState, [], undefined)
+        .toBeCalledWith(storage.initialGridSitesState, [])
     })
     it('populate state.gridSites list with Chromium topSites data', () => {
       const assertion = gridSitesReducer(storage.initialGridSitesState, {
@@ -70,6 +70,58 @@ describe('gridSitesReducer', () => {
 
       expect(assertion.gridSites).toHaveLength(2)
     })
+    it('check defaultSRTopSite is set properly if gridSites does not have that propeerty', () => {
+      let state: NewTab.GridSitesState = storage.initialGridSitesState
+      state = {
+        ...state,
+        gridSites: [
+          {
+            url: 'www.google.com',
+            title: 'Google',
+            id: 'topsite-2',
+            favicon: '',
+            letter: 'c',
+            pinnedIndex: 0
+          },
+          {
+            url: 'www.brave.com',
+            title: 'Brave Software',
+            id: 'topsite-1',
+            favicon: '',
+            letter: 'c',
+            pinnedIndex: undefined
+          }
+        ]
+      }
+
+      const topSites = [
+        {
+          url: 'www.brave.com',
+          title: 'brave'
+        }, {
+          url: 'www.cnn.com',
+          title: 'cnn'
+        }
+      ]
+
+      const defaultSuperReferralTopSites = [
+        {
+          url: 'www.google.com',
+          title: 'Google',
+          favicon: '',
+          pinnedIndex: 0
+        }
+      ]
+
+      const assertion = gridSitesReducer(state, {
+        type: types.GRID_SITES_SET_FIRST_RENDER_DATA,
+        payload: { topSites, defaultSuperReferralTopSites }
+      })
+
+      expect(assertion.gridSites[0].defaultSRTopSite).toBe(true)
+      expect(assertion.gridSites[1].defaultSRTopSite).toBe(false)
+    })
+
     it('check gridSites does not have sites that are removed from topSites', () => {
       let state: NewTab.GridSitesState = storage.initialGridSitesState
       state = {
@@ -81,7 +133,8 @@ describe('gridSitesReducer', () => {
             id: 'topsite-0',
             favicon: '',
             letter: 'b',
-            pinnedIndex: 0
+            pinnedIndex: 0,
+            defaultSRTopSite: false
           },
           {
             url: 'www.brave.com',
@@ -89,7 +142,8 @@ describe('gridSitesReducer', () => {
             id: 'topsite-1',
             favicon: '',
             letter: 'c',
-            pinnedIndex: undefined
+            pinnedIndex: undefined,
+            defaultSRTopSite: false
           },
           {
             url: 'www.google.com',
@@ -97,7 +151,8 @@ describe('gridSitesReducer', () => {
             id: 'topsite-2',
             favicon: '',
             letter: 'c',
-            pinnedIndex: undefined
+            pinnedIndex: undefined,
+            defaultSRTopSite: false
           }
         ]
       }
@@ -133,7 +188,8 @@ describe('gridSitesReducer', () => {
             id: 'topsite-0',
             favicon: '',
             letter: 'b',
-            pinnedIndex: 0
+            pinnedIndex: 0,
+            defaultSRTopSite: true
           },
           {
             url: 'www.brave.com',
@@ -141,7 +197,8 @@ describe('gridSitesReducer', () => {
             id: 'topsite-1',
             favicon: '',
             letter: 'c',
-            pinnedIndex: undefined
+            pinnedIndex: undefined,
+            defaultSRTopSite: false
           },
           {
             url: 'www.google.com',
@@ -149,7 +206,8 @@ describe('gridSitesReducer', () => {
             id: 'topsite-2',
             favicon: '',
             letter: 'c',
-            pinnedIndex: undefined
+            pinnedIndex: undefined,
+            defaultSRTopSite: false
           }
         ]
       }
@@ -164,17 +222,9 @@ describe('gridSitesReducer', () => {
         }
       ]
 
-      const defaultSuperReferralTopSites = [
-        {
-          pinnedIndex: 0,
-          url: 'www.basicattentiontoken.org',
-          title: 'BAT',
-          favicon: 'favicon.png'
-        }
-      ]
       const assertion = gridSitesReducer(state, {
         type: types.GRID_SITES_SET_FIRST_RENDER_DATA,
-        payload: { topSites, defaultSuperReferralTopSites }
+        payload: { topSites }
       })
 
       // topSites doesn't have bat site but it's in SR's default top sites.
