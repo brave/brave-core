@@ -53,7 +53,10 @@ class CookiesAndCacheClearable: Clearable {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
                 UserDefaults.standard.synchronize()
-                result.fill(Maybe<()>(success: ()))
+                BraveWebView.sharedNonPersistentStore().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
+                    UserDefaults.standard.synchronize()
+                    result.fill(Maybe<()>(success: ()))
+                }
             }
         }
         return result
@@ -78,8 +81,12 @@ class CacheClearable: Clearable {
                                                        WKWebsiteDataTypeMemoryCache,
                                                        WKWebsiteDataTypeFetchCache]
             WKWebsiteDataStore.default().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
+                
                 ImageCache.shared.clear()
-                result.fill(Maybe<()>(success: ()))
+                
+                BraveWebView.sharedNonPersistentStore().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
+                    result.fill(Maybe<()>(success: ()))
+                }
             }
         }
         
