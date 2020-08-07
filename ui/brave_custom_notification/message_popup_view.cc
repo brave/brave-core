@@ -44,20 +44,24 @@ void MessagePopupView::Show(Notification& notification) {
     g_message_popup_view = new MessagePopupView(notification);
   }
   g_notification = &notification;
-  
   delegate_ = g_notification->delegate();
 }
 
 void MessagePopupView::Clicked(const std::string& notification_id) {
-  LOG(INFO) << "albert MPV::Clicked";
   if (delegate_){
-    LOG(INFO) << "albert delegate found for MPV::Clicked";
     delegate_->Click(base::nullopt, base::nullopt);
+    delegate_ = nullptr;
   }
+  g_message_popup_view->Close();
+  g_message_popup_view = nullptr;
 }
 
 // static
 void MessagePopupView::ClosePopup() {
+  if (delegate_) {
+    delegate_->Close(true);
+    delegate_ = nullptr;
+  }
   if (g_message_popup_view) {
     g_message_popup_view->Close();
     g_message_popup_view = nullptr;

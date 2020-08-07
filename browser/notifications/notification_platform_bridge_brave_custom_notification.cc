@@ -55,12 +55,16 @@ class PassThroughDelegate : public brave_custom_notification::NotificationDelega
   }
 
   void Close(bool by_user) override {
+    /*
     NotificationDisplayServiceImpl::GetForProfile(profile_)
         ->ProcessNotificationOperation(
             NotificationCommon::OPERATION_CLOSE, notification_type_,
             notification_.origin_url(), notification_.id(),
-            base::nullopt /* action_index */, base::nullopt /* reply */,
+            base::nullopt , base::nullopt,
             by_user);
+            */
+    brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile_));
+    handler->OnClose(profile_, notification_.origin_url(), notification_.id(), by_user, base::OnceClosure());
   }
 
   void Click(const base::Optional<int>& button_index,

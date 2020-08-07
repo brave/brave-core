@@ -745,7 +745,6 @@ bool NotificationViewMD::OnMouseDragged(const ui::MouseEvent& event) {
 }
 
 void NotificationViewMD::OnMouseReleased(const ui::MouseEvent& event) {
-  LOG(INFO) << "albert ***NVMD::OnMouseReleased";
   if (!event.IsOnlyLeftMouseButton())
     return;
 
