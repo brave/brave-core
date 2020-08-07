@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_INTERNAL_LOGGING_H_
-#define BAT_LEDGER_INTERNAL_LOGGING_H_
+#ifndef BAT_LEDGER_INTERNAL_LOGGING_LOGGING_H_
+#define BAT_LEDGER_INTERNAL_LOGGING_LOGGING_H_
 
 #include <ostream>
 #include <string>
 
-#include "bat/ledger/internal/logging_util.h"
+#include "bat/ledger/internal/logging/logging_util.h"
 
 #include "base/logging.h"
 
@@ -65,4 +65,4 @@ void Log(
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_INTERNAL_LOGGING_H_
+#endif  // BAT_LEDGER_INTERNAL_LOGGING_LOGGING_H_

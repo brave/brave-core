@@ -6,7 +6,7 @@
 #include <limits>
 #include <map>
 
-#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/internal/legacy/client_state.h"
 #include "bat/ledger/internal/legacy/wallet_info_state.h"
 #include "base/json/json_reader.h"

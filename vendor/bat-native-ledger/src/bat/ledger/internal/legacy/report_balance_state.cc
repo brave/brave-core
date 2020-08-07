@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/internal/legacy/bat_util.h"
-#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/internal/legacy/report_balance_state.h"
 #include "base/json/json_reader.h"
 

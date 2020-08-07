@@ -17,7 +17,7 @@
 #include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
-#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/publisher/publisher.h"
