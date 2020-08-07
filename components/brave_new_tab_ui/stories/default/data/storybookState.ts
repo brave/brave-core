@@ -27,7 +27,8 @@ function generateTopSites (topSites: typeof defaultTopSitesData) {
       letter: '',
       id: 'some-id-' + index,
       pinnedIndex: undefined,
-      bookmarkInfo: undefined
+      bookmarkInfo: undefined,
+      defaultSRTopSite: false
     })
   }
   return staticTopSites

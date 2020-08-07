@@ -28,6 +28,11 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
 
   switch (action.type) {
     case types.GRID_SITES_SET_FIRST_RENDER_DATA: {
+      // Update existing default SR top sites in gridSites.
+      if (payload.defaultSuperReferralTopSites) {
+        state = gridSitesState
+            .gridSitesReducerUpdateDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
+      }
 
       // If there are legacy values from a previous
       // storage, update first render data with it
@@ -44,7 +49,7 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
 
       // New profiles just store what comes from Chromium
       state = gridSitesState
-        .gridSitesReducerSetFirstRenderData(state, payload.topSites, payload.defaultSuperReferralTopSites)
+        .gridSitesReducerSetFirstRenderData(state, payload.topSites)
 
       // Handle default top sites data only once.
       if (payload.defaultSuperReferralTopSites && !storage.isDefaultSuperReferralTopSitesAddedToPinnedSites()) {

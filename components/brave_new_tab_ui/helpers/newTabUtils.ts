@@ -55,7 +55,8 @@ export const generateGridSitePropertiesFromDefaultSuperReferralTopSite = (
     id: generateGridSiteId(),
     letter: getCharForSite(defaultSuperReferralTopSite),
     favicon: defaultSuperReferralTopSite.favicon,
-    pinnedIndex: defaultSuperReferralTopSite.pinnedIndex
+    pinnedIndex: defaultSuperReferralTopSite.pinnedIndex,
+    defaultSRTopSite: true
   }
 }
 
@@ -72,7 +73,8 @@ export const generateGridSiteProperties = (
     favicon: generateGridSiteFavicon(topSite.url),
     // In the legacy version of topSites the pinnedIndex
     // was the site index itself.
-    pinnedIndex: fromLegacyData ? index : undefined
+    pinnedIndex: fromLegacyData ? index : undefined,
+    defaultSRTopSite: false
   }
 }
 
