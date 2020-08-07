@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/page/chrome_client_impl.cc b/third_party/blink/renderer/core/page/chrome_client_impl.cc
-index 1b430137301a919f6d7b2bd2c1d7569e9f0bce79..b5214729b6fe56603928421cbf9f404d986103b4 100644
+index 1b430137301a919f6d7b2bd2c1d7569e9f0bce79..dba2b5b1debbb66a64d8cc716ff209a4e91b0fa7 100644
 --- a/third_party/blink/renderer/core/page/chrome_client_impl.cc
 +++ b/third_party/blink/renderer/core/page/chrome_client_impl.cc
 @@ -112,6 +112,12 @@
@@ -15,11 +15,12 @@ index 1b430137301a919f6d7b2bd2c1d7569e9f0bce79..b5214729b6fe56603928421cbf9f404d
  namespace blink {
  
  namespace {
-@@ -1248,6 +1254,25 @@ void ChromeClientImpl::DidUpdateTextAutosizerPageInfo(
+@@ -1254,4 +1260,25 @@ void ChromeClientImpl::DocumentDetached(Document& document) {
+   return PageZoomLevelToZoomFactor(web_view_->ZoomLevel());
  }
  
- void ChromeClientImpl::DocumentDetached(Document& document) {
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void ChromeClientImpl::FinalPageGraph(Document& document) {
 +  {
 +    WebViewClient* const web_view_client = web_view_->Client();
 +    if (web_view_client) {
@@ -36,8 +37,7 @@ index 1b430137301a919f6d7b2bd2c1d7569e9f0bce79..b5214729b6fe56603928421cbf9f404d
 +      }
 +    }
 +  }
++}
 +// #endif
 +
-   for (auto& it : file_chooser_queue_) {
-     if (it->FrameOrNull() == document.GetFrame())
-       it->DisconnectClient();
+ }  // namespace blink

@@ -1,0 +1,46 @@
+diff --git a/content/browser/renderer_host/render_process_host_impl.cc b/content/browser/renderer_host/render_process_host_impl.cc
+index 8d00b84a00615b456ecb31c836e873297c2966ee..ab992054ada03d506cb2b345124ba2edfdae0d02 100644
+--- a/content/browser/renderer_host/render_process_host_impl.cc
++++ b/content/browser/renderer_host/render_process_host_impl.cc
+@@ -298,6 +298,10 @@
+ #include "content/public/common/profiling_utils.h"
+ #endif
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "content/browser/devtools/devtools_instrumentation.h"
++#include "content/browser/frame_host/frame_tree_node.h"
++// #endif
+ namespace content {
+ 
+ namespace {
+@@ -3594,6 +3598,9 @@ bool RenderProcessHostImpl::OnMessageReceived(const IPC::Message& msg) {
+     // Dispatch control messages.
+     IPC_BEGIN_MESSAGE_MAP(RenderProcessHostImpl, msg)
+       IPC_MESSAGE_HANDLER(WidgetHostMsg_Close_ACK, OnCloseACK)
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++      IPC_MESSAGE_HANDLER(ViewHostMsg_FinalPageGraph, OnFinalPageGraph)
++// #endif
+     // Adding single handlers for your service here is fine, but once your
+     // service needs more than one handler, please extract them into a new
+     // message filter and add that filter to CreateMessageFilters().
+@@ -4980,6 +4993,20 @@ void RenderProcessHostImpl::OnCloseACK(int closed_widget_route_id) {
+   holder->Release(closed_widget_route_id);
+ }
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void RenderProcessHostImpl::OnFinalPageGraph(
++    const base::UnguessableToken& devtools_main_frame_token,
++    const std::string& frame_id,
++    const std::string& data) {
++  FrameTreeNode* const main_frame_tree_node =
++      FrameTreeNode::GloballyFindByDevToolsFrameToken(
++          devtools_main_frame_token);
++  if (main_frame_tree_node) {
++    devtools_instrumentation::FinalPageGraph(main_frame_tree_node, frame_id,
++                                             data);
++  }
++}
++// #endif
+ // static
+ RenderProcessHost*
+ RenderProcessHostImpl::FindReusableProcessHostForSiteInstance(

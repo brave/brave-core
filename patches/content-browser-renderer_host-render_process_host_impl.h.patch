@@ -1,0 +1,27 @@
+diff --git a/content/browser/renderer_host/render_process_host_impl.h b/content/browser/renderer_host/render_process_host_impl.h
+index 089fcd4351f6bd78b1b2f7cffb225aa20f44cc1c..ca1c49a09dd9436b6ae12dc38dadfae76b194e9b 100644
+--- a/content/browser/renderer_host/render_process_host_impl.h
++++ b/content/browser/renderer_host/render_process_host_impl.h
+@@ -94,6 +94,10 @@
+ #include "content/public/browser/android/child_process_importance.h"
+ #endif
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "base/unguessable_token.h"
++// #endif
++
+ namespace base {
+ class CommandLine;
+ class PersistentMemoryAllocator;
+@@ -796,6 +800,11 @@ class CONTENT_EXPORT RenderProcessHostImpl
+ 
+   // Control message handlers.
+   void OnCloseACK(int closed_widget_route_id);
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void OnFinalPageGraph(const base::UnguessableToken& devtools_main_frame_token,
++                        const std::string& frame_id,
++                        const std::string& data);
++// #endif
+ 
+   // Generates a command line to be used to spawn a renderer and appends the
+   // results to |*command_line|.
