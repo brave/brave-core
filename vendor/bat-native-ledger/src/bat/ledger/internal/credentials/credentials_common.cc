@@ -62,7 +62,7 @@ void CredentialsCommon::GetBlindedCreds(
       _1,
       callback);
 
-  ledger_->SaveCredsBatch(std::move(creds_batch), save_callback);
+  ledger_->database()->SaveCredsBatch(std::move(creds_batch), save_callback);
 }
 
 void CredentialsCommon::BlindedCredsSaved(
@@ -124,7 +124,7 @@ void CredentialsCommon::GetSignedCredsFromResponse(
   creds_batch->public_key = *public_key;
   creds_batch->batch_proof = *batch_proof;
 
-  ledger_->SaveSignedCreds(std::move(creds_batch), callback);
+  ledger_->database()->SaveSignedCreds(std::move(creds_batch), callback);
 }
 
 void CredentialsCommon::SaveUnblindedCreds(
@@ -152,7 +152,7 @@ void CredentialsCommon::SaveUnblindedCreds(
       trigger,
       callback);
 
-  ledger_->SaveUnblindedTokenList(std::move(list), save_callback);
+  ledger_->database()->SaveUnblindedTokenList(std::move(list), save_callback);
 }
 
 void CredentialsCommon::OnSaveUnblindedCreds(
@@ -165,7 +165,7 @@ void CredentialsCommon::OnSaveUnblindedCreds(
     return;
   }
 
-  ledger_->UpdateCredsBatchStatus(
+  ledger_->database()->UpdateCredsBatchStatus(
       trigger.id,
       trigger.type,
       ledger::CredsBatchStatus::FINISHED,

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/test/task_environment.h"
+#include "bat/ledger/internal/database/database_mock.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
 #include "bat/ledger/internal/promotion/promotion.h"
@@ -59,12 +60,15 @@ class PromotionTest : public testing::Test {
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
   std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Promotion> promotion_;
+  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
 
   PromotionTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
         std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
     promotion_ = std::make_unique<Promotion>(mock_ledger_impl_.get());
+    mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+        mock_ledger_impl_.get());
   }
 
   void SetUp() override {
@@ -72,11 +76,15 @@ class PromotionTest : public testing::Test {
     ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStatePaymentId))
       .WillByDefault(testing::Return(payment_id));
 
-    const std::string wallet_passphrase = "phrase";
-    ON_CALL(*mock_ledger_impl_, GetWalletPassphrase())
+    const std::string wallet_passphrase =
+        "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=";
+    ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStateRecoverySeed))
       .WillByDefault(testing::Return(wallet_passphrase));
 
-    ON_CALL(*mock_ledger_impl_, LoadURL(_, _, _, _, _, _))
+    ON_CALL(*mock_ledger_impl_, database())
+      .WillByDefault(testing::Return(mock_database_.get()));
+
+    ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
       .WillByDefault(
         Invoke([](
             const std::string& url,
@@ -93,7 +101,6 @@ class PromotionTest : public testing::Test {
         }));
   }
 };
-
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   ledger::FetchPromotionCallback fetch_promotion_callback =
       std::bind(
@@ -104,7 +111,7 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
       _2);
 
   bool inserted = false;
-  ON_CALL(*mock_ledger_impl_, GetAllPromotions(_))
+  ON_CALL(*mock_database_, GetAllPromotions(_))
     .WillByDefault(
         Invoke([&inserted](ledger::GetAllPromotionsCallback callback) {
           auto promotion = ledger::Promotion::New();
@@ -122,7 +129,7 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
           callback(std::move(map));
       }));
 
-  EXPECT_CALL(*mock_ledger_impl_, SavePromotion(_, _)).Times(1);
+  EXPECT_CALL(*mock_database_, SavePromotion(_, _)).Times(1);
 
   promotion_->Fetch(fetch_promotion_callback);
   inserted = true;

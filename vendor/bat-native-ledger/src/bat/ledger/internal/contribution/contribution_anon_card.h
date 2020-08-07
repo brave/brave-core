@@ -9,7 +9,6 @@
 #include <map>
 #include <string>
 
-#include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -20,9 +19,7 @@ namespace braveledger_contribution {
 
 class ContributionAnonCard {
  public:
-  explicit ContributionAnonCard(
-      bat_ledger::LedgerImpl* ledger,
-      Contribution* contribution);
+  explicit ContributionAnonCard(bat_ledger::LedgerImpl* ledger);
 
   ~ContributionAnonCard();
 
@@ -38,7 +35,6 @@ class ContributionAnonCard {
       ledger::TransactionCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  Contribution* contribution_;   // NOT OWNED
 };
 
 }  // namespace braveledger_contribution

@@ -98,7 +98,10 @@ void CredentialsSKU::Start(
       trigger,
       callback);
 
-  ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+  ledger_->database()->GetCredsBatchByTrigger(
+      trigger.id,
+      trigger.type,
+      get_callback);
 }
 
 void CredentialsSKU::OnStart(
@@ -121,7 +124,10 @@ void CredentialsSKU::OnStart(
           _1,
           trigger,
           callback);
-      ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+      ledger_->database()->GetCredsBatchByTrigger(
+          trigger.id,
+          trigger.type,
+          get_callback);
       break;
     }
     case ledger::CredsBatchStatus::CLAIMED: {
@@ -134,7 +140,10 @@ void CredentialsSKU::OnStart(
           _1,
           trigger,
           callback);
-      ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+      ledger_->database()->GetCredsBatchByTrigger(
+          trigger.id,
+          trigger.type,
+          get_callback);
       break;
     }
     case ledger::CredsBatchStatus::FINISHED: {
@@ -174,7 +183,10 @@ void CredentialsSKU::OnBlind(
       _1,
       trigger,
       callback);
-  ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+  ledger_->database()->GetCredsBatchByTrigger(
+      trigger.id,
+      trigger.type,
+      get_callback);
 }
 
 void CredentialsSKU::RetryPreviousStepSaved(
@@ -209,7 +221,7 @@ void CredentialsSKU::Claim(
             _1,
             callback);
 
-    ledger_->UpdateCredsBatchStatus(
+    ledger_->database()->UpdateCredsBatchStatus(
         trigger.id,
         trigger.type,
         ledger::CredsBatchStatus::NONE,
@@ -267,7 +279,7 @@ void CredentialsSKU::OnClaim(
       trigger,
       callback);
 
-  ledger_->UpdateCredsBatchStatus(
+  ledger_->database()->UpdateCredsBatchStatus(
       trigger.id,
       trigger.type,
       ledger::CredsBatchStatus::CLAIMED,
@@ -336,7 +348,10 @@ void CredentialsSKU::SignedCredsSaved(
       _1,
       trigger,
       callback);
-  ledger_->GetCredsBatchByTrigger(trigger.id, trigger.type, get_callback);
+  ledger_->database()->GetCredsBatchByTrigger(
+      trigger.id,
+      trigger.type,
+      get_callback);
 }
 
 void CredentialsSKU::Unblind(
@@ -457,7 +472,11 @@ void CredentialsSKU::OnRedeemTokens(
     id = redeem.order_id;
   }
 
-  ledger_->MarkUnblindedTokensAsSpent(token_id_list, redeem.type, id, callback);
+  ledger_->database()->MarkUnblindedTokensAsSpent(
+      token_id_list,
+      redeem.type,
+      id,
+      callback);
 }
 
 }  // namespace braveledger_credentials

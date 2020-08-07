@@ -49,7 +49,7 @@ void Reddit::OnMediaActivityError(
   new_visit_data.path = "/";
   new_visit_data.name = REDDIT_MEDIA_TYPE;
 
-  ledger_->GetPublisherActivityFromUrl(
+  ledger_->publisher()->GetPublisherActivityFromUrl(
       window_id, ledger::VisitData::New(new_visit_data), std::string());
 }
 
@@ -64,7 +64,7 @@ void Reddit::UserPath(
   }
 
   const std::string media_key = (std::string)REDDIT_MEDIA_TYPE + "_" + user;
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&Reddit::OnUserActivity,
           this,
@@ -163,14 +163,14 @@ void Reddit::GetPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key) {
-  auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
-    ledger_->GetReconcileStamp(),
+    ledger_->state()->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(std::move(filter),
+  ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Reddit::OnPublisherPanelInfo,
               this,
               window_id,
@@ -330,7 +330,7 @@ void Reddit::SavePublisherInfo(
   visit_data->favicon_url = favicon_url;
   visit_data->name = user_name;
 
-  ledger_->SaveVisit(
+  ledger_->publisher()->SaveVisit(
       publisher_key,
       *visit_data,
       0,
@@ -338,7 +338,7 @@ void Reddit::SavePublisherInfo(
       callback);
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
         [](const ledger::Result) {});
@@ -357,7 +357,7 @@ void Reddit::SaveMediaInfo(
   const std::string media_key =
       braveledger_media::GetMediaKey(user_name->second, REDDIT_MEDIA_TYPE);
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&Reddit::OnMediaPublisherInfo,
                 this,

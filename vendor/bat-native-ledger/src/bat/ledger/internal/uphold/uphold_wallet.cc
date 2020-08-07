@@ -119,7 +119,7 @@ void UpholdWallet::OnGenerate(
   }
 
   if (user.verified) {
-    ledger_->ClaimFunds(callback);
+    ledger_->wallet()->ClaimFunds(callback);
     return;
   }
 
@@ -145,7 +145,7 @@ void UpholdWallet::OnCreateCard(
       wallet_ptr->Clone());
 
   if (wallet_ptr->status == ledger::WalletStatus::VERIFIED) {
-    ledger_->ClaimFunds(callback);
+    ledger_->wallet()->ClaimFunds(callback);
     return;
   }
 

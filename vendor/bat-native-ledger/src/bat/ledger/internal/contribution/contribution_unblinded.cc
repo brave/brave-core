@@ -126,7 +126,9 @@ void Unblinded::GetContributionInfoAndUnblindedTokens(
       _1,
       contribution_id,
       callback);
-  ledger_->GetSpendableUnblindedTokensByBatchTypes(types, get_callback);
+  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
+      types,
+      get_callback);
 }
 
 void Unblinded::OnUnblindedTokens(
@@ -148,7 +150,7 @@ void Unblinded::OnUnblindedTokens(
     converted_list.push_back(new_item);
   }
 
-  ledger_->GetContributionInfo(contribution_id,
+  ledger_->database()->GetContributionInfo(contribution_id,
       std::bind(&Unblinded::OnGetContributionInfo,
                 this,
                 _1,
@@ -164,7 +166,9 @@ void Unblinded::GetContributionInfoAndReservedUnblindedTokens(
       _1,
       contribution_id,
       callback);
-  ledger_->GetReservedUnblindedTokens(contribution_id, get_callback);
+  ledger_->database()->GetReservedUnblindedTokens(
+      contribution_id,
+      get_callback);
 }
 
 void Unblinded::OnReservedUnblindedTokens(
@@ -186,7 +190,7 @@ void Unblinded::OnReservedUnblindedTokens(
     converted_list.push_back(new_item);
   }
 
-  ledger_->GetContributionInfo(contribution_id,
+  ledger_->database()->GetContributionInfo(contribution_id,
       std::bind(&Unblinded::OnGetContributionInfo,
                 this,
                 _1,
@@ -253,7 +257,7 @@ void Unblinded::PrepareTokens(
       types,
       callback);
 
-  ledger_->MarkUnblindedTokensAsReserved(
+  ledger_->database()->MarkUnblindedTokensAsReserved(
       token_id_list,
       contribution_id,
       reserved_callback);
@@ -312,7 +316,7 @@ void Unblinded::PreparePublishers(
         contribution->contribution_id,
         callback);
 
-    ledger_->SaveContributionInfo(
+    ledger_->database()->SaveContributionInfo(
       contribution->Clone(),
       save_callback);
     return;
@@ -325,7 +329,7 @@ void Unblinded::PreparePublishers(
       contribution->contribution_id,
       callback);
 
-  ledger_->UpdateContributionInfoStep(
+  ledger_->database()->UpdateContributionInfoStep(
       contribution->contribution_id,
       ledger::ContributionStep::STEP_PREPARE,
       save_callback);
@@ -394,7 +398,7 @@ void Unblinded::OnPrepareAutoContribution(
       contribution_id,
       callback);
 
-  ledger_->UpdateContributionInfoStep(
+  ledger_->database()->UpdateContributionInfoStep(
       contribution_id,
       ledger::ContributionStep::STEP_PREPARE,
       save_callback);
@@ -507,7 +511,7 @@ void Unblinded::TokenProcessed(
       final_publisher,
       callback);
 
-  ledger_->UpdateContributionInfoContributedAmount(
+  ledger_->database()->UpdateContributionInfoContributedAmount(
       contribution_id,
       publisher_key,
       save_callback);
@@ -569,7 +573,7 @@ void Unblinded::Retry(
           types,
           contribution_string,
           callback);
-      ledger_->GetReservedUnblindedTokens(
+      ledger_->database()->GetReservedUnblindedTokens(
           contribution->contribution_id,
           get_callback);
       return;

@@ -50,7 +50,8 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
         ledger::ServerPublisherInfo server_info;
         server_info.status = key_value.second.status;
         server_info.updated_at = key_value.second.updated_at;
-        return task_info->ledger->ShouldFetchServerPublisherInfo(&server_info);
+        return task_info->ledger->publisher()->ShouldFetchServerPublisherInfo(
+            &server_info);
       });
 
   // Execute the callback if no more expired elements are found.
@@ -61,24 +62,26 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 
   // Look for publisher key in hash index.
   auto& key = task_info->current->first;
-  task_info->ledger->SearchPublisherPrefixList(key, [task_info](bool exists) {
-    // If the publisher key does not exist in the hash index look for
-    // next expired entry.
-    if (!exists) {
-      ++task_info->current;
-      RefreshNext(task_info);
-      return;
-    }
-    // Fetch current publisher info.
-    auto& key = task_info->current->first;
-    task_info->ledger->GetServerPublisherInfo(key, [task_info](
-        ledger::ServerPublisherInfoPtr server_info) {
-      // Update status map and continue looking for expired entries.
-      task_info->current->second.status = server_info->status;
-      ++task_info->current;
-      RefreshNext(task_info);
-    });
-  });
+  task_info->ledger->database()->SearchPublisherPrefixList(
+      key,
+      [task_info](bool exists) {
+        // If the publisher key does not exist in the hash index look for
+        // next expired entry.
+        if (!exists) {
+          ++task_info->current;
+          RefreshNext(task_info);
+          return;
+        }
+        // Fetch current publisher info.
+        auto& key = task_info->current->first;
+        task_info->ledger->publisher()->GetServerPublisherInfo(key, [task_info](
+            ledger::ServerPublisherInfoPtr server_info) {
+          // Update status map and continue looking for expired entries.
+          task_info->current->second.status = server_info->status;
+          ++task_info->current;
+          RefreshNext(task_info);
+        });
+      });
 }
 
 void RefreshPublisherStatusMap(

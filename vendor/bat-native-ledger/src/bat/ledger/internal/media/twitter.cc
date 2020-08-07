@@ -284,7 +284,7 @@ void Twitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
     publisher_name = name->second;
   }
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
           media_key,
           std::bind(&Twitter::OnMediaPublisherInfo,
                     this,
@@ -381,7 +381,7 @@ void Twitter::SavePublisherInfo(
   visit_data->favicon_url = favicon_url;
   visit_data->name = publisher_name;
 
-  ledger_->SaveVisit(
+  ledger_->publisher()->SaveVisit(
       publisher_key,
       *visit_data,
       duration,
@@ -389,7 +389,7 @@ void Twitter::SavePublisherInfo(
       callback);
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
         [](const ledger::Result) {});
@@ -415,7 +415,7 @@ void Twitter::OnMediaActivityError(const ledger::VisitData& visit_data,
   new_visit_data.path = "/";
   new_visit_data.name = name;
 
-  ledger_->GetPublisherActivityFromUrl(
+  ledger_->publisher()->GetPublisherActivityFromUrl(
       window_id, ledger::VisitData::New(new_visit_data), std::string());
 }
 
@@ -436,7 +436,7 @@ void Twitter::ProcessActivityFromUrl(
     return;
   }
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&Twitter::OnMediaPublisherActivity,
                 this,
@@ -483,14 +483,14 @@ void Twitter::GetPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key) {
-  auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
-    ledger_->GetReconcileStamp(),
+    ledger_->state()->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(std::move(filter),
+  ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Twitter::OnPublisherPanelInfo,
               this,
               window_id,

@@ -33,7 +33,7 @@ void DatabaseMultiTables::GetTransactionReport(
       month,
       year,
       callback);
-  ledger_->GetAllPromotions(promotion_callback);
+  ledger_->database()->GetAllPromotions(promotion_callback);
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(

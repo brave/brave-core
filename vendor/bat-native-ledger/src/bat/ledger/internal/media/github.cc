@@ -214,7 +214,7 @@ void GitHub::ProcessActivityFromUrl(uint64_t window_id,
     return;
   }
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&GitHub::OnMediaPublisherActivity,
                 this,
@@ -291,7 +291,7 @@ void GitHub::OnMediaActivityError(uint64_t window_id) {
   new_visit_data.path = "/";
   new_visit_data.name = name;
 
-  ledger_->GetPublisherActivityFromUrl(
+  ledger_->publisher()->GetPublisherActivityFromUrl(
       window_id, ledger::VisitData::New(new_visit_data), "");
 }
 
@@ -300,14 +300,14 @@ void GitHub::GetPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key) {
-  auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
-    ledger_->GetReconcileStamp(),
+    ledger_->state()->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(std::move(filter),
+  ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&GitHub::OnPublisherPanelInfo,
               this,
               window_id,
@@ -398,7 +398,7 @@ void GitHub::SavePublisherInfo(
   visit_data.favicon_url = profile_picture;
   visit_data.name = publisher_name;
 
-  ledger_->SaveVisit(
+  ledger_->publisher()->SaveVisit(
       publisher_key,
       visit_data,
       duration,
@@ -406,7 +406,7 @@ void GitHub::SavePublisherInfo(
       callback);
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
         [](const ledger::Result) {});
@@ -457,7 +457,7 @@ void GitHub::OnMetaDataGet(
   const std::string publisher_name = GetPublisherName(response.body);
   const std::string profile_picture = GetProfileImageURL(response.body);
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
           media_key,
           std::bind(&GitHub::OnMediaPublisherInfo,
                     this,

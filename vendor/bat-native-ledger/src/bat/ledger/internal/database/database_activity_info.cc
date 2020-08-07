@@ -343,7 +343,7 @@ void DatabaseActivityInfo::DeleteRecord(
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
-  BindInt64(command.get(), 1, ledger_->GetReconcileStamp());
+  BindInt64(command.get(), 1, ledger_->state()->GetReconcileStamp());
 
   transaction->commands.push_back(std::move(command));
 

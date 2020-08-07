@@ -14,11 +14,9 @@ using std::placeholders::_2;
 
 namespace braveledger_contribution {
 
-ContributionTip::ContributionTip(bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution) :
-    ledger_(ledger),
-    contribution_(contribution) {
-  DCHECK(ledger_ && contribution_);
+ContributionTip::ContributionTip(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
+  DCHECK(ledger_);
 }
 
 ContributionTip::~ContributionTip() = default;
@@ -40,7 +38,9 @@ void ContributionTip::Process(
       amount,
       callback);
 
-  ledger_->GetServerPublisherInfo(publisher_key, server_callback);
+  ledger_->publisher()->GetServerPublisherInfo(
+      publisher_key,
+      server_callback);
 }
 
 void ContributionTip::ServerPublisher(
@@ -86,14 +86,14 @@ void ContributionTip::ServerPublisher(
       _1,
       callback);
 
-  ledger_->SaveContributionQueue(std::move(queue), save_callback);
+  ledger_->database()->SaveContributionQueue(std::move(queue), save_callback);
 }
 
 void ContributionTip::QueueSaved(
     const ledger::Result result,
     ledger::ResultCallback callback) {
   if (result == ledger::Result::LEDGER_OK) {
-    contribution_->ProcessContributionQueue();
+    ledger_->contribution()->ProcessContributionQueue();
   } else {
     BLOG(0, "Queue was not saved");
   }
@@ -113,7 +113,7 @@ void ContributionTip::SavePending(
   ledger::PendingContributionList list;
   list.push_back(std::move(contribution));
 
-  ledger_->SavePendingContribution(std::move(list), callback);
+  ledger_->database()->SavePendingContribution(std::move(list), callback);
 }
 
 void ContributionTip::OnSavePending(

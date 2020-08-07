@@ -80,7 +80,7 @@ void WalletCreate::OnCreate(
 
   ledger_->state()->SetRewardsMainEnabled(true);
   ledger_->state()->SetAutoContributeEnabled(true);
-  ledger_->ResetReconcileStamp();
+  ledger_->state()->ResetReconcileStamp();
   if (!ledger::is_testing) {
     ledger_->state()->SetFetchOldBalanceEnabled(false);
   }

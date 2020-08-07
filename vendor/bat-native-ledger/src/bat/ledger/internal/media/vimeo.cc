@@ -296,7 +296,7 @@ void Vimeo::OnMediaActivityError(uint64_t window_id) {
   new_data.path = "/";
   new_data.name = name;
 
-  ledger_->GetPublisherActivityFromUrl(window_id,
+  ledger_->publisher()->GetPublisherActivityFromUrl(window_id,
                                        ledger::VisitData::New(new_data),
                                        "");
 }
@@ -336,7 +336,7 @@ void Vimeo::ProcessMedia(const std::map<std::string, std::string>& parts) {
     event_info.time = iter->second;
   }
 
-  ledger_->GetMediaPublisherInfo(media_key,
+  ledger_->database()->GetMediaPublisherInfo(media_key,
       std::bind(&Vimeo::OnMediaPublisherInfo,
                 this,
                 media_id,
@@ -537,14 +537,14 @@ void Vimeo::GetPublisherPanleInfo(
     const std::string& publisher_key,
     const std::string& publisher_name,
     const std::string& user_id) {
-  auto filter = ledger_->CreateActivityFilter(
+  auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
     ledger::ExcludeFilter::FILTER_ALL,
     false,
-    ledger_->GetReconcileStamp(),
+    ledger_->state()->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(std::move(filter),
+  ledger_->database()->GetPanelPublisherInfo(std::move(filter),
     std::bind(&Vimeo::OnPublisherPanleInfo,
               this,
               media_key,
@@ -671,7 +671,7 @@ void Vimeo::SavePublisherInfo(
   visit_data.favicon_url = icon;
   visit_data.name = publisher_name;
 
-  ledger_->SaveVideoVisit(
+  ledger_->publisher()->SaveVideoVisit(
       key,
       visit_data,
       duration,
@@ -679,7 +679,7 @@ void Vimeo::SavePublisherInfo(
       [](ledger::Result, ledger::PublisherInfoPtr) {});
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         key,
         [](const ledger::Result) {});

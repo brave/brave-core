@@ -36,16 +36,16 @@ void StateMigrationV1::OnLoadState(
     ledger::ResultCallback callback) {
   if (result == ledger::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
-    ledger_->CalcScoreConsts(ledger_->ledger_client()->GetIntegerState(
-        ledger::kStateMinVisitTime));
+    ledger_->publisher()->CalcScoreConsts(
+        ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
 
     callback(ledger::Result::LEDGER_OK);
     return;
   }
 
   if (result != ledger::Result::LEDGER_OK) {
-    ledger_->CalcScoreConsts(ledger_->ledger_client()->GetIntegerState(
-        ledger::kStateMinVisitTime));
+    ledger_->publisher()->CalcScoreConsts(
+        ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
     callback(ledger::Result::LEDGER_OK);
@@ -55,7 +55,7 @@ void StateMigrationV1::OnLoadState(
   ledger_->ledger_client()->SetIntegerState(
       ledger::kStateMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
-  ledger_->CalcScoreConsts(
+  ledger_->publisher()->CalcScoreConsts(
       ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
 
   ledger_->ledger_client()->SetIntegerState(
@@ -78,7 +78,9 @@ void StateMigrationV1::OnLoadState(
       _1,
       callback);
 
-    ledger_->SaveBalanceReportInfoList(std::move(reports), save_callback);
+    ledger_->database()->SaveBalanceReportInfoList(
+        std::move(reports),
+        save_callback);
     return;
   }
 
@@ -104,7 +106,7 @@ void StateMigrationV1::SaveProcessedPublishers(
     _1,
     callback);
 
-  ledger_->SaveProcessedPublisherList(
+  ledger_->database()->SaveProcessedPublisherList(
       legacy_publisher_->GetAlreadyProcessedPublishers(),
       save_callback);
 }

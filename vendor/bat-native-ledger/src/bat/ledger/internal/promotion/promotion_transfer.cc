@@ -32,7 +32,7 @@ void PromotionTransfer::Start(ledger::ResultCallback callback) {
       _1,
       callback);
 
-  ledger_->GetPromotionListByType(
+  ledger_->database()->GetPromotionListByType(
       GetEligiblePromotions(),
       tokens_callback);
 }
@@ -54,7 +54,7 @@ void PromotionTransfer::GetEligibleTokens(
     ids.push_back(promotion->id);
   }
 
-  ledger_->GetSpendableUnblindedTokensByTriggerIds(
+  ledger_->database()->GetSpendableUnblindedTokensByTriggerIds(
       ids,
       tokens_callback);
 }

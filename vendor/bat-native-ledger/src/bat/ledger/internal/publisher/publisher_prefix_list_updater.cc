@@ -98,7 +98,7 @@ void PublisherPrefixListUpdater::OnFetchCompleted(
   retry_count_ = 0;
 
   BLOG(1, "Resetting publisher prefix list table");
-  ledger_->ResetPublisherPrefixList(
+  ledger_->database()->ResetPublisherPrefixList(
       std::move(reader),
       std::bind(&PublisherPrefixListUpdater::OnPrefixListInserted,
           this,

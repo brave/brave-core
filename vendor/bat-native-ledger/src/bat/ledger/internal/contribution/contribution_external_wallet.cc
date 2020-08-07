@@ -16,12 +16,10 @@ namespace braveledger_contribution {
 
 ContributionExternalWallet::ContributionExternalWallet(
     bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution,
     braveledger_uphold::Uphold* uphold) :
     ledger_(ledger),
-    contribution_(contribution),
     uphold_(uphold) {
-  DCHECK(ledger_ && contribution_ && uphold_);
+  DCHECK(ledger_ && uphold_);
 }
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;
@@ -56,7 +54,7 @@ void ContributionExternalWallet::Process(
       _1,
       *wallet,
       callback);
-  ledger_->GetContributionInfo(contribution_id, get_callback);
+  ledger_->database()->GetContributionInfo(contribution_id, get_callback);
 }
 
 void ContributionExternalWallet::ContributionInfo(
@@ -82,7 +80,7 @@ void ContributionExternalWallet::ContributionInfo(
   }
 
   if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
-    contribution_->SKUAutoContribution(
+    ledger_->contribution()->SKUAutoContribution(
         contribution->contribution_id,
         ledger::ExternalWallet::New(wallet),
         callback);
@@ -106,7 +104,9 @@ void ContributionExternalWallet::ContributionInfo(
           single_publisher,
           callback);
 
-    ledger_->GetServerPublisherInfo(publisher->publisher_key, get_callback);
+    ledger_->publisher()->GetServerPublisherInfo(
+        publisher->publisher_key,
+        get_callback);
     return;
   }
 
@@ -151,7 +151,9 @@ void ContributionExternalWallet::OnServerPublisherInfo(
     ledger::PendingContributionList list;
     list.push_back(std::move(contribution));
 
-    ledger_->SavePendingContribution(std::move(list), save_callback);
+    ledger_->database()->SavePendingContribution(
+        std::move(list),
+        save_callback);
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }

@@ -7,7 +7,6 @@
 #define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_AC_H_
 
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/contribution/contribution.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -17,9 +16,7 @@ namespace braveledger_contribution {
 
 class ContributionAC {
  public:
-  explicit ContributionAC(
-      bat_ledger::LedgerImpl* ledger,
-      Contribution* contribution);
+  explicit ContributionAC(bat_ledger::LedgerImpl* ledger);
 
   ~ContributionAC();
 
@@ -31,7 +28,6 @@ class ContributionAC {
   void QueueSaved(const ledger::Result result);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  Contribution* contribution_;   // NOT OWNED
 };
 
 }  // namespace braveledger_contribution

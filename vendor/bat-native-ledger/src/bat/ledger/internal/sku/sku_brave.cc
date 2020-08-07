@@ -65,7 +65,7 @@ void SKUBrave::OrderCreated(
       wallet,
       callback);
 
-  ledger_->SaveContributionIdForSKUOrder(
+  ledger_->database()->SaveContributionIdForSKUOrder(
       order_id,
       contribution_id,
       save_callback);
@@ -88,7 +88,7 @@ void SKUBrave::ContributionIdSaved(
       wallet,
       callback);
 
-  ledger_->GetSKUOrder(order_id, get_callback);
+  ledger_->database()->GetSKUOrder(order_id, get_callback);
 }
 
 void SKUBrave::CreateTransaction(
@@ -121,7 +121,7 @@ void SKUBrave::Retry(
       *wallet,
       callback);
 
-  ledger_->GetSKUOrder(order_id, get_callback);
+  ledger_->database()->GetSKUOrder(order_id, get_callback);
 }
 
 void SKUBrave::OnOrder(

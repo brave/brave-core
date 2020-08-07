@@ -79,7 +79,7 @@ void SKUCommon::SendExternalTransaction(
       _1,
       callback);
 
-  ledger_->GetSKUTransactionByOrderId(order_id, get_callback);
+  ledger_->database()->GetSKUTransactionByOrderId(order_id, get_callback);
 }
 
 void SKUCommon::GetSKUTransactionByOrderId(

@@ -284,7 +284,7 @@ void Twitch::OnMediaActivityError(const ledger::VisitData& visit_data,
     new_visit_data.path = "/";
     new_visit_data.name = name;
 
-    ledger_->GetPublisherActivityFromUrl(
+    ledger_->publisher()->GetPublisherActivityFromUrl(
         window_id, ledger::VisitData::New(new_visit_data), std::string());
   } else {
       BLOG(0, "Media activity error for " << TWITCH_MEDIA_TYPE << " (name: "
@@ -316,7 +316,7 @@ void Twitch::ProcessMedia(const std::map<std::string, std::string>& parts,
     twitch_info.time = iter->second;
   }
 
-  ledger_->GetMediaPublisherInfo(media_key,
+  ledger_->database()->GetMediaPublisherInfo(media_key,
       std::bind(&Twitch::OnMediaPublisherInfo,
                 this,
                 media_id,
@@ -349,7 +349,7 @@ void Twitch::ProcessActivityFromUrl(uint64_t window_id,
     return;
   }
 
-  ledger_->GetMediaPublisherInfo(
+  ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&Twitch::OnMediaPublisherActivity,
                 this,
@@ -522,7 +522,7 @@ void Twitch::OnMediaPublisherActivity(
 
   if (!info || result == ledger::Result::NOT_FOUND) {
     // first see if we have the publisher a different way (VOD vs. live stream
-    ledger_->GetPublisherInfo(
+    ledger_->database()->GetPublisherInfo(
         GetPublisherKey(media_id),
         std::bind(&Twitch::OnPublisherInfo,
                   this,
@@ -534,7 +534,8 @@ void Twitch::OnMediaPublisherActivity(
                   _1,
                   _2));
   } else {
-    const auto add = ledger_->IsPublisherConnectedOrVerified(info->status);
+    const auto add = ledger_->publisher()->IsConnectedOrVerified(
+        info->status);
     if (add && info->favicon_url.empty()) {
       std::string publisher_name;
       std::string publisher_favicon_url;
@@ -643,7 +644,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
   new_visit_data.name = publisher_name;
   new_visit_data.url = url;
 
-  ledger_->SaveVideoVisit(
+  ledger_->publisher()->SaveVideoVisit(
       key,
       new_visit_data,
       duration,
@@ -651,7 +652,7 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
       [](ledger::Result, ledger::PublisherInfoPtr) {});
 
   if (!media_key.empty()) {
-    ledger_->SaveMediaPublisherInfo(
+    ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         key,
         [](const ledger::Result) {});

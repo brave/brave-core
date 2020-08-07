@@ -48,6 +48,13 @@ class Publisher {
                  uint64_t window_id,
                  const ledger::PublisherInfoCallback callback);
 
+  void SaveVideoVisit(
+      const std::string& publisher_id,
+      const ledger::VisitData& visit_data,
+      uint64_t duration,
+      uint64_t window_id,
+      ledger::PublisherInfoCallback callback);
+
   void SetPublisherExclude(
       const std::string& publisher_id,
       const ledger::PublisherExclude& exclude,
@@ -55,9 +62,9 @@ class Publisher {
 
   void OnPublisherInfoSaved(const ledger::Result result);
 
-  void getPublisherActivityFromUrl(
+  void GetPublisherActivityFromUrl(
       uint64_t windowId,
-      const ledger::VisitData& visit_data,
+      ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob);
 
   void GetPublisherBanner(const std::string& publisher_key,
@@ -71,9 +78,10 @@ class Publisher {
       bool non_verified,
       bool min_visits);
 
-  void NormalizeContributeWinners(ledger::PublisherInfoList* newList,
-                                  const ledger::PublisherInfoList* list,
-                                  uint32_t /* next_record */);
+  void NormalizeContributeWinners(
+      ledger::PublisherInfoList* newList,
+      const ledger::PublisherInfoList* list,
+      uint32_t /* next_record */);
 
   void OnRestorePublishers(
       const ledger::Result result,
@@ -85,13 +93,21 @@ class Publisher {
 
   void CalcScoreConsts(const int min_duration_seconds);
 
- private:
-  void onPublisherActivitySave(uint64_t windowId,
-                               const ledger::VisitData& visit_data,
-                               ledger::Result result,
-                               ledger::PublisherInfoPtr info);
+  void GetServerPublisherInfo(
+      const std::string& publisher_key,
+      ledger::GetServerPublisherInfoCallback callback);
 
-  void OnPublisherPrefixListUpdated();
+ private:
+  void onPublisherActivitySave(
+      uint64_t windowId,
+      const ledger::VisitData& visit_data,
+      ledger::Result result,
+      ledger::PublisherInfoPtr info);
+
+  void OnGetActivityInfo(
+      ledger::PublisherInfoList list,
+      ledger::PublisherInfoCallback callback,
+      const std::string& publisher_key);
 
   void SaveVisitInternal(
       const ledger::PublisherStatus,
@@ -157,6 +173,11 @@ class Publisher {
       ledger::PublisherInfoPtr publisher_info);
 
   ledger::PublisherStatus ParsePublisherStatus(const std::string& status);
+
+  void OnServerPublisherInfoLoaded(
+      ledger::ServerPublisherInfoPtr server_info,
+      const std::string& publisher_key,
+      ledger::GetServerPublisherInfoCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PublisherPrefixListUpdater> prefix_list_updater_;

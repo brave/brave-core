@@ -77,11 +77,9 @@ std::string GetTransactionPayload(
 
 namespace braveledger_contribution {
 
-ContributionAnonCard::ContributionAnonCard(bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution) :
-    ledger_(ledger),
-    contribution_(contribution) {
-  DCHECK(ledger_ && contribution_);
+ContributionAnonCard::ContributionAnonCard(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
+  DCHECK(ledger_);
 }
 
 ContributionAnonCard::~ContributionAnonCard() = default;

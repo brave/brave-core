@@ -15,6 +15,14 @@
 
 #include "base/gtest_prod_util.h"
 #include "base/timer/timer.h"
+#include "bat/ledger/internal/contribution/contribution_ac.h"
+#include "bat/ledger/internal/contribution/contribution_anon_card.h"
+#include "bat/ledger/internal/contribution/contribution_external_wallet.h"
+#include "bat/ledger/internal/contribution/contribution_monthly.h"
+#include "bat/ledger/internal/contribution/contribution_sku.h"
+#include "bat/ledger/internal/contribution/contribution_tip.h"
+#include "bat/ledger/internal/contribution/contribution_unblinded.h"
+#include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -26,15 +34,6 @@ class Uphold;
 }
 
 namespace braveledger_contribution {
-
-class ContributionAC;
-class ContributionAnonCard;
-class ContributionExternalWallet;
-class ContributionMonthly;
-class ContributionSKU;
-class ContributionTip;
-class Unverified;
-class Unblinded;
 
 class Contribution {
  public:
@@ -95,6 +94,8 @@ class Contribution {
       const std::vector<ledger::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
+
+  void GetRecurringTips(ledger::PublisherInfoListCallback callback);
 
  private:
   // Start point for contribution

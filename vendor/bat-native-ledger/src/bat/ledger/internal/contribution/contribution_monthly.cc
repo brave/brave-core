@@ -15,11 +15,9 @@ using std::placeholders::_2;
 
 namespace braveledger_contribution {
 
-ContributionMonthly::ContributionMonthly(bat_ledger::LedgerImpl* ledger,
-    Contribution* contribution) :
-    ledger_(ledger),
-    contribution_(contribution) {
-  DCHECK(ledger_ && contribution_);
+ContributionMonthly::ContributionMonthly(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
+  DCHECK(ledger_);
 }
 
 ContributionMonthly::~ContributionMonthly() = default;
@@ -30,7 +28,7 @@ void ContributionMonthly::Process(ledger::ResultCallback callback) {
       _1,
       callback);
 
-  ledger_->GetRecurringTips(get_callback);
+  ledger_->contribution()->GetRecurringTips(get_callback);
 }
 
 void ContributionMonthly::PrepareTipList(
@@ -55,14 +53,14 @@ void ContributionMonthly::PrepareTipList(
     queue->partial = false;
     queue->publishers = std::move(queue_list);
 
-    ledger_->SaveContributionQueue(
+    ledger_->database()->SaveContributionQueue(
         std::move(queue),
         [](const ledger::Result _){});
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/8804):
   // we should change this logic and do batch insert with callback
-  contribution_->CheckContributionQueue();
+  ledger_->contribution()->CheckContributionQueue();
   callback(ledger::Result::LEDGER_OK);
 }
 
@@ -99,7 +97,9 @@ void ContributionMonthly::GetVerifiedTipList(
       &ContributionMonthly::OnSavePendingContribution,
       this,
       _1);
-  ledger_->SavePendingContribution(std::move(non_verified), save_callback);
+  ledger_->database()->SavePendingContribution(
+      std::move(non_verified),
+      save_callback);
 }
 
 void ContributionMonthly::OnSavePendingContribution(
@@ -120,7 +120,7 @@ void ContributionMonthly::HasSufficientBalance(
           _2,
           callback);
 
-  ledger_->FetchBalance(fetch_callback);
+  ledger_->wallet()->FetchBalance(fetch_callback);
 }
 
 void ContributionMonthly::OnSufficientBalanceWallet(
@@ -138,7 +138,7 @@ void ContributionMonthly::OnSufficientBalanceWallet(
       info->total,
       callback);
 
-  ledger_->GetRecurringTips(tips_callback);
+  ledger_->contribution()->GetRecurringTips(tips_callback);
 }
 
 void ContributionMonthly::OnHasSufficientBalance(
