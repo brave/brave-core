@@ -1,13 +1,14 @@
 const path = require('path');
 
 module.exports = {
-  braveResolveId: function (params, source, origin, relativePath, joinPaths, combinePaths, chromeResourcesUrl, nonGeneratedFiles) {
+  braveResolveId: function (params, source, origin, relativePath, joinPaths, combinePaths, chromeResourcesUrl, schemeRelativeResourcesUrl, nonGeneratedFiles) {
     const {srcPath, genPath, excludes} = params;
     const resourcesSrcPath = joinPaths(srcPath, 'ui/webui/resources/');
     const resourcesGenPath = joinPaths(genPath, 'ui/webui/resources/');
     const braveResourcesUrl = 'chrome://brave-resources/';
     // sources not referencing `brave-resources`
     if (source.startsWith(chromeResourcesUrl) ||
+        source.startsWith(schemeRelativeResourcesUrl) ||
        (!!origin && origin.startsWith(resourcesSrcPath) && source.indexOf(braveResourcesUrl) === -1) ||
        (!!origin && origin.startsWith(resourcesGenPath) && source.indexOf(braveResourcesUrl) === -1))
     {

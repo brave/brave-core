@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index cc6ac572da5ea5f8444ad431f2021cd3676fbe96..7dff1514cab4f6dd6c8294edc6221baef77490fc 100644
+index b1933ea71e79e354c2e69121b16852dbb55bee29..b84745adbc3cd176ad253ecb9e6b1f4653c87c0b 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -164,6 +164,7 @@ class InfoBarDelegate {
-     SYNC_ERROR_INFOBAR_DELEGATE_ANDROID = 97,
+@@ -168,6 +168,7 @@ class InfoBarDelegate {
      MIXED_CONTENT_DOWNLOAD_INFOBAR_DELEGATE_ANDROID = 98,
      CONDITIONAL_TAB_STRIP_INFOBAR_ANDROID = 99,
+     LITE_MODE_HTTPS_IMAGE_COMPRESSION_INFOBAR_ANDROID = 100,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

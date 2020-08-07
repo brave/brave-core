@@ -2,6 +2,14 @@
 <!-- Settings-specific strings shared by Browser and Chrome OS settings -->
 <!--This file is created by l10nUtil.js. Do not edit manually.-->
 <grit-part>
+  <!-- All subpages -->
+  <message name="IDS_SETTINGS_SUBPAGE_BACK_BUTTON_ARIA_LABEL" desc="Text read by screen readers when focusing on the back button. If the back button is activated, it will navigate to the previous page. This text will only be announced by BraveVox and will not be visible in the UI.">
+    <ph name="SUBPAGE_TITLE">$1<ex>Bluetooth</ex></ph> subpage back button
+  </message>
+  <message name="IDS_SETTINGS_SUBPAGE_BACK_BUTTON_ARIA_ROLE_DESCRIPTION" desc="Description read by screen readers when focusing on the back button. Indicates to the user that activating the back button will cause the settings page to navigate away from the currently displaying subpage to the previous visited page. This text will only be announced by BraveVox and will not be visible in the UI.">
+    Click to navigate away from <ph name="SUBPAGE_TITLE">$1<ex>Bluetooth</ex> subpage</ph>.
+  </message>
+
   <!-- Caption Subpage (strings used by the <settings-captions> element) -->
   <message name="IDS_SETTINGS_CAPTIONS" desc="Name of the settings page which displays caption preferences.">
     Captions
@@ -83,6 +91,11 @@
   </message>
   <message name="IDS_SETTINGS_CAPTIONS_DEFAULT_SETTING" desc="Name of the default setting for the caption text.">
     Default
+  </message>
+
+  <!-- Nearby Share -->
+  <message name="IDS_SETTINGS_NEARBY_SHARE_TITLE" desc="Name of the settings page for the Nearby Share feature">
+    Nearby Share
   </message>
 
  <!-- Personalization Options SubPage (strings used by the <settings-personalization-options> element) -->

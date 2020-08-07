@@ -167,10 +167,7 @@ class MockBraveTranslateBubbleView : public BraveTranslateBubbleView {
 
 class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
  public:
-  BraveTranslateBubbleViewTest() {
-    scoped_feature_list_.InitAndDisableFeature(
-      language::kUseButtonTranslateBubbleUi);
-  }
+  BraveTranslateBubbleViewTest() {}
 
  protected:
   void SetUp() override {
@@ -224,10 +221,10 @@ class BraveTranslateBubbleViewTest : public ChromeViewsTestBase {
 TEST_F(BraveTranslateBubbleViewTest, BraveBeforeTranslateView) {
   CreateAndShowBubble();
   views::Button* accept_button = static_cast<views::Button*>(
-      bubble_->GetViewByID(TranslateBubbleView::BUTTON_ID_TRANSLATE));
+      bubble_->GetViewByID(TranslateBubbleView::BUTTON_ID_DONE));
   EXPECT_TRUE(accept_button);
   views::Button* cancel_button = static_cast<views::Button*>(
-      bubble_->GetViewByID(TranslateBubbleView::BUTTON_ID_SHOW_ORIGINAL));
+      bubble_->GetViewByID(TranslateBubbleView::BUTTON_ID_CLOSE));
   EXPECT_TRUE(cancel_button);
 }
 
@@ -237,7 +234,7 @@ TEST_F(BraveTranslateBubbleViewTest, TranslateButton) {
   EXPECT_FALSE(bubble_->install_google_translate_called());
 
   // Press the "Translate" button.
-  PressButton(TranslateBubbleView::BUTTON_ID_TRANSLATE);
+  PressButton(TranslateBubbleView::BUTTON_ID_DONE);
   EXPECT_FALSE(mock_model_->translate_called_);
   EXPECT_TRUE(bubble_->install_google_translate_called());
 }
@@ -247,7 +244,7 @@ TEST_F(BraveTranslateBubbleViewTest, CancelButton) {
   EXPECT_FALSE(bubble_->GetWidget()->IsClosed());
 
   // Press the "Cancel" button.
-  PressButton(TranslateBubbleView::BUTTON_ID_CANCEL);
+  PressButton(TranslateBubbleView::BUTTON_ID_CLOSE);
   EXPECT_TRUE(bubble_->GetWidget()->IsClosed());
 }
 

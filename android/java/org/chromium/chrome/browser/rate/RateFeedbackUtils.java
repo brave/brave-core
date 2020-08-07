@@ -67,7 +67,7 @@ public class RateFeedbackUtils {
 		String appVersion = AboutChromeSettings.getApplicationVersion(context, AboutSettingsBridge.getApplicationVersion());
 		StringBuilder sb = new StringBuilder();
 
-		Profile mProfile = Profile.getLastUsedProfile();
+		Profile mProfile = Profile.getLastUsedRegularProfile();
 		NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
 
 		HttpURLConnection urlConnection = null;

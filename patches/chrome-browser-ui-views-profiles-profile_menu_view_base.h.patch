@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.h b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-index 012911aae015d77a6b363782fd1996827716c4da..09015d770ce879eb8bb01d3eaf19d4a1391935bd 100644
+index a3730bddea588d685bb987032cb0bd682796ad76..1947b648a6089a5181fb4b075c07ed615eb21aba 100644
 --- a/chrome/browser/ui/views/profiles/profile_menu_view_base.h
 +++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.h
-@@ -152,6 +152,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
- 
-   views::Button* anchor_button() const { return anchor_button_; }
- 
+@@ -147,6 +147,7 @@ class ProfileMenuViewBase : public content::WebContentsDelegate,
+   void set_perform_menu_actions_for_testing(bool perform_menu_actions) {
+     perform_menu_actions_ = perform_menu_actions;
+   }
 +  BRAVE_PROFILE_MENU_VIEW_BASE_H_
+ 
   private:
    friend class ProfileMenuViewExtensionsTest;
- 

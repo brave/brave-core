@@ -307,10 +307,13 @@
       Augmented reality
     </message>
     <message name="IDS_PAGE_INFO_TYPE_CAMERA_PAN_TILT_ZOOM" desc="The label used for the Camera PTZ permission controls in the Page Info popup.">
-      Camera movement
+      Camera use &amp; movement
     </message>
     <message name="IDS_PAGE_INFO_TYPE_WINDOW_PLACEMENT" desc="The label used for the Window Placement permission controls in the Page Info popup.">
       Window placement
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_HID" desc="The label used for the HID permission controls in the Page Info popup.">
+      HID devices
     </message>
     <!-- TODO(crbug.com/716303): A few permissions are missing here. -->
 
@@ -403,6 +406,12 @@
       Bluetooth device
     </message>
     <message name="IDS_PAGE_INFO_DELETE_BLUETOOTH_DEVICE" desc="The tooltip displayed when hovering over the button that will remove permission to access a Bluetooth device that the user previously granted to the site.">
+      Revoke access
+    </message>
+    <message name="IDS_PAGE_INFO_HID_DEVICE_SECONDARY_LABEL" desc="The label displayed underneath the device name to inform the user that the permission listed refers to a HID device.">
+      HID device
+    </message>
+    <message name="IDS_PAGE_INFO_DELETE_HID_DEVICE" desc="The tooltip displayed when hovering over the button that will remove permission to access a HID device that the user previously granted to the site.">
       Revoke access
     </message>
 

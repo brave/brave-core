@@ -6,6 +6,7 @@
 #include "brave/browser/metrics/metrics_reporting_util.h"
 
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
 

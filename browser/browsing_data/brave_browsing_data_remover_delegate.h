@@ -34,9 +34,9 @@ class BraveBrowsingDataRemoverDelegate
   // ChromeBrowsingDataRemoverDelegate overrides:
   void RemoveEmbedderData(const base::Time& delete_begin,
                           const base::Time& delete_end,
-                          int remove_mask,
+                          uint64_t remove_mask,
                           content::BrowsingDataFilterBuilder* filter_builder,
-                          int origin_type_mask,
+                          uint64_t origin_type_mask,
                           base::OnceClosure callback) override;
 
   void ClearShieldsSettings(base::Time begin_time, base::Time end_time);

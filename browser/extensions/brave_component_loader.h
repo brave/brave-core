@@ -27,7 +27,7 @@ namespace extensions {
 // For registering, loading, and unloading component extensions.
 class BraveComponentLoader : public ComponentLoader {
  public:
-  BraveComponentLoader(ExtensionServiceInterface* extension_service,
+  BraveComponentLoader(ExtensionSystem* extension_system,
                        Profile* browser_context);
   ~BraveComponentLoader() override;
 

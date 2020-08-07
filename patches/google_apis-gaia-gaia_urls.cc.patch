@@ -1,8 +1,8 @@
 diff --git a/google_apis/gaia/gaia_urls.cc b/google_apis/gaia/gaia_urls.cc
-index c3526692b92d06148591027e37c39fa981850595..57257f37e240e538ca053538639948098d69b738 100644
+index a36389dec87dc21b2dabea6403d6e797f10b624c..b2c2815f75bc0af2aa4c6e543e8be821a1d95519 100644
 --- a/google_apis/gaia/gaia_urls.cc
 +++ b/google_apis/gaia/gaia_urls.cc
-@@ -17,7 +17,7 @@ namespace {
+@@ -26,7 +26,7 @@ namespace {
  
  // Gaia service constants
  const char kDefaultGoogleUrl[] = "http://google.com";

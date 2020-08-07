@@ -127,7 +127,7 @@ public class BravePrefServiceBridge {
     * @param preference The name of the preference.
     * @return Whether the specified preference is enabled.
     */
-    public boolean getBoolean(@Pref int preference) {
+    public boolean getBoolean(int preference) {
         return BravePrefServiceBridgeJni.get().getBoolean(preference);
     }
 
@@ -135,7 +135,7 @@ public class BravePrefServiceBridge {
      * @param preference The name of the preference.
      * @param value The value the specified preference will be set to.
      */
-    public void setBoolean(@Pref int preference, boolean value) {
+    public void setBoolean(int preference, boolean value) {
         BravePrefServiceBridgeJni.get().setBoolean(preference, value);
     }
 
@@ -143,7 +143,7 @@ public class BravePrefServiceBridge {
      * @param preference The name of the preference.
      * @return value The value of the specified preference.
      */
-    public int getInteger(@Pref int preference) {
+    public int getInteger(int preference) {
         return BravePrefServiceBridgeJni.get().getInteger(preference);
     }
 
@@ -151,7 +151,7 @@ public class BravePrefServiceBridge {
      * @param preference The name of the preference.
      * @param value The value the specified preference will be set to.
      */
-    public void setInteger(@Pref int preference, int value) {
+    public void setInteger(int preference, int value) {
         BravePrefServiceBridgeJni.get().setInteger(preference, value);
     }
 
@@ -160,7 +160,7 @@ public class BravePrefServiceBridge {
      * @return value The value of the specified preference.
      */
     @NonNull
-    public String getString(@Pref int preference) {
+    public String getString(int preference) {
         return BravePrefServiceBridgeJni.get().getString(preference);
     }
 
@@ -168,7 +168,7 @@ public class BravePrefServiceBridge {
      * @param preference The name of the preference.
      * @param value The value the specified preference will be set to.
      */
-    public void setString(@Pref int preference, @NonNull String value) {
+    public void setString(int preference, @NonNull String value) {
         BravePrefServiceBridgeJni.get().setString(preference, value);
     }
 

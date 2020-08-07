@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/optional.h"
 #include "base/strings/stringprintf.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"

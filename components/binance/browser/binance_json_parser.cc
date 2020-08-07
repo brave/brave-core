@@ -8,6 +8,7 @@
 #include "brave/components/binance/browser/binance_json_parser.h"
 
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 
 // static
 // Response Format

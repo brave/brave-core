@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-index 0ecc748640c6fd81ee3d24aa779d76d24775b3ed..c371c3713bdfc470e91ca5b8e41ce6709ba4cf8b 100644
+index dbe1439508218d563014b99910968b79520099d4..3ed8ac4af4687d9088fd1e314334fb78ab63a752 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomControlsCoordinator.java
-@@ -109,7 +109,7 @@ public class BottomControlsCoordinator {
-             mTabGroupUi = TabManagementModuleProvider.getDelegate().createTabGroupUi(
-                     root.findViewById(R.id.bottom_container_slot), themeColorProvider);
+@@ -120,7 +120,7 @@ public class BottomControlsCoordinator {
+                     scrimCoordinator);
          } else {
--            mBottomToolbarCoordinator = new BottomToolbarCoordinator(
-+            mBottomToolbarCoordinator = new BraveBottomToolbarCoordinator(
-                     root.findViewById(R.id.bottom_toolbar_stub), tabProvider,
-                     tabSwitcherLongclickListener, themeColorProvider, shareDelegateSupplier,
-                     showStartSurfaceCallable, openHomepageAction, setUrlBarFocusAction);
-@@ -190,4 +190,5 @@ public class BottomControlsCoordinator {
+             mBottomToolbarCoordinator =
+-                    new BottomToolbarCoordinator(root.findViewById(R.id.bottom_toolbar_stub),
++                    new BraveBottomToolbarCoordinator(root.findViewById(R.id.bottom_toolbar_stub),
+                             tabProvider, tabSwitcherLongclickListener, themeColorProvider,
+                             shareDelegateSupplier, showStartSurfaceCallable, openHomepageAction,
+                             setUrlBarFocusAction, overviewModeBehaviorSupplier);
+@@ -200,4 +200,5 @@ public class BottomControlsCoordinator {
          if (mTabGroupUi != null) mTabGroupUi.destroy();
          mMediator.destroy();
      }

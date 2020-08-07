@@ -281,6 +281,7 @@
       <part file="autofill_strings.grdp" />
       <part file="bookmark_bar_strings.grdp" />
       <part file="bookmark_component_strings.grdp" />
+      <part file="blocked_content_strings.grdp" />
       <part file="browsing_data_strings.grdp" />
       <part file="components_settings_strings.grdp" />
       <part file="crash_strings.grdp" />
@@ -479,6 +480,10 @@
       <!-- Advanced Section Titles -->
       <message name="IDS_OPTIONS_ADVANCED_SECTION_TITLE_PRIVACY">
         Privacy
+      </message>
+
+      <message name="IDS_OPTIONS_ADVANCED_SECTION_TITLE_SAFETY_CHECK">
+        Safety Check
       </message>
 
       <message name="IDS_PATCH_SERVICE_DISPLAY_NAME" desc="The display name (in the system task manager, etc) of the service process used for patching file operations.">

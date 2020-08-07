@@ -250,9 +250,7 @@ CHAR-LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_ANNOUNCEMENT" desc="Label for announcements notifications, within a list of notification categories. [CHAR-LIMIT=32]">
         Announcements
       </message>
-      <message name="IDS_NOTIFICATION_CATEGORY_MEDIA_PLAYBACK" desc="Label for media playback notifications, within a list of notification categories. [CHAR-LIMIT=32]">
-        Playing media
-      </message>
+
       <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR-LIMIT=32]">
        Permission requests
       </message>
@@ -425,6 +423,12 @@ CHAR-LIMIT guidelines:
       <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NAME" desc="Label for text input field containing the name on a credit card. [CHAR-LIMIT=32]">
         Name on card
       </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_NICKNAME" desc="Label for text input field containing the nickname on a credit card. [CHAR-LIMIT=25]">
+        Card nickname
+      </message>
+      <message name="IDS_AUTOFILL_CREDIT_CARD_EDITOR_INVALID_NICKNAME" desc="Label for text input field containing the nickname on a credit card. [CHAR-LIMIT=25]">
+        Nickname can’t include numbers
+      </message>
       <message name="IDS_AUTOFILL_CARD_HOLDER_NAME" desc="Label for text input field containing the name on a credit card. [CHAR-LIMIT=32]">
         Cardholder name
       </message>
@@ -481,6 +485,12 @@ CHAR-LIMIT guidelines:
       </message>
       <message name="IDS_PASSWORDS_LEAK_DETECTION_SWITCH_SIGNED_OUT_ENABLE_DESCRIPTION" desc="Description for the switch toggling whether Brave should check that entered credentials have been part of a leak. Displayed for users who are not signed in and syncing.">
         When you sign in to your Brave sync chain, this feature is turned on
+      </message>
+      <message name="IDS_PASSWORDS_CHECK_TITLE" desc="Title for the check passwords button which allows to check whether the user's passwords have been compromised.">
+        Check passwords
+      </message>
+      <message name="IDS_PASSWORDS_CHECK_DESCRIPTION" desc="Text explaining the benefits of checking the passwords, to be displayed under the Check Passwords button title.">
+        Keep your passwords safe from data breaches and other security issues
       </message>
       <message name="IDS_SECTION_SAVED_PASSWORDS_EXCEPTIONS" desc="Header for the list of websites for which user selected to never save passwords. [CHAR-LIMIT=32]">
         Never saved
@@ -714,6 +724,45 @@ For example, some websites may respond to this request by showing you ads that a
       <message name="IDS_CAN_MAKE_PAYMENT_TITLE" desc="Title for preference to allow websites to know whether you have payment methods available through PaymentRequest.CanMakePayment interface">
         Access payment methods
       </message>
+      <message name="IDS_SETTINGS_CUSTOM" desc="Label for a custom option in a dropdown menu.">
+        Custom
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_TITLE" desc="Title of the Secure DNS settings option">
+        Use secure DNS
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
+        Determines how to connect to websites over a secure connection
+      </message>
+      <message name="IDS_SETTINGS_AUTOMATIC_MODE_LABEL" desc="Text of the radio button that puts secure DNS in auto-upgrade mode">
+        Use your current service provider
+      </message>
+      <message name="IDS_SETTINGS_AUTOMATIC_MODE_DESCRIPTION" desc="Descriptive text that appears below IDS_SETTINGS_AUTOMATIC_MODE_LABEL.">
+        Secure DNS may not be available all the time
+      </message>
+      <message name="IDS_SETTINGS_AUTOMATIC_MODE_SUMMARY" desc="Short description of automatic mode">
+        Automatic
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DROPDOWN_MODE_DESCRIPTION" desc="Text of the radio button that allows a secure resolver to be selected from a dropdown menu">
+        Choose another provider:
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DROPDOWN_MODE_PRIVACY_POLICY" desc="Text that displays a link to the privacy policy of the resolver selected from a dropdown menu">
+        See this provider's <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>privacy policy<ph name="END_LINK">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_FOR_MANAGED_ENVIRONMENT" desc="Substring of the secure DNS setting when secure DNS is disabled due to detection of a managed environment">
+        This setting is disabled on managed browsers
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_DISABLED_FOR_PARENTAL_CONTROL" desc="Substring of the secure DNS setting when secure DNS is disabled due to detection of OS-level parental controls">
+        This setting is disabled because parental controls are on
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_PLACEHOLDER" desc="Placeholder text for a textbox where users can enter a custom secure DNS provider">
+        Provider URL
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_FORMAT_ERROR" desc="Error text for an incorrectly formatted entry for the custom secure DNS provider">
+        Enter a correctly formatted URL
+      </message>
+      <message name="IDS_SETTINGS_SECURE_DNS_CUSTOM_CONNECTION_ERROR" desc="Error text for a custom secure DNS provider entry to which a probe connection fails">
+        Please verify that this is a valid provider or try again later
+      </message>
       <message name="IDS_CLEAR_BROWSING_DATA_TITLE" desc="Title of the Clear Browsing Data screen. [CHAR-LIMIT=32]">
         Clear browsing data
       </message>
@@ -817,6 +866,50 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_MULTIPLE_HISTORY_ITEMS_DELETED" desc="Accessibility announcement when multiple browsing history items have been deleted.">
         <ph name="NUMBER_OF_ITEMS">%1$s<ex>3</ex></ph> items deleted
+      </message>
+
+      <!-- Safety check -->
+      <message name="IDS_PREFS_SAFETY_CHECK" desc="Title of the Safety check element in settings, allowing the user to check multiple areas of browser safety. [CHAR-LIMIT=32]">
+        Safety check
+      </message>
+      <message name="IDS_SAFETY_CHECK_DESCRIPTION" desc="Introduces the safety check categories to the user. Followed by several items, such as 'Safe Browsing', 'Updates', 'Passwords'.">
+        Brave can check if your settings are protecting you from:
+      </message>
+      <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing section.">
+        Safe Browsing
+      </message>
+      <message name="IDS_SAFETY_CHECK_UPDATES_TITLE" desc="Title for the updates section.">
+        Updates
+      </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_TITLE" desc="Title for the passwords section.">
+        Passwords
+      </message>
+      <message name="IDS_SAFETY_CHECK_BUTTON" desc="Text for the button to start Safety check.">
+        Check now
+      </message>
+      <message name="IDS_SAFETY_CHECK_UNCHECKED" desc="A given element has not been checked.">
+        Unchecked
+      </message>
+      <message name="IDS_SAFETY_CHECK_CHECKING" desc="A given element is being checked.">
+        Checking
+      </message>
+      <message name="IDS_SAFETY_CHECK_ERROR" desc="A generic error state.">
+        An error occurred.
+      </message>
+      <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_DISABLED" desc="Text to display when Safe Browsing is disabled.">
+        Safe Browsing is off. Brave recommends turning it on.
+      </message>
+      <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_STANDARD" desc="Text to display when Safe Browsing is set to standard protection.">
+        Standard Protection is on
+      </message>
+      <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_ENABLED_ENHANCED" desc="Text to display when Safe Browsing is set to enhanced protection.">
+        Enhanced Protection is on
+      </message>
+      <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_DISABLED_BY_ADMIN" desc="Text to display when Safe Browsing is disabled by admin.">
+        <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Your administrator<ph name="END_LINK">&lt;/a&gt;</ph> has turned off Safe Browsing
+      </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_NO_PASSWORDS" desc="Text to display when no passwords are saved.">
+        No saved passwords. Brave can check your passwords when you save them.
       </message>
 
       <!-- Accessibility preferences -->
@@ -992,6 +1085,32 @@ Your Brave account may have other forms of browsing history like searches and ac
         Brave has saved you <ph name="gigabytes">%1$d<ex>10</ex></ph> GB
       </message>
 
+      <!-- Download later -->
+      <message name="IDS_DOWNLOAD_LATER_DIALOG_TITLE" desc="Title of the download later dialog that let the user to choose the time to download.">
+        Choose when to download
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_DIALOG_SUBTITLE" desc="Subtitle of the download later dialog that let the user to choose the time to download.">
+        You'll see a notification when this file is ready
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_DOWNLOAD_NOW_TEXT" desc="The text for the radio button to trigger the download now in download later dialog.">
+        Now
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_EDIT_LOCATION" desc="The text in the download later dialog that can be clicked to edit download location.">
+        Your file will be saved to <ph name="BEGIN_BOLD">&lt;b&gt;</ph><ph name="DIRECTORY">%1$s<ex>Downloads</ex></ph><ph name="END_BOLD">&lt;/b&gt;</ph>. <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Edit<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
+      </message>
+      <message name="IDS_DOWNLOAD_DATE_TIME_PICKER_NEXT_TEXT" desc="The text for the positive button of the download date time picker dialog.">
+        Next
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_ON_WIFI_TEXT" desc="The text for the radio button to trigger the download on WIFI in download later dialog.">
+        On Wi-Fi
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_PICK_TIME_TEXT" desc="The text for the radio button to select the download time in download later dialog.">
+        Pick date &amp; time
+      </message>
+      <message name="IDS_DOWNLOAD_LATER_PROMPT_ENABLED_TITLE" desc="A setting text to ask whether to show a dialog about when to download.">
+        Ask when to save files
+      </message>
+
       <!-- Downloads location -->
       <message name="IDS_DOWNLOADS_LOCATION_SELECTOR_TITLE" desc="Title of the preference that allows the user to select which of the folders they would like to make the default location to save their downloads.">
         Download location
@@ -1006,7 +1125,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Ask where to save files
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_DIALOG_TITLE" desc="Title for the dialog that asks where the user wants to save the download file before the download begins.">
-        Download file
+        Choose where to download
       </message>
       <message name="IDS_DOWNLOAD_LOCATION_DIALOG_CHECKBOX" desc="Label for the checkbox that allows the user to indicate if they do not want the download location selection dialog to appear every time they initiate a download.">
         Don‘t show again
@@ -1485,9 +1604,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- InfoBar -->
-      <message name="IDS_INFOBAR_CLOSE" desc="Accessibility label for the dismiss infobar Button">
-        Close
-      </message>
       <message name="IDS_BOTTOM_BAR_SCREEN_POSITION" desc="Accessibility label to inform users about the InfoBar location">
         Options available near bottom of the screen
       </message>
@@ -1539,11 +1655,22 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
           =1 {1 download pending.}
           other {# downloads pending.}}
       </message>
+      <message name="IDS_MULTIPLE_DOWNLOAD_SCHEDULED" desc="Label describing that one or more downloads are scheduled">
+        {FILE_COUNT, plural,
+          =1 {1 download scheduled.}
+          other {# downloads scheduled.}}
+      </message>
       <message name="IDS_DOWNLOAD_INFOBAR_FILENAME" desc="Label showing the file name that just finished downloading">
          <ph name="FILE_NAME">%1$s<ex>abc.png</ex></ph>.
       </message>
       <message name="IDS_DOWNLOAD_INFOBAR_ACCESSIBILITY_MESSAGE_WITH_LINK" desc="InfoBar accessibility text describing the link on the download progress infobar">
         <ph name="MESSAGE">%1$s<ex>Downloading file (200 MB)</ex></ph> <ph name="LINK_NAME">%2$s<ex>Details</ex></ph> button
+      </message>
+      <message name="IDS_DOWNLOAD_SCHEDULED_ON_WIFI" desc="Label describing that the download was scheduled to start on Wi-Fi.">
+        Download will start on Wi-Fi.
+      </message>
+      <message name="IDS_DOWNLOAD_SCHEDULED_ON_DATE" desc="Label describing that the download was scheduled to start at a later date or time.">
+        Download will start on <ph name="date">%1$s<ex>Feb 28</ex></ph>.
       </message>
 
       <!-- Inline Update Infobar -->
@@ -1626,9 +1753,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_MENU_SHARE_PAGE" desc="Menu item for sharing the current page. [CHAR-LIMIT=27]">
         Share…
-      </message>
-      <message name="IDS_SHARE_LINK_CHOOSER_TITLE" desc="title for the share dialog when sharing the current address [CHAR-LIMIT=27]">
-        Share via
       </message>
       <message name="IDS_ACCESSIBILITY_MENU_SHARE_VIA" desc="Content description share current page via the most recently used application menu item">
         Share via <ph name="APPLICATION">%s<ex>Gmail</ex></ph>
@@ -1719,6 +1843,15 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_CONTEXTMENU_SEARCH_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens. [CHAR-LIMIT=30]">
         Search with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
+      <message name="IDS_CONTEXTMENU_SHOP_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR-LIMIT=30]">
+        Shop similar products <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
+      <message name="IDS_CONTEXTMENU_SHOP_IMAGE_WITH_GOOGLE_LENS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR-LIMIT=30]">
+        Shop image with Brave Lens <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
+      </message>
+      <message name="IDS_CONTEXTMENU_SEARCH_SIMILAR_PRODUCTS" desc="Context sensitive menu item for deep linking into google lens for shopping results. [CHAR-LIMIT=30]">
+        Search similar products <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
       <message name="IDS_CONTEXTMENU_SEARCH_WEB_FOR_IMAGE" desc="Context sensitive menu item for search-for-Image command in a new tab. [CHAR-LIMIT=30]">
         Search <ph name="SEARCH_ENGINE">%1$s<ex>Brave</ex></ph> for this image
@@ -2056,7 +2189,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         <ph name="FILE_SIZE_OF_TOTAL">%1$s<ex>1.56 MB / 10MB</ex></ph> <ph name="SEPARATOR">•</ph> <ph name="DESCRIPTION">%2$s<ex>failed</ex></ph>
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_JUST_NOW" desc="Text on a label describing that the associated download event happened just now.">
-        Just Now
+        Just now
+      </message>
+      <message name="IDS_DOWNLOAD_MANAGER_SCHEDULED_LATER" desc="Text on a label describing that the associated download is scheduled to start later.">
+        Scheduled for later
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_OFFLINE_HOME" desc="The title text on download home indicating that we are in offline mode.">
         Offline Home
@@ -2187,25 +2323,27 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_PROMO_CHOOSE_ANOTHER_ACCOUNT" desc="Button that the user can press if they want to select a different account before signing in. This button is shown below 'Continue as Joe Doe' button that signs user in with default account.">
         Choose another account
       </message>
+      <message name="IDS_SIGNIN_PROMO_STATUS_MESSAGE" desc="Title string for 'Turn on sync' sync promos.">
+        Sync is off
+      </message>
+      <message name="IDS_SYNC_PROMO_TURN_ON_SYNC" desc="Button that the user can press if they want to turn on sync with this account.">
+        Turn on sync
+      </message>
 
-      <!-- Messages for remote media playback (casting) -->
-      <message name="IDS_ACCESSIBILITY_PLAY" desc="The play button that starts playing the media.">
-        Play
+      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING" desc="Alert dialog text warning the user (who is currently in private mode) that the site they are currently using is going to share data with an external application." formatter_data="android_java">
+        This site is about to share information with an app outside of private mode.
       </message>
-      <message name="IDS_ACCESSIBILITY_PAUSE" desc="The pause button that pauses playing the media.">
-        Pause
+      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_WARNING_TITLE" desc="Title for dialog asking if the user wants to leave private mode. [CHAR-LIMIT=32]" formatter_data="android_java">
+        Leave private mode?
       </message>
-      <message name="IDS_ACCESSIBILITY_PREVIOUS_TRACK" desc="The previous track button that switches media to the previous track.">
-        Previous track
+      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_STAY" desc="Label for the dialog button to stay in private mode. [CHAR-LIMIT=20]" formatter_data="android_java">
+        Stay
       </message>
-      <message name="IDS_ACCESSIBILITY_NEXT_TRACK" desc="The next track button that switches media to the next track.">
-        Next track
+      <message name="IDS_EXTERNAL_APP_LEAVE_INCOGNITO_LEAVE" desc="Label for the dialog button to leave private mode. [CHAR-LIMIT=20]" formatter_data="android_java">
+        Leave
       </message>
-      <message name="IDS_ACCESSIBILITY_SEEK_FORWARD" desc="The seek forward button that seeks media to a later position.">
-        Seek forward
-      </message>
-      <message name="IDS_ACCESSIBILITY_SEEK_BACKWARD" desc="The seek backward button that seeks media to an earlier position.">
-        Seek backward
+      <message name="IDS_EXTERNAL_APP_RESTRICTED_ACCESS_ERROR" desc="A message shown to the user if Brave receives a file view request to something Brave does not have access to view." formatter_data="android_java">
+        Brave does not have access to the requested resource.
       </message>
 
       <!-- New Tab Page strings -->
@@ -2729,6 +2867,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_ACCESSIBILITY_OMNIBOX_BTN_REFINE" desc="Content description for the omnibox refine button.">
         Refine
       </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_SWITCH_TO_TAB" desc="Content description for the omnibox switch to tab button.">
+        Switch To Tab
+      </message>
 
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
@@ -2750,10 +2891,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <message name="IDS_TAB_SWITCHER_BUTTON_LABEL" desc="Label for tab switcher button">
         Tabs
-      </message>
-
-      <message name="IDS_MEDIA_NOTIFICATION_INCOGNITO" desc="Text used as a placeholder for a media notification about playing media, when notification is shown from private tab.">
-        A site is playing media
       </message>
 
       <!-- Contextual Search -->
@@ -2795,6 +2932,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_CONTEXTUAL_SEARCH_IPH_TAP" desc="An in-product-help message for encouraging users to tap instead of long pressing to trigger the Tap to Search feature.">
         You can also search with a quick tap on a word
+      </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_IPH_TOUCH_AND_HOLD" desc="An in-product-help message for encouraging users to use a touch and hold gesture to trigger the Touch to Search feature.">
+        To search, touch &amp; hold a word
+      </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_IPH_TOUCH_AND_HOLD_ENGAGED" desc="An in-product-help message for encouraging engaged users to use a touch and hold gesture to trigger the Touch to Search feature.">
+        To search, touch &amp; hold a word instead of tapping it
       </message>
 
       <!-- Web apps -->
@@ -2875,6 +3018,20 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Preview tab is closed
       </message>
 
+      <!-- Feed Card Menu -->
+      <message name="IDS_FEED_CARD_MENU_DESCRIPTION" desc="The content description of the feed card menu bottom sheet.">
+        Feed card menu
+      </message>
+      <message name="IDS_FEED_CARD_MENU_OPENED_HALF" desc="Accessibility string read when the feed card menu bottom sheet is opened at half height. This should never happen, no need to translate.">
+        Feed card menu half height
+      </message>
+      <message name="IDS_FEED_CARD_MENU_OPENED_FULL" desc="Accessibility string read when the feed card menu bottom sheet is opened at full height. The sheet will occupy up to the full screen.">
+        Feed card menu is opened
+      </message>
+      <message name="IDS_FEED_CARD_MENU_CLOSED" desc="Accessibility string read when the feed card menu bottom sheet is closed.">
+        Feed card menu is closed
+      </message>
+
       <!-- Storage Preference UI strings for clearing storage. -->
       <message name="IDS_STORAGE_MANAGEMENT_ACTIVITY_LABEL" desc="Title for Brave's Manage Space Activity.">
          Brave <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> storage
@@ -2917,14 +3074,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_RESET_APP_DIALOG_TEXT" desc="Text of the reset app dialoag in the storage UI.">
         All Brave’s app data will be deleted permanently. This includes all files, settings, accounts, databases, etc.
-      </message>
-
-      <!-- Client certificate selection failure strings. -->
-      <message name="IDS_CLIENT_CERT_UNSUPPORTED_TITLE" desc="Title of a dialog box for when the operating system does not support client SSL certificate selection">
-        Unable to select certificate.
-      </message>
-      <message name="IDS_CLIENT_CERT_UNSUPPORTED_MESSAGE" desc="The message in a dialog box for when the operating system does not support client SSL certificate selection">
-        Client side certificate selection is not supported by the operating system.
       </message>
 
       <!-- WebUsb Picker UI strings -->
@@ -2999,6 +3148,12 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_ACCESSIBILITY_UNMUTE_VIDEO" desc="The accessibility string for the unmute video button.">
         Unmute video
+      </message>
+      <message name="IDS_ACCESSIBILITY_FULL_SCREEN" desc="The accessibility string for the full screen video button.">
+        Full screen
+      </message>
+      <message name="IDS_ACCESSIBILITY_EXIT_FULL_SCREEN" desc="The accessibility string for the exiting of full screen video button.">
+        Exit full screen
       </message>
       <message name="IDS_ACCESSIBILITY_VIDEO_PLAYER" desc="The accessibility string for the video player.">
         Video player
@@ -3159,10 +3314,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Reopen Brave.
       </message>
 
-      <if expr="enable_vr">
-        <part file="xr_consent_ui_strings_java.grdp" />
-      </if>
-
       <if expr="enable_arcore">
         <!-- ARCore check infobar -->
         <message name="IDS_AR_CORE_CHECK_INFOBAR_INSTALL_TEXT" desc="Text to be displayed in the ARCore check infobar. When a WebXR page is loaded, if ARCore is needed to display AR content and it is not installed, an infobar will be shown to the user prompting them to install ARCore.">
@@ -3175,19 +3326,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         <!-- AR module -->
         <message name="IDS_AR_MODULE_TITLE" desc="Text shown when the AR module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Augmented Reality for Brave…').">
           Augmented Reality
-        </message>
-        <message name="IDS_AR_IMMERSIVE_MODE_CONSENT_TITLE" desc="Title for dialog shown when a site requests consent for starting an augmented reality session.">
-          Enter AR from <ph name="DOMAIN">%s<ex>example.com</ex></ph>?
-        </message>
-        <message name="IDS_AR_IMMERSIVE_MODE_CONSENT_MESSAGE" desc="Message for dialog shown when a site requests consent for starting an augmented reality session.">
-          While you're in AR, this site may be able to:
-• create a 3D map of your environment
-• track camera motion
-
-Only you can see what your camera is looking at. The site can't see your camera's images.
-        </message>
-        <message name="IDS_AR_IMMERSIVE_MODE_CONSENT_BUTTON" desc="Confirm button for dialog shown when a site requests consent for starting an augmented reality session.">
-          Enter AR
         </message>
 
         <!-- App upgrade from Play Store -->
@@ -3230,6 +3368,9 @@ Only you can see what your camera is looking at. The site can't see your camera'
       </message>
       <message name="IDS_IPH_DOWNLOAD_HOME_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open download home after a restart.">
         Find your files and pages in Downloads from the More Options button
+      </message>
+      <message name="IDS_IPH_DOWNLOAD_INDICATOR_TEXT" desc="The in-product-help message to open download home, which is shown alongside the offline indicator when the device goes offline.">
+        See your offline files
       </message>
       <message name="IDS_IPH_DATA_SAVER_DETAIL_TEXT" desc="The in-product-help message to open lite mode.">
         See how much data you've saved
@@ -3279,11 +3420,6 @@ Only you can see what your camera is looking at. The site can't see your camera'
       <!-- Launcher Shortcuts -->
       <message name="IDS_DISABLED_INCOGNITO_LAUNCHER_SHORTCUT_MESSAGE" desc="Text for a toast displayed prompting the user to remove the disabled 'New private tab' app shortcut and recreate it.">
         Remove and recreate this shortcut
-      </message>
-
-      <!-- BottomSheet -->
-      <message name="IDS_BOTTOM_SHEET_ACCESSIBILITY_DESCRIPTION" desc="Accessibility string read when the bottom sheet is focused informing the user that the sheet can be closed by swiping down.">
-        Swipe down to close.
       </message>
 
       <!-- SendTabToSelf -->
@@ -3548,6 +3684,14 @@ Only you can see what your camera is looking at. The site can't see your camera'
         Download
       </message>
 
+      <message name="IDS_QR_CODE_ERROR_TOO_LONG" desc="Error message displayed when a URL exceeds the limit for which we can generate a QR code.">
+          Can't create QR code. URL is more than <ph name="CHARACTER_LIMIT">%1$d<ex>300</ex></ph> characters.
+      </message>
+
+      <message name="IDS_QR_CODE_ERROR_UNKNOWN" desc="Error message displayed when an unknown error occurs.">
+          Can't create QR code
+      </message>
+
       <!-- Sharing Hub -->
       <message name="IDS_SHARING_MORE_ICON_LABEL" desc="Icon label for the More button in the sharing hub.">
         More
@@ -3557,12 +3701,20 @@ Only you can see what your camera is looking at. The site can't see your camera'
         Copy link
       </message>
 
+      <message name="IDS_SHARING_COPY_TEXT" desc="Label for the Copy Text button in the sharing hub.">
+        Copy text
+      </message>
+
       <message name="IDS_SHARING_SCREENSHOT" desc="Label for Screenshot button in the sharing hub.">
         Screenshot
       </message>
 
       <message name="IDS_LINK_COPIED" desc="Text shown in the toast notification when Copy Link is selected in the sharing hub.">
         Link Copied
+      </message>
+
+      <message name="IDS_TEXT_COPIED" desc="Text shown in the toast notification when Copy Text is selected in the sharing hub.">
+        Text Copied
       </message>
 
       <message name="IDS_QR_CODE_CAMERA_FRAMING_RECT_DESCRIPTION" desc="Text under the framing rectangle in QR code camera preview.">
@@ -3609,21 +3761,27 @@ Only you can see what your camera is looking at. The site can't see your camera'
         chrome_qrcode_<ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
       </message>
 
-      <message name="IDS_QR_CODE_SUCCESSFUL_DOWNLOAD_TITLE" desc="Notification title for successful QR code download.">
-        QR code downloaded
+      <!-- Share Screenshot strings -->
+      <message name="IDS_SCREENSHOT_EDIT_TITLE" desc="The text shown on the share option for screenshots.">
+        Edit
       </message>
 
-      <message name="IDS_QR_CODE_SUCCESSFUL_DOWNLOAD_TEXT" desc="Notification text for successful QR code download.">
-        Tap to open QR code
+      <message name="IDS_SCREENSHOT_DELETE_TITLE" desc="The text shown on the delete option for screenshots.">
+        Delete
       </message>
 
-      <message name="IDS_QR_CODE_FAILED_DOWNLOAD_TITLE" desc="Notification title for failed QR code download.">
-        Can't download QR code
+      <message name="IDS_SCREENSHOT_SAVE_TITLE" desc="The text shown on the save option for screenshots.">
+        Save
       </message>
 
-      <message name="IDS_QR_CODE_FAILED_DOWNLOAD_TEXT" desc="Notification text for failed QR code download.">
-        Something went wrong
+      <message name="IDS_SCREENSHOT_SHARE_TITLE" desc="The text shown on the share option for screenshots.">
+        Share
       </message>
+
+      <message name="IDS_SCREENSHOT_FILENAME_PREFIX" desc="File name prefix for downloaded screenshot that is followed by timestamp.">
+        chrome_screenshot_<ph name="CURRENT_TIMESTAMP_MS">%1$s<ex>1582667748515</ex></ph>
+      </message>
+
       <!-- Chime DFM module strings -->
       <message name="IDS_CHIME_MODULE_TITLE" desc="Text shown when the chime module is referenced in install start, success, failure UI (e.g. in IDS_MODULE_INSTALL_START_TEXT, which will expand to 'Installing Brave Notifications Platform for Brave…').">
         Brave Notifications Platform
@@ -3651,24 +3809,35 @@ Only you can see what your camera is looking at. The site can't see your camera'
         Paint Preview playback failed.
       </message>
 
-      <!-- Browser Promo Notification Strings -->
-      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_1_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes relevant articles Brave has.">
-        Read today's news <ph name="NEWS_ICON">📰</ph>
+      <!-- Default Browser Promo Strings-->
+      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_TITLE" desc="Title of the default browser promo dialog">
+        Set <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> as your default?
       </message>
-      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_1_DESCRIPTION" desc="The body text of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes relevant articles Brave has.">
-        Articles on your interests on Brave
+      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DESC" desc="Description in the default browser promo dialog, which is concatenated with one of the following steps strings">
+        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> has the smarts and speed you need to safely do, create, and explore online
       </message>
-      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_2_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings.">
-        Save up to 60% data
+      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_DISAMBIGUATION_SHEET_STEPS" desc="Description of the steps to set the default browser throught disambiguation sheet. 'Always' should match TC ID 5575222334666843269.">
+        1. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>\n2. Tap “Always”
       </message>
-      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_2_DESCRIPTION" desc="The body text of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings.">
-        Use Lite mode on Brave
+      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_SYSTEM_SETTINGS_STEPS" desc="Description of the steps to set the default browser throught system settings.         'Go to Settings' should match TC ID 4431460803004659888. 'Browser App' should match TC ID 6222206565850006894.">
+        1. Go to Settings\n2. Tap “Browser App”\n3. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
       </message>
-      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_3_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.">
-        Brave recommends Brave
+      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_ROLE_MANAGER_STEPS" desc="Description of the steps to set the default browser throught role manager. 'Set as default' should match TC ID 5706081295230541240.">
+        1. Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>\n2. Tap “Set as default”
       </message>
-      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_3_DESCRIPTION" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings and relevant news.">
-        Save up to 60% data, read today's news
+      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_CHOOSE_CHROME_BUTTON" desc="A button in the default browser promo dialog to choose chrome as default">
+        Choose <ph name="APP_NAME">%1$s<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_PROMO_DIALOG_GO_TO_SETTINGS_BUTTON" desc="A button in the default browser promo to navigate users to systen settings. 'Go to Settings' should match TC ID 4431460803004659888.">
+        Go to Settings
+      </message>
+
+      <!-- HTTPS image compression InfoBar -->
+      <message name="IDS_LITE_MODE_HTTPS_IMAGE_COMPRESSION_MESSAGE" desc="The text of the infobar notifying the user that Brave's Lite mode will now also compresses HTTPS images.">
+        Lite mode now saves you more data by optimizing images on HTTPS pages.
+      </message>
+      <message name="IDS_LITE_MODE_HTTPS_IMAGE_COMPRESSION_SETTINGS_LINK" desc="This link opens the Lite Mode settings page to explain the feature and configure the settings.">
+        Manage
       </message>
     </messages>
   </release>

@@ -136,6 +136,6 @@ void FarblePlugins(DOMPluginArray* owner,
 #define BRAVE_DOM_PLUGINS_UPDATE_PLUGIN_DATA \
   brave::FarblePlugins(this, &dom_plugins_);
 
-#include "../../../../../../third_party/blink/renderer/modules/plugins/dom_plugin_array.cc"
+#include "../../../../../../../third_party/blink/renderer/modules/plugins/dom_plugin_array.cc"
 
 #undef BRAVE_DOM_PLUGIN_ARRAY_GET_PLUGIN_DATA

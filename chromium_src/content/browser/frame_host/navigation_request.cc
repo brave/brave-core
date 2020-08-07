@@ -21,7 +21,7 @@ GURL GetTopDocumentGURL(content::FrameTreeNode* frame_tree_node) {
   // On Android, a base URL can be set for the frame. If this the case, it is
   // the URL to use for cookies.
   content::NavigationEntry* last_committed_entry =
-      frame_tree_node->navigator()->GetController()->GetLastCommittedEntry();
+      frame_tree_node->navigator().GetController()->GetLastCommittedEntry();
   if (last_committed_entry)
     gurl = last_committed_entry->GetBaseURLForDataURL();
 #endif

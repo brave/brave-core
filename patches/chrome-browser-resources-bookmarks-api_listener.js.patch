@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/bookmarks/api_listener.js b/chrome/browser/resources/bookmarks/api_listener.js
-index bc6b075f315da3d4284cdab25df0be429119f2d1..b71d66c897ccec9308a99e1adec7d3059dcd6143 100644
+index 13723908914b07e4ca2207eff0f444bdeb0e4dc6..61b05509b9f6c2c0efe4eda68835dba198778e65 100644
 --- a/chrome/browser/resources/bookmarks/api_listener.js
 +++ b/chrome/browser/resources/bookmarks/api_listener.js
 @@ -142,6 +142,7 @@ function onChildrenReordered(id, reorderInfo) {

@@ -35,6 +35,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ipc/ipc_message_macros.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/api/brave_shields.h"
@@ -72,7 +73,7 @@ void UpdateContentSettingsToRendererFrames(content::WebContents* web_contents) {
         frame->GetProcess()->GetChannel();
     // channel might be NULL in tests.
     if (channel) {
-      chrome::mojom::RendererConfigurationAssociatedPtr rc_interface;
+      mojo::AssociatedRemote<chrome::mojom::RendererConfiguration> rc_interface;
       channel->GetRemoteAssociatedInterface(&rc_interface);
       rc_interface->SetContentSettingRules(rules);
     }

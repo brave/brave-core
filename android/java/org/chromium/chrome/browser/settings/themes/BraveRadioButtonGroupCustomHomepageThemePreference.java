@@ -28,7 +28,7 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
 
     public BraveRadioButtonGroupCustomHomepageThemePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Profile mProfile = Profile.getLastUsedProfile();
+        Profile mProfile = Profile.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
     }
 

@@ -5,6 +5,7 @@
 
 #include <limits>
 
+#include "base/notreached.h"
 #include "bat/ledger/internal/legacy/publisher_settings_state.h"
 #include "bat/ledger/internal/legacy/report_balance_state.h"
 #include "base/json/json_reader.h"

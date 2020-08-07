@@ -17,6 +17,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
+#include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace ntp_background_images {
@@ -70,9 +71,9 @@ void NTPBackgroundImagesSource::StartDataRequest(
   auto* images_data =
       service_->GetBackgroundImagesData(IsSuperReferralPath(path));
   if (!images_data) {
-    base::PostTask(FROM_HERE,
-        base::BindOnce(std::move(callback),
-                       scoped_refptr<base::RefCountedMemory>()));
+    content::GetUIThreadTaskRunner({})->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback),
+                                  scoped_refptr<base::RefCountedMemory>()));
     return;
   }
 

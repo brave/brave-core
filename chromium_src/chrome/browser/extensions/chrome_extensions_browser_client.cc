@@ -4,15 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
-#include "brave/browser/extensions/brave_component_extension_resource_manager.h"
 #include "brave/browser/extensions/updater/brave_update_client_config.h"
 #include "chrome/browser/extensions/updater/chrome_update_client_config.h"
 
-#define ChromeComponentExtensionResourceManager \
-  BraveComponentExtensionResourceManager  // NOLINT
 #define ChromeExtensionsAPIClient BraveExtensionsAPIClient
 #define ChromeUpdateClientConfig BraveUpdateClientConfig
-#include "../../../../../chrome/browser/extensions/chrome_extensions_browser_client.cc"  // NOLINT
-#undef ChromeComponentExtensionResourceManager
+#include "../../../../../chrome/browser/extensions/chrome_extensions_browser_client.cc"
 #undef ChromeExtensionsAPIClient
 #undef ChromeUpdateClientConfig

@@ -21,9 +21,9 @@ BraveBrowsingDataRemoverDelegate::BraveBrowsingDataRemoverDelegate(
 void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
     const base::Time& delete_begin,
     const base::Time& delete_end,
-    int remove_mask,
+    uint64_t remove_mask,
     content::BrowsingDataFilterBuilder* filter_builder,
-    int origin_type_mask,
+    uint64_t origin_type_mask,
     base::OnceClosure callback) {
   ChromeBrowsingDataRemoverDelegate::RemoveEmbedderData(delete_begin,
                                                         delete_end,

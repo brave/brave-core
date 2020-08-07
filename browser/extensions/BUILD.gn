@@ -31,8 +31,6 @@ source_set("extensions") {
     "api/rewards_notifications_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
-    "brave_component_extension_resource_manager.cc",
-    "brave_component_extension_resource_manager.h",
     "brave_component_loader.cc",
     "brave_component_loader.h",
     "brave_extension_management.cc",
@@ -76,6 +74,7 @@ source_set("extensions") {
   }
 
   deps = [
+    ":resources",
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/tor:buildflags",
@@ -84,8 +83,6 @@ source_set("extensions") {
     "//brave/common:pref_names",
     "//brave/common/extensions/api",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_extension:generated_resources",
-    "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_rewards/browser/buildflags",
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
@@ -110,15 +107,11 @@ source_set("extensions") {
   if (brave_rewards_enabled) {
     deps += [
       "//brave/components/brave_rewards/browser",
-      "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
-      "//brave/components/brave_rewards/resources/extension:static_resources",
     ]
   }
   if (enable_brave_webtorrent) {
     deps += [
       "//brave/components/brave_webtorrent/browser",
-      "//brave/components/brave_webtorrent:generated_resources",
-      "//brave/components/brave_webtorrent:static_resources",
     ]
     sources += [
       "brave_webtorrent_navigation_throttle.cc",
@@ -140,6 +133,25 @@ source_set("extensions") {
       "//brave/components/gemini/browser",
       "//components/country_codes",
       "//extensions/browser",
+    ]
+  }
+}
+
+group("resources") {
+  deps = [
+    "//brave/components/brave_extension:generated_resources",
+    "//brave/components/brave_extension:static_resources",
+  ]
+  if (brave_rewards_enabled) {
+    deps += [
+      "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
+      "//brave/components/brave_rewards/resources/extension:static_resources",
+    ]
+  }
+  if (enable_brave_webtorrent) {
+    deps += [
+      "//brave/components/brave_webtorrent:generated_resources",
+      "//brave/components/brave_webtorrent:static_resources",
     ]
   }
 }

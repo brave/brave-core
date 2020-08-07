@@ -7,10 +7,10 @@ package org.chromium.chrome.browser.signin;
 
 import org.chromium.base.annotations.CalledByNative;
 import org.chromium.chrome.browser.externalauth.ExternalAuthUtils;
+import org.chromium.chrome.browser.sync.AndroidSyncSettings;
 import org.chromium.components.signin.AccountTrackerService;
 import org.chromium.components.signin.identitymanager.IdentityManager;
 import org.chromium.components.signin.identitymanager.IdentityMutator;
-import org.chromium.components.sync.AndroidSyncSettings;
 
 public class BraveSigninManager extends SigninManager {
     BraveSigninManager(long nativeSigninManagerAndroid, AccountTrackerService accountTrackerService,

@@ -1,8 +1,8 @@
 diff --git a/build/config/compiler/BUILD.gn b/build/config/compiler/BUILD.gn
-index 01d97a3605ff2d6e9431ae2aab1d61434c09f085..be0293947c9679b43f838c4ba3a00bf5fe4a6b55 100644
+index 6e219b3994e2fd2c4ba02f72acdbe7b5b4f97413..ad564b8dc558c79633504b3cef527a04fde49754 100644
 --- a/build/config/compiler/BUILD.gn
 +++ b/build/config/compiler/BUILD.gn
-@@ -1598,6 +1598,7 @@ config("chromium_code") {
+@@ -1622,6 +1622,7 @@ config("chromium_code") {
        cflags += [ "-Wextra-semi" ]
      }
    }

@@ -34,6 +34,9 @@ class BraveTranslateBubbleView : public TranslateBubbleView {
   // views::View methods.
   bool AcceleratorPressed(const ui::Accelerator& accelerator) override;
 
+  // LocationBarBubbleDelegateView methods.
+  bool ShouldShowWindowTitle() const override;
+
  protected:
   virtual void InstallGoogleTranslate();
 

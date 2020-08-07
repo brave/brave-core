@@ -18,12 +18,14 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/http/http_request_headers.h"
+#include "net/test/embedded_test_server/default_handlers.h"
 #include "net/test/embedded_test_server/http_request.h"
 
 using brave_shields::ControlType;
@@ -62,8 +64,12 @@ const char kEmptyCookie[] = "";
 const char kTestCookie[] = COOKIE_STR;
 
 const char kCookieScript[] =
-    "document.cookie = '" COOKIE_STR
-    "'; domAutomationController.send(document.cookie);";
+    "document.cookie = '" COOKIE_STR "'"
+    "; document.cookie;";
+
+const char kCookie3PScript[] =
+    "document.cookie = '" COOKIE_STR ";SameSite=None;Secure'"
+    "; document.cookie;";
 
 const char kReferrerScript[] =
     "domAutomationController.send(document.referrer);";
@@ -74,6 +80,9 @@ const char kTitleScript[] = "domAutomationController.send(document.title);";
 
 class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
  public:
+  BraveContentSettingsAgentImplBrowserTest() :
+      https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
 
@@ -83,39 +92,45 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     content::SetBrowserClientForTesting(browser_content_client_.get());
 
     host_resolver()->AddRule("*", "127.0.0.1");
-    content::SetupCrossSiteRedirector(embedded_test_server());
 
     brave::RegisterPathProvider();
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
-
-    embedded_test_server()->RegisterRequestMonitor(base::BindRepeating(
+    https_server_.ServeFilesFromDirectory(test_data_dir);
+    https_server_.AddDefaultHandlers(GetChromeTestDataDir());
+    content::SetupCrossSiteRedirector(&https_server_);
+    https_server_.RegisterRequestMonitor(base::BindRepeating(
         &BraveContentSettingsAgentImplBrowserTest::SaveReferrer,
         base::Unretained(this)));
 
-    ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(https_server_.Start());
 
-    url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
-    cross_site_url_ = embedded_test_server()->GetURL("b.com", "/simple.html");
+    url_ = https_server_.GetURL("a.com", "/iframe.html");
+    cross_site_url_ = https_server_.GetURL("b.com", "/simple.html");
     cross_site_image_url_ =
-        embedded_test_server()->GetURL("b.com", "/logo.png");
-    link_url_ = embedded_test_server()->GetURL("a.com", "/simple_link.html");
-    redirect_to_cross_site_url_ = embedded_test_server()->GetURL(
+        https_server_.GetURL("b.com", "/logo.png");
+    link_url_ = https_server_.GetURL("a.com", "/simple_link.html");
+    redirect_to_cross_site_url_ = https_server_.GetURL(
         "a.com", "/cross-site/b.com/simple.html");
     redirect_to_cross_site_image_url_ =
-        embedded_test_server()->GetURL("a.com", "/cross-site/b.com/logo.png");
+        https_server_.GetURL("a.com", "/cross-site/b.com/logo.png");
     same_site_url_ =
-        embedded_test_server()->GetURL("sub.a.com", "/simple.html");
-    same_origin_url_ = embedded_test_server()->GetURL("a.com", "/simple.html");
+        https_server_.GetURL("sub.a.com", "/simple.html");
+    same_origin_url_ = https_server_.GetURL("a.com", "/simple.html");
     same_origin_image_url_ =
-        embedded_test_server()->GetURL("a.com", "/logo.png");
-    top_level_page_url_ = embedded_test_server()->GetURL("a.com", "/");
+        https_server_.GetURL("a.com", "/logo.png");
+    top_level_page_url_ = https_server_.GetURL("a.com", "/");
     top_level_page_pattern_ =
-        ContentSettingsPattern::FromString("http://a.com/*");
-    iframe_pattern_ = ContentSettingsPattern::FromString("http://b.com/*");
+        ContentSettingsPattern::FromString("https://a.com/*");
+    iframe_pattern_ = ContentSettingsPattern::FromString("https://b.com/*");
     first_party_pattern_ =
         ContentSettingsPattern::FromString("https://firstParty/*");
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    InProcessBrowserTest::SetUpCommandLine(command_line);
+    // This is needed to load pages from "domain.com" without an interstitial.
+    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
 
   void SaveReferrer(const net::test_server::HttpRequest& request) {
@@ -154,6 +169,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
     content_client_.reset();
   }
 
+  const net::EmbeddedTestServer& https_server() { return https_server_; }
   const GURL& url() { return url_; }
   const GURL& cross_site_url() { return cross_site_url_; }
   const GURL& cross_site_image_url() { return cross_site_image_url_; }
@@ -331,7 +347,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   void NavigateToURLUntilLoadStop(const std::string& origin,
                                   const std::string& path) {
     ui_test_utils::NavigateToURL(browser(),
-                                 embedded_test_server()->GetURL(origin, path));
+                                 https_server().GetURL(origin, path));
   }
 
   void NavigateIframe(const GURL& url) {
@@ -347,7 +363,12 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
 
   template <typename T>
   void CheckCookie(T* frame, base::StringPiece cookie) {
-    EXPECT_EQ(ExecScriptGetStr(kCookieScript, frame), cookie);
+    EXPECT_EQ(cookie, EvalJs(frame, kCookieScript));
+  }
+
+  template <typename T>
+  void Check3PCookie(T* frame, base::StringPiece cookie) {
+    EXPECT_EQ(cookie, EvalJs(frame, kCookie3PScript));
   }
 
   template <typename T>
@@ -388,6 +409,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
   std::map<GURL, std::string> last_referrers_;
 
   base::ScopedTempDir temp_user_data_dir_;
+  net::test_server::EmbeddedTestServer https_server_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -854,7 +876,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(child_frame(), kTestCookie);
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kEmptyCookie);
+  Check3PCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -865,7 +887,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(child_frame(), kTestCookie);
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kEmptyCookie);
+  Check3PCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockCookies) {
@@ -875,7 +897,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, BlockCookies) {
   CheckCookie(contents(), kEmptyCookie);
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kEmptyCookie);
+  Check3PCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, AllowCookies) {
@@ -883,9 +905,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest, AllowCookies) {
 
   NavigateToPageWithIframe();
   CheckCookie(contents(), kTestCookie);
+  EXPECT_EQ(COOKIE_STR, content::GetCookies(browser()->profile(), url()));
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kTestCookie);
+  Check3PCookie(child_frame(), kTestCookie);
+  EXPECT_EQ(COOKIE_STR,
+            content::GetCookies(browser()->profile(), cross_site_url()));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -901,7 +926,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(contents(), kEmptyCookie);
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kTestCookie);
+  Check3PCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -917,7 +942,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(contents(), kTestCookie);
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kEmptyCookie);
+  Check3PCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -929,7 +954,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(contents(), kTestCookie);
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kTestCookie);
+  Check3PCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -940,7 +965,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(contents(), kTestCookie);
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kTestCookie);
+  Check3PCookie(child_frame(), kTestCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -952,7 +977,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
   CheckCookie(contents(), kEmptyCookie);
 
   NavigateIframe(cross_site_url());
-  CheckCookie(child_frame(), kEmptyCookie);
+  Check3PCookie(child_frame(), kEmptyCookie);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
@@ -1003,7 +1028,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsAgentImplBrowserTest,
 
   // Throws in a sandboxed iframe.
   const GURL sandboxed(
-      embedded_test_server()->GetURL("a.com", "/sandboxed_iframe.html"));
+      https_server().GetURL("a.com", "/sandboxed_iframe.html"));
   ui_test_utils::NavigateToURL(browser(), sandboxed);
   CheckLocalStorageThrows(child_frame());
 }

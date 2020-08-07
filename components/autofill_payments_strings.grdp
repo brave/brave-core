@@ -364,7 +364,7 @@
   </if>
   <if expr="is_android">
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_ENABLE_FIDO_AUTH_CHECKBOX" desc="Text for checkbox in card unmasking dialog that allows the use of fingerprint to unmask cards starting next time. If checked, then a fingerprint prompt will immediately follow." formatter_data="android_java">
-      Use fingerprint to verify this card next time.
+      Use screen lock to confirm cards from now on
     </message>
   </if>
   <message name="IDS_AUTOFILL_CARD_UNMASK_CONFIRM_BUTTON" desc="Text for button that confirms the credit card CVC entry dialog.">

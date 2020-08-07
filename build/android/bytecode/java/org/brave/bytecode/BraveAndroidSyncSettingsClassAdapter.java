@@ -9,9 +9,9 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveAndroidSyncSettingsClassAdapter extends BraveClassVisitor {
 	static String sAndroidSyncSettingsClassName =
-            "org/chromium/components/sync/AndroidSyncSettings";
+            "org/chromium/chrome/browser/sync/AndroidSyncSettings";
     static String sBraveAndroidSyncSettingsClassName =
-            "org/chromium/components/sync/BraveAndroidSyncSettings";
+            "org/chromium/chrome/browser/sync/BraveAndroidSyncSettings";
 
     public BraveAndroidSyncSettingsClassAdapter(ClassVisitor visitor) {
         super(visitor);

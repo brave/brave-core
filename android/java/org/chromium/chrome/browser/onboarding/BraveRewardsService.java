@@ -68,7 +68,7 @@ public class BraveRewardsService extends Service implements BraveRewardsObserver
         if (BraveRewardsNativeWorker.WALLET_CREATED == error_code
                 && OnboardingPrefManager.getInstance().isAdsAvailable()) {
             // Enable ads
-            BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+            BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
         } else {
             // TODO: handle wallet creation problem
         }

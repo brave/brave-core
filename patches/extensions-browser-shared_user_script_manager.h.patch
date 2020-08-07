@@ -1,7 +1,7 @@
-diff --git a/extensions/browser/shared_user_script_master.h b/extensions/browser/shared_user_script_master.h
-index 3a5b005cafd7af8d89bf1c73a28d2e59a98d7e50..87248618f1e427564304318996cb5d51af23e716 100644
---- a/extensions/browser/shared_user_script_master.h
-+++ b/extensions/browser/shared_user_script_master.h
+diff --git a/extensions/browser/shared_user_script_manager.h b/extensions/browser/shared_user_script_manager.h
+index 55da0eb62a9d59c463dd2286fe1049d1d38e0514..c11c52ea8069de035eac718979b3f6f4ec4e34ab 100644
+--- a/extensions/browser/shared_user_script_manager.h
++++ b/extensions/browser/shared_user_script_manager.h
 @@ -19,6 +19,7 @@
  namespace content {
  class BrowserContext;
@@ -10,7 +10,7 @@ index 3a5b005cafd7af8d89bf1c73a28d2e59a98d7e50..87248618f1e427564304318996cb5d51
  
  namespace extensions {
  
-@@ -33,6 +34,7 @@ class SharedUserScriptMaster : public ExtensionRegistryObserver {
+@@ -33,6 +34,7 @@ class SharedUserScriptManager : public ExtensionRegistryObserver {
    UserScriptLoader* script_loader() { return &loader_; }
  
   private:

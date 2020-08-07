@@ -296,7 +296,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
       Context context = getContext();
       if ((PackageUtils.isFirstInstall(context)
-           || (!PackageUtils.isFirstInstall(context) && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())))
+           || (!PackageUtils.isFirstInstall(context) && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())))
           && !OnboardingPrefManager.getInstance().isOnboardingShown()) {
         OnboardingPrefManager.getInstance().showOnboarding(context);
       } else {
@@ -525,7 +525,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       }
     } else if (error_code == BraveRewardsNativeWorker.WALLET_CREATED) { // Wallet created code
       // Make sure that flag is set as panel can be closed before wallet is created
-      BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedProfile());
+      BraveAdsNativeHelper.nativeSetAdsEnabled(Profile.getLastUsedRegularProfile());
       // Check and set flag to show Brave Rewards icon if enabled
       SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
       SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
@@ -725,16 +725,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
       }
     }
-  }
-
-  @Override
-  boolean isShowingAppMenuUpdateBadge() {
-    if (this instanceof ToolbarPhone &&
-        BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-      // Just to avoid drawing menu button on transition animation
-      return true;
-    }
-    return super.isShowingAppMenuUpdateBadge();
   }
 
   @Override

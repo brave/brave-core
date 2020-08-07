@@ -8,7 +8,7 @@
 # needed for checking of existence for bytecode manipulation
 -keepnames class org.chromium.chrome.browser.settings.MainSettings
 
--keep class org.chromium.components.sync.AndroidSyncSettings {
+-keep class org.chromium.chrome.browser.sync.AndroidSyncSettings {
     *** notifyObservers(...);
     *** updateCachedSettings(...);
     *** setChromeSyncEnabled(...);
