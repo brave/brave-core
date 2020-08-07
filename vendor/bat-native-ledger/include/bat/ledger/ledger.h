@@ -50,6 +50,7 @@ using GetMonthlyReportCallback =
     std::function<void(const Result, MonthlyReportInfoPtr)>;
 using GetAllMonthlyReportIdsCallback =
     std::function<void(const std::vector<std::string>&)>;
+using GetEventLogsCallback = std::function<void(EventLogs)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -322,6 +323,8 @@ class LEDGER_EXPORT Ledger {
       SKUOrderCallback callback) = 0;
 
   virtual void Shutdown(ResultCallback callback) = 0;
+
+  virtual void GetEventLogs(GetEventLogsCallback callback) = 0;
 };
 
 }  // namespace ledger

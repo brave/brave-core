@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { Contributions } from './contributions'
 import { Promotions } from './promotions'
 import { General } from './general'
+import { EventLogs } from './event_logs'
 import { Log } from './log'
 import { Tabs } from 'brave-ui/components'
 import { Wrapper, MainTitle, DisabledContent, Disclaimer } from '../style'
@@ -76,6 +77,10 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
         this.getContributions()
         break
       }
+      case 'eventLogs': {
+        this.getEventLogs()
+        break
+      }
     }
   }
 
@@ -103,8 +108,12 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
     this.actions.getContributions()
   }
 
+  getEventLogs = () => {
+    this.actions.getEventLogs()
+  }
+
   render () {
-    const { isRewardsEnabled, contributions, promotions, log, fullLog } = this.props.rewardsInternalsData
+    const { isRewardsEnabled, contributions, promotions, log, fullLog, eventLogs } = this.props.rewardsInternalsData
 
     if (!isRewardsEnabled) {
       return (
@@ -143,6 +152,9 @@ export class RewardsInternalsPage extends React.Component<Props, State> {
           </div>
           <div data-key='contributions' data-title={getLocale('tabContributions')}>
             <Contributions items={contributions} onGet={this.getContributions} />
+          </div>
+          <div data-key='eventLogs' data-title={getLocale('tabEventLogs')}>
+            <EventLogs items={eventLogs} />
           </div>
         </Tabs>
       </Wrapper>)

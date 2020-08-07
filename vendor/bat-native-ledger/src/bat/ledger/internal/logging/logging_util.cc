@@ -9,7 +9,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 
 namespace ledger {
 

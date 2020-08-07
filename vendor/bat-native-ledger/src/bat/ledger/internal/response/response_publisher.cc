@@ -10,7 +10,7 @@
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/common/brotli_helpers.h"
 #include "bat/ledger/internal/common/time_util.h"
-#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/internal/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "net/http/http_status_code.h"

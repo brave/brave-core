@@ -13,8 +13,8 @@
 #include <utility>
 
 #include "base/strings/string_split.h"
-#include "bat/ledger/internal/bat_helper.h"
-#include "bat/ledger/internal/legacy/logging/logging.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "rapidjson/document.h"

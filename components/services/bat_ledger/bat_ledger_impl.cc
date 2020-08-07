@@ -1046,4 +1046,27 @@ void BatLedgerImpl::Shutdown(ShutdownCallback callback) {
           _1));
 }
 
+
+// static
+void BatLedgerImpl::OnGetEventLogs(
+    CallbackHolder<GetEventLogsCallback>* holder,
+    ledger::EventLogs logs) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(std::move(logs));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::GetEventLogs(GetEventLogsCallback callback) {
+  auto* holder = new CallbackHolder<GetEventLogsCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetEventLogs(
+      std::bind(BatLedgerImpl::OnGetEventLogs,
+          holder,
+          _1));
+}
+
 }  // namespace bat_ledger

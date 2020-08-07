@@ -334,7 +334,11 @@ class LedgerImpl : public ledger::Ledger {
 
   void Shutdown(ledger::ResultCallback callback) override;
 
+  void GetEventLogs(ledger::GetEventLogsCallback callback) override;
+
   // end ledger.h
+
+  void OnAllDone(const ledger::Result result, ledger::ResultCallback callback);
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_promotion::Promotion> promotion_;

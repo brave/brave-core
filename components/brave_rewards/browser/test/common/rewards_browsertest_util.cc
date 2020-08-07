@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
@@ -109,6 +111,15 @@ void NavigateToPublisherPage(
       GetUrl(https_server, publisher_key, path),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+}
+
+void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
+  base::RunLoop run_loop;
+  rewards_service->StopLedger(
+      base::BindLambdaForTesting([&](const ledger::Result) {
+        run_loop.Quit();
+      }));
+  run_loop.Run();
 }
 
 }  // namespace rewards_browsertest_util

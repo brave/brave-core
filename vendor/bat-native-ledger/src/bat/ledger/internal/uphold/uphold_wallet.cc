@@ -8,6 +8,7 @@
 #include "base/json/json_reader.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_wallet.h"
 
@@ -166,6 +167,9 @@ ledger::WalletStatus UpholdWallet::GetNewStatus(
           "wallet_new_verified",
           {"Uphold"},
           [](ledger::Result _){});
+      ledger_->database()->SaveEventLog(
+          ledger::log::kWalletVerified,
+          ledger::kWalletUphold);
       break;
     }
     case ledger::WalletStatus::VERIFIED: {

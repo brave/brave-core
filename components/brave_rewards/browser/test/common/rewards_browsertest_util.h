@@ -50,6 +50,8 @@ void NavigateToPublisherPage(
     const std::string& publisher_key,
     const std::string& path = "");
 
+void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service);
+
 }  // namespace rewards_browsertest_util
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_TEST_COMMON_REWARDS_BROWSERTEST_UTIL_H_

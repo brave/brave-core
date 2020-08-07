@@ -11,6 +11,7 @@
 #include "base/values.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/wallet_util.h"
 
@@ -142,6 +143,13 @@ void Wallet::DisconnectWallet(
     BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
+  }
+
+  if (!wallet_ptr->address.empty()) {
+    ledger_->database()->SaveEventLog(
+        ledger::log::kWalletDisconnected,
+        static_cast<std::string>(wallet_type) + "/" +
+            wallet_ptr->address.substr(0, 5));
   }
 
   wallet_ptr = ResetWallet(std::move(wallet_ptr));

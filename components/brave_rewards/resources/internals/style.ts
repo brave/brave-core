@@ -8,7 +8,7 @@ import { ComponentType } from 'react'
 
 export const Wrapper = styled<{}, 'div'>('div')`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1350px;
   margin: 15px auto 0;
   font-family: ${p => p.theme.fontFamily.body};
   font-size: 14px;
@@ -74,4 +74,14 @@ export const Disclaimer = styled<{}, 'p'>('p')`
   margin: 0 0 10px;
   padding: 0px;
   text-align: center;
+`
+
+export const EventTable = styled<{}, 'table'>('table')`
+  border-spacing: 0;
+  margin: 0 auto;
+`
+
+export const EventCell = styled<{}, 'td'>('td')`
+  border-bottom: 1px solid ${p => p.theme.palette.blackFade85};
+  padding: 10px;
 `

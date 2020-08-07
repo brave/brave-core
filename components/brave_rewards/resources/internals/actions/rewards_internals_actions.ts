@@ -68,3 +68,11 @@ export const onExternalWallet = (result: number, wallet: RewardsInternals.Extern
   result,
   wallet
 })
+
+export const getEventLogs = (type: RewardsInternals.WalletType) => action(types.GET_EVENT_LOGS, {
+  type
+})
+
+export const onEventLogs = (logs: RewardsInternals.EventLog[]) => action(types.ON_EVENT_LOGS, {
+  logs
+})

@@ -405,6 +405,9 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_REWARDS_OFF" desc="">Rewards was turned off</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_AUTO_CONTRIBUTE_OFF" desc="">Auto-contribute was turned off</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_RETRY_COUNT" desc="">Stopped retrying</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_KEY" desc="event log key">Key</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_VALUE" desc="event log value">Value</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_TIME" desc="when event was logged">Logged at</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_DISCLAIMER" desc="">WARNING: Data on this page may be sensitive. Treat them as you would your wallet private keys. Be careful who you share them with.</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_TYPE" desc="Contribution type">Type:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTIONS" desc="">Contributions</message>
@@ -440,6 +443,7 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_ONE_TIME_TIP" desc="One-time tip">One-time tip</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_RECURRING_TIP" desc="Recurring tip">Recurring tip</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS" desc="">Contributions</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_EVENT_LOGS" desc="">Event logs</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_INFO" desc="">General info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_LOGS" desc="">Logs</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_PROMOTIONS" desc="">Promotions</message>
