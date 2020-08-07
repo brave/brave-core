@@ -33,9 +33,6 @@ namespace {
 
 const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
 
-const uint64_t kSecondsPerDay = base::Time::kSecondsPerHour *
-    base::Time::kHoursPerDay;
-
 }  // namespace
 
 class BatAdsAdsPerDayFrequencyCapTest : public ::testing::Test {
@@ -105,6 +102,10 @@ class BatAdsAdsPerDayFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  Client* get_client() {
+    return ads_->get_client();
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -136,8 +137,12 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest,
   ON_CALL(*ads_client_mock_, GetAdsPerDay())
       .WillByDefault(Return(2));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      base::Time::kSecondsPerHour, 1);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();
@@ -152,7 +157,15 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest,
   ON_CALL(*ads_client_mock_, GetAdsPerDay())
       .WillByDefault(Return(2));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId, kSecondsPerDay, 2);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromDays(1));
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();
@@ -162,13 +175,20 @@ TEST_F(BatAdsAdsPerDayFrequencyCapTest,
 }
 
 TEST_F(BatAdsAdsPerDayFrequencyCapTest,
-    DoNotAllowAdIfExceedsCap) {
+    DoNotAllowAdIfExceedsCapWithin1Day) {
   // Arrange
   ON_CALL(*ads_client_mock_, GetAdsPerDay())
       .WillByDefault(Return(2));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      base::Time::kSecondsPerHour, 2);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(23));
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();

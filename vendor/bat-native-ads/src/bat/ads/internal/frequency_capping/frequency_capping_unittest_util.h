@@ -11,33 +11,15 @@
 #include <memory>
 #include <string>
 
+#include "bat/ads/ad_history.h"
+#include "bat/ads/confirmation_type.h"
+#include "bat/ads/internal/bundle/creative_ad_info.h"
+
 namespace ads {
 
-class AdsImpl;
-
-void GeneratePastCreativeSetHistoryFromNow(
-    const std::unique_ptr<AdsImpl>& ads,
-    const std::string& creative_set_id,
-    const uint64_t time_offset_in_seconds,
-    const int count);
-
-void GeneratePastCampaignHistoryFromNow(
-    const std::unique_ptr<AdsImpl>& ads,
-    const std::string& campaign_id,
-    const uint64_t time_offset_in_seconds,
-    const int count);
-
-void GeneratePastAdsHistoryFromNow(
-    const std::unique_ptr<AdsImpl>& ads,
-    const std::string& creative_instance_id,
-    const uint64_t time_offset_in_seconds,
-    const int count);
-
-void GeneratePastAdConversionHistoryFromNow(
-    const std::unique_ptr<AdsImpl>& ads,
-    const std::string& creative_set_id,
-    const uint64_t time_offset_in_seconds,
-    const int count);
+AdHistory GenerateAdHistory(
+    const CreativeAdInfo& ad,
+    const ConfirmationType& confirmation_type);
 
 }  // namespace ads
 

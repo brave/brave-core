@@ -142,8 +142,7 @@ TEST_F(BatAdsMarkedToNoLongerReceiveFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetId;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, ad.creative_set_id,
-      base::Time::kSecondsPerHour, 1);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
 
   get_client()->ToggleAdThumbDown(ad.creative_instance_id,
       ad.creative_set_id, AdContent::LikeAction::kThumbsUp);

@@ -207,14 +207,14 @@ void AdConversions::AddItemToQueue(
     return;
   }
 
-  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-  ads_->get_client()->AppendTimestampToAdConversionHistory(creative_set_id,
-      now);
+  ads_->get_client()->AppendCreativeSetIdToAdConversionHistory(creative_set_id);
 
   AdConversionQueueItemInfo ad_conversion;
 
   const uint64_t rand_delay = brave_base::random::Geometric(
       _is_debug ? kDebugAdConversionFrequency : kAdConversionFrequency);
+
+  const uint64_t now = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
 
   ad_conversion.timestamp_in_seconds = now + rand_delay;
   ad_conversion.creative_instance_id = creative_instance_id;

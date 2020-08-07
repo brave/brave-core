@@ -37,9 +37,6 @@ const std::vector<std::string> kCampaignIds = {
   "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"
 };
 
-const uint64_t kSecondsPerDay = base::Time::kSecondsPerHour *
-    base::Time::kHoursPerDay;
-
 }  // namespace
 
 class BatAdsDailyCapFrequencyCapTest : public ::testing::Test {
@@ -109,6 +106,10 @@ class BatAdsDailyCapFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  Client* get_client() {
+    return ads_->get_client();
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -142,7 +143,7 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
-  GeneratePastCampaignHistoryFromNow(ads_, ad.campaign_id, 0, 1);
+  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -155,10 +156,10 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
     AllowAdIfDoesNotExceedCapForNoMatchingCampaigns) {
   // Arrange
   CreativeAdInfo ad;
-  ad.campaign_id = kCampaignIds.at(1);
+  ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 1;
 
-  GeneratePastCampaignHistoryFromNow(ads_, kCampaignIds.at(0), 0, 2);
+  get_client()->AppendCampaignIdToCampaignHistory(kCampaignIds.at(1));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -174,9 +175,9 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
-  // 23hrs 59m 59s ago
-  GeneratePastCampaignHistoryFromNow(ads_, ad.campaign_id,
-      kSecondsPerDay - 1, 1);
+  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(23));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -192,8 +193,9 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
-  // 24hs ago
-  GeneratePastCampaignHistoryFromNow(ads_, ad.campaign_id, kSecondsPerDay, 1);
+  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromDays(1));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -209,28 +211,8 @@ TEST_F(BatAdsDailyCapFrequencyCapTest,
   ad.campaign_id = kCampaignIds.at(0);
   ad.daily_cap = 2;
 
-  GeneratePastCampaignHistoryFromNow(ads_, ad.campaign_id, 0, 2);
-
-  // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
-
-  // Assert
-  EXPECT_TRUE(should_exclude);
-}
-
-TEST_F(BatAdsDailyCapFrequencyCapTest,
-    DoNotAllowAdForIssue4207) {
-  // Arrange
-  const uint64_t ads_per_day = 20;
-  const uint64_t ads_per_hour = 5;
-  const uint64_t ad_interval = base::Time::kSecondsPerHour / ads_per_hour;
-
-  CreativeAdInfo ad;
-  ad.campaign_id = kCampaignIds.at(0);
-  ad.daily_cap = ads_per_day;
-
-  GeneratePastCampaignHistoryFromNow(ads_, ad.campaign_id,
-      ad_interval, ads_per_day);
+  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
+  get_client()->AppendCampaignIdToCampaignHistory(ad.campaign_id);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);

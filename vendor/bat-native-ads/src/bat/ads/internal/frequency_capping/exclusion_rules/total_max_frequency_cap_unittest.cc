@@ -106,6 +106,10 @@ class BatAdsTotalMaxFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  Client* get_client() {
+    return ads_->get_client();
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -139,8 +143,7 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   ad.creative_set_id = kCreativeSetIds.at(0);
   ad.total_max = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, ad.creative_set_id,
-      base::Time::kSecondsPerHour, 1);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -153,11 +156,11 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
     AllowAdIfDoesNotExceedCapForNoMatchingCreatives) {
   // Arrange
   CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(1);
+  ad.creative_set_id = kCreativeSetIds.at(0);
   ad.total_max = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetIds.at(0),
-      base::Time::kSecondsPerHour, 5);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(kCreativeSetIds.at(1));
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(kCreativeSetIds.at(1));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -185,10 +188,10 @@ TEST_F(BatAdsTotalMaxFrequencyCapTest,
   // Arrange
   CreativeAdInfo ad;
   ad.creative_set_id = kCreativeSetIds.at(0);
-  ad.total_max = 5;
+  ad.total_max = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, ad.creative_set_id,
-      base::Time::kSecondsPerHour, 5);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);

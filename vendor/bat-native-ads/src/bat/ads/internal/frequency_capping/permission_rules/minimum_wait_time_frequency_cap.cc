@@ -44,13 +44,13 @@ std::string MinimumWaitTimeFrequencyCap::get_last_message() const {
 
 bool MinimumWaitTimeFrequencyCap::DoesRespectCap(
     const std::deque<uint64_t>& history) const {
-  const uint64_t hour_window = base::Time::kSecondsPerHour;
-  const uint64_t hour_allowed = ads_->get_ads_client()->GetAdsPerHour();
+  const uint64_t time_constraint =
+      base::Time::kSecondsPerHour / ads_->get_ads_client()->GetAdsPerHour();
 
-  const uint64_t minimum_wait_time = hour_window / hour_allowed;
+  const uint64_t cap = 1;
 
   return DoesHistoryRespectCapForRollingTimeConstraint(history,
-      minimum_wait_time, 1);
+      time_constraint, cap);
 }
 
 std::deque<uint64_t> MinimumWaitTimeFrequencyCap::FilterHistory(

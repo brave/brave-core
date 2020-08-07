@@ -102,6 +102,10 @@ class BatAdsAdsPerHourFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  Client* get_client() {
+    return ads_->get_client();
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -136,8 +140,12 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
   ON_CALL(*platform_helper_mock_, IsMobile())
       .WillByDefault(Return(true));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      base::Time::kSecondsPerHour - 1, 1);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();
@@ -152,8 +160,12 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
   ON_CALL(*ads_client_mock_, GetAdsPerHour())
       .WillByDefault(Return(2));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      base::Time::kSecondsPerHour - 1, 1);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();
@@ -168,8 +180,15 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
   ON_CALL(*ads_client_mock_, GetAdsPerHour())
       .WillByDefault(Return(2));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      base::Time::kSecondsPerHour, 2);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(1));
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();
@@ -179,13 +198,20 @@ TEST_F(BatAdsAdsPerHourFrequencyCapTest,
 }
 
 TEST_F(BatAdsAdsPerHourFrequencyCapTest,
-    DoNotAllowAdIfExceedsCap) {
+    DoNotAllowAdIfExceedsCapWithin1Hour) {
   // Arrange
   ON_CALL(*ads_client_mock_, GetAdsPerHour())
       .WillByDefault(Return(2));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      10 * base::Time::kSecondsPerMinute, 2);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();

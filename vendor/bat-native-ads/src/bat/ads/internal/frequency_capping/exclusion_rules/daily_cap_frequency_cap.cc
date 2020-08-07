@@ -46,11 +46,13 @@ std::string DailyCapFrequencyCap::get_last_message() const {
 bool DailyCapFrequencyCap::DoesRespectCap(
       const std::deque<uint64_t>& history,
       const CreativeAdInfo& ad) const {
-  const uint64_t day_window =
+  const uint64_t time_constraint =
       base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
 
+  const uint64_t cap = ad.daily_cap;
+
   return DoesHistoryRespectCapForRollingTimeConstraint(
-      history, day_window, ad.daily_cap);
+      history, time_constraint, cap);
 }
 
 std::deque<uint64_t> DailyCapFrequencyCap::FilterHistory(

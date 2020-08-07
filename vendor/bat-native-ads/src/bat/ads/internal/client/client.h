@@ -102,21 +102,17 @@ class Client {
   void AppendPageProbabilitiesToHistory(
       const classification::PageProbabilitiesMap& page_probabilities);
   const classification::PageProbabilitiesList& GetPageProbabilitiesHistory();
-  void AppendTimestampToCreativeSetHistory(
-      const std::string& creative_instance_id,
-      const uint64_t timestamp_in_seconds);
+  void AppendCreativeSetIdToCreativeSetHistory(
+      const std::string& creative_set_id);
   const std::map<std::string, std::deque<uint64_t>>&
       GetCreativeSetHistory() const;
-  void AppendTimestampToAdConversionHistory(
-      const std::string& creative_set_id,
-      const uint64_t timestamp_in_seconds);
+  void AppendCreativeSetIdToAdConversionHistory(
+      const std::string& creative_set_id);
   const std::map<std::string, std::deque<uint64_t>>&
       GetAdConversionHistory() const;
-  void AppendTimestampToCampaignHistory(
-      const std::string& creative_instance_id,
-      const uint64_t timestamp_in_seconds);
-  const std::map<std::string, std::deque<uint64_t>>&
-      GetCampaignHistory() const;
+  void AppendCampaignIdToCampaignHistory(
+      const std::string& campaign_id);
+  const std::map<std::string, std::deque<uint64_t>>& GetCampaignHistory() const;
   std::string GetVersionCode() const;
   void SetVersionCode(
       const std::string& value);

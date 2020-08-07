@@ -33,9 +33,6 @@ namespace {
 
 const char kCreativeSetId[] = "654f10df-fbc4-4a92-8d43-2edf73734a60";
 
-const uint64_t kSecondsPerDay = base::Time::kSecondsPerHour *
-    base::Time::kHoursPerDay;
-
 }  // namespace
 
 
@@ -106,6 +103,10 @@ class BatAdsPerDayFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  Client* get_client() {
+    return ads_->get_client();
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -139,7 +140,7 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId, 0, 1);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -155,10 +156,10 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId, 0, 1);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId,
-      kSecondsPerDay, 1);
+  task_environment_.FastForwardBy(base::TimeDelta::FromDays(1));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -174,9 +175,10 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId, 0, 1);
-  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId,
-      kSecondsPerDay - 1, 1);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(23));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -192,28 +194,8 @@ TEST_F(BatAdsPerDayFrequencyCapTest,
   ad.creative_set_id = kCreativeSetId;
   ad.per_day = 2;
 
-  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId, 0, 2);
-
-  // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
-
-  // Assert
-  EXPECT_TRUE(should_exclude);
-}
-
-TEST_F(BatAdsPerDayFrequencyCapTest,
-    DoNotAllowAdForIssue4207) {
-  // Arrange
-  const uint64_t ads_per_day = 20;
-  const uint64_t ads_per_hour = 5;
-  const uint64_t ad_interval = base::Time::kSecondsPerHour / ads_per_hour;
-
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetId;
-  ad.per_day = ads_per_day;
-
-  GeneratePastCreativeSetHistoryFromNow(ads_, kCreativeSetId,
-      ad_interval, ads_per_day);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
+  get_client()->AppendCreativeSetIdToCreativeSetHistory(ad.creative_set_id);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);

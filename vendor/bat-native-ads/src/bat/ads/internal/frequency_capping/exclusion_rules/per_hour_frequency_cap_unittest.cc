@@ -102,6 +102,10 @@ class BatAdsPerHourFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  Client* get_client() {
+    return ads_->get_client();
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -133,8 +137,11 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      base::Time::kSecondsPerHour, 1);
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(1));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -144,28 +151,16 @@ TEST_F(BatAdsPerHourFrequencyCapTest,
 }
 
 TEST_F(BatAdsPerHourFrequencyCapTest,
-    DoNotAllowTheSameAdOnTheCuspOf1Hour) {
-  // Arrange
-  CreativeAdInfo ad;
-  ad.creative_instance_id = kCreativeInstanceId;
-
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      base::Time::kSecondsPerHour - 1, 1);
-
-  // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
-
-  // Assert
-  EXPECT_TRUE(should_exclude);
-}
-
-TEST_F(BatAdsPerHourFrequencyCapTest,
     DoNotAllowTheSameAdWithin1Hour) {
   // Arrange
   CreativeAdInfo ad;
   ad.creative_instance_id = kCreativeInstanceId;
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId, 0, 1);
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(59));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);

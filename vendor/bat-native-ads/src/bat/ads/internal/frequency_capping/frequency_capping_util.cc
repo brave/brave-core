@@ -24,11 +24,11 @@ bool DoesHistoryRespectCapForRollingTimeConstraint(
     }
   }
 
-  if (count < cap) {
-    return true;
+  if (count >= cap) {
+    return false;
   }
 
-  return false;
+  return true;
 }
 
 }  // namespace ads
