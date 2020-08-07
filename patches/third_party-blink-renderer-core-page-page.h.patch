@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/core/page/page.h b/third_party/blink/renderer/core/page/page.h
+index 1074204dbfb69f213a13c6784021953c9f18dc13..0a8bb47eeeb367dc8f8b685a4f75af8f37d582c1 100644
+--- a/third_party/blink/renderer/core/page/page.h
++++ b/third_party/blink/renderer/core/page/page.h
+@@ -164,6 +164,10 @@ class CORE_EXPORT Page final : public GarbageCollected<Page>,
+ 
+   void DocumentDetached(Document*);
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void FinalPageGraph(Document*);
++// #endif
++
+   bool OpenedByDOM() const;
+   void SetOpenedByDOM();
+ 

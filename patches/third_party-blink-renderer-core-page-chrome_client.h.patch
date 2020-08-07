@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/renderer/core/page/chrome_client.h b/third_party/blink/renderer/core/page/chrome_client.h
+index e027493c7217d34ee079152437a008894572dd92..5ad2bdd15c09e9213e747d351c3d27da54717761 100644
+--- a/third_party/blink/renderer/core/page/chrome_client.h
++++ b/third_party/blink/renderer/core/page/chrome_client.h
+@@ -510,6 +510,10 @@ class CORE_EXPORT ChromeClient : public GarbageCollected<ChromeClient> {
+ 
+   virtual void DocumentDetached(Document&) {}
+ 
++// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  virtual void FinalPageGraph(Document&) {}
++// #endif
++
+  protected:
+   ChromeClient() = default;
+ 
