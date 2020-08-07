@@ -227,6 +227,7 @@ fn correct_relative_links(
             if !href.starts_with("http://")
                 && !href.starts_with("https://")
                 && !href.starts_with("//")
+                && !href.starts_with("#")
             {
                 el.set_attribute("href", &format!("{}{}", href_origin, href))?;
             }
