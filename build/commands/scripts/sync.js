@@ -28,43 +28,30 @@ program
 const installDepotTools = (options = config.defaultOptions) => {
   options.cwd = config.braveCoreDir
 
-  util.run('git', ['submodule', 'sync'], options)
-  util.run('git', ['submodule', 'update', '--init', '--recursive'], options)
+  if (!fs.existsSync(config.depotToolsDir)) {
+    Log.progress('Install Depot Tools...')
+    fs.mkdirSync(config.depotToolsDir)
+    util.run('git', ['-C', config.depotToolsDir, 'clone', 'https://chromium.googlesource.com/chromium/tools/depot_tools.git', '.'], options)
+  }
 
+  Log.progress('Fixup Depot Tools...')
   // fixup depot tools after update
   if (process.platform !== 'win32') {
     util.run('git', ['-C', config.depotToolsDir, 'clean', '-fxd'], options)
     util.run('git', ['-C', config.depotToolsDir, 'reset', '--hard', 'HEAD'], options)
-    return
+  } else {
+    // On Windows:
+    // When depot_tools are already installed they redirect git to their own
+    // version which resides in a bootstrap-*_bin directory. So when we try to
+    // do git clean -fxd we fail because the git executable is in use in that
+    // directory. Get around that by using regular git.
+    let git_exes = util.run('where', ['git'], {shell: true})
+    let git_exe = '"' + git_exes.stdout.toString().split(os.EOL)[0] + '"'
+    if (git_exe === '""') git_exe = 'git'
+    util.run(git_exe, ['-C', config.depotToolsDir, 'clean', '-fxd'], options)
+    util.run(git_exe, ['-C', config.depotToolsDir, 'reset', '--hard', 'HEAD'], options)
   }
-  // On Windows:
-  // When depot_tools are already installed they redirect git to their own
-  // version which resides in a bootstrap-*_bin directory. So when we try to
-  // do git clean -fxd we fail because the git executable is in use in that
-  // directory. Get around that by using regular git.
-  let git_exes = util.run('where', ['git'], {shell: true})
-  let git_exe = '"' + git_exes.stdout.toString().split(os.EOL)[0] + '"'
-  if (git_exe === '""') git_exe = 'git'
-  util.run(git_exe, ['-C', config.depotToolsDir, 'clean', '-fxd'], options)
-  util.run(git_exe, ['-C', config.depotToolsDir, 'reset', '--hard', 'HEAD'], options)
-
-  // Get around the error in updating depot_tools on windows due to pylint.bat
-  // file transitioning from untracked to a committed file. When
-  // update_depot_tools script tries to use git rebase it errors out. This is
-  // already fixed upstream, but we need a workaround for
-  // now. See https://bugs.chromium.org/p/chromium/issues/detail?id=996359
-  // The commit id in git merge-base command below is when pylint.bat was
-  // added to git.
-  let cmd_options = Object.assign({}, options)
-  cmd_options.continueOnFail = true
-  let is_fixed = util.run('git',
-    ['-C', config.depotToolsDir, 'merge-base', '--is-ancestor', '53297790de09e48c91678367b48528afbc9f71c1', 'HEAD'], cmd_options)
-  // If merge-base succeeds the exit code is 0.
-  if (!is_fixed.status) return
-  console.log("Manually updating depot_tools as a workaround for https://crbug.com/996359")
-  util.run('git', ['-C', config.depotToolsDir, 'fetch', 'origin'], options)
-  util.run('git', ['-C', config.depotToolsDir, 'checkout', 'origin/master'], options)
-  util.run('git', ['-C', config.depotToolsDir, 'reset', '--hard', 'origin/master'], options)
+  Log.progress('Done Depot Tools...')
 }
 
 async function RunCommand () {
@@ -75,10 +62,8 @@ async function RunCommand () {
     Log.warn('--all, --run_hooks and --run_sync are deprecated. Will behave as if flag was not passed. Please update your command to `npm run sync` in the future.')
   }
 
-  if (program.init || !fs.existsSync(config.depotTooldDir)) {
-    Log.progress('Updating submodules...')
+  if (program.init || !fs.existsSync(config.depotToolsDir)) {
     installDepotTools()
-    Log.progress('Done updating submodules...')
   }
 
   if (program.init) {
