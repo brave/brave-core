@@ -198,7 +198,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<BraveStatsTable> getAllStatsWithDate(String thresholdTime, String currentTime) {
         List<BraveStatsTable> braveStats = new ArrayList<>();
-
         // Select All Query
         String selectQuery = "SELECT  * FROM "
                              + BraveStatsTable.TABLE_NAME

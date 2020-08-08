@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
+import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -31,10 +32,10 @@ import java.util.Map;
 
 public class RetentionNotificationUtil {
     public static String NOTIFICATION_TYPE = "notification_type";
+    private static final String BRAVE_BROWSER = "Brave Browser";
 
-    public static final String HOUR_3 = "hour_3";
+            public static final String HOUR_3 = "hour_3";
     public static final String HOUR_24 = "hour_24";
-    public static final String HOUR_48 = "hour_48";
     public static final String DAY_6 = "day_6";
     public static final String EVERY_SUNDAY = "every_sunday";
     public static final String DAY_10 = "day_10";
@@ -43,20 +44,25 @@ public class RetentionNotificationUtil {
     public static final String BRAVE_STATS_ADS_TRACKERS = "brave_stats_ads_trackers";
     public static final String BRAVE_STATS_DATA = "brave_stats_data";
     public static final String BRAVE_STATS_TIME = "brave_stats_time";
+    public static final String DEFAULT_BROWSER_1 = "default_browser_1";
+    public static final String DEFAULT_BROWSER_2 = "default_browser_2";
+    public static final String DEFAULT_BROWSER_3 = "default_browser_3";
 
     private static Map<String, RetentionNotification> mNotificationMap = new HashMap<String, RetentionNotification>() {
         {
-            put(HOUR_3, new RetentionNotification(3, 3 * 60, BraveChannelDefinitions.ChannelId.BRAVE_STATS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_stats)));
-            put(HOUR_24, new RetentionNotification(24, 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_STATS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_stats)));
-            put(HOUR_48, new RetentionNotification(48, 48 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_stats)));
-            put(DAY_6, new RetentionNotification(6, 6 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_stats)));
-            put(EVERY_SUNDAY, new RetentionNotification(7, -1, BraveChannelDefinitions.ChannelId.BRAVE_STATS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_stats)));
-            put(DAY_10, new RetentionNotification(10, 10 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_REWARDS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_ui_brave_rewards)));
-            put(DAY_30, new RetentionNotification(30, 30 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_REWARDS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_ui_brave_rewards)));
-            put(DAY_35, new RetentionNotification(35, 35 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_REWARDS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_ui_brave_rewards)));
-            put(BRAVE_STATS_ADS_TRACKERS, new RetentionNotification(14, 60, BraveChannelDefinitions.ChannelId.BRAVE_STATS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_stats)));
-            put(BRAVE_STATS_DATA, new RetentionNotification(15, 60, BraveChannelDefinitions.ChannelId.BRAVE_STATS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_stats)));
-            put(BRAVE_STATS_TIME, new RetentionNotification(16, 60, BraveChannelDefinitions.ChannelId.BRAVE_STATS, ContextUtils.getApplicationContext().getResources().getString(R.string.brave_stats)));
+            put(HOUR_3, new RetentionNotification(3, 3 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER ));
+            put(HOUR_24, new RetentionNotification(24, 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DAY_6, new RetentionNotification(6, 6 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(EVERY_SUNDAY, new RetentionNotification(7, -1, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DAY_10, new RetentionNotification(10, 10 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DAY_30, new RetentionNotification(30, 30 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DAY_35, new RetentionNotification(35, 35 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(BRAVE_STATS_ADS_TRACKERS, new RetentionNotification(14, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(BRAVE_STATS_DATA, new RetentionNotification(15, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(BRAVE_STATS_TIME, new RetentionNotification(16, 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DEFAULT_BROWSER_1, new RetentionNotification(17, 48 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DEFAULT_BROWSER_2, new RetentionNotification(18, 6 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(DEFAULT_BROWSER_3, new RetentionNotification(19, 20 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
         }
     };
 
@@ -74,7 +80,13 @@ public class RetentionNotificationUtil {
         builder.setStyle(new NotificationCompat.BigTextStyle().bigText(notificationText));
         builder.setSmallIcon(R.drawable.ic_chrome);
         builder.setAutoCancel(true);
-        builder.setContentIntent(getRetentionNotificationActionIntent(context, notificationType));
+        if (notificationType.equals(DEFAULT_BROWSER_1)
+                || notificationType.equals(DEFAULT_BROWSER_2)
+                || notificationType.equals(DEFAULT_BROWSER_3)) {
+            builder.setContentIntent(BraveSetDefaultBrowserNotificationService.getDefaultAppSettingsIntent(context));
+        } else {
+            builder.setContentIntent(getRetentionNotificationActionIntent(context, notificationType));
+        }
         return builder.build();
     }
 
@@ -101,7 +113,7 @@ public class RetentionNotificationUtil {
             }
         case HOUR_24:
             if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                return String.format(context.getResources().getString(R.string.notification_hour_24_text_1), totalSavedBandwidth);
+                return String.format(context.getResources().getString(R.string.notification_hour_24_text_1), dataSavedPair.first, dataSavedPair.second);
             } else {
                 return context.getResources().getString(R.string.notification_hour_24_text_2);
             }
@@ -119,6 +131,10 @@ public class RetentionNotificationUtil {
             return context.getResources().getString(R.string.notification_brave_stats_data);
         case BRAVE_STATS_TIME:
             return context.getResources().getString(R.string.notification_brave_stats_time);
+        case DEFAULT_BROWSER_1:
+        case DEFAULT_BROWSER_2:
+        case DEFAULT_BROWSER_3:
+            return context.getResources().getString(R.string.set_brave_as_your);
         }
         return "";
     }

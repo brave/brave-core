@@ -31,6 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="22sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:textColor="@color/brave_stats_text_color"/>
 
@@ -40,6 +42,8 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:gravity="center"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:textColor="@color/brave_stats_text_color"
             android:layout_marginBottom="16dp"/>
 

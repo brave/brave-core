@@ -202,17 +202,18 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           return;
         }
         mBraveShieldsHandler.updateValues(tabId);
-        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+        if (!isIncognito()
+            && OnboardingPrefManager.getInstance().isBraveStatsEnabled()
             && (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
                 || block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS))) {
-          Log.e("NTP", subresource);
           addStatsToDb(block_type, subresource, currentTab.getUrlString());
         }
       }
 
       @Override
       public void savedBandwidth(long savings) {
-        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+        if (!isIncognito()
+            && OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
           addSavedBandwidthToDb(savings);
         }
       }
@@ -286,19 +287,22 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
 
           if (!OnboardingPrefManager.getInstance().isAdsTrackersNotificationStarted()
-              && (trackersBlockedCount + adsBlockedCount) > 250) {
+              && (trackersBlockedCount + adsBlockedCount) > 250
+              && PackageUtils.isFirstInstall(getContext())) {
             RetentionNotificationUtil.scheduleNotification(getContext(), RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS);
             OnboardingPrefManager.getInstance().setAdsTrackersNotificationStarted(true);
           }
 
           if (!OnboardingPrefManager.getInstance().isDataSavedNotificationStarted()
-              && dataSaved > MB_10) {
+              && dataSaved > MB_10
+              && PackageUtils.isFirstInstall(getContext())) {
             RetentionNotificationUtil.scheduleNotification(getContext(), RetentionNotificationUtil.BRAVE_STATS_DATA);
             OnboardingPrefManager.getInstance().setDataSavedNotificationStarted(true);
           }
 
           if (!OnboardingPrefManager.getInstance().isTimeSavedNotificationStarted()
-              && estimatedMillisecondsSaved > MINUTES_10) {
+              && estimatedMillisecondsSaved > MINUTES_10
+              && PackageUtils.isFirstInstall(getContext())) {
             RetentionNotificationUtil.scheduleNotification(getContext(), RetentionNotificationUtil.BRAVE_STATS_TIME);
             OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
           }

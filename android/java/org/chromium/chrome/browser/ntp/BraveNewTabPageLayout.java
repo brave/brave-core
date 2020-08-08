@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -150,6 +151,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
         ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
+        if (!BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+                || !NTPUtil.shouldEnableNTPFeature()) {
+            mBadgeImageView.setColorFilter(ContextCompat.getColor(ContextUtils.getApplicationContext(), R.color.brave_stats_badge_tint_color), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
         mBadgeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

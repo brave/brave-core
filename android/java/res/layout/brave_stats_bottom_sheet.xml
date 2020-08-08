@@ -9,7 +9,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ntp_content"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@color/brave_stats_bg_color"
     android:maxWidth="400dp">
 
@@ -88,22 +88,36 @@
 
             </RadioGroup>
 
-            <TextView
-                android:id="@+id/brave_stats_empty_text"
+            <LinearLayout
+                android:id="@+id/brave_stats_empty_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:gravity="center_vertical"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginBottom="8dp"
                 android:padding="24dp"
-                android:gravity="center_horizontal"
-                android:fontFamily="sans-serif" 
-                android:text="@string/start_browsing_to_see"
-                android:background="@drawable/brave_stats_ui_empty_bg"
                 android:visibility="gone"
-                android:textColor="@color/brave_stats_empty_text_color"/>
+                android:background="@drawable/brave_stats_ui_empty_bg"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@null"
+                    app:srcCompat="@drawable/ic_clock"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:fontFamily="sans-serif" 
+                    android:text="@string/start_browsing_to_see"
+                    android:textColor="@color/brave_stats_empty_text_color"/>
+
+            </LinearLayout>
 
             <include layout="@layout/brave_stats_pager_layout"/>
 
