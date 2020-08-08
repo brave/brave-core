@@ -17,22 +17,22 @@ namespace tor {
 
 class TorControlObserver : public base::CheckedObserver {
  public:
-  virtual void OnTorControlReady();
-  virtual void OnTorClosed();
+  virtual void OnTorControlReady() {}
+  virtual void OnTorClosed() {}
 
   virtual void OnTorEvent(
       TorControlEvent,
       const std::string& initial,
-      const std::map<std::string, std::string>& extra);
+      const std::map<std::string, std::string>& extra) {}
 
   // Debugging options.
-  virtual void OnTorRawCmd(const std::string& cmd);
+  virtual void OnTorRawCmd(const std::string& cmd) {}
   virtual void OnTorRawAsync(const std::string& status,
-                             const std::string& line);
+                             const std::string& line) {}
   virtual void OnTorRawMid(const std::string& status,
-                           const std::string& line);
+                           const std::string& line) {}
   virtual void OnTorRawEnd(const std::string& status,
-                           const std::string& line);
+                           const std::string& line) {}
 };
 
 }

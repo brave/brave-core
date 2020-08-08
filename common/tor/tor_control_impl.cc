@@ -72,6 +72,7 @@ TorControlImpl::TorControlImpl()
     reading_(false),
     read_start_(-1),
     read_cr_(false) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DETACH_FROM_SEQUENCE(watch_sequence_checker_);
   DETACH_FROM_SEQUENCE(io_sequence_checker_);
 }
