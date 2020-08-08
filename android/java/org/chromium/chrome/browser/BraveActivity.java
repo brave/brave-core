@@ -263,13 +263,17 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
         BraveSyncReflectionUtils.showInformers();
 
-        if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()) {
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_24);
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_6);
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_10);
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_30);
-            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_35);
+        if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
+                && PackageUtils.isFirstInstall(this)) {
+            // RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
+            // RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_24);
+            // RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_6);
+            // RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_10);
+            // RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_30);
+            // RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_35);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_1);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_2);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_3);
             OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
         }
     }

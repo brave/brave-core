@@ -106,6 +106,7 @@
     <color name="brave_stats_close_button_color">#495057</color>
     <color name="brave_stats_radio_group_bg">#E9E9F4</color>
     <color name="brave_stats_empty_text_color">#339AF0</color>
-    <color name="brave_stats_empty_bg_color">#F0F8FF</color>
+    <color name="brave_stats_empty_bg_color">#335DB5FC</color>
     <color name="brave_stats_empty_border_color">#5DB5FC</color>
+    <color name="brave_stats_badge_tint_color">#495057</color>
 </resources>

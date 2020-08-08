@@ -23,8 +23,10 @@ import android.widget.FrameLayout;
 import android.util.DisplayMetrics;
 import android.content.res.Configuration;
 import android.widget.RadioGroup;
+import android.widget.RadioButton;
 import android.util.Pair;
 import android.content.pm.ActivityInfo;
+import android.content.DialogInterface;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -68,9 +70,13 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     private TextView timeSavedCountText;
     private TextView timeSavedText;
     private TextView noDataText;
-    private TextView emptyDataText;
+    private TextView braveStatsSubSectionText;
+    private LinearLayout emptyDataLayout;
     private LinearLayout websitesLayout;
     private LinearLayout trackersLayout;
+
+    private RadioButton monthRadioButton;
+    private RadioButton monthsRadioButton;
 
     private int selectedType = WEBSITES;
     private int selectedDuration = DAYS_7;
@@ -93,6 +99,18 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+
+        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                BottomSheetDialog d = (BottomSheetDialog) dialog;
+                View bottomSheetInternal = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                DisplayMetrics metrics = new DisplayMetrics();
+                getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                // BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(800);
+            }
+        });
+
         return inflater.inflate(R.layout.brave_stats_bottom_sheet, container, false);
     }
 
@@ -111,7 +129,6 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     @Override
     public void onResume() {
         super.onResume();
-
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
         if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
             getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
@@ -130,20 +147,19 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        emptyDataText = view.findViewById(R.id.brave_stats_empty_text);
+        emptyDataLayout = view.findViewById(R.id.brave_stats_empty_layout);
 
         // view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
         //     @Override
         //     public void onGlobalLayout() {
+        //         View parent = (View) view.getParent();
+        //         // View parent = (View) getActivity().findViewById(android.R.id.content);
         //         BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
         //         // FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        //         BottomSheetBehavior behavior = BottomSheetBehavior.from((View) view.getParent());
-        //         // behavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        //         BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
         //         DisplayMetrics metrics = new DisplayMetrics();
         //         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        //         int bottomSheetHeight = (int) (metrics.heightPixels * (2/3));
-        //         Log.e("NTP", "" + bottomSheetHeight);
-        //         behavior.setPeekHeight(bottomSheetHeight);
+        //         behavior.setPeekHeight(5000);
         //     }
         // });
 
@@ -162,10 +178,8 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             }
         });
 
-        view.findViewById(R.id.month_radio).setEnabled(false);
-        view.findViewById(R.id.month_radio).setAlpha(0.2f);
-        view.findViewById(R.id.months_radio).setEnabled(false);
-        view.findViewById(R.id.months_radio).setAlpha(0.2f);
+        monthRadioButton = view.findViewById(R.id.month_radio);
+        monthsRadioButton = view.findViewById(R.id.months_radio);
 
         LinearLayout layout = view.findViewById(R.id.brave_stats_layout);
         adsTrackersCountText = layout.findViewById(R.id.ads_trackers_count_text);
@@ -175,6 +189,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         timeSavedText = layout.findViewById(R.id.time_saved_text);
         websitesLayout = layout.findViewById(R.id.wesites_layout);
         trackersLayout = layout.findViewById(R.id.trackers_layout);
+        braveStatsSubSectionText = layout.findViewById(R.id.brave_stats_sub_section_text);
 
         RadioGroup statTypeRadioGroup = layout.findViewById(R.id.stat_type_radio_group);
         statTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -219,9 +234,29 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         showWebsitesTrackers();
 
         if (adsTrackersCount > 0) {
-            emptyDataText.setVisibility(View.GONE);
+            emptyDataLayout.setVisibility(View.GONE);
         } else {
-            emptyDataText.setVisibility(View.VISIBLE);
+            emptyDataLayout.setVisibility(View.VISIBLE);
+        }
+
+        //Check for month option
+        long adsTrackersCountToCheckForMonth = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_7)).size();
+        if (adsTrackersCountToCheckForMonth > 0) {
+            monthRadioButton.setEnabled(true);
+            monthRadioButton.setAlpha(1.0f);
+        } else {
+            monthRadioButton.setEnabled(false);
+            monthRadioButton.setAlpha(0.2f);
+        }
+
+        //Check for 3 month option
+        long adsTrackersCountToCheckFor3Month = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_90), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30)).size();
+        if (adsTrackersCountToCheckFor3Month > 0) {
+            monthsRadioButton.setEnabled(true);
+            monthsRadioButton.setAlpha(1.0f);
+        } else {
+            monthsRadioButton.setEnabled(false);
+            monthsRadioButton.setAlpha(0.2f);
         }
     }
 
@@ -258,8 +293,10 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 rootView.addView(layout);
             }
             noDataText.setVisibility(View.GONE);
+            braveStatsSubSectionText.setVisibility(View.VISIBLE);
         } else {
             noDataText.setVisibility(View.VISIBLE);
+            braveStatsSubSectionText.setVisibility(View.GONE);
         }
     }
 }

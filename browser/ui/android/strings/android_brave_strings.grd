@@ -1255,7 +1255,7 @@ until they verify, or until 90 days have passed.
         Turn on Brave stats to see how many trackers &amp; ads have been blocked in the past 3 hours.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_24_TEXT_1" desc="24_hours notification text">
-        You saved <ph name="DATA">%1$s</ph> data with Brave browser.
+        You saved <ph name="DATA">%1$s</ph> <ph name="DATA_TEXT">%2$s</ph> data with Brave browser.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_24_TEXT_2" desc="24_hours notification text">
         Turn on Brave Stats to see how much data you've saved.
@@ -1280,6 +1280,9 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_START_BROWSING_TO_SEE" desc="Brave stats empty text">
         Start browsing to see privacy reporting
+      </message>
+      <message name="IDS_SET_BRAVE_AS_YOUR" desc="Deafult browser notification text">
+        Set Brave as your default browser for private and secure browsing.
       </message>
     </messages>
   </release>
