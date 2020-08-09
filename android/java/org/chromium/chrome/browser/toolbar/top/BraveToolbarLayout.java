@@ -400,8 +400,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       showShieldsMenu(mBraveShieldsButton);
     } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
       Context context = getContext();
-      if ((PackageUtils.isFirstInstall(context)
-           || (!PackageUtils.isFirstInstall(context) && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())))
+      if ((checkForRewards())
           && !OnboardingPrefManager.getInstance().isOnboardingShown()) {
         OnboardingPrefManager.getInstance().showOnboarding(context);
       } else {
@@ -420,6 +419,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         mIsInitialNotificationPosted = false;
       }
     }
+  }
+
+  private boolean checkForRewards() {
+    return (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
+           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile());
   }
 
   private void showShieldsMenu(View mBraveShieldsButton) {
@@ -851,11 +855,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     updateModernLocationBarColor(mCurrentToolbarColor);
   }
 
-    @Override
-    View getMenuButtonWrapper() {
-        if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-            return null;
-        }
-        return super.getMenuButtonWrapper();
+  @Override
+  View getMenuButtonWrapper() {
+    if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+      return null;
     }
+    return super.getMenuButtonWrapper();
+  }
 }
