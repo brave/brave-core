@@ -509,7 +509,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     // MARK: - Brave Today
     
     private func loadFeedContents() {
-        if !feedDataSource.shouldLoadContent {
+        if !Preferences.BraveToday.isEnabled.value || !feedDataSource.shouldLoadContent {
             return
         }
         feedLoaderView.isHidden = false
