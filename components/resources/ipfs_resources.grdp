@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="ipfs_enabled">
+     <include name="IDR_IPFS_HTML" file="../ipfs_ui/ipfs.html" type="BINDATA" />
+  </if>
+</grit-part>

@@ -78,7 +78,7 @@ static void LoadOrLaunchIPFSURL(
 
   web_contents->GetController().LoadURL(url, content::Referrer(),
       page_transition, std::string());
-  // TODO: We probably want something more like this:
+  // TODO(bbondy): We probably want something more like this:
   /*
   if (IsWebtorrentEnabled(web_contents->GetBrowserContext())) {
     web_contents->GetController().LoadURL(url, content::Referrer(),

@@ -1,6 +1,7 @@
 import("//brave/components/brave_perf_predictor/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/config/locales.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -39,6 +40,7 @@ grit("static_resources") {
   defines = [
     "enable_brave_perf_predictor=$enable_brave_perf_predictor",
     "enable_speedreader=$enable_speedreader",
+    "ipfs_enabled=$ipfs_enabled",
   ]
 
   grit_flags = [
@@ -67,6 +69,15 @@ repack("resources") {
     "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
   ]
 
+  if (ipfs_enabled) {
+    deps += [
+      "//brave/components/ipfs_ui:generated_resources",
+    ]
+    sources += [
+      "$root_gen_dir/brave/components/ipfs_ui/resources/ipfs_generated.pak",
+    ]
+  }
+
   if (brave_wallet_enabled) {
     deps += [
       "//brave/components/brave_wallet_ui:generated_resources",
@@ -88,6 +99,7 @@ grit("strings") {
 
   defines = [
     "enable_speedreader=$enable_speedreader",
+    "ipfs_enabled=$ipfs_enabled",
   ]
 
   foreach(locale, locales_with_fake_bidi) {
