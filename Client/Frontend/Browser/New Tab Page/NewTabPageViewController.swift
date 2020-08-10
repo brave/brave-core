@@ -250,10 +250,15 @@ class NewTabPageViewController: UIViewController, Themeable {
             $0.centerX.equalTo(collectionView.frameLayoutGuide)
             $0.bottom.equalTo(collectionView.frameLayoutGuide).inset(16)
         }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        // Only load feed contents once per tab.
-        // TODO: Possibly revisit to make it once per NTP visibility (viewWillAppear)
-        loadFeedContents()
+        if collectionView.contentOffset.y == collectionView.contentInset.top {
+            // Reload contents if the user is not currently scrolled into the feed
+            loadFeedContents()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -514,6 +519,15 @@ class NewTabPageViewController: UIViewController, Themeable {
         }
         feedLoaderView.isHidden = false
         feedLoaderView.start()
+        if let section = layout.braveTodaySection {
+            let numberOfItems = collectionView.numberOfItems(inSection: section)
+            if numberOfItems > 0 {
+                // `feedDataSource.load` will update `feedDataSource.state` to `.loading` so remove items
+                collectionView.deleteItems(
+                    at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
+                )
+            }
+        }
         feedDataSource.load { [weak self] in
             guard let self = self else { return }
             UIView.animate(withDuration: 0.2, animations: {
