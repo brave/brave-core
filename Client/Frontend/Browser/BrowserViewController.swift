@@ -1357,7 +1357,7 @@ class BrowserViewController: UIViewController {
         case .estimatedProgress:
             guard tab === tabManager.selectedTab,
                 let progress = change?[.newKey] as? Float else { break }
-            if !(webView.url?.isLocalUtility ?? false) {
+            if webView.url?.isLocalUtility == false {
                 topToolbar.updateProgressBar(progress)
             } else {
                 topToolbar.hideProgressBar()
@@ -1367,13 +1367,6 @@ class BrowserViewController: UIViewController {
             
             if tab === tabManager.selectedTab {
                 topToolbar.locationView.loading = tab.loading
-                if !(webView.url?.isLocalUtility ?? false) {
-                    if loading && topToolbar.currentProgress() < TopToolbarView.psuedoProgressValue {
-                        topToolbar.updateProgressBar(TopToolbarView.psuedoProgressValue)
-                    }
-                } else {
-                    topToolbar.hideProgressBar()
-                }
             }
             
             if !loading {
@@ -2438,14 +2431,15 @@ extension BrowserViewController: TabManagerDelegate {
         if let tab = selected, let webView = tab.webView {
             updateURLBar()
             
-            if let url = tab.url, !url.isLocalUtility, webView.isLoading {
-                if webView.estimatedProgress > 0 {
-                    topToolbar.updateProgressBar(Float(webView.estimatedProgress))
-                } else {
-                    topToolbar.updateProgressBar(TopToolbarView.psuedoProgressValue)
+            if let url = tab.url, !url.isLocalUtility {
+                let previousEstimatedProgress = previous?.webView?.estimatedProgress ?? 1.0
+                let selectedEstimatedProgress = webView.estimatedProgress
+                
+                // Progress should be updated only if there's a difference between tabs.
+                // Otherwise we do nothing, so switching between fully loaded tabs won't show the animation.
+                if previousEstimatedProgress != selectedEstimatedProgress {
+                    topToolbar.updateProgressBar(Float(selectedEstimatedProgress))
                 }
-            } else {
-                topToolbar.hideProgressBar()
             }
 
             let newTheme = Theme.of(tab)
