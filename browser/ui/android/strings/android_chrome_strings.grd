@@ -297,10 +297,10 @@ CHAR-LIMIT guidelines:
       <message name="IDS_SIGN_OUT_AND_TURN_OFF_SYNC" desc="The text for a preferences row that for signs out the user and turns off sync.">
         Sign out and turn off sync
       </message>
-      <message name="IDS_MANAGE_YOUR_GOOGLE_ACCOUNT" desc="Title for link to Brave Account Page to manage account settings.">
-        Manage your Brave Account
+      <message name="IDS_MANAGE_YOUR_GOOGLE_ACCOUNT" desc="Title for link to Brave sync chain Page to manage account settings.">
+        Manage your Brave sync chain
       </message>
-      <message name="IDS_SYNC_CATEGORY_TITLE" desc="Title for the group of Sync-related entries in Settings. This group contains preferences for data tied to user's Brave Account.">
+      <message name="IDS_SYNC_CATEGORY_TITLE" desc="Title for the group of Sync-related entries in Settings. This group contains preferences for data tied to user's Brave sync chain.">
         Sync
       </message>
       <message name="IDS_SYNC_SWITCH_TITLE" desc="Title for the switch preference that enables sync. Displayed in 'Sync and Brave services' screen.">
@@ -309,10 +309,10 @@ CHAR-LIMIT guidelines:
       <message name="IDS_MANAGE_SYNC_TITLE" desc="Title for the preference row that opens the screen that allows configuring separate data types. Displayed in 'Sync and Brave services' screen.">
         Manage sync
       </message>
-      <message name="IDS_SERVICES_CATEGORY_TITLE" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave Account.">
+      <message name="IDS_SERVICES_CATEGORY_TITLE" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave sync chain.">
         Other Brave services
       </message>
-      <message name="IDS_PREFS_GOOGLE_SERVICES" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave Account. [CHAR-LIMIT=40]">
+      <message name="IDS_PREFS_GOOGLE_SERVICES" desc="Title for the group of preferences that control non-personalized Brave services. This group contains preferences for data that is not tied to user's Brave sync chain. [CHAR-LIMIT=40]">
         Brave services
       </message>
       <message name="IDS_AUTOCOMPLETE_SEARCHES_AND_URLS_TITLE" desc="Title for a checkbox in Settings that controls URL and search autocompletion and informs the user about the data shared by this feature.">
@@ -481,13 +481,13 @@ CHAR-LIMIT guidelines:
         Warn you if passwords are exposed in a data breach
       </message>
       <message name="IDS_PASSWORDS_LEAK_DETECTION_SWITCH_SIGNED_OUT_ENABLE_DESCRIPTION" desc="Description for the switch toggling whether Brave should check that entered credentials have been part of a leak. Displayed for users who are not signed in and syncing.">
-        When you sign in to your Brave Account, this feature is turned on
+        When you sign in to your Brave sync chain, this feature is turned on
       </message>
       <message name="IDS_SECTION_SAVED_PASSWORDS_EXCEPTIONS" desc="Header for the list of websites for which user selected to never save passwords. [CHAR-LIMIT=32]">
         Never saved
       </message>
       <message name="IDS_MANAGE_PASSWORDS_TEXT" desc="Text for link to manage passwords on Account Central.">
-        View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave Account<ph name="END_LINK">&lt;/link&gt;</ph>
+        View and manage saved passwords in your <ph name="BEGIN_LINK">&lt;link&gt;</ph>Brave sync chain<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_PHONE_AS_SECURITY_KEY_TEXT" desc="Text for link to use phone as a security key. A 'security key' is physical device used for authentication, usually as part of two-factor security. This option allows a phone to be used in place of a dedicated security key.">
         Use phone as a security key
@@ -742,16 +742,16 @@ Your Brave account may have other forms of browsing history like searches and ac
         Signs you out of most sites.
       </message>
       <message name="IDS_CLEAR_COOKIES_AND_SITE_DATA_SUMMARY_BASIC_SIGNED_IN" desc="A summary for the 'Cookies and site data' option in the 'Clear Browsing Data' screen, explaining that deleting cookies and site data will sign the user out of most websites but you Brave sign in will stay.">
-        Signs you out of most sites. You won't be signed out of your Brave Account.
+        Signs you out of most sites. You won't be signed out of your Brave sync chain.
       </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY" desc="A text for the basic tab explaining browsing history.">
         Clears history and autocompletions in the address bar.
       </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY_SIGNED_IN" desc="A text explaining other forms of activity for signed in users.">
-        Clears history and autocompletions in the address bar. Your Brave Account may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
+        Clears history and autocompletions in the address bar. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_BROWSING_HISTORY_SUMMARY_SYNCED" desc="A text for the basic tab explaining browsing history for users with history sync.">
-        Clears history from all signed-in devices. Your Brave Account may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
+        Clears history from all signed-in devices. Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_PASSWORDS_TITLE" desc="Title for Clear Passwords in Clear Browsing Data preference">
         Saved passwords
@@ -811,7 +811,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Basic
       </message>
       <message name="IDS_ANDROID_HISTORY_OTHER_FORMS_OF_HISTORY" desc="The notification at the top of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity.">
-        Your Brave Account may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
+        Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK">&lt;link&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/link&gt;</ph>.
       </message>
       <message name="IDS_ANDROID_HISTORY_BLOCKED_SITE" desc="The text displayed in the history page indicating that a visit to a web site was blocked due to an administrator policy.">
         Blocked site
@@ -1196,13 +1196,13 @@ Your Brave account may have other forms of browsing history like searches and ac
         Clear your Brave data from this device?
       </message>
       <message name="IDS_SIGNOUT_MESSAGE" desc="Message to display in 'Sign out and turn off sync?' dialog">
-        Your bookmarks, history, passwords, and other Brave data will no longer be synced to your Brave Account
+        Your bookmarks, history, passwords, and other Brave data will no longer be synced to your Brave sync chain
       </message>
       <message name="IDS_REMOVE_LOCAL_DATA" desc="Checkbox to delete all existing data in local device storage">
         Also clear your Brave data from this device
       </message>
       <message name="IDS_SIGNOUT_MANAGED_ACCOUNT_MESSAGE" desc="Message to display for sign out of Brave dialog when the account has enterprise management, and all user data will be erased">
-        Because you're signing out of an account managed by <ph name="DOMAIN_NAME">%1$s<ex>google.com</ex></ph>, your Brave data will be deleted from this device. It will remain in your Brave Account.
+        Because you're signing out of an account managed by <ph name="DOMAIN_NAME">%1$s<ex>google.com</ex></ph>, your Brave data will be deleted from this device. It will remain in your Brave sync chain.
       </message>
       <message name="IDS_SIGN_IN_GETTING_ACCOUNT_MANAGEMENT_POLICY" desc="Title of progress bar dialog for getting management policy">
         Contacting Brave. This may take a minute…
@@ -1219,7 +1219,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Sign in to managed account
       </message>
       <message name="IDS_SIGN_IN_MANAGED_ACCOUNT_DESCRIPTION" desc="Description for signing in to managed accounts">
-        You are signing in with an account managed by <ph name="MANAGED_DOMAIN">%1$s<ex>Brave</ex></ph> and giving its administrator control over your Brave data. Your data will become permanently tied to this account. Signing out of Brave will delete your data from this device, but it will remain stored in your Brave Account.
+        You are signing in with an account managed by <ph name="MANAGED_DOMAIN">%1$s<ex>Brave</ex></ph> and giving its administrator control over your Brave data. Your data will become permanently tied to this account. Signing out of Brave will delete your data from this device, but it will remain stored in your Brave sync chain.
       </message>
       <message name="IDS_SYNC_YOUR_BOOKMARKS" desc="Title for the prompt to signin and enable sync to sync their bookmarks">
         Sync your bookmarks
@@ -1298,7 +1298,7 @@ Your Brave account may have other forms of browsing history like searches and ac
         Create passphrase
       </message>
       <message name="IDS_SIGN_IN_GOOGLE_ACCOUNT" desc="Title of sign in account selection dialog. [CHAR-LIMIT=32]">
-        Brave Account
+        Brave sync chain
       </message>
       <message name="IDS_SYNC_CUSTOM_PASSPHRASE" desc="Prompt user to create a custom sync password.">
         Passphrase encryption doesn’t include payment methods and addresses from Brave Pay. Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting you'll need to reset sync. <ph name="BEGIN_LINK">&lt;learnmore&gt;</ph>Learn more<ph name="END_LINK">&lt;/learnmore&gt;</ph>
@@ -2104,13 +2104,13 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         By using Brave, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
       </message>
       <message name="IDS_FRE_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service, and Family Link's privacy notice for children.">
-        By using Brave, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave Accounts Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
+        By using Brave, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave sync chains Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
       </message>
       <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS" desc="Message explaining that use of Brave is governed by Brave's terms of service.">
         <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>.
       </message>
       <message name="IDS_LIGHTWEIGHT_FRE_ASSOCIATED_APP_TOS_AND_PRIVACY_CHILD_ACCOUNT" desc="Message explaining that use of Brave is governed by Brave's terms of service, and Family Link's privacy notice for children.">
-        <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave Accounts Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
+        <ph name="APP_NAME">%1$s<ex>Brave Maps</ex></ph> will open in Brave. By continuing, you agree to the <ph name="BEGIN_LINK1">&lt;LINK1&gt;</ph>Brave Terms of Service<ph name="END_LINK1">&lt;/LINK1&gt;</ph>, and the <ph name="BEGIN_LINK2">&lt;LINK2&gt;</ph>Brave and Chrome OS Additional Terms of Service<ph name="END_LINK2">&lt;/LINK2&gt;</ph>. The <ph name="BEGIN_LINK3">&lt;LINK3&gt;</ph>Privacy Notice for Brave sync chains Managed with Family Link<ph name="END_LINK3">&lt;/LINK3&gt;</ph> also applies.
       </message>
       <message name="IDS_FRE_SEND_REPORT_CHECK" desc="Text for asking the user to allow sending stats and crash reports">
         Help make Brave better by sending usage statistics and crash reports to Brave.
@@ -2123,7 +2123,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
 
       <!-- Account Signin Strings -->
-      <message name="IDS_SIGNIN_ADD_ACCOUNT" desc="Text for adding another Brave Account">
+      <message name="IDS_SIGNIN_ADD_ACCOUNT" desc="Text for adding another Brave sync chain">
         Add account
       </message>
       <message name="IDS_SIGNIN_GMS_UPDATING" desc="Message notifying user that Google Play Services is still updating.">

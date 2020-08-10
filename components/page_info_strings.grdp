@@ -456,7 +456,7 @@
     </message>
     <if expr="_google_chrome">
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS" desc="A short paragraph explaining to the user that they has reuse their google password on current website.">
-        You could lose access to your Brave Account. Brave recommends changing your password now. You'll be asked to sign in.
+        You could lose access to your Brave sync chain. Brave recommends changing your password now. You'll be asked to sign in.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website.">
         You just entered your password on a deceptive site. Brave recommends changing your password now.
@@ -480,7 +480,7 @@
         You just entered your password on a deceptive site. Brave recommends checking your saved passwords for <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph>, <ph name="WEBSITE_2">$2<ex>www.reddit.com</ex></ph>, <ph name="WEBSITE_3">$3<ex>www.amazon.com</ex></ph>, and other sites where you use this password now.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Brave sync user that they have reused their Brave password on the current website.">
-        Brave can help you protect your Brave Account and change your password.
+        Brave can help you protect your Brave sync chain and change your password.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SIGNED_IN_NON_SYNC" desc="A short paragraph explaining to a non-sync user that they have reused their Brave password on the current website.">
         You just entered your password on a deceptive site. Brave can help. To change your password and notify Brave that your account may be at risk, click Protect Account.
@@ -494,7 +494,7 @@
     </if>
     <if expr="not _google_chrome">
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS" desc="A short paragraph explaining to the user that they has reuse their google password on current website.">
-        You could lose access to your Brave Account. Brave recommends changing your password now. You'll be asked to sign in.
+        You could lose access to your Brave sync chain. Brave recommends changing your password now. You'll be asked to sign in.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SAVED" desc="A short paragraph explaining to a Brave user that they have reused their saved password on the current website.">
         You just entered your password on a deceptive site. Brave recommends changing your password now.
@@ -518,7 +518,7 @@
         You just entered your password on a deceptive site. Brave recommends checking your saved passwords for <ph name="WEBSITE_1">$1<ex>www.google.com</ex></ph>, <ph name="WEBSITE_2">$2<ex>www.reddit.com</ex></ph>, <ph name="WEBSITE_3">$3<ex>www.amazon.com</ex></ph>, and other sites where you use this password now.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SYNC" desc="A short paragraph explaining to a Brave sync user that they have reused their Brave password on the current website.">
-        Brave can help you protect your Brave Account and change your password.
+        Brave can help you protect your Brave sync chain and change your password.
       </message>
       <message name="IDS_PAGE_INFO_CHANGE_PASSWORD_DETAILS_SIGNED_IN_NON_SYNC" desc="A short paragraph explaining to a non-sync user that they have reused their Brave password on the current website.">
         You just entered your password on a deceptive site. Brave can help. To change your password and notify Brave that your account may be at risk, click Protect Account.
