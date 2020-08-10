@@ -6,7 +6,6 @@
 // The preload and postload js files are unmodified from Focus.
 
 import Shared
-import Deferred
 import Data
 
 struct TPPageStats {

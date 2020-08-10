@@ -3,9 +3,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Deferred
 import Storage
 import CoreData
+import Shared
 
 protocol WebsitePresentable {
     var title: String? { get }

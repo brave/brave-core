@@ -5,7 +5,6 @@
 import Foundation
 import Shared
 import Data
-import Deferred
 import BraveShared
 import WebKit
 

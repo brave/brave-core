@@ -12,7 +12,6 @@ import SnapKit
 import XCGLogger
 import MobileCoreServices
 import SwiftyJSON
-import Deferred
 import Data
 import BraveShared
 import SwiftKeychainWrapper

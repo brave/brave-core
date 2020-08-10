@@ -6,7 +6,6 @@ import Foundation
 import Shared
 import Storage
 import SDWebImage
-import Deferred
 import class Data.FaviconMO
 
 class FaviconHandler {

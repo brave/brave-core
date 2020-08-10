@@ -5,7 +5,6 @@
 import Foundation
 import WebKit
 import Shared
-import Deferred
 import XCGLogger
 
 private var log = Logger.syncLogger
