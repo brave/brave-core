@@ -189,7 +189,7 @@ void TorControlImpl::Poll() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   CHECK(polling_);
 
-  std::string cookie;
+  std::vector<uint8_t> cookie;
   base::Time cookie_mtime;
   int port;
   base::Time port_mtime;
@@ -221,7 +221,7 @@ void TorControlImpl::Poll() {
 //      Try to read the control auth cookie.  Return true and set
 //      cookie and mtime if successful; return false on failure.
 //
-bool TorControlImpl::EatControlCookie(std::string& cookie, base::Time& mtime) {
+bool TorControlImpl::EatControlCookie(std::vector<uint8_t>& cookie, base::Time& mtime) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   CHECK(polling_);
 
@@ -256,7 +256,7 @@ bool TorControlImpl::EatControlCookie(std::string& cookie, base::Time& mtime) {
   }
 
   // Success!
-  cookie.assign(buf, 0, nread);
+  cookie.assign(buf, buf + nread);
   mtime = info.last_accessed;
   // XXX DEBUG
   LOG(ERROR) << "Control cookie " << base::HexEncode(buf, nread)
@@ -364,7 +364,7 @@ void TorControlImpl::Polled() {
 //      Open a control connection on the specified port number at
 //      localhost, with the specified control auth cookie.
 //
-void TorControlImpl::OpenControl(int portno, std::string cookie) {
+void TorControlImpl::OpenControl(int portno, std::vector<uint8_t> cookie) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   // XXX DEBUG
   LOG(ERROR) << __func__ << " " << base::HexEncode(cookie.data(), cookie.size());
@@ -388,7 +388,7 @@ void TorControlImpl::OpenControl(int portno, std::string cookie) {
 //      activity while we were busy connecting, or go back to watching
 //      and waiting.  If it succeeded, start authenticating.
 //
-void TorControlImpl::Connected(std::string cookie, int rv) {
+void TorControlImpl::Connected(std::vector<uint8_t> cookie, int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 
   if (rv != net::OK) {
