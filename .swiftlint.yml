@@ -44,7 +44,6 @@ opt_in_rules: # some rules are only opt-in
   - statement_position
   - explicit_init
   - shorthand_operator
-  - file_header
   # Find all the available rules by running:
   # swiftlint rules
 included: # paths to include during linting. `--path` is ignored if present.
