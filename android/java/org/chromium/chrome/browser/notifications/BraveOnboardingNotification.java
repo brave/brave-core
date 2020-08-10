@@ -22,6 +22,7 @@ import org.chromium.components.browser_ui.notifications.ChromeNotification;
 import org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl;
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
+import org.chromium.chrome.browser.BraveActivity;
 
 import java.util.Locale;
 
@@ -81,6 +82,9 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
             context.startActivity(webIntent);
         } else {
             showOnboardingNotification(context);
+            if (BraveActivity.getBraveActivity() != null) {
+                BraveActivity.getBraveActivity().hideRewardsOnboardingIcon();
+            }
         }
     }
 

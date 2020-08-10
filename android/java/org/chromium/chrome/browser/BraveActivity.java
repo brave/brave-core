@@ -331,6 +331,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         transaction.commit();
     }
 
+    public void hideRewardsOnboardingIcon() {
+        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.hideRewardsOnboardingIcon();
+        }
+    }
+
     private void createNotificationChannel() {
         Context context = ContextUtils.getApplicationContext();
         // Create the NotificationChannel, but only on API 26+ because

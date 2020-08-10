@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.util.Pair;
 
@@ -108,6 +109,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private BraveShieldsContentSettings mBraveShieldsContentSettings;
   private BraveShieldsContentSettingsObserver mBraveShieldsContentSettingsObserver;
   private TextView mBraveRewardsNotificationsCount;
+  private ImageView mBraveRewardsOnboardingIcon;
   private boolean mShieldsLayoutIsColorBackground;
   private int mCurrentToolbarColor;
 
@@ -149,6 +151,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     mShieldsLayout = (FrameLayout) findViewById(R.id.brave_shields_button_layout);
     mRewardsLayout = (FrameLayout) findViewById(R.id.brave_rewards_button_layout);
     mBraveRewardsNotificationsCount = (TextView) findViewById(R.id.br_notifications_count);
+    mBraveRewardsOnboardingIcon = findViewById(R.id.br_rewards_onboarding_icon);
     mBraveShieldsButton = (ImageButton) findViewById(R.id.brave_shields_button);
     mBraveRewardsButton = (ImageButton) findViewById(R.id.brave_rewards_button);
     mHomeButton = (HomeButton) findViewById(R.id.home_button);
@@ -390,6 +393,15 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
   }
 
+  public void hideRewardsOnboardingIcon() {
+    if (mBraveRewardsOnboardingIcon != null) {
+      mBraveRewardsOnboardingIcon.setVisibility(View.GONE);
+    }
+    if (mBraveRewardsNotificationsCount != null) {
+      mBraveRewardsNotificationsCount.setVisibility(View.GONE);
+    }
+  }
+
   @Override
   public void onClick(View v) {
     if (mBraveShieldsHandler == null) {
@@ -400,9 +412,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       showShieldsMenu(mBraveShieldsButton);
     } else if (mBraveRewardsButton == v && mBraveRewardsButton != null) {
       Context context = getContext();
-      if ((checkForRewards())
-          && !OnboardingPrefManager.getInstance().isOnboardingShown()) {
+      if (checkForRewardsOnboarding()) {
         OnboardingPrefManager.getInstance().showOnboarding(context);
+        hideRewardsOnboardingIcon();
       } else {
         if (null != mRewardsPopup) {
           return;
@@ -421,9 +433,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
   }
 
-  private boolean checkForRewards() {
+  private boolean checkForRewardsOnboarding() {
     return (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
-           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile());
+           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
+           && !OnboardingPrefManager.getInstance().isOnboardingShown();
   }
 
   private void showShieldsMenu(View mBraveShieldsButton) {
@@ -717,6 +730,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     if (!PackageUtils.isFirstInstall(getContext())
         && !OnboardingPrefManager.getInstance().isAdsAvailable()) {
       mayShowBraveAdsOnboardingDialog();
+    }
+
+    if (checkForRewardsOnboarding()) {
+      mBraveRewardsOnboardingIcon.setVisibility(View.VISIBLE);
+      mBraveRewardsNotificationsCount.setVisibility(View.GONE);
     }
   }
 
