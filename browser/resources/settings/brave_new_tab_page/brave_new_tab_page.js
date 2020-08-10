@@ -24,6 +24,7 @@
       isSuperReferralActive_: Boolean,
       isBinanceSupported_: Boolean,
       isBraveTogetherSupported_: Boolean,
+      isGeminiSupported_: Boolean,
     },
 
     /** @override */
@@ -32,6 +33,7 @@
       this.isSuperReferralActive_ = false;
       this.isBinanceSupported_ = false;
       this.isBraveTogetherSupported_ = false;
+      this.isGeminiSupported_ = false;
     },
 
     /** @override */
@@ -44,6 +46,9 @@
       })
       this.browserProxy_.getIsBraveTogetherSupported().then(isBraveTogetherSupported => {
         this.isBraveTogetherSupported_ = isBraveTogetherSupported;
+      })
+      this.browserProxy_.getIsGeminiSupported().then(isGeminiSupported => {
+        this.isGeminiSupported_ = isGeminiSupported;
       })
 
       this.addWebUIListener('super-referral-active-state-changed', (isSuperReferralActive) => {
