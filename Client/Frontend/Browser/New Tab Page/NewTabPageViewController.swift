@@ -97,10 +97,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     private let backgroundButtonsView = NewTabPageBackgroundButtonsView()
     
     private let feedDataSource: FeedDataSource
-    private let feedLoaderView = LoaderView(size: .small).then {
-        $0.tintColor = .white
-        $0.isHidden = true
-    }
+    private let feedOverlayView = NewTabPageFeedOverlayView()
     
     private let notifications: NewTabPageNotifications
     
@@ -151,15 +148,12 @@ class NewTabPageViewController: UIViewController, Themeable {
         }
         
         Preferences.BraveToday.isEnabled.observe(from: self)
+        feedDataSource.observeState(from: self, handleFeedStateChange)
     }
     
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
-    }
-    
-    private let braveTodayHeaderView = BraveTodaySectionHeaderView().then {
-        $0.alpha = 0.0
     }
     
     private func handleBraveTodayAction(_ action: BraveTodaySectionProvider.Action) {
@@ -213,15 +207,11 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         view.addSubview(backgroundView)
         view.addSubview(collectionView)
-        view.addSubview(braveTodayHeaderView)
-        
-        braveTodayHeaderView.snp.makeConstraints {
-            $0.top.leading.trailing.equalToSuperview()
-        }
+        view.addSubview(feedOverlayView)
         
         collectionView.backgroundView = backgroundButtonsView
         
-        braveTodayHeaderView.settingsButton.addTarget(self, action: #selector(tappedBraveTodaySettings), for: .touchUpInside)
+        feedOverlayView.headerView.settingsButton.addTarget(self, action: #selector(tappedBraveTodaySettings), for: .touchUpInside)
         backgroundButtonsView.tappedActiveButton = { [weak self] sender in
             self?.tappedActiveBackgroundButton(sender)
         }
@@ -231,6 +221,9 @@ class NewTabPageViewController: UIViewController, Themeable {
             $0.edges.equalToSuperview()
         }
         collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+        feedOverlayView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         
@@ -244,20 +237,21 @@ class NewTabPageViewController: UIViewController, Themeable {
                 }
             }
         }
-        
-        collectionView.addSubview(feedLoaderView)
-        feedLoaderView.snp.makeConstraints {
-            $0.centerX.equalTo(collectionView.frameLayoutGuide)
-            $0.bottom.equalTo(collectionView.frameLayoutGuide).inset(16)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if collectionView.contentOffset.y == collectionView.contentInset.top {
-            // Reload contents if the user is not currently scrolled into the feed
-            loadFeedContents()
+        if isBraveTodayVisible {
+            if collectionView.contentOffset.y == collectionView.contentInset.top {
+                // Reload contents if the user is not currently scrolled into the feed
+                loadFeedContents()
+            } else {
+                // Possibly show the "new content available" button
+                if feedDataSource.shouldLoadContent {
+                    
+                }
+            }
         }
     }
     
@@ -513,43 +507,57 @@ class NewTabPageViewController: UIViewController, Themeable {
     
     // MARK: - Brave Today
     
-    private func loadFeedContents() {
-        if !Preferences.BraveToday.isEnabled.value || !feedDataSource.shouldLoadContent {
-            return
-        }
-        feedLoaderView.isHidden = false
-        feedLoaderView.start()
-        if let section = layout.braveTodaySection {
-            let numberOfItems = collectionView.numberOfItems(inSection: section)
-            if numberOfItems > 0 {
-                // `feedDataSource.load` will update `feedDataSource.state` to `.loading` so remove items
-                collectionView.deleteItems(
-                    at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
-                )
+    private func handleFeedStateChange(
+        _ oldValue: FeedDataSource.State,
+        _ newValue: FeedDataSource.State
+    ) {
+        guard let section = layout.braveTodaySection else { return }
+        
+        switch (oldValue, newValue) {
+        case (.loading, .loading):
+            // Nothing to do
+            break
+        case (_, .loading):
+            feedOverlayView.loaderView.isHidden = false
+            feedOverlayView.loaderView.start()
+            
+            if let section = layout.braveTodaySection {
+                let numberOfItems = collectionView.numberOfItems(inSection: section)
+                if numberOfItems > 0 {
+                    collectionView.deleteItems(
+                        at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
+                    )
+                }
             }
-        }
-        feedDataSource.load { [weak self] in
-            guard let self = self else { return }
+        case (.loading, _):
             UIView.animate(withDuration: 0.2, animations: {
-                self.feedLoaderView.alpha = 0.0
+                self.feedOverlayView.loaderView.alpha = 0.0
             }, completion: { _ in
-                self.feedLoaderView.stop()
-                self.feedLoaderView.alpha = 1.0
-                self.feedLoaderView.isHidden = true
+                self.feedOverlayView.loaderView.stop()
+                self.feedOverlayView.loaderView.alpha = 1.0
+                self.feedOverlayView.loaderView.isHidden = true
             })
-            self.collectionView.reloadData()
-            self.collectionView.layoutIfNeeded()
-            guard let braveTodaySection = self.layout.braveTodaySection else { return }
-            let cells = self.collectionView.indexPathsForVisibleItems
-                .filter { $0.section == braveTodaySection }
-                .compactMap(self.collectionView.cellForItem(at:))
+            collectionView.reloadData()
+            collectionView.layoutIfNeeded()
+            let cells = collectionView.indexPathsForVisibleItems
+                .filter { $0.section == section }
+                .compactMap(collectionView.cellForItem(at:))
             cells.forEach { cell in
                 cell.transform = .init(translationX: 0, y: 200)
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.beginFromCurrentState], animations: {
                     cell.transform = .identity
                 }, completion: nil)
             }
+        default:
+            collectionView.reloadSections(IndexSet(integer: section))
         }
+    }
+    
+    private func loadFeedContents() {
+        if !feedDataSource.shouldLoadContent {
+            return
+        }
+        feedDataSource.load()
     }
     
     // MARK: - Actions
@@ -624,7 +632,7 @@ extension NewTabPageViewController: PreferencesObserver {
         collectionView.reloadData()
         if !isBraveTodayVisible {
             collectionView.verticalScrollIndicatorInsets = .zero
-            braveTodayHeaderView.alpha = 0.0
+            feedOverlayView.headerView.alpha = 0.0
             backgroundButtonsView.alpha = 1.0
         }
     }
@@ -643,12 +651,12 @@ extension NewTabPageViewController {
             backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
             // Show the header as BraveToday feeds appear
             // Offset of where Brave Today starts
-            let todayStart = collectionView.frame.height - braveTodayHeaderView.bounds.height - 32 - 16
+            let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
             // Offset of where the header should begin becoming visible
             let alphaInStart = collectionView.frame.height / 2.0
             let value = scrollView.contentOffset.y
             let alpha = max(0.0, min(1.0, (value - alphaInStart) / (todayStart - alphaInStart)))
-            braveTodayHeaderView.alpha = alpha
+            feedOverlayView.headerView.alpha = alpha
         }
     }
 }

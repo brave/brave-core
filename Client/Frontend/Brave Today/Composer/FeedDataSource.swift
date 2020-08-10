@@ -291,8 +291,19 @@ class FeedDataSource {
         }
     }
     
-    private(set) var state: State = .initial
+    @Observable private(set) var state: State = .initial
     private(set) var sources: [FeedItem.Source] = []
+    
+    /// Add a closure that will execute when `state` is changed.
+    ///
+    /// Executes the closure on the main queue by default
+    func observeState(
+        from object: AnyObject,
+        onQueue queue: DispatchQueue = .main,
+        _ handler: @escaping Observable<State>.Handler
+    ) {
+        _state.observe(from: object, on: queue, handler)
+    }
     
     // MARK: - Resource Managment
     
@@ -442,7 +453,7 @@ class FeedDataSource {
     ///
     /// Given the nature of async card regeneration, calling this method will always set the state to
     /// `loading` initially.
-    func load(_ completion: @escaping () -> Void) {
+    func load(_ completion: (() -> Void)? = nil) {
         state = .loading
         loadSources().both(loadFeed()).uponQueue(.main) { [weak self] results in
             guard let self = self else { return }
@@ -450,13 +461,13 @@ class FeedDataSource {
             case (.failure(let error), _),
                  (_, .failure(let error)):
                 self.state = .failure(error)
-                completion()
+                completion?()
             case (.success(let sources), .success(let items)):
                 self.sources = sources
                 let feedItems = self.scored(feeds: items, sources: self.sources).sorted(by: <)
                 self.generateCards(from: feedItems) { [weak self] cards in
                     self?.state = .success(cards)
-                    completion()
+                    completion?()
                 }
             }
         }
@@ -475,7 +486,6 @@ class FeedDataSource {
                     try fileManager.removeItem(atPath: fileUrl.path)
                 }
             }
-            // state = .initial
         } catch {
             logger.error("Could not remove cached files")
             return false
