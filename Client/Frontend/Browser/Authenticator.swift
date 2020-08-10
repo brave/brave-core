@@ -5,7 +5,6 @@
 import Foundation
 import Shared
 import Storage
-import Deferred
 
 private let log = Logger.browserLogger
 

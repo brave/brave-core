@@ -5,7 +5,6 @@
 import WebKit
 import Shared
 import Data
-import Deferred
 import BraveShared
 
 extension ContentBlockerHelper: TabContentScript {

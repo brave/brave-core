@@ -5,7 +5,6 @@
 import Foundation
 import XCTest
 import Shared
-import Deferred
 @testable import Client
 @testable import Storage
 

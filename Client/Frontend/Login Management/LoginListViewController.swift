@@ -7,7 +7,6 @@ import SnapKit
 import Storage
 import Shared
 import SwiftKeychainWrapper
-import Deferred
 
 private struct LoginListUX {
     static let rowHeight: CGFloat = 58

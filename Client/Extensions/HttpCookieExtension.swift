@@ -5,7 +5,6 @@
 import Foundation
 import WebKit
 import Shared
-import Deferred
 
 private let log = Logger.browserLogger
 

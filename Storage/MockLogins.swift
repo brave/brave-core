@@ -4,7 +4,6 @@
 
 import Foundation
 import Shared
-import Deferred
 
 open class MockLogins: BrowserLogins, SyncableLogins {
     fileprivate var cache = [Login]()

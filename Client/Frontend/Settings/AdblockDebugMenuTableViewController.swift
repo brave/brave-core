@@ -5,7 +5,6 @@
 import UIKit
 import Static
 import WebKit
-import Deferred
 import Shared
 import BraveShared
 

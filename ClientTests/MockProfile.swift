@@ -7,7 +7,6 @@ import Foundation
 import Shared
 import Storage
 import XCTest
-import Deferred
 
 open class MockTabQueue: TabQueue {
     open func addToQueue(_ tab: ShareItem) -> Success {
