@@ -6,7 +6,7 @@
 import UIKit
 import BraveUI
 
-class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusable {
+class FeedSectionHeaderView: UIView {
     private let backgroundView: UIVisualEffectView
     private let label = UILabel().then {
         $0.text = "Brave Today" // TODO(kyle): localize
@@ -37,9 +37,8 @@ class BraveTodaySectionHeaderView: UICollectionReusableView, CollectionViewReusa
         
         let stackView = UIStackView(arrangedSubviews: [label, settingsButton]).then {
             $0.spacing = 20
-            $0.alignment = .center
         }
-        backgroundView.contentView.addSubview(stackView)
+        addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.edges.equalTo(safeAreaLayoutGuide).inset(UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
         }
