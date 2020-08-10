@@ -1469,7 +1469,7 @@ void RewardsServiceImpl::StopLedger(StopLedgerCallback callback) {
   BLOG(1, "Shutting down ledger process");
   if (!Connected()) {
     BLOG(1, "Ledger process not running");
-    Reset();
+    OnStopLedger(std::move(callback), ledger::Result::LEDGER_OK);
     return;
   }
 
