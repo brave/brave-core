@@ -77,7 +77,7 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
         notificationManager.notify(retentionNotification.getNotificationId(), notification);
     }
 
-    private void backgroundNotificationAction(Context context, Intent intent) {
+    public static void backgroundNotificationAction(Context context, Intent intent) {
         String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
         if (ApplicationStatus.hasVisibleActivities()) {
             return;

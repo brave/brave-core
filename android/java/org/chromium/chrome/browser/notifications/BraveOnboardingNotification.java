@@ -18,6 +18,8 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.notifications.BraveAdsNotificationBuilder;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationPublisher;
 import org.chromium.components.browser_ui.notifications.ChromeNotification;
 import org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl;
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
@@ -75,15 +77,18 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (action != null && action.equals(DEEP_LINK)) {
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getNotificationUrl()));
-            webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            webIntent.setPackage(context.getPackageName());
-            context.startActivity(webIntent);
+            if (braveActivity != null) {
+                braveActivity.openRewardsPanel();
+            } else {
+                intent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE, RetentionNotificationUtil.DAY_10);
+                RetentionNotificationPublisher.backgroundNotificationAction(context, intent);
+            }
         } else {
             showOnboardingNotification(context);
-            if (BraveActivity.getBraveActivity() != null) {
-                BraveActivity.getBraveActivity().hideRewardsOnboardingIcon();
+            if (braveActivity != null) {
+                braveActivity.hideRewardsOnboardingIcon();
             }
         }
     }
