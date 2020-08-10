@@ -1,5 +1,5 @@
 diff --git a/components/page_info/page_info.cc b/components/page_info/page_info.cc
-index 60441eb91e1265c7a81e2e9849dc4ee57e33633c..207049a3f016c3b6dc83f9bc6528c3d653400ab2 100644
+index 38306eefa1a0d5993868e6b71584631cae262e0c..9b27f73d50d897292a152374cf5e123e397ec4c4 100644
 --- a/components/page_info/page_info.cc
 +++ b/components/page_info/page_info.cc
 @@ -969,6 +969,7 @@ void PageInfo::PresentSitePermissions() {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 0b8e0ffe833730be109b5b4a3e852cff829a80e1..ca3c4dd44d27ae204e436af11c83b0045b45a0bf 100644
+index 8f8a3265769819955f499333895a55f217ac0191..a655c585de575a9f953a1a1d76af278c2dd9e4ed 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -353,6 +353,8 @@ content::WebUIDataSource* CreateMdExtensionsSource(Profile* profile,
+@@ -352,6 +352,8 @@ content::WebUIDataSource* CreateMdExtensionsSource(Profile* profile,
    }
    source->AddString(kLoadTimeClassesKey, GetLoadTimeClasses(in_dev_mode));
  

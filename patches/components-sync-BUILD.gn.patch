@@ -1,5 +1,5 @@
 diff --git a/components/sync/BUILD.gn b/components/sync/BUILD.gn
-index 3fa43324ec4212b0a9a5a07eeaf21f333f66f5fd..d4f8d8cde096cecd41d4ba2b0193f2c8c2197f63 100644
+index 6c27439dc3408d9133139d2979839c07bf7043a5..55b5c336a181194872d2a2482345669eca8b2e0e 100644
 --- a/components/sync/BUILD.gn
 +++ b/components/sync/BUILD.gn
 @@ -306,6 +306,7 @@ jumbo_static_library("rest_of_sync") {
