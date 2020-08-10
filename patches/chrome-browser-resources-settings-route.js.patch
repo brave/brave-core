@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/route.js b/chrome/browser/resources/settings/route.js
-index d19337c8bce64eb0195a458c3f3a46c7d38e1166..5f83dc919f6d5d0db3e0fc3ffa1209a8e438659a 100644
+index 29d23a5d1d92d1d0bddb7a466064b55a10d2912c..160934362a03fd3c6f02f38d014f606297d865e2 100644
 --- a/chrome/browser/resources/settings/route.js
 +++ b/chrome/browser/resources/settings/route.js
 @@ -34,7 +34,9 @@ function addPrivacyChildRoutes(r) {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/downloads/downloads_ui.cc b/chrome/browser/ui/webui/downloads/downloads_ui.cc
-index 91712e49e496035169d2879f211a661281ba57f6..4af8f0a0a7ba3c52d5c99a87c9076d8e313796d6 100644
+index a1ddff80f28035458be64285ee801ebf74a05db2..d77ed872c4b9f00f5738beb7b90244f0f5d48a29 100644
 --- a/chrome/browser/ui/webui/downloads/downloads_ui.cc
 +++ b/chrome/browser/ui/webui/downloads/downloads_ui.cc
 @@ -62,6 +62,7 @@ content::WebUIDataSource* CreateDownloadsUIHTMLSource(Profile* profile) {

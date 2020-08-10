@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 687aa0dab62f8db0e6aeca315861a4407c8f672a..0870532a4097fed6b58d903a0dd9f1507b1211f6 100644
+index 7b83efb7aa06cee64ff970deb174e118884decb0..948912b7a8c35a897fca95abdbfecf3ea499a193 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -179,7 +179,7 @@ import java.util.Locale;
+@@ -183,7 +183,7 @@ import java.util.Locale;
   * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
@@ -20,16 +20,16 @@ index 687aa0dab62f8db0e6aeca315861a4407c8f672a..0870532a4097fed6b58d903a0dd9f150
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
  
-@@ -1667,7 +1667,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1607,7 +1607,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
 -        return new TabbedAppMenuPropertiesDelegate(this, getActivityTabProvider(),
 +        return new org.chromium.chrome.browser.appmenu.BraveTabbedAppMenuPropertiesDelegate(this, getActivityTabProvider(),
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
-                 getWindow().getDecorView(), this,
-                 mOverviewModeController.mOverviewModeBehaviorSupplier, mBookmarkBridgeSupplier);
-@@ -1691,9 +1691,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+                 getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
+                 mBookmarkBridgeSupplier);
+@@ -1631,9 +1631,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -41,7 +41,7 @@ index 687aa0dab62f8db0e6aeca315861a4407c8f672a..0870532a4097fed6b58d903a0dd9f150
                          tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -2082,7 +2082,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2023,7 +2023,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  

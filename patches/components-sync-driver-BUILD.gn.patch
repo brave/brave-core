@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/BUILD.gn b/components/sync/driver/BUILD.gn
-index 3542c420e89446a1cf77ec45946a964b7a2e6c95..48786b80b3f01a02b0531a0741f4fbd21bbe58f8 100644
+index bb590d879b2f444b12c8765951c4203f1be37ab7..1c4ac01c0801d6a1940b9e5f3be2d80043acc6c1 100644
 --- a/components/sync/driver/BUILD.gn
 +++ b/components/sync/driver/BUILD.gn
-@@ -116,6 +116,7 @@ jumbo_static_library("driver") {
+@@ -117,6 +117,7 @@ jumbo_static_library("driver") {
    }
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]

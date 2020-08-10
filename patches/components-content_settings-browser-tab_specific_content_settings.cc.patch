@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/browser/tab_specific_content_settings.cc b/components/content_settings/browser/tab_specific_content_settings.cc
-index 9437ad7c1ed90f7ca79471f419b3776ebb6e6e3d..2744a4f0715f9d5848fed533b900accb99b0ad97 100644
+index 2a667d6b402c7851e6cde31eb8175200446dc868..e137660fecde4acb995b27bd7d92d3c91438e962 100644
 --- a/components/content_settings/browser/tab_specific_content_settings.cc
 +++ b/components/content_settings/browser/tab_specific_content_settings.cc
-@@ -496,6 +496,7 @@ bool TabSpecificContentSettings::IsContentBlocked(
+@@ -502,6 +502,7 @@ bool TabSpecificContentSettings::IsContentBlocked(
        content_type == ContentSettingsType::ADS ||
        content_type == ContentSettingsType::SOUND ||
        content_type == ContentSettingsType::CLIPBOARD_READ_WRITE ||
@@ -10,7 +10,7 @@ index 9437ad7c1ed90f7ca79471f419b3776ebb6e6e3d..2744a4f0715f9d5848fed533b900accb
        content_type == ContentSettingsType::SENSORS) {
      const auto& it = content_settings_status_.find(content_type);
      if (it != content_settings_status_.end())
-@@ -519,6 +520,7 @@ bool TabSpecificContentSettings::IsContentAllowed(
+@@ -525,6 +526,7 @@ bool TabSpecificContentSettings::IsContentAllowed(
        content_type != ContentSettingsType::PPAPI_BROKER &&
        content_type != ContentSettingsType::MIDI_SYSEX &&
        content_type != ContentSettingsType::CLIPBOARD_READ_WRITE &&

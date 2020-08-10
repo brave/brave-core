@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/renderer/content_settings_agent_impl.cc b/components/content_settings/renderer/content_settings_agent_impl.cc
-index 17fa8cc5eaf83710b13aa06efa60088c1aa49d03..d15f2ff7f8ca2d63bab0394f0abd74123d0f73fc 100644
+index 450005f9fc0b4378da7f21731f2722565cf011ad..87ffeec0fb72d5a4a360a661c19cd9c760538bcc 100644
 --- a/components/content_settings/renderer/content_settings_agent_impl.cc
 +++ b/components/content_settings/renderer/content_settings_agent_impl.cc
 @@ -468,6 +468,7 @@ bool ContentSettingsAgentImpl::IsWhitelistedForContentSettings() const {

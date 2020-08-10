@@ -1,13 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
-index dfb40813d117101500f8a36b022652c4a30cd498..12b8a51916fc5bf4344197db608fb1d63eaa8c40 100644
+index 7f4c0a3aca282920212b6e4d7366eeb0d774c07a..55694ed0631f50f90ebea354829b1f7cef4eb5ae 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/native_page/NativePageFactory.java
-@@ -89,7 +89,7 @@ public class NativePageFactory {
+@@ -90,7 +90,7 @@ public class NativePageFactory {
              NativePageHost nativePageHost = new TabShim(tab, mActivity);
              if (tab.isIncognito()) return new IncognitoNewTabPage(mActivity, nativePageHost);
  
 -            return new NewTabPage(mActivity, mActivity.getBrowserControlsManager(),
 +            return new org.chromium.chrome.browser.ntp.BraveNewTabPage(mActivity, mActivity.getBrowserControlsManager(),
-                     mActivity.getActivityTabProvider(), mActivity.getOverviewModeBehavior(),
-                     mActivity.getSnackbarManager(), mActivity.getLifecycleDispatcher(),
-                     mActivity.getTabModelSelector(), mActivity.isTablet(), mUma.get(),
+                     mActivity.getActivityTabProvider(), mActivity.getSnackbarManager(),
+                     mActivity.getLifecycleDispatcher(), mActivity.getTabModelSelector(),
+                     mActivity.isTablet(), mUma.get(),

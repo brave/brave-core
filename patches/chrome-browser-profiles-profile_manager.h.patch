@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index fa2dba6352dfcbf04b75078eb4d16f3fd8fcbc3d..f1b7aba25b38fc9e5d08aad70bd3c8ccc3ec97ef 100644
+index 93571e41925382f70d6a2c6218257f14574f7f3b..0fabed6c6f2d115ad8daa11568247742508de185 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
-@@ -272,6 +272,7 @@ class ProfileManager : public content::NotificationObserver,
+@@ -270,6 +270,7 @@ class ProfileManager : public content::NotificationObserver,
    void set_do_final_services_init(bool do_final_services_init) {
      do_final_services_init_ = do_final_services_init;
    }

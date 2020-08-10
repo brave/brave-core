@@ -1,5 +1,5 @@
 diff --git a/content/browser/browser_main_loop.h b/content/browser/browser_main_loop.h
-index affe516c1aa5976b45f47767966730ec1d62f7e6..a2a07d2213470b1de8479c4b00ff1df5800b8e1e 100644
+index 3f3ecd27f5888a91be718ec9efcd21ef030d644f..76c1068095c87250aa784ced7c2f98948c857ff5 100644
 --- a/content/browser/browser_main_loop.h
 +++ b/content/browser/browser_main_loop.h
 @@ -137,6 +137,7 @@ class CONTENT_EXPORT BrowserMainLoop {

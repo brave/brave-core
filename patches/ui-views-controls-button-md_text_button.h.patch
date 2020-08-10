@@ -1,5 +1,5 @@
 diff --git a/ui/views/controls/button/md_text_button.h b/ui/views/controls/button/md_text_button.h
-index 6688bc4a01e544847e54e1974ee528759d4c44b2..2bcc0ca1e5d5b310d17b4fa233d7169dc3031229 100644
+index 8cf51cd899fa81265752b0799fcc57de7fdf1646..8279168b6404dd39185a9d6dd538cc8cc50554b3 100644
 --- a/ui/views/controls/button/md_text_button.h
 +++ b/ui/views/controls/button/md_text_button.h
 @@ -60,11 +60,13 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
@@ -11,7 +11,7 @@ index 6688bc4a01e544847e54e1974ee528759d4c44b2..2bcc0ca1e5d5b310d17b4fa233d7169d
    gfx::Insets CalculateDefaultPadding() const;
  
    void UpdateTextColor();
-   virtual void UpdateBackgroundColor();
+   void UpdateBackgroundColor() override;
 +  virtual
    void UpdateColors();
  

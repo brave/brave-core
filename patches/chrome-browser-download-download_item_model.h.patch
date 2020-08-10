@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/download_item_model.h b/chrome/browser/download/download_item_model.h
-index fb1fc21d3f73f80cf394c6eef0cce5d30723cb8e..ff0bf17bccf892497cdef2a8d54e6f13a1a31a04 100644
+index 94d47afee871d2748e1b6fe2b69efec628c2b00c..30567b9c0909240b198f9eb7d6c057983364d36d 100644
 --- a/chrome/browser/download/download_item_model.h
 +++ b/chrome/browser/download/download_item_model.h
-@@ -102,6 +102,7 @@ class DownloadItemModel : public DownloadUIModel,
+@@ -104,6 +104,7 @@ class DownloadItemModel : public DownloadUIModel,
    void OnDownloadDestroyed(download::DownloadItem* download) override;
  
   private:
