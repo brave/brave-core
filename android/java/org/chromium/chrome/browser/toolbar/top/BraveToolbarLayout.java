@@ -400,6 +400,10 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     if (mBraveRewardsNotificationsCount != null) {
       mBraveRewardsNotificationsCount.setVisibility(View.GONE);
     }
+    SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+    SharedPreferences.Editor editor = sharedPref.edit();
+    editor.putBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, true);
+    editor.apply();
   }
 
   @Override
@@ -432,6 +436,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
       }
     }
   }
+
+
 
   private boolean checkForRewardsOnboarding() {
     return (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
