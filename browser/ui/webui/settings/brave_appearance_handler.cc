@@ -11,6 +11,7 @@
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/brave_together/buildflags/buildflags.h"
+#include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_widget_utils/browser/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
@@ -30,6 +31,10 @@
 
 #if BUILDFLAG(BRAVE_TOGETHER_ENABLED)
 #include "brave/components/brave_together/browser/regions.h"
+#endif
+
+#if BUILDFLAG(GEMINI_ENABLED)
+#include "brave/components/gemini/browser/regions.h"
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
@@ -90,6 +95,10 @@ void BraveAppearanceHandler::RegisterMessages() {
       "getIsBraveTogetherSupported",
       base::BindRepeating(&BraveAppearanceHandler::GetIsBraveTogetherSupported,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getIsGeminiSupported",
+      base::BindRepeating(&BraveAppearanceHandler::GetIsGeminiSupported,
+                          base::Unretained(this)));
 }
 
 void BraveAppearanceHandler::SetBraveThemeType(const base::ListValue* args) {
@@ -149,6 +158,22 @@ void BraveAppearanceHandler::GetIsBraveTogetherSupported(
 #else
   bool is_supported = ntp_widget_utils::IsRegionSupported(
       profile_->GetPrefs(), brave_together::supported_regions, true);
+#endif
+
+  ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));
+}
+
+void BraveAppearanceHandler::GetIsGeminiSupported(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+
+  AllowJavascript();
+
+#if !BUILDFLAG(GEMINI_ENABLED)
+  bool is_supported = false;
+#else
+  bool is_supported = ntp_widget_utils::IsRegionSupported(
+      profile_->GetPrefs(), gemini::supported_regions, true);
 #endif
 
   ResolveJavascriptCallback(args->GetList()[0], base::Value(is_supported));

@@ -34,6 +34,7 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler {
   void GetIsSuperReferralActive(const base::ListValue* args);
   void GetIsBinanceSupported(const base::ListValue* args);
   void GetIsBraveTogetherSupported(const base::ListValue* args);
+  void GetIsGeminiSupported(const base::ListValue* args);
 
   Profile* profile_ = nullptr;
   PrefChangeRegistrar local_state_change_registrar_;

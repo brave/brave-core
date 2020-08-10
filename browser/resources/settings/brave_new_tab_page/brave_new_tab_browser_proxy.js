@@ -23,6 +23,11 @@ cr.define('settings', function() {
      * @return {!Promise<Boolean>}
      */
     getIsBraveTogetherSupported() {}
+
+    /**
+     * @return {!Promise<Boolean>}
+     */
+    getIsGeminiSupported() {}
   }
 
   /**
@@ -42,6 +47,11 @@ cr.define('settings', function() {
     /** @override */
     getIsBraveTogetherSupported() {
       return cr.sendWithPromise('getIsBraveTogetherSupported')
+    }
+
+    /** @override */
+    getIsGeminiSupported() {
+      return cr.sendWithPromise('getIsGeminiSupported')
     }
   }
 
