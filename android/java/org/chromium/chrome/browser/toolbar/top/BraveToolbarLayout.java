@@ -65,6 +65,8 @@ import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.url_formatter.UrlFormatter;
 
 import java.net.URL;
 import java.util.List;
@@ -244,7 +246,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           updateBraveShieldsButtonState(tab);
           if (!NewTabPage.isNTPUrl(tab.getUrlString())
               && !OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
-              && PackageUtils.isFirstInstall(getContext())) {
+              && PackageUtils.isFirstInstall(getContext())
+              && !UrlUtilities.isInternalScheme(UrlFormatter.fixupUrl(url))
+              && (mBraveShieldsHandler.getAdsBlockedCount(tab.getId()) > 0 || mBraveShieldsHandler.getTackersBlockedCount(tab.getId()) > 0)) {
             PopupWindow mPopupWindow = mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
             OnboardingPrefManager.getInstance().setShieldsTooltipShown(true);
             mPopupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
