@@ -27,9 +27,25 @@ private class MenuCell: UITableViewCell {
         $0.isUserInteractionEnabled = false
     }
     
+    private let spinner = UIActivityIndicatorView().then {
+        $0.snp.makeConstraints { make in
+            make.size.equalTo(24)
+        }
+        $0.startAnimating()
+        $0.isHidden = true
+    }
+    
     let stackView = UIStackView().then {
         $0.spacing = 4
         $0.alignment = .center
+    }
+    
+    var isLoading = false {
+        didSet {
+            labelView.isEnabled = !isLoading
+            toggleButton.isHidden = isLoading
+            spinner.isHidden = !isLoading
+        }
     }
     
     convenience init(withToggle: Bool = false, fullLineSeparator: Bool = false) {
@@ -43,11 +59,11 @@ private class MenuCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(stackView)
         
-        [iconView, labelView, toggleButton].forEach(stackView.addArrangedSubview(_:))
+        [iconView, labelView, toggleButton, spinner].forEach(stackView.addArrangedSubview(_:))
         
         stackView.snp.makeConstraints {
             $0.leading.top.bottom.equalToSuperview()
-            $0.trailing.equalToSuperview().inset(4)
+            $0.trailing.equalToSuperview().inset(8)
         }
         
         separatorInset = UIEdgeInsets(top: 0, left: iconLength, bottom: 0, right: 0)
@@ -219,6 +235,7 @@ class MenuViewController: UITableViewController {
                     break
                 case .installed(let enabled):
                     menuCell.toggleButton.isOn = enabled
+                    menuCell.isLoading = BraveVPN.reconnectPending
                 }
                 
                 vpnMenuCell = menuCell
@@ -287,6 +304,11 @@ class MenuViewController: UITableViewController {
     private func openVPNAction(menuCell: MenuCell) {
         let enabled = !menuCell.toggleButton.isOn
         let vpnState = BraveVPN.vpnState
+        
+        /// Connecting to the vpn takes a while, that's why we have to show a spinner until it finishes.
+        if enabled {
+            menuCell.isLoading = true
+        }
         
         if !VPNProductInfo.isComplete {
             let alert =
@@ -363,7 +385,13 @@ class MenuViewController: UITableViewController {
     }
     
     @objc func vpnConfigChanged() {
-        vpnMenuCell?.toggleButton.isOn = BraveVPN.isConnected
+        guard let cell = vpnMenuCell else { return }
+        
+        cell.toggleButton.isOn = BraveVPN.isConnected
+        
+        if BraveVPN.isConnected {
+            cell.isLoading = false
+        }
     }
 }
 

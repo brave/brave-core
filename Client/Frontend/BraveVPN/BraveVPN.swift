@@ -56,7 +56,7 @@ class BraveVPN {
     private static var firstTimeUserConfigPending = false
     
     /// Lock to prevent user from spamming connect/disconnect button.
-    private static var reconnectPending = false
+    static var reconnectPending = false
     
     /// Status of creating vpn credentials on Guardian's servers.
     enum VPNUserCreationStatus {
