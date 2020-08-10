@@ -432,9 +432,6 @@ extension BrowserViewController: WKNavigationDelegate {
                 rewardsXHRLoadURL = webView.url
             }
             
-            if tab === tabManager.selectedTab {
-                topToolbar.updateProgressBar(1.0)
-            }
             tabsBar.reloadDataAndRestoreSelectedTab()
         }
     }

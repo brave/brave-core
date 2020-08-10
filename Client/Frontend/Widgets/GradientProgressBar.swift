@@ -168,6 +168,10 @@ open class GradientProgressBar: UIProgressView {
     }
     
     override open func setProgress(_ progress: Float, animated: Bool) {
+        if progress < self.progress && self.progress != 1 {
+            return
+        }
+        
         // Setup animations
         gradientLayer.removeAnimation(forKey: "position")
         if gradientLayer.animation(forKey: "colorChange") == nil {
