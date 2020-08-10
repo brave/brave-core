@@ -118,11 +118,11 @@ class TorControlImpl : public TorControl {
   void WatchDirChanged(const base::FilePath& path, bool error);
   void Poll();
   void Polled();
-  bool EatControlCookie(std::string&, base::Time&);
+  bool EatControlCookie(std::vector<uint8_t>&, base::Time&);
   bool EatControlPort(int&, base::Time&);
 
-  void OpenControl(int port, std::string cookie);
-  void Connected(std::string cookie, int rv);
+  void OpenControl(int port, std::vector<uint8_t> cookie);
+  void Connected(std::vector<uint8_t> cookie, int rv);
   void Authenticated(
       bool error, const std::string& status, const std::string& reply);
 
