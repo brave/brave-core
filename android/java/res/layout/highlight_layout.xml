@@ -8,7 +8,7 @@
     <org.chromium.chrome.browser.onboarding.v2.HighlightView
         android:id="@+id/highlight_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="@dimen/onboarding_2_layout_height">
 
     </org.chromium.chrome.browser.onboarding.v2.HighlightView>
 
@@ -21,7 +21,7 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"/>
+            android:layout_margin="8dp"/>
 
         <ImageView
             android:id="@+id/onboarding_bottom_sheet_close"
