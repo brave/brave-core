@@ -895,13 +895,13 @@ until they verify, or until 90 days have passed.
         point
       </message>
       <message name="IDS_ONE_TIP_OPTION" desc="Text for one tip option">
-        1 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+        1.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
       </message>
       <message name="IDS_FIVE_TIP_OPTION" desc="Text for five tip option">
-        5 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+        5.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
       </message>
       <message name="IDS_TEN_TIP_OPTION" desc="Text for ten tip option">
-        10 <ph name="TIP">%1$s<ex>BAT</ex></ph>
+        10.000 <ph name="TIP">%1$s<ex>BAT</ex></ph>
       </message>
       <message name="IDS_PREFS_NEW_TAB_PAGE" desc="Title of New Tab Page settings.">
         New Tab Page
