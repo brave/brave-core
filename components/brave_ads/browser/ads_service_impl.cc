@@ -648,7 +648,7 @@ void AdsServiceImpl::ResetState() {
 
 void AdsServiceImpl::ResetAllState(
     const bool should_shutdown) {
-  if (!should_shutdown) {
+  if (!should_shutdown || !connected()) {
     ResetState();
     return;
   }

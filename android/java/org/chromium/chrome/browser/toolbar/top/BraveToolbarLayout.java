@@ -67,6 +67,7 @@ import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.components.embedder_support.util.UrlUtilities;
 import org.chromium.components.url_formatter.UrlFormatter;
+import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 
 import java.net.URL;
 import java.util.List;
@@ -362,7 +363,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                                      int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP,
                                      List<Animator> animators) {
     Context context = getContext();
-    if (PackageUtils.isFirstInstall(context) && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()) {
+    if (PackageUtils.isFirstInstall(context)
+        && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
+        && !BraveSearchEngineUtils.getDSEShortName(true).equals(OnboardingPrefManager.DUCKDUCKGO)) {
       Intent searchActivityIntent = new Intent(context, SearchActivity.class);
       context.startActivity(searchActivityIntent);
     } else {
