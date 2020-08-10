@@ -1124,8 +1124,7 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                 if (grant.length < 3) {
                     continue;
                 }
-
-                String toInsert = "<b><font color=#ffffff>" + grant[0] + " " + batPointsText + "</font></b> ";
+                String toInsert = "<b><font color=#ffffff>" + String.format(Locale.getDefault(), "%.3f", Double.parseDouble(grant[0])) + " " + batPointsText + "</font></b> ";
 
                 if (grant[2].equals(BraveRewardsPanelPopup.ADS_GRANT_TYPE) == false) {
                     Calendar calTime = Calendar.getInstance();
@@ -1510,9 +1509,9 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
                     walletBalance = balance_obj.mTotal;
                 }
 
-                DecimalFormat df = new DecimalFormat("#.#");
+                DecimalFormat df = new DecimalFormat("#.###");
                 df.setRoundingMode(RoundingMode.FLOOR);
-                df.setMinimumFractionDigits(1);
+                df.setMinimumFractionDigits(3);
                 ((TextView) this.root.findViewById(R.id.br_bat_wallet))
                 .setText(df.format(walletBalance));
                 ((TextView) this.root.findViewById(R.id.br_bat)).setText(batPointsText);
