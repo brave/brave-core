@@ -345,3 +345,76 @@ fn unwrap_unmarked_element(el: &mut Element) -> HandlerResult {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod test {
+    use super::super::speedreader_streaming::SpeedReaderStreaming;
+    use super::super::SpeedReaderProcessor;
+    use super::*;
+    use url::Url;
+
+    fn check_rewriting(
+        article_url: &Url,
+        input: &str,
+        expectation: &str,
+        mappings: fn(
+            &mut Vec<(Selector, ContentFunction)>,
+            &mut Vec<SpeedReaderError>,
+            origin: String,
+        ) -> (),
+    ) {
+        let mut element_content_handlers = vec![];
+        let mut errors = vec![];
+
+        mappings(
+            &mut element_content_handlers,
+            &mut errors,
+            article_url.origin().ascii_serialization(),
+        );
+
+        let mut rewritten = "".to_owned();
+        let mut rewriter = SpeedReaderStreaming::try_new(
+            article_url.clone(),
+            |input: &[u8]| {
+                let appending_string = String::from_utf8(input.to_vec()).unwrap();
+                rewritten.push_str(&appending_string);
+            },
+            &element_content_handlers,
+        )
+        .unwrap();
+
+        rewriter.write(input.as_bytes()).unwrap();
+
+        assert_eq!(rewritten, expectation);
+    }
+
+    #[test]
+    pub fn rewrite_relative_url() {
+        check_rewriting(
+            &Url::parse("https://example.com/article/").unwrap(),
+            r##"<a href="/another-article">"##,
+            r##"<a href="https://example.com/another-article">"##,
+            correct_relative_links,
+        );
+    }
+
+    #[test]
+    pub fn not_rewrite_anchor_url() {
+        check_rewriting(
+            &Url::parse("https://example.com/article/").unwrap(),
+            r##"<a href="#Hello">"##,
+            r##"<a href="#Hello">"##,
+            correct_relative_links,
+        );
+    }
+
+    #[test]
+    pub fn not_rewrite_relative_scham_url() {
+        check_rewriting(
+            &Url::parse("https://example.com/article/").unwrap(),
+            r#"<a href="//example.com/another-article/">"#,
+            r#"<a href="//example.com/another-article/">"#,
+            correct_relative_links,
+        );
+    }
+}
