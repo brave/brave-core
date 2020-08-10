@@ -96,11 +96,6 @@ pub fn rewrite_rules_to_content_handlers(
     if conf.fix_embeds {
         fix_social_embeds(&mut element_content_handlers, &mut errors);
     }
-    correct_relative_links(
-        &mut element_content_handlers,
-        &mut errors,
-        origin.to_owned(),
-    );
 
     if !errors.is_empty() {
         eprintln!(
