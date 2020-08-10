@@ -809,8 +809,6 @@
 		A176323C20CF2AF900126F25 /* DeferredTestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A176323020CF2A6000126F25 /* DeferredTestUtils.swift */; };
 		A198E75120C701ED00334C11 /* HistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A198E75020C701ED00334C11 /* HistoryViewController.swift */; };
 		A1AD4BCF20BF3E8C007A6EA1 /* BookmarksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BCE20BF3E8C007A6EA1 /* BookmarksViewController.swift */; };
-		A1AD4BD420BF4757007A6EA1 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BD220BF4712007A6EA1 /* ImageCache.swift */; };
-		A1AD4BD720BF4772007A6EA1 /* FastImageCache.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1AD4BD520BF476E007A6EA1 /* FastImageCache.framework */; };
 		A1AD4BE120C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */; };
 		A1AD4BE320C0861D007A6EA1 /* UIBarButtonItemExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */; };
 		A1CA29C420E1746A00CB9126 /* OptionSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */; };
@@ -2364,9 +2362,6 @@
 		A176323020CF2A6000126F25 /* DeferredTestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeferredTestUtils.swift; sourceTree = "<group>"; };
 		A198E75020C701ED00334C11 /* HistoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewController.swift; sourceTree = "<group>"; };
 		A1AD4BCE20BF3E8C007A6EA1 /* BookmarksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarksViewController.swift; sourceTree = "<group>"; };
-		A1AD4BD020BF3F4D007A6EA1 /* Eureka.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Eureka.framework; path = Carthage/Build/iOS/Eureka.framework; sourceTree = "<group>"; };
-		A1AD4BD220BF4712007A6EA1 /* ImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
-		A1AD4BD520BF476E007A6EA1 /* FastImageCache.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FastImageCache.framework; path = Carthage/Build/iOS/FastImageCache.framework; sourceTree = "<group>"; };
 		A1AD4BE020C082EF007A6EA1 /* UIGestureRecognizerExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIGestureRecognizerExtensions.swift; sourceTree = "<group>"; };
 		A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBarButtonItemExtensions.swift; sourceTree = "<group>"; };
 		A1CA29C320E1746A00CB9126 /* OptionSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionSelectionViewController.swift; sourceTree = "<group>"; };
@@ -2697,7 +2692,6 @@
 				A1F66A8020DD87CA00303328 /* Static.framework in Frameworks */,
 				5D1DC52820AC9AFB00905E5A /* Data.framework in Frameworks */,
 				7BA4A9471C4CED900091D032 /* GCDWebServers.framework in Frameworks */,
-				A1AD4BD720BF4772007A6EA1 /* FastImageCache.framework in Frameworks */,
 				272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */,
 				7B604F9B1C4950F2006EEEC3 /* SDWebImage.framework in Frameworks */,
 				7B604FA21C495268006EEEC3 /* SnapKit.framework in Frameworks */,
@@ -4491,8 +4485,6 @@
 				272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */,
 				0AC0D399233E7CAF0091EFA5 /* ObjcExceptionBridging.framework */,
 				A1F66A7F20DD87CA00303328 /* Static.framework */,
-				A1AD4BD520BF476E007A6EA1 /* FastImageCache.framework */,
-				A1AD4BD020BF3F4D007A6EA1 /* Eureka.framework */,
 				A1D841F420BC405E00BDAFF7 /* pop.framework */,
 				3B4988CD1E42B01800A12FDA /* SwiftyJSON.framework */,
 				E6231C041B90A472005ABB0D /* libxml2.2.tbd */,
@@ -4858,7 +4850,6 @@
 		E65075551E37F714006961AC /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				A1AD4BD220BF4712007A6EA1 /* ImageCache.swift */,
 				E650755A1E37F747006961AC /* Swizzling.h */,
 				E650755B1E37F747006961AC /* Swizzling.m */,
 				E650755D1E37F756006961AC /* Try.h */,
@@ -6130,10 +6121,8 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Deferred.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftKeychainWrapper.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Fuzi.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/JSONSchema.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/SwiftyJSON.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/pop.framework",
-				"$(SRCROOT)/Carthage/Build/iOS/FastImageCache.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Static.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/OnePasswordExtension.framework",
 				"$(SRCROOT)/BraveRewards/BraveRewards.framework",
@@ -6899,7 +6888,6 @@
 				5E1645A824ABA35B0003C3B2 /* SpinnerView.swift in Sources */,
 				E640E85E1C73A45A00C5F072 /* PasscodeEntryViewController.swift in Sources */,
 				4422D4BF21BFFB7600BF1855 /* logging.cc in Sources */,
-				A1AD4BD420BF4757007A6EA1 /* ImageCache.swift in Sources */,
 				0A1E84462190A57F0042F782 /* SyncAddDeviceViewController.swift in Sources */,
 				4422D42C21BFCF8900BF1855 /* HttpsEverywhere.cpp in Sources */,
 				4422D50021BFFB7600BF1855 /* db_iter.cc in Sources */,

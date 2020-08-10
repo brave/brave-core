@@ -3308,7 +3308,7 @@ extension BrowserViewController {
         let alert = ThirdPartySearchAlerts.addThirdPartySearchEngine { alert in
             self.customSearchEngineButton.tintColor = UIColor.Photon.grey50
             self.customSearchEngineButton.isUserInteractionEnabled = false
-
+            
             WebImageCacheManager.shared.load(from: iconURL) { (image, _, _, _, _) in
                 guard let image = image else {
                     let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()

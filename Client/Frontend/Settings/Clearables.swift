@@ -81,8 +81,10 @@ class CacheClearable: Clearable {
                                                        WKWebsiteDataTypeMemoryCache,
                                                        WKWebsiteDataTypeFetchCache]
             WKWebsiteDataStore.default().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
-                
-                ImageCache.shared.clear()
+                WebImageCacheManager.shared.clearDiskCache()
+                WebImageCacheManager.shared.clearMemoryCache()
+                WebImageCacheWithNoPrivacyProtectionManager.shared.clearDiskCache()
+                WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
                 
                 BraveWebView.sharedNonPersistentStore().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0)) {
                     result.fill(Maybe<()>(success: ()))

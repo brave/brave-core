@@ -3,7 +3,6 @@
 import UIKit
 import CoreData
 import Foundation
-import FastImageCache
 import Shared
 import WebKit
 import XCGLogger
