@@ -533,7 +533,7 @@ class FeedDataSource {
                 lastVisitedDomains.contains(feedBaseDomain) {
                 score -= 5
             }
-            let variety = 1.0 / Double(1 << domainCount[content.publisherID, default: 0])
+            let variety = 1.0 * pow(0.8, Double(domainCount[content.publisherID, default: 0]))
             score *= variety
             domainCount[content.publisherID, default: 0] += 1
             guard let source = sources.first(where: { $0.id == content.publisherID }) else {
