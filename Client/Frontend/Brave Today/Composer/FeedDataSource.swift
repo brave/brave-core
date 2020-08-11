@@ -430,11 +430,11 @@ class FeedDataSource {
     /// If the data source is already loading, returns `false`
     var shouldLoadContent: Bool {
         switch state {
-        case .initial:
+        case .initial, .failure:
             return true
         case .loading:
             return false
-        default:
+        case .success:
             return isFeedContentExpired || isSourcesExpired
         }
     }

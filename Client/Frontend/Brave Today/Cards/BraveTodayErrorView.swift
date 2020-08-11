@@ -19,11 +19,14 @@ class BraveTodayErrorView: UIView, FeedCardContent {
         $0.spacing = 8
     }
     
-    let refreshButton = ActionButton(type: .system).then {
+    let refreshButton = ActionButton().then {
         $0.backgroundColor = BraveUX.braveOrange
         $0.setTitle("Refresh", for: .normal) // FIXME: Localize
         $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
         $0.layer.borderWidth = 0
+        $0.loaderView = LoaderView(size: .small).then {
+            $0.tintColor = .white
+        }
         $0.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
     }
     

@@ -107,7 +107,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if case .failure(let error) = dataSource.state {
+        if let error = dataSource.state.error {
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayErrorView>
             if let urlError = error as? URLError, urlError.code == .notConnectedToInternet {
                 cell.content.titleLabel.text = "No Internet" // FIXME: Localize
@@ -116,8 +116,16 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 cell.content.titleLabel.text = "Oops…" // FIXME: Localize
                 cell.content.errorMessageLabel.text = "Brave Today is experiencing some issues. Try again." // FIXME: Localize
             }
+            if case .loading = dataSource.state {
+                cell.content.refreshButton.isLoading = true
+            } else {
+                cell.content.refreshButton.isLoading = false
+            }
             cell.content.refreshButtonTapped = { [weak self] in
-                self?.actionHandler(.errorCardTappedRefresh)
+                if !cell.content.refreshButton.isLoading {
+                    cell.content.refreshButton.isLoading = true
+                    self?.actionHandler(.errorCardTappedRefresh)
+                }
             }
             return cell
         }
