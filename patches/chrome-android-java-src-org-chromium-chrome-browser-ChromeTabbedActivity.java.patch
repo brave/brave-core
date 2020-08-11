@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 1becbb921990445a578efd889c3801c90730c293..16dcd9eeab9e8fa7d74cf92c8fd9d5a5752b86b8 100644
+index 1becbb921990445a578efd889c3801c90730c293..b473200bacfe16062651ea452c22febcd5be8cae 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -186,7 +186,7 @@ import java.util.Locale;
@@ -11,6 +11,15 @@ index 1becbb921990445a578efd889c3801c90730c293..16dcd9eeab9e8fa7d74cf92c8fd9d5a5
      private static final String TAG = "ChromeTabbedActivity";
  
      private static final String HELP_URL_PREFIX = "https://support.google.com/chrome/";
+@@ -1124,7 +1124,7 @@ public class ChromeTabbedActivity
+         if (ReengagementNotificationController.isEnabled()) {
+             if (mCallbackController != null) {
+                 new OneShotCallback<>(
+-                        mTabModelProfileSupplier, mCallbackController.makeCancelable(profile -> {
++                        mTabModelProfileSupplier, mCallbackController.makeCancelable((Profile profile) -> {
+                             assert profile != null : "Unexpectedly null profile from TabModel.";
+                             if (profile == null) return;
+ 
 @@ -1688,7 +1688,7 @@ public class ChromeTabbedActivity
  
      @Override
