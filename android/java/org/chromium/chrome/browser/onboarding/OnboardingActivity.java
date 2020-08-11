@@ -32,6 +32,9 @@ public class OnboardingActivity extends AppCompatActivity implements OnViewPager
             this, getSupportFragmentManager(), this);
         viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(onboardingViewPagerAdapter);
+        if (BraveActivity.getBraveActivity() != null ) {
+            BraveActivity.getBraveActivity().hideRewardsOnboardingIcon();
+        }
     }
 
     @Override

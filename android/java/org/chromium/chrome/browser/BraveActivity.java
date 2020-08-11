@@ -244,7 +244,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         if (onboardingActivity == null
-                && OnboardingPrefManager.getInstance().showOnboardingForSkip()) {
+                && OnboardingPrefManager.getInstance().showOnboardingForSkip(this)) {
             OnboardingPrefManager.getInstance().showOnboarding(this);
             OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
         }
@@ -310,12 +310,12 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
                 OnboardingPrefManager.getInstance().setFromNotification(true);
                 getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
             } else {
-                showOnboarding();
+                showOnboardingV2();
             }
         }
     }
 
-    public void showOnboarding() {
+    public void showOnboardingV2() {
         OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
         FragmentManager fm = getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm

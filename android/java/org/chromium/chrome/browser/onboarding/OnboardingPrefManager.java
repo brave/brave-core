@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.util.PackageUtils;
 
 import java.lang.System;
 import java.util.HashMap;
@@ -174,8 +175,9 @@ public class OnboardingPrefManager {
         sharedPreferencesEditor.apply();
     }
 
-    public boolean showOnboardingForSkip() {
-        boolean shouldShow = !hasOnboardingShownForSkip()
+    public boolean showOnboardingForSkip(Context context) {
+        boolean shouldShow = PackageUtils.isFirstInstall(context)
+                             && !hasOnboardingShownForSkip()
                              && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
                              && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
                              && (getNextOnboardingDate() > 0 && System.currentTimeMillis() > getNextOnboardingDate());
