@@ -5,7 +5,6 @@
 
 #include "brave/common/tor/tor_control.h"
 
-#include "brave/common/tor/tor_control_impl.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace tor {
@@ -33,7 +32,7 @@ TEST(TorControlTest, ParseQuoted) {
   for (i = 0; i < sizeof(cases)/sizeof(cases[0]); i++) {
     std::string value;
     size_t end;
-    bool ok = TorControlImpl::ParseQuoted(cases[i].input, value, end);
+    bool ok = TorControl::ParseQuoted(cases[i].input, value, end);
     if (cases[i].output) {
       EXPECT_TRUE(ok) << i;
       EXPECT_EQ(value, cases[i].output) << i;
@@ -65,7 +64,7 @@ TEST(TorControlTest, ParseKV) {
     std::string key;
     std::string value;
     size_t end;
-    bool ok = TorControlImpl::ParseKV(cases[i].input, key, value, end);
+    bool ok = TorControl::ParseKV(cases[i].input, key, value, end);
     if (cases[i].value) {
       EXPECT_TRUE(ok) << i << ": " << cases[i].input
                       << "\nkey  : " << key
