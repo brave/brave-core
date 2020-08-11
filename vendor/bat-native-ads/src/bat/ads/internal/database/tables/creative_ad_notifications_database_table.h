@@ -89,6 +89,9 @@ class CreativeAdNotifications : public Table {
   void MigrateToV1(
       DBTransaction* transaction);
 
+  void MigrateToV2(
+      DBTransaction* transaction);
+
   int batch_size_;
 
   AdsImpl* ads_;  // NOT OWNED
