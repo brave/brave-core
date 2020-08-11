@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index e7d9fda46b207fa6d4f7f52e01714d14a85bcba3..c80dda8ee1f36d10742941bf73d2a7094c9cc4e8 100644
+index 1becbb921990445a578efd889c3801c90730c293..b473200bacfe16062651ea452c22febcd5be8cae 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -181,7 +181,7 @@ import java.util.Locale;
+@@ -186,7 +186,7 @@ import java.util.Locale;
   * are accessible via a chrome specific tab switching UI.
   */
  public class ChromeTabbedActivity
@@ -11,7 +11,16 @@ index e7d9fda46b207fa6d4f7f52e01714d14a85bcba3..c80dda8ee1f36d10742941bf73d2a709
      private static final String TAG = "ChromeTabbedActivity";
  
      private static final String HELP_URL_PREFIX = "https://support.google.com/chrome/";
-@@ -1665,7 +1665,7 @@ public class ChromeTabbedActivity
+@@ -1124,7 +1124,7 @@ public class ChromeTabbedActivity
+         if (ReengagementNotificationController.isEnabled()) {
+             if (mCallbackController != null) {
+                 new OneShotCallback<>(
+-                        mTabModelProfileSupplier, mCallbackController.makeCancelable(profile -> {
++                        mTabModelProfileSupplier, mCallbackController.makeCancelable((Profile profile) -> {
+                             assert profile != null : "Unexpectedly null profile from TabModel.";
+                             if (profile == null) return;
+ 
+@@ -1688,7 +1688,7 @@ public class ChromeTabbedActivity
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -20,7 +29,7 @@ index e7d9fda46b207fa6d4f7f52e01714d14a85bcba3..c80dda8ee1f36d10742941bf73d2a709
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier, mBookmarkBridgeSupplier);
-@@ -1688,9 +1688,9 @@ public class ChromeTabbedActivity
+@@ -1711,9 +1711,9 @@ public class ChromeTabbedActivity
                  }
              };
          }
@@ -32,7 +41,7 @@ index e7d9fda46b207fa6d4f7f52e01714d14a85bcba3..c80dda8ee1f36d10742941bf73d2a709
                          tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -2067,7 +2067,7 @@ public class ChromeTabbedActivity
+@@ -2090,7 +2090,7 @@ public class ChromeTabbedActivity
          }
      }
  
