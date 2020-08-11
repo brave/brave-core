@@ -23,7 +23,6 @@ void ThunkNotificationDelegate::Close(bool by_user) {
 void ThunkNotificationDelegate::Click(
     const base::Optional<int>& button_index,
     const base::Optional<base::string16>& reply) {
-  LOG(INFO) << "albert ThunkND::Click";
   if (impl_)
     impl_->Click(button_index, reply);
 }
@@ -76,7 +75,6 @@ HandleNotificationClickDelegate::~HandleNotificationClickDelegate() {}
 void HandleNotificationClickDelegate::Click(
     const base::Optional<int>& button_index,
     const base::Optional<base::string16>& reply) {
-  LOG(INFO) << "albert HNCD::Click";
   if (!callback_.is_null())
     callback_.Run(button_index);
 }

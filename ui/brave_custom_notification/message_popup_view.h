@@ -29,6 +29,8 @@ class MessagePopupView : public views::WidgetDelegateView,
   // Return opacity of the widget.
   float GetOpacity() const;
 
+//  Widget* GetWidget() const override;
+
   // Sets widget bounds.
   void SetPopupBounds(const gfx::Rect& bounds);
 
@@ -69,6 +71,7 @@ class MessagePopupView : public views::WidgetDelegateView,
  private:
   // True if the view has a widget and the widget is not closed.
   bool IsWidgetValid() const;
+  int GetBodyHeight(const base::string16& message);
 
   // Owned by views hierarchy.
   MessageView* message_view_;

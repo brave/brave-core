@@ -305,8 +305,6 @@ void LargeImageView::SetImage(const gfx::ImageSkia& image) {
 
 void LargeImageView::OnPaint(gfx::Canvas* canvas) {
   views::View::OnPaint(canvas);
-  LOG(INFO) << "albert *** LIV::OnPaint";
-
   gfx::Size resized_size = GetResizedImageSize();
   gfx::Size drawn_size = resized_size;
   drawn_size.SetToMin(kLargeImageMaxSize);
@@ -320,9 +318,7 @@ void LargeImageView::OnPaint(gfx::Canvas* canvas) {
   gfx::ImageSkia drawn_image = gfx::ImageSkiaOperations::ExtractSubset(
       resized_image, gfx::Rect(drawn_size));
 
-  // canvas->DrawImageInt(drawn_image, drawn_bounds.x(), drawn_bounds.y());
-  canvas->DrawImageInt(drawn_image, 328, 600);
-  // LOG(INFO) << "*** canvas width: " << std::to_string(message_view_->width()) << " height: " << std::to_string(message_view_->height());
+  canvas->DrawImageInt(drawn_image, drawn_bounds.x(), drawn_bounds.y());
 }
 
 const char* LargeImageView::GetClassName() const {
@@ -614,7 +610,6 @@ NotificationViewMD::NotificationViewMD(const Notification& notification)
 //  AddChildView(widget->GetRootView()->children().front());
   // AddChildView(webview);
 
-   // LOG(INFO) << "*** webview width: " << std::to_string(webview->width()) << " height: " << std::to_string(webview->height());
   // |content_row_| contains title, message, image, progressbar, etc...
   content_row_ = new views::View();
   auto* content_row_layout =
@@ -622,7 +617,6 @@ NotificationViewMD::NotificationViewMD(const Notification& notification)
           views::BoxLayout::Orientation::kHorizontal, kContentRowPadding, 0));
   content_row_layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kStart);
-  // albert re-add
   AddChildView(content_row_);
 
   // |left_content_| contains most contents like title, message, etc...
@@ -673,8 +667,6 @@ NotificationViewMD::NotificationViewMD(const Notification& notification)
   highlight_path_generator_ = highlight_path_generator.get();
   views::HighlightPathGenerator::Install(this,
                                          std::move(highlight_path_generator));
-  LOG(INFO) << "albert *** calling NVMD UpdateCornerRadius";
-//  UpdateCornerRadius(10, 10);
   UpdateCornerRadius(kNotificationCornerRadius, kNotificationCornerRadius);
 }
 
@@ -711,7 +703,6 @@ void NotificationViewMD::Layout() {
   // but we also have to round the actions row background here.
   if (actions_row_->GetVisible()) {
     constexpr SkScalar kCornerRadius = SkIntToScalar(kNotificationCornerRadius);
-    LOG(INFO) << "albert *** Layout" << kCornerRadius;
 
     // Use vertically larger clip path, so that actions row's top coners will
     // not be rounded.
@@ -736,7 +727,6 @@ void NotificationViewMD::OnFocus() {
 
 bool NotificationViewMD::OnMousePressed(const ui::MouseEvent& event) {
   last_mouse_pressed_timestamp_ = base::TimeTicks(event.time_stamp());
-  LOG(INFO) << "albert ***NVMD::OnMousePressed";
   return true;
 }
 
@@ -890,10 +880,7 @@ void NotificationViewMD::CreateOrUpdateContextTitleView(
                                   */
   header_row_->SetAccentColor(SK_ColorTRANSPARENT);
   header_row_->SetBackgroundColor(kNotificationBackgroundColor);
-  // header_row_->SetTimestamp(notification.timestamp());
   header_row_->SetAppNameElideBehavior(gfx::ELIDE_TAIL);
-  // const std::string s = std::string("albert summary text");
-  // header_row_->SetSummaryText(s::string16());
   header_row_->SetSummaryText(base::string16());
 
   base::string16 app_name;
@@ -928,7 +915,6 @@ void NotificationViewMD::CreateOrUpdateTitleView(
       kNotificationWidth * kMaxTitleLines / kMinPixelsPerTitleCharacterMD;
 
   base::string16 title = gfx::TruncateString(
-//      base::string16(base::UTF8ToUTF16("*** albert title")), title_character_limit, gfx::WORD_BREAK);
       notification.title(), title_character_limit, gfx::WORD_BREAK);
   if (!title_view_) {
     const gfx::FontList& font_list = GetTextFontList();
@@ -965,7 +951,6 @@ void NotificationViewMD::CreateOrUpdateMessageView(
 
   base::string16 text = gfx::TruncateString(
       notification.message(), kMessageCharacterLimitMD, gfx::WORD_BREAK);
-//      base::string16(base::UTF8ToUTF16("*** albert random text in message view")), kMessageCharacterLimitMD, gfx::WORD_BREAK);
 
   if (!message_view_) {
     const gfx::FontList& font_list = GetTextFontList();
@@ -981,9 +966,7 @@ void NotificationViewMD::CreateOrUpdateMessageView(
     message_view_->SetAllowCharacterBreak(true);
     left_content_->AddChildViewAt(message_view_, left_content_count_);
   } else {
-    // message_view_->SetText(std::string("*** albert message_view"));
     message_view_->SetText(text);
-
   }
 
   message_view_->SetVisible(notification.items().empty());
@@ -1124,33 +1107,6 @@ void NotificationViewMD::CreateOrUpdateImageView(
   if (!image_container_view_) {
     image_container_view_ = new views::View();
 
-    /*
-    content::BrowserContext* browser_context = std::make_unique<content::TestBrowserContext>();
-
-  auto* contents = WebContents::FromRenderFrameHost(host);
-  content::BrowserContext* browser_context =
-      web_ui->GetWebContents()->GetBrowserContext();
-      */
-    /*
-   std::unique_ptr<content::WebContents> web_contents(
-       content::WebContents::Create(
-           content::WebContents::CreateParams(browser_context)));
-    */
-    // views::WebView webview_ = new views::WebView(browser_context);
-    // gfx::NativeView view = web_contents->GetNativeView();
-//    Profile* profile = ProfileManager::GetLastUsedProfile();
-    // base::FilePath user_data_dir;
-    // base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-    //ProfileManager* profileManager =  g_browser_process->profile_manager();
-    // ProfileManager profileManager = ProfileManager(user_data_dir);
-    // ProfileManager profileManager = ProfileManager::getInstance();
-    /*
-    for (Browser* browser : *BrowserList::GetInstance()) {
-      Profile* profile = browser->profile();
-      std::string profName = profile->GetDebugName();
-      LOG(INFO) << "albert *** UpdateCornerRadius" << profName;
-    }
-    */
     gfx::Size preferred_size = kLargeImageMaxSize;
     SetPreferredSize(preferred_size);
 
@@ -1161,21 +1117,15 @@ void NotificationViewMD::CreateOrUpdateImageView(
         views::CreateEmptyBorder(kLargeImageContainerPadding));
     image_container_view_->SetBackground(
         views::CreateSolidBackground(kImageBackgroundColor));
-
-    // views::WebView* webview = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
-//    image_container_view_->AddChildView(webview);
     image_container_view_->AddChildView(new LargeImageView());
 
     // Insert the created image container just after the |content_row_|.
     image_container_view_->SetSize(kLargeImageMaxSize);
-    // webview->SetSize(kLargeImageMaxSize);
-    // message_view_->SetSize(kLargeMVMaxSize);
     AddChildViewAt(image_container_view_, GetIndexOf(content_row_) + 1);
   }
 
   static_cast<LargeImageView*>(image_container_view_->children().front())
       ->SetImage(notification.image().AsImageSkia());
-  LOG(INFO) << "*** image_container_view width: " << std::to_string(image_container_view_->width()) << " height: " << std::to_string(image_container_view_->height());
 }
 
 void NotificationViewMD::CreateOrUpdateActionButtonViews(
@@ -1225,90 +1175,18 @@ void NotificationViewMD::CreateOrUpdateActionButtonViews(
 
   // Inherit mouse hover state when action button views reset.
   // If the view is not expanded, there should be no hover state.
-  if (new_buttons && expanded_) {
-    views::Widget* widget = GetWidget();
-    if (widget) {
-      // This Layout() is needed because button should be in the right location
-      // in the view hierarchy when SynthesizeMouseMoveEvent() is called.
-      Layout();
-      widget->SetSize(widget->GetContentsView()->GetPreferredSize());
-      GetWidget()->SynthesizeMouseMoveEvent();
-    }
+  views::Widget* widget = GetWidget();
+  if (widget) {
+    // This Layout() is needed because button should be in the right location
+    // in the view hierarchy when SynthesizeMouseMoveEvent() is called.
+    Layout();
+    widget->SetSize(widget->GetContentsView()->GetPreferredSize());
+    LOG(INFO) << "albert settings size to height: " << widget->GetContentsView()->GetPreferredSize().height() << " width: "  << widget->GetContentsView()->GetPreferredSize().width();
+    GetWidget()->SynthesizeMouseMoveEvent();
+  } else {
+    LOG(INFO) << "albert Widget not found";
   }
 }
-
-/*
-void NotificationViewMD::CreateOrUpdateInlineSettingsViews(
-    const Notification& notification) {
-  if (settings_row_) {
-    DCHECK_EQ(SettingsButtonHandler::INLINE,
-              notification.rich_notification_data().settings_button_handler);
-    return;
-  }
-
-  if (notification.rich_notification_data().settings_button_handler !=
-      SettingsButtonHandler::INLINE) {
-    return;
-  }
-
-  // |settings_row_| contains inline settings.
-  settings_row_ = new views::View();
-  settings_row_->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kVertical, kSettingsRowPadding, 0));
-
-  int block_notifications_message_id = 0;
-  switch (notification.notifier_id().type) {
-    case NotifierType::APPLICATION:
-    case NotifierType::ARC_APPLICATION:
-      block_notifications_message_id =
-          IDS_MESSAGE_CENTER_BLOCK_ALL_NOTIFICATIONS_APP;
-      break;
-    case NotifierType::WEB_PAGE:
-      block_notifications_message_id =
-          IDS_MESSAGE_CENTER_BLOCK_ALL_NOTIFICATIONS_SITE;
-      break;
-    case NotifierType::SYSTEM_COMPONENT:
-      block_notifications_message_id =
-          IDS_MESSAGE_CENTER_BLOCK_ALL_NOTIFICATIONS;
-      break;
-    case NotifierType::CROSTINI_APPLICATION:
-      NOTREACHED();
-      break;
-  }
-  block_notifications_message_id =
-      IDS_MESSAGE_CENTER_BLOCK_ALL_NOTIFICATIONS_APP;
-  DCHECK_NE(block_notifications_message_id, 0);
-
-  block_all_button_ = new InlineSettingsRadioButton(
-      l10n_util::GetStringUTF16(block_notifications_message_id));
-  block_all_button_->SetBorder(
-      views::CreateEmptyBorder(kSettingsRadioButtonPadding));
-  settings_row_->AddChildView(block_all_button_);
-
-  dont_block_button_ = new InlineSettingsRadioButton(
-      l10n_util::GetStringUTF16(IDS_MESSAGE_CENTER_DONT_BLOCK_NOTIFICATIONS));
-  dont_block_button_->SetBorder(
-      views::CreateEmptyBorder(kSettingsRadioButtonPadding));
-  settings_row_->AddChildView(dont_block_button_);
-  settings_row_->SetVisible(false);
-
-  settings_done_button_ = new NotificationButtonMD(
-      this, l10n_util::GetStringUTF16(IDS_MESSAGE_CENTER_SETTINGS_DONE),
-      base::nullopt);
-  settings_done_button_->SetTextSubpixelRenderingEnabled(false);
-
-  auto* settings_button_row = new views::View;
-  auto settings_button_layout = std::make_unique<views::BoxLayout>(
-      views::BoxLayout::Orientation::kHorizontal, kSettingsButtonRowPadding, 0);
-  settings_button_layout->set_main_axis_alignment(
-      views::BoxLayout::MainAxisAlignment::kEnd);
-  settings_button_row->SetLayoutManager(std::move(settings_button_layout));
-  settings_button_row->AddChildView(settings_done_button_);
-  settings_row_->AddChildView(settings_button_row);
-
-  AddChildViewAt(settings_row_, GetIndexOf(actions_row_));
-}
-  */
 
 bool NotificationViewMD::IsExpandable() {
   // Inline settings can not be expanded.
@@ -1339,22 +1217,13 @@ bool NotificationViewMD::IsExpandable() {
   return false;
 }
 
-/*
-void NotificationViewMD::ToggleExpanded() {
-  SetExpanded(!expanded_);
-}
-*/
-
 void NotificationViewMD::UpdateViewForExpandedState(bool expanded) {
- // header_row_->SetExpanded(expanded);
   if (message_view_) {
     message_view_->SetMaxLines(expanded ? kMaxLinesForExpandedMessageView
                                         : kMaxLinesForMessageView);
   }
   if (image_container_view_) {
-    LOG(INFO) << "*** image_container_view width: " << std::to_string(image_container_view_->width()) << " height: " << std::to_string(image_container_view_->height());
     image_container_view_->SetSize(kLargeImageMaxSize);
-    LOG(INFO) << "*** image_container_view width: " << std::to_string(image_container_view_->width()) << " height: " << std::to_string(image_container_view_->height());
     image_container_view_->SetVisible(expanded);
   }
 
@@ -1447,7 +1316,6 @@ void NotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
 }
 
 void NotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radius) {
-  LOG(INFO) << "albert *** in UpdateCornerRadius";
   MessageView::UpdateCornerRadius(top_radius, bottom_radius);
   action_buttons_row_->SetBackground(views::CreateBackgroundFromPainter(
       std::make_unique<NotificationBackgroundPainter>(

@@ -100,7 +100,6 @@ const char* NotificationControlButtonsView::GetClassName() const {
 void NotificationControlButtonsView::ButtonPressed(views::Button* sender,
                                                    const ui::Event& event) {
   if (close_button_ && sender == close_button_.get()) {
-    LOG(INFO) << "albert *** BR:NCBV:ButtonPressed";
     message_view_->OnCloseButtonPressed();
   }
 }

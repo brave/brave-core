@@ -30,8 +30,6 @@
 #endif
 
 namespace brave_custom_notification {
-constexpr gfx::Size kSmallContainerSize(328, 50);
-
 namespace {
 static MessagePopupView* g_message_popup_view = nullptr;
 static Notification* g_notification = nullptr;
@@ -68,63 +66,13 @@ void MessagePopupView::ClosePopup() {
   }
 }
 
-// Todo: Albert need to fix this error before we can compile
-//
-//In file included from ../../brave/ui/brave_custom_notification/message_popup_view.cc:5:
-// In file included from ../../brave/ui/brave_custom_notification/message_popup_view.h:11:
-// In file included from ../../chrome/browser/profiles/profile.h:19:
-// ../../content/public/browser/browser_context.h:29:10: fatal error: 'third_party/blink/public/mojom/push_messaging/push_messaging_status.mojom-forward.h' file not found
-//
-// MessagePopupView::MessagePopupView(Profile* profile) {
-MessagePopupView::MessagePopupView() {
-  views::Widget* window = new views::Widget();
-  views::Widget::InitParams window_params;
-  window_params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
-  window_params.bounds = { 0, 0, 1500, 1000 };
-  views::View* container = new views::View();
- // views::View* wv_container = new views::View();
-  container->SetLayoutManager(std::make_unique<views::BoxLayout>(views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
-  container->SetSize(kSmallContainerSize);
-  views::Label* tv = new views::Label(base::ASCIIToUTF16("toplevel"));
-  tv->SetBackgroundColor(SkColorSetRGB(0xf5, 0xf5, 0xf5));
-  container->AddChildView(tv);
-
-  /*
-   wv_container->SetLayoutManager(std::make_unique<views::FillLayout>());
-  wv = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
-  wv_container->SetSize(kContainerSize);
-  wv_container->SetPreferredSize(kContainerSize);
-  wv_container->SizeToPreferredSize();
-  wv_container->AddChildView(wv);
-  */
-  // views::Label* tv2 = new views::Label(base::ASCIIToUTF16("bottomlevel"));
-//  tv2->SetBackgroundColor(kBackground);
-  window_params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
-  window_params.opacity = views::Widget::InitParams::WindowOpacity::kOpaque;
-  window_params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
-  window->Init(std::move(window_params));
-  window->CenterWindow(window_params.bounds.size());
-  window->Show();
-  window->SetContentsView(container);
-  views::Widget* child = new views::Widget;
-  views::Widget::InitParams child_params(views::Widget::InitParams::TYPE_POPUP);
-  child_params.ownership = views::Widget::InitParams::WIDGET_OWNS_NATIVE_WIDGET;
-  child_params.opacity = views::Widget::InitParams::WindowOpacity::kOpaque;
-  child_params.bounds = { 1000, 500, 200, 200 };
-  child_params.parent = window->GetNativeWindow();
-  child->Init(std::move(child_params));
-  child->Show();
-  // child->SetContentsView(wv_container);
-  g_message_popup_view = this;
-}
-
-// Worries about bounds. 
-MessagePopupView::MessagePopupView(const Notification& notification)
-    : message_view_(MessageViewFactory::Create(notification)) {
+MessagePopupView::MessagePopupView(const Notification& notification) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
+  params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
+  params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
-  params.bounds = { 30, 30, 400, 200 };
+  params.bounds = { 30, 30, 300, 100 + GetBodyHeight(notification.message())};
 #if defined(OS_LINUX) && !defined(OS_CHROMEOS)
   // Make the widget explicitly activatable as TYPE_POPUP is not activatable by
   // default but we need focus for the inline reply textarea.
@@ -159,7 +107,9 @@ MessagePopupView::MessagePopupView(const Notification& notification)
 
   popup_window_->ShowInactive();
 
-  AddChildView(message_view_);
+  MessageView* message_view_ = MessageViewFactory::Create(notification);
+  popup_window_->SetContentsView(message_view_);
+//   AddChildView(message_view_);
   set_notify_enter_exit_on_child(true);
   g_message_popup_view = this;
 }
@@ -226,6 +176,10 @@ void MessagePopupView::OnWidgetDestroyed(views::Widget* widget) {
 
 bool MessagePopupView::IsWidgetValid() const {
   return GetWidget() && !GetWidget()->IsClosed();
+}
+
+int MessagePopupView::GetBodyHeight(const base::string16& message) {
+  return (10 * (message.size() / 40)) + 10;
 }
 
 }  // namespace message_center
