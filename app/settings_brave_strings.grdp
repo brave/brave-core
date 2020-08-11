@@ -132,6 +132,30 @@
   <message name="IDS_SETTINGS_SAFETY_CHECK_EXTENSIONS_ERROR" desc="This text describes that safety check could not check extensions for an unkown reason.">
     Brave can't check your extensions. Try again later.
   </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER" desc="This text describes that Brave automatically checks device software.">
+    Brave checks for unwanted software once a week
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER_SECONDS" desc="This text describes that Brave automatically checks device software and that it last checked a moment ago.">
+    Brave checks for unwanted software once a week. Last checked: a moment ago.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER_MINUTES" desc="This text describes that Brave automatically checks device software and that it last checked minutes ago.">
+    {NUM_MINS, plural,
+     =1 {Brave checks for unwanted software once a week. Last checked: 1 minute ago.}
+     other {Brave checks for unwanted software once a week. Last checked: {NUM_MINS} minutes ago.}}
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER_HOURS" desc="This text describes that Brave automatically checks device software and that it last checked hours ago.">
+    {NUM_HOURS, plural,
+     =1 {Brave checks for unwanted software once a week. Last checked: 1 hour ago.}
+     other {Brave checks for unwanted software once a week. Last checked: {NUM_HOURS} hours ago.}}
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_YESTERDAY" desc="This text describes that Brave automatically checks device software and that it last checked yesterday.">
+    Brave checks for unwanted software once a week. Last checked: yesterday.
+  </message>
+  <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_AFTER_DAYS" desc="This text describes that Brave automatically checks device software and that it last checked days ago.">
+    {NUM_DAYS, plural,
+     =1 {Brave checks for unwanted software once a week. Last checked: 1 day ago.}
+     other {Brave checks for unwanted software once a week. Last checked: {NUM_DAYS} days ago.}}
+  </message>
   <message name="IDS_SETTINGS_SAFETY_CHECK_CHROME_CLEANER_INFECTED" desc="This text describes that Brave found harmful software on the computer.">
     Brave found harmful software on your computer
   </message>

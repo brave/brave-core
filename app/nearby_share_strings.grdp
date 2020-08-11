@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Nearby Share specific strings (included from generated_resources.grd). -->
+<!--This file is created by l10nUtil.js. Do not edit manually.-->
+<grit-part>
+  <!-- Common strings -->
+  <message name="IDS_NEARBY_FILE_ATTACHMENTS_APPS" desc="Describes one or more apps being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 app} other {# apps}}
+  </message>
+  <message name="IDS_NEARBY_FILE_ATTACHMENTS_IMAGES" desc="Describes one or more images being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 image} other {# images}}
+  </message>
+  <message name="IDS_NEARBY_FILE_ATTACHMENTS_UNKNOWN" desc="Describes one or more files being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 file} other {# files}}
+  </message>
+  <message name="IDS_NEARBY_FILE_ATTACHMENTS_VIDEOS" desc="Describes one or more videos being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 video} other {# videos}}
+  </message>
+  <message name="IDS_NEARBY_SECURE_CONNECTION_ID" desc="Description shown on both sender and receiver devices, to remind users to verify/compare tokens on both devices for security before sending/receiving data.">
+    Secure connection ID: <ph name="TOKEN">$1<ex>1234</ex></ph>
+  </message>
+  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_ADDRESSES" desc="Describes one or more addresses being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 address} other {# addresses}}
+  </message>
+  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_LINKS" desc="Describes one or more web links being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 link} other {# links}}
+  </message>
+  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_PHONE_NUMBERS" desc="Describes one or more phone numbers being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 phone number} other {# phone numbers}}
+  </message>
+  <message name="IDS_NEARBY_TEXT_ATTACHMENTS_UNKNOWN" desc="Describes one or more pieces of text being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 text} other {# texts}}
+  </message>
+  <message name="IDS_NEARBY_UNKNOWN_ATTACHMENTS" desc="Describes one or more items being transfered via Nearby Share.">
+    {COUNT, plural, =1 {1 item} other {# items}}
+  </message>
+
+  <!-- Notification strings -->
+  <message name="IDS_NEARBY_NOTIFICATION_CONNECTION_REQUEST_MESSAGE" desc="Text shown as the message of a notfication when a nearby device requests a connection via Nearby Share.">
+    <ph name="DEVICE_NAME">$1<ex>Ted's Pixel 2</ex></ph> is sharing <ph name="ATTACHMENTS">$2<ex>3 items</ex></ph> with you.
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_CONNECTION_REQUEST_TITLE" desc="Text shown as the title of a notfication when a nearby device requests a connection via Nearby Share.">
+    Receive with Nearby Share?
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_DECLINE_ACTION" desc="Text shown on the notification action to decline receiving data via Nearby Share.">
+    Decline
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_ONBOARDING_MESSAGE" desc="Text shown as the message of a notification when a nearby device is attempting to share data via Nearby Share.">
+    Click to become visible so it can share with you
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_ONBOARDING_TITLE" desc="Text shown as the title of a notification when a nearby device is attempting to share data via Nearby Share.">
+    Device nearby is sharing
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_ACTION" desc="Text shown on the notification action to accept receiving data via Nearby Share.">
+    Receive
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_FAILURE_TITLE" desc="Text shown as the title of a notfication when receiving data via Nearby Share failed.">
+    Failed to receive <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_PROGRESS_TITLE" desc="Text shown as the title of a notfication when receiving data via Nearby Share.">
+    Receiving <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_RECEIVE_SUCCESS_TITLE" desc="Text shown as the title of a notfication when data was sucessfully received via Nearby Share.">
+    <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> received from <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_SEND_FAILURE_TITLE" desc="Text shown as the title of a notfication when sending data via Nearby Share failed.">
+    Failed to send <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_SEND_PROGRESS_TITLE" desc="Text shown as the title of a notfication when sending data via Nearby Share.">
+    Sending <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_SEND_SUCCESS_TITLE" desc="Text shown as the title of a notfication when data was successfully sent via Nearby Share.">
+    <ph name="ATTACHMENTS">$1<ex>3 items</ex></ph> successfully sent to <ph name="DEVICE_NAME">$2<ex>Ted's Pixel 2</ex></ph>
+  </message>
+  <message name="IDS_NEARBY_NOTIFICATION_SOURCE" desc="Text shown as the source of a Nearby Share notification.">
+    Nearby Share
+  </message>
+</grit-part>

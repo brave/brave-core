@@ -404,9 +404,6 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_HISTORY_SEARCH_PROMPT" desc="Placeholder text/label for the search input field in the history page">
         Search history
       </message>
-      <message name="IDS_HISTORY_CLEAR_SEARCH" desc="Tooltip text for the button that clears the search term on the history page">
-        Clear search
-      </message>
       <message name="IDS_HISTORY_DELETE" desc="Text for delete button contained in the history page toolbar">
         Delete
       </message>
@@ -444,6 +441,9 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Generic terms -->
       <message name="IDS_EDIT" desc="Edit menu item">
         &amp;Edit
+      </message>
+      <message name="IDS_CLEAR_SEARCH" desc="Tooltip text for the button that clears the search term in search text input">
+        Clear search
       </message>
       <message name="IDS_CONFIRM" desc="A button that lets the user confirm something.">
         Confirm
@@ -1759,9 +1759,6 @@ are declared in tools/grit/grit_rule.gni.
       </message>
       <message name="IDS_DOWNLOAD_SEARCH" desc="Placeholder text/label for the search input in the download page">
         Search downloads
-      </message>
-      <message name="IDS_DOWNLOAD_CLEAR_SEARCH" desc="Tooltip text for the button that clears the search term on the downloads page.">
-        Clear search
       </message>
       <message name="IDS_DOWNLOAD_NO_DOWNLOADS" desc="A message shown when the user has no downloads to show on chrome://downloads.">
         Files you download appear here
@@ -3432,8 +3429,8 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_LINUX_VM_PREFIX" desc="The prefix for a Linux virtual machine row">
           Linux Virtual Machine: <ph name="LINUX_VM_NAME">$1<ex>termina</ex></ph>
         </message>
-        <message name="IDS_TASK_MANAGER_PLUGIN_VM_PREFIX" desc="The prefix for a Linux virtual machine row">
-          Plugin Virtual Machine: <ph name="PLUGIN_VM_NAME">$1<ex>PvmDefault</ex></ph>
+        <message name="IDS_TASK_MANAGER_PLUGIN_VM_PREFIX" desc="A row in the task manager for a Parallels Desktop Virtual Machine. Parallels Desktop is a 3rd-party product name that should remain in English.">
+          Parallels Desktop: <ph name="PLUGIN_VM_NAME">$1<ex>PvmDefault</ex></ph>
         </message>
       </if>
 
@@ -5831,7 +5828,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Move to Brave sync chain?
         </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_HINT" desc="Label describing the effect of moving an existing credential to the user's account store">
-          Move your password to your Brave Account to access it securely wherever you're signed in
+          Move your password to your Brave sync chain to access it securely wherever you're signed in
         </message>
         <message name="IDS_PASSWORD_MANAGER_UNSYNCED_CREDENTIALS_BUBBLE_TITLE" desc="The title of the 'save unsynced credentials' bubble.">
           Passwords not saved
@@ -6059,6 +6056,16 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Cleared Brave data
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_NOTICE_OK" desc="Button in a dialog that informs the user that the deletion of Brave's browsing data has been completed.">
+        Ok, got it
+      </message>
+      <!-- TODO(crbug.com/1099260): Add proper strings and make them translateable. -->
+      <message name="IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE" desc="Body text of a dialog informing the user that some of their passwords were not successfully deleted." translateable="false">
+        We were not able to delete all passwords stored in your Brave sync chain. Try again or visit <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>passwords.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+      </message>
+      <message name="IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE_TITLE" desc="Title of a dialog informing the user that some of their passwords were not successfully deleted." translateable="false">
+        Some passwords were not deleted
+      </message>
+      <message name="IDS_CLEAR_BROWSING_DATA_PASSWORDS_NOTICE_OK" desc="Button in a dialog informing the user that some of their passwords were not successfully deleted." translateable="false">
         Ok, got it
       </message>
 
@@ -8987,6 +8994,37 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
         Live Caption is not available right now
       </message>
+
+      <!-- Caret browsing. -->
+      <if expr="not chromeos">
+        <message name="IDS_ENABLE_CARET_BROWSING_INFO" desc="Information in the confirmation dialog for enabling caret browsing">
+          You can navigate pages with a text cursor. Press F7 to turn off.
+        </message>
+      </if>
+      <if expr="chromeos">
+        <message name="IDS_ENABLE_CARET_BROWSING_INFO" desc="Information in the confirmation dialog for enabling caret browsing">
+          You can navigate pages with a text cursor. Press Ctrl+Search+7 to turn off.
+        </message>
+      </if>
+      <message name="IDS_CARET_BROWSING_DO_NOT_ASK" desc="Label for check box that prevents the dialog from being shown in the future">
+        Don't ask me again
+      </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_ENABLE_CARET_BROWSING_TITLE" desc="In sentence case: The title text of the confirmation dialog for enabling caret browsing">
+          Turn on caret browsing?
+        </message>
+        <message name="IDS_ENABLE_CARET_BROWSING_TURN_ON" desc="In sentence case: The text of the button that confirms turning on caret browsing">
+          Turn on
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_ENABLE_CARET_BROWSING_TITLE" desc="In title case: The title text of the confirmation dialog for enabling caret browsing">
+          Turn On Caret Browsing?
+        </message>
+        <message name="IDS_ENABLE_CARET_BROWSING_TURN_ON" desc="In title case: The text of the button that confirms turning on caret browsing">
+          Turn On
+        </message>
+      </if>
 
       <!-- Media Galleries. -->
       <if expr="not is_android">

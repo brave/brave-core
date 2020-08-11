@@ -667,5 +667,8 @@
     <message name="IDS_PROFILE_PICKER_BACK_BUTTON_LABEL" desc="Label for a button that navigates user to the previous page">
       Back
     </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE" desc="Profile picker profile type choice     subtitle">
+      Sign in to Sync your bookmarks, passwords, history and more on all your devices
+    </message>
   </if>
 </grit-part>
