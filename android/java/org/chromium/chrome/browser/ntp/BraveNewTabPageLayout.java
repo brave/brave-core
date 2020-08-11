@@ -178,7 +178,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
-            ((BraveActivity)mActivity).showOnboarding(true);
+            ((BraveActivity)mActivity).showOnboardingV2(true);
         }
     }
 
