@@ -13,16 +13,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.app.Dialog;
 import android.widget.LinearLayout;
+import android.content.res.Resources;
 import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import android.widget.ImageView;
 import android.widget.FrameLayout;
+import android.util.DisplayMetrics;
 import android.content.res.Configuration;
 import android.widget.RadioGroup;
+import android.widget.RadioButton;
 import android.util.Pair;
 import android.content.pm.ActivityInfo;
+import android.content.DialogInterface;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -66,8 +71,13 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     private TextView timeSavedCountText;
     private TextView timeSavedText;
     private TextView noDataText;
+    private TextView braveStatsSubSectionText;
+    private LinearLayout emptyDataLayout;
     private LinearLayout websitesLayout;
     private LinearLayout trackersLayout;
+
+    private RadioButton monthRadioButton;
+    private RadioButton monthsRadioButton;
 
     private int selectedType = WEBSITES;
     private int selectedDuration = DAYS_7;
@@ -85,23 +95,22 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.brave_stats_bottom_sheet, container, false);
-    }
+    public void setupDialog(Dialog dialog, int style) {
+        super.setupDialog(dialog, style);
 
-    @Override
-    public void onDestroyView() {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        super.onDestroyView();
-    }
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.brave_stats_bottom_sheet, null);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        emptyDataLayout = view.findViewById(R.id.brave_stats_empty_layout);
+
+            getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                BottomSheetDialog d = (BottomSheetDialog) dialog;
+                View bottomSheetInternal = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+                bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+            }
+        });
 
         RadioGroup durationRadioGroup = view.findViewById(R.id.duration_radio_group);
         durationRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -118,6 +127,9 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             }
         });
 
+        monthRadioButton = view.findViewById(R.id.month_radio);
+        monthsRadioButton = view.findViewById(R.id.months_radio);
+
         LinearLayout layout = view.findViewById(R.id.brave_stats_layout);
         adsTrackersCountText = layout.findViewById(R.id.ads_trackers_count_text);
         dataSavedCountText = layout.findViewById(R.id.data_saved_count_text);
@@ -126,6 +138,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         timeSavedText = layout.findViewById(R.id.time_saved_text);
         websitesLayout = layout.findViewById(R.id.wesites_layout);
         trackersLayout = layout.findViewById(R.id.trackers_layout);
+        braveStatsSubSectionText = layout.findViewById(R.id.brave_stats_sub_section_text);
 
         RadioGroup statTypeRadioGroup = layout.findViewById(R.id.stat_type_radio_group);
         statTypeRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -149,6 +162,37 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             }
         });
         updateBraveStatsLayout();
+
+        dialog.setContentView(view);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+        if (isTablet || (!isTablet && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)) {
+            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
+        } else {
+            getDialog().getWindow().setLayout(-1, -1);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+        if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
+            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
+        } else {
+            getDialog().getWindow().setLayout(-1, -1);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        super.onDestroyView();
     }
 
     private void updateBraveStatsLayout() {
@@ -168,6 +212,32 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
 
         showWebsitesTrackers();
+
+        if (adsTrackersCount > 0) {
+            emptyDataLayout.setVisibility(View.GONE);
+        } else {
+            emptyDataLayout.setVisibility(View.VISIBLE);
+        }
+
+        //Check for month option
+        long adsTrackersCountToCheckForMonth = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_7)).size();
+        if (adsTrackersCountToCheckForMonth > 0) {
+            monthRadioButton.setEnabled(true);
+            monthRadioButton.setAlpha(1.0f);
+        } else {
+            monthRadioButton.setEnabled(false);
+            monthRadioButton.setAlpha(0.2f);
+        }
+
+        //Check for 3 month option
+        long adsTrackersCountToCheckFor3Month = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_90), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30)).size();
+        if (adsTrackersCountToCheckFor3Month > 0) {
+            monthsRadioButton.setEnabled(true);
+            monthsRadioButton.setAlpha(1.0f);
+        } else {
+            monthsRadioButton.setEnabled(false);
+            monthsRadioButton.setAlpha(0.2f);
+        }
     }
 
     private void showWebsitesTrackers() {
@@ -203,8 +273,10 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 rootView.addView(layout);
             }
             noDataText.setVisibility(View.GONE);
+            braveStatsSubSectionText.setVisibility(View.VISIBLE);
         } else {
             noDataText.setVisibility(View.VISIBLE);
+            braveStatsSubSectionText.setVisibility(View.GONE);
         }
     }
 }

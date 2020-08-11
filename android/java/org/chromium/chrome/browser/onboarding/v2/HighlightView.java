@@ -11,6 +11,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
@@ -56,19 +57,35 @@ public class HighlightView extends FrameLayout {
         Bitmap overlay = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(),
                 Bitmap.Config.ARGB_8888);
         Canvas overlayCanvas = new Canvas(overlay);
-        overlayCanvas.drawColor(0xcc1E2029);// 0x3333B5E5);
-        eraserPaint.setAlpha(ALPHA_60_PERCENT);
+        overlayCanvas.drawColor(0xcc1E2029);
         if (shouldShowHighlight) {
             int width = item.getScreenRight() - item.getScreenLeft();
             int height = item.getScreenBottom() - item.getScreenTop();
             int cx = item.getScreenLeft() + width / 2 - location[0];
             int cy = item.getScreenTop() + height / 2 - location[1];
             float radius = width > height ? ((float) width / 2) : ((float) height / 2);
-            float outerRadiusScaleMultiplier = 1.2f;
-            overlayCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, eraserPaint);
+
+            Paint innerBorderPaint = new Paint();
+            innerBorderPaint.setStyle(Paint.Style.STROKE);
+            innerBorderPaint.setStrokeWidth(2); // set stroke width
+            innerBorderPaint.setColor(Color.parseColor("#FFFFFF")); // set stroke color
+            innerBorderPaint.setAntiAlias(true);
             eraserPaint.setAlpha(0);
             float innerRadiusScaleMultiplier = 0.8f;
             overlayCanvas.drawCircle(cx, cy, radius * innerRadiusScaleMultiplier, eraserPaint);
+            overlayCanvas.drawCircle(cx, cy, radius * innerRadiusScaleMultiplier, innerBorderPaint);
+
+            Paint outterBorderPaint = new Paint();
+            outterBorderPaint.setStyle(Paint.Style.STROKE);
+            outterBorderPaint.setStrokeWidth(3); // set stroke width
+            outterBorderPaint.setColor(Color.parseColor("#FFFFFF")); // set stroke color
+            outterBorderPaint.setAntiAlias(true);
+            
+            eraserPaint.setAlpha(ALPHA_60_PERCENT);
+            float outerRadiusScaleMultiplier = 1.2f;
+            overlayCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, eraserPaint);
+            overlayCanvas.drawCircle(cx, cy, radius * outerRadiusScaleMultiplier, outterBorderPaint);
+
         }
         canvas.drawBitmap(overlay, 0, 0, basicPaint);
         super.dispatchDraw(canvas);

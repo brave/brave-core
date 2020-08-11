@@ -31,4 +31,10 @@
     <dimen name="verify_wallet_margin1_land">10dp</dimen>
     <dimen name="verify_wallet_margin2_land">7dp</dimen>
     <dimen name="verify_wallet_margin3_land">4dp</dimen>
+
+    <dimen name="onboarding_2_title_size">22sp</dimen>
+    <dimen name="onboarding_2_text_size">16sp</dimen>
+    <dimen name="onboarding_2_layout_height">200dp</dimen>
+    <dimen name="onboarding_2_animation_height">233dp</dimen>
+    <dimen name="onboarding_2_animation_width">318dp</dimen>
 </resources>

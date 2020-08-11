@@ -21,6 +21,13 @@ import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.BraveAdsNativeHelper;
+import org.chromium.chrome.browser.BraveFeatureList;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 
 public class RetentionNotificationPublisher extends BroadcastReceiver {
     private static final String NOTIFICATION_CHANNEL_NAME = "brave";
@@ -29,8 +36,8 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
+        BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (action != null && action.equals(RETENTION_NOTIFICATION_ACTION)) {
-            BraveActivity braveActivity = BraveActivity.getBraveActivity();
             if (braveActivity != null) {
                 switch (notificationType) {
                 case RetentionNotificationUtil.HOUR_3:
@@ -57,7 +64,37 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             }
         } else {
             // Can't check for rewards code in background
-            createNotification(context, intent);
+            switch (notificationType) {
+            case RetentionNotificationUtil.HOUR_3:
+            case RetentionNotificationUtil.HOUR_24:
+            case RetentionNotificationUtil.DAY_6:
+            case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
+            case RetentionNotificationUtil.BRAVE_STATS_DATA:
+            case RetentionNotificationUtil.BRAVE_STATS_TIME:
+                createNotification(context, intent);
+                break;
+            case RetentionNotificationUtil.DEFAULT_BROWSER_1:
+            case RetentionNotificationUtil.DEFAULT_BROWSER_2:
+            case RetentionNotificationUtil.DEFAULT_BROWSER_3:
+                if (!BraveSetDefaultBrowserNotificationService.isBraveSetAsDefaultBrowser(context)) {
+                    createNotification(context, intent);
+                }
+                break;
+            case RetentionNotificationUtil.DAY_10:
+            case RetentionNotificationUtil.DAY_30:
+            case RetentionNotificationUtil.DAY_35:
+                if (braveActivity != null
+                        && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
+                        && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+                    createNotification(context, intent);
+                }
+                break;
+            case RetentionNotificationUtil.EVERY_SUNDAY:
+                if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
+                    createNotification(context, intent);
+                }
+                break;
+            }
         }
     }
 
