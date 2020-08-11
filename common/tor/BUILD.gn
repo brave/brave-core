@@ -9,11 +9,10 @@ source_set("tor") {
     "tor_constants.cc",
     "tor_constants.h",
     "tor_control.h",
+    "tor_control.cc",
     "tor_control_event.cc",
     "tor_control_event.h",
     "tor_control_event_list.h",
-    "tor_control_impl.cc",
-    "tor_control_impl.h",
   ]
 
   deps = [

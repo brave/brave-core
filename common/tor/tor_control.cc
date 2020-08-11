@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/tor/tor_control_impl.h"
-
 #include "brave/common/tor/tor_control.h"
 
 #include "base/bind_helpers.h"
@@ -54,14 +52,15 @@ constexpr base::TaskTraits kWatchTaskTraits = {
 
 }
 
+// static
 std::unique_ptr<TorControl> TorControl::Create(TorControl::Delegate* delegate) {
-  return std::make_unique<TorControlImpl>(delegate);
+  return std::make_unique<TorControl>(delegate);
 }
 
 // try base::SequencedTaskRunnerHandle::Get()
 // try base::CreateSingleThreadTaskRunner({BrowserThread::IO})
 using content::BrowserThread;
-TorControlImpl::TorControlImpl(TorControl::Delegate* delegate)
+TorControl::TorControl(TorControl::Delegate* delegate)
   : running_(false),
     watch_task_runner_(base::CreateSequencedTaskRunner(kWatchTaskTraits)),
     io_task_runner_(base::CreateSingleThreadTaskRunner(kIOTaskTraits)),
@@ -77,25 +76,25 @@ TorControlImpl::TorControlImpl(TorControl::Delegate* delegate)
   DETACH_FROM_SEQUENCE(io_sequence_checker_);
 }
 
-TorControlImpl::~TorControlImpl() = default;
+TorControl::~TorControl() = default;
 
 // Start()
 //
 //      Start watching for the Tor control channel.  If we are able to
 //      connect, issue OnTorControlReady to delegate.
 //
-void TorControlImpl::Start(const base::FilePath& watchDirPath) {
+void TorControl::Start(const base::FilePath& watchDirPath) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!running_);
 
   running_ = true;
   watch_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControlImpl::StartWatching,
+      base::BindOnce(&TorControl::StartWatching,
                      base::RetainedRef(this), watchDirPath));
 }
 
-void TorControlImpl::StartWatching(base::FilePath watchDirPath) {
+void TorControl::StartWatching(base::FilePath watchDirPath) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   CHECK(watch_dir_path_.empty());
   CHECK(!watcher_);
@@ -106,7 +105,7 @@ void TorControlImpl::StartWatching(base::FilePath watchDirPath) {
   bool recursive = false;
   if (!watcher_->Watch(watch_dir_path_,
                        recursive,
-                       base::BindRepeating(&TorControlImpl::WatchDirChanged,
+                       base::BindRepeating(&TorControl::WatchDirChanged,
                                            base::Unretained(this)))) {
     // Never mind -- destroy the watcher and stop everything else.
     LOG(ERROR) << "tor: failed to watch directory";
@@ -123,20 +122,20 @@ void TorControlImpl::StartWatching(base::FilePath watchDirPath) {
 //      Stop watching for the Tor control channel, and disconnect if
 //      we have already connected.
 //
-void TorControlImpl::Stop() {
+void TorControl::Stop() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(running_);
 
   running_ = false;
   watch_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControlImpl::StopWatching, base::RetainedRef(this)));
+      base::BindOnce(&TorControl::StopWatching, base::RetainedRef(this)));
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControlImpl::Error, base::RetainedRef(this)));
+      base::BindOnce(&TorControl::Error, base::RetainedRef(this)));
 }
 
-void TorControlImpl::StopWatching() {
+void TorControl::StopWatching() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
 
   repoll_ = false;
@@ -154,7 +153,7 @@ void TorControlImpl::StopWatching() {
 //      daemon may now be ready if it wasn't before.  Otherwise, start
 //      polling.
 //
-void TorControlImpl::WatchDirChanged(const base::FilePath& path, bool error) {
+void TorControl::WatchDirChanged(const base::FilePath& path, bool error) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   LOG(ERROR) << "tor: watch directory changed";
 
@@ -174,7 +173,7 @@ void TorControlImpl::WatchDirChanged(const base::FilePath& path, bool error) {
 //      so, start connecting.  Must be done in a separate task because
 //      it does file I/O which may block.
 //
-void TorControlImpl::Poll() {
+void TorControl::Poll() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   CHECK(polling_);
 
@@ -201,7 +200,7 @@ void TorControlImpl::Poll() {
   // Blocking shenanigans all done; move back to the regular sequence.
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControlImpl::OpenControl,
+      base::BindOnce(&TorControl::OpenControl,
                      base::Unretained(this), port, std::move(cookie)));
 }
 
@@ -210,7 +209,7 @@ void TorControlImpl::Poll() {
 //      Try to read the control auth cookie.  Return true and set
 //      cookie and mtime if successful; return false on failure.
 //
-bool TorControlImpl::EatControlCookie(std::vector<uint8_t>& cookie, base::Time& mtime) {
+bool TorControl::EatControlCookie(std::vector<uint8_t>& cookie, base::Time& mtime) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   CHECK(polling_);
 
@@ -258,7 +257,7 @@ bool TorControlImpl::EatControlCookie(std::vector<uint8_t>& cookie, base::Time& 
 //      Try to read the control port number.  Return true and set
 //      port and mtime if successful; return false on failure.
 //
-bool TorControlImpl::EatControlPort(int& port, base::Time& mtime) {
+bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   CHECK(polling_);
 
@@ -329,7 +328,7 @@ bool TorControlImpl::EatControlPort(int& port, base::Time& mtime) {
 //      and waiting or whether to poll again, if something else
 //      happened on the file system while we were busy polling.
 //
-void TorControlImpl::Polled() {
+void TorControl::Polled() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   CHECK(polling_);
 
@@ -338,7 +337,7 @@ void TorControlImpl::Polled() {
     repoll_ = false;
     watch_task_runner_->PostTask(
         FROM_HERE,
-        base::BindOnce(&TorControlImpl::Poll, base::Unretained(this)));
+        base::BindOnce(&TorControl::Poll, base::Unretained(this)));
   } else {
     LOG(ERROR) << "tor: control connection not yet ready";
     polling_ = false;
@@ -353,7 +352,7 @@ void TorControlImpl::Polled() {
 //      Open a control connection on the specified port number at
 //      localhost, with the specified control auth cookie.
 //
-void TorControlImpl::OpenControl(int portno, std::vector<uint8_t> cookie) {
+void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   // XXX DEBUG
   LOG(ERROR) << __func__ << " " << base::HexEncode(cookie.data(), cookie.size());
@@ -364,7 +363,7 @@ void TorControlImpl::OpenControl(int portno, std::vector<uint8_t> cookie) {
   socket_ = std::make_unique<net::TCPClientSocket>(
       addrlist, nullptr, net::NetLog::Get(), net::NetLogSource());
   int rv = socket_->Connect(
-      base::BindOnce(&TorControlImpl::Connected,
+      base::BindOnce(&TorControl::Connected,
                      base::Unretained(this), std::move(cookie)));
   if (rv == net::ERR_IO_PENDING)
     return;
@@ -377,7 +376,7 @@ void TorControlImpl::OpenControl(int portno, std::vector<uint8_t> cookie) {
 //      activity while we were busy connecting, or go back to watching
 //      and waiting.  If it succeeded, start authenticating.
 //
-void TorControlImpl::Connected(std::vector<uint8_t> cookie, int rv) {
+void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 
   if (rv != net::OK) {
@@ -388,12 +387,12 @@ void TorControlImpl::Connected(std::vector<uint8_t> cookie, int rv) {
                << net::ErrorToString(rv);
     watch_task_runner_->PostTask(
         FROM_HERE,
-        base::BindOnce(&TorControlImpl::Polled, base::Unretained(this)));
+        base::BindOnce(&TorControl::Polled, base::Unretained(this)));
     return;
   }
 
   Cmd1("AUTHENTICATE " + base::HexEncode(cookie.data(), cookie.size()),
-       base::BindOnce(&TorControlImpl::Authenticated,
+       base::BindOnce(&TorControl::Authenticated,
                       base::Unretained(this)));
 }
 
@@ -403,7 +402,7 @@ void TorControlImpl::Connected(std::vector<uint8_t> cookie, int rv) {
 //      the connection and start over.  If we succeeded, announce that
 //      we're ready.
 //
-void TorControlImpl::Authenticated(bool error,
+void TorControl::Authenticated(bool error,
                                    const std::string& status,
                                    const std::string& reply) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
@@ -431,15 +430,15 @@ void TorControlImpl::Authenticated(bool error,
 //      Subsequently, whenever the event happens, notify delegate the
 //      OnTorEvent.
 //
-void TorControlImpl::Subscribe(
+void TorControl::Subscribe(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback) {
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControlImpl::DoSubscribe,
+      base::BindOnce(&TorControl::DoSubscribe,
                      base::Unretained(this), event, std::move(callback)));
 }
 
-void TorControlImpl::DoSubscribe(
+void TorControl::DoSubscribe(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   if (async_events_[event]++ != 0) {
@@ -450,11 +449,11 @@ void TorControlImpl::DoSubscribe(
 
   async_events_[event] = 1;
   Cmd1(SetEventsCmd(),
-       base::BindOnce(&TorControlImpl::Subscribed,
+       base::BindOnce(&TorControl::Subscribed,
                       base::Unretained(this), event, std::move(callback)));
 }
 
-void TorControlImpl::Subscribed(
+void TorControl::Subscribed(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback,
     bool error, const std::string& status, const std::string& reply) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
@@ -479,15 +478,15 @@ void TorControlImpl::Subscribed(
 //      unsubscription has been processed.  Subsequently, the event
 //      will not trigger notification of OnTorEvent.
 //
-void TorControlImpl::Unsubscribe(
+void TorControl::Unsubscribe(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback) {
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControlImpl::DoUnsubscribe,
+      base::BindOnce(&TorControl::DoUnsubscribe,
                      base::Unretained(this), event, std::move(callback)));
 }
 
-void TorControlImpl::DoUnsubscribe(
+void TorControl::DoUnsubscribe(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   // We had better already be subscribed.
@@ -501,11 +500,11 @@ void TorControlImpl::DoUnsubscribe(
   CHECK(async_events_[event] == 0);
   async_events_.erase(event);
   Cmd1(SetEventsCmd(),
-       base::BindOnce(&TorControlImpl::Unsubscribed,
+       base::BindOnce(&TorControl::Unsubscribed,
                       base::Unretained(this), event, std::move(callback)));
 }
 
-void TorControlImpl::Unsubscribed(
+void TorControl::Unsubscribed(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback,
     bool error, const std::string& status, const std::string& reply) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
@@ -522,7 +521,7 @@ void TorControlImpl::Unsubscribed(
 //      Return a SETEVENTS command with our current asynchronous event
 //      subscriptions.
 //
-std::string TorControlImpl::SetEventsCmd() {
+std::string TorControl::SetEventsCmd() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   std::ostringstream cmds;
   cmds << "SETEVENTS";
@@ -542,7 +541,7 @@ std::string TorControlImpl::SetEventsCmd() {
 //      Issue a Tor control command for which we only care about the
 //      final line; ignore all intermediate lines.
 //
-void TorControlImpl::Cmd1(const std::string& cmd, CmdCallback callback) {
+void TorControl::Cmd1(const std::string& cmd, CmdCallback callback) {
   Cmd(cmd,
       base::DoNothing::Repeatedly<const std::string&, const std::string&>(),
       std::move(callback));
@@ -554,16 +553,16 @@ void TorControlImpl::Cmd1(const std::string& cmd, CmdCallback callback) {
 //      intermediate line; then call callback for the last line or on
 //      error.
 //
-void TorControlImpl::Cmd(const std::string& cmd,
+void TorControl::Cmd(const std::string& cmd,
                          PerLineCallback perline,
                          CmdCallback callback) {
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControlImpl::DoCmd, base::Unretained(this),
+      base::BindOnce(&TorControl::DoCmd, base::Unretained(this),
                      cmd, std::move(perline), std::move(callback)));
 }
 
-void TorControlImpl::DoCmd(std::string cmd,
+void TorControl::DoCmd(std::string cmd,
                            PerLineCallback perline,
                            CmdCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
@@ -595,20 +594,20 @@ void TorControlImpl::DoCmd(std::string cmd,
 //
 //      Get the Tor version and call callback(error, version).
 //
-void TorControlImpl::GetVersion(
+void TorControl::GetVersion(
     base::OnceCallback<void(
         bool error, const std::string& version)> callback) {
   std::unique_ptr<std::string> version = std::make_unique<std::string>();
   std::string* versionp = version.get();
   Cmd("GETINFO version",
-      base::BindRepeating(&TorControlImpl::GetVersionLine,
+      base::BindRepeating(&TorControl::GetVersionLine,
                           base::Unretained(this), versionp),
-      base::BindOnce(&TorControlImpl::GetVersionDone,
+      base::BindOnce(&TorControl::GetVersionDone,
                      base::Unretained(this),
                      std::move(version), std::move(callback)));
 }
 
-void TorControlImpl::GetVersionLine(std::string* version,
+void TorControl::GetVersionLine(std::string* version,
                                     const std::string& status,
                                     const std::string& reply) {
   const char prefix[] = "version=";
@@ -621,7 +620,7 @@ void TorControlImpl::GetVersionLine(std::string* version,
   *version = reply.substr(strlen(prefix));
 }
 
-void TorControlImpl::GetVersionDone(
+void TorControl::GetVersionDone(
     std::unique_ptr<std::string> version,
     base::OnceCallback<void(bool error, const std::string& version)> callback,
     bool error, const std::string& status, const std::string& reply) {
@@ -635,21 +634,21 @@ void TorControlImpl::GetVersionDone(
   std::move(callback).Run(false, *version);
 }
 
-void TorControlImpl::GetSOCKSListeners(
+void TorControl::GetSOCKSListeners(
     base::OnceCallback<void(
         bool error, const std::vector<std::string>& listeners)> callback) {
   std::unique_ptr<std::vector<std::string>> listeners =
     std::make_unique<std::vector<std::string>>();
   std::vector<std::string>* listeners_p = listeners.get();
   Cmd("GETINFO net/listeners/socks",
-      base::BindRepeating(&TorControlImpl::GetSOCKSListenersLine,
+      base::BindRepeating(&TorControl::GetSOCKSListenersLine,
                           base::Unretained(this), listeners_p),
-      base::BindOnce(&TorControlImpl::GetSOCKSListenersDone,
+      base::BindOnce(&TorControl::GetSOCKSListenersDone,
                      base::Unretained(this),
                      std::move(listeners), std::move(callback)));
 }
 
-void TorControlImpl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
+void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
                                            const std::string& status,
                                            const std::string& reply) {
   const char prefix[] = "net/listeners/socks=";
@@ -661,7 +660,7 @@ void TorControlImpl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
   listeners->push_back(reply.substr(strlen(prefix)));
 }
 
-void TorControlImpl::GetSOCKSListenersDone(
+void TorControl::GetSOCKSListenersDone(
     std::unique_ptr<std::vector<std::string>> listeners,
     base::OnceCallback<void(bool error,
                             const std::vector<std::string>& listeners)> callback,
@@ -685,7 +684,7 @@ void TorControlImpl::GetSOCKSListenersDone(
 //
 //      Caller must ensure writing_ is true.
 //
-void TorControlImpl::StartWrite() {
+void TorControl::StartWrite() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   CHECK(writing_);
   CHECK(!writeq_.empty());
@@ -728,13 +727,13 @@ static std::string escapify(const char *buf, int len) {
 //      Caller must ensure writing_ is true and writeiobuf_ is
 //      initialized.
 //
-void TorControlImpl::DoWrites() {
+void TorControl::DoWrites() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   CHECK(writing_);
   CHECK(writeiobuf_);
   int rv;
   while ((rv = socket_->Write(writeiobuf_.get(), writeiobuf_->size(),
-                              base::BindOnce(&TorControlImpl::WriteDoneAsync,
+                              base::BindOnce(&TorControl::WriteDoneAsync,
                                              base::Unretained(this)),
                               tor_control_traffic_annotation))
       != net::ERR_IO_PENDING) {
@@ -752,7 +751,7 @@ void TorControlImpl::DoWrites() {
 //      Caller must ensure writing_ is true and writeiobuf_ is
 //      initialized.
 //
-void TorControlImpl::WriteDoneAsync(int rv) {
+void TorControl::WriteDoneAsync(int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   CHECK(writing_);
   CHECK(writeiobuf_);
@@ -771,7 +770,7 @@ void TorControlImpl::WriteDoneAsync(int rv) {
 //      Caller must ensure writing_ is true and writeiobuf_ is
 //      initialized.
 //
-void TorControlImpl::WriteDone(int rv) {
+void TorControl::WriteDone(int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   CHECK(writing_);
   CHECK(writeiobuf_);
@@ -807,7 +806,7 @@ void TorControlImpl::WriteDone(int rv) {
 //      synchronous command callbacks or asynchronous event
 //      registrations.
 //
-void TorControlImpl::StartRead() {
+void TorControl::StartRead() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   CHECK(reading_);
   CHECK(!cmdq_.empty() || !async_events_.empty());
@@ -824,14 +823,14 @@ void TorControlImpl::StartRead() {
 //      Caller must ensure reading_ is true and readiobuf_ is
 //      initialized.
 //
-void TorControlImpl::DoReads() {
+void TorControl::DoReads() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   CHECK(reading_);
   CHECK(readiobuf_);
   int rv;
   CHECK(readiobuf_->RemainingCapacity());
   while ((rv = socket_->Read(readiobuf_.get(), readiobuf_->RemainingCapacity(),
-                             base::BindOnce(&TorControlImpl::ReadDoneAsync,
+                             base::BindOnce(&TorControl::ReadDoneAsync,
                                             base::Unretained(this))))
       != net::ERR_IO_PENDING) {
     ReadDone(rv);
@@ -849,7 +848,7 @@ void TorControlImpl::DoReads() {
 //      Caller must ensure reading_ is true and readiobuf_ is
 //      initialized.
 //
-void TorControlImpl::ReadDoneAsync(int rv) {
+void TorControl::ReadDoneAsync(int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   CHECK(reading_);
   CHECK(readiobuf_);
@@ -868,7 +867,7 @@ void TorControlImpl::ReadDoneAsync(int rv) {
 //      Caller must ensure reading_ is true and readiobuf_ is
 //      initialized.
 //
-void TorControlImpl::ReadDone(int rv) {
+void TorControl::ReadDone(int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   CHECK(reading_);
   CHECK(readiobuf_);
@@ -959,7 +958,7 @@ void TorControlImpl::ReadDone(int rv) {
 //      We have read a line of input; process it.  Return true on
 //      success, false on error.
 //
-bool TorControlImpl::ReadLine(const std::string& line) {
+bool TorControl::ReadLine(const std::string& line) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 
   if (line.size() < 4) {
@@ -1130,14 +1129,14 @@ bool TorControlImpl::ReadLine(const std::string& line) {
   return false;
 }
 
-TorControlImpl::Async::Async() = default;
-TorControlImpl::Async::~Async() = default;
+TorControl::Async::Async() = default;
+TorControl::Async::~Async() = default;
 
 // Error()
 //
 //      Clear read and write state and disconnect.
 //
-void TorControlImpl::Error() {
+void TorControl::Error() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 
   LOG(ERROR) << "tor: closing control on " << (running_ ? "request" : "error");
@@ -1168,7 +1167,7 @@ void TorControlImpl::Error() {
   if (running_) {
     watch_task_runner_->PostTask(
         FROM_HERE,
-        base::BindOnce(&TorControlImpl::Poll, base::Unretained(this)));
+        base::BindOnce(&TorControl::Poll, base::Unretained(this)));
   }
 }
 
@@ -1179,7 +1178,7 @@ void TorControlImpl::Error() {
 //      success, false on failure.
 //
 // static
-bool TorControlImpl::ParseKV(
+bool TorControl::ParseKV(
     const std::string& string,
     std::string& key, std::string& value) {
   size_t end;
@@ -1194,7 +1193,7 @@ bool TorControlImpl::ParseKV(
 //      failure.
 //
 // static
-bool TorControlImpl::ParseKV(
+bool TorControl::ParseKV(
     const std::string& string,
     std::string& key, std::string& value, size_t& end) {
   // Search for `=' -- it had better be there.
@@ -1252,7 +1251,7 @@ bool TorControlImpl::ParseKV(
 //      return false on failure.
 //
 // static
-bool TorControlImpl::ParseQuoted(const std::string& string,
+bool TorControl::ParseQuoted(const std::string& string,
                                  std::string& value, size_t& end) {
   enum {
     REJECT,
