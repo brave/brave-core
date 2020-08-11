@@ -231,6 +231,11 @@ void CreativeAdNotifications::Migrate(
       break;
     }
 
+    case 2: {
+      MigrateToV2(transaction);
+      break;
+    }
+
     default: {
       break;
     }
@@ -418,7 +423,6 @@ void CreativeAdNotifications::CreateTableV1(
           "target_url TEXT NOT NULL, "
           "title TEXT NOT NULL, "
           "body TEXT NOT NULL, "
-          "ptr DOUBLE NOT NULL DEFAULT 1, "
           "PRIMARY KEY(creative_instance_id))",
       get_table_name().c_str());
 
@@ -436,6 +440,22 @@ void CreativeAdNotifications::MigrateToV1(
   Drop(transaction, get_table_name());
 
   CreateTableV1(transaction);
+}
+
+void CreativeAdNotifications::MigrateToV2(
+    DBTransaction* transaction) {
+  DCHECK(transaction);
+
+  const std::string query = base::StringPrintf(
+      "ALTER TABLE %s "
+          "ADD ptr DOUBLE NOT NULL DEFAULT 1",
+      get_table_name().c_str());
+
+  DBCommandPtr command = DBCommand::New();
+  command->type = DBCommand::Type::EXECUTE;
+  command->command = query;
+
+  transaction->commands.push_back(std::move(command));
 }
 
 }  // namespace table
