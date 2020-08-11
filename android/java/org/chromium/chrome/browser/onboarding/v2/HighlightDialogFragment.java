@@ -186,7 +186,7 @@ public class HighlightDialogFragment extends DialogFragment {
         public void onLearnMore() {
             dismiss();
             //Start from beginning
-            ((BraveActivity)getActivity()).showOnboarding(false);
+            ((BraveActivity)getActivity()).showOnboardingV2(false);
         }
     };
 }
