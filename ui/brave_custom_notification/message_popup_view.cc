@@ -46,24 +46,20 @@ void MessagePopupView::Show(Notification& notification) {
 }
 
 void MessagePopupView::Clicked(const std::string& notification_id) {
+  g_message_popup_view->Close();
   if (delegate_){
     delegate_->Click(base::nullopt, base::nullopt);
-    delegate_ = nullptr;
   }
-  g_message_popup_view->Close();
   g_message_popup_view = nullptr;
 }
 
 // static
 void MessagePopupView::ClosePopup() {
+  g_message_popup_view->Close();
   if (delegate_) {
     delegate_->Close(true);
-    delegate_ = nullptr;
   }
-  if (g_message_popup_view) {
-    g_message_popup_view->Close();
-    g_message_popup_view = nullptr;
-  }
+  g_message_popup_view = nullptr;
 }
 
 MessagePopupView::MessagePopupView(const Notification& notification) {
@@ -109,7 +105,6 @@ MessagePopupView::MessagePopupView(const Notification& notification) {
 
   MessageView* message_view_ = MessageViewFactory::Create(notification);
   popup_window_->SetContentsView(message_view_);
-//   AddChildView(message_view_);
   set_notify_enter_exit_on_child(true);
   g_message_popup_view = this;
 }
@@ -141,13 +136,15 @@ void MessagePopupView::Show() {
 }
 
 void MessagePopupView::Close() {
-  if (!GetWidget()) {
+  if (popup_window_ && !popup_window_->IsClosed()) {
+    popup_window_->CloseNow();
+  }
+  /*
+  if (popup_window_) {
     DeleteDelegate();
     return;
   }
-
-  if (!GetWidget()->IsClosed())
-    GetWidget()->CloseNow();
+  */
 }
 
 void MessagePopupView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
