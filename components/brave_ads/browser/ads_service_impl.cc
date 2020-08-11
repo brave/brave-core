@@ -1160,7 +1160,10 @@ void AdsServiceImpl::OnGetAdsHistory(
         base::Value(entry.ad_content.creative_instance_id));
     ad_content_dictionary.SetKey("creativeSetId",
         base::Value(entry.ad_content.creative_set_id));
-    ad_content_dictionary.SetKey("brand", base::Value(entry.ad_content.brand));
+    ad_content_dictionary.SetKey("campaignId",
+        base::Value(entry.ad_content.campaign_id));
+    ad_content_dictionary.SetKey("brand",
+        base::Value(entry.ad_content.brand));
     ad_content_dictionary.SetKey("brandInfo",
         base::Value(entry.ad_content.brand_info));
     ad_content_dictionary.SetKey("brandLogo",

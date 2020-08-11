@@ -51,6 +51,10 @@ Result AdNotificationInfo::FromJson(
     creative_set_id = document["creative_set_id"].GetString();
   }
 
+  if (document.HasMember("campaign_id")) {
+    campaign_id = document["campaign_id"].GetString();
+  }
+
   if (document.HasMember("category")) {
     category = document["category"].GetString();
   }
@@ -90,6 +94,9 @@ void SaveToJson(
 
   writer->String("creative_set_id");
   writer->String(info.creative_set_id.c_str());
+
+  writer->String("campaign_id");
+  writer->String(info.campaign_id.c_str());
 
   writer->String("category");
   writer->String(info.category.c_str());

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap.h"
 
 #include <memory>
 #include <vector>
@@ -32,16 +32,18 @@ namespace ads {
 
 namespace {
 
-const std::vector<std::string> kCreativeSetIds = {
-  "654f10df-fbc4-4a92-8d43-2edf73734a60",
-  "465f10df-fbc4-4a92-8d43-4edf73734a60"
+const char kCreativeInstanceId[] = "9aea9a47-c6a0-4718-a0fa-706338bb2156";
+
+const std::vector<std::string> kCampaignIds = {
+  "60267cee-d5bb-4a0d-baaf-91cd7f18e07e",
+  "90762cee-d5bb-4a0d-baaf-61cd7f18e07e"
 };
 
 }  // namespace
 
-class BatAdsConversionFrequencyCapTest : public ::testing::Test {
+class BatAdsDismissedFrequencyCapTest : public ::testing::Test {
  protected:
-  BatAdsConversionFrequencyCapTest()
+  BatAdsDismissedFrequencyCapTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME),
         ads_client_mock_(std::make_unique<NiceMock<AdsClientMock>>()),
         ads_(std::make_unique<AdsImpl>(ads_client_mock_.get())),
@@ -49,7 +51,7 @@ class BatAdsConversionFrequencyCapTest : public ::testing::Test {
             NiceMock<brave_l10n::LocaleHelperMock>>()),
         platform_helper_mock_(std::make_unique<
             NiceMock<PlatformHelperMock>>()),
-        frequency_cap_(std::make_unique<ConversionFrequencyCap>(ads_.get())) {
+        frequency_cap_(std::make_unique<DismissedFrequencyCap>(ads_.get())) {
     // You can do set-up work for each test here
 
     brave_l10n::LocaleHelper::GetInstance()->set_for_testing(
@@ -58,7 +60,7 @@ class BatAdsConversionFrequencyCapTest : public ::testing::Test {
     PlatformHelper::GetInstance()->set_for_testing(platform_helper_mock_.get());
   }
 
-  ~BatAdsConversionFrequencyCapTest() override {
+  ~BatAdsDismissedFrequencyCapTest() override {
     // You can do clean-up work that doesn't throw exceptions here
   }
 
@@ -118,15 +120,16 @@ class BatAdsConversionFrequencyCapTest : public ::testing::Test {
   std::unique_ptr<AdsImpl> ads_;
   std::unique_ptr<brave_l10n::LocaleHelperMock> locale_helper_mock_;
   std::unique_ptr<PlatformHelperMock> platform_helper_mock_;
-  std::unique_ptr<ConversionFrequencyCap> frequency_cap_;
+  std::unique_ptr<DismissedFrequencyCap> frequency_cap_;
   std::unique_ptr<Database> database_;
 };
 
-TEST_F(BatAdsConversionFrequencyCapTest,
-    AllowAdIfThereIsNoAdConversionHistory) {
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AllowAdIfThereIsNoAdsHistory) {
   // Arrange
   CreativeAdInfo ad;
-  ad.creative_set_id = "654f10df-fbc4-4a92-8d43-2edf73734a60";
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
@@ -135,49 +138,89 @@ TEST_F(BatAdsConversionFrequencyCapTest,
   EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsConversionFrequencyCapTest,
-    DoNotAllowAdIfShouldNotAllowAdConversionTrackingAndHasAConversion) {
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithDifferentCampaignIdWithin48Hours) {
   // Arrange
-  ON_CALL(*ads_client_mock_, ShouldAllowAdConversionTracking())
-      .WillByDefault(Return(false));
+  CreativeAdInfo ad_1;
+  ad_1.creative_instance_id = kCreativeInstanceId;
+  ad_1.campaign_id = kCampaignIds.at(0);
 
+  CreativeAdInfo ad_2;
+  ad_2.creative_instance_id = kCreativeInstanceId;
+  ad_2.campaign_id = kCampaignIds.at(1);
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad_2, ConfirmationType::kDismissed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
+
+  // Act
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad_1);
+
+  // Assert
+  EXPECT_FALSE(should_exclude);
+}
+
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdNotAllowedForAdWithSameCampaignIdWithin48Hours) {
+  // Arrange
   CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(0);
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
 
-  get_client()->AppendCreativeSetIdToAdConversionHistory(ad.creative_set_id);
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kDismissed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(47));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsConversionFrequencyCapTest,
-    DoNotAllowAdIfAlreadyConverted) {
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithSameCampaignIdAfter48Hours) {
   // Arrange
   CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(0);
+  ad.creative_instance_id = kCreativeInstanceId;
+  ad.campaign_id = kCampaignIds.at(0);
 
-  get_client()->AppendCreativeSetIdToAdConversionHistory(ad.creative_set_id);
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kDismissed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 
   // Act
   const bool should_exclude = frequency_cap_->ShouldExclude(ad);
 
   // Assert
-  EXPECT_TRUE(should_exclude);
+  EXPECT_FALSE(should_exclude);
 }
 
-TEST_F(BatAdsConversionFrequencyCapTest,
-    AllowAdIfNotAlreadyConverted) {
+TEST_F(BatAdsDismissedFrequencyCapTest,
+    AdAllowedForAdWithDifferentCampaignIdAfter48Hours) {
   // Arrange
-  CreativeAdInfo ad;
-  ad.creative_set_id = kCreativeSetIds.at(0);
+  CreativeAdInfo ad_1;
+  ad_1.creative_instance_id = kCreativeInstanceId;
+  ad_1.campaign_id = kCampaignIds.at(0);
 
-  get_client()->AppendCreativeSetIdToCreativeSetHistory(kCreativeSetIds.at(1));
+  CreativeAdInfo ad_2;
+  ad_2.creative_instance_id = kCreativeInstanceId;
+  ad_2.campaign_id = kCampaignIds.at(1);
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad_2, ConfirmationType::kDismissed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromHours(48));
 
   // Act
-  const bool should_exclude = frequency_cap_->ShouldExclude(ad);
+  const bool should_exclude = frequency_cap_->ShouldExclude(ad_1);
 
   // Assert
   EXPECT_FALSE(should_exclude);

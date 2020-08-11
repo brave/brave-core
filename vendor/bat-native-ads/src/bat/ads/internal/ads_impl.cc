@@ -32,6 +32,8 @@
 #include "bat/ads/internal/frequency_capping/exclusion_rules/conversion_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/daily_cap_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/exclusion_rule.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/dismissed_frequency_cap.h"
+#include "bat/ads/internal/frequency_capping/exclusion_rules/landed_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_as_inappropriate_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/marked_to_no_longer_receive_frequency_cap.h"
 #include "bat/ads/internal/frequency_capping/exclusion_rules/per_day_frequency_cap.h"
@@ -939,6 +941,14 @@ std::vector<std::unique_ptr<ExclusionRule>>
       std::make_unique<SubdivisionTargetingFrequencyCap>(this);
   exclusion_rules.push_back(std::move(subdivision_targeting_frequency_cap));
 
+  std::unique_ptr<ExclusionRule> dismissed_frequency_cap =
+      std::make_unique<DismissedFrequencyCap>(this);
+  exclusion_rules.push_back(std::move(dismissed_frequency_cap));
+
+  std::unique_ptr<ExclusionRule> landed_frequency_cap =
+      std::make_unique<LandedFrequencyCap>(this);
+  exclusion_rules.push_back(std::move(landed_frequency_cap));
+
   std::unique_ptr<ExclusionRule> marked_to_no_longer_recieve_frequency_cap =
       std::make_unique<MarkedToNoLongerReceiveFrequencyCap>(this);
   exclusion_rules.push_back(std::move(
@@ -957,7 +967,7 @@ CreativeAdNotificationList AdsImpl::GetEligibleAds(
 
   const auto exclusion_rules = CreateExclusionRules();
 
-  std::set<std::string> exclusions;
+  std::set<std::string> exclusion_reasons;
 
   auto unseen_ads = GetUnseenAdsAndRoundRobinIfNeeded(ads);
   for (const auto& ad : unseen_ads) {
@@ -968,7 +978,10 @@ CreativeAdNotificationList AdsImpl::GetEligibleAds(
         continue;
       }
 
-      exclusions.insert(exclusion_rule->get_last_message());
+      const std::string exclusion_reason = exclusion_rule->get_last_message();
+      if (!exclusion_reason.empty()) {
+        exclusion_reasons.insert(exclusion_reason);
+      }
 
       should_exclude = true;
     }
@@ -980,8 +993,8 @@ CreativeAdNotificationList AdsImpl::GetEligibleAds(
     eligible_ads.push_back(ad);
   }
 
-  for (const auto& exclusion : exclusions) {
-    BLOG(2, exclusion);
+  for (const auto& exclusion_reason : exclusion_reasons) {
+    BLOG(2, exclusion_reason);
   }
 
   return eligible_ads;
@@ -1101,12 +1114,8 @@ bool AdsImpl::ShowAdNotification(
     return false;
   }
 
-  auto now_in_seconds = static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-
-  client_->AppendTimestampToCreativeSetHistory(
-      info.creative_set_id, now_in_seconds);
-  client_->AppendTimestampToCampaignHistory(
-      info.campaign_id, now_in_seconds);
+  client_->AppendCreativeSetIdToCreativeSetHistory(info.creative_set_id);
+  client_->AppendCampaignIdToCampaignHistory(info.campaign_id);
 
   client_->UpdateSeenAdNotification(info.creative_instance_id, 1);
   client_->UpdateSeenAdvertiser(info.advertiser_id, 1);

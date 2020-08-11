@@ -1,10 +1,10 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
-#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
+#ifndef BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_LANDED_CAP_FREQUENCY_CAP_H_  // NOLINT
+#define BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_LANDED_CAP_FREQUENCY_CAP_H_  // NOLINT
 
 #include <stdint.h>
 
@@ -19,18 +19,18 @@ namespace ads {
 
 class AdsImpl;
 
-class PerHourFrequencyCap : public ExclusionRule {
+class LandedFrequencyCap : public ExclusionRule {
  public:
-  PerHourFrequencyCap(
+  LandedFrequencyCap(
       const AdsImpl* const ads);
 
-  ~PerHourFrequencyCap() override;
+  ~LandedFrequencyCap() override;
 
-  PerHourFrequencyCap(const PerHourFrequencyCap&) = delete;
-  PerHourFrequencyCap& operator=(const PerHourFrequencyCap&) = delete;
+  LandedFrequencyCap(const LandedFrequencyCap&) = delete;
+  LandedFrequencyCap& operator=(const LandedFrequencyCap&) = delete;
 
   bool ShouldExclude(
-    const CreativeAdInfo& ad) override;
+      const CreativeAdInfo& ad) override;
 
   std::string get_last_message() const override;
 
@@ -45,9 +45,9 @@ class PerHourFrequencyCap : public ExclusionRule {
 
   std::deque<uint64_t> FilterHistory(
       const std::deque<AdHistory>& history,
-      const std::string& creative_instance_id) const;
+      const std::string& campaign_id);
 };
 
 }  // namespace ads
 
-#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_PER_HOUR_FREQUENCY_CAP_H_  // NOLINT
+#endif  // BAT_ADS_INTERNAL_FREQUENCY_CAPPING_EXCLUSION_RULES_LANDED_CAP_FREQUENCY_CAP_H_  // NOLINT

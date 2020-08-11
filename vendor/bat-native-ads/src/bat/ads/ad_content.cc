@@ -21,6 +21,7 @@ bool AdContent::operator==(
     const AdContent& rhs) const {
   return creative_instance_id == rhs.creative_instance_id &&
       creative_set_id == rhs.creative_set_id &&
+      campaign_id == rhs.campaign_id &&
       brand == rhs.brand &&
       brand_info == rhs.brand_info &&
       brand_logo == rhs.brand_logo &&
@@ -55,6 +56,10 @@ Result AdContent::FromJson(
 
   if (document.HasMember("uuid")) {
     creative_instance_id = document["uuid"].GetString();
+  }
+
+  if (document.HasMember("campaign_id")) {
+    campaign_id = document["campaign_id"].GetString();
   }
 
   if (document.HasMember("creative_set_id")) {
@@ -109,6 +114,9 @@ void SaveToJson(JsonWriter* writer, const AdContent& content) {
 
   writer->String("creative_set_id");
   writer->String(content.creative_set_id.c_str());
+
+  writer->String("campaign_id");
+  writer->String(content.campaign_id.c_str());
 
   writer->String("brand");
   writer->String(content.brand.c_str());

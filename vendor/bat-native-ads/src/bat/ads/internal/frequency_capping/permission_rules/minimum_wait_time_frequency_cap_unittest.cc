@@ -103,6 +103,10 @@ class BatAdsMinimumWaitTimeFrequencyCapTest : public ::testing::Test {
 
   // Objects declared here can be used by all tests in the test case
 
+  Client* get_client() {
+    return ads_->get_client();
+  }
+
   base::test::TaskEnvironment task_environment_;
 
   base::ScopedTempDir temp_dir_;
@@ -132,10 +136,16 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
     AllowAdIfDoesNotExceedCap) {
   // Arrange
   ON_CALL(*ads_client_mock_, GetAdsPerHour())
-      .WillByDefault(Return(2));
+      .WillByDefault(Return(5));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      45 * base::Time::kSecondsPerMinute, 1);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(12));
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();
@@ -148,10 +158,16 @@ TEST_F(BatAdsMinimumWaitTimeFrequencyCapTest,
     DoNotAllowAdIfExceedsCap) {
   // Arrange
   ON_CALL(*ads_client_mock_, GetAdsPerHour())
-      .WillByDefault(Return(2));
+      .WillByDefault(Return(5));
 
-  GeneratePastAdsHistoryFromNow(ads_, kCreativeInstanceId,
-      15 * base::Time::kSecondsPerMinute, 1);
+  CreativeAdInfo ad;
+  ad.creative_instance_id = kCreativeInstanceId;
+
+  const AdHistory ad_history =
+      GenerateAdHistory(ad, ConfirmationType::kViewed);
+  get_client()->AppendAdHistoryToAdsHistory(ad_history);
+
+  task_environment_.FastForwardBy(base::TimeDelta::FromMinutes(11));
 
   // Act
   const bool is_allowed = frequency_cap_->IsAllowed();
