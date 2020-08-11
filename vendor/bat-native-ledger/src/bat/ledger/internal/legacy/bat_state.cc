@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <utility>
 
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/legacy/bat_state.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"

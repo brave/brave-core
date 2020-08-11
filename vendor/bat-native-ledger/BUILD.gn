@@ -99,8 +99,6 @@ source_set("ledger") {
   output_name = "bat_native_ledger"
 
   sources = [
-    "src/bat/ledger/internal/bat_util.cc",
-    "src/bat/ledger/internal/bat_util.h",
     "src/bat/ledger/internal/api/api.cc",
     "src/bat/ledger/internal/api/api.h",
     "src/bat/ledger/internal/api/api_parameters.cc",
@@ -115,8 +113,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/attestation/attestation_impl.h",
     "src/bat/ledger/internal/attestation/attestation_iosx.cc",
     "src/bat/ledger/internal/attestation/attestation_iosx.h",
-    "src/bat/ledger/internal/bat_helper.cc",
-    "src/bat/ledger/internal/bat_helper.h",
+    "src/bat/ledger/internal/legacy/bat_helper.cc",
+    "src/bat/ledger/internal/legacy/bat_helper.h",
     "src/bat/ledger/internal/legacy/bat_state.cc",
     "src/bat/ledger/internal/legacy/bat_state.h",
     "src/bat/ledger/internal/common/bind_util.cc",
@@ -274,6 +272,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/promotion/promotion_transfer.h",
     "src/bat/ledger/internal/promotion/promotion_util.cc",
     "src/bat/ledger/internal/promotion/promotion_util.h",
+    "src/bat/ledger/internal/legacy/bat_util.cc",
+    "src/bat/ledger/internal/legacy/bat_util.h",
     "src/bat/ledger/internal/legacy/client_properties.cc",
     "src/bat/ledger/internal/legacy/client_properties.h",
     "src/bat/ledger/internal/legacy/publisher_settings_properties.cc",

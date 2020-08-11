@@ -7,7 +7,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution_sku.h"

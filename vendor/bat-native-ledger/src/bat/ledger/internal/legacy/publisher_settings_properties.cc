@@ -9,8 +9,7 @@
 namespace ledger {
 
 PublisherSettingsProperties::PublisherSettingsProperties()
-    : min_page_time_before_logging_a_visit(
-        braveledger_ledger::_default_min_page_time_before_logging_a_visit),
+    : min_page_time_before_logging_a_visit(8),
       min_visits_for_publisher_relevancy(1),
       allow_non_verified_sites_in_list(true),
       allow_contribution_to_videos(true) {}

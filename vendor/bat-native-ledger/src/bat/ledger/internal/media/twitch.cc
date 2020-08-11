@@ -11,7 +11,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/twitch.h"
 #include "net/http/http_status_code.h"

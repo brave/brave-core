@@ -10,7 +10,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/response/response_uphold.h"

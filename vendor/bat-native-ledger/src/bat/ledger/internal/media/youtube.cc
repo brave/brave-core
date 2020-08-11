@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/strings/string_split.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/media/youtube.h"

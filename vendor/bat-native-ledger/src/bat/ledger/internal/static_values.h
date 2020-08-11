@@ -6,7 +6,6 @@
 #ifndef BRAVELEDGER_STATIC_VALUES_H_
 #define BRAVELEDGER_STATIC_VALUES_H_
 
-#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -42,16 +41,6 @@
 #define TWITCH_MAXIMUM_SECONDS_CHUNK    120
 
 namespace braveledger_ledger {
-
-static const uint64_t _default_min_page_time_before_logging_a_visit = 8;
-
-static const uint64_t _milliseconds_day = 24 * 60 * 60 * 1000;
-
-static const uint64_t _milliseconds_hour = 60 * 60 * 1000;
-
-static const uint64_t _milliseconds_minute = 60 * 1000;
-
-static const uint64_t _milliseconds_second = 1000;
 
 // 30 days in seconds
 static const uint64_t _reconcile_default_interval = 30 * 24 * 60 * 60;
