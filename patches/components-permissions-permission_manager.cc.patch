@@ -1,11 +1,11 @@
 diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
-index a9566441647f0e8527a6b9603f663f66e49b2abb..ed823fd999b1f41d98547aed4280d86efcb6c3f4 100644
+index 0ca29923b6924ff063afd25e1fca9609c5c187fd..17341cf268882ba761585523e3335a4d0d1f07ff 100644
 --- a/components/permissions/permission_manager.cc
 +++ b/components/permissions/permission_manager.cc
-@@ -128,6 +128,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(
-       return ContentSettingsType::CAMERA_PAN_TILT_ZOOM;
-     case PermissionType::WINDOW_PLACEMENT:
+@@ -130,6 +130,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(
        return ContentSettingsType::WINDOW_PLACEMENT;
+     case PermissionType::FONT_ACCESS:
+       return ContentSettingsType::FONT_ACCESS;
 +    BRAVE_PERMISSION_MANAGER_PERMISSION_TYPE_TO_CONTENT_SETTING_SAFE
      case PermissionType::NUM:
        break;

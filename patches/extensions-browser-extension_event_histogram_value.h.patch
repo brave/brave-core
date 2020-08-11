@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 4eea59c72f82f89d3076dc3017eed8a651491e6a..4db83de8c300ec790796b770c0ddc03e1a99c12f 100644
+index a9076b7c61f6316b2533c2c08542d5c0b8a9707d..cd2ea03fe600358929a88fe69d3cc408103e048e 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -481,6 +481,20 @@ enum HistogramValue {
-   CERTIFICATEPROVIDER_ON_CERTIFICATES_UPDATE_REQUESTED = 459,
+@@ -482,6 +482,20 @@ enum HistogramValue {
    CERTIFICATEPROVIDER_ON_SIGNATURE_REQUESTED = 460,
    WINDOWS_ON_BOUNDS_CHANGED = 461,
+   WALLPAPER_PRIVATE_ON_CLOSE_PREVIEW_WALLPAPER = 462,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,
