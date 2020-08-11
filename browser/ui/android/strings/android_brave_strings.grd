@@ -1219,7 +1219,10 @@ until they verify, or until 90 days have passed.
         3 Months
       </message>
       <message name="IDS_BRAVE_STATS" desc="Brave stats title">
-        Brave Stats
+        Privacy Report
+      </message>
+      <message name="IDS_BRAVE_STATS_NOTIFICATION" desc="Brave stats title">
+        Privacy Report Notification
       </message>
       <message name="IDS_TRACKERS_AND_ADS" desc="Brave stats title">
         Trackers &amp; Ads Blocked
@@ -1252,13 +1255,13 @@ until they verify, or until 90 days have passed.
         Browse up to 6x faster on major news sites in Brave by blocking trackes &amp; ads.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_3_TEXT_3" desc="3_hours notification text">
-        Turn on Brave stats to see how many trackers &amp; ads have been blocked in the past 3 hours.
+        Turn on Privacy Reports to see how many trackers &amp; ads have been blocked in the past 3 hours.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_24_TEXT_1" desc="24_hours notification text">
         You saved <ph name="DATA">%1$s</ph> <ph name="DATA_TEXT">%2$s</ph> data with Brave browser.
       </message>
       <message name="IDS_NOTIFICATION_HOUR_24_TEXT_2" desc="24_hours notification text">
-        Turn on Brave Stats to see how much data you've saved.
+        Turn on Privacy Reports to see how much data you've saved.
       </message>
       <message name="IDS_NOTIFICATION_MARKETING" desc="Marketing notification text">
         Brave browser uses 40% less battery on average.
@@ -1283,6 +1286,21 @@ until they verify, or until 90 days have passed.
       </message>
       <message name="IDS_SET_BRAVE_AS_YOUR" desc="Deafult browser notification text">
         Set Brave as your default browser for private and secure browsing.
+      </message>
+      <message name="IDS_ALLOWS_BRAVE_TO_SHOW" desc="Brave stats pref summary text">
+        Allows brave to show your privacy statistics
+      </message>
+      <message name="IDS_SENDS_A_WEEKLY" desc="Brave stats pref summary text">
+        Sends a weekly privacy report
+      </message>
+      <message name="IDS_CLEAR_BRAVE_STATS_DATA" desc="Brave stats pref summary text">
+        Clear all privacy reports data
+      </message>
+      <message name="IDS_RESETS_YOUR_BRAVE_STATS" desc="Brave stats pref summary text">
+        Resets your privacy reports to zero
+      </message>
+      <message name="IDS_DATA_HAS_BEEN_CLEARED" desc="Brave stats pref summary text">
+        Privacy reports data has been cleared.
       </message>
     </messages>
   </release>

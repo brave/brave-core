@@ -729,6 +729,7 @@ brave_java_resources = [
   "java/res/xml/clear_browsing_data_preferences_tab.xml",
   "java/res/xml/brave_privacy_preferences.xml",
   "java/res/xml/appearance_preferences.xml",
+  "java/res/xml/brave_stats_preferences.xml",
 ]
 
 brave_components_browser_ui_site_settings_android_java_resources = [

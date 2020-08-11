@@ -39,7 +39,8 @@ public class OnboardingPrefManager {
     private static final String PREF_ONBOARDING_SKIP_COUNT = "onboarding_skip_count";
     private static final String PREF_SEARCH_ENGINE_ONBOARDING = "search_engine_onboarding";
     private static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
-    private static final String PREF_BRAVE_STATS = "brave_stats";
+    public static final String PREF_BRAVE_STATS = "brave_stats";
+    public static final String PREF_BRAVE_STATS_NOTIFICATION = "brave_stats_notification";
     public static final String ONBOARDING_TYPE = "onboarding_type";
     public static final String FROM_NOTIFICATION = "from_notification";
     public static final String FROM_STATS = "from_stats";
@@ -126,6 +127,16 @@ public class OnboardingPrefManager {
     public void setBraveStatsEnabled(boolean enabled) {
         SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
         sharedPreferencesEditor.putBoolean(PREF_BRAVE_STATS, enabled);
+        sharedPreferencesEditor.apply();
+    }
+
+    public boolean isBraveStatsNotificationEnabled() {
+        return mSharedPreferences.getBoolean(PREF_BRAVE_STATS_NOTIFICATION, true);
+    }
+
+    public void setBraveStatsNotificationEnabled(boolean enabled) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putBoolean(PREF_BRAVE_STATS_NOTIFICATION, enabled);
         sharedPreferencesEditor.apply();
     }
 
