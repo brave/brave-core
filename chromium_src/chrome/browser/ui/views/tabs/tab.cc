@@ -4,10 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/tabs/brave_alert_indicator.h"
-#include "brave/browser/ui/views/tabs/brave_tab_close_button.h"
 
 #define AlertIndicator BraveAlertIndicator
-#define TabCloseButton BraveTabCloseButton
 #include "../../../../../../../chrome/browser/ui/views/tabs/tab.cc"  // NOLINT
 #undef AlertIndicator
-#undef TabCloseButton
