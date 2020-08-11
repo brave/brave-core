@@ -697,7 +697,8 @@ extension NewTabPageViewController {
             let alpha = max(0.0, min(1.0, (value - alphaInStart) / (todayStart - alphaInStart)))
             feedOverlayView.headerView.alpha = alpha
             
-            if feedOverlayView.newContentAvailableButton.alpha != 0 {
+            if feedOverlayView.newContentAvailableButton.alpha != 0 &&
+                !feedOverlayView.newContentAvailableButton.isLoading {
                 let velocity = scrollView.panGestureRecognizer.velocity(in: scrollView).y
                 if velocity > 0 && collectionView.contentOffset.y < todayStart {
                     // Scrolling up
