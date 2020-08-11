@@ -77,8 +77,13 @@
   <message name="IDS_MEDIA_ROUTER_ISSUE_TAB_AUDIO_NOT_SUPPORTED" desc="Title of an issue shown when the user is casting a tab, but only its visual content can be cast and not its audio output.">
     Casting tab audio is not supported on this device.
   </message>
+  <if expr="is_macosx">
+    <message name="IDS_MEDIA_ROUTER_ISSUE_MAC_SCREEN_CAPTURE_PERMISSION_ERROR" desc="Message shown when a macOS user attempts to cast their screen, but the Screen Recording system permission has not been granted.">
+      Unable to cast your screen. Check the Screen Recording permission in System Preferences.
+    </message>
+  </if>
 
-  <!-- Sink List -->
+<!-- Sink List -->
   <message name="IDS_MEDIA_ROUTER_STATUS_LOOKING_FOR_DEVICES" desc="Status text temporarily shown while searching for Cast devices but none have been found.">
     Looking for devices
   </message>

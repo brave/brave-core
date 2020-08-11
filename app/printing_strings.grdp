@@ -201,9 +201,6 @@
     <message name="IDS_PRINT_PREVIEW_ADD_ACCOUNT_TITLE" desc="Title of the selection control item to let user to sign into another account.">
       Add account...
     </message>
-    <message name="IDS_PRINT_PREVIEW_CLOUD_PRINT_PROMOTION" desc="Message describing features of Google Cloud Print.">
-      Print to Google Docs and other cloud destinations. <ph name="BEGIN_LINK">$1<ex>&lt;span&gt;</ex></ph>Sign in<ph name="END_LINK">$2<ex>&lt;/span&gt;</ex></ph> to print to Google Cloud Print.
-    </message>
     <message name="IDS_PRINT_PREVIEW_SEARCH_BOX_PLACEHOLDER" desc="Text to put in a search box when user has not entered a search query.">
       Search destinations
     </message>
@@ -319,9 +316,6 @@
       <message name="IDS_PRINT_PREVIEW_EULA_URL" desc="Message shown to user when their printer has a EULA associated with its PPD. This message is hyperlinked to the EULA.">
         End User License Agreement
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_CONNECTING_TO_DEVICE" desc="Error label to show under the destination dropdown when the device can't connect to the printer.">
-         Connection error
-      </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DEVICE_ERROR" desc="Error label to show under the destination dropdown when the printer has a device error.">
          Printer device error
       </message>
@@ -355,8 +349,8 @@
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_QUEUE_FULL" desc="Error label to show under the destination dropdown when the printer has a full queue.">
          Printer queue is full
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_UNREACHABLE" desc="Error label to show under the destination dropdown when the printer is unreachable.">
-         Printer is unreachable
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_UNREACHABLE" desc="Error label to show under the destination dropdown when the device is attempting to schedule a print job on the printer but can't get a connection to the printer">
+         Can’t connect to printer
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_STOPPED" desc="Error label to show under the destination dropdown when the printer is in a stopped state.">
          Printer is stopped
@@ -410,5 +404,26 @@
     <message name="IDS_SERVICE_CRASH_RECOVERY_CONTENT" desc="Text content telling the user the service process has crashed.">
       The <ph name="CLOUD_PRINT_NAME">$1<ex>Google Cloud Print</ex></ph> connector process has crashed. Restart?
     </message>
+  </if>
+
+  <!-- Cloud Print deprecation strings -->
+  <if expr="not is_android">
+    <message name="IDS_PRINTER_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that a particular printer will no longer be supported.">
+      This printer won't be supported after December. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a is="action-link" href="" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+    </message>
+    <message name="IDS_PRINTER_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that a particular printer will no longer be supported.">
+      This printer won't be supported after December. Contact your admin.
+    </message>
+    <message name="IDS_DESTINATION_NOT_SUPPORTED_WARNING" desc="Warning shown next to a destination to the user to inform them that the destination will no longer be supported.">
+      Not supported after December
+    </message>
+    <if expr="not chromeos">
+      <message name="IDS_GOOGLE_DRIVE_OPTION_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that saving to Google Drive will no longer be supported.">
+        This option won't be supported after December. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a is="action-link" href="" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_GOOGLE_DRIVE_OPTION_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that saving to Google Drive will no longer be supported.">
+        This option won't be supported after December. Contact your admin.
+      </message>
+    </if>
   </if>
 </grit-part>

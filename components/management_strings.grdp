@@ -130,7 +130,7 @@
 
     <!-- Chrome OS update required end-of-life reached section -->
     <message name="IDS_MANAGEMENT_UPDATE_REQUIRED_EOL_MESSAGE" desc="Message indicating that the device needs to be returned back before the deadline because the device has reached end-of-life and an update is required as per policy.">
-      <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this device.
+      <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph>.
     </message>
     <message name="IDS_MANAGEMENT_UPDATE_REQUIRED_EOL_ADMIN_MESSAGE_TITLE" desc="Message indicating return instructions from the device administrator because the device cannot be updated as it has reached its end of life.">
       Instructions from your device administrator:
@@ -231,16 +231,5 @@
   </message>
   <message name="IDS_MANAGEMENT_PAGE_VISITED_VISIBLE_DATA" desc="Description of the visible data for the real time URL check feature.">
     URLs of pages you visit are sent to Brave Cloud or third parties for analysis. For example, they might be scanned to detect unsafe websites.
-  </message>
-
-  <!-- Strings for ios only -->
-  <message name="IDS_IOS_MANAGEMENT_UI_DESC" desc="The descriptive text on chrome://management page when the browser is managed. [iOS only]">
-    Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave.
-  </message>
-  <message name="IDS_IOS_MANAGEMENT_UI_UNMANAGED_DESC" desc="The descriptive text on chrome://management page when the browser is not managed. [iOS only]">
-    Your browser is not managed.
-  </message>
-  <message name="IDS_IOS_MANAGEMENT_UI_MESSAGE" desc="The main message at the top of chrome://management page when the browser is managed. [iOS only]">
-    Your browser is managed by your administrator.
   </message>
 </grit-part>
