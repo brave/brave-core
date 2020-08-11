@@ -253,7 +253,6 @@ CHAR-LIMIT guidelines:
       <message name="IDS_NOTIFICATION_CATEGORY_MEDIA_PLAYBACK" desc="Label for media playback notifications, within a list of notification categories. [CHAR-LIMIT=32]">
         Playing media
       </message>
-
       <message name="IDS_NOTIFICATION_CATEGORY_PERMISSION_REQUESTS" desc="Label for permission requests, within a list of notification categories. [CHAR-LIMIT=32]">
        Permission requests
       </message>
@@ -3650,6 +3649,26 @@ Only you can see what your camera is looking at. The site can't see your camera'
       </message>
       <message name="IDS_PAINT_PREVIEW_DEMO_PLAYBACK_FAILURE" desc="Toast message displayed when there is a failure in playing back a paint preview for the demo. Used in paint preview demo mode." translateable="false">
         Paint Preview playback failed.
+      </message>
+
+      <!-- Browser Promo Notification Strings -->
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_1_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes relevant articles Brave has.">
+        Read today's news <ph name="NEWS_ICON">📰</ph>
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_1_DESCRIPTION" desc="The body text of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes relevant articles Brave has.">
+        Articles on your interests on Brave
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_2_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings.">
+        Save up to 60% data
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_2_DESCRIPTION" desc="The body text of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings.">
+        Use Lite mode on Brave
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_3_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.">
+        Brave recommends Brave
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_3_DESCRIPTION" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings and relevant news.">
+        Save up to 60% data, read today's news
       </message>
     </messages>
   </release>
