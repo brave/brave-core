@@ -44,10 +44,9 @@ BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
 
   set_custom_link(l10n_util::GetStringUTF16(IDS_BLOCKED_PLUGINS_LOAD_ALL));
   set_custom_link_enabled(
-      web_contents &&
-      content_settings::TabSpecificContentSettings::FromWebContents(
-          web_contents)
-          ->load_plugins_link_enabled());
+      web_contents && content_settings::TabSpecificContentSettings::GetForFrame(
+                          web_contents->GetMainFrame())
+                          ->load_plugins_link_enabled());
 }
 
 void BraveContentSettingPluginBubbleModel::OnLearnMoreClicked() {

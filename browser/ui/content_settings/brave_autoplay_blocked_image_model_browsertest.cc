@@ -21,8 +21,8 @@ IN_PROC_BROWSER_TEST_F(BraveAutoplayBlockedImageModelTest, CreateBubbleModel) {
   WebContents* web_contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   content_settings::TabSpecificContentSettings* content_settings =
-      content_settings::TabSpecificContentSettings::FromWebContents(
-          web_contents);
+      content_settings::TabSpecificContentSettings::GetForFrame(
+          web_contents->GetMainFrame());
   content_settings->BlockAllContentForTesting();
 
   auto model = std::make_unique<BraveAutoplayBlockedImageModel>();

@@ -29,8 +29,8 @@ bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(
     return false;
 
   content_settings::TabSpecificContentSettings* content_settings =
-      content_settings::TabSpecificContentSettings::FromWebContents(
-          web_contents);
+      content_settings::TabSpecificContentSettings::GetForFrame(
+          web_contents->GetMainFrame());
   if (!content_settings)
     return false;
   if (!content_settings->IsContentBlocked(content_type()))
