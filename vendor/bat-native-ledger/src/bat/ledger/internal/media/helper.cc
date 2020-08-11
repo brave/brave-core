@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/base64.h"
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/media/helper.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
 
 namespace braveledger_media {
 
@@ -27,13 +28,10 @@ void GetTwitchParts(
   }
 
   std::string varValue = query.substr(5);
-  std::vector<uint8_t> decoded;
-  bool succeded = braveledger_bat_helper::getFromBase64(varValue, &decoded);
+  std::string decoded;
+  bool succeded = base::Base64Decode(varValue, &decoded);
   if (succeded) {
-    decoded.push_back((uint8_t)'\0');
-    braveledger_bat_helper::getJSONTwitchProperties(
-        reinterpret_cast<char*>(&decoded.front()),
-        parts);
+    braveledger_bat_helper::getJSONTwitchProperties(decoded, parts);
   }
 }
 

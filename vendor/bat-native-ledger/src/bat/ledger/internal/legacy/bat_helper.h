@@ -16,45 +16,16 @@
 #include "bat/ledger/ledger.h"
 
 namespace braveledger_bat_helper {
-bool isProbiValid(const std::string& number);
-
-using SaveVisitSignature = void(const std::string&, uint64_t);
-using SaveVisitCallback = std::function<SaveVisitSignature>;
 
 bool getJSONValue(const std::string& fieldName,
                   const std::string& json,
                   std::string* value);
 
-bool getJSONList(const std::string& fieldName,
-                 const std::string& json,
-                 std::vector<std::string>* value);
-
 bool getJSONTwitchProperties(
     const std::string& json,
     std::vector<std::map<std::string, std::string>>* parts);
 
-bool getJSONBatchSurveyors(const std::string& json,
-                           std::vector<std::string>* surveyors);
-
-bool getJSONResponse(const std::string& json,
-                     unsigned int* statusCode,
-                     std::string* error);
-
-bool getJSONAddresses(const std::string& json,
-                      std::map<std::string, std::string>* addresses);
-
-bool getJSONMessage(const std::string& json,
-                     std::string* message);
-
-std::string stringify(std::string* keys,
-                      std::string* values,
-                      const unsigned int size);
-
-std::vector<uint8_t> getSHA256(const std::string& in);
-
 std::string getBase64(const std::vector<uint8_t>& in);
-
-bool getFromBase64(const std::string& in, std::vector<uint8_t>* out);
 
 // Sign using ed25519 algorithm
 std::string sign(

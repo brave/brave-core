@@ -13,9 +13,8 @@
 #include <utility>
 
 #include "base/strings/string_split.h"
-#include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
-#include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "rapidjson/document.h"
@@ -30,16 +29,6 @@ namespace braveledger_bat_helper {
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
-bool isProbiValid(const std::string& probi) {
-  // probi shouldn't be longer then 44
-  if (probi.length() > 44) {
-    return false;
-  }
-
-  // checks if probi only contains numbers
-  return re2::RE2::FullMatch(probi, "^-?[0-9]*$");
-}
-
 /////////////////////////////////////////////////////////////////////////////
 
 bool getJSONValue(const std::string& fieldName,
@@ -52,24 +41,6 @@ bool getJSONValue(const std::string& fieldName,
   bool error = d.HasParseError() || (false == d.HasMember(fieldName.c_str()));
   if (!error) {
     *value = d[fieldName.c_str()].GetString();
-  }
-  return !error;
-}
-
-bool getJSONList(const std::string& fieldName,
-                 const std::string& json,
-                 std::vector<std::string>* value) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError() ||
-      (false == (d.HasMember(fieldName.c_str()) &&
-       d[fieldName.c_str()].IsArray()));
-  if (!error) {
-    for (auto & i : d[fieldName.c_str()].GetArray()) {
-      value->push_back(i.GetString());
-    }
   }
   return !error;
 }
@@ -119,110 +90,6 @@ bool getJSONTwitchProperties(
   return !error;
 }
 
-bool getJSONBatchSurveyors(const std::string& json,
-                           std::vector<std::string>* surveyors) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (!error) {
-    for (auto & i : d.GetArray()) {
-      rapidjson::StringBuffer sb;
-      rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-      i.Accept(writer);
-      std::string surveyor = sb.GetString();
-      surveyors->push_back(surveyor);
-    }
-  }
-
-  return !error;
-}
-
-bool getJSONResponse(const std::string& json,
-                     unsigned int* statusCode,
-                     std::string* error) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool hasError = d.HasParseError();
-  if (!hasError) {
-    hasError = !(d.HasMember("statusCode") && d["statusCode"].IsNumber() &&
-              d.HasMember("error") && d["error"].IsString());
-  }
-
-  if (!hasError) {
-    *statusCode = d["statusCode"].GetUint();
-    *error = d["error"].GetString();
-  }
-  return !hasError;
-}
-
-bool getJSONAddresses(const std::string& json,
-                      std::map<std::string, std::string>* addresses) {
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  // has parser errors or wrong types
-  bool error = d.HasParseError();
-  if (!error) {
-    error = !(d.HasMember("addresses") && d["addresses"].IsObject());
-  }
-
-  if (!error) {
-    addresses->insert(
-        std::make_pair("BAT", d["addresses"]["BAT"].GetString()));
-    addresses->insert(
-        std::make_pair("BTC", d["addresses"]["BTC"].GetString()));
-    addresses->insert(
-        std::make_pair("CARD_ID", d["addresses"]["CARD_ID"].GetString()));
-    addresses->insert(
-        std::make_pair("ETH", d["addresses"]["ETH"].GetString()));
-    addresses->insert(
-        std::make_pair("LTC", d["addresses"]["LTC"].GetString()));
-  }
-
-  return !error;
-}
-
-bool getJSONMessage(const std::string& json,
-                     std::string* message) {
-  DCHECK(message);
-  rapidjson::Document d;
-  d.Parse(json.c_str());
-
-  if (message && d.HasMember("message")) {
-    *message = d["message"].GetString();
-    return true;
-  }
-
-  return false;
-}
-
-
-std::string stringify(std::string* keys,
-                      std::string* values,
-                      const unsigned int size) {
-  rapidjson::StringBuffer buffer;
-  JsonWriter writer(buffer);
-  writer.StartObject();
-
-  for (unsigned int i = 0; i < size; i++) {
-    writer.String(keys[i].c_str());
-    writer.String(values[i].c_str());
-  }
-
-  writer.EndObject();
-  return buffer.GetString();
-}
-
-std::vector<uint8_t> getSHA256(const std::string& in) {
-  std::vector<uint8_t> res(SHA256_DIGEST_LENGTH);
-  SHA256((uint8_t*)in.c_str(), in.length(), &res.front());
-  return res;
-}
-
 std::string getBase64(const std::vector<uint8_t>& in) {
   std::string res;
   size_t size = 0;
@@ -235,34 +102,6 @@ std::string getBase64(const std::vector<uint8_t>& in) {
   DCHECK_NE(numEncBytes, 0);
   res = reinterpret_cast<char*>(&out.front());
   return res;
-}
-
-bool getFromBase64(const std::string& in, std::vector<uint8_t>* out) {
-  bool succeded = true;
-  size_t size = 0;
-  if (!EVP_DecodedLength(&size, in.length())) {
-    DCHECK(false);
-    succeded = false;
-  }
-
-  if (succeded) {
-    out->resize(size);
-    size_t final_size = 0;
-    int numDecBytes = EVP_DecodeBase64(&out->front(),
-                                       &final_size,
-                                       size,
-                                       (const uint8_t*)in.c_str(),
-                                       in.length());
-    DCHECK_NE(numDecBytes, 0);
-
-    if (numDecBytes == 0) {
-      succeded = false;
-      out->clear();
-    } else if (final_size != size) {
-      out->resize(final_size);
-    }
-  }
-  return succeded;
 }
 
 std::string sign(
@@ -309,11 +148,6 @@ bool HasSameDomainAndPath(
       gurl.DomainIs(domain_to_match) &&
       gurl.has_path() && !path_to_match.empty() &&
       gurl.path().substr(0, path_to_match.size()) == path_to_match;
-}
-
-std::string toLowerCase(std::string word) {
-  std::transform(word.begin(), word.end(), word.begin(), ::tolower);
-  return word;
 }
 
 }  // namespace braveledger_bat_helper

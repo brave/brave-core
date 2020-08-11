@@ -13,7 +13,6 @@
 
 #include "base/guid.h"
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/bat_util.h"
 #include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution.h"

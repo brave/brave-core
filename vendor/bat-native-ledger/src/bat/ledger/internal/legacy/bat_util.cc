@@ -4,7 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/string_split.h"
-#include "bat/ledger/internal/bat_util.h"
+#include "bat/ledger/internal/legacy/bat_util.h"
 
 namespace braveledger_bat_util {
 
