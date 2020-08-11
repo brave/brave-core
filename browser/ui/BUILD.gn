@@ -132,8 +132,6 @@ source_set("ui") {
       "views/rounded_separator.h",
       "views/tabs/brave_browser_tab_strip_controller.cc",
       "views/tabs/brave_browser_tab_strip_controller.h",
-      "views/tabs/brave_tab_close_button.cc",
-      "views/tabs/brave_tab_close_button.h",
       "views/tabs/brave_tab_context_menu_contents.cc",
       "views/tabs/brave_tab_context_menu_contents.h",
       "views/toolbar/bookmark_button.cc",
