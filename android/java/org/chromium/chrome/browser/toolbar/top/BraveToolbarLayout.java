@@ -460,46 +460,51 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     return Toast.showAnchoredToast(context, v, description);
   }
 
-  public void populateUrlAnimatorSet(boolean hasFocus, int urlFocusToolbarButtonsDuration,
-                                     int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP,
-                                     List<Animator> animators) {
+  @Override
+  public void onUrlFocusChange(boolean hasFocus) {
     Context context = getContext();
-    if (PackageUtils.isFirstInstall(context)
+    if (hasFocus
+        && PackageUtils.isFirstInstall(context)
         && !OnboardingPrefManager.getInstance().hasSearchEngineOnboardingShown()
         && !BraveSearchEngineUtils.getDSEShortName(true).equals(OnboardingPrefManager.DUCKDUCKGO)) {
       Intent searchActivityIntent = new Intent(context, SearchActivity.class);
       context.startActivity(searchActivityIntent);
-    } else {
-      if (mBraveShieldsButton != null) {
-        Animator animator;
-        if (hasFocus) {
-          float density = getContext().getResources().getDisplayMetrics().density;
-          boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
-          float toolbarButtonTranslationX =
-            MathUtils.flipSignIf(urlFocusToolbarButtonsTranslationXDP, isRtl) * density;
-          animator = ObjectAnimator.ofFloat(
-                       mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
-          animator.setDuration(urlFocusToolbarButtonsDuration);
-          animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
-          animators.add(animator);
+    }
+    super.onUrlFocusChange(hasFocus);
+  }
 
-          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 0);
-          animator.setDuration(urlFocusToolbarButtonsDuration);
-          animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
-          animators.add(animator);
-        } else {
-          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, TRANSLATION_X, 0);
-          animator.setDuration(urlFocusToolbarButtonsDuration);
-          animator.setStartDelay(urlClearFocusTabStackDelayMs);
-          animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
-          animators.add(animator);
+  public void populateUrlAnimatorSet(boolean hasFocus, int urlFocusToolbarButtonsDuration,
+                                     int urlClearFocusTabStackDelayMs, int urlFocusToolbarButtonsTranslationXDP,
+                                     List<Animator> animators) {
+    if (mBraveShieldsButton != null) {
+      Animator animator;
+      if (hasFocus) {
+        float density = getContext().getResources().getDisplayMetrics().density;
+        boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+        float toolbarButtonTranslationX =
+          MathUtils.flipSignIf(urlFocusToolbarButtonsTranslationXDP, isRtl) * density;
+        animator = ObjectAnimator.ofFloat(
+                     mBraveShieldsButton, TRANSLATION_X, toolbarButtonTranslationX);
+        animator.setDuration(urlFocusToolbarButtonsDuration);
+        animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
+        animators.add(animator);
 
-          animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 1);
-          animator.setDuration(urlFocusToolbarButtonsDuration);
-          animator.setStartDelay(urlClearFocusTabStackDelayMs);
-          animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
-          animators.add(animator);
-        }
+        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 0);
+        animator.setDuration(urlFocusToolbarButtonsDuration);
+        animator.setInterpolator(BakedBezierInterpolator.FADE_OUT_CURVE);
+        animators.add(animator);
+      } else {
+        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, TRANSLATION_X, 0);
+        animator.setDuration(urlFocusToolbarButtonsDuration);
+        animator.setStartDelay(urlClearFocusTabStackDelayMs);
+        animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
+        animators.add(animator);
+
+        animator = ObjectAnimator.ofFloat(mBraveShieldsButton, ALPHA, 1);
+        animator.setDuration(urlFocusToolbarButtonsDuration);
+        animator.setStartDelay(urlClearFocusTabStackDelayMs);
+        animator.setInterpolator(BakedBezierInterpolator.TRANSFORM_CURVE);
+        animators.add(animator);
       }
     }
   }
@@ -851,11 +856,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     updateModernLocationBarColor(mCurrentToolbarColor);
   }
 
-    @Override
-    View getMenuButtonWrapper() {
-        if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-            return null;
-        }
-        return super.getMenuButtonWrapper();
+  @Override
+  View getMenuButtonWrapper() {
+    if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+      return null;
     }
+    return super.getMenuButtonWrapper();
+  }
 }
