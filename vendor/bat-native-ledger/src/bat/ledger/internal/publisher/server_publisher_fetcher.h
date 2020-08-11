@@ -50,11 +50,6 @@ class ServerPublisherFetcher {
       const std::string& publisher_key,
       const ledger::UrlResponse& response);
 
-  ledger::ServerPublisherInfoPtr ParseResponse(
-      const std::string& publisher_key,
-      int response_status_code,
-      const std::string& response);
-
   ledger::ServerPublisherInfoPtr GetServerInfoForEmptyResponse(
       const std::string& publisher_key);
 

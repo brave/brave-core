@@ -12,22 +12,17 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
-#include "bat/ledger/internal/common/brotli_helpers.h"
-#include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/publisher/protos/channel_response.pb.h"
 #include "bat/ledger/internal/request/request_publisher.h"
+#include "bat/ledger/internal/response/response_publisher.h"
 #include "bat/ledger/option_keys.h"
-#include "brave/components/brave_private_cdn/private_cdn_helper.h"
 #include "brave_base/random.h"
-#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
-
-using brave::PrivateCdnHelper;
 
 namespace {
 
@@ -40,105 +35,6 @@ int64_t GetCacheExpiryInSeconds(bat_ledger::LedgerImpl* ledger) {
   // time we may want to introduce an additional option for this value.
   return ledger->ledger_client()->GetUint64Option(
       ledger::kOptionPublisherListRefreshInterval);
-}
-
-ledger::PublisherStatus PublisherStatusFromMessage(
-    const publishers_pb::ChannelResponse& response) {
-  auto status = ledger::PublisherStatus::CONNECTED;
-  for (const auto& wallet : response.wallets()) {
-    if (wallet.has_uphold_wallet()) {
-      switch (wallet.uphold_wallet().wallet_state()) {
-        case publishers_pb::UPHOLD_ACCOUNT_KYC:
-          return ledger::PublisherStatus::VERIFIED;
-        default: {}
-      }
-    }
-  }
-  return status;
-}
-
-std::string PublisherAddressFromMessage(
-    const publishers_pb::ChannelResponse& response) {
-  for (const auto& wallet : response.wallets()) {
-    if (wallet.has_uphold_wallet()) {
-      return wallet.uphold_wallet().address();
-    }
-  }
-  return "";
-}
-
-ledger::PublisherBannerPtr PublisherBannerFromMessage(
-    const publishers_pb::SiteBannerDetails& banner_details) {
-  auto banner = ledger::PublisherBanner::New();
-
-  banner->title = banner_details.title();
-  banner->description = banner_details.description();
-
-  if (!banner_details.background_url().empty()) {
-    banner->background =
-        "chrome://rewards-image/" + banner_details.background_url();
-  }
-
-  if (!banner_details.logo_url().empty()) {
-    banner->logo = "chrome://rewards-image/" + banner_details.logo_url();
-  }
-
-  for (auto& amount : banner_details.donation_amounts()) {
-    banner->amounts.push_back(amount);
-  }
-
-  if (banner_details.has_social_links()) {
-    auto& links = banner_details.social_links();
-    if (!links.youtube().empty()) {
-      banner->links.insert(std::make_pair("youtube", links.youtube()));
-    }
-    if (!links.twitter().empty()) {
-      banner->links.insert(std::make_pair("twitter", links.twitter()));
-    }
-    if (!links.twitch().empty()) {
-      banner->links.insert(std::make_pair("twitch", links.twitch()));
-    }
-  }
-
-  return banner;
-}
-
-ledger::ServerPublisherInfoPtr ServerPublisherInfoFromMessage(
-    const publishers_pb::ChannelResponseList& message,
-    const std::string& expected_key) {
-  if (expected_key.empty()) {
-    return nullptr;
-  }
-
-  for (const auto& entry : message.channel_responses()) {
-    if (entry.channel_identifier() != expected_key) {
-      continue;
-    }
-
-    auto server_info = ledger::ServerPublisherInfo::New();
-    server_info->publisher_key = entry.channel_identifier();
-    server_info->status = PublisherStatusFromMessage(entry);
-    server_info->address = PublisherAddressFromMessage(entry);
-    server_info->updated_at =
-        static_cast<uint64_t>(base::Time::Now().ToDoubleT());
-
-    if (entry.has_site_banner_details()) {
-      server_info->banner =
-          PublisherBannerFromMessage(entry.site_banner_details());
-    }
-
-    return server_info;
-  }
-
-  return nullptr;
-}
-
-bool DecompressMessage(base::StringPiece payload, std::string* output) {
-  constexpr size_t buffer_size = 32 * 1024;
-  return braveledger_helpers::DecodeBrotliStringWithBuffer(
-      payload,
-      buffer_size,
-      output);
 }
 
 }  // namespace
@@ -184,7 +80,7 @@ void ServerPublisherFetcher::OnFetchCompleted(
     const std::string& publisher_key,
     const ledger::UrlResponse& response) {
   BLOG(6, ledger::UrlResponseToString(__func__, response));
-  auto server_info = ParseResponse(
+  auto server_info = braveledger_response_util::ParsePublisherInfo(
       publisher_key,
       response.status_code,
       response.body);
@@ -207,46 +103,6 @@ void ServerPublisherFetcher::OnFetchCompleted(
         }
         RunCallbacks(publisher_key, std::move(*shared_info));
       });
-}
-
-ledger::ServerPublisherInfoPtr ServerPublisherFetcher::ParseResponse(
-    const std::string& publisher_key,
-    int response_status_code,
-    const std::string& response) {
-  if (response_status_code == net::HTTP_NOT_FOUND) {
-    return GetServerInfoForEmptyResponse(publisher_key);
-  }
-
-  if (response_status_code != net::HTTP_OK || response.empty()) {
-    BLOG(0, "Server returned an invalid response from publisher data URL");
-    return nullptr;
-  }
-
-  base::StringPiece response_payload(response.data(), response.size());
-  if (!PrivateCdnHelper::GetInstance()->RemovePadding(&response_payload)) {
-    BLOG(0, "Publisher data response has invalid padding");
-    return nullptr;
-  }
-
-  std::string message_string;
-  if (!DecompressMessage(response_payload, &message_string)) {
-    BLOG(1, "Error decompressing publisher data response. "
-        "Attempting to parse as uncompressed message.");
-    message_string.assign(response_payload.data(), response_payload.size());
-  }
-
-  publishers_pb::ChannelResponseList message;
-  if (!message.ParseFromString(message_string)) {
-    BLOG(0, "Error parsing publisher data protobuf message");
-    return nullptr;
-  }
-
-  auto server_info = ServerPublisherInfoFromMessage(message, publisher_key);
-  if (!server_info) {
-    return GetServerInfoForEmptyResponse(publisher_key);
-  }
-
-  return server_info;
 }
 
 bool ServerPublisherFetcher::IsExpired(
@@ -276,22 +132,6 @@ void ServerPublisherFetcher::PurgeExpiredRecords() {
   ledger_->database()->DeleteExpiredServerPublisherInfo(
       max_age,
       [](auto result) {});
-}
-
-ledger::ServerPublisherInfoPtr
-ServerPublisherFetcher::GetServerInfoForEmptyResponse(
-    const std::string& publisher_key) {
-  // The server has indicated that a publisher record does not exist
-  // for this publisher key, perhaps as a result of a false positive
-  // when searching the publisher prefix list. Create a "non-verified"
-  // record that can be cached in the database so that we don't repeatedly
-  // attempt to fetch from the server for this publisher.
-  BLOG(1, "Server did not return an entry for publisher " << publisher_key);
-  auto server_info = ledger::ServerPublisherInfo::New();
-  server_info->publisher_key = publisher_key;
-  server_info->status = ledger::PublisherStatus::NOT_VERIFIED;
-  server_info->updated_at = braveledger_time_util::GetCurrentTimeStamp();
-  return server_info;
 }
 
 FetchCallbackVector ServerPublisherFetcher::GetCallbacks(
