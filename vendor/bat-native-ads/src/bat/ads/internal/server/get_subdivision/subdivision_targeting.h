@@ -50,7 +50,7 @@ class SubdivisionTargeting {
   void Fetch();
 
   void OnFetch(
-      const UrlResponse& response);
+      const UrlResponse& url_response);
 
   bool ParseJson(
       const std::string& json);

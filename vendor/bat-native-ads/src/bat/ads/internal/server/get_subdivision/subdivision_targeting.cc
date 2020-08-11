@@ -165,27 +165,29 @@ void SubdivisionTargeting::Fetch() {
   GetSubdivisionUrlRequestBuilder url_request_builder;
   UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
+  BLOG(7, UrlRequestHeadersToString(url_request));
 
   const auto callback = std::bind(&SubdivisionTargeting::OnFetch, this, _1);
   ads_->get_ads_client()->UrlRequest(std::move(url_request), callback);
 }
 
 void SubdivisionTargeting::OnFetch(
-    const UrlResponse& response) {
-  BLOG(6, UrlResponseToString(response));
+    const UrlResponse& url_response) {
+  BLOG(6, UrlResponseToString(url_response));
+  BLOG(7, UrlResponseHeadersToString(url_response));
 
   bool should_retry = false;
 
-  if (response.status_code / 100 == 2) {
-    if (!response.body.empty()) {
+  if (url_response.status_code / 100 == 2) {
+    if (!url_response.body.empty()) {
       BLOG(1, "Successfully fetched ads subdivision");
     }
 
-    if (!ParseJson(response.body)) {
+    if (!ParseJson(url_response.body)) {
       BLOG(1, "Failed to parse ads subdivision");
       should_retry = true;
     }
-  } else if (response.status_code == 304) {
+  } else if (url_response.status_code == 304) {
     BLOG(1, "Ads subdivision is up to date");
   } else {
     BLOG(1, "Failed to fetch ads subdivision");

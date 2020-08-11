@@ -10,9 +10,6 @@
 
 #include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
-#include "bat/ads/internal/reports/event_type_blur_info.h"
-#include "bat/ads/internal/reports/event_type_destroy_info.h"
-#include "bat/ads/internal/reports/event_type_focus_info.h"
 #include "bat/ads/internal/reports/event_type_load_info.h"
 #include "bat/ads/mojom.h"
 
@@ -29,27 +26,10 @@ class Reports {
 
   std::string GenerateAdNotificationEventReport(
       const AdNotificationInfo& info,
-      const AdNotificationEventType event_type);
-
-  std::string GenerateConfirmationEventReport(
-      const std::string& creative_instance_id,
-      const ConfirmationType& confirmation_type) const;
+      const AdNotificationEventType event_type) const;
 
   std::string GenerateLoadEventReport(
       const LoadInfo& info) const;
-
-  std::string GenerateBackgroundEventReport() const;
-
-  std::string GenerateForegroundEventReport() const;
-
-  std::string GenerateBlurEventReport(
-      const BlurInfo& info) const;
-
-  std::string GenerateDestroyEventReport(
-      const DestroyInfo& info) const;
-
-  std::string GenerateFocusEventReport(
-      const FocusInfo& info) const;
 
   std::string GenerateSettingsEventReport() const;
 

@@ -102,6 +102,7 @@ void RedeemUnblindedToken::CreateConfirmation(
   CreateConfirmationUrlRequestBuilder url_request_builder(confirmation);
   UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
+  BLOG(7, UrlRequestHeadersToString(url_request));
 
   auto callback = std::bind(&RedeemUnblindedToken::OnCreateConfirmation,
       this, _1, confirmation);
@@ -116,6 +117,7 @@ void RedeemUnblindedToken::OnCreateConfirmation(
   BLOG(1, "OnCreateConfirmation");
 
   BLOG(6, UrlResponseToString(url_response));
+  BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code == net::HTTP_BAD_REQUEST) {
     // OnFetchPaymentToken handles HTTP response status codes for duplicate/bad
@@ -140,6 +142,7 @@ void RedeemUnblindedToken::FetchPaymentToken(
   FetchPaymentTokenUrlRequestBuilder url_request_builder(confirmation);
   UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
+  BLOG(7, UrlRequestHeadersToString(url_request));
 
   auto callback = std::bind(&RedeemUnblindedToken::OnFetchPaymentToken,
       this, _1, confirmation);
@@ -152,6 +155,7 @@ void RedeemUnblindedToken::OnFetchPaymentToken(
   BLOG(1, "OnFetchPaymentToken");
 
   BLOG(6, UrlResponseToString(url_response));
+  BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code == net::HTTP_NOT_FOUND) {
     BLOG(1, "Confirmation not found");

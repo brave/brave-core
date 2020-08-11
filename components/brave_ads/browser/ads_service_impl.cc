@@ -1085,14 +1085,12 @@ void AdsServiceImpl::RegisterUserModelComponentsForLocale(
 void AdsServiceImpl::OnURLRequestStarted(
     const GURL& final_url,
     const network::mojom::URLResponseHead& response_head) {
-  VLOG(6) << "Started URL request for " << final_url.PathForRequest();
+  VLOG(6) << "URL request started for " << final_url.PathForRequest();
 
   if (response_head.headers->response_code() == -1) {
     VLOG(6) << "Response headers are malformed!!";
     return;
   }
-
-  VLOG(6) << response_head.headers->raw_headers();
 }
 
 void AdsServiceImpl::OnURLRequestComplete(
@@ -1101,6 +1099,9 @@ void AdsServiceImpl::OnURLRequestComplete(
     const std::unique_ptr<std::string> response_body) {
   DCHECK(url_loaders_.find(url_loader) != url_loaders_.end());
   url_loaders_.erase(url_loader);
+
+  VLOG(6) << "URL request complete for "
+      << url_loader->GetFinalURL().PathForRequest();
 
   if (!connected()) {
     return;
@@ -1132,13 +1133,13 @@ void AdsServiceImpl::OnURLRequestComplete(
     }
   }
 
-  ads::UrlResponse response;
-  response.url = url_loader->GetFinalURL().spec();
-  response.status_code = response_code;
-  response.body = response_body ? *response_body : "";
-  response.headers = headers;
+  ads::UrlResponse url_response;
+  url_response.url = url_loader->GetFinalURL().spec();
+  url_response.status_code = response_code;
+  url_response.body = response_body ? *response_body : "";
+  url_response.headers = headers;
 
-  callback(response);
+  callback(url_response);
 }
 
 bool AdsServiceImpl::CanShowBackgroundNotifications() const {
