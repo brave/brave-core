@@ -357,19 +357,10 @@ void MessageView::OnCloseButtonPressed() {
   for (auto& observer : observers_) {
     observer.OnCloseButtonPressed(notification_id_);
   }
-  LOG(INFO) << "albert closing";
   MessagePopupView::ClosePopup();
 // TODO
 //  MessageCenter::Get()->RemoveNotification(notification_id_, true /* by_user */);
 }
-
-/*
-void MessageView::OnSettingsButtonPressed(const ui::Event& event) {
-  for (auto& observer : observers_)
-    observer.OnSettingsButtonPressed(notification_id_);
-//  MessageCenter::Get()->ClickOnSettingsButton(notification_id_);
-}
-*/
 
 void MessageView::SetNestedBorderIfNecessary() {
   if (is_nested_) {

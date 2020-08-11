@@ -85,6 +85,7 @@ NotificationPlatformBridgeBraveCustomNotification::
 NotificationPlatformBridgeBraveCustomNotification::
     ~NotificationPlatformBridgeBraveCustomNotification() = default;
 
+// Albert: Need to keep this as this overrides the parent class
 void NotificationPlatformBridgeBraveCustomNotification::Display(
     NotificationHandler::Type notification_type,
     Profile* profile,
@@ -112,6 +113,7 @@ void NotificationPlatformBridgeBraveCustomNotification::Display(
 void NotificationPlatformBridgeBraveCustomNotification::Close(
     Profile* profile,
     const std::string& notification_id) {
+  /*
   DCHECK_EQ(profile, profile_);
 
   NotificationUIManager* ui_manager =
@@ -121,6 +123,7 @@ void NotificationPlatformBridgeBraveCustomNotification::Close(
 
   ui_manager->CancelById(notification_id,
                          NotificationUIManager::GetProfileID(profile_));
+                         */
 }
 
 void NotificationPlatformBridgeBraveCustomNotification::GetDisplayed(

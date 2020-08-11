@@ -231,11 +231,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile) :
   MaybeShowOnboarding();
 #endif
 
-<<<<<<< HEAD
   g_brave_browser_process->user_model_file_service()->AddObserver(this);
-=======
-  // NotificationPlatformBridgeBraveCustomNotification* brave_custom_notification_bridge_ = new NotificationPlatformBridgeBraveCustomNotification>(profile);
->>>>>>> c784ca67bc... Record onView
 
   MaybeStart(false);
 }
