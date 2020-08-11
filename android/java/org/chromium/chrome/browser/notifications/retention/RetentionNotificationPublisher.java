@@ -36,8 +36,8 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
         String notificationType = intent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
+        BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (action != null && action.equals(RETENTION_NOTIFICATION_ACTION)) {
-            BraveActivity braveActivity = BraveActivity.getBraveActivity();
             if (braveActivity != null) {
                 switch (notificationType) {
                 case RetentionNotificationUtil.HOUR_3:
@@ -67,7 +67,6 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             switch (notificationType) {
             case RetentionNotificationUtil.HOUR_3:
             case RetentionNotificationUtil.HOUR_24:
-            case RetentionNotificationUtil.EVERY_SUNDAY:
             case RetentionNotificationUtil.DAY_6:
             case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
             case RetentionNotificationUtil.BRAVE_STATS_DATA:
@@ -84,11 +83,16 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             case RetentionNotificationUtil.DAY_10:
             case RetentionNotificationUtil.DAY_30:
             case RetentionNotificationUtil.DAY_35:
-                // if ((ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
-                //         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedProfile())) {
-                //     createNotification(context, intent);
-                // }
-                createNotification(context, intent);
+                if (braveActivity != null
+                        && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
+                        && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
+                    createNotification(context, intent);
+                }
+                break;
+            case RetentionNotificationUtil.EVERY_SUNDAY:
+                if (OnboardingPrefManager.getInstance().isBraveStatsNotificationEnabled()) {
+                    createNotification(context, intent);
+                }
                 break;
             }
         }
