@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 4a31f9315ce8..22f6dd94e6c8 100644
+index 4a31f9315ce8..e154baaa2c70 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -608,10 +608,13 @@ static_library("ui") {
@@ -44,7 +44,16 @@ index 4a31f9315ce8..22f6dd94e6c8 100644
      sources += [
        "autofill/payments/virtual_card_selection_dialog_controller.h",
        "autofill/payments/virtual_card_selection_dialog_controller_impl.cc",
-@@ -2371,6 +2374,13 @@ static_library("ui") {
+@@ -2297,7 +2300,7 @@ static_library("ui") {
+     deps += [ "//ui/webui" ]
+   }
+ 
+-  if (is_win || is_mac || is_desktop_linux) {
++  if (is_android || is_win || is_mac || is_desktop_linux) {
+     sources += [
+       "bookmarks/bookmark_bubble_sign_in_delegate.cc",
+       "bookmarks/bookmark_bubble_sign_in_delegate.h",
+@@ -2371,6 +2374,23 @@ static_library("ui") {
        "webui/welcome/welcome_ui.h",
      ]
  
@@ -52,13 +61,23 @@ index 4a31f9315ce8..22f6dd94e6c8 100644
 +     sources -= [
 +       "views/external_protocol_dialog.cc",
 +       "views/external_protocol_dialog.h",
++       "webui/signin/profile_picker_ui.cc",
++       "webui/signin/profile_picker_ui.h",
++       "webui/signin/signin_error_ui.cc",
++       "webui/signin/signin_error_ui.h",
++       "webui/welcome/google_apps_handler.cc",
++       "webui/welcome/google_apps_handler.h",
++       "webui/welcome/ntp_background_handler.cc",
++       "webui/welcome/ntp_background_handler.h",
++       "webui/welcome/welcome_ui.cc",
++       "webui/welcome/welcome_ui.h",
 +     ]
 +   }
 +
      deps += [ "//components/country_codes" ]
  
      if (enable_dice_support) {
-@@ -2668,10 +2678,13 @@ static_library("ui") {
+@@ -2668,10 +2688,13 @@ static_library("ui") {
        ]
        deps += [ "//google_update" ]
      } else {
@@ -76,7 +95,16 @@ index 4a31f9315ce8..22f6dd94e6c8 100644
      }
    } else {  # 'OS!="win"
      # The Cast Linux build sets toolkit_views to false, but many files in this
-@@ -2789,7 +2802,7 @@ static_library("ui") {
+@@ -2780,7 +2803,7 @@ static_library("ui") {
+     }
+   }
+ 
+-  if (is_chromeos) {
++  if (is_android || is_chromeos) {
+     sources += [
+       "views/parent_permission_dialog_view.cc",
+       "views/parent_permission_dialog_view.h",
+@@ -2789,7 +2812,7 @@ static_library("ui") {
      ]
    }
  
@@ -85,7 +113,7 @@ index 4a31f9315ce8..22f6dd94e6c8 100644
      sources += [
        "autofill/payments/local_card_migration_bubble.h",
        "autofill/payments/local_card_migration_bubble_controller_impl.cc",
-@@ -3543,6 +3556,25 @@ static_library("ui") {
+@@ -3543,6 +3566,25 @@ static_library("ui") {
        "webauthn/transport_utils.h",
      ]
  
@@ -111,7 +139,7 @@ index 4a31f9315ce8..22f6dd94e6c8 100644
      deps += [
        "//base/util/timer",
        "//chrome/browser/ui/views",
-@@ -3610,6 +3642,12 @@ static_library("ui") {
+@@ -3610,6 +3652,12 @@ static_library("ui") {
          "views/ssl_client_certificate_selector.cc",
          "views/ssl_client_certificate_selector.h",
        ]
@@ -124,7 +152,7 @@ index 4a31f9315ce8..22f6dd94e6c8 100644
      }
  
      if (is_win) {
-@@ -3692,6 +3730,11 @@ static_library("ui") {
+@@ -3692,6 +3740,11 @@ static_library("ui") {
        deps += [ "//chrome/browser/ui/media_router/internal/vector_icons" ]
      }
    }
@@ -136,7 +164,7 @@ index 4a31f9315ce8..22f6dd94e6c8 100644
  
    if (use_aura) {
      sources += [
-@@ -4230,7 +4273,7 @@ static_library("ui") {
+@@ -4230,7 +4283,7 @@ static_library("ui") {
        "//components/printing/browser",
        "//printing",
      ]

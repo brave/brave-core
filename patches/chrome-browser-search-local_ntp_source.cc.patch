@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/search/local_ntp_source.cc b/chrome/browser/search/local_ntp_source.cc
+index da8115e40df4..b3f9c816a67f 100644
+--- a/chrome/browser/search/local_ntp_source.cc
++++ b/chrome/browser/search/local_ntp_source.cc
+@@ -139,6 +139,7 @@ const struct Resource{
+     // added complexity.
+     {chrome::kChromeSearchLocalNtpBackgroundFilename, kLocalResource,
+      "image/jpg"},
++#if !defined(OS_ANDROID)
+     {omnibox::kGoogleGIconResourceName, IDR_WEBUI_IMAGES_200_LOGO_GOOGLE_G,
+      "image/png"},
+     {omnibox::kBookmarkIconResourceName, IDR_LOCAL_NTP_ICONS_BOOKMARK,
+@@ -170,6 +171,7 @@ const struct Resource{
+     {omnibox::kPageIconResourceName, IDR_LOCAL_NTP_ICONS_PAGE, "image/svg+xml"},
+     {omnibox::kSearchIconResourceName, IDR_WEBUI_IMAGES_ICON_SEARCH,
+      "image/svg+xml"},
++#endif
+ };
+ 
+ // This enum must match the numbering for NTPSearchSuggestionsRequestStatusi in

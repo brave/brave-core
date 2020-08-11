@@ -184,6 +184,7 @@ def main():
             add_extensions_output(ifElem, 'pa')
             add_extensions_output(ifElem, 'si')
             add_extensions_output(ifElem, 'sq')
+            add_extensions_output(ifElem, 'sr-Latn')
             add_extensions_output(ifElem, 'ur')
             add_extensions_output(ifElem, 'uz')
             add_extensions_output(ifElem, 'zh-HK')
@@ -210,6 +211,7 @@ def main():
         applyIsAndroidOr(xml_tree, '//structure[@name="IDR_SAFETY_TIP_LOOKALIKE_ILLUSTRATION_DARK"]')
         applyIsAndroidOr(xml_tree, '//structure[@name="IDR_SETTINGS_FAVICON"]')
         applyIsAndroidOr(xml_tree, '//structure[@name="IDR_COOKIE_BLOCKING_ON_HEADER"]')
+        applyIsAndroidOr(xml_tree, '//structure[@name="IDR_PASSWORD_CHECK"]')
         applyIsAndroidOr(xml_tree, '//structure[@file="chromium/webstore_icon.png"]')
         applyIsAndroidOr(xml_tree, '//structure[@file="google_chrome/webstore_icon.png"]')
 
@@ -235,6 +237,7 @@ def main():
 
     if filename == 'mojo_bindings_resources':
         applyIsAndroidOr(xml_tree, '//include[@name="IDR_MOJO_MOJO_BINDINGS_JS"]')
+        applyIsAndroidOr(xml_tree, '//include[@name="IDR_MOJO_TIME_MOJOM_HTML"]')
 
     if filename == 'bookmarks_strings':
         applyIsAndroidOr(xml_tree, '//message[@name="IDS_BOOKMARK_GROUP_FROM_FIREFOX"]')
@@ -263,6 +266,7 @@ def main():
         moveOnLevelHigher(xml_tree, '//message[@name="IDS_PASSWORD_MANAGER_EXPORT_DIALOG_TITLE"]')
         moveOnLevelHigher(xml_tree, '//message[@name="IDS_PASSWORD_MANAGER_USERNAME_LABEL"]')
         moveOnLevelHigher(xml_tree, '//message[@name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL"]')
+        moveOnLevelHigher(xml_tree, '//message[@name="IDS_PASSWORD_MANAGER_MOVE_BUTTON"]')
         applyIsAndroidOr(xml_tree, '//message[@name="IDS_IMPORT_FROM_FIREFOX"]')
         applyIsAndroidOr(xml_tree, '//message[@name="IDS_TOOLBAR_INFORM_SET_HOME_PAGE"]')
         applyIsAndroidOr(xml_tree, '//message[@name="IDS_OMNIBOX_QRCODE_GENERATOR_ICON_LABEL"]')
@@ -320,6 +324,9 @@ def main():
 
     if filename == 'sync_ui_strings':
         applyIsAndroidOr(xml_tree, '//message[@name="IDS_SYNC_BASIC_ENCRYPTION_DATA"]')
+
+    if filename == 'webui_resources':
+        applyIsAndroidOr(xml_tree, '//part[@file="cr_components/cr_components_images.grdp"]')
 
     grit_root = xml_tree.xpath(
         '//grit' if extension == '.grd' else '//grit-part')[0]

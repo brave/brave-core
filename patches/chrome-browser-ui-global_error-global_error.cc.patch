@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/global_error/global_error.cc b/chrome/browser/ui/global_error/global_error.cc
+index cd53a78db3ff..2874f9f8fb80 100644
+--- a/chrome/browser/ui/global_error/global_error.cc
++++ b/chrome/browser/ui/global_error/global_error.cc
+@@ -27,7 +27,7 @@ GlobalError::Severity GlobalError::GetSeverity() { return SEVERITY_MEDIUM; }
+ 
+ ui::ImageModel GlobalError::MenuItemIcon() {
+ #if defined(OS_ANDROID)
+-  return ui::ImageModel(
++  return ui::ImageModel::FromImage(
+       ui::ResourceBundle::GetSharedInstance().GetNativeImageNamed(
+           IDR_INPUT_ALERT_MENU));
+ #else

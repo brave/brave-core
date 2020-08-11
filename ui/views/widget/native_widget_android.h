@@ -64,8 +64,8 @@ class VIEWS_EXPORT NativeWidgetAndroid : public internal::NativeWidgetPrivate {
   bool ShouldUseNativeFrame() const override;
   bool ShouldWindowContentsBeTransparent() const override;
   void FrameTypeChanged() override;
-  Widget* GetWidget();
-  const Widget* GetWidget() const;
+  Widget* GetWidget() override;
+  const Widget* GetWidget() const override;
   gfx::NativeView GetNativeView() const override;
   gfx::NativeWindow GetNativeWindow() const override;
   Widget* GetTopLevelWidget() override;
@@ -149,7 +149,6 @@ class VIEWS_EXPORT NativeWidgetAndroid : public internal::NativeWidgetPrivate {
   std::string GetName() const override;
   void OnNativeViewHierarchyWillChange() override {}
   void OnNativeViewHierarchyChanged() override {}
-  const Widget* GetWidgetImpl() const override;
 
  protected:
   ~NativeWidgetAndroid() override;

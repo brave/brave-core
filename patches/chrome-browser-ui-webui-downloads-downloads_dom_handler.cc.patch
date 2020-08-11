@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/downloads/downloads_dom_handler.cc b/chrome/browser/ui/webui/downloads/downloads_dom_handler.cc
+index f3c630fd91c6..c11bd497f952 100644
+--- a/chrome/browser/ui/webui/downloads/downloads_dom_handler.cc
++++ b/chrome/browser/ui/webui/downloads/downloads_dom_handler.cc
+@@ -368,7 +368,9 @@ void DownloadsDOMHandler::OpenDuringScanningRequiringGesture(
+   if (download) {
+     DownloadItemModel model(download);
+     model.SetOpenWhenComplete(true);
++#if BUILDFLAG(FULL_SAFE_BROWSING)
+     model.CompleteSafeBrowsingScan();
++#endif
+   }
+ }
+ 

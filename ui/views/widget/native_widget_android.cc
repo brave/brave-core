@@ -121,10 +121,6 @@ void NativeWidgetAndroid::FrameTypeChanged() {
   GetWidget()->GetRootView()->SchedulePaint();
 }
 
-const Widget* NativeWidgetAndroid::GetWidgetImpl() const {
-  return delegate_->AsWidget();	
-}
-
 Widget* NativeWidgetAndroid::GetWidget() {
   return delegate_->AsWidget();
 }

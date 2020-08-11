@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 57d7ce2fd3e1..c9d1847cb79e 100644
+index 57d7ce2fd3e1..a52fffbf4fa0 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -69,6 +69,7 @@ source_set("channel_info") {
@@ -39,3 +39,15 @@ index 57d7ce2fd3e1..c9d1847cb79e 100644
  }
  
  component("chrome_features") {
+@@ -712,9 +715,9 @@ mojom("mojo_bindings") {
+ 
+   if (is_android) {
+     sources += [ "sandbox_status_extension_android.mojom" ]
+-  } else {
++  }# else {
+     sources += [ "caption.mojom" ]
+-  }
++  #}
+ 
+   if (is_mac) {
+     sources += [ "mac/app_shim.mojom" ]

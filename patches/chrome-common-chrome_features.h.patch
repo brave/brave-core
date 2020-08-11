@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_features.h b/chrome/common/chrome_features.h
-index 4b652fc862f8..cc61c6b50449 100644
+index 4b652fc862f8..c127de2cf415 100644
 --- a/chrome/common/chrome_features.h
 +++ b/chrome/common/chrome_features.h
 @@ -50,14 +50,14 @@ COMPONENT_EXPORT(CHROME_FEATURES)
@@ -19,6 +19,19 @@ index 4b652fc862f8..cc61c6b50449 100644
  
  COMPONENT_EXPORT(CHROME_FEATURES) extern const base::Feature kAsyncDns;
  
+@@ -154,10 +154,10 @@ extern const base::Feature kDesktopPWAsUnifiedLaunch;
+ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kDesktopPWAsSharedStoreService;
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kDefaultWebAppInstallation;
+-#endif
++//#endif
+ 
+ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kDnsOverHttps;
 @@ -224,7 +224,7 @@ COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kHappinessTrackingSystem;
  #endif
@@ -37,6 +50,19 @@ index 4b652fc862f8..cc61c6b50449 100644
  
  COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kHideCorsLegacyModeEnabledPolicySupport;
+@@ -263,10 +263,10 @@ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kInstallableAmbientBadgeInfoBar;
+ #endif  // defined(OS_ANDROID)
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ COMPONENT_EXPORT(CHROME_FEATURES)
+ extern const base::Feature kIntentPickerPWAPersistence;
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ #if defined(OS_CHROMEOS)
+ COMPONENT_EXPORT(CHROME_FEATURES)
 @@ -302,9 +302,9 @@ extern const base::Feature kAcknowledgeNtpOverrideOnDeactivate;
  COMPONENT_EXPORT(CHROME_FEATURES)
  extern const base::Feature kMixedContentSiteSetting;

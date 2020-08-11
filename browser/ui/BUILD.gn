@@ -61,6 +61,14 @@ source_set("ui") {
       "brave_view_ids.h",
       "browser_commands.cc",
       "browser_commands.h",
+      "content_settings/brave_autoplay_blocked_image_model.cc",
+      "content_settings/brave_autoplay_blocked_image_model.h",
+      "content_settings/brave_autoplay_content_setting_bubble_model.cc",
+      "content_settings/brave_autoplay_content_setting_bubble_model.h",
+      "content_settings/brave_content_setting_bubble_model.cc",
+      "content_settings/brave_content_setting_bubble_model.h",
+      "content_settings/brave_content_setting_image_models.cc",
+      "content_settings/brave_content_setting_image_models.h",
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "tabs/brave_tab_menu_model.cc",
@@ -180,13 +188,17 @@ source_set("ui") {
     "//brave/browser/devtools",
     "//brave/browser/gcm_driver",
     "//brave/browser/profiles",
+    "//brave/browser/resources/settings:resources",
     "//brave/browser/tor",
+    "//brave/browser/ui/bookmark",
     "//brave/common",
     "//brave/common:pref_names",
     "//brave/common/tor",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/webcompat_reporter/ui:generated_resources",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_new_tab_ui:generated_resources",
+    "//brave/components/brave_welcome_ui:generated_resources",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/browser",
@@ -218,6 +230,7 @@ source_set("ui") {
   if (is_android) {
     deps += [
       "//brave/ui/views",
+      "//brave/components/webcompat_reporter/browser",
     ]
   }
 
@@ -241,11 +254,7 @@ source_set("ui") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
       "//brave/browser:version_info",
-      "//brave/browser/resources/settings:resources",
-      "//brave/browser/ui/bookmark",
       "//brave/components/brave_sync",
-      "//brave/components/brave_new_tab_ui:generated_resources",
-      "//brave/components/brave_welcome_ui:generated_resources",
       "//components/sync_device_info",
       "//third_party/blink/public/common",
     ]

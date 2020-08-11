@@ -3414,18 +3414,10 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_UTILITY_PROCESS_PROFILE_IMPORTER_NAME" desc="The name of the utility process used for importing profiles.">
           Profile Importer
         </message>
-<<<<<<< HEAD
-<<<<<<< HEAD
       </if>
       <message name="IDS_UTILITY_PROCESS_QRCODE_GENERATOR_SERVICE_NAME" desc="The name of the utility process used for encoding QR codes.">
         QR Code Generator
       </message>
-=======
-      <!--</if>-->
->>>>>>> f10f6e6f2... internal modifications for extensions support
-=======
-      </if>
->>>>>>> bada5017b... automates grd files changes for Android extensions
       <if expr="is_win">
         <message name="IDS_UTILITY_PROCESS_WIFI_CREDENTIALS_GETTER_NAME" desc="The name of the utility process used for getting the WiFi credentials">
           WiFi Credentials Getter
@@ -5700,9 +5692,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Save button text for password manager">
           Save
         </message>
-        <message name="IDS_PASSWORD_MANAGER_MOVE_BUTTON" desc="Move button text for password manager">
-          Move
-        </message>
         <if expr="use_titlecase">
           <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="In Title Case: Update button text for password manager">
             Update Password
@@ -5713,8 +5702,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
             Update password
           </message>
         </if>
-<<<<<<< HEAD
       </if>
+      <message name="IDS_PASSWORD_MANAGER_MOVE_BUTTON" desc="Move button text for password manager">
+          Move
+        </message>
         <message name="IDS_PASSWORD_MANAGER_BUBBLE_BLACKLIST_BUTTON" desc="Button text for the 'Save Password' bubble's 'Never remember for this site' option">
           Never
         </message>
@@ -5742,20 +5733,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential">
           Password
         </message>
-<<<<<<< HEAD
         <message name="IDS_PASSWORD_MANAGER_MOVE_TITLE" desc="The title of the 'move password to account' bubble">
           Move to Brave Account?
         </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_HINT" desc="Label describing the effect of moving an existing credential to the user's account store">
           Move your password to your Brave account to access it securely wherever you're signed in
         </message>
-      </if>
-=======
-      <!--</if>-->
->>>>>>> f10f6e6f2... internal modifications for extensions support
-=======
-        </if>
->>>>>>> bada5017b... automates grd files changes for Android extensions
       <if expr="is_android">
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Mobile: Button text for the 'Save Password' infobar's 'Remember password' option">
           Save
@@ -10313,30 +10296,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
           other {Click to view these extensions}}
       </message>
     </if>
-  <message name="IDS_PASSWORD_MANAGER_BUBBLE_BLACKLIST_BUTTON" desc="Button text for the 'Save Password' bubble's 'Never remember for this site' option">
-          Never
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_TOOLTIP_SAVE" desc="Text for the 'Manage Passwords' icon's 'password to be saved' state">
-          Save your password
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_TOOLTIP_MANAGE" desc="Text for the 'Manage Passwords' icon's 'saving passwords' state">
-          Manage your passwords
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_IMPORT_BUTTON" desc="The label of the button for importing passwords. The button appears next to the list of saved passwords in Brave's settings.">
-          Import
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_IMPORT_DIALOG_TITLE" desc="The title of the file selection dialog for importing passwords">
-          Import Passwords To Brave
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_EXPORT_DIALOG_TITLE" desc="The title of the file selection dialog for exporting passwords">
-          Export Passwords From Brave
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_USERNAME_LABEL" desc="Label for the username field in a prompt to store new credential">
-          Username
-        </message>
-        <message name="IDS_PASSWORD_MANAGER_PASSWORD_LABEL" desc="Label for the password field in a prompt to store new credential">
-          Password
-        </message>
       </messages>
 </release>
 </grit>

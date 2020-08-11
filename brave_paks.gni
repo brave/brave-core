@@ -58,6 +58,7 @@ template("brave_extra_paks") {
                            ])
     output = "${invoker.output_dir}/brave_resources.pak"
     sources = [
+      "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
     ]
 
     if (!is_android) {
@@ -66,13 +67,13 @@ template("brave_extra_paks") {
         "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
         "$root_gen_dir/brave/brave_generated_resources.pak",
         "$root_gen_dir/brave/brave_unscaled_resources.pak",
-        "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
       ]
     }
 
     deps = [
       "//brave/components/resources",
       "//brave/ui/webui/resources",
+      "//brave/browser/resources/settings:resources",
     ]
 
     if (!is_android) {
@@ -80,7 +81,6 @@ template("brave_extra_paks") {
         "//brave/app:brave_generated_resources_grit",
         "//brave/app/theme:brave_unscaled_resources",
         "//brave/components/resources:strings",
-        "//brave/browser/resources/settings:resources",
       ]
     }
 

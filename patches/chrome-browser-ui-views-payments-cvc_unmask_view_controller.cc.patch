@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/payments/cvc_unmask_view_controller.cc b/chrome/browser/ui/views/payments/cvc_unmask_view_controller.cc
+index 2e2a42b2e8d5..59e8d978219c 100644
+--- a/chrome/browser/ui/views/payments/cvc_unmask_view_controller.cc
++++ b/chrome/browser/ui/views/payments/cvc_unmask_view_controller.cc
+@@ -390,4 +390,9 @@ void CvcUnmaskViewController::OnPerformAction(views::Combobox* combobox) {
+   UpdatePayButtonState();
+ }
+ 
++#if defined(OS_ANDROID)
++bool CvcUnmaskViewController::ShouldOfferFidoAuth() const { return false; }
++bool CvcUnmaskViewController::UserOptedInToFidoFromSettingsPageOnMobile() const { return false; }
++#endif
++
+ }  // namespace payments

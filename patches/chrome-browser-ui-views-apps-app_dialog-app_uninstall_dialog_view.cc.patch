@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/views/apps/app_dialog/app_uninstall_dialog_view.cc b/chrome/browser/ui/views/apps/app_dialog/app_uninstall_dialog_view.cc
+index 2469d947d59e..d34201ba332c 100644
+--- a/chrome/browser/ui/views/apps/app_dialog/app_uninstall_dialog_view.cc
++++ b/chrome/browser/ui/views/apps/app_dialog/app_uninstall_dialog_view.cc
+@@ -342,16 +342,20 @@ void AppUninstallDialogView::StyledLabelLinkClicked(views::StyledLabel* label,
+ }
+ 
+ void AppUninstallDialogView::OnDialogCancelled() {
++#if !defined(OS_ANDROID)
+   uninstall_dialog()->OnDialogClosed(false /* uninstall */,
+                                      false /* clear_site_data */,
+                                      false /* report_abuse */);
++#endif
+ }
+ 
+ void AppUninstallDialogView::OnDialogAccepted() {
++#if !defined(OS_ANDROID)
+   const bool clear_site_data =
+       clear_site_data_checkbox_ && clear_site_data_checkbox_->GetChecked();
+   const bool report_abuse_checkbox =
+       report_abuse_checkbox_ && report_abuse_checkbox_->GetChecked();
+   uninstall_dialog()->OnDialogClosed(true /* uninstall */, clear_site_data,
+                                      report_abuse_checkbox);
++#endif
+ }

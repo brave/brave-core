@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc b/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
-index b359e44ea989..d6702c6ce5ea 100644
+index b359e44ea989..af1ca5b0eea1 100644
 --- a/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
 +++ b/chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.cc
 @@ -104,7 +104,7 @@
@@ -125,7 +125,7 @@ index b359e44ea989..d6702c6ce5ea 100644
  #endif
    SharingServiceFactory::GetInstance();
    ShortcutsBackendFactory::GetInstance();
-@@ -359,6 +386,9 @@ void ChromeBrowserMainExtraPartsProfiles::
+@@ -359,16 +386,22 @@ void ChromeBrowserMainExtraPartsProfiles::
  #endif
    suggestions::SuggestionsServiceFactory::GetInstance();
  #if BUILDFLAG(ENABLE_SUPERVISED_USERS)
@@ -135,7 +135,22 @@ index b359e44ea989..d6702c6ce5ea 100644
    SupervisedUserServiceFactory::GetInstance();
  #endif
    TabRestoreServiceFactory::GetInstance();
-@@ -382,8 +412,14 @@ void ChromeBrowserMainExtraPartsProfiles::
+   TabStateDBFactory::GetInstance();
+   TemplateURLFetcherFactory::GetInstance();
+   TemplateURLServiceFactory::GetInstance();
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+   ThemeServiceFactory::GetInstance();
+-#endif
++//#endif
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
++#if defined(OS_ANDROID)
++  if (full_init)
++#endif
+   ToolbarActionsModelFactory::GetInstance();
+ #endif
+   TopSitesFactory::GetInstance();
+@@ -382,8 +415,14 @@ void ChromeBrowserMainExtraPartsProfiles::
    UsbChooserContextFactory::GetInstance();
  #endif
  #if BUILDFLAG(ENABLE_EXTENSIONS)

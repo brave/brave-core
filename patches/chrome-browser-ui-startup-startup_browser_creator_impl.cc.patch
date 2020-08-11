@@ -1,8 +1,13 @@
 diff --git a/chrome/browser/ui/startup/startup_browser_creator_impl.cc b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-index 03d2b4e6456b9b132388a3db6cf9c1d44716749d..dd6d42b5f7414293e5580e9b79ddd46b41bf59a7 100644
+index 03d2b4e6456b..7032de90a996 100644
 --- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 +++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-@@ -665,6 +665,7 @@ void StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
+@@ -661,10 +661,11 @@ void StartupBrowserCreatorImpl::DetermineURLsAndLaunch(
+   }
+ 
+   bool welcome_enabled = true;
+-#if !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
    welcome_enabled =
        welcome::IsEnabled(profile_) && welcome::HasModulesToShow(profile_);
  #endif  // !defined(OS_CHROMEOS)
@@ -10,3 +15,12 @@ index 03d2b4e6456b9b132388a3db6cf9c1d44716749d..dd6d42b5f7414293e5580e9b79ddd46b
  
    bool serve_extensions_page =
        extensions::ShouldShowExtensionsCheckupOnStartup(profile_);
+@@ -913,7 +914,7 @@ void StartupBrowserCreatorImpl::AddInfoBarsIfNecessary(
+         ObsoleteSystemInfoBarDelegate::Create(infobar_service);
+     }
+ 
+-#if !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+     if (!command_line_.HasSwitch(switches::kNoDefaultBrowserCheck)) {
+       // The default browser prompt should only be shown after the first run.
+       if (!is_first_run_)

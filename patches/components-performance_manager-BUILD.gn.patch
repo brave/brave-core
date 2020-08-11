@@ -1,0 +1,40 @@
+diff --git a/components/performance_manager/BUILD.gn b/components/performance_manager/BUILD.gn
+index a22123b01e3a..9adba7c57218 100644
+--- a/components/performance_manager/BUILD.gn
++++ b/components/performance_manager/BUILD.gn
+@@ -134,7 +134,7 @@ static_library("performance_manager") {
+     "//url",
+   ]
+ 
+-  if (!is_android) {
++  #if (!is_android) {
+     sources += [
+       "persistence/site_data/exponential_moving_average.cc",
+       "persistence/site_data/exponential_moving_average.h",
+@@ -165,7 +165,7 @@ static_library("performance_manager") {
+       ":site_data_proto",
+       "//third_party/leveldatabase",
+     ]
+-  }
++  #}
+ }
+ 
+ source_set("unit_tests") {
+@@ -213,7 +213,7 @@ source_set("unit_tests") {
+   ]
+ 
+   # The site data database isn't supported on Android.
+-  if (!is_android) {
++  #if (!is_android) {
+     sources += [
+       "persistence/site_data/exponential_moving_average_unittest.cc",
+       "persistence/site_data/leveldb_site_data_store_unittest.cc",
+@@ -226,7 +226,7 @@ source_set("unit_tests") {
+       "persistence/site_data/unittest_utils.cc",
+       "persistence/site_data/unittest_utils.h",
+     ]
+-  }
++  #}
+ }
+ 
+ source_set("browser_tests") {

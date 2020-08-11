@@ -1,0 +1,29 @@
+diff --git a/ui/base/dragdrop/os_exchange_data_provider.h b/ui/base/dragdrop/os_exchange_data_provider.h
+index 2e45ee878fb3..45bbba6106d6 100644
+--- a/ui/base/dragdrop/os_exchange_data_provider.h
++++ b/ui/base/dragdrop/os_exchange_data_provider.h
+@@ -24,7 +24,7 @@
+ #include "ui/base/dragdrop/file_info/file_info.h"
+ #include "url/gurl.h"
+ 
+-#if defined(USE_AURA) || defined(OS_MACOSX)
++#if defined(OS_ANDROID) || defined(USE_AURA) || defined(OS_MACOSX)
+ #include "ui/gfx/geometry/vector2d.h"
+ #include "ui/gfx/image/image_skia.h"
+ #endif
+@@ -94,13 +94,13 @@ class COMPONENT_EXPORT(UI_BASE_DATA_EXCHANGE) OSExchangeDataProvider {
+   virtual void SetDownloadFileInfo(DownloadFileInfo* download) = 0;
+ #endif
+ 
+-#if defined(USE_AURA)
++#if defined(OS_ANDROID) || defined(USE_AURA)
+   virtual void SetHtml(const base::string16& html, const GURL& base_url) = 0;
+   virtual bool GetHtml(base::string16* html, GURL* base_url) const = 0;
+   virtual bool HasHtml() const = 0;
+ #endif
+ 
+-#if defined(USE_AURA) || defined(OS_MACOSX)
++#if defined(OS_ANDROID) || defined(USE_AURA) || defined(OS_MACOSX)
+   virtual void SetDragImage(const gfx::ImageSkia& image,
+                             const gfx::Vector2d& cursor_offset) = 0;
+   virtual gfx::ImageSkia GetDragImage() const = 0;

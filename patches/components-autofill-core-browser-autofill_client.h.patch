@@ -1,0 +1,24 @@
+diff --git a/components/autofill/core/browser/autofill_client.h b/components/autofill/core/browser/autofill_client.h
+index b1cd8283f70c..8d98001247a3 100644
+--- a/components/autofill/core/browser/autofill_client.h
++++ b/components/autofill/core/browser/autofill_client.h
+@@ -285,7 +285,9 @@ class AutofillClient : public RiskDataLoader {
+   // Returns the whitelists for virtual cards. Used on desktop platforms only.
+   virtual std::vector<std::string> GetMerchantWhitelistForVirtualCards() = 0;
+   virtual std::vector<std::string> GetBinRangeWhitelistForVirtualCards() = 0;
++#endif
+ 
++#if !defined(OS_IOS)
+   // Runs |show_migration_dialog_closure| if the user accepts the card migration
+   // offer. This causes the card migration dialog to be shown.
+   virtual void ShowLocalCardMigrationDialog(
+@@ -312,6 +314,9 @@ class AutofillClient : public RiskDataLoader {
+       const base::string16& tip_message,
+       const std::vector<MigratableCreditCard>& migratable_credit_cards,
+       MigrationDeleteCardCallback delete_local_card_callback) = 0;
++#endif
++
++#if !defined(OS_ANDROID) && !defined(OS_IOS)
+ 
+   // TODO(crbug.com/991037): Find a way to merge these two functions. Shouldn't
+   // use WebauthnDialogState as that state is a purely UI state (should not be

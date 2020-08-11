@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index c70c0e041f4d..2bd80e4e3f79 100644
+index c70c0e041f4d..f5cfbe1de650 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
 @@ -48,7 +48,7 @@ const base::Feature kShow10_9ObsoleteInfobar{"Show109ObsoleteInfobar",
@@ -20,6 +20,20 @@ index c70c0e041f4d..2bd80e4e3f79 100644
  
  // Enables the built-in DNS resolver.
  const base::Feature kAsyncDns {
+@@ -273,11 +273,11 @@ const base::Feature kDesktopPWAsUnifiedLaunch{"DesktopPWAsUnifiedLaunch",
+ const base::Feature kDesktopPWAsSharedStoreService{
+     "DesktopPWAsSharedStoreService", base::FEATURE_ENABLED_BY_DEFAULT};
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // Whether to allow installed-by-default web apps to be installed or not.
+ const base::Feature kDefaultWebAppInstallation{
+     "DefaultWebAppInstallation", base::FEATURE_ENABLED_BY_DEFAULT};
+-#endif
++//#endif
+ 
+ // Enable DNS over HTTPS (DoH).
+ const base::Feature kDnsOverHttps{"DnsOverHttps",
 @@ -369,7 +369,7 @@ const base::Feature kHappinessTrackingSystem{"HappinessTrackingSystem",
                                               base::FEATURE_DISABLED_BY_DEFAULT};
  #endif
@@ -38,6 +52,20 @@ index c70c0e041f4d..2bd80e4e3f79 100644
  
  // Hide CorsLegacyModeEnabled enterprise policy support. This feature and
  // the enterprise policy supporting code will be removed at m84.
+@@ -442,11 +442,11 @@ const base::Feature kInstallableAmbientBadgeInfoBar{
+     "InstallableAmbientBadgeInfoBar", base::FEATURE_ENABLED_BY_DEFAULT};
+ #endif
+ 
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ // Allow user to have preference for PWA in the intent picker.
+ const base::Feature kIntentPickerPWAPersistence{
+     "IntentPickerPWAPersistence", base::FEATURE_DISABLED_BY_DEFAULT};
+-#endif  // !defined(OS_ANDROID)
++//#endif  // !defined(OS_ANDROID)
+ 
+ #if defined(OS_CHROMEOS)
+ const base::Feature kKernelnextVMs{"KernelnextVMs",
 @@ -495,10 +495,10 @@ const base::Feature kAcknowledgeNtpOverrideOnDeactivate{
  const base::Feature kMixedContentSiteSetting{"MixedContentSiteSetting",
                                               base::FEATURE_ENABLED_BY_DEFAULT};

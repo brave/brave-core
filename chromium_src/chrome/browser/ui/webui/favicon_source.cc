@@ -19,13 +19,13 @@
 // https://chromium.googlesource.com/chromium/src/+/2ad1441f59880e901664277108e4a490f4b6ea88
 // But it is still used for icons in rewards webui, including Android page.
 // Thus we exclude desktop related code from it for Android builds.
+#include "chrome/browser/profiles/profile.h"
+#include "url/gurl.h"
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 // Exclude extension headers to avoid build errors
 #define EXTENSIONS_BROWSER_EXTENSION_REGISTRY_H_
 #define EXTENSIONS_COMMON_CONSTANTS_H_
 #define EXTENSIONS_COMMON_MANIFEST_H_
-#include "chrome/browser/profiles/profile.h"
-#include "url/gurl.h"
 // Just dummy values to avoid build errors
 namespace {
 namespace extensions {
@@ -70,7 +70,7 @@ class InstantService {
 
 #include "../../../../../../chrome/browser/ui/webui/favicon_source.cc"
 
-#if defined(OS_ANDROID)
+#if !defined(OS_ANDROID)
 #if !BUILDFLAG(ENABLE_EXTENSIONS)
 #undef EXTENSIONS_BROWSER_EXTENSION_REGISTRY_H_
 #undef EXTENSIONS_COMMON_CONSTANTS_H_

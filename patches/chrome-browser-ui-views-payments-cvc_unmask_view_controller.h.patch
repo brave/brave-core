@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/payments/cvc_unmask_view_controller.h b/chrome/browser/ui/views/payments/cvc_unmask_view_controller.h
+index 76ec94ceb95f..ad101e625721 100644
+--- a/chrome/browser/ui/views/payments/cvc_unmask_view_controller.h
++++ b/chrome/browser/ui/views/payments/cvc_unmask_view_controller.h
+@@ -64,6 +64,10 @@ class CvcUnmaskViewController
+       base::WeakPtr<autofill::CardUnmaskDelegate> delegate) override;
+   void OnUnmaskVerificationResult(
+       autofill::AutofillClient::PaymentsRpcResult result) override;
++#if defined(OS_ANDROID)
++    bool ShouldOfferFidoAuth() const override;
++    bool UserOptedInToFidoFromSettingsPageOnMobile() const override;
++#endif
+ 
+  protected:
+   // PaymentRequestSheetController:

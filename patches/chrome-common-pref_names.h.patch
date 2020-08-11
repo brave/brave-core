@@ -1,7 +1,20 @@
 diff --git a/chrome/common/pref_names.h b/chrome/common/pref_names.h
-index 493b14f36317..9f0966850d04 100644
+index 493b14f36317..845967cf940e 100644
 --- a/chrome/common/pref_names.h
 +++ b/chrome/common/pref_names.h
+@@ -184,10 +184,10 @@ extern const char kAccessibilityCaptionsTextOpacity[];
+ extern const char kAccessibilityCaptionsBackgroundColor[];
+ extern const char kAccessibilityCaptionsTextShadow[];
+ extern const char kAccessibilityCaptionsBackgroundOpacity[];
+-#if !defined(OS_ANDROID)
++//#if !defined(OS_ANDROID)
+ extern const char kLiveCaptionEnabled[];
+ extern const char kSODAPath[];
+-#endif
++//#endif
+ #if defined(OS_MACOSX)
+ extern const char kConfirmToQuitEnabled[];
+ extern const char kShowFullscreenToolbar[];
 @@ -339,9 +339,9 @@ extern const char kDeviceLoginScreenWebUsbAllowDevicesForUrls[];
  extern const char kShowHomeButton[];
  extern const char kSpeechRecognitionFilterProfanities[];

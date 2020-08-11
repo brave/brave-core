@@ -1,8 +1,18 @@
 diff --git a/chrome/browser/ui/webui/settings/safety_check_handler.h b/chrome/browser/ui/webui/settings/safety_check_handler.h
-index 0c73407ae34e..972dcde2eb34 100644
+index 0c73407ae34e..bc6c8ba7c208 100644
 --- a/chrome/browser/ui/webui/settings/safety_check_handler.h
 +++ b/chrome/browser/ui/webui/settings/safety_check_handler.h
-@@ -233,8 +233,9 @@ class SafetyCheckHandler
+@@ -116,7 +116,9 @@ class SafetyCheckHandler
+ 
+   void SetVersionUpdaterForTesting(
+       std::unique_ptr<VersionUpdater> version_updater) {
++#if !defined(OS_ANDROID)
+     version_updater_ = std::move(version_updater);
++#endif
+   }
+ 
+  private:
+@@ -233,8 +235,9 @@ class SafetyCheckHandler
  
    std::unique_ptr<safety_check::SafetyCheck> safety_check_;
    std::unique_ptr<safety_check::UpdateCheckHelper> update_helper_;

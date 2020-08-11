@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/ui/views/omnibox/webui_omnibox_popup_view.cc b/chrome/browser/ui/views/omnibox/webui_omnibox_popup_view.cc
+index 54680751d47d..f49bfeed0c9c 100644
+--- a/chrome/browser/ui/views/omnibox/webui_omnibox_popup_view.cc
++++ b/chrome/browser/ui/views/omnibox/webui_omnibox_popup_view.cc
+@@ -20,10 +20,14 @@ WebUIOmniboxPopupView::WebUIOmniboxPopupView(
+ }
+ 
+ OmniboxPopupHandler* WebUIOmniboxPopupView::GetWebUIHandler() {
++#if defined(OS_ANDROID)
++  return nullptr;
++#else
+   OmniboxUI* const omnibox_ui =
+       static_cast<OmniboxUI*>(GetWebContents()->GetWebUI()->GetController());
+   OmniboxPopupHandler* handler = omnibox_ui->popup_handler();
+ 
+   DCHECK(handler);
+   return handler;
++#endif
+ }

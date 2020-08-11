@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_view.cc b/chrome/browser/ui/views/frame/browser_view.cc
-index cadbd4693740..5834bdd1eed3 100644
+index cadbd4693740..71c0fd51de91 100644
 --- a/chrome/browser/ui/views/frame/browser_view.cc
 +++ b/chrome/browser/ui/views/frame/browser_view.cc
 @@ -993,6 +993,7 @@ void BrowserView::OnActiveTabChanged(content::WebContents* old_contents,
@@ -124,7 +124,17 @@ index cadbd4693740..5834bdd1eed3 100644
  }
  
  void BrowserView::FocusAppMenu() {
-@@ -2116,12 +2138,14 @@ base::string16 BrowserView::GetAccessibleWindowTitleForChannelAndProfile(
+@@ -1712,7 +1734,9 @@ void BrowserView::UserChangedTheme(BrowserThemeChangeType theme_change_type) {
+   // In Incognito, the usage of dark or normal hinges on the browser theme.
+   if (theme_change_type == BrowserThemeChangeType::kBrowserTheme &&
+       !IsRegularOrGuestSession()) {
++#if !defined(OS_ANDROID)
+     ui::NativeTheme::GetInstanceForDarkUI()->NotifyObservers();
++#endif
+     ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
+ 
+     // Early exit. A native theme change will update all the
+@@ -2116,12 +2140,14 @@ base::string16 BrowserView::GetAccessibleWindowTitleForChannelAndProfile(
          IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT, title);
    } else if (profile->IsRegularProfile() &&
               profile_manager->GetNumberOfProfiles() > 1) {

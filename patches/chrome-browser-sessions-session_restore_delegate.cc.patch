@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/sessions/session_restore_delegate.cc b/chrome/browser/sessions/session_restore_delegate.cc
+index 21fd231cfde6..573bb1550311 100644
+--- a/chrome/browser/sessions/session_restore_delegate.cc
++++ b/chrome/browser/sessions/session_restore_delegate.cc
+@@ -89,6 +89,7 @@ void SessionRestoreDelegate::RestoreTabs(
+                                  /*is_same_document=*/false);
+   }
+ 
++#if !defined(OS_ANDROID)
+   // Don't start a TabLoader here if background tab loading is done by
+   // PerformanceManager.
+   if (!base::FeatureList::IsEnabled(
+@@ -103,4 +104,5 @@ void SessionRestoreDelegate::RestoreTabs(
+     performance_manager::policies::ScheduleLoadForRestoredTabs(
+         std::move(web_contents_vector));
+   }
++#endif
+ }

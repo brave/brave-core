@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/extension_install_prompt.h b/chrome/browser/extensions/extension_install_prompt.h
-index 74370afb2eaa..79d0eafb657d 100644
+index 74370afb2eaa..35e04737bc2f 100644
 --- a/chrome/browser/extensions/extension_install_prompt.h
 +++ b/chrome/browser/extensions/extension_install_prompt.h
 @@ -26,6 +26,9 @@
@@ -7,29 +7,11 @@ index 74370afb2eaa..79d0eafb657d 100644
  #include "ui/gfx/image/image.h"
  #include "ui/gfx/native_widget_types.h"
 +#if defined(OS_ANDROID)
-+#include "components/app_modal/javascript_app_modal_dialog.h"
++#include "components/javascript_dialogs/app_modal_dialog_controller.h"
 +#endif
  
  class ExtensionInstallPromptShowParams;
  class Profile;
-@@ -101,7 +104,7 @@ class ExtensionInstallPrompt {
-   class Prompt {
-    public:
-     explicit Prompt(PromptType type);
--    ~Prompt();
-+    virtual ~Prompt();
- 
-     void AddPermissionSet(const extensions::PermissionSet& permissions);
-     void AddPermissionMessages(
-@@ -114,7 +117,7 @@ class ExtensionInstallPrompt {
-     PromptType type() const { return type_; }
- 
-     // Getters for UI element labels.
--    base::string16 GetDialogTitle() const;
-+    virtual base::string16 GetDialogTitle() const;
-     int GetDialogButtons() const;
-     // Returns the empty string when there should be no "accept" button.
-     base::string16 GetAcceptButtonLabel() const;
 @@ -147,6 +150,9 @@ class ExtensionInstallPrompt {
      void AppendRatingStars(StarAppender appender, void* data) const;
      base::string16 GetRatingCount() const;
@@ -40,15 +22,7 @@ index 74370afb2eaa..79d0eafb657d 100644
      size_t GetPermissionCount() const;
      base::string16 GetPermission(size_t index) const;
      base::string16 GetPermissionsDetails(size_t index) const;
-@@ -197,6 +203,7 @@ class ExtensionInstallPrompt {
-     void OnDialogCanceled();
- 
-    private:
-+    friend class BravePrompt;
-     bool ShouldDisplayRevokeButton() const;
- 
-     const PromptType type_;
-@@ -377,6 +384,9 @@ class ExtensionInstallPrompt {
+@@ -377,6 +383,9 @@ class ExtensionInstallPrompt {
    // The object responsible for doing the UI specific actions.
    std::unique_ptr<extensions::ExtensionInstallUI> install_ui_;
  

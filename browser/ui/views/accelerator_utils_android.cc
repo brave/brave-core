@@ -5,7 +5,6 @@
 #include <stddef.h>
 
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/views/accelerator_table.h"
 #include "ui/base/accelerators/accelerator.h"
 
@@ -15,7 +14,7 @@
 
 namespace chrome {
 
-bool IsChromeAccelerator(const ui::Accelerator& accelerator, Profile* profile) {
+bool IsChromeAccelerator(const ui::Accelerator& accelerator) {
   return false;
 }
 

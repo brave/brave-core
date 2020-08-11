@@ -1,0 +1,19 @@
+diff --git a/components/autofill/core/browser/BUILD.gn b/components/autofill/core/browser/BUILD.gn
+index d8de972ccdb2..4b569a131424 100644
+--- a/components/autofill/core/browser/BUILD.gn
++++ b/components/autofill/core/browser/BUILD.gn
+@@ -399,6 +399,14 @@ jumbo_static_library("browser") {
+       "//ui/native_theme:native_theme_browser",
+     ]
+   }
++  if (is_android) {
++    sources += [
++      "payments/local_card_migration_manager.cc",
++      "payments/local_card_migration_manager.h",
++      "payments/local_card_migration_strike_database.cc",
++      "payments/local_card_migration_strike_database.h",
++    ]
++  }
+ 
+   configs += [ "//build/config/compiler:no_size_t_to_int_warning" ]
+ }

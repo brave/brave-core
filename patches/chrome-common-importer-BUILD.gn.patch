@@ -1,5 +1,5 @@
 diff --git a/chrome/common/importer/BUILD.gn b/chrome/common/importer/BUILD.gn
-index 6be16e699b7e..6757b43280c8 100644
+index 6be16e699b7e..c6b90df94410 100644
 --- a/chrome/common/importer/BUILD.gn
 +++ b/chrome/common/importer/BUILD.gn
 @@ -12,6 +12,7 @@ mojom("interfaces") {
@@ -14,7 +14,7 @@ index 6be16e699b7e..6757b43280c8 100644
      "safari_importer_utils.h",
      "safari_importer_utils.mm",
    ]
-+  if (is_android) {sources += ["firefox_importer_utils_android.cc",]}
++  if (is_android) {sources += ["//brave/common/importer/firefox_importer_utils_android.cc",]}
    deps = [
      "//base",
      "//chrome/app:generated_resources",

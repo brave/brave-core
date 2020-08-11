@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/upgrade_detector/installed_version_poller.cc b/chrome/browser/upgrade_detector/installed_version_poller.cc
+index c474795d460f..1e3b0c445eb1 100644
+--- a/chrome/browser/upgrade_detector/installed_version_poller.cc
++++ b/chrome/browser/upgrade_detector/installed_version_poller.cc
+@@ -71,7 +71,12 @@ GetGetInstalledVersionCallback() {
+   const uint32_t testing_options = GetTestingOptions();
+   return testing_options ? base::BindRepeating(&SimulateGetInstalledVersion,
+                                                testing_options)
++#if !defined(OS_ANDROID)
+                          : base::BindRepeating(&GetInstalledVersion);
++#else
++                         : base::BindRepeating(&SimulateGetInstalledVersion,
++                                               testing_options);
++#endif
+ }
+ 
+ // Returns the polling interval specified by --check-for-update-interval, or

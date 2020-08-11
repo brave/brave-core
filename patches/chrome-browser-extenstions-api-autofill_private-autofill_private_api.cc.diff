@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/extensions/api/autofill_private/autofill_private_api.cc b/chrome/browser/extensions/api/autofill_private/autofill_private_api.cc
+index 450445fb7760..183162bfe86f 100644
+--- a/chrome/browser/extensions/api/autofill_private/autofill_private_api.cc
++++ b/chrome/browser/extensions/api/autofill_private/autofill_private_api.cc
+@@ -490,7 +490,11 @@ AutofillPrivateMigrateCreditCardsFunction::Run() {
+ 
+   // Get local card migration manager from form data importer.
+   autofill::LocalCardMigrationManager* local_card_migration_manager =
++#if !defined(OS_ANDROID)
+       form_data_importer->local_card_migration_manager();
++#else
++      nullptr;
++#endif
+   if (!local_card_migration_manager)
+     return RespondNow(Error(kErrorDataUnavailable));
+ 

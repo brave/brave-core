@@ -1,0 +1,18 @@
+diff --git a/components/page_info/android/certificate_viewer_android.cc b/components/page_info/android/certificate_viewer_android.cc
+index 56adeded395c..a3aea66745f5 100644
+--- a/components/page_info/android/certificate_viewer_android.cc
++++ b/components/page_info/android/certificate_viewer_android.cc
+@@ -11,6 +11,13 @@ using base::android::ConvertUTF8ToJavaString;
+ using base::android::JavaParamRef;
+ using base::android::ScopedJavaLocalRef;
+ 
++void ShowCertificateViewer(content::WebContents* web_contents,
++                           gfx::NativeWindow parent,
++                           net::X509Certificate* cert) {
++  // For Android, showing the certificate is always handled in Java.
++  NOTREACHED();
++}
++
+ static ScopedJavaLocalRef<jstring> JNI_CertificateViewer_GetCertIssuedToText(
+     JNIEnv* env) {
+   return ConvertUTF8ToJavaString(

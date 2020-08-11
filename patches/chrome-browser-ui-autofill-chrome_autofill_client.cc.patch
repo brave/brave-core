@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.cc b/chrome/browser/ui/autofill/chrome_autofill_client.cc
+index e823ce19234e..9d2c79c4500d 100644
+--- a/chrome/browser/ui/autofill/chrome_autofill_client.cc
++++ b/chrome/browser/ui/autofill/chrome_autofill_client.cc
+@@ -356,6 +356,18 @@ void ChromeAutofillClient::OfferVirtualCardOptions(
+ }
+ 
+ #else  // defined(OS_ANDROID)
++void ChromeAutofillClient::ShowLocalCardMigrationDialog(
++    base::OnceClosure show_migration_dialog_closure) { }
++void ChromeAutofillClient::ConfirmMigrateLocalCardToCloud(
++    const LegalMessageLines& legal_message_lines,
++    const std::string& user_email,
++    const std::vector<MigratableCreditCard>& migratable_credit_cards,
++    LocalCardMigrationCallback start_migrating_cards_callback) { }
++void ChromeAutofillClient::ShowLocalCardMigrationResults(
++    const bool has_server_error,
++    const base::string16& tip_message,
++    const std::vector<MigratableCreditCard>& migratable_credit_cards,
++    MigrationDeleteCardCallback delete_local_card_callback) { }
+ void ChromeAutofillClient::ConfirmAccountNameFixFlow(
+     base::OnceCallback<void(const base::string16&)> callback) {
+   CardNameFixFlowViewAndroid* card_name_fix_flow_view_android =

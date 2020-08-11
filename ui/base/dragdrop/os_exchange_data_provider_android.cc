@@ -19,7 +19,7 @@ OSExchangeDataProviderAndroid::OSExchangeDataProviderAndroid()
 
 OSExchangeDataProviderAndroid::~OSExchangeDataProviderAndroid() = default;
 
-std::unique_ptr<OSExchangeData::Provider>
+std::unique_ptr<OSExchangeDataProvider>
 OSExchangeDataProviderAndroid::Clone() const {
   OSExchangeDataProviderAndroid* ret = new OSExchangeDataProviderAndroid();
   ret->formats_ = formats_;
@@ -32,7 +32,7 @@ OSExchangeDataProviderAndroid::Clone() const {
   ret->html_ = html_;
   ret->base_url_ = base_url_;
 
-  return base::WrapUnique<OSExchangeData::Provider>(ret);
+  return base::WrapUnique<OSExchangeDataProvider>(ret);
 }
 
 void OSExchangeDataProviderAndroid::MarkOriginatedFromRenderer() {
@@ -88,13 +88,13 @@ bool OSExchangeDataProviderAndroid::GetString(base::string16* data) const {
 }
 
 bool OSExchangeDataProviderAndroid::GetURLAndTitle(
-    OSExchangeData::FilenameToURLPolicy policy,
+    FilenameToURLPolicy policy,
     GURL* url,
     base::string16* title) const {
   if ((formats_ & OSExchangeData::URL) == 0) {
     title->clear();
     return GetPlainTextURL(url) ||
-           (policy == OSExchangeData::CONVERT_FILENAMES && GetFileURL(url));
+           (policy == CONVERT_FILENAMES && GetFileURL(url));
   }
 
   if (!url_.is_valid())
@@ -137,13 +137,13 @@ bool OSExchangeDataProviderAndroid::HasString() const {
 }
 
 bool OSExchangeDataProviderAndroid::HasURL(
-    OSExchangeData::FilenameToURLPolicy policy) const {
+    FilenameToURLPolicy policy) const {
   if ((formats_ & OSExchangeData::URL) != 0) {
     return true;
   }
   // No URL, see if we have plain text that can be parsed as a URL.
   return GetPlainTextURL(NULL) ||
-         (policy == OSExchangeData::CONVERT_FILENAMES && GetFileURL(nullptr));
+         (policy == CONVERT_FILENAMES && GetFileURL(nullptr));
 }
 
 bool OSExchangeDataProviderAndroid::HasFile() const {

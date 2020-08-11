@@ -21,13 +21,13 @@ class ClipboardFormatType;
 
 // OSExchangeData::Provider implementation for Android on linux.
 class UI_BASE_EXPORT OSExchangeDataProviderAndroid
-    : public OSExchangeData::Provider {
+    : public OSExchangeDataProvider {
  public:
   OSExchangeDataProviderAndroid();
   ~OSExchangeDataProviderAndroid() override;
 
   // Overridden from OSExchangeData::Provider:
-  std::unique_ptr<Provider> Clone() const override;
+  std::unique_ptr<OSExchangeDataProvider> Clone() const override;
   void MarkOriginatedFromRenderer() override;
   bool DidOriginateFromRenderer() const override;
   void SetString(const base::string16& data) override;
@@ -37,7 +37,7 @@ class UI_BASE_EXPORT OSExchangeDataProviderAndroid
   void SetPickledData(const ClipboardFormatType& format,
                       const base::Pickle& data) override;
   bool GetString(base::string16* data) const override;
-  bool GetURLAndTitle(OSExchangeData::FilenameToURLPolicy policy,
+  bool GetURLAndTitle(FilenameToURLPolicy policy,
                       GURL* url,
                       base::string16* title) const override;
   bool GetFilename(base::FilePath* path) const override;
@@ -45,13 +45,14 @@ class UI_BASE_EXPORT OSExchangeDataProviderAndroid
   bool GetPickledData(const ClipboardFormatType& format,
                       base::Pickle* data) const override;
   bool HasString() const override;
-  bool HasURL(OSExchangeData::FilenameToURLPolicy policy) const override;
+  bool HasURL(FilenameToURLPolicy policy) const override;
   bool HasFile() const override;
   bool HasCustomFormat(const ClipboardFormatType& format) const override;
 
   void SetHtml(const base::string16& html, const GURL& base_url) override;
   bool GetHtml(base::string16* html, GURL* base_url) const override;
   bool HasHtml() const override;
+
   void SetDragImage(const gfx::ImageSkia& image,
                     const gfx::Vector2d& cursor_offset) override;
   gfx::ImageSkia GetDragImage() const override;

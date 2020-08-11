@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.h b/chrome/browser/ui/autofill/chrome_autofill_client.h
+index 6b63aeb4a336..50a8485dda99 100644
+--- a/chrome/browser/ui/autofill/chrome_autofill_client.h
++++ b/chrome/browser/ui/autofill/chrome_autofill_client.h
+@@ -81,6 +81,7 @@ class ChromeAutofillClient
+ #if !defined(OS_ANDROID)
+   std::vector<std::string> GetMerchantWhitelistForVirtualCards() override;
+   std::vector<std::string> GetBinRangeWhitelistForVirtualCards() override;
++#endif
+   void ShowLocalCardMigrationDialog(
+       base::OnceClosure show_migration_dialog_closure) override;
+   void ConfirmMigrateLocalCardToCloud(
+@@ -93,6 +94,7 @@ class ChromeAutofillClient
+       const base::string16& tip_message,
+       const std::vector<MigratableCreditCard>& migratable_credit_cards,
+       MigrationDeleteCardCallback delete_local_card_callback) override;
++#if !defined(OS_ANDROID)
+   void ShowWebauthnOfferDialog(
+       WebauthnDialogCallback offer_dialog_callback) override;
+   void ShowWebauthnVerifyPendingDialog(

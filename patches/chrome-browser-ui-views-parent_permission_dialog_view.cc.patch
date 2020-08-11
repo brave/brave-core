@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/views/parent_permission_dialog_view.cc b/chrome/browser/ui/views/parent_permission_dialog_view.cc
+index 501fc1634bb5..4b7c6d918d0e 100644
+--- a/chrome/browser/ui/views/parent_permission_dialog_view.cc
++++ b/chrome/browser/ui/views/parent_permission_dialog_view.cc
+@@ -310,9 +310,13 @@ void ParentPermissionDialogView::SetRepromptAfterIncorrectCredential(
+ }
+ 
+ base::string16 ParentPermissionDialogView::GetActiveUserFirstName() const {
++#if !defined(OS_ANDROID)
+   user_manager::UserManager* manager = user_manager::UserManager::Get();
+   const user_manager::User* user = manager->GetActiveUser();
+   return user->GetGivenName();
++#else
++  return base::string16();
++#endif
+ }
+ 
+ gfx::Size ParentPermissionDialogView::CalculatePreferredSize() const {

@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/startup/startup_browser_creator.cc b/chrome/browser/ui/startup/startup_browser_creator.cc
+index 5672bd4c1d2a..cadeae2ea3b6 100644
+--- a/chrome/browser/ui/startup/startup_browser_creator.cc
++++ b/chrome/browser/ui/startup/startup_browser_creator.cc
+@@ -264,7 +264,7 @@ bool CanOpenProfileOnStartup(Profile* profile) {
+ #endif
+ }
+ 
+-#if !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+ bool ShouldShowProfilePicker() {
+   return !signin_util::IsForceSigninEnabled() &&
+          base::FeatureList::IsEnabled(features::kNewProfilePicker);
+@@ -800,7 +800,7 @@ bool StartupBrowserCreator::LaunchBrowserForLastProfiles(
+     bool process_startup,
+     Profile* last_used_profile,
+     const Profiles& last_opened_profiles) {
+-#if !defined(OS_CHROMEOS)
++#if !defined(OS_CHROMEOS) && !defined(OS_ANDROID)
+   if (ShouldShowProfilePicker()) {
+     ProfilePicker::Show();
+     return true;

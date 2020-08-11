@@ -1,8 +1,8 @@
 diff --git a/extensions/strings/BUILD.gn b/extensions/strings/BUILD.gn
-index 05913994d626dd8684c90a92fe40b114a6ee0fd0..118ccea83714f4f1cf2fa795f5bf3207485cdf4f 100644
+index 05913994d626..994560374c54 100644
 --- a/extensions/strings/BUILD.gn
 +++ b/extensions/strings/BUILD.gn
-@@ -66,4 +66,35 @@ grit("strings") {
+@@ -66,4 +66,36 @@ grit("strings") {
      "extensions_strings_zh-CN.pak",
      "extensions_strings_zh-TW.pak",
    ]
@@ -31,6 +31,7 @@ index 05913994d626dd8684c90a92fe40b114a6ee0fd0..118ccea83714f4f1cf2fa795f5bf3207
 +        "extensions_strings_pa.pak",
 +        "extensions_strings_si.pak",
 +        "extensions_strings_sq.pak",
++        "extensions_strings_sr-Latn.pak",
 +        "extensions_strings_ur.pak",
 +        "extensions_strings_uz.pak",
 +        "extensions_strings_zh-HK.pak",
