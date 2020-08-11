@@ -204,20 +204,20 @@ void BatAdsClientMojoBridge::CloseNotification(
 
 void OnUrlRequest(
     const ads::UrlRequestCallback& callback,
-    const ads::UrlResponsePtr response_ptr) {
-  ads::UrlResponse response;
+    const ads::UrlResponsePtr url_response_ptr) {
+  ads::UrlResponse url_response;
 
-  if (!response_ptr) {
-    response.status_code = 418;  // I'm a teapot
-    callback(response);
+  if (!url_response_ptr) {
+    url_response.status_code = 418;  // I'm a teapot
+    callback(url_response);
     return;
   }
 
-  response.url = response_ptr->url;
-  response.status_code = response_ptr->status_code;
-  response.body = response_ptr->body;
-  response.headers = response_ptr->headers;
-  callback(response);
+  url_response.url = url_response_ptr->url;
+  url_response.status_code = url_response_ptr->status_code;
+  url_response.body = url_response_ptr->body;
+  url_response.headers = url_response_ptr->headers;
+  callback(url_response);
 }
 
 void BatAdsClientMojoBridge::UrlRequest(

@@ -323,7 +323,7 @@ void AdConversions::Save() {
     return;
   }
 
-  BLOG(3, "Saving ad conversions state");
+  BLOG(9, "Saving ad conversions state");
 
   std::string json = ToJson();
   auto callback = std::bind(&AdConversions::OnSaved, this, _1);
@@ -337,7 +337,7 @@ void AdConversions::OnSaved(
     return;
   }
 
-  BLOG(3, "Successfully saved ad conversions state");
+  BLOG(9, "Successfully saved ad conversions state");
 }
 
 std::string AdConversions::ToJson() {

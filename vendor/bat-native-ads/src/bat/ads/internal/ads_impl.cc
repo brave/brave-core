@@ -307,9 +307,7 @@ bool AdsImpl::GetAdNotification(
 void AdsImpl::OnForeground() {
   is_foreground_ = true;
 
-  const Reports reports(this);
-  const std::string report = reports.GenerateForegroundEventReport();
-  BLOG(3, "Event log: " << report);
+  BLOG(1, "Browser window did become active");
 
   if (PlatformHelper::GetInstance()->IsMobile() &&
       !ads_client_->CanShowBackgroundNotifications()) {
@@ -320,9 +318,7 @@ void AdsImpl::OnForeground() {
 void AdsImpl::OnBackground() {
   is_foreground_ = false;
 
-  const Reports reports(this);
-  const std::string report = reports.GenerateBackgroundEventReport();
-  BLOG(3, "Event log: " << report);
+  BLOG(1, "Browser window did enter background");
 
   if (PlatformHelper::GetInstance()->IsMobile() &&
       !ads_client_->CanShowBackgroundNotifications()) {
@@ -456,20 +452,8 @@ void AdsImpl::OnTabUpdated(
     active_tab_id_ = tab_id;
     previous_tab_url_ = active_tab_url_;
     active_tab_url_ = url;
-
-    const Reports reports(this);
-    FocusInfo focus_info;
-    focus_info.tab_id = tab_id;
-    const std::string report = reports.GenerateFocusEventReport(focus_info);
-    BLOG(3, "Event log: " << report);
   } else {
-    BLOG(3, "Tab id " << tab_id << " is occluded");
-
-    const Reports reports(this);
-    BlurInfo blur_info;
-    blur_info.tab_id = tab_id;
-    const std::string report = reports.GenerateBlurEventReport(blur_info);
-    BLOG(3, "Event log: " << report);
+    BLOG(7, "Tab id " << tab_id << " is occluded");
   }
 
   if (is_browser_active) {
@@ -490,12 +474,6 @@ void AdsImpl::OnTabClosed(
   OnMediaStopped(tab_id);
 
   sustained_ad_notifications_.erase(tab_id);
-
-  const Reports reports(this);
-  DestroyInfo destroy_info;
-  destroy_info.tab_id = tab_id;
-  const std::string report = reports.GenerateDestroyEventReport(destroy_info);
-  BLOG(3, "Event log: " << report);
 }
 
 void AdsImpl::OnWalletUpdated(

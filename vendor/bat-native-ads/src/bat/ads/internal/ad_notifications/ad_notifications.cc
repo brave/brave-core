@@ -303,7 +303,7 @@ void AdNotifications::Save() {
     return;
   }
 
-  BLOG(3, "Saving ad notifications state");
+  BLOG(9, "Saving ad notifications state");
 
   std::string json = ToJson();
   auto callback = std::bind(&AdNotifications::OnSaved, this, _1);
@@ -317,7 +317,7 @@ void AdNotifications::OnSaved(
     return;
   }
 
-  BLOG(3, "Successfully saved ad notifications state");
+  BLOG(9, "Successfully saved ad notifications state");
 }
 
 void AdNotifications::Load() {

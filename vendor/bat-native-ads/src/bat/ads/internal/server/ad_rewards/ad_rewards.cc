@@ -165,6 +165,7 @@ void AdRewards::GetPayments() {
   PaymentsUrlRequestBuilder url_request_builder(wallet_);
   UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
+  BLOG(7, UrlRequestHeadersToString(url_request));
 
   auto callback = std::bind(&AdRewards::OnGetPayments, this, _1);
   ads_->get_ads_client()->UrlRequest(std::move(url_request), callback);
@@ -175,6 +176,7 @@ void AdRewards::OnGetPayments(
   BLOG(1, "OnGetPayments");
 
   BLOG(6, UrlResponseToString(url_response));
+  BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to get payment balance");
@@ -198,6 +200,7 @@ void AdRewards::GetAdGrants() {
   AdGrantsUrlRequestBuilder url_request_builder(wallet_);
   UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
+  BLOG(7, UrlRequestHeadersToString(url_request));
 
   auto callback = std::bind(&AdRewards::OnGetAdGrants, this, _1);
   ads_->get_ads_client()->UrlRequest(std::move(url_request), callback);
@@ -205,9 +208,10 @@ void AdRewards::GetAdGrants() {
 
 void AdRewards::OnGetAdGrants(
     const UrlResponse& url_response) {
-  BLOG(1, "OnGetGrants");
+  BLOG(1, "OnGetAdGrants");
 
   BLOG(6, UrlResponseToString(url_response));
+  BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code == net::HTTP_NO_CONTENT) {
     ad_grants_ = std::make_unique<AdGrants>();

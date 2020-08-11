@@ -28,7 +28,7 @@ Reports::~Reports() = default;
 
 std::string Reports::GenerateAdNotificationEventReport(
     const AdNotificationInfo& info,
-    const AdNotificationEventType event_type) {
+    const AdNotificationEventType event_type) const {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
@@ -106,38 +106,6 @@ std::string Reports::GenerateAdNotificationEventReport(
   return buffer.GetString();
 }
 
-std::string Reports::GenerateConfirmationEventReport(
-    const std::string& creative_instance_id,
-    const ConfirmationType& confirmation_type) const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("confirmation");
-
-  writer.String("timestamp");
-  const base::Time time = base::Time::Now();
-  const std::string timestamp = LongFormatFriendlyDateAndTime(time, false);
-  writer.String(timestamp.c_str());
-
-  writer.String("creativeInstanceId");
-  writer.String(creative_instance_id.c_str());
-
-  writer.String("confirmationType");
-  writer.String(std::string(confirmation_type).c_str());
-
-  writer.EndObject();
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
-
 std::string Reports::GenerateLoadEventReport(
     const LoadInfo& info) const {
   rapidjson::StringBuffer buffer;
@@ -198,138 +166,6 @@ std::string Reports::GenerateLoadEventReport(
     }
     writer.EndArray();
   }
-
-  writer.EndObject();
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
-
-std::string Reports::GenerateBackgroundEventReport() const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("background");
-
-  writer.String("timestamp");
-  const base::Time time = base::Time::Now();
-  const std::string timestamp = LongFormatFriendlyDateAndTime(time, false);
-  writer.String(timestamp.c_str());
-
-  writer.EndObject();
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
-
-std::string Reports::GenerateForegroundEventReport() const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("foreground");
-
-  writer.String("timestamp");
-  const base::Time time = base::Time::Now();
-  const std::string timestamp = LongFormatFriendlyDateAndTime(time, false);
-  writer.String(timestamp.c_str());
-
-  writer.EndObject();
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
-
-std::string Reports::GenerateBlurEventReport(
-    const BlurInfo& info) const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("blur");
-
-  writer.String("timestamp");
-  const base::Time time = base::Time::Now();
-  const std::string timestamp = LongFormatFriendlyDateAndTime(time, false);
-  writer.String(timestamp.c_str());
-
-  writer.String("tabId");
-  writer.Int(info.tab_id);
-
-  writer.EndObject();
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
-
-std::string Reports::GenerateDestroyEventReport(
-    const DestroyInfo& info) const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("destroy");
-
-  writer.String("timestamp");
-  const base::Time time = base::Time::Now();
-  const std::string timestamp = LongFormatFriendlyDateAndTime(time, false);
-  writer.String(timestamp.c_str());
-
-  writer.String("tabId");
-  writer.Int(info.tab_id);
-
-  writer.EndObject();
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
-
-std::string Reports::GenerateFocusEventReport(
-    const FocusInfo& info) const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("focus");
-
-  writer.String("timestamp");
-  const base::Time time = base::Time::Now();
-  const std::string timestamp = LongFormatFriendlyDateAndTime(time, false);
-  writer.String(timestamp.c_str());
-
-  writer.String("tabId");
-  writer.Int(info.tab_id);
 
   writer.EndObject();
 

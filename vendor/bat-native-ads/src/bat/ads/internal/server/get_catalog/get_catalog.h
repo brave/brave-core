@@ -32,7 +32,7 @@ class GetCatalog {
 
  private:
   void OnDownloaded(
-      const UrlResponse& response);
+      const UrlResponse& url_response);
 
   bool Parse(
       const std::string& json);

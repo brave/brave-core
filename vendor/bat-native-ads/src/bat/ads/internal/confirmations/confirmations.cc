@@ -85,11 +85,6 @@ void Confirmations::set_next_token_redemption_date(
 void Confirmations::ConfirmAd(
     const AdInfo& ad,
     const ConfirmationType confirmation_type) {
-  const Reports reports(ads_);
-  const std::string report = reports.GenerateConfirmationEventReport(
-      ad.creative_instance_id, confirmation_type);
-  BLOG(3, "Event log: " << report);
-
   std::string log_message = "Confirm ad:\n";
 
   log_message += "  creativeInstanceId: ";
@@ -184,7 +179,7 @@ void Confirmations::Save() {
     return;
   }
 
-  BLOG(3, "Saving confirmations state");
+  BLOG(9, "Saving confirmations state");
 
   const std::string json = state_->ToJson();
   auto callback = std::bind(&Confirmations::OnSaved, this, _1);
@@ -234,7 +229,7 @@ void Confirmations::OnSaved(
     return;
   }
 
-  BLOG(3, "Successfully saved confirmations state");
+  BLOG(9, "Successfully saved confirmations state");
 }
 
 void Confirmations::Load() {

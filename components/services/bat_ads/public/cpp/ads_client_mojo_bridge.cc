@@ -281,11 +281,11 @@ void AdsClientMojoBridge::Save(
 // static
 void AdsClientMojoBridge::OnURLRequest(
     CallbackHolder<UrlRequestCallback>* holder,
-    const ads::UrlResponse& response) {
+    const ads::UrlResponse& url_response) {
   DCHECK(holder);
 
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(ads::UrlResponse::New(response));
+    std::move(holder->get()).Run(ads::UrlResponse::New(url_response));
   }
 
   delete holder;

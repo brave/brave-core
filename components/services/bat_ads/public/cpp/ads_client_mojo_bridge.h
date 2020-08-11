@@ -159,7 +159,7 @@ class AdsClientMojoBridge
 
   static void OnURLRequest(
       CallbackHolder<UrlRequestCallback>* holder,
-      const ads::UrlResponse& response);
+      const ads::UrlResponse& url_response);
 
   static void OnRunDBTransaction(
       CallbackHolder<RunDBTransactionCallback>* holder,

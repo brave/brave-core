@@ -9,9 +9,9 @@
 #include <ostream>
 #include <string>
 
+#include "base/check.h"
+#include "base/notreached.h"
 #include "bat/ads/internal/logging_util.h"
-
-#include "base/logging.h"
 
 namespace ads {
 
@@ -48,7 +48,7 @@ void Log(
 //   1 Info
 //   5 URL request
 //   6 URL response
-//   7 URL response (with large body)
+//   7 URL response (with large body), response headers and request headers
 //   8 Database queries
 
 #define BLOG(verbose_level, stream) ads::Log(__FILE__, __LINE__, \

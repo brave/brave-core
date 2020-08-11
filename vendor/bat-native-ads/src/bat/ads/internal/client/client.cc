@@ -536,7 +536,7 @@ void Client::Save() {
     return;
   }
 
-  BLOG(3, "Saving client state");
+  BLOG(9, "Saving client state");
 
   auto json = client_state_->ToJson();
   auto callback = std::bind(&Client::OnSaved, this, _1);
@@ -551,7 +551,7 @@ void Client::OnSaved(
     return;
   }
 
-  BLOG(3, "Successfully saved client state");
+  BLOG(9, "Successfully saved client state");
 }
 
 void Client::Load() {

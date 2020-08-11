@@ -90,6 +90,7 @@ void RedeemUnblindedPaymentTokens::Redeem() {
       url_request_builder(wallet_, unblinded_tokens);
   UrlRequestPtr url_request = url_request_builder.Build();
   BLOG(5, UrlRequestToString(url_request));
+  BLOG(7, UrlRequestHeadersToString(url_request));
 
   auto callback = std::bind(&RedeemUnblindedPaymentTokens::OnRedeem, this, _1);
   ads_->get_ads_client()->UrlRequest(std::move(url_request), callback);
@@ -100,6 +101,7 @@ void RedeemUnblindedPaymentTokens::OnRedeem(
   BLOG(1, "OnRedeemUnblindedPaymentTokens");
 
   BLOG(6, UrlResponseToString(url_response));
+  BLOG(7, UrlResponseHeadersToString(url_response));
 
   if (url_response.status_code != net::HTTP_OK) {
     BLOG(1, "Failed to redeem unblinded payment tokens");
