@@ -305,6 +305,8 @@ class FeedDataSource {
         _state.observe(from: object, on: queue, handler)
     }
     
+    private var todayQueue = DispatchQueue(label: "com.brave.today")
+    
     // MARK: - Resource Managment
     
     private let session = NetworkManager(session: URLSession(configuration: .ephemeral))
@@ -366,9 +368,12 @@ class FeedDataSource {
         let deferred = Deferred<Result<Data, Error>>(value: nil, defaultQueue: .main)
         let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(filename).path
         if let cachedPath = cachedPath,
-            !isResourceExpired(resource),
-            let cachedContents = fileManager.contents(atPath: cachedPath) {
-            deferred.fill(.success(cachedContents))
+            !isResourceExpired(resource) {
+            todayQueue.async {
+                if let cachedContents = fileManager.contents(atPath: cachedPath) {
+                    deferred.fill(.success(cachedContents))
+                }
+            }
         } else {
             session.dataRequest(with: Self.baseURL.appendingPathComponent(filename)) { data, response, error in
                 if let error = error {
@@ -379,7 +384,7 @@ class FeedDataSource {
                 deferred.fill(.success(data))
             }
         }
-        return deferred.map { result in
+        return deferred.mapQueue(todayQueue) { result in
             switch result {
             case .success(let data):
                 do {
@@ -464,10 +469,11 @@ class FeedDataSource {
                 completion?()
             case (.success(let sources), .success(let items)):
                 self.sources = sources
-                let feedItems = self.scored(feeds: items, sources: self.sources).sorted(by: <)
-                self.generateCards(from: feedItems) { [weak self] cards in
-                    self?.state = .success(cards)
-                    completion?()
+                self.score(feeds: items, sources: self.sources) { [weak self] feedItems in
+                    self?.generateCards(from: feedItems) { [weak self] cards in
+                        self?.state = .success(cards)
+                        completion?()
+                    }
                 }
             }
         }
@@ -530,36 +536,50 @@ class FeedDataSource {
     
     // MARK: - Card Generation
     
-    private func scored(feeds: [FeedItem.Content], sources: [FeedItem.Source]) -> [FeedItem] {
+    /// Scores a set of items in the feed based on recency, personalization and variety.
+    ///
+    /// The items returned in `completion` will be sorted based on score
+    ///
+    /// Must be called on the main thread, `completion` is called on main thread
+    private func score(
+        feeds: [FeedItem.Content],
+        sources: [FeedItem.Source],
+        completion: @escaping ([FeedItem]) -> Void
+    ) {
+        // Ensure main thread since we're querying from CoreData
+        dispatchPrecondition(condition: .onQueue(.main))
         let lastVisitedDomains = (try? History.suffix(200)
             .lazy
             .compactMap(\.url)
             .compactMap { URL(string: $0)?.baseDomain }) ?? []
-        var domainCount: [String: Int] = [:]
-        return feeds.compactMap { content in
-            let timeSincePublished = Date().timeIntervalSince(content.publishTime)
-            var score = timeSincePublished > 0 ? log(timeSincePublished) : 0
-            if let feedBaseDomain = content.url?.baseDomain,
-                lastVisitedDomains.contains(feedBaseDomain) {
-                score -= 5
+        todayQueue.async {
+            var domainCount: [String: Int] = [:]
+            let items: [FeedItem] = feeds.compactMap { content in
+                let timeSincePublished = Date().timeIntervalSince(content.publishTime)
+                var score = timeSincePublished > 0 ? log(timeSincePublished) : 0
+                if let feedBaseDomain = content.url?.baseDomain,
+                    lastVisitedDomains.contains(feedBaseDomain) {
+                    score -= 5
+                }
+                let variety = 1.0 * pow(0.8, Double(domainCount[content.publisherID, default: 0]))
+                score *= variety
+                domainCount[content.publisherID, default: 0] += 1
+                guard let source = sources.first(where: { $0.id == content.publisherID }) else {
+                    return nil
+                }
+                return FeedItem(score: score, content: content, source: source)
             }
-            let variety = 1.0 * pow(0.8, Double(domainCount[content.publisherID, default: 0]))
-            score *= variety
-            domainCount[content.publisherID, default: 0] += 1
-            guard let source = sources.first(where: { $0.id == content.publisherID }) else {
-                return nil
+            .sorted(by: <)
+            DispatchQueue.main.async {
+                completion(items)
             }
-            return FeedItem(score: score, content: content, source: source)
         }
     }
     
     private func generateCards(from items: [FeedItem], completion: @escaping ([FeedCard]) -> Void) {
-        /**
-         Beginning of new session:
-            Sponsor card
-            1st item, Large Card, Latest item from query
-            Deals card
-         */
+        // Ensure main thread since we're querying from CoreData
+        dispatchPrecondition(condition: .onQueue(.main))
+        
         let overridenSources = BraveTodaySourceMO.all()
         let feedsFromEnabledSources = items.filter { item in
             overridenSources.first(where: {
@@ -687,7 +707,7 @@ class FeedDataSource {
             }
         }
         
-        DispatchQueue.global(qos: .default).async {
+        todayQueue.async {
             var generatedCards: [FeedCard] = []
             for rule in rules {
                 if let elementCards = _cards(for: rule, fillStrategy: DefaultFillStrategy()) {
