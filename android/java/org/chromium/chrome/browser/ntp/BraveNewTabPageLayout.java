@@ -207,10 +207,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
         if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
                 && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            ((BraveActivity)mActivity).showOnboarding();
+            ((BraveActivity)mActivity).showOnboardingV2();
         }
         if (OnboardingPrefManager.getInstance().isFromNotification() ) {
-            ((BraveActivity)mActivity).showOnboarding();
+            ((BraveActivity)mActivity).showOnboardingV2();
             OnboardingPrefManager.getInstance().setFromNotification(false);
         }
     }
