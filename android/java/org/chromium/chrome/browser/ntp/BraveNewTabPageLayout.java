@@ -115,6 +115,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private DatabaseHelper mDatabaseHelper;
 
     private ViewGroup mSiteSectionView;
+    private LottieAnimationView mBadgeAnimationView;
 
     private Tab mTab;
     private Activity mActivity;
@@ -163,10 +164,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             }
         });
 
-        LottieAnimationView mBadgeAnimationView = (LottieAnimationView) findViewById(R.id.badge_image);
-        if (OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
-            // mBadgeAnimationView.setVisibility(View.VISIBLE);
-        }
+        mBadgeAnimationView = (LottieAnimationView) findViewById(R.id.badge_image);
 
         mBraveStatsView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -235,6 +233,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (OnboardingPrefManager.getInstance().isFromNotification() ) {
             ((BraveActivity)mActivity).showOnboardingV2(false);
             OnboardingPrefManager.getInstance().setFromNotification(false);
+        }
+        if (mBadgeAnimationView != null
+                && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
+            mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
     }
 
