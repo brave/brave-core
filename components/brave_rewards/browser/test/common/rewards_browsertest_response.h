@@ -67,7 +67,6 @@ class RewardsBrowserTestResponse {
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
-  std::string uphold_addresses_resp_;
   std::string user_funds_balance_resp_;
 
   std::vector<Request> requests_;

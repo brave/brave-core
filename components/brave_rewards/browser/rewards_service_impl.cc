@@ -3186,7 +3186,6 @@ void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
   new_wallet.SetStringKey("withdraw_url", wallet->withdraw_url);
   new_wallet.SetStringKey("account_url", wallet->account_url);
   new_wallet.SetStringKey("login_url", wallet->login_url);
-  new_wallet.SetStringKey("anon_address", wallet->anon_address);
 
   new_wallets.SetKey(wallet_type, std::move(new_wallet));
 
@@ -3255,11 +3254,6 @@ RewardsServiceImpl::GetExternalWallets() {
       wallet->login_url = *login_url;
     }
 
-    auto* anon_address = it.second.FindStringKey("anon_address");
-    if (anon_address) {
-      wallet->anon_address = *anon_address;
-    }
-
     wallets.insert(std::make_pair(it.first, std::move(wallet)));
   }
 
@@ -3285,7 +3279,6 @@ void RewardsServiceImpl::OnGetExternalWallet(
     external->user_name = wallet->user_name;
     external->account_url = wallet->account_url;
     external->login_url = wallet->login_url;
-    external->anon_address = wallet->anon_address;
   }
 
   std::move(callback).Run(static_cast<int>(result), std::move(external));

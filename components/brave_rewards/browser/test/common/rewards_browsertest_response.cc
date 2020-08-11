@@ -198,10 +198,6 @@ void RewardsBrowserTestResponse::LoadMocks() {
       path.AppendASCII("uphold_commit_resp.json"),
       &uphold_commit_resp_));
 
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("uphold_addresses_resp.json"),
-      &uphold_addresses_resp_));
-
   std::vector<std::string> publisher_keys {
       "bumpsmack.com",
       "duckduckgo.com",
@@ -340,11 +336,6 @@ void RewardsBrowserTestResponse::Get(
         "commit",
         base::CompareCase::INSENSITIVE_ASCII)) {
         *response = uphold_commit_resp_;
-    } else if (base::EndsWith(
-        url,
-        "addresses",
-        base::CompareCase::INSENSITIVE_ASCII)) {
-      *response = uphold_addresses_resp_;
     } else {
       *response = rewards_browsertest_util::GetUpholdCard(
           external_balance_,
