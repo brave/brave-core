@@ -13,7 +13,6 @@ extern const char kHideBraveRewardsButton[];
 extern const char kBraveRewardsEnabled[];
 extern const char kRewardsNotifications[];
 extern const char kRewardsNotificationTimerInterval[];
-extern const char kRewardsBackupNotificationFrequency[];
 extern const char kRewardsBackupNotificationInterval[];
 extern const char kRewardsBackupSucceeded[];
 extern const char kRewardsUserHasFunded[];

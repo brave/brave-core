@@ -462,27 +462,49 @@ void RewardsServiceImpl::OnResult(
 
 void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
   PrefService* pref_service = profile_->GetPrefs();
-  bool user_has_funded = pref_service->GetBoolean(prefs::kRewardsUserHasFunded);
-  bool backup_succeeded = pref_service->GetBoolean(
-      prefs::kRewardsBackupSucceeded);
-  if (user_has_funded && !backup_succeeded) {
-    base::Time now = base::Time::Now();
-    base::Time boot_timestamp = base::Time::FromDoubleT(boot_stamp);
-    base::TimeDelta backup_notification_frequency =
-        pref_service->GetTimeDelta(prefs::kRewardsBackupNotificationFrequency);
-    base::TimeDelta backup_notification_interval =
-        pref_service->GetTimeDelta(prefs::kRewardsBackupNotificationInterval);
-    base::TimeDelta elapsed = now - boot_timestamp;
-    if (elapsed > backup_notification_interval) {
-      base::TimeDelta next_backup_notification_interval =
-          backup_notification_interval + backup_notification_frequency;
-      pref_service->SetTimeDelta(prefs::kRewardsBackupNotificationInterval,
-                                 next_backup_notification_interval);
-      RewardsNotificationService::RewardsNotificationArgs args;
-      notification_service_->AddNotification(
-          RewardsNotificationService::REWARDS_NOTIFICATION_BACKUP_WALLET, args,
-          "rewards_notification_backup_wallet");
+  const base::TimeDelta interval = pref_service->GetTimeDelta(
+      prefs::kRewardsBackupNotificationInterval);
+
+  // Don't display notification if it has already been shown or if
+  // the balance is zero.
+  if (interval.is_zero() ||
+      !pref_service->GetBoolean(prefs::kRewardsUserHasFunded)) {
+    return;
+  }
+
+  auto clear_backup_interval = [pref_service]() {
+    pref_service->SetTimeDelta(
+        prefs::kRewardsBackupNotificationInterval,
+        base::TimeDelta());
+  };
+
+  // Don't display notification if a backup has already succeeded.
+  if (pref_service->GetBoolean(prefs::kRewardsBackupSucceeded)) {
+    clear_backup_interval();
+    return;
+  }
+
+  // Don't display notification if user has a verified wallet.
+  for (auto& pair : GetExternalWallets()) {
+    DCHECK(pair.second);
+    switch (pair.second->status) {
+      case ledger::WalletStatus::VERIFIED:
+      case ledger::WalletStatus::DISCONNECTED_VERIFIED:
+        clear_backup_interval();
+        return;
+      default:
+        break;
     }
+  }
+
+  const base::Time boot_time = base::Time::FromDoubleT(boot_stamp);
+  const base::TimeDelta elapsed = base::Time::Now() - boot_time;
+  if (elapsed > interval) {
+    clear_backup_interval();
+    notification_service_->AddNotification(
+        RewardsNotificationService::REWARDS_NOTIFICATION_BACKUP_WALLET,
+        RewardsNotificationService::RewardsNotificationArgs(),
+        "rewards_notification_backup_wallet");
   }
 }
 
@@ -821,9 +843,11 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
     ready_->Signal();
   }
 
-  if (result == ledger::Result::WALLET_CREATED) {
+  if (is_wallet_initialized_) {
     StartNotificationTimers(true);
+  }
 
+  if (result == ledger::Result::WALLET_CREATED) {
     // Record P3A:
     RecordWalletBalanceP3A(true, true, 0);
 #if BUILDFLAG(BRAVE_ADS_ENABLED)

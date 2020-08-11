@@ -13,8 +13,6 @@ const char kBraveRewardsEnabled[] = "brave.rewards.enabled";
 const char kRewardsNotifications[] = "brave.rewards.notifications";
 const char kRewardsNotificationTimerInterval[]=
     "brave.rewards.notification_timer_interval";
-const char kRewardsBackupNotificationFrequency[] =
-    "brave.rewards.backup_notification_frequency";
 const char kRewardsBackupNotificationInterval[] =
     "brave.rewards.backup_notification_interval";
 const char kRewardsBackupSucceeded[] = "brave.rewards.backup_succeeded";
