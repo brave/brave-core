@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index 13a3bea6d34ce460773df7f628c01ea2ca15f371..d2edb7dc5e55ed05368a268dbfbd76578a6e7f0f 100644
+index faf600a3073ad96cbe05b8b2f48ea44d7acb7cff..d75995327bb809cccc99a3c4c11b641e9a5b21a0 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -34,7 +34,9 @@ by a child template that "extends" this file.
@@ -12,7 +12,7 @@ index 13a3bea6d34ce460773df7f628c01ea2ca15f371..d2edb7dc5e55ed05368a268dbfbd7657
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
      <uses-permission-sdk-23 android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
  
-@@ -43,9 +45,13 @@ by a child template that "extends" this file.
+@@ -44,9 +46,13 @@ by a child template that "extends" this file.
      {% if target_sdk_version|int > 27 or target_sdk_version == "Q" %}
          <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
      {% endif %}
@@ -26,7 +26,7 @@ index 13a3bea6d34ce460773df7f628c01ea2ca15f371..d2edb7dc5e55ed05368a268dbfbd7657
      <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
      <uses-permission android:name="android.permission.NFC"/>
      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-@@ -53,7 +59,9 @@ by a child template that "extends" this file.
+@@ -54,7 +60,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.READ_SYNC_STATS"/>
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -36,7 +36,7 @@ index 13a3bea6d34ce460773df7f628c01ea2ca15f371..d2edb7dc5e55ed05368a268dbfbd7657
      <uses-permission-sdk-23 android:name="android.permission.USE_BIOMETRIC"/>
      <uses-permission-sdk-23 android:name="android.permission.USE_FINGERPRINT"/>
      <uses-permission android:name="android.permission.VIBRATE"/>
-@@ -100,7 +108,9 @@ by a child template that "extends" this file.
+@@ -101,7 +109,9 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
@@ -46,7 +46,7 @@ index 13a3bea6d34ce460773df7f628c01ea2ca15f371..d2edb7dc5e55ed05368a268dbfbd7657
  
      {% block extra_uses_permissions %}
      {% endblock %}
-@@ -126,6 +136,7 @@ by a child template that "extends" this file.
+@@ -127,6 +137,7 @@ by a child template that "extends" this file.
      <!-- Set android:largeHeap to "true" to allow more than the default
           Java heap limit (32Mb on Nexus S, 48Mb on Xoom). -->
      <application android:name="{% block application_name %}org.chromium.chrome.browser.ChromeApplication{% endblock %}"
@@ -54,7 +54,7 @@ index 13a3bea6d34ce460773df7f628c01ea2ca15f371..d2edb7dc5e55ed05368a268dbfbd7657
          android:icon="@drawable/ic_launcher"
          android:roundIcon="@drawable/ic_launcher_round"
          android:label="{% block application_label %}@string/app_name{% endblock %}"
-@@ -176,6 +187,7 @@ by a child template that "extends" this file.
+@@ -177,6 +188,7 @@ by a child template that "extends" this file.
          <!-- ARCore APK integration -->
          <!-- This tag indicates that this application optionally uses ARCore. -->
          <meta-data android:name="com.google.ar.core" android:value="optional" />
@@ -62,7 +62,7 @@ index 13a3bea6d34ce460773df7f628c01ea2ca15f371..d2edb7dc5e55ed05368a268dbfbd7657
          {% endif %}
  
          <!-- Cast support -->
-@@ -1165,6 +1177,7 @@ by a child template that "extends" this file.
+@@ -1176,6 +1188,7 @@ by a child template that "extends" this file.
          </activity>
          {% endif %}
  

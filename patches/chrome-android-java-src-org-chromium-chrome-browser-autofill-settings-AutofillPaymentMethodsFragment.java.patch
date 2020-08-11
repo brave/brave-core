@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
-index 6bc1a9c4d0510f9b36c2ce100ab51d6daceb8f9d..e22bfaa55100caef0a9140f0c13df0b1bd4f7a42 100644
+index 0e938171032a9bc9f0b9f6e89c9dc77f5b4ccf0b..660cac79ba2814f2b1056f66bbd03f13c3360129 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment.java
 @@ -30,7 +30,7 @@ import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;

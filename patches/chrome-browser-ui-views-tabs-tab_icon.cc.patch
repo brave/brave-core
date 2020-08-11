@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_icon.cc b/chrome/browser/ui/views/tabs/tab_icon.cc
-index f3bcff381e9bd61be5e5c471293a6716e06e0db1..61dcae48074564382cfd4942c0046f3cdd0c3733 100644
+index 0c9e5b98b3ef5acdb3dc33f3c572d42bc37bc332..eec05b31aeb2a489bb1f8636a5be28b976d24d9e 100644
 --- a/chrome/browser/ui/views/tabs/tab_icon.cc
 +++ b/chrome/browser/ui/views/tabs/tab_icon.cc
 @@ -356,7 +356,7 @@ void TabIcon::SetIcon(const GURL& url, const gfx::ImageSkia& icon) {

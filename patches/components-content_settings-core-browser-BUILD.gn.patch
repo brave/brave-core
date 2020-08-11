@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/BUILD.gn b/components/content_settings/core/browser/BUILD.gn
-index 6d543a430d7e15fd0c6668bb40459986d9754b47..12baf52d3d8f17ec54206390405d869cd0380d24 100644
+index 7194ee1824656d519aa86351908f26b3f671af7c..39346ec2fc636fc165cf8106c2eb79ee0b9820f5 100644
 --- a/components/content_settings/core/browser/BUILD.gn
 +++ b/components/content_settings/core/browser/BUILD.gn
-@@ -63,6 +63,7 @@ jumbo_static_library("browser") {
+@@ -63,6 +63,7 @@ static_library("browser") {
      "//services/preferences/public/cpp",
      "//url",
    ]

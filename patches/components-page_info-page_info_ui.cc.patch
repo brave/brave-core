@@ -1,8 +1,8 @@
 diff --git a/components/page_info/page_info_ui.cc b/components/page_info/page_info_ui.cc
-index a37312090ef008e9f29bfcc9284d6841a918997b..d470315b4a17f74de4f826cd73da1731122e2efa 100644
+index e1f09ff7755a1b1d56c1217a412965a39c695873..d28508bd9b70e1d358a0fd2b57d982a738acd135 100644
 --- a/components/page_info/page_info_ui.cc
 +++ b/components/page_info/page_info_ui.cc
-@@ -554,6 +554,7 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
+@@ -555,6 +555,7 @@ const gfx::ImageSkia PageInfoUI::GetPermissionIcon(const PermissionInfo& info,
                                                     SkColor related_text_color) {
    const gfx::VectorIcon* icon = &gfx::kNoneIcon;
    switch (info.type) {
