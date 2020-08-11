@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.chrome.browser.settings.BraveStatsPreferences;
 
 import java.util.HashMap;
 
@@ -53,6 +54,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
     private static final String PREF_RATE_BRAVE = "rate_brave";
+    private static final String PREF_BRAVE_STATS = "brave_stats";
 
     private final HashMap<String, Preference> mRemovedPreferences = new HashMap<>();
 
@@ -184,6 +186,8 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         p.setSummary(ClosingAllTabsClosesBravePreference.getPreferenceSummary());
         p = findPreference(PREF_USE_CUSTOM_TABS);
         p.setSummary(BraveCustomTabsPreference.getPreferenceSummary());
+        p = findPreference(PREF_BRAVE_STATS);
+        p.setSummary(BraveStatsPreferences.getPreferenceSummary());
     }
 
     private void overrideChromiumPreferences() {

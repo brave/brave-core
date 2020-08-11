@@ -133,17 +133,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public long insertStats(BraveStatsTable braveStat) {
         // if (!isAdsTrackerAlreadyAdded(braveStat)) {
-            SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
-            ContentValues values = new ContentValues();
-            values.put(BraveStatsTable.COLUMN_URL, braveStat.getUrl());
-            values.put(BraveStatsTable.COLUMN_DOMAIN, braveStat.getDomain());
-            values.put(BraveStatsTable.COLUMN_STAT_TYPE, braveStat.getStatType());
-            values.put(BraveStatsTable.COLUMN_STAT_SITE, braveStat.getStatSite());
-            values.put(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN, braveStat.getStatSiteDomain());
-            values.put(BraveStatsTable.COLUMN_TIMESTAMP, braveStat.getTimestamp());
+        ContentValues values = new ContentValues();
+        values.put(BraveStatsTable.COLUMN_URL, braveStat.getUrl());
+        values.put(BraveStatsTable.COLUMN_DOMAIN, braveStat.getDomain());
+        values.put(BraveStatsTable.COLUMN_STAT_TYPE, braveStat.getStatType());
+        values.put(BraveStatsTable.COLUMN_STAT_SITE, braveStat.getStatSite());
+        values.put(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN, braveStat.getStatSiteDomain());
+        values.put(BraveStatsTable.COLUMN_TIMESTAMP, braveStat.getTimestamp());
 
-            return  db.insert(BraveStatsTable.TABLE_NAME, null, values);
+        return  db.insert(BraveStatsTable.TABLE_NAME, null, values);
         // }
         // return -1;
     }
@@ -152,8 +152,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String sql = "SELECT * FROM "
                      + BraveStatsTable.TABLE_NAME
-                     + " WHERE " + BraveStatsTable.COLUMN_STAT_SITE + " = '" + braveStat.getStatSite()+"'"
-                     + " AND "+BraveStatsTable.COLUMN_URL+" = '"+braveStat.getUrl()+"'";
+                     + " WHERE " + BraveStatsTable.COLUMN_STAT_SITE + " = '" + braveStat.getStatSite() + "'"
+                     + " AND " + BraveStatsTable.COLUMN_URL + " = '" + braveStat.getUrl() + "'";
 
         Log.e("NTP", sql);
 
@@ -278,6 +278,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return braveStats;
     }
 
+    public void clearStatsTable() {
+        String selectQuery = "DELETE FROM " + BraveStatsTable.TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(selectQuery);
+    }
+
     public long insertSavedBandwidth(SavedBandwidthTable savedBandwidthTable) {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
@@ -320,5 +326,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
         return sum;
+    }
+
+    public void clearSavedBandwidthTable() {
+        String selectQuery = "DELETE FROM " + SavedBandwidthTable.TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(selectQuery);
     }
 }
