@@ -69,6 +69,13 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
       int* response_status_code,
       std::string* response,
       std::map<std::string, std::string>* headers) {
+    if (promotion_gone_) {
+      if (url.find("/v1/promotions/") != std::string::npos && method == 2) {
+        *response_status_code = 410;
+        return;
+      }
+    }
+
     response_->Get(
         url,
         method,
@@ -76,7 +83,7 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
         response);
   }
 
-  double ClaimPromotion(bool use_panel) {
+  double ClaimPromotion(bool use_panel, const bool should_finish = true) {
     // Wait for promotion to initialize
     promotion_->WaitForPromotionInitialization();
 
@@ -105,6 +112,11 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
         contents,
         "[data-test-id=\"captcha-triangle\"]",
         "[data-test-id=\"captcha-drop\"]");
+
+    if (!should_finish) {
+      promotion_->WaitForPromotionFinished(false);
+      return 0.0;
+    }
 
     promotion_->WaitForPromotionFinished();
 
@@ -141,10 +153,15 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     return 30;
   }
 
+  content::WebContents* contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
+  bool promotion_gone_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaSettingsPage) {
@@ -172,6 +189,27 @@ IN_PROC_BROWSER_TEST_F(
       rewards_browsertest_helper::OpenRewardsPopup(browser()),
       "[data-test-id=notification-close]",
       false);
+}
+
+IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
+  promotion_gone_ = true;
+  rewards_browsertest_helper::EnableRewards(browser());
+
+  promotion_->WaitForPromotionInitialization();
+  ClaimPromotion(true, false);
+
+  rewards_browsertest_helper::LoadURL(
+      browser(),
+      rewards_browsertest_util::GetRewardsInternalsUrl());
+
+  rewards_browsertest_util::WaitForElementThenClick(
+      contents(),
+      "#internals-tabs > div > div:nth-of-type(3)");
+
+  rewards_browsertest_util::WaitForElementToContain(
+      contents(),
+      "#internals-tabs",
+      "Over");
 }
 
 }  // namespace rewards_browsertest
