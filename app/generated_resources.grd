@@ -1252,7 +1252,7 @@ are declared in tools/grit/grit_rule.gni.
       <message name="IDS_HELP_MENU" desc="The text label of the Help sub-menu item in the wrench menu">
         H&amp;elp
       </message>
-      <message name="IDS_MANAGED" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users">
+      <message name="IDS_MANAGED" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users" formatter_data="android_java">
         Managed by your organization
       </message>
       <message name="IDS_MANAGED_BY" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users">
@@ -4751,6 +4751,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Manage passwords
         </message>
       </if>
+      <if expr="is_android">
+        <message name="IDS_SETTINGS_PASSWORDS_ANDROID_APP" desc="Label for the app a password is for when displaying a credential and the real app display name could not be obtained.">
+          App (<ph name="ANDROID_PACKAGE_NAME">$1<ex>com.netflix.mediaclient</ex></ph>)
+        </message>
+      </if>
       <!-- Password manager onboarding strings -->
       <message name="IDS_PASSWORD_MANAGER_ONBOARDING_TITLE_A" desc="The title shown in the password manager onboarding dialog.">
         Save your passwords?
@@ -5499,6 +5504,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_TOOLTIP_FIND" desc="The tooltip for the find button">
         Find
       </message>
+      <message name="IDS_TOOLTIP_TAB_SEARCH" desc="The tooltip for the Tab Search bubble.">
+        Tab search
+      </message>
 
       <!-- Strings for intent picker -->
       <if expr="not is_android">
@@ -5579,6 +5587,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_ACCNAME_ZOOM_SET_DEFAULT" desc="The accessible description of the Reset button in the Zoom bubble.">
         Reset to default zoom level
+      </message>
+      <message name="IDS_ACCNAME_TAB_SEARCH" desc="The accessible name for the Tab Search bubble.">
+        Tab search
       </message>
 
       <!-- Clipboard permission -->
@@ -5868,6 +5879,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_ALL_PASSWORDS_LINK" desc="The text of the link in the password sheet that opens the password management section.">
           Manage passwords
         </message>
+        <message name="IDS_PASSWORD_MANAGER_ACCESSORY_USE_OTHER_PASSWORD" desc="The text of the link in the password sheet that opens a bottom sheet which shows all saved passwords from any origin.">
+          Use other password
+        </message>
         <message name="IDS_PASSWORD_MANAGER_ACCESSORY_GENERATE_PASSWORD_BUTTON_TITLE" desc="Text for the button used to generate a password.">
           Suggest strong password
         </message>
@@ -5970,8 +5984,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_FEEDBACK_USER_EMAIL_LABEL" desc="Label showing the e-mail address that will be reported">
           Email
         </message>
-        <message name="IDS_FEEDBACK_ANONYMOUS_EMAIL_OPTION" desc="Option in the drop down menu to let the user send the feedback report anonymously.">
-          Report anonymously
+        <message name="IDS_FEEDBACK_ANONYMOUS_EMAIL_OPTION" desc="Option in the drop down menu to let the user send the feedback report without attaching their email.">
+          Do not include email address
         </message>
         <message name="IDS_FEEDBACK_SCREENSHOT_LABEL" desc="Label for the screenshot field if current screenshots are being shown">
           Include this screenshot and titles of open tabs
@@ -6650,7 +6664,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Send feedback
       </message>
       <!-- Killed Tab Strings -->
-      <if expr="chromeos">
+      <if expr="chromeos or lacros">
         <message name="IDS_KILLED_TAB_BY_OOM_MESSAGE" desc="The message displayed on the killed tab page when the page was killed by an out of memory error.">
           Either Brave ran out of memory or the process for the webpage was terminated for some other reason.  To continue, reload or go to another page.
         </message>
@@ -9279,6 +9293,14 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Printer registration has timed out. In order to register a printer, you must confirm registration on the printer.
       </message>
 
+      <!--Cloud printing deprecation messages for chrome://devices & Print Preview-->
+      <message name="IDS_CLOUD_PRINTING_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that cloud printing will no longer be supported.">
+        Cloud printing will no longer be supported after December 31. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a is="action-link" href="" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+      </message>
+      <message name="IDS_CLOUD_PRINTING_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that cloud printing will no longer be supported.">
+        Cloud printing will no longer be supported after December 31. Contact your administrator.
+      </message>
+
       <!--Printer registration message for local discovery and Print Preview-->
       <message name="IDS_CLOUD_PRINT_REGISTER_PRINTER_INFORMATION" desc="Information about registering printers with Google Cloud Print shown to the user before they confirm registration.">
         Documents are <ph name="BEGIN_LINK_HELP">&lt;a is="action-link" href="https://support.google.com/cloudprint/answer/2541843" target="_blank"&gt;</ph>sent to Brave<ph name="END_LINK_HELP">&lt;/a&gt;</ph> to prepare them for printing. View, edit and manage your printers and printer history on the <ph name="BEGIN_LINK_DASHBOARD">&lt;a is="action-link" href="https://www.google.com/cloudprint#jobs" target="_blank"&gt;</ph>Google Cloud Print dashboard<ph name="END_LINK_DASHBOARD">&lt;/a&gt;</ph>.
@@ -10347,20 +10369,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEEP_SCANNING_TIMED_OUT_DIALOG_OPEN_NOW_BUTTON" desc="The text on the open now button in tab modal dialog when deep scanning times out.">
       Open now
-    </message>
-
-
-    <!-- SMS strings -->
-    <message name="IDS_SMS_INFOBAR_TITLE" desc="Title shown when Brave is waiting for an SMS on the user's behalf">
-      Verify your phone number
-    </message>
-
-    <message name="IDS_SMS_INFOBAR_STATUS_SMS_RECEIVED" desc="Message shown when Brave has received an SMS on the user's behalf">
-      <ph name="ONE_TIME_CODE">$1<ex>123</ex></ph> is your code for <ph name="ORIGIN">$2<ex>example.com</ex></ph>
-    </message>
-
-    <message name="IDS_SMS_INFOBAR_BUTTON_OK" desc="Text for the button shown when Brave has received an SMS on the user's behalf">
-      Verify
     </message>
 
     <!-- App uninstall prompt title -->

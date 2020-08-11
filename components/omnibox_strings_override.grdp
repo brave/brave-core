@@ -14,10 +14,10 @@
   <if expr="is_ios">
     </if>
   <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="The button text contents to suggest pedal action, launch private.">
-    Open Private Window
+    Open Private window
   </message>
   <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, launch private.">
-    Open new Brave private window
+    Open a new Private window to browse privately
   </message>
 
   </grit-part>

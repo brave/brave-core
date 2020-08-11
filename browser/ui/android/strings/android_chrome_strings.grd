@@ -908,19 +908,34 @@ Your Brave account may have other forms of browsing history like searches and ac
         Enhanced Protection is on
       </message>
       <message name="IDS_SAFETY_CHECK_SAFE_BROWSING_DISABLED_BY_ADMIN" desc="Text to display when Safe Browsing is disabled by admin.">
-        Your administrator has turned off Safe Browsing
+        Turned off by your administrator
+      </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_SAFE" desc="Text to display when no passwords are compromised.">
+        No compromised passwords found
       </message>
       <message name="IDS_SAFETY_CHECK_PASSWORDS_NO_PASSWORDS" desc="Text to display when no passwords are saved.">
         No saved passwords
       </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR" desc="Text to display when the password check has an unknown error.">
+        Brave can’t check your passwords
+      </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR_OFFLINE" desc="Text to display when the password check has an unknown error.">
+        Offline. Brave can’t check your passwords.
+      </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR_SIGNED_OUT" desc="Text to display when the password check is unable to run because the usere is signed out.">
+        Sign in to your Brave account to check your passwords
+      </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_ERROR_QUOTA_LIMIT" desc="Text to display when the password check hits the daily quota limit.">
+        Brave couldn’t check all passwords
+      </message>
       <message name="IDS_SAFETY_CHECK_UPDATES_UPDATED" desc="Text to display when the updates check confirms that the latest version is already installed.">
-        You are running the latest version of Brave
+        Brave is up to date
       </message>
       <message name="IDS_SAFETY_CHECK_UPDATES_OUTDATED" desc="Text to display when the updates check detects a new version.">
-        A newer version of Brave is available. Tap this element to go to the Play Store.
+        Brave is out of date
       </message>
       <message name="IDS_SAFETY_CHECK_UPDATES_OFFLINE" desc="Text to display when the updates check failed because of no connectivity.">
-        Brave can't check for updates. Try checking your internet connection.
+        Offline. Brave can’t check for updates.
       </message>
       <message name="IDS_SAFETY_CHECK_UPDATES_ERROR" desc="Text to display when the updates check failed for some reason.">
         Brave can’t check for updates
@@ -947,12 +962,12 @@ Your Brave account may have other forms of browsing history like searches and ac
         other {Checked # days ago}}
       </message>
 
-       <!-- Security preferences -->
-      <message name="IDS_PREFS_SECURITY_TITLE" desc="Title for the Security preferences. [CHAR-LIMIT=32]">
-        Security
+       <!-- Safe Browsing preferences -->
+      <message name="IDS_PREFS_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing preferences. [CHAR-LIMIT=32]">
+        Safe Browsing
       </message>
-      <message name="IDS_PREFS_SECURITY_SUMMARY" desc="Summary for the Security preferences.">
-        Safe Browsing (protection from dangerous sites) and other security settings
+      <message name="IDS_PREFS_SAFE_BROWSING_SUMMARY" desc="Summary for the Safe Browsing preferences.">
+        <ph name="SAFE_BROWSING_MODE">%1$s<ex>Enhanced protection</ex></ph> is on
       </message>
       <message name="IDS_PREFS_SECTION_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing section. [CHAR-LIMIT=32]">
         Safe Browsing
@@ -1011,6 +1026,17 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_EXTENDED_REPORTING_SUMMARY" desc="Summary for Safe Browsing extended reporting.">
         Sends URLs of some pages you visit, limited system information, and some page content to Brave, to help discover new threats and protect everyone on the web.
+      </message>
+
+      <!-- Safe Browsing no protection confirmation dialog -->
+      <message name="IDS_SAFE_BROWSING_NO_PROTECTION_CONFIRMATION_DIALOG_TITLE" desc="Title for Safe Browsing no protection confirmation dialog.">
+        Turn off Safe Browsing?
+      </message>
+      <message name="IDS_SAFE_BROWSING_NO_PROTECTION_CONFIRMATION_DIALOG_MESSAGE" desc="Message for Safe Browsing no protection confirmation dialog.">
+        Safe Browsing protects you against deceptive websites. If you turn it off, be extra careful when browsing, especially before entering passwords.
+      </message>
+      <message name="IDS_SAFE_BROWSING_NO_PROTECTION_CONFIRMATION_DIALOG_CONFIRM" desc="Message for Safe Browsing no protection confirmation button.">
+        Turn off
       </message>
 
       <!-- Accessibility preferences -->
@@ -1655,6 +1681,26 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Update <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph> to start sync
       </message>
 
+      <!-- Sync error card button strings -->
+      <message name="IDS_ANDROID_SYNC_DISABLED_ERROR_CARD_BUTTON" desc="Button text for android sync disabled error in sync error cards.">
+        Enable Android system sync
+      </message>
+      <message name="IDS_CLIENT_OUT_OF_DATE_ERROR_CARD_BUTTON" desc="Button text for client out of date error in sync error cards.">
+          Update <ph name="PRODUCT_NAME">%1$s<ex>Brave</ex></ph>
+      </message>
+      <message name="IDS_PASSPHRASE_REQUIRED_ERROR_CARD_BUTTON" desc="Button text for passphrase required error in sync error cards.">
+        Enter passphrase
+      </message>
+      <message name="IDS_AUTH_ERROR_CARD_BUTTON" desc="Button text for auth error in sync error cards.">
+        Sign in again
+      </message>
+      <message name="IDS_SYNC_SETUP_INCOMPLETE_ERROR_CARD_CONFIRM_BUTTON" desc="Positive button text for advanced sync interrupted error in sync error cards.">
+        Confirm sync
+      </message>
+      <message name="IDS_TRUSTED_VAULT_ERROR_CARD_BUTTON" desc="Button text for trusted vault error in sync error cards.">
+        Unlock with Screen Lock
+      </message>
+
       <!-- Sync error strings -->
       <message name="IDS_SYNC_ERROR_GENERIC" desc="Sync error string for generic error. [CHAR-LIMIT=80]">
         Sync has stopped working
@@ -1770,8 +1816,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_DOWNLOAD_SCHEDULED_ON_WIFI" desc="Label describing that the download was scheduled to start on Wi-Fi.">
         Download will start on Wi-Fi.
       </message>
-      <message name="IDS_DOWNLOAD_SCHEDULED_ON_DATE" desc="Label describing that the download was scheduled to start at a later date or time.">
-        Download will start on <ph name="date">%1$s<ex>Feb 28</ex></ph>.
+      <message name="IDS_DOWNLOAD_SCHEDULED_ON_DATE" desc="Label describing that the download was scheduled to start at a later date.">
+        Download will start on <ph name="date">%1$s<ex>Feb 28 2020</ex></ph>.
+      </message>
+      <message name="IDS_DOWNLOAD_SCHEDULED_ON_TIME" desc="Label describing that the download was scheduled to start at a later time.">
+        Download will start at <ph name="time">%1$s<ex>8:30PM</ex></ph>.
       </message>
 
       <!-- Inline Update Infobar -->

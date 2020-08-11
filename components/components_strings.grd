@@ -311,6 +311,7 @@
       <part file="security_interstitials_strings.grdp" />
       <part file="security_state_strings.grdp" />
       <part file="send_tab_to_self_strings.grdp" />
+      <part file="sms_strings.grdp" />
       <part file="ssl_errors_strings.grdp" />
       <part file="sync_ui_strings.grdp" />
       <part file="translate_strings.grdp" />
@@ -318,11 +319,14 @@
       <part file="undo_strings.grdp" />
       <part file="version_ui_strings.grdp" />
 
-      <if expr="not is_android">
+      <if expr="not is_android and not is_ios">
         <part file="management_strings.grdp" />
       </if>
       <if expr="is_android">
         <part file="android_system_error_page_strings.grdp" />
+      </if>
+      <if expr="is_ios">
+        <part file="management_ios_strings.grdp" />
       </if>
 
       <!-- Generic terms -->

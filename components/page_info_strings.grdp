@@ -46,17 +46,20 @@
   <message name="IDS_PAGE_INFO_SAFETY_TIP_BAD_REPUTATION_DESCRIPTION" desc="Body of message to display in the page info bubble when you are viewing a page that triggered a safety tip.">
     This site could be fake or fraudulent. Brave recommends leaving now.
   </message>
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_BAD_REPUTATION_LEAVE_BUTTON" desc="Text of button to leave a suspicious page. Shown on the safety tip page info bubble.">
+    Leave site
+  </message>
   <message name="IDS_PAGE_INFO_SAFETY_TIP_MORE_INFO_LINK" desc="Text of link to Help Center page on safety tip page info bubble.">
     Learn more
   </message>
-  <message name="IDS_PAGE_INFO_SAFETY_TIP_LEAVE_BUTTON" desc="Text of button to leave a suspicious page shown on the safety tip page info bubble.">
-    Leave site
+  <message name="IDS_PAGE_INFO_SAFETY_TIP_LOOKALIKE_LEAVE_BUTTON" desc="Text of button to leave a lookalike site. Shown on the safety tip page info bubble. Answers the question 'Did you mean example.com?'.">
+    Yes, continue
   </message>
   <message name="IDS_PAGE_INFO_SAFETY_TIP_LOOKALIKE_TITLE" desc="Title of Safety Tip infobar on a domain that looks like another domain.">
     Did you mean <ph name="LOOKALIKE_DOMAIN">$1<ex>google.com</ex></ph>?
   </message>
   <message name="IDS_PAGE_INFO_SAFETY_TIP_LOOKALIKE_DESCRIPTION" desc="Body of a warning when the user visits a page that triggered a Safety Tip because the domain looked like another domain.">
-    This site's name looks similar to <ph name="LOOKALIKE_DOMAIN">$1<ex>google.com</ex></ph>. Attackers sometimes mimic sites by making hard-to-see changes to the web address.
+    Attackers sometimes mimic sites by making hard-to-see changes to the web address.
   </message>
 
   <!-- Viewing file strings -->
@@ -311,6 +314,9 @@
     </message>
     <message name="IDS_PAGE_INFO_TYPE_WINDOW_PLACEMENT" desc="The label used for the Window Placement permission controls in the Page Info popup.">
       Window placement
+    </message>
+    <message name="IDS_PAGE_INFO_TYPE_FONT_ACCESS" desc="The label used for the Font Access permission controls in the Page Info popup.">
+      Local font access
     </message>
     <message name="IDS_PAGE_INFO_TYPE_HID" desc="The label used for the HID permission controls in the Page Info popup.">
       HID devices

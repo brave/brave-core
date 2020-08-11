@@ -19,14 +19,13 @@
   <message name="IDS_SETTINGS_SECONDARY_USER_BANNER" desc="Banner displayed in settings page when the user is secondary in a multi-profile session.">
     Some settings belonging to <ph name="PRIMARY_EMAIL">$1<ex>john@google.com</ex></ph> are being shared with you. These settings only affect your account when using multiple sign-in.
   </message>
-  <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_DAYS" desc="Banner displayed in OS settings page in case update is required by policy but device has reached end-of-life and the days remaining to return the device back to the enterprise is greater than one and less than seven.">
-      <ph name="DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this device within <ph name="DAYS_COUNT">$2<ex>10</ex></ph> days.<ph name="LINK_BEGIN">&lt;a target="_blank" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
-  </message>
-  <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_LAST_DAY" desc="Banner displayed in OS settings page in case update is required by policy but device has reached end-of-life and it is the last day to return the device back to the enterprise.">
-      <ph name="DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this device today.<ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_DAYS" desc="Banner displayed in OS settings page in case update is required by policy but device has reached end-of-life and the days remaining to return the device back to the enterprise is less than seven.">
+    {NUM_DAYS, plural,
+      =1 {<ph name="DOMAIN">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> today.<ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}
+      other {<ph name="DOMAIN">{1}<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">{2}<ex>Bravebook</ex></ph> within {NUM_DAYS} days.<ph name="LINK_BEGIN">&lt;a target="_blank" href="{3}<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>}}
   </message>
   <message name="IDS_SETTINGS_UPDATE_REQUIRED_EOL_BANNER_ONE_WEEK" desc="Banner displayed in OS settings page in case update is required by policy but device has reached end-of-life and the days remaining to return the device back to the enterprise is equal to seven.">
-      <ph name="DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this device within 1 week.<ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
+    <ph name="DOMAIN">$1<ex>example.com</ex></ph> requires you to back up your data and return this <ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> within 1 week.<ph name="LINK_BEGIN">&lt;a target="_blank" href="$3<ex>https://google.com/</ex>"&gt;</ph>See details<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
 
   <!-- Settings Search Box -->
@@ -243,6 +242,12 @@
   <message name="IDS_OS_SETTINGS_LANGUAGES_AND_INPUT_PAGE_TITLE" desc="Name of the OS settings page which displays language method preferences.">
     Languages and input
   </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PAGE_TITLE" translateable="false" desc="A page under “Languages and input” section in the OS settings page that users can set system display language, web content language fallback and translation preference.">
+    Languages
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE" translateable="false" desc="A page under “Languages and input” section in the OS settings page that users can add, remove and manage input methods.">
+    Input
+  </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_LIST_TITLE" desc="Title for the list of the user's preferred written languages.">
     Languages
   </message>
@@ -284,30 +289,27 @@
     System text is shown in this language
   </message>
 
-  <!-- Smart Inputs Section -->
-  <message name="IDS_SETTINGS_SMART_INPUTS_TITLE" desc="The label for the smart inputs section, which contains features to help users type faster or more expressively such as suggesting personal information or suggesting emoji to use.">
-    Smart inputs
+  <!-- Suggestions Section -->
+  <message name="IDS_SETTINGS_SUGGESTIONS_TITLE" desc="The label for the suggestions section, which contains features to help users type faster or more expressively such as suggesting personal information or suggesting emoji to use.">
+    Suggestions
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_PERSONAL_INFO_TITLE" desc="The label for personal information suggestion section.">
+  <message name="IDS_SETTINGS_SUGGESTIONS_PERSONAL_INFO_TITLE" desc="The label for personal information suggestion section. The feature shows inline suggestions for the users’s name, address, and phone number.">
     Personal information suggestions
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_PERSONAL_INFO_DESCRIPTION" desc="The description for personal information suggestion section.">
-    Personal information suggestions help you write faster with suggestions such as your name, address or phone number. Only you see your own private, personalized suggestions for your account.
+  <message name="IDS_SETTINGS_SUGGESTIONS_PERSONAL_INFO_HELP_TOOLTIP" desc="The help icon's tooltip for personal information suggestion section to inform users of the privacy of the suggestions.">
+    Personal suggestions are only shown on your account
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_SHOW_PERSONAL_INFO" desc="The label for the toggle button controlling showing personal information suggestions.">
-    Show personal information suggestions
+  <message name="IDS_SETTINGS_SUGGESTIONS_PERSONAL_INFO_DESCRIPTION" desc="The description for personal information suggestion section.">
+    Write faster with inline suggestions for your name, address, or phone number
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_MANAGE_PERSONAL_INFO" desc="The label for opening Brave's browser settings page for managing personal addresses">
+  <message name="IDS_SETTINGS_SUGGESTIONS_MANAGE_PERSONAL_INFO" desc="The label for opening Brave's browser settings page for managing personal addresses">
     Manage personal information
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_EMOJI_SUGGESTION_TITLE" desc="The label for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
+  <message name="IDS_SETTINGS_SUGGESTIONS_EMOJI_SUGGESTION_TITLE" desc="The label for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
     Emoji suggestions
   </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_EMOJI_SUGGESTION_DESCRIPTION" desc="The description for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
-    Get emoji suggestions based on what you are typing
-  </message>
-  <message name="IDS_SETTINGS_SMART_INPUTS_SHOW_EMOJI_SUGGESTION" desc="The label for the toggle button controlling showing emoji suggestions (when an user types a word, some emojis might be suggested for the user to insert after).">
-    Show emoji suggestions
+  <message name="IDS_SETTINGS_SUGGESTIONS_EMOJI_SUGGESTION_DESCRIPTION" desc="The description for emoji suggestion (when an user types a word, some emojis might be suggested for the user to insert after) section.">
+    Get emoji suggestions based on what you're typing
   </message>
 
   <!-- Input Method Options Section -->
@@ -474,7 +476,7 @@
     Off
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_TITLE" desc="Label for the radio button group of ambient mode topic source, where the screen contents come from.">
-    Background
+    Photo Frame
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS" desc="Label for the radio button to choose the topic source from Brave Photos. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
     Brave Photos
@@ -492,10 +494,10 @@
     Curated images and artwork
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_SELECTED_ROW" desc="A11y label for the selected topic source row in ambient mode.">
-    <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> selected, press Enter to select <ph name="TOPIC_SOURCE">$2<ex>Brave Photos</ex></ph> albums
+    <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph> selected, press Enter to select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_UNSELECTED_ROW" desc="A11y label for the unselected topic source row in ambient mode.">
-    Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph>
+    Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph>
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_SUBPAGE" desc="A11y label for the subpage button to select albums in ambient mode.">
     Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
@@ -1782,6 +1784,9 @@
   </message>
 
   <!-- Internet page (OS settings) -->
+  <message name="IDS_SETTINGS_INTERNET_ADD_CELLULAR" desc="The accessibility label for the add cellular icon at Settings &gt; Internet &gt; Add Cellular label. This text will not be visible, but will be announced when BraveVox is on and the user navigates to the icon. Clicking this icon will show a dialog that allows the user to activate a physical SIM or set up eSIM.">
+    Add Cellular...
+  </message>
   <message name="IDS_SETTINGS_INTERNET_ADD_CONNECTION" desc="Settings &gt; Internet &gt; Add connection expanding section label.">
     Add connection
   </message>
@@ -1992,6 +1997,9 @@
   <message name="IDS_SETTINGS_INTERNET_CELLULAR_CONTACT_DEFAULT_CARRIER" desc="Text shown when the Bravebook cannot connect to a cellular network, which alerts the user to contact their carrier.">
     Trouble connecting. Please contact your carrier for assistance.
   </message>
+  <message name="IDS_SETTINGS_INTERNET_CELLULAR_SETUP_DIALOG_TITLE" desc="The title text of the cellular setup dialog that allows users set up a new cellular network by activating a physical SIM card or setting up the device's built in eSIM.">
+    Set up new network
+  </message>
   <message name="IDS_SETTINGS_INTERNET_TETHER_PHONE_OUT_OF_RANGE" desc="Text shown when viewing the Tether network detail page when the currently-viewed Tether network has been lost (e.g., has gone out of range). Because Tether networks are provided by Android phones, we use the word 'phone' here instead of 'network'.">
     Unable to detect your phone
   </message>
@@ -2118,6 +2126,18 @@
   </message>
   <message name="IDS_SETTINGS_MULTIDEVICE_ANDROID_MESSAGES_SUMMARY" desc="Description of for the 'Android Messages' setting. This feature lets the user read and reply to text messages from their Bravebook. New text messages will appear as notifications.">
     Send and receive text messages from your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub section on the settings page.">
+    Phone Hub
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATIONS_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Notifications section on the settings page.">
+    Notifications
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_NOTIFICATION_BADGE_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Notifications Badge section on the settings page.">
+    Notifications Badge
+  </message>
+  <message name="IDS_SETTINGS_MULTIDEVICE_PHONE_HUB_TASK_CONTINUATION_SECTION_TITLE" translateable="false" desc="The title of the Phone Hub Task Continuation section on the settings page.">
+    Task Continuation
   </message>
 
   <!-- Lock Screen Page (OS settings) -->
@@ -2982,9 +3002,6 @@
   </message>
   <message name="IDS_SETTINGS_ENABLE_CONTENT_PROTECTION_ATTESTATION" desc="description label for verified access about premium contents">
     Enable Verified Access
-  </message>
-  <message name="IDS_SETTINGS_WAKE_ON_WIFI_DESCRIPTION" desc="In the settings tab, the text next to the checkbox for enabling quickly reconnecting to known Wi-Fi SSIDs.">
-    Keep Wi-Fi on during sleep
   </message>
 </if>
 </grit-part>

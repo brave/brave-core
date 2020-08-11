@@ -71,6 +71,12 @@
     <message name="IDS_PDF_TOOLTIP_ZOOM_OUT" desc="Button tooltip for the button which zooms out a PDF, so that the document appears smaller">
       Zoom out
     </message>
+    <message name="IDS_PDF_TOOLTIP_THUMBNAILS" desc="Button tooltip for the button which selects the PDF thumbnail view in the sidenav">
+      Thumbnails
+    </message>
+    <message name="IDS_PDF_TOOLTIP_DOCUMENT_OUTLINE" desc="Button tooltip for the button which selects the PDF document outline view in the sidenav">
+      Document outline
+    </message>
     <message name="IDS_PDF_LABEL_PAGE_NUMBER" desc="Label for the input field containing the current page number">
       Page number
     </message>
