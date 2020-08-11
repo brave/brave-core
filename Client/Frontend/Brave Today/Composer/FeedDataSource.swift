@@ -262,7 +262,7 @@ class FeedDataSource {
         case initial
         /// Sources and or feed content items are currently downloading, read from cache, or cards are being
         /// generated from that data
-        case loading
+        indirect case loading(_ previousState: State)
         /// Cards have been successfully generated from downloaded or cached content.
         case success([FeedCard])
         /// Some sort of error has occured when attempting to load feed content
@@ -270,24 +270,23 @@ class FeedDataSource {
         
         /// The list of generated feed cards, if the state is `success`
         var cards: [FeedCard]? {
-            get {
-                if case .success(let cards) = self {
-                    return cards
-                }
+            switch self {
+            case .success(let cards),
+                 .loading(.success(let cards)):
+                return cards
+            default:
                 return nil
-            }
-            set {
-                if let cards = newValue {
-                    self = .success(cards)
-                }
             }
         }
         /// The error if the state is `failure`
         var error: Error? {
-            if case .failure(let error) = self {
+            switch self {
+            case .failure(let error),
+                 .loading(.failure(let error)):
                 return error
+            default:
+                return nil
             }
-            return nil
         }
     }
     
@@ -459,7 +458,7 @@ class FeedDataSource {
     /// Given the nature of async card regeneration, calling this method will always set the state to
     /// `loading` initially.
     func load(_ completion: (() -> Void)? = nil) {
-        state = .loading
+        state = .loading(state)
         loadSources().both(loadFeed()).uponQueue(.main) { [weak self] results in
             guard let self = self else { return }
             switch results {

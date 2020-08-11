@@ -149,11 +149,16 @@ class NewTabPageViewController: UIViewController, Themeable {
         
         Preferences.BraveToday.isEnabled.observe(from: self)
         feedDataSource.observeState(from: self, handleFeedStateChange)
+        NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func handleBraveTodayAction(_ action: BraveTodaySectionProvider.Action) {
@@ -212,6 +217,8 @@ class NewTabPageViewController: UIViewController, Themeable {
         collectionView.backgroundView = backgroundButtonsView
         
         feedOverlayView.headerView.settingsButton.addTarget(self, action: #selector(tappedBraveTodaySettings), for: .touchUpInside)
+        feedOverlayView.newContentAvailableButton.addTarget(self, action: #selector(tappedNewContentAvailable), for: .touchUpInside)
+        
         backgroundButtonsView.tappedActiveButton = { [weak self] sender in
             self?.tappedActiveBackgroundButton(sender)
         }
@@ -241,18 +248,7 @@ class NewTabPageViewController: UIViewController, Themeable {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if isBraveTodayVisible {
-            if collectionView.contentOffset.y == collectionView.contentInset.top {
-                // Reload contents if the user is not currently scrolled into the feed
-                loadFeedContents()
-            } else {
-                // Possibly show the "new content available" button
-                if feedDataSource.shouldLoadContent {
-                    
-                }
-            }
-        }
+        checkForUpdatedFeed()
     }
     
     override func viewDidLayoutSubviews() {
@@ -507,6 +503,12 @@ class NewTabPageViewController: UIViewController, Themeable {
     
     // MARK: - Brave Today
     
+    private var newContentAvailableDismissTimer: Timer? {
+        didSet {
+            oldValue?.invalidate()
+        }
+    }
+    
     private func handleFeedStateChange(
         _ oldValue: FeedDataSource.State,
         _ newValue: FeedDataSource.State
@@ -518,15 +520,18 @@ class NewTabPageViewController: UIViewController, Themeable {
             // Nothing to do
             break
         case (_, .loading):
-            feedOverlayView.loaderView.isHidden = false
-            feedOverlayView.loaderView.start()
-            
-            if let section = layout.braveTodaySection {
-                let numberOfItems = collectionView.numberOfItems(inSection: section)
-                if numberOfItems > 0 {
-                    collectionView.deleteItems(
-                        at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
-                    )
+            if collectionView.contentOffset.y == collectionView.contentInset.top ||
+                collectionView.numberOfItems(inSection: section) == 0 {
+                feedOverlayView.loaderView.isHidden = false
+                feedOverlayView.loaderView.start()
+                
+                if let section = layout.braveTodaySection {
+                    let numberOfItems = collectionView.numberOfItems(inSection: section)
+                    if numberOfItems > 0 {
+                        collectionView.deleteItems(
+                            at: (0..<numberOfItems).map({ IndexPath(item: $0, section: section) })
+                        )
+                    }
                 }
             }
         case (.loading, _):
@@ -537,30 +542,64 @@ class NewTabPageViewController: UIViewController, Themeable {
                 self.feedOverlayView.loaderView.alpha = 1.0
                 self.feedOverlayView.loaderView.isHidden = true
             })
-            collectionView.reloadData()
-            collectionView.layoutIfNeeded()
-            let cells = collectionView.indexPathsForVisibleItems
-                .filter { $0.section == section }
-                .compactMap(collectionView.cellForItem(at:))
-            cells.forEach { cell in
-                cell.transform = .init(translationX: 0, y: 200)
-                UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.beginFromCurrentState], animations: {
-                    cell.transform = .identity
-                }, completion: nil)
+            if collectionView.contentOffset.y == collectionView.contentInset.top {
+                collectionView.reloadData()
+                collectionView.layoutIfNeeded()
+                let cells = collectionView.indexPathsForVisibleItems
+                    .filter { $0.section == section }
+                    .compactMap(collectionView.cellForItem(at:))
+                cells.forEach { cell in
+                    cell.transform = .init(translationX: 0, y: 200)
+                    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.beginFromCurrentState], animations: {
+                        cell.transform = .identity
+                    }, completion: nil)
+                }
+            } else {
+                collectionView.reloadSections(IndexSet(integer: section))
             }
         default:
             collectionView.reloadSections(IndexSet(integer: section))
         }
     }
     
-    private func loadFeedContents() {
+    @objc private func checkForUpdatedFeed() {
+        if isBraveTodayVisible {
+            if collectionView.contentOffset.y == collectionView.contentInset.top {
+                // Reload contents if the user is not currently scrolled into the feed
+                loadFeedContents()
+            } else {
+                // Possibly show the "new content available" button
+                if feedDataSource.shouldLoadContent {
+                    feedOverlayView.showNewContentAvailableButton()
+                }
+            }
+        }
+    }
+    
+    private func loadFeedContents(completion: (() -> Void)? = nil) {
         if !feedDataSource.shouldLoadContent {
             return
         }
-        feedDataSource.load()
+        feedDataSource.load(completion)
     }
     
     // MARK: - Actions
+    
+    @objc private func tappedNewContentAvailable() {
+        if case .loading = feedDataSource.state {
+            return
+        }
+        let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
+        newContentAvailableDismissTimer = nil
+        feedOverlayView.newContentAvailableButton.isLoading = true
+        loadFeedContents { [weak self] in
+            guard let self = self else { return }
+            self.feedOverlayView.hideNewContentAvailableButton()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.collectionView.setContentOffset(CGPoint(x: 0, y: todayStart), animated: true)
+            }
+        }
+    }
     
     @objc private func tappedBraveTodaySettings() {
         let controller = BraveTodaySettingsViewController(dataSource: feedDataSource)
@@ -657,6 +696,30 @@ extension NewTabPageViewController {
             let value = scrollView.contentOffset.y
             let alpha = max(0.0, min(1.0, (value - alphaInStart) / (todayStart - alphaInStart)))
             feedOverlayView.headerView.alpha = alpha
+            
+            if feedOverlayView.newContentAvailableButton.alpha != 0 {
+                let velocity = scrollView.panGestureRecognizer.velocity(in: scrollView).y
+                if velocity > 0 && collectionView.contentOffset.y < todayStart {
+                    // Scrolling up
+                    self.feedOverlayView.hideNewContentAvailableButton()
+                } else if velocity < 0 {
+                    // Scrolling down
+                    if newContentAvailableDismissTimer == nil {
+                        let timer = Timer(
+                            timeInterval: 4,
+                            repeats: false
+                        ) { [weak self] _ in
+                            guard let self = self else { return }
+                            self.feedOverlayView.hideNewContentAvailableButton()
+                            self.newContentAvailableDismissTimer = nil
+                        }
+                        // Adding the timer manually under `common` mode allows it to execute while the user
+                        // is scrolling through the feed rather than have to wait until input stops
+                        RunLoop.main.add(timer, forMode: .common)
+                        newContentAvailableDismissTimer = timer
+                    }
+                }
+            }
         }
     }
 }
