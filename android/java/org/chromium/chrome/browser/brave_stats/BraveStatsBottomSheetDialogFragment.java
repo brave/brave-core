@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.app.Dialog;
 import android.widget.LinearLayout;
 import android.content.res.Resources;
 import com.google.android.material.tabs.TabLayout;
@@ -94,74 +95,22 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public void setupDialog(Dialog dialog, int style) {
+        super.setupDialog(dialog, style);
 
-        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.brave_stats_bottom_sheet, null);
+
+        emptyDataLayout = view.findViewById(R.id.brave_stats_empty_layout);
+
+            getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
                 View bottomSheetInternal = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                DisplayMetrics metrics = new DisplayMetrics();
-                getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-                // BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(800);
+                bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
             }
         });
-
-        return inflater.inflate(R.layout.brave_stats_bottom_sheet, container, false);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if (isTablet || (!isTablet && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)) {
-            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
-        } else {
-            getDialog().getWindow().setLayout(-1, -1);
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
-            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
-        } else {
-            getDialog().getWindow().setLayout(-1, -1);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        emptyDataLayout = view.findViewById(R.id.brave_stats_empty_layout);
-
-        // view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-        //     @Override
-        //     public void onGlobalLayout() {
-        //         View parent = (View) view.getParent();
-        //         // View parent = (View) getActivity().findViewById(android.R.id.content);
-        //         BottomSheetDialog dialog = (BottomSheetDialog) getDialog();
-        //         // FrameLayout bottomSheet = (FrameLayout) dialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-        //         BottomSheetBehavior behavior = BottomSheetBehavior.from(parent);
-        //         DisplayMetrics metrics = new DisplayMetrics();
-        //         getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        //         behavior.setPeekHeight(5000);
-        //     }
-        // });
 
         RadioGroup durationRadioGroup = view.findViewById(R.id.duration_radio_group);
         durationRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -213,6 +162,37 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             }
         });
         updateBraveStatsLayout();
+
+        dialog.setContentView(view);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+        if (isTablet || (!isTablet && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)) {
+            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
+        } else {
+            getDialog().getWindow().setLayout(-1, -1);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+        if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
+            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
+        } else {
+            getDialog().getWindow().setLayout(-1, -1);
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+        super.onDestroyView();
     }
 
     private void updateBraveStatsLayout() {
