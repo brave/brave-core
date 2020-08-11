@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "brave/browser/ui/brave_actions/constants.h"
+#include "brave/common/extensions/constants.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"

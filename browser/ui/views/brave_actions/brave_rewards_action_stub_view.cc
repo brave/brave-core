@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"  // NOLINT
-#include "brave/browser/ui/brave_actions/constants.h"
+#include "brave/common/extensions/constants.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"  // NOLINT
 #include "chrome/browser/profiles/profile.h"
