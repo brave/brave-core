@@ -161,52 +161,6 @@ class NewTabPageViewController: UIViewController, Themeable {
         NotificationCenter.default.removeObserver(self)
     }
     
-    private func handleBraveTodayAction(_ action: BraveTodaySectionProvider.Action) {
-        switch action {
-        case .welcomeCardAction(.closedButtonTapped):
-            Preferences.BraveToday.isShowingIntroCard.value = false
-            if let section = layout.braveTodaySection, collectionView.numberOfItems(inSection: section) != 0 {
-                collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
-            }
-        case .welcomeCardAction(.learnMoreButtonTapped):
-            delegate?.navigateToInput("https://brave.com/privacy/#brave-today", inNewTab: false, switchingToPrivateMode: false)
-        case .welcomeCardAction(.settingsButtonTapped),
-             .emptyCardTappedSourcesAndSettings:
-            tappedBraveTodaySettings()
-        case .errorCardTappedRefresh:
-            break
-        case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
-            guard let url = context.item.content.url else { return }
-            delegate?.navigateToInput(
-                url.absoluteString,
-                inNewTab: inNewTab,
-                switchingToPrivateMode: switchingToPrivateMode
-            )
-        case .itemAction(.toggleSource, let context):
-            let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
-            feedDataSource.toggleSource(context.item.source, enabled: !isEnabled)
-            collectionView.reloadData()
-            if isEnabled {
-                let alert = FeedActionAlertView(
-                    image: UIImage(imageLiteralResourceName: "disable.feed.source.alert"),
-                    title: "Disabled", // FIXME: Localize
-                    message: "Brave Today will stop showing content from \(context.item.source.name)" // FIXME: Localize
-                )
-                alert.present(on: self)
-            }
-        case .itemAction(.longPressed(let context), _):
-            let alertController = UIAlertController(
-                title: context.title,
-                message: context.message,
-                preferredStyle: .actionSheet
-            )
-            for action in context.actions {
-                alertController.addAction(action)
-            }
-            present(alertController, animated: true)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -503,6 +457,52 @@ class NewTabPageViewController: UIViewController, Themeable {
     
     // MARK: - Brave Today
     
+    private func handleBraveTodayAction(_ action: BraveTodaySectionProvider.Action) {
+        switch action {
+        case .welcomeCardAction(.closedButtonTapped):
+            Preferences.BraveToday.isShowingIntroCard.value = false
+            if let section = layout.braveTodaySection, collectionView.numberOfItems(inSection: section) != 0 {
+                collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
+            }
+        case .welcomeCardAction(.learnMoreButtonTapped):
+            delegate?.navigateToInput("https://brave.com/privacy/#brave-today", inNewTab: false, switchingToPrivateMode: false)
+        case .welcomeCardAction(.settingsButtonTapped),
+             .emptyCardTappedSourcesAndSettings:
+            tappedBraveTodaySettings()
+        case .errorCardTappedRefresh:
+            loadFeedContents()
+        case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
+            guard let url = context.item.content.url else { return }
+            delegate?.navigateToInput(
+                url.absoluteString,
+                inNewTab: inNewTab,
+                switchingToPrivateMode: switchingToPrivateMode
+            )
+        case .itemAction(.toggleSource, let context):
+            let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
+            feedDataSource.toggleSource(context.item.source, enabled: !isEnabled)
+            collectionView.reloadData()
+            if isEnabled {
+                let alert = FeedActionAlertView(
+                    image: UIImage(imageLiteralResourceName: "disable.feed.source.alert"),
+                    title: "Disabled", // FIXME: Localize
+                    message: "Brave Today will stop showing content from \(context.item.source.name)" // FIXME: Localize
+                )
+                alert.present(on: self)
+            }
+        case .itemAction(.longPressed(let context), _):
+            let alertController = UIAlertController(
+                title: context.title,
+                message: context.message,
+                preferredStyle: .actionSheet
+            )
+            for action in context.actions {
+                alertController.addAction(action)
+            }
+            present(alertController, animated: true)
+        }
+    }
+    
     private var newContentAvailableDismissTimer: Timer? {
         didSet {
             oldValue?.invalidate()
@@ -519,6 +519,15 @@ class NewTabPageViewController: UIViewController, Themeable {
         case (.loading, .loading):
             // Nothing to do
             break
+        case (.failure(let error1 as NSError),
+              .failure(let error2 as NSError)) where error1 == error2:
+            // Nothing to do
+            break
+        case (.loading(.failure(let error1 as NSError)),
+              .failure(let error2 as NSError)) where error1 == error2:
+            if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section)) as? FeedCardCell<BraveTodayErrorView> {
+                cell.content.refreshButton.isLoading = false
+            }
         case (_, .loading):
             if collectionView.contentOffset.y == collectionView.contentInset.top ||
                 collectionView.numberOfItems(inSection: section) == 0 {
