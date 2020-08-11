@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/brave_actions/constants.h"
+#include "brave/common/extensions/constants.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/toolbar/toolbar_actions_bar.h"
 #include "chrome/grit/theme_resources.h"
