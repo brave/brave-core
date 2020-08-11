@@ -70,8 +70,6 @@ class Uphold {
 
   void GetUser(GetUserCallback callback);
 
-  void CreateAnonAddressIfNecessary(ledger::ResultCallback callback);
-
  private:
   void ContributionCompleted(
       const ledger::Result result,

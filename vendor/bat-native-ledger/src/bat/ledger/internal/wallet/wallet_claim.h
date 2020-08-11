@@ -32,7 +32,6 @@ class WalletClaim {
       ledger::ResultCallback callback);
 
   void TransferFunds(
-      const ledger::Result result,
       const std::string user_funds,
       ledger::ResultCallback callback);
 
