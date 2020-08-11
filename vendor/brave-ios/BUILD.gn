@@ -5,6 +5,7 @@
 
 import("//build/config/ios/rules.gni")
 import("components/headers.gni")
+import("components/brave_sync/headers.gni")
 
 config("internal_config") {
   visibility = [
@@ -155,6 +156,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
   ]
 
   public_headers += brave_components_public_headers
+  public_headers += brave_sync_public_headers
 
   frameworks = [
     "Foundation.framework",
@@ -162,7 +164,8 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Security.framework",
     "CoreData.framework",
     "SystemConfiguration.framework",
-    "Network.framework"
+    "Network.framework",
+    "CoreImage.framework"
   ]
 
   bundle_deps = [ "//ios/chrome/app/resources" ]

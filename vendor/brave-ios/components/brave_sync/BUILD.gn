@@ -21,7 +21,9 @@ source_set("brave_sync") {
 
   sources = [
     "brave_sync_service.mm",
-    "brave_sync_service.h"
+    "brave_sync_service.h",
+    "brave_sync_worker.h",
+    "brave_sync_worker.mm"
   ]
 
   deps = [
@@ -29,5 +31,12 @@ source_set("brave_sync") {
     "//base",
     "//brave/ios/browser/browser_state",
     "//brave/ios/browser/bookmarks",
+    "//brave/ios/app",
+    "//brave/ios/browser",
+    "//components/bookmarks/browser",
+    "//components/unified_consent",
+    "//ios/chrome/browser/providers:provider_factory",
+    "//ios/public/provider/chrome/browser",
+    "//ios/web/public/init",
   ]
 }
