@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.js b/chrome/browser/resources/settings/privacy_page/privacy_page.js
-index 7f587b3fbfc366410307ded5d65dbe339c331e2c..47b3718289ef6d67d532bc8fc5b162ca06223a90 100644
+index b80d9bfac40ff7eabddf110d64c8c18e7e80f000..926b988ecc64569a26d1d62f496560ac39261bc7 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.js
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.js
 @@ -17,6 +17,7 @@ import '../prefs/prefs.m.js';

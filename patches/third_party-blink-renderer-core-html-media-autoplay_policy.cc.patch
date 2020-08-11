@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index 9aa401d790cdedb402fe2b0b6581e7aeb6161c12..9ae32a669d3139be84ff9a6f22a4702247987953 100644
+index b7ec37b07760fb36b577869b50f438e28b4e1ece..ddcc59bca198ce0370b273af7c01b58134995439 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -309,6 +309,7 @@ bool AutoplayPolicy::IsGestureNeededForPlayback() const {

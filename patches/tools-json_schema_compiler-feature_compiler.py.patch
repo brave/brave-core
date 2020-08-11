@@ -1,8 +1,8 @@
 diff --git a/tools/json_schema_compiler/feature_compiler.py b/tools/json_schema_compiler/feature_compiler.py
-index fbdeaf69405f8bb6fb82adca5cd1d789a09efb26..6b50d636b9ee7a219c1e658811983330c1765fad 100644
+index acb4e45508512eb9af4660369f03e781e7e058bc..6bf22c7a07f79f8c553cdfb07ce4da97902d3c58 100644
 --- a/tools/json_schema_compiler/feature_compiler.py
 +++ b/tools/json_schema_compiler/feature_compiler.py
-@@ -743,6 +743,14 @@ class FeatureCompiler(object):
+@@ -744,6 +744,14 @@ class FeatureCompiler(object):
                    abs_source_file)
          raise
        dupes = set(f_json) & set(self._json)

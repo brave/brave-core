@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/autocomplete_controller.cc b/components/omnibox/browser/autocomplete_controller.cc
-index 1f9b1ece13694fa6db0003acdeac3d0af15592fc..f95c443ebe2dbc98a3d8c810a6408252eb0f2a33 100644
+index 7418d76d1991f0c953c0ecdc6dfee79a33dc2d58..2f3e3d49d725922eae745fcca7335caaaf5c0bf1 100644
 --- a/components/omnibox/browser/autocomplete_controller.cc
 +++ b/components/omnibox/browser/autocomplete_controller.cc
 @@ -257,6 +257,7 @@ AutocompleteController::AutocompleteController(

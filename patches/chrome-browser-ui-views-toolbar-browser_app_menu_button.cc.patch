@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
-index 87fe1c6e0aac6c0945faea6283d54de00421cd52..539fd9dcbe57b594b63e239457645d900f9c31e0 100644
+index 171166457a31226ccc36d76c8b64d578012d112a..a07cd6cef46a862bfbf0d4a3c1eab17128d54d9d 100644
 --- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
 +++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.cc
 @@ -11,6 +11,7 @@
