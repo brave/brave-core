@@ -27,4 +27,11 @@ public class BraveAndroidSyncSettings extends AndroidSyncSettings {
 
     @Override
     public void disableChromeSync() { }
+
+    // We need to override this to make able
+    // DevicePickerBottomSheetContent.createContentView send the link
+    @Override
+    public boolean isChromeSyncEnabled() {
+        return mMasterSyncEnabled;
+    }
 }
