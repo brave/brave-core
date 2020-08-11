@@ -86,8 +86,15 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <!-- Brave stats -->
-            <include layout="@layout/brave_stats_layout"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <include layout="@layout/crypto_widget_layout"/>
+                <!-- Brave stats -->
+                <include layout="@layout/brave_stats_layout"/>
+
+            </FrameLayout>
 
             <LinearLayout
                 android:id="@+id/ntp_super_referral_sites_layout"
