@@ -232,4 +232,15 @@
   <message name="IDS_MANAGEMENT_PAGE_VISITED_VISIBLE_DATA" desc="Description of the visible data for the real time URL check feature.">
     URLs of pages you visit are sent to Brave Cloud or third parties for analysis. For example, they might be scanned to detect unsafe websites.
   </message>
+
+  <!-- Strings for ios only -->
+  <message name="IDS_IOS_MANAGEMENT_UI_DESC" desc="The descriptive text on chrome://management page when the browser is managed. [iOS only]">
+    Your administrator can change your browser setup remotely. Activity on this device may also be managed outside of Brave.
+  </message>
+  <message name="IDS_IOS_MANAGEMENT_UI_UNMANAGED_DESC" desc="The descriptive text on chrome://management page when the browser is not managed. [iOS only]">
+    Your browser is not managed.
+  </message>
+  <message name="IDS_IOS_MANAGEMENT_UI_MESSAGE" desc="The main message at the top of chrome://management page when the browser is managed. [iOS only]">
+    Your browser is managed by your administrator.
+  </message>
 </grit-part>

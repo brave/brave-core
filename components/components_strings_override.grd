@@ -90,7 +90,7 @@
       <part file="omnibox_strings_override.grdp" />
       <part file="payments_strings_override.grdp" />
       <part file="security_interstitials_strings_override.grdp" />
-      <if expr="not is_android and not is_ios">
+      <if expr="not is_android">
         </if>
       <if expr="is_android">
         </if>

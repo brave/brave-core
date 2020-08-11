@@ -534,24 +534,6 @@
   <message name="IDS_OS_SETTINGS_TAG_NIGHT_LIGHT_COLOR_TEMPERATURE" desc="Text for search result item which, when clicked, navigates the user to display settings, with a slider to increase/decrease the 'color temperature' for Night Light, which makes it easier to look at the screen in dim light.">
     Night Light color temperature
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_DOWNLOADED_CONTENT" desc="Text for search result item which, when clicked, navigates the user to downloaded content. Alternate phrase for: 'DLC'">
-    Downloaded Content
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_DOWNLOADED_CONTENT_ALT1" desc="Text for search result item which, when clicked, navigates the user to downloaded content. Alternate phrase for: 'Downloaded Content'">
-    DLC
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_REMOVE_DOWNLOADED_CONTENT" desc="Text for search result item which, when clicked, navigates the user to downloaded content subpage where they can choose to delete a DLC from the device. Alternate phrase for: 'Delete Downloaded Content', 'Remove DLC', 'Delete DLC'">
-    Remove Downloaded Content
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_REMOVE_DOWNLOADED_CONTENT_ALT1" desc="Text for search result item which, when clicked, navigates the user to downloaded content subpage where they can choose to delete a DLC from the device. Alternate phrase for: 'Delete Downloaded Content', 'Remove Downloaded Content', 'Delete DLC'">
-    Remove DLC
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_REMOVE_DOWNLOADED_CONTENT_ALT2" desc="Text for search result item which, when clicked, navigates the user to downloaded content subpage where they can choose to delete a DLC from the device. Alternate phrase for: 'Remove Downloaded Content', 'Remove DLC', 'Delete DLC'">
-    Delete Downloaded Content
-  </message>
-  <message name="IDS_OS_SETTINGS_TAG_REMOVE_DOWNLOADED_CONTENT_ALT3" desc="Text for search result item which, when clicked, navigates the user to downloaded content subpage where they can choose to delete a DLC from the device. Alternate phrase for: 'Delete Downloaded Content', 'Remove DLC', 'Remove Downloaded Content'">
-    Delete DLC
-  </message>
   <message name="IDS_OS_SETTINGS_TAG_EXTERNAL_STORAGE" desc="Text for search result item which, when clicked, navigates the user to external storage preferences.">
     External storage preferences
   </message>
