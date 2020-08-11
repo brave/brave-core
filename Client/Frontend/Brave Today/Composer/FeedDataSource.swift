@@ -292,6 +292,7 @@ class FeedDataSource {
     
     @Observable private(set) var state: State = .initial
     private(set) var sources: [FeedItem.Source] = []
+    private var items: [FeedItem.Content] = []
     
     /// Add a closure that will execute when `state` is changed.
     ///
@@ -305,6 +306,7 @@ class FeedDataSource {
     }
     
     private var todayQueue = DispatchQueue(label: "com.brave.today")
+    private var reloadQueue = DispatchQueue(label: "com.brave.today.reload")
     
     // MARK: - Resource Managment
     
@@ -468,12 +470,8 @@ class FeedDataSource {
                 completion?()
             case (.success(let sources), .success(let items)):
                 self.sources = sources
-                self.score(feeds: items, sources: self.sources) { [weak self] feedItems in
-                    self?.generateCards(from: feedItems) { [weak self] cards in
-                        self?.state = .success(cards)
-                        completion?()
-                    }
-                }
+                self.items = items
+                self.reloadCards(from: items, sources: sources, completion: completion)
             }
         }
     }
@@ -517,6 +515,12 @@ class FeedDataSource {
     /// Toggle a source's enabled status
     func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
         BraveTodaySourceMO.setEnabled(forId: source.id, enabled: enabled)
+        
+        if let cards = state.cards, cards.isEmpty && enabled {
+            // If we're enabling a source and we don't have any items because their source selection was
+            // causing an empty generation, regenerate the cards
+            self.reloadCards(from: self.items, sources: self.sources)
+        }
     }
     
     /// Toggle an entire category on or off
@@ -526,6 +530,12 @@ class FeedDataSource {
             return
         }
         BraveTodaySourceMO.setEnabled(forIds: sourcesInCategory.map(\.id), enabled: enabled)
+        
+        if let cards = state.cards, cards.isEmpty && enabled {
+            // If we're enabling a category and we don't have any items because their source selection was
+            // causing an empty generation, regenerate the cards
+            self.reloadCards(from: self.items, sources: self.sources)
+        }
     }
     
     /// Reset all source settings back to default
@@ -534,6 +544,32 @@ class FeedDataSource {
     }
     
     // MARK: - Card Generation
+    
+    /// Scores and generates cards from a set of items and sources
+    private func reloadCards(
+        from items: [FeedItem.Content],
+        sources: [FeedItem.Source],
+        completion: (() -> Void)? = nil
+    ) {
+        // Only allow 1 reload at a time
+        // Since the scoring/generation work hops between threads a lot it would be possible for reloads to
+        // mess up the ending state or update the cards
+        reloadQueue.async { [weak self] in
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.main.async {
+                // Score must be called from main queue
+                self?.score(feeds: items, sources: sources) { [weak self] feedItems in
+                    self?.generateCards(from: feedItems) { [weak self] cards in
+                        defer { group.leave() }
+                        self?.state = .success(cards)
+                        completion?()
+                    }
+                }
+            }
+            _ = group.wait(timeout: .now() + 30)
+        }
+    }
     
     /// Scores a set of items in the feed based on recency, personalization and variety.
     ///
