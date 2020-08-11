@@ -142,6 +142,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.target_url = "https://brave.com";
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
+  info_1.ptr = 1.0;
   creative_ad_notifications.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
@@ -160,6 +161,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
+  info_2.ptr = 0.8;
   creative_ad_notifications.push_back(info_2);
 
   // Act
@@ -207,6 +209,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.target_url = "https://brave.com";
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
+  info_1.ptr = 1.0;
   creative_ad_notifications_1.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
@@ -225,6 +228,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
+  info_2.ptr = 1.0;
   creative_ad_notifications_1.push_back(info_2);
 
   SaveDatabase(creative_ad_notifications_1);
@@ -248,6 +252,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.target_url = "https://brave.com";
   info_3.title = "Test Ad 3 Title";
   info_3.body = "Test Ad 3 Body";
+  info_3.ptr = 1.0;
   creative_ad_notifications_2.push_back(info_3);
 
   SaveDatabase(creative_ad_notifications_2);
@@ -292,6 +297,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.target_url = "https://brave.com";
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
+  info_1.ptr = 1.0;
   creative_ad_notifications.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
@@ -310,6 +316,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
+  info_2.ptr = 1.0;
   creative_ad_notifications.push_back(info_2);
 
   CreativeAdNotificationInfo info_3;
@@ -328,6 +335,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.target_url = "https://brave.com";
   info_3.title = "Test Ad 3 Title";
   info_3.body = "Test Ad 3 Body";
+  info_3.ptr = 1.0;
   creative_ad_notifications.push_back(info_3);
 
   // Act
@@ -375,6 +383,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.target_url = "https://brave.com";
   info.title = "Test Ad 1 Title";
   info.body = "Test Ad 1 Body";
+  info.ptr = 1.0;
   creative_ad_notifications.push_back(info);
 
   SaveDatabase(creative_ad_notifications);
@@ -424,6 +433,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.target_url = "https://brave.com";
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
+  info_1.ptr = 1.0;
   creative_ad_notifications.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
@@ -442,6 +452,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
+  info_2.ptr = 1.0;
   creative_ad_notifications.push_back(info_2);
 
   SaveDatabase(creative_ad_notifications);
@@ -490,6 +501,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.target_url = "https://brave.com";
   info.title = "Test Ad 1 Title";
   info.body = "Test Ad 1 Body";
+  info.ptr = 1.0;
   creative_ad_notifications.push_back(info);
 
   SaveDatabase(creative_ad_notifications);
@@ -535,6 +547,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info.target_url = "https://brave.com";
   info.title = "Test Ad 1 Title";
   info.body = "Test Ad 1 Body";
+  info.ptr = 1.0;
   creative_ad_notifications.push_back(info);
 
   SaveDatabase(creative_ad_notifications);
@@ -582,6 +595,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.target_url = "https://brave.com";
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
+  info_1.ptr = 1.0;
   creative_ad_notifications.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
@@ -600,6 +614,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
+  info_2.ptr = 1.0;
   creative_ad_notifications.push_back(info_2);
 
   CreativeAdNotificationInfo info_3;
@@ -618,6 +633,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_3.target_url = "https://brave.com";
   info_3.title = "Test Ad 3 Title";
   info_3.body = "Test Ad 3 Body";
+  info_3.ptr = 1.0;
   creative_ad_notifications.push_back(info_3);
 
   SaveDatabase(creative_ad_notifications);
@@ -668,6 +684,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.target_url = "https://brave.com";
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
+  info_1.ptr = 1.0;
   creative_ad_notifications.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
@@ -686,6 +703,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
+  info_2.ptr = 1.0;
   creative_ad_notifications.push_back(info_2);
 
   SaveDatabase(creative_ad_notifications);
@@ -735,6 +753,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_1.target_url = "https://brave.com";
   info_1.title = "Test Ad 1 Title";
   info_1.body = "Test Ad 1 Body";
+  info_1.ptr = 1.0;
   creative_ad_notifications.push_back(info_1);
 
   CreativeAdNotificationInfo info_2;
@@ -753,6 +772,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
   info_2.target_url = "https://brave.com";
   info_2.title = "Test Ad 2 Title";
   info_2.body = "Test Ad 2 Body";
+  info_2.ptr = 1.0;
   creative_ad_notifications.push_back(info_2);
 
   SaveDatabase(creative_ad_notifications);
@@ -804,7 +824,7 @@ TEST_F(BatAdsCreativeAdNotificationsDatabaseTableTest,
 
   const URLEndpoints endpoints = {
     {
-      "/v3/catalog", {
+      "/v4/catalog", {
         {
           net::HTTP_OK, "/catalog.json"
         }
