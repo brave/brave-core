@@ -26,13 +26,11 @@ namespace tor {
 
 class TorControlImpl : public TorControl {
  public:
-  TorControlImpl();
+  TorControlImpl(TorControl::Delegate* delegate);
+  ~TorControlImpl() final;
 
   void Start(const base::FilePath& watchDirPath) override;
   void Stop() override;
-
-  void AddObserver(TorControlObserver* observer) override;
-  void RemoveObserver(TorControlObserver* observer) override;
 
   void Cmd1(const std::string& cmd, CmdCallback callback) override;
   void Cmd(const std::string& cmd,
@@ -68,9 +66,6 @@ class TorControlImpl : public TorControl {
                           std::string& value, size_t& end);
 
  private:
-  friend class base::RefCounted<TorControlImpl>;
-  ~TorControlImpl() final;
-
   bool running_;
   SEQUENCE_CHECKER(sequence_checker_);
 
@@ -111,7 +106,7 @@ class TorControlImpl : public TorControl {
   };
   std::unique_ptr<Async> async_;
 
-  base::ObserverList<TorControlObserver> observers_;
+  TorControl::Delegate* delegate_;
 
   void StartWatching(base::FilePath watchDirPath);
   void StopWatching();

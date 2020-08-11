@@ -12,7 +12,6 @@
 #include "base/observer_list.h"
 #include "brave/common/tor/tor_common.h"
 #include "brave/common/tor/tor_control.h"
-#include "brave/common/tor/tor_control_observer.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
@@ -20,7 +19,7 @@ namespace tor {
 class TorProfileServiceImpl;
 }
 
-class TorLauncherFactory : public tor::TorControlObserver {
+class TorLauncherFactory : public tor::TorControl::Delegate {
  public:
   static TorLauncherFactory* GetInstance();
 
@@ -34,7 +33,7 @@ class TorLauncherFactory : public tor::TorControlObserver {
   void AddObserver(tor::TorProfileServiceImpl* serice);
   void RemoveObserver(tor::TorProfileServiceImpl* service);
 
-  // tor::TorControlObserver
+  // tor::TorControl::Delegate
   void OnTorControlReady() override;
   void OnTorClosed() override;
   void OnTorEvent(
@@ -81,7 +80,7 @@ class TorLauncherFactory : public tor::TorControlObserver {
 
   base::ObserverList<tor::TorProfileServiceImpl> observers_;
 
-  scoped_refptr<tor::TorControl> control_;
+  std::unique_ptr<tor::TorControl> control_;
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherFactory);
 };
