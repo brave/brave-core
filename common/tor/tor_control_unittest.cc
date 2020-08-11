@@ -6,7 +6,6 @@
 #include "brave/common/tor/tor_control.h"
 
 #include "brave/common/tor/tor_control_impl.h"
-#include "brave/common/tor/tor_control_observer.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace tor {

@@ -6,7 +6,6 @@
 #include "brave/common/tor/tor_control_impl.h"
 
 #include "brave/common/tor/tor_control.h"
-#include "brave/common/tor/tor_control_observer.h"
 
 #include "base/bind_helpers.h"
 #include "base/files/file.h"
@@ -55,14 +54,14 @@ constexpr base::TaskTraits kWatchTaskTraits = {
 
 }
 
-scoped_refptr<TorControl> TorControl::Create() {
-  return base::MakeRefCounted<TorControlImpl>();
+std::unique_ptr<TorControl> TorControl::Create(TorControl::Delegate* delegate) {
+  return std::make_unique<TorControlImpl>(delegate);
 }
 
 // try base::SequencedTaskRunnerHandle::Get()
 // try base::CreateSingleThreadTaskRunner({BrowserThread::IO})
 using content::BrowserThread;
-TorControlImpl::TorControlImpl()
+TorControlImpl::TorControlImpl(TorControl::Delegate* delegate)
   : running_(false),
     watch_task_runner_(base::CreateSequencedTaskRunner(kWatchTaskTraits)),
     io_task_runner_(base::CreateSingleThreadTaskRunner(kIOTaskTraits)),
@@ -71,7 +70,8 @@ TorControlImpl::TorControlImpl()
     writing_(false),
     reading_(false),
     read_start_(-1),
-    read_cr_(false) {
+    read_cr_(false),
+    delegate_(delegate) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DETACH_FROM_SEQUENCE(watch_sequence_checker_);
   DETACH_FROM_SEQUENCE(io_sequence_checker_);
@@ -79,21 +79,10 @@ TorControlImpl::TorControlImpl()
 
 TorControlImpl::~TorControlImpl() = default;
 
-void TorControlImpl::AddObserver(TorControlObserver* observer) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  observers_.AddObserver(observer);
-}
-
-void TorControlImpl::RemoveObserver(TorControlObserver* observer) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  observers_.RemoveObserver(observer);
-}
-
 // Start()
 //
 //      Start watching for the Tor control channel.  If we are able to
-//      connect, issue TorControlObserver::OnTorControlReady to all
-//      observers.
+//      connect, issue OnTorControlReady to delegate.
 //
 void TorControlImpl::Start(const base::FilePath& watchDirPath) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -427,8 +416,7 @@ void TorControlImpl::Authenticated(bool error,
     return;
   }
   LOG(ERROR) << "tor: control connection ready";
-  for (auto& observer : observers_)
-    observer.OnTorControlReady();
+  delegate_->OnTorControlReady();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -440,8 +428,8 @@ void TorControlImpl::Authenticated(bool error,
 //      (along with all previously subscribed events).  If repeated,
 //      just increment nesting depth without sending SETEVENTS.  Call
 //      the callback once the subscription has been processed.
-//      Subsequently, whenever the event happens, notify the
-//      OnTorEvent observers.
+//      Subsequently, whenever the event happens, notify delegate the
+//      OnTorEvent.
 //
 void TorControlImpl::Subscribe(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback) {
@@ -489,7 +477,7 @@ void TorControlImpl::Subscribed(
 //      repeated Subscribe with the same event, just decrement nesting
 //      depth without sending SETEVENTS.  Call the callback once the
 //      unsubscription has been processed.  Subsequently, the event
-//      will not trigger notification of OnTorEvent observers.
+//      will not trigger notification of OnTorEvent.
 //
 void TorControlImpl::Unsubscribe(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback) {
@@ -579,8 +567,7 @@ void TorControlImpl::DoCmd(std::string cmd,
                            PerLineCallback perline,
                            CmdCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  for (auto& observer : observers_)
-    observer.OnTorRawCmd(cmd);
+  delegate_->OnTorRawCmd(cmd);
   if (!socket_ || writeq_.size() > 100 || cmdq_.size() > 100) {
     // Socket is closed, or over 100 commands pending or synchronous
     // callbacks queued -- something is probably wrong.
@@ -993,9 +980,8 @@ bool TorControlImpl::ReadLine(const std::string& line) {
 
   // Determine whether it is an asynchronous reply, status 6yz.
   if (status[0] == '6') {
-    // Notify observers of the raw reply.
-    for (auto& observer : observers_)
-      observer.OnTorRawAsync(status, reply);
+    // Notify delegate of the raw reply.
+    delegate_->OnTorRawAsync(status, reply);
 
     // Is this a new async reply?
     if (!async_) {
@@ -1028,10 +1014,9 @@ bool TorControlImpl::ReadLine(const std::string& line) {
             return true;
           }
 
-          // Notify the observers of the parsed reply.  No extra
+          // Notify the delegate of the parsed reply.  No extra
           // because there were no intermediate reply lines.
-          for (auto& observer : observers_)
-            observer.OnTorEvent(event, initial, {});
+          delegate_->OnTorEvent(event, initial, {});
 
           return true;
         }
@@ -1099,11 +1084,10 @@ bool TorControlImpl::ReadLine(const std::string& line) {
             }
             async_->extra[key] = value;
 
-            // If we're still subscribed, notify the observers of the
+            // If we're still subscribed, notify the delegate of the
             // parsed reply.
             if (async_events_.count(async_->event)) {
-              for (auto& observer : observers_)
-                observer.OnTorEvent(
+              delegate_->OnTorEvent(
                     async_->event, async_->initial, async_->extra);
             }
           }
@@ -1117,8 +1101,7 @@ bool TorControlImpl::ReadLine(const std::string& line) {
     // the queue.
     switch (pos) {
       case '-':
-        for (auto& observer : observers_)
-          observer.OnTorRawMid(status, reply);
+        delegate_->OnTorRawMid(status, reply);
         if (!cmdq_.empty()) {
           PerLineCallback& perline = cmdq_.front().first;
           perline.Run(status, reply);
@@ -1129,8 +1112,7 @@ bool TorControlImpl::ReadLine(const std::string& line) {
         // XXX Just ignore it for now.
         return true;
       case ' ':
-        for (auto& observer : observers_)
-          observer.OnTorRawEnd(status, reply);
+        delegate_->OnTorRawEnd(status, reply);
         if (!cmdq_.empty()) {
           CmdCallback& callback = cmdq_.front().second;
           bool error = false;
