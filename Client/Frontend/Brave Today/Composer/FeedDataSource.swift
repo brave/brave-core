@@ -346,17 +346,12 @@ class FeedDataSource {
             .compactMap(\.url)
             .compactMap { URL(string: $0)?.baseDomain }) ?? []
         todayQueue.async {
-            var domainCount: [String: Int] = [:]
             let items: [FeedItem] = feeds.compactMap { content in
-                let timeSincePublished = Date().timeIntervalSince(content.publishTime)
-                var score = timeSincePublished > 0 ? log(timeSincePublished) : 0
+                var score = content.baseScore
                 if let feedBaseDomain = content.url?.baseDomain,
                     lastVisitedDomains.contains(feedBaseDomain) {
                     score -= 5
                 }
-                let variety = 1.0 * pow(0.95, Double(domainCount[content.publisherID, default: 0]))
-                score *= variety
-                domainCount[content.publisherID, default: 0] += 1
                 guard let source = sources.first(where: { $0.id == content.publisherID }) else {
                     return nil
                 }
