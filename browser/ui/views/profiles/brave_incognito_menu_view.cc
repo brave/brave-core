@@ -22,6 +22,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/models/image_model.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/extensions/brave_tor_client_updater.h"
@@ -69,14 +70,14 @@ void BraveIncognitoMenuView::BuildMenu() {
       *this, views::style::CONTEXT_LABEL, views::style::STYLE_PRIMARY);
 
   int window_count = GetWindowCount(browser()->profile());
-  SetProfileIdentityInfo(/*profile_name=*/base::string16(),
-                         /*edit_button=*/base::nullopt,
-                         ColoredImageForMenu(kIncognitoProfileIcon, icon_color),
-                         l10n_util::GetStringUTF16(
-                           GetProfileMenuTitleId(browser()->profile())),
-                         window_count > 1 ? l10n_util::GetPluralStringFUTF16(
+  SetProfileIdentityInfo(
+      /*profile_name=*/base::string16(),
+      /*edit_button=*/base::nullopt,
+      ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
+      l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
+      window_count > 1 ? l10n_util::GetPluralStringFUTF16(
                              IDS_INCOGNITO_WINDOW_COUNT_MESSAGE, window_count)
-                           : base::string16());
+                       : base::string16());
 
   AddTorButton();
 
