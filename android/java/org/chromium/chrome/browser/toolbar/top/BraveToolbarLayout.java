@@ -191,8 +191,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     // shown and loading state is changed.
     updateBraveShieldsButtonState(null);
     if (this instanceof ToolbarPhone) {
-      if (getMenuButtonWrapper() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-        getMenuButtonWrapper().setVisibility(View.GONE);
+      if (super.getMenuButtonWrapper() != null && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+        super.getMenuButtonWrapper().setVisibility(View.GONE);
       }
     }
   }
@@ -765,8 +765,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void onBottomToolbarVisibilityChanged(boolean isVisible) {
-    if (this instanceof ToolbarPhone && getMenuButtonWrapper() != null) {
-      getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    if (this instanceof ToolbarPhone && super.getMenuButtonWrapper() != null) {
+      super.getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
     }
   }
 
