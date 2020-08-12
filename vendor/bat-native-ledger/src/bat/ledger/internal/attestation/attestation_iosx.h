@@ -6,17 +6,19 @@
 #ifndef BRAVELEDGER_ATTESTATION_ATTESTATION_IOS_H_
 #define BRAVELEDGER_ATTESTATION_ATTESTATION_IOS_H_
 
-#include <map>
+#include <memory>
 #include <string>
 
 #include "base/values.h"
 #include "bat/ledger/internal/attestation/attestation.h"
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_attestation {
+namespace ledger {
+namespace attestation {
 
 class AttestationIOS : public Attestation {
  public:
@@ -33,18 +35,24 @@ class AttestationIOS : public Attestation {
   std::string ParseStartPayload(
       const std::string& response);
 
-  void ParseClaimSolution(
+  ledger::Result ParseClaimSolution(
       const std::string& response,
-      base::Value* result);
+      std::string* nonce,
+      std::string* blob,
+      std::string* signature);
 
   void OnStart(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const std::string& nonce,
       StartCallback callback);
 
   void OnConfirm(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
       ConfirmCallback callback);
+
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
-}  // namespace braveledger_attestation
+}  // namespace attestation
+}  // namespace ledger
 #endif  // BRAVELEDGER_ATTESTATION_ATTESTATION_IOS_H_

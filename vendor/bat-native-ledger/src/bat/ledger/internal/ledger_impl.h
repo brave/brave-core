@@ -21,6 +21,7 @@
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/publisher/publisher.h"
+#include "bat/ledger/internal/recovery/recovery.h"
 #include "bat/ledger/internal/report/report.h"
 #include "bat/ledger/internal/sku/sku.h"
 #include "bat/ledger/internal/state/state.h"
@@ -58,7 +59,7 @@ class LedgerImpl : public ledger::Ledger {
 
   braveledger_contribution::Contribution* contribution() const;
 
-  braveledger_wallet::Wallet* wallet() const;
+  ledger::wallet::Wallet* wallet() const;
 
   braveledger_report::Report* report() const;
 
@@ -340,12 +341,13 @@ class LedgerImpl : public ledger::Ledger {
   std::unique_ptr<braveledger_publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> media_;
   std::unique_ptr<braveledger_contribution::Contribution> contribution_;
-  std::unique_ptr<braveledger_wallet::Wallet> wallet_;
+  std::unique_ptr<ledger::wallet::Wallet> wallet_;
   std::unique_ptr<braveledger_database::Database> database_;
   std::unique_ptr<braveledger_report::Report> report_;
   std::unique_ptr<braveledger_sku::SKU> sku_;
   std::unique_ptr<braveledger_state::State> state_;
   std::unique_ptr<braveledger_api::API> api_;
+  std::unique_ptr<ledger::recovery::Recovery> recovery_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

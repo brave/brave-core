@@ -10,24 +10,27 @@
 #include "base/json/json_writer.h"
 #include "bat/ledger/internal/attestation/attestation_androidx.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_attestation.h"
-#include "bat/ledger/internal/response/response_attestation.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_attestation {
+namespace ledger {
+namespace attestation {
 
 AttestationAndroid::AttestationAndroid(bat_ledger::LedgerImpl* ledger) :
-    Attestation(ledger) {
+    Attestation(ledger),
+    promotion_server_(new endpoint::PromotionServer(ledger)) {
 }
 
 AttestationAndroid::~AttestationAndroid() = default;
 
 void AttestationAndroid::ParseClaimSolution(
     const std::string& response,
-    base::Value* result) {
+    std::string* token,
+    std::string* nonce) {
+  DCHECK(token && nonce);
+
   base::Optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
     BLOG(0, "Parsing of solution failed");
@@ -40,20 +43,20 @@ void AttestationAndroid::ParseClaimSolution(
     return;
   }
 
-  const auto* nonce = dictionary->FindStringKey("nonce");
-  if (!nonce) {
+  const auto* nonce_string = dictionary->FindStringKey("nonce");
+  if (!nonce_string) {
     BLOG(0, "Nonce is missing");
     return;
   }
 
-  const auto* token = dictionary->FindStringKey("token");
-  if (!token) {
+  const auto* token_string = dictionary->FindStringKey("token");
+  if (!token_string) {
     BLOG(0, "Token is missing");
     return;
   }
 
-  result->SetStringKey("nonce", *nonce);
-  result->SetStringKey("token", *token);
+  *nonce = *nonce_string;
+  *token = *token_string;
 }
 
 void AttestationAndroid::Start(
@@ -62,88 +65,42 @@ void AttestationAndroid::Start(
   auto url_callback = std::bind(&AttestationAndroid::OnStart,
       this,
       _1,
+      _2,
       callback);
-
-  const std::string url =
-      braveledger_request_util::GetStartAttestationAndroidUrl();
-
-  auto payment_id = base::Value(ledger_->state()->GetPaymentId());
-  base::Value payment_ids(base::Value::Type::LIST);
-  payment_ids.Append(std::move(payment_id));
-
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetKey("paymentIds", std::move(payment_ids));
-
-  std::string json;
-  base::JSONWriter::Write(body, &json);
-
-  ledger_->LoadURL(
-      url,
-      {},
-      json,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+  promotion_server_->post_safetynet()->Request(url_callback);
 }
 
 void AttestationAndroid::OnStart(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const std::string& nonce,
     StartCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckStartAttestation(response);
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Failed to start attestation");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, response.body);
+  callback(ledger::Result::LEDGER_OK, nonce);
 }
 
 void AttestationAndroid::Confirm(
     const std::string& solution,
     ConfirmCallback callback)  {
-  base::Value parsed_solution(base::Value::Type::DICTIONARY);
-  ParseClaimSolution(solution, &parsed_solution);
-
-  if (parsed_solution.DictSize() != 2) {
-    BLOG(0, "Solution is wrong: " << solution);
-    callback(ledger::Result::LEDGER_ERROR);
-    return;
-  }
-
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetStringKey("token", *parsed_solution.FindStringKey("token"));
-  std::string payload;
-  base::JSONWriter::Write(dictionary, &payload);
-
-  const std::string nonce = *parsed_solution.FindStringKey("nonce");
-  const std::string url =
-      braveledger_request_util::GetConfirmAttestationAndroidUrl(nonce);
+  std::string token;
+  std::string nonce;
+  ParseClaimSolution(solution, &token, &nonce);
 
   auto url_callback = std::bind(&AttestationAndroid::OnConfirm,
       this,
       _1,
       callback);
 
-  ledger_->LoadURL(
-      url,
-      {},
-      payload,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::PUT,
-      url_callback);
+  promotion_server_->put_safetynet()->Request(token, nonce, url_callback);
 }
 
 void AttestationAndroid::OnConfirm(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
     ConfirmCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckConfirmAttestation(response);
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
     callback(result);
@@ -153,4 +110,5 @@ void AttestationAndroid::OnConfirm(
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_attestation
+}  // namespace attestation
+}  // namespace ledger

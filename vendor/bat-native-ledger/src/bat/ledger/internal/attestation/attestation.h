@@ -15,7 +15,8 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_attestation {
+namespace ledger {
+namespace attestation {
 
 using StartCallback =
     std::function<void(const ledger::Result, const std::string&)>;
@@ -38,5 +39,6 @@ class Attestation {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_attestation
+}  // namespace attestation
+}  // namespace ledger
 #endif  // BRAVELEDGER_ATTESTATION_ATTESTATION_H_

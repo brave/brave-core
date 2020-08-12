@@ -8,16 +8,19 @@
 
 #include <stdint.h>
 
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_wallet {
+namespace ledger {
+namespace wallet {
 
 class WalletRecover {
  public:
@@ -30,12 +33,15 @@ class WalletRecover {
 
  private:
   void OnRecover(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const std::string& payment_id,
       const std::vector<uint8_t>& new_seed,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
-}  // namespace braveledger_wallet
+}  // namespace wallet
+}  // namespace ledger
 #endif  // BRAVELEDGER_WALLET_WALLET_RECOVER_H_

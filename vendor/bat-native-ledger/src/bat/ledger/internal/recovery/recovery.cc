@@ -3,16 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/recovery/recovery.h"
-#include "bat/ledger/internal/recovery/recovery_empty_balance.h"
 
-namespace braveledger_recovery {
+namespace ledger {
+namespace recovery {
 
-void Check(bat_ledger::LedgerImpl* ledger) {
-  if (!ledger->state()->GetEmptyBalanceChecked()) {
+Recovery::Recovery(bat_ledger::LedgerImpl* ledger):
+    ledger_(ledger),
+    empty_balance_(std::make_unique<EmptyBalance>(ledger)) {
+  DCHECK(ledger_);
+}
+
+Recovery::~Recovery() = default;
+
+void Recovery::Check() {
+  if (!ledger_->state()->GetEmptyBalanceChecked()) {
     BLOG(1, "Running empty balance check...")
-    EmptyBalance::Check(ledger);
+    empty_balance_->Check();
   }
 }
 
-}  // namespace braveledger_recovery
+}  // namespace recovery
+}  // namespace ledger

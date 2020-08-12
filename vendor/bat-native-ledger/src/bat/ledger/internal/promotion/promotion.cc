@@ -20,9 +20,6 @@
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
-#include "bat/ledger/internal/request/request_promotion.h"
-#include "bat/ledger/internal/request/request_util.h"
-#include "bat/ledger/internal/response/response_promotion.h"
 #include "bat/ledger/internal/static_values.h"
 
 #include "wrapper.hpp"  // NOLINT
@@ -77,9 +74,11 @@ void HandleExpiredPromotions(
 }  // namespace
 
 Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
-    attestation_(std::make_unique<braveledger_attestation::AttestationImpl>
+    attestation_(std::make_unique<ledger::attestation::AttestationImpl>
         (ledger)),
     transfer_(std::make_unique<PromotionTransfer>(ledger)),
+    promotion_server_(
+        std::make_unique<ledger::endpoint::PromotionServer>(ledger)),
     ledger_(ledger) {
   DCHECK(ledger_);
   credentials_ = braveledger_credentials::CredentialsFactory::Create(
@@ -139,28 +138,20 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   auto url_callback = std::bind(&Promotion::OnFetch,
       this,
       _1,
+      _2,
+      _3,
       std::move(callback));
 
   auto client_info = ledger_->ledger_client()->GetClientInfo();
   const std::string client = ParseClientInfoToString(std::move(client_info));
-
-  const std::string url = braveledger_request_util::GetFetchPromotionUrl(
-      wallet_payment_id,
-      client);
-
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, url_callback);
+  promotion_server_->get_available()->Request(client, url_callback);
 }
 
 void Promotion::OnFetch(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    ledger::PromotionList list,
+    const std::vector<std::string>& corrupted_promotions,
     ledger::FetchPromotionCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  ledger::PromotionList list;
-
-  const ledger::Result result =
-      braveledger_response_util::CheckFetchPromotions(response);
-
   if (result == ledger::Result::NOT_FOUND) {
     ProcessFetchedPromotions(
         ledger::Result::NOT_FOUND,
@@ -169,39 +160,7 @@ void Promotion::OnFetch(
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
-    ProcessFetchedPromotions(
-        ledger::Result::LEDGER_ERROR,
-        std::move(list),
-        callback);
-    return;
-  }
-
-  auto all_callback = std::bind(&Promotion::OnGetAllPromotions,
-      this,
-      _1,
-      response,
-      callback);
-
-  ledger_->database()->GetAllPromotions(all_callback);
-}
-
-void Promotion::OnGetAllPromotions(
-    ledger::PromotionMap promotions,
-    const ledger::UrlResponse& response,
-    ledger::FetchPromotionCallback callback) {
-  HandleExpiredPromotions(ledger_, &promotions);
-
-  ledger::PromotionList list;
-  std::vector<std::string> corrupted_promotions;
-  const ledger::Result result =
-      braveledger_response_util::ParseFetchPromotions(
-          response,
-          &list,
-          &corrupted_promotions);
-
   if (result == ledger::Result::LEDGER_ERROR) {
-    BLOG(0, "Failed to parse promotions");
     ProcessFetchedPromotions(
         ledger::Result::LEDGER_ERROR,
         std::move(list),
@@ -211,14 +170,36 @@ void Promotion::OnGetAllPromotions(
 
   // even though that some promotions are corrupted
   // we should display non corrupted ones either way
-  if (result == ledger::Result::CORRUPTED_DATA) {
-    BLOG(0, "Promotions are not correct: "
-        << base::JoinString(corrupted_promotions, ", "));
+  BLOG_IF(
+      1,
+      result == ledger::Result::CORRUPTED_DATA,
+      "Promotions are not correct: "
+          << base::JoinString(corrupted_promotions, ", "));
+
+  auto shared_list = std::make_shared<ledger::PromotionList>(std::move(list));
+
+  auto all_callback = std::bind(&Promotion::OnGetAllPromotions,
+      this,
+      _1,
+      shared_list,
+      callback);
+
+  ledger_->database()->GetAllPromotions(all_callback);
+}
+
+void Promotion::OnGetAllPromotions(
+    ledger::PromotionMap promotions,
+    std::shared_ptr<ledger::PromotionList> list,
+    ledger::FetchPromotionCallback callback) {
+  HandleExpiredPromotions(ledger_, &promotions);
+
+  if (!list) {
+    callback(ledger::Result::LEDGER_ERROR, {});
+    return;
   }
 
   ledger::PromotionList promotions_ui;
-
-  for (const auto& item : list) {
+  for (const auto& item : *list) {
     auto it = promotions.find(item->id);
     if (it != promotions.end()) {
       const auto status = it->second->status;
@@ -258,7 +239,7 @@ void Promotion::OnGetAllPromotions(
     }
 
     bool found =
-        std::any_of(list.begin(), list.end(), [&promotion](auto& item) {
+        std::any_of(list->begin(), list->end(), [&promotion](auto& item) {
           return item->id == promotion.second->id;
         });
 
@@ -716,35 +697,19 @@ void Promotion::CorruptedPromotions(
     return;
   }
 
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetKey("claimIds", std::move(corrupted_claims));
-
-  std::string json;
-  base::JSONWriter::Write(body, &json);
-
-  const std::string url = braveledger_request_util::ReportClobberedClaimsUrl();
-
   auto url_callback = std::bind(&Promotion::OnCheckForCorrupted,
       this,
       _1,
       ids);
 
-  ledger_->LoadURL(
-      url,
-      {},
-      json,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
+  promotion_server_->post_clobbered_claims()->Request(
+      std::move(corrupted_claims),
       url_callback);
 }
 
 void Promotion::OnCheckForCorrupted(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
     const std::vector<std::string>& promotion_id_list) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckCorruptedPromotions(response);
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse corrupted promotions response");
     return;

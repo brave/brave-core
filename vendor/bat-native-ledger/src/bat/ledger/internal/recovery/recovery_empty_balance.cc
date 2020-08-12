@@ -9,9 +9,8 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
+#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/recovery/recovery_empty_balance.h"
-#include "bat/ledger/internal/request/request_promotion.h"
-#include "bat/ledger/internal/request/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -22,27 +21,31 @@ const int32_t kVersion = 1;
 
 }  // namespace
 
-namespace braveledger_recovery {
+namespace ledger {
+namespace recovery {
 
-void EmptyBalance::Check(bat_ledger::LedgerImpl* ledger) {
-  auto get_callback = std::bind(
-      &EmptyBalance::OnAllContributions,
-      _1,
-      ledger);
-
-  ledger->database()->GetAllContributions(get_callback);
+EmptyBalance::EmptyBalance(bat_ledger::LedgerImpl* ledger):
+    ledger_(ledger),
+    promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
+  DCHECK(ledger_);
 }
 
-void EmptyBalance::OnAllContributions(
-    ledger::ContributionInfoList list,
-    bat_ledger::LedgerImpl* ledger) {
+EmptyBalance::~EmptyBalance() = default;
+
+void EmptyBalance::Check() {
+  auto get_callback = std::bind(&EmptyBalance::OnAllContributions, this, _1);
+  ledger_->database()->GetAllContributions(get_callback);
+}
+
+void EmptyBalance::OnAllContributions(ledger::ContributionInfoList list) {
   // we can just restore all tokens if no contributions
   if (list.empty()) {
-    auto get_callback = std::bind(&EmptyBalance::GetCredsByPromotions,
-        _1,
-        ledger);
+    auto get_callback = std::bind(
+        &EmptyBalance::GetCredsByPromotions,
+        this,
+        _1);
 
-    GetPromotions(ledger, get_callback);
+    GetPromotions(get_callback);
     return;
   }
 
@@ -56,21 +59,20 @@ void EmptyBalance::OnAllContributions(
   BLOG(1, "Contribution SUM: " << contribution_sum);
 
   auto get_callback = std::bind(&EmptyBalance::GetAllTokens,
+    this,
     _1,
-    ledger,
     contribution_sum);
 
-  GetPromotions(ledger, get_callback);
+  GetPromotions(get_callback);
 }
 
-void EmptyBalance::GetPromotions(
-    bat_ledger::LedgerImpl* ledger,
-    ledger::GetPromotionListCallback callback) {
+void EmptyBalance::GetPromotions(ledger::GetPromotionListCallback callback) {
   auto get_callback = std::bind(&EmptyBalance::OnPromotions,
+    this,
     _1,
     callback);
 
-  ledger->database()->GetAllPromotions(get_callback);
+  ledger_->database()->GetAllPromotions(get_callback);
 }
 
 void EmptyBalance::OnPromotions(
@@ -92,27 +94,21 @@ void EmptyBalance::OnPromotions(
   callback(std::move(list));
 }
 
-void EmptyBalance::GetCredsByPromotions(
-    ledger::PromotionList list,
-    bat_ledger::LedgerImpl* ledger) {
+void EmptyBalance::GetCredsByPromotions(ledger::PromotionList list) {
   std::vector<std::string> promotion_ids;
   for (auto& promotion : list) {
     promotion_ids.push_back(promotion->id);
   }
 
-  auto get_callback = std::bind(&EmptyBalance::OnCreds,
-    _1,
-    ledger);
+  auto get_callback = std::bind(&EmptyBalance::OnCreds, this, _1);
 
-  ledger->database()->GetCredsBatchesByTriggers(promotion_ids, get_callback);
+  ledger_->database()->GetCredsBatchesByTriggers(promotion_ids, get_callback);
 }
 
-void EmptyBalance::OnCreds(
-    ledger::CredsBatchList list,
-    bat_ledger::LedgerImpl* ledger) {
+void EmptyBalance::OnCreds(ledger::CredsBatchList list) {
   if (list.empty()) {
     BLOG(1, "Creds batch list is emtpy");
-    ledger->state()->SetEmptyBalanceChecked(true);
+    ledger_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
@@ -147,29 +143,24 @@ void EmptyBalance::OnCreds(
 
   if (token_list.empty()) {
     BLOG(1, "Unblinded token list is emtpy");
-    ledger->state()->SetEmptyBalanceChecked(true);
+    ledger_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
-  auto save_callback = std::bind(&EmptyBalance::OnSaveUnblindedCreds,
-      _1,
-      ledger);
+  auto save_callback = std::bind(&EmptyBalance::OnSaveUnblindedCreds, this, _1);
 
-  ledger->database()->SaveUnblindedTokenList(
+  ledger_->database()->SaveUnblindedTokenList(
       std::move(token_list),
       save_callback);
 }
 
-void EmptyBalance::OnSaveUnblindedCreds(
-    const ledger::Result result,
-    bat_ledger::LedgerImpl* ledger) {
+void EmptyBalance::OnSaveUnblindedCreds(const ledger::Result result) {
   BLOG(1, "Finished empty balance migration with result: " << result);
-  ledger->state()->SetEmptyBalanceChecked(true);
+  ledger_->state()->SetEmptyBalanceChecked(true);
 }
 
 void EmptyBalance::GetAllTokens(
     ledger::PromotionList list,
-    bat_ledger::LedgerImpl* ledger,
     const double contribution_sum) {
     // from all completed promotions get creds
     // unblind them and save them
@@ -181,19 +172,18 @@ void EmptyBalance::GetAllTokens(
   BLOG(1, "Promotion SUM: " << promotion_sum);
 
   auto tokens_callback = std::bind(&EmptyBalance::ReportResults,
+      this,
       _1,
-      ledger,
       contribution_sum,
       promotion_sum);
 
-  ledger->database()->GetSpendableUnblindedTokensByBatchTypes(
+  ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
       {ledger::CredsBatchType::PROMOTION},
       tokens_callback);
 }
 
 void EmptyBalance::ReportResults(
     ledger::UnblindedTokenList list,
-    bat_ledger::LedgerImpl* ledger,
     const double contribution_sum,
     const double promotion_sum) {
   double tokens_sum = 0.0;
@@ -206,55 +196,28 @@ void EmptyBalance::ReportResults(
 
   if (total <= 0) {
     BLOG(1, "Unblinded token total is OK");
-    ledger->state()->SetEmptyBalanceChecked(true);
+    ledger_->state()->SetEmptyBalanceChecked(true);
     return;
   }
 
   BLOG(1, "Unblinded token total is " << total);
 
-  const std::string json = base::StringPrintf(
-      R"({"amount": %f})",
-      total);
+  auto url_callback = std::bind(&EmptyBalance::Sent, this, _1);
 
-  const std::string payment_id = ledger->state()->GetPaymentId();
-  auto url_callback = std::bind(&EmptyBalance::Sent,
-      _1,
-      ledger);
-
-  const std::string header_url = base::StringPrintf(
-      "post /v1/wallets/%s/events/batloss/%d",
-      payment_id.c_str(),
-      kVersion);
-
-  const auto headers = braveledger_request_util::BuildSignHeaders(
-      header_url,
-      json,
-      payment_id,
-      ledger->state()->GetRecoverySeed());
-
-  const std::string url = braveledger_request_util::GetBatlossURL(
-      payment_id,
-      kVersion);
-  ledger->LoadURL(
-      url,
-      headers,
-      json,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
+  promotion_server_->post_bat_loss()->Request(
+      total,
+      kVersion,
       url_callback);
 }
 
-void EmptyBalance::Sent(
-    const ledger::UrlResponse& response,
-    bat_ledger::LedgerImpl* ledger) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  if (response.status_code != net::HTTP_OK) {
+void EmptyBalance::Sent(const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
     return;
   }
 
   BLOG(1, "Finished empty balance migration!");
-  ledger->state()->SetEmptyBalanceChecked(true);
+  ledger_->state()->SetEmptyBalanceChecked(true);
 }
 
-}  // namespace braveledger_recovery
+}  // namespace recovery
+}  // namespace ledger

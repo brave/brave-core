@@ -8,15 +8,18 @@
 
 #include <stdint.h>
 
+#include <memory>
 #include <string>
 
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_wallet {
+namespace ledger {
+namespace wallet {
 
 class WalletCreate {
  public:
@@ -27,11 +30,14 @@ class WalletCreate {
 
  private:
   void OnCreate(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const std::string& payment_id,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
-}  // namespace braveledger_wallet
+}  // namespace wallet
+}  // namespace ledger
 #endif  // BRAVELEDGER_WALLET_WALLET_CREATE_H_

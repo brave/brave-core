@@ -97,7 +97,8 @@ std::string UrlResponseToString(
 
 void LogUrlResponse(
     const char* func,
-    const ledger::UrlResponse& response) {
+    const ledger::UrlResponse& response,
+    const bool long_response) {
   std::string result;
   if (!response.error.empty()) {
     result = "Error (" + response.error + ")";
@@ -132,7 +133,7 @@ void LogUrlResponse(
       response.url.c_str(),
       formatted_headers.c_str());
 
-  BLOG(6, response_basic);
+  BLOG(long_response ? 7 : 6, response_basic);
   BLOG(9, response_headers);
 }
 

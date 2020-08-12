@@ -6,17 +6,19 @@
 #ifndef BRAVELEDGER_ATTESTATION_ATTESTATION_DESKTOP_H_
 #define BRAVELEDGER_ATTESTATION_ATTESTATION_DESKTOP_H_
 
-#include <map>
+#include <memory>
 #include <string>
 
 #include "base/values.h"
 #include "bat/ledger/internal/attestation/attestation.h"
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_attestation {
+namespace ledger {
+namespace attestation {
 
 class AttestationDesktop : public Attestation {
  public:
@@ -30,27 +32,32 @@ class AttestationDesktop : public Attestation {
       ConfirmCallback callback) override;
 
  private:
-  void ParseClaimSolution(
+  ledger::Result ParseClaimSolution(
       const std::string& response,
-      base::Value* result);
-
-  void OnStart(
-      const ledger::UrlResponse& response,
-      StartCallback callback);
+      int* x,
+      int* y,
+      std::string* captcha_id);
 
   void DownloadCaptchaImage(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const std::string& hint,
+      const std::string& captcha_id,
       StartCallback callback);
 
   void OnDownloadCaptchaImage(
-      const ledger::UrlResponse& response,
-      const ledger::UrlResponse& captcha_response,
+      const ledger::Result result,
+      const std::string& image,
+      const std::string& hint,
+      const std::string& captcha_id,
       StartCallback callback);
 
   void OnConfirm(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
       ConfirmCallback callback);
+
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
-}  // namespace braveledger_attestation
+}  // namespace attestation
+}  // namespace ledger
 #endif  // BRAVELEDGER_ATTESTATION_ATTESTATION_DESKTOP_H_

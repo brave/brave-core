@@ -2,100 +2,32 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-#include "bat/ledger/internal/response/response_promotion.h"
+#include "bat/ledger/internal/endpoint/promotion/get_available/get_available.h"
 
 #include <utility>
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
-#include "bat/ledger/internal/logging.h"
+#include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
+#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
 #include "net/http/http_status_code.h"
 
-namespace braveledger_response_util {
+using std::placeholders::_1;
 
-// Request Url:
-// POST /v1/promotions/{promotion_id}
-//
-// Success:
-// OK (200)
-//
-// Response Format:
-// {
-//   "claimId": "53714048-9675-419e-baa3-369d85a2facb"
-// }
-
-ledger::Result ParseClaimCreds(
-    const ledger::UrlResponse& response,
-    std::string* claim_id) {
-  DCHECK(claim_id);
-
-  // Bad Request (400)
-  if (response.status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  // Forbidden (403)
-  if (response.status_code == net::HTTP_FORBIDDEN) {
-    BLOG(0, "Signature validation failed");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  // Conflict (409)
-  if (response.status_code == net::HTTP_CONFLICT) {
-    BLOG(0, "Incorrect blinded credentials");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  // Gone (410)
-  if (response.status_code == net::HTTP_GONE) {
-    BLOG(0, "Promotion is gone");
-    return ledger::Result::NOT_FOUND;
-  }
-
-  // Internal Server Error (500)
-  if (response.status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  if (response.status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
-  if (!value || !value->is_dict()) {
-    BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  base::DictionaryValue* dictionary = nullptr;
-  if (!value->GetAsDictionary(&dictionary)) {
-    BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  auto* id = dictionary->FindStringKey("claimId");
-  if (!id || id->empty()) {
-    BLOG(0, "Claim id is missing");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  *claim_id = *id;
-
-  return ledger::Result::LEDGER_OK;
-}
-
-// Request Url:
 // GET /v1/promotions?migrate=true&paymentId={payment_id}&platform={platform}
 //
-// Success:
-// OK (200)
+// Success code:
+// HTTP_OK (200)
 //
-// Response Format:
+// Error codes:
+// HTTP_BAD_REQUEST (400)
+// HTTP_NOT_FOUND (404)
+// HTTP_INTERNAL_SERVER_ERROR (500)
+//
+// Response body:
 // {
 //   "promotions": [
 //     {
@@ -116,39 +48,61 @@ ledger::Result ParseClaimCreds(
 //   ]
 // }
 
-ledger::Result CheckFetchPromotions(const ledger::UrlResponse& response) {
-  // Bad Request (400)
-  if (response.status_code == net::HTTP_BAD_REQUEST) {
+namespace ledger {
+namespace endpoint {
+namespace promotion {
+
+GetAvailable::GetAvailable(bat_ledger::LedgerImpl* ledger):
+    ledger_(ledger) {
+  DCHECK(ledger_);
+}
+
+GetAvailable::~GetAvailable() = default;
+
+std::string GetAvailable::GetUrl(const std::string& platform) {
+  const std::string payment_id = ledger_->state()->GetPaymentId();
+  const std::string& arguments = base::StringPrintf(
+      "migrate=true&paymentId=%s&platform=%s",
+      payment_id.c_str(),
+      platform.c_str());
+
+  const std::string& path = base::StringPrintf(
+      "/v1/promotions?%s",
+      arguments.c_str());
+
+  return GetServerUrl(path);
+}
+
+ledger::Result GetAvailable::CheckStatusCode(const int status_code) {
+  if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid paymentId or platform in request");
     return ledger::Result::LEDGER_ERROR;
   }
 
-  // Not Found (404)
-  if (response.status_code == net::HTTP_NOT_FOUND) {
+  if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized paymentId/promotion combination");
     return ledger::Result::NOT_FOUND;
   }
 
-  // Internal Server Error (500)
-  if (response.status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
+  if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
     return ledger::Result::LEDGER_ERROR;
   }
 
-  if (response.status_code != net::HTTP_OK) {
+  if (status_code != net::HTTP_OK) {
     return ledger::Result::LEDGER_ERROR;
   }
 
   return ledger::Result::LEDGER_OK;
 }
 
-ledger::Result ParseFetchPromotions(
-    const ledger::UrlResponse& response,
+ledger::Result GetAvailable::ParseBody(
+    const std::string& body,
     ledger::PromotionList* list,
     std::vector<std::string>* corrupted_promotions) {
   DCHECK(list && corrupted_promotions);
 
-  base::Optional<base::Value> value = base::JSONReader::Read(response.body);
+  base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
     return ledger::Result::LEDGER_ERROR;
@@ -256,62 +210,40 @@ ledger::Result ParseFetchPromotions(
   return ledger::Result::LEDGER_OK;
 }
 
-// Request Url:
-// POST /v1/promotions/reportclobberedclaims
-//
-// Success:
-// OK (200)
-//
-// Response Format:
-// {Empty body}
-
-ledger::Result CheckCorruptedPromotions(const ledger::UrlResponse& response) {
-  // Bad Request (400)
-  if (response.status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  // Internal Server Error (500)
-  if (response.status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  if (response.status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  return ledger::Result::LEDGER_OK;
+void GetAvailable::Request(
+    const std::string& platform,
+    GetAvailableCallback callback) {
+  auto url_callback = std::bind(&GetAvailable::OnRequest,
+      this,
+      _1,
+      callback);
+  ledger_->LoadURL(
+      GetUrl(platform),
+      {},
+      "",
+      "",
+      ledger::UrlMethod::GET,
+      url_callback);
 }
 
-// Request Url:
-// POST /v1/suggestions
-//
-// Success:
-// OK (200)
-//
-// Response Format:
-// {Empty body}
+void GetAvailable::OnRequest(
+    const ledger::UrlResponse& response,
+    GetAvailableCallback callback) {
+  ledger::LogUrlResponse(__func__, response);
 
-ledger::Result CheckRedeemTokens(const ledger::UrlResponse& response) {
-  // Bad Request (400)
-  if (response.status_code == net::HTTP_BAD_REQUEST) {
-    BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+  ledger::PromotionList list;
+  std::vector<std::string> corrupted_promotions;
+  ledger::Result result = CheckStatusCode(response.status_code);
+
+  if (result != ledger::Result::LEDGER_OK) {
+    callback(result, std::move(list), corrupted_promotions);
+    return;
   }
 
-  // Internal Server Error (500)
-  if (response.status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
-    BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  if (response.status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
-  }
-
-  return ledger::Result::LEDGER_OK;
+  result = ParseBody(response.body, &list, &corrupted_promotions);
+  callback(result, std::move(list), corrupted_promotions);
 }
 
-}  // namespace braveledger_response_util
+}  // namespace promotion
+}  // namespace endpoint
+}  // namespace ledger

@@ -62,10 +62,6 @@ namespace braveledger_credentials {
 
   std::string GenerateRedeemTokensPayload(const CredentialsRedeem& redeem);
 
-  std::string GenerateTransferTokensPayload(
-      const CredentialsRedeem& redeem,
-      const std::string& payment_id);
-
 }  // namespace braveledger_credentials
 
 #endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_

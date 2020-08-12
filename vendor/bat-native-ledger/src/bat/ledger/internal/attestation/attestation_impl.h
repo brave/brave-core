@@ -15,7 +15,8 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_attestation {
+namespace ledger {
+namespace attestation {
 
 class AttestationDesktop;
 class AttestationAndroid;
@@ -36,5 +37,6 @@ class AttestationImpl : public Attestation {
   std::unique_ptr<Attestation> platform_instance_;
 };
 
-}  // namespace braveledger_attestation
+}  // namespace attestation
+}  // namespace ledger
 #endif  // BRAVELEDGER_ATTESTATION_ATTESTATION_IMPL_H_
