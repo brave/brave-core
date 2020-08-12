@@ -1,5 +1,8 @@
 import("//brave/build/cargo.gni")
 
+lib_build_path = "$root_build_dir/brave_rust/out"
+lib_output_path = "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
+
 cargo_build("rust_lib") {
   visibility = [ ":*" ]
   inputs = [
@@ -7,8 +10,8 @@ cargo_build("rust_lib") {
     "lib.rs",
   ]
 
-  build_path = "$root_build_dir/brave_rust/out"
-  output = "$build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
+  build_path = lib_build_path
+  output = lib_output_path
   manifest_path = "Cargo.toml"
 
   deps = [
@@ -61,7 +64,7 @@ if (is_mac) {
   }
 } else {
   config("external_config") {
-    libs = get_target_outputs(":rust_lib")
+    libs = lib_output_path
   }
 
   group("brave_rust") {
