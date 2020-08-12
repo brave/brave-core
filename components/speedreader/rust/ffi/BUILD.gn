@@ -6,6 +6,12 @@
 import("//brave/build/cargo.gni")
 import("//brave/build/rust/config.gni")
 
+config("external_config") {
+  if (is_mac) {
+    defines = [ "SPEEDREADER_SHARED_LIBRARY" ]
+  }
+}
+
 # Generate FFI header from Rust source
 cargo_cbindgen("speedreader_ffi_header") {
   visibility = [ ":*" ]
@@ -23,6 +29,7 @@ cargo_cbindgen("speedreader_ffi_header") {
 }
 
 source_set("ffi") {
+  public_configs = [ ":external_config" ]
   visibility = [ "//brave/build/rust:*" ]
   defines = [ "SPEEDREADER_IMPLEMENTATION" ]
 

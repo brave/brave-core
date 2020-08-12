@@ -11,8 +11,8 @@
 
 #include "brave/components/speedreader/rust/ffi/speedreader_ffi.h"
 
+#if defined(SPEEDREADER_SHARED_LIBRARY)
 #if defined(WIN32)
-
 #if defined(SPEEDREADER_IMPLEMENTATION)
 #define SPEEDREADER_EXPORT __declspec(dllexport)
 #else
@@ -25,6 +25,9 @@
 #else
 #define SPEEDREADER_EXPORT
 #endif
+#endif
+#else  // defined(SPEEDREADER_SHARED_LIBRARY)
+#define SPEEDREADER_EXPORT
 #endif
 
 namespace speedreader {
