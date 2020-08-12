@@ -20,6 +20,7 @@
 #include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
 #include "net/url_request/url_request.h"
+#include "third_party/blink/public/common/loader/network_utils.h"
 #include "third_party/re2/src/re2/re2.h"
 
 namespace brave {
@@ -105,10 +106,9 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(
-          ctx->allow_referrers, ctx->allow_brave_shields,
-          GURL(ctx->referrer), ctx->tab_origin, ctx->request_url,
-          content::Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
-              ctx->referrer_policy),
+          ctx->allow_referrers, ctx->allow_brave_shields, GURL(ctx->referrer),
+          ctx->tab_origin, ctx->request_url,
+          blink::NetToMojoReferrerPolicy(ctx->referrer_policy),
           &new_referrer)) {
     ctx->new_referrer = new_referrer.url;
     return true;

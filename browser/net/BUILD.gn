@@ -60,6 +60,7 @@ source_set("net") {
     "//net",
     "//services/network/public/cpp",
     "//services/network/public/mojom",
+    "//third_party/blink/public/common",
     "//third_party/blink/public/mojom:mojom_platform_headers",
     "//third_party/re2",
     "//url",
