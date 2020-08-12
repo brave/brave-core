@@ -36,6 +36,8 @@ if (is_mac) {
     ]
   }
 
+  # This is just a hack so @loader_path/Libraries/lib$target_name.dylib
+  # works for the test executables
   copy("copy_rust_lib") {
     visibility = [ ":*" ]
     sources = [
