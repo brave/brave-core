@@ -7,6 +7,7 @@
 #include <sstream>
 #include <string>
 #include "third_party/blink/renderer/platform/loader/fetch/resource_response.h"
+#include "third_party/blink/renderer/platform/loader/fetch/resource_load_info.h"
 #include "third_party/blink/renderer/platform/network/http_header_map.h"
 
 using ::blink::HTTPHeaderMap;
@@ -18,13 +19,23 @@ namespace brave_page_graph {
 
 ResponseMetadata::ResponseMetadata() {}
 
+
+static void SerializeHeaderMap(const HTTPHeaderMap& headers, const char *prefix, std::ostream& ss) {
+  for (HTTPHeaderMap::const_iterator it = headers.begin();
+      it != headers.end(); ++it) {
+    ss << prefix << ":" << it->key << " " << it->value << "\n";
+  }
+}
+
 ResponseMetadata::ResponseMetadata(const ResourceResponse& response) {
   stringstream ss;
 
-  const HTTPHeaderMap& headers = response.HttpHeaderFields();
-  for (HTTPHeaderMap::const_iterator it = headers.begin();
-      it != headers.end(); ++it) {
-    ss << it->key << " " << it->value << "\n";
+  const auto load_info = response.GetResourceLoadInfo();
+  if (load_info) {
+    SerializeHeaderMap(load_info->request_headers, "raw-request", ss);
+    SerializeHeaderMap(load_info->response_headers, "raw-response", ss);
+  } else {
+    SerializeHeaderMap(response.HttpHeaderFields(), "cooked-response", ss);
   }
 
   response_header_summary_ = ss.str();

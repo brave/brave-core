@@ -1,0 +1,26 @@
+diff --git a/services/network/url_loader.cc b/services/network/url_loader.cc
+index 3dc126f94737..cd6fc8c980fe 100644
+--- a/services/network/url_loader.cc
++++ b/services/network/url_loader.cc
+@@ -512,8 +512,10 @@ URLLoader::URLLoader(
+       peer_closed_handle_watcher_(FROM_HERE,
+                                   mojo::SimpleWatcher::ArmingPolicy::MANUAL,
+                                   base::SequencedTaskRunnerHandle::Get()),
+-      want_raw_headers_(request.report_raw_headers),
+-      report_raw_headers_(false),
++      // PG hack: always want/report raw headers
++      want_raw_headers_(true),
++      report_raw_headers_(true),
++
+       devtools_request_id_(request.devtools_request_id),
+       has_user_activation_(false),
+       request_destination_(request.destination),
+@@ -1450,7 +1452,7 @@ int32_t URLLoader::GetProcessId() const {
+ }
+ 
+ void URLLoader::SetAllowReportingRawHeaders(bool allow) {
+-  report_raw_headers_ = want_raw_headers_ && allow;
++  report_raw_headers_ = true; // PG hack: always report raw headers (original: want_raw_headers_ && allow; )
+ }
+ 
+ uint32_t URLLoader::GetResourceType() const {
