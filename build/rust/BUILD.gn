@@ -64,7 +64,7 @@ if (is_mac) {
   }
 } else {
   config("external_config") {
-    libs = lib_output_path
+    libs = [ lib_output_path ]
   }
 
   group("brave_rust") {
