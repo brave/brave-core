@@ -72,6 +72,7 @@ void BraveIncognitoMenuView::BuildMenu() {
   int window_count = GetWindowCount(browser()->profile());
   SetProfileIdentityInfo(
       /*profile_name=*/base::string16(),
+      /*background_color=*/SK_ColorTRANSPARENT,
       /*edit_button=*/base::nullopt,
       ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
       l10n_util::GetStringUTF16(GetProfileMenuTitleId(browser()->profile())),
