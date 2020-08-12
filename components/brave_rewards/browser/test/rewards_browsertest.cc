@@ -158,8 +158,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ToggleAutoContribute) {
   rewards_browsertest_helper::EnableRewards(browser());
 
   // once rewards has loaded, reload page to activate auto-contribute
-  contents()->GetController().Reload(content::ReloadType::NORMAL, true);
-  EXPECT_TRUE(WaitForLoadStop(contents()));
+  rewards_browsertest_helper::ReloadCurrentSite(browser());
 
   // toggle auto contribute off
   rewards_browsertest_util::WaitForElementThenClick(

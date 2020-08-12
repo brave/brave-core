@@ -693,7 +693,7 @@ export class Panel extends React.Component<Props, State> {
   }
 
   render () {
-    const { pendingContributionTotal, enabledAC, externalWallet, balance, promotions, parameters } = this.props.rewardsPanelData
+    const { pendingContributionTotal, enabledAC, externalWallet, balance, parameters } = this.props.rewardsPanelData
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const total = balance.total || 0
     const converted = utils.convertBalance(total, parameters.rate)
@@ -749,7 +749,6 @@ export class Panel extends React.Component<Props, State> {
         onNotificationClick={notificationClick}
         onSolution={this.onSolution}
         onFinish={this.onFinish}
-        grants={utils.generatePromotions(promotions)}
         walletState={walletStatus}
         onVerifyClick={onVerifyClick}
         onDisconnectClick={this.onDisconnectClick}

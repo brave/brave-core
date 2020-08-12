@@ -16,15 +16,11 @@ import {
   StyledCopyImage,
   StyledIconAction,
   StyledBalanceConverted,
-  StyledGrantWrapper,
-  StyledGrant,
   StyledActionWrapper,
   StyledBalanceCurrency,
   StyledCurve,
   StyledAlertWrapper,
   StyledAlertClose,
-  StyleGrantButton,
-  GrantButton,
   StyledActionText,
   StyledBAT,
   StyledNotificationIcon,
@@ -52,7 +48,6 @@ import Alert, { Type as AlertType } from '../alert'
 import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 import {
   CaratDownIcon,
-  CaratUpIcon,
   CloseCircleOIcon,
   SettingsAdvancedIcon,
   UpholdColorIcon,
@@ -63,12 +58,6 @@ import {
 import giftIconUrl from './assets/gift.svg'
 import loveIconUrl from './assets/love.svg'
 import megaphoneIconUrl from './assets/megaphone.svg'
-
-type Grant = {
-  amount: number,
-  expiresAt: string,
-  type: number
-}
 
 type GrantStatus = 'start' | 'wrongPosition' | 'generalError' | 'finished' | null
 
@@ -140,7 +129,6 @@ export interface Props {
   children?: React.ReactNode
   showSecActions?: boolean
   onSettingsClick?: () => void
-  grants?: Grant[]
   grant?: GrantClaim
   alert?: AlertWallet | null
   id?: string
@@ -162,7 +150,6 @@ export interface Props {
 export type Step = '' | 'captcha' | 'complete'
 
 interface State {
-  grantDetails: boolean,
   verificationDetails: boolean
   showLoginMessage: boolean
 }
@@ -171,7 +158,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      grantDetails: false,
       verificationDetails: false,
       showLoginMessage: false
     }
@@ -463,14 +449,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     )
   }
 
-  toggleGrantDetails = () => {
-    this.setState({ grantDetails: !this.state.grantDetails })
-  }
-
-  hasGrants = (grants?: Grant[]) => {
-    return grants && grants.length > 0
-  }
-
   getNotificationIcon = (notification: Notification) => {
     let icon
 
@@ -573,7 +551,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       compact,
       contentPadding,
       showSecActions,
-      grants,
       grant,
       onSettingsClick,
       alert,
@@ -584,8 +561,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       onDisconnectClick,
       onlyAnonWallet
     } = this.props
-
-    const hasGrants = this.hasGrants(grants)
 
     let date = ''
     let grantAmount = '0.000'
@@ -685,39 +660,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         ? <StyledBalanceConverted>{converted}</StyledBalanceConverted>
                         : null
                     }
-                    {
-                      hasGrants
-                        ? <StyleGrantButton>
-                          <GrantButton
-                            text={getLocale('details')}
-                            size={'small'}
-                            type={'subtle'}
-                            level={'secondary'}
-                            onClick={this.toggleGrantDetails}
-                            icon={{ position: 'after', image: this.state.grantDetails ? <CaratUpIcon /> : <CaratDownIcon /> }}
-                          />
-                        </StyleGrantButton>
-                        : null
-                    }
                   </StyledBalance>
-                  {
-                    this.state.grantDetails && hasGrants
-                      ? <StyledGrantWrapper>
-                        {
-                          grants && grants.map((grant: Grant, i: number) => {
-                            return <StyledGrant key={`${id}-grant-${i}`}>
-                              <b>{grant.amount.toFixed(3)} {batFormatString}</b>
-                              {
-                                grant.type === 1
-                                ? <span>{getLocale('adsEarnings')}</span>
-                                : <span>{getLocale('expiresOn')} {grant.expiresAt}</span>
-                              }
-                            </StyledGrant>
-                          })
-                        }
-                      </StyledGrantWrapper>
-                      : null
-                  }
                   <StyledActionWrapper>
                     {this.generateActions(actions, id)}
                   </StyledActionWrapper>

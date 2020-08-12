@@ -357,8 +357,7 @@ IN_PROC_BROWSER_TEST_F(
 
   rewards_browsertest_helper::EnableRewards(browser());
 
-  contents()->GetController().Reload(content::ReloadType::NORMAL, true);
-  EXPECT_TRUE(WaitForLoadStop(contents()));
+  rewards_browsertest_helper::ReloadCurrentSite(browser());
 
   // Tip unverified publisher
   contribution_->TipViaCode(
@@ -539,8 +538,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->SetUpUpholdWallet(50.0, ledger::WalletStatus::CONNECTED);
 
   rewards_browsertest_helper::EnableRewards(browser());
-  contents()->GetController().Reload(content::ReloadType::NORMAL, true);
-  EXPECT_TRUE(WaitForLoadStop(contents()));
+  rewards_browsertest_helper::ReloadCurrentSite(browser());
 
   const double amount = 5.0;
   contribution_->TipViaCode(
@@ -565,8 +563,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->SetUpUpholdWallet(50.0);
 
   rewards_browsertest_helper::EnableRewards(browser());
-  contents()->GetController().Reload(content::ReloadType::NORMAL, true);
-  EXPECT_TRUE(WaitForLoadStop(contents()));
+  rewards_browsertest_helper::ReloadCurrentSite(browser());
 
   const double amount = 5.0;
   contribution_->TipViaCode(

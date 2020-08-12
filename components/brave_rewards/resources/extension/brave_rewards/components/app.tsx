@@ -316,13 +316,11 @@ export class RewardsPanel extends React.Component<Props, State> {
       walletCorrupted,
       balance,
       externalWallet,
-      promotions,
       parameters
     } = this.props.rewardsPanelData
 
     const total = balance.total || 0
     const converted = utils.convertBalance(total, parameters.rate)
-    const claimedPromotions = utils.getClaimedPromotions(promotions || [])
 
     if (!walletCreated || walletCorrupted) {
       return (
@@ -366,7 +364,6 @@ export class RewardsPanel extends React.Component<Props, State> {
                 showSecActions={false}
                 showCopy={false}
                 onlyAnonWallet={this.state.onlyAnonWallet}
-                grants={utils.generatePromotions(claimedPromotions)}
                 converted={utils.formatConverted(converted)}
                 walletState={walletStatus}
                 onVerifyClick={onVerifyClick}
