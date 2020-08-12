@@ -5,24 +5,6 @@
 
 import Foundation
 
-@propertyWrapper struct URLString: Equatable, Decodable {
-    var wrappedValue: URL?
-    
-    init(wrappedValue: URL?) {
-        self.wrappedValue = wrappedValue
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if container.decodeNil() {
-            wrappedValue = nil
-        } else {
-            let value = try container.decode(String.self)
-            wrappedValue = URL(string: value)
-        }
-    }
-}
-
 struct FeedItem: Equatable, Comparable {
     var score: Double
     var content: Content
@@ -87,6 +69,24 @@ extension FeedItem {
             case contentType = "content_type"
             case publisherID = "publisher_id"
             case urlHash = "url_hash"
+        }
+    }
+}
+
+@propertyWrapper struct URLString: Equatable, Decodable {
+    var wrappedValue: URL?
+    
+    init(wrappedValue: URL?) {
+        self.wrappedValue = wrappedValue
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if container.decodeNil() {
+            wrappedValue = nil
+        } else {
+            let value = try container.decode(String.self)
+            wrappedValue = URL(string: value)
         }
     }
 }

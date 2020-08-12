@@ -5,66 +5,6 @@
 
 import Foundation
 
-/// The context menu information
-class FeedItemMenu {
-    /// A `UIMenu` to display when the user long-presses the feed item
-    ///
-    /// For single-item card's `itemIndex` will always be `0`, for multi-item cards
-    /// such as group cards or the headline pairs, `itemIndex` will be based on
-    /// the actioned upon feed item.
-    ///
-    /// Note: Must be lazy to allow usage of `@available` on a stored property
-    @available(iOS 13.0, *)
-    lazy var menu: ((_ itemIndex: Int) -> UIMenu?)? = nil
-    
-    @available(iOS 13.0, *)
-    init(_ menu: @escaping (_ itemIndex: Int) -> UIMenu?) {
-        self.menu = menu
-    }
-    
-    /// The legacy menu for iOS 12. Displays an action sheet
-    ///
-    /// For single-item card's `itemIndex` will always be `0`, for multi-item cards
-    /// such as group cards or the headline pairs, `itemIndex` will be based on
-    /// the actioned upon feed item.
-    var legacyMenu: ((_ itemIndex: Int) -> LegacyContext?)?
-    
-    @available(iOS, deprecated: 13.0, message: "Use UIMenu based API through `init(_ menu:)`")
-    init(_ legacyMenu: @escaping (_ itemIndex: Int) -> LegacyContext?) {
-        self.legacyMenu = legacyMenu
-    }
-    
-    /// A legacy context to use on iOS 12 for an action sheet
-    struct LegacyContext: Equatable {
-        /// Optionally, the alert title
-        var title: String?
-        /// Optionally, the alert message
-        var message: String?
-        /// A list of actions to display in the action sheet
-        var actions: [UIAlertAction]
-    }
-}
-
-/// The actions you can perform on a feed item in the list
-enum FeedItemAction: Equatable {
-    /// The user choose to open the feed item in some way
-    case opened(inNewTab: Bool = false, switchingToPrivateMode: Bool = false)
-    /// Toggle the enabled status for the source of the feed item
-    case toggleSource
-    /// Handle a long press initiated by the user for legacy menus
-    case longPressed(_ legacyContext: FeedItemMenu.LegacyContext)
-}
-
-/// Additonal information related to an action performed on a feed item
-struct FeedItemActionContext {
-    /// The feed item actioned upon
-    var item: FeedItem
-    /// The card that this item is displayed in
-    var card: FeedCard
-    /// The index path of the card in the collection view
-    var indexPath: IndexPath
-}
-
 /// The content of a card placed in the Brave Today section on the NTP
 protocol FeedCardContent {
     /// The content's view
@@ -88,4 +28,14 @@ protocol FeedCardContent {
 
 extension FeedCardContent where Self: UIView {
     var view: UIView { self }
+}
+
+/// The actions you can perform on a feed item in the list
+enum FeedItemAction: Equatable {
+    /// The user choose to open the feed item in some way
+    case opened(inNewTab: Bool = false, switchingToPrivateMode: Bool = false)
+    /// Toggle the enabled status for the source of the feed item
+    case toggleSource
+    /// Handle a long press initiated by the user for legacy menus
+    case longPressed(_ legacyContext: FeedItemMenu.LegacyContext)
 }

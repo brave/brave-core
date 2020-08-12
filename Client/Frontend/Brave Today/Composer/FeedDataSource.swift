@@ -12,247 +12,6 @@ import BraveShared
 // Named `logger` because we are using math function `log`
 private let logger = Logger.browserLogger
 
-/// A set of 2 items
-struct FeedPair: Equatable {
-    /// The first item
-    var first: FeedItem
-    /// The second item
-    var second: FeedItem
-    
-    init(_ first: FeedItem, _ second: FeedItem) {
-        self.first = first
-        self.second = second
-    }
-}
-
-/// A container for one or many `FeedItem`s
-enum FeedCard: Equatable {
-    /// A sponsored image to display
-    case sponsor(_ feed: FeedItem)
-    /// A group of deals/offers displayed horizontally
-    case deals(_ feeds: [FeedItem], title: String)
-    /// A single item displayed prompinently with an image
-    case headline(_ feed: FeedItem)
-    /// A pair of `headline` items that should be displayed side by side horizontally with equal sizes
-    case headlinePair(_ pair: FeedPair)
-    /// A group of items that can be displayed in a number of different configurations
-    case group(_ feeds: [FeedItem], title: String, direction: NSLayoutConstraint.Axis, displayBrand: Bool)
-    /// A numbered group of items which will always be displayed in a vertical list.
-    case numbered(_ feeds: [FeedItem], title: String)
-    
-    /// Obtain an estimated height for this card given a width it will be displayed with
-    func estimatedHeight(for width: CGFloat) -> CGFloat {
-        switch self {
-        case .sponsor:
-            return FeedItemView.Layout.bannerThumbnail.estimatedHeight(for: width)
-        case .headline:
-            return FeedItemView.Layout.brandedHeadline.estimatedHeight(for: width)
-        case .headlinePair:
-            return 300
-        case .group, .numbered, .deals:
-            return 400
-        }
-    }
-    
-    /// A list of feed items that are present in the card
-    var items: [FeedItem] {
-        switch self {
-        case .headline(let item), .sponsor(let item):
-            return [item]
-        case .headlinePair(let pair):
-            return [pair.first, pair.second]
-        case .group(let items, _, _, _), .numbered(let items, _), .deals(let items, _):
-            return items
-        }
-    }
-    
-    /// Creates a new card that has replaced an item it is displaying with a replacement
-    ///
-    /// If `item` is not being displayed by this card this function returns itself
-    func replacing(item: FeedItem, with replacementItem: FeedItem) -> Self {
-        if !items.contains(item) { return self }
-        switch self {
-        case .headline:
-            return .headline(replacementItem)
-        case .headlinePair(let pair):
-            if pair.first == item {
-                return .headlinePair(.init(replacementItem, pair.second))
-            } else {
-                return .headlinePair(.init(pair.first, replacementItem))
-            }
-        case .sponsor:
-            return .sponsor(replacementItem)
-        case .numbered(var feeds, let title):
-            if let matchedItemIndex = feeds.firstIndex(of: item) {
-                feeds[matchedItemIndex] = replacementItem
-                return .numbered(feeds, title: title)
-            }
-            return self
-        case .group(var feeds, let title, let direction, let displayBrand):
-            if let matchedItemIndex = feeds.firstIndex(of: item) {
-                feeds[matchedItemIndex] = replacementItem
-                return .group(feeds, title: title, direction: direction, displayBrand: displayBrand)
-            }
-            return self
-        case .deals(var feeds, let title):
-            if let matchedItemIndex = feeds.firstIndex(of: item) {
-                feeds[matchedItemIndex] = replacementItem
-                return .deals(feeds, title: title)
-            }
-            return self
-        }
-    }
-}
-
-// TODO: Move this to its own file along with `URLString`
-@propertyWrapper private struct FailableDecodable<T: Decodable>: Decodable {
-    var wrappedValue: T?
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        wrappedValue = try? container.decode(T.self)
-    }
-}
-
-enum FeedSequenceElement {
-    /// Display a sponsored image with the content type of `product`
-    case sponsor
-    /// Displays a horizontal list of deals with the content type of `brave_offers`
-    case deals
-    /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired
-    /// headlines
-    case headline(paired: Bool)
-    /// Displays a list of `article` typed items with the same category in a vertical list.
-    case categoryGroup
-    /// Displays a list of `article` typed items with the same source. It can optionally be displayed as a
-    /// numbered list
-    case brandedGroup(numbered: Bool = false)
-    /// Displays a list of `article` typed items that can have different categories and different sources.
-    case group
-    /// Displays the sequence element provided using a specific fill strategy to obtain feed items from the
-    /// feed list
-    indirect case fillUsing(_ strategy: FillStrategy, _ elements: [FeedSequenceElement])
-    /// Displays the provided elements a number of times. Passing in `.max` for `times` means it will repeat
-    /// until there is no more content available
-    indirect case repeating([FeedSequenceElement], times: Int = .max)
-}
-
-/// Defines a ruleset for getting the next set of items from a list of `FeedItem`'s
-protocol FillStrategy {
-    /// Obtain the next `length` number of feed items from a list. If exactly `length` items can be queried,
-    /// then those items are removed from `list` and returned.
-    ///
-    /// You can optionally provide some `predicate` to determine what items are valid in `list`
-    ///
-    /// - Returns: A set of feed items if `list` (or the filtered variant given some `predicate`) contains at
-    ///            least `length` items.
-    func next(
-        _ length: Int,
-        from list: inout [FeedItem],
-        where predicate: ((FeedItem) -> Bool)?
-    ) -> [FeedItem]?
-}
-
-extension FillStrategy {
-    func next(
-        _ length: Int,
-        from list: inout [FeedItem],
-        where predicate: ((FeedItem) -> Bool)? = nil
-    ) -> [FeedItem]? {
-        next(length, from: &list, where: predicate)
-    }
-    /// Obtain the next feed item from `list`. If that item can be queried successfully, then that item is
-    /// removed from `list` and returned.
-    func next(
-        from list: inout [FeedItem],
-        where predicate: ((FeedItem) -> Bool)? = nil
-    ) -> FeedItem? {
-        next(1, from: &list, where: predicate)?.first
-    }
-}
-
-/// A fill strategy that always pulls from the beginning of the list
-struct DefaultFillStrategy: FillStrategy {
-    func next(
-        _ length: Int,
-        from list: inout [FeedItem],
-        where predicate: ((FeedItem) -> Bool)? = nil
-    ) -> [FeedItem]? {
-        if let predicate = predicate {
-            let filteredItems = list.filter(predicate)
-            if filteredItems.count < length { return nil }
-            let items = Array(filteredItems.prefix(upTo: length))
-            items.forEach { item in
-                if let index = list.firstIndex(of: item) {
-                    list.remove(at: index)
-                }
-            }
-            return items
-        } else {
-            if list.count < length { return nil }
-            let items = Array(list.prefix(upTo: length))
-            list.removeFirst(items.count)
-            return items
-        }
-    }
-}
-
-/// A fill strategy that always pulls from the beginning of the list after said list has been filtered
-/// by some given predicate
-struct FilteredFillStrategy: FillStrategy {
-    /// A global predicate to determine what items are valid to pull from. For example, only pulling items
-    /// that are in a given category
-    var isIncluded: ((FeedItem) -> Bool)
-    
-    func next(
-        _ length: Int,
-        from list: inout [FeedItem],
-        where predicate: ((FeedItem) -> Bool)? = nil
-    ) -> [FeedItem]? {
-        let workingList = list.filter {
-            (predicate?($0) ?? true) && isIncluded($0)
-        }
-        if workingList.count < length { return nil }
-        let items = Array(workingList.prefix(upTo: length))
-        items.forEach { item in
-            if let index = list.firstIndex(of: item) {
-                list.remove(at: index)
-            }
-        }
-        return items
-    }
-}
-
-/// A fill strategy that pulls random items from the list
-struct RandomizedFillStrategy: FillStrategy {
-    /// A global predicate to determine what random items are valid to pull from. For example, only pulling
-    /// random items that are less than 48 hours old
-    var isIncluded: ((FeedItem) -> Bool)?
-    
-    func next(
-        _ length: Int,
-        from list: inout [FeedItem],
-        where predicate: ((FeedItem) -> Bool)? = nil
-    ) -> [FeedItem]? {
-        var workingList = list
-        if predicate != nil || isIncluded != nil {
-            workingList = workingList.filter {
-                (predicate?($0) ?? true) && (isIncluded?($0) ?? true)
-            }
-        }
-        if workingList.count < length { return nil }
-        return (0..<length).compactMap { _ in
-            if let index = workingList.indices.randomElement() {
-                let item = workingList.remove(at: index)
-                if let index = list.firstIndex(of: item) {
-                    list.remove(at: index)
-                }
-                return item
-            }
-            return nil
-        }
-    }
-}
-
 /// Powers Brave Today's feed.
 class FeedDataSource {
     /// The current view state of the data source
@@ -751,5 +510,40 @@ class FeedDataSource {
                 completion(generatedCards)
             }
         }
+    }
+}
+
+extension FeedDataSource {
+    private enum FeedSequenceElement {
+        /// Display a sponsored image with the content type of `product`
+        case sponsor
+        /// Displays a horizontal list of deals with the content type of `brave_offers`
+        case deals
+        /// Displays an `article` type item in a headline card. Can also be displayed as two (smaller) paired
+        /// headlines
+        case headline(paired: Bool)
+        /// Displays a list of `article` typed items with the same category in a vertical list.
+        case categoryGroup
+        /// Displays a list of `article` typed items with the same source. It can optionally be displayed as a
+        /// numbered list
+        case brandedGroup(numbered: Bool = false)
+        /// Displays a list of `article` typed items that can have different categories and different sources.
+        case group
+        /// Displays the sequence element provided using a specific fill strategy to obtain feed items from the
+        /// feed list
+        indirect case fillUsing(_ strategy: FillStrategy, _ elements: [FeedSequenceElement])
+        /// Displays the provided elements a number of times. Passing in `.max` for `times` means it will repeat
+        /// until there is no more content available
+        indirect case repeating([FeedSequenceElement], times: Int = .max)
+    }
+
+}
+
+// TODO: Move this to its own file along with `URLString`
+@propertyWrapper private struct FailableDecodable<T: Decodable>: Decodable {
+    var wrappedValue: T?
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        wrappedValue = try? container.decode(T.self)
     }
 }

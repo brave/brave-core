@@ -313,6 +313,9 @@
 		27325A6924105FF100790DC6 /* SKUPurchaseButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27325A6824105FF100790DC6 /* SKUPurchaseButtonView.swift */; };
 		27353FF2235F4E7300E42EBB /* WalletDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */; };
 		273EB3A72422AB24002A8AAF /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9616E6A240EE43F00667C2D /* PaymentRequest.swift */; };
+		274398E224E4827800E79605 /* FeedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E124E4827800E79605 /* FeedCard.swift */; };
+		274398E524E4829900E79605 /* FeedFillStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E424E4829900E79605 /* FeedFillStrategy.swift */; };
+		274398E724E483AD00E79605 /* FeedItemMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E624E483AD00E79605 /* FeedItemMenu.swift */; };
 		27448522245A1A1C001920B5 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27448521245A1A1C001920B5 /* FavoritesViewController.swift */; };
 		27448532245B5EC2001920B5 /* CustomTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744852F245B5EC2001920B5 /* CustomTheme.swift */; };
 		27448533245B5EC2001920B5 /* NTPDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27448530245B5EC2001920B5 /* NTPDataSource.swift */; };
@@ -1706,6 +1709,9 @@
 		27325A6624105F8500790DC6 /* SKUPurchaseDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKUPurchaseDetailsView.swift; sourceTree = "<group>"; };
 		27325A6824105FF100790DC6 /* SKUPurchaseButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKUPurchaseButtonView.swift; sourceTree = "<group>"; };
 		27353FF1235F4E7300E42EBB /* WalletDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletDisclaimerView.swift; sourceTree = "<group>"; };
+		274398E124E4827800E79605 /* FeedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCard.swift; sourceTree = "<group>"; };
+		274398E424E4829900E79605 /* FeedFillStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFillStrategy.swift; sourceTree = "<group>"; };
+		274398E624E483AD00E79605 /* FeedItemMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemMenu.swift; sourceTree = "<group>"; };
 		27448521245A1A1C001920B5 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		2744852F245B5EC2001920B5 /* CustomTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTheme.swift; path = Client/Frontend/Browser/HomePanel/CustomTheme.swift; sourceTree = SOURCE_ROOT; };
 		27448530245B5EC2001920B5 /* NTPDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NTPDataSource.swift; path = Client/Frontend/Browser/HomePanel/NTPDataSource.swift; sourceTree = SOURCE_ROOT; };
@@ -3756,6 +3762,7 @@
 				27A1ABFD24855C1700344503 /* FeedItemView.swift */,
 				2719D9FF249AAC2A0080AB48 /* FeedContextMenuDelegate.swift */,
 				27EA04C1249D4336004F5D2E /* FeedCardContent.swift */,
+				274398E624E483AD00E79605 /* FeedItemMenu.swift */,
 				27A1ABF924855C1700344503 /* Cards */,
 				27A1AC0A2485A0CC00344503 /* Composer */,
 				27EF6B7D24BF48B1005E034F /* Source List */,
@@ -3793,6 +3800,8 @@
 			children = (
 				27A1AC0B2485A1C200344503 /* FeedDataSource.swift */,
 				27B3DDD424AF98EA0006A7ED /* FeedItem.swift */,
+				274398E124E4827800E79605 /* FeedCard.swift */,
+				274398E424E4829900E79605 /* FeedFillStrategy.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -6773,6 +6782,7 @@
 				276A791024476FD200AC9446 /* StatsSectionProvider.swift in Sources */,
 				27FCA8E02447708300A8CA48 /* FavoritesSectionProvider.swift in Sources */,
 				2719DA00249AAC2A0080AB48 /* FeedContextMenuDelegate.swift in Sources */,
+				274398E524E4829900E79605 /* FeedFillStrategy.swift in Sources */,
 				4422D4DA21BFFB7600BF1855 /* iterator.cc in Sources */,
 				4422D4AF21BFFB7600BF1855 /* status.cc in Sources */,
 				4422D4EA21BFFB7600BF1855 /* db_impl.cc in Sources */,
@@ -7062,6 +7072,7 @@
 				5E612A90234B7FCD007D12B5 /* OnboardingRewardsAgreementView.swift in Sources */,
 				4422D56A21BFFB7F00BF1855 /* simplify.cc in Sources */,
 				5EC594F1232C697200922111 /* OnboardingAdsCountdownView.swift in Sources */,
+				274398E724E483AD00E79605 /* FeedItemMenu.swift in Sources */,
 				27B16C5924E1D72600E0CF2C /* NewTabPageFeedOverlayView.swift in Sources */,
 				27CFB71424E1F67B008DFC8C /* Observable.swift in Sources */,
 				A134B88A20DA98BB00A581D0 /* ClientPreferences.swift in Sources */,
@@ -7075,6 +7086,7 @@
 				E68E7ADA1CAC207400FDCA76 /* ChangePasscodeViewController.swift in Sources */,
 				5E1645A824ABA35B0003C3B2 /* SpinnerView.swift in Sources */,
 				E640E85E1C73A45A00C5F072 /* PasscodeEntryViewController.swift in Sources */,
+				274398E224E4827800E79605 /* FeedCard.swift in Sources */,
 				4422D4BF21BFFB7600BF1855 /* logging.cc in Sources */,
 				0A1E84462190A57F0042F782 /* SyncAddDeviceViewController.swift in Sources */,
 				4422D42C21BFCF8900BF1855 /* HttpsEverywhere.cpp in Sources */,

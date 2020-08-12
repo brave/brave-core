@@ -6,8 +6,8 @@
 import UIKit
 import BraveUI
 
-/// A small non-interactive alert modal that displays an image, title and message and automatically disappears
-/// after a given amount of time.
+/// A small non-interactive alert modal that displays an image, title and message and automatically
+/// disappears after a given amount of time.
 ///
 /// Present it using `present(on:dismissAfter:)`
 class FeedActionAlertView: UIView {

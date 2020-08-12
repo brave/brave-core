@@ -8,6 +8,17 @@ import BraveUI
 import Shared
 import BraveShared
 
+/// Additonal information related to an action performed on a feed item
+struct FeedItemActionContext {
+    /// The feed item actioned upon
+    var item: FeedItem
+    /// The card that this item is displayed in
+    var card: FeedCard
+    /// The index path of the card in the collection view
+    var indexPath: IndexPath
+}
+
+/// The section provider for Brave Today. 
 class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
     /// Set of actions that can occur from the Brave Today section
     enum Action {
