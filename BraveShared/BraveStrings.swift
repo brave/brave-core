@@ -1436,5 +1436,11 @@ extension Strings {
             value: "New Content Available",
             comment: ""
         )
+        public static let sourceSearchPlaceholder = NSLocalizedString(
+            "today.sourceSearchPlaceholder",
+            bundle: .braveShared,
+            value: "Search",
+            comment: ""
+        )
     }
 }

@@ -7,6 +7,7 @@ import UIKit
 import BraveUI
 import Shared
 
+/// The header which is shown when the user scrolls down into the Brave Today feed
 class FeedSectionHeaderView: UIView {
     private let backgroundView: UIVisualEffectView
     private let label = UILabel().then {

@@ -87,7 +87,7 @@ class FeedSourceListViewController: UITableViewController {
         
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
-        searchController.searchBar.placeholder = "Search"
+        searchController.searchBar.placeholder = Strings.BraveToday.sourceSearchPlaceholder
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.hidesSearchBarWhenScrolling = true
         navigationItem.searchController = searchController
