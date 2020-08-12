@@ -2,61 +2,38 @@
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
 
-import("config.gni")
 import("//brave/build/cargo.gni")
-import("//brave/test/testing.gni")
 
-config("external_config") {
-  include_dirs = [ "src" ]
-  defines = [
-    "NO_CXXEXCEPTIONS=1"
-  ]
+group("adblock_rust_ffi") {
+  public_configs = [ ":external_config" ]
+  public_deps = [ "//brave/build/rust" ]
 }
 
-source_set("adblock_ffi") {
+config("external_config") {
+  if (is_mac) {
+    defines = [ "ADBLOCK_SHARED_LIBRARY"]
+  }
+}
+
+source_set("rust_ffi") {
+  visibility = [ "//brave/build/rust:*" ]
+
   public_configs = [ ":external_config" ]
 
+  defines = [ "ADBLOCK_IMPLEMENTATION" ]
+
   sources = [
+    "src/lib.h",
     "src/wrapper.cpp",
     "src/wrapper.hpp"
   ]
-
-  deps = [
-    "//base",
-    ":adblock"
-  ]
-
-  libs = [ adblock_lib_path ]
-
-  if (is_mac || is_ios ) {
-    libs += [
-      "Security.framework"
-    ]
-  }
 }
 
-if (adblock_shared_lib_install_name != "") {
-  fix_testing_install_name("test_adblock_install_name") {
-    current_path = adblock_shared_lib_install_name
-    new_path = "@executable_path/" + rebase_path(adblock_lib_path, root_build_dir)
-  }
-} else {
-    group("test_adblock_install_name") {}
-}
+source_set("rust_lib") {
+  visibility = [ "//brave/build/rust:*" ]
 
-cargo_build("adblock") {
   inputs = [
     "Cargo.toml",
-    "src/lib.h",
     "src/lib.rs",
   ]
-
-  rust_flags = adblock_flags
-  output = adblock_lib_path
-
-  manifest_path = "Cargo.toml"
-
-  build_path = adblock_build_path
-
-  target = adblock_target
 }

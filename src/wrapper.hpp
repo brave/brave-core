@@ -8,9 +8,27 @@ extern "C" {
 #include "lib.h"
 }
 
+#if defined(ADBLOCK_SHARED_LIBRARY)
+#if defined(WIN32)
+#if defined(ADBLOCK_IMPLEMENTATION)
+#define ADBLOCK_EXPORT __declspec(dllexport)
+#else
+#define ADBLOCK_EXPORT __declspec(dllimport)
+#endif  // defined(ADBLOCK_IMPLEMENTATION)
+#else  // defined(WIN32)
+#if defined(ADBLOCK_IMPLEMENTATION)
+#define ADBLOCK_EXPORT __attribute__((visibility("default")))
+#else
+#define ADBLOCK_EXPORT
+#endif  // defined(ADBLOCK_IMPLEMENTATION)
+#endif
+#else  // defined(ADBLOCK_SHARED_LIBRARY)
+#define ADBLOCK_EXPORT
+#endif
+
 namespace adblock {
 
-class FilterList {
+class ADBLOCK_EXPORT FilterList {
  public:
   FilterList(const std::string& uuid,
              const std::string& url,
@@ -41,7 +59,7 @@ private:
   static std::vector<FilterList> regional_list;
 };
 
-class Engine {
+class ADBLOCK_EXPORT Engine {
  public:
   Engine();
   Engine(const std::string& rules);
