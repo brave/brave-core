@@ -13,7 +13,6 @@ cargo_lib_suffix = ""
 # See https://forge.rust-lang.org/release/platform-support.html for possible targets
 if (is_win) {
   if (current_cpu == "x86") {
-    rust_flags += " --codegen target-feature=+crt-static "
     rustc_target = "i686-pc-windows-msvc"
   } else if (current_cpu == "x64") {
     rustc_target = "x86_64-pc-windows-msvc"
@@ -25,10 +24,6 @@ if (is_win) {
 } else if (is_linux) {
   if (current_cpu == "x64") {
     rustc_target = "x86_64-unknown-linux-gnu"
-    if (use_sysroot) {
-      rust_flags += " -C link-arg=--sysroot=$target_sysroot "
-      rust_flags += " -C link-arg=-Wl,-rpath=\$ORIGIN "
-    }
   }
 } else if (is_android) {
   if (current_cpu == "arm") {
