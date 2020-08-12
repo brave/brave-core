@@ -373,7 +373,15 @@ extension FeedItemView {
     func setupWithItem(_ feedItem: FeedItem, isBrandVisible: Bool = true) {
         titleLabel.text = feedItem.content.title
         if #available(iOS 13, *) {
-            dateLabel.text = RelativeDateTimeFormatter().localizedString(for: feedItem.content.publishTime, relativeTo: Date())
+            dateLabel.text = RelativeDateTimeFormatter().localizedString(
+                for: feedItem.content.publishTime,
+                relativeTo: Date()
+            )
+        } else {
+            dateLabel.text = LegacyRelativeDateTimeFormatter().localizedString(
+                for: feedItem.content.publishTime,
+                relativeTo: Date()
+            )
         }
         if feedItem.content.imageURL == nil {
             thumbnailImageView.isHidden = true

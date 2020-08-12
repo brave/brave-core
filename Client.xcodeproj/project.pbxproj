@@ -195,6 +195,7 @@
 		0BF0DB941A8545800039F300 /* TopToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF0DB931A8545800039F300 /* TopToolbarView.swift */; };
 		0BF1B7E31AC60DEA00A7B407 /* InsetButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */; };
 		0BF42D4F1A7CD09600889E28 /* TestFavicons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */; };
+		2701C04924E450050073496F /* LegacyRelativeDateTimeFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2701C04824E450050073496F /* LegacyRelativeDateTimeFormatter.swift */; };
 		270C48CC24AE243300E2A1E6 /* SDWebImage.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7B604F9A1C4950F2006EEEC3 /* SDWebImage.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2713AF052396EA8F00E3ACAA /* VerifyUserWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713AF042396EA8F00E3ACAA /* VerifyUserWalletViewController.swift */; };
 		2713AF072398439E00E3ACAA /* ConnectUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713AF062398439E00E3ACAA /* ConnectUserWalletButton.swift */; };
@@ -414,6 +415,7 @@
 		27F4439F2135E11200296C58 /* BraveShareTo.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* BraveShareTo.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
 		27F443F42138843400296C58 /* BraveShareToInfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27F443F22138843400296C58 /* BraveShareToInfoPlist.strings */; };
+		27F56F8D24E447020018F2F9 /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 27F56F7D24E447020018F2F9 /* DateTools.bundle */; };
 		27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */; };
 		27FA2D4A234CC95A004D5D2D /* BATValueTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA2D47234CC959004D5D2D /* BATValueTests.swift */; };
 		27FA2D4B234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FA2D48234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift */; };
@@ -1577,6 +1579,7 @@
 		0BF0DB931A8545800039F300 /* TopToolbarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopToolbarView.swift; sourceTree = "<group>"; };
 		0BF1B7E21AC60DEA00A7B407 /* InsetButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InsetButton.swift; sourceTree = "<group>"; };
 		0BF42D4E1A7CD09600889E28 /* TestFavicons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestFavicons.swift; sourceTree = "<group>"; };
+		2701C04824E450050073496F /* LegacyRelativeDateTimeFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LegacyRelativeDateTimeFormatter.swift; sourceTree = "<group>"; };
 		2713AF042396EA8F00E3ACAA /* VerifyUserWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyUserWalletViewController.swift; sourceTree = "<group>"; };
 		2713AF062398439E00E3ACAA /* ConnectUserWalletButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserWalletButton.swift; sourceTree = "<group>"; };
 		2713AF0823984C6B00E3ACAA /* VerifiedUserWalletButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifiedUserWalletButton.swift; sourceTree = "<group>"; };
@@ -1793,6 +1796,7 @@
 		27F4439C2135E11200296C58 /* BraveShareToInfo.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = BraveShareToInfo.plist; sourceTree = "<group>"; };
 		27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareToBraveViewController.swift; sourceTree = "<group>"; };
 		27F443F32138843400296C58 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Localizations/en.lproj/BraveShareToInfoPlist.strings; sourceTree = "<group>"; };
+		27F56F7D24E447020018F2F9 /* DateTools.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DateTools.bundle; sourceTree = "<group>"; };
 		27F94A3921909A5900F4FADF /* SearchSuggestionsPromptView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsPromptView.swift; sourceTree = "<group>"; };
 		27FA2D47234CC959004D5D2D /* BATValueTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BATValueTests.swift; sourceTree = "<group>"; };
 		27FA2D48234CC95A004D5D2D /* RewardsNotificationViewBuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardsNotificationViewBuilderTests.swift; sourceTree = "<group>"; };
@@ -3187,6 +3191,14 @@
 			path = UIImageViewAligned;
 			sourceTree = "<group>";
 		};
+		2711D99224E444E200E3844B /* DateTools */ = {
+			isa = PBXGroup;
+			children = (
+				27F56F7D24E447020018F2F9 /* DateTools.bundle */,
+			);
+			path = DateTools;
+			sourceTree = "<group>";
+		};
 		2713AF022396EA6000E3ACAA /* User Wallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -3905,6 +3917,7 @@
 		28CE83EF1A1D246900576538 /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				2711D99224E444E200E3844B /* DateTools */,
 				A1FEEE1F20BF28D900298DA2 /* Then.swift */,
 				288A2D7E1AB8B2AD0023ABC3 /* Result */,
 				0B1C05D41A798B1F004C78B0 /* UIImageViewAligned */,
@@ -4993,6 +5006,7 @@
 			isa = PBXGroup;
 			children = (
 				27CFB71324E1F67B008DFC8C /* Observable.swift */,
+				2701C04824E450050073496F /* LegacyRelativeDateTimeFormatter.swift */,
 				E650755A1E37F747006961AC /* Swizzling.h */,
 				E650755B1E37F747006961AC /* Swizzling.m */,
 				E650755D1E37F756006961AC /* Try.h */,
@@ -6146,6 +6160,7 @@
 				0A2FF33F24A4B75100F88F43 /* vpncheckmark.json in Resources */,
 				E4B7B7621A793CF20022C5E0 /* CharisSILBI.ttf in Resources */,
 				5D5374A723846FFC00A2B587 /* andreas-gucklhorn.jpg in Resources */,
+				27F56F8D24E447020018F2F9 /* DateTools.bundle in Resources */,
 				5D53749E23846FFC00A2B587 /* louis-kim.jpg in Resources */,
 				78A9D0942407B3110077576C /* BraveGetUA.js in Resources */,
 				27658271217130D900754B2F /* GlobalSign_r1.cer in Resources */,
@@ -6834,6 +6849,7 @@
 				E6108FF91C84E91C005D25E8 /* BasePasscodeViewController.swift in Sources */,
 				39F4C10A2045DB2E00746155 /* FocusHelper.swift in Sources */,
 				E4CD9F2D1A6DC91200318571 /* TabLocationView.swift in Sources */,
+				2701C04924E450050073496F /* LegacyRelativeDateTimeFormatter.swift in Sources */,
 				0BB5B2881AC0A2B90052877D /* SnackBar.swift in Sources */,
 				27A1AC0224855C1700344503 /* FeedItemView.swift in Sources */,
 				7BEFC6801BFF68C30059C952 /* QuickActions.swift in Sources */,
