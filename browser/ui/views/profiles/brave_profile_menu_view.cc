@@ -32,6 +32,7 @@ void BraveProfileMenuView::BuildIdentity() {
   // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in").
   SetProfileIdentityInfo(
       /*profile_name=*/base::string16(),
+      profile_attributes->GetProfileThemeColors().profile_highlight_color,
       /*edit_button=*/base::nullopt,
       ui::ImageModel::FromImage(profile_attributes->GetAvatarIcon()),
       /*title=*/base::string16());
