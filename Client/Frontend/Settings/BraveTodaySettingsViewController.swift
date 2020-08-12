@@ -33,7 +33,7 @@ class BraveTodaySettingsViewController: TableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Brave Today" // FIXME: Localize
+        title = Strings.BraveToday.braveToday
         
         if navigationController?.viewControllers.first === self {
             // Isolated presentation, add close button
@@ -43,8 +43,7 @@ class BraveTodaySettingsViewController: TableViewController {
         dataSource.sections = [
             .init(
                 rows: [
-                    // FIXME: Localize
-                    .boolRow(title: "Show Brave Today", option: Preferences.BraveToday.isEnabled)
+                    .boolRow(title: Strings.BraveToday.isEnabledToggleLabel, option: Preferences.BraveToday.isEnabled)
                 ]
             )
         ]
@@ -52,11 +51,9 @@ class BraveTodaySettingsViewController: TableViewController {
         if !feedDataSource.sources.isEmpty {
             dataSource.sections.append(
                 .init(
-                    // FIXME: Localize
-                    header: .title("Sources"),
+                    header: .title(Strings.BraveToday.settingsSourceHeaderTitle),
                     rows: [
-                        // FIXME: Localize
-                        Row(text: "All Sources", selection: { [unowned self] in
+                        Row(text: Strings.BraveToday.allSources, selection: { [unowned self] in
                             let controller = FeedSourceListViewController(dataSource: self.feedDataSource, category: nil)
                             self.navigationController?.pushViewController(controller, animated: true)
                         }, accessory: .disclosureIndicator)
@@ -65,8 +62,7 @@ class BraveTodaySettingsViewController: TableViewController {
             )
             dataSource.sections.append(
                 .init(rows: [
-                    // FIXME: Localize
-                    Row(text: "Reset Source Settings to Default", selection: { [unowned self] in
+                    Row(text: Strings.BraveToday.resetSourceSettingsButtonTitle, selection: { [unowned self] in
                         self.feedDataSource.resetSourcesToDefault()
                     }, cellClass: ButtonCell.self)
                 ])

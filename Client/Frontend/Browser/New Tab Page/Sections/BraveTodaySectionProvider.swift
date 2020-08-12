@@ -110,11 +110,11 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         if let error = dataSource.state.error {
             let cell = collectionView.dequeueReusableCell(for: indexPath) as FeedCardCell<BraveTodayErrorView>
             if let urlError = error as? URLError, urlError.code == .notConnectedToInternet {
-                cell.content.titleLabel.text = "No Internet" // FIXME: Localize
-                cell.content.errorMessageLabel.text = "Try checking your connection or reconnecting to Wi-Fi." // FIXME: Localize
+                cell.content.titleLabel.text = Strings.BraveToday.errorNoInternetTitle
+                cell.content.errorMessageLabel.text = Strings.BraveToday.errorNoInternetBody
             } else {
-                cell.content.titleLabel.text = "Oops…" // FIXME: Localize
-                cell.content.errorMessageLabel.text = "Brave Today is experiencing some issues. Try again." // FIXME: Localize
+                cell.content.titleLabel.text = Strings.BraveToday.errorGeneralTitle
+                cell.content.errorMessageLabel.text = Strings.BraveToday.errorGeneralBody
             }
             if case .loading = dataSource.state {
                 cell.content.refreshButton.isLoading = true
@@ -276,12 +276,11 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 }
                 
                 var disableSource: UIAction {
-                    // FIXME: Localize
-                    .init(title: "Disable content from \(item.source.name)", image: UIImage(named: "disable.feed.source"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
+                    .init(title: String(format: Strings.BraveToday.disablePublisherContent, item.source.name), image: UIImage(named: "disable.feed.source"), attributes: .destructive, handler: mapDeferredHandler(toggleSourceHandler))
                 }
                 
                 var enableSource: UIAction {
-                    .init(title: "Enable content from \(item.source.name)", image: UIImage(named: "enable.feed.source"), handler: mapDeferredHandler(toggleSourceHandler))
+                    .init(title: String(format: Strings.BraveToday.enablePublisherContent, item.source.name), image: UIImage(named: "enable.feed.source"), handler: mapDeferredHandler(toggleSourceHandler))
                 }
                 
                 let openActions: [UIAction] = [
@@ -326,13 +325,11 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             }
             
             var disableSource: UIAlertAction {
-                // FIXME: Localize
-                .init(title: "Disable content from \(item.source.name)", style: .destructive, handler: mapHandler(toggleSourceHandler))
+                .init(title: String(format: Strings.BraveToday.disablePublisherContent, item.source.name), style: .destructive, handler: mapHandler(toggleSourceHandler))
             }
             
             var enableSource: UIAlertAction {
-                // FIXME: Localize
-                .init(title: "Enable content from \(item.source.name)", style: .default, handler: mapHandler(toggleSourceHandler))
+                .init(title: String(format: Strings.BraveToday.enablePublisherContent, item.source.name), style: .default, handler: mapHandler(toggleSourceHandler))
             }
             
             let cancel = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)

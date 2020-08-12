@@ -288,8 +288,7 @@ class SettingsViewController: TableViewController {
         }
         
         section.rows.append(
-            // FIXME: Localize
-            Row(text: "Brave Today", selection: {
+            Row(text: Strings.BraveToday.braveToday, selection: {
                 let todaySettings = BraveTodaySettingsViewController(dataSource: self.feedDataSource)
                 self.navigationController?.pushViewController(todaySettings, animated: true)
             }, accessory: .disclosureIndicator)
