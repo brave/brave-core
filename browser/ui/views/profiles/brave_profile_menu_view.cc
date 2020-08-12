@@ -13,6 +13,7 @@
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "ui/base/models/image_model.h"
 
 void BraveProfileMenuView::BuildIdentity() {
   ProfileMenuView::BuildIdentity();
@@ -23,10 +24,11 @@ void BraveProfileMenuView::BuildIdentity() {
       .GetProfileAttributesWithPath(profile->GetPath(), &profile_attributes);
   // Reset IdentityInfo to get rid of the subtitle string
   // IDS_PROFILES_LOCAL_PROFILE_STATE("Not signed in").
-  SetProfileIdentityInfo(/*profile_name=*/base::string16(),
-                         /*edit_button=*/base::nullopt,
-                         profile_attributes->GetAvatarIcon().AsImageSkia(),
-                         /*title=*/base::string16());
+  SetProfileIdentityInfo(
+      /*profile_name=*/base::string16(),
+      /*edit_button=*/base::nullopt,
+      ui::ImageModel::FromImage(profile_attributes->GetAvatarIcon()),
+      /*title=*/base::string16());
 }
 
 // We don't want autofill buttons in this menu.
