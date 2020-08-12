@@ -31,6 +31,12 @@ source_set("rust_ffi") {
   deps = [
     "//base",
   ]
+
+  if (is_mac || is_ios ) {
+    libs = [
+      "Security.framework"
+    ]
+  }
 }
 
 group("challenge_bypass_ristretto") {
