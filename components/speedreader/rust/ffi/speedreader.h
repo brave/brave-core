@@ -18,8 +18,7 @@
 #else
 #define SPEEDREADER_EXPORT __declspec(dllimport)
 #endif  // defined(SPEEDREADER_IMPLEMENTATION)
-
-#else // defined(WIN32)
+#else  // defined(WIN32)
 #if defined(SPEEDREADER_IMPLEMENTATION)
 #define SPEEDREADER_EXPORT __attribute__((visibility("default")))
 #else
