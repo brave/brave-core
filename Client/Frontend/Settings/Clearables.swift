@@ -176,7 +176,7 @@ class BraveTodayClearable: Clearable {
     }
     
     var label: String {
-        return "Brave Today" // FIXME: Localize
+        return Strings.BraveToday.braveToday
     }
     
     func clear() -> Success {

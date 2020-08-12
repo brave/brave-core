@@ -485,8 +485,8 @@ class NewTabPageViewController: UIViewController, Themeable {
             if isEnabled {
                 let alert = FeedActionAlertView(
                     image: UIImage(imageLiteralResourceName: "disable.feed.source.alert"),
-                    title: "Disabled", // FIXME: Localize
-                    message: "Brave Today will stop showing content from \(context.item.source.name)" // FIXME: Localize
+                    title: Strings.BraveToday.disabledAlertTitle,
+                    message: String(format: Strings.BraveToday.disabledAlertBody, context.item.source.name)
                 )
                 alert.present(on: self)
             }

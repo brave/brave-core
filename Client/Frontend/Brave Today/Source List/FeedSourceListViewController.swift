@@ -74,7 +74,7 @@ class FeedSourceListViewController: UITableViewController {
         tableView.dataSource = self
         tableView.sectionIndexColor = BraveUX.braveOrange
         
-        title = category ?? "All Sources" // FIXME: Localize
+        title = category ?? Strings.BraveToday.allSources
         if category != nil {
             // TODO(iOS14): Replace with context menu primary action
             navigationItem.rightBarButtonItem = .init(
@@ -96,12 +96,10 @@ class FeedSourceListViewController: UITableViewController {
     @objc private func tappedMenu(_ sender: UIBarButtonItem) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.popoverPresentationController?.barButtonItem = sender
-        // FIXME: Localize
-        alert.addAction(UIAlertAction(title: "Enable All", style: .default, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: Strings.BraveToday.enableAll, style: .default, handler: { [weak self] _ in
             self?.toggleCategory(enabled: true)
         }))
-        // FIXME: Localize
-        alert.addAction(UIAlertAction(title: "Disable All", style: .destructive, handler: { [weak self] _ in
+        alert.addAction(UIAlertAction(title: Strings.BraveToday.disableAll, style: .destructive, handler: { [weak self] _ in
             self?.toggleCategory(enabled: false)
         }))
         alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))

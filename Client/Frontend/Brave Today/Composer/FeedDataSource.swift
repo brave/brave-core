@@ -660,8 +660,7 @@ class FeedDataSource {
                 }
             case .deals:
                 return fillStrategy.next(3, from: &deals).map {
-                    // FIXME: Localize
-                    [.deals($0, title: "Deals")]
+                    [.deals($0, title: Strings.BraveToday.deals)]
                 }
             case .headline(let paired):
                 if articles.isEmpty { return nil }

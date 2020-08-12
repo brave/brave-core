@@ -1289,3 +1289,152 @@ extension Strings {
                               comment: "Text that informs a user about Brave Sync service deprecation.")
     }
 }
+
+extension Strings {
+    public struct BraveToday {
+        public static let braveToday = NSLocalizedString(
+            "today.braveToday",
+            bundle: .braveShared,
+            value: "Brave Today",
+            comment: "The name of the feature"
+        )
+        public static let sourcesAndSettings = NSLocalizedString(
+            "today.sourcesAndSettings",
+            bundle: .braveShared,
+            value: "Sources & Settings",
+            comment: ""
+        )
+        public static let learnMoreTitle = NSLocalizedString(
+            "today.learnMoreTitle",
+            bundle: .braveShared,
+            value: "Learn more about your data",
+            comment: ""
+        )
+        public static let introCardTitle = NSLocalizedString(
+            "today.introCardTitle",
+            bundle: .braveShared,
+            value: "Today’s top stories in a completely private feed, just for you.",
+            comment: ""
+        )
+        public static let introCardBody = NSLocalizedString(
+            "today.introCardBody",
+            bundle: .braveShared,
+            value: "Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated throughout the day.",
+            comment: ""
+        )
+        public static let refresh = NSLocalizedString(
+            "today.refresh",
+            bundle: .braveShared,
+            value: "Refresh",
+            comment: ""
+        )
+        public static let emptyFeedTitle = NSLocalizedString(
+            "today.emptyFeedTitle",
+            bundle: .braveShared,
+            value: "No articles to show",
+            comment: ""
+        )
+        public static let emptyFeedBody = NSLocalizedString(
+            "today.emptyFeedBody",
+            bundle: .braveShared,
+            value: "Try turning on some news sources",
+            comment: ""
+        )
+        public static let deals = NSLocalizedString(
+            "today.deals",
+            bundle: .braveShared,
+            value: "Deals",
+            comment: ""
+        )
+        public static let allSources = NSLocalizedString(
+            "today.allSources",
+            bundle: .braveShared,
+            value: "All Sources",
+            comment: ""
+        )
+        public static let enableAll = NSLocalizedString(
+            "today.enableAll",
+            bundle: .braveShared,
+            value: "Enable All",
+            comment: ""
+        )
+        public static let disableAll = NSLocalizedString(
+            "today.disableAll",
+            bundle: .braveShared,
+            value: "Disable All",
+            comment: ""
+        )
+        public static let errorNoInternetTitle = NSLocalizedString(
+            "today.noInternet",
+            bundle: .braveShared,
+            value: "No Internet",
+            comment: ""
+        )
+        public static let errorNoInternetBody = NSLocalizedString(
+            "today.noInternetBody",
+            bundle: .braveShared,
+            value: "Try checking your connection or reconnecting to Wi-Fi.",
+            comment: ""
+        )
+        public static let errorGeneralTitle = NSLocalizedString(
+            "today.errorGeneralTitle",
+            bundle: .braveShared,
+            value: "Oops…",
+            comment: ""
+        )
+        public static let errorGeneralBody = NSLocalizedString(
+            "today.errorGeneralBody",
+            bundle: .braveShared,
+            value: "Brave Today is experiencing some issues. Try again.",
+            comment: ""
+        )
+        public static let disablePublisherContent = NSLocalizedString(
+            "today.disablePublisherContent",
+            bundle: .braveShared,
+            value: "Disable content from %@",
+            comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
+        )
+        public static let enablePublisherContent = NSLocalizedString(
+            "today.enablePublisherContent",
+            bundle: .braveShared,
+            value: "Enable content from %@",
+            comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
+        )
+        public static let disabledAlertTitle = NSLocalizedString(
+            "today.disabledAlertTitle",
+            bundle: .braveShared,
+            value: "Disabled",
+            comment: ""
+        )
+        public static let disabledAlertBody = NSLocalizedString(
+            "today.disabledAlertBody",
+            bundle: .braveShared,
+            value: "Brave Today will stop showing content from %@",
+            comment: "'%@' will turn into the name of a publisher (verbatim), for example: Brave Blog"
+        )
+        public static let isEnabledToggleLabel = NSLocalizedString(
+            "today.isEnabledToggleLabel",
+            bundle: .braveShared,
+            value: "Show Brave Today",
+            comment: ""
+        )
+        public static let settingsSourceHeaderTitle = NSLocalizedString(
+            "today.settingsSourceHeaderTitle",
+            bundle: .braveShared,
+            value: "Sources",
+            comment: ""
+        )
+        public static let resetSourceSettingsButtonTitle = NSLocalizedString(
+            "today.resetSourceSettingsButtonTitle",
+            bundle: .braveShared,
+            value: "Reset Source Settings to Default",
+            comment: ""
+        )
+        public static let contentAvailableButtonTitle = NSLocalizedString(
+            "today.contentAvailableButtonTitle",
+            bundle: .braveShared,
+            value: "New Content Available",
+            comment: ""
+        )
+    }
+}

@@ -6,6 +6,7 @@
 import Foundation
 import Lottie
 import BraveUI
+import Shared
 
 enum WelcomeCardAction {
     case closedButtonTapped
@@ -36,15 +37,13 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
     private let sourcesAndSettingsButton = ActionButton(type: .system).then {
         $0.layer.borderWidth = 0
         $0.titleLabel?.font = .systemFont(ofSize: 16.0, weight: .semibold)
-        // FIXME: Localize
-        $0.setTitle("Sources & Settings", for: .normal)
+        $0.setTitle(Strings.BraveToday.sourcesAndSettings, for: .normal)
         $0.contentEdgeInsets = UIEdgeInsets(top: 10, left: 20, bottom: 10, right: 20)
         $0.backgroundColor = UIColor.white.withAlphaComponent(0.2)
     }
     
     private let learnMoreButton = UIButton(type: .system).then {
-        // FIXME: Localize
-        $0.setTitle("Learn more about your data", for: .normal)
+        $0.setTitle(Strings.BraveToday.learnMoreTitle, for: .normal)
         $0.titleLabel?.font = .systemFont(ofSize: 15.0, weight: .semibold)
         $0.titleLabel?.appearanceTextColor = .white
         $0.setTitleColor(.white, for: .normal)
@@ -67,16 +66,14 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
             .view(graphicAnimationView),
             .customSpace(30),
             .view(UILabel().then {
-                // FIXME: Localize
-                $0.text = "Today’s top stories in a completely private feed, just for you."
+                $0.text = Strings.BraveToday.introCardTitle
                 $0.textAlignment = .center
                 $0.appearanceTextColor = .white
                 $0.font = .systemFont(ofSize: 18, weight: .semibold)
                 $0.numberOfLines = 0
             }),
             .view(UILabel().then {
-                // FIXME: Localize
-                $0.text = "Brave Today matches your interests on your device so your personal information never leaves your browser. New content updated throughout the day."
+                $0.text = Strings.BraveToday.introCardBody
                 $0.textAlignment = .center
                 $0.appearanceTextColor = .white
                 $0.font = .systemFont(ofSize: 14)
