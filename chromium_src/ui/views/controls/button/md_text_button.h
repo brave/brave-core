@@ -6,20 +6,49 @@
 #ifndef BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 #define BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
 
-#include "base/optional.h"
-#include "ui/views/controls/button/label_button.h"
-#include "ui/views/controls/focus_ring.h"
-#include "ui/views/style/typography.h"
+// Make all private members into protected instead of using `friend`. This is
+// because we are renaming the class into MdTextButtonBase and making our own
+// MdTextButton, so the friend statement would get renamed too.
+#define BRAVE_MD_TEXT_BUTTON_H_ \
+ protected:
+// BRAVE_MD_TEXT_BUTTON_H_
 
-// Insert our own definition for `Create`, and (in concert with the .cc)
-// move chromium's definition to `Create_ChromiumImpl`
-#define Create Create_ChromiumImpl( \
-        ButtonListener* listener, \
-        const base::string16& text, \
-        int button_context = style::CONTEXT_BUTTON_MD); \
-      static std::unique_ptr<MdTextButton> Create
-
+// Rename MdTextButton to MdTextButtonBase
+#define MdTextButton MdTextButtonBase
 #include "../../../../../../ui/views/controls/button/md_text_button.h"
-#undef Create
+#undef MdTextButton
+#undef BRAVE_MD_TEXT_BUTTON_H_
+
+namespace views {
+
+// Make visual changes to MdTextButton in line with Brave visual style:
+//  - More rounded rectangle (for regular border, focus ring and ink drop)
+//  - Different hover text and boder color for non-prominent button
+//  - Differenet hover bg color for prominent background
+//  - No shadow for prominent background
+class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
+ public:
+  explicit MdTextButton(ButtonListener* listener = nullptr,
+                        const base::string16& text = base::string16(),
+                        int button_context = style::CONTEXT_BUTTON_MD);
+
+  ~MdTextButton() override;
+
+  // InkDrop
+  std::unique_ptr<InkDrop> CreateInkDrop() override;
+  std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
+      const override;
+
+  SkPath GetHighlightPath() const;
+
+ protected:
+  void OnPaintBackground(gfx::Canvas* canvas) override;
+
+ private:
+  void UpdateColors() override;
+  DISALLOW_COPY_AND_ASSIGN(MdTextButton);
+};
+
+}  // namespace views
 
 #endif  // BRAVE_CHROMIUM_SRC_UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_
