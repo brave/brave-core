@@ -4,13 +4,13 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "ui/views/controls/button/md_text_button.h"
+
 #include "ui/views/controls/highlight_path_generator.h"
 #include "ui/views/view_class_properties.h"
 
-// Override button creation to return BraveTextButton instances
-#define Create Create_ChromiumImpl
+#define MdTextButton MdTextButtonBase
 #include "../../../../../../ui/views/controls/button/md_text_button.cc"
-#undef Create
+#undef MdTextButton
 
 namespace {
 
@@ -32,53 +32,18 @@ class BraveTextButtonHighlightPathGenerator
 
 namespace views {
 
-// Make visual changes to MdTextButton in line with Brave visual style:
-//  - More rounded rectangle (for regular border, focus ring and ink drop)
-//  - Different hover text and boder color for non-prominent button
-//  - Differenet hover bg color for prominent background
-//  - No shadow for prominent background
-class BraveTextButton : public MdTextButton {
- public:
-  BraveTextButton(ButtonListener* listener, int button_context);
-  // InkDrop
-  std::unique_ptr<InkDrop> CreateInkDrop() override;
-  std::unique_ptr<views::InkDropHighlight> CreateInkDropHighlight()
-      const override;
-
-  SkPath GetHighlightPath() const;
-
- protected:
-  void OnPaintBackground(gfx::Canvas* canvas) override;
-
- private:
-  void UpdateColors() override;
-  DISALLOW_COPY_AND_ASSIGN(BraveTextButton);
-};
-
-//
-// This static Create function purely exists to make sure BraveTextButtons
-// are created instead of MdTextButtons.
-//
-
-// static
-std::unique_ptr<MdTextButton> MdTextButton::Create(ButtonListener* listener,
-                                                   const base::string16& text,
-                                                   int button_context) {
-  auto button = base::WrapUnique<BraveTextButton>(
-      new BraveTextButton(listener, button_context));
-  button->SetText(text);
-  button->SetCornerRadius(100);
-  button->SetFocusForPlatform();
-  return button;
-}
-
-BraveTextButton::BraveTextButton(ButtonListener* listener, int button_context)
-    : MdTextButton(listener, button_context) {
+MdTextButton::MdTextButton(ButtonListener* listener,
+                                 const base::string16& text,
+                                 int button_context)
+    : MdTextButtonBase(listener, text, button_context) {
+  SetCornerRadius(100);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<BraveTextButtonHighlightPathGenerator>());
 }
 
-SkPath BraveTextButton::GetHighlightPath() const {
+MdTextButton::~MdTextButton() = default;
+
+SkPath MdTextButton::GetHighlightPath() const {
   SkPath path;
   int radius = GetCornerRadius();
   path.addRRect(
@@ -86,7 +51,7 @@ SkPath BraveTextButton::GetHighlightPath() const {
   return path;
 }
 
-void BraveTextButton::OnPaintBackground(gfx::Canvas* canvas) {
+void MdTextButton::OnPaintBackground(gfx::Canvas* canvas) {
   // Set brave-style hover colors
   LabelButton::OnPaintBackground(canvas);
   if (GetProminent() && (
@@ -105,7 +70,7 @@ void BraveTextButton::OnPaintBackground(gfx::Canvas* canvas) {
   }
 }
 
-std::unique_ptr<InkDrop> BraveTextButton::CreateInkDrop() {
+std::unique_ptr<InkDrop> MdTextButton::CreateInkDrop() {
   // We don't need a highlight on hover, the hover color
   // is handled by the OnPaintBackground and brave-style doesn't
   // have a shadow. Plus, it's very difficult (impossible?) to create
@@ -117,7 +82,7 @@ std::unique_ptr<InkDrop> BraveTextButton::CreateInkDrop() {
 }
 
 std::unique_ptr<views::InkDropHighlight>
-    BraveTextButton::CreateInkDropHighlight() const {
+MdTextButton::CreateInkDropHighlight() const {
   // Blank ink drop highlight, not needed
   const SkColor fill_color = SK_ColorTRANSPARENT;
   gfx::RectF boundsF(GetLocalBounds());
@@ -127,8 +92,8 @@ std::unique_ptr<views::InkDropHighlight>
       boundsF.CenterPoint(), fill_color);
 }
 
-void BraveTextButton::UpdateColors() {
-  MdTextButton::UpdateColors();
+void MdTextButton::UpdateColors() {
+  MdTextButtonBase::UpdateColors();
   if (GetProminent()) {
     return;
   }
@@ -142,7 +107,7 @@ void BraveTextButton::UpdateColors() {
   // Override border color for hover on non-prominent
   if (GetState() == ButtonState::STATE_PRESSED
         || GetState() == ButtonState::STATE_HOVERED) {
-    // First, get the same background fill color that MdTextButton does.
+    // First, get the same background fill color that MdTextButtonBase does.
     // It is undfortunate to copy these lines almost as-is. Consider otherwise
     // patching it in via a #define.
     SkColor bg_color =
@@ -168,7 +133,7 @@ namespace {
 
 SkPath BraveTextButtonHighlightPathGenerator::GetHighlightPath(
     const views::View* view) {
-  return static_cast<const views::BraveTextButton*>(view)->GetHighlightPath();
+  return static_cast<const views::MdTextButton*>(view)->GetHighlightPath();
 }
 
 }  // namespace
