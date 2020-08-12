@@ -19,6 +19,10 @@ def build(args):
     build_path = args.build_path
     target = args.target
     is_debug = args.is_debug
+    clang_prefix = os.path.join(args.clang_prefix, "bin")
+    clang_c_compiler = os.path.join(clang_prefix, "clang")
+    sysroot = args.sysroot
+    rustflags = []
 
     # Set environment variables for rustup
     env = os.environ.copy()
@@ -41,12 +45,37 @@ def build(args):
     if args.mac_deployment_target is not None:
         env['MACOSX_DEPLOYMENT_TARGET'] = args.mac_deployment_target
 
-    # Set environment variables for Challenge Bypass Ristretto FFI
     if is_debug == "false":
         env['NDEBUG'] = "1"
 
-    if args.rust_flags is not None:
-        env['RUSTFLAGS'] = args.rust_flags
+    if args.target.endswith("linux-gnu"):
+        rustflags += ["-Clink-arg=-Wl,--build-id"]
+    if not args.target.endswith("darwin"):
+        rustflags += ["-Clink-arg=-Wl,--threads"]
+
+    env["CARGO_TARGET_LINKER"] = clang_c_compiler
+    env["CARGO_TARGET_X86_64_APPLE_DARWIN_LINKER"] = clang_c_compiler
+    env["CARGO_TARGET_X86_64_UNKNOWN_LINUX_GNU_LINKER"] = clang_c_compiler
+    env["CARGO_TARGET_%s_LINKER" % target.replace("-", "_").upper()] = clang_c_compiler
+    rustflags += ["-Clink-arg=--target=" + target]
+
+    env["CARGO_TARGET_%s_RUSTFLAGS" % target.replace("-", "_").upper()] = (
+        ' '.join(rustflags)
+    )
+
+    env["CC"] = clang_c_compiler
+    cflags = []
+    if sysroot:
+        cflags += ["--sysroot=" + sysroot]
+    env["CFLAGS"] = " ".join(cflags)
+
+    env["CARGO_BUILD_DEP_INFO_BASEDIR"] = build_path
+    env["RUST_BACKTRACE"] = "1"
+    env["CC"] = os.path.join(clang_prefix, "clang")
+    env["CXX"] = os.path.join(clang_prefix, "clang++")
+    # TODO(bridiver) - these don't exist on mac and cause an error when they are added
+    # env["AR"] = os.path.join(clang_prefix, "llvm-ar")
+    # env["RANLIB"] = os.path.join(clang_prefix, "llvm-ranlib")
 
     # Clean first because we want GN to decide when to rebuild and cargo doesn't
     # rebuild when env changes
@@ -92,6 +121,8 @@ def parse_args():
     parser.add_argument('--is_debug', required=True)
     parser.add_argument('--mac_deployment_target')
     parser.add_argument('--rust_flags')
+    parser.add_argument('--clang_prefix')
+    parser.add_argument('--sysroot')
 
     args = parser.parse_args()
 

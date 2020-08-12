@@ -1,0 +1,21 @@
+[package]
+name = "brave-rust"
+version = "0.1.0"
+edition = "2018"
+
+[dependencies]
+adblock-ffi = { path = "../../vendor/adblock_rust_ffi" }
+challenge-bypass-ristretto-ffi = { path = "../../vendor/challenge_bypass_ristretto_ffi" }
+speedreader-ffi = { path = "../../components/speedreader/rust/ffi" }
+
+[lib]
+crate-type = [ "staticlib" ]
+name = "brave_rust"
+path = "lib.rs"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+lto = true

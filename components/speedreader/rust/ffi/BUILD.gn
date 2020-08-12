@@ -3,57 +3,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import("config.gni")
 import("//brave/build/cargo.gni")
 import("//brave/build/rust/config.gni")
-import("//brave/test/testing.gni")
-
-config("external_config") {
-  include_dirs = [ "src" ]
-}
-
-# Cargo build for the Rust project
-cargo_build("speedreader_rust_lib") {
-  inputs = [
-    # Underlying library code
-    "../lib/build.rs",
-    "../lib/Cargo.lock",
-    "../lib/Cargo.toml",
-    "../lib/src/classifier/feature_extractor.rs",
-    "../lib/src/classifier/mod.rs",
-    "../lib/src/classifier/model.c",
-    "../lib/src/classifier/model.rs",
-    "../lib/src/classifier/model.rs",
-    "../lib/src/lib.rs",
-    "../lib/src/readability/Cargo.toml",
-    "../lib/src/readability/src/dom.rs",
-    "../lib/src/readability/src/error.rs",
-    "../lib/src/readability/src/extractor.rs",
-    "../lib/src/readability/src/lib.rs",
-    "../lib/src/readability/src/scorer.rs",
-    "../lib/src/rewriter_config_builder.rs",
-    "../lib/src/speedreader_heuristics.rs",
-    "../lib/src/speedreader_streaming.rs",
-    "../lib/src/speedreader.rs",
-    "../lib/src/whitelist.rs",
-    # FFI
-    "Cargo.lock",
-    "Cargo.toml",
-    "charbuf.rs",
-    "lib.rs",
-    "speedreader.rs",
-  ]
-
-  if (fix_rust_install_name) {
-    rust_flags += " -C link-args=-Wl,-install_name,$speedreader_shared_lib_install_name "
-  }
-  output = speedreader_lib_path
-  manifest_path = "Cargo.toml"
-  build_path = "${root_gen_dir}/speedreader/out"
-}
 
 # Generate FFI header from Rust source
 cargo_cbindgen("speedreader_ffi_header") {
+  visibility = [ ":*" ]
   config = "cbindgen.toml"
   output = "${target_gen_dir}/speedreader_ffi.h"
 
@@ -67,9 +22,9 @@ cargo_cbindgen("speedreader_ffi_header") {
   ]
 }
 
-# Build the FFI wrapper as a static library
-source_set("speedreader_ffi") {
-  public_configs = [ ":external_config" ]
+source_set("ffi") {
+  visibility = [ "//brave/build/rust:*" ]
+  defines = [ "SPEEDREADER_IMPLEMENTATION" ]
 
   sources = [
     "speedreader.cc",
@@ -78,23 +33,6 @@ source_set("speedreader_ffi") {
 
   deps = [
     "//base",
-    ":speedreader_rust_lib",
     ":speedreader_ffi_header",
   ]
-
-  libs = get_target_outputs(":speedreader_rust_lib")
-}
-
-if (is_mac) {
-  bundle_data("speedreader_ffi_lib") {
-    sources = get_target_outputs(":speedreader_rust_lib")
-    outputs = [
-      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
-    ]
-    public_deps = [
-      ":speedreader_rust_lib",
-    ]
-  }
-} else {
-  group("speedreader_ffi_lib") {}
 }

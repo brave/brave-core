@@ -1,0 +1,79 @@
+import("//brave/build/cargo.gni")
+
+cargo_build("rust_lib") {
+  visibility = [ ":*" ]
+  inputs = [
+    "Cargo.toml",
+    "lib.rs",
+  ]
+
+  build_path = "$root_build_dir/brave_rust/out"
+  output = "$build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
+  manifest_path = "Cargo.toml"
+
+  deps = [
+    "//brave/components/challenge_bypass_ristretto:rust_lib",
+    "//brave/components/speedreader/rust/lib",
+    "//brave/vendor/adblock_rust_ffi:rust_lib",
+  ]
+}
+
+brave_ffi_deps = [
+  "//brave/components/challenge_bypass_ristretto:rust_ffi",
+  "//brave/components/speedreader/rust/ffi",
+  "//brave/vendor/adblock_rust_ffi:rust_ffi",
+]
+
+brave_rust_deps = brave_ffi_deps + [ ":rust_lib" ]
+
+if (is_mac) {
+  shared_library("brave_rust") {
+    visibility = [ ":*" ]
+    deps = brave_rust_deps
+
+    ldflags = [
+      "-Wl,-install_name,@loader_path/Libraries/lib$target_name.dylib",
+    ]
+  }
+
+  copy("copy_rust_lib") {
+    visibility = [ ":*" ]
+    sources = [
+      "$root_out_dir/libbrave_rust.dylib",
+    ]
+    outputs = [ "$root_out_dir/Libraries/{{source_file_part}}" ]
+
+    public_deps = [ ":brave_rust" ]
+  }
+
+  bundle_data("bundle_rust_lib") {
+    visibility = [ ":*" ]
+    sources = [
+      "$root_out_dir/Libraries/libbrave_rust.dylib",
+    ]
+    outputs = [ "{{bundle_contents_dir}}/Libraries/{{source_file_part}}" ]
+
+    public_deps = [
+      ":copy_rust_lib"
+    ]
+  }
+} else {
+  config("external_config") {
+    libs = get_target_outputs(":rust_lib")
+  }
+
+  group("brave_rust") {
+    public_configs = [ ":external_config" ]
+    visibility = [ ":*" ]
+    deps = brave_rust_deps
+  }
+}
+
+group("rust") {
+  deps = [ ":brave_rust" ]
+  if (is_mac) {
+    deps += [
+      ":bundle_rust_lib"
+    ]
+  }
+}
