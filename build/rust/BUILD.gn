@@ -71,13 +71,14 @@ if (is_mac) {
     public_configs = [ ":external_config" ]
     visibility = [ ":*" ]
     deps = brave_rust_deps
+    public_deps = brave_ffi_deps
   }
 }
 
 group("rust") {
-  deps = [ ":brave_rust" ]
+  public_deps = [ ":brave_rust" ]
   if (is_mac) {
-    deps += [
+    deps = [
       ":bundle_rust_lib"
     ]
   }
