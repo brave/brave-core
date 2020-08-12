@@ -7,7 +7,6 @@ import Foundation
 import BraveUI
 import Data
 import Shared
-import Deferred
 import BraveShared
 
 // Named `logger` because we are using math function `log`
@@ -305,8 +304,8 @@ class FeedDataSource {
         _state.observe(from: object, on: queue, handler)
     }
     
-    private var todayQueue = DispatchQueue(label: "com.brave.today")
-    private var reloadQueue = DispatchQueue(label: "com.brave.today.reload")
+    private let todayQueue = DispatchQueue(label: "com.brave.today")
+    private let reloadQueue = DispatchQueue(label: "com.brave.today.reload")
     
     // MARK: - Resource Managment
     
