@@ -1,7 +1,7 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@f836fd3beacc38feba01eda8452d5e06f302a655",
+  "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@40d52c24c04c536085f413762a18b28be67e839c",
   "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@b4d059c73042cacf3a5e9156d4b1698e7bc18678",
   "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@6eab0271d014ff09bd9f38abe1e0c117e13e9aa9",
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
@@ -14,7 +14,7 @@ deps = {
   "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@800f9d40b7409239ff192e0be634764e747c7a75",
   "vendor/bat-native-usermodel": "https://github.com/brave-intl/bat-native-usermodel.git@02b8c81c94072c67fe00108feb90786e088d4d26",
-  "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@c396fb4eb9e9bf63b89ae5a0ec0b5f201d43c7c5",
+  "vendor/challenge_bypass_ristretto_ffi": "https://github.com/brave-intl/challenge-bypass-ristretto-ffi.git@c6947d93ee8d3d02d5c9598d994a1401f87824be",
   "vendor/gn-project-generators": "https://github.com/brave/gn-project-generators.git@b76e14b162aa0ce40f11920ec94bfc12da29e5d0",
 }
 
