@@ -25,16 +25,6 @@ if (is_android) {
   import("//chrome/android/chrome_public_apk_tmpl.gni")
 }
 
-  group("fix_test_install_name_brave_unit_tests") {
-    testonly = true
-    deps = [ ":brave_unit_tests" ]
-  }
-
-  group("fix_test_install_name_brave_browser_tests") {
-    testonly = true
-    deps = [ ":brave_browser_tests" ]
-  }
-
 static_library("brave_test_support_unit") {
   testonly = true
   # Remove when https://github.com/brave/brave-browser/issues/10613 is resolved
