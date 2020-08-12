@@ -23,7 +23,6 @@ public interface BraveRewardsObserver {
   default public void OnRecurringDonationUpdated() {};
   default public void OnResetTheWholeState(boolean success) {};
   default public void OnRewardsMainEnabled(boolean enabled) {};
-  default public void OnFetchPromotions() {};
   default public void OnGrantFinish(int result) {};
   default public void OnGetExternalWallet(int error_code,
           String external_wallet) {};

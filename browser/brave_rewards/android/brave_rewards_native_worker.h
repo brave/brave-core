@@ -113,9 +113,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
     void GetGrant(JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
         const base::android::JavaParamRef<jstring>& promotionId);
 
-    int GetCurrentGrantsCount(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj);
-
     base::android::ScopedJavaLocalRef<jobjectArray> GetCurrentGrant(
         JNIEnv* env, const base::android::JavaParamRef<jobject>& obj,
         int position);
@@ -239,10 +236,6 @@ class BraveRewardsNativeWorker : public brave_rewards::RewardsServiceObserver,
 
     bool IsAnonWallet(JNIEnv* env,
         const base::android::JavaParamRef<jobject>& jcaller);
-
-    void OnFetchPromotions(brave_rewards::RewardsService* rewards_service,
-        const uint32_t result,
-        const std::vector<brave_rewards::Promotion>& list) override;
 
     void OnClaimPromotion(const int32_t result,
         std::unique_ptr<brave_rewards::Promotion> promotion);
