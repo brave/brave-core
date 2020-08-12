@@ -10,16 +10,16 @@
 #include "bat/ledger/internal/api/api_parameters.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_api.h"
-#include "bat/ledger/internal/response/response_api.h"
 
 using std::placeholders::_1;
+using std::placeholders::_2;
 
 namespace braveledger_api {
 
 APIParameters::APIParameters(bat_ledger::LedgerImpl* ledger) :
-    ledger_(ledger) {
-  DCHECK(ledger_);
+    ledger_(ledger),
+    api_server_(std::make_unique<ledger::endpoint::APIServer>(ledger)) {
+  DCHECK(ledger_ && api_server_);
 }
 
 APIParameters::~APIParameters() = default;
@@ -42,18 +42,15 @@ void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
 
   auto url_callback = std::bind(&APIParameters::OnFetch,
       this,
-      _1);
+      _1,
+      _2);
 
-  const std::string url = braveledger_request_util::GetParametersURL();
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, url_callback);
+  api_server_->get_parameters()->Request(url_callback);
 }
 
-void APIParameters::OnFetch(const ledger::UrlResponse& response) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  ledger::RewardsParameters parameters;
-  const ledger::Result result =
-      braveledger_response_util::ParseParameters(response, &parameters);
+void APIParameters::OnFetch(
+    const ledger::Result result,
+    const ledger::RewardsParameters& parameters) {
   if (result == ledger::Result::RETRY_SHORT) {
     RunCallbacks();
     SetRefreshTimer(base::TimeDelta::FromSeconds(90));

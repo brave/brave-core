@@ -247,11 +247,7 @@ void RewardsBrowserTestResponse::Get(
     return;
   }
 
-  if (URLMatches(
-      url,
-      "/parameters",
-      PREFIX_V1,
-      ServerTypes::kAPI)) {
+  if (url.find("/v1/parameters") != std::string::npos) {
     *response = parameters_;
     return;
   }

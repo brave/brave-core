@@ -16,7 +16,6 @@ enum class ServerTypes {
   kPublisher,
   kPromotion,
   kPayments,
-  kAPI,
   kPrivateCDN
 };
 

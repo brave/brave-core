@@ -50,6 +50,7 @@ void Log(
 //   6 URL response
 //   7 URL response (with large body)
 //   8 Database queries
+//   9 Detailed debugging (response headers, etc)
 
 #define BLOG(verbose_level, stream) ledger::Log(__FILE__, __LINE__, \
     verbose_level, (std::ostringstream() << stream).str());
