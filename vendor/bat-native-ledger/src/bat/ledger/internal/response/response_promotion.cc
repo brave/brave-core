@@ -50,6 +50,12 @@ ledger::Result ParseClaimCreds(
     return ledger::Result::LEDGER_ERROR;
   }
 
+  // Gone (410)
+  if (response.status_code == net::HTTP_GONE) {
+    BLOG(0, "Promotion is gone");
+    return ledger::Result::NOT_FOUND;
+  }
+
   // Internal Server Error (500)
   if (response.status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
