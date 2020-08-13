@@ -9,6 +9,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -63,6 +64,10 @@ RewardsService* RewardsServiceFactory::GetForProfile(
     Profile* profile) {
   if (testing_service_) {
     return testing_service_;
+  }
+
+  if (profile->IsOffTheRecord() || brave::IsTorProfile(profile)) {
+    return nullptr;
   }
 
   return static_cast<RewardsService*>(
@@ -124,7 +129,7 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
                         std::move(notification_observer));
   return rewards_service.release();
 #else
-  return NULL;
+  return nullptr;
 #endif
 }
 
