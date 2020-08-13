@@ -20,18 +20,6 @@ def build(args):
     target = args.target
     is_debug = args.is_debug
 
-    if args.android_sysroot is not None:
-        sysroot = os.path.join(args.android_toolchain_root, 'sysroot')
-
-    if args.android_toolchain_root is not None:
-        clang_prefix = os.path.join(args.android_toolchain_root, "bin")
-        clang_c_compiler = os.path.join(clang_prefix, "clang")
-
-    print(target)
-    print(sysroot)
-    print(clang_prefix)
-    print(clang_c_compiler)
-
     # Set environment variables for rustup
     env = os.environ.copy()
 
