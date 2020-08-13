@@ -218,8 +218,8 @@ class UserScriptManager {
         //When the script is called, the token is provided in order to access the script variable.
         var alteredSource = source
         let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
-        alteredSource = alteredSource.replacingOccurrences(of: "$<prunePaths>", with: "ABS\(token)", options: .literal)
-        alteredSource = alteredSource.replacingOccurrences(of: "$<findOwner>", with: "ABS\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<prunePaths>", with: "ABSPP\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<findOwner>", with: "ABSFO\(token)", options: .literal)
         
         return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
