@@ -166,26 +166,6 @@ class PageWallet extends React.Component<Props, State> {
     return utils.convertBalance(balance.total, parameters.rate)
   }
 
-  generatePromotions = () => {
-    const promotions = this.props.rewardsData.promotions
-    if (!promotions) {
-      return []
-    }
-
-    let claimedPromotions = promotions.filter((promotion: Rewards.Promotion) => {
-      return promotion.status === 4 // PromotionStatus::FINISHED
-    })
-
-    const typeUGP = 0
-    return claimedPromotions.map((promotion: Rewards.Promotion) => {
-      return {
-        amount: promotion.amount,
-        expiresAt: new Date(promotion.expiresAt).toLocaleDateString(),
-        type: promotion.type || typeUGP
-      }
-    })
-  }
-
   onModalActivityToggle = () => {
     if (!this.state.modalActivity) {
       this.actions.getMonthlyReport()
@@ -811,7 +791,6 @@ class PageWallet extends React.Component<Props, State> {
           onSettingsClick={this.onModalBackupOpen}
           showCopy={showCopy}
           showSecActions={true}
-          grants={this.generatePromotions()}
           alert={this.walletAlerts()}
           walletState={this.getWalletStatus()}
           onVerifyClick={onVerifyClick}

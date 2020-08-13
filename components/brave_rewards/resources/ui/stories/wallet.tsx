@@ -38,7 +38,6 @@ storiesOf('Rewards/Wallet/Desktop', module)
       text: <span>Now you can earn by viewing ads.</span>
     }
     const showAlert = boolean('Show alert', false)
-    const showGrant = boolean('Show grants', false)
 
     const state: WalletState = select('wallet status', {
       unverified: 'unverified',
@@ -72,23 +71,6 @@ storiesOf('Rewards/Wallet/Desktop', module)
             externalWallet: true
           }
         ]}
-        grants={showGrant ? [
-          {
-            amount: 2.5,
-            expiresAt: '1574451334789',
-            type: 1
-          },
-          {
-            amount: 5.0,
-            expiresAt: '1574451334789',
-            type: 1
-          },
-          {
-            amount: 7.5,
-            expiresAt: '1574451334789',
-            type: 1
-          }
-        ] : []}
         alert={showAlert ? alert : undefined}
         walletState={state}
         onDisconnectClick={doNothing}

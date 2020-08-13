@@ -69,11 +69,16 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
       int* response_status_code,
       std::string* response,
       std::map<std::string, std::string>* headers) {
-    if (promotion_gone_) {
+    if (gone_) {
       if (url.find("/v1/promotions/") != std::string::npos && method == 2) {
         *response_status_code = 410;
         return;
       }
+    }
+
+    if (removed_ && url.find("/v1/promotions?") != std::string::npos) {
+      *response = "{}";
+      return;
     }
 
     response_->Get(
@@ -157,11 +162,27 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
 
+  void CheckPromotionStatus(const std::string status) {
+    rewards_browsertest_helper::LoadURL(
+        browser(),
+        rewards_browsertest_util::GetRewardsInternalsUrl());
+
+    rewards_browsertest_util::WaitForElementThenClick(
+        contents(),
+        "#internals-tabs > div > div:nth-of-type(3)");
+
+    rewards_browsertest_util::WaitForElementToContain(
+        contents(),
+        "#internals-tabs",
+        status);
+  }
+
   brave_rewards::RewardsServiceImpl* rewards_service_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<RewardsBrowserTestResponse> response_;
-  bool promotion_gone_ = false;
+  bool gone_ = false;
+  bool removed_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, ClaimViaSettingsPage) {
@@ -192,24 +213,28 @@ IN_PROC_BROWSER_TEST_F(
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsPromotionBrowserTest, PromotionGone) {
-  promotion_gone_ = true;
+  gone_ = true;
   rewards_browsertest_helper::EnableRewards(browser());
 
   promotion_->WaitForPromotionInitialization();
   ClaimPromotion(true, false);
+  CheckPromotionStatus("Over");
+}
 
-  rewards_browsertest_helper::LoadURL(
-      browser(),
-      rewards_browsertest_util::GetRewardsInternalsUrl());
+IN_PROC_BROWSER_TEST_F(
+    RewardsPromotionBrowserTest,
+    PromotionRemovedFromEndpoint) {
+  rewards_browsertest_helper::EnableRewards(browser());
 
-  rewards_browsertest_util::WaitForElementThenClick(
+  promotion_->WaitForPromotionInitialization();
+  removed_ = true;
+  rewards_browsertest_helper::ReloadCurrentSite(browser());
+
+  rewards_browsertest_util::WaitForElementToAppear(
       contents(),
-      "#internals-tabs > div > div:nth-of-type(3)");
-
-  rewards_browsertest_util::WaitForElementToContain(
-      contents(),
-      "#internals-tabs",
-      "Over");
+      "[data-test-id='promotion-claim-box']",
+      false);
+  CheckPromotionStatus("Over");
 }
 
 }  // namespace rewards_browsertest

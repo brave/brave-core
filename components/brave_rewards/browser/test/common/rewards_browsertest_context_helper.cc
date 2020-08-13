@@ -200,4 +200,10 @@ void LoadURL(Browser* browser, GURL url) {
   WaitForLoadStop(contents);
 }
 
+void ReloadCurrentSite(Browser* browser) {
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  contents->GetController().Reload(content::ReloadType::NORMAL, true);
+  EXPECT_TRUE(WaitForLoadStop(contents));
+}
+
 }  // namespace rewards_browsertest_helper

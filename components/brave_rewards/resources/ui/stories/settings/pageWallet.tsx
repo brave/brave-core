@@ -27,11 +27,6 @@ const guardian = require('../img/guardian.jpg')
 const wiki = require('../img/wiki.jpg')
 
 export interface Props {
-  grants: {
-    amount: number,
-    expiresAt: string,
-    type: number
-  }[]
   content: 'empty' | 'summary' | 'off'
   walletState: WalletState
 }
@@ -218,7 +213,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   render () {
-    const { content, walletState, grants } = this.props
+    const { content, walletState } = this.props
     const self = this
 
     return (
@@ -247,7 +242,6 @@ class PageWallet extends React.Component<Props, State> {
           showCopy={true}
           onlyAnonWallet={false}
           showSecActions={true}
-          grants={grants}
           walletState={walletState}
         >
           {

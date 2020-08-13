@@ -78,19 +78,6 @@ void HandleExpiredPromotions(
   }
 }
 
-ledger::PromotionList GetPromotionsForUI(
-    const ledger::PromotionMap& promotions) {
-  ledger::PromotionList promotions_ui;
-  for (const auto& item : promotions) {
-    if (item.second->status == ledger::PromotionStatus::ACTIVE ||
-        item.second->status == ledger::PromotionStatus::FINISHED) {
-      promotions_ui.push_back(item.second->Clone());
-    }
-  }
-
-  return promotions_ui;
-}
-
 }  // namespace
 
 Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
@@ -234,11 +221,16 @@ void Promotion::OnGetAllPromotions(
         << base::JoinString(corrupted_promotions, ", "));
   }
 
-  for (auto & item : list) {
+  ledger::PromotionList promotions_ui;
+
+  for (const auto& item : list) {
     auto it = promotions.find(item->id);
-    if (it != promotions.end() &&
-        it->second->status != ledger::PromotionStatus::ACTIVE) {
-      continue;
+    if (it != promotions.end()) {
+      const auto status = it->second->status;
+      promotions.erase(item->id);
+      if (status != ledger::PromotionStatus::ACTIVE) {
+        continue;
+      }
     }
 
     // if the server return expiration for ads we need to set it to 0
@@ -256,14 +248,32 @@ void Promotion::OnGetAllPromotions(
       continue;
     }
 
-    promotions.insert(std::make_pair(item->id, item->Clone()));
+    promotions_ui.push_back(item->Clone());
 
     ledger_->SavePromotion(
         item->Clone(),
         [](const ledger::Result _){});
   }
 
-  ledger::PromotionList promotions_ui = GetPromotionsForUI(promotions);
+  // mark as over promotions that are in db with status active,
+  // but are not available on the server anymore
+  for (const auto& promotion : promotions) {
+    if (promotion.second->status != ledger::PromotionStatus::ACTIVE) {
+      break;
+    }
+
+    bool found =
+        std::any_of(list.begin(), list.end(), [&promotion](auto& item) {
+          return item->id == promotion.second->id;
+        });
+
+    if (!found) {
+      ledger_->UpdatePromotionStatus(
+          promotion.second->id,
+          ledger::PromotionStatus::OVER,
+          [](const ledger::Result){});
+    }
+  }
 
   ProcessFetchedPromotions(
       ledger::Result::LEDGER_OK,
@@ -276,7 +286,12 @@ void Promotion::OnGetAllPromotionsFromDatabase(
     ledger::FetchPromotionCallback callback) {
   HandleExpiredPromotions(ledger_, &promotions);
 
-  ledger::PromotionList promotions_ui = GetPromotionsForUI(promotions);
+  ledger::PromotionList promotions_ui;
+  for (const auto& item : promotions) {
+    if (item.second->status == ledger::PromotionStatus::ACTIVE) {
+      promotions_ui.push_back(item.second->Clone());
+    }
+  }
   callback(ledger::Result::LEDGER_OK, std::move(promotions_ui));
 }
 
@@ -529,7 +544,7 @@ void Promotion::CredentialsProcessed(
   }
 
   if (result == ledger::Result::NOT_FOUND) {
-    ledger_->database()->UpdatePromotionStatus(
+    ledger_->UpdatePromotionStatus(
       promotion_id,
       ledger::PromotionStatus::OVER,
       callback);
