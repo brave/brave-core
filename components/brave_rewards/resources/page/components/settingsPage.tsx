@@ -173,18 +173,13 @@ class SettingsPage extends React.Component<Props, State> {
   getPromotionsClaims = () => {
     const { promotions, ui } = this.props.rewardsData
 
-    if (!promotions) {
+    if (!promotions || promotions.length === 0) {
       return null
     }
 
-    let remainingPromotions = promotions.filter((promotion: Rewards.Promotion) => {
-      return promotion.status !== 4 || // PromotionStatus::FINISHED
-        (promotion.status === 4 && promotion.captchaStatus === 'finished')
-    })
-
     return (
-      <div style={{ width: '100%' }}>
-        {remainingPromotions.map((promotion?: Rewards.Promotion, index?: number) => {
+      <div style={{ width: '100%' }} data-test-id={'promotion-claim-box'}>
+        {promotions.map((promotion?: Rewards.Promotion, index?: number) => {
           if (!promotion || !promotion.promotionId) {
             return null
           }

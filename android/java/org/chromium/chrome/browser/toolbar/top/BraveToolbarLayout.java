@@ -787,9 +787,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   public void OnResetTheWholeState(boolean success) {}
 
   @Override
-  public void OnFetchPromotions() {}
-
-  @Override
   public void OnRewardsMainEnabled(boolean enabled) {
 
     Log.e("OnRewardsMainEnabled", "isEnabled : " + enabled);

@@ -397,28 +397,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             }));
         }
 
-        Button btGrants = (Button)this.root.findViewById(R.id.grants_dropdown);
-        if (btGrants != null) {
-            btGrants.setText(isAnonWallet ? context.getResources().getString(R.string.brave_ui_details) : context.getResources().getString(R.string.brave_ui_grants));
-            btGrants.setOnClickListener((new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ListView listView = (ListView)thisObject.root.findViewById(R.id.grants_listview);
-                    Button btGrants = (Button)thisObject.root.findViewById(R.id.grants_dropdown);
-                    if (listView == null || btGrants == null) {
-                        return;
-                    }
-                    if (listView.getVisibility() == View.VISIBLE) {
-                        btGrants.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down_icon, 0);
-                        listView.setVisibility(View.GONE);
-                    } else {
-                        btGrants.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.up_icon, 0);
-                        listView.setVisibility(View.VISIBLE);
-                    }
-                }
-            }));
-        }
-
         SetRewardsSummaryMonthYear();
         // Starts Send a tip Activity
         Button btSendATip = (Button)root.findViewById(R.id.send_a_tip);
@@ -1105,45 +1083,6 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
         }
         wallet_init_animation = null;
         mWalletCreateInProcess = false;
-    }
-
-    @Override
-    public void OnFetchPromotions() {
-        int currentGrantsCount = mBraveRewardsNativeWorker.GetCurrentGrantsCount();
-        Button btGrants = (Button)this.root.findViewById(R.id.grants_dropdown);
-        if (currentGrantsCount != 0) {
-            btGrants.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.down_icon, 0);
-            btGrants.setVisibility(View.VISIBLE);
-
-            ListView listView = (ListView)this.root.findViewById(R.id.grants_listview);
-
-            ArrayAdapter<Spanned> adapter = new ArrayAdapter<Spanned>(
-                ContextUtils.getApplicationContext(), R.layout.brave_rewards_grants_list_item);
-            for (int i = 0; i < currentGrantsCount; i++) {
-                String[] grant = mBraveRewardsNativeWorker.GetCurrentGrant(i);
-                if (grant.length < 3) {
-                    continue;
-                }
-                String toInsert = "<b><font color=#ffffff>" + String.format(Locale.getDefault(), "%.3f", Double.parseDouble(grant[0])) + " " + batPointsText + "</font></b> ";
-
-                if (grant[2].equals(BraveRewardsPanelPopup.ADS_GRANT_TYPE) == false) {
-                    Calendar calTime = Calendar.getInstance();
-                    calTime.setTimeInMillis(Long.parseLong(grant[1]) * 1000);
-                    String date = Integer.toString(calTime.get(Calendar.MONTH) + 1) + "/" +
-                                  Integer.toString(calTime.get(Calendar.DAY_OF_MONTH)) + "/" +
-                                  Integer.toString(calTime.get(Calendar.YEAR));
-                    toInsert += String.format(this.root.getResources().getString(R.string.brave_ui_expires_on),
-                                              date);
-                } else {
-                    toInsert += this.root.getResources().getString(R.string.brave_ui_ads_earnings);
-                }
-
-                adapter.add(BraveRewardsHelper.spannedFromHtmlString(toInsert));
-            }
-            listView.setAdapter(adapter);
-        } else {
-            btGrants.setVisibility(View.GONE);
-        }
     }
 
     /**

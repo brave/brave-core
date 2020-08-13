@@ -386,11 +386,6 @@ void BraveRewardsNativeWorker::OnClaimPromotion(const int32_t result,
       weak_java_brave_rewards_native_worker_.get(env), result);
 }
 
-int BraveRewardsNativeWorker::GetCurrentGrantsCount(JNIEnv* env,
-        const base::android::JavaParamRef<jobject>& obj) {
-  return promotions_.size();
-}
-
 base::android::ScopedJavaLocalRef<jobjectArray>
     BraveRewardsNativeWorker::GetCurrentGrant(JNIEnv* env,
       const base::android::JavaParamRef<jobject>& obj,
@@ -638,27 +633,6 @@ void BraveRewardsNativeWorker::OnGetRewardsMainEnabled(
 
   Java_BraveRewardsNativeWorker_OnGetRewardsMainEnabled(env,
     weak_java_brave_rewards_native_worker_.get(env), enabled);
-}
-
-void BraveRewardsNativeWorker::OnFetchPromotions(
-    brave_rewards::RewardsService* rewards_service,
-    const uint32_t result,
-    const std::vector<brave_rewards::Promotion>& list) {
-  // All unclaimed promotions come via notifications,
-  // we filter claimed here to show in a panel
-
-  promotions_.clear();
-  for (auto& promotion : list) {
-    if ((ledger::PromotionStatus)promotion.status !=
-        ledger::PromotionStatus::FINISHED) {
-      continue;
-    }
-    promotions_.push_back(promotion);
-  }
-
-  JNIEnv* env = base::android::AttachCurrentThread();
-  Java_BraveRewardsNativeWorker_OnFetchPromotions(env,
-    weak_java_brave_rewards_native_worker_.get(env));
 }
 
 int BraveRewardsNativeWorker::GetAdsPerHour(

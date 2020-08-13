@@ -154,9 +154,6 @@ public class BraveRewardsPreferences extends BravePreferenceFragment
     public void OnRecurringDonationUpdated() {}
 
     @Override
-    public void OnFetchPromotions() {}
-
-    @Override
     public void OnResetTheWholeState(boolean success) {
         if (success) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();

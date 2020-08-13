@@ -158,30 +158,6 @@
                 android:layout_row="3"
                 android:layout_columnSpan="2">
 
-                <Button
-                    android:id="@+id/grants_dropdown"
-                    android:layout_height="25dp"
-                    android:layout_width="wrap_content"
-                    android:background="@drawable/rewards_button"
-                    android:text="@string/brave_ui_grants"
-                    android:fontFamily="sans-serif"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:textSize="8sp"
-                    android:textColor="#FFFFFF"
-                    android:visibility="gone"
-                    android:alpha=".5"
-                    tools:ignore="SmallSp"/>
-
-                <ListView
-                        android:id="@+id/grants_listview"
-                        android:layout_height="wrap_content"
-                        android:layout_width="fill_parent"
-                        android:layout_marginBottom="-15dp"
-                        android:divider="@null"
-                        android:dividerHeight="0dp"
-                        android:visibility="gone"
-                        tools:ignore="NestedScrolling" />
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="fill_parent"
