@@ -39,14 +39,14 @@ template("cargo_build") {
       "--target=" + target,
       "--toolchain=" + rustc_toolchain, # defined by //brave/build/rust/config.gni,
       "--is_debug=$is_debug",
-      "--sysroot=" + rebase_path(sysroot, root_build_dir),
-      "--clang_prefix",
-          rebase_path(clang_base_path, "", root_build_dir),
-
     ]
 
     if (is_mac) {
       args += [ "--mac_deployment_target=" + mac_deployment_target ]
+    }
+
+    if (defined(rust_flags)) {
+      args += [ "--rust_flags=$rust_flags" ]
     }
   }
 
