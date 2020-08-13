@@ -371,8 +371,6 @@ void Vimeo::OnEmbedResponse(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const ledger::UrlResponse& response) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
   if (response.status_code != net::HTTP_OK) {
     auto callback = std::bind(&Vimeo::OnUnknownPage,
                               this,
@@ -444,8 +442,6 @@ void Vimeo::OnPublisherPage(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const ledger::UrlResponse& response) {
-  BLOG(7, ledger::UrlResponseToString(__func__, response));
-
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
@@ -466,8 +462,6 @@ void Vimeo::OnUnknownPage(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const ledger::UrlResponse& response) {
-  BLOG(7, ledger::UrlResponseToString(__func__, response));
-
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(window_id);
     return;
@@ -603,8 +597,6 @@ void Vimeo::OnPublisherVideoPage(
     const std::string& media_key,
     ledger::MediaEventInfo event_info,
     const ledger::UrlResponse& response) {
-  BLOG(7, ledger::UrlResponseToString(__func__, response));
-
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError();
     return;
