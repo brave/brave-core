@@ -69,16 +69,6 @@ KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
 #endif
 }
 
-content::BrowserContext* AdsServiceFactory::GetBrowserContextToUse(
-    content::BrowserContext* context) const {
-  if (context->IsOffTheRecord() || brave::IsTorProfile(context)) {
-    return chrome::GetBrowserContextOwnInstanceInIncognito(context);
-  }
-
-  // use original profile for session profiles
-  return chrome::GetBrowserContextRedirectedInIncognito(context);
-}
-
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
   return false;
 }

@@ -17,11 +17,13 @@ class Profile;
 namespace brave_rewards {
 class RewardsService;
 
-// Singleton that owns all RewardsService and associates them with
-// Profiles.
+// Singleton that owns all RewardsService and associates them with Profiles.
 class RewardsServiceFactory : public BrowserContextKeyedServiceFactory,
                               public content::NotificationObserver {
  public:
+  RewardsServiceFactory(const RewardsServiceFactory&) = delete;
+  RewardsServiceFactory& operator=(const RewardsServiceFactory&) = delete;
+
   static brave_rewards::RewardsService* GetForProfile(Profile* profile);
 
   static RewardsServiceFactory* GetInstance();
@@ -45,8 +47,6 @@ class RewardsServiceFactory : public BrowserContextKeyedServiceFactory,
                const content::NotificationDetails& details) override;
 
   content::NotificationRegistrar registrar_;
-
-  DISALLOW_COPY_AND_ASSIGN(RewardsServiceFactory);
 };
 
 }  // namespace brave_rewards
