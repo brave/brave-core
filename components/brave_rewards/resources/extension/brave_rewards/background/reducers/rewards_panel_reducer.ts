@@ -37,6 +37,14 @@ const updateBadgeTextAllWindows = (windows: chrome.windows.Window[], state?: Rew
 
 }
 
+const handledByGreaselion = (url: URL) => {
+  if (!url) {
+    return false
+  }
+
+  return url.hostname.endsWith('.youtube.com') || url.hostname === 'youtube.com'
+}
+
 export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = (state: RewardsExtension.State, action: any) => {
   if (!state) {
     return
@@ -119,11 +127,13 @@ export const rewardsPanelReducer: Reducer<RewardsExtension.State | undefined> = 
 
       if (!publisher || (publisher.tabUrl !== tab.url || !validKey)) {
         // Invalid publisher for tab, re-fetch publisher.
-        chrome.braveRewards.getPublisherData(
-          tab.windowId,
-          tab.url,
-          tab.favIconUrl || '',
-          payload.publisherBlob || '')
+        if (!handledByGreaselion(new URL(tab.url))) {
+          chrome.braveRewards.getPublisherData(
+            tab.windowId,
+            tab.url,
+            tab.favIconUrl || '',
+            payload.publisherBlob || '')
+        }
 
         if (publisher) {
           delete publishers[id]
