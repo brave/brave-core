@@ -303,7 +303,6 @@ void Twitch::ProcessMedia(const std::map<std::string, std::string>& parts,
 
   std::string media_key = braveledger_media::GetMediaKey(media_id,
                                                          TWITCH_MEDIA_TYPE);
-  BLOG(1, "Media key: " << media_key);
 
   ledger::MediaEventInfo twitch_info;
   std::map<std::string, std::string>::const_iterator iter = parts.find("event");
@@ -478,8 +477,6 @@ void Twitch::OnEmbedResponse(
     const uint64_t window_id,
     const std::string& user_id,
     const ledger::UrlResponse& response) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
   if (response.status_code != net::HTTP_OK) {
     // TODO(anyone): add error handler
     return;

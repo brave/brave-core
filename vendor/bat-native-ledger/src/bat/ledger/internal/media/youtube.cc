@@ -349,9 +349,6 @@ void YouTube::ProcessMedia(const std::map<std::string, std::string>& parts,
                                                          YOUTUBE_MEDIA_TYPE);
   uint64_t duration = GetMediaDurationFromParts(parts, media_key);
 
-  BLOG(1, "Media key: " << media_key);
-  BLOG(1, "Media duration: " << duration);
-
   ledger_->database()->GetMediaPublisherInfo(
       media_key,
       std::bind(&YouTube::OnMediaPublisherInfo,
@@ -451,8 +448,6 @@ void YouTube::OnEmbedResponse(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const ledger::UrlResponse& response) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
   if (response.status_code != net::HTTP_OK) {
     // embedding disabled, need to scrape
     if (response.status_code == net::HTTP_UNAUTHORIZED) {
