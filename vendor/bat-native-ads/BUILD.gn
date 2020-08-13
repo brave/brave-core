@@ -289,7 +289,6 @@ source_set("ads") {
     "src/bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h",
     "src/bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.cc",
     "src/bat/ads/internal/privacy/unblinded_tokens/unblinded_tokens.h",
-    "src/bat/ads/internal/reports/event_type_load_info.h",
     "src/bat/ads/internal/reports/reports.cc",
     "src/bat/ads/internal/reports/reports.h",
     "src/bat/ads/internal/search_engine/search_provider_info.cc",

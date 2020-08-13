@@ -5,16 +5,16 @@
 
 #include "bat/ads/internal/ad_events/ad_notification_event_viewed.h"
 
-#include <string>
-
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/reports/reports.h"
 
 namespace ads {
+
+namespace {
+const ConfirmationType kConfirmationType = ConfirmationType::kViewed;
+}  // namespace
 
 AdNotificationEventViewed::AdNotificationEventViewed(
     AdsImpl* ads)
@@ -25,17 +25,15 @@ AdNotificationEventViewed::AdNotificationEventViewed(
 AdNotificationEventViewed::~AdNotificationEventViewed() = default;
 
 void AdNotificationEventViewed::Trigger(
-    const AdNotificationInfo& info) {
-  ads_->set_last_shown_ad_notification(info);
+    const AdNotificationInfo& ad_notification) {
+  BLOG(3, "Viewed ad notification with uuid " << ad_notification.uuid << " and "
+      << ad_notification.creative_instance_id << " creative instance id");
 
-  Reports reports(ads_);
-  const std::string report = reports.GenerateAdNotificationEventReport(info,
-      AdNotificationEventType::kViewed);
-  BLOG(3, "Event log: " << report);
+  ads_->set_last_shown_ad_notification(ad_notification);
 
-  ads_->get_confirmations()->ConfirmAd(info, ConfirmationType::kViewed);
+  ads_->AppendAdNotificationToHistory(ad_notification, kConfirmationType);
 
-  ads_->AppendAdNotificationToHistory(info, ConfirmationType::kViewed);
+  ads_->get_confirmations()->ConfirmAd(ad_notification, kConfirmationType);
 }
 
 }  // namespace ads

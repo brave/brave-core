@@ -947,13 +947,7 @@ void AdsServiceImpl::OnClose(
     const std::string& uuid,
     const bool by_user,
     base::OnceClosure completed_closure) {
-  if (StopNotificationTimeoutTimer(uuid)) {
-    if (by_user) {
-      VLOG(1) << "Cancelled timeout for ad notification with uuid " << uuid;
-    } else {
-      VLOG(1) << "Timed out ad notification with uuid " << uuid;
-    }
-  }
+  StopNotificationTimeoutTimer(uuid);
 
   if (connected()) {
     const ads::AdNotificationEventType event_type =

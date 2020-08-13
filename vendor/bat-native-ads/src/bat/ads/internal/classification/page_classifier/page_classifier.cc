@@ -14,8 +14,6 @@
 #include "bat/ads/internal/classification/page_classifier/page_classifier_user_models.h"
 #include "bat/ads/internal/classification/page_classifier/page_classifier_util.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/reports/event_type_load_info.h"
-#include "bat/ads/internal/reports/reports.h"
 #include "bat/ads/internal/url_util.h"
 
 namespace ads {
@@ -72,15 +70,6 @@ std::string PageClassifier::MaybeClassifyPage(
 
   const std::string page_classification =
       ShouldClassifyPages() ? ClassifyPage(url, content) : kUntargeted;
-
-  LoadInfo load_info;
-  load_info.tab_id = ads_->get_active_tab_id();
-  load_info.tab_url = ads_->get_active_tab_url();
-  load_info.tab_classification = page_classification;
-
-  const Reports reports(ads_);
-  const std::string report = reports.GenerateLoadEventReport(load_info);
-  BLOG(3, "Event log: " << report);
 
   if (page_classification == kUntargeted) {
     const std::string locale =

@@ -5,15 +5,13 @@
 
 #include "bat/ads/internal/reports/reports.h"
 
+#include "base/check.h"
 #include "brave/components/l10n/browser/locale_helper.h"
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 #include "bat/ads/internal/ads_impl.h"
-#include "bat/ads/internal/classification/page_classifier/page_classifier.h"
-#include "bat/ads/internal/classification/classification_util.h"
-#include "bat/ads/internal/search_engine/search_providers.h"
 #include "bat/ads/internal/time_util.h"
 
 namespace ads {
@@ -25,154 +23,6 @@ Reports::Reports(
 }
 
 Reports::~Reports() = default;
-
-std::string Reports::GenerateAdNotificationEventReport(
-    const AdNotificationInfo& info,
-    const AdNotificationEventType event_type) const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  const base::Time time = base::Time::Now();
-  const std::string timestamp = LongFormatFriendlyDateAndTime(time, false);
-
-  writer.StartObject();
-
-  static bool is_first_run = true;
-  if (is_first_run) {
-    is_first_run = false;
-
-    writer.String("data");
-    writer.StartObject();
-
-    writer.String("type");
-    writer.String("restart");
-
-    writer.String("timestamp");
-    writer.String(timestamp.c_str());
-
-    writer.EndObject();
-  }
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("notify");
-
-  writer.String("timestamp");
-  writer.String(timestamp.c_str());
-
-  writer.String("eventType");
-  switch (event_type) {
-    case AdNotificationEventType::kViewed: {
-      writer.String("generated");
-      break;
-    }
-
-    case AdNotificationEventType::kClicked: {
-      writer.String("clicked");
-      break;
-    }
-
-    case AdNotificationEventType::kDismissed: {
-      writer.String("dismissed");
-      break;
-    }
-
-    case AdNotificationEventType::kTimedOut: {
-      writer.String("timed out");
-      break;
-    }
-  }
-
-  writer.String("classifications");
-  writer.StartArray();
-  auto classifications = classification::SplitCategory(info.category);
-  for (const auto& classification : classifications) {
-    writer.String(classification.c_str());
-  }
-  writer.EndArray();
-
-  writer.String("adCatalog");
-  writer.String(info.creative_set_id.c_str());
-
-  writer.String("targetUrl");
-  writer.String(info.target_url.c_str());
-
-  writer.EndObject();
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
-
-std::string Reports::GenerateLoadEventReport(
-    const LoadInfo& info) const {
-  rapidjson::StringBuffer buffer;
-  rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
-
-  writer.StartObject();
-
-  writer.String("data");
-  writer.StartObject();
-
-  writer.String("type");
-  writer.String("load");
-
-  writer.String("timestamp");
-  const base::Time time = base::Time::Now();
-  const std::string timestamp = LongFormatFriendlyDateAndTime(time, false);
-  writer.String(timestamp.c_str());
-
-  writer.String("tabId");
-  writer.Int(info.tab_id);
-
-  writer.String("tabType");
-  if (SearchProviders::IsSearchEngine(info.tab_url)) {
-    writer.String("search");
-  } else {
-    writer.String("click");
-  }
-
-  writer.String("tabClassification");
-  writer.StartArray();
-  auto classifications = classification::SplitCategory(info.tab_classification);
-  for (const auto& classification : classifications) {
-    writer.String(classification.c_str());
-  }
-  writer.EndArray();
-
-  auto page_probabilities_cache =
-      ads_->get_page_classifier()->get_page_probabilities_cache();
-  auto iter = page_probabilities_cache.find(info.tab_url);
-  if (iter != page_probabilities_cache.end()) {
-    writer.String("pageProbabilities");
-    writer.StartArray();
-
-    const classification::PageProbabilitiesMap page_probabilities =
-        iter->second;
-    for (const auto& page_probability : page_probabilities) {
-      writer.StartObject();
-
-      writer.String("category");
-      const std::string category = page_probability.first;
-      writer.String(category.c_str());
-
-      writer.String("pageScore");
-      const double page_score = page_probability.second;
-      writer.Double(page_score);
-
-      writer.EndObject();
-    }
-    writer.EndArray();
-  }
-
-  writer.EndObject();
-
-  writer.EndObject();
-
-  return buffer.GetString();
-}
 
 std::string Reports::GenerateSettingsEventReport() const {
   rapidjson::StringBuffer buffer;
