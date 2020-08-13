@@ -7,15 +7,54 @@
 
 #include <utility>
 
+#include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/components/ipfs/browser/ipfs_json_parser.h"
+#include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/common/chrome_paths.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/service_process_host.h"
+#include "content/public/browser/storage_partition.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
+#include "net/http/http_request_headers.h"
+
+namespace {
+
+net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ipfs_service", R"(
+      semantics {
+        sender: "IPFS service"
+        description:
+          "This service is used to communicate with IPFS daemon "
+          "on behalf of the user interacting with the actions in brvae://ipfs."
+        trigger:
+          "Triggered by actions in brave://ipfs."
+        data:
+          "Options of the commands."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "You can enable or disable this feature in brave://settings."
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
+}
+
+}  // namespace
 
 namespace ipfs {
 
 IpfsService::IpfsService(content::BrowserContext* context) {
+  url_loader_factory_ =
+      content::BrowserContext::GetDefaultStoragePartition(context)
+          ->GetURLLoaderFactoryForBrowserProcess();
+
   g_brave_browser_process->ipfs_client_updater()->AddObserver(this);
   OnExecutableReady(GetIpfsExecutablePath());
 }
@@ -100,6 +139,38 @@ void IpfsService::Shutdown() {
 
   ipfs_service_.reset();
   ipfs_pid_ = -1;
+}
+
+void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = GURL(kSwarmPeersAPIURL);
+  request->method = "POST";
+  request->headers.SetHeader(net::HttpRequestHeaders::kOrigin,
+                             kHttpAPIServerEndpoint);
+
+  url_loader_ = network::SimpleURLLoader::Create(
+      std::move(request), GetNetworkTrafficAnnotationTag());
+  url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      url_loader_factory_.get(),
+      base::BindOnce(&IpfsService::OnGetConnectedPeers,
+                     base::Unretained(this),
+                     std::move(callback)));
+}
+
+void IpfsService::OnGetConnectedPeers(
+    GetConnectedPeersCallback callback,
+    std::unique_ptr<std::string> response_body) {
+  int error_code = url_loader_->NetError();
+  url_loader_.reset();
+
+  if (error_code != net::OK) {
+    std::move(callback).Run(false, std::vector<std::string>{});
+    return;
+  }
+
+  std::vector<std::string> peers;
+  bool success = IPFSJSONParser::GetPeersFromJSON(*response_body, peers);
+  std::move(callback).Run(success, peers);
 }
 
 }  // namespace ipfs

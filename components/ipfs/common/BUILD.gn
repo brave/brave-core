@@ -1,0 +1,6 @@
+source_set("common") {
+  sources = [
+    "ipfs_constants.cc",
+    "ipfs_constants.h",
+  ]
+}

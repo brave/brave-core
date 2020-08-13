@@ -6,6 +6,10 @@
 #ifndef BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_SERVICE_H_
 #define BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_SERVICE_H_
 
+#include <memory>
+#include <string>
+#include <vector>
+
 #include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -15,6 +19,11 @@ namespace content {
 class BrowserContext;
 }  // namespace content
 
+namespace network {
+class SharedURLLoaderFactory;
+class SimpleURLLoader;
+}  // namespace network
+
 namespace ipfs {
 
 class IpfsService : public KeyedService,
@@ -23,8 +32,14 @@ class IpfsService : public KeyedService,
   explicit IpfsService(content::BrowserContext* context);
   ~IpfsService() override;
 
+  using GetConnectedPeersCallback = base::OnceCallback<
+    void(bool,
+         const std::vector<std::string>&)>;
+
   // KeyedService
   void Shutdown() override;
+
+  void GetConnectedPeers(GetConnectedPeersCallback callback);
 
  protected:
   base::FilePath GetIpfsExecutablePath();
@@ -37,8 +52,11 @@ class IpfsService : public KeyedService,
   void OnIpfsLaunched(bool result, int64_t pid);
   void OnIpfsDaemonCrashed(int64_t pid);
 
-  // Launches the ipfs service in a sandboxed utility process.
+  // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
+
+  void OnGetConnectedPeers(GetConnectedPeersCallback,
+                           std::unique_ptr<std::string> response_body);
 
   // The remote to the ipfs service running on an utility process. The browser
   // will not launch a new ipfs service process if this remote is already
@@ -46,6 +64,9 @@ class IpfsService : public KeyedService,
   mojo::Remote<ipfs::mojom::IpfsService> ipfs_service_;
 
   int64_t ipfs_pid_;
+
+  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  std::unique_ptr<network::SimpleURLLoader> url_loader_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);
 };

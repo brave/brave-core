@@ -6,8 +6,10 @@
 #include "brave/browser/ui/webui/ipfs_ui.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
@@ -16,25 +18,8 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/browser/web_ui_message_handler.h"
 
-namespace {
-
-class IPFSDOMHandler : public content::WebUIMessageHandler {
- public:
-  IPFSDOMHandler();
-  ~IPFSDOMHandler() override;
-
-  // WebUIMessageHandler implementation.
-  void RegisterMessages() override;
-
- private:
-  void HandleGetConnectedPeers(const base::ListValue* args);
-
-  DISALLOW_COPY_AND_ASSIGN(IPFSDOMHandler);
-};
-
-IPFSDOMHandler::IPFSDOMHandler() {}
+IPFSDOMHandler::IPFSDOMHandler() : weak_ptr_factory_{this} {}
 
 IPFSDOMHandler::~IPFSDOMHandler() {}
 
@@ -44,8 +29,6 @@ void IPFSDOMHandler::RegisterMessages() {
       base::BindRepeating(&IPFSDOMHandler::HandleGetConnectedPeers,
                           base::Unretained(this)));
 }
-
-}  // namespace
 
 IPFSUI::IPFSUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name, kIpfsGenerated,
@@ -91,6 +74,23 @@ void IPFSDOMHandler::HandleGetConnectedPeers(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 0U);
   if (!web_ui()->CanCallJavascript())
     return;
+
+  ipfs::IpfsService* service =
+      ipfs::IpfsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui()));
+  if (!service) {
+    return;
+  }
+
+  service->GetConnectedPeers(
+      base::BindOnce(&IPFSDOMHandler::OnGetConnectedPeers,
+                     weak_ptr_factory_.GetWeakPtr()));
+}
+
+void IPFSDOMHandler::OnGetConnectedPeers(bool success,
+    const std::vector<std::string>& peers) {
+  if (!web_ui()->CanCallJavascript() || !success)
+    return;
+
   web_ui()->CallJavascriptFunctionUnsafe("ipfs.onGetConnectedPeers",
-                                         base::Value(0));
+      base::Value(static_cast<int>(peers.size())));
 }

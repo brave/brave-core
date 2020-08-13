@@ -229,6 +229,16 @@ test("brave_unit_tests") {
     ]
   }
 
+  if (ipfs_enabled) {
+    sources += [
+      "//brave/components/ipfs/browser/ipfs_json_parser_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/components/ipfs/browser",
+    ]
+  }
+
   if (binance_enabled) {
     sources += [
       "//brave/components/binance/browser/binance_json_parser_unittest.cc"
