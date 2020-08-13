@@ -35,8 +35,9 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
 
   void SetUp() override {
     TestingProfile::Builder builder;
+    builder.AddTestingFactory(BookmarkModelFactory::GetInstance(),
+                              BookmarkModelFactory::GetDefaultFactory());
     profile_ = builder.Build();
-    profile_->CreateBookmarkModel(true);
     model_ = BookmarkModelFactory::GetForBrowserContext(profile_.get());
     bookmarks::test::WaitForBookmarkModelToLoad(model_);
   }
