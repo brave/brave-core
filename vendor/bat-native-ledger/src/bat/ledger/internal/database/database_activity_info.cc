@@ -226,6 +226,80 @@ void DatabaseActivityInfo::InsertOrUpdate(
       transaction_callback);
 }
 
+void DatabaseActivityInfo::GetRecord(
+    const std::string& publisher_key,
+    GetActivityInfoCallback callback) {
+  if (publisher_key.empty()) {
+    BLOG(1, "Publisher key is empty");
+    callback({});
+    return;
+  }
+
+  auto transaction = type::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+      "SELECT publisher_id, duration, visits, score, percent, "
+      "weight, reconcile_stamp FROM %s WHERE publisher_id = ?",
+      kTableName);
+
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
+  command->command = query;
+
+  BindString(command.get(), 0, publisher_key);
+
+  command->record_bindings = {
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE
+  };
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&DatabaseActivityInfo::OnGetRecord,
+      this,
+      _1,
+      callback);
+
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
+}
+
+void DatabaseActivityInfo::OnGetRecord(
+    type::DBCommandResponsePtr response,
+    GetActivityInfoCallback callback) {
+  if (!response ||
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+    BLOG(0, "Response is wrong");
+    callback({});
+    return;
+  }
+
+  if (response->result->get_records().size() != 1) {
+    BLOG(1, "Record size is not correct: " <<
+        response->result->get_records().size());
+    callback({});
+    return;
+  }
+
+  auto* record = response->result->get_records()[0].get();
+  auto info = type::ActivityInfo::New();
+  info->id = GetStringColumn(record, 0);
+  info->duration = GetInt64Column(record, 1);
+  info->visits = GetIntColumn(record, 2);
+  info->score = GetDoubleColumn(record, 3);
+  info->percent = GetInt64Column(record, 4);
+  info->weight = GetDoubleColumn(record, 5);
+  info->reconcile_stamp = GetInt64Column(record, 6);
+
+  callback(std::move(info));
+}
+
 void DatabaseActivityInfo::GetRecordsList(
     const int start,
     const int limit,
@@ -323,6 +397,58 @@ void DatabaseActivityInfo::OnGetRecordsList(
   }
 
   callback(std::move(list));
+}
+
+void DatabaseActivityInfo::UpdateDuration(
+    const std::string& publisher_key,
+    uint64_t duration,
+    ledger::ResultCallback callback) {
+  if (publisher_key.empty()) {
+    callback(type::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto get_callback = std::bind(
+      &DatabaseActivityInfo::OnGetRecordForUpdateDuration,
+      this,
+      _1,
+      duration,
+      callback);
+  GetRecord(publisher_key, get_callback);
+}
+
+void DatabaseActivityInfo::OnGetRecordForUpdateDuration(
+    type::ActivityInfoPtr activity_info,
+    uint64_t duration,
+    ledger::ResultCallback callback) {
+  if (!activity_info) {
+    BLOG(0, "Activity info was not found");
+    callback(type::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto transaction = type::DBTransaction::New();
+
+  const std::string query = base::StringPrintf(
+    "UPDATE %s SET duration = ? WHERE publisher_id = ?",
+    kTableName);
+
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
+  command->command = query;
+
+  BindInt(command.get(), 0, activity_info->duration + duration);
+  BindString(command.get(), 1, activity_info->id);
+
+  transaction->commands.push_back(std::move(command));
+
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 void DatabaseActivityInfo::DeleteRecord(

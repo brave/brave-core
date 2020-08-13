@@ -16,8 +16,8 @@ chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: Re
   rewardsPanelActions.onPublisherData(windowId, publisher)
 
   // Get publisher amounts
-  if (publisher && publisher.publisher_key && publisher.status !== 0) {
-    chrome.braveRewards.getPublisherBanner(publisher.publisher_key, ((banner: RewardsExtension.PublisherBanner) => {
+  if (publisher && publisher.publisherKey && publisher.status !== 0) {
+    chrome.braveRewards.getPublisherBanner(publisher.publisherKey, ((banner: RewardsExtension.PublisherBanner) => {
       rewardsPanelActions.onPublisherBanner(banner)
     }))
   }

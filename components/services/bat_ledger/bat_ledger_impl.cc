@@ -601,6 +601,83 @@ void BatLedgerImpl::SaveMediaInfo(
       std::bind(BatLedgerImpl::OnSaveMediaInfoCallback, holder, _1, _2));
 }
 
+void BatLedgerImpl::UpdateMediaDuration(
+    const std::string& publisher_key,
+    uint64_t duration) {
+  ledger_->UpdateMediaDuration(publisher_key, duration);
+}
+
+// static
+void BatLedgerImpl::OnPublisherInfo(
+    CallbackHolder<GetPublisherInfoCallback>* holder,
+    const ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(info));
+  delete holder;
+}
+
+void BatLedgerImpl::GetPublisherInfo(
+    const std::string& publisher_key,
+    GetPublisherInfoCallback callback) {
+  // deleted in OnPublisherInfo
+  auto* holder = new CallbackHolder<GetPublisherInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->GetPublisherInfo(
+      publisher_key,
+      std::bind(BatLedgerImpl::OnPublisherInfo, holder, _1, _2));
+}
+
+// static
+void BatLedgerImpl::OnPublisherPanelInfo(
+    CallbackHolder<GetPublisherPanelInfoCallback>* holder,
+    const ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  DCHECK(holder);
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(info));
+  delete holder;
+}
+
+void BatLedgerImpl::GetPublisherPanelInfo(
+    const std::string& publisher_key,
+    GetPublisherPanelInfoCallback callback) {
+  // deleted in OnPublisherPanelInfo
+  auto* holder = new CallbackHolder<GetPublisherPanelInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->GetPublisherPanelInfo(
+      publisher_key,
+      std::bind(BatLedgerImpl::OnPublisherPanelInfo, holder, _1, _2));
+}
+
+// static
+void BatLedgerImpl::OnSavePublisherInfo(
+    CallbackHolder<SavePublisherInfoCallback>* holder,
+    const ledger::type::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::SavePublisherInfo(
+    const uint64_t window_id,
+    ledger::type::PublisherInfoPtr publisher_info,
+    SavePublisherInfoCallback callback) {
+  auto* holder = new CallbackHolder<SavePublisherInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->SavePublisherInfo(
+      window_id,
+      std::move(publisher_info),
+      std::bind(BatLedgerImpl::OnSavePublisherInfo,
+          holder,
+          _1));
+}
+
 void BatLedgerImpl::OnRefreshPublisher(
     CallbackHolder<RefreshPublisherCallback>* holder,
     ledger::type::PublisherStatus status) {
@@ -927,8 +1004,8 @@ void BatLedgerImpl::GetAllContributions(GetAllContributionsCallback callback) {
 }
 
 // static
-void BatLedgerImpl::OnSavePublisherInfo(
-    CallbackHolder<SavePublisherInfoCallback>* holder,
+void BatLedgerImpl::OnSavePublisherInfoForTip(
+    CallbackHolder<SavePublisherInfoForTipCallback>* holder,
     const ledger::type::Result result) {
   DCHECK(holder);
   if (holder->is_valid()) {
@@ -938,15 +1015,15 @@ void BatLedgerImpl::OnSavePublisherInfo(
   delete holder;
 }
 
-void BatLedgerImpl::SavePublisherInfo(
+void BatLedgerImpl::SavePublisherInfoForTip(
     ledger::type::PublisherInfoPtr info,
-    SavePublisherInfoCallback callback) {
-  auto* holder = new CallbackHolder<SavePublisherInfoCallback>(
+    SavePublisherInfoForTipCallback callback) {
+  auto* holder = new CallbackHolder<SavePublisherInfoForTipCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->SavePublisherInfo(
+  ledger_->SavePublisherInfoForTip(
       std::move(info),
-      std::bind(BatLedgerImpl::OnSavePublisherInfo,
+      std::bind(BatLedgerImpl::OnSavePublisherInfoForTip,
           holder,
           _1));
 }

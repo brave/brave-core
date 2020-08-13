@@ -95,6 +95,9 @@ using PublisherInfoListCallback = std::function<void(type::PublisherInfoList)>;
 using PublisherInfoCallback =
     std::function<void(const type::Result, type::PublisherInfoPtr)>;
 
+using GetPublisherInfoCallback =
+    std::function<void(const type::Result, type::PublisherInfoPtr)>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(
@@ -296,6 +299,23 @@ class LEDGER_EXPORT Ledger {
       const std::map<std::string, std::string>& data,
       PublisherInfoCallback callback) = 0;
 
+  virtual void UpdateMediaDuration(
+      const std::string& publisher_key,
+      uint64_t duration) = 0;
+
+  virtual void GetPublisherInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) = 0;
+
+  virtual void GetPublisherPanelInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) = 0;
+
+  virtual void SavePublisherInfo(
+      const uint64_t window_id,
+      type::PublisherInfoPtr publisher_info,
+      ResultCallback callback) = 0;
+
   virtual void SetInlineTippingPlatformEnabled(
       const type::InlineTipsPlatforms platform,
       bool enabled) = 0;
@@ -350,7 +370,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetAllContributions(ContributionInfoListCallback callback) = 0;
 
-  virtual void SavePublisherInfo(
+  virtual void SavePublisherInfoForTip(
       type::PublisherInfoPtr info,
       ResultCallback callback) = 0;
 

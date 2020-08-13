@@ -89,7 +89,7 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
   publisher.name = info->name;
   publisher.url = info->url;
   publisher.provider = info->provider;
-  publisher.favicon_url = info->favicon_url;
+  publisher.fav_icon_url = info->favicon_url;
   publisher.publisher_key = info->id;
   std::unique_ptr<base::ListValue> args(
       extensions::api::brave_rewards::OnPublisherData::Create(windowId,

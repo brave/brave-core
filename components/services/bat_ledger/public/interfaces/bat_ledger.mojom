@@ -110,6 +110,16 @@ interface BatLedger {
   SaveMediaInfo(string type, map<string, string> args) =>
     (ledger.mojom.Result result, ledger.mojom.PublisherInfo? publisher_info);
 
+  UpdateMediaDuration(string publisher_key, uint64 duration);
+
+  GetPublisherInfo(string publisher_key) => (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
+
+  GetPublisherPanelInfo(string publisher_key) =>
+      (ledger.mojom.Result result, ledger.mojom.PublisherInfo? info);
+
+  SavePublisherInfo(uint64 window_id, ledger.mojom.PublisherInfo publisher_info) =>
+      (ledger.mojom.Result result);
+
   SetInlineTippingPlatformEnabled(ledger.mojom.InlineTipsPlatforms platform, bool enabled);
 
   GetInlineTippingPlatformEnabled(ledger.mojom.InlineTipsPlatforms platform) => (bool enabled);
@@ -141,7 +151,7 @@ interface BatLedger {
 
   GetAllContributions() => (array<ledger.mojom.ContributionInfo> list);
 
-  SavePublisherInfo(ledger.mojom.PublisherInfo info) => (ledger.mojom.Result result);
+  SavePublisherInfoForTip(ledger.mojom.PublisherInfo info) => (ledger.mojom.Result result);
 
   GetMonthlyReport(ledger.mojom.ActivityMonth month, int32 year) => (ledger.mojom.Result result, ledger.mojom.MonthlyReportInfo report);
 

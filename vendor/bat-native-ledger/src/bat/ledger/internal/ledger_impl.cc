@@ -629,6 +629,34 @@ void LedgerImpl::SaveMediaInfo(
   media()->SaveMediaInfo(type, data, callback);
 }
 
+void LedgerImpl::UpdateMediaDuration(
+    const std::string& publisher_key,
+    uint64_t duration) {
+  publisher()->UpdateMediaDuration(publisher_key, duration);
+}
+
+void LedgerImpl::GetPublisherInfo(
+    const std::string& publisher_key,
+    ledger::PublisherInfoCallback callback) {
+  database()->GetPublisherInfo(publisher_key, callback);
+}
+
+void LedgerImpl::GetPublisherPanelInfo(
+    const std::string& publisher_key,
+    ledger::PublisherInfoCallback callback) {
+  publisher()->GetPublisherPanelInfo(publisher_key, callback);
+}
+
+void LedgerImpl::SavePublisherInfo(
+    const uint64_t window_id,
+    type::PublisherInfoPtr publisher_info,
+    ledger::ResultCallback callback) {
+  publisher()->SavePublisherInfo(
+      window_id,
+      std::move(publisher_info),
+      callback);
+}
+
 void LedgerImpl::SetInlineTippingPlatformEnabled(
     const type::InlineTipsPlatforms platform,
     bool enabled) {
@@ -729,7 +757,7 @@ void LedgerImpl::GetAllContributions(
   database()->GetAllContributions(callback);
 }
 
-void LedgerImpl::SavePublisherInfo(
+void LedgerImpl::SavePublisherInfoForTip(
     type::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
   database()->SavePublisherInfo(std::move(info), callback);

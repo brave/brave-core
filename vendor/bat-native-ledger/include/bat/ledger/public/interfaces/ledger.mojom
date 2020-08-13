@@ -54,7 +54,6 @@ struct PublisherInfo {
   uint32 percent;
   double weight;
   PublisherExclude excluded;
-  int32 category;
   uint64 reconcile_stamp;
   PublisherStatus status = PublisherStatus.NOT_VERIFIED;
   uint64 status_updated_at;
@@ -170,6 +169,16 @@ enum ExcludeFilter {
   FILTER_EXCLUDED = 1,
   FILTER_INCLUDED = 2,
   FILTER_ALL_EXCEPT_EXCLUDED = 3
+};
+
+struct ActivityInfo {
+  string id;
+  uint64 duration;
+  uint32 visits;
+  double score;
+  uint32 percent;
+  double weight;
+  uint64 reconcile_stamp;
 };
 
 struct ActivityInfoFilterOrderPair {

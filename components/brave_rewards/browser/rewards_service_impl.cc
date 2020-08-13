@@ -570,14 +570,14 @@ void RewardsServiceImpl::CreateWalletAttestationResult(
 }
 #endif
 
-void RewardsServiceImpl::GetContentSiteList(
+void RewardsServiceImpl::GetPublisherInfoList(
     uint32_t start,
     uint32_t limit,
     uint64_t min_visit_time,
     uint64_t reconcile_stamp,
     bool allow_non_verified,
     uint32_t min_visits,
-    const GetContentSiteListCallback& callback) {
+    const GetPublisherInfoListCallback& callback) {
   if (!Connected()) {
     return;
   }
@@ -597,25 +597,25 @@ void RewardsServiceImpl::GetContentSiteList(
       start,
       limit,
       std::move(filter),
-      base::BindOnce(&RewardsServiceImpl::OnGetContentSiteList,
+      base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList,
                      AsWeakPtr(),
                      callback));
 }
 
 void RewardsServiceImpl::GetExcludedList(
-    const GetContentSiteListCallback& callback) {
+    const GetPublisherInfoListCallback& callback) {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->GetExcludedList(base::BindOnce(
-      &RewardsServiceImpl::OnGetContentSiteList,
+      &RewardsServiceImpl::OnGetPublisherInfoList,
       AsWeakPtr(),
       callback));
 }
 
-void RewardsServiceImpl::OnGetContentSiteList(
-    const GetContentSiteListCallback& callback,
+void RewardsServiceImpl::OnGetPublisherInfoList(
+    const GetPublisherInfoListCallback& callback,
     ledger::type::PublisherInfoList list) {
   callback.Run(std::move(list));
 }
@@ -1931,6 +1931,125 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
                     std::move(callback)));
 }
 
+void RewardsServiceImpl::UpdateMediaDuration(
+    const std::string& publisher_key,
+    uint64_t duration) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->UpdateMediaDuration(publisher_key, duration);
+}
+
+void RewardsServiceImpl::GetPublisherInfo(
+    const std::string& publisher_key,
+    GetPublisherInfoCallback callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->GetPublisherInfo(
+      publisher_key,
+      base::BindOnce(&RewardsServiceImpl::OnPublisherInfo,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnPublisherInfo(
+    GetPublisherInfoCallback callback,
+    const ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  const auto result_converted = static_cast<int>(result);
+  if (result != ledger::type::Result::LEDGER_OK) {
+    std::move(callback).Run(result_converted, nullptr);
+    return;
+  }
+
+  brave_rewards::PublisherInfo rewards_publisher_info =
+      PublisherInfoToRewardsPublisherInfo(*info);
+
+  auto rewards_publisher_info_ptr =
+      std::make_unique<brave_rewards::PublisherInfo>(rewards_publisher_info);
+  std::move(callback).Run(
+      result_converted,
+      std::move(rewards_publisher_info_ptr));
+}
+
+void RewardsServiceImpl::GetPublisherPanelInfo(
+    const std::string& publisher_key,
+    GetPublisherInfoCallback callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->GetPublisherPanelInfo(
+      publisher_key,
+      base::BindOnce(&RewardsServiceImpl::OnPublisherPanelInfo,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnPublisherPanelInfo(
+    GetPublisherInfoCallback callback,
+    const ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  const auto result_converted = static_cast<int>(result);
+  if (result != ledger::type::Result::LEDGER_OK) {
+    std::move(callback).Run(result_converted, nullptr);
+    return;
+  }
+
+  brave_rewards::PublisherInfo rewards_publisher_info =
+      PublisherInfoToRewardsPublisherInfo(*info);
+
+  auto rewards_publisher_info_ptr =
+      std::make_unique<brave_rewards::PublisherInfo>(rewards_publisher_info);
+  std::move(callback).Run(
+      result_converted,
+      std::move(rewards_publisher_info_ptr));
+}
+
+void RewardsServiceImpl::SavePublisherInfo(
+    const uint64_t window_id,
+    std::unique_ptr<brave_rewards::PublisherInfo> publisher_info,
+    SavePublisherInfoCallback callback) {
+  if (!Connected()) {
+    return;
+  }
+
+  auto ledger_publisher_info = ledger::PublisherInfo::New();
+  ledger_publisher_info->id = publisher_info->id;
+  ledger_publisher_info->duration = publisher_info->duration;
+  ledger_publisher_info->score = publisher_info->score;
+  ledger_publisher_info->visits = publisher_info->visits;
+  ledger_publisher_info->percent = publisher_info->percent;
+  ledger_publisher_info->weight = publisher_info->weight;
+  ledger_publisher_info->excluded =
+      static_cast<ledger::PublisherExclude>(publisher_info->excluded);
+  ledger_publisher_info->reconcile_stamp = publisher_info->reconcile_stamp;
+  ledger_publisher_info->status =
+      static_cast<ledger::PublisherStatus>(publisher_info->status);
+  ledger_publisher_info->status_updated_at = publisher_info->status_updated_at;
+  ledger_publisher_info->name = publisher_info->name;
+  ledger_publisher_info->url = publisher_info->url;
+  ledger_publisher_info->provider = publisher_info->provider;
+  ledger_publisher_info->favicon_url = publisher_info->favicon_url;
+
+  bat_ledger_->SavePublisherInfo(
+      window_id,
+      std::move(ledger_publisher_info),
+      base::BindOnce(&RewardsServiceImpl::OnSavePublisherInfo,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnSavePublisherInfo(
+    SavePublisherInfoCallback callback,
+    const ledger::type::Result result) {
+  const auto result_converted = static_cast<int>(result);
+  std::move(callback).Run(result_converted);
+}
+
 void RewardsServiceImpl::OnGetRecurringTips(
     GetRecurringTipsCallback callback,
     ledger::type::PublisherInfoList list) {
@@ -2441,7 +2560,7 @@ void RewardsServiceImpl::OnTip(
   }
   publisher->id = publisher_key;
 
-  bat_ledger_->SavePublisherInfo(
+  bat_ledger_->SavePublisherInfoForTip(
       std::move(publisher),
       base::BindOnce(&RewardsServiceImpl::OnTipPublisherSaved,
           AsWeakPtr(),

@@ -138,11 +138,11 @@
                 "type": "string",
                 "description": "provider (if media publisher) for this publisher"
               },
-              "favicon_url": {
+              "favIconUrl": {
                 "type": "string",
                 "description": "publisher image url"
               },
-              "publisher_key": {
+              "publisherKey": {
                 "type": "string",
                 "description": "publisher key, unique identifier"
               },
@@ -206,7 +206,7 @@
             "items": {
               "type": "object",
               "properties": {
-                "publisher_key": {
+                "publisherKey": {
                   "type": "string",
                   "description": "publisher key, unique identifier"
                 },
@@ -232,7 +232,7 @@
             "name": "properties",
             "type": "object",
             "properties": {
-              "publisher_key": {
+              "publisherKey": {
                 "type": "string",
                 "description": "publisher key, unique identifier"
               },
@@ -368,6 +368,172 @@
         "type": "function",
         "description": "Creates new wallet",
         "parameters": []
+      },
+      {
+        "name": "updateMediaDuration",
+        "type": "function",
+        "description": "Update the media duration for a given resource",
+        "parameters": [
+          {
+            "name": "publisherKey",
+            "type": "string"
+          },
+          {
+            "name": "duration",
+            "type": "integer"
+          }
+        ]
+      },
+      {
+        "name": "getPublisherInfo",
+        "type": "function",
+        "description": "Get the details for a particular publisher",
+        "parameters": [
+          {
+            "name": "publisherKey",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "integer"
+              },
+              {
+                "name": "properties",
+                "type": "object",
+                "properties": {
+                  "publisherKey": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "percentage": {
+                    "type": "number"
+                  },
+                  "status": {
+                    "type": "number"
+                  },
+                  "excluded": {
+                    "type": "number"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "provider": {
+                    "type": "string"
+                  },
+                  "favIconUrl": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getPublisherPanelInfo",
+        "type": "function",
+        "description": "Get the panel info for a particular publisher",
+        "parameters": [
+          {
+            "name": "publisherKey",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "integer"
+              },
+              {
+                "name": "publisher",
+                "type": "object",
+                "properties": {
+                  "percentage": {
+                    "type": "integer",
+                    "description": "publisher attention score"
+                  },
+                  "excluded": {
+                    "type": "boolean",
+                    "description": "is site excluded from auto contribute"
+                  },
+                  "provider": {
+                    "type": "string",
+                    "description": "provider (if media publisher) for this publisher"
+                  },
+                  "favIconUrl": {
+                    "type": "string",
+                    "description": "publisher image url"
+                  },
+                  "publisherKey": {
+                    "type": "string",
+                    "description": "publisher key, unique identifier"
+                  },
+                  "name": {
+                    "type": "string",
+                    "description": "publisher name"
+                  },
+                  "url": {
+                    "type": "string",
+                    "description": "url of the current tab"
+                  },
+                  "status": {
+                    "type": "integer",
+                    "description": "publisher status"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "savePublisherInfo",
+        "type": "function",
+        "description": "Save the publisher info when visiting a site",
+        "parameters": [
+          {
+            "name": "windowId",
+            "type": "number"
+          },
+          {
+            "name": "mediaType",
+            "type": "string"
+          },
+          {
+            "name": "url",
+            "type": "string"
+          },
+          {
+            "name": "publisherKey",
+            "type": "string"
+          },
+          {
+            "name": "publisherName",
+            "type": "string"
+          },
+          {
+            "name": "favIconUrl",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "result",
+                "type": "integer"
+              }
+            ]
+          }
+        ]
       },
       {
         "name": "tipSite",

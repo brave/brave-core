@@ -15,6 +15,18 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
+namespace {
+
+bool HandledByGreaselion(const std::string media_type) {
+#if defined(OS_ANDROID) || defined(OS_IOS)
+  return false;
+#else
+  return media_type == "youtube";
+#endif
+}
+
+}  // namespace
+
 namespace braveledger_media {
 
 Media::Media(ledger::LedgerImpl* ledger):
@@ -34,11 +46,10 @@ std::string Media::GetLinkType(
     const std::string& url,
     const std::string& first_party_url,
     const std::string& referrer) {
-  std::string type;
-
-#if defined(OS_ANDROID) || defined(OS_IOS)
-  type = braveledger_media::YouTube::GetLinkType(url);
-#endif
+  std::string type = braveledger_media::YouTube::GetLinkType(url);
+  if (HandledByGreaselion(type)) {
+    return std::string();
+  }
 
   if (type.empty()) {
     type = braveledger_media::Twitch::GetLinkType(
@@ -68,12 +79,14 @@ void Media::ProcessMedia(
     return;
   }
 
-#if defined(OS_ANDROID) || defined(OS_IOS)
+  if (HandledByGreaselion(type)) {
+    return;
+  }
+
   if (type == YOUTUBE_MEDIA_TYPE) {
     media_youtube_->ProcessMedia(parts, *visit_data);
     return;
   }
-#endif
 
   if (type == TWITCH_MEDIA_TYPE) {
     media_twitch_->ProcessMedia(parts, *visit_data);
@@ -96,12 +109,12 @@ void Media::GetMediaActivityFromUrl(
     ledger::type::VisitDataPtr visit_data,
     const std::string& type,
     const std::string& publisher_blob) {
-#if defined(OS_ANDROID) || defined(OS_IOS)
+  if (HandledByGreaselion(type)) {
+    return;
+  }
   if (type == YOUTUBE_MEDIA_TYPE) {
     media_youtube_->ProcessActivityFromUrl(window_id, *visit_data);
-  }
-#endif
-  if (type == TWITCH_MEDIA_TYPE) {
+  } else if (type == TWITCH_MEDIA_TYPE) {
     media_twitch_->ProcessActivityFromUrl(window_id,
                                           *visit_data,
                                           publisher_blob);
@@ -124,6 +137,11 @@ void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
                                        uint64_t window_id) {
   std::string url;
   std::string name;
+
+  if (HandledByGreaselion(type)) {
+    return;
+  }
+
   if (type == TWITCH_MEDIA_TYPE) {
     url = TWITCH_TLD;
     name = TWITCH_MEDIA_TYPE;
@@ -137,12 +155,10 @@ void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
     url = VIMEO_TLD;
     name = VIMEO_MEDIA_TYPE;
   } else {
-#if defined(OS_ANDROID) || defined(OS_IOS)
     if (type == YOUTUBE_MEDIA_TYPE) {
       url = YOUTUBE_TLD;
       name = YOUTUBE_MEDIA_TYPE;
     }
-#endif
   }
 
   if (url.empty()) {

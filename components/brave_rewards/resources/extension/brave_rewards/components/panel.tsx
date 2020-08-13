@@ -19,7 +19,7 @@ import * as utils from '../utils'
 import { getMessage } from '../background/api/locale_api'
 
 interface Props extends RewardsExtension.ComponentProps {
-  windowId: number,
+  tabId: number,
   onlyAnonWallet: boolean
 }
 
@@ -51,7 +51,7 @@ export class Panel extends React.Component<Props, State> {
 
   componentDidMount () {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const newKey = publisher && publisher.publisher_key
+    const newKey = publisher && publisher.publisherKey
 
     if (newKey) {
       this.setState({
@@ -69,7 +69,7 @@ export class Panel extends React.Component<Props, State> {
 
   componentDidUpdate (prevProps: Props, prevState: State) {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const newKey = publisher && publisher.publisher_key
+    const newKey = publisher && publisher.publisherKey
 
     if (!prevState.publisherKey && newKey) {
       this.setState({
@@ -134,7 +134,7 @@ export class Panel extends React.Component<Props, State> {
 
   switchAutoContribute = () => {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const publisherKey = publisher && publisher.publisher_key
+    const publisherKey = publisher && publisher.publisherKey
     const excluded = publisher && publisher.excluded
     if (publisherKey && publisherKey.length > 0 && excluded !== undefined) {
       this.props.actions.includeInAutoContribution(publisherKey, !excluded)
@@ -142,15 +142,15 @@ export class Panel extends React.Component<Props, State> {
   }
 
   getPublisher = () => {
-    let windowId = this.props.windowId.toString()
+    let tabKey = this.props.tabId.toString()
 
-    if (!windowId) {
+    if (!tabKey) {
       return undefined
     }
 
-    windowId = `id_${windowId}`
+    tabKey = `key_${tabKey}`
 
-    return this.props.rewardsPanelData.publishers[windowId]
+    return this.props.rewardsPanelData.publishers[tabKey]
   }
 
   onSliderToggle = () => {
@@ -287,22 +287,14 @@ export class Panel extends React.Component<Props, State> {
 
   showTipSiteDetail = (monthly: boolean) => {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    // TODO: why do we store windowId instead of active tab id in state?
-    chrome.tabs.query({
-      active: true,
-      windowId: chrome.windows.WINDOW_ID_CURRENT
-    }, (tabs) => {
-      if (!tabs || !tabs.length) {
-        return
-      }
-      const tabId = tabs[0].id
-      if (tabId === undefined || !publisher || !publisher.publisher_key) {
-        return
-      }
+    const tabId = this.props.tabId
 
-      chrome.braveRewards.tipSite(tabId, publisher.publisher_key, monthly)
-      window.close()
-    })
+    if (!publisher || !publisher.publisherKey) {
+      return
+    }
+
+    chrome.braveRewards.tipSite(tabId, publisher.publisherKey, monthly)
+    window.close()
   }
 
   onCloseNotification = (id: string) => {
@@ -506,11 +498,11 @@ export class Panel extends React.Component<Props, State> {
     const newValue = parseFloat(event.target.value)
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
 
-    if (!publisher || !publisher.publisher_key) {
+    if (!publisher || !publisher.publisherKey) {
       return
     }
 
-    const publisherKey = publisher.publisher_key
+    const publisherKey = publisher.publisherKey
 
     if (newValue === 0) {
       this.actions.removeRecurringTip(publisherKey)
@@ -522,7 +514,7 @@ export class Panel extends React.Component<Props, State> {
   generateAmounts = (publisher?: RewardsExtension.Publisher) => {
     const { tipAmounts, parameters } = this.props.rewardsPanelData
 
-    const publisherKey = publisher && publisher.publisher_key
+    const publisherKey = publisher && publisher.publisherKey
     let publisherAmounts = null
     if (publisherKey && tipAmounts && tipAmounts[publisherKey] && tipAmounts[publisherKey].length) {
       publisherAmounts = tipAmounts[publisherKey]
@@ -555,12 +547,12 @@ export class Panel extends React.Component<Props, State> {
     const { recurringTips } = this.props.rewardsPanelData
 
     if (!recurringTips ||
-       (!publisher || !publisher.publisher_key)) {
+       (!publisher || !publisher.publisherKey)) {
       return defaultContribution
     }
 
     recurringTips.map((tip: any) => {
-      if (tip.publisherKey === publisher.publisher_key) {
+      if (tip.publisherKey === publisher.publisherKey) {
         defaultContribution = tip.amount.toFixed(3)
       }
     })
@@ -597,7 +589,7 @@ export class Panel extends React.Component<Props, State> {
     })
     this.initiateDelayCounter()
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const publisherKey = publisher && publisher.publisher_key
+    const publisherKey = publisher && publisher.publisherKey
     if (publisherKey) {
       chrome.braveRewards.refreshPublisher(publisherKey, (status: number, publisherKey: string) => {
         if (publisherKey) {
@@ -720,8 +712,8 @@ export class Panel extends React.Component<Props, State> {
     let faviconUrl
     if (publisher && publisher.url) {
       faviconUrl = `chrome://favicon/size/64@1x/${publisher.url}`
-      if (publisher.favicon_url && checkmark) {
-        faviconUrl = `chrome://favicon/size/64@1x/${publisher.favicon_url}`
+      if (publisher.favIconUrl && checkmark) {
+        faviconUrl = `chrome://favicon/size/64@1x/${publisher.favIconUrl}`
       }
     }
 
@@ -763,7 +755,7 @@ export class Panel extends React.Component<Props, State> {
           onToggle={this.onSliderToggle}
         >
           {
-            publisher && publisher.publisher_key
+            publisher && publisher.publisherKey
             ? <WalletPanel
               id={'wallet-panel'}
               platform={publisher.provider as Provider}

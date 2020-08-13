@@ -26,7 +26,7 @@ interface Props extends RewardsExtension.ComponentProps {
 }
 
 interface State {
-  windowId: number
+  tabId: number
   onlyAnonWallet: boolean
 }
 
@@ -34,7 +34,7 @@ export class RewardsPanel extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      windowId: -1,
+      tabId: -1,
       onlyAnonWallet: false
     }
   }
@@ -66,7 +66,7 @@ export class RewardsPanel extends React.Component<Props, State> {
   }
 
   startRewards = () => {
-    chrome.windows.getCurrent({}, this.onWindowCallback)
+    this.getCurrentTab(this.onCurrentTab)
 
     chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
       this.props.actions.onAllNotifications(list)
@@ -85,7 +85,7 @@ export class RewardsPanel extends React.Component<Props, State> {
         this.props.actions.onAllNotifications(list)
       })
 
-      chrome.windows.getCurrent({}, this.onWindowCallback)
+      this.getCurrentTab(this.onCurrentTab)
 
       this.handleGrantNotification()
     }
@@ -119,6 +119,18 @@ export class RewardsPanel extends React.Component<Props, State> {
   getBalance () {
     chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
       this.actions.onBalance(balance)
+    })
+  }
+
+  getCurrentTab (callback: ((tab: chrome.tabs.Tab) => void)) {
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true
+    }, (tabs) => {
+      if (!tabs || !tabs.length) {
+        return
+      }
+      callback(tabs[0])
     })
   }
 
@@ -230,9 +242,13 @@ export class RewardsPanel extends React.Component<Props, State> {
     })
   }
 
-  onWindowCallback = (window: chrome.windows.Window) => {
+  onCurrentTab = (tab: chrome.tabs.Tab) => {
+    if (!tab || !tab.id) {
+      return
+    }
+
     this.setState({
-      windowId: window.id
+      tabId: tab.id
     })
 
     if (this.props.rewardsPanelData.walletCreated) {
@@ -352,7 +368,7 @@ export class RewardsPanel extends React.Component<Props, State> {
         {
           enabledMain
           ? <Panel
-              windowId={this.state.windowId}
+              tabId={this.state.tabId}
               onlyAnonWallet={this.state.onlyAnonWallet}
           />
           : <>

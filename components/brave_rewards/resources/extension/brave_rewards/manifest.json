@@ -15,6 +15,7 @@
     "webRequest",
     "chrome://favicon/*",
     "https://www.twitch.tv/*",
+    "https://www.youtube.com/*",
     "https://*.twitter.com/*"
   ],
   "browser_action": {
@@ -63,6 +64,6 @@
     "128": "img/bat-128.png",
     "256": "img/bat-256.png"
   },
-  "content_security_policy": "default-src 'self'; img-src 'self' chrome: data:; style-src 'self' 'unsafe-inline';font-src 'self' data:; connect-src https://api.twitter.com 'self';",
+  "content_security_policy": "default-src 'self'; img-src 'self' chrome: data:; style-src 'self' 'unsafe-inline';font-src 'self' data:; connect-src https://api.twitter.com https://www.youtube.com 'self';",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAmqLJHCRq1BdVqkYZuPiH3UxlEnF6ZZGq2ba8IOIuuAjGd3xFjA1yxKhuJWt17mCUonB04jG+BmxDQNj29gHhBHKwV20Zw4HNQeyXsThx6op4lfL0ypiZX727Dvcd2zn48eP+0hT/2oP3szHvsPDHrZUPwXcL6ButcJYWsO18OlIMPK4L3B/l37nOeAs2OVlSrrKFu7uiAfGj70kJYvAQdHEtCsuTsWX3ApZ6MM49XTYD5TyKvXJXHagsiDmqeAZPAgPrk32ES43deqZYWorWOCFHuRzjJUwNRJBJn59IP4DK5X1Y+Uc7VjZDk9EUft+BI8UT6M+Ok8EDaDZZI57c5QIDAQAB"
 }

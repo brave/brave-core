@@ -4,6 +4,7 @@
 
 import rewardsPanelActions from './background/actions/rewardsPanelActions'
 
+import './background/publisherVisit'
 import './background/store'
 import './background/twitterAuth'
 import './background/events/rewardsEvents'

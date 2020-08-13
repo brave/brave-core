@@ -91,6 +91,13 @@ void Database::GetActivityInfoList(
   activity_info_->GetRecordsList(start, limit, std::move(filter), callback);
 }
 
+void Database::UpdateActivityInfoDuration(
+    const std::string& publisher_key,
+    uint64_t duration,
+    ledger::ResultCallback callback) {
+  activity_info_->UpdateDuration(publisher_key, duration, callback);
+}
+
 void Database::DeleteActivityInfo(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {

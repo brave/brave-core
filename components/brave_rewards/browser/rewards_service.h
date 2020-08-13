@@ -66,6 +66,10 @@ using RefreshPublisherCallback =
     base::OnceCallback<void(
         const ledger::type::PublisherStatus,
         const std::string&)>;
+using GetPublisherInfoCallback = base::OnceCallback<void(
+    const int32_t,
+    std::unique_ptr<brave_rewards::PublisherInfo>)>;
+using SavePublisherInfoCallback = base::OnceCallback<void(const int32_t)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(ledger::type::PublisherInfoPtr publisher)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
@@ -134,15 +138,16 @@ class RewardsService : public KeyedService {
 
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
-  virtual void GetContentSiteList(
+  virtual void GetPublisherInfoList(
       uint32_t start,
       uint32_t limit,
       uint64_t min_visit_time,
       uint64_t reconcile_stamp,
       bool allow_non_verified,
       uint32_t min_visits,
-      const GetContentSiteListCallback& callback) = 0;
-  virtual void GetExcludedList(const GetContentSiteListCallback& callback) = 0;
+      const GetPublisherInfoListCallback& callback) = 0;
+  virtual void GetExcludedList(
+      const GetPublisherInfoListCallback& callback) = 0;
   virtual void FetchPromotions() = 0;
   // Used by desktop
   virtual void ClaimPromotion(
@@ -270,6 +275,23 @@ class RewardsService : public KeyedService {
       const std::string& media_type,
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
+
+  virtual void UpdateMediaDuration(
+      const std::string& publisher_key,
+      uint64_t duration) = 0;
+
+  virtual void GetPublisherInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) = 0;
+
+  virtual void GetPublisherPanelInfo(
+      const std::string& publisher_key,
+      GetPublisherInfoCallback callback) = 0;
+
+  virtual void SavePublisherInfo(
+      const uint64_t window_id,
+      std::unique_ptr<brave_rewards::PublisherInfo> publisher_info,
+      SavePublisherInfoCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(
       const std::string& key,
