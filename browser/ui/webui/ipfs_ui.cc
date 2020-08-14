@@ -6,10 +6,10 @@
 #include "brave/browser/ui/webui/ipfs_ui.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ipfs/ipfs_service.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/ipfs/browser/ipfs_service.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
@@ -76,7 +76,7 @@ void IPFSDOMHandler::HandleGetConnectedPeers(const base::ListValue* args) {
     return;
 
   ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui()));
+      ipfs::IpfsServiceFactory::GetForContext(Profile::FromWebUI(web_ui()));
   if (!service) {
     return;
   }

@@ -154,7 +154,7 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   BraveWalletServiceFactory::GetForProfile(profile);
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  ipfs::IpfsServiceFactory::GetForProfile(profile);
+  ipfs::IpfsServiceFactory::GetForContext(profile);
 #endif
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   gcm::BraveGCMChannelStatus* status =

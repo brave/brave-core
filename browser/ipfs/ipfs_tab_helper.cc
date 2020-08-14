@@ -10,7 +10,6 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/infobars/ipfs_infobar_delegate.h"
 #include "chrome/browser/infobars/infobar_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
 #include "extensions/common/url_pattern.h"
 

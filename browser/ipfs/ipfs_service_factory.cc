@@ -5,9 +5,8 @@
 
 #include "brave/browser/ipfs/ipfs_service_factory.h"
 
-#include "brave/components/ipfs/browser/ipfs_service.h"
+#include "brave/browser/ipfs/ipfs_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 
 namespace ipfs {
@@ -18,9 +17,10 @@ IpfsServiceFactory* IpfsServiceFactory::GetInstance() {
 }
 
 // static
-IpfsService* IpfsServiceFactory::GetForProfile(Profile* profile) {
+IpfsService* IpfsServiceFactory::GetForContext(
+    content::BrowserContext* context) {
   return static_cast<IpfsService*>(
-      GetInstance()->GetServiceForBrowserContext(profile, true));
+      GetInstance()->GetServiceForBrowserContext(context, true));
 }
 
 IpfsServiceFactory::IpfsServiceFactory()
@@ -34,7 +34,7 @@ IpfsServiceFactory::~IpfsServiceFactory() {
 
 KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  return new IpfsService(Profile::FromBrowserContext(context));
+  return new IpfsService(context);
 }
 
 content::BrowserContext* IpfsServiceFactory::GetBrowserContextToUse(

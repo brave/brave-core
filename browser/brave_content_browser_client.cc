@@ -87,7 +87,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(IPFS_ENABLED)
-#include "brave/components/ipfs/browser/content_browser_client_helper.h"
+#include "brave/browser/ipfs/content_browser_client_helper.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)

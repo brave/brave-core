@@ -311,9 +311,24 @@ source_set("browser_process") {
   }
 
   if (ipfs_enabled) {
+    sources += [
+      "ipfs/content_browser_client_helper.cc",
+      "ipfs/content_browser_client_helper.h",
+      "ipfs/ipfs_service.cc",
+      "ipfs/ipfs_service.h",
+      "ipfs/ipfs_service_factory.cc",
+      "ipfs/ipfs_service_factory.h",
+      "ipfs/ipfs_tab_helper.cc",
+      "ipfs/ipfs_tab_helper.h",
+    ]
+
     deps += [
-      "ipfs",
+      "//brave/browser/infobars",
       "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
+      "//brave/components/services/ipfs/public/mojom",
+      "//extensions/browser",
+      "//extensions/common",
     ]
   }
 

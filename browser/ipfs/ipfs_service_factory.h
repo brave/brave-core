@@ -15,7 +15,7 @@ class IpfsService;
 
 class IpfsServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
-  static IpfsService* GetForProfile(Profile* profile);
+  static IpfsService* GetForContext(content::BrowserContext* context);
   static IpfsServiceFactory* GetInstance();
 
  private:
