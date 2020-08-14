@@ -110,10 +110,6 @@ void AdsTabHelper::DidFinishLoad(
   TabUpdated();
 }
 
-void AdsTabHelper::DidAttachInterstitialPage() {
-  TabUpdated();
-}
-
 void AdsTabHelper::TabUpdated() {
   if (!ads_service_)
     return;

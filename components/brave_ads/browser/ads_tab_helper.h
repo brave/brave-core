@@ -57,7 +57,6 @@ class AdsTabHelper : public content::WebContentsObserver,
   void DocumentOnLoadCompletedInMainFrame() override;
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
                      const GURL& validated_url) override;
-  void DidAttachInterstitialPage() override;
   void MediaStartedPlaying(const MediaPlayerInfo& video_type,
                            const content::MediaPlayerId& id) override;
   void MediaStoppedPlaying(
