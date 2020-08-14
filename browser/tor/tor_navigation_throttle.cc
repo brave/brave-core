@@ -65,7 +65,7 @@ const char* TorNavigationThrottle::GetNameForLogging() {
   return "TorNavigationThrottle";
 }
 
-void TorNavigationThrottle::OnTorLaunched(bool result, int64_t pid) {
+void TorNavigationThrottle::OnTorCircuitEstablished(bool result) {
   if (result && resume_pending_) {
     resume_pending_ = false;
     Resume();

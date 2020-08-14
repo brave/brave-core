@@ -311,6 +311,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON" desc="Button in the avatar menu bubble view to open a Tor window.">
         Open Tor Window
       </message>
+      <message name="IDS_OMNIBOX_INITIALIZING_TOR" desc="Omnibox indicator to show Tor executable is downloading or launching">
+        Initializing Tor...
+      </message>
       <if expr="use_titlecase">
         <message name="IDS_NEW_OFFTHERECORD_WINDOW_TOR" desc="Title case: The text label of a menu item to open a new off-the-record window with Tor.">
           New Private Window with Tor

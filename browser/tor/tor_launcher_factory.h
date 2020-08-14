@@ -63,12 +63,13 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   void OnTorLauncherCrashed();
   void OnTorCrashed(int64_t pid);
   void OnTorLaunched(bool result, int64_t pid);
+
   void OnTorNewProxyURI(std::string uri);
+  void OnTorCircuitEstablished(bool result);
+  void OnTorInitializing(std::string percentage);
 
   void GotVersion(bool error, const std::string& version);
   void GotSOCKSListeners(bool error, const std::vector<std::string>& listeners);
-  void Loggerific(
-      bool error, const std::string& status, const std::string& reply);
 
   bool is_starting_;
 

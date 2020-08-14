@@ -210,6 +210,19 @@ void TorProfileServiceImpl::NotifyTorNewProxyURI(const std::string& uri) {
   proxy_config_service_->UpdateProxyURI(uri);
 }
 
+void TorProfileServiceImpl::NotifyTorCircuitEstablished(bool result) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  for (auto& observer : observers_)
+    observer.OnTorCircuitEstablished(result);
+}
+
+void TorProfileServiceImpl::NotifyTorInitializing(
+    const std::string& percentage) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  for (auto& observer : observers_)
+    observer.OnTorInitializing(percentage);
+}
+
 std::unique_ptr<net::ProxyConfigService>
 TorProfileServiceImpl::CreateProxyConfigService() {
   proxy_config_service_ = new net::ProxyConfigServiceTor();
