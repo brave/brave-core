@@ -64,7 +64,13 @@ index f55c90df9969ace76a0813d02237edcb406e079c..d6e103cb4267adc6829857d78c1b0c0d
 +  }
 +
 +  LocalFrame* const frame = GetFrame();
-+  if (!frame || frame->IsProvisional()) {
++  if (!frame) {
++    if (IsTemplateDocument()) {
++      return context_document->GetPageGraph();
++    }
++    return nullptr;
++  }
++  if (frame->IsProvisional()) {
 +    return nullptr;
 +  }
 +
