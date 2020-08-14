@@ -20,8 +20,8 @@ void NativeLedgerClient::LoadLedgerState(ledger::OnLoadCallback callback) {
 void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
 }
-void NativeLedgerClient::LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::UrlMethod method, ledger::LoadURLCallback callback) {
-  [bridge_ loadURL:url headers:headers content:content contentType:contentType method:method callback:callback];
+void NativeLedgerClient::LoadURL(ledger::UrlRequestPtr request, ledger::LoadURLCallback callback) {
+  [bridge_ loadURL:std::move(request) callback:callback];
 }
 void NativeLedgerClient::Log(const char * file, const int line, const int verbose_level, const std::string & message) {
   [bridge_ log:file line:line verboseLevel:verbose_level message:message];

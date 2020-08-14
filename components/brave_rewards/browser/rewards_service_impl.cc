@@ -993,25 +993,19 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
 }
 
 void RewardsServiceImpl::LoadURL(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& contentType,
-    const ledger::UrlMethod method,
+    ledger::UrlRequestPtr request,
     ledger::LoadURLCallback callback) {
-
-  if (url.empty()) {
+  if (!request || request->url.empty()) {
     ledger::UrlResponse response;
-    response.url = url;
     response.status_code = net::HTTP_BAD_REQUEST;
     callback(response);
     return;
   }
 
-  GURL parsed_url(url);
+  GURL parsed_url(request->url);
   if (!parsed_url.is_valid()) {
     ledger::UrlResponse response;
-    response.url = url;
+    response.url = request->url;
     response.status_code = net::HTTP_BAD_REQUEST;
     callback(response);
     return;
@@ -1022,14 +1016,14 @@ void RewardsServiceImpl::LoadURL(
     std::map<std::string, std::string> test_headers;
     int response_status_code = net::HTTP_OK;
     test_response_callback_.Run(
-        url,
-        static_cast<int>(method),
+        request->url,
+        static_cast<int>(request->method),
         &response_status_code,
         &test_response,
         &test_headers);
 
     ledger::UrlResponse response;
-    response.url = url;
+    response.url = request->url;
     response.status_code = response_status_code;
     response.body = test_response;
     response.headers = base::MapToFlatMap(test_headers);
@@ -1037,37 +1031,38 @@ void RewardsServiceImpl::LoadURL(
     return;
   }
 
-  const std::string request_method = URLMethodToRequestType(method);
-  auto request = std::make_unique<network::ResourceRequest>();
-  request->url = GURL(url);
-  request->method = request_method;
+  auto net_request = std::make_unique<network::ResourceRequest>();
+  net_request->url = parsed_url;
+  net_request->method = URLMethodToRequestType(request->method);
 
   // Loading Twitter requires credentials
-  if (request->url.DomainIs("twitter.com")) {
-    request->credentials_mode = network::mojom::CredentialsMode::kInclude;
+  if (net_request->url.DomainIs("twitter.com")) {
+    net_request->credentials_mode = network::mojom::CredentialsMode::kInclude;
 
 #if defined(OS_ANDROID)
-    request->headers.SetHeader(net::HttpRequestHeaders::kUserAgent, "DESKTOP");
+    net_request->headers.SetHeader(
+        net::HttpRequestHeaders::kUserAgent,
+        "DESKTOP");
 #endif
 
   } else {
-    request->credentials_mode = network::mojom::CredentialsMode::kOmit;
+    net_request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   }
 
-  for (size_t i = 0; i < headers.size(); i++) {
-    request->headers.AddHeaderFromString(headers[i]);
+  for (const auto& header : request->headers) {
+    net_request->headers.AddHeaderFromString(header);
   }
 
   network::SimpleURLLoader* loader = network::SimpleURLLoader::Create(
-      std::move(request),
+      std::move(net_request),
       GetNetworkTrafficAnnotationTagForURLLoad()).release();
   loader->SetAllowHttpErrorResults(true);
   url_loaders_.insert(loader);
   loader->SetRetryOptions(kRetriesCountOnNetworkChange,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
-  if (!content.empty()) {
-    loader->AttachStringForUpload(content, contentType);
+  if (!request->content.empty()) {
+    loader->AttachStringForUpload(request->content, request->content_type);
   }
 
   loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(

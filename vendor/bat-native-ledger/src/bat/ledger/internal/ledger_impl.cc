@@ -124,13 +124,14 @@ void LedgerImpl::LoadURL(
   BLOG(5, ledger::UrlRequestToString(url, headers, content, content_type,
       method));
 
-  ledger_client_->LoadURL(
-      url,
-      headers,
-      content,
-      content_type,
-      method,
-      callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = url;
+  request->method = method;
+  request->headers = headers;
+  request->content = content;
+  request->content_type = content_type;
+
+  ledger_client_->LoadURL(std::move(request), callback);
 }
 
 void LedgerImpl::StartServices() {

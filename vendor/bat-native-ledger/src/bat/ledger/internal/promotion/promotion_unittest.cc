@@ -84,19 +84,15 @@ class PromotionTest : public testing::Test {
     ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(testing::Return(mock_database_.get()));
 
-    ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+    ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
         Invoke([](
-            const std::string& url,
-            const std::vector<std::string>& headers,
-            const std::string& content,
-            const std::string& contentType,
-            const ledger::UrlMethod method,
+            ledger::UrlRequestPtr request,
             ledger::LoadURLCallback callback) {
           ledger::UrlResponse response;
           response.status_code = 200;
-          response.url = url;
-          response.body = GetResponse(url);
+          response.url = request->url;
+          response.body = GetResponse(request->url);
           callback(response);
         }));
   }

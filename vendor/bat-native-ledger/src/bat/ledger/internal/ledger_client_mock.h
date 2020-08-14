@@ -47,12 +47,8 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD1(URIEncode, std::string(
       const std::string& value));
 
-  MOCK_METHOD6(LoadURL, void(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const ledger::UrlMethod method,
+  MOCK_METHOD2(LoadURL, void(
+      ledger::UrlRequestPtr request,
       ledger::LoadURLCallback callback));
 
   MOCK_METHOD2(SetPublisherExclude, void(

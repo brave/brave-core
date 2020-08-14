@@ -499,11 +499,8 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PromotionPtr promotion);
   void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadPublisherState(ledger::OnLoadCallback callback) override;
-  void LoadURL(const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& contentType,
-      const ledger::UrlMethod method,
+  void LoadURL(
+      ledger::UrlRequestPtr request,
       ledger::LoadURLCallback callback) override;
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisits(int visits) const override;
