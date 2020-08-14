@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-index 2e8ba69ab6b6b838a9ca25393825d2988e6c3edf..e3651d20bcccc9caa54a8f44687410ac652a2b29 100644
+index 9150c91338f40df308aa591c714924e6c064b4fe..cfd6f73a7f1e71c3b52113b36b27802159df9007 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/channels/ChromeChannelDefinitions.java
-@@ -45,7 +45,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -44,7 +44,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
       * set of channels returned by {@link #getStartupChannelIds()} or {@link #getLegacyChannelIds()}
       * changes.
       */
@@ -11,7 +11,7 @@ index 2e8ba69ab6b6b838a9ca25393825d2988e6c3edf..e3651d20bcccc9caa54a8f44687410ac
  
      private static class LazyHolder {
          private static ChromeChannelDefinitions sInstance = new ChromeChannelDefinitions();
-@@ -65,6 +65,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -64,6 +64,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
       * more detailed instructions.
       */
      @StringDef({ChannelId.BROWSER, ChannelId.DOWNLOADS, ChannelId.INCOGNITO,
@@ -19,7 +19,7 @@ index 2e8ba69ab6b6b838a9ca25393825d2988e6c3edf..e3651d20bcccc9caa54a8f44687410ac
              ChannelId.MEDIA_PLAYBACK, ChannelId.SCREEN_CAPTURE, ChannelId.CONTENT_SUGGESTIONS,
              ChannelId.WEBAPP_ACTIONS, ChannelId.SITES, ChannelId.SHARING, ChannelId.UPDATES,
              ChannelId.COMPLETED_DOWNLOADS, ChannelId.PERMISSION_REQUESTS,
-@@ -93,7 +94,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -92,7 +93,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
          String WEBRTC_CAM_AND_MIC = "webrtc_cam_and_mic";
      }
  
@@ -28,7 +28,7 @@ index 2e8ba69ab6b6b838a9ca25393825d2988e6c3edf..e3651d20bcccc9caa54a8f44687410ac
      @Retention(RetentionPolicy.SOURCE)
      public @interface ChannelGroupId {
          String SITES = "sites";
-@@ -122,6 +123,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -121,6 +122,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
              Map<String, PredefinedChannel> map = new HashMap<>();
              Set<String> startup = new HashSet<>();
  
@@ -36,7 +36,7 @@ index 2e8ba69ab6b6b838a9ca25393825d2988e6c3edf..e3651d20bcccc9caa54a8f44687410ac
              map.put(ChannelId.BROWSER,
                      PredefinedChannel.create(ChannelId.BROWSER,
                              R.string.notification_category_browser,
-@@ -237,6 +239,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
+@@ -236,6 +238,7 @@ public class ChromeChannelDefinitions extends ChannelDefinitions {
          static final Map<String, PredefinedChannelGroup> MAP;
          static {
              Map<String, PredefinedChannelGroup> map = new HashMap<>();
