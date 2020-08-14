@@ -59,8 +59,6 @@ source_set("browser") {
     "transaction_report_info.h",
     "contribution_report_info.cc",
     "contribution_report_info.h",
-    "rewards_database.h",
-    "rewards_database.cc",
     "event_log.h",
     "event_log.cc",
   ]

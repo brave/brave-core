@@ -4,6 +4,7 @@
 
 #import <UIKit/UIKit.h>
 #import "bat/ledger/ledger.h"
+#import "bat/ledger/ledger_database.h"
 #import "bat/ledger/global_constants.h"
 #import "bat/ledger/option_keys.h"
 
@@ -29,7 +30,6 @@
 #import "url/gurl.h"
 #import "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #import "base/strings/sys_string_conversions.h"
-#import "brave/components/brave_rewards/browser/rewards_database.h"
 
 #import "base/i18n/icu_util.h"
 #import "base/ios/ios_util.h"
@@ -93,7 +93,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
 @interface BATBraveLedger () <NativeLedgerClientBridge> {
   NativeLedgerClient *ledgerClient;
   ledger::Ledger *ledger;
-  brave_rewards::RewardsDatabase *rewardsDatabase;
+  ledger::LedgerDatabase *rewardsDatabase;
 }
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) BATRewardsParameters *rewardsParameters;
@@ -166,7 +166,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
     self.databaseQueue = dispatch_queue_create("com.rewards.db-transactions", DISPATCH_QUEUE_SERIAL);
     
     const auto* dbPath = [self rewardsDatabasePath].UTF8String;
-    rewardsDatabase = new brave_rewards::RewardsDatabase(base::FilePath(dbPath));
+    rewardsDatabase = ledger::LedgerDatabase::CreateInstance(base::FilePath(dbPath));
 
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
@@ -321,7 +321,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   const auto dbPath = [self rewardsDatabasePath];
   [NSFileManager.defaultManager removeItemAtPath:dbPath error:nil];
   [NSFileManager.defaultManager removeItemAtPath:[dbPath stringByAppendingString:@"-journal"] error:nil];
-  rewardsDatabase = new brave_rewards::RewardsDatabase(base::FilePath(dbPath.UTF8String));
+  rewardsDatabase = ledger::LedgerDatabase::CreateInstance(base::FilePath(dbPath.UTF8String));
 }
 
 - (void)getCreateScript:(ledger::GetCreateScriptCallback)callback

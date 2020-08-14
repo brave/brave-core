@@ -75,6 +75,7 @@ source_set("headers") {
     "include/bat/ledger/global_constants.h",
     "include/bat/ledger/export.h",
     "include/bat/ledger/ledger.h",
+    "include/bat/ledger/ledger_database.h",
     "include/bat/ledger/ledger_client.h",
     "include/bat/ledger/mojom_structs.h",
     "include/bat/ledger/option_keys.h",
@@ -249,6 +250,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/database/database_unblinded_token.h",
     "src/bat/ledger/internal/database/database_util.cc",
     "src/bat/ledger/internal/database/database_util.h",
+    "src/bat/ledger/internal/ledger_database_impl.cc",
+    "src/bat/ledger/internal/ledger_database_impl.h",
     "src/bat/ledger/internal/ledger_impl.cc",
     "src/bat/ledger/internal/ledger_impl.h",
     "src/bat/ledger/internal/logging/event_log_keys.h",
@@ -435,6 +438,7 @@ source_set("ledger") {
     "src/bat/ledger/internal/media/github.h",
     "src/bat/ledger/internal/media/github.cc",
     "src/bat/ledger/ledger.cc",
+    "src/bat/ledger/ledger_database.cc",
   ]
 
   deps = [
