@@ -1874,8 +1874,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTEXTMENU_OPEN_IN_EPHEMERAL_TAB" desc="Context-sensitive menu item to open a quick preview of the selected linked page.   Note that 'preview' is a verb, not a noun. We're also labeling it *New* to draw attention to it when first released. The selected link will open in an overlay panel on top of the current tab which will go away easily too. [CHAR-LIMIT=30]">
         Preview page <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
-      <message name="IDS_CONTEXTMENU_PERFORMANCE_INFO_FAST" desc="This string is shown in the context sensitive menu for links and is shown underneath the link URL. It indicates to the user that the link's target website should load quickly. [CHAR-LIMIT=30]">
-        Fast site
+      <message name="IDS_CONTEXTMENU_PERFORMANCE_INFO_FAST" desc="This string is shown in the context sensitive menu for links and is shown underneath the link URL. It indicates to the user that the link's target page is fast-loading and responsive. [CHAR-LIMIT=30]">
+        Fast page
       </message>
 
       <!-- Swipe refresh -->
@@ -3838,6 +3838,26 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_LITE_MODE_HTTPS_IMAGE_COMPRESSION_SETTINGS_LINK" desc="This link opens the Lite Mode settings page to explain the feature and configure the settings.">
         Manage
+      </message>
+
+      <!-- Browser Promo Notification Strings -->
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_1_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes relevant articles Brave has.">
+        Read today's news <ph name="NEWS_ICON">📰</ph>
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_1_DESCRIPTION" desc="The body text of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes relevant articles Brave has.">
+        Articles on your interests on Brave
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_2_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings.">
+        Save up to 60% data
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_2_DESCRIPTION" desc="The body text of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings.">
+        Use Lite mode on Brave
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_3_TITLE" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.">
+        Brave recommends Brave
+      </message>
+      <message name="IDS_CHROME_REENGAGEMENT_NOTIFICATION_3_DESCRIPTION" desc="The title of a notification shown to suggest that users use Brave.  Users probably have not opened Brave in a while.  Promotes data savings and relevant news.">
+        Save up to 60% data, read today's news
       </message>
     </messages>
   </release>
