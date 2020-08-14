@@ -66,6 +66,12 @@ class FeedDataSource {
     private let todayQueue = DispatchQueue(label: "com.brave.today")
     private let reloadQueue = DispatchQueue(label: "com.brave.today.reload")
     
+    // MARK: - Initialization
+    
+    init() {
+        restoreCachedSources()
+    }
+    
     // MARK: - Resource Managment
     
     private let session = NetworkManager(session: URLSession(configuration: .ephemeral))
@@ -110,6 +116,28 @@ class FeedDataSource {
         case resourceEmpty
     }
     
+    /// Get a cached Brave Today resource file, optionally allowing expired data to be returned
+    private func cachedResource(_ resource: TodayResource, loadExpiredData: Bool = false) -> Deferred<Data?> {
+        let filename = resource.filename
+        let fileManager = FileManager.default
+        let deferred = Deferred<Data?>(value: nil, defaultQueue: .main)
+        let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(filename).path
+        if (loadExpiredData || !isResourceExpired(resource)),
+            let cachedPath = cachedPath,
+            fileManager.fileExists(atPath: cachedPath) {
+            todayQueue.async {
+                if let cachedContents = fileManager.contents(atPath: cachedPath) {
+                    deferred.fill(cachedContents)
+                } else {
+                    deferred.fill(nil)
+                }
+            }
+        } else {
+            deferred.fill(nil)
+        }
+        return deferred
+    }
+    
     /// Load a Brave Today resource either from a file cache or the web
     ///
     /// The `filename` provided will be appended as a path component to the request URL, and be used to
@@ -123,42 +151,55 @@ class FeedDataSource {
         decodedTo: DataType.Type
     ) -> Deferred<Result<DataType, Error>> where DataType: Decodable {
         let filename = resource.filename
-        let fileManager = FileManager.default
-        let deferred = Deferred<Result<Data, Error>>(value: nil, defaultQueue: .main)
-        let cachedPath = fileManager.getOrCreateFolder(name: Self.cacheFolderName)?.appendingPathComponent(filename).path
-        if let cachedPath = cachedPath,
-            !isResourceExpired(resource) {
-            todayQueue.async {
-                if let cachedContents = fileManager.contents(atPath: cachedPath) {
-                    deferred.fill(.success(cachedContents))
+        return cachedResource(resource)
+            .bind({ [weak self] data -> Deferred<Result<Data, Error>> in
+                guard let self = self else { return .init() }
+                if let data = data {
+                    return .init(value: .success(data), defaultQueue: .main)
                 }
-            }
-        } else {
-            session.dataRequest(with: Self.baseURL.appendingPathComponent(filename)) { data, response, error in
-                if let error = error {
-                    deferred.fill(.failure(error))
-                    return
-                }
-                guard let data = data else { return }
-                deferred.fill(.success(data))
-            }
-        }
-        return deferred.mapQueue(todayQueue) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let decodedSources = try self.decoder.decode(DataType.self, from: data)
-                    if !data.isEmpty {
-                        if !FileManager.default.writeToDiskInFolder(data, fileName: filename, folderName: Self.cacheFolderName) {
-                            logger.error("Failed to write sources to disk")
-                        }
+                let deferred = Deferred<Result<Data, Error>>(value: nil, defaultQueue: .main)
+                self.session.dataRequest(with: Self.baseURL.appendingPathComponent(filename)) { data, response, error in
+                    if let error = error {
+                        deferred.fill(.failure(error))
+                        return
                     }
-                    return .success(decodedSources)
-                } catch {
+                    guard let data = data else { return }
+                    deferred.fill(.success(data))
+                }
+                return deferred
+            })
+            .mapQueue(todayQueue) { result in
+                switch result {
+                case .success(let data):
+                    do {
+                        let decodedResource = try self.decoder.decode(DataType.self, from: data)
+                        if !data.isEmpty {
+                            if !FileManager.default.writeToDiskInFolder(data, fileName: filename, folderName: Self.cacheFolderName) {
+                                logger.error("Failed to write sources to disk")
+                            }
+                        }
+                        return .success(decodedResource)
+                    } catch {
+                        return .failure(error)
+                    }
+                case .failure(let error):
                     return .failure(error)
                 }
-            case .failure(let error):
-                return .failure(error)
+            }
+    }
+    
+    private func restoreCachedSources() {
+        cachedResource(.sources, loadExpiredData: true).uponQueue(todayQueue) { [weak self] data in
+            guard let self = self, let data = data else { return }
+            do {
+                let decodedResource = try self.decoder.decode([FailableDecodable<FeedItem.Source>].self, from: data)
+                DispatchQueue.main.async {
+                    self.sources = decodedResource.compactMap(\.wrappedValue)
+                }
+            } catch {
+                // Could be a source type change, so may not be a big issue. If the user goes to download
+                // updated lists and it still fails it will show an error on the feed
+                logger.debug("Failed to decode previously cached sources: \(error)")
             }
         }
     }
