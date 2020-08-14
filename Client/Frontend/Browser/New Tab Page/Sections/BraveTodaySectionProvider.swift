@@ -263,7 +263,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             itemActionHandler(.opened(inNewTab: true, switchingToPrivateMode: true), context)
         }
         let toggleSourceHandler: MenuActionHandler = { context in
-            itemActionHandler(.toggleSource, context)
+            itemActionHandler(.toggledSource, context)
         }
         
         if #available(iOS 13.0, *) {

@@ -77,7 +77,7 @@ class BraveTodaySettingsViewController: TableViewController {
     private var categoryRows: [Row] {
         var rows: [Row] = []
         var categories = Set(feedDataSource.sources.map(\.category))
-        let topNewsCategory = "Top News"
+        let topNewsCategory = FeedDataSource.topNewsCategory
         func row(for category: String) -> Row {
             Row(text: category, selection: {
                 let controller = FeedSourceListViewController(dataSource: self.feedDataSource, category: category)

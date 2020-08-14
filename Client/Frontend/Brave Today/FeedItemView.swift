@@ -31,14 +31,11 @@ class FeedItemView: UIView {
     }
     /// The feed title label, defaults to 2 line maximum
     var titleLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 14.0, weight: .semibold)
         $0.appearanceTextColor = .white
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
-        $0.numberOfLines = 2
     }
     /// The date of when the article was posted
     lazy var dateLabel = UILabel().then {
-        $0.font = .systemFont(ofSize: 11.0, weight: .semibold)
         $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.5)
     }
     /// The branding information (if applicable)
@@ -47,9 +44,13 @@ class FeedItemView: UIView {
     /// Generates the view hierarchy given a layout component
     private func view(for component: Layout.Component) -> UIView {
         switch component {
-        case .brand:
+        case .brand(_, let configuration):
+            brandContainerView.textLabel.numberOfLines = configuration.numberOfLines
+            brandContainerView.textLabel.font = configuration.font
             return brandContainerView
-        case .date:
+        case .date(let configuration):
+            dateLabel.numberOfLines = configuration.numberOfLines
+            dateLabel.font = configuration.font
             return dateLabel
         case .thumbnail(let imageLayout):
             thumbnailImageView.snp.remakeConstraints { maker in
@@ -62,8 +63,9 @@ class FeedItemView: UIView {
                 }
             }
             return thumbnailImageView
-        case .title(let numberOfLines):
-            titleLabel.numberOfLines = numberOfLines
+        case .title(let configuration):
+            titleLabel.numberOfLines = configuration.numberOfLines
+            titleLabel.font = configuration.font
             return titleLabel
         case .stack(let stack):
             return UIStackView().then {
@@ -124,6 +126,20 @@ extension FeedItemView {
             case fixedSize(CGSize)
             case aspectRatio(CGFloat)
         }
+        struct LabelConfiguration {
+            var numberOfLines: Int
+            var font: UIFont
+            
+            func withNumberOfLines(_ numberOfLines: Int) -> Self {
+                var copy = self
+                copy.numberOfLines = numberOfLines
+                return copy
+            }
+            
+            static let title = LabelConfiguration(numberOfLines: 0, font: .systemFont(ofSize: 14.0, weight: .semibold))
+            static let date = LabelConfiguration(numberOfLines: 1, font: .systemFont(ofSize: 11.0, weight: .semibold))
+            static let brand = LabelConfiguration(numberOfLines: 0, font: .systemFont(ofSize: 13.0, weight: .semibold))
+        }
         /// The components that represent the appropriate UI in a feed item view
         /// or container to hold said UI
         enum Component {
@@ -131,9 +147,9 @@ extension FeedItemView {
             case customSpace(CGFloat)
             case flexibleSpace(minHeight: CGFloat)
             case thumbnail(ImageLayout)
-            case title(_ numberOfLines: Int = 2)
-            case date
-            case brand(viewingMode: BrandContainerView.ViewingMode = .automatic)
+            case title(_ labelConfiguration: LabelConfiguration)
+            case date(_ labelConfiguration: LabelConfiguration = .date)
+            case brand(viewingMode: BrandContainerView.ViewingMode = .automatic, labelConfiguration: LabelConfiguration = .brand)
         }
         /// The root stack for a given layout
         var root: Stack
@@ -155,16 +171,14 @@ extension FeedItemView {
                     case .aspectRatio(let ratio):
                         return width / ratio
                     }
-                case .title(let numberOfLines):
-                    return UIFont.systemFont(ofSize: 14.0, weight: .semibold).lineHeight * (numberOfLines == 0 ? 3 : CGFloat(numberOfLines))
-                case .date:
-                    return UIFont.systemFont(ofSize: 11.0, weight: .semibold).lineHeight
-                case .brand(let viewingMode):
+                case .title(let configuration), .date(let configuration):
+                    return configuration.font.pointSize * (configuration.numberOfLines == 0 ? 3 : CGFloat(configuration.numberOfLines))
+                case .brand(let viewingMode, let configuration):
                     switch viewingMode {
                     case .automatic, .alwaysLogo:
                         return 20.0
                     case .alwaysText:
-                        return UIFont.systemFont(ofSize: 13.0, weight: .semibold).lineHeight
+                        return configuration.font.pointSize * (configuration.numberOfLines == 0 ? 1 : CGFloat(configuration.numberOfLines))
                     }
                 }
                 
@@ -199,8 +213,8 @@ extension FeedItemView {
                             spacing: 4,
                             padding: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12),
                             children: [
-                                .title(5),
-                                .date,
+                                .title(.init(numberOfLines: 5, font: .systemFont(ofSize: 18.0, weight: .semibold))),
+                                .date(),
                                 .flexibleSpace(minHeight: 12),
                                 .brand()
                             ]
@@ -231,9 +245,9 @@ extension FeedItemView {
                 spacing: 10,
                 children: [
                     .thumbnail(.aspectRatio(1)),
-                    .title(4),
+                    .title(LabelConfiguration.title.withNumberOfLines(4)),
                     .customSpace(4),
-                    .date
+                    .date()
                 ]
             )
         )
@@ -258,7 +272,7 @@ extension FeedItemView {
                 spacing: 10,
                 children: [
                     .thumbnail(.aspectRatio(1)),
-                    .title(4)
+                    .title(LabelConfiguration.title.withNumberOfLines(4))
                 ]
             )
         )
@@ -278,8 +292,8 @@ extension FeedItemView {
                 axis: .vertical,
                 spacing: 6,
                 children: [
-                    .title(4),
-                    .date
+                    .title(LabelConfiguration.title.withNumberOfLines(4)),
+                    .date()
                 ]
             )
         )
@@ -308,8 +322,8 @@ extension FeedItemView {
                             spacing: 4,
                             children: [
                                 .brand(viewingMode: .alwaysText),
-                                .title(4),
-                                .date
+                                .title(LabelConfiguration.title.withNumberOfLines(4)),
+                                .date()
                             ]
                         )
                     ),
@@ -364,7 +378,6 @@ extension FeedItemView {
         }
         /// A label view for setting the brands name in plain text
         private(set) var textLabel = UILabel().then {
-            $0.font = .systemFont(ofSize: 13.0, weight: .semibold)
             $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.7)
             $0.numberOfLines = 0
         }

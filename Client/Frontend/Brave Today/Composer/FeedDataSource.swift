@@ -297,6 +297,8 @@ class FeedDataSource {
     
     // MARK: - Sources
     
+    static let topNewsCategory = "Top News"
+    
     /// Get a map of customized sources IDs and their overridden enabled states
     var customizedSources: [String: Bool] {
         let all = BraveTodaySourceMO.all()
@@ -421,7 +423,7 @@ class FeedDataSource {
         
         let rules: [FeedSequenceElement] = [
             .sponsor,
-            .fillUsing(FilteredFillStrategy(isIncluded: { $0.source.category == "Top News" }), [
+            .fillUsing(FilteredFillStrategy(isIncluded: { $0.source.category == Self.topNewsCategory }), [
                 .headline(paired: false)
             ]),
             .deals,
@@ -443,7 +445,7 @@ class FeedDataSource {
             ])
         ]
         
-        var nextCategory = "Top News" // FIXME: Magic string should be defined somewhere
+        var nextCategory = Self.topNewsCategory
         let allCategories = Set(articles.map(\.source.category))
         var categories: Set<String> = allCategories
         
@@ -485,7 +487,7 @@ class FeedDataSource {
                     // All categories have now been shown, reset back to the start
                     categories = allCategories
                     // FIXME: Magic string should be defined somewhere
-                    nextCategory = "Top News"
+                    nextCategory = Self.topNewsCategory
                 } else {
                     nextCategory = categories.randomElement()!
                 }
@@ -573,13 +575,4 @@ extension FeedDataSource {
         indirect case repeating([FeedSequenceElement], times: Int = .max)
     }
 
-}
-
-// TODO: Move this to its own file along with `URLString`
-@propertyWrapper private struct FailableDecodable<T: Decodable>: Decodable {
-    var wrappedValue: T?
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        wrappedValue = try? container.decode(T.self)
-    }
 }

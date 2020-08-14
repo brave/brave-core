@@ -465,7 +465,7 @@ class NewTabPageViewController: UIViewController, Themeable {
                 collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
             }
         case .welcomeCardAction(.learnMoreButtonTapped):
-            delegate?.navigateToInput("https://brave.com/privacy/#brave-today", inNewTab: false, switchingToPrivateMode: false)
+            delegate?.navigateToInput(BraveUX.braveTodayPrivacyURL.absoluteString, inNewTab: false, switchingToPrivateMode: false)
         case .welcomeCardAction(.settingsButtonTapped),
              .emptyCardTappedSourcesAndSettings:
             tappedBraveTodaySettings()
@@ -478,10 +478,9 @@ class NewTabPageViewController: UIViewController, Themeable {
                 inNewTab: inNewTab,
                 switchingToPrivateMode: switchingToPrivateMode
             )
-        case .itemAction(.toggleSource, let context):
+        case .itemAction(.toggledSource, let context):
             let isEnabled = feedDataSource.isSourceEnabled(context.item.source)
             feedDataSource.toggleSource(context.item.source, enabled: !isEnabled)
-            collectionView.reloadData()
             if isEnabled {
                 let alert = FeedActionAlertView(
                     image: UIImage(imageLiteralResourceName: "disable.feed.source.alert"),
@@ -572,15 +571,14 @@ class NewTabPageViewController: UIViewController, Themeable {
     }
     
     @objc private func checkForUpdatedFeed() {
-        if isBraveTodayVisible {
-            if collectionView.contentOffset.y == collectionView.contentInset.top {
-                // Reload contents if the user is not currently scrolled into the feed
-                loadFeedContents()
-            } else {
-                // Possibly show the "new content available" button
-                if feedDataSource.shouldLoadContent {
-                    feedOverlayView.showNewContentAvailableButton()
-                }
+        if !isBraveTodayVisible { return }
+        if collectionView.contentOffset.y == collectionView.contentInset.top {
+            // Reload contents if the user is not currently scrolled into the feed
+            loadFeedContents()
+        } else {
+            // Possibly show the "new content available" button
+            if feedDataSource.shouldLoadContent {
+                feedOverlayView.showNewContentAvailableButton()
             }
         }
     }

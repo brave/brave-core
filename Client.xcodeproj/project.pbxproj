@@ -316,6 +316,8 @@
 		274398E224E4827800E79605 /* FeedCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E124E4827800E79605 /* FeedCard.swift */; };
 		274398E524E4829900E79605 /* FeedFillStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E424E4829900E79605 /* FeedFillStrategy.swift */; };
 		274398E724E483AD00E79605 /* FeedItemMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398E624E483AD00E79605 /* FeedItemMenu.swift */; };
+		274398F524E71D8700E79605 /* FailableDecodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398F424E71D8700E79605 /* FailableDecodable.swift */; };
+		274398F824E71E9800E79605 /* URLString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 274398F724E71E9800E79605 /* URLString.swift */; };
 		27448522245A1A1C001920B5 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27448521245A1A1C001920B5 /* FavoritesViewController.swift */; };
 		27448532245B5EC2001920B5 /* CustomTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744852F245B5EC2001920B5 /* CustomTheme.swift */; };
 		27448533245B5EC2001920B5 /* NTPDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27448530245B5EC2001920B5 /* NTPDataSource.swift */; };
@@ -1712,6 +1714,8 @@
 		274398E124E4827800E79605 /* FeedCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCard.swift; sourceTree = "<group>"; };
 		274398E424E4829900E79605 /* FeedFillStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedFillStrategy.swift; sourceTree = "<group>"; };
 		274398E624E483AD00E79605 /* FeedItemMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedItemMenu.swift; sourceTree = "<group>"; };
+		274398F424E71D8700E79605 /* FailableDecodable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FailableDecodable.swift; sourceTree = "<group>"; };
+		274398F724E71E9800E79605 /* URLString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLString.swift; sourceTree = "<group>"; };
 		27448521245A1A1C001920B5 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		2744852F245B5EC2001920B5 /* CustomTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomTheme.swift; path = Client/Frontend/Browser/HomePanel/CustomTheme.swift; sourceTree = SOURCE_ROOT; };
 		27448530245B5EC2001920B5 /* NTPDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NTPDataSource.swift; path = Client/Frontend/Browser/HomePanel/NTPDataSource.swift; sourceTree = SOURCE_ROOT; };
@@ -4091,6 +4095,8 @@
 				39455F761FC83F430088A22C /* TabEventHandler.swift */,
 				39F819C51FD70F5D009E31E4 /* TabEventHandlers.swift */,
 				39A359E31BFCCE94006B9E87 /* UserActivityHandler.swift */,
+				274398F424E71D8700E79605 /* FailableDecodable.swift */,
+				274398F724E71E9800E79605 /* URLString.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -7048,6 +7054,7 @@
 				4422D56521BFFB7F00BF1855 /* filtered_re2.cc in Sources */,
 				5EC594EF232C68FC00922111 /* OnboardingAdsCountdownViewController.swift in Sources */,
 				277223722469B4FB0059A7EB /* FaviconFetcher.swift in Sources */,
+				274398F524E71D8700E79605 /* FailableDecodable.swift in Sources */,
 				279C756B219DDE3B001CD1CB /* FingerprintingProtection.swift in Sources */,
 				E650755F1E37F756006961AC /* Try.m in Sources */,
 				0A3C789D23055C4A0022F6D8 /* OnboardingSearchEnginesViewController.swift in Sources */,
@@ -7064,6 +7071,7 @@
 				0A43293021B1C7F50041625B /* AdBlockStats.swift in Sources */,
 				F930CDAE2270015C00A23FE1 /* U2FExtensions.swift in Sources */,
 				0AEFB88722299E6A007AF600 /* AdblockerType.swift in Sources */,
+				274398F824E71E9800E79605 /* URLString.swift in Sources */,
 				D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */,
 				0AF6B1E824A0EDC1005417FC /* InstallVPNViewController.swift in Sources */,
 				D3C744CD1A687D6C004CE85D /* URIFixup.swift in Sources */,

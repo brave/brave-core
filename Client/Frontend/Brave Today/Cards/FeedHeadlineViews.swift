@@ -10,8 +10,6 @@ class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
     var contextMenu: FeedItemMenu?
     
     let feedView = FeedItemView(layout: .brandedHeadline).then {
-        // Title label slightly different
-        $0.titleLabel.font = .systemFont(ofSize: 18.0, weight: .semibold)
         $0.isUserInteractionEnabled = false
     }
     
