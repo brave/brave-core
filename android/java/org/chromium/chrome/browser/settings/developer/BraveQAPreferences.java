@@ -55,6 +55,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private static final String PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER =
         "qa_maximize_initial_ads_number";
     private static final String PREF_QA_DEBUG_NTP = "qa_debug_ntp";
+    private static final String PREF_QA_VLOG_REWARDS = "qa_vlog_rewards";
 
     private static final String QA_ADS_PER_HOUR = "qa_ads_per_hour";
     private static final String QA_IMPORT_REWARDS_DB = "qa_import_rewards_db";
@@ -70,6 +71,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mIsSyncStagingServer;
     private ChromeSwitchPreference mMaximizeAdsNumber;
     private ChromeSwitchPreference mDebugNTP;
+    private ChromeSwitchPreference mVlogRewards;
     private Preference mRestoreWallet;
 
     private Preference mImportRewardsDb;
@@ -105,6 +107,12 @@ public class BraveQAPreferences extends BravePreferenceFragment
         mDebugNTP = (ChromeSwitchPreference) findPreference(PREF_QA_DEBUG_NTP);
         if (mDebugNTP != null) {
             mDebugNTP.setOnPreferenceChangeListener(this);
+        }
+
+        mVlogRewards = (ChromeSwitchPreference) findPreference(PREF_QA_VLOG_REWARDS);
+        if (mVlogRewards != null) {
+            mVlogRewards.setOnPreferenceChangeListener(this);
+            mVlogRewards.setChecked(shouldVlogRewards());
         }
 
         mDbUtil = BraveDbUtil.getInstance();
@@ -202,8 +210,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
             enableMaximumAdsNumber(((boolean) newValue) && mMaximizeAdsNumber.isChecked());
         } else if (PREF_QA_MAXIMIZE_INITIAL_ADS_NUMBER.equals(preference.getKey())) {
             enableMaximumAdsNumber((boolean) newValue);
-        } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey()) ||
-            PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())) {
+        } else if (PREF_QA_DEBUG_NTP.equals(preference.getKey())
+                || PREF_USE_SYNC_STAGING_SERVER.equals(preference.getKey())
+                || PREF_QA_VLOG_REWARDS.equals(preference.getKey())) {
             setOnPreferenceValue(preference.getKey(), (boolean)newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         }
@@ -225,6 +234,10 @@ public class BraveQAPreferences extends BravePreferenceFragment
     @CalledByNative
     public static boolean isSyncStagingUsed() {
         return getPreferenceValue(PREF_USE_SYNC_STAGING_SERVER);
+    }
+
+    public static boolean shouldVlogRewards() {
+        return getPreferenceValue(PREF_QA_VLOG_REWARDS);
     }
 
     private void checkQACode() {

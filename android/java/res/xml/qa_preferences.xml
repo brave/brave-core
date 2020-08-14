@@ -33,6 +33,13 @@
         android:summaryOff="@string/text_off"
         android:defaultValue="false" />
 
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="qa_vlog_rewards"
+        android:title="Enable vlog for rewards"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off"
+        android:defaultValue="false" />
+
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="qa_import_rewards_db"
         android:title="Import Rewards Database"/>
