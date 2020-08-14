@@ -5,8 +5,6 @@
 #include "brave/ui/brave_custom_notification/message_popup_view.h"
 
 #include "build/build_config.h"
-#include "ui/accessibility/ax_enums.mojom.h"
-#include "ui/accessibility/ax_node_data.h"
 #include "ui/display/display.h"
 // #include "chrome/browser/profiles/profile.h"
 #include "ui/display/screen.h"
@@ -145,11 +143,6 @@ void MessagePopupView::Close() {
     return;
   }
   */
-}
-
-void MessagePopupView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
-  message_view_->GetAccessibleNodeData(node_data);
-  node_data->role = ax::mojom::Role::kAlertDialog;
 }
 
 const char* MessagePopupView::GetClassName() const {

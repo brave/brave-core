@@ -135,12 +135,12 @@ AdConversions* AdsImpl::get_ad_conversions() const {
 
 void AdsImpl::Initialize(
     InitializeCallback callback) {
-  BLOG(1, "Initializing ads");
+  LOG(INFO) << " albert Initializing ads";
 
   initialize_callback_ = callback;
 
   if (IsInitialized()) {
-    BLOG(1, "Already initialized ads");
+  LOG(INFO) << " albert already initialized ads";
 
     initialize_callback_(FAILED);
     return;
@@ -153,8 +153,10 @@ void AdsImpl::Initialize(
 
 void AdsImpl::InitializeStep2(
     const Result result) {
+      LOG(INFO) << " albert step 2";
   if (result != SUCCESS) {
     BLOG(0, "Failed to initialize database: " << database_->get_last_message());
+    LOG(INFO) << " albert step 2";
     initialize_callback_(FAILED);
     return;
   }
@@ -165,6 +167,7 @@ void AdsImpl::InitializeStep2(
 
 void AdsImpl::InitializeStep3(
     const Result result) {
+      LOG(INFO) << " albert step 3";
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
     return;
@@ -176,6 +179,7 @@ void AdsImpl::InitializeStep3(
 
 void AdsImpl::InitializeStep4(
     const Result result) {
+      LOG(INFO) << " albert step 4";
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
     return;
@@ -187,6 +191,8 @@ void AdsImpl::InitializeStep4(
 
 void AdsImpl::InitializeStep5(
     const Result result) {
+      
+      LOG(INFO) << " albert step 5";
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
     return;
@@ -199,6 +205,9 @@ void AdsImpl::InitializeStep5(
 
 void AdsImpl::InitializeStep6(
     const Result result) {
+      
+      
+      LOG(INFO) << " albert step 6";
   if (result != SUCCESS) {
     initialize_callback_(FAILED);
     return;
@@ -207,6 +216,9 @@ void AdsImpl::InitializeStep6(
   is_initialized_ = true;
 
   BLOG(1, "Successfully initialized ads");
+  
+      
+      LOG(INFO) << " albert successfully initialized ads";
 
   is_foreground_ = ads_client_->IsForeground();
 
@@ -216,7 +228,7 @@ void AdsImpl::InitializeStep6(
 
   ad_conversions_->StartTimerIfReady();
 
-  MaybeServeAdNotification(false);
+  MaybeServeAdNotification(true);
 
 #if defined(OS_ANDROID)
     // Ad notifications do not sustain a reboot or update, so we should remove
@@ -269,6 +281,8 @@ void AdsImpl::RemoveAllAdNotificationsAfterUpdate() {
 #endif
 
 bool AdsImpl::IsInitialized() {
+  
+  LOG(INFO) << "albert Ads Is Initialized";
   if (!is_initialized_ || !ads_client_->IsEnabled()) {
     return false;
   }
@@ -1048,10 +1062,13 @@ void AdsImpl::FailedToServeAdNotification(
     const std::string& reason) {
   BLOG(1, "Ad notification not shown: " << reason);
 
+/*
   if (IsMobile()) {
     StartDeliveringAdNotificationsAfterSeconds(
         2 * base::Time::kSecondsPerMinute);
   }
+  */
+  StartDeliveringAdNotificationsAfterSeconds(30);
 }
 
 std::vector<std::unique_ptr<ExclusionRule>>
@@ -1379,6 +1396,7 @@ bool AdsImpl::IsCatalogOlderThanOneDay() {
 
 void AdsImpl::MaybeServeAdNotification(
     const bool should_serve) {
+  LOG(INFO) << "albert should be serving ad notification";
   auto ok = ads_client_->ShouldShowNotifications();
 
   auto previous = client_->GetAvailable();
@@ -1387,6 +1405,7 @@ void AdsImpl::MaybeServeAdNotification(
     client_->SetAvailable(ok);
   }
 
+/*
   if (!should_serve || ok != previous) {
     const Reports reports(this);
     const std::string report = reports.GenerateSettingsEventReport();
@@ -1411,6 +1430,7 @@ void AdsImpl::MaybeServeAdNotification(
     FailedToServeAdNotification("Catalog older than one day");
     return;
   }
+  */
 
   ServeAdNotificationIfReady(true);
 }

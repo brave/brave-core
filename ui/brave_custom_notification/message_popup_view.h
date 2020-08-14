@@ -22,8 +22,8 @@ class MessagePopupView : public views::WidgetDelegateView,
   static void Show(Notification& notification); // Returns static reference
   static void ClosePopup(); // Destroys the widget
   static void Clicked(const std::string& notification_id);
-  MessagePopupView();
-   MessagePopupView(const Notification& notification);
+  // MessagePopupView();
+  MessagePopupView(const Notification& notification);
   ~MessagePopupView() override;
 
   // Return opacity of the widget.
@@ -53,7 +53,7 @@ class MessagePopupView : public views::WidgetDelegateView,
 //  void OnMouseEntered(const ui::MouseEvent& event) override;
 //  void OnMouseExited(const ui::MouseEvent& event) override;
 //  void ChildPreferredSizeChanged(views::View* child) override;
-  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
+//  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   const char* GetClassName() const override;
 //  void OnDisplayChanged() override;
 //  void OnWorkAreaChanged() override;
