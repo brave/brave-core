@@ -528,6 +528,14 @@ void Promotion::CredentialsProcessed(
     return;
   }
 
+  if (result == ledger::Result::NOT_FOUND) {
+    ledger_->database()->UpdatePromotionStatus(
+      promotion_id,
+      ledger::PromotionStatus::OVER,
+      callback);
+    return;
+  }
+
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Credentials process not succeeded " << result);
     callback(result);

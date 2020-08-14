@@ -30,7 +30,7 @@ class RewardsBrowserTestPromotion
 
   void WaitForPromotionInitialization();
 
-  void WaitForPromotionFinished();
+  void WaitForPromotionFinished(const bool should_succeed = true);
 
   void WaitForUnblindedTokensReady();
 
@@ -60,6 +60,7 @@ class RewardsBrowserTestPromotion
   bool finished_ = false;
   std::unique_ptr<base::RunLoop> wait_for_unblinded_tokens_loop_;
   bool unblinded_tokens_ = false;
+  bool should_succeed_ = true;
 
   brave_rewards::Promotion promotion_;
   Browser* browser_;  // NOT OWNED

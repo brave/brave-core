@@ -193,7 +193,7 @@ void CredentialsPromotion::OnClaim(
       braveledger_response_util::ParseClaimCreds(response, &claim_id);
 
   if (result != ledger::Result::LEDGER_OK) {
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(result);
     return;
   }
 
