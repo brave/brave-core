@@ -317,13 +317,13 @@ dependencies = [
 [[package]]
 name = "cssparser"
 version = "0.25.9"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fbe18ca4efb9ba3716c6da66cc3d7e673bf59fa576353011f48c4cfddbdd740e"
+source = "git+https://github.com/AndriusA/rust-cssparser?branch=glibc#ad2f4d3c89e247ec1693a581ecace199e46f30fa"
 dependencies = [
  "autocfg 0.1.7",
  "cssparser-macros",
  "dtoa-short",
  "itoa",
+ "libm",
  "matches",
  "phf 0.7.24",
  "proc-macro2 1.0.19",
@@ -336,8 +336,7 @@ dependencies = [
 [[package]]
 name = "cssparser-macros"
 version = "0.3.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5bb1c84e87c717666564ec056105052331431803d606bd45529b28547b611eef"
+source = "git+https://github.com/AndriusA/rust-cssparser?branch=glibc#ad2f4d3c89e247ec1693a581ecace199e46f30fa"
 dependencies = [
  "phf_codegen 0.7.24",
  "proc-macro2 1.0.19",
@@ -581,6 +580,12 @@ name = "libc"
 version = "0.2.74"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a2f02823cf78b754822df5f7f268fb59822e7296276d3e069d8e8cb26a14bd10"
+
+[[package]]
+name = "libm"
+version = "0.2.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c7d73b3f436185384286bd8098d17ec07c9a7d2388a6599f824d8502b529702a"
 
 [[package]]
 name = "lifeguard"
@@ -899,9 +904,8 @@ dependencies = [
 
 [[package]]
 name = "procedural-masquerade"
-version = "0.1.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8f1383dff4092fe903ac180e391a8d4121cc48f08ccf850614b0290c6673b69d"
+version = "0.1.6"
+source = "git+https://github.com/AndriusA/rust-cssparser?branch=glibc#ad2f4d3c89e247ec1693a581ecace199e46f30fa"
 
 [[package]]
 name = "psl"
