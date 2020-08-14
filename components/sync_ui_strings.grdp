@@ -36,7 +36,7 @@
       Encryption options
     </message>
     <message name="IDS_SYNC_ENTER_GOOGLE_PASSPHRASE_BODY" desc="Instructions for the dialog where the user needs to enter their previous google passphrase.">
-      You already have data that is encrypted using a different version of your Brave Account password. Please enter it below.
+      You already have data that is encrypted using a different version of your Brave sync chain password. Please enter it below.
     </message>
     <message name="IDS_SYNC_FULL_ENCRYPTION_DATA" desc="Text of the radio that when selected enables full encryption.">
       Encrypt synced data with your own sync passphrase

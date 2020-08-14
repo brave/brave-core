@@ -4695,7 +4695,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Update password for <ph name="ORIGIN">$1<ex>example.com</ex></ph>?
       </message>
       <message name="IDS_SAVE_PASSWORD_FOOTER" desc="The footer text of the bubble that offers user to save a password to Brave.">
-        Passwords are saved in your Brave Account so you can use them on any device
+        Passwords are saved in your Brave sync chain so you can use them on any device
       </message>
       <if expr="use_titlecase">
         <message name="IDS_PASSWORD_MANAGER_ACCOUNT_CHOOSER_SIGN_IN" desc="In Title Case: The title of the Sign in button in the account chooser when there is one account.">
@@ -4724,18 +4724,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Never worry about your passwords
       </message>
       <message name="IDS_PASSWORD_MANAGER_ONBOARDING_DETAILS_A" desc="The explanation text that is shown below the title in the password manager onboarding dialog.">
-        Save passwords securely in your Brave Account, and you'll never have to type them again
+        Save passwords securely in your Brave sync chain, and you'll never have to type them again
       </message>
       <message name="IDS_PASSWORD_MANAGER_ONBOARDING_DETAILS_B" desc="The explanation text that is shown below the title in the password manager onboarding dialog.">
-        Access your passwords whenever you're signed in to your Brave Account
+        Access your passwords whenever you're signed in to your Brave sync chain
       </message>
 
       <!-- Begin of Sync Promo strings for Desktop Identity Consistency. -->
       <message name="IDS_PASSWORD_MANAGER_DICE_PROMO_SIGNIN_MESSAGE" desc="Text of the sync promo displayed at the bottom of the save password bubble asking the user to sign in and enable sync.">
-        To save passwords to your Brave Account, sign in and turn on sync.
+        To save passwords to your Brave sync chain, sign in and turn on sync.
       </message>
       <message name="IDS_PASSWORD_MANAGER_DICE_PROMO_SYNC_MESSAGE" desc="Text of the sync promo displayed at the bottom of the save password bubble asking the user to enable sync.">
-        To save passwords to your Brave Account, turn on sync.
+        To save passwords to your Brave sync chain, turn on sync.
       </message>
       <!-- End of Sync Promo strings for Desktop Identity Consistency. -->
 
@@ -5733,7 +5733,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Password
         </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_TITLE" desc="The title of the 'move password to account' bubble">
-          Move to Brave Account?
+          Move to Brave sync chain?
         </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_HINT" desc="Label describing the effect of moving an existing credential to the user's account store">
           Move your password to your Brave account to access it securely wherever you're signed in
@@ -5943,7 +5943,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Clear browsing data
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_NOTICE" desc="A dialog informing the user that their Brave browsing history was deleted, but other forms of history can still be found on Brave My Activity.">
-        The selected data has been removed from Brave and synced devices. Your Brave Account may have other forms of browsing history like searches and activity from other Brave services at <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
+        The selected data has been removed from Brave and synced devices. Your Brave sync chain may have other forms of browsing history like searches and activity from other Brave services at <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK">&lt;/a&gt;</ph>.
       </message>
       <message name="IDS_CLEAR_BROWSING_DATA_HISTORY_NOTICE_TITLE" desc="Title of a dialog that informs the user that the deletion of Brave's browsing data has been completed.">
         Cleared Brave data
@@ -6977,7 +6977,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Undo
       </message>
       <message name="IDS_ONE_CLICK_SIGNIN_BUBBLE_MESSAGE" desc="The body of the sync promo NTP bubble.">
-        Your bookmarks, history, and other settings will be synced to your Brave Account.
+        Your bookmarks, history, and other settings will be synced to your Brave sync chain.
       </message>
       <message name="IDS_ONE_CLICK_SIGNIN_DIALOG_OK_BUTTON" desc="The text of the OK button of the one click sign-in dialog.">
         OK, got it
@@ -8555,18 +8555,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <!-- Protected media identifier permission infobar -->
       <message name="IDS_MANAGE_PASSWORDS_CONFIRM_GENERATED_TEXT" desc="A message that the browser shows after saving a password it has autogenerated for the user. This message appears in a bubble and contains a link to all the user's saved autogenerated passwords. The link text is a separate string in the translation console and appears here as placeholder text.">
-        View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE">$1<ex>Brave Account</ex></ph>
+        View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE">$1<ex>Brave sync chain</ex></ph>
       </message>
       <message name="IDS_PASSWORDS_WEB_LINK" translateable="false">
         https://passwords.google.com
       </message>
       <if expr="is_android">
         <message name="IDS_MANAGE_PASSWORDS_CONFIRM_GENERATED_TEXT_INFOBAR" desc="A message that the browser shows after saving a password it has autogenerated for the user. This message appears in an infobar and contains a link to all the user's saved autogenerated passwords. The link text is a separate string in the translation console and appears here as placeholder text.">
-          Password saved. View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE">$1<ex>Brave Account</ex></ph>.
+          Password saved. View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE">$1<ex>Brave sync chain</ex></ph>.
         </message>
       </if>
       <message name="IDS_MANAGE_PASSWORDS_LINK" desc="The text for a link to the user's saved passwords. This is inserted into an infobar or a bubble that the browser shows to the user. The infobar and the bubble use a separate string in the translation console that has a placeholder for this link title.">
-        Brave Account
+        Brave sync chain
       </message>
       <message name="IDS_MANAGE_PASSWORDS_TITLE" desc="The title text that is used in the manage passwords bubble when a password is autofilled or after a user has stored a password.">
         Saved passwords for this site

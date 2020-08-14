@@ -120,12 +120,12 @@
   <if expr="is_linux and not chromeos">
     <then>
       <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments and also saved locally. The prompt can be either a bubble or an infobar.">
-        Do you want to save this card to your Brave Account?
+        Do you want to save this card to your Brave sync chain?
       </message>
     </then>
     <else>
       <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments and also saved locally. The prompt can be either a bubble or an infobar.">
-        Do you want to save this card to your Brave Account and on this device?
+        Do you want to save this card to your Brave sync chain and on this device?
       </message>
     </else>
   </if>
@@ -133,7 +133,7 @@
     Save card?
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_V4" desc="Title text for the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments, according to November 2018 UI guidelines. The prompt can be either a bubble or an infobar.">
-    Save card to Brave Account?
+    Save card to Brave sync chain?
   </message>
   <message name="IDS_AUTOFILL_CARD_SAVED" desc="Title text for the Autofill save card manager bubble when the card has been saved either locally or to Brave Payments. Also label for icon animation.">
     Card saved
@@ -154,10 +154,10 @@
     Pay quickly on sites and apps across devices using cards you have saved with Brave.
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_V3" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments, according to April 2018 UI guidelines. The prompt will be shown in a bubble below the omnibox.">
-    To pay faster next time, save your card and billing address to your Brave Account.
+    To pay faster next time, save your card and billing address to your Brave sync chain.
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_V3_WITH_NAME" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Payments, according to April 2018 UI guidelines. The prompt will be shown in a bubble below the omnibox.">
-    To pay faster next time, save your card, name, and billing address to your Brave Account.
+    To pay faster next time, save your card, name, and billing address to your Brave sync chain.
   </message>
 
   <if expr="is_ios">
@@ -173,7 +173,7 @@
     </else>
   </if>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_CARDHOLDER_NAME_TOOLTIP" desc="The tooltip text for the cardholder name textfield. Note that the translation should not have period" formatter_data="android_java">
-    This name is from your Brave Account
+    This name is from your Brave sync chain
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_CARDHOLDER_NAME_FIX_FLOW_HEADER" desc="Header for the cardholder name fix flow.">
     Confirm name
@@ -190,10 +190,10 @@
     </message>
   </if>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_TOOLTIP" desc="The tooltip hover text that explains why credit card upload to Brave Payments is being offered.">
-    Brave is offering to save your cards in your Brave Account because you are signed in. You can change this behavior in settings.
+    Brave is offering to save your cards in your Brave sync chain because you are signed in. You can change this behavior in settings.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_AND_CARDHOLDER_NAME_TOOLTIP" desc="The tooltip hover text that explains why credit card upload to Brave Account is being offered and where the suggested cardholder name came from.">
-    Brave is offering to save your cards in your Brave Account because you are signed in. You can change this behavior in settings. The cardholder name comes from your account.
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_AND_CARDHOLDER_NAME_TOOLTIP" desc="The tooltip hover text that explains why credit card upload to Brave sync chain is being offered and where the suggested cardholder name came from.">
+    Brave is offering to save your cards in your Brave sync chain because you are signed in. You can change this behavior in settings. The cardholder name comes from your account.
   </message>
 
   <!-- Autofill Local card migration bubble or dialog -->
@@ -215,8 +215,8 @@
     </message>
     <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_TITLE_OFFER" desc="The title text for a dialog that offers to migrate local cards into the cloud.     [ICU Syntax]">
       {NUM_CARDS, plural,
-      =1 {Save card in your Brave Account}
-      other {Save cards in your Brave Account}}
+      =1 {Save card in your Brave sync chain}
+      other {Save cards in your Brave sync chain}}
     </message>
     <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_TITLE_DONE" desc="The title text for a dialog shown after the user accepts another dialog that offers to migrate local cards into the cloud and all cards are successfully migrated.">
       You're all set!
@@ -234,8 +234,8 @@
     </message>
     <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_MESSAGE_DONE" desc="The body text for a dialog shown after the user accepts another dialog that offers to migrate local cards into the cloud and all cards are successfully migrated. [ICU Syntax]">
       {NUM_CARDS, plural,
-      =1 {This card has been saved in your Brave Account}
-      other {These cards have been saved in your Brave Account}}
+      =1 {This card has been saved in your Brave sync chain}
+      other {These cards have been saved in your Brave sync chain}}
     </message>
     <message name="IDS_AUTOFILL_LOCAL_CARD_MIGRATION_DIALOG_MESSAGE_ERROR" desc="The body text shown on a dialog when the user attempts to migrate their cards to Brave Payments, but all migrations fail. [ICU Syntax]">
       {NUM_CARDS, plural,
@@ -306,7 +306,7 @@
       Enter the expiration date and CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph>
     </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS" desc="Text explaining what the user should do in the card unmasking dialog.">
-      After you confirm, card details from your Brave Account will be shared with this site.
+      After you confirm, card details from your Brave sync chain will be shared with this site.
     </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_LOCAL_CARD" desc="Text explaining what the user should do in the card unmasking dialog.  Appears specifically for local cards already stored on the device.">
       Once you confirm, your card details will be shared with this site.
@@ -323,13 +323,13 @@
       Confirm Card
     </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS" desc="Text explaining what the user should do in the card unmasking dialog.">
-      Enter the CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph>. After you confirm, card details from your Brave Account will be shared with this site.
+      Enter the CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph>. After you confirm, card details from your Brave sync chain will be shared with this site.
     </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_LOCAL_CARD" desc="Text explaining what the user should do in the card unmasking dialog.  Appears specifically for local cards already stored on the device.">
       Enter the CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph>. Once you confirm, your card details will be shared with this site.
     </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_EXPIRED" desc="Text explaining what the user should do in the card unmasking dialog to update an expired card.">
-      Enter the expiration date and CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph> to update your card details. After you confirm, card details from your Brave Account will be shared with this site.
+      Enter the expiration date and CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph> to update your card details. After you confirm, card details from your Brave sync chain will be shared with this site.
     </message>
     <message name="IDS_AUTOFILL_CARD_UNMASK_PROMPT_INSTRUCTIONS_EXPIRED_LOCAL_CARD" desc="Text explaining what the user should do in the card unmasking dialog to update an expired card.  Appears specifically for local cards already stored on the device.">
       Enter the expiration date and CVC for <ph name="CREDIT_CARD">$1<ex>Visa - 5679</ex></ph> to update your card details. Once you confirm, your card details will be shared with this site.

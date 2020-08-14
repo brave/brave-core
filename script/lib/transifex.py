@@ -498,7 +498,8 @@ def braveify(string_value):
             .replace('Brave Drive', 'Google Drive')
             .replace('Brave Play', 'Google Play')
             .replace('Brave Safe', 'Google Safe')
-            .replace('Sends URLs of some pages you visit to Brave', 'Sends URLs of some pages you visit to Google'))
+            .replace('Sends URLs of some pages you visit to Brave', 'Sends URLs of some pages you visit to Google')
+            .replace('Brave Account', 'Brave sync chain'))
 
 
 def upload_missing_translation_to_transifex(source_string_path, lang_code,
