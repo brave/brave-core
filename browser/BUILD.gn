@@ -247,6 +247,13 @@ source_set("browser_process") {
       "//brave/components/binance/browser",
       "//components/country_codes",
     ]
+
+    if (is_android) {
+      sources += [
+        "binance/android/binance_native_worker.cc",
+        "binance/android/binance_native_worker.h",
+      ]
+    }
   }
 
   if (gemini_enabled) {
