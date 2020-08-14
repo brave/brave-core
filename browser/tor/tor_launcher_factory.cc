@@ -157,6 +157,8 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
   if (result) {
     is_starting_ = false;
     tor_pid_ = pid;
+    for (auto& observer : observers_)
+      observer.NotifyTorInitializing("0");
   } else {
     LOG(ERROR) << "Tor Launching Failed(" << pid <<")";
   }
@@ -167,6 +169,16 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
 void TorLauncherFactory::OnTorNewProxyURI(std::string uri) {
   for (auto& observer : observers_)
     observer.NotifyTorNewProxyURI(uri);
+}
+
+void TorLauncherFactory::OnTorCircuitEstablished(bool result) {
+  for (auto& observer : observers_)
+    observer.NotifyTorCircuitEstablished(result);
+}
+
+void TorLauncherFactory::OnTorInitializing(std::string percentage) {
+  for (auto& observer : observers_)
+    observer.NotifyTorInitializing(percentage);
 }
 
 void TorLauncherFactory::OnTorControlReady() {
@@ -226,6 +238,34 @@ void TorLauncherFactory::OnTorEvent(
   LOG(ERROR) << "TOR CONTROL: event "
              << (*tor::kTorControlEventByEnum.find(event)).second
              << ": " << initial;
+  if (event == tor::TorControlEvent::STATUS_CLIENT) {
+    if (initial.find("BOOTSTRAP") != std::string::npos) {
+      const char prefix[] = "PROGRESS=";
+      size_t progress_start = initial.find(prefix);
+      size_t progress_length = initial.substr(progress_start).find(" ") ;
+      // Dispatch progress
+      const std::string percentage =
+        initial.substr(progress_start + strlen(prefix),
+                       progress_length - strlen(prefix));
+      content::GetUIThreadTaskRunner({})
+        ->PostTask(FROM_HERE,
+                   base::BindOnce(&TorLauncherFactory::OnTorInitializing,
+                                  base::Unretained(this),
+                                  std::move(percentage)));
+    } else if (initial.find("CIRCUIT_ESTABLISHED") != std::string::npos) {
+      content::GetUIThreadTaskRunner({})
+        ->PostTask(FROM_HERE,
+                   base::BindOnce(&TorLauncherFactory::OnTorCircuitEstablished,
+                                  base::Unretained(this),
+                                  true));
+    } else if (initial.find("CIRCUIT_NOT_ESTABLISHED") != std::string::npos) {
+      content::GetUIThreadTaskRunner({})
+        ->PostTask(FROM_HERE,
+                   base::BindOnce(&TorLauncherFactory::OnTorCircuitEstablished,
+                                  base::Unretained(this),
+                                  false));
+    }
+  }
 }
 
 void TorLauncherFactory::OnTorRawCmd(const std::string& cmd) {

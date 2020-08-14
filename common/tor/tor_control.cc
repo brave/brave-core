@@ -127,6 +127,7 @@ void TorControl::Stop() {
   CHECK(running_);
 
   running_ = false;
+  async_events_.clear();
   watch_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::StopWatching, base::RetainedRef(this)));
