@@ -34,7 +34,7 @@ open class RollingFileLogger: XCGLogger {
 
     :param: date Date for with to start and mark the new log file
     */
-    open func newLogWithDate(_ date: Date) {
+    open func newLogWithDate(_ date: Date, configureDestination: ((FileDestination) -> Void)? = nil) {
         // Don't start a log if we don't have a valid log directory path
         if logDirectoryPath == nil {
             return
@@ -42,7 +42,9 @@ open class RollingFileLogger: XCGLogger {
 
         if let filename = filenameWithRoot(root, withDate: date) {
             remove(destinationWithIdentifier: fileLogIdentifierWithRoot(root))
-            add(destination: FileDestination(owner: self, writeToFile: filename, identifier: fileLogIdentifierWithRoot(root)))
+            let destination = FileDestination(owner: self, writeToFile: filename, identifier: fileLogIdentifierWithRoot(root))
+            add(destination: destination)
+            configureDestination?(destination)
             info("Created file destination for logger with root: \(self.root) and timestamp: \(date)")
         } else {
             error("Failed to create a new log with root name: \(self.root) and timestamp: \(date)")
@@ -53,6 +55,22 @@ open class RollingFileLogger: XCGLogger {
         // Check to see we haven't hit our size limit and if we did, clear out some logs to make room.
         while sizeOfAllLogFilesWithPrefix(self.root, exceedsSizeInBytes: sizeLimit) {
             deleteOldestLogWithPrefix(self.root)
+        }
+    }
+    
+    open func deleteAllLogs() {
+        if logDirectoryPath == nil {
+            return
+        }
+        
+        do {
+            let logFiles = try FileManager.default.contentsOfDirectoryAtPath(logDirectoryPath!, withFilenamePrefix: root)
+            for filename in logFiles {
+                try FileManager.default.removeItem(atPath: "\(logDirectoryPath!)/\(filename)")
+            }
+        } catch _ as NSError {
+            error("Shouldn't get here")
+            return
         }
     }
 

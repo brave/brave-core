@@ -19,13 +19,18 @@ public extension Logger {
     
     /// Logger used for things recorded on BraveRewards framework.
     static let rewardsLogger: RollingFileLogger = {
-        let logger = RollingFileLogger(filenameRoot: "rewards", logDirectoryPath: nil)
+        let logger = RollingFileLogger(filenameRoot: "rewards", logDirectoryPath: Logger.logFileDirectoryPath())
         logger.identifier = "BraveRewards"
+        logger.newLogWithDate(Date(), configureDestination: { destination in
+            // Same as debug log, Rewards framework handles function names in message
+            destination.showFunctionName = false
+            destination.showThreadName = false
+        })
         
         if !AppConstants.buildChannel.isPublic {
             // For rewards logs we want to show it only using the Apple System Log to make it visible
             // via console.app
-            logger.destinations.removeAll()
+            logger.destinations.removeAll(where: { ($0 is ConsoleDestination) })
             
             // Create a destination for the system console log (via NSLog)
             let systemDestination = AppleSystemLogDestination(identifier: "com.brave.ios.logs")
