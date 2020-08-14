@@ -47,7 +47,8 @@ class FeedSourceListViewController: UITableViewController {
                 .filter { $0.name.lowercased().contains(searchQuery.lowercased()) }
         }
         var updatedSections: [[FeedItem.Source]] = []
-        let otherSections = Dictionary(grouping: list, by: { $0.sectionIndexTitle })
+        let otherSections = Dictionary(grouping: list, by: { $0.sectionIndexTitle ?? "" })
+            .filter { !$0.key.isEmpty }
             .sorted(by: { $0.key < $1.key })
             .reduce(into: [[FeedItem.Source]]()) { (sections, value) in
                 sections.append(value.value)
@@ -102,7 +103,7 @@ class FeedSourceListViewController: UITableViewController {
         alert.addAction(UIAlertAction(title: Strings.BraveToday.disableAll, style: .destructive, handler: { [weak self] _ in
             self?.toggleCategory(enabled: false)
         }))
-        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
         present(alert, animated: true)
     }
     
@@ -167,7 +168,8 @@ extension FeedSourceListViewController {
         cell.textLabel?.text = source.name
         cell.accessoryView = cell.enabledToggle
         cell.enabledToggle.isOn = customizedSources[source.id] ?? source.isDefault
-        cell.enabledToggleValueChanged = { isOn in
+        cell.enabledToggleValueChanged = { [weak self] isOn in
+            guard let self = self else { return }
             // Update data source + DB
             self.dataSource.toggleSource(source, enabled: isOn)
             // Update local state
@@ -178,14 +180,14 @@ extension FeedSourceListViewController {
 }
 
 extension FeedItem.Source {
-    fileprivate var sectionIndexTitle: String {
+    fileprivate var sectionIndexTitle: String? {
         if let firstCharacter = name.first?.uppercased() {
             if Int(firstCharacter) != nil {
                 return "#"
             }
             return firstCharacter
         }
-        return ""
+        return nil
     }
 }
 

@@ -46,7 +46,7 @@ class FeedActionAlertView: UIView {
         backgroundColor = .clear
         isUserInteractionEnabled = false
         
-        imageView.image = image.withRenderingMode(.alwaysTemplate)
+        imageView.image = image.template
         titleLabel.text = title
         messageLabel.text = message
         

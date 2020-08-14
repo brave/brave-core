@@ -116,12 +116,12 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
     
     var actionHandler: ((Int, FeedItemAction) -> Void)? {
         didSet {
-            fatalError("Unused for welcome card")
+            assertionFailure("Unused for welcome card")
         }
     }
     var contextMenu: FeedItemMenu? {
         didSet {
-            fatalError("Unused for welcome card")
+            assertionFailure("Unused for welcome card")
         }
     }
 }

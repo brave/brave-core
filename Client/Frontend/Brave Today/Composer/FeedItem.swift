@@ -11,7 +11,7 @@ struct FeedItem: Equatable, Comparable {
     var source: Source
     
     static func < (lhs: Self, rhs: Self) -> Bool {
-        return lhs.score < rhs.score
+        lhs.score < rhs.score
     }
 }
 
@@ -33,7 +33,7 @@ extension FeedItem {
         }
         
         static func == (lhs: Self, rhs: Self) -> Bool {
-            return lhs.id == rhs.id
+            lhs.id == rhs.id
         }
     }
     
@@ -71,24 +71,6 @@ extension FeedItem {
             case publisherID = "publisher_id"
             case urlHash = "url_hash"
             case baseScore = "score"
-        }
-    }
-}
-
-@propertyWrapper struct URLString: Equatable, Decodable {
-    var wrappedValue: URL?
-    
-    init(wrappedValue: URL?) {
-        self.wrappedValue = wrappedValue
-    }
-    
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if container.decodeNil() {
-            wrappedValue = nil
-        } else {
-            let value = try container.decode(String.self)
-            wrappedValue = URL(string: value)
         }
     }
 }
