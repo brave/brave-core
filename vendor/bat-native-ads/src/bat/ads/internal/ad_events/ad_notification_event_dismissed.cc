@@ -5,17 +5,17 @@
 
 #include "bat/ads/internal/ad_events/ad_notification_event_dismissed.h"
 
-#include <string>
-
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/confirmation_type.h"
 #include "bat/ads/internal/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/confirmations/confirmations.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/reports/reports.h"
 
 namespace ads {
+
+namespace {
+const ConfirmationType kConfirmationType = ConfirmationType::kDismissed;
+}  // namespace
 
 AdNotificationEventDismissed::AdNotificationEventDismissed(
     AdsImpl* ads)
@@ -26,17 +26,17 @@ AdNotificationEventDismissed::AdNotificationEventDismissed(
 AdNotificationEventDismissed::~AdNotificationEventDismissed() = default;
 
 void AdNotificationEventDismissed::Trigger(
-    const AdNotificationInfo& info) {
-  ads_->get_ad_notifications()->Remove(info.uuid, false);
+    const AdNotificationInfo& ad_notification) {
+  BLOG(3, "Dismissed ad notification with uuid " << ad_notification.uuid
+      << " and " << ad_notification.creative_instance_id
+          << " creative instance id");
 
-  Reports reports(ads_);
-  const std::string report = reports.GenerateAdNotificationEventReport(info,
-      AdNotificationEventType::kDismissed);
-  BLOG(3, "Event log: " << report);
+  ads_->get_ad_notifications()->Remove(ad_notification.uuid,
+      /* should dismiss */ false);
 
-  ads_->get_confirmations()->ConfirmAd(info, ConfirmationType::kDismissed);
+  ads_->AppendAdNotificationToHistory(ad_notification, kConfirmationType);
 
-  ads_->AppendAdNotificationToHistory(info, ConfirmationType::kDismissed);
+  ads_->get_confirmations()->ConfirmAd(ad_notification, kConfirmationType);
 }
 
 }  // namespace ads

@@ -5,13 +5,9 @@
 
 #include "bat/ads/internal/ad_events/ad_notification_event_timed_out.h"
 
-#include <string>
-
-#include "bat/ads/ad_notification_info.h"
 #include "bat/ads/internal/ad_notifications/ad_notifications.h"
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/logging.h"
-#include "bat/ads/internal/reports/reports.h"
 
 namespace ads {
 
@@ -24,13 +20,13 @@ AdNotificationEventTimedOut::AdNotificationEventTimedOut(
 AdNotificationEventTimedOut::~AdNotificationEventTimedOut() = default;
 
 void AdNotificationEventTimedOut::Trigger(
-    const AdNotificationInfo& info) {
-  ads_->get_ad_notifications()->Remove(info.uuid, false);
+    const AdNotificationInfo& ad_notification) {
+  BLOG(3, "Timed out ad notification with uuid " << ad_notification.uuid
+      << " and " << ad_notification.creative_instance_id
+          << " creative instance id");
 
-  Reports reports(ads_);
-  const std::string report = reports.GenerateAdNotificationEventReport(info,
-      AdNotificationEventType::kTimedOut);
-  BLOG(3, "Event log: " << report);
+  ads_->get_ad_notifications()->Remove(ad_notification.uuid,
+      /* should dismiss */ false);
 }
 
 }  // namespace ads

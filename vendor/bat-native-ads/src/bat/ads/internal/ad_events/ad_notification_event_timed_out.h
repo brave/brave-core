@@ -21,7 +21,7 @@ class AdNotificationEventTimedOut : public AdEvent<AdNotificationInfo> {
   ~AdNotificationEventTimedOut() override;
 
   void Trigger(
-      const AdNotificationInfo& info) override;
+      const AdNotificationInfo& ad_notification) override;
 
  private:
   AdsImpl* ads_;  // NOT OWNED
