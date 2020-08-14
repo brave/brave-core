@@ -44,7 +44,6 @@ def build(args):
     if is_debug == "false":
         env['NDEBUG'] = "1"
 
-
     if args.rust_flags is not None:
         env['RUSTFLAGS'] = args.rust_flags
 
