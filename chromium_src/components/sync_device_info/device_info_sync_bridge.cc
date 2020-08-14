@@ -3,9 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#define BRAVE_DEVICE_INFO_SYNC_BRIDGE \
+  InitSyncTabsPrefChangeRegistrar()
+
 #include "../../../../components/sync_device_info/device_info_sync_bridge.cc"
 
 #include "base/threading/sequenced_task_runner_handle.h"
+#include "components/sync/base/pref_names.h"
 
 namespace syncer {
 
@@ -37,6 +41,25 @@ void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
   } else {
     std::move(callback).Run();
   }
+}
+
+void DeviceInfoSyncBridge::InitSyncTabsPrefChangeRegistrar() {
+  // Monitor Open Tabs sync pref change
+  brave_pref_change_registrar_.Init(device_info_prefs_->GetPrefService());
+
+  brave_pref_change_registrar_.Add(
+      prefs::kSyncTabs,
+      base::Bind(&DeviceInfoSyncBridge::OnSyncTabsPrefsChanged,
+                 weak_ptr_factory_.GetWeakPtr()));
+}
+
+void DeviceInfoSyncBridge::OnSyncTabsPrefsChanged(const std::string& pref) {
+  DCHECK_EQ(pref, prefs::kSyncTabs);
+  if (!local_device_info_provider_ ||
+      !local_device_info_provider_->GetLocalDeviceInfo()) {
+    return;
+  }
+  RefreshLocalDeviceInfo();
 }
 
 }  // namespace syncer

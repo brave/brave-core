@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_SYNC_BRIDGE_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DEVICE_INFO_DEVICE_INFO_SYNC_BRIDGE_H_
 
+#include "components/prefs/pref_change_registrar.h"
 #include "components/sync_device_info/device_info_tracker.h"
 
 #define ForcePulseForTest                                                    \
@@ -14,9 +15,12 @@
   void ForcePulseForTest
 
 // private:
-#define StoreSpecifics                              \
-  OnDeviceInfoDeleted(const std::string& client_id, \
-                      base::OnceClosure callback);  \
+#define StoreSpecifics                                  \
+  OnDeviceInfoDeleted(const std::string& client_id,     \
+                      base::OnceClosure callback);      \
+  void InitSyncTabsPrefChangeRegistrar();               \
+  void OnSyncTabsPrefsChanged(const std::string& pref); \
+  PrefChangeRegistrar brave_pref_change_registrar_;     \
   void StoreSpecifics
 
 #include "../../../../components/sync_device_info/device_info_sync_bridge.h"
