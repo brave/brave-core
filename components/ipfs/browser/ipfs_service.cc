@@ -13,6 +13,7 @@
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/service_sandbox_type.h"
 #include "chrome/common/chrome_paths.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/service_process_host.h"
@@ -81,7 +82,6 @@ void IpfsService::LaunchIfNotRunning(const base::FilePath& executable_path) {
       ipfs_service_.BindNewPipeAndPassReceiver(),
       content::ServiceProcessHost::Options()
         .WithDisplayName(IDS_UTILITY_PROCESS_IPFS_NAME)
-        .WithSandboxType(service_manager::SandboxType::kNoSandbox)
         .Pass());
 
   ipfs_service_.set_disconnect_handler(

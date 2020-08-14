@@ -7,6 +7,7 @@
 
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
 
+#include "base/logging.h"
 #include "base/json/json_reader.h"
 
 // static
