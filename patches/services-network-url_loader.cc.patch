@@ -1,5 +1,5 @@
 diff --git a/services/network/url_loader.cc b/services/network/url_loader.cc
-index 3dc126f94737..cd6fc8c980fe 100644
+index 3dc126f94737cbf7f01afcfe21e108b93b630b27..cd6fc8c980fe4f9d95d156725f2107ec05373865 100644
 --- a/services/network/url_loader.cc
 +++ b/services/network/url_loader.cc
 @@ -512,8 +512,10 @@ URLLoader::URLLoader(
