@@ -169,10 +169,12 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
   if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
-    handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
-                            content::BrowserURLHandler::null_handler());
-    handler->AddHandlerPair(&ipfs::HandleIPFSURLRewrite,
-                            &ipfs::HandleIPFSURLReverseRewrite);
+    handler->AddHandlerPair(
+        &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
+        content::BrowserURLHandler::null_handler());
+    handler->AddHandlerPair(
+        &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
+        &ipfs::ContentBrowserClientHelper::HandleIPFSURLReverseRewrite);
   }
 #endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
@@ -206,10 +208,11 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
   }
 #endif
 #if BUILDFLAG(IPFS_ENABLED)
-  if (ipfs::IsIPFSProtocol(url)) {
-    ipfs::HandleIPFSProtocol(url, std::move(web_contents_getter),
-                             page_transition, has_user_gesture,
-                             initiating_origin);
+  if (ipfs::ContentBrowserClientHelper::IsIPFSProtocol(url)) {
+    ipfs::ContentBrowserClientHelper::HandleIPFSProtocol(url,
+        std::move(web_contents_getter),
+        page_transition, has_user_gesture,
+        initiating_origin);
     return true;
   }
 #endif
