@@ -169,7 +169,7 @@ void IpfsService::OnGetConnectedPeers(
   }
 
   std::vector<std::string> peers;
-  bool success = IPFSJSONParser::GetPeersFromJSON(*response_body, peers);
+  bool success = IPFSJSONParser::GetPeersFromJSON(*response_body, &peers);
   std::move(callback).Run(success, peers);
 }
 

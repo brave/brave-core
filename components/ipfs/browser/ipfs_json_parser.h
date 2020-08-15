@@ -12,7 +12,7 @@
 class IPFSJSONParser {
  public:
   static bool GetPeersFromJSON(const std::string& json,
-                               std::vector<std::string>& peers);
+                               std::vector<std::string>* peers);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_JSON_PARSER_H_

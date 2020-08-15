@@ -29,7 +29,7 @@
 //    ]
 // }
 bool IPFSJSONParser::GetPeersFromJSON(
-    const std::string& json, std::vector<std::string>& peers) {
+    const std::string& json, std::vector<std::string>* peers) {
   base::JSONReader::ValueWithError value_with_error =
       base::JSONReader::ReadAndReturnValueWithError(
           json, base::JSONParserOptions::JSON_PARSE_RFC);
@@ -57,7 +57,7 @@ bool IPFSJSONParser::GetPeersFromJSON(
       continue;
     }
 
-    peers.push_back(addr->GetString() + "/" + peer->GetString());
+    peers->push_back(addr->GetString() + "/" + peer->GetString());
   }
 
   return true;

@@ -31,7 +31,7 @@ TEST_F(IPFSJSONParserTest, GetPeersFromJSON) {
             "Peer": "QmaNcj4BMFQgE884rZSMqWEcqquWuv8QALzhpvPeHZGeee"
           }
         ]
-      })", peers));
+      })", &peers));
 
   ASSERT_EQ(peers.size(), uint64_t(2));
   ASSERT_EQ(peers[0],
