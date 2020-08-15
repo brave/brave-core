@@ -304,7 +304,7 @@ IN_PROC_BROWSER_TEST_F(GeminiAPIBrowserTest, GetOAuthClientURL) {
     "response_type=code&"
     "client_id=fake-client-id&"
     "redirect_uri=com.brave.gemini%3A%2F%2Fauthorization&"
-    "scope=trader&"
+    "scope=addresses%3Aread%2Cbalances%3Aread%2Corders%3Acreate&"
     "state=placeholder");
   client_url = net::AppendOrReplaceQueryParameter(client_url, "state",
       "fake-state");
