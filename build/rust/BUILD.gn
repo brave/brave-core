@@ -3,6 +3,8 @@ import("//brave/build/cargo.gni")
 lib_build_path = "$root_build_dir/brave_rust/out"
 lib_output_path = "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
 
+# TODO(bridiver) - selectively include these libraries based on buildflags, but
+# in order to do that we have to dynamically create the brave rust lib
 cargo_build("rust_lib") {
   visibility = [ ":*" ]
   inputs = [
@@ -33,6 +35,8 @@ if (is_mac) {
   shared_library("brave_rust") {
     visibility = [ ":*" ]
     deps = brave_rust_deps
+
+    public_deps = brave_ffi_deps
 
     ldflags = [
       "-Wl,-install_name,@loader_path/Libraries/lib$target_name.dylib",
