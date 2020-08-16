@@ -12,7 +12,7 @@ buildflag_header("buildflags") {
 source_set("speedreader") {
   public_deps = [
     ":buildflags",
-    "rust/ffi:speedreader_ffi_lib",
+    "//brave/build/rust",
   ]
 
   sources = [
@@ -46,6 +46,5 @@ source_set("speedreader") {
     "//third_party/blink/public/common",
     "//ui/base",  # For ResourceBundle, consider getting rid of this?
     "//url",
-    "rust/ffi:speedreader_ffi",
   ]
 }

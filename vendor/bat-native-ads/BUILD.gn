@@ -2,8 +2,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/vendor/challenge_bypass_ristretto_ffi/config.gni")
-
 if (is_android) {
   import("//build/config/android/rules.gni")
 }
@@ -408,6 +406,7 @@ source_set("ads") {
   deps = [
     "//base",
     "//brave/base",
+    "//brave/components/challenge_bypass_ristretto",
     "//brave/components/l10n/browser",
     "//brave/components/l10n/common",
     "//crypto",
@@ -420,27 +419,9 @@ source_set("ads") {
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-usermodel", dep_base),
     rebase_path("brave_base", dep_base),
-    rebase_path("challenge_bypass_ristretto_ffi", dep_base),
   ]
 
   public_deps = [
-    ":challenge_bypass_libs",
     ":headers",
   ]
-}
-
-if (is_mac) {
-  bundle_data("challenge_bypass_libs") {
-    sources = [
-      challenge_bypass_lib_path,
-    ]
-    outputs = [
-      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
-    ]
-    public_deps = [
-      rebase_path("challenge_bypass_ristretto_ffi:challenge_bypass_ristretto", dep_base),
-    ]
-  }
-} else {
-  group("challenge_bypass_libs") {}
 }

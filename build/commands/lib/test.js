@@ -58,7 +58,7 @@ const test = (suite, buildConfig = config.defaultBuildConfig, options) => {
 
   // Build the tests
   if (suite === 'brave_unit_tests' || suite === 'brave_browser_tests') {
-    util.run('ninja', ['-C', config.outputDir, "brave/test:fix_test_install_name_" + suite], config.defaultOptions)
+    util.run('ninja', ['-C', config.outputDir, "brave/test:" + suite], config.defaultOptions)
   } else {
     util.run('ninja', ['-C', config.outputDir, suite], config.defaultOptions)
   }

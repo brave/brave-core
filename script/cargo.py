@@ -41,12 +41,13 @@ def build(args):
     if args.mac_deployment_target is not None:
         env['MACOSX_DEPLOYMENT_TARGET'] = args.mac_deployment_target
 
-    # Set environment variables for Challenge Bypass Ristretto FFI
     if is_debug == "false":
         env['NDEBUG'] = "1"
 
     if args.rust_flags is not None:
         env['RUSTFLAGS'] = args.rust_flags
+
+    env["RUST_BACKTRACE"] = "1"
 
     # Clean first because we want GN to decide when to rebuild and cargo doesn't
     # rebuild when env changes

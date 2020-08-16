@@ -1,0 +1,57 @@
+# Copyright 2014 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//brave/build/cargo.gni")
+
+config("external_config") {
+  defines = [
+    "NO_CXXEXCEPTIONS=1"
+  ]
+  if (is_mac) {
+    defines += [ "CHALLENGE_BYPASS_RISTRETTO_SHARED_LIBRARY" ]
+  }
+
+  include_dirs = [ "//brave/vendor/challenge_bypass_ristretto_ffi/src" ]
+}
+
+source_set("rust_ffi") {
+  visibility = [ "//brave/build/rust:*" ]
+
+  defines = [ "CHALLENGE_BYPASS_RISTRETTO_IMPLEMENTATION" ]
+
+  public_configs = [ ":external_config" ]
+
+  sources = [
+    "//brave/vendor/challenge_bypass_ristretto_ffi/src/lib.h",
+    "//brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.cpp",
+    "//brave/vendor/challenge_bypass_ristretto_ffi/src/wrapper.hpp",
+  ]
+
+  deps = [
+    "//base",
+  ]
+
+  if (is_mac || is_ios ) {
+    libs = [
+      "Security.framework"
+    ]
+  }
+}
+
+group("challenge_bypass_ristretto") {
+  public_configs = [ ":external_config" ]
+
+  public_deps = [
+    "//brave/build/rust",
+  ]
+}
+
+source_set("rust_lib") {
+  visibility = [ "//brave/build/rust:*" ]
+
+  inputs = [
+    "//brave/vendor/challenge_bypass_ristretto_ffi/Cargo.toml",
+    "//brave/vendor/challenge_bypass_ristretto_ffi/src/lib.rs",
+  ]
+}

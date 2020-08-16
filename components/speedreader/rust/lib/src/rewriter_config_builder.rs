@@ -37,7 +37,7 @@ impl From<TextHandler> for ContentFunction {
 
 pub fn rewrite_rules_to_content_handlers(
     conf: &RewriteRules,
-    origin: &str,
+    _origin: &str,
 ) -> Vec<(Selector, ContentFunction)> {
     let mut element_content_handlers = vec![];
     let mut errors = vec![];

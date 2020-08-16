@@ -11,11 +11,29 @@
 
 #include "brave/components/speedreader/rust/ffi/speedreader_ffi.h"
 
+#if defined(SPEEDREADER_SHARED_LIBRARY)
+#if defined(WIN32)
+#if defined(SPEEDREADER_IMPLEMENTATION)
+#define SPEEDREADER_EXPORT __declspec(dllexport)
+#else
+#define SPEEDREADER_EXPORT __declspec(dllimport)
+#endif  // defined(SPEEDREADER_IMPLEMENTATION)
+#else  // defined(WIN32)
+#if defined(SPEEDREADER_IMPLEMENTATION)
+#define SPEEDREADER_EXPORT __attribute__((visibility("default")))
+#else
+#define SPEEDREADER_EXPORT
+#endif
+#endif
+#else  // defined(SPEEDREADER_SHARED_LIBRARY)
+#define SPEEDREADER_EXPORT
+#endif
+
 namespace speedreader {
 
 using RewriterType = C_CRewriterType;
 
-class Rewriter {
+class SPEEDREADER_EXPORT Rewriter {
  public:
   /// Create a buffering `Rewriter`. Output will be accumulated internally,
   /// retrievable via `GetOutput`. Expected to only be instantiated by
@@ -59,7 +77,7 @@ class Rewriter {
   C_CRewriter* raw_;
 };
 
-class SpeedReader {
+class SPEEDREADER_EXPORT SpeedReader {
  public:
   SpeedReader();
   /// New instance of SpeedReader using serialized whitelist

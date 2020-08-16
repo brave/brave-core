@@ -1,0 +1,26 @@
+source_set("lib") {
+  visibility = [ "//brave/build/rust:*" ]
+  inputs = [
+    # Underlying library code
+    "build.rs",
+    "Cargo.lock",
+    "Cargo.toml",
+    "src/classifier/feature_extractor.rs",
+    "src/classifier/mod.rs",
+    "src/classifier/model.c",
+    "src/classifier/model.rs",
+    "src/classifier/model.rs",
+    "src/lib.rs",
+    "src/readability/Cargo.toml",
+    "src/readability/src/dom.rs",
+    "src/readability/src/error.rs",
+    "src/readability/src/extractor.rs",
+    "src/readability/src/lib.rs",
+    "src/readability/src/scorer.rs",
+    "src/rewriter_config_builder.rs",
+    "src/speedreader_heuristics.rs",
+    "src/speedreader_streaming.rs",
+    "src/speedreader.rs",
+    "src/whitelist.rs",
+  ]
+}

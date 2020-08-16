@@ -403,6 +403,7 @@ source_set("ledger") {
     ":publishers_proto",
     "//base",
     "//brave/components/brave_private_cdn",
+    "//brave/components/challenge_bypass_ristretto",
     "//crypto",
     "//net:net",
     "//sql:sql",
@@ -415,7 +416,6 @@ source_set("ledger") {
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
     rebase_path("brave_base", dep_base),
-    rebase_path("challenge_bypass_ristretto_ffi", dep_base),
   ]
 
   public_deps = [
