@@ -55,13 +55,17 @@ void ScriptTracker::AddScriptSourceForElm(const ScriptSourceCode& code,
 void ScriptTracker::AddDescendantUrlForParent(
     const blink::KURL& descendant_location,
     const blink::KURL& parent_location) {
-  const UrlHash descendant_url_hash(descendant_location.GetString().Impl()->GetHash());
-  const UrlHash parent_url_hash(parent_location.GetString().Impl()->GetHash());
+  const UrlHash descendant_url_hash(
+      descendant_location.GetString().Impl()->GetHash());
+  const UrlHash parent_url_hash(
+      parent_location.GetString().Impl()->GetHash());
 
   if (script_url_to_descendant_module_urls_.count(parent_url_hash) == 0) {
-    script_url_to_descendant_module_urls_.emplace(parent_url_hash, vector<blink::KURL>());
+    script_url_to_descendant_module_urls_.emplace(parent_url_hash,
+        vector<blink::KURL>());
   }
-  auto& descendant_module_urls = script_url_to_descendant_module_urls_.at(parent_url_hash);
+  auto& descendant_module_urls = script_url_to_descendant_module_urls_.at(
+      parent_url_hash);
   bool already_has_descendant = false;
   for (auto& a_descendant : descendant_module_urls) {
     if (a_descendant == descendant_location) {
@@ -74,9 +78,11 @@ void ScriptTracker::AddDescendantUrlForParent(
   }
 
   if (script_url_to_parent_module_urls_.count(descendant_url_hash) == 0) {
-    script_url_to_parent_module_urls_.emplace(descendant_url_hash, vector<blink::KURL>());
+    script_url_to_parent_module_urls_.emplace(descendant_url_hash,
+        vector<blink::KURL>());
   }
-  auto& parent_module_urls = script_url_to_parent_module_urls_.at(descendant_url_hash);
+  auto& parent_module_urls = script_url_to_parent_module_urls_.at(
+      descendant_url_hash);
   bool already_has_parent = false;
   for (auto& a_parent : parent_module_urls) {
     if (a_parent == parent_location) {
@@ -92,12 +98,15 @@ void ScriptTracker::AddDescendantUrlForParent(
 void ScriptTracker::AddDescendantUrlForParent(
     const blink::KURL& descendant_location,
     const ScriptId parent_id) {
-  const UrlHash descendant_url_hash(descendant_location.GetString().Impl()->GetHash());
+  const UrlHash descendant_url_hash(
+      descendant_location.GetString().Impl()->GetHash());
 
   if (script_id_to_descendant_module_urls_.count(parent_id) == 0) {
-    script_id_to_descendant_module_urls_.emplace(parent_id, vector<blink::KURL>());
+    script_id_to_descendant_module_urls_.emplace(parent_id,
+        vector<blink::KURL>());
   }
-  auto& descendant_module_urls = script_id_to_descendant_module_urls_.at(parent_id);
+  auto& descendant_module_urls = script_id_to_descendant_module_urls_.at(
+      parent_id);
   bool already_has_descendant = false;
   for (auto& a_descendant : descendant_module_urls) {
     if (a_descendant == descendant_location) {
@@ -110,9 +119,11 @@ void ScriptTracker::AddDescendantUrlForParent(
   }
 
   if (script_url_to_parent_module_ids_.count(descendant_url_hash) == 0) {
-    script_url_to_parent_module_ids_.emplace(descendant_url_hash, vector<ScriptId>());
+    script_url_to_parent_module_ids_.emplace(descendant_url_hash,
+        vector<ScriptId>());
   }
-  auto& parent_module_ids = script_url_to_parent_module_ids_.at(descendant_url_hash);
+  auto& parent_module_ids = script_url_to_parent_module_ids_.at(
+      descendant_url_hash);
   bool already_has_parent = false;
   for (auto& a_parent : parent_module_ids) {
     if (a_parent == parent_id) {
@@ -263,16 +274,19 @@ std::vector<ScriptId> ScriptTracker::GetModuleScriptParentsForScriptId(
   if (source_hash_to_script_url_hash_.count(source_hash) > 0) {
     const UrlHash url_hash = source_hash_to_script_url_hash_.at(source_hash);
     if (script_url_to_parent_module_ids_.count(url_hash) != 0) {
-      for (const ScriptId& a_parent_script_id : script_url_to_parent_module_ids_.at(url_hash)) {
-        LOG(ERROR) << "found parent script id: " << a_parent_script_id;
-        parent_script_ids.push_back(a_parent_script_id);
+      for (const ScriptId& script_id : script_url_to_parent_module_ids_.at(url_hash)) {
+        LOG(ERROR) << "found parent script id: " << script_id;
+        parent_script_ids.push_back(script_id);
       }
     }
     if (script_url_to_parent_module_urls_.count(url_hash) != 0) {
       for (const blink::KURL& a_parent_url : script_url_to_parent_module_urls_.at(url_hash)) {
-        const UrlHash parent_url_hash(a_parent_url.GetString().Impl()->GetHash());
-        const auto& parent_source_hash = script_url_hash_to_source_hash_.at(parent_url_hash);
-        const auto& parent_script_id = source_hash_to_script_id_.at(parent_source_hash);
+        const UrlHash parent_url_hash(
+            a_parent_url.GetString().Impl()->GetHash());
+        const auto& parent_source_hash = script_url_hash_to_source_hash_.at(
+            parent_url_hash);
+        const auto& parent_script_id = source_hash_to_script_id_.at(
+            parent_source_hash);
         parent_script_ids.push_back(parent_script_id);
       }
     }
@@ -286,7 +300,7 @@ void ScriptTracker::AddScriptId(const ScriptId script_id,
   // Make sure we've either never seen this script before, or that it
   // appears to be the same script.
   LOG_ASSERT(script_id_hashes_.count(script_id) == 0 ||
-    script_id_hashes_.at(script_id) == hash);
+      script_id_hashes_.at(script_id) == hash);
   script_id_hashes_.emplace(script_id, hash);
 }
 
@@ -308,7 +322,8 @@ ScriptId ScriptTracker::ResolveScriptId(const ScriptId script_id) const {
   return script_id;
 }
 
-blink::KURL ScriptTracker::GetModuleScriptSourceUrl(const ScriptId script_id) const {
+blink::KURL ScriptTracker::GetModuleScriptSourceUrl(
+      const ScriptId script_id) const {
   const SourceCodeHash& source_hash = script_id_to_source_hash_.at(script_id);
   const UrlHash& url_hash = source_hash_to_script_url_hash_.at(source_hash);
   return url_hashes_to_urls_.at(url_hash);
