@@ -13,6 +13,8 @@
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
+using ::std::chrono::duration_cast;
+using ::std::chrono::milliseconds;
 using ::std::to_string;
 
 namespace brave_page_graph {
@@ -26,12 +28,12 @@ void GraphItem::StartGraphMLExport(PageGraphId id_counter) {
 
 GraphItem::GraphItem(PageGraph* const graph) :
     id_(++(graph->id_counter_)),
-    time_(std::chrono::high_resolution_clock::now()),
+    time_(NowInMs()),
     graph_(graph) {}
 
 GraphItem::GraphItem() :
     id_(++ad_hoc_id_counter),
-    time_(std::chrono::high_resolution_clock::now()),
+    time_(NowInMs()),
     graph_(nullptr) {}
 
 GraphItem::~GraphItem() {}
@@ -52,9 +54,8 @@ bool GraphItem::IsNode() const {
   return false;
 }
 
-double GraphItem::GetMicroSecSincePageStart() const {
-  return std::chrono::duration_cast<std::chrono::microseconds>(
-      time_ - graph_->GetTimestamp()).count();
+milliseconds GraphItem::GetMicroSecSincePageStart() const {
+  return time_ - graph_->GetTimestamp();
 }
 
 }  // namespace brave_page_graph

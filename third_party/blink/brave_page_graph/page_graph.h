@@ -42,6 +42,7 @@ class GraphItem;
 class Node;
 class NodeActor;
 class NodeAdFilter;
+class NodeDOMRoot;
 class NodeExtensions;
 class NodeFingerprintingFilter;
 class NodeFrame;
@@ -65,6 +66,8 @@ class ResponseMetadata;
 class RequestTracker;
 class ScriptTracker;
 struct TrackedRequestRecord;
+
+::std::chrono::milliseconds NowInMs();
 
 class PageGraph {
 // Needed so that graph items can assign themself the next graph id.
@@ -200,8 +203,7 @@ friend NodeHTMLElement;
 
   std::string ToGraphML() const;
 
-  const std::chrono::time_point<std::chrono::high_resolution_clock>&
-    GetTimestamp() const;
+  std::chrono::milliseconds GetTimestamp() const;
 
   void Log(const std::string& str) const;
 
@@ -269,7 +271,7 @@ friend NodeHTMLElement;
   NodeStorageSessionStorage* const session_storage_node_;
 
   // Non-owning reference to the HTML root of the document (i.e. <html>).
-  NodeHTMLElement* html_root_node_;
+  NodeDOMRoot* html_root_node_;
 
   // Index structure for storing and looking up webapi nodes.
   // This map does not own the references.
@@ -312,7 +314,7 @@ friend NodeHTMLElement;
   // it exists, will always be for the top level frame.
   blink::ExecutionContext& execution_context_;
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> start_;
+  std::chrono::milliseconds start_;
 };
 
 }  // namespace brave_page_graph

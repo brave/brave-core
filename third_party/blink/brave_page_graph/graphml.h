@@ -6,10 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPHML_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPHML_H_
 
+#include <chrono>
 #include <string>
 #include <vector>
 #include <libxml/tree.h>
 #include "brave/third_party/blink/brave_page_graph/types.h"
+
+using ::std::chrono::milliseconds;
 
 namespace brave_page_graph {
 
@@ -38,6 +41,8 @@ class GraphMLAttr {
       const uint64_t value) const;
   void AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
       const double value) const;
+  void AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
+      const milliseconds value) const;
 
  protected:
   const uint64_t id_;

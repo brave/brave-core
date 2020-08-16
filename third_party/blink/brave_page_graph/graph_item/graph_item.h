@@ -23,8 +23,7 @@ friend class PageGraph;
   virtual ~GraphItem();
 
   PageGraphId GetId() const { return id_; }
-  std::chrono::time_point<std::chrono::high_resolution_clock> GetTimestamp()
-    const { return time_; }
+  ::std::chrono::milliseconds GetTimestamp() const { return time_; }
 
   virtual ItemName GetItemName() const = 0;
   virtual ItemDesc GetItemDesc() const;
@@ -37,7 +36,7 @@ friend class PageGraph;
   virtual bool IsEdge() const;
   virtual bool IsNode() const;
 
-  double GetMicroSecSincePageStart() const;
+  ::std::chrono::milliseconds GetMicroSecSincePageStart() const;
 
  protected:
   GraphItem(PageGraph* const graph);
@@ -50,7 +49,7 @@ friend class PageGraph;
   static void StartGraphMLExport(PageGraphId id_counter);
 
   const PageGraphId id_;
-  const std::chrono::time_point<std::chrono::high_resolution_clock> time_;
+  const ::std::chrono::milliseconds time_;
   PageGraph* const graph_ = nullptr;
 };
 
