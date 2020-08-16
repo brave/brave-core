@@ -84,7 +84,7 @@ import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.crypto_widget.CryptoWidgetBottomSheetDialogFragment;
+import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
 
 import java.util.List;
 
