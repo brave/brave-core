@@ -457,15 +457,6 @@ class BinanceAPIBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
 };
 
-
-IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetCodeChallenge) {
-  std::string verifier =
-      "FA87A1758E149A8BCD3A6D43DEAFAA013BCE2F132639ADA66C5BF101";
-  ASSERT_EQ(
-    "1vw-WOmdXSW7OHQPgnuMsZjhaQKxi3LO5L7uX0YEtHs",
-    BinanceService::GetCodeChallenge(verifier));
-}
-
 IN_PROC_BROWSER_TEST_F(BinanceAPIBrowserTest, GetOAuthClientURL) {
   EXPECT_TRUE(NavigateToNewTabUntilLoadStop());
   auto* service = GetBinanceService();
