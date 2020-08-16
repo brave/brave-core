@@ -147,7 +147,7 @@ void GeminiService::SetAuthToken(const std::string& auth_token) {
   auth_token_ = auth_token;
 }
 
-bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
+bool GeminiService::GetAccessToken(AccessTokenCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetAccessToken,
       base::Unretained(this), std::move(callback));
   GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
@@ -166,8 +166,26 @@ bool GeminiService::GetAccessToken(GetAccessTokenCallback callback) {
       std::move(internal_callback), true, false, "");
 }
 
+bool GeminiService::RefreshAccessToken(AccessTokenCallback callback) {
+  auto internal_callback = base::BindOnce(&GeminiService::OnGetAccessToken,
+      base::Unretained(this), std::move(callback));
+  GURL base_url = GetURLWithPath(oauth_host_, oauth_path_access_token);
+
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("client_id", client_id_);
+  dict.SetStringKey("client_secret", client_secret_);
+  dict.SetStringKey("refresh_token", refresh_token_);
+  dict.SetStringKey("grant_type", "refresh_token");
+  std::string request_body = CreateJSONRequestBody(dict);
+
+  auth_token_.clear();
+  return OAuthRequest(
+      base_url, "POST", request_body,
+      std::move(internal_callback), true, false, "");
+}
+
 void GeminiService::OnGetAccessToken(
-    GetAccessTokenCallback callback,
+    AccessTokenCallback callback,
     const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
   std::string access_token;
