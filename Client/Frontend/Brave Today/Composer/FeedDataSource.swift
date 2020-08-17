@@ -421,18 +421,35 @@ class FeedDataSource {
         var deals = feedsFromEnabledSources.filter { $0.content.contentType == .deals }
         var articles = feedsFromEnabledSources.filter { $0.content.contentType == .article }
         
+        let dealsCategoryFillStrategy = CategoryFillStrategy(
+            categories: Set(deals.compactMap(\.content.offersCategory)),
+            category: \.content.offersCategory
+        )
+        
         let rules: [FeedSequenceElement] = [
             .sponsor,
             .fillUsing(FilteredFillStrategy(isIncluded: { $0.source.category == Self.topNewsCategory }), [
                 .headline(paired: false)
             ]),
-            .deals,
+            .fillUsing(dealsCategoryFillStrategy, [
+                .deals
+            ]),
             .repeating([
                 .repeating([.headline(paired: false)], times: 2),
                 .repeating([.headline(paired: true)], times: 2),
-                .categoryGroup,
+                .fillUsing(
+                    CategoryFillStrategy(
+                        categories: Set(articles.map(\.source.category)),
+                        category: \.source.category,
+                        initialCategory: Self.topNewsCategory
+                    ), [
+                        .categoryGroup,
+                    ]
+                ),
                 .headline(paired: false),
-                .deals,
+                .fillUsing(dealsCategoryFillStrategy, [
+                    .deals
+                ]),
                 .headline(paired: false),
                 .headline(paired: true),
                 .brandedGroup(numbered: true),
@@ -445,10 +462,6 @@ class FeedDataSource {
             ])
         ]
         
-        var nextCategory = Self.topNewsCategory
-        let allCategories = Set(articles.map(\.source.category))
-        var categories: Set<String> = allCategories
-        
         func _cards(for element: FeedSequenceElement, fillStrategy: FillStrategy) -> [FeedCard]? {
             switch element {
             case .sponsor:
@@ -457,7 +470,8 @@ class FeedDataSource {
                 }
             case .deals:
                 return fillStrategy.next(3, from: &deals).map {
-                    [.deals($0, title: Strings.BraveToday.deals)]
+                    let title = $0.first?.content.offersCategory
+                    return [.deals($0, title: title ?? Strings.BraveToday.deals)]
                 }
             case .headline(let paired):
                 if articles.isEmpty { return nil }
@@ -477,21 +491,10 @@ class FeedDataSource {
                     }
                 }
             case .categoryGroup:
-                let items: [FeedCard]? = fillStrategy.next(3, from: &articles, where: { $0.source.category == nextCategory }).map {
-                    [.group($0, title: nextCategory, direction: .vertical, displayBrand: false)]
+                return fillStrategy.next(3, from: &articles).map {
+                    let title = $0.first?.source.category ?? ""
+                    return [.group($0, title: title, direction: .vertical, displayBrand: false)]
                 }
-                // Ensure the next category card does not use the same categories until all categories have
-                // been shown
-                categories.remove(nextCategory)
-                if categories.isEmpty {
-                    // All categories have now been shown, reset back to the start
-                    categories = allCategories
-                    // FIXME: Magic string should be defined somewhere
-                    nextCategory = Self.topNewsCategory
-                } else {
-                    nextCategory = categories.randomElement()!
-                }
-                return items
             case .brandedGroup(let numbered):
                 if let item = fillStrategy.next(from: &articles) {
                     return fillStrategy.next(2, from: &articles, where: { $0.source == item.source }).map {

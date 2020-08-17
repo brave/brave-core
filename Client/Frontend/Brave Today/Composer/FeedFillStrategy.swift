@@ -91,6 +91,66 @@ struct FilteredFillStrategy: FillStrategy {
     }
 }
 
+/// A fill strategy which pulls sets of items which have a matching category and cycles through all available
+/// categories until all categories are used up. You can optionally provide a fixed initial category that
+/// will always be shown first.
+///
+/// For example, if we had 3 categories: "Top News", "Business", and "Food", `next(_:from:where:)` would
+/// attempt to find 3 items that have the "Top News" category first, then upon a subsequent call to `next`,
+/// it would pick one of the remaining categories at random ("Business" or "Food")
+class CategoryFillStrategy<Category>: FillStrategy where Category: Hashable {
+    /// A complete set of categories to cycle through
+    let categories: Set<Category>
+    /// An initial category to fill
+    let initialCategory: Category?
+    /// A key path pointing to some category in a `FeedItem`
+    let category: KeyPath<FeedItem, Category>
+    /// The set of remaining categories in the current cycle
+    private var remainingCategories: Set<Category>
+    /// The upcoming category that will be used
+    private var nextCategory: Category?
+    
+    init(categories: Set<Category>, category: KeyPath<FeedItem, Category>, initialCategory: Category? = nil) {
+        self.categories = categories
+        self.category = category
+        self.remainingCategories = categories
+        self.initialCategory = initialCategory
+        self.nextCategory = initialCategory ?? categories.first
+    }
+    
+    func next(
+        _ length: Int,
+        from list: inout [FeedItem],
+        where predicate: ((FeedItem) -> Bool)? = nil
+    ) -> [FeedItem]? {
+        var workingList: [FeedItem]
+        if let predicate = predicate {
+            workingList = list.filter(predicate)
+        } else {
+            workingList = list
+        }
+        guard let nextCategory = nextCategory else { return nil }
+        workingList = workingList.filter({ $0[keyPath: category] == nextCategory })
+        
+        remainingCategories.remove(nextCategory)
+        if remainingCategories.isEmpty {
+            remainingCategories = categories
+            self.nextCategory = initialCategory ?? remainingCategories.first
+        } else {
+            self.nextCategory = remainingCategories.randomElement()!
+        }
+        
+        if workingList.count < length { return nil }
+        let items = Array(workingList.prefix(upTo: length))
+        items.forEach { item in
+            if let index = list.firstIndex(of: item) {
+                list.remove(at: index)
+            }
+        }
+        return items
+    }
+}
+
 /// A fill strategy that pulls random items from the list
 struct RandomizedFillStrategy: FillStrategy {
     /// A global predicate to determine what random items are valid to pull from. For example, only pulling

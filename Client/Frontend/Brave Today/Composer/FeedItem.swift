@@ -60,6 +60,7 @@ extension FeedItem {
         var publisherID: String
         var urlHash: String
         var baseScore: Double
+        var offersCategory: String?
         
         enum CodingKeys: String, CodingKey {
             case publishTime = "publish_time"
@@ -71,6 +72,7 @@ extension FeedItem {
             case publisherID = "publisher_id"
             case urlHash = "url_hash"
             case baseScore = "score"
+            case offersCategory = "offers_category"
         }
     }
 }
