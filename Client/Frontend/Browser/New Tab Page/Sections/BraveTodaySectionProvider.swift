@@ -180,6 +180,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                     item,
                     isBrandVisible: false
                 )
+                view.descriptionLabel.text = item.content.description
                 // Force thumbnail to show up for deals even if the data source has none for UI purposes
                 view.thumbnailImageView.isHidden = false
             }
