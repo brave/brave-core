@@ -69,6 +69,7 @@ export const getPromo = (type: PromoType, rewardsData: Rewards.State) => {
             {getLocale('upholdPromoInfo')}
           </StyledInfo>
         ),
+        supportedLocales: ['US'],
         title: getLocale('upholdPromoTitle')
       }
     default:
