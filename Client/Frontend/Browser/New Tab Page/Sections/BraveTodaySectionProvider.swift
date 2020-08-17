@@ -314,7 +314,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 if context.item.content.contentType != .sponsor {
                     children.append(UIMenu(title: "", options: [.displayInline], children: manageActions))
                 }
-                return UIMenu(title: item.content.title, children: children)
+                return UIMenu(title: item.content.url?.absoluteString ?? "", children: children)
             }
         }
         return .init { [weak self] index -> FeedItemMenu.LegacyContext? in
@@ -366,7 +366,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
             actions.append(cancel)
             
             return .init(
-                title: item.content.title,
+                title: item.content.url?.absoluteString,
                 message: nil,
                 actions: actions.compactMap { $0 }
             )
