@@ -1299,6 +1299,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_DATA_HAS_BEEN_CLEARED" desc="Brave stats pref summary text">
         Privacy reports data has been cleared.
       </message>
+      <message name="IDS_BRAVE_UI_REFRESH_PUBLISHER_STATUS" desc="A button that allows to refresh publisher status">
+        Refresh Status
+      </message>
     </messages>
   </release>
 </grit>

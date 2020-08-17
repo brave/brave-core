@@ -1167,47 +1167,8 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             btAutoContribute.setOnCheckedChangeListener(autoContributeSwitchListener);
         }
 
-        // set publisher verified/unverified status
-        String verified_text = "";
-        TextView tvVerified = (TextView)root.findViewById(R.id.publisher_verified);
-        @PublisherStatus int pubStatus =
-            thisObject.mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId);
-        if (pubStatus == BraveRewardsPublisher.CONNECTED ||
-                pubStatus == BraveRewardsPublisher.VERIFIED) {
-            verified_text = root.getResources().getString(R.string.brave_ui_verified_publisher);
-        } else {
-            verified_text = root.getResources().getString(R.string.brave_ui_not_verified_publisher);
-            tvVerified.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bat_unverified, 0, 0, 0);
-        }
-        tvVerified.setText(verified_text);
-        tvVerified.setVisibility(View.VISIBLE);
-
-        // show |brave_ui_panel_connected_text| text if
-        // publisher is CONNECTED and user doesn't have any Brave funds (anonymous or
-        // blinded wallets)
-        String verified_description = "";
-        if (pubStatus == BraveRewardsPublisher.CONNECTED) {
-            BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
-            if (balance_obj != null) {
-                double braveFunds = ((balance_obj.mWallets.containsKey(BraveRewardsBalance.WALLET_ANONYMOUS) && balance_obj.mWallets.get(BraveRewardsBalance.WALLET_ANONYMOUS) != null) ? balance_obj.mWallets.get(BraveRewardsBalance.WALLET_ANONYMOUS) : .0) +
-                                    ((balance_obj.mWallets.containsKey(BraveRewardsBalance.WALLET_BLINDED) && balance_obj.mWallets.get(BraveRewardsBalance.WALLET_BLINDED) != null) ? balance_obj.mWallets.get(BraveRewardsBalance.WALLET_BLINDED) : .0);
-                if (braveFunds <= 0) {
-                    verified_description = root.getResources().getString(R.string.brave_ui_panel_connected_text);
-                }
-            }
-        } else if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
-            verified_description = root.getResources().getString(
-                                       R.string.brave_ui_not_verified_publisher_description);
-        }
-
-        if (!TextUtils.isEmpty(verified_description)) {
-            verified_description += "<br/><font color=#73CBFF>" +
-                                    root.getResources().getString(R.string.learn_more) + ".</font>";
-            Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(verified_description);
-            TextView tv_note = (TextView)root.findViewById(R.id.publisher_not_verified);
-            tv_note.setText(toInsert);
-            tv_note.setVisibility(View.VISIBLE);
-        }
+        UpdatePublisherStatus(
+                thisObject.mBraveRewardsNativeWorker.GetPublisherStatus(currentTabId));
 
         tv = (TextView)root.findViewById(R.id.br_no_activities_yet);
         gl = (GridLayout)thisObject.root.findViewById(R.id.br_activities);
@@ -1678,4 +1639,94 @@ public class BraveRewardsPanelPopup implements BraveRewardsObserver, BraveReward
             ShowNotification(REWARDS_PROMOTION_CLAIM_ERROR_ID, REWARDS_PROMOTION_CLAIM_ERROR, 0, args);
         }
     }
+
+    private void UpdatePublisherStatus(int pubStatus) {
+        // Set publisher verified/unverified status
+        String verified_text = "";
+        TextView publisherVerified = (TextView) root.findViewById(R.id.publisher_verified);
+        publisherVerified.setAlpha(1f);
+        TextView publisherDelimiter = (TextView) root.findViewById(R.id.publisher_delimiter);
+        publisherDelimiter.setAlpha(1f);
+        publisherDelimiter.setText(" | ");
+        TextView refreshPublisher = (TextView) root.findViewById(R.id.refresh_publisher);
+        refreshPublisher.setAlpha(1f);
+        refreshPublisher.setEnabled(true);
+        View refreshStatusProgress = root.findViewById(R.id.progress_refresh_status);
+        refreshStatusProgress.setVisibility(View.GONE);
+        refreshPublisher.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pubId = thisObject.mBraveRewardsNativeWorker.GetPublisherId(currentTabId);
+                refreshStatusProgress.setVisibility(View.VISIBLE);
+                refreshPublisher.setEnabled(false);
+                publisherVerified.setAlpha(.3f);
+                publisherDelimiter.setAlpha(.3f);
+                refreshPublisher.setAlpha(.3f);
+                mBraveRewardsNativeWorker.RefreshPublisher(pubId);
+            }
+        }));
+        if (pubStatus == BraveRewardsPublisher.CONNECTED
+                || pubStatus == BraveRewardsPublisher.VERIFIED) {
+            verified_text = root.getResources().getString(R.string.brave_ui_verified_publisher);
+            publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.bat_verified, 0, 0, 0);
+            publisherDelimiter.setVisibility(View.GONE);
+            refreshPublisher.setVisibility(View.GONE);
+        } else {
+            verified_text = root.getResources().getString(R.string.brave_ui_not_verified_publisher);
+            publisherVerified.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.bat_unverified, 0, 0, 0);
+            publisherDelimiter.setVisibility(View.VISIBLE);
+            refreshPublisher.setVisibility(View.VISIBLE);
+        }
+        publisherVerified.setText(verified_text);
+        publisherVerified.setVisibility(View.VISIBLE);
+
+        // show |brave_ui_panel_connected_text| text if
+        // publisher is CONNECTED and user doesn't have any Brave funds (anonymous or
+        // blinded wallets)
+        String verified_description = "";
+        if (pubStatus == BraveRewardsPublisher.CONNECTED) {
+            BraveRewardsBalance balance_obj = mBraveRewardsNativeWorker.GetWalletBalance();
+            if (balance_obj != null) {
+                double braveFunds =
+                        ((balance_obj.mWallets.containsKey(BraveRewardsBalance.WALLET_ANONYMOUS)
+                                 && balance_obj.mWallets.get(BraveRewardsBalance.WALLET_ANONYMOUS)
+                                         != null)
+                                        ? balance_obj.mWallets.get(
+                                                BraveRewardsBalance.WALLET_ANONYMOUS)
+                                        : .0)
+                        + ((balance_obj.mWallets.containsKey(BraveRewardsBalance.WALLET_BLINDED)
+                                   && balance_obj.mWallets.get(BraveRewardsBalance.WALLET_BLINDED)
+                                           != null)
+                                        ? balance_obj.mWallets.get(
+                                                BraveRewardsBalance.WALLET_BLINDED)
+                                        : .0);
+                if (braveFunds <= 0) {
+                    verified_description =
+                            root.getResources().getString(R.string.brave_ui_panel_connected_text);
+                }
+            }
+        } else if (pubStatus == BraveRewardsPublisher.NOT_VERIFIED) {
+            verified_description = root.getResources().getString(
+                    R.string.brave_ui_not_verified_publisher_description);
+        }
+
+        if (!TextUtils.isEmpty(verified_description)) {
+            verified_description += "<br/><font color=#73CBFF>"
+                    + root.getResources().getString(R.string.learn_more) + ".</font>";
+            Spanned toInsert = BraveRewardsHelper.spannedFromHtmlString(verified_description);
+            TextView tv_note = (TextView) root.findViewById(R.id.publisher_not_verified);
+            tv_note.setText(toInsert);
+            tv_note.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void OnRefreshPublisher(int status, String publisherKey) {
+        String pubName = thisObject.mBraveRewardsNativeWorker.GetPublisherName(currentTabId);
+        if (pubName.equals(publisherKey)) {
+            UpdatePublisherStatus(status);
+        }
+    };
 }
