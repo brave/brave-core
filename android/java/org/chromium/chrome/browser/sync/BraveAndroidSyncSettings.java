@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.sync;
 
+import org.chromium.chrome.browser.sync.ProfileSyncService;
 import org.chromium.components.sync.SyncContentResolverDelegate;
 
 // see org.brave.bytecode.BraveAndroidSyncSettingsAdapter
@@ -30,8 +31,11 @@ public class BraveAndroidSyncSettings extends AndroidSyncSettings {
 
     // We need to override this to make able
     // DevicePickerBottomSheetContent.createContentView send the link
+    // For Brave we don't have an account in Android system account,
+    // so pretend sync for Brave "account" is always on when sync is requsted
     @Override
     public boolean isChromeSyncEnabled() {
-        return mMasterSyncEnabled;
+        ProfileSyncService profileSyncService = ProfileSyncService.get();
+        return profileSyncService != null && profileSyncService.isSyncRequested();
     }
 }
