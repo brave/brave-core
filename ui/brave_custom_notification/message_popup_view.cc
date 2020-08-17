@@ -64,7 +64,7 @@ MessagePopupView::MessagePopupView(const Notification& notification) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
-  params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
+  // params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
   params.bounds = { 30, 30, 300, 100 + GetBodyHeight(notification.message())};
 #if defined(OS_LINUX) && !defined(OS_CHROMEOS)
@@ -137,12 +137,6 @@ void MessagePopupView::Close() {
   if (popup_window_ && !popup_window_->IsClosed()) {
     popup_window_->CloseNow();
   }
-  /*
-  if (popup_window_) {
-    DeleteDelegate();
-    return;
-  }
-  */
 }
 
 const char* MessagePopupView::GetClassName() const {
