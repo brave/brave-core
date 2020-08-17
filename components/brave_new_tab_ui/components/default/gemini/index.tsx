@@ -123,6 +123,7 @@ interface Props {
   tickerPrices: Record<string, string>
   disconnectInProgress: boolean
   authInvalid: boolean
+  stackPosition: number
   onShowContent: () => void
   onDisableWidget: () => void
   onValidAuthCode: () => void
@@ -1077,10 +1078,10 @@ class Gemini extends React.PureComponent<Props, State> {
   }
 
   renderTitleTab () {
-    const { onShowContent } = this.props
+    const { onShowContent, stackPosition } = this.props
 
     return (
-      <StyledTitleTab onClick={onShowContent}>
+      <StyledTitleTab onClick={onShowContent} stackPosition={stackPosition}>
         {this.renderTitle()}
       </StyledTitleTab>
     )
