@@ -56,6 +56,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/BraveNewTabPageLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/NTPWidgetAdapter.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/model/NTPImage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/model/BackgroundImage.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/model/Wallpaper.java",

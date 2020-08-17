@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.FrameLayout;
@@ -84,26 +83,14 @@ import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
+import org.chromium.chrome.browser.custom_layout.VerticalViewPager;
+import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
 
 import java.util.List;
 
 public class BraveNewTabPageLayout extends NewTabPageLayout {
     private static final String TAG = "BraveNewTabPageView";
 
-    private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
-    private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
-    private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
-    public static final short MILLISECONDS_PER_ITEM = 50;
-
-    private ViewGroup mBraveStatsView;
-
-    private TextView mAdsBlockedCountTextView;
-    private TextView mDataSavedValueTextView;
-    private TextView mEstTimeSavedCountTextView;
-    private TextView mAdsBlockedTextView;
-    private TextView mDataSavedTextView;
-    private TextView mEstTimeSavedTextView;
     private ImageView bgImageView;
     private Profile mProfile;
 
@@ -119,6 +106,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     private ViewGroup mSiteSectionView;
     private LottieAnimationView mBadgeAnimationView;
+    private VerticalViewPager ntpWidgetViewPager;
+    private NTPWidgetAdapter ntpWidgetAdapter;
 
     private Tab mTab;
     private Activity mActivity;
@@ -132,26 +121,25 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     @Override
-    public void setSearchProviderInfo(boolean hasLogo, boolean isGoogle) {
-        super.setSearchProviderInfo(hasLogo, isGoogle);
-        // Make brave stats visibile always on NTP.
-        // NewTabPageLayout::setSearchProviderInfo() makes it invisible.
-        // So, explicitly set it as visible.
-        mBraveStatsView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
+        ntpWidgetViewPager = findViewById(R.id.ntp_widget_view_pager);
+        ntpWidgetAdapter = new NTPWidgetAdapter();
+        ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
 
-        mAdsBlockedCountTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_ads_count);
-        mDataSavedValueTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_value);
-        mEstTimeSavedCountTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time_count);
-
-        mAdsBlockedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_ads);
-        mDataSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_text);
-        mEstTimeSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time);
+        LayoutInflater inflater = (LayoutInflater) ContextUtils.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View mBraveStatsView = inflater.inflate (R.layout.brave_stats_layout, null);
+        ntpWidgetAdapter.addView (mBraveStatsView, 0);
+        View binanceWidgetView = inflater.inflate (R.layout.crypto_widget_layout, null);
+        ntpWidgetAdapter.addView (binanceWidgetView, 1);
+        if (mSiteSectionView != null) {
+            if (!mNTPBackgroundImagesBridge.isSuperReferral()
+                    || !NTPBackgroundImagesBridge.enableSponsoredImages()
+                    || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                ntpWidgetAdapter.addView (mSiteSectionView, 2);
+            }
+        }
+        ntpWidgetAdapter.notifyDataSetChanged();
 
         FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
         ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
@@ -159,6 +147,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 || !NTPUtil.shouldEnableNTPFeature()) {
             mBadgeImageView.setColorFilter(ContextCompat.getColor(ContextUtils.getApplicationContext(), R.color.brave_stats_badge_tint_color), android.graphics.PorterDuff.Mode.SRC_IN);
         }
+
         mBadgeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,17 +170,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
+            setWidgetCurrentPage(mBraveStatsView);
+            ntpWidgetAdapter.notifyDataSetChanged();
             ((BraveActivity)mActivity).showOnboardingV2(true);
         }
-
-        Button btnTrade = findViewById(R.id.btn_trade);
-        btnTrade.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment = new CryptoWidgetBottomSheetDialogFragment();
-                cryptoWidgetBottomSheetDialogFragment.show(((BraveActivity) mActivity).getSupportFragmentManager(), "brave_stats_bottom_sheet_dialog_fragment");
-            }
-        });
     }
 
     protected void insertSiteSectionView() {
@@ -208,13 +190,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     R.dimen.tile_grid_layout_vertical_spacing);
         }
         mSiteSectionView.setLayoutParams(layoutParams);
-
-        ViewGroup mBraveStatsView = (ViewGroup) findViewById(R.id.brave_stats_layout);
-        int insertionPoint = mainLayout.indexOfChild(mBraveStatsView) + 1;
-        if (!mNTPBackgroundImagesBridge.isSuperReferral()
-                || !NTPBackgroundImagesBridge.enableSponsoredImages()
-                || Build.VERSION.SDK_INT < Build.VERSION_CODES.M)
-            mainLayout.addView(mSiteSectionView, insertionPoint);
     }
 
     protected int getMaxRowsForMostVisitedTiles() {
@@ -306,48 +281,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         assert (activity instanceof BraveActivity);
         mActivity = activity;
         ((BraveActivity)mActivity).dismissShieldsTooltip();
-    }
-
-    @Override
-    protected void onWindowVisibilityChanged(int visibility) {
-        super.onWindowVisibilityChanged(visibility);
-        if (visibility == VISIBLE) {
-            updateBraveStats();
-        }
-    }
-
-    /**
-     * Sets up Brave stats.
-     */
-    private void updateBraveStats() {
-        TraceEvent.begin(TAG + ".updateBraveStats()");
-        long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
-        long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
-        long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
-        long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * MILLISECONDS_PER_ITEM;
-
-        Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
-        Pair<String, String> dataSavedPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
-
-        mAdsBlockedCountTextView.setText(String.format(getResources().getString(R.string.ntp_stat_text), adsTrackersPair.first, adsTrackersPair.second));
-        mDataSavedValueTextView.setText(String.format(getResources().getString(R.string.ntp_stat_text), dataSavedPair.first, dataSavedPair.second));
-        mEstTimeSavedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
-
-        if ((UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                || NTPUtil.isReferralEnabled())
-                && sponsoredTab != null
-                && NTPUtil.shouldEnableNTPFeature()) {
-            mAdsBlockedTextView.setTextColor(
-                getResources().getColor(android.R.color.white));
-            mDataSavedTextView.setTextColor(
-                getResources().getColor(android.R.color.white));
-            mEstTimeSavedTextView.setTextColor(
-                getResources().getColor(android.R.color.white));
-            mEstTimeSavedCountTextView.setTextColor(
-                getResources().getColor(android.R.color.white));
-        }
-
-        TraceEvent.end(TAG + ".updateBraveStats()");
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -645,5 +578,26 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     private TabImpl getTabImpl() {
         return (TabImpl) getTab();
+    }
+
+    // NTP related methods
+    public void addViewToWidget(View newPage) {
+        int pageIndex = ntpWidgetAdapter.addView(newPage);
+        ntpWidgetViewPager.setCurrentItem(pageIndex, true);
+    }
+
+    public void removeViewToWidget(View defunctPage) {
+        int pageIndex = ntpWidgetAdapter.removeView (ntpWidgetViewPager, defunctPage);
+        if (pageIndex == ntpWidgetAdapter.getCount())
+            pageIndex--;
+        ntpWidgetViewPager.setCurrentItem (pageIndex);
+    }
+
+    public View getWidgetCurrentPage() {
+        return ntpWidgetAdapter.getView(ntpWidgetViewPager.getCurrentItem());
+    }
+
+    public void setWidgetCurrentPage(View pageToShow) {
+        ntpWidgetViewPager.setCurrentItem(ntpWidgetAdapter.getItemPosition(pageToShow), true);
     }
 }

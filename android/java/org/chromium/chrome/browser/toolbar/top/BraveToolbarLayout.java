@@ -79,7 +79,6 @@ import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
-import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 
 import java.net.URL;
 import java.util.List;
@@ -302,7 +301,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
           long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
           long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
-          long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
+          long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * BraveStatsUtil.MILLISECONDS_PER_ITEM;
 
           if (!OnboardingPrefManager.getInstance().isAdsTrackersNotificationStarted()
               && (trackersBlockedCount + adsBlockedCount) > 250

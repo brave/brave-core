@@ -86,15 +86,11 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <include layout="@layout/crypto_widget_layout"/>
-                <!-- Brave stats -->
-                <include layout="@layout/brave_stats_layout"/>
-
-            </FrameLayout>
+            <org.chromium.chrome.browser.custom_layout.VerticalViewPager
+                android:id="@+id/ntp_widget_view_pager"
+                android:layout_width="wrap_content"
+                android:layout_height="120dp"
+                android:layout_margin="8dp"/>
 
             <LinearLayout
                 android:id="@+id/ntp_super_referral_sites_layout"

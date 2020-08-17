@@ -15,6 +15,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class BraveStatsUtil {
+	public static final short MILLISECONDS_PER_ITEM = 50;
 	/*
 	* Gets string view of specific time in seconds for Brave stats
 	*/

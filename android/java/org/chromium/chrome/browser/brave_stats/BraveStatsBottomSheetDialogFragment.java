@@ -52,7 +52,7 @@ import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.ui.base.DeviceFormFactor
 
 import java.util.Arrays;
 import java.util.Calendar;
