@@ -1023,7 +1023,8 @@ void AdsServiceImpl::OnURLRequestComplete(
 }
 
 bool AdsServiceImpl::CanShowBackgroundNotifications() const {
-  return NotificationHelper::GetInstance()->CanShowBackgroundNotifications();
+  LOG(INFO) << "albert AdsServiceImpl::CanShowBackgroundNotifications";
+  return true;
 }
 
 void AdsServiceImpl::OnGetAdsHistory(
@@ -1662,10 +1663,6 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
     return;
   }
 
-  if (!NotificationHelper::GetInstance()->ShowMyFirstAdNotification()) {
-    return;
-  }
-
   SetBooleanPref(prefs::kShouldShowMyFirstAdNotification, false);
 }
 
@@ -1943,7 +1940,8 @@ bool AdsServiceImpl::StopNotificationTimeoutTimer(
 }
 
 bool AdsServiceImpl::ShouldShowNotifications() {
-  return NotificationHelper::GetInstance()->ShouldShowNotifications();
+  LOG(INFO) << "albert AdsServiceImpl::ShouldShowNotifications() ";
+  return true;
 }
 
 void AdsServiceImpl::CloseNotification(
