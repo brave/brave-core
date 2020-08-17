@@ -133,7 +133,9 @@ class NewTabPageViewController: UIViewController, Themeable {
             sections.append(
                 BraveTodaySectionProvider(
                     dataSource: feedDataSource,
-                    actionHandler: handleBraveTodayAction
+                    actionHandler: { [weak self] in
+                        self?.handleBraveTodayAction($0)
+                    }
                 )
             )
             layout.braveTodaySection = sections.firstIndex(where: { $0 is BraveTodaySectionProvider })
@@ -148,7 +150,9 @@ class NewTabPageViewController: UIViewController, Themeable {
         }
         
         Preferences.BraveToday.isEnabled.observe(from: self)
-        feedDataSource.observeState(from: self, handleFeedStateChange)
+        feedDataSource.observeState(from: self) { [weak self] in
+            self?.handleFeedStateChange($0, $1)
+        }
         NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     

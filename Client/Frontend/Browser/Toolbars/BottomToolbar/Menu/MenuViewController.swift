@@ -369,7 +369,7 @@ class MenuViewController: UITableViewController {
     }
     
     private func openSettings() {
-        let vc = SettingsViewController(profile: bvc.profile, tabManager: bvc.tabManager, feedDataSource: BrowserViewController.feedDataSource, rewards: bvc.rewards)
+        let vc = SettingsViewController(profile: bvc.profile, tabManager: bvc.tabManager, feedDataSource: bvc.feedDataSource, rewards: bvc.rewards)
         vc.settingsDelegate = bvc
         open(vc, doneButton: DoneButton(style: .done, position: .right),
              allowSwipeToDismiss: false)
