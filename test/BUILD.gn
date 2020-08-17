@@ -103,6 +103,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/version_info/brave_version_info_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
     "//brave/chromium_src/services/network/public/cpp/cors/cors_unittest.cc",
+    "//brave/chromium_src/third_party/blink/renderer/platform/runtime_enabled_features_test.cc",
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
     "//brave/components/brave_private_cdn/private_cdn_helper_unittest.cc",
