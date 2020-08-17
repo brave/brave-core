@@ -22,7 +22,6 @@ namespace brave_rewards {
     base::Value dict(base::Value::Type::DICTIONARY);
     dict.SetStringKey("token", token);
     dict.SetStringKey("address", address);
-    dict.SetStringKey("anon_address", anon_address);
 
     // enum class WalletStatus : int32_t
     dict.SetIntKey("status", static_cast<int32_t>(status));

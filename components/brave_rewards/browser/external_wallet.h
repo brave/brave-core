@@ -18,7 +18,6 @@ struct ExternalWallet {
 
   std::string token;
   std::string address;
-  std::string anon_address;
   uint32_t status;
   std::string type;
   std::string verify_url;

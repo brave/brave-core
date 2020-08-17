@@ -19,7 +19,6 @@ class LedgerImpl;
 namespace braveledger_uphold {
 
 const char kCardName[] = "Brave Browser";
-const char kAnonID[] = "anonymous";
 
 struct UpdateCard {
   std::string label;
@@ -42,8 +41,6 @@ class UpholdCard {
   ~UpholdCard();
 
   void CreateIfNecessary(CreateCardCallback callback);
-
-  void CreateAnonAddressIfNecessary(ledger::ResultCallback callback);
 
  private:
   void OnCreateIfNecessary(
@@ -69,31 +66,8 @@ class UpholdCard {
       const ledger::UrlResponse& response,
       UpdateCardCallback callback);
 
-  void GetCardAddresses(
-      GetCardAddressesCallback callback);
-
   std::map<std::string, std::string> ParseGetCardAddressResponse(
       const std::string& response);
-
-  void OnGetCardAddresses(
-      const ledger::UrlResponse& response,
-      GetCardAddressesCallback callback);
-
-  void OnCreateAnonAddressGet(
-      ledger::Result result,
-      std::map<std::string, std::string> addresses);
-
-  void OnCreateAnonAddressIfNecessary(
-      ledger::Result result,
-      std::map<std::string, std::string> addresses,
-      ledger::ResultCallback callback);
-
-  void CreateAnonAddress(
-      ledger::ResultCallback callback);
-
-  void OnCreateAnonAddress(
-      const ledger::UrlResponse& response,
-      ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED
