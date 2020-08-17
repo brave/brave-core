@@ -139,7 +139,7 @@ ledger::Result ParseRecoverWallet(
 // POST /v3/wallet/uphold/{payment_id}/claim
 //
 // Success:
-// OK (201)
+// OK (200)
 //
 // Response Format:
 // {Empty body}
@@ -175,7 +175,7 @@ ledger::Result CheckClaimWallet(const ledger::UrlResponse& response) {
     return ledger::Result::LEDGER_ERROR;
   }
 
-  if (response.status_code != net::HTTP_CREATED) {
+  if (response.status_code != net::HTTP_OK) {
     return ledger::Result::LEDGER_ERROR;
   }
 
