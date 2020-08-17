@@ -29,10 +29,14 @@ class FeedItemView: UIView {
         $0.backgroundColor = UIColor(white: 1.0, alpha: 0.1)
         $0.clipsToBounds = true
     }
-    /// The feed title label, defaults to 2 line maximum
+    /// The feed title label
     var titleLabel = UILabel().then {
         $0.appearanceTextColor = .white
         $0.setContentCompressionResistancePriority(.required, for: .vertical)
+    }
+    /// An optional description label
+    lazy var descriptionLabel = UILabel().then {
+        $0.appearanceTextColor = UIColor.white.withAlphaComponent(0.5)
     }
     /// The date of when the article was posted
     lazy var dateLabel = UILabel().then {
@@ -67,6 +71,10 @@ class FeedItemView: UIView {
             titleLabel.numberOfLines = configuration.numberOfLines
             titleLabel.font = configuration.font
             return titleLabel
+        case .description(let configuration):
+            descriptionLabel.numberOfLines = configuration.numberOfLines
+            descriptionLabel.font = configuration.font
+            return descriptionLabel
         case .stack(let stack):
             return UIStackView().then {
                 $0.axis = stack.axis
@@ -137,6 +145,7 @@ extension FeedItemView {
             }
             
             static let title = LabelConfiguration(numberOfLines: 0, font: .systemFont(ofSize: 14.0, weight: .semibold))
+            static let description = LabelConfiguration(numberOfLines: 3, font: .systemFont(ofSize: 13.0, weight: .semibold))
             static let date = LabelConfiguration(numberOfLines: 1, font: .systemFont(ofSize: 11.0, weight: .semibold))
             static let brand = LabelConfiguration(numberOfLines: 0, font: .systemFont(ofSize: 13.0, weight: .semibold))
         }
@@ -149,6 +158,7 @@ extension FeedItemView {
             case thumbnail(ImageLayout)
             case title(_ labelConfiguration: LabelConfiguration)
             case date(_ labelConfiguration: LabelConfiguration = .date)
+            case description(_ labelConfiguration: LabelConfiguration = .description)
             case brand(viewingMode: BrandContainerView.ViewingMode = .automatic, labelConfiguration: LabelConfiguration = .brand)
         }
         /// The root stack for a given layout
@@ -171,7 +181,7 @@ extension FeedItemView {
                     case .aspectRatio(let ratio):
                         return width / ratio
                     }
-                case .title(let configuration), .date(let configuration):
+                case .title(let configuration), .date(let configuration), .description(let configuration):
                     return configuration.font.pointSize * (configuration.numberOfLines == 0 ? 3 : CGFloat(configuration.numberOfLines))
                 case .brand(let viewingMode, let configuration):
                     switch viewingMode {
@@ -251,7 +261,8 @@ extension FeedItemView {
                 ]
             )
         )
-        /// Defines an offer layout, similar to `vertical` except does not show a date
+        /// Defines an offer layout, similar to `vertical` except it displays some additional information and
+        /// does not show a date
         ///
         /// ```
         /// ┌───────────┐
@@ -261,6 +272,7 @@ extension FeedItemView {
         /// ├───────────┤
         /// ├───────────┤
         /// │ title     │
+        /// | desc...   |
         /// └───────────┘
         /// ```
         ///
@@ -272,7 +284,9 @@ extension FeedItemView {
                 spacing: 10,
                 children: [
                     .thumbnail(.aspectRatio(1)),
-                    .title(LabelConfiguration.title.withNumberOfLines(4))
+                    .title(LabelConfiguration.title.withNumberOfLines(4)),
+                    .customSpace(4),
+                    .description()
                 ]
             )
         )
