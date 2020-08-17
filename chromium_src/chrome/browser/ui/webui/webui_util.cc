@@ -33,7 +33,8 @@ void SetupWebUIDataSource(content::WebUIDataSource* source,
                           int default_resource) {
   SetupWebUIDataSource_ChromiumImpl(source, resources, generated_path,
                                     default_resource);
-  source->OverrideContentSecurityPolicyScriptSrc(kBraveCSP);
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ScriptSrc, kBraveCSP);
 }
 
 #if BUILDFLAG(OPTIMIZE_WEBUI)
@@ -43,7 +44,8 @@ void SetupBundledWebUIDataSource(content::WebUIDataSource* source,
                                  int default_resource) {
   SetupBundledWebUIDataSource_ChromiumImpl(source, bundled_path, bundle,
                                            default_resource);
-  source->OverrideContentSecurityPolicyScriptSrc(kBraveCSP);
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ScriptSrc, kBraveCSP);
 }
 #endif
 

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-index 5737f324846addec7938b4dac1519e97abb7d1b1..e06f381fb39c50a67054a3fad2537b3d07c3ac3a 100644
+index 470dbea2910aebff729b7510b9c605a0e42c823d..b079c9f0914f4253e2afa0e954acb2a7a958d43b 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate_factory.cc
-@@ -102,5 +102,5 @@ ChromeBrowsingDataRemoverDelegateFactory::GetBrowserContextToUse(
+@@ -106,5 +106,5 @@ ChromeBrowsingDataRemoverDelegateFactory::GetBrowserContextToUse(
  
  KeyedService* ChromeBrowsingDataRemoverDelegateFactory::BuildServiceInstanceFor(
      content::BrowserContext* context) const {

@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 
+#include "base/check_op.h"
 #include "base/logging.h"
 
 namespace ntp_background_images {

@@ -6,8 +6,16 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_LOCATION_BAR_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_LOCATION_BAR_VIEW_H_
 
+#define BRAVE_LOCATION_BAR_VIEW_H_   \
+ private:                            \
+  friend class BraveLocationBarView; \
+                                     \
+ public:                             \
+  void Layout(views::View* trailing_view);
+
 #define GetBorderRadius virtual GetBorderRadius
 #include "../../../../../../../chrome/browser/ui/views/location_bar/location_bar_view.h"
 #undef GetBorderRadius
+#undef BRAVE_LOCATION_BAR_VIEW_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_LOCATION_BAR_LOCATION_BAR_VIEW_H_

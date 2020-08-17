@@ -225,6 +225,7 @@ ledger::DBCommandResponse::Status RewardsDatabase::Initialize(
 
     initialized_ = true;
     memory_pressure_listener_.reset(new base::MemoryPressureListener(
+        FROM_HERE,
         base::Bind(&RewardsDatabase::OnMemoryPressure,
         base::Unretained(this))));
   } else {

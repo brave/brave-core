@@ -1,8 +1,8 @@
 diff --git a/extensions/browser/api/socket/tcp_socket.cc b/extensions/browser/api/socket/tcp_socket.cc
-index b01331a2c0921b2e0fbc44330b13612fe5548373..fd2dc22832ea4bc1cfd68c8f19a59106928a462f 100644
+index 9aafd37de0f5df5c156d1d062449634cf90bca8a..ae1f1ebfa29cd67936551ecd8913cb218c295dda 100644
 --- a/extensions/browser/api/socket/tcp_socket.cc
 +++ b/extensions/browser/api/socket/tcp_socket.cc
-@@ -157,8 +157,16 @@ void TCPSocket::Disconnect(bool socket_destroying) {
+@@ -156,8 +156,16 @@ void TCPSocket::Disconnect(bool socket_destroying) {
    client_socket_.reset();
    server_socket_.reset();
    listen_callback_.Reset();

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index ee91707b46ab0677232c8fef7877a875e6178418..355d0d043c7282a11951797b1902d61555ab191b 100644
+index 832cfc42b139fe7ee00fa2f5178ab35b934485e6..f8f36bf7afdf49353b30c6ecff1c5821efa292f5 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
 @@ -279,6 +279,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,

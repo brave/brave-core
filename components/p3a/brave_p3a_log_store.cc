@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/brave_p3a_log_store.h"
 
+#include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
@@ -153,6 +154,8 @@ void BraveP3ALogStore::DiscardStagedLog() {
   staged_entry_key_.clear();
   staged_log_.clear();
 }
+
+void BraveP3ALogStore::MarkStagedLogAsSent() {}
 
 void BraveP3ALogStore::PersistUnsentLogs() const {
   NOTREACHED();

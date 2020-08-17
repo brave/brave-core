@@ -5,18 +5,23 @@
 
 #include "content/public/browser/url_data_source.h"
 
-#define GetContentSecurityPolicyScriptSrc \
-  GetContentSecurityPolicyScriptSrc_ChromiumImpl
+#define GetContentSecurityPolicy GetContentSecurityPolicy_ChromiumImpl
 
 #include "../../../../../content/public/browser/url_data_source.cc"
-#undef GetContentSecurityPolicyScriptSrc
+#undef GetContentSecurityPolicy
 
 namespace content {
 
-std::string URLDataSource::GetContentSecurityPolicyScriptSrc() {
-  // Note: Do not add 'unsafe-eval' here. Instead override CSP for the
-  // specific pages that need it, see context http://crbug.com/525224.
-  return "script-src chrome://resources chrome://brave-resources 'self';";
+std::string URLDataSource::GetContentSecurityPolicy(
+    network::mojom::CSPDirectiveName directive) {
+  switch (directive) {
+    case network::mojom::CSPDirectiveName::ScriptSrc:
+      // Note: Do not add 'unsafe-eval' here. Instead override CSP for the
+      // specific pages that need it, see context http://crbug.com/525224.
+      return "script-src chrome://resources chrome://brave-resources 'self';";
+    default:
+      return GetContentSecurityPolicy_ChromiumImpl(directive);
+  }
 }
 
 }  // namespace content

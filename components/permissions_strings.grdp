@@ -85,8 +85,8 @@
   <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's camera.">
     Use your camera
   </message>
-  <message name="IDS_MEDIA_CAPTURE_CAMERA_PAN_TILT_ZOOM_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions prompt when a web page requests access to the computer's camera, including zoom and move.">
-    Move your camera
+  <message name="IDS_MEDIA_CAPTURE_CAMERA_PAN_TILT_ZOOM_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions prompt when a web page requests access to the computer's camera, including zoom and move.">
+    Use &amp; move your camera
   </message>
   <message name="IDS_ACCESSIBILITY_EVENTS_PERMISSION_FRAGMENT" desc="Permission request shown if the user is visiting a site that wants to respond to accessibility events, for example if the user is using a screen reader and the site has custom accessibility features. Follows a prompt: 'This site would like to:'">
     Respond to Accessibility Events
@@ -119,6 +119,36 @@ This will otherwise be blocked by your privacy settings. This will allow the con
   <message name="IDS_PERMISSION_DENY" desc="Label on button to deny a permissions request.">
     Block
   </message>
+
+  <if expr="not is_android">
+    <message name="IDS_GEOLOCATION_PERMISSION_CHIP" desc="Button text representing a request for the user's physical location from a website. When clicked, shows a permission prompt bubble with more information.">
+      Share location?
+    </message>
+    <message name="IDS_NOTIFICATION_PERMISSIONS_CHIP" desc="Button text representing a request for showing notifications from a website. When clicked, shows a permission prompt bubble with more information.">
+      Get notifications?
+    </message>
+    <message name="IDS_MIDI_SYSEX_PERMISSION_CHIP" desc="Button text representing a request for accessing MIDI devices from a website. When clicked, shows a permission prompt bubble with more information.">
+      Connect MIDI device?
+    </message>
+    <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_PERMISSION_CHIP" desc="Button text representing a request for accessing the computer's microphone from a website. When clicked, shows a permission prompt bubble with more information.">
+      Use microphone?
+    </message>
+    <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_CHIP" desc="Button text representing a request for accessing to the computer's camera from a website. When clicked, shows a permission prompt bubble with more information.">
+      Use camera?
+    </message>
+    <message name="IDS_MEDIA_CAPTURE_VIDEO_AND_AUDIO_PERMISSION_CHIP" desc="Button text representing a request for accessing the computer's camera and microphone from a website. When clicked, shows a permission prompt bubble with more information.">
+      Use camera &amp; microphone?
+    </message>
+    <message name="IDS_CLIPBOARD_PERMISSION_CHIP" desc="Button text representing a request for reading data from the system clipboard from a website. When clicked, shows a permission prompt bubble with more information.">
+      Share clipboard?
+    </message>
+    <message name="IDS_VR_PERMISSION_CHIP" desc="Button text representing a request for using VR from a website. When clicked, shows a permission prompt bubble with more information.">
+      Allow VR?
+    </message>
+    <message name="IDS_AR_PERMISSION_CHIP" desc="Button text representing a request for using AR from a website. When clicked, shows a permission prompt bubble with more information.">
+      Allow AR?
+    </message>
+  </if>
 
   <!-- Quota messages -->
   <if expr="is_android">

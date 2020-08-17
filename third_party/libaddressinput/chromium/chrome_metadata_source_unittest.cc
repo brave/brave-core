@@ -1,9 +1,13 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "third_party/libaddressinput/chromium/chrome_metadata_source.h"
 
-#include "base/message_loop/message_loop.h"
 #include "base/run_loop.h"
 #include "base/test/bind_test_util.h"
-#include "base/threading/thread_task_runner_handle.h"
+#include "base/test/task_environment.h"
 #include "mojo/core/embedder/embedder.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -39,12 +43,12 @@ class ChromeMetadataSourceTest : public testing::Test {
   }
 
  protected:
-  base::MessageLoop loop_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> test_shared_loader_factory_;
 };
 
 TEST_F(ChromeMetadataSourceTest, NoFetch) {
+  base::test::TaskEnvironment task_environment;
   bool network_access_occurred = false;
   base::RunLoop loop;
   test_url_loader_factory_.SetInterceptor(

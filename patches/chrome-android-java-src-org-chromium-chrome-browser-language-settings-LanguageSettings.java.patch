@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/language/settings/LanguageSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/language/settings/LanguageSettings.java
-index 272fb7ad2199a22255617fdc90b222e42c5ee494..69a269ba9dde6ad00e17ef5e976e34971d253255 100644
+index 7ee2459e9a66b1a7f8f6345150e623232bf691f9..c7fd902d0ac4c2d30cd94be23b4571aabf85be70 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/language/settings/LanguageSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/language/settings/LanguageSettings.java
-@@ -25,7 +25,7 @@ import org.chromium.components.browser_ui.settings.SettingsUtils;
+@@ -27,7 +27,7 @@ import org.chromium.components.user_prefs.UserPrefs;
   * seamlessly find and manage their languages preferences across platforms.
   */
  public class LanguageSettings

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index f3abfb161746d4ebdfacfbe1d49dcef0c44e73f6..d8d012dc0ff884313d96fd3d1063b258d671b95c 100644
+index 339d7359c905c6fb5a9b32c251dc91016d5ffd2f..7bc88d7d5c7d35ae123224d66243da3e6df17b21 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
-@@ -303,6 +303,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
+@@ -302,6 +302,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
  #endif
      content::kChromeUIScheme,
      content::kChromeUIUntrustedScheme,

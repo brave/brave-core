@@ -58,8 +58,7 @@ class BraveContentSettingsAgentImpl : public ContentSettingsAgentImpl {
   // RenderFrameObserver
   bool OnMessageReceived(const IPC::Message& message) override;
   void OnAllowScriptsOnce(const std::vector<std::string>& origins);
-  void DidCommitProvisionalLoad(bool is_same_document_navigation,
-                                ui::PageTransition transition) override;
+  void DidCommitProvisionalLoad(ui::PageTransition transition) override;
 
   bool IsScriptTemporilyAllowed(const GURL& script_url);
 

@@ -65,7 +65,7 @@
     Applications that can cause this error include antivirus, firewall, and web-filtering or proxy software.
   </message>
 
-  <!-- Lookalike URL warning -->
+  <!-- Lookalike URL warning with a suggested hostname -->
   <message name="IDS_LOOKALIKE_URL_TITLE" desc="Tab title. Context: the requested URL might be trying to trick the user since it looks like a more popular URL. This interstitial points the user to the safe site instead.">
     Safety warning
   </message>
@@ -78,9 +78,16 @@
   <message name="IDS_LOOKALIKE_URL_CONTINUE" desc="Button text. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL. This button dismisses the interstitial and navigates to the suggested (safe) URL.">
     Go to <ph name="DOMAIN">$1<ex>example.com</ex></ph>
   </message>
+
   <message name="IDS_LOOKALIKE_URL_PRIMARY_PARAGRAPH" desc="Main paragraph of an error message. Context: the error page that's shown when the requested URL might be trying to trick the user since it looks like a more popular URL.">
     The site you just tried to visit looks fake. Attackers sometimes mimic sites by making small, hard-to-see changes to the URL.
   </message>
+
+  <!-- Lookalike URL without a suggested hostname -->
+  <message name="IDS_LOOKALIKE_URL_BACK_TO_SAFETY" desc="The text for the button that takes the user back to the new tab page.">
+    Back to safety
+  </message>
+
 
   <!-- Clock errors -->
   <message name="IDS_CLOCK_ERROR_TITLE" desc="Tab title. Context: the browser can't load a page because the device's clock is wrong.">
@@ -228,11 +235,8 @@
   <message name="IDS_MALWARE_V3_PROCEED_PARAGRAPH" desc="The paragraph that lets the user skip the warning.">
     If you understand the risks to your security, you may <ph name="BEGIN_LINK">&lt;a href="#" id="proceed-link"&gt;</ph>visit this unsafe site<ph name="END_LINK">&lt;/a&gt;</ph> before the dangerous programs have been removed.
   </message>
-  <message name="IDS_SAFE_BROWSING_PRIVACY_POLICY_PAGE" desc="Label for the link to SafeBrowsing Privacy policy page">
-    Privacy policy
-  </message>
   <message name="IDS_SAFE_BROWSING_SCOUT_REPORTING_AGREE" desc="SafeBrowsing Scout label next to checkbox">
-    Help improve Brave security by sending <ph name="BEGIN_WHITEPAPER_LINK">&lt;a href="#" id="whitepaper-link"&gt;</ph>URLs of some pages you visit, limited system information, and some page content<ph name="END_WHITEPAPER_LINK">&lt;/a&gt;</ph> to Brave. <ph name="PRIVACY_PAGE_LINK">$1</ph>
+    Help improve security on the web for everyone by sending <ph name="BEGIN_WHITEPAPER_LINK">&lt;a href="#" id="whitepaper-link"&gt;</ph>URLs of some pages you visit, limited system information, and some page content<ph name="END_WHITEPAPER_LINK">&lt;/a&gt;</ph> to Brave. <ph name="BEGIN_PRIVACY_PAGE_LINK">&lt;a id="privacy-link" href="#"&gt;</ph>Privacy policy<ph name="END_PRIVACY_PAGE_LINK">&lt;/a&gt;</ph>
   </message>
 
   <!-- Harmful download interstitial -->
@@ -414,25 +418,25 @@
   </message>
   <message name="IDS_ORIGIN_POLICY_INFO" desc="The primary explanatory paragraph for the Origin Policy Error interstitial.">
     The site <ph name="ORIGIN">$2</ph> has requested that an origin policy
-    will apply to all its request, but this policy cannot presently be applied.
+    apply to all requests to it, but this policy cannot presently be applied.
   </message>
   <message name="IDS_ORIGIN_POLICY_INFO2" desc="The second paragraph of the text of the Origin Policy Error Interstitial. (Presently intentionally left blank.)" />
   <message name="IDS_ORIGIN_POLICY_BUTTON" desc="The text for the Origin Policy Error Interstitial button that takes the user back to the previous page">
-    Back to safety.
+    Back to safety
   </message>
   <message name="IDS_ORIGIN_POLICY_DETAILS" desc="The text for the Origin Policy Error Interstitial button that contains additional information.">
     Advanced
   </message>
   <message name="IDS_ORIGIN_POLICY_EXPLANATION_CANNOT_LOAD" desc="The text of the Origin Policy Error Interstitial that will be displayed when the user presses the 'Advanced' button for additional information, for the case where the policy was requested but could not be loaded.">
     The server you are going to, <ph name="ORIGIN">$2</ph>, has requested that
-    an origin policy will be applied to all requests to it. But it has now
-    failed to deliver a policy, which prevents the browser from fulfilling
-    your request for <ph name="SITE">$1</ph>. Origin policies can be used by
-    site operators to configure security and other properties for a site.
+    an origin policy be applied to all requests to it. But it has now failed to
+    deliver a policy, which prevents the browser from fulfilling your request
+    for <ph name="SITE">$1</ph>. Origin policies can be used by site operators
+    to configure security and other properties for a site.
   </message>
   <message name="IDS_ORIGIN_POLICY_EXPLANATION_CANNOT_PARSE_HEADER" desc="The text of the Origin Policy Error Interstitial that will be displayed when the user presses the 'Advanced' button for additional information, for the case where the policy header could not be parsed.">
     The server you are going to, <ph name="ORIGIN">$2</ph>, has set a header
-    requiring that an origin policy will be applied to all requests to it. But
+    requiring that an origin policy be applied to all requests to it. But
     the header is malformed, which prevents the browser from fulfilling
     your request for <ph name="SITE">$1</ph>. Origin policies can be used by
     site operators to configure security and other properties for a site.
@@ -506,4 +510,22 @@
   <message name="IDS_LEGACY_TLS_EXPLANATION" desc="Part of an extended description hidden behind an 'Advanced' button on an error page. A user visits a website that uses an obsolete version of TLS and they are shown this error. Page title and additional description of the error are shown above.">
     The connection used to load this site used TLS 1.0 or TLS 1.1, which are deprecated and will be disabled in the future. Once disabled, users will be prevented from loading this site. The server should enable TLS 1.2 or later.
   </message>
+
+  <!-- Insecure form submission interstitial-->
+  <message name="IDS_INSECURE_FORM_TITLE" desc="Tab Title for insecure form submission warning">
+    Insecure Form
+  </message>
+  <message name="IDS_INSECURE_FORM_HEADING" desc="Large heading of the warning shown when submitting an insecure form">
+    The data in this form is being sent through an insecure connection
+  </message>
+  <message name="IDS_INSECURE_FORM_PRIMARY_PARAGRAPH" desc="Main paragraph of the insecure form submission warning. This warning is shown when a form shown on a secure website is submitted over an insecure connection.">
+    This form is being submitted over an insecure connection, which may expose your information (for example, passwords, messages, or credit cards) when it is sent to this site.
+  </message>
+  <message name="IDS_INSECURE_FORM_BACK_BUTTON" desc="Text for the button in the insecure form warning that takes the user back to the previous page">
+    Go Back
+  </message>
+  <message name="IDS_INSECURE_FORM_SUBMIT_BUTTON" desc="Text for the button in the insecure form warning that bypasses the warning and submits the form">
+    Submit Anyways
+  </message>
+
 </grit-part>

@@ -95,11 +95,6 @@ void RewardsTabHelper::ResourceLoadComplete(
   }
 }
 
-void RewardsTabHelper::DidAttachInterstitialPage() {
-  if (rewards_service_)
-    rewards_service_->OnUnload(tab_id_);
-}
-
 void RewardsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
   if (!rewards_service_)
     return;

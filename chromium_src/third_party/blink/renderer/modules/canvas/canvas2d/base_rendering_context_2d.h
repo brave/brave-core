@@ -14,8 +14,12 @@
   bool isPointInStroke(ScriptState*, const double x, const double y);       \
   bool isPointInStroke(ScriptState*, Path2D*, const double x, const double y);
 
-#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
+#define getImageData                                                           \
+  getImageData(ScriptState*, int sx, int sy, int sw, int sh, ExceptionState&); \
+  virtual ImageData* getImageDataUnused
 
+#include "../../../../../../../../third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
+#undef getImageData
 #undef BRAVE_BASE_RENDERING_CONTEXT_2D_H
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_CANVAS_CANVAS2D_BASE_RENDERING_CONTEXT_2D_H_

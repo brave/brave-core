@@ -1,8 +1,8 @@
 diff --git a/ui/base/BUILD.gn b/ui/base/BUILD.gn
-index 547ecab34e43ff0cc929df830a9c98c714ff4a7f..a2b99810a2ebb8982ee0cc2d1f1eb93f350a8e5c 100644
+index 1179753aeffe325bc35ee6a730b0a6fde269e909..75ad5137fbc215dce21b9a59fcc89f063529d4c4 100644
 --- a/ui/base/BUILD.gn
 +++ b/ui/base/BUILD.gn
-@@ -449,6 +449,7 @@ jumbo_component("base") {
+@@ -453,6 +453,7 @@ jumbo_component("base") {
      "//ui/strings",
      "//url",
    ]

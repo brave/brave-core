@@ -81,7 +81,7 @@ bool BatteryManager::HasPendingActivity() const {
   return false;
 }
 
-void BatteryManager::Trace(blink::Visitor* visitor) {
+void BatteryManager::Trace(blink::Visitor* visitor) const {
   visitor->Trace(battery_property_);
   PlatformEventController::Trace(visitor);
   EventTargetWithInlineData::Trace(visitor);

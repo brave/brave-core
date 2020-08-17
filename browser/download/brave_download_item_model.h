@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -17,27 +18,23 @@
 class BraveDownloadItemModel {
  public:
   // Constructs a BraveDownloadItemModel that encapsulates DownloadItemModel.
-  explicit BraveDownloadItemModel(DownloadUIModel& model);
+  explicit BraveDownloadItemModel(DownloadUIModel* model);
   ~BraveDownloadItemModel();
 
   // Method that returns a string suitable for use as a tooltip. For
   // a regular download, the tooltip is the filename and the origin URL with an
   // indicator if the URL is secure. For an interrupted download, falls back on
   // the base class behavior.
-  // |font_list| and |max_width| are used to elide the filename and/or interrupt
-  // reason as necessary to keep the width of the tooltip text under
-  // |max_width|. The tooltip will be at most 3 lines.
-  base::string16 GetTooltipText(const gfx::FontList& font_list,
-                                int max_width);
+  base::string16 GetTooltipText();
 
   // Returns a string suitable for use as the origin URL. |is_secure| is set to
   // true if the url is considered secure.
-  base::string16 GetOriginURLText(bool& is_secure);
+  base::string16 GetOriginURLText(bool* is_secure);
 
-  // Reference to the encapsulated model.
-  DownloadUIModel& model_;
+  // Encapsulated model.
+  DownloadUIModel* model_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDownloadItemModel);
 };
 
-#endif
+#endif  // BRAVE_BROWSER_DOWNLOAD_BRAVE_DOWNLOAD_ITEM_MODEL_H_

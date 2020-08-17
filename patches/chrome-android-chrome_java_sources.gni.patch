@@ -1,10 +1,10 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index b1b92faadfa68e5f7a3df30774aa42b4edb98980..520e64ae9dedbccd87737858237386c3ab07c8a9 100644
+index 27d29dc46ff919a3235f47b482e38f6c297b2f39..a6b5b57d935a98dd130267e5f0579c54050af32b 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1803,3 +1803,4 @@ chrome_java_sources = [
-   "java/src/org/chromium/chrome/browser/widget/bottomsheet/EmptyBottomSheetObserver.java",
-   "java/src/org/chromium/chrome/browser/widget/bottomsheet/TouchRestrictingFrameLayout.java",
+@@ -1768,3 +1768,4 @@ chrome_java_sources = [
+   "java/src/org/chromium/chrome/browser/widget/DateDividedAdapter.java",
+   "java/src/org/chromium/chrome/browser/widget/ScrimView.java",
  ]
 +chrome_java_sources -= ["java/src/org/chromium/chrome/browser/ntp/IncognitoNewTabPageView.java",]
 \ No newline at end of file

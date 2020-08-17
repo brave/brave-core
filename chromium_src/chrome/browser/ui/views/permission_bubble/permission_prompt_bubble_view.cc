@@ -7,6 +7,7 @@
 
 #include "components/permissions/permission_request.h"
 #include "third_party/widevine/cdm/buildflags.h"
+#include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/window/dialog_delegate.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -61,7 +62,7 @@ bool HasWidevinePermissionRequest(
 }
 
 void AddAdditionalWidevineViewControlsIfNeeded(
-    views::DialogDelegateView* dialog_delegate,
+    views::BubbleDialogDelegateView* dialog_delegate_view,
     const std::vector<permissions::PermissionRequest*>& requests) {
   if (!HasWidevinePermissionRequest(requests))
     return;
@@ -75,17 +76,23 @@ void AddAdditionalWidevineViewControlsIfNeeded(
 
   ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
   const int preferred_dialog_width = provider->GetSnappedDialogWidth(
-      dialog_delegate->GetPreferredSize().width());
+      dialog_delegate_view->GetPreferredSize().width());
   // Resize width. Then, it's height deduced.
-  text->SizeToFit(preferred_dialog_width - dialog_delegate->margins().width());
-  dialog_delegate->AddChildView(text);
-  dialog_delegate->AddChildView(new DontAskAgainCheckbox(widevine_request));
+  text->SizeToFit(preferred_dialog_width -
+                  dialog_delegate_view->margins().width());
+  dialog_delegate_view->AddChildView(text);
+  dialog_delegate_view->AddChildView(
+      new DontAskAgainCheckbox(widevine_request));
 }
 #else
 void AddAdditionalWidevineViewControlsIfNeeded(
-    views::DialogDelegateView* dialog_delegate,
+    views::BubbleDialogDelegateView* dialog_delegate_view,
     const std::vector<permissions::PermissionRequest*>& requests) {}
 #endif
 }  // namespace
 
-#include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"  // NOLINT
+#define BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW \
+  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());
+
+#include "../../../../../../../chrome/browser/ui/views/permission_bubble/permission_prompt_bubble_view.cc"
+#undef BRAVE_PERMISSION_PROMPT_BUBBLE_VIEW

@@ -74,12 +74,12 @@ views::View* BraveTranslateBubbleView::BraveCreateViewBeforeTranslate() {
 
   auto accept_button = views::MdTextButton::Create(
       this, l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_INSTALL));
-  accept_button->SetID(BUTTON_ID_TRANSLATE);
+  accept_button->SetID(BUTTON_ID_DONE);
   accept_button->SetIsDefault(true);
 
   auto cancel_button = views::MdTextButton::Create(
       this, l10n_util::GetStringUTF16(IDS_BRAVE_TRANSLATE_BUBBLE_CANCEL));
-  cancel_button->SetID(BUTTON_ID_CANCEL);
+  cancel_button->SetID(BUTTON_ID_CLOSE);
 
   layout->StartRowWithPadding(
       views::GridLayout::kFixedSize, kButtonColumnSetId,
@@ -131,11 +131,11 @@ void BraveTranslateBubbleView::DisableOfferTranslatePref() {
 void BraveTranslateBubbleView::ButtonPressed(views::Button* sender,
                                              const ui::Event& event) {
   switch (static_cast<ButtonID>(sender->GetID())) {
-    case BUTTON_ID_TRANSLATE: {
+    case BUTTON_ID_DONE: {
       InstallGoogleTranslate();
       break;
     }
-    case BUTTON_ID_CANCEL: {
+    case BUTTON_ID_CLOSE: {
       CloseBubble();
       break;
     }
@@ -170,8 +170,12 @@ bool BraveTranslateBubbleView::AcceleratorPressed(
   return TranslateBubbleView::AcceleratorPressed(accelerator);
 }
 
+bool BraveTranslateBubbleView::ShouldShowWindowTitle() const {
+  return true;
+}
+
 void BraveTranslateBubbleView::Init() {
   TranslateBubbleView::Init();
-  RemoveChildView(before_translate_view_);
-  before_translate_view_ = AddChildView(BraveCreateViewBeforeTranslate());
+  RemoveChildView(translate_view_);
+  translate_view_ = AddChildView(BraveCreateViewBeforeTranslate());
 }

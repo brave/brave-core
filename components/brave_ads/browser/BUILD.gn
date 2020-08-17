@@ -52,12 +52,31 @@ source_set("browser") {
       "notification_helper.h",
     ]
 
+    deps += [
+      "//brave/vendor/bat-native-ads",
+      "//brave/components/brave_ads/resources",
+      "//brave/components/services/bat_ads/public/cpp",
+      "//components/history/core/browser",
+      "//components/history/core/common",
+      "//components/wifi",
+      "//net",
+      "//services/network/public/cpp",
+      "//services/network/public/mojom",
+      "//ui/base",
+      "//ui/message_center/public/cpp",
+    ]
+
     if (is_android) {
       sources += [
         "background_helper_android.cc",
         "background_helper_android.h",
         "notification_helper_android.cc",
         "notification_helper_android.h",
+      ]
+      deps += [
+        "//brave/browser/brave_ads/android:jni_headers",
+        "//brave/build/android:jni_headers",
+        "//chrome/android:jni_headers",
       ]
     }
 
@@ -68,6 +87,7 @@ source_set("browser") {
         "notification_helper_linux.cc",
         "notification_helper_linux.h",
       ]
+      deps += [ "//ui/gfx/x" ]
     }
 
     if (is_mac) {
@@ -86,34 +106,9 @@ source_set("browser") {
         "notification_helper_win.cc",
         "notification_helper_win.h",
       ]
-    }
-
-    deps += [
-      "//brave/vendor/bat-native-ads",
-      "//brave/components/brave_ads/resources",
-      "//brave/components/services/bat_ads/public/cpp",
-      "//components/history/core/browser",
-      "//components/history/core/common",
-      "//components/wifi",
-      "//net",
-      "//services/network/public/cpp",
-      "//services/network/public/mojom",
-      "//ui/base",
-      "//ui/message_center/public/cpp",
-    ]
-
-    if (is_win) {
       deps += [
         "//ui/views",
         "//ui/gfx",
-      ]
-    }
-
-    if (is_android) {
-      deps += [
-        "//brave/browser/brave_ads/android:jni_headers",
-        "//brave/build/android:jni_headers",
-        "//chrome/android:jni_headers",
       ]
     }
   }

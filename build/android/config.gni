@@ -1,7 +1,6 @@
 import("//brave/android/brave_java_resources.gni")
 import("//brave/android/brave_java_sources.gni")
-import("//brave/build/android/bytecode/java_sources.gni")
-import("//brave/components/sync/android/java_sources.gni")
+import("//brave/build/android/bytecode/bytecode_rewriter.gni")
 
 declare_args() {
   brave_android_manifest_includes = []
@@ -37,4 +36,9 @@ brave_components_browser_ui_site_settings_android_java_resources_deps = [
 
 brave_resources_exclusion_exceptions = [
 "*com_google_android_material_material*design_bottom_*"
+]
+
+brave_resource_values_filter_rules_exclusions = [
+  "*com_google_android_material_material*:[Bb]ottomSheet",
+  "*com_google_android_material_material*:[Ff]loatingActionButton",
 ]

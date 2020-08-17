@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/debian/build.sh b/chrome/installer/linux/debian/build.sh
-index 29e94a6f46f38b5c34ca83d3901c7ed193a4a922..4d9f965c1b0bc4d1e3471b2b977be87e2034bf89 100755
+index b5755a2ce97534dbcd7d1ad8bd977bb12679f683..541f70f9ca69cb1ae01392ea1dfe51702df06139 100755
 --- a/chrome/installer/linux/debian/build.sh
 +++ b/chrome/installer/linux/debian/build.sh
 @@ -21,7 +21,7 @@ gen_changelog() {

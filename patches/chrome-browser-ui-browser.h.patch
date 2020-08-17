@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index 0bae6f32f3f02de3179bf306b94b5adb125a4d1a..58054ca1169254949c65792f4914ee2bae79bc68 100644
+index a5c70f2f3dd1149068f24b56480cf3f63130851d..d718fd276a0d1acd17d13fa74661d5e44ff8fde8 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -661,6 +661,7 @@ class Browser : public TabStripModelObserver,
+@@ -659,6 +659,7 @@ class Browser : public TabStripModelObserver,
    // dragging.
    void SetIsInTabDragging(bool is_in_tab_dragging);
  
 +  BRAVE_BROWSER_H
   private:
    friend class BrowserTest;
-   friend class FullscreenControllerInteractiveTest;
+   friend class ExclusiveAccessTest;

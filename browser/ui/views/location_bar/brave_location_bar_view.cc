@@ -64,7 +64,7 @@ void BraveLocationBarView::Layout() {
   LocationBarView::Layout(brave_actions_ ? brave_actions_ : nullptr);
 }
 
-void BraveLocationBarView::Update(const content::WebContents* contents) {
+void BraveLocationBarView::Update(content::WebContents* contents) {
   // base Init calls update before our Init is run, so our children
   // may not be initialized yet
   if (brave_actions_) {

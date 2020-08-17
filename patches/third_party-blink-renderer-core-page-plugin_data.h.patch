@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/page/plugin_data.h b/third_party/blink/renderer/core/page/plugin_data.h
-index d0260f9f6b1b0025b7305b85f2424dd4ba48af63..43c2a1558a70552225b6652e448229d10d615d11 100644
+index fe5aa20243d89ea6a0f1cecb5ea00846607c6d39..7363a4dab1c30ab26fc57b2d546b77564b359e0b 100644
 --- a/third_party/blink/renderer/core/page/plugin_data.h
 +++ b/third_party/blink/renderer/core/page/plugin_data.h
 @@ -1,4 +1,3 @@

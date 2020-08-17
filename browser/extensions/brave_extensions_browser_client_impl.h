@@ -6,13 +6,11 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSIONS_BROWSER_CLIENT_IMPL_H_
 #define BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSIONS_BROWSER_CLIENT_IMPL_H_
 
-#include "brave/extensions/browser/brave_extensions_browser_client.h"
 #include "chrome/browser/extensions/chrome_extensions_browser_client.h"
 
 namespace extensions {
 
-class BraveExtensionsBrowserClientImpl : public ChromeExtensionsBrowserClient,
-                                         public BraveExtensionsBrowserClient {
+class BraveExtensionsBrowserClientImpl : public ChromeExtensionsBrowserClient {
  public:
   BraveExtensionsBrowserClientImpl();
   ~BraveExtensionsBrowserClientImpl() override = default;

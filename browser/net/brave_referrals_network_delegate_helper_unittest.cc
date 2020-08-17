@@ -19,8 +19,8 @@ using brave::ResponseCallback;
 
 namespace {
 const char kTestReferralHeaders[] = R"(
-  [  
-    {  
+  [
+    {
       "domains": [
          "marketwatch.com",
          "barrons.com"
@@ -53,13 +53,13 @@ const char kTestReferralHeaders[] = R"(
 
 TEST(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
   const GURL url("https://www.marketwatch.com");
-  base::Optional<base::Value> referral_headers =
-      base::JSONReader().ReadToValue(kTestReferralHeaders);
-  ASSERT_TRUE(referral_headers);
-  ASSERT_TRUE(referral_headers->is_list());
+  base::JSONReader::ValueWithError referral_headers =
+      base::JSONReader::ReadAndReturnValueWithError(kTestReferralHeaders);
+  ASSERT_TRUE(referral_headers.value);
+  ASSERT_TRUE(referral_headers.value->is_list());
 
   const base::ListValue* referral_headers_list = nullptr;
-  referral_headers->GetAsList(&referral_headers_list);
+  referral_headers.value->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(url);
@@ -82,13 +82,13 @@ TEST(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
 TEST(BraveReferralsNetworkDelegateHelperTest,
      NoReplaceHeadersForNonMatchingDomain) {
   const GURL url("https://www.google.com");
-  base::Optional<base::Value> referral_headers =
-      base::JSONReader().ReadToValue(kTestReferralHeaders);
-  ASSERT_TRUE(referral_headers);
-  ASSERT_TRUE(referral_headers->is_list());
+  base::JSONReader::ValueWithError referral_headers =
+      base::JSONReader::ReadAndReturnValueWithError(kTestReferralHeaders);
+  ASSERT_TRUE(referral_headers.value);
+  ASSERT_TRUE(referral_headers.value->is_list());
 
   const base::ListValue* referral_headers_list = nullptr;
-  referral_headers->GetAsList(&referral_headers_list);
+  referral_headers.value->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
   auto request_info = std::make_shared<brave::BraveRequestInfo>(GURL());

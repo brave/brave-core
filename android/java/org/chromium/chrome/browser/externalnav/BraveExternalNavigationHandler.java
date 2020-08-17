@@ -37,13 +37,18 @@ public class BraveExternalNavigationHandler extends ExternalNavigationHandler {
         mBraveUphold.CompleteUpholdVerification(params, this);
     }
 
-    /**
-     * This function will be removed by ASM byte-code patching tool
-     * and redirected to ExternalNavigationHandler.
-     */
     public @OverrideUrlLoadingResult int clobberCurrentTabWithFallbackUrl(
         String browserFallbackUrl, ExternalNavigationParams params) {
-        assert false;
-        return OverrideUrlLoadingResult.OVERRIDE_WITH_CLOBBERING_TAB;
+        // Below is an actual code that was used prior to deletion of
+        // clobberCurrentTabWithFallbackUrl introduced here
+        // https://chromium.googlesource.com/chromium/src/+/37b5b744bc83f630d3121b46868818bb4e848c2a
+        if (!params.isMainFrame()) {
+            return OverrideUrlLoadingResult.NO_OVERRIDE;
+        }
+
+        if (params.getRedirectHandler() != null) {
+            params.getRedirectHandler().setShouldNotOverrideUrlLoadingOnCurrentRedirectChain();
+        }
+        return clobberCurrentTab(browserFallbackUrl, params.getReferrerUrl());
     }
 }

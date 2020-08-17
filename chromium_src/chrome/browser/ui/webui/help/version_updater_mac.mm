@@ -107,12 +107,12 @@ void VersionUpdaterMac::CheckForUpdate(
       // status indicating the result of the check.
     }
   } else {
-    status_callback.Run(DISABLED, 0, false, std::string(), 0,
-                        base::string16());
+    status_callback_.Run(DISABLED, 0, false, false, std::string(), 0,
+                         base::string16());
   }
 #else
-  status_callback.Run(DISABLED, 0, false, std::string(), 0,
-                        base::string16());
+  status_callback_.Run(DISABLED, 0, false, false, std::string(), 0,
+                         base::string16());
 #endif
 }
 
@@ -196,7 +196,7 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
   }
 
   if (!status_callback_.is_null())
-    status_callback_.Run(status, 0, false, std::string(), 0, message);
+    status_callback_.Run(status, 0, false, false, std::string(), 0, message);
 }
 
 

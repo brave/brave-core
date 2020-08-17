@@ -13,20 +13,24 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestion;
 import org.chromium.chrome.browser.omnibox.suggestions.UrlBarDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.SuggestionHost;
+import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.ui.favicon.LargeIconBridge;
 
 public class BraveEditUrlSuggestionProcessor extends EditUrlSuggestionProcessor {
     private boolean mHasClearedOmniboxForFocus;
 
     public BraveEditUrlSuggestionProcessor(Context context, SuggestionHost suggestionHost,
-            UrlBarDelegate locationBarDelegate, Supplier<LargeIconBridge> iconBridgeSupplier) {
-        super(context, suggestionHost, locationBarDelegate, iconBridgeSupplier);
+            UrlBarDelegate locationBarDelegate, Supplier<LargeIconBridge> iconBridgeSupplier,
+            Supplier<Tab> tabSupplier, Supplier<ShareDelegate> shareDelegateSupplier) {
+        super(context, suggestionHost, locationBarDelegate, iconBridgeSupplier, tabSupplier,
+                shareDelegateSupplier);
     }
 
     @Override
-    public boolean doesProcessSuggestion(OmniboxSuggestion suggestion) {
+    public boolean doesProcessSuggestion(OmniboxSuggestion suggestion, int position) {
         // We don't want to clear omnibox for focus, so just pretend that it's already happened
         mHasClearedOmniboxForFocus = true;
-        return super.doesProcessSuggestion(suggestion);
+        return super.doesProcessSuggestion(suggestion, position);
     }
 }

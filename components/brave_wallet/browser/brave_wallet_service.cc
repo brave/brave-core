@@ -28,7 +28,7 @@
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_system.h"
-#include "extensions/browser/shared_user_script_master.h"
+#include "extensions/browser/shared_user_script_manager.h"
 #include "extensions/browser/unloaded_extension_reason.h"
 #include "extensions/browser/extension_prefs.h"
 
@@ -251,8 +251,8 @@ std::string BraveWalletService::GetBitGoSeed(
 
 void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
-  auto* shared_user_script_master =
-      extensions::ExtensionSystem::Get(context_)->shared_user_script_master();
+  auto* shared_user_script_manager =
+      extensions::ExtensionSystem::Get(context_)->shared_user_script_manager();
   auto* registry = extensions::ExtensionRegistry::Get(context_);
   auto* metamask_extension =
       registry->enabled_extensions().GetByID(metamask_extension_id);
@@ -262,22 +262,22 @@ void BraveWalletService::RemoveUnusedWeb3ProviderContentScripts() {
   auto provider = static_cast<BraveWalletWeb3ProviderTypes>(
       prefs->GetInteger(kBraveWalletWeb3Provider));
   if (metamask_extension) {
-    shared_user_script_master->OnExtensionUnloaded(
+    shared_user_script_manager->OnExtensionUnloaded(
         context_, metamask_extension,
         extensions::UnloadedExtensionReason::DISABLE);
   }
   if (erc_extension) {
-    shared_user_script_master->OnExtensionUnloaded(
+    shared_user_script_manager->OnExtensionUnloaded(
         context_, erc_extension,
         extensions::UnloadedExtensionReason::DISABLE);
   }
   if (provider == BraveWalletWeb3ProviderTypes::CRYPTO_WALLETS) {
     if (erc_extension) {
-      shared_user_script_master->OnExtensionLoaded(context_, erc_extension);
+      shared_user_script_manager->OnExtensionLoaded(context_, erc_extension);
     }
   } else if (provider == BraveWalletWeb3ProviderTypes::METAMASK) {
     if (metamask_extension) {
-      shared_user_script_master->OnExtensionLoaded(
+      shared_user_script_manager->OnExtensionLoaded(
           context_, metamask_extension);
     }
   }

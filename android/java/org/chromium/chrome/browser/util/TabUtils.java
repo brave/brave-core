@@ -77,7 +77,7 @@ public class TabUtils {
         if (chromeActivity == null || chromeActivity.getToolbarManager() == null) {
             return;
         }
-        View toolbarView = chromeActivity.getToolbarManager().getToolbarView();
+        View toolbarView = chromeActivity.findViewById(R.id.toolbar);
         if (toolbarView == null) {
             return;
         }

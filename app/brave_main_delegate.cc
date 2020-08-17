@@ -35,6 +35,7 @@
 #include "components/offline_pages/core/offline_page_feature.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/safe_browsing/core/features.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
@@ -223,12 +224,12 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
     autofill::features::kAutofillServerCommunication.name,
     blink::features::kTextFragmentAnchor.name,
     features::kAllowPopupsDuringPageUnload.name,
-    features::kLookalikeUrlNavigationSuggestionsUI.name,
     features::kNotificationTriggers.name,
+    features::kPrivacySettingsRedesign.name,
     features::kSmsReceiver.name,
     features::kVideoPlaybackQuality.name,
     features::kTabHoverCards.name,
-    language::kUseButtonTranslateBubbleUi.name,
+    safe_browsing::kEnhancedProtection.name,
 #if defined(OS_ANDROID)
     feed::kInterestFeedContentSuggestions.name,
     translate::kTranslateUI.name,
