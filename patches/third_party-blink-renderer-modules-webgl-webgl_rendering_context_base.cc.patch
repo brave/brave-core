@@ -84,7 +84,9 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..b38657021c277f002287222650c2f037
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
-+      canvas()->GetDocument().GetPageGraph();
++        brave_page_graph::PageGraph::GetFromExecutionContext(
++          *Host()->GetTopExecutionContext());
++
 +    if (page_graph != nullptr) {
 +      std::vector<const String> args;
 +      args.push_back(name);
