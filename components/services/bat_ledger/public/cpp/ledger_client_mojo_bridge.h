@@ -161,6 +161,8 @@ class LedgerClientMojoBridge :
 
   void ClearAllNotifications() override;
 
+  void DeleteLog(DeleteLogCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>
@@ -223,6 +225,10 @@ class LedgerClientMojoBridge :
       CallbackHolder<GetCreateScriptCallback>* holder,
       const std::string& script,
       const int table_version);
+
+  static void OnDeleteLog(
+      CallbackHolder<DeleteLogCallback>* holder,
+      const ledger::Result result);
 
   ledger::LedgerClient* ledger_client_;
 };

@@ -470,4 +470,16 @@ void BatLedgerClientMojoBridge::ClearAllNotifications() {
   bat_ledger_client_->ClearAllNotifications();
 }
 
+void OnDeleteLog(
+    const ledger::ResultCallback callback,
+    const ledger::Result result) {
+  callback(result);
+}
+
+void BatLedgerClientMojoBridge::DeleteLog(
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->DeleteLog(
+      base::BindOnce(&OnDeleteLog, std::move(callback)));
+}
+
 }  // namespace bat_ledger

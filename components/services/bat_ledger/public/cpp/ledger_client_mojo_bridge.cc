@@ -467,4 +467,25 @@ void LedgerClientMojoBridge::ClearAllNotifications() {
   ledger_client_->ClearAllNotifications();
 }
 
+// static
+void LedgerClientMojoBridge::OnDeleteLog(
+    CallbackHolder<DeleteLogCallback>* holder,
+    const ledger::Result result) {
+  DCHECK(holder);
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoBridge::DeleteLog(DeleteLogCallback callback) {
+  auto* holder = new CallbackHolder<DeleteLogCallback>(
+      AsWeakPtr(),
+      std::move(callback));
+  ledger_client_->DeleteLog(
+      std::bind(LedgerClientMojoBridge::OnDeleteLog,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

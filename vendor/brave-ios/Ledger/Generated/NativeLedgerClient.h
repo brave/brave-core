@@ -64,4 +64,5 @@ private:
   void GetCreateScript(ledger::GetCreateScriptCallback callback) override;
   void PendingContributionSaved(const ledger::Result result) override;
   void ClearAllNotifications() override;
+  void DeleteLog(ledger::ResultCallback callback) override;
 };

@@ -146,6 +146,8 @@ class BatLedgerClientMojoBridge :
 
   void ClearAllNotifications() override;
 
+  void DeleteLog(ledger::ResultCallback callback) override;
+
  private:
   bool Connected() const;
 

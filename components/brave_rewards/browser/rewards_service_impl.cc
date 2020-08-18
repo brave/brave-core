@@ -2497,7 +2497,7 @@ void RewardsServiceImpl::DiagnosticLog(
     const int line,
     const int verbose_level,
     const std::string& message) {
-  if (ledger_for_testing_) {
+  if (ledger_for_testing_ || !should_persist_logs_) {
     return;
   }
 
@@ -2744,6 +2744,16 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       }
 
       continue;
+    }
+
+    if (name == "persist-logs") {
+      const std::string lower = base::ToLowerASCII(value);
+
+      if (lower == "true" || lower == "1") {
+        should_persist_logs_ = true;
+      } else {
+        should_persist_logs_ = false;
+      }
     }
   }
 }
@@ -3964,6 +3974,30 @@ void RewardsServiceImpl::OnCompleteReset(
   }
 
   std::move(callback).Run(true);
+}
+
+void RewardsServiceImpl::DeleteLog(ledger::ResultCallback callback) {
+  diagnostic_log_.Close();
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
+      base::BindOnce(
+          &RewardsServiceImpl::DeleteLogTaskRunner,
+          base::Unretained(this)),
+      base::BindOnce(
+          &RewardsServiceImpl::OnDeleteLog,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+bool RewardsServiceImpl::DeleteLogTaskRunner() {
+  return base::DeleteFile(diagnostic_log_path_);
+}
+
+void RewardsServiceImpl::OnDeleteLog(
+    ledger::ResultCallback callback,
+    const bool success) {
+  callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
 }
 
 }  // namespace brave_rewards

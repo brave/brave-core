@@ -158,3 +158,6 @@ void NativeLedgerClient::PendingContributionSaved(const ledger::Result result) {
 void NativeLedgerClient::ClearAllNotifications() {
   [bridge_ clearAllNotifications];
 }
+void NativeLedgerClient::DeleteLog(ledger::ResultCallback callback) {
+  [bridge_ deleteLog:callback];
+}
