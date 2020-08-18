@@ -87,15 +87,12 @@ constexpr gfx::Size kActionButtonMinSize(0, 32);
 // and merge with contradicting |kNotificationIconSize|.
 constexpr gfx::Size kIconViewSize(36, 36);
 constexpr gfx::Insets kLargeImageContainerPadding(0, 16, 16, 16);
-// constexpr gfx::Size kLargeImageMinSize(328, 0);
-constexpr gfx::Size kLargeImageMaxSize(328, 200);
+constexpr gfx::Size kLargeImageMinSize(328, 0);
+constexpr gfx::Size kLargeImageMaxSize(328, 218);
 constexpr gfx::Insets kLeftContentPadding(2, 4, 0, 4);
 constexpr gfx::Insets kLeftContentPaddingWithIcon(2, 4, 0, 12);
 constexpr gfx::Insets kInputTextfieldPadding(16, 16, 16, 0);
 constexpr gfx::Insets kInputReplyButtonPadding(0, 14, 0, 14);
-// constexpr gfx::Insets kSettingsRowPadding(8, 0, 0, 0);
-// constexpr gfx::Insets kSettingsRadioButtonPadding(14, 18, 14, 18);
-// constexpr gfx::Insets kSettingsButtonRowPadding(8);
 
 // Background of inline actions area.
 constexpr SkColor kActionsRowBackgroundColor = SkColorSetRGB(0x00, 0x00, 0x00);
@@ -134,13 +131,6 @@ constexpr int kMessageViewWidthWithIcon =
     kNotificationWidth - kIconViewSize.width() -
     kLeftContentPaddingWithIcon.left() - kLeftContentPaddingWithIcon.right() -
     kContentRowPadding.left() - kContentRowPadding.right();
-
-/* TODO: This should be kept, right?
-constexpr int kMessageViewWidth =
-    kNotificationWidth - kLeftContentPadding.left() -
-    kLeftContentPadding.right() - kContentRowPadding.left() -
-    kContentRowPadding.right();
-    */
 
 const int kMinPixelsPerTitleCharacterMD = 4;
 
@@ -294,17 +284,18 @@ LargeImageView::LargeImageView() {
 LargeImageView::~LargeImageView() = default;
 
 void LargeImageView::SetImage(const gfx::ImageSkia& image) {
-  // image_ = image;
-  // gfx::Size preferred_size = GetResizedImageSize();
-  // preferred_size.SetToMax(kLargeImageMinSize);
-  // preferred_size.SetToMin(kLargeImageMaxSize);
-  // SetPreferredSize(preferred_size);
+  image_ = image;
+  gfx::Size preferred_size = GetResizedImageSize();
+  preferred_size.SetToMax(kLargeImageMinSize);
+  preferred_size.SetToMin(kLargeImageMaxSize);
+  SetPreferredSize(preferred_size);
   SchedulePaint();
   Layout();
 }
 
 void LargeImageView::OnPaint(gfx::Canvas* canvas) {
   views::View::OnPaint(canvas);
+
   gfx::Size resized_size = GetResizedImageSize();
   gfx::Size drawn_size = resized_size;
   drawn_size.SetToMin(kLargeImageMaxSize);
@@ -538,7 +529,6 @@ class NotificationViewMD::NotificationViewMDPathGenerator
   NotificationViewMDPathGenerator& operator=(
       const NotificationViewMDPathGenerator&) = delete;
 
-  // views::HighlightPathGenerator:
   base::Optional<gfx::RRectF> GetRoundRect(const gfx::RectF& rect) override {
     gfx::RectF bounds = rect;
     if (!preferred_size_.IsEmpty())
@@ -576,7 +566,6 @@ void NotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
   CreateOrUpdateListItemViews(notification);
   CreateOrUpdateSmallIconView(notification);
   CreateOrUpdateImageView(notification);
-//  CreateOrUpdateInlineSettingsViews(notification);
   UpdateViewForExpandedState(expanded_);
   // Should be called at the last because SynthesizeMouseMoveEvent() requires
   // everything is in the right location when called.
@@ -586,7 +575,6 @@ void NotificationViewMD::CreateOrUpdateViews(const Notification& notification) {
 NotificationViewMD::NotificationViewMD(const Notification& notification)
     : MessageView(notification),
       ink_drop_container_(new views::InkDropContainerView()) {
-//   SetLayoutManager(std::make_unique<views::FillLayout>(
   SetLayoutManager(std::make_unique<views::BoxLayout>(
         views::BoxLayout::Orientation::kVertical, gfx::Insets(), 0));
 
@@ -602,13 +590,6 @@ NotificationViewMD::NotificationViewMD(const Notification& notification)
   header_row_->AddChildView(control_buttons_view_.get());
   header_row_->SetBounds(0, 0, 200, 20);
   AddChildView(header_row_);
-
-  // albert attempt
-    // views::Widget* widget = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
-    //views::WebView* webview = views::ViewsDelegate::GetInstance()->GetWebViewForWindow();
-//  webview->SetSize(kLargeImageMaxSize);
-//  AddChildView(widget->GetRootView()->children().front());
-  // AddChildView(webview);
 
   // |content_row_| contains title, message, image, progressbar, etc...
   content_row_ = new views::View();
@@ -788,7 +769,6 @@ void NotificationViewMD::OnGestureEvent(ui::GestureEvent* event) {
 }
 
 void NotificationViewMD::PreferredSizeChanged() {
-  // highlight_path_generator_->set_preferred_size(GetPreferredSize());
   MessageView::PreferredSizeChanged();
 }
 
@@ -815,9 +795,7 @@ void NotificationViewMD::ButtonPressed(views::Button* sender,
   // |expand_button| can be focused by TAB.
   if (sender == header_row_) {
     if (IsExpandable() && content_row_->GetVisible()) {
-//      SetManuallyExpandedOrCollapsed(true);
       auto weak_ptr = weak_ptr_factory_.GetWeakPtr();
-//      ToggleExpanded();
       // Check |this| is valid before continuing, because ToggleExpanded() might
       // cause |this| to be deleted.
       if (!weak_ptr)
@@ -850,9 +828,6 @@ void NotificationViewMD::ButtonPressed(views::Button* sender,
       inline_reply_->textfield()->RequestFocus();
       Layout();
       SchedulePaint();
-    } else {
-      // TODO
-      // MessageCenter::Get()->ClickOnNotificationButton(notification_id(), i);
     }
     return;
   }
@@ -864,20 +839,10 @@ void NotificationViewMD::ButtonPressed(views::Button* sender,
 }
 
 void NotificationViewMD::OnNotificationInputSubmit(size_t index,
-                                                   const base::string16& text) {
-  /* TODO
-  MessageCenter::Get()->ClickOnNotificationButtonWithReply(notification_id(),
-                                                           index, text);
-                                                           */
-}
+                                                   const base::string16& text) {}
 
 void NotificationViewMD::CreateOrUpdateContextTitleView(
     const Notification& notification) {
-  /*
-  header_row_->SetAccentColor(notification.accent_color() == SK_ColorTRANSPARENT
-                                  ? kNotificationDefaultAccentColor
-                                  : notification.accent_color());
-                                  */
   header_row_->SetAccentColor(SK_ColorTRANSPARENT);
   header_row_->SetBackgroundColor(kNotificationBackgroundColor);
   header_row_->SetAppNameElideBehavior(gfx::ELIDE_TAIL);
@@ -889,10 +854,6 @@ void NotificationViewMD::CreateOrUpdateContextTitleView(
         notification.origin_url(),
         url_formatter::SchemeDisplay::OMIT_HTTP_AND_HTTPS);
     header_row_->SetAppNameElideBehavior(gfx::ELIDE_HEAD);
-    /* TODO: Remove???
-  } else if (notification.display_source().empty()) {
-    app_name = MessageCenter::Get()->GetSystemNotificationAppName();
-    */
   } else if (!notification.context_message().empty()) {
     app_name = notification.context_message();
   } else {
@@ -1076,12 +1037,6 @@ void NotificationViewMD::CreateOrUpdateSmallIconView(
     const Notification& notification) {
   // TODO(knollr): figure out if this has a performance impact and
   // cache images if so. (crbug.com/768748)
-  /*
-  gfx::Image masked_small_icon = notification.GenerateMaskedSmallIcon(
-      kSmallImageSizeMD, notification.accent_color() == SK_ColorTRANSPARENT
-                             ? kNotificationDefaultAccentColor
-                             : notification.accent_color());
-                             */
   gfx::Image masked_small_icon =
       ui::ResourceBundle::GetSharedInstance().GetImageNamed(
           IDR_REWARDS_LOGO_64);
@@ -1181,10 +1136,7 @@ void NotificationViewMD::CreateOrUpdateActionButtonViews(
     // in the view hierarchy when SynthesizeMouseMoveEvent() is called.
     Layout();
     widget->SetSize(widget->GetContentsView()->GetPreferredSize());
-    LOG(INFO) << "albert settings size to height: " << widget->GetContentsView()->GetPreferredSize().height() << " width: "  << widget->GetContentsView()->GetPreferredSize().width();
     GetWidget()->SynthesizeMouseMoveEvent();
-  } else {
-    LOG(INFO) << "albert Widget not found";
   }
 }
 
@@ -1292,7 +1244,6 @@ void NotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
   // to be deleted.
   {
     auto weak_ptr = weak_ptr_factory_.GetWeakPtr();
-//    SetExpanded(!inline_settings_visible);
     if (!weak_ptr)
       return;
   }
@@ -1306,70 +1257,21 @@ void NotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
 
   Layout();
   SchedulePaint();
-
-  // Call DisableNotification() at the end, because |this| can be deleted at any
-  // point after it's called.
-  /* TODO
-  if (disable_notification)
-    MessageCenter::Get()->DisableNotification(notification_id());
-    */
 }
 
 void NotificationViewMD::UpdateCornerRadius(int top_radius, int bottom_radius) {
   MessageView::UpdateCornerRadius(top_radius, bottom_radius);
   action_buttons_row_->SetBackground(views::CreateBackgroundFromPainter(
       std::make_unique<NotificationBackgroundPainter>(
-//          20, 20, kActionsRowBackgroundColor)));
           top_radius, bottom_radius, kActionsRowBackgroundColor)));
-  /*
   highlight_path_generator_->set_top_radius(top_radius);
   highlight_path_generator_->set_bottom_radius(bottom_radius);
-  */
 }
 
 NotificationControlButtonsView* NotificationViewMD::GetControlButtonsView()
     const {
   return control_buttons_view_.get();
 }
-
-/*
-bool NotificationViewMD::IsExpanded() const {
-  return expanded_;
-}
-*/
-
-/*
-void NotificationViewMD::SetExpanded(bool expanded) {
-  if (expanded_ == expanded)
-    return;
-  expanded_ = expanded;
-
-  UpdateViewForExpandedState(expanded_);
-  PreferredSizeChanged();
-}
-*/
-
-/*
-bool NotificationViewMD::IsManuallyExpandedOrCollapsed() const {
-  return manually_expanded_or_collapsed_;
-}
-
-void NotificationViewMD::SetManuallyExpandedOrCollapsed(bool value) {
-  manually_expanded_or_collapsed_ = value;
-}
-*/
-
-/*
-void NotificationViewMD::OnSettingsButtonPressed(const ui::Event& event) {
-  for (auto& observer : *observers())
-    observer.OnSettingsButtonPressed(notification_id());
-
-  if (settings_row_)
-    ToggleInlineSettings(event);
-  else
-    MessageView::OnSettingsButtonPressed(event);
-}
-*/
 
 void NotificationViewMD::Activate() {
   GetWidget()->widget_delegate()->SetCanActivate(true);
