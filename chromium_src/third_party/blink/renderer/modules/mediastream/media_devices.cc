@@ -3,12 +3,41 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/content_settings/renderer/brave_content_settings_agent_impl_helper.h"
+#include <random>
 
-#define BRAVE_MEDIA_DEVICES_ENUMERATE_DEVICES          \
-  if (!AllowFingerprinting(frame)) {                   \
-    return ScriptPromise::CastUndefined(script_state); \
+#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "third_party/blink/public/platform/web_content_settings_client.h"
+#include "third_party/blink/renderer/core/dom/document.h"
+#include "third_party/blink/renderer/core/frame/local_dom_window.h"
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+#include "third_party/blink/renderer/modules/mediastream/media_device_info.h"
+
+namespace brave {
+
+void FarbleMediaDevices(blink::LocalFrame* frame,
+                        blink::MediaDeviceInfoVector* media_devices) {
+  if (blink::WebContentSettingsClient* settings =
+          frame->GetContentSettingsClient()) {
+    if (settings->GetBraveFarblingLevel() != BraveFarblingLevel::OFF) {
+      // Shuffle the list of plugins pseudo-randomly, based on the
+      // domain+session key.
+      std::mt19937_64 prng = BraveSessionCache::From(*(frame->GetDocument()))
+                                 .MakePseudoRandomGenerator();
+      std::shuffle(media_devices->begin(), media_devices->end(), prng);
+    }
+  }
+}
+
+}  // namespace brave
+
+#define BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED                         \
+  if (ScriptState* script_state = resolver->GetScriptState()) {        \
+    if (LocalDOMWindow* window = LocalDOMWindow::From(script_state)) { \
+      if (LocalFrame* frame = window->GetFrame()) {                    \
+        brave::FarbleMediaDevices(frame, &media_devices);              \
+      }                                                                \
+    }                                                                  \
   }
 
 #include "../../../../../../../third_party/blink/renderer/modules/mediastream/media_devices.cc"
-#undef BRAVE_MEDIA_DEVICES_ENUMERATE_DEVICES
+#undef BRAVE_MEDIA_DEVICES_DEVICES_ENUMERATED
