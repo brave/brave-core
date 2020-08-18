@@ -15,7 +15,6 @@ using std::placeholders::_1;
 // Success code:
 // HTTP_OK (200)
 //
-//
 // Response body:
 // blob
 

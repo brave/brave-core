@@ -49,6 +49,8 @@ source_set("brave_rewards_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/publisher_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/api/api_util_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/api/get_parameters/get_parameters_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/private_cdn/get_publisher/get_publisher_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/private_cdn/private_cdn_util_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/get_available/get_available_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/get_captcha/get_captcha_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/endpoint/promotion/get_recover_wallet/get_recover_wallet_unittest.cc",

@@ -20,7 +20,6 @@ class PromotionsUtilTest : public testing::Test {
 TEST(PromotionsUtilTest, GetServerUrlDevelopment) {
   ledger::_environment = ledger::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
-  const std::string expected_url = "";
   ASSERT_EQ(url, "https://grant.rewards.brave.software/test");
 }
 

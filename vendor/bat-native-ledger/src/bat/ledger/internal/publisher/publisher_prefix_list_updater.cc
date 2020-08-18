@@ -11,7 +11,6 @@
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
-#include "bat/ledger/internal/request/request_publisher.h"
 #include "bat/ledger/option_keys.h"
 #include "net/http/http_status_code.h"
 
@@ -30,8 +29,8 @@ namespace braveledger_publisher {
 
 PublisherPrefixListUpdater::PublisherPrefixListUpdater(
     bat_ledger::LedgerImpl* ledger)
-    : ledger_(ledger),
-    rewrads_server_(new ledger::endpoint::RewardsServer(ledger)){}
+      : ledger_(ledger),
+      rewards_server_(new ledger::endpoint::RewardsServer(ledger)) {}
 
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
@@ -66,7 +65,7 @@ void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
       this,
       _1,
       _2);
-  rewrads_server_->get_prefix_list()->Request(url_callback);
+  rewards_server_->get_prefix_list()->Request(url_callback);
 }
 
 void PublisherPrefixListUpdater::OnFetchCompleted(

@@ -26,7 +26,6 @@ class RewardsServer {
   rewards::GetPrefixList* get_prefix_list() const;
 
  private:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<rewards::GetPrefixList> get_prefix_list_;
 };
 

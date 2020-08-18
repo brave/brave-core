@@ -20,7 +20,6 @@ class APIUtilTest : public testing::Test {
 TEST(APIUtilTest, GetServerUrlDevelopment) {
   ledger::_environment = ledger::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
-  const std::string expected_url = "";
   ASSERT_EQ(url, "https://api.rewards.brave.software/test");
 }
 

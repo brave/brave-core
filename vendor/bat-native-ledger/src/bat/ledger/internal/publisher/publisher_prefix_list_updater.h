@@ -59,7 +59,7 @@ class PublisherPrefixListUpdater {
   bool auto_update_ = false;
   int retry_count_ = 0;
   ledger::PublisherPrefixListUpdatedCallback on_updated_callback_;
-  std::unique_ptr<ledger::endpoint::RewardsServer> rewrads_server_;
+  std::unique_ptr<ledger::endpoint::RewardsServer> rewards_server_;
 };
 
 }  // namespace braveledger_publisher

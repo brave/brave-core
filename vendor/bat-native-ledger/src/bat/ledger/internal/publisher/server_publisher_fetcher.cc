@@ -15,8 +15,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/publisher/protos/channel_response.pb.h"
-#include "bat/ledger/internal/request/request_publisher.h"
-#include "bat/ledger/internal/response/response_publisher.h"
 #include "bat/ledger/option_keys.h"
 #include "brave_base/random.h"
 
@@ -41,9 +39,9 @@ int64_t GetCacheExpiryInSeconds(bat_ledger::LedgerImpl* ledger) {
 
 namespace braveledger_publisher {
 
-ServerPublisherFetcher::ServerPublisherFetcher(
-    bat_ledger::LedgerImpl* ledger)
-    : ledger_(ledger) {
+ServerPublisherFetcher::ServerPublisherFetcher(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger),
+    private_cdn_server_(new ledger::endpoint::PrivateCDNServer(ledger)) {
   DCHECK(ledger);
 }
 
@@ -55,37 +53,30 @@ void ServerPublisherFetcher::Fetch(
   FetchCallbackVector& callbacks = callback_map_[publisher_key];
   callbacks.push_back(callback);
   if (callbacks.size() > 1) {
-    BLOG(1, "Fetch already in progress for publisher " << publisher_key);
+    BLOG(1, "Fetch already in progress");
     return;
   }
 
-  BLOG(1, "Fetching server publisher info for " << publisher_key);
+  const std::string hex_prefix =
+      GetHashPrefixInHex(publisher_key, kQueryPrefixBytes);
 
-  std::string hex_prefix = GetHashPrefixInHex(
+  auto url_callback = std::bind(&ServerPublisherFetcher::OnFetchCompleted,
+      this,
+      _1,
+      _2,
+      publisher_key);
+
+  private_cdn_server_->get_publisher()->Request(
       publisher_key,
-      kQueryPrefixBytes);
-
-  // Due to privacy concerns, the request length must be consistent
-  // for all publisher lookups. Do not add URL parameters or headers
-  // whose size will vary depending on the publisher key.
-  std::string url = braveledger_request_util::GetPublisherInfoUrl(hex_prefix);
-  ledger_->LoadURL(
-      url, {}, "", "",
-      ledger::UrlMethod::GET,
-      std::bind(&ServerPublisherFetcher::OnFetchCompleted,
-          this, publisher_key, _1));
+      hex_prefix,
+      url_callback);
 }
 
 void ServerPublisherFetcher::OnFetchCompleted(
-    const std::string& publisher_key,
-    const ledger::UrlResponse& response) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-  auto server_info = braveledger_response_util::ParsePublisherInfo(
-      publisher_key,
-      response.status_code,
-      response.body);
-
-  if (!server_info) {
+    const ledger::Result result,
+    ledger::ServerPublisherInfoPtr info,
+    const std::string& publisher_key) {
+  if (result != ledger::Result::LEDGER_OK) {
     RunCallbacks(publisher_key, nullptr);
     return;
   }
@@ -93,7 +84,7 @@ void ServerPublisherFetcher::OnFetchCompleted(
   // Create a shared pointer to a mojo struct so that it can be copied
   // into a callback.
   auto shared_info = std::make_shared<ledger::ServerPublisherInfoPtr>(
-      std::move(server_info));
+      std::move(info));
 
   // Store the result for subsequent lookups.
   ledger_->database()->InsertServerPublisherInfo(**shared_info,
