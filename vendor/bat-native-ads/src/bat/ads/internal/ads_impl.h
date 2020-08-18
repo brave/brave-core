@@ -173,8 +173,14 @@ class AdsImpl : public Ads {
   void OnAdsSubdivisionTargetingCodeHasChanged() override;
 
   void OnPageLoaded(
+      const int32_t tab_id,
+      const std::string& original_url,
       const std::string& url,
       const std::string& content) override;
+
+  void MaybeSustainAdNotification(
+      const int32_t tab_id,
+      const std::string& url);
 
   void ExtractPurchaseIntentSignal(
       const std::string& url);
@@ -257,9 +263,6 @@ class AdsImpl : public Ads {
       const AdNotificationInfo& info,
       const ConfirmationType& confirmation_type);
 
-  bool IsSupportedUrl(
-      const std::string& url) const;
-
   std::unique_ptr<Client> client_;
   std::unique_ptr<Bundle> bundle_;
   std::unique_ptr<AdsServe> ads_serve_;
@@ -278,10 +281,14 @@ class AdsImpl : public Ads {
   AdNotificationInfo last_shown_ad_notification_;
   CreativeAdNotificationInfo last_shown_creative_ad_notification_;
   Timer sustain_ad_notification_interaction_timer_;
-  AdNotificationInfo last_sustained_ad_notification_;
-  void StartSustainingAdNotificationInteraction();
-  void SustainAdNotificationInteractionIfNeeded();
-  bool IsStillViewingAdNotification() const;
+  std::set<int32_t> sustained_ad_notifications_;
+  std::set<int32_t> sustaining_ad_notifications_;
+  void MaybeStartSustainingAdNotificationInteraction(
+      const int32_t tab_id,
+      const std::string& url);
+  void SustainAdNotificationInteractionIfNeeded(
+      const int32_t tab_id,
+      const std::string& url);
 
   std::unique_ptr<AdNotifications> ad_notifications_;
 

@@ -29,6 +29,13 @@ bool UrlMatchesPattern(
   return RE2::FullMatch(url, quoted_pattern);
 }
 
+bool UrlHasScheme(
+    const std::string& url) {
+  DCHECK(!url.empty());
+
+  return GURL(url).SchemeIsHTTPOrHTTPS();
+}
+
 bool SameSite(
       const std::string& url1,
       const std::string& url2) {

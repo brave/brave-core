@@ -113,7 +113,7 @@ NS_SWIFT_NAME(BraveAds)
 
 /// Report that a page has loaded in the current browser tab, and the inner text
 /// within the page loaded for classification
-- (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text;
+- (void)reportLoadedPageWithURL:(NSURL *)url innerText:(NSString *)text tabId:(NSInteger)tabId;
 
 /// Report that media has started on a tab with a given id
 - (void)reportMediaStartedWithTabId:(NSInteger)tabId NS_SWIFT_NAME(reportMediaStarted(tabId:));

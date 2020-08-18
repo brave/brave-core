@@ -94,6 +94,8 @@ class ADS_EXPORT Ads {
   // Should be called when a page has loaded in a browser tab, and the HTML is
   // available for analysis
   virtual void OnPageLoaded(
+    const int32_t tab_id,
+      const std::string& original_url,
       const std::string& url,
       const std::string& html) = 0;
 

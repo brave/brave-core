@@ -50,6 +50,8 @@ class BatAdsImpl :
   void OnAdsSubdivisionTargetingCodeHasChanged() override;
 
   void OnPageLoaded(
+      const int32_t tab_id,
+      const std::string& original_url,
       const std::string& url,
       const std::string& html) override;
 

@@ -92,7 +92,9 @@ class AdsServiceImpl : public AdsService,
       const std::string& locale) override;
 
   void OnPageLoaded(
-      const std::string& url,
+      const SessionID& tab_id,
+      const GURL& original_url,
+      const GURL& url,
       const std::string& html) override;
 
   void OnMediaStart(
