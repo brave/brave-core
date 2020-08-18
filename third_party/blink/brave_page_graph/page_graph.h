@@ -80,7 +80,8 @@ friend NodeHTMLElement;
  public:
   static PageGraph* GetFromIsolate(v8::Isolate& isolate);
   static PageGraph* GetFromContext(v8::Local<v8::Context> context);
-  static PageGraph* GetFromExecutionContext(blink::ExecutionContext& exec_context);
+  static PageGraph* GetFromExecutionContext(
+    blink::ExecutionContext& exec_context);
 
   PageGraph(blink::ExecutionContext& execution_context,
             const blink::DOMNodeId node_id, const WTF::String& tag_name,
@@ -239,6 +240,10 @@ friend NodeHTMLElement;
     const RequestType type);
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);
+
+  // Return true if this PageGraph instance is instrumenting the top level
+  // frame tree.
+  bool IsRootFrame() const;
 
   // Monotonically increasing counter, used so that we can replay the
   // the graph's construction if needed.
