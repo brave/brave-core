@@ -237,4 +237,6 @@ interface BatLedgerClient {
   ClearAllNotifications();
 
   WalletDisconnected(string wallet_type);
+
+  DeleteLog() => (ledger.mojom.Result result);
 };

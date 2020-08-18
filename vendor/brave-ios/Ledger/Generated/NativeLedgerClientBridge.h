@@ -51,5 +51,6 @@
 - (void)pendingContributionSaved:(const ledger::Result)result;
 - (void)clearAllNotifications;
 - (void)walletDisconnected:(const std::string&)wallet_type;
+- (void)deleteLog:(ledger::ResultCallback)callback;
 
 @end

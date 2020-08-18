@@ -58,4 +58,5 @@ private:
   void PendingContributionSaved(const ledger::Result result) override;
   void ClearAllNotifications() override;
   void WalletDisconnected(const std::string& wallet_type) override;
+  void DeleteLog(ledger::ResultCallback callback) override;
 };

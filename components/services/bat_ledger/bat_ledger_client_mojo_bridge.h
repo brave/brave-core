@@ -135,6 +135,8 @@ class BatLedgerClientMojoBridge :
 
   void WalletDisconnected(const std::string& wallet_type) override;
 
+  void DeleteLog(ledger::ResultCallback callback) override;
+
  private:
   bool Connected() const;
 

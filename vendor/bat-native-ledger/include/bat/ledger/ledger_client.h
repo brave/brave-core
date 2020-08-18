@@ -191,6 +191,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void ClearAllNotifications() = 0;
 
   virtual void WalletDisconnected(const std::string& wallet_type) = 0;
+
+  virtual void DeleteLog(ledger::ResultCallback callback) = 0;
 };
 
 }  // namespace ledger
