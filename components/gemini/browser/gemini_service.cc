@@ -14,6 +14,7 @@
 #include "base/files/file_enumerator.h"
 #include "base/files/file_util.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
@@ -103,6 +104,29 @@ namespace {
     base::JSONWriter::Write(dict, &json);
     base::Base64Encode(json, &encoded_payload);
     return encoded_payload;
+  }
+
+  void CalculateSaleAmount(const std::string quantity,
+                           const std::string price,
+                           const std::string fee,
+                           std::string* total_price) {
+    if (quantity.empty() || price.empty() || fee.empty()) {
+      return;
+    }
+
+    double parsed_quantity;
+    double parsed_price;
+    double parsed_fee;
+
+    if (!base::StringToDouble(quantity, &parsed_quantity) ||
+        !base::StringToDouble(price, &parsed_price) ||
+        !base::StringToDouble(fee, &parsed_fee)) {
+      return;
+    }
+
+    // Sale amount is (quantity * price) - fee
+    double sale_amount = (parsed_quantity * parsed_price) - parsed_fee;
+    *total_price = std::to_string(sale_amount);
   }
 
 }  // namespace
@@ -286,7 +310,7 @@ bool GeminiService::GetOrderQuote(const std::string& side,
                                   const std::string& spend,
                                   GetOrderQuoteCallback callback) {
   auto internal_callback = base::BindOnce(&GeminiService::OnGetOrderQuote,
-      base::Unretained(this), std::move(callback));
+      base::Unretained(this), std::move(callback), side);
   std::string endpoint =
     std::string(api_path_get_quote) + "/" + side + "/" + symbol;
   std::string payload = GetEncodedRequestPayload(endpoint);
@@ -297,7 +321,7 @@ bool GeminiService::GetOrderQuote(const std::string& side,
 }
 
 void GeminiService::OnGetOrderQuote(GetOrderQuoteCallback callback,
-    const int status, const std::string& body,
+    const std::string& side, const int status, const std::string& body,
     const std::map<std::string, std::string>& headers) {
   std::string fee;
   std::string quote_id;
@@ -310,6 +334,9 @@ void GeminiService::OnGetOrderQuote(GetOrderQuoteCallback callback,
     GeminiJSONParser::GetOrderQuoteInfoFromJSON(
       json_body, &quote_id, &quantity,
       &fee, &price, &total_price, &error);
+  }
+  if (side == "sell") {
+    CalculateSaleAmount(quantity, price, fee, &total_price);
   }
   std::move(callback).Run(
     quote_id, quantity, fee, price, total_price, error);
