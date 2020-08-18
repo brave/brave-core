@@ -14,8 +14,6 @@ namespace android_util {
 
 ledger::ClientInfoPtr GetAndroidClientInfo();
 
-std::string ParseClaimPromotionResponse(const std::string& response);
-
 }  // namespace android_util
 
 #endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_ANDROID_UTIL_H_

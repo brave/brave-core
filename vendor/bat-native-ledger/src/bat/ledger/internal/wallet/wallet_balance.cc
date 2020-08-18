@@ -12,19 +12,18 @@
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_promotion.h"
-#include "bat/ledger/internal/response/response_wallet.h"
 #include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/internal/uphold/uphold.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_wallet {
+namespace ledger {
+namespace wallet {
 
 WalletBalance::WalletBalance(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
-    ledger_(ledger) {
+    promotion_server_(new endpoint::PromotionServer(ledger)) {
 }
 
 WalletBalance::~WalletBalance() = default;
@@ -39,31 +38,26 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
     return;
   }
 
-  const std::string payment_id = ledger_->state()->GetPaymentId();
-  if (payment_id.empty()) {
+  if (ledger_->state()->GetPaymentId().empty()) {
     BLOG(0, "Payment ID is empty");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  const std::string url = braveledger_request_util::GetBalanceWalletURL(
-      ledger_->state()->GetPaymentId());
-
   auto load_callback = std::bind(&WalletBalance::OnFetch,
       this,
       _1,
+      _2,
       callback);
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, load_callback);
+
+  promotion_server_->get_wallet_balance()->Request(load_callback);
 }
 
 void WalletBalance::OnFetch(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    ledger::BalancePtr balance,
     ledger::FetchBalanceCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  ledger::BalancePtr balance =
-      braveledger_response_util::ParseWalletBalance(response);
-  if (!balance) {
+  if (result != ledger::Result::LEDGER_OK || !balance) {
     BLOG(0, "Couldn't fetch wallet balance");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
@@ -169,4 +163,5 @@ double WalletBalance::GetPerWalletBalance(
   return  0.0;
 }
 
-}  // namespace braveledger_wallet
+}  // namespace wallet
+}  // namespace ledger

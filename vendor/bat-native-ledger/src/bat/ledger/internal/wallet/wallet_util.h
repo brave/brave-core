@@ -11,7 +11,8 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_wallet {
+namespace ledger {
+namespace wallet {
 
 ledger::ExternalWalletPtr GetWallet(
     const std::string& wallet_type,
@@ -19,6 +20,7 @@ ledger::ExternalWalletPtr GetWallet(
 
 ledger::ExternalWalletPtr ResetWallet(ledger::ExternalWalletPtr wallet);
 
-}  // namespace braveledger_wallet
+}  // namespace wallet
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_WALLET_WALLET_UTIL_H_

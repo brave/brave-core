@@ -16,7 +16,8 @@
 
 #include "wally_bip39.h"  // NOLINT
 
-namespace braveledger_wallet {
+namespace ledger {
+namespace wallet {
 
 Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
@@ -216,4 +217,5 @@ void Wallet::DisconnectAllWallets(ledger::ResultCallback callback) {
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_wallet
+}  // namespace wallet
+}  // namespace ledger

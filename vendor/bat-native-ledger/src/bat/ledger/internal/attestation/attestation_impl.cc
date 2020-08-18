@@ -13,7 +13,8 @@
 #include "bat/ledger/internal/attestation/attestation_iosx.h"
 #include "net/http/http_status_code.h"
 
-namespace braveledger_attestation {
+namespace ledger {
+namespace attestation {
 
 AttestationImpl::AttestationImpl(bat_ledger::LedgerImpl* ledger) :
     Attestation(ledger) {
@@ -40,4 +41,5 @@ void AttestationImpl::Confirm(
   platform_instance_->Confirm(solution, callback);
 }
 
-}  // namespace braveledger_attestation
+}  // namespace attestation
+}  // namespace ledger

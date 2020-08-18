@@ -10,7 +10,6 @@
 #include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/publisher/publisher_status_helper.h"
-#include "bat/ledger/internal/recovery/recovery.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
@@ -27,11 +26,12 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     publisher_(new braveledger_publisher::Publisher(this)),
     media_(new braveledger_media::Media(this)),
     contribution_(new braveledger_contribution::Contribution(this)),
-    wallet_(new braveledger_wallet::Wallet(this)),
+    wallet_(new ledger::wallet::Wallet(this)),
     database_(new braveledger_database::Database(this)),
     report_(new braveledger_report::Report(this)),
     state_(new braveledger_state::State(this)),
     api_(new braveledger_api::API(this)),
+    recovery_(new ledger::recovery::Recovery(this)),
     initialized_task_scheduler_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -88,7 +88,7 @@ braveledger_contribution::Contribution* LedgerImpl::contribution() const {
   return contribution_.get();
 }
 
-braveledger_wallet::Wallet* LedgerImpl::wallet() const {
+ledger::wallet::Wallet* LedgerImpl::wallet() const {
   return wallet_.get();
 }
 
@@ -143,7 +143,7 @@ void LedgerImpl::StartServices() {
   contribution()->Initialize();
   promotion()->Initialize();
   api()->Initialize();
-  braveledger_recovery::Check(this);
+  recovery_->Check();
 }
 
 void LedgerImpl::Initialize(

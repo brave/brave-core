@@ -304,19 +304,4 @@ std::string GenerateRedeemTokensPayload(const CredentialsRedeem& redeem) {
   return json;
 }
 
-std::string GenerateTransferTokensPayload(
-    const CredentialsRedeem& redeem,
-    const std::string& payment_id) {
-  base::Value credentials(base::Value::Type::LIST);
-  GenerateCredentials(redeem.token_list, payment_id, &credentials);
-
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("paymentId", payment_id);
-  body.SetKey("credentials", std::move(credentials));
-
-  std::string json;
-  base::JSONWriter::Write(body, &json);
-  return json;
-}
-
 }  // namespace braveledger_credentials

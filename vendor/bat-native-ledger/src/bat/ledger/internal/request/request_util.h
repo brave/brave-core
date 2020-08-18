@@ -14,7 +14,6 @@ namespace braveledger_request_util {
 
 enum class ServerTypes {
   kPublisher,
-  kPromotion,
   kPayments,
   kPrivateCDN
 };

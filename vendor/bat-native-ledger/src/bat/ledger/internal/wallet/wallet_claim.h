@@ -9,14 +9,16 @@
 #include <memory>
 #include <string>
 
-#include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/internal/uphold/uphold.h"
+#include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_wallet {
+namespace ledger {
+namespace wallet {
 
 class WalletClaim {
  public:
@@ -31,17 +33,15 @@ class WalletClaim {
       ledger::BalancePtr properties,
       ledger::ResultCallback callback);
 
-  void TransferFunds(
-      const std::string user_funds,
-      ledger::ResultCallback callback);
-
   void OnTransferFunds(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
-}  // namespace braveledger_wallet
+}  // namespace wallet
+}  // namespace ledger
 #endif  // BRAVELEDGER_WALLET_WALLET_CLAIM_H_

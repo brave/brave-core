@@ -324,7 +324,7 @@ void Contribution::CreateNewEntry(
   }
 
   const double wallet_balance =
-      braveledger_wallet::WalletBalance::GetPerWalletBalance(
+      ledger::wallet::WalletBalance::GetPerWalletBalance(
           wallet_type,
           balance->wallets);
   if (wallet_balance == 0) {

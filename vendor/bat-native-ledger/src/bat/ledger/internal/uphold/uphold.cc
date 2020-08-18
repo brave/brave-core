@@ -208,7 +208,7 @@ void Uphold::DisconnectWallet() {
     return;
   }
 
-  wallet = braveledger_wallet::ResetWallet(std::move(wallet));
+  wallet = ledger::wallet::ResetWallet(std::move(wallet));
 
   ledger_->ledger_client()->ShowNotification(
       "wallet_disconnected",

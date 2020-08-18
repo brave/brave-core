@@ -30,7 +30,8 @@ std::string UrlResponseToString(
 
 void LogUrlResponse(
     const char* func,
-    const ledger::UrlResponse& response);
+    const ledger::UrlResponse& response,
+    const bool long_response = false);
 
 }  // namespace ledger
 

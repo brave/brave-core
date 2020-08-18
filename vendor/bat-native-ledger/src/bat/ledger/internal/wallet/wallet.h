@@ -22,7 +22,8 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_wallet {
+namespace ledger {
+namespace wallet {
 
 class Wallet {
  public:
@@ -67,5 +68,6 @@ class Wallet {
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
 };
 
-}  // namespace braveledger_wallet
+}  // namespace wallet
+}  // namespace ledger
 #endif  // BRAVELEDGER_WALLET_WALLET_H_

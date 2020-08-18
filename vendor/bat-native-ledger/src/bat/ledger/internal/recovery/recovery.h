@@ -6,12 +6,30 @@
 #ifndef BRAVELEDGER_RECOVERY_RECOVERY_H_
 #define BRAVELEDGER_RECOVERY_RECOVERY_H_
 
-#include "bat/ledger/internal/ledger_impl.h"
+#include <memory>
 
-namespace braveledger_recovery {
+#include "bat/ledger/internal/recovery/recovery_empty_balance.h"
 
-void Check(bat_ledger::LedgerImpl* ledger);
+namespace bat_ledger {
+class LedgerImpl;
+}
 
-}  // namespace braveledger_recovery
+namespace ledger {
+namespace recovery {
+
+class Recovery {
+ public:
+  explicit Recovery(bat_ledger::LedgerImpl* ledger);
+  ~Recovery();
+
+  void Check();
+
+ private:
+  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<EmptyBalance> empty_balance_;
+};
+
+}  // namespace recovery
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_RECOVERY_RECOVERY_H_

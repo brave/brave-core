@@ -16,6 +16,7 @@
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/internal/attestation/attestation_impl.h"
 #include "bat/ledger/internal/credentials/credentials_factory.h"
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -50,12 +51,14 @@ class Promotion {
 
  private:
   void OnFetch(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      ledger::PromotionList list,
+      const std::vector<std::string>& corrupted_promotions,
       ledger::FetchPromotionCallback callback);
 
   void OnGetAllPromotions(
       ledger::PromotionMap promotions,
-      const ledger::UrlResponse& response,
+      std::shared_ptr<ledger::PromotionList> list,
       ledger::FetchPromotionCallback callback);
 
   void OnGetAllPromotionsFromDatabase(
@@ -127,7 +130,7 @@ class Promotion {
       const std::vector<std::string>& ids);
 
   void OnCheckForCorrupted(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
       const std::vector<std::string>& promotion_id_list);
 
   void ErrorStatusSaved(
@@ -140,9 +143,10 @@ class Promotion {
 
   void OnLastCheckTimerElapsed();
 
-  std::unique_ptr<braveledger_attestation::AttestationImpl> attestation_;
+  std::unique_ptr<ledger::attestation::AttestationImpl> attestation_;
   std::unique_ptr<PromotionTransfer> transfer_;
   std::unique_ptr<braveledger_credentials::Credentials> credentials_;
+  std::unique_ptr<ledger::endpoint::PromotionServer> promotion_server_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer last_check_timer_;
   base::OneShotTimer retry_timer_;

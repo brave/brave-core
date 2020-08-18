@@ -2,12 +2,12 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+#include "bat/ledger/internal/endpoint/api/get_parameters/get_parameters.h"
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/endpoint/api/api_util.h"
-#include "bat/ledger/internal/endpoint/api/get_parameters/get_parameters.h"
+#include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -15,7 +15,7 @@ using std::placeholders::_1;
 // GET /v1/parameters
 // GET /v1/parameters?currency={currency}
 //
-// Success:
+// Success code:
 // HTTP_OK (200)
 //
 // Error codes:

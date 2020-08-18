@@ -83,21 +83,14 @@ TEST_F(GetParametersTest, ServerOK) {
   parameters_->Request([](
       const ledger::Result result,
       const ledger::RewardsParameters& parameters) {
+    ledger::RewardsParameters expected_parameters;
+    expected_parameters.rate = 0.2476573499489187;
+    expected_parameters.auto_contribute_choice = 20;
+    expected_parameters.auto_contribute_choices = {5, 10, 15};
+    expected_parameters.tip_choices = {1, 10, 100};
+    expected_parameters.monthly_tip_choices = {5, 10, 15};
     EXPECT_EQ(result, ledger::Result::LEDGER_OK);
-    EXPECT_EQ(parameters.rate, 0.2476573499489187);
-    EXPECT_EQ(parameters.auto_contribute_choice, 20);
-    EXPECT_EQ(parameters.auto_contribute_choices.size(), 3ul);
-    EXPECT_EQ(parameters.auto_contribute_choices[0], 5);
-    EXPECT_EQ(parameters.auto_contribute_choices[1], 10);
-    EXPECT_EQ(parameters.auto_contribute_choices[2], 15);
-    EXPECT_EQ(parameters.tip_choices.size(), 3ul);
-    EXPECT_EQ(parameters.tip_choices[0], 1);
-    EXPECT_EQ(parameters.tip_choices[1], 10);
-    EXPECT_EQ(parameters.tip_choices[2], 100);
-    EXPECT_EQ(parameters.monthly_tip_choices.size(), 3ul);
-    EXPECT_EQ(parameters.monthly_tip_choices[0], 5);
-    EXPECT_EQ(parameters.monthly_tip_choices[1], 10);
-    EXPECT_EQ(parameters.monthly_tip_choices[2], 15);
+    EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
 }
 
@@ -219,12 +212,11 @@ TEST_F(GetParametersTest, WrongListValues) {
   parameters_->Request([](
       const ledger::Result result,
       const ledger::RewardsParameters& parameters) {
+    ledger::RewardsParameters expected_parameters;
     EXPECT_EQ(result, ledger::Result::LEDGER_OK);
-    EXPECT_EQ(parameters.rate, 0.2476573499489187);
-    EXPECT_EQ(parameters.auto_contribute_choice, 20);
-    EXPECT_TRUE(parameters.auto_contribute_choices.empty());
-    EXPECT_TRUE(parameters.tip_choices.empty());
-    EXPECT_TRUE(parameters.monthly_tip_choices.empty());
+    expected_parameters.rate = 0.2476573499489187;
+    expected_parameters.auto_contribute_choice = 20;
+    EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
 }
 
@@ -270,18 +262,14 @@ TEST_F(GetParametersTest, DoubleListValues) {
   parameters_->Request([](
       const ledger::Result result,
       const ledger::RewardsParameters& parameters) {
+    ledger::RewardsParameters expected_parameters;
+    expected_parameters.rate = 0.2476573499489187;
+    expected_parameters.auto_contribute_choice = 20;
+    expected_parameters.auto_contribute_choices = {5, 10.5, 15};
+    expected_parameters.tip_choices = {1, 10.5, 100};
+    expected_parameters.monthly_tip_choices = {5, 10.5, 15};
     EXPECT_EQ(result, ledger::Result::LEDGER_OK);
-    EXPECT_EQ(parameters.rate, 0.2476573499489187);
-    EXPECT_EQ(parameters.auto_contribute_choice, 20);
-    EXPECT_EQ(parameters.auto_contribute_choices[0], 5);
-    EXPECT_EQ(parameters.auto_contribute_choices[1], 10.5);
-    EXPECT_EQ(parameters.auto_contribute_choices[2], 15);
-    EXPECT_EQ(parameters.tip_choices[0], 1);
-    EXPECT_EQ(parameters.tip_choices[1], 10.5);
-    EXPECT_EQ(parameters.tip_choices[2], 100);
-    EXPECT_EQ(parameters.monthly_tip_choices[0], 5);
-    EXPECT_EQ(parameters.monthly_tip_choices[1], 10.5);
-    EXPECT_EQ(parameters.monthly_tip_choices[2], 15);
+    EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
 }
 

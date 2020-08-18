@@ -6,55 +6,55 @@
 #ifndef BRAVELEDGER_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
 #define BRAVELEDGER_RECOVERY_RECOVERY_EMPTY_BALANCE_H_
 
-#include "bat/ledger/internal/ledger_impl.h"
+#include <memory>
 
-namespace braveledger_recovery {
+#include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
+
+namespace bat_ledger {
+class LedgerImpl;
+}
+
+namespace ledger {
+namespace recovery {
 
 class EmptyBalance {
  public:
-  static void Check(bat_ledger::LedgerImpl* ledger);
+  explicit EmptyBalance(bat_ledger::LedgerImpl* ledger);
+  ~EmptyBalance();
+
+  void Check();
 
  private:
-  static void OnAllContributions(
-      ledger::ContributionInfoList list,
-      bat_ledger::LedgerImpl* ledger);
+  void OnAllContributions(ledger::ContributionInfoList list);
 
-  static void GetPromotions(
-      bat_ledger::LedgerImpl* ledger,
-      ledger::GetPromotionListCallback callback);
+  void GetPromotions(ledger::GetPromotionListCallback callback);
 
-  static void OnPromotions(
+  void OnPromotions(
       ledger::PromotionMap promotions,
       ledger::GetPromotionListCallback callback);
 
-  static void GetCredsByPromotions(
+  void GetCredsByPromotions(ledger::PromotionList list);
+
+  void OnCreds(ledger::CredsBatchList list);
+
+  void OnSaveUnblindedCreds(const ledger::Result result);
+
+  void GetAllTokens(
       ledger::PromotionList list,
-      bat_ledger::LedgerImpl* ledger);
-
-  static void OnCreds(
-      ledger::CredsBatchList list,
-      bat_ledger::LedgerImpl* ledger);
-
-  static void OnSaveUnblindedCreds(
-      const ledger::Result result,
-      bat_ledger::LedgerImpl* ledger);
-
-  static void GetAllTokens(
-      ledger::PromotionList list,
-      bat_ledger::LedgerImpl* ledger,
       const double contribution_sum);
 
-  static void ReportResults(
+  void ReportResults(
       ledger::UnblindedTokenList list,
-      bat_ledger::LedgerImpl* ledger,
       const double contribution_sum,
       const double promotion_sum);
 
-  static void Sent(
-      const ledger::UrlResponse& response,
-      bat_ledger::LedgerImpl* ledger);
+  void Sent(const ledger::Result result);
+
+  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
-}  // namespace braveledger_recovery
+}  // namespace recovery
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_RECOVERY_RECOVERY_EMPTY_BALANCE_H_

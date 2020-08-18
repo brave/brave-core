@@ -11,17 +11,19 @@
 #include "base/strings/string_split.h"
 #include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_promotion.h"
-#include "bat/ledger/internal/request/request_util.h"
-#include "bat/ledger/internal/response/response_wallet.h"
 
 #include "wally_bip39.h"  // NOLINT
 
 using std::placeholders::_1;
+using std::placeholders::_2;
 
-namespace braveledger_wallet {
+namespace ledger {
+namespace wallet {
 
-WalletRecover::WalletRecover(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+WalletRecover::WalletRecover(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger),
+    promotion_server_(new endpoint::PromotionServer(ledger)) {
+  DCHECK(ledger_);
 }
 
 WalletRecover::~WalletRecover() = default;
@@ -69,31 +71,20 @@ void WalletRecover::Start(
   auto url_callback = std::bind(&WalletRecover::OnRecover,
       this,
       _1,
+      _2,
       new_seed,
       callback);
 
-  const std::string url =
-      braveledger_request_util::GetRecoverWalletURL(public_key_hex);
-  ledger_->LoadURL(
-      url,
-      {},
-      "",
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::GET,
+  promotion_server_->get_recover_wallet()->Request(
+      public_key_hex,
       url_callback);
 }
 
 void WalletRecover::OnRecover(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const std::string& payment_id,
     const std::vector<uint8_t>& new_seed,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  std::string payment_id;
-  const auto result = braveledger_response_util::ParseRecoverWallet(
-      response,
-      &payment_id);
-
   if (result != ledger::Result::LEDGER_OK) {
     callback(result);
     return;
@@ -108,4 +99,5 @@ void WalletRecover::OnRecover(
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_wallet
+}  // namespace wallet
+}  // namespace ledger

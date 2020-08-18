@@ -6,11 +6,13 @@
 #include "bat/ledger/internal/attestation/attestation.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-namespace braveledger_attestation {
+namespace ledger {
+namespace attestation {
 
 Attestation::Attestation(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
 }
 
 Attestation::~Attestation() = default;
 
-}  // namespace braveledger_attestation
+}  // namespace attestation
+}  // namespace ledger

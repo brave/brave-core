@@ -1257,13 +1257,12 @@ void RewardsServiceImpl::AttestationAndroid(
     const std::string& promotion_id,
     AttestPromotionCallback callback,
     const ledger::Result result,
-    const std::string& response) {
+    const std::string& nonce) {
   if (result != ledger::Result::LEDGER_OK) {
     std::move(callback).Run(static_cast<int32_t>(result), nullptr);
     return;
   }
 
-  const std::string nonce = android_util::ParseClaimPromotionResponse(response);
   if (nonce.empty()) {
     std::move(callback).Run(
         static_cast<int32_t>(ledger::Result::LEDGER_ERROR),

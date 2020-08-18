@@ -10,17 +10,17 @@
 #include "base/json/json_writer.h"
 #include "bat/ledger/internal/attestation/attestation_iosx.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_attestation.h"
-#include "bat/ledger/internal/response/response_attestation.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_attestation {
+namespace ledger {
+namespace attestation {
 
 AttestationIOS::AttestationIOS(bat_ledger::LedgerImpl* ledger) :
-    Attestation(ledger) {
+    Attestation(ledger),
+    promotion_server_(new endpoint::PromotionServer(ledger)) {
 }
 
 AttestationIOS::~AttestationIOS() = default;
@@ -46,40 +46,43 @@ std::string AttestationIOS::ParseStartPayload(
   return *key;
 }
 
-void AttestationIOS::ParseClaimSolution(
+ledger::Result AttestationIOS::ParseClaimSolution(
     const std::string& response,
-    base::Value* result) {
+    std::string* nonce,
+    std::string* blob,
+    std::string* signature) {
   base::Optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    return;
+    return ledger::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
-    return;
+    return ledger::Result::LEDGER_ERROR;
   }
 
-  const auto* nonce = dictionary->FindStringKey("nonce");
-  if (!nonce) {
+  const auto* nonce_parsed = dictionary->FindStringKey("nonce");
+  if (!nonce_parsed) {
     BLOG(0, "Nonce is wrong");
-    return;
+    return ledger::Result::LEDGER_ERROR;
   }
 
-  const auto* blob = dictionary->FindStringKey("blob");
-  if (!blob) {
+  const auto* blob_parsed = dictionary->FindStringKey("blob");
+  if (!blob_parsed) {
     BLOG(0, "Blob is wrong");
-    return;
+    return ledger::Result::LEDGER_ERROR;
   }
 
-  const auto* signature = dictionary->FindStringKey("signature");
-  if (!signature) {
+  const auto* signature_parsed = dictionary->FindStringKey("signature");
+  if (!signature_parsed) {
     BLOG(0, "Signature is wrong");
-    return;
+    return ledger::Result::LEDGER_ERROR;
   }
 
-  result->SetStringKey("nonce", *nonce);
-  result->SetStringKey("blob", *blob);
-  result->SetStringKey("signature", *signature);
+  *nonce = *nonce_parsed;
+  *blob = *blob_parsed;
+  *signature = *signature_parsed;
+  return ledger::Result::LEDGER_OK;
 }
 
 void AttestationIOS::Start(
@@ -93,90 +96,58 @@ void AttestationIOS::Start(
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
-
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetStringKey("publicKeyHash", key);
-  dictionary.SetStringKey("paymentId", payment_id);
-  std::string json;
-  base::JSONWriter::Write(dictionary, &json);
-
   auto url_callback = std::bind(&AttestationIOS::OnStart,
       this,
       _1,
+      _2,
       callback);
 
-  const std::string url = braveledger_request_util::GetStartAttestationIOSUrl();
-
-  ledger_->LoadURL(
-      url,
-      {},
-      json,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+  promotion_server_->post_devicecheck()->Request(key, url_callback);
 }
 
 void AttestationIOS::OnStart(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const std::string& nonce,
     StartCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckStartAttestation(response);
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Failed to start attestation");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, response.body);
+  callback(ledger::Result::LEDGER_OK, nonce);
 }
 
 void AttestationIOS::Confirm(
     const std::string& solution,
     ConfirmCallback callback) {
-  base::Value parsed_solution(base::Value::Type::DICTIONARY);
-  ParseClaimSolution(solution, &parsed_solution);
+  std::string nonce;
+  std::string blob;
+  std::string signature;
+  const ledger::Result result =
+      ParseClaimSolution(solution, &nonce, &blob, &signature);
 
-  if (parsed_solution.DictSize() != 3) {
-    BLOG(0, "Solution is wrong: " << solution);
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Failed to parse solution");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
-
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetStringKey("attestationBlob",
-      *parsed_solution.FindStringKey("blob"));
-  dictionary.SetStringKey("signature",
-      *parsed_solution.FindStringKey("signature"));
-  std::string payload;
-  base::JSONWriter::Write(dictionary, &payload);
-
-  const std::string nonce = *parsed_solution.FindStringKey("nonce");
-  const std::string url =
-      braveledger_request_util::GetConfirmAttestationIOSUrl(nonce);
 
   auto url_callback = std::bind(&AttestationIOS::OnConfirm,
       this,
       _1,
       callback);
 
-  ledger_->LoadURL(
-      url,
-      {},
-      payload,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::PUT,
+  promotion_server_->put_devicecheck()->Request(
+      blob,
+      signature,
+      nonce,
       url_callback);
 }
 
 void AttestationIOS::OnConfirm(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
     ConfirmCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckConfirmAttestation(response);
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
     callback(ledger::Result::LEDGER_ERROR);
@@ -186,4 +157,5 @@ void AttestationIOS::OnConfirm(
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_attestation
+}  // namespace attestation
+}  // namespace ledger

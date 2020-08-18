@@ -18,12 +18,6 @@ const char kStaging[] = "https://rewards-stg.bravesoftware.com";
 const char kProduction[] = "https://rewards.brave.com";
 }  // namespace publisher
 
-namespace promotion {
-const char kDevelopment[] = "https://grant.rewards.brave.software";
-const char kStaging[] = "https://grant.rewards.bravesoftware.com";
-const char kProduction[] = "https://grant.rewards.brave.com";
-}  // namespace promotion
-
 namespace payment {
 const char kDevelopment[] = "https://payment.rewards.brave.software";
 const char kStaging[] = "http://payment.rewards.bravesoftware.com";
@@ -47,23 +41,6 @@ std::string BuildPublisherUrl() {
       break;
     case ledger::Environment::PRODUCTION:
       url = publisher::kProduction;
-      break;
-  }
-
-  return url;
-}
-
-std::string BuildPromotionUrl() {
-  std::string url;
-  switch (ledger::_environment) {
-    case ledger::Environment::DEVELOPMENT:
-      url = promotion::kDevelopment;
-      break;
-    case ledger::Environment::STAGING:
-      url = promotion::kStaging;
-      break;
-    case ledger::Environment::PRODUCTION:
-      url = promotion::kProduction;
       break;
   }
 
@@ -112,10 +89,6 @@ std::string BuildUrl(
   switch (server) {
     case ServerTypes::kPublisher: {
       url = BuildPublisherUrl();
-      break;
-    }
-    case ServerTypes::kPromotion: {
-      url = BuildPromotionUrl();
       break;
     }
     case ServerTypes::kPayments: {

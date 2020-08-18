@@ -957,12 +957,9 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
     return;
   }
   const auto jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-  ledger->ClaimPromotion(promotionId.UTF8String, jsonString.UTF8String, ^(const ledger::Result result, const std::string& json) {
-    const auto jsonData = [[NSString stringWithUTF8String:json.c_str()] dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *nonce = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+  ledger->ClaimPromotion(promotionId.UTF8String, jsonString.UTF8String, ^(const ledger::Result result, const std::string& nonce) {
     dispatch_async(dispatch_get_main_queue(), ^{
-      completion(static_cast<BATResult>(result),
-                 nonce[@"nonce"]);
+      completion(static_cast<BATResult>(result), [NSString stringWithUTF8String:nonce.c_str()]);
     });
   });
 }

@@ -21,28 +21,26 @@ class WalletUtilTest : public testing::Test {
 TEST(WalletUtilTest, GetWallet) {
   // no wallets
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
-  auto result = braveledger_wallet::GetWallet("brave", std::move(wallets));
+  auto result = ledger::wallet::GetWallet("brave", std::move(wallets));
   ASSERT_TRUE(!result);
 
   // different wallet
   auto diff = ledger::ExternalWallet::New();
   diff->address = "add1";
   wallets.insert(std::make_pair("different", std::move(diff)));
-  result =
-      braveledger_wallet::GetWallet(ledger::kWalletUphold, std::move(wallets));
+  result = ledger::wallet::GetWallet(ledger::kWalletUphold, std::move(wallets));
   ASSERT_TRUE(!result);
 
   // uphold wallet
   auto uphold = ledger::ExternalWallet::New();
   uphold->address = "12355";
   wallets.insert(std::make_pair(ledger::kWalletUphold, std::move(uphold)));
-  result =
-      braveledger_wallet::GetWallet(ledger::kWalletUphold, std::move(wallets));
+  result = ledger::wallet::GetWallet(ledger::kWalletUphold, std::move(wallets));
   ASSERT_EQ(result->address, "12355");
 }
 
 TEST(WalletUtilTest, ResetWalletNull) {
-  auto result = braveledger_wallet::ResetWallet(nullptr);
+  auto result = ledger::wallet::ResetWallet(nullptr);
   ASSERT_TRUE(!result);
 }
 
@@ -54,7 +52,7 @@ TEST(WalletUtilTest, ResetWalletVerifiedWallet) {
   wallet->one_time_string = "4";
   wallet->status = ledger::WalletStatus::VERIFIED;
 
-  auto reset_wallet = braveledger_wallet::ResetWallet(std::move(wallet));
+  auto reset_wallet = ledger::wallet::ResetWallet(std::move(wallet));
 
   ledger::ExternalWallet expected_wallet;
   expected_wallet.status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
@@ -66,7 +64,7 @@ TEST(WalletUtilTest, ResetWalletNotVerifiedWallet) {
   auto not_verified = ledger::ExternalWallet::New();
   not_verified->status = ledger::WalletStatus::CONNECTED;
   auto reset_wallet =
-      braveledger_wallet::ResetWallet(std::move(not_verified));
+      ledger::wallet::ResetWallet(std::move(not_verified));
 
   ledger::ExternalWallet expected_wallet;
   expected_wallet.status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
