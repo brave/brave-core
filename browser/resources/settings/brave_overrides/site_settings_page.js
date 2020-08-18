@@ -7,9 +7,11 @@ import {RegisterPolymerComponentBehaviors} from 'chrome://brave-resources/polyme
 import {ContentSettingsTypes} from '../site_settings/constants.js'
 import {routes} from '../route.js'
 
-const SITE_SETTINGS_REMOVE_IDS = [
-  ContentSettingsTypes.ADS,
+const PERMISSIONS_BASIC_REMOVE_IDS = [
   ContentSettingsTypes.BACKGROUND_SYNC,
+]
+const CONTENT_ADVANCED_REMOVE_IDS = [
+  ContentSettingsTypes.ADS,
 ]
 
 RegisterPolymerComponentBehaviors({
@@ -22,25 +24,38 @@ RegisterPolymerComponentBehaviors({
       const oldListsGetter = this.properties.lists_.value
       this.properties.lists_.value = function () {
         const lists_ = oldListsGetter()
-        if (!lists_ || !lists_.all) {
+        if (!lists_) {
           console.error('[Brave Settings Overrides] did not get lists_ data')
           return
         }
-        lists_.all = lists_.all.filter(item => !SITE_SETTINGS_REMOVE_IDS.includes(item.id))
-        let indexForAutoplay = lists_.all.findIndex(item => item.id === ContentSettingsTypes.AUTOMATIC_DOWNLOADS)
-        if (indexForAutoplay === -1) {
-          console.error('Could not find automatic downloads site settings item')
+        if (!lists_.permissionsBasic) {
+          console.error('[Brave Settings Overrides] did not get lists_.permissionsBasic data')
         } else {
-          indexForAutoplay++
-          const autoplayItem = {
-            route: routes.SITE_SETTINGS_AUTOPLAY,
-            id: 'autoplay',
-            label: 'siteSettingsAutoplay',
-            icon: 'cr:extension',
-            enabledLabel: 'siteSettingsAllowed',
-            disabledLabel: 'siteSettingsBlocked'
+          lists_.permissionsBasic = lists_.permissionsBasic.filter(item => !PERMISSIONS_BASIC_REMOVE_IDS.includes(item.id))
+        }
+        if (!lists_.contentAdvanced) {
+          console.error('[Brave Settings Overrides] did not get lists_.contentAdvanced data')
+        } else {
+          lists_.contentAdvanced = lists_.contentAdvanced.filter(item => !CONTENT_ADVANCED_REMOVE_IDS.includes(item.id))
+        }
+        if (!lists_.permissionsAdvanced) {
+          console.error('[Brave Settings Overrides] did not get lists_.permissionsAdvanced data')
+        } else {
+          let indexForAutoplay = lists_.permissionsAdvanced.findIndex(item => item.id === ContentSettingsTypes.AUTOMATIC_DOWNLOADS)
+          if (indexForAutoplay === -1) {
+            console.error('Could not find automatic downloads site settings item')
+          } else {
+            indexForAutoplay++
+            const autoplayItem = {
+              route: routes.SITE_SETTINGS_AUTOPLAY,
+              id: 'autoplay',
+              label: 'siteSettingsAutoplay',
+              icon: 'cr:extension',
+              enabledLabel: 'siteSettingsAllowed',
+              disabledLabel: 'siteSettingsBlocked'
+            }
+            lists_.permissionsAdvanced.splice(indexForAutoplay, 0, autoplayItem)
           }
-          lists_.all.splice(indexForAutoplay, 0, autoplayItem)
         }
         return lists_
       }
