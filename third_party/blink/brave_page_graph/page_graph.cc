@@ -143,16 +143,17 @@ using ::std::unique_ptr;
 using ::std::vector;
 
 using ::blink::Document;
-using ::blink::DynamicTo;
-using ::blink::IsA;
-using ::blink::ExecutionContext;
 using ::blink::DOMNodeId;
+using ::blink::DynamicTo;
+using ::blink::ExecutionContext;
+using ::blink::IsA;
 using ::blink::KURL;
+using ::blink::LocalDOMWindow;
+using ::blink::protocol::Array;
 using ::blink::ResourceType;
 using ::blink::ScriptSourceCode;
 using ::blink::To;
 using ::blink::ToExecutionContext;
-using ::blink::protocol::Array;
 
 using ::v8::Context;
 using ::v8::HandleScope;
@@ -165,7 +166,7 @@ namespace brave_page_graph {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.1";
+constexpr char kPageGraphVersion[] = "0.2";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -211,7 +212,7 @@ PageGraph* PageGraph::GetFromExecutionContext(ExecutionContext& exec_context) {
     return nullptr;
   }
 
-  Document* document = To<blink::LocalDOMWindow>(exec_context).document();
+  Document* document = To<LocalDOMWindow>(exec_context).document();
   if (!document) {
     return nullptr;
   }
@@ -263,7 +264,6 @@ PageGraph::PageGraph(blink::ExecutionContext& execution_context,
       execution_context_(execution_context),
       start_(NowInMs()) {
   const string local_tag_name(tag_name.Utf8().data());
-
   const KURL normalized_url = NormalizeUrl(url);
   const string local_url(normalized_url.GetString().Utf8().data());
 
@@ -334,7 +334,6 @@ void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
   }
 
   const string local_tag_name(tag_name.Utf8().data());
-
   const KURL normalized_url = NormalizeUrl(url);
   const string local_url(normalized_url.GetString().Utf8().data());
 
@@ -1248,6 +1247,8 @@ string PageGraph::ToGraphML() const {
       BAD_CAST kPageGraphUrl);
   xmlNewTextChild(desc_container_node, NULL, BAD_CAST "url",
       BAD_CAST html_root_node_->GetURL().c_str());
+  xmlNewTextChild(desc_container_node, NULL, BAD_CAST "is_root",
+      BAD_CAST (IsRootFrame() ? "true" : "false"));
 
   xmlNodePtr time_container_node = xmlNewChild(desc_container_node, NULL,
       BAD_CAST "time", NULL);
@@ -1452,6 +1453,19 @@ void PageGraph::AddStorageNode(NodeStorage* const storage_node) {
 
 void PageGraph::Log(const string& str) const {
   PG_LOG(str);
+}
+
+bool PageGraph::IsRootFrame() const {
+  if (execution_context_.IsDocument() == false) {
+    return false;
+  }
+
+  Document* document = To<LocalDOMWindow>(execution_context_).document();
+  if (document == nullptr) {
+    return false;
+  }
+
+  return document->IsInMainFrame();
 }
 
 }  // namespace brave_page_graph
