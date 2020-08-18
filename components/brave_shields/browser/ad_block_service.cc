@@ -53,9 +53,27 @@ std::string AdBlockService::g_ad_block_component_id_(kAdBlockComponentId);
 std::string AdBlockService::g_ad_block_component_base64_public_key_(
     kAdBlockComponentBase64PublicKey);
 
+AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
+  if (!regional_service_manager_)
+    regional_service_manager_ =
+        brave_shields::AdBlockRegionalServiceManagerFactory(
+            component_delegate_);
+  return regional_service_manager_.get();
+}
+
+brave_shields::AdBlockCustomFiltersService*
+AdBlockService::custom_filters_service() {
+  if (!custom_filters_service_)
+    custom_filters_service_ =
+        brave_shields::AdBlockCustomFiltersServiceFactory(
+            component_delegate_);
+  return custom_filters_service_.get();
+}
+
 AdBlockService::AdBlockService(
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate) {
+    : AdBlockBaseService(delegate),
+      component_delegate_(delegate) {
 }
 
 AdBlockService::~AdBlockService() {}
@@ -72,6 +90,9 @@ bool AdBlockService::Init() {
 void AdBlockService::OnComponentReady(const std::string& component_id,
                                       const base::FilePath& install_dir,
                                       const std::string& manifest) {
+  // Regional service manager depends on regional catalog loading
+  custom_filters_service()->Start();
+
   base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
   GetDATFileData(dat_file_path);
 
@@ -102,8 +123,9 @@ void AdBlockService::OnResourcesFileDataReady(const std::string& resources) {
 
 void AdBlockService::OnRegionalCatalogFileDataReady(
     const std::string& catalog_json) {
-  g_brave_browser_process->ad_block_regional_service_manager()
+  regional_service_manager()
       ->SetRegionalCatalog(RegionalCatalogFromJSON(catalog_json));
+  regional_service_manager()->Start();
 }
 
 // static

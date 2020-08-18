@@ -13,6 +13,8 @@
 #include <vector>
 
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
+#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
+#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/browser_thread.h"
@@ -43,6 +45,9 @@ class AdBlockService : public AdBlockBaseService {
   explicit AdBlockService(BraveComponent::Delegate* delegate);
   ~AdBlockService() override;
 
+  AdBlockRegionalServiceManager* regional_service_manager();
+  AdBlockCustomFiltersService* custom_filters_service();
+
  protected:
   bool Init() override;
   void OnComponentReady(const std::string& component_id,
@@ -59,6 +64,13 @@ class AdBlockService : public AdBlockBaseService {
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
+
+  std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
+      regional_service_manager_;
+  std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
+      custom_filters_service_;
+
+  BraveComponent::Delegate* component_delegate_;
 
   base::WeakPtrFactory<AdBlockService> weak_factory_{this};
   DISALLOW_COPY_AND_ASSIGN(AdBlockService);

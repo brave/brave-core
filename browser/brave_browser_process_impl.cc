@@ -186,8 +186,6 @@ void BraveBrowserProcessImpl::StartBraveServices() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   ad_block_service()->Start();
-  ad_block_custom_filters_service()->Start();
-  ad_block_regional_service_manager()->Start();
   https_everywhere_service()->Start();
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -223,20 +221,12 @@ brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
 
 brave_shields::AdBlockCustomFiltersService*
 BraveBrowserProcessImpl::ad_block_custom_filters_service() {
-  if (!ad_block_custom_filters_service_)
-    ad_block_custom_filters_service_ =
-        brave_shields::AdBlockCustomFiltersServiceFactory(
-            brave_component_updater_delegate());
-  return ad_block_custom_filters_service_.get();
+  return ad_block_service()->custom_filters_service();
 }
 
 brave_shields::AdBlockRegionalServiceManager*
 BraveBrowserProcessImpl::ad_block_regional_service_manager() {
-  if (!ad_block_regional_service_manager_)
-    ad_block_regional_service_manager_ =
-        brave_shields::AdBlockRegionalServiceManagerFactory(
-            brave_component_updater_delegate());
-  return ad_block_regional_service_manager_.get();
+  return ad_block_service()->regional_service_manager();
 }
 
 NTPBackgroundImagesService*
