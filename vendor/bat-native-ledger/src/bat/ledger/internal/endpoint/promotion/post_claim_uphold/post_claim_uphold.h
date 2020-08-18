@@ -27,13 +27,13 @@ class PostClaimUphold {
   ~PostClaimUphold();
 
   void Request(
-      const std::string& user_funds,
+      const double user_funds,
       PostClaimUpholdCallback callback);
 
  private:
   std::string GetUrl();
 
-  std::string GeneratePayload(const std::string& user_funds);
+  std::string GeneratePayload(const double user_funds);
 
   ledger::Result CheckStatusCode(const int status_code);
 

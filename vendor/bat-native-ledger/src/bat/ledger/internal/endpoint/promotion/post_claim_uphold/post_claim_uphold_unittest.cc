@@ -59,7 +59,7 @@ TEST_F(PostClaimUpholdTest, ServerOK) {
           }));
 
   claim_->Request(
-      "30.0",
+      30.0,
       [](const ledger::Result result) {
         EXPECT_EQ(result, ledger::Result::LEDGER_OK);
       });
@@ -83,7 +83,7 @@ TEST_F(PostClaimUpholdTest, ServerError400) {
           }));
 
   claim_->Request(
-      "30.0",
+      30.0,
       [](const ledger::Result result) {
         EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
       });
@@ -107,7 +107,7 @@ TEST_F(PostClaimUpholdTest, ServerError403) {
           }));
 
   claim_->Request(
-      "30.0",
+      30.0,
       [](const ledger::Result result) {
         EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
       });
@@ -131,7 +131,7 @@ TEST_F(PostClaimUpholdTest, ServerError404) {
           }));
 
   claim_->Request(
-      "30.0",
+      30.0,
       [](const ledger::Result result) {
         EXPECT_EQ(result, ledger::Result::NOT_FOUND);
       });
@@ -155,7 +155,7 @@ TEST_F(PostClaimUpholdTest, ServerError409) {
           }));
 
   claim_->Request(
-      "30.0",
+      30.0,
       [](const ledger::Result result) {
         EXPECT_EQ(result, ledger::Result::ALREADY_EXISTS);
       });
@@ -179,7 +179,7 @@ TEST_F(PostClaimUpholdTest, ServerError500) {
           }));
 
   claim_->Request(
-      "30.0",
+      30.0,
       [](const ledger::Result result) {
         EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
       });
@@ -203,7 +203,7 @@ TEST_F(PostClaimUpholdTest, ServerErrorRandom) {
           }));
 
   claim_->Request(
-      "30.0",
+      30.0,
       [](const ledger::Result result) {
         EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
       });
