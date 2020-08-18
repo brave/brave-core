@@ -135,8 +135,6 @@ class MessageView
 
   views::ScrollView* scroller() { return scroller_; }
 
-  bool is_nested() const { return is_nested_; }
-
   base::ObserverList<Observer>::Unchecked* observers() { return &observers_; }
 
  private:
@@ -148,9 +146,6 @@ class MessageView
 
   // Returns the ideal slide mode by calculating the current status.
   views::SlideOutController::SlideMode CalculateSlideMode() const;
-
-  // Sets the border if |is_nested_| is true.
-  void SetNestedBorderIfNecessary();
 
   std::string notification_id_;
   views::ScrollView* scroller_ = nullptr;
@@ -168,10 +163,6 @@ class MessageView
 
   views::SlideOutController slide_out_controller_;
   base::ObserverList<Observer>::Unchecked observers_;
-
-  // True if |this| is embedded in another view. Equivalent to |!top_level| in
-  // MessageViewFactory parlance.
-  bool is_nested_ = false;
 
   // True if the slide is disabled forcibly.
   bool disable_slide_ = false;

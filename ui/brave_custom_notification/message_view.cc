@@ -17,7 +17,6 @@
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/shadow_util.h"
 #include "ui/gfx/shadow_value.h"
-// #include "ui/message_center/message_center.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/message_view.h"
 #include "brave/ui/brave_custom_notification/notification_background_painter.h"
@@ -77,7 +76,6 @@ class MessageView::HighlightPathGenerator
  public:
   HighlightPathGenerator() = default;
 
-  // views::HighlightPathGenerator:
   SkPath GetHighlightPath(const views::View* view) override {
     return static_cast<const MessageView*>(view)->GetHighlightPath();
   }
@@ -88,14 +86,9 @@ class MessageView::HighlightPathGenerator
 
 MessageView::MessageView(const Notification& notification) : notification_id_(notification.id()), slide_out_controller_(this, this) {
   SetFocusBehavior(FocusBehavior::ALWAYS);
-  // no idea wtf this is albert
-  // focus_ring_ = views::FocusRing::Install(this);
+  focus_ring_ = views::FocusRing::Install(this);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<HighlightPathGenerator>());
-
-  // TODO(amehfooz): Remove explicit color setting after native theme changes.
-  // albert lol wut
-  // focus_ring_->SetColor(SK_ColorTRANSPARENT);
 
   // Paint to a dedicated layer to make the layer non-opaque.
   SetPaintToLayer();
@@ -103,10 +96,7 @@ MessageView::MessageView(const Notification& notification) : notification_id_(no
 
   UpdateWithNotification(notification);
 
-  // albert: this might be interesting
-  // base::debug::StackTrace st;
-  // st.Print();
-  UpdateCornerRadius(10, 10);
+  UpdateCornerRadius(0, 0);
 
   // If Aero is enabled, set shadow border.
   if (ShouldShowAeroShadowBorder()) {
@@ -248,11 +238,10 @@ void MessageView::AddedToWidget() {
 
 void MessageView::OnThemeChanged() {
   InkDropHostView::OnThemeChanged();
-  SetNestedBorderIfNecessary();
 }
 
 ui::Layer* MessageView::GetSlideOutLayer() {
-  return is_nested_ ? layer() : GetWidget()->GetLayer();
+  return GetWidget()->GetLayer();
 }
 
 void MessageView::OnSlideStarted() {
@@ -268,7 +257,6 @@ void MessageView::OnSlideChanged(bool in_progress) {
 }
 
 void MessageView::AddObserver(MessageView::Observer* observer) {
-  LOG(INFO) << "albert *** BR::MV::AddObserver";
   observers_.AddObserver(observer);
 }
 
@@ -282,8 +270,6 @@ void MessageView::OnSlideOut() {
   for (auto& observer : observers_)
     observer.OnPreSlideOut(notification_id_);
 
-  // TODO: Handle remove
-  // MessageCenter::Get()->RemoveNotification(notification_id_, true /* by_user */);
   for (auto& observer : observers_)
     observer.OnSlideOut(notification_id_);
 }
@@ -319,25 +305,12 @@ MessageView::Mode MessageView::GetMode() const {
   if (setting_mode_)
     return Mode::SETTING;
 
-  // Only nested notifications can be pinned. Standalones (i.e. popups) can't
-  // be.
-  if (pinned_ && is_nested_)
-    return Mode::PINNED;
-
   return Mode::NORMAL;
 }
 
 float MessageView::GetSlideAmount() const {
   return slide_out_controller_.gesture_amount();
 }
-
-/*
-void MessageView::SetSettingMode(bool setting_mode) {
-  setting_mode_ = setting_mode;
-  slide_out_controller_.set_slide_mode(CalculateSlideMode());
-  UpdateControlButtonsVisibility();
-}
-*/
 
 void MessageView::DisableSlideForcibly(bool disable) {
   disable_slide_ = disable;
@@ -358,20 +331,6 @@ void MessageView::OnCloseButtonPressed() {
     observer.OnCloseButtonPressed(notification_id_);
   }
   MessagePopupView::ClosePopup();
-// TODO
-//  MessageCenter::Get()->RemoveNotification(notification_id_, true /* by_user */);
-}
-
-void MessageView::SetNestedBorderIfNecessary() {
-  if (is_nested_) {
-    /*
-    SkColor border_color = GetNativeTheme()->GetSystemColor(
-        ui::NativeTheme::kColorId_UnfocusedBorderColor);
-        */
-    SkColor border_color = SK_ColorTRANSPARENT;
-    SetBorder(views::CreateRoundedRectBorder(
-        kNotificationBorderThickness, kNotificationCornerRadius, border_color));
-  }
 }
 
 void MessageView::UpdateControlButtonsVisibility() {

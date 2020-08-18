@@ -77,12 +77,10 @@ bool NotificationHelperWin::CanShowBackgroundNotifications() const {
 }
 
 NotificationHelperWin* NotificationHelperWin::GetInstanceImpl() {
-  LOG(INFO) << "Getting instance for notificationhelper1 ";
   return base::Singleton<NotificationHelperWin>::get();
 }
 
 NotificationHelper* NotificationHelper::GetInstanceImpl() {
-  LOG(INFO) << "Getting instance for notificationhelper2";
   return NotificationHelperWin::GetInstanceImpl();
 }
 

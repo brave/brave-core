@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/ads_notification_handler.h"
 
-#include "base/logging.h"
 #include <memory>
 #include <utility>
 
