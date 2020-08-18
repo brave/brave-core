@@ -30,7 +30,8 @@ namespace braveledger_publisher {
 
 PublisherPrefixListUpdater::PublisherPrefixListUpdater(
     bat_ledger::LedgerImpl* ledger)
-    : ledger_(ledger) {}
+    : ledger_(ledger),
+    rewrads_server_(new ledger::endpoint::RewardsServer(ledger)){}
 
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
@@ -61,24 +62,24 @@ void PublisherPrefixListUpdater::StartFetchTimer(
 
 void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
   BLOG(1, "Fetching publisher prefix list");
-  std::string url = braveledger_request_util::GetPublisherPrefixListUrl();
-  ledger_->LoadURL(
-      url, {}, "", "",
-      ledger::UrlMethod::GET,
-      std::bind(&PublisherPrefixListUpdater::OnFetchCompleted, this, _1));
+  auto url_callback = std::bind(&PublisherPrefixListUpdater::OnFetchCompleted,
+      this,
+      _1,
+      _2);
+  rewrads_server_->get_prefix_list()->Request(url_callback);
 }
 
 void PublisherPrefixListUpdater::OnFetchCompleted(
-    const ledger::UrlResponse& response) {
-  BLOG(7, ledger::UrlResponseToString(__func__, response));
-  if (response.status_code != net::HTTP_OK || response.body.empty()) {
+    const ledger::Result result,
+    const std::string& body) {
+  if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Invalid server response for publisher prefix list");
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
   }
 
   auto reader = std::make_unique<PrefixListReader>();
-  auto parse_error = reader->Parse(response.body);
+  auto parse_error = reader->Parse(body);
   if (parse_error != PrefixListReader::ParseError::kNone) {
     // This could be a problem on the client or the server, but
     // optimistically assume that it is a server issue and retry

@@ -8,10 +8,12 @@
 
 #include <functional>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "bat/ledger/internal/endpoint/rewards/rewards_server.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -44,7 +46,9 @@ class PublisherPrefixListUpdater {
       base::TimeDelta delay);
 
   void OnFetchTimerElapsed();
-  void OnFetchCompleted(const ledger::UrlResponse& response);
+  void OnFetchCompleted(
+      const ledger::Result result,
+      const std::string& body);
   void OnPrefixListInserted(const ledger::Result result);
 
   base::TimeDelta GetAutoUpdateDelay();
@@ -55,6 +59,7 @@ class PublisherPrefixListUpdater {
   bool auto_update_ = false;
   int retry_count_ = 0;
   ledger::PublisherPrefixListUpdatedCallback on_updated_callback_;
+  std::unique_ptr<ledger::endpoint::RewardsServer> rewrads_server_;
 };
 
 }  // namespace braveledger_publisher

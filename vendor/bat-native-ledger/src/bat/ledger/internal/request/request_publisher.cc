@@ -10,13 +10,6 @@
 
 namespace braveledger_request_util {
 
-std::string GetPublisherPrefixListUrl() {
-  return BuildUrl(
-      "/publishers/prefix-list",
-      "",
-      ServerTypes::kPublisher);
-}
-
 std::string GetPublisherInfoUrl(const std::string& hash_prefix) {
   // The endpoint is case-sensitive, so convert the hash prefix to
   // lower case.
