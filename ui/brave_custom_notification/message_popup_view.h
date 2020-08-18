@@ -9,7 +9,6 @@
 #include "base/scoped_observer.h"
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
-// #include "chrome/browser/profiles/profile.h"
 #include "ui/views/widget/widget_observer.h"
 
 namespace brave_custom_notification {
@@ -22,25 +21,18 @@ class MessagePopupView : public views::WidgetDelegateView,
  public:
   static void Show(Notification& notification); // Returns static reference
   static void ClosePopup(); // Destroys the widget
-  static void Clicked(const std::string& notification_id);
-  // MessagePopupView();
+  static void Clicked(const std::string& notification_id); // Tells AdsNotificationHandler that this was clicked
   MessagePopupView(const Notification& notification);
   ~MessagePopupView() override;
 
   // Return opacity of the widget.
   float GetOpacity() const;
 
-//  Widget* GetWidget() const override;
-
   // Sets widget bounds.
   void SetPopupBounds(const gfx::Rect& bounds);
 
   // Set widget opacity.
   void SetOpacity(float opacity);
-
-  // Collapses the notification unless the user is interacting with it. The
-  // request can be ignored. Virtual for unit testing.
-// virtual void AutoCollapse();
 
   // Shows popup. After this call, MessagePopupView should be owned by the
   // widget.
@@ -50,14 +42,7 @@ class MessagePopupView : public views::WidgetDelegateView,
   // in such case MessagePopupView should be deleted. Virtual for unit testing.
   virtual void Close();
 
-  // views::WidgetDelegateView:
-//  void OnMouseEntered(const ui::MouseEvent& event) override;
-//  void OnMouseExited(const ui::MouseEvent& event) override;
-//  void ChildPreferredSizeChanged(views::View* child) override;
-//  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
   const char* GetClassName() const override;
-//  void OnDisplayChanged() override;
-//  void OnWorkAreaChanged() override;
   void OnFocus() override;
 
   // views::WidgetObserver:

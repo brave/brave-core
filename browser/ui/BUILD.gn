@@ -110,8 +110,6 @@ source_set("ui") {
 
   if (toolkit_views) {
     sources += [
-      "views/ads_notification_view.cc",
-      "views/ads_notification_view.h",
       "views/bookmarks/bookmark_bar_instructions_view.cc",
       "views/bookmarks/bookmark_bar_instructions_view.h",
       "views/brave_layout_provider.cc",

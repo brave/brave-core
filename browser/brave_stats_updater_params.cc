@@ -19,7 +19,7 @@ namespace brave {
 
 base::Time BraveStatsUpdaterParams::g_current_time;
 bool BraveStatsUpdaterParams::g_force_first_run = false;
-static constexpr base::TimeDelta g_dtoi_delete_delta =	
+static constexpr base::TimeDelta g_dtoi_delete_delta =
     base::TimeDelta::FromSeconds(14 * 24 * 60 * 60);
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
@@ -63,8 +63,8 @@ std::string BraveStatsUpdaterParams::GetWeekOfInstallationParam() const {
 }
 
 std::string BraveStatsUpdaterParams::GetDateOfInstallationParam() const {
-    return (GetCurrentTimeNow() - date_of_installation_ >= g_dtoi_delete_delta)	
-      ? "null"	
+    return (GetCurrentTimeNow() - date_of_installation_ >= g_dtoi_delete_delta)
+      ? "null"
       : brave::GetDateAsYMD(date_of_installation_);
 }
 

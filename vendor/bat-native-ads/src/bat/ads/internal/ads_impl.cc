@@ -1167,18 +1167,21 @@ bool AdsImpl::IsAllowedToServeAdNotifications() {
 }
 
 void AdsImpl::StartDeliveringAdNotifications() {
+  /*
   const base::Time now = base::Time::Now();
   const base::Time next_check_serve_ad_notification_date =
       client_->GetNextCheckServeAdNotificationDate();
-
+*/
   base::TimeDelta delay;
+  /*
   if (now >= next_check_serve_ad_notification_date) {
     // Browser was launched after the next check to serve an ad
     delay = base::TimeDelta::FromMinutes(1);
   } else {
     delay = next_check_serve_ad_notification_date - now;
   }
-  delay = 30;
+  */
+  delay = base::TimeDelta::FromSeconds(10);
 
   const base::Time time = deliver_ad_notification_timer_.Start(delay,
       base::BindOnce(&AdsImpl::DeliverAdNotification, base::Unretained(this)));
