@@ -26,6 +26,7 @@
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 #define DAT_FILE "rs-ABPFilterParserData.dat"
 #define REGIONAL_CATALOG "regional_catalog.json"
@@ -45,6 +46,24 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
     return brave_shields::kLinkedInEmbeds;
   }
   return "";
+}
+
+// Extracts the start and end characters of a domain from a hostname.
+// Required for correct functionality of adblock-rust.
+void AdBlockServiceDomainResolver(const char* host, uint32_t* start,
+    uint32_t* end) {
+  const auto host_str = std::string(host);
+  const auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      host_str,
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  const size_t match = host_str.rfind(domain);
+  if (match != std::string::npos) {
+    *start = match;
+    *end = match + domain.length();
+  } else {
+    *start = 0;
+    *end = host_str.length();
+  }
 }
 
 }  // namespace
@@ -79,6 +98,9 @@ AdBlockService::AdBlockService(
 AdBlockService::~AdBlockService() {}
 
 bool AdBlockService::Init() {
+  // Initializes adblock-rust's domain resolution implementation
+  adblock::SetDomainResolver(AdBlockServiceDomainResolver);
+
   if (!AdBlockBaseService::Init())
     return false;
 
