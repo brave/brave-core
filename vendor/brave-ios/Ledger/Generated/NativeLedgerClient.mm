@@ -140,3 +140,6 @@ void NativeLedgerClient::ClearAllNotifications() {
 void NativeLedgerClient::WalletDisconnected(const std::string& wallet_type) {
   [bridge_ walletDisconnected:wallet_type];
 }
+void NativeLedgerClient::DeleteLog(ledger::ResultCallback callback) {
+  [bridge_ deleteLog:callback];
+}

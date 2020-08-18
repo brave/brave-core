@@ -392,4 +392,16 @@ void BatLedgerClientMojoBridge::WalletDisconnected(
   bat_ledger_client_->WalletDisconnected(wallet_type);
 }
 
+void OnDeleteLog(
+    const ledger::ResultCallback callback,
+    const ledger::Result result) {
+  callback(result);
+}
+
+void BatLedgerClientMojoBridge::DeleteLog(
+    ledger::ResultCallback callback) {
+  bat_ledger_client_->DeleteLog(
+      base::BindOnce(&OnDeleteLog, std::move(callback)));
+}
+
 }  // namespace bat_ledger
