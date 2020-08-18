@@ -11,6 +11,7 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ledger/internal/common/security_helper.h"
@@ -28,14 +29,12 @@ using std::placeholders::_2;
 namespace {
 
 std::string GeneratePayload(
-    const std::string& user_funds,
+    const double user_funds,
     const std::string& address,
     const std::string& anon_address,
     const std::vector<uint8_t>& seed) {
-  const std::string amount = user_funds.empty() ? "0" : user_funds;
-
   base::Value denomination(base::Value::Type::DICTIONARY);
-  denomination.SetStringKey("amount", amount);
+  denomination.SetStringKey("amount", base::NumberToString(user_funds));
   denomination.SetStringKey("currency", "BAT");
 
   base::Value octets(base::Value::Type::DICTIONARY);
@@ -109,7 +108,7 @@ void WalletClaim::OnBalance(
   }
 
   if (ledger_->GetBooleanState(ledger::kStateAnonTransferChecked) &&
-      balance->user_funds == "0") {
+      balance->user_funds == 0) {
     BLOG(1, "Second ping with zero balance");
     callback(ledger::Result::LEDGER_OK);
     return;
@@ -144,7 +143,7 @@ void WalletClaim::OnBalance(
 
 void WalletClaim::TransferFunds(
     const ledger::Result result,
-    const std::string user_funds,
+    const double user_funds,
     ledger::ResultCallback callback) {
   auto wallets = ledger_->GetExternalWallets();
   auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
