@@ -10,6 +10,7 @@
 
 #include "base/base64.h"
 #include "base/json/json_writer.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/common/security_helper.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
@@ -60,7 +61,7 @@ std::string PostClaimUphold::GetUrl() {
   return GetServerUrl(path);
 }
 
-std::string PostClaimUphold::GeneratePayload(const std::string& user_funds) {
+std::string PostClaimUphold::GeneratePayload(const double user_funds) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
   if (!wallet_ptr) {
@@ -68,10 +69,8 @@ std::string PostClaimUphold::GeneratePayload(const std::string& user_funds) {
     return "";
   }
 
-  const std::string amount = user_funds.empty() ? "0" : user_funds;
-
   base::Value denomination(base::Value::Type::DICTIONARY);
-  denomination.SetStringKey("amount", amount);
+  denomination.SetStringKey("amount", base::NumberToString(user_funds));
   denomination.SetStringKey("currency", "BAT");
 
   base::Value octets(base::Value::Type::DICTIONARY);
@@ -148,7 +147,7 @@ ledger::Result PostClaimUphold::CheckStatusCode(const int status_code) {
 }
 
 void PostClaimUphold::Request(
-    const std::string& user_funds,
+    const double user_funds,
     PostClaimUpholdCallback callback) {
   auto url_callback = std::bind(&PostClaimUphold::OnRequest,
       this,

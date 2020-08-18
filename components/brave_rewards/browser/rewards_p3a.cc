@@ -154,7 +154,7 @@ void RecordRewardsDisabledForSomeMetrics() {
 
 
 double CalcWalletBalanceForP3A(base::flat_map<std::string, double> wallets,
-                               std::string user_funds) {
+                               double user_funds) {
   double balance_minus_grant = 0.0;
   for (const auto& wallet : wallets) {
     // Skip anonymous wallet, since it can contain grants.
@@ -166,9 +166,7 @@ double CalcWalletBalanceForP3A(base::flat_map<std::string, double> wallets,
 
   // `user_funds` is the amount of user-funded BAT
   // in the anonymous wallet (ex: not grants).
-  double user_funds_value;
-  balance_minus_grant +=
-      base::StringToDouble(user_funds, &user_funds_value);
+  balance_minus_grant += user_funds;
   return balance_minus_grant;
 }
 

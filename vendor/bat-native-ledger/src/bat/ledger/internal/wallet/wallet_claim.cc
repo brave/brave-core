@@ -53,7 +53,7 @@ void WalletClaim::OnBalance(
   }
 
   if (ledger_->state()->GetAnonTransferChecked() &&
-      balance->user_funds == "0") {
+      balance->user_funds == 0) {
     BLOG(1, "Second ping with zero balance");
     callback(ledger::Result::LEDGER_OK);
     return;
