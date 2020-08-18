@@ -6,15 +6,12 @@
 
 #include "build/build_config.h"
 #include "ui/display/display.h"
-// #include "chrome/browser/profiles/profile.h"
 #include "ui/display/screen.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/message_view.h"
 #include "brave/ui/brave_custom_notification/message_view_factory.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/widget/widget.h"
-#include "ui/views/layout/box_layout.h"
-// #include "ui/views/views_delegate.h"
 #include "ui/views/controls/textfield/textfield.h"
 #include "ui/views/controls/label.h"
 
@@ -43,6 +40,7 @@ void MessagePopupView::Show(Notification& notification) {
   delegate_ = g_notification->delegate();
 }
 
+// static
 void MessagePopupView::Clicked(const std::string& notification_id) {
   g_message_popup_view->Close();
   if (delegate_){
@@ -64,7 +62,6 @@ MessagePopupView::MessagePopupView(const Notification& notification) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
-  // params.shadow_type = views::Widget::InitParams::ShadowType::kDrop;
   params.z_order = ui::ZOrderLevel::kFloatingWindow;
   params.bounds = { 30, 30, 300, 100 + GetBodyHeight(notification.message())};
 #if defined(OS_LINUX) && !defined(OS_CHROMEOS)
