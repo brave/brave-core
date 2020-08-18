@@ -44,8 +44,9 @@ AdBlockRegionalService::~AdBlockRegionalService() {
 
 bool AdBlockRegionalService::Init() {
   AdBlockBaseService::Init();
-  std::vector<adblock::FilterList>&  region_lists =
-    adblock::FilterList::GetRegionalLists();
+  const std::vector<adblock::FilterList>& region_lists = g_brave_browser_process
+      ->ad_block_regional_service_manager()
+          ->GetRegionalCatalog();
   auto it = brave_shields::FindAdBlockFilterListByUUID(region_lists, uuid_);
   if (it == region_lists.end())
     return false;

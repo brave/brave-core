@@ -245,6 +245,11 @@ void AdBlockRegionalServiceManager::SetRegionalCatalog(
   regional_catalog_ = std::move(catalog);
 }
 
+const std::vector<adblock::FilterList>&
+AdBlockRegionalServiceManager::GetRegionalCatalog() {
+  return regional_catalog_;
+}
+
 std::unique_ptr<base::ListValue>
 AdBlockRegionalServiceManager::GetRegionalLists() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
