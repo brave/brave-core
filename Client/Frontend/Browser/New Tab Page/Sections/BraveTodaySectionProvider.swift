@@ -28,6 +28,8 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
         case emptyCardTappedSourcesAndSettings
         /// The user tapped refresh on the error card
         case errorCardTappedRefresh
+        /// The user tapped to show more brave offers on one of the deal cards
+        case moreBraveOffersTapped
         /// The user performed an action on a feed item
         case itemAction(FeedItemAction, context: FeedItemActionContext)
     }
@@ -184,7 +186,9 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 // Force thumbnail to show up for deals even if the data source has none for UI purposes
                 view.thumbnailImageView.isHidden = false
             }
-            cell.content.groupBrandImageView.isHidden = true
+            cell.content.moreOffersButtonTapped = { [weak self] in
+                self?.actionHandler(.moreBraveOffersTapped)
+            }
             cell.content.actionHandler = handler(from: { items[$0] }, card: card, indexPath: indexPath)
             cell.content.contextMenu = contextMenu(from: { items[$0] }, card: card, indexPath: indexPath)
             return cell

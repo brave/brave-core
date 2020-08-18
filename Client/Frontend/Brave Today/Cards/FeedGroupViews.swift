@@ -4,6 +4,7 @@
 
 import UIKit
 import BraveUI
+import Shared
 
 /// Displays a group of feed items under a title, and optionally a brand under
 /// the feeds.
@@ -12,6 +13,12 @@ class FeedGroupView: UIView {
     var actionHandler: ((Int, FeedItemAction) -> Void)?
     
     var contextMenu: FeedItemMenu?
+    
+    /// The containing stack view that can be used to prepend or append views to the group card
+    let containerStackView = UIStackView().then {
+        $0.axis = .vertical
+        $0.spacing = 0
+    }
     
     /// The title label appearing above the list of feeds
     let titleLabel = UILabel().then {
@@ -23,17 +30,6 @@ class FeedGroupView: UIView {
     private let buttons: [SpringButton]
     /// The feeds that are displayed within the list
     let feedViews: [FeedItemView]
-    /// The brand image at the bottom of each card.
-    ///
-    /// Set `isHidden` to true if you want to hide the brand image for a given
-    /// card
-    let groupBrandImageView = UIImageView().then {
-        $0.isHidden = true
-        $0.contentMode = .left
-        $0.snp.makeConstraints {
-            $0.height.equalTo(20)
-        }
-    }
     /// The context menu delegate if on iOS 13
     private var contextMenuDelegates: [NSObject] = []
     /// The blurred background view
@@ -92,6 +88,8 @@ class FeedGroupView: UIView {
         let stackView = UIStackView().then {
             $0.axis = .vertical
             $0.spacing = 16
+            $0.isLayoutMarginsRelativeArrangement = true
+            $0.layoutMargins = UIEdgeInsets(equalInset: 20)
         }
         stackView.addStackViewItems(
             .view(titleLabel),
@@ -109,14 +107,18 @@ class FeedGroupView: UIView {
         )
         
         addSubview(backgroundView)
-        addSubview(stackView)
+        addSubview(containerStackView)
+        containerStackView.addArrangedSubview(stackView)
         
         backgroundView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
-        stackView.snp.makeConstraints {
-            $0.edges.equalToSuperview().inset(20)
+        containerStackView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
         }
+        
+        layer.cornerRadius = backgroundView.layer.cornerRadius
+        layer.masksToBounds = true
     }
     
     @available(*, unavailable)
@@ -149,8 +151,70 @@ class HorizontalFeedGroupView: FeedGroupView, FeedCardContent {
 
 /// A group of deal feed items placed horizontally in a card
 class DealsFeedGroupView: FeedGroupView, FeedCardContent {
+    var moreOffersButtonTapped: (() -> Void)?
+    
     required init() {
         super.init(axis: .horizontal, feedLayout: .offer)
+        
+        containerStackView.addStackViewItems(
+            .view(UIView().then {
+                $0.backgroundColor = UIColor(white: 1.0, alpha: 0.15)
+                $0.snp.makeConstraints {
+                    $0.height.equalTo(1.0 / UIScreen.main.scale)
+                }
+                $0.isUserInteractionEnabled = false
+            }),
+            .view(MoreOffersButton().then {
+                $0.addTarget(self, action: #selector(tappedMoreOffers), for: .touchUpInside)
+            })
+        )
+    }
+    
+    @objc private func tappedMoreOffers() {
+        moreOffersButtonTapped?()
+    }
+    
+    private class MoreOffersButton: UIControl {
+        private let label = UILabel().then {
+            $0.appearanceTextColor = .white
+            $0.text = Strings.BraveToday.moreBraveOffers
+            $0.font = .systemFont(ofSize: 14, weight: .semibold)
+        }
+        private let disclosureIcon = UIImageView(image: UIImage(imageLiteralResourceName: "disclosure-arrow").template).then {
+            $0.tintColor = .white
+            $0.setContentHuggingPriority(.required, for: .horizontal)
+        }
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            
+            let stackView = UIStackView(arrangedSubviews: [label, disclosureIcon])
+            stackView.alignment = .center
+            stackView.isUserInteractionEnabled = false
+            addSubview(stackView)
+            stackView.snp.makeConstraints {
+                $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20))
+            }
+            snp.makeConstraints {
+                $0.height.equalTo(44)
+            }
+        }
+        
+        @available(*, unavailable)
+        required init(coder: NSCoder) {
+            fatalError()
+        }
+        
+        override var isHighlighted: Bool {
+            didSet {
+                UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1.0) {
+                    self.backgroundColor = self.isHighlighted ?
+                        UIColor(white: 1.0, alpha: 0.1) :
+                        UIColor.clear
+                }
+                .startAnimation()
+            }
+        }
     }
 }
 

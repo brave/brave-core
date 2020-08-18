@@ -475,6 +475,12 @@ class NewTabPageViewController: UIViewController, Themeable {
             tappedBraveTodaySettings()
         case .errorCardTappedRefresh:
             loadFeedContents()
+        case .moreBraveOffersTapped:
+            delegate?.navigateToInput(
+                BraveUX.braveOffersURL.absoluteString,
+                inNewTab: false,
+                switchingToPrivateMode: false
+            )
         case .itemAction(.opened(let inNewTab, let switchingToPrivateMode), let context):
             guard let url = context.item.content.url else { return }
             delegate?.navigateToInput(

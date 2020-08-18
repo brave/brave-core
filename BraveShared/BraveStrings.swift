@@ -1442,5 +1442,11 @@ extension Strings {
             value: "Search",
             comment: ""
         )
+        public static let moreBraveOffers = NSLocalizedString(
+            "today.moreBraveOffers",
+            bundle: .braveShared,
+            value: "More Brave Offers",
+            comment: ""
+        )
     }
 }
