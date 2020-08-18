@@ -49,6 +49,11 @@
           compress="false"
           preprocess="true"
           type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_COOKIES_PAGE_JS"
+          file="brave_overrides/cookies_page.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
       <include name="IDR_SETTINGS_BRAVE_OVERRIDES_DEFAULT_BROWSER_PAGE_JS"
           file="brave_overrides/default_browser_page.js"
           compress="false"
