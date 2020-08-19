@@ -1,8 +1,6 @@
 import("//brave/build/config.gni")
 
 source_set("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10642 is resolved
-  check_includes = false
   sources = [
     "greaselion_download_service.cc",
     "greaselion_download_service.h",
@@ -16,9 +14,10 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser",
+    "//chrome/browser/extensions:extensions",
     "//content/public/browser",
     "//content/public/common",
-    "//chrome/common",
+    "//extensions/browser",
     "//url",
   ]
 
