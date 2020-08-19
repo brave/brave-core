@@ -16,6 +16,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/observer_list.h"
+#include "base/process/process.h"
 #include "base/time/time.h"
 
 namespace base {
@@ -45,6 +46,7 @@ class TorControl {
     virtual ~Delegate() = default;
     virtual void OnTorControlReady() = 0;
     virtual void OnTorClosed() = 0;
+    virtual void OnTorCleanupNeeded(base::ProcessId id) = 0;
 
     virtual void OnTorEvent(
         TorControlEvent,
@@ -66,7 +68,8 @@ class TorControl {
 
   static std::unique_ptr<TorControl> Create(Delegate* delegate);
 
-  void Start(const base::FilePath& watchDirPath);
+  void Start(const base::FilePath& watchDirPath,
+             base::OnceClosure check_complete);
   void Stop();
 
   void Cmd1(const std::string& cmd, CmdCallback callback);
@@ -140,13 +143,15 @@ class TorControl {
 
   TorControl::Delegate* delegate_;
 
-  void StartWatching(base::FilePath watchDirPath);
+  void StartWatching();
   void StopWatching();
+  void CheckingOldTorProcess(base::OnceClosure callback);
   void WatchDirChanged(const base::FilePath& path, bool error);
   void Poll();
   void Polled();
   bool EatControlCookie(std::vector<uint8_t>&, base::Time&);
   bool EatControlPort(int&, base::Time&);
+  bool EatOldPid(base::ProcessId& id);
 
   void OpenControl(int port, std::vector<uint8_t> cookie);
   void Connected(std::vector<uint8_t> cookie, int rv);

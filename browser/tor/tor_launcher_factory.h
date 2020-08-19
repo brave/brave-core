@@ -36,6 +36,7 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   // tor::TorControl::Delegate
   void OnTorControlReady() override;
   void OnTorClosed() override;
+  void OnTorCleanupNeeded(base::ProcessId id) override;
   void OnTorEvent(
       tor::TorControlEvent event,
       const std::string& initial,
@@ -58,6 +59,9 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   TorLauncherFactory();
   ~TorLauncherFactory() final;
 
+  void OnTorControlCheckComplete();
+  void Launching();
+
   bool SetConfig(const tor::TorConfig& config);
 
   void OnTorLauncherCrashed();
@@ -70,6 +74,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   void GotVersion(bool error, const std::string& version);
   void GotSOCKSListeners(bool error, const std::vector<std::string>& listeners);
+
+  void KillOldTorProcess(base::ProcessId id);
 
   bool is_starting_;
 
