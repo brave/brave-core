@@ -1,12 +1,10 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ 
 #ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_CPP_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT_H_
 #define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_CPP_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT_H_
-
-// Defines BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT so that functionality implemented by the
-// message_center module can be exported to consumers.
 
 #if defined(COMPONENT_BUILD)
 #if defined(WIN32)

@@ -22,11 +22,6 @@
 
 namespace {
 
-// A NotificationDelegate that passes through click actions to the notification
-// display service (and on to the appropriate handler). This is a temporary
-// class to ease the transition from NotificationDelegate to
-// NotificationHandler.
-// TODO(estade): also handle other NotificationDelegate actions as needed.
 class PassThroughDelegate : public brave_custom_notification::NotificationDelegate {
  public:
   PassThroughDelegate(Profile* profile,

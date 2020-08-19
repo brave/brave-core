@@ -87,16 +87,6 @@ MessagePopupView::MessagePopupView(const Notification& notification) {
 #endif
 
   popup_window_->Init(std::move(params));
-
-#if defined(OS_CHROMEOS)
-  // On Chrome OS, this widget is shown in the shelf container. It means this
-  // widget would inherit the parent's window targeter (ShelfWindowTarget) by
-  // default. But it is not good for popup. So we override it with the normal
-  // WindowTargeter.
-  gfx::NativeWindow native_window = widget->GetNativeWindow();
-  native_window->SetEventTargeter(std::make_unique<aura::WindowTargeter>());
-#endif
-
   popup_window_->ShowInactive();
 
   MessageView* message_view_ = MessageViewFactory::Create(notification);
@@ -164,4 +154,4 @@ int MessagePopupView::GetBodyHeight(const base::string16& message) {
   return (10 * (message.size() / 40)) + 10;
 }
 
-}  // namespace message_center
+}  // namespace brave_custom_notification

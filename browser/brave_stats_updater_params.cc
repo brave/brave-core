@@ -63,7 +63,7 @@ std::string BraveStatsUpdaterParams::GetWeekOfInstallationParam() const {
 }
 
 std::string BraveStatsUpdaterParams::GetDateOfInstallationParam() const {
-    return (GetCurrentTimeNow() - date_of_installation_ >= g_dtoi_delete_delta)
+  return (GetCurrentTimeNow() - date_of_installation_ >= g_dtoi_delete_delta)
       ? "null"
       : brave::GetDateAsYMD(date_of_installation_);
 }
