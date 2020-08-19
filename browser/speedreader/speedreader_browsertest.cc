@@ -68,7 +68,8 @@ class SpeedReaderBrowserTest : public InProcessBrowserTest {
   net::EmbeddedTestServer https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
+// disabled in https://github.com/brave/brave-browser/issues/11328
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, DISABLED_SmokeTest) {
   chrome::ExecuteCommand(browser(), IDC_TOGGLE_SPEEDREADER);
   const GURL url = https_server_.GetURL(kTestHost, kTestPage);
   ui_test_utils::NavigateToURL(browser(), url);
