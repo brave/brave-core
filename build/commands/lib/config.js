@@ -299,7 +299,7 @@ Config.prototype.buildArgs = function () {
 
     if (this.buildConfig !== 'Release') {
       // treat non-release builds like Debug builds
-      args.java_warnings_as_errors = false
+      args.treat_warnings_as_errors = false
     } else {
       // otherwise there is build error
       // ld.lld: error: output file too large: 5861255936 bytes
