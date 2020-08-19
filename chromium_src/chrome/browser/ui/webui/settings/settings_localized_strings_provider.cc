@@ -11,6 +11,8 @@
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/version_info.h"
 #include "chrome/browser/ui/webui/webui_util.h"
+#include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
@@ -42,6 +44,9 @@ const char kBraveBuildInstructionsUrl[] =
 const char kBraveLicenseUrl[] = "https://mozilla.org/MPL/2.0/";
 const char kBraveReleaseTagPrefix[] =
     "https://github.com/brave/brave-browser/releases/tag/v";
+const char kGoogleLoginLearnMoreURL[] =
+    "https://github.com/brave/brave-browser/wiki/"
+    "Social-Blocking:-Allow-Google-login";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -298,6 +303,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   AddLocalizedStringsBulk(html_source, localized_strings);
   html_source->AddString("webRTCLearnMoreURL",
                          base::ASCIIToUTF16(kWebRTCLearnMoreURL));
+  html_source->AddString("googleLoginLearnMoreURL",
+                        base::ASCIIToUTF16(kGoogleLoginLearnMoreURL));
   html_source->AddString(
       "getMoreExtensionsUrl",
       base::ASCIIToUTF16(
@@ -324,12 +331,19 @@ void BraveAddAboutStrings(content::WebUIDataSource* html_source,
   html_source->AddString("aboutProductLicense", license);
 }
 
+void BraveAddSocialBlockingLoadTimeData(content::WebUIDataSource* html_source,
+                                        Profile* profile) {
+    html_source->AddBoolean("signInAllowedOnNextStartupInitialValue",
+        profile->GetPrefs()->GetBoolean(prefs::kSigninAllowedOnNextStartup));
+}
+
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
                               Profile* profile) {
   BraveAddCommonStrings(html_source, profile);
   BraveAddResources(html_source, profile);
   BraveAddAboutStrings(html_source, profile);
   BravePrivacyHandler::AddLoadTimeData(html_source, profile);
+  BraveAddSocialBlockingLoadTimeData(html_source, profile);
 }
 
 }  // namespace settings

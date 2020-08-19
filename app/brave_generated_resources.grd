@@ -401,7 +401,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Show the number of blocked items on the Shields icon
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_GOOGLE_LOGIN_LABEL" desc="Label for a switch control which allows Google social buttons to be enabled/disabled">
-        Allow Google login buttons on third party sites
+        Allow Google login for extensions and third party sites
       </message>
       <message name="IDS_SETTINGS_BRAVE_SHIELDS_FACEBOOK_EMBEDDED_POSTS_LABEL" desc="Label for a switch control which allows Facebook embedded posts">
         Allow Facebook logins and embedded posts

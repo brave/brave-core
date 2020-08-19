@@ -109,6 +109,11 @@
           compress="false"
           preprocess="true"
           type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SYNC_ACCOUNT_CONTROL_JS"
+          file="brave_overrides/sync_account_control.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
       <include name="IDR_SETTINGS_BRAVE_OVERRIDES_SYNC_CONTROLS_JS"
           file="brave_overrides/sync_controls.js"
           compress="false"

@@ -2,6 +2,7 @@
 
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
 <link rel="import" href="chrome://resources/cr_elements/md_select_css.html">
+<link rel="import" href="social_blocking_page_proxy.html">
 <link rel="import" href="../settings_shared_css.html">
 <link rel="import" href="../settings_vars_css.html">
 
@@ -12,7 +13,16 @@
     <settings-toggle-button id="googleLoginControlType"
         class="cr-row"
         pref="{{prefs.brave.google_login_default}}"
-        label="$i18n{googleLoginControlLabel}">
+        label="$i18n{googleLoginControlLabel}"
+        learn-more-url="$i18n{googleLoginLearnMoreURL}"
+        on-settings-boolean-control-change="setSignInEnabledAtNextStartup_"
+        >
+        <template is="dom-if" if="[[shouldShowRestart_(
+          prefs.brave.google_login_default.value)]]">
+        <cr-button on-click="restartBrowser_" slot="more-actions">
+          $i18n{restart}
+        </cr-button>
+        </template>
     </settings-toggle-button>
     <settings-toggle-button id="fbEmbedControlType"
         class="cr-row"

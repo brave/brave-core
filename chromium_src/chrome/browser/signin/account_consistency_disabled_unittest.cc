@@ -50,7 +50,7 @@ TEST(AccountConsistencyDisabledTest, NewProfile) {
   }
   std::unique_ptr<TestingProfile> profile = profile_builder.Build();
   ASSERT_TRUE(profile->IsNewProfile());
-  EXPECT_FALSE(AccountConsistencyModeManager::IsDiceEnabledForProfile(
+  EXPECT_TRUE(AccountConsistencyModeManager::IsDiceEnabledForProfile(
         profile.get()));
 }
 
@@ -60,9 +60,9 @@ TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {
   {
     // Regular profile.
     TestingProfile profile;
-    EXPECT_FALSE(
+    EXPECT_TRUE(
         AccountConsistencyModeManager::IsDiceEnabledForProfile(&profile));
-    EXPECT_EQ(signin::AccountConsistencyMethod::kDisabled,
+    EXPECT_EQ(signin::AccountConsistencyMethod::kDice,
               AccountConsistencyModeManager::GetMethodForProfile(&profile));
 
     // Incognito profile.

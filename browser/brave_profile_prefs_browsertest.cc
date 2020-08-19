@@ -124,7 +124,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest,
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetInteger(
                 prefs::kNetworkPredictionOptions),
             chrome_browser_net::NETWORK_PREDICTION_NEVER);
-  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
       prefs::kSigninAllowedOnNextStartup));
   // Verify cloud print is disabled.
   EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(
