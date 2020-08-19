@@ -104,6 +104,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ViewGroup mainLayout;
     private DatabaseHelper mDatabaseHelper;
 
+    private View mBraveStatsView;
     private ViewGroup mSiteSectionView;
     private LottieAnimationView mBadgeAnimationView;
     private VerticalViewPager ntpWidgetViewPager;
@@ -128,7 +129,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
 
         LayoutInflater inflater = (LayoutInflater) ContextUtils.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View mBraveStatsView = inflater.inflate (R.layout.brave_stats_layout, null);
+        mBraveStatsView = inflater.inflate (R.layout.brave_stats_layout, null);
         ntpWidgetAdapter.addView (mBraveStatsView, 0);
         View binanceWidgetView = inflater.inflate (R.layout.crypto_widget_layout, null);
         ntpWidgetAdapter.addView (binanceWidgetView, 1);
@@ -140,23 +141,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             }
         }
         ntpWidgetAdapter.notifyDataSetChanged();
-
-        FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
-        ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
-        if (!UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                || !NTPUtil.shouldEnableNTPFeature()) {
-            mBadgeImageView.setColorFilter(ContextCompat.getColor(ContextUtils.getApplicationContext(), R.color.brave_stats_badge_tint_color), android.graphics.PorterDuff.Mode.SRC_IN);
-        }
-
-        mBadgeImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkForBraveStats();
-                OnboardingPrefManager.getInstance().setShowBadgeAnimation(false);
-            }
-        });
-
-        mBadgeAnimationView = (LottieAnimationView) findViewById(R.id.badge_image);
 
         mBraveStatsView.setOnClickListener(new View.OnClickListener() {
             @Override
