@@ -212,7 +212,6 @@ class NewTabPageViewController: UIViewController, Themeable {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        layout.invalidateLayout()
         collectionView.reloadData()
         
         // Make sure that imageView has a frame calculated before we attempt
@@ -522,7 +521,7 @@ class NewTabPageViewController: UIViewController, Themeable {
         _ oldValue: FeedDataSource.State,
         _ newValue: FeedDataSource.State
     ) {
-        guard let section = layout.braveTodaySection else { return }
+        guard let braveTodaySection = layout.braveTodaySection else { return }
         
         switch (oldValue, newValue) {
         case (.loading, .loading):
@@ -534,12 +533,12 @@ class NewTabPageViewController: UIViewController, Themeable {
             break
         case (.loading(.failure(let error1 as NSError)),
               .failure(let error2 as NSError)) where error1 == error2:
-            if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section)) as? FeedCardCell<BraveTodayErrorView> {
+            if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: braveTodaySection)) as? FeedCardCell<BraveTodayErrorView> {
                 cell.content.refreshButton.isLoading = false
             }
         case (_, .loading):
             if collectionView.contentOffset.y == collectionView.contentInset.top ||
-                collectionView.numberOfItems(inSection: section) == 0 {
+                collectionView.numberOfItems(inSection: braveTodaySection) == 0 {
                 feedOverlayView.loaderView.isHidden = false
                 feedOverlayView.loaderView.start()
                 
@@ -564,7 +563,7 @@ class NewTabPageViewController: UIViewController, Themeable {
                 collectionView.reloadData()
                 collectionView.layoutIfNeeded()
                 let cells = collectionView.indexPathsForVisibleItems
-                    .filter { $0.section == section }
+                    .filter { $0.section == braveTodaySection }
                     .compactMap(collectionView.cellForItem(at:))
                 cells.forEach { cell in
                     cell.transform = .init(translationX: 0, y: 200)
@@ -573,10 +572,10 @@ class NewTabPageViewController: UIViewController, Themeable {
                     }, completion: nil)
                 }
             } else {
-                collectionView.reloadSections(IndexSet(integer: section))
+                collectionView.reloadSections(IndexSet(integer: braveTodaySection))
             }
         default:
-            collectionView.reloadSections(IndexSet(integer: section))
+            collectionView.reloadSections(IndexSet(integer: braveTodaySection))
         }
     }
     
@@ -778,8 +777,8 @@ extension NewTabPageViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-// MARK: - UISearchControllerDelegate
-extension NewTabPageViewController: UISearchControllerDelegate {
+// MARK: - UICollectionViewDelegate
+extension NewTabPageViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         sections[indexPath.section].collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
     }
