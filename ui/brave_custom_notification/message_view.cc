@@ -86,7 +86,6 @@ class MessageView::HighlightPathGenerator
 
 MessageView::MessageView(const Notification& notification) : notification_id_(notification.id()), slide_out_controller_(this, this) {
   SetFocusBehavior(FocusBehavior::ALWAYS);
-  focus_ring_ = views::FocusRing::Install(this);
   views::HighlightPathGenerator::Install(
       this, std::make_unique<HighlightPathGenerator>());
 
