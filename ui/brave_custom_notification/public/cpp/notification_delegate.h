@@ -116,4 +116,4 @@ class HandleNotificationClickDelegate
 
 }  //  namespace brave_custom_notification
 
-#endif  // UI_MESSAGE_CENTER_PUBLIC_CPP_NOTIFICATION_DELEGATE_H_
+#endif // BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_CPP_NOTIFICATION_DELEGATE_H_

@@ -151,4 +151,4 @@ gfx::Image Notification::GenerateMaskedSmallIcon(int dip_size,
   return gfx::Image(resized);
 }
 
-}  // namespace message_center
+}  // namespace brave_custom_notification

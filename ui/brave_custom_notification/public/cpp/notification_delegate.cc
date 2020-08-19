@@ -10,8 +10,6 @@
 
 namespace brave_custom_notification {
 
-// ThunkNotificationDelegate:
-
 ThunkNotificationDelegate::ThunkNotificationDelegate(
     base::WeakPtr<NotificationObserver> impl)
     : impl_(impl) {}
@@ -39,8 +37,6 @@ void ThunkNotificationDelegate::DisableNotification() {
 }
 
 ThunkNotificationDelegate::~ThunkNotificationDelegate() = default;
-
-// HandleNotificationClickDelegate:
 
 HandleNotificationClickDelegate::HandleNotificationClickDelegate(
     const base::RepeatingClosure& callback) {

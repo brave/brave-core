@@ -39,15 +39,6 @@ struct BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT NotificationItem {
   base::string16 message;
 };
 
-/*
-enum class SettingsButtonHandler {
-  NONE = 0,      // No button. This is the default. Does not affect native
-                 // settings button (like on Android).
-  INLINE = 1,    // Button shown, settings inline.
-  DELEGATE = 2,  // Button shown, notification's delegate handles action.
-};
-*/
-
 enum class SystemNotificationWarningLevel { NORMAL, WARNING, CRITICAL_WARNING };
 
 // Represents a button to be shown as part of a notification.
@@ -392,17 +383,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
     optional_fields_.accent_color = accent_color;
   }
 
-  /*
-  bool should_show_settings_button() const {
-    return optional_fields_.settings_button_handler !=
-           SettingsButtonHandler::NONE;
-  }
-
-  void set_settings_button_handler(SettingsButtonHandler handler) {
-    optional_fields_.settings_button_handler = handler;
-  }
-  */
-
   bool should_show_snooze_button() const {
     return optional_fields_.should_show_snooze_button;
   }
@@ -472,6 +452,6 @@ class BRAVE_CUSTOM_NOTIFICATION_PUBLIC_EXPORT Notification {
   std::string custom_view_type_;
 };
 
-}  // namespace message_center
+}  // namespace brave_custom_notification
 
-#endif  // UI_MESSAGE_CENTER_PUBLIC_CPP_NOTIFICATION_H_
+#endif  // BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_PUBLIC_CPP_NOTIFICATION_H_
