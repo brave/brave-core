@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index c61bf8d408484990ad328db5725f9444419c3e6c..a4163cceeb8cf649102b8947dc9fffe7efab632f 100644
+index a6abcb78a33ec43ce42d390fe8bd1beefd201162..4ae6d14c6303aa18a30f44a3927761049bf26292 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -189,7 +189,7 @@ import java.util.Locale;
@@ -11,7 +11,7 @@ index c61bf8d408484990ad328db5725f9444419c3e6c..a4163cceeb8cf649102b8947dc9fffe7
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-@@ -1131,7 +1131,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1133,7 +1133,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          if (ReengagementNotificationController.isEnabled()) {
              if (mCallbackController != null) {
                  new OneShotCallback<>(
@@ -20,7 +20,7 @@ index c61bf8d408484990ad328db5725f9444419c3e6c..a4163cceeb8cf649102b8947dc9fffe7
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
  
-@@ -1706,7 +1706,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1710,7 +1710,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -29,7 +29,7 @@ index c61bf8d408484990ad328db5725f9444419c3e6c..a4163cceeb8cf649102b8947dc9fffe7
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier, mBookmarkBridgeSupplier);
-@@ -1729,9 +1729,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1733,9 +1733,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -41,7 +41,7 @@ index c61bf8d408484990ad328db5725f9444419c3e6c..a4163cceeb8cf649102b8947dc9fffe7
                          tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -2120,7 +2120,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2124,7 +2124,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  
