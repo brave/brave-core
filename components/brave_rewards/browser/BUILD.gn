@@ -61,6 +61,8 @@ source_set("browser") {
     "contribution_report_info.h",
     "rewards_database.h",
     "rewards_database.cc",
+    "event_log.h",
+    "event_log.cc",
   ]
 
   deps = [

@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "base/test/task_environment.h"
+#include "bat/ledger/internal/database/database_mock.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
 #include "bat/ledger/internal/publisher/publisher.h"
@@ -47,15 +48,21 @@ class PublisherTest : public testing::Test {
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
   std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Publisher> publisher_;
+  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
 
   PublisherTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
         std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
     publisher_ = std::make_unique<Publisher>(mock_ledger_impl_.get());
+    mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+        mock_ledger_impl_.get());
   }
 
   void SetUp() override {
+    ON_CALL(*mock_ledger_impl_, database())
+      .WillByDefault(testing::Return(mock_database_.get()));
+
     ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::kStateScoreA))
       .WillByDefault(
           Invoke([this](const std::string& key) {

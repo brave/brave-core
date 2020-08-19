@@ -534,3 +534,9 @@ enum InlineTipsPlatforms {
   GITHUB = 3
 };
 
+struct EventLog {
+  string event_log_id;
+  string key;
+  string value;
+  uint64 created_at;
+};

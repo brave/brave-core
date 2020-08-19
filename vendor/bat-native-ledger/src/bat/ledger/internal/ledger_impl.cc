@@ -765,8 +765,22 @@ void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
       1,
       result != ledger::Result::LEDGER_OK,
       "Not all wallets were disconnected");
-    database()->FinishAllInProgressContributions(callback);
+    auto finish_callback = std::bind(&LedgerImpl::OnAllDone,
+        this,
+        _1,
+        callback);
+    database()->FinishAllInProgressContributions(finish_callback);
   });
+}
+
+void LedgerImpl::OnAllDone(
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
+  database()->Close(callback);
+}
+
+void LedgerImpl::GetEventLogs(ledger::GetEventLogsCallback callback) {
+  database()->GetLastEventLogs(callback);
 }
 
 }  // namespace bat_ledger

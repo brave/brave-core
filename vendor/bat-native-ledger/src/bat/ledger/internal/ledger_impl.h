@@ -17,7 +17,7 @@
 #include "bat/ledger/internal/api/api.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/database/database.h"
-#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/promotion/promotion.h"
 #include "bat/ledger/internal/publisher/publisher.h"
@@ -334,7 +334,11 @@ class LedgerImpl : public ledger::Ledger {
 
   void Shutdown(ledger::ResultCallback callback) override;
 
+  void GetEventLogs(ledger::GetEventLogsCallback callback) override;
+
   // end ledger.h
+
+  void OnAllDone(const ledger::Result result, ledger::ResultCallback callback);
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_promotion::Promotion> promotion_;

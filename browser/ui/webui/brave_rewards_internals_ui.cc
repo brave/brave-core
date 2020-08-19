@@ -67,6 +67,8 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnGetExternalWallet(
       int32_t result,
       std::unique_ptr<brave_rewards::ExternalWallet> wallet);
+  void GetEventLogs(const base::ListValue* args);
+  void OnGetEventLogs(const std::vector<brave_rewards::EventLog>&);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   Profile* profile_;
@@ -121,11 +123,15 @@ void RewardsInternalsDOMHandler::RegisterMessages() {
       base::BindRepeating(
           &RewardsInternalsDOMHandler::ClearLog,
           base::Unretained(this)));
-
   web_ui()->RegisterMessageCallback(
       "brave_rewards_internals.getExternalWallet",
       base::BindRepeating(
           &RewardsInternalsDOMHandler::GetExternalWallet,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_internals.getEventLogs",
+      base::BindRepeating(
+          &RewardsInternalsDOMHandler::GetEventLogs,
           base::Unretained(this)));
 }
 
@@ -408,6 +414,39 @@ void RewardsInternalsDOMHandler::OnGetExternalWallet(
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_internals.externalWallet",
       data);
+}
+
+void RewardsInternalsDOMHandler::GetEventLogs(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->GetEventLogs(
+      base::BindOnce(
+          &RewardsInternalsDOMHandler::OnGetEventLogs,
+          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void RewardsInternalsDOMHandler::OnGetEventLogs(
+    const std::vector<brave_rewards::EventLog>& logs) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value data(base::Value::Type::LIST);
+
+  for (const auto& log : logs) {
+    base::Value item(base::Value::Type::DICTIONARY);
+    item.SetStringKey("id", log.event_log_id);
+    item.SetStringKey("key", log.key);
+    item.SetStringKey("value", log.value);
+    item.SetIntKey("createdAt", log.created_at);
+    data.Append(std::move(item));
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_internals.eventLogs",
+      std::move(data));
 }
 
 }  // namespace

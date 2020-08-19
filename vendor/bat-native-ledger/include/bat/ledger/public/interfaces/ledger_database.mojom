@@ -25,7 +25,8 @@ struct DBCommand {
     RUN,
     EXECUTE,
     MIGRATE,
-    VACUUM
+    VACUUM,
+    CLOSE
   };
 
   enum RecordBindingType {

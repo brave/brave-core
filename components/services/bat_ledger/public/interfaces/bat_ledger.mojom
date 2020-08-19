@@ -150,6 +150,8 @@ interface BatLedger {
   GetAllPromotions() => (map<string, ledger.mojom.Promotion> items);
 
   Shutdown() => (ledger.mojom.Result result);
+
+  GetEventLogs() => (array<ledger.mojom.EventLog> logs);
 };
 
 interface BatLedgerClient {

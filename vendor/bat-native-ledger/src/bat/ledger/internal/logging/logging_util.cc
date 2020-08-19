@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/logging_util.h"
+#include "bat/ledger/internal/logging/logging_util.h"
 
 #include <sstream>
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 
 namespace ledger {
 

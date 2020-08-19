@@ -852,6 +852,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "contributionStepRewardsOff", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_REWARDS_OFF },        // NOLINT
         { "contributionStepAutoContributeOff", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_AUTO_CONTRIBUTE_OFF },        // NOLINT
         { "contributionStepRetryCount", IDS_BRAVE_REWARDS_INTERNALS_CONTRIBUTION_STEP_RETRY_COUNT },        // NOLINT
+        { "eventLogKey", IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_KEY },
+        { "eventLogValue", IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_VALUE },
+        { "eventLogTime", IDS_BRAVE_REWARDS_INTERNALS_EVENT_LOG_TIME },
         { "mainDisclaimer", IDS_BRAVE_REWARDS_INTERNALS_MAIN_DISCLAIMER },
         { "rewardsNotEnabled", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_NOT_ENABLED },                // NOLINT
         { "rewardsTypeAuto", IDS_BRAVE_REWARDS_INTERNALS_REWARDS_TYPE_AUTO },                    // NOLINT
@@ -893,6 +896,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "tabLogs", IDS_BRAVE_REWARDS_INTERNALS_TAB_LOGS },
         { "tabPromotions", IDS_BRAVE_REWARDS_INTERNALS_TAB_PROMOTIONS },
         { "tabContributions", IDS_BRAVE_REWARDS_INTERNALS_TAB_CONTRIBUTIONS },
+        { "tabEventLogs", IDS_BRAVE_REWARDS_INTERNALS_TAB_EVENT_LOGS },
         { "totalAmount", IDS_BRAVE_REWARDS_INTERNALS_TOTAL_AMOUNT },
         { "totalBalance", IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE },
         { "userId", IDS_BRAVE_REWARDS_INTERNALS_USER_ID },

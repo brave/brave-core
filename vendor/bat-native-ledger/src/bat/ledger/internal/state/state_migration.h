@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/state/state_migration_v2.h"
 #include "bat/ledger/internal/state/state_migration_v3.h"
 #include "bat/ledger/internal/state/state_migration_v4.h"
+#include "bat/ledger/internal/state/state_migration_v5.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -38,6 +39,7 @@ class StateMigration {
   std::unique_ptr<StateMigrationV2> v2_;
   std::unique_ptr<StateMigrationV3> v3_;
   std::unique_ptr<StateMigrationV4> v4_;
+  std::unique_ptr<StateMigrationV5> v5_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

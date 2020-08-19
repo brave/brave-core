@@ -78,6 +78,17 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
       state = { ...state }
       state.externalWallet = action.payload.wallet
       break
+    case types.GET_EVENT_LOGS:
+      chrome.send('brave_rewards_internals.getEventLogs')
+      break
+    case types.ON_EVENT_LOGS:
+      state = { ...state }
+      if (!action.payload.logs || !Array.isArray(action.payload.logs)) {
+        break
+      }
+      state.eventLogs = action.payload.logs
+        .sort((a: RewardsInternals.EventLog, b: RewardsInternals.EventLog) => b.createdAt - a.createdAt)
+      break
     default:
       break
   }

@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <utility>
 #include <vector>
 
+#include "base/strings/stringprintf.h"
 #include "base/strings/string_util.h"
 #include "bat/ledger/internal/database/database_migration.h"
 #include "bat/ledger/internal/database/database_util.h"
@@ -38,7 +38,9 @@
 #include "bat/ledger/internal/database/migration/migration_v26.h"
 #include "bat/ledger/internal/database/migration/migration_v27.h"
 #include "bat/ledger/internal/database/migration/migration_v28.h"
+#include "bat/ledger/internal/database/migration/migration_v29.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!
@@ -104,6 +106,7 @@ void DatabaseMigration::Start(
     migration::v26,
     migration::v27,
     migration::v28,
+    migration::v29,
   };
 
   DCHECK_LE(target_version, mappings.size());
@@ -126,13 +129,26 @@ void DatabaseMigration::Start(
   command->type = ledger::DBCommand::Type::VACUUM;
   transaction->commands.push_back(std::move(command));
 
-  auto transaction_callback = std::bind(&braveledger_database::OnResultCallback,
-      _1,
-      callback);
+  const std::string message = base::StringPrintf(
+      "%d->%d",
+      start_version,
+      migrated_version);
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
-      transaction_callback);
+      [this, callback, message](ledger::DBCommandResponsePtr response) {
+        if (response &&
+            response->status ==
+              ledger::DBCommandResponse::Status::RESPONSE_OK) {
+          ledger_->database()->SaveEventLog(
+              ledger::log::kDatabaseMigrated,
+              message);
+          callback(ledger::Result::LEDGER_OK);
+          return;
+        }
+
+        callback(ledger::Result::LEDGER_ERROR);
+      });
 }
 
 void DatabaseMigration::GenerateCommand(

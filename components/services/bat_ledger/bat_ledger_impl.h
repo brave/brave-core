@@ -224,6 +224,8 @@ class BatLedgerImpl :
 
   void Shutdown(ShutdownCallback callback) override;
 
+  void GetEventLogs(GetEventLogsCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   template <typename Callback>
@@ -405,6 +407,10 @@ class BatLedgerImpl :
   static void OnShutdown(
       CallbackHolder<ShutdownCallback>* holder,
       const ledger::Result result);
+
+  static void OnGetEventLogs(
+      CallbackHolder<GetEventLogsCallback>* holder,
+      ledger::EventLogs logs);
 
   std::unique_ptr<BatLedgerClientMojoBridge> bat_ledger_client_mojo_bridge_;
   std::unique_ptr<ledger::Ledger> ledger_;

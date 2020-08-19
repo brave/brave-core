@@ -12,6 +12,7 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
@@ -206,6 +207,13 @@ void Uphold::DisconnectWallet() {
   if (!wallet) {
     BLOG(0, "Wallet is null");
     return;
+  }
+
+  if (!wallet->address.empty()) {
+    ledger_->database()->SaveEventLog(
+        ledger::log::kWalletDisconnected,
+        static_cast<std::string>(ledger::kWalletUphold) + "/" +
+            wallet->address.substr(0, 5));
   }
 
   wallet = ledger::wallet::ResetWallet(std::move(wallet));

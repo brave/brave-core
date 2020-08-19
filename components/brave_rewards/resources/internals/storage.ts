@@ -20,7 +20,8 @@ const defaultState: RewardsInternals.State = {
   externalWallet: {
     address: '',
     status: 0
-  }
+  },
+  eventLogs: []
 }
 
 export const load = (): RewardsInternals.State => {

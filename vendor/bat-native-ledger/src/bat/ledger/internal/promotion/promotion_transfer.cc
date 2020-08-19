@@ -6,8 +6,10 @@
 #include <utility>
 
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
+#include "bat/ledger/internal/static_values.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -78,7 +80,18 @@ void PromotionTransfer::OnGetEligibleTokens(
   redeem.processor = ledger::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = token_list;
 
-  credentials_->RedeemTokens(redeem, callback);
+  const double transfer_amount =
+      token_list.size() * braveledger_ledger::_vote_price;
+  credentials_->RedeemTokens(
+      redeem,
+      [this, transfer_amount, callback](const ledger::Result result) {
+        if (result == ledger::Result::LEDGER_OK) {
+            ledger_->database()->SaveEventLog(
+                ledger::log::kPromotionsClaimed,
+                std::to_string(transfer_amount));
+        }
+        callback(result);
+      });
 }
 
 }  // namespace braveledger_promotion

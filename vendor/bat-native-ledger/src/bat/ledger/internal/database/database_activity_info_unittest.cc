@@ -9,6 +9,7 @@
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
+#include "bat/ledger/internal/database/database_mock.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
@@ -29,15 +30,23 @@ class DatabaseActivityInfoTest : public ::testing::Test {
   std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabaseActivityInfo> activity_;
+  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
 
   DatabaseActivityInfoTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
         std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
     activity_ = std::make_unique<DatabaseActivityInfo>(mock_ledger_impl_.get());
+    mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+        mock_ledger_impl_.get());
   }
 
   ~DatabaseActivityInfoTest() override {}
+
+  void SetUp() override {
+    ON_CALL(*mock_ledger_impl_, database())
+      .WillByDefault(testing::Return(mock_database_.get()));
+  }
 };
 
 TEST_F(DatabaseActivityInfoTest, InsertOrUpdateNull) {
@@ -179,6 +188,9 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
   EXPECT_CALL(*mock_ledger_client_, RunDBTransaction(_, _)).Times(1);
+
+  ON_CALL(*mock_ledger_client_, GetUint64State(_))
+      .WillByDefault(testing::Return(1597744617));
 
   const std::string query =
       "DELETE FROM activity_info "

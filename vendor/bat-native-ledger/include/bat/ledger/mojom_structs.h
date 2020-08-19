@@ -76,6 +76,10 @@ using CredsBatchType = mojom::CredsBatchType;
 
 using CredsBatchStatus = mojom::CredsBatchStatus;
 
+using EventLog = ledger::mojom::EventLog;
+using EventLogPtr = ledger::mojom::EventLogPtr;
+using EventLogs = std::vector<EventLogPtr>;
+
 using Environment = ledger::mojom::Environment;
 
 using ExcludeFilter = mojom::ExcludeFilter;

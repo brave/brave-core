@@ -10,7 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/logging/logging.h"
 #include "net/http/http_status_code.h"
 
 namespace braveledger_response_util {

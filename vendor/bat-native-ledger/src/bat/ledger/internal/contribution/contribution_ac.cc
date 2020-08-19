@@ -7,6 +7,7 @@
 
 #include "base/guid.h"
 #include "bat/ledger/internal/contribution/contribution_ac.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 using std::placeholders::_1;
@@ -83,6 +84,10 @@ void ContributionAC::PreparePublisherList(ledger::PublisherInfoList list) {
   queue->amount = ledger_->state()->GetAutoContributionAmount();
   queue->partial = true;
   queue->publishers = std::move(queue_list);
+
+  ledger_->database()->SaveEventLog(
+      ledger::log::kACAddedToQueue,
+      std::to_string(queue->amount));
 
   auto save_callback = std::bind(&ContributionAC::QueueSaved,
       this,

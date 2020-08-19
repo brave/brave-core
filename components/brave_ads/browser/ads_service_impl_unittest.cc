@@ -219,6 +219,10 @@ class MockRewardsService : public RewardsService {
       brave_rewards::ClearDiagnosticLogCallback callback));
 
   MOCK_METHOD1(CompleteReset, void(brave_rewards::SuccessCallback callback));
+
+  MOCK_METHOD1(
+      GetEventLogs,
+      void(brave_rewards::GetEventLogsCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

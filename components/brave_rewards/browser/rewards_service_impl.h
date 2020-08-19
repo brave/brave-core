@@ -318,6 +318,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
+  void GetEventLogs(GetEventLogsCallback callback) override;
+
+  void StopLedger(StopLedgerCallback callback);
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void PrepareLedgerEnvForTesting();
@@ -335,11 +339,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void EnableGreaseLion(const bool enabled);
 
-  void StopLedger(StopLedgerCallback callback);
-
   void OnStopLedger(
       StopLedgerCallback callback,
       const ledger::Result result);
+
   void OnStopLedgerForCompleteReset(
       SuccessCallback callback,
       const ledger::Result result);
@@ -707,6 +710,10 @@ class RewardsServiceImpl : public RewardsService,
   bool DeleteLogTaskRunner();
 
   void OnDeleteLog(ledger::ResultCallback callback, const bool success);
+
+  void OnGetEventLogs(
+      GetEventLogsCallback callback,
+      ledger::EventLogs logs);
 
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();

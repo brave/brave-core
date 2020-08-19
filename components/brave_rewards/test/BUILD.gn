@@ -36,7 +36,7 @@ source_set("brave_rewards_unit_tests") {
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/publisher_settings_state_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/report_balance_state_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/legacy/wallet_info_state_unittest.cc",
-      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/logging_util_unittest.cc",
+      "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/logging/logging_util_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/github_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/helper_unittest.cc",
       "//brave/vendor/bat-native-ledger/src/bat/ledger/internal/media/reddit_unittest.cc",

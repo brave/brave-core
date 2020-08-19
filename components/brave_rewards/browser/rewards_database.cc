@@ -125,6 +125,15 @@ void RewardsDatabase::RunTransaction(
     return;
   }
 
+  // Close command must always be sent as single command in transaction
+  if (transaction->commands.size() == 1 &&
+      transaction->commands[0]->type == ledger::DBCommand::Type::CLOSE) {
+    db_.Close();
+    initialized_ = false;
+    command_response->status = ledger::DBCommandResponse::Status::RESPONSE_OK;
+    return;
+  }
+
   sql::Transaction committer(&db_);
   if (!committer.Begin()) {
     command_response->status =
@@ -170,8 +179,10 @@ void RewardsDatabase::RunTransaction(
         status = ledger::DBCommandResponse::Status::RESPONSE_OK;
         break;
       }
-      default: {
+      case ledger::DBCommand::Type::CLOSE: {
         NOTREACHED();
+        status = ledger::DBCommandResponse::Status::COMMAND_ERROR;
+        break;
       }
     }
 

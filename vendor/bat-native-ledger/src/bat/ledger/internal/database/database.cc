@@ -8,9 +8,10 @@
 #include "bat/ledger/internal/database/database.h"
 #include "bat/ledger/internal/database/database_activity_info.h"
 #include "bat/ledger/internal/database/database_balance_report.h"
-#include "bat/ledger/internal/database/database_creds_batch.h"
 #include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
+#include "bat/ledger/internal/database/database_creds_batch.h"
+#include "bat/ledger/internal/database/database_event_log.h"
 #include "bat/ledger/internal/database/database_initialize.h"
 #include "bat/ledger/internal/database/database_media_publisher_info.h"
 #include "bat/ledger/internal/database/database_multi_tables.h"
@@ -24,8 +25,12 @@
 #include "bat/ledger/internal/database/database_sku_order.h"
 #include "bat/ledger/internal/database/database_sku_transaction.h"
 #include "bat/ledger/internal/database/database_unblinded_token.h"
+#include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
+
+using std::placeholders::_1;
 
 namespace braveledger_database {
 
@@ -39,6 +44,7 @@ Database::Database(bat_ledger::LedgerImpl* ledger) :
   contribution_queue_ = std::make_unique<DatabaseContributionQueue>(ledger_);
   contribution_info_ = std::make_unique<DatabaseContributionInfo>(ledger_);
   creds_batch_ = std::make_unique<DatabaseCredsBatch>(ledger_);
+  event_log_ = std::make_unique<DatabaseEventLog>(ledger_);
   media_publisher_info_ =
       std::make_unique<DatabaseMediaPublisherInfo>(ledger_);
   multi_tables_ = std::make_unique<DatabaseMultiTables>(ledger_);
@@ -64,6 +70,21 @@ void Database::Initialize(
     const bool execute_create_script,
     ledger::ResultCallback callback) {
   initialize_->Start(execute_create_script, callback);
+}
+
+void Database::Close(ledger::ResultCallback callback) {
+  auto transaction = ledger::DBTransaction::New();
+  auto command = ledger::DBCommand::New();
+  command->type = ledger::DBCommand::Type::CLOSE;
+
+  transaction->commands.push_back(std::move(command));
+  auto transaction_callback = std::bind(&OnResultCallback,
+      _1,
+      callback);
+
+  ledger_->ledger_client()->RunDBTransaction(
+      std::move(transaction),
+      transaction_callback);
 }
 
 /**
@@ -285,6 +306,23 @@ void Database::GetCredsBatchesByTriggers(
 }
 
 /**
+ * EVENT LOG
+ */
+void Database::SaveEventLog(const std::string& key, const std::string& value) {
+  event_log_->Insert(key, value);
+}
+
+void Database::SaveEventLogs(
+    const std::map<std::string, std::string>& records,
+    ledger::ResultCallback callback) {
+  event_log_->InsertRecords(records, callback);
+}
+
+void Database::GetLastEventLogs(ledger::GetEventLogsCallback callback) {
+  event_log_->GetLastRecords(callback);
+}
+
+/**
  * MEDIA PUBLISHER INFO
  */
 void Database::SaveMediaPublisherInfo(
@@ -454,6 +492,9 @@ void Database::GetExcludedList(ledger::PublisherInfoListCallback callback) {
 void Database::SaveRecurringTip(
     ledger::RecurringTipPtr info,
     ledger::ResultCallback callback) {
+  if (info) {
+    SaveEventLog(ledger::log::kRecurringTipAdded, info->publisher_key);
+  }
   recurring_tip_->InsertOrUpdate(std::move(info), callback);
 }
 
@@ -464,6 +505,7 @@ void Database::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
 void Database::RemoveRecurringTip(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
+  SaveEventLog(ledger::log::kRecurringTipRemoved, publisher_key);
   recurring_tip_->DeleteRecord(publisher_key, callback);
 }
 

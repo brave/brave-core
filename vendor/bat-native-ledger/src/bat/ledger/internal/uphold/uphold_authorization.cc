@@ -9,6 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/logging/event_log_keys.h"
 #include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -237,6 +238,13 @@ void UpholdAuthorization::OnCardCreate(
   ledger_->ledger_client()->SaveExternalWallet(
       ledger::kWalletUphold,
       wallet_ptr->Clone());
+
+  if (!address.empty()) {
+    ledger_->database()->SaveEventLog(
+        ledger::log::kWalletConnected,
+        static_cast<std::string>(ledger::kWalletUphold) + "/" +
+            address.substr(0, 5));
+  }
 
   std::map<std::string, std::string> args;
   if (wallet_ptr->status != ledger::WalletStatus::VERIFIED) {
