@@ -114,7 +114,7 @@ void UpholdAuthorization::Authorize(
 void UpholdAuthorization::OnAuthorize(
     const ledger::UrlResponse& response,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
+  BLOG(7, ledger::UrlResponseToString(__func__, response));
 
   std::string token;
   const ledger::Result result =
