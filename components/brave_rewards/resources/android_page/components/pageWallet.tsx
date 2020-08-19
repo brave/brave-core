@@ -49,25 +49,6 @@ class PageWallet extends React.Component<Props, State> {
     return utils.convertBalance(balance.total, parameters.rate)
   }
 
-  generatePromotions = () => {
-    const promotions = this.props.rewardsData.promotions
-    if (!promotions) {
-      return []
-    }
-
-    let claimedPromotions = promotions.filter((promotion: Rewards.Promotion) => {
-      return promotion.status === 4 // PromotionStatus::FINISHED
-    })
-
-    return claimedPromotions.map((promotion: Rewards.Promotion) => {
-      return {
-        amount: promotion.amount,
-        expiresAt: new Date(promotion.expiresAt).toLocaleDateString(),
-        type: promotion.type || 0
-      }
-    })
-  }
-
   walletAlerts = (): AlertWallet | null => {
     const { walletServerProblem } = this.props.rewardsData.ui
 
@@ -141,7 +122,6 @@ class PageWallet extends React.Component<Props, State> {
               isMobile={true}
               showCopy={showCopy}
               showSecActions={false}
-              grants={this.generatePromotions()}
               alert={this.walletAlerts()}
               onlyAnonWallet={onlyAnonWallet}
             >

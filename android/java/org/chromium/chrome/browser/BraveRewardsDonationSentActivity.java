@@ -240,7 +240,4 @@ public class BraveRewardsDonationSentActivity extends Activity implements BraveR
 
     @Override
     public void OnRewardsMainEnabled(boolean enabled) {}
-
-    @Override
-    public void OnFetchPromotions() {}
 }

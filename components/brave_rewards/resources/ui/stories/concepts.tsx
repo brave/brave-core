@@ -326,23 +326,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
             }
           ]}
           showSecActions={false}
-          grants={object('Grants', [
-            {
-              amount: 2.5,
-              expiresAt: '1574451334789',
-              type: 1
-            },
-            {
-              amount: 5.0,
-              expiresAt: '1574451334789',
-              type: 1
-            },
-            {
-              amount: 7.5,
-              expiresAt: '1574451334789',
-              type: 1
-            }
-          ])}
         >
           <WalletPanelDisabled
             onTOSClick={doNothing}
@@ -465,23 +448,6 @@ storiesOf('Rewards/Concepts/Desktop', module)
           ]}
           showCopy={boolean('Show Uphold', false)}
           showSecActions={false}
-          grants={object('Grants', [
-            {
-              amount: 2.5,
-              expiresAt: '1574451334789',
-              type: 1
-            },
-            {
-              amount: 5.0,
-              expiresAt: '1574451334789',
-              type: 1
-            },
-            {
-              amount: 7.5,
-              expiresAt: '1574451334789',
-              type: 1
-            }
-          ])}
           grant={store.state.grant}
           onGrantHide={onGrantHide}
           onNotificationClick={onFetchCaptcha}

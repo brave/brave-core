@@ -175,13 +175,9 @@ class SettingsPage extends React.Component<Props, State> {
       return null
     }
 
-    let remainingPromotions = promotions.filter((promotion: Rewards.Promotion) => {
-      return promotion.status !== 4 // PromotionStatus::FINISHED
-    })
-
     return (
       <div style={{ width: '100%' }}>
-        {remainingPromotions.map((promotion?: Rewards.Promotion, index?: number) => {
+        {promotions.map((promotion?: Rewards.Promotion, index?: number) => {
           if (!promotion || !promotion.promotionId) {
             return null
           }

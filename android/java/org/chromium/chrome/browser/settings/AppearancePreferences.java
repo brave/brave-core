@@ -174,8 +174,5 @@ public class AppearancePreferences extends BravePreferenceFragment
     public void OnResetTheWholeState(boolean success) {}
 
     @Override
-    public void OnFetchPromotions() {}
-
-    @Override
     public void OnRewardsMainEnabled(boolean enabled) {}
 }
