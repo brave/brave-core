@@ -1987,4 +1987,9 @@ BATLedgerBridge(BOOL,
   }
 }
 
+- (void)deleteLog:(ledger::ResultCallback)callback
+{
+  // TODO implement
+}
+
 @end

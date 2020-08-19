@@ -57,5 +57,6 @@
 - (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(const ledger::Result)result;
 - (void)clearAllNotifications;
+- (void)deleteLog:(ledger::ResultCallback)callback;
 
 @end

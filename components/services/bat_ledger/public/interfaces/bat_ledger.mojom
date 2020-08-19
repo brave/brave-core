@@ -252,4 +252,6 @@ interface BatLedgerClient {
   Log(string file, int32 line, int32 verbose_level, string message);
 
   ClearAllNotifications();
+
+  DeleteLog() => (ledger.mojom.Result result);
 };

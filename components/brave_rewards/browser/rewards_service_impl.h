@@ -658,6 +658,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void ClearAllNotifications() override;
 
+  void DeleteLog(ledger::ResultCallback callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods
@@ -729,6 +731,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnCompleteReset(SuccessCallback callback, const bool success);
 
+  bool DeleteLogTaskRunner();
+
+  void OnDeleteLog(ledger::ResultCallback callback, const bool success);
+
 #if defined(OS_ANDROID)
   ledger::Environment GetServerEnvironmentForAndroid();
   void CreateWalletAttestationResult(
@@ -777,6 +783,7 @@ class RewardsServiceImpl : public RewardsService,
   bool is_wallet_initialized_ = false;
   bool ledger_for_testing_ = false;
   bool resetting_rewards_ = false;
+  bool should_persist_logs_ = false;
 
   GetTestResponseCallback test_response_callback_;
 

@@ -723,6 +723,8 @@ class LedgerImpl : public ledger::Ledger {
       const std::vector<std::string>& trigger_ids,
       ledger::GetCredsBatchListCallback callback);
 
+  void DeleteLog(ledger::ResultCallback callback);
+
  private:
   void OnInitialized(
       const ledger::Result result,

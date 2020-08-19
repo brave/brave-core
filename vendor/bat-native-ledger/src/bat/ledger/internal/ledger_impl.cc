@@ -1755,4 +1755,8 @@ void LedgerImpl::GetCredsBatchesByTriggers(
   bat_database_->GetCredsBatchesByTriggers(trigger_ids, callback);
 }
 
+void LedgerImpl::DeleteLog(ledger::ResultCallback callback) {
+  ledger_client_->DeleteLog(callback);
+}
+
 }  // namespace bat_ledger
