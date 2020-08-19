@@ -83,25 +83,30 @@ TorControl::~TorControl() = default;
 //      Start watching for the Tor control channel.  If we are able to
 //      connect, issue OnTorControlReady to delegate.
 //
-void TorControl::Start(const base::FilePath& watchDirPath) {
+void TorControl::Start(const base::FilePath& watchDirPath,
+                       base::OnceClosure check_complete) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(!running_);
 
   running_ = true;
+  watch_dir_path_ = std::move(watchDirPath);
+  watch_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(&TorControl::CheckingOldTorProcess,
+                     base::RetainedRef(this), std::move(check_complete)));
   watch_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::StartWatching,
-                     base::RetainedRef(this), watchDirPath));
+                     base::RetainedRef(this)));
 }
 
-void TorControl::StartWatching(base::FilePath watchDirPath) {
+void TorControl::StartWatching() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  CHECK(watch_dir_path_.empty());
   CHECK(!watcher_);
 
   // Create a watcher and start watching.
-  watch_dir_path_ = std::move(watchDirPath);
   watcher_ = std::make_unique<base::FilePathWatcher>();
+
   bool recursive = false;
   if (!watcher_->Watch(watch_dir_path_,
                        recursive,
@@ -143,6 +148,15 @@ void TorControl::StopWatching() {
   watcher_.reset();
   watch_dir_path_.clear();
 }
+
+void TorControl::CheckingOldTorProcess(base::OnceClosure callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
+  base::ProcessId id;
+  if (EatOldPid(id))
+    delegate_->OnTorCleanupNeeded(std::move(id));
+  std::move(callback).Run();
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Watching for startup
@@ -210,7 +224,8 @@ void TorControl::Poll() {
 //      Try to read the control auth cookie.  Return true and set
 //      cookie and mtime if successful; return false on failure.
 //
-bool TorControl::EatControlCookie(std::vector<uint8_t>& cookie, base::Time& mtime) {
+bool TorControl::EatControlCookie(std::vector<uint8_t>& cookie,
+                                  base::Time& mtime) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   CHECK(polling_);
 
@@ -319,6 +334,33 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   mtime = info.last_modified;
   // XXX DEBUG
   LOG(ERROR) << "Control port " << port << ", mtime " << mtime;
+  return true;
+}
+
+bool TorControl::EatOldPid(base::ProcessId& id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
+
+  // Open the tor pid file.
+  base::FilePath pidpath = watch_dir_path_.Append("tor.pid");
+  base::File pidfile(pidpath,
+                        base::File::FLAG_OPEN|base::File::FLAG_READ);
+  if (!pidfile.IsValid()) {
+    LOG(ERROR) << "tor: failed to open tor.pid";
+    return false;
+  }
+
+  const char maxpid[] = "4194304";
+  char buf[strlen(maxpid)];
+  int nread = pidfile.ReadAtCurrentPos(buf, sizeof buf);
+  if (nread < 0) {
+    LOG(ERROR) << "tor: failed to read tor pid file";
+    return false;
+  }
+  std::string pid(buf, 0, nread - 1);
+  if (!base::StringToInt(pid, &id)) {
+    LOG(ERROR) << "tor: failed to parse tor pid";
+    return false;
+  }
   return true;
 }
 

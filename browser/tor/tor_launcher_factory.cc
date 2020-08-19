@@ -6,12 +6,15 @@
 #include "brave/browser/tor/tor_launcher_factory.h"
 
 #include "base/task/post_task.h"
+#include "base/bind.h"
+#include "base/process/kill.h"
 #include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/service_sandbox_type.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/service_process_host.h"
+#include "content/public/browser/child_process_launcher_utils.h"
 
 using content::BrowserThread;
 
@@ -92,10 +95,25 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
   if (!tor_launcher_) {
     Init();
   }
+
+  // Launch tor after cleanup is done
+  control_->Start(config_.tor_watch_path(),
+                  base::BindOnce(&TorLauncherFactory::OnTorControlCheckComplete,
+                                 base::Unretained(this)));
+}
+
+void TorLauncherFactory::OnTorControlCheckComplete() {
+  content::GetUIThreadTaskRunner({})
+    ->PostTask(FROM_HERE,
+               base::BindOnce(&TorLauncherFactory::Launching,
+               base::Unretained(this)));
+}
+
+void TorLauncherFactory::Launching() {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   tor_launcher_->Launch(config_,
                         base::Bind(&TorLauncherFactory::OnTorLaunched,
                                    base::Unretained(this)));
-  control_->Start(config_.tor_watch_path());
 }
 
 void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
@@ -157,8 +175,6 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
   if (result) {
     is_starting_ = false;
     tor_pid_ = pid;
-    for (auto& observer : observers_)
-      observer.NotifyTorInitializing("0");
   } else {
     LOG(ERROR) << "Tor Launching Failed(" << pid <<")";
   }
@@ -194,8 +210,10 @@ void TorLauncherFactory::OnTorControlReady() {
                       base::DoNothing::Once<bool>());
   control_->Subscribe(tor::TorControlEvent::STATUS_GENERAL,
                       base::DoNothing::Once<bool>());
+#if 0
   control_->Subscribe(tor::TorControlEvent::STREAM,
                       base::DoNothing::Once<bool>());
+#endif
 }
 
 void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
@@ -230,6 +248,23 @@ void TorLauncherFactory::GotSOCKSListeners(
 
 void TorLauncherFactory::OnTorClosed() {
   LOG(ERROR) << "TOR CONTROL: Closed!";
+}
+
+void TorLauncherFactory::OnTorCleanupNeeded(base::ProcessId id) {
+  LOG(ERROR) << "Killing old tor process pid=" << id;
+  // Dispatch to launcher thread
+  content::GetProcessLauncherTaskRunner()
+    ->PostTask(FROM_HERE,
+               base::BindOnce(&TorLauncherFactory::KillOldTorProcess,
+                              base::Unretained(this),
+                              std::move(id)));
+}
+
+
+void TorLauncherFactory::KillOldTorProcess(base::ProcessId id) {
+  DCHECK(content::CurrentlyOnProcessLauncherTaskRunner());
+  base::Process tor_process = base::Process::Open(id);
+  tor_process.Terminate(0, false);
 }
 
 void TorLauncherFactory::OnTorEvent(
