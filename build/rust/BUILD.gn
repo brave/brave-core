@@ -1,6 +1,6 @@
 import("//brave/build/cargo.gni")
 
-lib_build_path = "$root_build_dir/brave_rust/out"
+lib_build_path = "$root_build_dir/brave_rust/out/$current_cpu"
 lib_output_path = "$lib_build_path/${cargo_lib_prefix}brave_rust${cargo_lib_suffix}"
 
 # TODO(bridiver) - selectively include these libraries based on buildflags, but
