@@ -44,7 +44,6 @@ function getPageVisibility () {
     onStartup: false,
     appearance: alwaysTrueProxy,
     privacy: alwaysTrueProxy,
-    safetyCheck: false,
     // custom properties
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
   }
