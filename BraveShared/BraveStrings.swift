@@ -1446,7 +1446,7 @@ extension Strings {
             "today.moreBraveOffers",
             bundle: .braveShared,
             value: "More Brave Offers",
-            comment: ""
+            comment: "'Brave Offers' is a product name"
         )
     }
 }
