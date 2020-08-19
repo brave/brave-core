@@ -19,8 +19,6 @@ class FeedCardCell<Content: FeedCardContent>: UICollectionViewCell, CollectionVi
         contentView.addSubview(content.view)
         content.view.snp.makeConstraints {
             $0.top.bottom.equalToSuperview()
-            $0.leading.greaterThanOrEqualToSuperview()
-            $0.trailing.lessThanOrEqualToSuperview()
             widthConstraint = $0.width.equalTo(375).constraint
             $0.centerX.equalToSuperview()
         }
