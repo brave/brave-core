@@ -1,6 +1,7 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_MESSAGE_VIEW_H_
 #define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_MESSAGE_VIEW_H_
@@ -48,8 +49,6 @@ class MessageView
     virtual void OnPreSlideOut(const std::string& notification_id) {}
     virtual void OnSlideOut(const std::string& notification_id) {}
     virtual void OnCloseButtonPressed(const std::string& notification_id) {}
-//    virtual void OnSettingsButtonPressed(const std::string& notification_id) {}
-//    virtual void OnSnoozeButtonPressed(const std::string& notification_id) {}
   };
 
   enum class Mode {
@@ -110,10 +109,6 @@ class MessageView
 
   // Gets the current horizontal scroll offset of the view by slide gesture.
   float GetSlideAmount() const;
-
-  // Set "setting" mode. This overrides "pinned" mode. See the comment of
-  // MessageView::Mode enum for detail.
-  // void SetSettingMode(bool setting_mode);
 
   // Disables slide by vertical swipe regardless of the current notification
   // mode.

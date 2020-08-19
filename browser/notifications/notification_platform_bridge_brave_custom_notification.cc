@@ -1,6 +1,7 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/notifications/notification_platform_bridge_brave_custom_notification.h"
 
@@ -98,7 +99,6 @@ void NotificationPlatformBridgeBraveCustomNotification::Display(
     brave_custom_notification::Notification& notification,
     std::unique_ptr<NotificationCommon::Metadata> /* metadata */) {
   DCHECK_EQ(profile, profile_);
-  LOG(INFO) << "albert NPBBCN::DISPLAY";
 
   // If there's no delegate, replace it with a PassThroughDelegate so clicks
   // go back to the appropriate handler.
@@ -112,19 +112,7 @@ void NotificationPlatformBridgeBraveCustomNotification::Display(
 
 void NotificationPlatformBridgeBraveCustomNotification::Close(
     Profile* profile,
-    const std::string& notification_id) {
-  /*
-  DCHECK_EQ(profile, profile_);
-
-  NotificationUIManager* ui_manager =
-      g_browser_process->notification_ui_manager();
-  if (!ui_manager)
-    return;  // the process is shutting down
-
-  ui_manager->CancelById(notification_id,
-                         NotificationUIManager::GetProfileID(profile_));
-                         */
-}
+    const std::string& notification_id) {}
 
 void NotificationPlatformBridgeBraveCustomNotification::GetDisplayed(
     Profile* profile,

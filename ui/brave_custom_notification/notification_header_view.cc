@@ -1,6 +1,7 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ui/brave_custom_notification/notification_header_view.h"
 
@@ -285,42 +286,13 @@ void NotificationHeaderView::GetAccessibleNodeData(ui::AXNodeData* node_data) {
   node_data->role = ax::mojom::Role::kGenericContainer;
   node_data->SetName(app_name_view_->GetText());
   node_data->SetDescription(summary_text_view_->GetText());
-
-  /*
-  if (is_expanded_)
-    node_data->AddState(ax::mojom::State::kExpanded);
-    */
 }
-
-/*
-void NotificationHeaderView::SetDetailViewsVisible(bool visible) {
-  detail_views_->SetVisible(visible);
-
-  UpdateSummaryTextVisibility();
-}
-
-void NotificationHeaderView::SetExpandButtonEnabled(bool enabled) {
-  expand_button_->SetVisible(enabled);
-}
-
-void NotificationHeaderView::SetExpanded(bool expanded) {
-  is_expanded_ = expanded;
-  expand_button_->SetImage(gfx::CreateVectorIcon(
-      expanded ? kNotificationExpandLessIcon : kNotificationExpandMoreIcon,
-      kExpandIconSize, accent_color_));
-  expand_button_->set_tooltip_text(l10n_util::GetStringUTF16(
-      expanded ? IDS_MESSAGE_CENTER_COLLAPSE_NOTIFICATION
-               : IDS_MESSAGE_CENTER_EXPAND_NOTIFICATION));
-  NotifyAccessibilityEvent(ax::mojom::Event::kStateChanged, true);
-}
-*/
 
 void NotificationHeaderView::SetAccentColor(SkColor color) {
   accent_color_ = color;
   app_name_view_->SetEnabledColor(accent_color_);
   summary_text_view_->SetEnabledColor(accent_color_);
   summary_text_divider_->SetEnabledColor(accent_color_);
-  // SetExpanded(is_expanded_);
 
   // If we are using the default app icon we should clear it so we refresh it
   // with the new accent color.

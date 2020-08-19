@@ -1,6 +1,7 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ui/brave_custom_notification/notification_control_buttons_view.h"
 
@@ -46,7 +47,6 @@ void NotificationControlButtonsView::ShowCloseButton(bool show) {
     close_button_->set_owned_by_client();
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-       //TODO gfx::CreateVectorIcon(kNotificationCloseButtonIcon, icon_color_));
         gfx::CreateVectorIcon(kCloseIcon, icon_color_));
     close_button_->SetAccessibleName(l10n_util::GetStringUTF16(
         IDS_MESSAGE_CENTER_CLOSE_NOTIFICATION_BUTTON_ACCESSIBLE_NAME));
@@ -84,7 +84,6 @@ void NotificationControlButtonsView::SetButtonIconColors(SkColor color) {
   if (close_button_) {
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-        //TODO gfx::CreateVectorIcon(kNotificationCloseButtonIcon, icon_color_));
         gfx::CreateVectorIcon(kCloseIcon, icon_color_));
   }
 }

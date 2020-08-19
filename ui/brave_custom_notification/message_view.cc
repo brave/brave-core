@@ -1,6 +1,7 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/logging.h"
 #include <base/debug/stack_trace.h>
@@ -152,9 +153,7 @@ SkPath MessageView::GetHighlightPath() const {
   rect.Inset(gfx::Insets(inset));
 
   int top_radius = std::max(0, top_radius_ - inset);
-  //int top_radius = 0;
   int bottom_radius = std::max(0, bottom_radius_ - inset);
-  // int bottom_radius = 60;
   SkScalar radii[8] = {top_radius,    top_radius,      // top-left
                        top_radius,    top_radius,      // top-right
                        bottom_radius, bottom_radius,   // bottom-right

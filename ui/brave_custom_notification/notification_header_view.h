@@ -1,6 +1,7 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_HEADER_VIEW_H_
 #define BRAVE_UI_BRAVE_CUSTOM_NOTIFICATION_NOTIFICATION_HEADER_VIEW_H_
@@ -27,17 +28,11 @@ class NotificationHeaderView : public views::Button {
   void SetAppName(const base::string16& name);
   void SetAppNameElideBehavior(gfx::ElideBehavior elide_behavior);
 
-  // Only show AppIcon and AppName in settings mode.
-  // void SetDetailViewsVisible(bool visible);
-
   // Progress, summary and overflow indicator are all the same UI element so are
   // mutually exclusive.
   void SetProgress(int progress);
   void SetSummaryText(const base::string16& text);
   void SetOverflowIndicator(int count);
-
-  // void SetExpandButtonEnabled(bool enabled);
-  // void SetExpanded(bool expanded);
 
   // Set the unified theme color used among the app icon, app name, and expand
   // button.

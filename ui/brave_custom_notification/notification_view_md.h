@@ -1,6 +1,7 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_NOTIFICATION_VIEW_MD_H_
 #define UI_BRAVE_CUSTOM_NOTIFICATION_VIEWS_NOTIFICATION_VIEW_MD_H_
@@ -189,9 +190,7 @@ class NotificationViewMD
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
   void UpdateCornerRadius(int top_radius, int bottom_radius) override;
   NotificationControlButtonsView* GetControlButtonsView() const override;
-  // void OnSettingsButtonPressed(const ui::Event& event) override;
 
-  // views::InkDropObserver:
   void InkDropAnimationStarted() override;
   void InkDropRippleAnimationEnded(views::InkDropState ink_drop_state) override;
 
@@ -252,7 +251,6 @@ class NotificationViewMD
   void CreateOrUpdateSmallIconView(const Notification& notification);
   void CreateOrUpdateImageView(const Notification& notification);
   void CreateOrUpdateActionButtonViews(const Notification& notification);
-  // void CreateOrUpdateInlineSettingsViews(const Notification& notification);
 
   bool IsExpandable();
   void ToggleExpanded();

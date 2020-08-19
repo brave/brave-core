@@ -1,6 +1,7 @@
-// Copyright 2017 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ui/brave_custom_notification/notification_view_md.h"
 #include "base/logging.h"
@@ -17,12 +18,6 @@
 #include "ui/base/resource/resource_bundle.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
-/*
-#include "content/public/browser/browser_thread.h"
-#include "content/public/browser/web_contents.h"
-#include "content/public/browser/browser_context.h"
-#include "content/public/test/test_browser_context.h"
-*/
 #include "components/url_formatter/elide_url.h"
 #include "ui/base/class_property.h"
 #include "ui/base/cursor/cursor.h"
@@ -38,7 +33,6 @@
 #include "ui/gfx/skia_util.h"
 #include "ui/gfx/text_constants.h"
 #include "ui/gfx/text_elider.h"
-// #include "ui/views/views_delegate.h"
 #include "brave/ui/brave_custom_notification/public/cpp/constants.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification_types.h"
@@ -56,7 +50,6 @@
 #include "ui/views/animation/ink_drop_mask.h"
 #include "ui/views/background.h"
 #include "ui/views/border.h"
-// #include "ui/views/controls/webview/webview.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/button/radio_button.h"
 #include "ui/views/controls/highlight_path_generator.h"
@@ -465,7 +458,6 @@ void NotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
   DCHECK_EQ(sender, textfield_);
   button_->SetImage(
       views::Button::STATE_NORMAL,
-      // gfx::CreateVectorIcon(kNotificationInlineReplyIcon, kInputReplyButtonSize,
       gfx::CreateVectorIcon(kCloseIcon, kInputReplyButtonSize,
                             textfield_->GetText().empty()
                                 ? kTextfieldPlaceholderIconColorMD
@@ -1221,14 +1213,9 @@ void NotificationViewMD::ToggleInlineSettings(const ui::Event& event) {
     return;
 
   bool inline_settings_visible = !settings_row_->GetVisible();
-  /*
-  bool disable_notification =
-      settings_row_->GetVisible() && block_all_button_->GetChecked();
-      */
 
   settings_row_->SetVisible(inline_settings_visible);
   content_row_->SetVisible(!inline_settings_visible);
-  // header_row_->SetDetailViewsVisible(!inline_settings_visible);
   header_row_->SetBackgroundColor(inline_settings_visible
                                       ? kInlineSettingsBackgroundColor
                                       : kNotificationBackgroundColor);
