@@ -244,10 +244,6 @@ void NotificationHeaderView::SetAppIcon(const gfx::ImageSkia& img) {
 }
 
 void NotificationHeaderView::ClearAppIcon() {
-  app_icon_view_->SetImage(
-      // TODO
-      // gfx::CreateVectorIcon(kProductIcon, kSmallImageSizeMD, accent_color_));
-      gfx::CreateVectorIcon(kTorProfileIcon, kSmallImageSizeMD, accent_color_));
   using_default_app_icon_ = true;
 }
 

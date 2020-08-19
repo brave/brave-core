@@ -458,7 +458,7 @@ void NotificationInputContainerMD::OnAfterUserAction(views::Textfield* sender) {
   DCHECK_EQ(sender, textfield_);
   button_->SetImage(
       views::Button::STATE_NORMAL,
-      gfx::CreateVectorIcon(kCloseIcon, kInputReplyButtonSize,
+      gfx::CreateVectorIcon(kBraveAdsCloseIcon, kInputReplyButtonSize,
                             textfield_->GetText().empty()
                                 ? kTextfieldPlaceholderIconColorMD
                                 : SK_ColorWHITE));
@@ -1031,7 +1031,7 @@ void NotificationViewMD::CreateOrUpdateSmallIconView(
   // cache images if so. (crbug.com/768748)
   gfx::Image masked_small_icon =
       ui::ResourceBundle::GetSharedInstance().GetImageNamed(
-          IDR_REWARDS_LOGO_64);
+          IDR_BRAVE_ADS_LOGO_64);
 
   if (masked_small_icon.IsEmpty()) {
     header_row_->ClearAppIcon();

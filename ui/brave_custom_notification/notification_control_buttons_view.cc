@@ -47,7 +47,7 @@ void NotificationControlButtonsView::ShowCloseButton(bool show) {
     close_button_->set_owned_by_client();
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kCloseIcon, icon_color_));
+        gfx::CreateVectorIcon(kBraveAdsCloseIcon, icon_color_));
     close_button_->SetAccessibleName(l10n_util::GetStringUTF16(
         IDS_MESSAGE_CENTER_CLOSE_NOTIFICATION_BUTTON_ACCESSIBLE_NAME));
     close_button_->SetTooltipText(l10n_util::GetStringUTF16(
@@ -84,7 +84,7 @@ void NotificationControlButtonsView::SetButtonIconColors(SkColor color) {
   if (close_button_) {
     close_button_->SetImage(
         views::Button::STATE_NORMAL,
-        gfx::CreateVectorIcon(kCloseIcon, icon_color_));
+        gfx::CreateVectorIcon(kBraveAdsCloseIcon, icon_color_));
   }
 }
 
