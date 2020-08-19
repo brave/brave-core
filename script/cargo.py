@@ -51,18 +51,7 @@ def build(args):
 
     # Clean first because we want GN to decide when to rebuild and cargo doesn't
     # rebuild when env changes
-    cargo_args = []
-    cargo_args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
-    cargo_args.append("clean")
-    cargo_args.append("--manifest-path=" + manifest_path)
-    cargo_args.append("--target-dir=" + build_path)
-    cargo_args.append("--target=" + target)
-
-    try:
-        subprocess.check_call(cargo_args, env=env)
-    except subprocess.CalledProcessError as e:
-        print(e.output)
-        raise e
+    shutil.rmtree(build_path)
 
     # Build target
     cargo_args = []
