@@ -11,6 +11,7 @@ source_set("notifications") {
       deps = [
         "//base",
         "//skia",
+        "//brave/vendor/bat-native-ads",
       ]
   } else if (is_android) {
     sources = [

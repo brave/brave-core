@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <utility>
-
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "content/public/browser/browser_context.h"
 
@@ -18,12 +17,12 @@
 
 namespace brave_ads {
 
-brave_ads::AdsServiceImpl* g_ads_service;
+// brave_ads::AdsServiceImpl* g_ads_service;
 int kUserDataKey;  // The value is not important, the address is a key.
 
 AdsNotificationHandler::AdsNotificationHandler(
     content::BrowserContext* browser_context)
-    : browser_context_(browser_context) {
+    : browser_context_(browser_context), ads_service_(nullptr) {
   DCHECK(browser_context);
   browser_context_->SetUserData(UserDataKey(),
                                 std::make_unique<UnownedPointer>(this));
@@ -37,7 +36,7 @@ void AdsNotificationHandler::OnShow(
     Profile* profile,
     const std::string& id) {
 
-  if (!g_ads_service) {
+  if (!ads_service_) {
     auto notification = base::BindOnce(&AdsNotificationHandler::OnShow,
                                        base::Unretained(this), profile, id);
     pending_notifications_.push(std::move(notification));
@@ -48,7 +47,8 @@ void AdsNotificationHandler::OnShow(
   headless_shutdown_timer_.Stop();
 #endif
 
-  g_ads_service->OnShow(profile, id);
+
+  ads_service_->OnShow(profile, id);
 }
 
 void AdsNotificationHandler::OnClose(
@@ -62,7 +62,7 @@ void AdsNotificationHandler::OnClose(
       base::BindOnce(&AdsNotificationHandler::CloseOperationCompleted,
       base::Unretained(this), id);
 
-  if (!g_ads_service) {
+  if (!ads_service_) {
     auto notification = base::BindOnce(
         &AdsNotificationHandler::OnClose, base::Unretained(this), profile,
         origin, id, by_user, std::move(completed_closure_local));
@@ -75,7 +75,7 @@ void AdsNotificationHandler::OnClose(
     headless_shutdown_timer_.Stop();
   #endif
 
-  g_ads_service->OnClose(profile, origin, id, by_user,
+  ads_service_->OnClose(profile, origin, id, by_user,
                         std::move(completed_closure_local));
 }
 
@@ -87,7 +87,7 @@ void AdsNotificationHandler::OnClick(
     const base::Optional<base::string16>& reply,
     base::OnceClosure completed_closure) {
 
-  if (!g_ads_service) {
+  if (!ads_service_) {
     auto notification = base::BindOnce(
         &AdsNotificationHandler::OnClick, base::Unretained(this), profile,
         origin, id, action_index, reply, std::move(completed_closure));
@@ -99,7 +99,7 @@ void AdsNotificationHandler::OnClick(
   headless_shutdown_timer_.Stop();
 #endif
 
-  g_ads_service->ViewAdNotification(id);
+  ads_service_->ViewAdNotification(id);
 }
 
 void AdsNotificationHandler::DisableNotifications(
@@ -117,7 +117,7 @@ void AdsNotificationHandler::OpenSettings(
   DCHECK(origin.has_query());
   auto id = origin.query();
 
-  if (!g_ads_service) {
+  if (!ads_service_) {
     auto notification = base::BindOnce(&AdsNotificationHandler::OpenSettings,
                                        base::Unretained(this), profile, origin);
     pending_notifications_.push(std::move(notification));
@@ -128,16 +128,16 @@ void AdsNotificationHandler::OpenSettings(
   headless_shutdown_timer_.Stop();
 #endif
 
-  g_ads_service->ViewAdNotification(id);
+  ads_service_->ViewAdNotification(id);
 }
 
 void AdsNotificationHandler::SetAdsService(
     brave_ads::AdsServiceImpl* ads_service) {
   if (ads_service) {
-    g_ads_service = ads_service;
+    ads_service_ = ads_service;
     SendPendingNotifications();
   } else {
-    ads_service = nullptr;
+    ads_service_ = nullptr;
   }
 }
 

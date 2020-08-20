@@ -1803,11 +1803,9 @@ void AdsServiceImpl::MaybeShowMyFirstAdNotification() {
     return;
   }
 
-/*
   if (!NotificationHelper::GetInstance()->ShowMyFirstAdNotification()) {
     return;
   }
-  */
 
   SetBooleanPref(prefs::kShouldShowMyFirstAdNotification, false);
 }
@@ -2078,9 +2076,6 @@ bool AdsServiceImpl::StopNotificationTimeoutTimer(
 }
 
 bool AdsServiceImpl::ShouldShowNotifications() {
-  #ifdef OS_WIN
-    return true;
-  #endif
   return NotificationHelper::GetInstance()->ShouldShowNotifications();
 }
 
