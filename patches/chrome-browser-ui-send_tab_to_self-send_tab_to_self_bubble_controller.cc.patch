@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/send_tab_to_self/send_tab_to_self_bubble_controller.cc b/chrome/browser/ui/send_tab_to_self/send_tab_to_self_bubble_controller.cc
+index c1432ff1e72561ee3e16f4c52085770cc2147e16..980d0b7e21aef4ed7ab2375f578cee1aebd65705 100644
+--- a/chrome/browser/ui/send_tab_to_self/send_tab_to_self_bubble_controller.cc
++++ b/chrome/browser/ui/send_tab_to_self/send_tab_to_self_bubble_controller.cc
+@@ -63,6 +63,7 @@ base::string16 SendTabToSelfBubbleController::GetWindowTitle() const {
+ 
+ const std::vector<TargetDeviceInfo>&
+ SendTabToSelfBubbleController::GetValidDevices() const {
++  BRAVE_GET_VALID_DEVICES;
+   return valid_devices_;
+ }
+ 
