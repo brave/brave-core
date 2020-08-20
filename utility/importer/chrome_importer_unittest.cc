@@ -145,19 +145,19 @@ TEST_F(ChromeImporterTest, ImportPasswords) {
   OSCryptMocker::SetUp();
 
   autofill::PasswordForm autofillable_login;
-  autofill::PasswordForm blacklisted_login;
+  autofill::PasswordForm blocked_login;
 
   EXPECT_CALL(*bridge_, NotifyStarted());
   EXPECT_CALL(*bridge_, NotifyItemStarted(importer::PASSWORDS));
   EXPECT_CALL(*bridge_, SetPasswordForm(_))
       .WillOnce(::testing::SaveArg<0>(&autofillable_login))
-      .WillOnce(::testing::SaveArg<0>(&blacklisted_login));
+      .WillOnce(::testing::SaveArg<0>(&blocked_login));
   EXPECT_CALL(*bridge_, NotifyItemEnded(importer::PASSWORDS));
   EXPECT_CALL(*bridge_, NotifyEnded());
 
   importer_->StartImport(profile_, importer::PASSWORDS, bridge_.get());
 
-  EXPECT_FALSE(autofillable_login.blacklisted_by_user);
+  EXPECT_FALSE(autofillable_login.blocked_by_user);
   EXPECT_EQ("http://127.0.0.1:8080/",
             autofillable_login.signon_realm);
   EXPECT_EQ("test-autofillable-login",
@@ -165,11 +165,11 @@ TEST_F(ChromeImporterTest, ImportPasswords) {
   EXPECT_EQ("autofillable-login-password",
             UTF16ToASCII(autofillable_login.password_value));
 
-  EXPECT_TRUE(blacklisted_login.blacklisted_by_user);
+  EXPECT_TRUE(blocked_login.blocked_by_user);
   EXPECT_EQ("http://127.0.0.1:8081/",
-            blacklisted_login.signon_realm);
-  EXPECT_EQ("", UTF16ToASCII(blacklisted_login.username_value));
-  EXPECT_EQ("", UTF16ToASCII(blacklisted_login.password_value));
+            blocked_login.signon_realm);
+  EXPECT_EQ("", UTF16ToASCII(blocked_login.username_value));
+  EXPECT_EQ("", UTF16ToASCII(blocked_login.password_value));
 
   OSCryptMocker::TearDown();
 }
