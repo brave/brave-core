@@ -12,16 +12,6 @@
 
 namespace rewards_browsertest_util {
 
-bool URLMatches(
-    const std::string& url,
-    const std::string& path,
-    const std::string& prefix,
-    const braveledger_request_util::ServerTypes server) {
-  const std::string target_url =
-      braveledger_request_util::BuildUrl(path, prefix, server);
-  return (url.find(target_url) == 0);
-}
-
 std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
     const net::test_server::HttpRequest& request) {
   std::unique_ptr<net::test_server::BasicHttpResponse> http_response(

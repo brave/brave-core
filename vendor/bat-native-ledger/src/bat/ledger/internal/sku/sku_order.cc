@@ -8,8 +8,6 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_sku.h"
-#include "bat/ledger/internal/response/response_sku.h"
 #include "bat/ledger/internal/sku/sku_order.h"
 #include "bat/ledger/internal/sku/sku_util.h"
 
@@ -19,7 +17,9 @@ using std::placeholders::_3;
 
 namespace braveledger_sku {
 
-SKUOrder::SKUOrder(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+SKUOrder::SKUOrder(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger),
+    payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
 }
 
@@ -34,47 +34,20 @@ void SKUOrder::Create(
     return;
   }
 
-  base::Value order_items(base::Value::Type::LIST);
-  for (const auto& item : items) {
-    base::Value order_item(base::Value::Type::DICTIONARY);
-    order_item.SetStringKey("sku", item.sku);
-    order_item.SetIntKey("quantity", item.quantity);
-    order_items.Append(std::move(order_item));
-  }
-
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetKey("items", std::move(order_items));
-
-  std::string json;
-  base::JSONWriter::Write(body, &json);
-
   auto url_callback = std::bind(&SKUOrder::OnCreate,
       this,
       _1,
-      items,
+      _2,
       callback);
 
-  const std::string url = braveledger_request_util::GetCreateOrderURL();
-
-  ledger_->LoadURL(
-      url,
-      {},
-      json,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+  payment_server_->post_order()->Request(items, url_callback);
 }
 
 void SKUOrder::OnCreate(
-    const ledger::UrlResponse& response,
-    const std::vector<ledger::SKUOrderItem>& order_items,
+    const ledger::Result result,
+    ledger::SKUOrderPtr order,
     ledger::SKUOrderCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  auto order =
-      braveledger_response_util::ParseOrderCreate(response, order_items);
-
-  if (!order) {
+  if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Order response could not be parsed");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;

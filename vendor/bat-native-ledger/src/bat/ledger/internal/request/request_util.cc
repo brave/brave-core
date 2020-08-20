@@ -2,58 +2,14 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-#include <map>
+
+#include "bat/ledger/internal/request/request_util.h"
 
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/static_values.h"
-#include "bat/ledger/internal/request/request_util.h"
 #include "bat/ledger/internal/common/security_helper.h"
 
 namespace braveledger_request_util {
-
-namespace payment {
-const char kDevelopment[] = "https://payment.rewards.brave.software";
-const char kStaging[] = "http://payment.rewards.bravesoftware.com";
-const char kProduction[] = "http://payment.rewards.brave.com";
-}  // namespace payment
-
-std::string BuildPaymentsUrl() {
-  std::string url;
-  switch (ledger::_environment) {
-    case ledger::Environment::DEVELOPMENT:
-      url = payment::kDevelopment;
-      break;
-    case ledger::Environment::STAGING:
-      url = payment::kStaging;
-      break;
-    case ledger::Environment::PRODUCTION:
-      url = payment::kProduction;
-      break;
-  }
-
-  return url;
-}
-
-std::string BuildUrl(
-    const std::string& path,
-    const std::string& prefix,
-    const ServerTypes& server) {
-  std::string url;
-  switch (server) {
-    case ServerTypes::kPayments: {
-      url = BuildPaymentsUrl();
-      break;
-    }
-  }
-
-  if (url.empty()) {
-    NOTREACHED();
-    return "";
-  }
-
-  return url + prefix + path;
-}
 
 std::string SignatureHeaderValue(
     const std::string& data,

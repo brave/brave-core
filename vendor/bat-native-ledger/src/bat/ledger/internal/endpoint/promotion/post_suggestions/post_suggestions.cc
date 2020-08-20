@@ -20,7 +20,7 @@ using std::placeholders::_1;
 //
 // Request body:
 // {
-//   "credentials": credentials": [
+//   "credentials": [
 //     {
 //       "t": "",
 //       "publicKey": "",

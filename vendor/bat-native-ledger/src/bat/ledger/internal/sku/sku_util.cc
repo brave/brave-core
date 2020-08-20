@@ -25,22 +25,6 @@ const char kUpholdDestinationStaging[] =
 const char kUpholdDestinationProduction[] =
     "5d4be2ad-1c65-4802-bea1-e0f3a3a487cb";
 
-std::string ConvertTransactionTypeToString(
-    const ledger::SKUTransactionType type) {
-  switch (type) {
-    case ledger::SKUTransactionType::UPHOLD: {
-      return "uphold";
-    }
-    case ledger::SKUTransactionType::ANONYMOUS_CARD: {
-      return "anonymous-card";
-    }
-    case ledger::SKUTransactionType::NONE:
-    case ledger::SKUTransactionType::TOKENS: {
-      return "";
-    }
-  }
-}
-
 std::string GetBraveDestination(const std::string& wallet_type) {
   if (wallet_type == ledger::kWalletUphold) {
     return GetUpholdDestination();

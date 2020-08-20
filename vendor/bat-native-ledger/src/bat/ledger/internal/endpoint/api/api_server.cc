@@ -10,9 +10,7 @@ namespace ledger {
 namespace endpoint {
 
 APIServer::APIServer(bat_ledger::LedgerImpl* ledger):
-    ledger_(ledger),
     get_parameters_(new api::GetParameters(ledger)) {
-  DCHECK(ledger_);
 }
 
 APIServer::~APIServer() = default;

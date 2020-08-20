@@ -26,7 +26,6 @@ class APIServer {
   api::GetParameters* get_parameters() const;
 
  private:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<api::GetParameters> get_parameters_;
 };
 

@@ -1,0 +1,55 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVELEDGER_ENDPOINT_PAYMENT_PAYMENT_SERVER_H_
+#define BRAVELEDGER_ENDPOINT_PAYMENT_PAYMENT_SERVER_H_
+
+#include <memory>
+
+#include "bat/ledger/internal/endpoint/payment/get_credentials/get_credentials.h"
+#include "bat/ledger/internal/endpoint/payment/post_credentials/post_credentials.h"
+#include "bat/ledger/internal/endpoint/payment/post_order/post_order.h"
+#include "bat/ledger/internal/endpoint/payment/post_transaction_anon/post_transaction_anon.h"
+#include "bat/ledger/internal/endpoint/payment/post_transaction_uphold/post_transaction_uphold.h"
+#include "bat/ledger/internal/endpoint/payment/post_votes/post_votes.h"
+#include "bat/ledger/ledger.h"
+
+namespace bat_ledger {
+class LedgerImpl;
+}
+
+namespace ledger {
+namespace endpoint {
+
+class PaymentServer {
+ public:
+  explicit PaymentServer(bat_ledger::LedgerImpl* ledger);
+  ~PaymentServer();
+
+  payment::PostOrder* post_order() const;
+
+  payment::PostCredentials* post_credentials() const;
+
+  payment::GetCredentials* get_credentials() const;
+
+  payment::PostVotes* post_votes() const;
+
+  payment::PostTransactionUphold* post_transaction_uphold() const;
+
+  payment::PostTransactionAnon* post_transaction_anon() const;
+
+ private:
+  std::unique_ptr<payment::PostOrder> post_order_;
+  std::unique_ptr<payment::PostCredentials> post_credentials_;
+  std::unique_ptr<payment::GetCredentials> get_credentials_;
+  std::unique_ptr<payment::PostVotes> post_votes_;
+  std::unique_ptr<payment::PostTransactionUphold> post_transaction_uphold_;
+  std::unique_ptr<payment::PostTransactionAnon> post_transaction_anon_;
+};
+
+}  // namespace endpoint
+}  // namespace ledger
+
+#endif  // BRAVELEDGER_ENDPOINT_PAYMENT_PAYMENT_SERVER_H_

@@ -7,8 +7,10 @@
 #define BRAVELEDGER_SKU_TRANSACTION_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
+#include "bat/ledger/internal/endpoint/payment/payment_server.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -53,10 +55,11 @@ class SKUTransaction {
       ledger::ResultCallback callback);
 
   void OnSendExternalTransaction(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
 };
 
 }  // namespace braveledger_sku

@@ -7,9 +7,11 @@
 #define BRAVELEDGER_SKU_ORDER_H_
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
+#include "bat/ledger/internal/endpoint/payment/payment_server.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -29,8 +31,8 @@ class SKUOrder {
 
  private:
   void OnCreate(
-      const ledger::UrlResponse& response,
-      const std::vector<ledger::SKUOrderItem>& order_items,
+      const ledger::Result result,
+      ledger::SKUOrderPtr order,
       ledger::SKUOrderCallback callback);
 
   void OnCreateSave(
@@ -39,6 +41,7 @@ class SKUOrder {
       ledger::SKUOrderCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
 };
 
 }  // namespace braveledger_sku

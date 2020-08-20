@@ -12,15 +12,6 @@
 
 namespace braveledger_request_util {
 
-enum class ServerTypes {
-  kPayments
-};
-
-std::string BuildUrl(
-    const std::string& path,
-    const std::string& prefix,
-    const ServerTypes& server);
-
 std::map<std::string, std::string> GetSignHeaders(
     const std::string& url,
     const std::string& body,

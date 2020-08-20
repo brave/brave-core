@@ -129,9 +129,6 @@ std::string GetPublisherChannelResponse(
 
 namespace rewards_browsertest {
 
-using braveledger_request_util::ServerTypes;
-using rewards_browsertest_util::URLMatches;
-
 RewardsBrowserTestResponse::RewardsBrowserTestResponse() = default;
 
 RewardsBrowserTestResponse::~RewardsBrowserTestResponse() = default;
@@ -244,7 +241,7 @@ void RewardsBrowserTestResponse::Get(
     return;
   }
 
-  if (url.find("v1/promotions?") != std::string::npos) {
+  if (url.find("/v1/promotions?") != std::string::npos) {
     if (empty_promotion_key_) {
       *response = promotion_empty_key_;
     } else {
@@ -324,11 +321,7 @@ void RewardsBrowserTestResponse::Get(
     return;
   }
 
-  if (URLMatches(
-      url,
-      "/order",
-      PREFIX_V1,
-      ServerTypes::kPayments)) {
+  if (url.find("/v1/orders") != std::string::npos) {
     if (url.find("credentials") != std::string::npos) {
       if (method == 0) {
         #if defined(OFFICIAL_BUILD)
