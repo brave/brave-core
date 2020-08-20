@@ -19,6 +19,7 @@ import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.ThemeColorProvider;
 import org.chromium.chrome.browser.compositor.layouts.EmptyOverviewModeObserver;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
@@ -42,10 +43,12 @@ public class BraveBottomToolbarCoordinator
     private BottomToolbarNewTabButton mNewTabButton;
     private ActivityTabProvider mBraveTabProvider;
     private Runnable mOriginalHomeButtonRunnable;
+    private final ScrollingBottomViewResourceFrameLayout rootView;
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
-    BraveBottomToolbarCoordinator(ViewStub stub, ActivityTabProvider tabProvider,
+    BraveBottomToolbarCoordinator(ViewStub stub, ScrollingBottomViewResourceFrameLayout root,
+            ActivityTabProvider tabProvider,
             OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
@@ -56,6 +59,7 @@ public class BraveBottomToolbarCoordinator
                 setUrlBarFocusAction, overviewModeBehaviorSupplier);
         mBraveTabProvider = tabProvider;
         mOriginalHomeButtonRunnable = openHomepageAction;
+        rootView = root;
     }
 
     @Override
@@ -185,6 +189,11 @@ public class BraveBottomToolbarCoordinator
             if (mOverviewModeBehavior != null) {
                 mOverviewModeBehavior.addOverviewModeObserver(mOverviewModeObserver);
             }
+        }
+        ChromeActivity activity = TabUtils.getChromeActivity();
+        if (rootView != null && activity != null) {
+            rootView.setSwipeDetector(
+                        activity.getCompositorViewHolder().getLayoutManager().getToolbarSwipeHandler());
         }
     }
 }
