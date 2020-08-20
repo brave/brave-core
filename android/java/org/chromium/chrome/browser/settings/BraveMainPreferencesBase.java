@@ -113,10 +113,10 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
      *  We need to override it to avoid NullPointerException in Chromium's child classes
      */
     @Override
-    public Preference findPreference(CharSequence key) {
-        Preference result = super.findPreference(key);
+    public <T extends Preference> T findPreference(CharSequence key) {
+        T result = super.findPreference(key);
         if (result == null) {
-            result = mRemovedPreferences.get(key);
+            result = (T)mRemovedPreferences.get(key);
         }
         return result;
     }
