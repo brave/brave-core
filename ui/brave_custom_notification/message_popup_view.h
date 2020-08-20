@@ -10,20 +10,23 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_delegate.h"
 #include "ui/views/widget/widget_observer.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
 
 namespace brave_custom_notification {
 
 class MessageView;
-class Notification;
+// class Notification;
 
 class MessagePopupView : public views::WidgetDelegateView,
                          public views::WidgetObserver {
  public:
-  static void Show(Notification& notification); // Returns static reference
+  static void Show(const Notification& notification); // Returns static reference
   static void ClosePopup(); // Destroys the widget
   static void Clicked(const std::string& notification_id); // Tells AdsNotificationHandler that this was clicked
   MessagePopupView(const Notification& notification);
   ~MessagePopupView() override;
+  
+  Notification notification_;
 
   // Return opacity of the widget.
   float GetOpacity() const;

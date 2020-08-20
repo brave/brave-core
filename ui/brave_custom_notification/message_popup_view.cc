@@ -27,39 +27,32 @@
 
 namespace brave_custom_notification {
 namespace {
-static MessagePopupView* g_message_popup_view = nullptr;
-static Notification* g_notification = nullptr;
-static scoped_refptr<NotificationDelegate> delegate_ = nullptr;
+static std::map<std::string, MessagePopupView*> g_notifications_;
 }
 
 // static
-void MessagePopupView::Show(Notification& notification) {
-  if (g_message_popup_view == nullptr) {
-    g_message_popup_view = new MessagePopupView(notification);
-  }
-  g_notification = &notification;
-  delegate_ = g_notification->delegate();
+void MessagePopupView::Show(const Notification& notification) {
+  g_notifications_[notification.id()] = new MessagePopupView(notification);
 }
 
 // static
 void MessagePopupView::Clicked(const std::string& notification_id) {
-  g_message_popup_view->Close();
-  if (delegate_){
-    delegate_->Click(base::nullopt, base::nullopt);
-  }
-  g_message_popup_view = nullptr;
+  MessagePopupView* message_popup_view = g_notifications_[notification_id];
+  message_popup_view->Close();
+  message_popup_view->notification_.delegate()->Click(base::nullopt, base::nullopt);
 }
 
 // static
 void MessagePopupView::ClosePopup() {
-  g_message_popup_view->Close();
-  if (delegate_) {
-    delegate_->Close(true);
+  for (auto iter = g_notifications_.begin(); iter != g_notifications_.end(); ++iter) {
+    MessagePopupView* message_popup_view = g_notifications_[iter->first];
+    message_popup_view->Close();
+    message_popup_view->notification_.delegate()->Close(true);
   }
-  g_message_popup_view = nullptr;
 }
 
-MessagePopupView::MessagePopupView(const Notification& notification) {
+MessagePopupView::MessagePopupView(const Notification& notification) :
+  notification_(notification) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
   views::Widget::InitParams params(views::Widget::InitParams::TYPE_POPUP);
   params.type = views::Widget::InitParams::TYPE_WINDOW_FRAMELESS;
@@ -92,7 +85,7 @@ MessagePopupView::MessagePopupView(const Notification& notification) {
   MessageView* message_view_ = MessageViewFactory::Create(notification);
   popup_window_->SetContentsView(message_view_);
   set_notify_enter_exit_on_child(true);
-  g_message_popup_view = this;
+  // g_message_popup_view = this;
 }
 
 MessagePopupView::~MessagePopupView() {
