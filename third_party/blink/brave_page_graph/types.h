@@ -83,6 +83,8 @@ typedef enum {
   kGraphMLAttrDefURL,
   kGraphMLAttrDefValue,
   kGraphMLAttrDefUnknown,
+  kGraphMLAttrDefSize,
+  kGraphMLAttrDefHeaders,
 } GraphMLAttrDef;
 
 typedef enum {

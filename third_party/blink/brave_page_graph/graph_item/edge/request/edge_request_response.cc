@@ -44,9 +44,9 @@ ItemName EdgeRequestResponse::GetItemName() const {
 void EdgeRequestResponse::AddGraphMLAttributes(xmlDocPtr doc,
     xmlNodePtr parent_node) const {
   EdgeRequest::AddGraphMLAttributes(doc, parent_node);
-  GraphMLAttrDefForType(kGraphMLAttrDefValue)
+  GraphMLAttrDefForType(kGraphMLAttrDefHeaders)
       ->AddValueNode(doc, parent_node, response_header_string_);
-  GraphMLAttrDefForType(kGraphMLAttrDefValue)
+  GraphMLAttrDefForType(kGraphMLAttrDefSize)
       ->AddValueNode(doc, parent_node, to_string(response_body_length_));
 }
 
