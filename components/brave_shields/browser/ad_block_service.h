@@ -13,8 +13,6 @@
 #include <vector>
 
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
-#include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
-#include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "content/public/browser/browser_thread.h"
@@ -26,6 +24,9 @@ class PrefService;
 using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
+
+class AdBlockRegionalServiceManager;
+class AdBlockCustomFiltersService;
 
 const char kAdBlockResourcesFilename[] = "resources.json";
 const char kAdBlockComponentName[] = "Brave Ad Block Updater";
