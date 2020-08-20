@@ -224,7 +224,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_2) {
       1590484778ul);
   EXPECT_EQ(
       profile_->GetPrefs()->GetUint64("brave.rewards.ac.next_reconcile_stamp"),
-      1593076778ul);
+      2593076778ul);
   EXPECT_EQ(
       profile_->GetPrefs()->GetDouble("brave.rewards.ac.amount"),
       20.0);
