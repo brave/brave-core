@@ -2033,15 +2033,11 @@ std::string AdsServiceImpl::LoadDataResourceAndDecompressIfNeeded(
 
 void AdsServiceImpl::ShowNotification(
     const std::unique_ptr<ads::AdNotificationInfo> info) {
-  LOG(INFO) << "albert AdsServiceImpl::ShowNotification";
-  brave_custom_notification::Notification* notification = (brave_custom_notification::Notification*) CreateAdNotification(*info);
+  std::unique_ptr<brave_custom_notification::Notification> notification = CreateAdNotification(*info);
 
   // Call NotificationPlatformBridgeBraveCustomNotification
   NotificationPlatformBridgeBraveCustomNotification* platform_bridge = new NotificationPlatformBridgeBraveCustomNotification(profile_);
   platform_bridge->Display(NotificationHandler::Type::BRAVE_ADS, profile_, *notification, /*metadata=*/nullptr);
-  //
-  // display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification, /*metadata=*/nullptr);
-  // brave_custom_notification::MessagePopupView::Show(*notification);
   StartNotificationTimeoutTimer(info->uuid);
 }
 

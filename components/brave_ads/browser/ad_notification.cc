@@ -14,7 +14,7 @@
 namespace brave_ads {
 
 // static
-brave_custom_notification::Notification* CreateAdNotification(
+std::unique_ptr<brave_custom_notification::Notification> CreateAdNotification(
     const ads::AdNotificationInfo& info) {
   brave_custom_notification::RichNotificationData notification_data;
 
@@ -31,7 +31,7 @@ brave_custom_notification::Notification* CreateAdNotification(
   // hack to prevent origin from showing in the notification
   // since we're using that to get the notification_id to OpenSettings
   notification_data.context_message = base::ASCIIToUTF16(" ");
-  brave_custom_notification::Notification* notification = new brave_custom_notification::Notification(
+  auto notification = std::make_unique<brave_custom_notification::Notification>(
       brave_custom_notification::NOTIFICATION_TYPE_SIMPLE, info.uuid, title, body,
       base::string16(), GURL(), notification_data, nullptr);
 
