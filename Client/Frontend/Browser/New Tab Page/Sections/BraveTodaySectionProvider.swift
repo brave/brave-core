@@ -359,7 +359,7 @@ class BraveTodaySectionProvider: NSObject, NTPObservableSectionProvider {
                 nil
             ]
             
-            if context.item.content.contentType == .article {
+            if context.item.content.contentType != .sponsor {
                 if self.dataSource.isSourceEnabled(context.item.source) {
                     actions.append(disableSource)
                 } else {
