@@ -17,12 +17,14 @@
 #include "bat/ledger/ledger.h"
 #include "brave/common/brave_paths.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
 #include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_rewards/browser/rewards_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
+#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/l10n/browser/locale_helper_mock.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
