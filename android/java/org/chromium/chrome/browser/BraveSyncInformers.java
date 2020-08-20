@@ -16,7 +16,6 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.infobar.InfoBarIdentifier;
-import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.settings.BraveSyncScreensPreference;
 import org.chromium.chrome.browser.settings.SettingsLauncher;

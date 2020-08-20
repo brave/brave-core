@@ -25,7 +25,7 @@ import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.BraveFeatureList;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
 
@@ -84,7 +84,7 @@ public class RetentionNotificationPublisher extends BroadcastReceiver {
             case RetentionNotificationUtil.DAY_30:
             case RetentionNotificationUtil.DAY_35:
                 if (braveActivity != null
-                        && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
+                        && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
                         && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                     createNotification(context, intent);
                 }

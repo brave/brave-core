@@ -16,7 +16,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
@@ -59,13 +59,13 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
         showBackgroundImagesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_BACKGROUND_IMAGES);
         if (showBackgroundImagesPref != null) {
             showBackgroundImagesPref.setEnabled(true);
-            showBackgroundImagesPref.setChecked(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE));
+            showBackgroundImagesPref.setChecked(PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
             showBackgroundImagesPref.setOnPreferenceChangeListener(this);
         }
         showSponsoredImagesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_IMAGES);
         if (showSponsoredImagesPref != null) {
-            showSponsoredImagesPref.setEnabled(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE));
-            showSponsoredImagesPref.setChecked(BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
+            showSponsoredImagesPref.setEnabled(PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
+            showSponsoredImagesPref.setChecked(PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
             showSponsoredImagesPref.setOnPreferenceChangeListener(this);
         }
     }
@@ -82,9 +82,9 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
 
     public static void setOnPreferenceValue(String preferenceName, boolean newValue) {
         if (PREF_SHOW_BACKGROUND_IMAGES.equals(preferenceName)) {
-            BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE, newValue);
+            PrefServiceBridge.getInstance().setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, newValue);
         } else if (PREF_SHOW_SPONSORED_IMAGES.equals(preferenceName)) {
-            BravePrefServiceBridge.getInstance().setBoolean(BravePref.NTP_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE, (boolean)newValue);
+            PrefServiceBridge.getInstance().setBoolean(BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE, (boolean)newValue);
         } else {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();

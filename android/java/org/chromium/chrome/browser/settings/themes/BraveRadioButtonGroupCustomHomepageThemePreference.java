@@ -14,8 +14,8 @@ import android.widget.RadioGroup;
 import org.chromium.chrome.R;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.night_mode.settings.RadioButtonGroupThemePreference;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
@@ -42,7 +42,7 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
         RadioButtonWithDescription refView = (RadioButtonWithDescription)holder.findViewById(R.id.dark);
         if (mNTPBackgroundImagesBridge != null && mNTPBackgroundImagesBridge.isSuperReferral()) {
             refView.setPrimaryText(mNTPBackgroundImagesBridge.getSuperReferralThemeName());
-            if(BravePrefServiceBridge.getInstance().getInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false) {
+            if(PrefServiceBridge.getInstance().getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false) {
                 refView.setChecked(true);
                 braveDefaultView.setChecked(false);
             } else {
@@ -56,7 +56,7 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         super.onCheckedChanged(group, checkedId);
-        BravePrefServiceBridge.getInstance().setInteger(BravePref.NTP_SHOW_SUPER_REFERRAL_THEMES_OPTION, checkedId == R.id.light ? 0 : 1 );
+        PrefServiceBridge.getInstance().setInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION, checkedId == R.id.light ? 0 : 1 );
         BraveRelaunchUtils.askForRelaunch(getContext());
     }
 }
