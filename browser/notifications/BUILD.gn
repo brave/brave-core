@@ -16,7 +16,7 @@ source_set("notifications") {
       "//skia",
     ]
 
-    libs = [ "Foundation.framework" ]
+    frameworks = [ "Foundation.framework" ]
   } else if (is_android) {
     sources = [
       "brave_notification_platform_bridge_helper_android.cc",
