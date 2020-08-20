@@ -48,6 +48,30 @@
 
     </FrameLayout>
 
+    <FrameLayout
+        android:id="@+id/logo_holder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ViewStub
+            android:id="@+id/cryptid_holder"
+            android:layout="@layout/new_tab_page_cryptid_holder"
+            android:layout_width="@dimen/cryptid_width_in_logo_wrapper"
+            android:layout_height="@dimen/cryptid_height_in_logo_wrapper"
+            android:layout_gravity="bottom|start" />
+
+        <org.chromium.chrome.browser.ntp.LogoView
+            android:id="@+id/search_provider_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/ntp_logo_height"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="@dimen/ntp_logo_margin_top"
+            android:layout_marginBottom="23dp" />
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/parent_layout"
         android:layout_width="match_parent"
