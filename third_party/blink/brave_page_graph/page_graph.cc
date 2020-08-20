@@ -166,7 +166,7 @@ namespace brave_page_graph {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.2";
+constexpr char kPageGraphVersion[] = "0.2.1";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 

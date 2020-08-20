@@ -106,6 +106,10 @@ namespace {
     kGraphMLAttrForTypeNode, "url");
   const GraphMLAttr* const value_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "value");
+  const GraphMLAttr* const size_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "size");
+  const GraphMLAttr* const headers_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "headers");
 
   const vector<const GraphMLAttr* const> _all_graphml_attrs = {
     attr_name_attr, attr_value, before_node_attr, block_type_attr,
@@ -117,7 +121,8 @@ namespace {
     request_id_attr, request_type_attr, resource_type_attr, response_hash_attr,
     rule_attr, script_id_for_edge_attr, script_id_for_node_attr,
     script_position_attr, script_type_attr, secondary_pattern_attr, source_attr,
-    status_type_attr, success_attr, tag_attr, url_attr, value_attr
+    status_type_attr, success_attr, tag_attr, url_attr, value_attr,
+    size_attr, headers_attr
   };
 }
 
@@ -293,6 +298,10 @@ const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
       return value_attr;
     case kGraphMLAttrDefUnknown:
       return nullptr;
+    case kGraphMLAttrDefSize:
+      return size_attr;
+    case kGraphMLAttrDefHeaders:
+      return headers_attr;
   }
 }
 
