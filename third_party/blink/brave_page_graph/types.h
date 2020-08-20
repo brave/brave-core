@@ -210,6 +210,7 @@ typedef enum {
   kWebAPILocationReload,
   kWebAPILocationReplace,
   kWebAPILocationSearch,
+  kWebAPIConsoleLog,
 } WebAPI;
 WebAPI WebAPIFromString(const std::string& built_in_name) noexcept;
 const std::string& WebAPIToString(const WebAPI built_in_name) noexcept;

@@ -260,6 +260,7 @@ namespace {
     {kWebAPILocationReload, "Location.reload"},
     {kWebAPILocationReplace, "Location.replace"},
     {kWebAPILocationSearch, "Location.search"},
+    {kWebAPIConsoleLog, "console.log"},
   };
 
   const map<string, WebAPI> web_api_str_to_enum_map = {
@@ -277,6 +278,7 @@ namespace {
     {"Location.reload", kWebAPILocationReload},
     {"Location.replace", kWebAPILocationReplace},
     {"Location.search", kWebAPILocationSearch},
+    {"console.log", kWebAPIConsoleLog},
   };
 }
 
