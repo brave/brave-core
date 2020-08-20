@@ -284,14 +284,13 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     @Override
     public void initialize(NewTabPageManager manager, Activity activity,
-                           TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
-                           boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
-                           ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
-                           ActivityLifecycleDispatcher lifecycleDispatcher,
-                           @Nullable OverviewModeBehavior overviewModeBehavior, NewTabPageUma uma) {
+            TileGroup.Delegate tileGroupDelegate, boolean searchProviderHasLogo,
+            boolean searchProviderIsGoogle, ScrollDelegate scrollDelegate,
+            ContextMenuManager contextMenuManager, UiConfig uiConfig, Supplier<Tab> tabProvider,
+            ActivityLifecycleDispatcher lifecycleDispatcher, NewTabPageUma uma) {
         super.initialize(manager, activity, tileGroupDelegate, searchProviderHasLogo,
-                         searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
-                         lifecycleDispatcher, overviewModeBehavior, uma);
+                searchProviderIsGoogle, scrollDelegate, contextMenuManager, uiConfig, tabProvider,
+                lifecycleDispatcher, uma);
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
