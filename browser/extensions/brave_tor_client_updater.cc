@@ -83,7 +83,7 @@ const char kTorClientComponentBase64PublicKey[] =
     "4Qa6VFmuoBhup54tTZvMv+ikoKKaQkHzkkjTa4hV5AzdnFDKO8C9qJb3T/Ef0+MO"
     "IuZjyySVzGNcOfASeHkhxhlwMQSQuhCN5mdFW5YBnVZ/5QWx8WzbhqBny/ZynS4e"
     "rQIDAQAB";
-#elif defined(OS_MACOSX)
+#elif defined(OS_MAC)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Mac)";
 const char kTorClientComponentId[] = "cldoidikboihgcjfkhdeidbpclkineef";
 const char kTorClientComponentBase64PublicKey[] =

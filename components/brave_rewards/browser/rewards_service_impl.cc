@@ -3289,7 +3289,7 @@ ledger::type::Environment RewardsServiceImpl::GetServerEnvironmentForAndroid() {
 ledger::type::ClientInfoPtr GetDesktopClientInfo() {
   auto info = ledger::type::ClientInfo::New();
   info->platform = ledger::type::Platform::DESKTOP;
-  #if defined(OS_MACOSX)
+  #if defined(OS_MAC)
     info->os = ledger::type::OperatingSystem::MACOS;
   #elif defined(OS_WIN)
     info->os = ledger::type::OperatingSystem::WINDOWS;

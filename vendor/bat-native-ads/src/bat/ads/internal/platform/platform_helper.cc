@@ -39,9 +39,8 @@ PlatformHelper* PlatformHelper::GetInstance() {
 }
 
 #if !defined(OS_ANDROID) && \
-    !defined(OS_IOS) && \
+    !defined(OS_APPLE) && \
     !defined(OS_LINUX) && \
-    !defined(OS_MACOSX) && \
     !defined(OS_WIN)
 PlatformHelper* PlatformHelper::GetInstanceImpl() {
   // Return a default platform helper for unsupported platforms

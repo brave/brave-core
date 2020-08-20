@@ -71,7 +71,7 @@ class BraveTorClientUpdaterTest : public ExtensionBrowserTest {
   bool InstallTorClientUpdater() {
 #if defined(OS_WIN)
     return InstallTorClientUpdater("tor-client-updater-win");
-#elif defined(OS_MACOSX)
+#elif defined(OS_MAC)
     return InstallTorClientUpdater("tor-client-updater-mac");
 #elif defined(OS_LINUX)
     return InstallTorClientUpdater("tor-client-updater-linux");

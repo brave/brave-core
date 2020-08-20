@@ -34,7 +34,7 @@ LocaleHelper* LocaleHelper::GetInstance() {
   return GetInstanceImpl();
 }
 
-#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID) && !defined(OS_IOS)  // NOLINT
+#if !defined(OS_APPLE) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID) // NOLINT
 LocaleHelper* LocaleHelper::GetInstanceImpl() {
   // Return a default locale helper for unsupported platforms
   return base::Singleton<LocaleHelper>::get();
