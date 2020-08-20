@@ -6,15 +6,15 @@
 import Foundation
 import CoreData
 
-public final class BraveTodaySourceMO: NSManagedObject, CRUD {
+public final class FeedSourceOverride: NSManagedObject, CRUD {
     @NSManaged public var enabled: Bool
     @NSManaged public var publisherID: String
     
-    public class func get(fromId id: String) -> BraveTodaySourceMO? {
+    public class func get(fromId id: String) -> FeedSourceOverride? {
         getInternal(fromId: id)
     }
     
-    public class func all() -> [BraveTodaySourceMO] {
+    public class func all() -> [FeedSourceOverride] {
         all() ?? []
     }
     
@@ -34,8 +34,8 @@ public final class BraveTodaySourceMO: NSManagedObject, CRUD {
         deleteAll()
     }
     
-    class func getInternal(fromId id: String, context: NSManagedObjectContext = DataController.viewContext) -> BraveTodaySourceMO? {
-        let predicate = NSPredicate(format: "\(#keyPath(BraveTodaySourceMO.publisherID)) == %@", id)
+    class func getInternal(fromId id: String, context: NSManagedObjectContext = DataController.viewContext) -> FeedSourceOverride? {
+        let predicate = NSPredicate(format: "\(#keyPath(FeedSourceOverride.publisherID)) == %@", id)
         return first(where: predicate, context: context)
     }
     
@@ -51,7 +51,7 @@ public final class BraveTodaySourceMO: NSManagedObject, CRUD {
     
     class func insertInternal(publisherID: String, enabled: Bool, context: WriteContext = .new(inMemory: false)) {
         DataController.perform(context: context) { context in
-            let source = BraveTodaySourceMO(entity: entity(in: context), insertInto: context)
+            let source = FeedSourceOverride(entity: entity(in: context), insertInto: context)
             
             source.enabled = enabled
             source.publisherID = publisherID
@@ -59,6 +59,6 @@ public final class BraveTodaySourceMO: NSManagedObject, CRUD {
     }
     
     private class func entity(in context: NSManagedObjectContext) -> NSEntityDescription {
-        NSEntityDescription.entity(forEntityName: "BraveTodaySourceMO", in: context)!
+        NSEntityDescription.entity(forEntityName: "FeedSourceOverride", in: context)!
     }
 }
