@@ -114,7 +114,6 @@ MessageView::~MessageView() {
 }
 
 void MessageView::UpdateWithNotification(const Notification& notification) {
-  pinned_ = notification.pinned();
   base::string16 new_accessible_name = CreateAccessibleName(notification);
   if (new_accessible_name != accessible_name_) {
     accessible_name_ = new_accessible_name;
@@ -286,24 +285,7 @@ views::SlideOutController::SlideMode MessageView::CalculateSlideMode() const {
   if (disable_slide_)
     return views::SlideOutController::SlideMode::kNone;
 
-  switch (GetMode()) {
-    case Mode::SETTING:
-      return views::SlideOutController::SlideMode::kNone;
-    case Mode::PINNED:
-      return views::SlideOutController::SlideMode::kPartial;
-    case Mode::NORMAL:
-      return views::SlideOutController::SlideMode::kFull;
-  }
-
-  NOTREACHED();
   return views::SlideOutController::SlideMode::kFull;
-}
-
-MessageView::Mode MessageView::GetMode() const {
-  if (setting_mode_)
-    return Mode::SETTING;
-
-  return Mode::NORMAL;
 }
 
 float MessageView::GetSlideAmount() const {

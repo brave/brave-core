@@ -86,13 +86,6 @@ NotificationPlatformBridgeBraveCustomNotification::
 NotificationPlatformBridgeBraveCustomNotification::
     ~NotificationPlatformBridgeBraveCustomNotification() = default;
 
-// Albert: Need to keep this as this overrides the parent class
-void NotificationPlatformBridgeBraveCustomNotification::Display(
-    NotificationHandler::Type notification_type,
-    Profile* profile,
-    const message_center::Notification& notification,
-    std::unique_ptr<NotificationCommon::Metadata> /* metadata */) {}
-
 void NotificationPlatformBridgeBraveCustomNotification::Display(
     NotificationHandler::Type notification_type,
     Profile* profile,
@@ -118,11 +111,6 @@ void NotificationPlatformBridgeBraveCustomNotification::GetDisplayed(
     Profile* profile,
     GetDisplayedNotificationsCallback callback) const {
   return;
-}
-
-void NotificationPlatformBridgeBraveCustomNotification::SetReadyCallback(
-    NotificationBridgeReadyCallback callback) {
-  std::move(callback).Run(true /* success */);
 }
 
 void NotificationPlatformBridgeBraveCustomNotification::DisplayServiceShutDown(

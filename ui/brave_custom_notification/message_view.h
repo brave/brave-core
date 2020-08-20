@@ -51,23 +51,6 @@ class MessageView
     virtual void OnCloseButtonPressed(const std::string& notification_id) {}
   };
 
-  enum class Mode {
-    // Normal mode.
-    NORMAL = 0,
-    // "Pinned" mode flag. This mode is for pinned notification.
-    // When this mode is enabled:
-    //  - Swipe: partially possible, but limited to the half position
-    //  - Close button: hidden
-    //  - Settings and snooze button: visible
-    PINNED = 1,
-    // "Setting" mode flag. This mode is for showing inline setting panel in
-    // the notification view.
-    // When this mode is enabled:
-    //  - Swipe: prohibited
-    //  - Close button: hidden
-    //  - Settings and snooze button: hidden
-    SETTING = 2,
-  };
   ~MessageView() override;
   virtual void UpdateWithNotification(const Notification& notification);
   virtual NotificationControlButtonsView* GetControlButtonsView() const = 0;
@@ -104,8 +87,6 @@ class MessageView
 
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
-
-  Mode GetMode() const;
 
   // Gets the current horizontal scroll offset of the view by slide gesture.
   float GetSlideAmount() const;
@@ -148,13 +129,6 @@ class MessageView
   base::string16 accessible_name_;
 // TODO: Figure out a way to pass along the PopupView as the widget container
 //  MessagePopupView message_popup_view_;
-
-  // Flag if the notification is set to pinned or not. See the comment in
-  // MessageView::Mode for detail.
-  bool pinned_ = false;
-
-  // "fixed" mode flag. See the comment in MessageView::Mode for detail.
-  bool setting_mode_ = false;
 
   views::SlideOutController slide_out_controller_;
   base::ObserverList<Observer>::Unchecked observers_;
