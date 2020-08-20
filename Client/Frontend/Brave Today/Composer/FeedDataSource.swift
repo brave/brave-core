@@ -301,7 +301,7 @@ class FeedDataSource {
     
     /// Get a map of customized sources IDs and their overridden enabled states
     var customizedSources: [String: Bool] {
-        let all = BraveTodaySourceMO.all()
+        let all = FeedSourceOverride.all()
         return all.reduce(into: [:]) { (result, source) in
             result[source.publisherID] = source.enabled
         }
@@ -310,12 +310,12 @@ class FeedDataSource {
     /// Whether or not a source is currently enabled (whether or not by default or by a user changing
     /// said default)
     func isSourceEnabled(_ source: FeedItem.Source) -> Bool {
-        BraveTodaySourceMO.get(fromId: source.id)?.enabled ?? source.isDefault
+        FeedSourceOverride.get(fromId: source.id)?.enabled ?? source.isDefault
     }
     
     /// Toggle a source's enabled status
     func toggleSource(_ source: FeedItem.Source, enabled: Bool) {
-        BraveTodaySourceMO.setEnabled(forId: source.id, enabled: enabled)
+        FeedSourceOverride.setEnabled(forId: source.id, enabled: enabled)
         
         if let cards = state.cards, cards.isEmpty && enabled {
             // If we're enabling a source and we don't have any items because their source selection was
@@ -330,7 +330,7 @@ class FeedDataSource {
         if sourcesInCategory.isEmpty {
             return
         }
-        BraveTodaySourceMO.setEnabled(forIds: sourcesInCategory.map(\.id), enabled: enabled)
+        FeedSourceOverride.setEnabled(forIds: sourcesInCategory.map(\.id), enabled: enabled)
         
         if let cards = state.cards, cards.isEmpty && enabled {
             // If we're enabling a category and we don't have any items because their source selection was
@@ -341,7 +341,7 @@ class FeedDataSource {
     
     /// Reset all source settings back to default
     func resetSourcesToDefault() {
-        BraveTodaySourceMO.resetSourceSelection()
+        FeedSourceOverride.resetSourceSelection()
     }
     
     // MARK: - Card Generation
@@ -411,7 +411,7 @@ class FeedDataSource {
         // Ensure main thread since we're querying from CoreData
         dispatchPrecondition(condition: .onQueue(.main))
         
-        let overridenSources = BraveTodaySourceMO.all()
+        let overridenSources = FeedSourceOverride.all()
         let feedsFromEnabledSources = items.filter { item in
             overridenSources.first(where: {
                 $0.publisherID == item.source.id
