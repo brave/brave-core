@@ -155,7 +155,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "$target_gen_dir/ads.mojom.objc.h",
   ]
 
-  libs = [
+  frameworks = [
     "Foundation.framework",
     "UIKit.framework",
     "Security.framework",

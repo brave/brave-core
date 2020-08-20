@@ -33,7 +33,7 @@ source_set("rust_ffi") {
   ]
 
   if (is_mac || is_ios ) {
-    libs = [
+    frameworks = [
       "Security.framework"
     ]
   }
