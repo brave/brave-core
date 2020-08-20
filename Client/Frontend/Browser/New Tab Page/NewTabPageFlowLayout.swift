@@ -51,6 +51,9 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
                     extraHeight = (collectionView.bounds.height - gapPadding) - (lastItemAttribute.frame.maxY - attribute.frame.minY)
                 }
             }
+            
+            lastSizedElementMinY = nil
+            lastSizedElementPreferredHeight = nil
         }
     }
     
@@ -140,4 +143,68 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
         }
         return offset
     }
+    
+    override func shouldInvalidateLayout(
+        forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes,
+        withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes
+    ) -> Bool {
+        if let braveTodaySection = braveTodaySection,
+            preferredAttributes.representedElementCategory == .cell,
+            preferredAttributes.indexPath.section == braveTodaySection {
+            return preferredAttributes.size.height.rounded() != originalAttributes.size.height.rounded()
+        }
+        return super.shouldInvalidateLayout(
+            forPreferredLayoutAttributes: preferredAttributes,
+            withOriginalAttributes: originalAttributes
+        )
+    }
+    
+    override func invalidationContext(
+        forPreferredLayoutAttributes preferredAttributes: UICollectionViewLayoutAttributes,
+        withOriginalAttributes originalAttributes: UICollectionViewLayoutAttributes
+    ) -> UICollectionViewLayoutInvalidationContext {
+        let context = super.invalidationContext(
+            forPreferredLayoutAttributes: preferredAttributes,
+            withOriginalAttributes: originalAttributes
+        )
+        
+        guard let collectionView = collectionView, let _ = braveTodaySection else {
+            return context
+        }
+        
+        // Big thanks to Bryan Keller for the solution found in this `airbnb/MagazineLayout` PR:
+        // https://github.com/airbnb/MagazineLayout/pull/11/files
+        //
+        // Original comment:
+        // If layout information is discarded above our current scroll position (on rotation, for
+        // example), we need to compensate for preferred size changes to items as we're scrolling up,
+        // otherwise, the collection view will appear to jump each time an element is sized.
+        // Since size adjustments can occur for multiple items in the same soon-to-be-visible row, we
+        // need to account for this by considering the preferred height for previously sized elements in
+        // the same row so that we only adjust the content offset by the exact amount needed to create
+        // smooth scrolling.
+        let currentElementY = originalAttributes.frame.minY
+        let isScrolling = collectionView.isDragging || collectionView.isDecelerating
+        let isSizingElementAboveTopEdge = originalAttributes.frame.minY < collectionView.contentOffset.y
+        
+        if isScrolling && isSizingElementAboveTopEdge {
+            let isSameRowAsLastSizedElement = lastSizedElementMinY == currentElementY
+            if isSameRowAsLastSizedElement {
+                let lastSizedElementPreferredHeight = self.lastSizedElementPreferredHeight ?? 0
+                if preferredAttributes.size.height > lastSizedElementPreferredHeight {
+                    context.contentOffsetAdjustment.y = preferredAttributes.size.height - lastSizedElementPreferredHeight
+                }
+            } else {
+                context.contentOffsetAdjustment.y = preferredAttributes.size.height - originalAttributes.size.height
+            }
+        }
+        
+        lastSizedElementMinY = currentElementY
+        lastSizedElementPreferredHeight = preferredAttributes.size.height
+        
+        return context
+    }
+    
+    private var lastSizedElementMinY: CGFloat?
+    private var lastSizedElementPreferredHeight: CGFloat?
 }
