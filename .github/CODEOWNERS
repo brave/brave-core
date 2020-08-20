@@ -1,4 +1,5 @@
 patches/ @bridiver
+!patches/chrome-VERSION.patch @bridiver
 chromium_src/ @bridiver
 script/build-bisect.py @bsclifton
 script/uplift.py @bsclifton
