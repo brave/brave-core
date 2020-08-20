@@ -70,6 +70,7 @@ import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
 import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.suggestions.tile.SiteSection;
 import org.chromium.chrome.browser.suggestions.tile.TileGroup;
@@ -152,7 +153,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
         ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
-        if (!BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+        if (!PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                 || !NTPUtil.shouldEnableNTPFeature()) {
             mBadgeImageView.setColorFilter(ContextCompat.getColor(ContextUtils.getApplicationContext(), R.color.brave_stats_badge_tint_color), android.graphics.PorterDuff.Mode.SRC_IN);
         }
@@ -206,7 +207,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     protected int getMaxRowsForMostVisitedTiles() {
-        if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+        if (PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                 && NTPUtil.shouldEnableNTPFeature()) {
             return 1;
         } else {
@@ -321,7 +322,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         mDataSavedValueTextView.setText(String.format(getResources().getString(R.string.ntp_stat_text), dataSavedPair.first, dataSavedPair.second));
         mEstTimeSavedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
 
-        if ((BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+        if ((PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                 || NTPUtil.isReferralEnabled())
                 && sponsoredTab != null
                 && NTPUtil.shouldEnableNTPFeature()) {
@@ -364,8 +365,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                         "SuperReferralShareDialogFragment");
                 }
             });
-        } else if (BravePrefServiceBridge.getInstance().getBoolean(
-                       BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+        } else if (PrefServiceBridge.getInstance().getBoolean(
+                       BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                    && sponsoredTab != null
                    && NTPUtil.shouldEnableNTPFeature()) {
             setBackgroundImage(ntpImage);
@@ -538,7 +539,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             tileViewTitleTv.setText(topSite.getName());
 
             if (!GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                    && !BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+                    && !PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                     && !NTPUtil.isReferralEnabled()) {
                 tileViewTitleTv.setTextColor(getResources().getColor(android.R.color.black));
             } else {

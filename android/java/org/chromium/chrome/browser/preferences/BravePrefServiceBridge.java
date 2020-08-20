@@ -123,55 +123,6 @@ public class BravePrefServiceBridge {
         return BravePrefServiceBridgeJni.get().getBooleanForContentSetting(content_type);
     }
 
-    /**
-    * @param preference The name of the preference.
-    * @return Whether the specified preference is enabled.
-    */
-    public boolean getBoolean(int preference) {
-        return BravePrefServiceBridgeJni.get().getBoolean(preference);
-    }
-
-    /**
-     * @param preference The name of the preference.
-     * @param value The value the specified preference will be set to.
-     */
-    public void setBoolean(int preference, boolean value) {
-        BravePrefServiceBridgeJni.get().setBoolean(preference, value);
-    }
-
-    /**
-     * @param preference The name of the preference.
-     * @return value The value of the specified preference.
-     */
-    public int getInteger(int preference) {
-        return BravePrefServiceBridgeJni.get().getInteger(preference);
-    }
-
-    /**
-     * @param preference The name of the preference.
-     * @param value The value the specified preference will be set to.
-     */
-    public void setInteger(int preference, int value) {
-        BravePrefServiceBridgeJni.get().setInteger(preference, value);
-    }
-
-    /**
-     * @param preference The name of the preference.
-     * @return value The value of the specified preference.
-     */
-    @NonNull
-    public String getString(int preference) {
-        return BravePrefServiceBridgeJni.get().getString(preference);
-    }
-
-    /**
-     * @param preference The name of the preference.
-     * @param value The value the specified preference will be set to.
-     */
-    public void setString(int preference, @NonNull String value) {
-        BravePrefServiceBridgeJni.get().setString(preference, value);
-    }
-
     public void setReferralAndroidFirstRunTimestamp(long time) {
         BravePrefServiceBridgeJni.get().setReferralAndroidFirstRunTimestamp(time);
     }
@@ -225,13 +176,6 @@ public class BravePrefServiceBridge {
         void setUseRewardsStagingServer(boolean enabled);
         boolean getUseRewardsStagingServer();
         boolean getBooleanForContentSetting(int content_type);
-
-        boolean getBoolean(int preference);
-        void setBoolean(int preference, boolean value);
-        int getInteger(int preference);
-        void setInteger(int preference, int value);
-        String getString(int preference);
-        void setString(int preference, String value);
 
         void setReferralAndroidFirstRunTimestamp(long time);
         void setReferralCheckedForPromoCodeFile(boolean value);

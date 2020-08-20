@@ -13,7 +13,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
+import org.chromium.chrome.browser.preferences.PrefServiceBridge;
 import org.chromium.chrome.browser.suggestions.tile.TileWithTextView;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
@@ -28,7 +28,7 @@ public class BraveTileWithTextView extends TileWithTextView {
     public void setTitle(String title, int titleLines) {
         super.setTitle(title, titleLines);
         TextView mTitleView = findViewById(R.id.tile_view_title);
-        if (BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+        if (PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                 && NTPUtil.shouldEnableNTPFeature()) {
             mTitleView.setTextColor(getResources().getColor(android.R.color.white));
         }

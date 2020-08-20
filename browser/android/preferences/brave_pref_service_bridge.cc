@@ -7,7 +7,6 @@
 
 #include "build/build_config.h"
 #include "base/android/jni_string.h"
-#include "brave/browser/android/preferences/brave_prefs.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/browser/buildflags.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
@@ -33,24 +32,11 @@ using brave_shields::ControlType;
 
 namespace {
 
-PrefService* GetPrefService() {
-  return ProfileManager::GetActiveUserProfile()
-      ->GetOriginalProfile()
-      ->GetPrefs();
-}
-
 Profile* GetOriginalProfile() {
   return ProfileManager::GetActiveUserProfile()->GetOriginalProfile();
 }
 
-const char* GetPrefNameExposedToJava(int pref_index) {
-  DCHECK_GE(pref_index, kBravePrefOffset);
-  DCHECK_LT(pref_index, BravePref::BRAVE_PREF_NUM_PREFS);
-  return kBravePrefsExposedToJava[pref_index - kBravePrefOffset];
-}
-
 }  // namespace
-
 
 namespace chrome {
 namespace android {
@@ -263,44 +249,6 @@ void JNI_BravePrefServiceBridge_SetReferralDownloadId(
     const JavaParamRef<jstring>& downloadId) {
   return g_browser_process->local_state()->SetString(
       kReferralDownloadID, ConvertJavaStringToUTF8(env, downloadId));
-}
-
-static jboolean JNI_BravePrefServiceBridge_GetBoolean(
-    JNIEnv* env,
-    const jint j_pref_index) {
-  return GetPrefService()->GetBoolean(GetPrefNameExposedToJava(j_pref_index));
-}
-
-static void JNI_BravePrefServiceBridge_SetBoolean(JNIEnv* env,
-                                             const jint j_pref_index,
-                                             const jboolean j_value) {
-  GetPrefService()->SetBoolean(GetPrefNameExposedToJava(j_pref_index), j_value);
-}
-
-static jint JNI_BravePrefServiceBridge_GetInteger(JNIEnv* env,
-                                             const jint j_pref_index) {
-  return GetPrefService()->GetInteger(GetPrefNameExposedToJava(j_pref_index));
-}
-
-static void JNI_BravePrefServiceBridge_SetInteger(JNIEnv* env,
-                                             const jint j_pref_index,
-                                             const jint j_value) {
-  GetPrefService()->SetInteger(GetPrefNameExposedToJava(j_pref_index), j_value);
-}
-
-static base::android::ScopedJavaLocalRef<jstring>
-JNI_BravePrefServiceBridge_GetString(JNIEnv* env, const jint j_pref_index) {
-  return base::android::ConvertUTF8ToJavaString(
-      env, GetPrefService()->GetString(GetPrefNameExposedToJava(j_pref_index)));
-}
-
-static void JNI_BravePrefServiceBridge_SetString(
-    JNIEnv* env,
-    const jint j_pref_index,
-    const base::android::JavaParamRef<jstring>& j_value) {
-  GetPrefService()->SetString(
-      GetPrefNameExposedToJava(j_pref_index),
-      base::android::ConvertJavaStringToUTF8(env, j_value));
 }
 
 }  // namespace android
