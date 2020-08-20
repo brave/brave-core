@@ -64,7 +64,7 @@ public class TabUtils {
         chromeActivity.getTabCreator(isIncognito).launchNTP();
     }
 
-    private static ChromeActivity getChromeActivity() {
+    public static ChromeActivity getChromeActivity() {
         for (Activity ref : ApplicationStatus.getRunningActivities()) {
             if (!(ref instanceof ChromeActivity)) continue;
             return (ChromeActivity) ref;
