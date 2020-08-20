@@ -400,6 +400,8 @@ source_set("browser_process") {
       "brave_drm_tab_helper.h",
     ]
     deps += [ "//brave/browser/widevine" ]
+
+    allow_circular_includes_from = [ "//brave/browser/widevine" ]
   }
 
   if (enable_brave_perf_predictor) {
