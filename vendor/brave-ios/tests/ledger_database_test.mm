@@ -9,7 +9,8 @@
 #import "BATLedgerDatabase.h"
 #import "CoreDataModels.h"
 #import "BATBraveLedger.h"
-#import "brave/components/brave_rewards/browser/rewards_database.h"
+
+#include "bat/ledger/ledger_database.h"
 
 @interface TempTestDataController : DataController
 @property (nonatomic, nullable) NSUUID *folderPrefix;
@@ -32,7 +33,7 @@
 @end
 
 @interface LedgerDatabaseTest : XCTestCase  {
-  brave_rewards::RewardsDatabase *rewardsDatabase;
+  ledger::LedgerDatabase *rewardsDatabase;
 }
 @property (nonatomic, copy) NSString *dbPath;
 @end
@@ -47,7 +48,7 @@
   
   const auto name = [NSString stringWithFormat:@"%@.sqlite", NSUUID.UUID.UUIDString];
   self.dbPath = [NSTemporaryDirectory() stringByAppendingPathComponent:name];
-  rewardsDatabase = new brave_rewards::RewardsDatabase(base::FilePath(self.dbPath.UTF8String));
+  rewardsDatabase = ledger::LedgerDatabase::CreateInstance(base::FilePath(self.dbPath.UTF8String));
   
   [self initializeSQLiteDatabase];
 }

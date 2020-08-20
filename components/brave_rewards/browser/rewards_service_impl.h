@@ -48,6 +48,7 @@ class SequencedTaskRunner;
 
 namespace ledger {
 class Ledger;
+class LedgerDatabase;
 struct LedgerMediaPublisherInfo;
 }  // namespace ledger
 
@@ -70,7 +71,6 @@ class RewardsFlagBrowserTest;
 
 namespace brave_rewards {
 
-class RewardsDatabase;
 class RewardsNotificationServiceImpl;
 class RewardsBrowserTest;
 
@@ -743,7 +743,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_state_path_;
   const base::FilePath publisher_info_db_path_;
   const base::FilePath publisher_list_path_;
-  std::unique_ptr<RewardsDatabase> rewards_database_;
+  std::unique_ptr<ledger::LedgerDatabase> ledger_database_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
   std::unique_ptr<RewardsServiceObserver> extension_observer_;

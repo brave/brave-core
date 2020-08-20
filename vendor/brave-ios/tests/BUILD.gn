@@ -6,7 +6,6 @@ ios_xctest_test("brave_rewards_ios_tests") {
   check_includes = false
   deps = [
     "//brave/vendor/brave-ios:brave_rewards_ios_framework+link",
-    "//brave/vendor/brave-ios:rewards_db",
     "//brave/vendor/bat-native-ledger"
   ]
 
