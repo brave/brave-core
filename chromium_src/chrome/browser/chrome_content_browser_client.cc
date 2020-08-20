@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "build/build_config.h"  // For OS_MACOSX
+#include "build/build_config.h"  // For OS_MAC
 #include "chrome/browser/search/search.h"
 #include "content/public/browser/browser_url_handler.h"
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 #include "brave/browser/brave_browser_main_parts_mac.h"
 #undef ChromeBrowserMainPartsMac
 #define ChromeBrowserMainPartsMac BraveBrowserMainPartsMac

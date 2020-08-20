@@ -89,7 +89,7 @@ TorLauncherImpl::~TorLauncherImpl() {
 #if defined(OS_POSIX)
     TearDownPipeHack();
 #endif
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
     base::PostTask(
         FROM_HERE,
         {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT},

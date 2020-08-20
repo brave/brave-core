@@ -45,7 +45,7 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
                                  kNotifierId),
       notification_data, nullptr);
 
-#if !defined(OS_MACOSX) || defined(OFFICIAL_BUILD)
+#if !defined(OS_APPLE) || defined(OFFICIAL_BUILD)
   // set_never_timeout uses an XPC service which requires signing
   // so for now we don't set this for macos dev builds
   notification->set_never_timeout(true);

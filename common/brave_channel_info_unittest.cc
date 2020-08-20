@@ -13,7 +13,7 @@
 #include "base/environment.h"
 #endif
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 // GetChannelByName is only supported on MacOS.
 TEST(BraveChannelInfoTest, ChannelByNameTest) {
 #if defined(OFFICIAL_BUILD)
@@ -30,7 +30,7 @@ TEST(BraveChannelInfoTest, ChannelByNameTest) {
             chrome::GetChannelByName(""));
 #endif
 }
-#endif  // OS_MACOSX
+#endif  // OS_MAC
 
 #if defined(OS_LINUX)
 TEST(BraveChannelInfoTest, ParentDirectoryOfUserDataDirectoryTest) {

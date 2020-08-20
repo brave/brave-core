@@ -49,7 +49,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   RegisterPrefsForBraveReferralsService(registry);
 #endif
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
       base::Value(false));

@@ -36,7 +36,7 @@ void FirstRunMasterPrefsBrowserTestBase::SetUpCommandLine(
   extensions::ComponentLoader::EnableBackgroundExtensionsForTesting();
 }
 
-#if defined(OS_MACOSX) || defined(OS_LINUX)
+#if defined(OS_MAC) || defined(OS_LINUX)
 void FirstRunMasterPrefsBrowserTestBase::SetUpInProcessBrowserTestFixture() {
   InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
   // Suppress first run dialog since it blocks test progress.

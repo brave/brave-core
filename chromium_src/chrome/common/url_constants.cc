@@ -247,7 +247,7 @@ const char kEnhancedPlaybackNotificationLearnMoreURL[] =
     "https://community.brave.com";
 #endif
 
-#if defined(OS_MACOSX)
+#if defined(OS_MAC)
 const char kChromeEnterpriseSignInLearnMoreURL[] =
     "https://support.brave.com/";
 
