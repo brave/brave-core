@@ -8,6 +8,10 @@ extern "C" {
 
 namespace adblock {
 
+bool SetDomainResolver(DomainResolverCallback resolver) {
+  return set_domain_resolver(resolver);
+}
+
 std::vector<FilterList> FilterList::default_list;
 std::vector<FilterList> FilterList::regional_list;
 
@@ -31,45 +35,6 @@ FilterList::FilterList(const std::string& uuid,
 FilterList::FilterList(const FilterList& other) = default;
 
 FilterList::~FilterList() {
-}
-
-// [static]
-std::vector<FilterList>&  FilterList::GetDefaultLists() {
-  return GetFilterLists("default");
-}
-
-// [static]
-std::vector<FilterList>&  FilterList::GetRegionalLists() {
-  return GetFilterLists("regions");
-}
-
-std::vector<FilterList>& FilterList::GetFilterLists(const std::string &category) {
-  std::vector<FilterList>& list =
-    category == "regions" ? regional_list : default_list;
-  if (list.size() > 0) {
-    return list;
-  }
-
-  size_t size = filter_list_size(category.c_str());
-  for (size_t i = 0; i < size; i++) {
-    std::vector<std::string> langs;
-    C_FList l = filter_list_get(category.c_str(), i);
-    if (strlen(l.lang) > 0)
-      langs.push_back(l.lang);
-    if (strlen(l.lang2) > 0)
-      langs.push_back(l.lang2);
-    if (strlen(l.lang3) > 0)
-      langs.push_back(l.lang3);
-    list.push_back(FilterList(l.uuid,
-             l.url,
-             l.title,
-             langs,
-             l.support_url,
-             l.component_id,
-             l.base64_public_key,
-             l.desc));
-  }
-  return list;
 }
 
 Engine::Engine() : raw(engine_create("")) {

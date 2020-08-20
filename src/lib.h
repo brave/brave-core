@@ -8,18 +8,12 @@
 
 typedef struct C_Engine C_Engine;
 
-typedef struct {
-  const char *uuid;
-  const char *url;
-  const char *title;
-  const char *lang;
-  const char *lang2;
-  const char *lang3;
-  const char *support_url;
-  const char *component_id;
-  const char *base64_public_key;
-  const char *desc;
-} C_FList;
+/**
+ * An external callback that receives a hostname and two out-parameters for start and end
+ * position. The callback should fill the start and end positions with the start and end indices
+ * of the domain part of the hostname.
+ */
+typedef void (*C_DomainResolverCallback)(const char*, uint32_t*, uint32_t*);
 
 /**
  * Destroy a `*c_char` once you are done with it.
@@ -101,13 +95,12 @@ bool engine_tag_exists(C_Engine *engine, const char *tag);
 char *engine_url_cosmetic_resources(C_Engine *engine, const char *url);
 
 /**
- * Get the specific default list size
+ * Passes a callback to the adblock library, allowing it to be used for domain resolution.
+ *
+ * This is required to be able to use any adblocking functionality.
+ *
+ * Returns true on success, false if a callback was already set previously.
  */
-C_FList filter_list_get(const char *category, size_t i);
-
-/**
- * Get the default list size. `category` must be one of "regions" or "default"
- */
-size_t filter_list_size(const char *category);
+bool set_domain_resolver(C_DomainResolverCallback resolver);
 
 #endif /* ADBLOCK_RUST_FFI_H */

@@ -1,7 +1,4 @@
-extern crate adblock;
-
 use adblock::engine::Engine;
-use adblock::filter_lists;
 use adblock::resources::{Resource, ResourceType, MimeType};
 use core::ptr;
 use libc::size_t;
@@ -10,18 +7,38 @@ use std::ffi::CString;
 use std::os::raw::c_char;
 use std::string::String;
 
-#[repr(C)]
-pub struct FList {
-    uuid: *const c_char,
-    url: *const c_char,
-    title: *const c_char,
-    lang: *const c_char,
-    lang2: *const c_char,
-    lang3: *const c_char,
-    support_url: *const c_char,
-    component_id: *const c_char,
-    base64_public_key: *const c_char,
-    desc: *const c_char,
+/// An external callback that receives a hostname and two out-parameters for start and end
+/// position. The callback should fill the start and end positions with the start and end indices
+/// of the domain part of the hostname.
+pub type DomainResolverCallback = unsafe extern "C" fn(*const c_char, *mut u32, *mut u32);
+
+/// Passes a callback to the adblock library, allowing it to be used for domain resolution.
+///
+/// This is required to be able to use any adblocking functionality.
+///
+/// Returns true on success, false if a callback was already set previously.
+#[no_mangle]
+pub unsafe extern "C" fn set_domain_resolver(resolver: DomainResolverCallback) -> bool {
+    struct RemoteResolverImpl {
+        remote_callback: DomainResolverCallback,
+    }
+
+    impl adblock::url_parser::ResolvesDomain for RemoteResolverImpl {
+        fn get_host_domain(&self, host: &str) -> (usize, usize) {
+            let mut start: u32 = 0;
+            let mut end: u32 = 0;
+            let host_c_str = CString::new(host).expect("Error: CString::new()");
+            let remote_callback = self.remote_callback;
+
+            unsafe {
+                remote_callback(host_c_str.as_ptr(), &mut start as *mut u32, &mut end as *mut u32);
+            }
+
+            (start as usize, end as usize)
+        }
+    }
+
+    adblock::url_parser::set_domain_resolver(Box::new(RemoteResolverImpl { remote_callback: resolver })).is_ok()
 }
 
 /// Create a new `Engine`.
@@ -161,67 +178,6 @@ pub unsafe extern "C" fn c_char_buffer_destroy(s: *mut c_char) {
     if !s.is_null() {
         drop(CString::from_raw(s));
     }
-}
-
-/// Get the default list size. `category` must be one of "regions" or "default"
-#[no_mangle]
-pub unsafe extern "C" fn filter_list_size(category: *const c_char) -> size_t {
-    if CStr::from_ptr(category).to_str().unwrap() == "regions" {
-        filter_lists::regions::regions().len()
-    } else {
-        filter_lists::default::default_lists().len()
-    }
-}
-
-/// Get the specific default list size
-#[no_mangle]
-pub unsafe extern "C" fn filter_list_get(category: *const c_char, i: size_t) -> FList {
-    let list = match CStr::from_ptr(category).to_str().unwrap() {
-        "regions" => filter_lists::regions::regions()[i].clone(),
-        _ => filter_lists::default::default_lists()[i].clone(),
-    };
-    let mut new_list = FList {
-        uuid: CString::new(list.uuid)
-            .expect("Error: CString::new()")
-            .into_raw(),
-        url: CString::new(list.url)
-            .expect("Error: CString::new()")
-            .into_raw(),
-        title: CString::new(list.title)
-            .expect("Error: CString::new()")
-            .into_raw(),
-        lang: CString::new("").expect("Error: CString::new()").into_raw(),
-        lang2: CString::new("").expect("Error: CString::new()").into_raw(),
-        lang3: CString::new("").expect("Error: CString::new()").into_raw(),
-        support_url: CString::new(list.support_url)
-            .expect("Error: CString::new()")
-            .into_raw(),
-        component_id: CString::new(list.component_id)
-            .expect("Error: CString::new()")
-            .into_raw(),
-        base64_public_key: CString::new(list.base64_public_key)
-            .expect("Error: CString::new()")
-            .into_raw(),
-        desc: CString::new(list.desc)
-            .expect("Error: CString::new()")
-            .into_raw(),
-    };
-    if !list.langs.is_empty() {
-        new_list.lang = CString::new(list.langs[0].clone())
-            .expect("Error: CString::new()")
-            .into_raw();
-    }
-    if list.langs.len() > 1 {
-        new_list.lang2 = CString::new(list.langs[1].clone())
-            .expect("Error: CString::new()")
-            .into_raw();
-    }
-    if list.langs.len() > 2 {
-        new_list.lang3 = CString::new(list.langs[2].clone())
-            .expect("Error: CString::new()")
-            .into_raw();
-    }
-    new_list
 }
 
 /// Returns a set of cosmetic filtering resources specific to the given url, in JSON format
