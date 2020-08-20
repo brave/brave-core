@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "bat/ledger/internal/endpoint/private_cdn/private_cdn_server.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
@@ -47,10 +48,8 @@ class ServerPublisherFetcher {
 
  private:
   void OnFetchCompleted(
-      const std::string& publisher_key,
-      const ledger::UrlResponse& response);
-
-  ledger::ServerPublisherInfoPtr GetServerInfoForEmptyResponse(
+      const ledger::Result result,
+      ledger::ServerPublisherInfoPtr info,
       const std::string& publisher_key);
 
   FetchCallbackVector GetCallbacks(const std::string& publisher_key);
@@ -61,6 +60,7 @@ class ServerPublisherFetcher {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, FetchCallbackVector> callback_map_;
+  std::unique_ptr<ledger::endpoint::PrivateCDNServer> private_cdn_server_;
 };
 
 }  // namespace braveledger_publisher

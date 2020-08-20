@@ -4,37 +4,37 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
+#include "bat/ledger/internal/endpoint/private_cdn/private_cdn_util.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=PromotionsUtilTest.*
+// npm run test -- brave_unit_tests --filter=PrivateCDNTest.*
 
 namespace ledger {
 namespace endpoint {
-namespace promotion {
+namespace private_cdn {
 
-class PromotionsUtilTest : public testing::Test {
+class PrivateCDNTest : public testing::Test {
 };
 
-TEST(PromotionsUtilTest, GetServerUrlDevelopment) {
+TEST(PrivateCDNTest, GetServerUrlDevelopment) {
   ledger::_environment = ledger::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, "https://grant.rewards.brave.software/test");
+  ASSERT_EQ(url, "https://pcdn.brave.software/test");
 }
 
-TEST(PromotionsUtilTest, GetServerUrlStaging) {
+TEST(PrivateCDNTest, GetServerUrlStaging) {
   ledger::_environment = ledger::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, "https://grant.rewards.bravesoftware.com/test");
+  ASSERT_EQ(url, "https://pcdn.bravesoftware.com/test");
 }
 
-TEST(PromotionsUtilTest, GetServerUrlProduction) {
+TEST(PrivateCDNTest, GetServerUrlProduction) {
   ledger::_environment = ledger::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, "https://grant.rewards.brave.com/test");
+  ASSERT_EQ(url, "https://pcdn.brave.com/test");
 }
 
-}  // namespace promotion
+}  // namespace private_cdn
 }  // namespace endpoint
 }  // namespace ledger

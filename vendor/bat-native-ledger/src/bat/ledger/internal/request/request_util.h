@@ -13,9 +13,7 @@
 namespace braveledger_request_util {
 
 enum class ServerTypes {
-  kPublisher,
-  kPayments,
-  kPrivateCDN
+  kPayments
 };
 
 std::string BuildUrl(

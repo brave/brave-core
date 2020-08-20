@@ -4,37 +4,37 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
+#include "bat/ledger/internal/endpoint/rewards/rewards_util.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=PromotionsUtilTest.*
+// npm run test -- brave_unit_tests --filter=RewardsUtilTest.*
 
 namespace ledger {
 namespace endpoint {
-namespace promotion {
+namespace rewards {
 
-class PromotionsUtilTest : public testing::Test {
+class RewardsUtilTest : public testing::Test {
 };
 
-TEST(PromotionsUtilTest, GetServerUrlDevelopment) {
+TEST(RewardsUtilTest, GetServerUrlDevelopment) {
   ledger::_environment = ledger::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, "https://grant.rewards.brave.software/test");
+  ASSERT_EQ(url, "https://rewards-dev.brave.software/test");
 }
 
-TEST(PromotionsUtilTest, GetServerUrlStaging) {
+TEST(RewardsUtilTest, GetServerUrlStaging) {
   ledger::_environment = ledger::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, "https://grant.rewards.bravesoftware.com/test");
+  ASSERT_EQ(url, "https://rewards-stg.bravesoftware.com/test");
 }
 
-TEST(PromotionsUtilTest, GetServerUrlProduction) {
+TEST(RewardsUtilTest, GetServerUrlProduction) {
   ledger::_environment = ledger::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
-  ASSERT_EQ(url, "https://grant.rewards.brave.com/test");
+  ASSERT_EQ(url, "https://rewards.brave.com/test");
 }
 
-}  // namespace promotion
+}  // namespace rewards
 }  // namespace endpoint
 }  // namespace ledger

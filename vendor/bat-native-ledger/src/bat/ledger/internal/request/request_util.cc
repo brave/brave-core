@@ -12,40 +12,11 @@
 
 namespace braveledger_request_util {
 
-namespace publisher {
-const char kDevelopment[] = "https://rewards-dev.brave.software";
-const char kStaging[] = "https://rewards-stg.bravesoftware.com";
-const char kProduction[] = "https://rewards.brave.com";
-}  // namespace publisher
-
 namespace payment {
 const char kDevelopment[] = "https://payment.rewards.brave.software";
 const char kStaging[] = "http://payment.rewards.bravesoftware.com";
 const char kProduction[] = "http://payment.rewards.brave.com";
 }  // namespace payment
-
-namespace cdn {
-const char kDevelopment[] = "https://pcdn.brave.software";
-const char kStaging[] = "https://pcdn.bravesoftware.com";
-const char kProduction[] = "https://pcdn.brave.com";
-}  // namespace cdn
-
-std::string BuildPublisherUrl() {
-  std::string url;
-  switch (ledger::_environment) {
-    case ledger::Environment::DEVELOPMENT:
-      url = publisher::kDevelopment;
-      break;
-    case ledger::Environment::STAGING:
-      url = publisher::kStaging;
-      break;
-    case ledger::Environment::PRODUCTION:
-      url = publisher::kProduction;
-      break;
-  }
-
-  return url;
-}
 
 std::string BuildPaymentsUrl() {
   std::string url;
@@ -64,39 +35,14 @@ std::string BuildPaymentsUrl() {
   return url;
 }
 
-std::string BuildPrivateCdnUrl() {
-  std::string url;
-  switch (ledger::_environment) {
-    case ledger::Environment::DEVELOPMENT:
-      url = cdn::kDevelopment;
-      break;
-    case ledger::Environment::STAGING:
-      url = cdn::kStaging;
-      break;
-    case ledger::Environment::PRODUCTION:
-      url = cdn::kProduction;
-      break;
-  }
-
-  return url;
-}
-
 std::string BuildUrl(
     const std::string& path,
     const std::string& prefix,
     const ServerTypes& server) {
   std::string url;
   switch (server) {
-    case ServerTypes::kPublisher: {
-      url = BuildPublisherUrl();
-      break;
-    }
     case ServerTypes::kPayments: {
       url = BuildPaymentsUrl();
-      break;
-    }
-    case ServerTypes::kPrivateCDN: {
-      url = BuildPrivateCdnUrl();
       break;
     }
   }

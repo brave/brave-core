@@ -266,19 +266,11 @@ void RewardsBrowserTestResponse::Get(
     *response = captcha_;
   }
 
-  if (URLMatches(
-      url,
-      "/publishers/prefix-list",
-      "",
-      ServerTypes::kPublisher)) {
+  if (url.find("/publishers/prefix-list") != std::string::npos) {
     *response = GetPublisherPrefixListResponse(publisher_prefixes_);
     }
 
-  if (URLMatches(
-      url,
-      "/publishers/prefixes/",
-      "",
-      ServerTypes::kPrivateCDN)) {
+  if (url.find("/publishers/prefixes/") != std::string::npos) {
     size_t start = url.rfind('/') + 1;
     if (start < url.length()) {
       *response = GetPublisherChannelResponse(
