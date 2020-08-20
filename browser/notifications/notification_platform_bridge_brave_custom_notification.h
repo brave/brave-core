@@ -7,8 +7,8 @@
 #define BRAVE_BROWSER_NOTIFICATIONS_NOTIFICATION_PLATFORM_BRIDGE_BRAVE_CUSTOM_NOTIFICATION_H_
 
 #include "base/macros.h"
-#include "chrome/browser/notifications/notification_platform_bridge.h"
 #include "brave/ui/brave_custom_notification/public/cpp/notification.h"
+#include "chrome/browser/notifications/notification_platform_bridge.h"
 
 class Profile;
 

@@ -17,7 +17,6 @@
 
 namespace brave_ads {
 
-// brave_ads::AdsServiceImpl* g_ads_service;
 int kUserDataKey;  // The value is not important, the address is a key.
 
 AdsNotificationHandler::AdsNotificationHandler(

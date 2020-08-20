@@ -10,18 +10,18 @@
 #include "base/callback.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/task/post_task.h"
+#include "brave/components/brave_ads/browser/ads_notification_handler.h"
+#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/ads_service_factory.h"
+#include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
+#include "brave/ui/brave_custom_notification/message_popup_view.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/notifications/notification_display_service_impl.h"
 #include "chrome/browser/notifications/notification_ui_manager.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
-#include "brave/components/brave_ads/browser/ads_service_factory.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
-#include "brave/components/brave_ads/browser/ads_service_impl.h"
-#include "brave/components/brave_ads/browser/ads_notification_handler.h"
-#include "brave/ui/brave_custom_notification/public/cpp/notification.h"
-#include "brave/ui/brave_custom_notification/message_popup_view.h"
 
 namespace {
 
@@ -54,14 +54,14 @@ class PassThroughDelegate : public brave_custom_notification::NotificationDelega
   }
 
   void Close(bool by_user) override {
-    brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile_));
+    std::unique_ptr<brave_ads::AdsNotificationHandler> handler = std::make_unique<brave_ads::AdsNotificationHandler>(static_cast<content::BrowserContext*>(profile_));
     handler->SetAdsService(static_cast<brave_ads::AdsServiceImpl*>(brave_ads::AdsServiceFactory::GetForProfile(profile_)));
     handler->OnClose(profile_, notification_.origin_url(), notification_.id(), by_user, base::OnceClosure());
   }
 
   void Click(const base::Optional<int>& button_index,
              const base::Optional<base::string16>& reply) override {
-    brave_ads::AdsNotificationHandler* handler = new brave_ads::AdsNotificationHandler(static_cast<content::BrowserContext*>(profile_));
+    std::unique_ptr<brave_ads::AdsNotificationHandler> handler = std::make_unique<brave_ads::AdsNotificationHandler>(static_cast<content::BrowserContext*>(profile_));
     handler->SetAdsService(static_cast<brave_ads::AdsServiceImpl*>(brave_ads::AdsServiceFactory::GetForProfile(profile_)));
     handler->OnClick(profile_, notification_.origin_url(), notification_.id(), button_index, reply, base::OnceClosure());
   }
