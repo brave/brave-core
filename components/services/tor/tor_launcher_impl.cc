@@ -184,15 +184,6 @@ void TorLauncherImpl::SetCrashHandler(SetCrashHandlerCallback callback) {
   crash_handler_callback_ = std::move(callback);
 }
 
-void TorLauncherImpl::ReLaunch(const TorConfig& config,
-                               ReLaunchCallback callback) {
-  if (tor_process_.IsValid())
-    tor_process_.Terminate(0, true);
-
-  tor_process_.WaitForExit(nullptr);
-  Launch(config, std::move(callback));
-}
-
 void TorLauncherImpl::MonitorChild() {
 #if defined(OS_POSIX)
   char buf[PIPE_BUF];

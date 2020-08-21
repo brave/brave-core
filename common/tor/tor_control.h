@@ -103,6 +103,7 @@ class TorControl {
  private:
   bool running_;
   SEQUENCE_CHECKER(sequence_checker_);
+  scoped_refptr<base::SequencedTaskRunner> owner_task_runner_;
 
   scoped_refptr<base::SequencedTaskRunner> watch_task_runner_;
   SEQUENCE_CHECKER(watch_sequence_checker_);
@@ -188,6 +189,23 @@ class TorControl {
       TorControlEvent event, base::OnceCallback<void(bool error)> callback,
       bool error, const std::string& status, const std::string& reply);
   std::string SetEventsCmd();
+
+  // Notify delegate on owner thread
+  void NotifyTorControlReady();
+  void NotifyTorClosed();
+  void NotifyTorCleanupNeeded(base::ProcessId id);
+
+  void NotifyTorEvent(
+      TorControlEvent,
+      const std::string& initial,
+      const std::map<std::string, std::string>& extra);
+  void NotifyTorRawCmd(const std::string& cmd);
+  void NotifyTorRawAsync(const std::string& status,
+                             const std::string& line);
+  void NotifyTorRawMid(const std::string& status,
+                           const std::string& line);
+  void NotifyTorRawEnd(const std::string& status,
+                           const std::string& line);
 
   void StartWrite();
   void DoWrites();
