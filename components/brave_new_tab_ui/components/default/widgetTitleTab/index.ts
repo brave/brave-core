@@ -5,7 +5,6 @@
 import styled from 'styled-components'
 
 interface StyleProps {
-  isAlone?: boolean
   stackPosition: number
 }
 
@@ -27,7 +26,7 @@ const getBackgroundRule = (position: number) => {
 export const StyledTitleTab = styled<StyleProps, 'div'>('div')`
   color: #fff;
   cursor: pointer;
-  padding: 4px 20px ${p => p.isAlone ? 5 : 15}px 20px;
+  padding: 4px 20px 15px 20px;
   margin-bottom: -8px;
   backdrop-filter: blur(23px);
   border-radius: 8px 8px 0 0;
