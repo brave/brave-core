@@ -359,6 +359,8 @@ source_set("ads") {
     "src/bat/ads/internal/time_util.h",
     "src/bat/ads/internal/timer.cc",
     "src/bat/ads/internal/timer.h",
+    "src/bat/ads/internal/trials/trial.h",
+    "src/bat/ads/internal/trials/trial.cc",
     "src/bat/ads/internal/url_util.cc",
     "src/bat/ads/internal/url_util.h",
     "src/bat/ads/internal/wallet/wallet_info.h",

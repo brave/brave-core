@@ -120,6 +120,10 @@ class AdsImpl
     return subdivision_targeting_.get();
   }
 
+  Experiments* get_experiments() const {
+    return experiments_.get();
+  }
+
   void Initialize(
       InitializeCallback callback) override;
   void InitializeStep2(
@@ -354,6 +358,7 @@ class AdsImpl
   std::unique_ptr<RedeemUnblindedToken> redeem_unblinded_token_;
   std::unique_ptr<RefillUnblindedTokens> refill_unblinded_tokens_;
   std::unique_ptr<SubdivisionTargeting> subdivision_targeting_;
+  std::unique_ptr<Experiments> experiments_;
 
   // RedeemUnblindedTokenDelegate implementation
   void OnDidRedeemUnblindedToken(

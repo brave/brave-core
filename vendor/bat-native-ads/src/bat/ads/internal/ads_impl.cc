@@ -57,6 +57,7 @@
 #include "bat/ads/internal/sorts/ads_history/ads_history_sort_factory.h"
 #include "bat/ads/internal/string_util.h"
 #include "bat/ads/internal/time_util.h"
+#include "bat/ads/internal/trials/trials.h"
 #include "bat/ads/internal/url_util.h"
 
 #if defined(OS_ANDROID)
@@ -115,7 +116,8 @@ AdsImpl::AdsImpl(
           RedeemUnblindedPaymentTokens>(this)),
       redeem_unblinded_token_(std::make_unique<RedeemUnblindedToken>(this)),
       refill_unblinded_tokens_(std::make_unique<RefillUnblindedTokens>(this)),
-      subdivision_targeting_(std::make_unique<SubdivisionTargeting>(this)) {
+      subdivision_targeting_(std::make_unique<SubdivisionTargeting>(this)),
+      experiments_(std::make_unique<Trials>(this)) {
   set_ads_client_for_logging(ads_client_);
 
   redeem_unblinded_token_->set_delegate(this);
@@ -625,6 +627,7 @@ void AdsImpl::ChangeLocale(
   subdivision_targeting_->MaybeFetchForLocale(locale);
   page_classifier_->LoadUserModelForLocale(locale);
   purchase_intent_classifier_->LoadUserModelForLocale(locale);
+  experiments_->LoadUserModelForLocale(locale):
 }
 
 void AdsImpl::OnUserModelUpdated(
@@ -635,6 +638,9 @@ void AdsImpl::OnUserModelUpdated(
   } else if (kPurchaseIntentUserModelIds.find(id) !=
       kPurchaseIntentUserModelIds.end()) {
     purchase_intent_classifier_->LoadUserModelForId(id);
+  } else if (kTrialsUserModelIds.find(id) !=
+      kTrialsUserModelIds.end()) {
+    experiments_->LoadUserModelForId(id);
   } else {
     BLOG(0, "Unknown " << id << " user model");
   }
