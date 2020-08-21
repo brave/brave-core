@@ -6,6 +6,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#17171F"
@@ -22,23 +23,19 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:drawableStart="@drawable/ic_full_color"
-            android:drawablePadding="8dp"
-            android:layout_marginStart="16dp"
+            android:drawablePadding="4dp"
             android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:text="Binance"
-            android:textColor="#F8F9FA"
-            android:textSize="18sp" />
+            android:textColor="@android:color/white"
+            android:textSize="12sp"/>
 
-        <Button
-            android:id="@+id/btn_trade"
+        <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/rounded_filled_binance"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:text="Trade" />
+            android:padding="8dp"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/ic_more_horiz"/>
 
     </LinearLayout>
 

@@ -53,8 +53,7 @@ public class NTPWidgetAdapter extends PagerAdapter {
         if (0 == position) {
             updateBraveStats(v);
         } else if (1 == position) {
-            Button btnTrade = v.findViewById(R.id.btn_trade);
-            btnTrade.setOnClickListener(new View.OnClickListener() {
+            v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment = new CryptoWidgetBottomSheetDialogFragment();
