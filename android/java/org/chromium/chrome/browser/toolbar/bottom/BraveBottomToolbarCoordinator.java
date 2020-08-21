@@ -47,8 +47,8 @@ public class BraveBottomToolbarCoordinator
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
-    BraveBottomToolbarCoordinator(ViewStub stub, ScrollingBottomViewResourceFrameLayout root,
-            ActivityTabProvider tabProvider,
+    BraveBottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout root,
+            ViewStub stub, ActivityTabProvider tabProvider,
             OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
