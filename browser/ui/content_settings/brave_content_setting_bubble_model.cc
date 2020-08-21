@@ -15,6 +15,7 @@
 #include "chrome/browser/subresource_filter/chrome_subresource_filter_client.h"
 #include "chrome/browser/ui/content_settings/content_setting_bubble_model_delegate.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -44,9 +45,10 @@ BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
 
   set_custom_link(l10n_util::GetStringUTF16(IDS_BLOCKED_PLUGINS_LOAD_ALL));
   set_custom_link_enabled(
-      web_contents && content_settings::TabSpecificContentSettings::GetForFrame(
-                          web_contents->GetMainFrame())
-                          ->load_plugins_link_enabled());
+      web_contents &&
+      content_settings::PageSpecificContentSettings::GetForFrame(
+          web_contents->GetMainFrame())
+          ->load_plugins_link_enabled());
 }
 
 void BraveContentSettingPluginBubbleModel::OnLearnMoreClicked() {

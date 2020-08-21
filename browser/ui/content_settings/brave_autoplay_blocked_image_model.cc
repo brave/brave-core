@@ -10,6 +10,7 @@
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/components/vector_icons/vector_icons.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
@@ -28,8 +29,8 @@ bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(
   if (!web_contents)
     return false;
 
-  content_settings::TabSpecificContentSettings* content_settings =
-      content_settings::TabSpecificContentSettings::GetForFrame(
+  content_settings::PageSpecificContentSettings* content_settings =
+      content_settings::PageSpecificContentSettings::GetForFrame(
           web_contents->GetMainFrame());
   if (!content_settings)
     return false;
