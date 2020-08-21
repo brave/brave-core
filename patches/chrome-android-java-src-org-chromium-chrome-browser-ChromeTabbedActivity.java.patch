@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index 34f3f572528f6ea17eea8f17dfefe85479622fa0..d32e3920a97dc6b96651db47917ec5a1f1070e62 100644
+index e086e3ec91c7322b0f870c9a632518f8f348a2a3..03374ecca3ad510b12b70d5305a3cfda45e01b27 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -184,7 +184,7 @@ import java.util.Locale;
+@@ -183,7 +183,7 @@ import java.util.Locale;
   * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
@@ -11,7 +11,7 @@ index 34f3f572528f6ea17eea8f17dfefe85479622fa0..d32e3920a97dc6b96651db47917ec5a1
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-@@ -1043,7 +1043,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1042,7 +1042,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          if (ReengagementNotificationController.isEnabled()) {
              if (mCallbackController != null) {
                  new OneShotCallback<>(
@@ -29,19 +29,20 @@ index 34f3f572528f6ea17eea8f17dfefe85479622fa0..d32e3920a97dc6b96651db47917ec5a1
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this, mOverviewModeBehaviorSupplier,
                  mBookmarkBridgeSupplier);
-@@ -1637,9 +1637,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1637,10 +1637,10 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
 -        return Pair.create(new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +        return Pair.create(new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
-                                    tabDelegateFactorySupplier, false, overviewNTPCreator),
+                                    tabDelegateFactorySupplier, false, overviewNTPCreator,
+                                    AsyncTabParamsManager.getInstance()),
 -                new ChromeTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
 +                new org.chromium.chrome.browser.tabmodel.BraveTabCreator(this, getWindowAndroid(), getStartupTabPreloader(),
-                         tabDelegateFactorySupplier, true, overviewNTPCreator));
+                         tabDelegateFactorySupplier, true, overviewNTPCreator,
+                         AsyncTabParamsManager.getInstance()));
      }
- 
-@@ -2029,7 +2029,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2031,7 +2031,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  

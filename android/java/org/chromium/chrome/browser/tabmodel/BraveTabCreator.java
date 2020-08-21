@@ -25,9 +25,11 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 
 public class BraveTabCreator extends ChromeTabCreator {
 
-    public BraveTabCreator(ChromeActivity activity, WindowAndroid nativeWindow, StartupTabPreloader startupTabPreloader,
-            Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito, OverviewNTPCreator overviewNTPCreator) {
-        super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito, overviewNTPCreator);
+    public BraveTabCreator(ChromeActivity activity, WindowAndroid nativeWindow,
+            StartupTabPreloader startupTabPreloader,
+            Supplier<TabDelegateFactory> tabDelegateFactory, boolean incognito,
+            OverviewNTPCreator overviewNTPCreator, AsyncTabParamsManager asyncTabParamsManager) {
+        super(activity, nativeWindow, startupTabPreloader, tabDelegateFactory, incognito, overviewNTPCreator, asyncTabParamsManager);
     }
 
     @Override
