@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/script_resource.cc b/third_party/blink/renderer/core/loader/resource/script_resource.cc
-index a7a69c2617a7309b8d5b38aaa837864db9b3634a..15de33636e0cb44330f7f741df4c72d5ab45c2c1 100644
+index a7a69c2617a7309b8d5b38aaa837864db9b3634a..c25c15c0e219f38b89e48d135f751bdfe11565dd 100644
 --- a/third_party/blink/renderer/core/loader/resource/script_resource.cc
 +++ b/third_party/blink/renderer/core/loader/resource/script_resource.cc
 @@ -50,6 +50,17 @@
@@ -7,7 +7,7 @@ index a7a69c2617a7309b8d5b38aaa837864db9b3634a..15de33636e0cb44330f7f741df4c72d5
  #include "third_party/blink/renderer/platform/wtf/shared_buffer.h"
  
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED
-+#include "base/logging.h"
++#include "brave/third_party/blink/brave_page_graph/logging.h"
 +
 +#include "third_party/blink/renderer/platform/crypto.h"
 +
@@ -35,7 +35,7 @@ index a7a69c2617a7309b8d5b38aaa837864db9b3634a..15de33636e0cb44330f7f741df4c72d5
 +  std::string str_copy(result.Utf8().data());
 +  const bool digest_succeeded = ComputeDigest(kHashAlgorithmSha256,
 +      str_copy.c_str(), str_copy.size(), digest);
-+  LOG_ASSERT(digest_succeeded);
++  PG_LOG_ASSERT(digest_succeeded);
 +  return std::string(WTF::Base64Encode(digest).Utf8().data());
 +}
 +
@@ -57,7 +57,7 @@ index a7a69c2617a7309b8d5b38aaa837864db9b3634a..15de33636e0cb44330f7f741df4c72d5
 +  if (resource->ResourceBuffer()->GetBytes(data.get(), size)) {
 +    const bool digest_succeeded = ComputeDigest(kHashAlgorithmSha256,
 +        data.get(), size, digest);
-+    LOG_ASSERT(digest_succeeded);
++    PG_LOG_ASSERT(digest_succeeded);
 +    return std::string(WTF::Base64Encode(digest).Utf8().data());
 +  }
 +

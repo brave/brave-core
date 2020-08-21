@@ -10,7 +10,7 @@
 #include <string>
 #include <libxml/tree.h>
 
-#include "base/logging.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 
@@ -113,7 +113,7 @@ void NodeHTMLElement::PlaceChildNodeAfterSiblingNode(NodeHTML* const child,
   // If this node has no current children, then this is easy, just add
   // the provided child as the only child.
   if (child_nodes_.size() == 0) {
-    LOG_ASSERT(sibling == nullptr);
+    PG_LOG_ASSERT(sibling == nullptr);
     child_nodes_.push_back(child);
     return;
   }
@@ -127,14 +127,14 @@ void NodeHTMLElement::PlaceChildNodeAfterSiblingNode(NodeHTML* const child,
 
   // Otherwise, figure out where the sibling is in the child node set.
   const auto sib_pos = find(child_nodes_.begin(), child_nodes_.end(), sibling);
-  LOG_ASSERT(sib_pos != child_nodes_.end());
+  PG_LOG_ASSERT(sib_pos != child_nodes_.end());
   child_nodes_.insert(sib_pos + 1, child);
 }
 
 void NodeHTMLElement::RemoveChildNode(NodeHTML* const child_node) {
   const auto child_pos = find(child_nodes_.begin(), child_nodes_.end(),
       child_node);
-  LOG_ASSERT(child_pos != child_nodes_.end());
+  PG_LOG_ASSERT(child_pos != child_nodes_.end());
   child_nodes_.erase(child_pos);
 }
 

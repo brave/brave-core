@@ -235,12 +235,12 @@ namespace {
 }
 
 JSBuiltIn JSBuiltInFromString(const string& built_in_name) noexcept {
-  LOG_ASSERT(js_built_in_str_to_enum_map.count(built_in_name) != 0);
+  PG_LOG_ASSERT(js_built_in_str_to_enum_map.count(built_in_name) != 0);
   return js_built_in_str_to_enum_map.at(built_in_name);
 }
 
 const string& JSBuiltInToSting(const JSBuiltIn built_in) noexcept {
-  LOG_ASSERT(js_built_in_enum_to_str_map.count(built_in) != 0);
+  PG_LOG_ASSERT(js_built_in_enum_to_str_map.count(built_in) != 0);
   return js_built_in_enum_to_str_map.at(built_in);
 }
 
@@ -281,12 +281,12 @@ namespace {
 }
 
 WebAPI WebAPIFromString(const string& web_api_name) noexcept {
-  LOG_ASSERT(web_api_str_to_enum_map.count(web_api_name) != 0);
+  PG_LOG_ASSERT(web_api_str_to_enum_map.count(web_api_name) != 0);
   return web_api_str_to_enum_map.at(web_api_name);
 }
 
 const string& WebAPIToString(const WebAPI web_api) noexcept {
-  LOG_ASSERT(web_api_enum_to_str_map.count(web_api) != 0);
+  PG_LOG_ASSERT(web_api_enum_to_str_map.count(web_api) != 0);
   return web_api_enum_to_str_map.at(web_api);
 }
 

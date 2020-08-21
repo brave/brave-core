@@ -9,7 +9,12 @@
 #include "base/logging.h"
 
 #define PG_LOG(msg) LOG(INFO) << "*PageGraph* " << msg
-#define PG_LOG_IF(condition, msg) << LOG_IF(INFO, condition) << msg
+#define PG_LOG_IF(condition, msg) << LOG_IF(INFO, condition) << "*PageGraph* " << msg
+
+// Variant of LOG_ASSERT that tags the message with a *PageGraph* marker
+#define PG_LOG_ASSERT(condition)  \
+	LOG_IF(FATAL, !(ANALYZER_ASSUME_TRUE(condition))) \
+	<< "*PageGraph* Assert failed: " #condition ". "
 
 #endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_LOG_H_
 

@@ -13,6 +13,7 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js.h"
 
@@ -49,7 +50,7 @@ const string& EdgeJSResult::GetResult() const {
 }
 
 const MethodName& EdgeJSResult::GetMethodName() const {
-  LOG_ASSERT(GetOutNode()->IsNodeJS());
+  PG_LOG_ASSERT(GetOutNode()->IsNodeJS());
   return To<NodeJS>(GetOutNode())->GetMethodName();
 }
 

@@ -26,8 +26,8 @@ TrackedRequest::TrackedRequest(const InspectorId request_id,
       request_id_(request_id),
       request_type_(request_type),
       resource_(resource) {
-  LOG_ASSERT(requester != nullptr);
-  LOG_ASSERT(resource != nullptr);
+  PG_LOG_ASSERT(requester != nullptr);
+  PG_LOG_ASSERT(resource != nullptr);
   requesters_.push_back(requester);
 }
 
@@ -37,7 +37,7 @@ TrackedRequest::TrackedRequest(const InspectorId request_id,
     const blink::ResourceType type) :
       request_id_(request_id),
       resource_type_(type) {
-  LOG_ASSERT(resource_type_ != blink::ResourceType::kMaxValue);
+  PG_LOG_ASSERT(resource_type_ != blink::ResourceType::kMaxValue);
   request_status_ = RequestStatus::kSuccess;
 }
 
@@ -88,17 +88,17 @@ blink::ResourceType TrackedRequest::GetResourceType() const {
 
 void TrackedRequest::AddRequest(Node* const requester,
     NodeResource* const resource, const RequestType request_type) {
-  LOG_ASSERT(requester != nullptr);
-  LOG_ASSERT(resource != nullptr);
-  LOG_ASSERT(request_type != RequestType::kRequestTypeUnknown);
+  PG_LOG_ASSERT(requester != nullptr);
+  PG_LOG_ASSERT(resource != nullptr);
+  PG_LOG_ASSERT(request_type != RequestType::kRequestTypeUnknown);
 
   if (requesters_.size() != 0) {
     // These assertions check that we're only seeing the same
     // resource id / InspectorID reused when making identical requests
     // to the identical resource. If this is wrong, then my understanding
     // of the blink request system is wrong...
-    LOG_ASSERT(request_type == request_type_);
-    LOG_ASSERT(resource == resource_);
+    PG_LOG_ASSERT(request_type == request_type_);
+    PG_LOG_ASSERT(resource == resource_);
   } else {
     request_type_ = request_type;
     resource_ = resource;
@@ -110,17 +110,17 @@ void TrackedRequest::AddRequest(Node* const requester,
 void TrackedRequest::SetIsError() {
   // Check that we haven't tried to set error information after we've
   // already set information about a successful response.
-  LOG_ASSERT(request_status_ == RequestStatus::kUnknown ||
+  PG_LOG_ASSERT(request_status_ == RequestStatus::kUnknown ||
       request_status_ == RequestStatus::kError);
   request_status_ = RequestStatus::kError;
 }
 
 void TrackedRequest::SetCompletedResourceType(const blink::ResourceType type) {
-  LOG_ASSERT(type != blink::ResourceType::kMaxValue);
+  PG_LOG_ASSERT(type != blink::ResourceType::kMaxValue);
 
   // Check that we haven't tried to set "successful response" information
   // after we've already set information about an error.
-  LOG_ASSERT(request_status_ == RequestStatus::kUnknown ||
+  PG_LOG_ASSERT(request_status_ == RequestStatus::kUnknown ||
       request_status_ == RequestStatus::kSuccess);
   request_status_ = RequestStatus::kSuccess;
   resource_type_ = type;
@@ -135,12 +135,12 @@ void TrackedRequest::SetResponseMetadata(const ResponseMetadata& metadata) {
 }
 
 const string& TrackedRequest::GetResponseBodyHash() const {
-  LOG_ASSERT(request_status_ == RequestStatus::kSuccess);
+  PG_LOG_ASSERT(request_status_ == RequestStatus::kSuccess);
   return hash_;
 }
 
 void TrackedRequest::SetResponseBodyHash(const string& response_body_hash) {
-  LOG_ASSERT(request_status_ == RequestStatus::kSuccess);
+  PG_LOG_ASSERT(request_status_ == RequestStatus::kSuccess);
   hash_ = response_body_hash;
 }
 

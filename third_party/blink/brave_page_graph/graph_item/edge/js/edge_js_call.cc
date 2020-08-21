@@ -15,6 +15,7 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_script.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/js/node_js.h"
 
@@ -49,7 +50,7 @@ EdgeJSCall::EdgeJSCall(PageGraph* const graph,
 EdgeJSCall::~EdgeJSCall() {}
 
 const MethodName& EdgeJSCall::GetMethodName() const {
-  LOG_ASSERT(GetInNode()->IsNodeJS());
+  PG_LOG_ASSERT(GetInNode()->IsNodeJS());
   return To<NodeJS>(GetInNode())->GetMethodName();
 }
 

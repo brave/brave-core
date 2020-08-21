@@ -14,6 +14,7 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/actor/node_actor.h"
 
@@ -56,7 +57,7 @@ ItemName EdgeNodeInsert::GetItemName() const {
 
 ItemDesc EdgeNodeInsert::GetItemDesc() const {
   const Node* const parent_node = GetParentNode();
-  LOG_ASSERT(parent_node);
+  PG_LOG_ASSERT(parent_node);
 
   const Node* const prior_sibling_node = GetPriorSiblingNode();
 
