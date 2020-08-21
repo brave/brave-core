@@ -15,28 +15,32 @@ interface StyleProps {
   isSummary?: boolean
   isAsset?: boolean
   position?: string
+  hasBorder?: boolean
   hideBalance?: boolean
   hide?: boolean
   itemsShowing?: boolean
   disabled?: boolean
   isSmall?: boolean
-  isAuth?: boolean
+  isAuth?: boolean,
+  showContent?: boolean
 }
 
 export const WidgetWrapper = styled<StyleProps, 'div'>('div')`
   color: white;
-  padding: 6px 20px 12px 20px;
+  padding: 6px 20px 30px 20px;
   border-radius: 6px;
   position: relative;
   font-family: ${p => p.theme.fontFamily.body};
+  font-size: 14px;
   overflow: hidden;
   min-width: 284px;
-  min-height: ${p => p.userAuthed ? '360px' : 'initial'};
-  background: #000;
+  background: rgba(15, 28, 45, 0.7);
+  backdrop-filter: blur(16px);
 `
 
-export const Header = styled<{}, 'div'>('div')`
+export const Header = styled<StyleProps, 'div'>('div')`
   text-align: left;
+  margin-bottom: ${p => p.showContent ? '15' : '0'}px;
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
@@ -50,7 +54,7 @@ export const StyledTitle = styled<{}, 'div'>('div')`
   font-family: ${p => p.theme.fontFamily.heading};
 `
 
-export const GeminiIcon = styled<{}, 'div'>('div')`
+export const CryptoDotComIcon = styled<{}, 'div'>('div')`
   width: 27px;
   height: 27px;
   margin-right: 7px;
@@ -59,6 +63,11 @@ export const GeminiIcon = styled<{}, 'div'>('div')`
 
 export const StyledTitleText = styled<{}, 'div'>('div')`
   margin-top: 4px;
+`
+
+export const Text = styled<{}, 'p'>('p')`
+  font-size: 14px;
+  margin: 20px 0px;
 `
 
 export const DismissAction = styled<{}, 'span'>('span')`
@@ -133,17 +142,22 @@ export const NavigationItem = styled<StyleProps, 'button'>('button')`
   }
 `
 
-export const SelectedView = styled<StyleProps, 'div'>('div')`
-  border: 1px solid rgb(70, 70, 70);
+export const Box = styled<StyleProps, 'div'>('div')`
+  border: 1px solid #979797;
+  padding: 10px 5px;
+  border-radius: 2px;
+`;
+
+export const List = styled<StyleProps, 'div'>('div')`
+  border: 1px solid #979797;
   overflow-y: ${p => p.hideOverflow ? 'hidden' : 'scroll'};
   height: 260px;
   width: 240px;
   margin-left: 4px;
 `
 
-export const ListItem = styled<{}, 'div'>('div')`
-  border-bottom: 1px solid rgb(70, 70, 70);
-  padding: 6px 5px;
+export const ListItem = styled<StyleProps, 'div'>('div')`
+  border-bottom: ${p => p.hasBorder ? '1px solid #979797' : 'none'};
   overflow-y: auto;
   overflow-x: hidden;
 `
@@ -151,9 +165,26 @@ export const ListItem = styled<{}, 'div'>('div')`
 export const ListIcon = styled<{}, 'div'>('div')`
   margin-left: 5px;
   width: 28px;
-  margin-top: 6px;
   float: left;
   margin-right: 10px;
+`
+
+export const ListInfo = styled<StyleProps, 'div'>('div')`
+  float: ${p => `${p.position}`};
+  min-width: ${p => p.isSummary ? 60 : 83}px;
+  ${p => {
+    if (p.position === 'right') {
+      const width = p.isSummary ? 25 : 40
+      return `
+        width: ${width}%;
+        text-align: left;
+      `
+    } else if (p.position === 'left') {
+      return `width: 120px`
+    } else {
+      return null
+    }
+  }}
 `
 
 export const ListImg = styled<{}, 'img'>('img')`
@@ -164,7 +195,7 @@ export const ListImg = styled<{}, 'img'>('img')`
 export const ListLabel = styled<StyleProps, 'div'>('div')`
   color: #fff;
   cursor: ${p => p.clickable ? 'pointer' : 'initial'};
-  margin-top: 10px;
+  margin-top: 5px;
   font-weight: 600;
 `
 
@@ -298,26 +329,6 @@ export const AccountSummary = styled(ListItem)`
   padding: 5px 7px;
 `
 
-export const ListInfo = styled<StyleProps, 'div'>('div')`
-  float: ${p => `${p.position}`};
-  min-width: ${p => p.isSummary ? 60 : 83}px;
-  font-size: ${p => p.isAsset ? '16px' : 'inherit'};
-  margin-top: ${p => p.isAsset ? '9' : '0'}px;
-  ${p => {
-    if (p.position === 'right') {
-      const width = p.isSummary ? 25 : 40
-      return `
-        width: ${width}%;
-        text-align: left;
-      `
-    } else if (p.position === 'left') {
-      return `width: 120px`
-    } else {
-      return null
-    }
-  }}
-`
-
 export const TradeLabel = styled<{}, 'span'>('span')`
   font-weight: bold;
   font-size: 14px;
@@ -328,8 +339,6 @@ export const TradeLabel = styled<{}, 'span'>('span')`
 
 export const Balance = styled<StyleProps, 'span'>('span')`
   display: block;
-  font-size: ${p => p.isSummary ? '25' : '14'}px;
-  margin: ${p => p.isSummary ? '5px' : '20px'} 0;
   color: #fff;
   text-align: ${p => p.isSummary ? 'unset' : 'right'};
   margin-right: ${p => p.isSummary ? '0' : '7px'};
@@ -428,24 +437,24 @@ export const AssetItem = styled<StyleProps, 'div'>('div')`
   padding: 3px 0px;
   font-weight: bold;
   cursor: pointer;
-  border-bottom: ${p => !p.isLast ? '1px solid rgb(70, 70, 70)' : ''};
+  border-bottom: ${p => !p.isLast ? '1px solid #979797' : ''};
 `
 
 export const DropdownIcon = styled<StyleProps, 'span'>('span')`
   margin-right: 10px;
 `
 
-export const ActionButton = styled<{}, 'button'>('button')`
-  font-size: 13px;
+export const ActionButton = styled<StyleProps, 'button'>('button')`
+  font-family: ${p => p.theme.fontFamily.heading};
+  font-size: 15px;
   font-weight: bold;
   border-radius: 20px;
   width: 100%;
-  background: #7CDDF9;
+  background: #44B0FF;
   border: 0;
-  padding: 10px 60px;
+  padding: 10px 0px;
   cursor: pointer;
-  color: #000;
-  margin-top: 20px;
+  color: #FFFFFF;
 `
 
 export const TradeSwitchWrapper = styled<StyleProps, 'div'>('div')`
