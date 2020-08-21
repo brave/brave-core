@@ -13,6 +13,7 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -65,8 +66,8 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   if (display_host.empty())
     display_host = base::ASCIIToUTF16(url.spec());
 
-  content_settings::TabSpecificContentSettings* content_settings =
-      content_settings::TabSpecificContentSettings::GetForFrame(
+  content_settings::PageSpecificContentSettings* content_settings =
+      content_settings::PageSpecificContentSettings::GetForFrame(
           web_contents()->GetMainFrame());
   bool allowed = !content_settings->IsContentBlocked(content_type());
   DCHECK(!allowed || content_settings->IsContentAllowed(content_type()));
