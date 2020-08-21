@@ -14,6 +14,7 @@
 
 #include "base/files/file_path.h"
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 
 class AdBlockServiceTest;
 
@@ -24,9 +25,11 @@ namespace brave_shields {
 class AdBlockRegionalService : public AdBlockBaseService {
  public:
   explicit AdBlockRegionalService(
-      const std::string& uuid,
+      const adblock::FilterList& catalog_entry,
       brave_component_updater::BraveComponent::Delegate* delegate);
   ~AdBlockRegionalService() override;
+
+  void SetCatalogEntry(const adblock::FilterList& entry);
 
   std::string GetUUID() const { return uuid_; }
   std::string GetTitle() const { return title_; }
@@ -49,6 +52,8 @@ class AdBlockRegionalService : public AdBlockBaseService {
 
   std::string uuid_;
   std::string title_;
+  std::string component_id_;
+  std::string base64_public_key_;
 
   base::WeakPtrFactory<AdBlockRegionalService> weak_factory_{this};
   DISALLOW_COPY_AND_ASSIGN(AdBlockRegionalService);
@@ -56,7 +61,7 @@ class AdBlockRegionalService : public AdBlockBaseService {
 
 // Creates the AdBlockRegionalService
 std::unique_ptr<AdBlockRegionalService> AdBlockRegionalServiceFactory(
-    const std::string& uuid,
+    const adblock::FilterList& catalog_entry,
     brave_component_updater::BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields

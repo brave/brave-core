@@ -25,6 +25,9 @@ using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
+class AdBlockRegionalServiceManager;
+class AdBlockCustomFiltersService;
+
 const char kAdBlockResourcesFilename[] = "resources.json";
 const char kAdBlockComponentName[] = "Brave Ad Block Updater";
 const char kAdBlockComponentId[] = "cffkpbalmllkdoenhmdmpbkajipdjfam";
@@ -43,6 +46,9 @@ class AdBlockService : public AdBlockBaseService {
   explicit AdBlockService(BraveComponent::Delegate* delegate);
   ~AdBlockService() override;
 
+  AdBlockRegionalServiceManager* regional_service_manager();
+  AdBlockCustomFiltersService* custom_filters_service();
+
  protected:
   bool Init() override;
   void OnComponentReady(const std::string& component_id,
@@ -59,6 +65,13 @@ class AdBlockService : public AdBlockBaseService {
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
+
+  std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
+      regional_service_manager_;
+  std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
+      custom_filters_service_;
+
+  BraveComponent::Delegate* component_delegate_;
 
   base::WeakPtrFactory<AdBlockService> weak_factory_{this};
   DISALLOW_COPY_AND_ASSIGN(AdBlockService);

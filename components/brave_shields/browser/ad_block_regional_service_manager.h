@@ -43,6 +43,7 @@ class AdBlockRegionalServiceManager {
   std::unique_ptr<base::ListValue> GetRegionalLists();
 
   void SetRegionalCatalog(std::vector<adblock::FilterList> catalog);
+  const std::vector<adblock::FilterList>& GetRegionalCatalog();
 
   bool IsInitialized() const;
   bool Start();

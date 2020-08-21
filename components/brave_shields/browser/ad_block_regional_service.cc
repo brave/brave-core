@@ -33,32 +33,35 @@ std::string
     AdBlockRegionalService::g_ad_block_regional_component_base64_public_key_;  // NOLINT
 
 AdBlockRegionalService::AdBlockRegionalService(
-    const std::string& uuid,
+    const adblock::FilterList& catalog_entry,
     brave_component_updater::BraveComponent::Delegate* delegate)
     : AdBlockBaseService(delegate),
-      uuid_(uuid) {
+      uuid_(catalog_entry.uuid),
+      title_(catalog_entry.title),
+      component_id_(catalog_entry.component_id),
+      base64_public_key_(catalog_entry.base64_public_key) {
 }
 
 AdBlockRegionalService::~AdBlockRegionalService() {
 }
 
+void AdBlockRegionalService::SetCatalogEntry(const adblock::FilterList& entry) {
+  DCHECK(entry.uuid == uuid_);
+  title_ = entry.title;
+  component_id_ = entry.component_id;
+  base64_public_key_ = entry.base64_public_key;
+}
+
 bool AdBlockRegionalService::Init() {
   AdBlockBaseService::Init();
-  std::vector<adblock::FilterList>&  region_lists =
-    adblock::FilterList::GetRegionalLists();
-  auto it = brave_shields::FindAdBlockFilterListByUUID(region_lists, uuid_);
-  if (it == region_lists.end())
-    return false;
 
-  Register(it->title,
+  Register(title_,
            !g_ad_block_regional_component_id_.empty()
                ? g_ad_block_regional_component_id_
-               : it->component_id,
+               : component_id_,
            !g_ad_block_regional_component_base64_public_key_.empty()
                ? g_ad_block_regional_component_base64_public_key_
-               : it->base64_public_key);
-
-  title_ = it->title;
+               : base64_public_key_);
 
   return true;
 }
@@ -100,9 +103,9 @@ void AdBlockRegionalService::SetComponentIdAndBase64PublicKeyForTest(
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<AdBlockRegionalService> AdBlockRegionalServiceFactory(
-    const std::string& uuid,
+    const adblock::FilterList& catalog_entry,
     brave_component_updater::BraveComponent::Delegate* delegate) {
-  return std::make_unique<AdBlockRegionalService>(uuid, delegate);
+  return std::make_unique<AdBlockRegionalService>(catalog_entry, delegate);
 }
 
 }  // namespace brave_shields

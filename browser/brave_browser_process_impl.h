@@ -132,10 +132,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<brave_component_updater::BraveComponent::Delegate>
       brave_component_updater_delegate_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
-  std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
-      ad_block_custom_filters_service_;
-  std::unique_ptr<brave_shields::AdBlockRegionalServiceManager>
-      ad_block_regional_service_manager_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   std::unique_ptr<brave_component_updater::ExtensionWhitelistService>
       extension_whitelist_service_;

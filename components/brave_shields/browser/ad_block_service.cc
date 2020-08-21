@@ -26,6 +26,7 @@
 #include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 #define DAT_FILE "rs-ABPFilterParserData.dat"
 #define REGIONAL_CATALOG "regional_catalog.json"
@@ -47,20 +48,59 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
   return "";
 }
 
+// Extracts the start and end characters of a domain from a hostname.
+// Required for correct functionality of adblock-rust.
+void AdBlockServiceDomainResolver(const char* host, uint32_t* start,
+    uint32_t* end) {
+  const auto host_str = std::string(host);
+  const auto domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      host_str,
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  const size_t match = host_str.rfind(domain);
+  if (match != std::string::npos) {
+    *start = match;
+    *end = match + domain.length();
+  } else {
+    *start = 0;
+    *end = host_str.length();
+  }
+}
+
 }  // namespace
 
 std::string AdBlockService::g_ad_block_component_id_(kAdBlockComponentId);
 std::string AdBlockService::g_ad_block_component_base64_public_key_(
     kAdBlockComponentBase64PublicKey);
 
+AdBlockRegionalServiceManager* AdBlockService::regional_service_manager() {
+  if (!regional_service_manager_)
+    regional_service_manager_ =
+        brave_shields::AdBlockRegionalServiceManagerFactory(
+            component_delegate_);
+  return regional_service_manager_.get();
+}
+
+brave_shields::AdBlockCustomFiltersService*
+AdBlockService::custom_filters_service() {
+  if (!custom_filters_service_)
+    custom_filters_service_ =
+        brave_shields::AdBlockCustomFiltersServiceFactory(
+            component_delegate_);
+  return custom_filters_service_.get();
+}
+
 AdBlockService::AdBlockService(
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate) {
+    : AdBlockBaseService(delegate),
+      component_delegate_(delegate) {
 }
 
 AdBlockService::~AdBlockService() {}
 
 bool AdBlockService::Init() {
+  // Initializes adblock-rust's domain resolution implementation
+  adblock::SetDomainResolver(AdBlockServiceDomainResolver);
+
   if (!AdBlockBaseService::Init())
     return false;
 
@@ -72,6 +112,9 @@ bool AdBlockService::Init() {
 void AdBlockService::OnComponentReady(const std::string& component_id,
                                       const base::FilePath& install_dir,
                                       const std::string& manifest) {
+  // Regional service manager depends on regional catalog loading
+  custom_filters_service()->Start();
+
   base::FilePath dat_file_path = install_dir.AppendASCII(DAT_FILE);
   GetDATFileData(dat_file_path);
 
@@ -95,15 +138,15 @@ void AdBlockService::OnComponentReady(const std::string& component_id,
 }
 
 void AdBlockService::OnResourcesFileDataReady(const std::string& resources) {
-  g_brave_browser_process->ad_block_service()->AddResources(resources);
-  g_brave_browser_process->ad_block_custom_filters_service()->AddResources(
-      resources);
+  AddResources(resources);
+  custom_filters_service()->AddResources(resources);
 }
 
 void AdBlockService::OnRegionalCatalogFileDataReady(
     const std::string& catalog_json) {
-  g_brave_browser_process->ad_block_regional_service_manager()
+  regional_service_manager()
       ->SetRegionalCatalog(RegionalCatalogFromJSON(catalog_json));
+  regional_service_manager()->Start();
 }
 
 // static
