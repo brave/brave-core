@@ -316,10 +316,10 @@
       <message name="IDS_PRINT_PREVIEW_EULA_URL" desc="Message shown to user when their printer has a EULA associated with its PPD. This message is hyperlinked to the EULA.">
         End User License Agreement
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DEVICE_ERROR" desc="Error label to show under the destination dropdown when the printer has a device error.">
-         Printer device error
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DEVICE_ERROR" desc="Error label to show under the destination dropdown when there is a mechanical error inside the printer.">
+         Mechanical issue. Check printer
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DOOR_OPEN" desc="Error label to show under the destination dropdown when the printer has an open door.">
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_DOOR_OPEN" desc="Error label to show under the destination dropdown when the printer has an open cover or door.">
          Printer door is open
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_LOW_ON_INK" desc="Error label to show under the destination dropdown when the printer is low on ink.">
@@ -334,26 +334,26 @@
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUT_OF_PAPER" desc="Error label to show under the destination dropdown when the printer is out of paper.">
          Out of paper
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_ALMOST_FULL" desc="Error label to show under the destination dropdown when the printer's output area is almost full.">
-         Output area is almost full
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_ALMOST_FULL" desc="Error label to show under the destination dropdown when the printer's output tray is almost full.">
+         Output tray is almost full
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_FULL" desc="Error label to show under the destination dropdown when the printer's output area is full.">
-         Output area is full
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_OUPUT_FULL" desc="Error label to show under the destination dropdown when the printer's output tray is full.">
+         Output tray is full
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAPER_JAM" desc="Error label to show under the destination dropdown when the printer has a paper jam.">
          Paper is jammed
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAUSED" desc="Error label to show under the destination dropdown when the printer is in a paused state.">
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PAUSED" desc="Error label to show under the destination dropdown when someone has put the printer into a paused state.">
          Printer is paused
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_QUEUE_FULL" desc="Error label to show under the destination dropdown when the printer has a full queue.">
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_QUEUE_FULL" desc="Error label to show under the destination dropdown when the printer's job queue is full and is temporarily unable to accept more print jobs.">
          Printer queue is full
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_PRINTER_UNREACHABLE" desc="Error label to show under the destination dropdown when the device is attempting to schedule a print job on the printer but can't get a connection to the printer">
          Can’t connect to printer
       </message>
-      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_STOPPED" desc="Error label to show under the destination dropdown when the printer is in a stopped state.">
-         Printer is stopped
+      <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_STOPPED" desc="Error label to show under the destination dropdown when the printer is in the process of stopping or the printer is powered down.">
+         Printer has stopped
       </message>
       <message name="IDS_PRINT_PREVIEW_PRINTER_STATUS_TRAY_MISSING" desc="Error label to show under the destination dropdown when the printer is missing a tray.">
          Tray is missing
@@ -419,7 +419,7 @@
     </message>
     <if expr="not chromeos">
       <message name="IDS_GOOGLE_DRIVE_OPTION_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that saving to Google Drive will no longer be supported.">
-        This option won't be supported after December. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a is="action-link" href="" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+        This option won't be supported after December. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$1<ex>https://google.com/</ex>" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
       </message>
       <message name="IDS_GOOGLE_DRIVE_OPTION_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that saving to Google Drive will no longer be supported.">
         This option won't be supported after December. Contact your admin.

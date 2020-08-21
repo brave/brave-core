@@ -124,7 +124,7 @@
   <message name="IDS_SETTINGS_ABOUT_PAGE_UPDATE_WARNING_TITLE" desc="The title of the warning about update over mobile data.">
     Download update using mobile data
   </message>
-    <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_BETA" desc="The beta label in the message about current channel.">
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_BETA" desc="The beta label in the message about current channel.">
     beta
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_CANARY" desc="The canary label in the message about current channel.">
@@ -138,6 +138,9 @@
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_STABLE" desc="The stable label in the message about current channel.">
     stable
+  </message>
+  <message name="IDS_SETTINGS_ABOUT_PAGE_CURRENT_CHANNEL_STABLE_TT" desc="The stable (trusted tester) label in the message about current channel.">
+    stable (trusted tester)
   </message>
   <message name="IDS_SETTINGS_ABOUT_PAGE_CHECK_FOR_UPDATES" desc="The button label to check for updates and apply (download and install) if found">
     Check for updates
@@ -247,6 +250,45 @@
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_PAGE_TITLE" translateable="false" desc="A page under “Languages and input” section in the OS settings page that users can add, remove and manage input methods.">
     Input
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SYSTEM_LANGUAGE_TITLE" translateable="false" desc="The label for the section where users can see their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+    System display language
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SYSTEM_LANGUAGE_DESCRIPTION" translateable="false" desc="The description for the section where users can see their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+    System features like launcher, Settings and Files will appear in this language.
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_SYSTEM_LANGUAGE_BUTTON_LABEL" translateable="false" desc="The label for the button where users can change their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+    Change
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_CHANGE_SYSTEM_LANGUAGE_BUTTON_DESCRIPTION" translateable="false" desc="The description read by screenreader for the button where users can change their display language. This language will be used for system surfaces (launcher, shelf, and notifications etc.) and the preferred application language if it’s provided by the application developer.">
+    Change system language. Current language is <ph name="LANGUAGE">$1<ex>English</ex></ph>. System features like launcher, Settings and Files will appear in the language you choose.
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_TITLE" translateable="false" desc="The label of the section in the language settings page where users can add languages they read to an ordered list. The web content languages will be served in the order of the list.">
+    Languages you read
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_LANGUAGES_PREFERENCE_DESCRIPTION" translateable="false" desc="The description of the section in the language settings page where users can add languages they read to an ordered list. The web content languages will be served in the order of the list.">
+    Add and order languages you read. Apps and websites will be displayed in the most preferred language available. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_LABEL" translateable="false" desc="The label of the toggle that enables the prompt to translate a page to users.">
+   Translation suggestion
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OFFER_TRANSLATION_SUBLABEL" translateable="false" desc="The sublabel of the toggle that enables the prompt to translate a page to users.">
+    Allow the system to offer to translate web pages when it detects languages you don't read
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_INPUT_METHOD_LIST_TITLE" translateable="false" desc="Title for the current input method in the header for the collapsible list of enabled input methods (keyboard layouts and input method editors).">
+    Input methods
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_OPEN_OPTIONS_PAGE_LABEL" translateable="false" desc="Title for the button to open the options page for a input method (keyboard layout and input method editor).">
+      Open options page for <ph name="INPUT_METHOD_NAME">$1<ex>US keyboard</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_ADD_INPUT_METHOD_LABEL" translateable="false" desc="Button under the list of input methods which opens a dialog that lets the user add keyboard layouts and input method editors.">
+    Add input methods
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" translateable="false" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
+    Spell check
+  </message>
+  <message name="IDS_OS_SETTINGS_LANGUAGES_SPELL_CHECK_DISABLED_REASON" translateable="false" desc="Text that indicates to the user that spell check options are disabled because none of the languages they have added have spell check support.">
+    Spell check isn’t supported for the languages you selected
   </message>
   <message name="IDS_OS_SETTINGS_LANGUAGES_LIST_TITLE" desc="Title for the list of the user's preferred written languages.">
     Languages
@@ -458,7 +500,7 @@
     Change device account image
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TITLE" desc="Label for row in settings page that opens the ambient mode settings page to customize what you see on your screen when the device is idle.">
-    Ambient mode
+    Screen saver
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ENABLED" desc="Sub label for the ambient mode row in settings page when it is enabled.">
     Enabled
@@ -466,8 +508,10 @@
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_DISABLED" desc="Sub label for the ambient mode row in settings page when it is disabled.">
     Disabled
   </message>
+
+  <!-- Ambient Mode Page -->
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_PAGE_DESCRIPTION" desc="Description for the ambient mode settings page.">
-    Personalize your idle display. Keep your screen on when device is charging.
+    When your screen is idle, show photos, time, weather, and media info
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ON" desc="Label for the toggle row in ambient mode settings page when it is enabled.">
     On
@@ -476,22 +520,22 @@
     Off
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_TITLE" desc="Label for the radio button group of ambient mode topic source, where the screen contents come from.">
-    Photo Frame
+    Background
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS" desc="Label for the radio button to choose the topic source from Brave Photos. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
     Brave Photos
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESCRIPTION" desc="Description for the radio button to choose the topic source from Brave Photos. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
-    Select your memories
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESC" desc="Description for the radio button to choose the topic source from Brave Photos. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
+    Choose your favorite photos and albums
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESCRIPTION_NO_ALBUM" desc="Description for the radio button to choose the topic source from Brave Photos when there is no album. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_GOOGLE_PHOTOS_DESC_NO_ALBUM" desc="Description for the radio button to choose the topic source from Brave Photos when there is no album. The radio button allows the user to set Brave Photos for ambient mode, which shows photos to the user when their device is idle.">
     To create albums, go to Brave Photos
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_ART_GALLERY" desc="Label for the radio button to choose the topic source from art gallery. The radio button allows the user to set Art gallery for ambient mode, which shows photos to the user when their device is idle.">
     Art gallery
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_ART_GALLERY_DESCRIPTION" desc="Description for the radio button to choose the topic source from art gallery. The radio button allows the user to set Art gallery for ambient mode, which shows photos to the user when their device is idle.">
-    Curated images and artwork
+    Select curated artwork and images
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TOPIC_SOURCE_SELECTED_ROW" desc="A11y label for the selected topic source row in ambient mode.">
     <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> <ph name="TOPIC_SOURCE_DESC">$2<ex>Select your memories</ex></ph> selected, press Enter to select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
@@ -503,19 +547,34 @@
     Select <ph name="TOPIC_SOURCE">$1<ex>Brave Photos</ex></ph> albums
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_TITLE" desc="Label for the subpage to select albums of Brave Photos in ambient mode.">
-    A slideshow of selected memories will be created. To make any changes to the existing albums, go to<ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
+    Relive your favorite memories. To add or edit albums, go to<ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_GOOGLE_PHOTOS_NO_ALBUM" desc="Text for the subpage to select albums of Brave Photos when there is no album in ambient mode.">
-    No albums set up yet
+    No albums. Create an album in<ph name="LINK_BEGIN">&lt;a target="_blank" href="$1<ex>https://google.com/</ex>"&gt;</ph>Brave Photos<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_RECENT_DESC" desc="Description for the Recent highlights album in ambient mode.">
-    Your best auto selected photos
+    Your best photos, selected automatically
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_PHOTOS_NUM" desc="Number of photos in an album in ambient mode.">
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_PHOTOS_NUM_PLURAL" desc="Number of photos in an album in ambient mode.">
     <ph name="NUMBER">$1<ex>100</ex></ph> photos
   </message>
-  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_PHOTOS_NUM_ONE" desc="1 photo in an album in ambient mode.">
-    1 photo
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_PHOTOS_NUM_SINGULAR" desc="1 or 0 photo in an album in ambient mode.">
+    <ph name="NUMBER">$1<ex>1</ex></ph> photo
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_ALBUM_SELECTED" desc="A11y label of a selected album in ambient mode.">
+    Album <ph name="TITLE">$1<ex>Recent highlights</ex></ph> <ph name="DESC">$2<ex>Your best auto selected photos</ex></ph> selected
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_ALBUMS_SUBPAGE_ALBUM_UNSELECTED" desc="A11y label of an unselected album in ambient mode.">
+    Select album <ph name="TITLE">$1<ex>Recent highlights</ex></ph> <ph name="DESC">$2<ex>Your best auto selected photos</ex></ph>
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_WEATHER_TITLE" desc="Label for the radio button group of weather.">
+    Weather
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TEMPERATURE_UNIT_FAHRENHEIT" desc="Label for the radio button to choose fahrenheit as the preferred temperature unit.">
+    Fahrenheit
+  </message>
+  <message name="IDS_OS_SETTINGS_AMBIENT_MODE_TEMPERATURE_UNIT_CELSIUS" desc="Label for the radio button to choose celsius as the preferred temperature unit.">
+    Celsius
   </message>
 
   <!-- Search and Assistant section. -->
@@ -1537,7 +1596,7 @@
     Set up or manage CUPS printers. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_PRINTER" desc="In CUPS printing settings subpage, text for the link adding a new CUPS printer.">
-    Add Printer
+    Add printer
   </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTERS_ADD_DETECTED_OR_NEW_PRINTER" desc="In CUPS printing settings subpage, explanatory text for the nearby printers list.">
     Save detected printers to your profile, or add a new printer. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
