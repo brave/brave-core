@@ -87,6 +87,7 @@ brave_java_resources = [
   "java/res/drawable/ic_litecoin.xml",
   "java/res/drawable/ic_polygon_1.xml",
   "java/res/drawable/rounded_filled_binance.xml",
+  "java/res/drawable/ic_more_horiz.xml",
   "java/res/drawable-hdpi/check.png",
   "java/res/drawable-hdpi/btn_bookmark.png",
   "java/res/drawable-hdpi/arrow_forward.png",

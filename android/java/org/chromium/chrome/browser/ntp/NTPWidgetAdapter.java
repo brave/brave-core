@@ -114,10 +114,6 @@ public class NTPWidgetAdapter extends PagerAdapter {
         TextView mDataSavedValueTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_value);
         TextView mEstTimeSavedCountTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time_count);
 
-        TextView mAdsBlockedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_ads);
-        TextView mDataSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_text);
-        TextView mEstTimeSavedTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time);
-
         long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(profile);
         long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(profile);
         long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(profile);
@@ -129,18 +125,5 @@ public class NTPWidgetAdapter extends PagerAdapter {
         mAdsBlockedCountTextView.setText(String.format(context.getResources().getString(R.string.ntp_stat_text), adsTrackersPair.first, adsTrackersPair.second));
         mDataSavedValueTextView.setText(String.format(context.getResources().getString(R.string.ntp_stat_text), dataSavedPair.first, dataSavedPair.second));
         mEstTimeSavedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
-
-        if ((BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
-                || NTPUtil.isReferralEnabled())
-                && NTPUtil.shouldEnableNTPFeature()) {
-            mAdsBlockedTextView.setTextColor(
-                context.getResources().getColor(android.R.color.white));
-            mDataSavedTextView.setTextColor(
-                context.getResources().getColor(android.R.color.white));
-            mEstTimeSavedTextView.setTextColor(
-                context.getResources().getColor(android.R.color.white));
-            mEstTimeSavedCountTextView.setTextColor(
-                context.getResources().getColor(android.R.color.white));
-        }
     }
 }

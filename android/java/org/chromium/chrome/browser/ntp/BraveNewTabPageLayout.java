@@ -27,9 +27,11 @@ import android.widget.LinearLayout;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.util.Pair;
+import android.text.Html;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
+import androidx.cardview.widget.CardView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -112,6 +114,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
     private Tab mTab;
     private Activity mActivity;
+    private LinearLayout indicatorLayout;
 
     public BraveNewTabPageLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -124,9 +127,28 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        indicatorLayout = findViewById(R.id.indicator_layout);
+
         ntpWidgetViewPager = findViewById(R.id.ntp_widget_view_pager);
         ntpWidgetAdapter = new NTPWidgetAdapter();
         ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
+
+        ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                updateAndShowIndicators(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
 
         LayoutInflater inflater = (LayoutInflater) ContextUtils.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mBraveStatsView = inflater.inflate (R.layout.brave_stats_layout, null);
@@ -148,6 +170,33 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                 checkForBraveStats();
             }
         });
+        updateAndShowIndicators(0);
+    }
+
+    private void updateAndShowIndicators(int position) {
+        Context context = ContextUtils.getApplicationContext();
+        indicatorLayout.removeAllViews();
+        for (int i = 0; i < ntpWidgetAdapter.getCount(); i++) {
+            TextView dotTextView = new TextView(context);
+            dotTextView.setText(Html.fromHtml("&#9679;"));
+            dotTextView.setTextColor(context.getResources().getColor(android.R.color.white));
+            dotTextView.setTextSize(8);
+            if (position == i) {
+                dotTextView.setAlpha(1.0f);
+            } else {
+                dotTextView.setAlpha(0.4f);
+            }
+            indicatorLayout.addView(dotTextView);
+        }
+    }
+
+    private void selectedDot(int position) {
+        if (indicators.get(position) != null) {
+            TextView selectedTextView = indicators.get(position);
+            selectedTextView.setText(Html.fromHtml("&#9673;"));
+        } else {
+            indicators.get(0).setText(Html.fromHtml("&#9673;"));
+        }
     }
 
     private void checkForBraveStats() {

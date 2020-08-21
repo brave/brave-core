@@ -1,112 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    app:cardBackgroundColor="#1F1F1F"
-    app:cardCornerRadius="6dp"
-    app:contentPadding="8dp">
+    android:background="#17171F"
+    android:padding="8dp"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        tools:context=".MainActivity">
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_full_color"
+            android:drawablePadding="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_gravity="center_vertical"
+            android:text="Binance"
+            android:textColor="#F8F9FA"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/btn_trade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/rounded_filled_binance"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:text="Trade" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginEnd="36dp"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:drawableStart="@drawable/ic_full_color"
-                android:drawablePadding="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_gravity="center_vertical"
-                android:text="Binance"
-                android:textColor="#F8F9FA"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/btn_trade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/rounded_filled_binance"
-                android:paddingStart="4dp"
-                android:paddingEnd="4dp"
-                android:text="Trade" />
+                android:text="1.0118121BTC"
+                android:textColor="#FFFFFF"
+                android:layout_marginBottom="4dp"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="≈ $9,345.21"
+                android:textColor="#FFFFFF"
+                android:alpha="0.6"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
-            android:layout_marginEnd="36dp"
-            android:orientation="horizontal">
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1.0118121BTC"
-                    android:textColor="#FFFFFF"
-                    android:layout_marginBottom="4dp"
-                    android:textSize="24sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="≈ $9,345.21"
-                    android:textColor="#FFFFFF"
-                    android:alpha="0.6"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_polygon_1"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="1.01%"
+                android:textColor="#5DFF43"
                 android:layout_gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_marginBottom="4dp"
+                android:textSize="18sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableStart="@drawable/ic_polygon_1"
-                    android:drawablePadding="4dp"
-                    android:gravity="center_vertical"
-                    android:text="1.01%"
-                    android:textColor="#5DFF43"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="4dp"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="24h Change"
-                    android:textColor="#FFFFFF"
-                    android:alpha="0.4"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24h Change"
+                android:textColor="#FFFFFF"
+                android:alpha="0.4"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+</LinearLayout>
