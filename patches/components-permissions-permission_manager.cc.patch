@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_manager.cc b/components/permissions/permission_manager.cc
-index 0ca29923b6924ff063afd25e1fca9609c5c187fd..17341cf268882ba761585523e3335a4d0d1f07ff 100644
+index d5ed9f78abbe8b05364c647bb7f8bd02ed5a196c..d063866277b7380237fda2871bc433bed5b1a359 100644
 --- a/components/permissions/permission_manager.cc
 +++ b/components/permissions/permission_manager.cc
 @@ -130,6 +130,7 @@ ContentSettingsType PermissionTypeToContentSettingSafe(

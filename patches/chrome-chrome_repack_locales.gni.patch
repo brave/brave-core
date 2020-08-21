@@ -1,5 +1,5 @@
 diff --git a/chrome/chrome_repack_locales.gni b/chrome/chrome_repack_locales.gni
-index f26b0f1b1cd2de04b296fa9cfb97933a1d0ef8ba..a35dcf22ee20b3675b42a966884ec1f850f6eed8 100644
+index b714d4e3b4cef6cc2f24ec2ad6f16be388ae12bf..a5e48daa6479f644cf7549242879b23b42fd1b53 100644
 --- a/chrome/chrome_repack_locales.gni
 +++ b/chrome/chrome_repack_locales.gni
 @@ -36,6 +36,7 @@ template("chrome_repack_locales") {

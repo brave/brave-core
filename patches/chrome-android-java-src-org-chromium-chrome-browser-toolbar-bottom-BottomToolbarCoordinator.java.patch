@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-index 0dc01acfee4445664356f688b125d780f4ee6ef5..8c86a1c6bdb28d0a7c94855c74df851ca43aee62 100644
+index 2c58d305f8b79cca4a58f2f1df7f58f20c358241..f953c0970f0a663e95de040cbde9b3c1d5c1d7fd 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/bottom/BottomToolbarCoordinator.java
-@@ -39,7 +39,7 @@ import org.chromium.components.feature_engagement.Tracker;
+@@ -40,7 +40,7 @@ import org.chromium.components.feature_engagement.Tracker;
   */
  class BottomToolbarCoordinator {
      /** The browsing mode bottom toolbar component */
@@ -11,7 +11,7 @@ index 0dc01acfee4445664356f688b125d780f4ee6ef5..8c86a1c6bdb28d0a7c94855c74df851c
  
      /** The tab switcher mode bottom toolbar component */
      private TabSwitcherBottomToolbarCoordinator mTabSwitcherModeCoordinator;
-@@ -51,8 +51,8 @@ class BottomToolbarCoordinator {
+@@ -52,8 +52,8 @@ class BottomToolbarCoordinator {
      private final ThemeColorProvider mThemeColorProvider;
  
      /** The overview mode manager. */
@@ -22,7 +22,7 @@ index 0dc01acfee4445664356f688b125d780f4ee6ef5..8c86a1c6bdb28d0a7c94855c74df851c
  
      /** The activity tab provider. */
      private ActivityTabProvider mTabProvider;
-@@ -106,7 +106,7 @@ class BottomToolbarCoordinator {
+@@ -110,7 +110,7 @@ class BottomToolbarCoordinator {
              setUrlBarFocusAction.onResult(LocationBar.OmniboxFocusReason.ACCELERATOR_TAP);
          };
  
@@ -31,7 +31,7 @@ index 0dc01acfee4445664356f688b125d780f4ee6ef5..8c86a1c6bdb28d0a7c94855c74df851c
                  homeButtonListener, searchAcceleratorListener, mShareButtonListenerSupplier,
                  tabsSwitcherLongClickListner, mOverviewModeBehaviorSupplier);
  
-@@ -274,4 +274,5 @@ class BottomToolbarCoordinator {
+@@ -280,4 +280,5 @@ class BottomToolbarCoordinator {
              listener.onClick(v);
          };
      }

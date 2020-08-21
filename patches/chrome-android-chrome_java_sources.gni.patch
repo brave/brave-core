@@ -1,8 +1,8 @@
 diff --git a/chrome/android/chrome_java_sources.gni b/chrome/android/chrome_java_sources.gni
-index e3fe9d3dacb73f0673d479803c595a7aaf08efa7..555b96595288a9314dbfa7609546b685278671a6 100644
+index 83227ce8bc8566b8611e4985759fb2c46a99a9fc..7936581ce1a0337c6068d361d69ed51c2edba1c9 100644
 --- a/chrome/android/chrome_java_sources.gni
 +++ b/chrome/android/chrome_java_sources.gni
-@@ -1737,3 +1737,4 @@ chrome_java_sources = [
+@@ -1741,3 +1741,4 @@ chrome_java_sources = [
    "java/src/org/chromium/chrome/browser/webshare/ShareServiceImplementationFactory.java",
    "java/src/org/chromium/chrome/browser/widget/DateDividedAdapter.java",
  ]
