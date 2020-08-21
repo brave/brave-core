@@ -190,15 +190,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         }
     }
 
-    private void selectedDot(int position) {
-        if (indicators.get(position) != null) {
-            TextView selectedTextView = indicators.get(position);
-            selectedTextView.setText(Html.fromHtml("&#9673;"));
-        } else {
-            indicators.get(0).setText(Html.fromHtml("&#9673;"));
-        }
-    }
-
     private void checkForBraveStats() {
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
