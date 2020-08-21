@@ -97,9 +97,9 @@ public class BravePrivacySettings extends PrivacySettings {
         } else if (PREF_SEARCH_SUGGESTIONS.equals(key)) {
             mPrefServiceBridge.setBoolean(Pref.SEARCH_SUGGEST_ENABLED, (boolean) newValue);
         } else if (PREF_AUTOCOMPLETE_TOP_SITES.equals(key)) {
-            PrefServiceBridge.getInstance().setBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED, (boolean) newValue);
+            UserPrefs.get(Profile.getLastUsedRegularProfile()).setBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED, (boolean) newValue);
         } else if (PREF_AUTOCOMPLETE_BRAVE_SUGGESTED_SITES.equals(key)) {
-            PrefServiceBridge.getInstance().setBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED,
+            UserPrefs.get(Profile.getLastUsedRegularProfile()).setBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED,
                     (boolean) newValue);
         }
 
@@ -117,10 +117,10 @@ public class BravePrivacySettings extends PrivacySettings {
         mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
         mSearchSuggestions.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 1);
         mAutocompleteTopSites
-                .setChecked(PrefServiceBridge.getInstance().getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
+                .setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
         mAutocompleteTopSites.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 2);
         mAutocompleteBraveSuggestedSites.setChecked(
-                PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED));
+                UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED));
         mAutocompleteBraveSuggestedSites.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 3);
     }
 

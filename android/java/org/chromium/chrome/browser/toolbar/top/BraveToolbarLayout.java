@@ -46,7 +46,7 @@ import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettingsObserver;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -451,7 +451,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   private boolean checkForRewardsOnboarding() {
     return PackageUtils.isFirstInstall(getContext())
-           && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
+           && (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS) && !UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.BRAVE_REWARDS_ENABLED))
            && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
            && !OnboardingPrefManager.getInstance().isOnboardingShown();
   }
@@ -724,7 +724,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   @Override
   public void OnNotificationsCount(int count) {
-    boolean rewardsEnabled = PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED);
+    boolean rewardsEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.BRAVE_REWARDS_ENABLED);
     if (mBraveRewardsNotificationsCount != null && rewardsEnabled) {
       if (count != 0) {
         String value = Integer.toString(count);

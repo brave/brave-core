@@ -17,7 +17,7 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabDelegateFactory;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.embedder_support.util.UrlConstants;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
@@ -37,7 +37,7 @@ public class BraveTabCreator extends ChromeTabCreator {
             ChromeTabbedActivity chromeTabbedActivity = BraveActivity.getChromeTabbedActivity();
             if(chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
-                if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS && PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+                if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS && UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
                     Tab tab = chromeTabbedActivity.selectExistingTab(UrlConstants.NTP_URL);
                     if (tab != null) {
                         chromeTabbedActivity.hideOverview();
