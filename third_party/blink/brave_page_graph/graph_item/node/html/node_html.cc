@@ -7,7 +7,7 @@
 
 #include <libxml/tree.h>
 
-#include "base/logging.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 
@@ -33,7 +33,7 @@ NodeHTML::NodeHTML(PageGraph* const graph, const blink::DOMNodeId node_id) :
 NodeHTML::~NodeHTML() {}
 
 void NodeHTML::MarkDeleted() {
-  LOG_ASSERT(is_deleted_ == false);
+  PG_LOG_ASSERT(is_deleted_ == false);
   is_deleted_ = true;
 }
 

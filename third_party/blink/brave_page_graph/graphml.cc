@@ -12,7 +12,7 @@
 #include <libxml/entities.h>
 #include <libxml/tree.h>
 
-#include "base/logging.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -169,7 +169,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
     const string& value) const {
-  LOG_ASSERT(type_ == kGraphMLAttrTypeString);
+  PG_LOG_ASSERT(type_ == kGraphMLAttrTypeString);
   xmlChar* encoded_content = xmlEncodeEntitiesReentrant(doc,
       BAD_CAST value.c_str());
   xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL,
@@ -180,7 +180,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
     const int value) const {
-  LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
+  PG_LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
   xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
       BAD_CAST to_string(value).c_str());
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
@@ -188,7 +188,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
     const bool value) const {
-  LOG_ASSERT(type_ == kGraphMLAttrTypeBoolean);
+  PG_LOG_ASSERT(type_ == kGraphMLAttrTypeBoolean);
   xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
       BAD_CAST (value ? "true" : "false"));
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
@@ -196,7 +196,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
     const uint64_t value) const {
-  LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
+  PG_LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
   xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
       BAD_CAST to_string(value).c_str());
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
@@ -204,7 +204,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
     const double value) const {
-  LOG_ASSERT(type_ == kGraphMLAttrTypeDouble);
+  PG_LOG_ASSERT(type_ == kGraphMLAttrTypeDouble);
   xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
       BAD_CAST to_string(value).c_str());
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());
@@ -212,7 +212,7 @@ void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
 
 void GraphMLAttr::AddValueNode(xmlDocPtr doc, xmlNodePtr parent_node,
     const milliseconds value) const {
-  LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
+  PG_LOG_ASSERT(type_ == kGraphMLAttrTypeLong);
   xmlNodePtr new_node = xmlNewTextChild(parent_node, NULL, BAD_CAST "data",
       BAD_CAST to_string(value.count()).c_str());
   xmlSetProp(new_node, BAD_CAST "key", BAD_CAST GetGraphMLId().c_str());

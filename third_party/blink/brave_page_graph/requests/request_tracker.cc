@@ -107,14 +107,14 @@ shared_ptr<const TrackedRequestRecord> RequestTracker::ReturnTrackingRecord(
 }
 
 void RequestTracker::AddTracedRequestToHistory(const TrackedRequest* request) {
-  LOG_ASSERT(request->GetRequestId() > 0);
-  LOG_ASSERT(request->GetResource() != nullptr);
+  PG_LOG_ASSERT(request->GetRequestId() > 0);
+  PG_LOG_ASSERT(request->GetResource() != nullptr);
   completed_requests_.emplace(request->GetRequestId(), request->GetResource());
 }
 
 void RequestTracker::CheckTracedRequestAgainstHistory(
     const TrackedRequest* request) {
-  LOG_ASSERT(completed_requests_.count(request->GetRequestId()) == 0 ||
+  PG_LOG_ASSERT(completed_requests_.count(request->GetRequestId()) == 0 ||
     completed_requests_.at(request->GetRequestId()) == request->GetResource());
 }
 

@@ -162,7 +162,7 @@ void ScriptTracker::SetScriptIdForCode(const ScriptId script_id,
   // There should be no situtions where V8 has compiled source code that
   // we don't know about (TODO: handle cases of partial compilation,
   // eval, and similar).
-  LOG_ASSERT(
+  PG_LOG_ASSERT(
     source_hash_to_script_url_hash_.count(code_hash) > 0 ||
     source_hash_to_node_ids_.count(code_hash) > 0 ||
     extension_source_hash_to_script_url_hash_.count(code_hash) > 0);
@@ -181,7 +181,7 @@ ScriptTrackerScriptSource ScriptTracker::GetSourceOfScript(
   // Make sure that we know about this script id, and that its
   // associated with either code from an extension, or from a page,
   // but not both.
-  LOG_ASSERT(script_id_to_extension_source_hash_.count(script_id)
+  PG_LOG_ASSERT(script_id_to_extension_source_hash_.count(script_id)
     + script_id_to_source_hash_.count(script_id) == 1);
 
   if (script_id_to_extension_source_hash_.count(script_id) == 1) {
@@ -299,7 +299,7 @@ void ScriptTracker::AddScriptId(const ScriptId script_id,
     const SourceCodeHash hash) {
   // Make sure we've either never seen this script before, or that it
   // appears to be the same script.
-  LOG_ASSERT(script_id_hashes_.count(script_id) == 0 ||
+  PG_LOG_ASSERT(script_id_hashes_.count(script_id) == 0 ||
       script_id_hashes_.at(script_id) == hash);
   script_id_hashes_.emplace(script_id, hash);
 }
@@ -310,7 +310,7 @@ void ScriptTracker::AddScriptIdAlias(const ScriptId script_id,
     return;
   }
 
-  LOG_ASSERT(script_id_aliases_.count(script_id) == 0 ||
+  PG_LOG_ASSERT(script_id_aliases_.count(script_id) == 0 ||
       script_id_aliases_.at(script_id) == parent_script_id);
   script_id_aliases_.emplace(script_id, parent_script_id);
 }

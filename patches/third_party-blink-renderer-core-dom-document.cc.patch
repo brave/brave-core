@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index f55c90df9969ace76a0813d02237edcb406e079c..f7a732e74ed1cda0787874d60a0e151f7e1d71b8 100644
+index f55c90df9969ace76a0813d02237edcb406e079c..48b00acb2970082446c1a46c18162828592092b1 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -335,6 +335,14 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
@@ -94,13 +94,13 @@ index f55c90df9969ace76a0813d02237edcb406e079c..f7a732e74ed1cda0787874d60a0e151f
 +  if (!frame->IsLocalRoot()) {
 +    Document* local_frame_root_document =
 +        context_frame->LocalFrameRoot().GetDocument();
-+    LOG_ASSERT(local_frame_root_document);
++    PG_LOG_ASSERT(local_frame_root_document);
 +    page_graph_non_owning_ = local_frame_root_document->GetPageGraph();
 +    return page_graph_non_owning_;
 +  }
 +
-+  LOG_ASSERT(!IsTemplateDocument());
-+  LOG_ASSERT(context_document == this);
++  PG_LOG_ASSERT(!IsTemplateDocument());
++  PG_LOG_ASSERT(context_document == this);
 +
 +  // Otherwise, we're the top document, and we need to decide if we should
 +  // create a page graph instance.  We do this for documents that look like
