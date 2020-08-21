@@ -49,7 +49,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -86,7 +86,7 @@ public class NTPUtil {
 
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(context);
 
-        if (ConfigurationUtils.isLandscape(context) && PrefServiceBridge.getInstance().getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
+        if (ConfigurationUtils.isLandscape(context) && UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
             // In landscape
             parentLayout.removeView(mainLayout);
             parentLayout.removeView(imageCreditLayout);
@@ -151,7 +151,7 @@ public class NTPUtil {
         BraveRewardsNativeWorker mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
 
         if (sponsoredTab.shouldShowBanner()) {
-            if (PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED)) {
+            if (UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.ENABLED)) {
                 if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                     if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_ON;
@@ -449,7 +449,7 @@ public class NTPUtil {
     public static boolean isReferralEnabled() {
         Profile mProfile = Profile.getLastUsedRegularProfile();
         NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
-        boolean isReferralEnabled = PrefServiceBridge.getInstance().getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
+        boolean isReferralEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile()).getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false;
         return mNTPBackgroundImagesBridge.isSuperReferral() && isReferralEnabled;
     }
 
