@@ -32,6 +32,7 @@ class BraveTodayWelcomeView: UIView, FeedCardContent {
     
     private let closeButton = UIButton(type: .system).then {
         $0.setImage(#imageLiteral(resourceName: "card_close").withRenderingMode(.alwaysOriginal), for: .normal)
+        $0.accessibilityLabel = Strings.close
     }
     
     private let sourcesAndSettingsButton = ActionButton(type: .system).then {
