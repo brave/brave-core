@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/memory/singleton.h"
+#include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
 #include "brave/common/tor/tor_common.h"
 #include "brave/common/tor/tor_control.h"
@@ -82,6 +83,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   base::ObserverList<tor::TorProfileServiceImpl> observers_;
 
   std::unique_ptr<tor::TorControl> control_;
+
+  base::WeakPtrFactory<TorLauncherFactory> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(TorLauncherFactory);
 };

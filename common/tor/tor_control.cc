@@ -22,8 +22,6 @@
 #include "net/socket/tcp_client_socket.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 
-#define RetainedRef Unretained
-
 namespace tor {
 
 namespace {
@@ -94,11 +92,11 @@ void TorControl::Start(const base::FilePath& watchDirPath,
   watch_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::CheckingOldTorProcess,
-                     base::RetainedRef(this), std::move(check_complete)));
+                     base::Unretained(this), std::move(check_complete)));
   watch_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::StartWatching,
-                     base::RetainedRef(this)));
+                     base::Unretained(this)));
 }
 
 void TorControl::StartWatching() {
@@ -136,10 +134,10 @@ void TorControl::Stop() {
   async_events_.clear();
   watch_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControl::StopWatching, base::RetainedRef(this)));
+      base::BindOnce(&TorControl::StopWatching, base::Unretained(this)));
   io_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControl::Error, base::RetainedRef(this)));
+      base::BindOnce(&TorControl::Error, base::Unretained(this)));
 }
 
 void TorControl::StopWatching() {
