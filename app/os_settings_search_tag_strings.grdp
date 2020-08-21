@@ -714,10 +714,16 @@
   <message name="IDS_OS_SETTINGS_TAG_PLAY_STORE" desc="Text for search result item which, when clicked, navigates the user to Play Store (Android app store) settings.">
     Play Store
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ANDROID_SETTINGS_WITH_PLAY_STORE" desc="Text for search result item which, when clicked, navigates the user to Android app settings, with a button to open Android settings.">
+  <message name="IDS_OS_SETTINGS_TAG_ANDROID_SETTINGS_WITH_PLAY_STORE" desc="Text for search result item which, when clicked, navigates the user Android app settings, with a button to open Android settings. Alternate phrase for: 'Android settings'">
+    Android preferences
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ANDROID_SETTINGS_WITH_PLAY_STORE_ALT1" desc="Text for search result item which, when clicked, navigates the user to Android app settings, with a button to open Android settings. Alternate phrase for: 'Android preferences'">
     Android settings
   </message>
-  <message name="IDS_OS_SETTINGS_TAG_ANDROID_SETTINGS" desc="Text for search result item which, when clicked, navigates the user to apps settings, with a button to open Android settings.">
+  <message name="IDS_OS_SETTINGS_TAG_ANDROID_SETTINGS" desc="Text for search result item which, when clicked, navigates the user to apps settings, with a button to open Android settings. Alternate phrase for: 'Android settings'">
+    Android preferences
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_ANDROID_SETTINGS_ALT1" desc="Text for search result item which, when clicked, navigates the user to apps settings, with a button to open Android settings. Alternate phrase for: 'Android preferences'">
     Android settings
   </message>
   <message name="IDS_OS_SETTINGS_TAG_ANDROID_TURN_ON_PLAY_STORE" desc="Text for search result item which, when clicked, navigates the user to apps settings, with a button to turn on the Play Store (Android app store). Alternate phrase for: 'Enable Play Store'">
@@ -860,8 +866,20 @@
   <message name="IDS_OS_SETTINGS_TAG_INPUT" translateable="false" desc="Text for search result item which, when clicked, navigates the user to input settings.">
     Input
   </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_CHANGE_SYSTEM_LANGUAGE" translateable="false" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with allows users to change system display language.">
+    Change system language
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_OFFER_TRANSLATION" translateable="false" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with a toggle to enable/disable translation prompts.">
+    Translation suggestion
+  </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_ADD_LANGUAGE" desc="Text for search result item which, when clicked, navigates the user to languages and input settings, with an option to add a new language.">
     Add languages
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_ADD_INPUT_METHOD" translateable="false" desc="Text for search result item which, when clicked, navigates the user to input settings, with the option to add input methods (keyboard layouts and input method editors).">
+    Add input methods
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_SPELL_CHECK" translateable="false" desc="Text for search result item which, when clicked, navigates the user to input settings, with all the options for spell check settings">
+    Spell check
   </message>
   <message name="IDS_OS_SETTINGS_TAG_LANGUAGES_INPUT_METHODS" desc="Text for search result item which, when clicked, navigates the user to input settings, with the option to enable/disable input in supported languages.">
     Manage input methods

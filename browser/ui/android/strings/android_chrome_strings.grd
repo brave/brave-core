@@ -662,7 +662,7 @@ CHAR-LIMIT guidelines:
 
       <!-- Themes settings -->
       <message name="IDS_THEME_SETTINGS" desc="Title for the Theme settings. [CHAR-LIMIT=32]">
-        Themes
+        Theme
       </message>
       <message name="IDS_THEMES_SYSTEM_DEFAULT_TITLE" desc="Title for the System Default option. [CHAR-LIMIT=32]">
         System default
@@ -913,6 +913,11 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFETY_CHECK_PASSWORDS_SAFE" desc="Text to display when no passwords are compromised.">
         No compromised passwords found
       </message>
+      <message name="IDS_SAFETY_CHECK_PASSWORDS_COMPROMISED_EXIST" desc="Text to display when there are compromised passwords.">
+        {NUM_PASSWORDS, plural,
+        =1 {1 compromised password}
+        other {# compromised passwords}}
+      </message>
       <message name="IDS_SAFETY_CHECK_PASSWORDS_NO_PASSWORDS" desc="Text to display when no passwords are saved.">
         No saved passwords
       </message>
@@ -969,6 +974,9 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_PREFS_SAFE_BROWSING_SUMMARY" desc="Summary for the Safe Browsing preferences.">
         <ph name="SAFE_BROWSING_MODE">%1$s<ex>Enhanced protection</ex></ph> is on
       </message>
+      <message name="IDS_PREFS_SAFE_BROWSING_NO_PROTECTION_SUMMARY" desc="Summary for the Safe Browsing preferences when Safe Browsing is off.">
+        Safe Browsing is off
+      </message>
       <message name="IDS_PREFS_SECTION_SAFE_BROWSING_TITLE" desc="Title for the Safe Browsing section. [CHAR-LIMIT=32]">
         Safe Browsing
       </message>
@@ -1021,7 +1029,7 @@ Your Brave account may have other forms of browsing history like searches and ac
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_BULLET_TWO" desc="Second bullet point under the Safe Browsing standard protection mode.">
         Checks URLs with a list of unsafe sites stored in Brave. If a site tries to steal your password, or when you download a harmful file, Brave may also send URLs, including bits of page content, to Safe Browsing.
       </message>
-      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_EXTENDED_REPORTING_TITLE" desc="Title for Safe Browsing extended reporting. [CHAR-LIMIT=32]">
+      <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_EXTENDED_REPORTING_TITLE" desc="Title for Safe Browsing extended reporting.">
         Help improve security on the web
       </message>
       <message name="IDS_SAFE_BROWSING_STANDARD_PROTECTION_EXTENDED_REPORTING_SUMMARY" desc="Summary for Safe Browsing extended reporting.">
@@ -1086,6 +1094,12 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_LANGUAGES_ITEM_OPTION_OFFER_TO_TRANSLATE" desc="Option in language item menu. User can click the 'Offer to translate' option to toggle whether they want Brave to translate pages in this language. [CHAR-LIMIT=32]">
         Offer to translate
+      </message>
+      <message name="IDS_LANGUAGES_SET_APPLICATION_LANGUAGE_PROMPT" desc="Option in language item menu. User can click the 'App Language' option to toggle whether or not the Brave user interface should be displayed in this language. [CHAR-LIMIT=32]">
+        Use as Brave’s language
+      </message>
+      <message name="IDS_LANGUAGES_SET_AS_APPLICATION_LANGUAGE" desc="Toast to display after selecting language to use for Brave's user interface.">
+        <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> will use <ph name="language">%2$s<ex>Hindi</ex></ph> on restart.
       </message>
       <message name="IDS_LANGUAGES_EXPLICIT_ASK_TITLE" desc="Title of the dialog that explicitly asks the user which languages they can read.">
         What languages do you read?
@@ -1426,11 +1440,6 @@ Your Brave account may have other forms of browsing history like searches and ac
       </message>
       <message name="IDS_FAMILY_LINK_PRIVACY_POLICY_URL" desc="URL for the Family Link privacy policy" translateable="false">
         https://families.google.com/intl/$LOCALE/familylink/privacy/child-policy/
-      </message>
-
-      <!-- Certificate viewer -->
-      <message name="IDS_CERTTITLE" desc="Dialog box title for viewing security certificates. [CHAR-LIMIT=32]">
-        Certificate viewer
       </message>
 
       <!-- Sign-in strings -->
@@ -2414,6 +2423,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SUBTITLE" desc="The subtitle for the account picker bottom sheet that tells the user what happens if the button 'Continue as John Doe' is clicked">
         You’ll be signed in with your Brave sync chain\n(this won’t turn on Brave Sync)
       </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SIGNIN_TITLE" desc="The title of the account picker bottom sheet tells that the user is in the process of signing in with their Brave sync chain">
+        Signing in...
+      </message>
 
       <!-- Personalized Signin Promos Strings -->
       <message name="IDS_SIGNIN_PROMO_CONTINUE_AS" desc="Button that the user can press to login without asking the password and continue using Brave with this acccount.">
@@ -3159,10 +3171,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
          Brave <ph name="APP_NAME">%1$s<ex>Brave</ex></ph> storage
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_UNIMPORTANT_SITE_DATA_DESCRIPTION" desc="Text to describe the data stored by unimportant or infrequent sites.">
-        Site storage Brave doesn't think is important (e.g. sites with no saved settings or that you don't visit often)
+        Stored data that Brave doesn't think is important (e.g. sites with no saved settings or that you don't visit often)
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_UNIMPORTANT_SITE_DATA_SIZE_LABEL" desc="Label for the data usage of site data for unimportant sites (followed by a number of megabytes). [CHAR-LIMIT=30]">
-        Unimportant storage
+        Unimportant data
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_CLEAR_UNIMPORTANT_SITE_DATA_BUTTON" desc="Text on the button to clear all Brave data. [CHAR LIMIT=30]">
         Free up space
@@ -3171,7 +3183,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         This will clear cookies, cache, and other data of sites Brave doesn't think is important.
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_SITE_DATA_DESCRIPTION" desc="Text to describe the data stored on the device by websites.">
-        All site storage, including cookies and other locally stored data
+        All data stored by sites, including cookies and other locally stored data
       </message>
       <message name="IDS_STORAGE_MANAGEMENT_COMPUTING_SIZE" desc="String shown in place of the data usage while it's being calculated. [CHAR-LIMIT=30]">
         Computing…
@@ -3337,8 +3349,14 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_TWA_CLEAR_DATA_SITE_SELECTION_TITLE" desc="Title of screen showing the sites linked to TWA, allowing the user to clean data in any of them.">
         Linked sites
       </message>
-      <message name="IDS_TWA_QUALITY_ENFORCEMENT_VIOLATION_ERROR" desc="Text shown on a toast when TWA violation.">
-          TWA error: <ph name="ERROR_CODE">%1$s<ex>404</ex></ph> on <ph name="VIOLATED_URL">%2$s<ex>https://google.com/</ex></ph>
+      <message name="IDS_TWA_QUALITY_ENFORCEMENT_VIOLATION_ERROR" desc="Text shown on a toast when TWA violation 404.">
+        <ph name="ERROR_CODE">%1$s<ex>404</ex></ph> on <ph name="VIOLATED_URL">%2$s<ex>https://example.com/</ex></ph>
+      </message>
+      <message name="IDS_TWA_QUALITY_ENFORCEMENT_VIOLATION_ASSERT_LINK" desc="Text shown on a toast when TWA violate the quality enforcement criteria: digital assert link verification failed.">
+        Digital assert links verification failed on <ph name="VIOLATED_URL">%1$s<ex>https://example.com/</ex></ph>
+      </message>
+      <message name="IDS_TWA_QUALITY_ENFORCEMENT_VIOLATION_OFFLINE" desc="Text shown on a toast when TWA violate the quality enforcement criteria: page unavailable offline.">
+        Page unavailable offline: <ph name="VIOLATED_URL">%1$s<ex>https://example.com/</ex></ph>
       </message>
 
       <message name="IDS_WEBAPP_TAP_TO_COPY_URL" desc="Message on the notification that indicates that taping it will copy a Web App's URL into the clipboard.">
@@ -3840,10 +3858,6 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
 
       <message name="IDS_SHARING_HIGHLIGHTS" desc="Label for Link-to-text button in the sharing hub.">
         Link to text
-      </message>
-
-      <message name="IDS_LINK_COPIED" desc="Text shown in the toast notification when Copy Link is selected in the sharing hub.">
-        Link Copied
       </message>
 
       <message name="IDS_TEXT_COPIED" desc="Text shown in the toast notification when Copy Text is selected in the sharing hub.">

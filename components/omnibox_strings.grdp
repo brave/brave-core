@@ -110,6 +110,12 @@
   <message name="IDS_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, clear browsing data.">
     Clear your browsing history, cookies, cache, and more in Brave settings
   </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA_SUFFIX" desc="Suffix for spoken suggestion description with clear data pedal action to explain keystroke used to clear browsing data.">
+    <ph name="CLEAR_BROWSING_DATA_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to Clear your browsing history, cookies, cache, and more in Brave settings
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_CLEAR_BROWSING_DATA" desc="Announcement when clear browsing data pedal button is focused.">
+    Clear browsing data button, press Enter to clear your browsing history, cookies, cache, and more in Brave settings
+  </message>
 
   <message name="IDS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_HINT" desc="The button text contents to suggest pedal action, manage passwords.">
     Manage passwords
@@ -119,6 +125,12 @@
   </message>
   <message name="IDS_OMNIBOX_PEDAL_MANAGE_PASSWORDS_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, change language.">
     View and manage your passwords in Brave settings
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_PASSWORDS_SUFFIX" desc="Suffix for spoken suggestion description with manage passwords pedal action to explain keystroke used to manage passwords.">
+    <ph name="MANAGE_PASSWORDS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to view and manage your passwords in Brave settings
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_MANAGE_PASSWORDS" desc="Announcement when manage passwords pedal button is focused.">
+    Manage passwords button, press Enter to view and manage your passwords in Brave settings
   </message>
 
   <message name="IDS_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD_HINT" desc="The button text contents to suggest pedal action, update credit card.">
@@ -130,6 +142,12 @@
   <message name="IDS_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, update credit card.">
     Manage your payments and credit card info in Brave settings
   </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD_SUFFIX" desc="Suffix for spoken suggestion description with update credit card pedal action to explain keystroke used to update credit card.">
+    <ph name="UPDATE_CREDIT_CARD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to manage your payments and credit card info in Brave settings
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_UPDATE_CREDIT_CARD" desc="Announcement when update credit card pedal button is focused.">
+    Manage payment methods button, press Enter to manage your payments and credit card info in Brave settings
+  </message>
 
   <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="The button text contents to suggest pedal action, launch private.">
     Open Private window
@@ -139,6 +157,12 @@
   </message>
   <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, launch private.">
     Open a new Private window to browse privately
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUFFIX" desc="Suffix for spoken suggestion description with launch private pedal action to explain keystroke used to launch private.">
+    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private window to browse privately
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO" desc="Announcement when launch private pedal button is focused.">
+    Open Private Window button, press Enter to open a new Private window to browse privately
   </message>
 
   <message name="IDS_OMNIBOX_PEDAL_TRANSLATE_HINT" desc="The button text contents to suggest pedal action, translate.">
@@ -150,6 +174,12 @@
   <message name="IDS_OMNIBOX_PEDAL_TRANSLATE_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, translate.">
     Translate this page with Brave Translate
   </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_TRANSLATE_SUFFIX" desc="Suffix for spoken suggestion description with translate pedal action to explain keystroke used to translate this page.">
+    <ph name="TRANSLATE_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to translate this page with Brave Translate
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_TRANSLATE" desc="Announcement when translate pedal button is focused.">
+    Translate page button, press Enter to translate this page with Brave Translate
+  </message>
 
   <message name="IDS_OMNIBOX_PEDAL_UPDATE_CHROME_HINT" desc="The button text contents to suggest pedal action, update chrome.">
     Update Brave
@@ -159,6 +189,12 @@
   </message>
   <message name="IDS_OMNIBOX_PEDAL_UPDATE_CHROME_SUGGESTION_CONTENTS" desc="The suggestion content text to suggest pedal action, update chrome.">
     Update Brave from your Brave settings
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_UPDATE_CHROME_SUFFIX" desc="Suffix for spoken suggestion description with update chrome pedal action to explain keystroke used to update Brave.">
+    <ph name="UPDATE_CHROME_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to update Brave from your Brave settings
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_UPDATE_CHROME" desc="Announcement when update chrome pedal button is focused.">
+    Update Brave button, press Enter to update Brave from your Brave settings
   </message>
 
   <!-- Accessibility labels for autocomplete match types.
@@ -212,6 +248,17 @@
   <message name="IDS_ACC_TAB_SWITCH_BUTTON" desc="Announcement when tab switch button focused.">
     Tab switch button, press Enter to switch to this tab
   </message>
+
+  <message name="IDS_ACC_MULTIPLE_ACTIONS_SUFFIX" desc="Suffix for spoken suggestion description with multiple actions available (pedals, switch tab, keyword search) to indicate that this suggestion has multiple actions available.">
+    <ph name="MULTIPLE_ACTIONS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, multiple actions are available, press Tab to cycle through them
+  </message>
+    <message name="IDS_ACC_KEYWORD_SUFFIX" desc="Suffix for spoken keyword suggestion description to explain keystroke used to search.">
+    <ph name="KEYWORD_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to search
+  </message>
+  <message name="IDS_ACC_KEYWORD_BUTTON" desc="Announcement when keyword search button focused.">
+    Search button, press Enter to search <ph name="KEYWORD_SUFFIX">$1<ex>Youtube</ex></ph>
+  </message>
+
   <!-- Accessibility suffix for suggestions when the remove button is focused. -->
   <message name="IDS_ACC_REMOVE_SUGGESTION_FOCUSED_PREFIX" desc="Announcement when remove suggestion button is focused.">
     Remove Suggestion button, press Enter to remove, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Brave Projects http://www.chromium.org bookmark</ex></ph>
