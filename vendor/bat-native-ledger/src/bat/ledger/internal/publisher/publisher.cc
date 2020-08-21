@@ -372,7 +372,7 @@ void Publisher::onFetchFavIcon(const std::string& publisher_key,
                                    bool success,
                                    const std::string& favicon_url) {
   if (!success || favicon_url.empty()) {
-    BLOG(1, "Missing or corrupted favicon file for: " << publisher_key);
+    BLOG(1, "Corrupted favicon file");
     return;
   }
 
@@ -777,8 +777,6 @@ void Publisher::OnServerPublisherInfoLoaded(
     const std::string& publisher_key,
     ledger::GetServerPublisherInfoCallback callback) {
   if (ShouldFetchServerPublisherInfo(server_info.get())) {
-    BLOG(1, "Server publisher info  is expired for " << publisher_key);
-
     // Store the current server publisher info so that if fetching fails
     // we can execute the callback with the last known valid data.
     auto shared_info = std::make_shared<ledger::ServerPublisherInfoPtr>(
