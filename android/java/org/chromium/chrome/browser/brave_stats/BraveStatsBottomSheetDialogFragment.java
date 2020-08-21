@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.app.Dialog;
@@ -103,15 +104,6 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
         emptyDataLayout = view.findViewById(R.id.brave_stats_empty_layout);
 
-            getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialog) {
-                BottomSheetDialog d = (BottomSheetDialog) dialog;
-                View bottomSheetInternal = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-            }
-        });
-
         RadioGroup durationRadioGroup = view.findViewById(R.id.duration_radio_group);
         durationRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -164,6 +156,9 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         updateBraveStatsLayout();
 
         dialog.setContentView(view);
+        ViewParent parent = view.getParent();
+        ((View)parent).getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+
     }
 
     @Override
