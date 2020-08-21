@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index 44b517f08fa194adc1abd6e08d0df56425af3c0b..9e5a23caac8d886f4e07331d5966c0a8ebf5d195 100644
+index 5ad265fbe50d64e49b8cb8e5a2a2bc40ac7ca259..c693778365afc1d4a9a39041ab9805ce352bc136 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -659,6 +659,7 @@ class Browser : public TabStripModelObserver,
+@@ -664,6 +664,7 @@ class Browser : public TabStripModelObserver,
    // dragging.
    void SetIsInTabDragging(bool is_in_tab_dragging);
  

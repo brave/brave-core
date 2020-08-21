@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc b/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
-index 3e0cad4e0c08b75e9688ce7f0d1ac71988a078d5..1aaa97305698f876313c3d455ce1fce00677b3b1 100644
+index 0716ab28c05a24f3bc2aefc7774ee66e7321c4c2..4a98a5d023ec5035c6cf57984e0bf76c19434d28 100644
 --- a/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
 +++ b/chrome/browser/ui/views/outdated_upgrade_bubble_view.cc
-@@ -35,8 +35,12 @@ namespace {
+@@ -37,8 +37,12 @@ namespace {
  
  // The URL to be used to re-install Chrome when auto-update failed for too long.
  constexpr char kDownloadChromeUrl[] =
