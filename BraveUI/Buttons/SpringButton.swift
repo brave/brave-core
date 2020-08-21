@@ -22,6 +22,9 @@ open class SpringButton: UIControl {
   
   public override init(frame: CGRect) {
     super.init(frame: frame)
+    
+    accessibilityTraits.insert(.button)
+    isAccessibilityElement = true
   }
   
   @available(*, unavailable)

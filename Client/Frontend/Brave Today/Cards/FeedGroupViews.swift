@@ -18,6 +18,7 @@ class FeedGroupView: UIView {
     let containerStackView = UIStackView().then {
         $0.axis = .vertical
         $0.spacing = 0
+        $0.shouldGroupAccessibilityChildren = true
     }
     
     /// The title label appearing above the list of feeds
@@ -55,14 +56,7 @@ class FeedGroupView: UIView {
                 $0.isUserInteractionEnabled = false
             }
         }
-        buttons = feedViews.map {
-            let button = SpringButton()
-            button.addSubview($0)
-            $0.snp.makeConstraints {
-                $0.edges.equalToSuperview()
-            }
-            return button
-        }
+        buttons = feedViews.map(FeedSpringButton.init)
         
         super.init(frame: .zero)
         
@@ -163,6 +157,7 @@ class DealsFeedGroupView: FeedGroupView, FeedCardContent {
                     $0.height.equalTo(1.0 / UIScreen.main.scale)
                 }
                 $0.isUserInteractionEnabled = false
+                $0.isAccessibilityElement = false
             }),
             .view(MoreOffersButton().then {
                 $0.addTarget(self, action: #selector(tappedMoreOffers), for: .touchUpInside)
@@ -179,6 +174,7 @@ class DealsFeedGroupView: FeedGroupView, FeedCardContent {
             $0.appearanceTextColor = .white
             $0.text = Strings.BraveToday.moreBraveOffers
             $0.font = .systemFont(ofSize: 14, weight: .semibold)
+            $0.isAccessibilityElement = false
         }
         private let disclosureIcon = UIImageView(image: UIImage(imageLiteralResourceName: "disclosure-arrow").template).then {
             $0.tintColor = .white
@@ -198,6 +194,9 @@ class DealsFeedGroupView: FeedGroupView, FeedCardContent {
             snp.makeConstraints {
                 $0.height.equalTo(44)
             }
+            accessibilityLabel = label.text
+            accessibilityTraits.insert(.button)
+            isAccessibilityElement = true
         }
         
         @available(*, unavailable)
@@ -240,11 +239,32 @@ class NumberedFeedGroupView: FeedGroupView, FeedCardContent {
                             $0.font = .systemFont(ofSize: 16, weight: .bold)
                             $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.4)
                             $0.setContentHuggingPriority(.required, for: .horizontal)
+                            $0.isAccessibilityElement = false
                         }),
                         .view(view.element)
                     )
                 }
             }
         })
+    }
+}
+
+private class FeedSpringButton: SpringButton {
+    let feedItemView: FeedItemView
+    
+    init(itemView: FeedItemView) {
+        feedItemView = itemView
+        
+        super.init(frame: .zero)
+        
+        addSubview(itemView)
+        itemView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    override var accessibilityLabel: String? {
+        get { feedItemView.accessibilityLabel }
+        set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
     }
 }

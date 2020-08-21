@@ -19,6 +19,7 @@ class FeedSectionHeaderView: UIView {
         $0.setImage(UIImage(imageLiteralResourceName: "brave-today-settings"), for: .normal)
         $0.tintColor = .white
         $0.setContentHuggingPriority(.required, for: .horizontal)
+        $0.accessibilityLabel = Strings.BraveToday.sourcesAndSettings
     }
     
     private let shadowLine = UIView().then {

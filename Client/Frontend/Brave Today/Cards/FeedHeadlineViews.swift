@@ -40,6 +40,13 @@ class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
             let longPress = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(_:)))
             addGestureRecognizer(longPress)
         }
+        
+        isAccessibilityElement = true
+    }
+    
+    override var accessibilityLabel: String? {
+        get { feedView.accessibilityLabel }
+        set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
     }
     
     @objc private func tappedSelf() {

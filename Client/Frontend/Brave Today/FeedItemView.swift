@@ -21,6 +21,7 @@ class FeedItemView: UIView {
         contentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+        isAccessibilityElement = true
     }
     /// The feed thumbnail image view. By default thumbnails aspect scale to
     /// fill the available space
@@ -113,6 +114,26 @@ class FeedItemView: UIView {
     @available(*, unavailable)
     required init(coder: NSCoder) {
         fatalError()
+    }
+    
+    override var accessibilityLabel: String? {
+        get {
+            var labels: [String] = []
+            if let title = titleLabel.text, titleLabel.superview != nil {
+                labels.append(title)
+            }
+            if let description = descriptionLabel.text, descriptionLabel.superview != nil {
+                labels.append(description)
+            }
+            if let date = dateLabel.text, dateLabel.superview != nil {
+                labels.append(date)
+            }
+            if let brand = brandContainerView.textLabel.text, brandContainerView.superview != nil {
+                labels.append(brand)
+            }
+            return labels.joined(separator: ". ")
+        }
+        set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
     }
 }
 
