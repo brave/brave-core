@@ -89,6 +89,11 @@
           compress="false"
           preprocess="true"
           type="BINDATA" />
+      <include name="IDR_SETTINGS_BRAVE_OVERRIDES_PRINTING_PAGE_JS"
+          file="brave_overrides/printing_page.js"
+          compress="false"
+          preprocess="true"
+          type="BINDATA" />
       <include name="IDR_SETTINGS_BRAVE_OVERRIDES_RESET_PROFILE_DIALOG_JS"
           file="brave_overrides/reset_profile_dialog.js"
           compress="false"
