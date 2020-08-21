@@ -31,7 +31,8 @@ TorLauncherFactory* TorLauncherFactory::GetInstance() {
 TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
       tor_pid_(-1),
-      control_(tor::TorControl::Create(this)) {
+      control_(tor::TorControl::Create(this)),
+      weak_ptr_factory_(this) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (g_prevent_tor_launch_for_tests) {
     tor_pid_ = 1234;
@@ -50,11 +51,12 @@ void TorLauncherFactory::Init() {
           .Pass());
 
   tor_launcher_.set_disconnect_handler(base::BindOnce(
-      &TorLauncherFactory::OnTorLauncherCrashed, base::Unretained(this)));
+      &TorLauncherFactory::OnTorLauncherCrashed,
+      weak_ptr_factory_.GetWeakPtr()));
 
   tor_launcher_->SetCrashHandler(base::Bind(
                         &TorLauncherFactory::OnTorCrashed,
-                        base::Unretained(this)));
+                        weak_ptr_factory_.GetWeakPtr()));
 }
 
 TorLauncherFactory::~TorLauncherFactory() {}
@@ -99,14 +101,14 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
   // Launch tor after cleanup is done
   control_->Start(config_.tor_watch_path(),
                   base::BindOnce(&TorLauncherFactory::OnTorControlCheckComplete,
-                                 base::Unretained(this)));
+                                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void TorLauncherFactory::OnTorControlCheckComplete() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   tor_launcher_->Launch(config_,
                         base::Bind(&TorLauncherFactory::OnTorLaunched,
-                                   base::Unretained(this)));
+                                   weak_ptr_factory_.GetWeakPtr()));
 }
 
 void TorLauncherFactory::KillTorProcess() {
@@ -154,10 +156,11 @@ void TorLauncherFactory::OnTorControlReady() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "TOR CONTROL: Ready!";
   control_->GetVersion(
-      base::BindOnce(&TorLauncherFactory::GotVersion, base::Unretained(this)));
+      base::BindOnce(&TorLauncherFactory::GotVersion,
+                     weak_ptr_factory_.GetWeakPtr()));
   control_->GetSOCKSListeners(
       base::BindOnce(&TorLauncherFactory::GotSOCKSListeners,
-                     base::Unretained(this)));
+                     weak_ptr_factory_.GetWeakPtr()));
   control_->Subscribe(tor::TorControlEvent::NETWORK_LIVENESS,
                       base::DoNothing::Once<bool>());
   control_->Subscribe(tor::TorControlEvent::STATUS_CLIENT,
