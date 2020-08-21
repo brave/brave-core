@@ -25,7 +25,6 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   void Init();
   void LaunchTorProcess(const tor::TorConfig& config);
-  void ReLaunchTorProcess(const tor::TorConfig& config);
   void KillTorProcess();
   const tor::TorConfig& GetTorConfig() const { return config_; }
   int64_t GetTorPid() const { return tor_pid_; }
@@ -60,17 +59,12 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
   ~TorLauncherFactory() final;
 
   void OnTorControlCheckComplete();
-  void Launching();
 
   bool SetConfig(const tor::TorConfig& config);
 
   void OnTorLauncherCrashed();
   void OnTorCrashed(int64_t pid);
   void OnTorLaunched(bool result, int64_t pid);
-
-  void OnTorNewProxyURI(std::string uri);
-  void OnTorCircuitEstablished(bool result);
-  void OnTorInitializing(std::string percentage);
 
   void GotVersion(bool error, const std::string& version);
   void GotSOCKSListeners(bool error, const std::vector<std::string>& listeners);

@@ -62,6 +62,7 @@ std::unique_ptr<TorControl> TorControl::Create(TorControl::Delegate* delegate) {
 using content::BrowserThread;
 TorControl::TorControl(TorControl::Delegate* delegate)
   : running_(false),
+    owner_task_runner_(base::SequencedTaskRunnerHandle::Get()),
     watch_task_runner_(base::CreateSequencedTaskRunner(kWatchTaskTraits)),
     io_task_runner_(base::CreateSingleThreadTaskRunner(kIOTaskTraits)),
     polling_(false),
@@ -153,8 +154,9 @@ void TorControl::CheckingOldTorProcess(base::OnceClosure callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   base::ProcessId id;
   if (EatOldPid(id))
-    delegate_->OnTorCleanupNeeded(std::move(id));
-  std::move(callback).Run();
+    NotifyTorCleanupNeeded(std::move(id));
+  owner_task_runner_->PostTask(FROM_HERE,
+                               std::move(callback));
 }
 
 
@@ -458,7 +460,7 @@ void TorControl::Authenticated(bool error,
     return;
   }
   LOG(ERROR) << "tor: control connection ready";
-  delegate_->OnTorControlReady();
+  NotifyTorControlReady();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -609,7 +611,7 @@ void TorControl::DoCmd(std::string cmd,
                            PerLineCallback perline,
                            CmdCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  delegate_->OnTorRawCmd(cmd);
+  NotifyTorRawCmd(cmd);
   if (!socket_ || writeq_.size() > 100 || cmdq_.size() > 100) {
     // Socket is closed, or over 100 commands pending or synchronous
     // callbacks queued -- something is probably wrong.
@@ -671,10 +673,12 @@ void TorControl::GetVersionDone(
       status != "250" ||
       reply != "OK" ||
       version->empty()) {
-    std::move(callback).Run(true, "");
+    owner_task_runner_->PostTask(FROM_HERE, base::BindOnce(std::move(callback),
+                                                           true, ""));
     return;
   }
-  std::move(callback).Run(false, *version);
+  owner_task_runner_->PostTask(FROM_HERE, base::BindOnce(std::move(callback),
+                                                         false, *version));
 }
 
 void TorControl::GetSOCKSListeners(
@@ -712,10 +716,14 @@ void TorControl::GetSOCKSListenersDone(
       status != "250" ||
       reply != "OK" ||
       listeners->empty()) {
-    std::move(callback).Run(true, std::vector<std::string>());
+    owner_task_runner_->PostTask(FROM_HERE,
+                                 base::BindOnce(std::move(callback),
+                                                true,
+                                                std::vector<std::string>()));
     return;
   }
-  std::move(callback).Run(false, *listeners);
+  owner_task_runner_->PostTask(FROM_HERE, base::BindOnce(std::move(callback),
+                                                         false, *listeners));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1023,7 +1031,7 @@ bool TorControl::ReadLine(const std::string& line) {
   // Determine whether it is an asynchronous reply, status 6yz.
   if (status[0] == '6') {
     // Notify delegate of the raw reply.
-    delegate_->OnTorRawAsync(status, reply);
+    NotifyTorRawAsync(status, reply);
 
     // Is this a new async reply?
     if (!async_) {
@@ -1058,7 +1066,7 @@ bool TorControl::ReadLine(const std::string& line) {
 
           // Notify the delegate of the parsed reply.  No extra
           // because there were no intermediate reply lines.
-          delegate_->OnTorEvent(event, initial, {});
+          NotifyTorEvent(event, initial, {});
 
           return true;
         }
@@ -1129,7 +1137,7 @@ bool TorControl::ReadLine(const std::string& line) {
             // If we're still subscribed, notify the delegate of the
             // parsed reply.
             if (async_events_.count(async_->event)) {
-              delegate_->OnTorEvent(
+              NotifyTorEvent(
                     async_->event, async_->initial, async_->extra);
             }
           }
@@ -1143,7 +1151,7 @@ bool TorControl::ReadLine(const std::string& line) {
     // the queue.
     switch (pos) {
       case '-':
-        delegate_->OnTorRawMid(status, reply);
+        NotifyTorRawMid(status, reply);
         if (!cmdq_.empty()) {
           PerLineCallback& perline = cmdq_.front().first;
           perline.Run(status, reply);
@@ -1154,7 +1162,7 @@ bool TorControl::ReadLine(const std::string& line) {
         // XXX Just ignore it for now.
         return true;
       case ' ':
-        delegate_->OnTorRawEnd(status, reply);
+        NotifyTorRawEnd(status, reply);
         if (!cmdq_.empty()) {
           CmdCallback& callback = cmdq_.front().second;
           bool error = false;
@@ -1212,6 +1220,94 @@ void TorControl::Error() {
         FROM_HERE,
         base::BindOnce(&TorControl::Poll, base::Unretained(this)));
   }
+}
+
+void TorControl::NotifyTorControlReady() {
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](TorControl::Delegate* delegate) {
+            delegate->OnTorControlReady();
+          }, delegate_));
+}
+
+void TorControl::NotifyTorClosed() {
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](TorControl::Delegate* delegate) {
+            delegate->OnTorClosed();
+          }, delegate_));
+}
+
+void TorControl::NotifyTorCleanupNeeded(base::ProcessId id) {
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](TorControl::Delegate* delegate, base::ProcessId id) {
+            delegate->OnTorCleanupNeeded(std::move(id));
+          }, delegate_, std::move(id)));
+}
+
+void TorControl::NotifyTorEvent(
+    TorControlEvent event,
+    const std::string& initial,
+    const std::map<std::string, std::string>& extra) {
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](TorControl::Delegate* delegate,
+             TorControlEvent event,
+             const std::string& initial,
+             const std::map<std::string, std::string>& extra) {
+            delegate->OnTorEvent(event, initial, extra);
+          }, delegate_, event, initial, extra));
+}
+
+void TorControl::NotifyTorRawCmd(const std::string& cmd) {
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](TorControl::Delegate* delegate,
+             const std::string& cmd) {
+            delegate->OnTorRawCmd(cmd);
+          }, delegate_, cmd));
+}
+
+void TorControl::NotifyTorRawAsync(const std::string& status,
+                                   const std::string& line) {
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](TorControl::Delegate* delegate,
+             const std::string& status,
+             const std::string& line) {
+            delegate->OnTorRawAsync(status, line);
+          }, delegate_, status, line));
+}
+
+void TorControl::NotifyTorRawMid(const std::string& status,
+                                 const std::string& line) {
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](TorControl::Delegate* delegate,
+             const std::string& status,
+             const std::string& line) {
+            delegate->OnTorRawMid(status, line);
+          }, delegate_, status, line));
+}
+
+void TorControl::NotifyTorRawEnd(const std::string& status,
+                                 const std::string& line) {
+  owner_task_runner_->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          [](TorControl::Delegate* delegate,
+             const std::string& status,
+             const std::string& line) {
+            delegate->OnTorRawEnd(status, line);
+          }, delegate_, status, line));
 }
 
 // ParseKV(string, key, value)

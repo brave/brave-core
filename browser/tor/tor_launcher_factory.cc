@@ -103,40 +103,8 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
 }
 
 void TorLauncherFactory::OnTorControlCheckComplete() {
-  content::GetUIThreadTaskRunner({})
-    ->PostTask(FROM_HERE,
-               base::BindOnce(&TorLauncherFactory::Launching,
-               base::Unretained(this)));
-}
-
-void TorLauncherFactory::Launching() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   tor_launcher_->Launch(config_,
-                        base::Bind(&TorLauncherFactory::OnTorLaunched,
-                                   base::Unretained(this)));
-}
-
-void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
-  DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  DLOG_IF(ERROR, g_prevent_tor_launch_for_tests)
-      << "The tor process launch was suppressed for testing. Feel free to "
-         "replace this logging with a condition if you want to prevent "
-         "relaunch as well";
-
-  if (is_starting_) {
-    LOG(WARNING) << "tor process is already starting";
-    return;
-  }
-
-  if (tor_pid_ < 0) {
-    LaunchTorProcess(config);
-    return;
-  }
-  if (!SetConfig(config)) {
-    LOG(WARNING) << "config is empty.";
-    return;
-  }
-  tor_launcher_->ReLaunch(config_,
                         base::Bind(&TorLauncherFactory::OnTorLaunched,
                                    base::Unretained(this)));
 }
@@ -182,22 +150,8 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
     observer.NotifyTorLaunched(result, pid);
 }
 
-void TorLauncherFactory::OnTorNewProxyURI(std::string uri) {
-  for (auto& observer : observers_)
-    observer.NotifyTorNewProxyURI(uri);
-}
-
-void TorLauncherFactory::OnTorCircuitEstablished(bool result) {
-  for (auto& observer : observers_)
-    observer.NotifyTorCircuitEstablished(result);
-}
-
-void TorLauncherFactory::OnTorInitializing(std::string percentage) {
-  for (auto& observer : observers_)
-    observer.NotifyTorInitializing(percentage);
-}
-
 void TorLauncherFactory::OnTorControlReady() {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "TOR CONTROL: Ready!";
   control_->GetVersion(
       base::BindOnce(&TorLauncherFactory::GotVersion, base::Unretained(this)));
@@ -217,6 +171,7 @@ void TorLauncherFactory::OnTorControlReady() {
 }
 
 void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (error) {
     LOG(ERROR) << "Failed to get version!";
     return;
@@ -226,6 +181,7 @@ void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
 
 void TorLauncherFactory::GotSOCKSListeners(
     bool error, const std::vector<std::string>& listeners) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (error) {
     LOG(ERROR) << "Failed to get SOCKS listeners!";
     return;
@@ -239,18 +195,17 @@ void TorLauncherFactory::GotSOCKSListeners(
   tor_proxy_uri.erase(
       std::remove(tor_proxy_uri.begin(), tor_proxy_uri.end(), '\"'),
       tor_proxy_uri.end());
-  content::GetUIThreadTaskRunner({})
-    ->PostTask(FROM_HERE,
-               base::BindOnce(&TorLauncherFactory::OnTorNewProxyURI,
-                              base::Unretained(this),
-                              std::move(tor_proxy_uri)));
+  for (auto& observer : observers_)
+    observer.NotifyTorNewProxyURI(tor_proxy_uri);
 }
 
 void TorLauncherFactory::OnTorClosed() {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "TOR CONTROL: Closed!";
 }
 
 void TorLauncherFactory::OnTorCleanupNeeded(base::ProcessId id) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "Killing old tor process pid=" << id;
   // Dispatch to launcher thread
   content::GetProcessLauncherTaskRunner()
@@ -270,6 +225,7 @@ void TorLauncherFactory::KillOldTorProcess(base::ProcessId id) {
 void TorLauncherFactory::OnTorEvent(
     tor::TorControlEvent event, const std::string& initial,
     const std::map<std::string, std::string>& extra) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "TOR CONTROL: event "
              << (*tor::kTorControlEventByEnum.find(event)).second
              << ": " << initial;
@@ -282,43 +238,38 @@ void TorLauncherFactory::OnTorEvent(
       const std::string percentage =
         initial.substr(progress_start + strlen(prefix),
                        progress_length - strlen(prefix));
-      content::GetUIThreadTaskRunner({})
-        ->PostTask(FROM_HERE,
-                   base::BindOnce(&TorLauncherFactory::OnTorInitializing,
-                                  base::Unretained(this),
-                                  std::move(percentage)));
+      for (auto& observer : observers_)
+        observer.NotifyTorInitializing(percentage);
     } else if (initial.find("CIRCUIT_ESTABLISHED") != std::string::npos) {
-      content::GetUIThreadTaskRunner({})
-        ->PostTask(FROM_HERE,
-                   base::BindOnce(&TorLauncherFactory::OnTorCircuitEstablished,
-                                  base::Unretained(this),
-                                  true));
+      for (auto& observer : observers_)
+        observer.NotifyTorCircuitEstablished(true);
     } else if (initial.find("CIRCUIT_NOT_ESTABLISHED") != std::string::npos) {
-      content::GetUIThreadTaskRunner({})
-        ->PostTask(FROM_HERE,
-                   base::BindOnce(&TorLauncherFactory::OnTorCircuitEstablished,
-                                  base::Unretained(this),
-                                  false));
+      for (auto& observer : observers_)
+        observer.NotifyTorCircuitEstablished(false);
     }
   }
 }
 
 void TorLauncherFactory::OnTorRawCmd(const std::string& cmd) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "TOR CONTROL: command: " << cmd;
 }
 
 void TorLauncherFactory::OnTorRawAsync(
     const std::string& status, const std::string& line) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "TOR CONTROL: async " << status << " " << line;
 }
 
 void TorLauncherFactory::OnTorRawMid(
     const std::string& status, const std::string& line) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "TOR CONTROL: mid " << status << "-" << line;
 }
 
 void TorLauncherFactory::OnTorRawEnd(
     const std::string& status, const std::string& line) {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
   LOG(ERROR) << "TOR CONTROL: end " << status << " " << line;
 }
 
