@@ -36,7 +36,7 @@ fn main() -> io::Result<()> {
                 .filter(|f| detect_network_filter(f))
                 .collect::<Vec<String>>();
 
-            let adblock_matcher = adblock::engine::Engine::from_rules_debug(&whitelist);
+            let adblock_matcher = adblock::engine::Engine::from_rules_debug(&whitelist, adblock::lists::FilterFormat::Standard);
 
             for url in expected_readable {
                 let check = adblock_matcher.check_network_urls(&url, &url, "");
