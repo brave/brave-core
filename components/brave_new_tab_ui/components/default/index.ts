@@ -14,6 +14,7 @@ import { TogetherWidget } from './together'
 import { AddCardWidget } from './addCard'
 import { GeminiWidget } from './gemini'
 import { BitcoinDotComWidget } from './bitcoinDotCom'
+import { CryptoDotComWidget } from './cryptoDotCom'
 import createWidget from './widget'
 
 export * from './page'
@@ -36,5 +37,6 @@ export {
   AddCardWidget,
   GeminiWidget,
   BitcoinDotComWidget,
+  CryptoDotComWidget,
   createWidget
 }
