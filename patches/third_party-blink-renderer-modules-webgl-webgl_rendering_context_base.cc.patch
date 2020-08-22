@@ -70,9 +70,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
 +    brave_page_graph::PageGraph* page_graph =
-+        brave_page_graph::PageGraph::GetFromExecutionContext(
-+          *Host()->GetTopExecutionContext());
-+
++      brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +    if (page_graph != nullptr) {
 +      std::vector<const String> args;
 +      args.push_back(name);
@@ -108,7 +106,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.ALIASED_LINE_WIDTH_RANGE");
@@ -131,7 +129,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.ALIASED_POINT_SIZE_RANGE");
@@ -159,7 +157,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.ALPHA_BITS");
@@ -188,7 +186,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.BLUE_BITS");
@@ -222,7 +220,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.DEPTH_BITS");
@@ -251,7 +249,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.GREEN_BITS");
@@ -280,7 +278,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS");
@@ -303,7 +301,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_CUBE_MAP_TEXTURE_SIZE");
@@ -326,7 +324,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_FRAGMENT_UNIFORM_VECTORS");
@@ -349,7 +347,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_RENDERBUFFER_SIZE");
@@ -372,7 +370,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_TEXTURE_IMAGE_UNITS");
@@ -395,7 +393,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_TEXTURE_SIZE");
@@ -418,7 +416,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_VARYING_VECTORS");
@@ -441,7 +439,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_VERTEX_ATTRIBS");
@@ -464,7 +462,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS");
@@ -487,7 +485,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_VERTEX_UNIFORM_VECTORS");
@@ -509,7 +507,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.MAX_VIEWPORT_DIMS");
@@ -538,7 +536,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.RED_BITS");
@@ -563,7 +561,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.RENDERER");
@@ -596,7 +594,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.SHADING_LANGUAGE_VERSION");
@@ -630,7 +628,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.STENCIL_BITS");
@@ -659,7 +657,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.VENDOR");
@@ -684,7 +682,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("gl.VERSION");
@@ -729,7 +727,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("ext.UNMASKED_RENDERER_WEBGL");
@@ -768,7 +766,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("ext.UNMASKED_VENDOR_WEBGL");
@@ -809,7 +807,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +// #if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +        {
 +          brave_page_graph::PageGraph* page_graph =
-+            canvas()->GetDocument().GetPageGraph();
++            brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +          if (page_graph != nullptr) {
 +            std::vector<const String> args;
 +            args.push_back("ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT");
@@ -927,7 +925,7 @@ index 39d00937e8a17183c22dcfc99692aed9a8638ac6..e1584a5ef32ab1cb1141df00694d133e
 +                                                       precision);
 +
 +    brave_page_graph::PageGraph* page_graph =
-+      canvas()->GetDocument().GetPageGraph();
++      brave_page_graph::PageGraph::GetFromExecutionContext(*Host()->GetTopExecutionContext());
 +    if (page_graph != nullptr) {
 +      std::vector<const String> args;
 +      args.push_back(shader.c_str());
