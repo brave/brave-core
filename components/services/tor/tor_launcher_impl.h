@@ -35,6 +35,7 @@ class TorLauncherImpl : public tor::mojom::TorLauncher {
 
   SetCrashHandlerCallback crash_handler_callback_;
   std::unique_ptr<base::Thread> child_monitor_thread_;
+  scoped_refptr<base::SequencedTaskRunner> main_task_runner_;
   base::Process tor_process_;
   mojo::Receiver<tor::mojom::TorLauncher> receiver_;
   bool in_shutdown_ = false;
