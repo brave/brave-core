@@ -77,7 +77,8 @@ namespace tor {
 
 TorLauncherImpl::TorLauncherImpl(
     mojo::PendingReceiver<mojom::TorLauncher> receiver)
-    : receiver_(this, std::move(receiver)) {
+    : main_task_runner_(base::SequencedTaskRunnerHandle::Get()),
+      receiver_(this, std::move(receiver)) {
   receiver_.set_disconnect_handler(
       base::BindOnce(&TorLauncherImpl::Cleanup, base::Unretained(this)));
 #if defined(OS_POSIX)
@@ -203,7 +204,7 @@ void TorLauncherImpl::MonitorChild() {
           }
           tor_process_.Close();
           if (receiver_.is_bound() && crash_handler_callback_) {
-            base::ThreadTaskRunnerHandle::Get()->PostTask(
+            main_task_runner_->PostTask(
               FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
                                         pid));
           }
@@ -216,7 +217,7 @@ void TorLauncherImpl::MonitorChild() {
 #elif defined(OS_WIN)
   WaitForSingleObject(tor_process_.Handle(), INFINITE);
   if (receiver_.is_bound() && crash_handler_callback_)
-    base::ThreadTaskRunnerHandle::Get()->PostTask(
+    main_task_runner_->PostTask(
       FROM_HERE, base::BindOnce(std::move(crash_handler_callback_),
                                 base::GetProcId(tor_process_.Handle())));
 #else

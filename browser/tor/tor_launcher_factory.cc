@@ -54,7 +54,7 @@ void TorLauncherFactory::Init() {
       &TorLauncherFactory::OnTorLauncherCrashed,
       weak_ptr_factory_.GetWeakPtr()));
 
-  tor_launcher_->SetCrashHandler(base::Bind(
+  tor_launcher_->SetCrashHandler(base::BindOnce(
                         &TorLauncherFactory::OnTorCrashed,
                         weak_ptr_factory_.GetWeakPtr()));
 }
@@ -107,8 +107,8 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
 void TorLauncherFactory::OnTorControlCheckComplete() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   tor_launcher_->Launch(config_,
-                        base::Bind(&TorLauncherFactory::OnTorLaunched,
-                                   weak_ptr_factory_.GetWeakPtr()));
+                        base::BindOnce(&TorLauncherFactory::OnTorLaunched,
+                                       weak_ptr_factory_.GetWeakPtr()));
 }
 
 void TorLauncherFactory::KillTorProcess() {
@@ -222,7 +222,8 @@ void TorLauncherFactory::OnTorCleanupNeeded(base::ProcessId id) {
 void TorLauncherFactory::KillOldTorProcess(base::ProcessId id) {
   DCHECK(content::CurrentlyOnProcessLauncherTaskRunner());
   base::Process tor_process = base::Process::Open(id);
-  tor_process.Terminate(0, false);
+  if (tor_process.IsValid())
+    tor_process.Terminate(0, false);
 }
 
 void TorLauncherFactory::OnTorEvent(

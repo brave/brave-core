@@ -230,7 +230,7 @@ bool TorControl::EatControlCookie(std::vector<uint8_t>& cookie,
   CHECK(polling_);
 
   // Open the control auth cookie file.
-  base::FilePath cookiepath = watch_dir_path_.Append("control_auth_cookie");
+  base::FilePath cookiepath = watch_dir_path_.AppendASCII("control_auth_cookie");
   base::File cookiefile(cookiepath,
                         base::File::FLAG_OPEN|base::File::FLAG_READ);
   if (!cookiefile.IsValid()) {
@@ -278,7 +278,7 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   CHECK(polling_);
 
   // Open the control port file.
-  base::FilePath portpath = watch_dir_path_.Append("controlport");
+  base::FilePath portpath = watch_dir_path_.AppendASCII("controlport");
   base::File portfile(portpath, base::File::FLAG_OPEN|base::File::FLAG_READ);
   if (!portfile.IsValid()) {
     LOG(ERROR) << "tor: failed to open control port";
@@ -292,9 +292,14 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
     return false;
   }
 
-  // Read up to 27 octets, the maximum we will ever need.
+  // Read up to 27/28 octets, the maximum we will ever need.
+#if defined(OS_WIN)
+  const char mintmpl[] = "PORT=1.1.1.1:1\r\n";
+  const char maxtmpl[] = "PORT=255.255.255.255:65535\r\n";
+#else
   const char mintmpl[] = "PORT=1.1.1.1:1\n";
   const char maxtmpl[] = "PORT=255.255.255.255:65535\n";
+#endif
   char buf[strlen(maxtmpl)];
   int nread = portfile.ReadAtCurrentPos(buf, sizeof buf);
   if (nread < 0) {
@@ -311,7 +316,11 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
 
   // Sanity-check the content.
   if (!base::StartsWith(text, "PORT=", base::CompareCase::SENSITIVE) ||
+#if defined(OS_WIN)
+      !base::EndsWith(text, "\r\n", base::CompareCase::SENSITIVE)) {
+#else
       !base::EndsWith(text, "\n", base::CompareCase::SENSITIVE)) {
+#endif
     LOG(ERROR) << "tor: invalid control port: "
                << "`" << text << ";"; // XXX escape
     return false;
@@ -325,7 +334,11 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   }
 
   // Parse it!
+#if defined(OS_WIN)
+  std::string portstr(text, strlen(expected), nread - 2 - strlen(expected));
+#else
   std::string portstr(text, strlen(expected), nread - 1 - strlen(expected));
+#endif
   if (!base::StringToInt(portstr, &port)) {
     LOG(ERROR) << "tor: failed to parse control port: "
                << "`" << portstr << "'"; // XXX escape
@@ -341,7 +354,7 @@ bool TorControl::EatOldPid(base::ProcessId& id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
 
   // Open the tor pid file.
-  base::FilePath pidpath = watch_dir_path_.Append("tor.pid");
+  base::FilePath pidpath = watch_dir_path_.AppendASCII("tor.pid");
   base::File pidfile(pidpath,
                         base::File::FLAG_OPEN|base::File::FLAG_READ);
   if (!pidfile.IsValid()) {
@@ -356,11 +369,16 @@ bool TorControl::EatOldPid(base::ProcessId& id) {
     LOG(ERROR) << "tor: failed to read tor pid file";
     return false;
   }
+
   std::string pid(buf, 0, nread - 1);
+#if defined(OS_WIN)
+  id = stoul(pid, nullptr);
+#else
   if (!base::StringToInt(pid, &id)) {
     LOG(ERROR) << "tor: failed to parse tor pid";
     return false;
   }
+ #endif
   return true;
 }
 
