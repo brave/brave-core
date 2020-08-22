@@ -762,6 +762,29 @@ void BraveRewardsNativeWorker::OnRecoverWallet(
       env, weak_java_brave_rewards_native_worker_.get(env), result);
 }
 
+void BraveRewardsNativeWorker::RefreshPublisher(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& obj,
+    const base::android::JavaParamRef<jstring>& publisher_key) {
+  if (!brave_rewards_service_) {
+    NOTREACHED();
+    return;
+  }
+  brave_rewards_service_->RefreshPublisher(
+      base::android::ConvertJavaStringToUTF8(env, publisher_key),
+      base::BindOnce(&BraveRewardsNativeWorker::OnRefreshPublisher,
+                     base::Unretained(this)));
+}
+
+void BraveRewardsNativeWorker::OnRefreshPublisher(
+    uint32_t status,
+    const std::string& publisher_key) {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_OnRefreshPublisher(
+      env, weak_java_brave_rewards_native_worker_.get(env), status,
+      base::android::ConvertUTF8ToJavaString(env, publisher_key));
+}
+
 static void JNI_BraveRewardsNativeWorker_Init(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
