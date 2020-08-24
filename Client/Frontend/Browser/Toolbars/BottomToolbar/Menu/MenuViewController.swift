@@ -31,7 +31,7 @@ private class MenuCell: UITableViewCell {
         $0.snp.makeConstraints { make in
             make.size.equalTo(24)
         }
-        $0.startAnimating()
+        $0.hidesWhenStopped = true
         $0.isHidden = true
     }
     
@@ -45,6 +45,13 @@ private class MenuCell: UITableViewCell {
             labelView.isEnabled = !isLoading
             toggleButton.isHidden = isLoading
             spinner.isHidden = !isLoading
+            
+            // on iOS12 if `isHidden` property is ignored if the spinner is animating.
+            if isLoading {
+                spinner.startAnimating()
+            } else {
+                spinner.stopAnimating()
+            }
         }
     }
     

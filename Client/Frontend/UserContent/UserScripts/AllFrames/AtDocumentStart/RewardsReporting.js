@@ -54,15 +54,18 @@ function install() {
     window.fetch = function(resource, options) {
         const args = arguments
         const url = resource instanceof Request ? resource.url : resource
+        const method = options != null ? options.method : 'GET'
+        const body = options != null ? options.body : null
+        const referrer = options != null ? options.referrer : null
 
         return new Promise(function(resolve, reject) {
             originalFetch.apply(this, args)
             .then(function(response) {
-                sendMessage(options.method, url, options.body, options.referrer);
+                sendMessage(method, url, body, referrer);
                 resolve(response);
             })
             .catch(function(error) {
-                sendMessage(options.method, url, options.body, options.referrer);
+                sendMessage(method, url, body, referrer);
                 reject(error);
             })
         });

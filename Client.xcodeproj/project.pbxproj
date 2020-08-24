@@ -305,6 +305,7 @@
 		2726636924944BFA0056CFE1 /* BraveTodayWelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2726636824944BFA0056CFE1 /* BraveTodayWelcomeView.swift */; };
 		2726637324981B600056CFE1 /* FeedSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2726637224981B5F0056CFE1 /* FeedSectionHeaderView.swift */; };
 		2727369B24A65F650096DCB9 /* UIActionExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2727369A24A65F650096DCB9 /* UIActionExtensions.swift */; };
+		272736A424A686920096DCB9 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 272736A324A686920096DCB9 /* ZIPFoundation */; };
 		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
 		27325A5724097DB900790DC6 /* LedgerInitializationFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27325A5624097DB900790DC6 /* LedgerInitializationFailedView.swift */; };
 		27325A622410586D00790DC6 /* SKUPurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27325A612410586D00790DC6 /* SKUPurchaseViewController.swift */; };
@@ -327,6 +328,14 @@
 		2744D6CB239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D6CA239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift */; };
 		2744D6CE239EDCBC00A89EBB /* VerifyUserWalletButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D6CD239EDCBC00A89EBB /* VerifyUserWalletButton.swift */; };
 		2744D6D0239EF10B00A89EBB /* UserWalletDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2744D6CF239EF10B00A89EBB /* UserWalletDetailsViewController.swift */; };
+		2746D26F24A291FD00E38852 /* RewardsInternalsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746D26E24A291FD00E38852 /* RewardsInternalsViewController.swift */; };
+		2746D27124A2A12700E38852 /* RewardsInternalsPromotionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746D27024A2A12700E38852 /* RewardsInternalsPromotionListController.swift */; };
+		2746D27324A2A5DA00E38852 /* RewardsInternalsContributionListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746D27224A2A5DA00E38852 /* RewardsInternalsContributionListController.swift */; };
+		2746D27524A2A9FE00E38852 /* RewardsInternalsContributionPublishersListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746D27424A2A9FE00E38852 /* RewardsInternalsContributionPublishersListController.swift */; };
+		2746D27D24A3E44900E38852 /* RewardsInternalsLogController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746D27C24A3E44900E38852 /* RewardsInternalsLogController.swift */; };
+		2746D27F24A3EB9800E38852 /* UITableViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271DECB8234CC7EF009DAC37 /* UITableViewExtensions.swift */; };
+		2746D28124A4F8DA00E38852 /* RewardsInternalsShareController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746D28024A4F8DA00E38852 /* RewardsInternalsShareController.swift */; };
+		2746D28324A4FB7400E38852 /* RewardsInternalsSharable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2746D28224A4FB7400E38852 /* RewardsInternalsSharable.swift */; };
 		2747B8D12416FCAA0066F320 /* SKUPurchaseProcessingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2747B8D02416FCAA0066F320 /* SKUPurchaseProcessingView.swift */; };
 		2747B8D32416FEF10066F320 /* SKUPurchaseCompletedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2747B8D22416FEF10066F320 /* SKUPurchaseCompletedView.swift */; };
 		275218FC23E0BB7500E416B4 /* PendingContributionDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275218FB23E0BB7500E416B4 /* PendingContributionDetailController.swift */; };
@@ -1726,6 +1735,13 @@
 		2744D6CA239EDB1A00A89EBB /* DisconnectedUserWalletButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisconnectedUserWalletButton.swift; sourceTree = "<group>"; };
 		2744D6CD239EDCBC00A89EBB /* VerifyUserWalletButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerifyUserWalletButton.swift; sourceTree = "<group>"; };
 		2744D6CF239EF10B00A89EBB /* UserWalletDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserWalletDetailsViewController.swift; sourceTree = "<group>"; };
+		2746D26E24A291FD00E38852 /* RewardsInternalsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsViewController.swift; sourceTree = "<group>"; };
+		2746D27024A2A12700E38852 /* RewardsInternalsPromotionListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsPromotionListController.swift; sourceTree = "<group>"; };
+		2746D27224A2A5DA00E38852 /* RewardsInternalsContributionListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsContributionListController.swift; sourceTree = "<group>"; };
+		2746D27424A2A9FE00E38852 /* RewardsInternalsContributionPublishersListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsContributionPublishersListController.swift; sourceTree = "<group>"; };
+		2746D27C24A3E44900E38852 /* RewardsInternalsLogController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsLogController.swift; sourceTree = "<group>"; };
+		2746D28024A4F8DA00E38852 /* RewardsInternalsShareController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsShareController.swift; sourceTree = "<group>"; };
+		2746D28224A4FB7400E38852 /* RewardsInternalsSharable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsInternalsSharable.swift; sourceTree = "<group>"; };
 		2747B8D02416FCAA0066F320 /* SKUPurchaseProcessingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKUPurchaseProcessingView.swift; sourceTree = "<group>"; };
 		2747B8D22416FEF10066F320 /* SKUPurchaseCompletedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SKUPurchaseCompletedView.swift; sourceTree = "<group>"; };
 		275218FB23E0BB7500E416B4 /* PendingContributionDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PendingContributionDetailController.swift; sourceTree = "<group>"; };
@@ -2767,6 +2783,7 @@
 				3B4988CE1E42B01800A12FDA /* SwiftyJSON.framework in Frameworks */,
 				0A1DF486244A2ECB00541FE4 /* NetworkExtension.framework in Frameworks */,
 				7B604FBB1C495D8A006EEEC3 /* XCGLogger.framework in Frameworks */,
+				272736A424A686920096DCB9 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3631,6 +3648,20 @@
 			path = SKUs;
 			sourceTree = "<group>";
 		};
+		2746D26C24A291ED00E38852 /* Rewards Internals */ = {
+			isa = PBXGroup;
+			children = (
+				2746D28224A4FB7400E38852 /* RewardsInternalsSharable.swift */,
+				2746D26E24A291FD00E38852 /* RewardsInternalsViewController.swift */,
+				2746D27C24A3E44900E38852 /* RewardsInternalsLogController.swift */,
+				2746D27024A2A12700E38852 /* RewardsInternalsPromotionListController.swift */,
+				2746D27224A2A5DA00E38852 /* RewardsInternalsContributionListController.swift */,
+				2746D27424A2A9FE00E38852 /* RewardsInternalsContributionPublishersListController.swift */,
+				2746D28024A4F8DA00E38852 /* RewardsInternalsShareController.swift */,
+			);
+			path = "Rewards Internals";
+			sourceTree = "<group>";
+		};
 		2765826D217130B700754B2F /* Certificates */ = {
 			isa = PBXGroup;
 			children = (
@@ -3971,6 +4002,7 @@
 		2F44FC551A9E83E200FD20CC /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				2746D26C24A291ED00E38852 /* Rewards Internals */,
 				0B62EFD11AD63CD100ACB9CD /* Clearables.swift */,
 				D3E8EEE71B97A87A001900FB /* ClearPrivateDataTableViewController.swift */,
 				2F44FCCA1A9E972E00FD20CC /* SearchEnginePicker.swift */,
@@ -5830,6 +5862,9 @@
 				278C468C23F1E6270083347F /* PBXTargetDependency */,
 			);
 			name = Client;
+			packageProductDependencies = (
+				272736A324A686920096DCB9 /* ZIPFoundation */,
+			);
 			productName = Client;
 			productReference = F84B21BE1A090F8100AAB793 /* Client.app */;
 			productType = "com.apple.product-type.application";
@@ -5979,6 +6014,9 @@
 				nb,
 			);
 			mainGroup = F84B21B51A090F8100AAB793;
+			packageReferences = (
+				272736A224A686920096DCB9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+			);
 			productRefGroup = F84B21BF1A090F8100AAB793 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
@@ -6464,6 +6502,7 @@
 				278C46B523F4A9C80083347F /* POPExtensions.swift in Sources */,
 				278C46B923F4AB5A0083347F /* Then.swift in Sources */,
 				27EF6B8124BF6095005E034F /* UITableViewExtensions.swift in Sources */,
+				2746D27F24A3EB9800E38852 /* UITableViewExtensions.swift in Sources */,
 				278C46B223F4A91D0083347F /* PopoverNavigationController.swift in Sources */,
 				278C46B023F4A91C0083347F /* PopoverContainerView.swift in Sources */,
 				278C46A323F1EDAB0083347F /* Colors.swift in Sources */,
@@ -6756,6 +6795,7 @@
 				27F94A3A21909A5900F4FADF /* SearchSuggestionsPromptView.swift in Sources */,
 				C690C208212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift in Sources */,
 				27D114D42358FBBF00166534 /* BraveRewardsSettingsViewController.swift in Sources */,
+				2746D27124A2A12700E38852 /* RewardsInternalsPromotionListController.swift in Sources */,
 				0A4BEFDA221EF3360005551A /* NetworkResourceType.swift in Sources */,
 				4422D4B921BFFB7600BF1855 /* crc32c.cc in Sources */,
 				0A39FE932486604D00290ABC /* GRDVPNHelper.m in Sources */,
@@ -6923,6 +6963,7 @@
 				C6620BBB213BCEC6009FE75A /* TabType.swift in Sources */,
 				F930CDB82270040D00A23FE1 /* WebAuthnClientData.swift in Sources */,
 				4422D50721BFFB7600BF1855 /* port_posix.cc in Sources */,
+				2746D26F24A291FD00E38852 /* RewardsInternalsViewController.swift in Sources */,
 				E64ED8FA1BC55AE300DAF864 /* UIAlertControllerExtensions.swift in Sources */,
 				A16DC67F20E585D90069C8E1 /* PasscodeSettingsViewController.swift in Sources */,
 				4422D56221BFFB7F00BF1855 /* dfa.cc in Sources */,
@@ -7014,10 +7055,12 @@
 				A9072B801D07B34100459960 /* NoImageModeHelper.swift in Sources */,
 				4422D4EB21BFFB7600BF1855 /* filename.cc in Sources */,
 				2726636924944BFA0056CFE1 /* BraveTodayWelcomeView.swift in Sources */,
+				2746D28324A4FB7400E38852 /* RewardsInternalsSharable.swift in Sources */,
 				44331DDA22552313007E3E93 /* LocationContainerView.swift in Sources */,
 				2718780A216526240006036E /* PopupView.swift in Sources */,
 				4422D4C221BFFB7600BF1855 /* comparator.cc in Sources */,
 				0A1E84452190A57F0042F782 /* SyncPairWordsViewController.swift in Sources */,
+				2746D27524A2A9FE00E38852 /* RewardsInternalsContributionPublishersListController.swift in Sources */,
 				4422D4DF21BFFB7600BF1855 /* table_builder.cc in Sources */,
 				27448536245B608E001920B5 /* QRCodePopupView.swift in Sources */,
 				4422D50121BFFB7600BF1855 /* repair.cc in Sources */,
@@ -7061,6 +7104,7 @@
 				279C756B219DDE3B001CD1CB /* FingerprintingProtection.swift in Sources */,
 				E650755F1E37F756006961AC /* Try.m in Sources */,
 				0A3C789D23055C4A0022F6D8 /* OnboardingSearchEnginesViewController.swift in Sources */,
+				2746D27324A2A5DA00E38852 /* RewardsInternalsContributionListController.swift in Sources */,
 				3B6889C51D66950E002AC85E /* UIImageColors.swift in Sources */,
 				0A1E84402190A57F0042F782 /* SyncSelectDeviceTypeViewController.swift in Sources */,
 				392ED7E41D0AEF56009D9B62 /* NewTabAccessors.swift in Sources */,
@@ -7093,6 +7137,7 @@
 				D3A9949C1A3686BD008AD1AC /* BrowserViewController.swift in Sources */,
 				59A681BDFC95A19F05E07223 /* SearchViewController.swift in Sources */,
 				0A8C6993225BC7B100988715 /* ToolbarUrlActionsProtocol.swift in Sources */,
+				2746D27D24A3E44900E38852 /* RewardsInternalsLogController.swift in Sources */,
 				0AFC8F9523D1DF6500941895 /* TranslucentBottomSheet.swift in Sources */,
 				E68E7ADA1CAC207400FDCA76 /* ChangePasscodeViewController.swift in Sources */,
 				5E1645A824ABA35B0003C3B2 /* SpinnerView.swift in Sources */,
@@ -7140,6 +7185,7 @@
 				27D114D62358FCA400166534 /* SettingsRowViews.swift in Sources */,
 				4422D56621BFFB7F00BF1855 /* tostring.cc in Sources */,
 				2727369B24A65F650096DCB9 /* UIActionExtensions.swift in Sources */,
+				2746D28124A4F8DA00E38852 /* RewardsInternalsShareController.swift in Sources */,
 				4422D54821BFFB7E00BF1855 /* pcre.cc in Sources */,
 				C8F457AA1F1FDD9B000CB895 /* BrowserViewController+KeyCommands.swift in Sources */,
 				E40FAB0C1A7ABB77009CB80D /* WebServer.swift in Sources */,
@@ -12024,6 +12070,25 @@
 			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		272736A224A686920096DCB9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.11;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		272736A324A686920096DCB9 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 272736A224A686920096DCB9 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		5D1DC54C20AE004600905E5A /* Model.xcdatamodeld */ = {
