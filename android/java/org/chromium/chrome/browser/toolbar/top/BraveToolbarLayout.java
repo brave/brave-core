@@ -718,123 +718,113 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   @Override
   public void OnRecurringDonationUpdated() {}
 
-  <<< <<< < HEAD
   @Override
   public void OnResetTheWholeState(boolean success) {}
-  == == == =
-    @Override
+
+  @Override
   public void OnRewardsMainEnabled(boolean enabled) {
-
-    Log.e("OnRewardsMainEnabled", "isEnabled : " + enabled);
-
     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
     SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
-    >>> >>> > Update UI with highlight view
 
-    @Override
-    public void OnRewardsMainEnabled(boolean enabled) {
-      SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
-      SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
+    boolean needRelaunch = false;
+    if (enabled && sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
+      sharedPreferencesEditor.putBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false);
+      needRelaunch = true;
+    }
 
-      boolean needRelaunch = false;
-      if (enabled && sharedPreferences.getBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false)) {
-        sharedPreferencesEditor.putBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, false);
-        needRelaunch = true;
+    if (mBraveRewardsNotificationsCount != null) {
+      String count = mBraveRewardsNotificationsCount.getText().toString();
+      if (!count.isEmpty()) {
+        mBraveRewardsNotificationsCount.setVisibility(enabled ? View.VISIBLE : View.GONE);
       }
-
-      if (mBraveRewardsNotificationsCount != null) {
-        String count = mBraveRewardsNotificationsCount.getText().toString();
-        if (!count.isEmpty()) {
-          mBraveRewardsNotificationsCount.setVisibility(enabled ? View.VISIBLE : View.GONE);
-        }
-      }
-
-      if (needRelaunch) BraveRelaunchUtils.askForRelaunch(getContext());
-      mIsRewardsEnabled = enabled;
-      updateVerifiedPublisherMark();
     }
 
-    private void updateNotificationBadgeForNewInstall(boolean rewardsEnabled) {
-      SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
-      boolean shownBefore = sharedPref.getBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
-      boolean shouldShow =
-        mBraveRewardsNotificationsCount != null && !shownBefore && !rewardsEnabled;
-      mIsInitialNotificationPosted = shouldShow; // initial notification
+    if (needRelaunch) BraveRelaunchUtils.askForRelaunch(getContext());
+    mIsRewardsEnabled = enabled;
+    updateVerifiedPublisherMark();
+  }
 
-      if (!shouldShow) return;
+  private void updateNotificationBadgeForNewInstall(boolean rewardsEnabled) {
+    SharedPreferences sharedPref = ContextUtils.getAppSharedPreferences();
+    boolean shownBefore = sharedPref.getBoolean(BraveRewardsPanelPopup.PREF_WAS_TOOLBAR_BAT_LOGO_BUTTON_PRESSED, false);
+    boolean shouldShow =
+      mBraveRewardsNotificationsCount != null && !shownBefore && !rewardsEnabled;
+    mIsInitialNotificationPosted = shouldShow; // initial notification
 
-      mBraveRewardsNotificationsCount.setText("");
-      mBraveRewardsNotificationsCount.setBackground(
-        getResources().getDrawable(R.drawable.brave_rewards_circle));
-      mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
+    if (!shouldShow) return;
+
+    mBraveRewardsNotificationsCount.setText("");
+    mBraveRewardsNotificationsCount.setBackground(
+      getResources().getDrawable(R.drawable.brave_rewards_circle));
+    mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void onThemeColorChanged(int color, boolean shouldAnimate) {
+    final int textBoxColor = ToolbarColors.getTextBoxColorForToolbarBackgroundInNonNativePage(
+                               getResources(), color, isIncognito());
+    updateModernLocationBarColor(textBoxColor);
+  }
+
+  /**
+   * BraveRewardsNativeWorker.PublisherObserver:
+   *   Update a 'verified publisher' checkmark on url bar BAT icon only if
+   *   no notifications are posted.
+   */
+  @Override
+  public void onFrontTabPublisherChanged(boolean verified) {
+    mIsPublisherVerified = verified;
+    updateVerifiedPublisherMark();
+  }
+
+  private void updateVerifiedPublisherMark() {
+    if (mBraveRewardsNotificationsCount == null) {
+      // Most likely we are on a custom page
+      return;
     }
-
-    @Override
-    public void onThemeColorChanged(int color, boolean shouldAnimate) {
-      final int textBoxColor = ToolbarColors.getTextBoxColorForToolbarBackgroundInNonNativePage(
-                                 getResources(), color, isIncognito());
-      updateModernLocationBarColor(textBoxColor);
-    }
-
-    /**
-     * BraveRewardsNativeWorker.PublisherObserver:
-     *   Update a 'verified publisher' checkmark on url bar BAT icon only if
-     *   no notifications are posted.
-     */
-    @Override
-    public void onFrontTabPublisherChanged(boolean verified) {
-      mIsPublisherVerified = verified;
-      updateVerifiedPublisherMark();
-    }
-
-    private void updateVerifiedPublisherMark() {
-      if (mBraveRewardsNotificationsCount == null) {
-        // Most likely we are on a custom page
-        return;
-      }
-      if (mIsInitialNotificationPosted) {
-        return;
-      } else if (!mIsRewardsEnabled) {
+    if (mIsInitialNotificationPosted) {
+      return;
+    } else if (!mIsRewardsEnabled) {
+      mBraveRewardsNotificationsCount.setBackgroundResource(0);
+      mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
+    } else if (!mIsNotificationPosted) {
+      if (mIsPublisherVerified) {
+        mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
+        mBraveRewardsNotificationsCount.setBackground(
+          getResources().getDrawable(R.drawable.bat_verified));
+      } else {
         mBraveRewardsNotificationsCount.setBackgroundResource(0);
         mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
-      } else if (!mIsNotificationPosted) {
-        if (mIsPublisherVerified) {
-          mBraveRewardsNotificationsCount.setVisibility(View.VISIBLE);
-          mBraveRewardsNotificationsCount.setBackground(
-            getResources().getDrawable(R.drawable.bat_verified));
-        } else {
-          mBraveRewardsNotificationsCount.setBackgroundResource(0);
-          mBraveRewardsNotificationsCount.setVisibility(View.INVISIBLE);
-        }
       }
-    }
-
-    @Override
-    public void onBottomToolbarVisibilityChanged(boolean isVisible) {
-      if (this instanceof ToolbarPhone && super.getMenuButtonWrapper() != null) {
-        super.getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
-      }
-    }
-
-    private void updateShieldsLayoutBackground(boolean rounded) {
-      if (!(this instanceof ToolbarTablet) || (mShieldsLayout == null)) return;
-
-      if (rounded) {
-        mShieldsLayout.setBackgroundDrawable(ApiCompatibilityUtils.getDrawable(getContext().getResources(),
-                                             R.drawable.modern_toolbar_background_grey_end_segment));
-        mShieldsLayoutIsColorBackground = false;
-      } else {
-        mShieldsLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
-        mShieldsLayoutIsColorBackground = true;
-      }
-      updateModernLocationBarColor(mCurrentToolbarColor);
-    }
-
-    @Override
-    View getMenuButtonWrapper() {
-      if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
-        return null;
-      }
-      return super.getMenuButtonWrapper();
     }
   }
+
+  @Override
+  public void onBottomToolbarVisibilityChanged(boolean isVisible) {
+    if (this instanceof ToolbarPhone && super.getMenuButtonWrapper() != null) {
+      super.getMenuButtonWrapper().setVisibility(isVisible ? View.GONE : View.VISIBLE);
+    }
+  }
+
+  private void updateShieldsLayoutBackground(boolean rounded) {
+    if (!(this instanceof ToolbarTablet) || (mShieldsLayout == null)) return;
+
+    if (rounded) {
+      mShieldsLayout.setBackgroundDrawable(ApiCompatibilityUtils.getDrawable(getContext().getResources(),
+                                           R.drawable.modern_toolbar_background_grey_end_segment));
+      mShieldsLayoutIsColorBackground = false;
+    } else {
+      mShieldsLayout.setBackgroundColor(ChromeColors.getDefaultThemeColor(getResources(), isIncognito()));
+      mShieldsLayoutIsColorBackground = true;
+    }
+    updateModernLocationBarColor(mCurrentToolbarColor);
+  }
+
+  @Override
+  View getMenuButtonWrapper() {
+    if (this instanceof ToolbarPhone && BottomToolbarVariationManager.isMenuButtonOnBottom()) {
+      return null;
+    }
+    return super.getMenuButtonWrapper();
+  }
+}
