@@ -709,6 +709,7 @@ brave_java_resources = [
   "java/res/layout-land/brave_rewards_site_banner.xml",
   "java/res/layout-land/verify_wallet_activity.xml",
   "java/res/menu/new_tab_menu.xml",
+  "java/res/menu/ntp_widget_menu.xml",
   "java/res/menu/exit_settings_menu.xml",
   "java/res/values/brave_ids.xml",
   "java/res/values/brave_styles.xml",

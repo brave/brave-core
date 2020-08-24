@@ -131,6 +131,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         ntpWidgetViewPager = findViewById(R.id.ntp_widget_view_pager);
         ntpWidgetAdapter = new NTPWidgetAdapter();
+        ntpWidgetAdapter.setNTPWidgetMenuListener(ntpWidgetMenuListener);
         ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
 
         ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -152,14 +153,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         LayoutInflater inflater = (LayoutInflater) ContextUtils.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mBraveStatsView = inflater.inflate (R.layout.brave_stats_layout, null);
-        ntpWidgetAdapter.addView (mBraveStatsView, 0);
+        ntpWidgetAdapter.addView (mBraveStatsView);
         View binanceWidgetView = inflater.inflate (R.layout.crypto_widget_layout, null);
-        ntpWidgetAdapter.addView (binanceWidgetView, 1);
+        ntpWidgetAdapter.addView (binanceWidgetView);
         if (mSiteSectionView != null) {
             if (!mNTPBackgroundImagesBridge.isSuperReferral()
                     || !NTPBackgroundImagesBridge.enableSponsoredImages()
                     || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                ntpWidgetAdapter.addView (mSiteSectionView, 2);
+                ntpWidgetAdapter.addView (mSiteSectionView);
             }
         }
         ntpWidgetAdapter.notifyDataSetChanged();
@@ -610,11 +611,14 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ntpWidgetViewPager.setCurrentItem(pageIndex, true);
     }
 
-    public void removeViewToWidget(View defunctPage) {
-        int pageIndex = ntpWidgetAdapter.removeView (ntpWidgetViewPager, defunctPage);
-        if (pageIndex == ntpWidgetAdapter.getCount())
+    public void removeViewFromWidget(int position) {
+        int pageIndex = ntpWidgetAdapter.removeView(ntpWidgetViewPager, position);
+        Log.e("NTP", "PageIndex : " + pageIndex);
+        if (pageIndex == ntpWidgetAdapter.getCount()) {
+            Log.e("NTP", "inside condition : " + pageIndex);
             pageIndex--;
-        ntpWidgetViewPager.setCurrentItem (pageIndex);
+        }
+        ntpWidgetViewPager.setCurrentItem(pageIndex);
     }
 
     public View getWidgetCurrentPage() {
@@ -624,4 +628,16 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     public void setWidgetCurrentPage(View pageToShow) {
         ntpWidgetViewPager.setCurrentItem(ntpWidgetAdapter.getItemPosition(pageToShow), true);
     }
+
+    private NTPWidgetAdapter.NTPWidgetMenuListener ntpWidgetMenuListener = new NTPWidgetAdapter.NTPWidgetMenuListener() {
+        @Override
+        public void onEdit() {
+
+        }
+
+        @Override
+        public void onRemove(int position) {
+            removeViewFromWidget(position);
+        }
+    };
 }

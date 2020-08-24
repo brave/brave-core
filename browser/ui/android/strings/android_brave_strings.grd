@@ -1308,6 +1308,12 @@ until they verify, or until 90 days have passed.
       <message name="IDS_NIGHT_MODE_ENABLE" desc="Menu item for enabling dark mode for webcontent.">
         Enable "Night Mode" (Experimental)
       </message>
+      <message name="IDS_MENU_EDIT" desc="NTP widget menu item">
+        Edit
+      </message>
+      <message name="IDS_MENU_REMOVE" desc="NTP widget menu item">
+        Remove
+      </message>
     </messages>
   </release>
 </grit>
