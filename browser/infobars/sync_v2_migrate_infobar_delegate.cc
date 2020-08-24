@@ -11,7 +11,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/grit/brave_generated_resources.h"

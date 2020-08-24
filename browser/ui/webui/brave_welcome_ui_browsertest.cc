@@ -5,7 +5,7 @@
 
 #include "base/command_line.h"
 #include "brave/browser/ui/webui/brave_web_ui_controller_factory.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"

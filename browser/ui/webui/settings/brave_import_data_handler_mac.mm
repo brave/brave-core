@@ -14,7 +14,7 @@
 #include "base/task/post_task.h"
 #include "base/task/task_traits.h"
 #include "base/values.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "chrome/browser/importer/external_process_importer_host.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -92,7 +92,7 @@ void FullDiskAccessConfirmDialogDelegate::OnLinkClicked(
   const int target_index =
       browser_->tab_strip_model()->active_index() + 1;
   // Add import help tab right after current settings tab.
-  chrome::AddTabAt(browser_, GURL(kImportDataHelpURL),
+  chrome::AddTabAt(browser_, GURL(brave::kImportDataHelpURL),
                    target_index, true /* foreground */);
 }
 

@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/basic_ui.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"

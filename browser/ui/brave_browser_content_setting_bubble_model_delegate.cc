@@ -4,7 +4,7 @@
 
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
 
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 
@@ -22,7 +22,7 @@ BraveBrowserContentSettingBubbleModelDelegate::
 
 void
 BraveBrowserContentSettingBubbleModelDelegate::ShowWidevineLearnMorePage() {
-  GURL learn_more_url = GURL(kWidevineTOS);
+  GURL learn_more_url = GURL(brave::kWidevineTOS);
   chrome::AddSelectedTabWithURL(browser_, learn_more_url,
                                 ui::PAGE_TRANSITION_LINK);
 }

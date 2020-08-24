@@ -48,28 +48,8 @@ source_set("switches") {
 }
 
 source_set("common") {
-  # Remove when https://github.com/brave/brave-browser/issues/10653 is resolved
-  check_includes = false
   deps = []
-
-  sources = [
-    "brave_channel_info.cc",
-    "brave_channel_info.h",
-    "brave_features.cc",
-    "brave_features.h",
-    "brave_paths.cc",
-    "brave_paths.h",
-    "common_message_generator.cc",
-    "common_message_generator.h",
-    "resource_bundle_helper.cc",
-    "resource_bundle_helper.h",
-    "translate_network_constants.cc",
-    "translate_network_constants.h",
-    "url_constants.cc",
-    "url_constants.h",
-    "webui_url_constants.cc",
-    "webui_url_constants.h",
-  ]
+  sources = []
 
   if (!is_android && !is_ios) {
     deps += [
@@ -85,34 +65,22 @@ source_set("common") {
       "extensions/whitelist.h",
     ]
 
-    deps += [ "//extensions/common:common_constants" ]
+    deps += [
+      "//brave/components/brave_wallet/buildflags:buildflags",
+      "//extensions/common:common_constants",
+    ]
 
     public_deps = [
-      "extensions/api",
+      "//brave/components/brave_component_updater/browser",
+      "//brave/common/extensions/api",
+      "//extensions/common:common"
     ]
   }
 
-  deps += [
-    "//base",
-    ":network_constants",
-    ":pref_names",
-    ":shield_exceptions",
-    ":switches",
-    "//brave/chromium_src:common",
-    "//brave/components/resources",
-    "//components/resources",
-    "//extensions/buildflags",
-    "//services/service_manager",
-    "//ui/base",
-  ]
-
   if (!is_ios) {
-    sources += [
-      "brave_content_client.cc",
-      "brave_content_client.h",
-    ]
-
     deps += [
+      "//chrome/common:channel_info",
+      "//chrome/common:constants",
       "//content/public/common",
     ]
   }

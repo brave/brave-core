@@ -6,7 +6,7 @@
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -33,7 +33,7 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(const GURL& url,
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (url.SchemeIs(kChromeExtensionScheme) &&
+  if (url.SchemeIs(brave::kChromeExtensionScheme) &&
       url.host() == ethereum_remote_client_extension_id) {
     base::ReplaceFirstSubstringAfterOffset(
         new_formatted_url,

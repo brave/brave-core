@@ -37,6 +37,7 @@ source_set("p3a") {
     "//brave/components/brave_stats/browser",
     "//brave/components/p3a:buildflags",
     "//brave/vendor/brave_base",
+    "//chrome/common:common",
     "//components/metrics",
     "//components/prefs",
     "//content/public/browser",

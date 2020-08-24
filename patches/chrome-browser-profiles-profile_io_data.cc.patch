@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_io_data.cc b/chrome/browser/profiles/profile_io_data.cc
-index de38b5ff34b49d6e988a203b3ef8457107048bae..b19031be77d08516784deb4f0fc056dbea1fdfa2 100644
+index de38b5ff34b49d6e988a203b3ef8457107048bae..8609a8735531ee8b28d969d7abf1b1f838546327 100644
 --- a/chrome/browser/profiles/profile_io_data.cc
 +++ b/chrome/browser/profiles/profile_io_data.cc
 @@ -302,6 +302,9 @@ bool ProfileIOData::IsHandledProtocol(const std::string& scheme) {
@@ -7,7 +7,7 @@ index de38b5ff34b49d6e988a203b3ef8457107048bae..b19031be77d08516784deb4f0fc056db
      content::kChromeUIScheme,
      content::kChromeUIUntrustedScheme,
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+    kBraveUIScheme,
++    brave::kBraveUIScheme,
 +#endif
      url::kDataScheme,
  #if defined(OS_CHROMEOS)

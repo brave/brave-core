@@ -10,7 +10,7 @@
 #include "brave/browser/extensions/brave_extension_functional_test.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -55,7 +55,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest,
       InstallExtensionSilently(
           extension_service(),
           test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
-  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
+  GURL url = GURL(std::string(brave::kChromeExtensionScheme) + "://" +
                   extension->id() + "/blocking.html");
 
   ui_test_utils::NavigateToURL(browser(), url);
@@ -81,7 +81,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanGetCookies) {
       InstallExtensionSilently(
       extension_service(),
       test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
-  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
+  GURL url = GURL(std::string(brave::kChromeExtensionScheme) + "://" +
                   extension->id() + "/blocking.html");
 
   ui_test_utils::NavigateToURL(browser(), url);
@@ -105,7 +105,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, ExtensionsCanSetCookies) {
       InstallExtensionSilently(
       extension_service(),
       test_data_dir.AppendASCII("extension-compat-test-extension.crx"));
-  GURL url = GURL(std::string(kChromeExtensionScheme) + "://" +
+  GURL url = GURL(std::string(brave::kChromeExtensionScheme) + "://" +
                   extension->id() + "/blocking.html");
 
   ui_test_utils::NavigateToURL(browser(), url);

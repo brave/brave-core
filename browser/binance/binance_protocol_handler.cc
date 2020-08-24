@@ -13,7 +13,7 @@
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "brave/browser/binance/binance_service_factory.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/binance/browser/binance_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/user_prefs/user_prefs.h"
@@ -83,7 +83,7 @@ void HandleBinanceProtocol(const GURL& url,
 }
 
 bool IsBinanceProtocol(const GURL& url) {
-  return url.SchemeIs(kBinanceScheme);
+  return url.SchemeIs(brave::kBinanceScheme);
 }
 
 }  // namespace binance

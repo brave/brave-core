@@ -12,7 +12,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -103,7 +103,8 @@ static void LoadOrLaunchMagnetURL(
 
 static bool HandleMagnetURLRewrite(GURL* url,
     content::BrowserContext* browser_context) {
-  if (IsWebtorrentEnabled(browser_context) && url->SchemeIs(kMagnetScheme)) {
+  if (IsWebtorrentEnabled(browser_context) &&
+      url->SchemeIs(brave::kMagnetScheme)) {
     *url = TranslateMagnetURL(*url);
     return true;
   }
@@ -117,7 +118,7 @@ static void HandleMagnetProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin) {
-  DCHECK(url.SchemeIs(kMagnetScheme));
+  DCHECK(url.SchemeIs(brave::kMagnetScheme));
   base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                  base::BindOnce(&LoadOrLaunchMagnetURL, url,
                                 std::move(web_contents_getter), page_transition,
@@ -125,7 +126,7 @@ static void HandleMagnetProtocol(
 }
 
 static bool IsMagnetProtocol(const GURL& url) {
-  return url.SchemeIs(kMagnetScheme);
+  return url.SchemeIs(brave::kMagnetScheme);
 }
 
 }  // namespace webtorrent

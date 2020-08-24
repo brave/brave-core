@@ -7,6 +7,8 @@
 #ifndef BRAVE_COMMON_URL_CONSTANTS_H_
 #define BRAVE_COMMON_URL_CONSTANTS_H_
 
+namespace brave {
+
 extern const char kChromeExtensionScheme[];
 extern const char kBraveUIScheme[];
 extern const char kMagnetScheme[];
@@ -26,5 +28,7 @@ extern const char kCryptoWalletsLearnMoreURL[];
 // should be initialized with initialize list or string literal.
 // So, this macro is used.
 #define kDownloadBraveUrl "https://www.brave.com/download"
+
+}  // namespace brave
 
 #endif  // BRAVE_COMMON_URL_CONSTANTS_H_

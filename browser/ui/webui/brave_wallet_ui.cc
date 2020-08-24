@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_generated_map.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/render_frame_host.h"

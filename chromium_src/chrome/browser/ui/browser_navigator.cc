@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
@@ -53,8 +53,8 @@ void MaybeHandleInParent(NavigateParams* params, bool allow_in_incognito) {
 }
 
 bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
-  if (host == kWalletHost ||
-      host == kRewardsPageHost ||
+  if (host == brave::kWalletHost ||
+      host == brave::kRewardsPageHost ||
       host == chrome::kChromeUISyncInternalsHost) {
     return false;
   }

@@ -6,7 +6,7 @@
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
 
 #include "base/strings/string_piece.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "extensions/common/permissions/permissions_data.h"
 #include "extensions/common/url_pattern.h"
 #include "url/origin.h"
@@ -37,7 +37,7 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     return true;
   }
 
-  if (request.url.SchemeIs(kBinanceScheme)) {
+  if (request.url.SchemeIs(brave::kBinanceScheme)) {
     return true;
   }
 
@@ -51,7 +51,7 @@ bool BraveExtensionsAPIClient::ShouldHideBrowserNetworkRequest(
     return true;
   }
 
-  if (request.url.SchemeIs(kGeminiScheme)) {
+  if (request.url.SchemeIs(brave::kGeminiScheme)) {
     return true;
   }
 

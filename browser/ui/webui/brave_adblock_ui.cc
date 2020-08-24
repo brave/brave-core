@@ -7,7 +7,7 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 #include "brave/components/brave_adblock/resources/grit/brave_adblock_generated_map.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"

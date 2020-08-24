@@ -13,7 +13,7 @@
 #include "brave/browser/ui/webui/webcompat_reporter_ui.h"
 #include "brave/common/brave_features.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/buildflags/buildflags.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -62,31 +62,31 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 template<>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
-  if (host == kAdblockHost) {
+  if (host == brave::kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
-  } else if (host == kWebcompatReporterHost) {
+  } else if (host == brave::kWebcompatReporterHost) {
     return new WebcompatReporterUI(web_ui, url.host());
 #if BUILDFLAG(IPFS_ENABLED)
-  } else if (host == kIPFSHost &&
+  } else if (host == brave::kIPFSHost &&
       base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
     return new IPFSUI(web_ui, url.host());
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  } else if (host == kWalletHost) {
+  } else if (host == brave::kWalletHost) {
     return new BraveWalletUI(web_ui, url.host());
 #endif  // BUILDFLAG(BRAVE_WALLET_ENABLED)
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  } else if (host == kRewardsPageHost) {
+  } else if (host == brave::kRewardsPageHost) {
     return new BraveRewardsPageUI(web_ui, url.host());
-  } else if (host == kRewardsInternalsHost) {
+  } else if (host == brave::kRewardsInternalsHost) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
 #if !defined(OS_ANDROID)
-  } else if (host == kTipHost) {
+  } else if (host == brave::kTipHost) {
     return new BraveTipUI(web_ui, url.host());
 #endif  // !defined(OS_ANDROID)
 #endif  // BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #if !defined(OS_ANDROID)
-  } else if (host == kWelcomeHost) {
+  } else if (host == brave::kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
   } else if (host == chrome::kChromeUISettingsHost) {
     return new BraveSettingsUI(web_ui, url.host());
@@ -102,21 +102,21 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 // with it.
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
-  if (url.host_piece() == kAdblockHost ||
-      url.host_piece() == kWebcompatReporterHost ||
+  if (url.host_piece() == brave::kAdblockHost ||
+      url.host_piece() == brave::kWebcompatReporterHost ||
 #if BUILDFLAG(IPFS_ENABLED)
-      (url.host_piece() == kIPFSHost &&
+      (url.host_piece() == brave::kIPFSHost &&
           base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) ||
 #endif  // BUILDFLAG(IPFS_ENABLED)
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-      url.host_piece() == kWalletHost ||
+      url.host_piece() == brave::kWalletHost ||
 #endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-      url.host_piece() == kRewardsPageHost ||
-      url.host_piece() == kRewardsInternalsHost ||
-      url.host_piece() == kTipHost ||
+      url.host_piece() == brave::kRewardsPageHost ||
+      url.host_piece() == brave::kRewardsInternalsHost ||
+      url.host_piece() == brave::kTipHost ||
 #endif
-      url.host_piece() == kWelcomeHost ||
+      url.host_piece() == brave::kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
       url.host_piece() == chrome::kChromeUINewTabHost ||
       url.host_piece() == chrome::kChromeUISettingsHost) {
@@ -129,8 +129,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if defined(OS_ANDROID)
 bool ShouldBlockRewardsWebUI(
       content::BrowserContext* browser_context, const GURL& url) {
-  if (url.host_piece() != kRewardsPageHost &&
-      url.host_piece() != kRewardsInternalsHost) {
+  if (url.host_piece() != brave::kRewardsPageHost &&
+      url.host_piece() != brave::kRewardsInternalsHost) {
     return false;
   }
   if (!base::FeatureList::IsEnabled(features::kBraveRewards)) {

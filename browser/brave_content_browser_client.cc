@@ -20,7 +20,7 @@
 #include "brave/browser/net/brave_proxying_web_socket.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 #include "brave/components/binance/browser/buildflags/buildflags.h"
 #include "brave/components/gemini/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -366,8 +366,8 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     blink::mojom::ReferrerPtr* referrer) {
   DCHECK(referrer && !referrer->is_null());
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-  if (document_url.SchemeIs(kChromeExtensionScheme) ||
-      request_url.SchemeIs(kChromeExtensionScheme)) {
+  if (document_url.SchemeIs(brave::kChromeExtensionScheme) ||
+      request_url.SchemeIs(brave::kChromeExtensionScheme)) {
     return;
   }
 #endif
@@ -424,7 +424,7 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
   if (url->host() == chrome::kChromeUISyncHost) {
     GURL::Replacements replacements;
     replacements.SetHostStr(chrome::kChromeUISettingsHost);
-    replacements.SetPathStr(kBraveSyncPath);
+    replacements.SetPathStr(brave::kBraveSyncPath);
     *url = url->ReplaceComponents(replacements);
     return true;
   }

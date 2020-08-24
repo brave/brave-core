@@ -3,7 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
+
+namespace brave {
 
 const char kAdblockHost[] = "adblock";
 const char kAdblockJS[] = "brave_adblock.js";
@@ -25,3 +27,5 @@ const char kExtensionSettingsURL[] = "brave://settings/extensions";
 const char kWalletHost[] = "wallet";
 const char kBraveSyncPath[] = "braveSync";
 const char kBraveSyncSetupPath[] = "braveSync/setup";
+
+}  // namespace brave

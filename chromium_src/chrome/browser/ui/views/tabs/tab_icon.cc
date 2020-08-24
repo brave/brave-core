@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 #include "url/gurl.h"
 
 namespace {
@@ -22,8 +22,8 @@ namespace {
 // original Chromium implementation for all other URLs.
 bool BraveShouldThemifyFaviconForUrl(const GURL& url) {
   if (url.SchemeIs(content::kChromeUIScheme) &&
-      (url.host_piece() == kWelcomeHost ||
-       url.host_piece() == kRewardsPageHost))
+      (url.host_piece() == brave::kWelcomeHost ||
+       url.host_piece() == brave::kRewardsPageHost))
     return false;
 
   return ShouldThemifyFaviconForUrl_ChromiumImpl(url);

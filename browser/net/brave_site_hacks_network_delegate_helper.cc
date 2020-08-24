@@ -15,7 +15,7 @@
 #include "base/strings/string_util.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"

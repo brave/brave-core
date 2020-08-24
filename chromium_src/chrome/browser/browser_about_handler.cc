@@ -7,14 +7,14 @@
 #include "../../../../chrome/browser/browser_about_handler.cc"  // NOLINT
 #undef FixupBrowserAboutURL
 
-#include "brave/common/url_constants.h"
-#include "brave/common/webui_url_constants.h"
+#include "brave/common/brave_url_constants.h"
+#include "brave/common/brave_webui_url_constants.h"
 
 bool FixupBrowserAboutURL(GURL* url,
                           content::BrowserContext* browser_context) {
   bool result = FixupBrowserAboutURL_ChromiumImpl(url, browser_context);
 
-  if (url->SchemeIs(kBraveUIScheme)) {
+  if (url->SchemeIs(brave::kBraveUIScheme)) {
     GURL::Replacements replacements;
     replacements.SetSchemeStr(content::kChromeUIScheme);
     *url = url->ReplaceComponents(replacements);

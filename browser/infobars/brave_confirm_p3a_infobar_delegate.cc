@@ -9,7 +9,7 @@
 #include <utility>
 
 #include "brave/common/pref_names.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
@@ -87,7 +87,7 @@ base::string16 BraveConfirmP3AInfoBarDelegate::GetLinkText() const {
 }
 
 GURL BraveConfirmP3AInfoBarDelegate::GetLinkURL() const {
-  return GURL(kP3ALearnMoreURL);
+  return GURL(brave::kP3ALearnMoreURL);
 }
 
 bool BraveConfirmP3AInfoBarDelegate::Accept() {

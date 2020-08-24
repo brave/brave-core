@@ -1,0 +1,31 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+# To avoid a circular dependency with //chrome/common, all files of
+# //brave/common are built with //chrome/common.
+# See also brave/brave-browser#10653.
+brave_chrome_common_sources = [
+  "//brave/common/brave_channel_info.cc",
+  "//brave/common/brave_channel_info.h",
+  "//brave/common/brave_common_message_generator.cc",
+  "//brave/common/brave_common_message_generator.h",
+  "//brave/common/brave_content_client.cc",
+  "//brave/common/brave_content_client.h",
+  "//brave/common/brave_features.cc",
+  "//brave/common/brave_features.h",
+  "//brave/common/brave_paths.cc",
+  "//brave/common/brave_paths.h",
+  "//brave/common/brave_url_constants.cc",
+  "//brave/common/brave_url_constants.h",
+  "//brave/common/brave_webui_url_constants.cc",
+  "//brave/common/brave_webui_url_constants.h",
+  "//brave/common/resource_bundle_helper.cc",
+  "//brave/common/resource_bundle_helper.h",
+  "//brave/common/translate_network_constants.cc",
+  "//brave/common/translate_network_constants.h",
+]
+brave_chrome_common_public_deps = [
+  "//brave/common:switches",
+]

@@ -14,7 +14,7 @@ class BraveContentClient : public ChromeContentClient {
   ~BraveContentClient() override;
 
  private:
-  // ChromeContentClinet overrides:
+  // ChromeContentClient overrides:
   base::RefCountedMemory* GetDataResourceBytes(int resource_id) override;
   void AddAdditionalSchemes(Schemes* schemes) override;
 };

@@ -4,7 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
+
+namespace brave {
 
 const char kChromeExtensionScheme[] = "chrome-extension";
 const char kBraveUIScheme[] = "brave";
@@ -20,3 +22,5 @@ const char kImportDataHelpURL[] =
     "https://support.brave.com/hc/en-us/articles/360019782291#safari";
 const char kCryptoWalletsLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/360034535452";
+
+}  // namespace brave

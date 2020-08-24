@@ -9,7 +9,7 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/pref_names.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/extensions/extension_service.h"
@@ -94,7 +94,7 @@ BraveWebTorrentNavigationThrottle::CommonWillProcessRequestResponse() {
   auto* headers = navigation_handle()->GetResponseHeaders();
   bool is_torrent_file = headers ? webtorrent::IsTorrentFile(url, headers) :
       webtorrent::TorrentURLMatched(url);
-  if ((url.SchemeIs(kMagnetScheme) || is_torrent_file) &&
+  if ((url.SchemeIs(brave::kMagnetScheme) || is_torrent_file) &&
        MaybeLoadWebtorrent(web_contents->GetBrowserContext(), url)) {
     resume_pending_ = true;
     return content::NavigationThrottle::DEFER;

@@ -10,7 +10,7 @@
 
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/ui/brave_pages.h"
-#include "brave/common/url_constants.h"
+#include "brave/common/brave_url_constants.h"
 #include "brave/components/brave_wallet/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/brave_wallet_service.h"
 #include "brave/components/brave_wallet/pref_names.h"
@@ -88,7 +88,7 @@ base::string16 CryptoWalletsInfoBarDelegate::GetLinkText() const {
 }
 
 GURL CryptoWalletsInfoBarDelegate::GetLinkURL() const {
-  return GURL(kCryptoWalletsLearnMoreURL);
+  return GURL(brave::kCryptoWalletsLearnMoreURL);
 }
 
 bool CryptoWalletsInfoBarDelegate::Accept() {

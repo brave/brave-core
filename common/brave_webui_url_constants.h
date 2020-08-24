@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_
 #define BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_
 
+namespace brave {
+
 extern const char kAdblockHost[];
 extern const char kAdblockJS[];
 extern const char kIPFSHost[];
@@ -28,5 +30,7 @@ extern const char kExtensionSettingsURL[];
 extern const char kWalletHost[];
 extern const char kBraveSyncPath[];
 extern const char kBraveSyncSetupPath[];
+
+}  // namespace brave
 
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_
