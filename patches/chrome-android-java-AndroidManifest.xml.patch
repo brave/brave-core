@@ -58,7 +58,7 @@ index faf600a3073ad96cbe05b8b2f48ea44d7acb7cff..d75995327bb809cccc99a3c4c11b641e
          <!-- ARCore APK integration -->
          <!-- This tag indicates that this application optionally uses ARCore. -->
          <meta-data android:name="com.google.ar.core" android:value="optional" />
-+        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="190603076"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
++        <meta-data android:name="com.google.ar.core.min_apk_version" android:value="200501000"/><activity android:name="com.google.ar.core.InstallActivity" android:configChanges="keyboardHidden|orientation|screenSize" android:excludeFromRecents="true" android:exported="false" android:launchMode="singleTop" android:theme="@android:style/Theme.Material.Light.Dialog.Alert" />
          {% endif %}
  
          <!-- Cast support -->
