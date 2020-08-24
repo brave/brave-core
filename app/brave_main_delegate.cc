@@ -212,7 +212,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       // this feature.
       features::kWebUIDarkMode.name,
       blink::features::kPrefetchPrivacyChanges.name,
-      features::kReducedReferrerGranularity.name,
+      blink::features::kReducedReferrerGranularity.name,
 #if defined(OS_WIN)
       features::kWinrtGeolocationImplementation.name,
 #endif
