@@ -35,7 +35,6 @@ void WalletBalance::Fetch(ledger::FetchBalanceCallback callback) {
   // we can skip balance server ping
   if (!braveledger_state::GetFetchOldBalanceEnabled(ledger_)) {
     auto balance = ledger::Balance::New();
-    balance->user_funds = "0";
     GetUnblindedTokens(std::move(balance), callback);
     return;
   }

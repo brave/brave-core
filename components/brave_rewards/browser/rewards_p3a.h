@@ -63,7 +63,7 @@ void RecordNoWalletCreatedForAllMetrics();
 void RecordRewardsDisabledForSomeMetrics();
 
 double CalcWalletBalanceForP3A(base::flat_map<std::string, double> wallets,
-                               std::string user_funds);
+                               double user_funds);
 
 uint64_t RoundProbiToUint64(base::StringPiece probi);
 
