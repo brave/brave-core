@@ -98,6 +98,7 @@ const Config = function () {
   this.updaterDevEndpoint = getNPMConfig(['updater_dev_endpoint']) || ''
   this.webcompatReportApiEndpoint = getNPMConfig(['webcompat_report_api_endpoint']) || 'https://webcompat.brave.com/1/webcompat'
   this.chromePgoPhase = 0
+  this.useBlinkV8BindingNewIdlInterface = false
   // this.buildProjects()
   this.braveVersion = getNPMConfig(['version']) || '0.0.0'
   this.androidOverrideVersionName = this.braveVersion
@@ -210,6 +211,7 @@ Config.prototype.buildArgs = function () {
     enable_cdm_host_verification: this.enableCDMHostVerification(),
     skip_signing: !this.shouldSign(),
     chrome_pgo_phase: this.chromePgoPhase,
+    use_blink_v8_binding_new_idl_interface: this.useBlinkV8BindingNewIdlInterface,
     ...this.extraGnArgs,
   }
 
