@@ -51,7 +51,7 @@ TorNavigationThrottle::WillStartRequest() {
       url.SchemeIs(content::kChromeUIScheme) ||
       url.SchemeIs(extensions::kExtensionScheme) ||
       url.SchemeIs(content::kChromeDevToolsScheme)) {
-    if (!tor_profile_service_->IsTorLaunched() &&
+    if (!tor_profile_service_->IsTorConnected() &&
         !url.SchemeIs(content::kChromeUIScheme)) {
       resume_pending_ = true;
       return content::NavigationThrottle::DEFER;

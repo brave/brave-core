@@ -229,12 +229,12 @@ TorProfileServiceImpl::CreateProxyConfigService() {
   return std::unique_ptr<net::ProxyConfigServiceTor>(proxy_config_service_);
 }
 
-bool TorProfileServiceImpl::IsTorLaunched() {
+bool TorProfileServiceImpl::IsTorConnected() {
   if (is_tor_launched_for_test_)
     return true;
   if (!tor_launcher_factory_)
     return false;
-  return tor_launcher_factory_->GetTorPid() > 0;
+  return tor_launcher_factory_->IsTorConnected();
 }
 
 void TorProfileServiceImpl::SetTorLaunchedForTest() {
