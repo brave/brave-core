@@ -10,7 +10,7 @@ namespace ledger {
 namespace endpoint {
 
 APIServer::APIServer(bat_ledger::LedgerImpl* ledger):
-    get_parameters_(new api::GetParameters(ledger)) {
+    get_parameters_(std::make_unique<api::GetParameters>(ledger)) {
 }
 
 APIServer::~APIServer() = default;

@@ -271,7 +271,7 @@ void CredentialsSKU::ClaimStatusSaved(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Claim status not saved " << result);
+    BLOG(0, "Claim status not saved: " << result);
     callback(ledger::Result::RETRY);
     return;
   }

@@ -20,7 +20,7 @@ namespace wallet {
 
 WalletCreate::WalletCreate(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
-    promotion_server_(new endpoint::PromotionServer(ledger)) {
+    promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
   DCHECK(ledger_);
 }
 

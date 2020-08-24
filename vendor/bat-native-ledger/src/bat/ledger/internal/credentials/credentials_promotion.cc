@@ -23,7 +23,7 @@ CredentialsPromotion::CredentialsPromotion(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
     common_(std::make_unique<CredentialsCommon>(ledger)),
     promotion_server_(
-        std::make_unique<ledger::endpoint::PromotionServer>(ledger))  {
+        std::make_unique<ledger::endpoint::PromotionServer>(ledger)) {
   DCHECK(ledger_ && common_);
 }
 

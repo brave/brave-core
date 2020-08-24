@@ -11,12 +11,14 @@ namespace ledger {
 namespace endpoint {
 
 PaymentServer::PaymentServer(bat_ledger::LedgerImpl* ledger):
-    post_order_(new payment::PostOrder(ledger)),
-    post_credentials_(new payment::PostCredentials(ledger)),
-    get_credentials_(new payment::GetCredentials(ledger)),
-    post_votes_(new payment::PostVotes(ledger)),
-    post_transaction_uphold_(new payment::PostTransactionUphold(ledger)),
-    post_transaction_anon_(new payment::PostTransactionAnon(ledger)) {
+    post_order_(std::make_unique<payment::PostOrder>(ledger)),
+    post_credentials_(std::make_unique<payment::PostCredentials>(ledger)),
+    get_credentials_(std::make_unique<payment::GetCredentials>(ledger)),
+    post_votes_(std::make_unique<payment::PostVotes>(ledger)),
+    post_transaction_uphold_(
+        std::make_unique<payment::PostTransactionUphold>(ledger)),
+    post_transaction_anon_(
+        std::make_unique<payment::PostTransactionAnon>(ledger)) {
 }
 
 PaymentServer::~PaymentServer() = default;
