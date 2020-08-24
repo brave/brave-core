@@ -47,16 +47,17 @@ public class BraveBottomToolbarCoordinator
 
     private final Context mContext = ContextUtils.getApplicationContext();
 
-    BraveBottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout root,
-            ViewStub stub, ActivityTabProvider tabProvider,
-            OnLongClickListener tabsSwitcherLongClickListner, ThemeColorProvider themeColorProvider,
+    BraveBottomToolbarCoordinator(ScrollingBottomViewResourceFrameLayout root, ViewStub stub,
+            ActivityTabProvider tabProvider, OnLongClickListener tabsSwitcherLongClickListner,
+            ThemeColorProvider themeColorProvider,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             Supplier<Boolean> showStartSurfaceCallable, Runnable openHomepageAction,
             Callback<Integer> setUrlBarFocusAction,
-            ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier) {
+            ObservableSupplier<OverviewModeBehavior> overviewModeBehaviorSupplier,
+            ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier) {
         super(stub, tabProvider, tabsSwitcherLongClickListner, themeColorProvider,
                 shareDelegateSupplier, showStartSurfaceCallable, openHomepageAction,
-                setUrlBarFocusAction, overviewModeBehaviorSupplier);
+                setUrlBarFocusAction, overviewModeBehaviorSupplier, menuButtonHelperSupplier);
         mBraveTabProvider = tabProvider;
         mOriginalHomeButtonRunnable = openHomepageAction;
         rootView = root;
@@ -90,11 +91,11 @@ public class BraveBottomToolbarCoordinator
 
     @Override
     void initializeWithNative(OnClickListener tabSwitcherListener,
-            OnClickListener newTabClickListener, AppMenuButtonHelper menuButtonHelper,
-            TabCountProvider tabCountProvider, IncognitoStateProvider incognitoStateProvider,
-            ViewGroup topToolbarRoot, Runnable closeAllTabsAction) {
-        super.initializeWithNative(tabSwitcherListener, newTabClickListener, menuButtonHelper,
-                tabCountProvider, incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
+            OnClickListener newTabClickListener, TabCountProvider tabCountProvider,
+            IncognitoStateProvider incognitoStateProvider, ViewGroup topToolbarRoot,
+            Runnable closeAllTabsAction) {
+        super.initializeWithNative(tabSwitcherListener, newTabClickListener, tabCountProvider,
+                incognitoStateProvider, topToolbarRoot, closeAllTabsAction);
 
         View root = (View) topToolbarRoot.getParent();
         View bottom_toolbar_browsing = root.findViewById(R.id.bottom_toolbar_browsing);
