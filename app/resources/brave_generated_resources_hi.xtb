@@ -23,8 +23,6 @@
 
 इस एक्सटेंशन को इन्स्टॉल करने के साथ, आप Google Wivedine के उपयोग की शर्तों से सहमत हो रहे हैं| आप सहमत हैं की Google Wivedine के प्रयोग से किसी क्षति या नुकसान के सम्बन्ध में Brave ज़िम्मेदार नहीं है|</translation>
 <translation id="410351446219883937">स्वतः प्ले</translation>
-<translation id="2240268017737062801">पूछें जब कोई साइट मीडिया को स्वतः चलाना चाहती है</translation>
-<translation id="3371702087847741961">तब पूछें कि जब कोई साइट मीडिया को ऑटोप्ले करना चाहती है(अनुग्रह)</translation>
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> पर हमेश स्वतः चालू का अनुमति दें</translation>
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
@@ -80,6 +78,7 @@ Binance
 <translation id="8173998484743827990">Brave आँकड़े</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">शीर्ष साइट्स</translation>
 <translation id="1776831331757823105">घड़ी</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
@@ -114,7 +113,7 @@ Binance
 <translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
 <translation id="519861640102428255">देखें और महसूस करें</translation>
 <translation id="4800195524776354947">शील्ड्स आइकन पर ब्लॉक किए गए वस्तुओं की संख्या दिखाएँ</translation>
-<translation id="7498695072878479744">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
+<translation id="3932286112122164477">अन्य पक्ष के साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
@@ -269,4 +268,5 @@ Binance
 <translation id="5570470519803062774">साइट और शील्ड सेटिंग</translation>
 <translation id="8487693399751278191">अब बुकमार्क्स को इम्पोर्ट करें...</translation>
 <translation id="2557899542277210112">त्वरित पहुँच के लिए, अपने बुकमार्क को यहाँ बुकमार्क बार पर रखें।</translation>
+<translation id="2808630562319398131">Brave रिवॉर्ड डेटा रीसेट करें ...</translation>
 </translationbundle>

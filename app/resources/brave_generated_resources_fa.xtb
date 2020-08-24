@@ -22,8 +22,6 @@
 
 با نصب این افزونه، «شرایط استفاده از Google Widevine» را می‌پذیرید و موافقت می‌کنید Brave مسئول هرگونه خسارت یا زیان مرتبط با استفاده شما از Google Widevine نیست.</translation>
 <translation id="410351446219883937">پخش خودکار</translation>
-<translation id="2240268017737062801">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود</translation>
-<translation id="3371702087847741961">‏وقتی سایتی می‌خواهد رسانه را پخش خودکار کند سؤال شود (توصیه می‌شود)</translation>
 <translation id="3218385319396786393">پخش خودکار در این صفحه مسدود شد</translation>
 <translation id="4988333904713528597">همیشه در <ph name="HOST"/> به پخش خودکار اجازه داده شود</translation>
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">آمار Brave</translation>
 <translation id="5551238871320268996">Brave در کنار هم</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">سایت‌های برتر</translation>
 <translation id="1776831331757823105">ساعت</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
 <translation id="519861640102428255">ظاهر و حس</translation>
 <translation id="4800195524776354947">نمایش تعداد موارد مسدودشده روی نماد سپر ایمنی</translation>
-<translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
+<translation id="3932286112122164477">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">تنظیمات سایت و سپر ایمنی</translation>
 <translation id="8487693399751278191">اکنون نشانک‌ها را وارد کنید...</translation>
 <translation id="2557899542277210112">برای دسترسی سریع، نشانک‌های خود را در اینجا روی نوار نشانک‌ها قرار دهید.</translation>
+<translation id="2808630562319398131">بازنشانی داده‌های Brave Rewards…</translation>
 </translationbundle>

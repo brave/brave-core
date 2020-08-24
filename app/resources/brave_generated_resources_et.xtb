@@ -22,8 +22,6 @@
 
 Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. Nõustute, et Brave ei vastuta mis tahes kahjude eest, mis tulenevad Google Widevine'i kasutamisest.</translation>
 <translation id="410351446219883937">Automaatesitus</translation>
-<translation id="2240268017737062801">Küsi, kui veebisait tahab meediat automaatesitada</translation>
-<translation id="3371702087847741961">Küsi, kui veebisait tahab meediat automaatesitada (soovituslik)</translation>
 <translation id="3218385319396786393">Automaatesitus blokeeriti sellel lehel</translation>
 <translation id="4988333904713528597">Luba alati automaatesitust saidil <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Jätka automaatesituse blokeerimist</translation>
@@ -46,6 +44,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="8173998484743827990">Brave'i statistika</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Popid saidid</translation>
 <translation id="1776831331757823105">Kell</translation>
 <translation id="7965178729203412357">Uus Tor'i identiteet</translation>
@@ -80,7 +79,7 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="4824468494729001999">Blokeeri skriptid</translation>
 <translation id="519861640102428255">Välimus ja tunnetus</translation>
 <translation id="4800195524776354947">Kuva blokeeritud elementide arv Kaitse ikoonil</translation>
-<translation id="7498695072878479744">Luba Google'i sisselogimisnupud kolmanda osapoole saitidel</translation>
+<translation id="3932286112122164477">Luba Google'i sisselogimisnupud kolmanda osapoole saitidel</translation>
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
 <translation id="5165042248369837294">Luba Twitteri manustatud säutsud</translation>
 <translation id="958971637207126733">Luba LinkedIni manustatud postitused</translation>
@@ -235,4 +234,5 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="5570470519803062774">Saitide ja Kaitse sätted</translation>
 <translation id="8487693399751278191">Impordi järjehoidjad nüüd...</translation>
 <translation id="2557899542277210112">Kiire juurdepääsu saamiseks paigutage järjehoidjad siia järjehoidjaribale.</translation>
+<translation id="2808630562319398131">Taasta Brave Rewardsi andmed...</translation>
 </translationbundle>

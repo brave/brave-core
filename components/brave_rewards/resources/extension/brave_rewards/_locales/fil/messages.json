@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "I-cancel",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Mag-login",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Nagbibigay-daan sa iyo ang pag-verify sa wallet na mas mabisa mong mapamahalaan ang iyong mga pondo.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. <br/> Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Nakakonekta",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Nakabinbin",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

@@ -42,6 +42,12 @@
 <translation id="383680190590774040">時鐘</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">背景圖</translation>
+<translation id="1776831331757823105">時鐘</translation>
+<translation id="4643117005422448078">熱門網站</translation>
+<translation id="7791543448312431591">新增</translation>
+<translation id="7679334366167089823">為觀看尊重隱私權廣告而賺取代幣。</translation>
+<translation id="1531133232292396145">在您瀏覽器中的 Binance 上直接交易加密貨幣。</translation>
+<translation id="2166494527623220386">在您瀏覽器中的 Gemini 上直接交易加密貨幣。</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="6248988683584659830">搜尋設定</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">當您找到寶石時馬上給小費。</translation>
 <translation id="3642432959491988696">如果要的話，用簡短的推文告知大家。</translation>
-<translation id="5984081903757971165">收回了 {{balance}} {{currency}}。你的錢包金鑰已成功驗證並載入。</translation>
+<translation id="4875485795191140618">您的錢包金鑰已被驗證並成功地載入。</translation>
 <translation id="1083279119532577005">錢包已復原！</translation>
 <translation id="7841456038054167122">請重新輸入或嘗試其他金鑰。</translation>
+<translation id="340102383764929340">所輸入的復原金鑰已不再受支援。請造訪 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> 來取得新的金鑰。</translation>
 <translation id="2195074481553016770">即將完成</translation>
 <translation id="5254740304961202261">證明您是人類！</translation>
 <translation id="2187043784382239974">嗯，不太…</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">已瀏覽</translation>
 <translation id="2852258589816753010">您的所在地區目前不支援 BAT。請參閱 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> 來查詢更新。</translation>
 <translation id="2564425876266960486">建立 Brave 瀏覽器 BAT 卡時發生錯誤</translation>
+<translation id="6473583070570450185">您需要經驗證錢包來登入</translation>
+<translation id="2106271389438168634">您至少需有 25 BAT 才能建立 Uphold 帳戶。請在您已和 Uphold 驗證過錢包後再試一次。</translation>
 <translation id="7422678632904904341">金額：</translation>
 <translation id="6969783933307596818">每 5 秒自動重新整理</translation>
 <translation id="5025866799968038247">餘額資訊</translation>
-<translation id="1642443162274867084">已建立的錢包</translation>
+<translation id="6073289164268847023">錢包建立：</translation>
 <translation id="6643016212128521049">清除</translation>
 <translation id="8949473809474431949">捐款額度：</translation>
 <translation id="4468686134841688885">建立於：</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">獎勵已關閉</translation>
 <translation id="3354337256330577726">自動捐款已關閉</translation>
 <translation id="6727186931929643711">停止重試</translation>
+<translation id="2059498613853603008">警告：這網頁上的資料可能有敏感性。請以對待您錢包私人金鑰的方式來對待這些資料。對於您分享資料的對象需謹慎。</translation>
 <translation id="7375125077091615385">類型：</translation>
 <translation id="4973347371961481083">捐款</translation>
 <translation id="1924618796077284366">下載完整紀錄</translation>
+<translation id="1979114396925139279">外部錢包資訊</translation>
 <translation id="5457113250005438886">無效</translation>
-<translation id="7687511348932340294">金鑰資訊種子：</translation>
+<translation id="6161467863097205016">關鍵資訊種子：</translation>
 <translation id="1907668701131938713">我們顯示紀錄檔中最新的 {{numberOfLines}} 行。如果您想要完整紀錄，您可以在上方下載。</translation>
 <translation id="7168491065836975228">內部獎勵</translation>
 <translation id="758790787422117549">個人 ID</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">總餘額</translation>
 <translation id="2223892939866251845">使用者 ID</translation>
 <translation id="4235360514405112390">有效</translation>
+<translation id="3902084968737576005">錢包位址：</translation>
 <translation id="2326487656644542536">錢包資訊</translation>
-<translation id="3576689061489548788">錢包付款 ID：</translation>
+<translation id="8559420016582377654">錢包付款 ID：</translation>
+<translation id="438586487791444158">錢包狀態：</translation>
+<translation id="3368922792935385530">已連線</translation>
+<translation id="8874184842967597500">未連線</translation>
+<translation id="4569155249847375786">已驗證</translation>
+<translation id="922103963921062336">切斷連線了（未經驗證）</translation>
+<translation id="6521149675246672063">切斷連線（經驗證）</translation>
+<translation id="3248185426436836442">未定</translation>
 <translation id="5094577350232361255">關於</translation>
 <translation id="4918086044614829423">接受</translation>
 <translation id="5916290544882167205">Brave Software。Brave 是 Brave Software 的註冊商標。網站名稱可能為網站所有者的商標或註冊商標。</translation>
@@ -330,6 +349,9 @@
 <translation id="2291686779354188838">您好，{{name}}！</translation>
 <translation id="1389143276807887637">匯入</translation>
 <translation id="7335371657242627509">包含在自動捐獻中</translation>
+<translation id="1864111464094315414">登入</translation>
+<translation id="4556504723624686474">驗證錢包讓您能更有效率地管理基金。</translation>
+<translation id="4188679602963314994">您至少需有 25 BAT 才能建立 Uphold 帳戶。請稍後再試。<ph name="BREAK">&lt;br/&gt;</ph>如果您已有經驗證的 Uphold 帳戶，請繼續登入。</translation>
 <translation id="3250511771491660127">成為每月一次</translation>
 <translation id="6028954173739504682">管理您的錢包</translation>
 <translation id="7886389832052393750">四月</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">提領您可能先前新增至您的 Brave 獎勵電子錢包的 BAT (注意力代幣)</translation>
 <translation id="8558636200953226885">但如果您進行驗證，您可以……</translation>
 <translation id="3354315693758743702">驗證您的錢包是選擇性的。</translation>
-<translation id="4569155249847375786">已驗證</translation>
 <translation id="8465442795593991224">根據服務要求，Uphold 可能需要您驗證身分識別</translation>
 <translation id="723054503945711909">當您建立您的帳號時，Brave 軟體公司不會處理、儲存或存取您提供給 Uphold 的任何個人資料。</translation>
 <translation id="7404779623219601861">使用 BAT 兌換禮物卡</translation>
 <translation id="6215565499749144110">使用 TAP 網路，您可以使用您的 BAT 來兌換熱門名牌禮物卡。</translation>
-<translation id="526152301446370337">造訪 TAP。</translation>
 <translation id="6915065518766963119">* 需要 Uphold 驗證。</translation>
+<translation id="651649139059930379">以本  Uphold 卡取得 2% 的 cryptoback</translation>
+<translation id="1109729143147368573">將您的加密貨幣和其他資產，花用在全世界近五千萬的商業和自動櫃員機上。花用加密貨幣來取得加密貨幣！</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>進一步瞭解<ph name="LINK_END"/> Brave Rewards</translation>
 <translation id="5826706758731195747">開啟「獎勵」，即表示您同意<ph name="LINK_BEGIN"/>服務條款<ph name="LINK_END"/>。</translation>
 <translation id="8344084848798035850">本月到目前為止的估計收入</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">您在透過檢視這張背景影像來賺錢。</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>進一步瞭解<ph name="LINK_END"/> Brave Rewards 的贊助影像。</translation>
 <translation id="6113004497629356998">隱藏贊助影像</translation>
+<translation id="2148613324460538318">增加卡片</translation>
 <translation id="5977237145327845546">與您的好友與同事開始私人視訊通話。</translation>
 <translation id="5850325887346946383">開始視訊通話</translation>
 <translation id="3651550649176056334">關於您的資料</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">摘要</translation>
 <translation id="439104575421522802">工作階段已過期</translation>
 <translation id="8558560988211507902">您的幣安存取權杖已過期。請重新連線以繼續使用小工具。</translation>
+<translation id="1543656153506416324">以 Gemini 購買和交易</translation>
+<translation id="8960333903621861280">啟用 Gemini 連線來檢視您的 Gemini 帳戶餘額和交易加密貨幣。</translation>
+<translation id="7604416013180651887">連線到 Gemini</translation>
+<translation id="2349109114223854255">您的 Gemini 取用代幣已過期而無法刷新。請重新連線。</translation>
+<translation id="4848984536030986115">無法進行交易</translation>
+<translation id="7352651011704765696">有地方出錯了</translation>
+<translation id="7097088316781182926">確認交易</translation>
+<translation id="3488255243387417752">賣出</translation>
+<translation id="7969910554171263591">取得報價</translation>
+<translation id="1848737374354350807">餘額：</translation>
+<translation id="8285358301500391177">買進</translation>
+<translation id="8675476238074172660">賣出中</translation>
+<translation id="3081546448594005997">您買進了</translation>
+<translation id="8810136648184657966">您賣出了</translation>
+<translation id="1833248467354516560">單價</translation>
+<translation id="4763179765154524864">總計花出</translation>
+<translation id="8851480289992540512">總計收到</translation>
 <translation id="5655621391922317800">加密錢包</translation>
 <translation id="616639131065447379">歡迎使用 Brave 加密錢包</translation>
 <translation id="1740464057879304704">加密錢包讓您可以在 Brave 中使用加密貨幣與相關資產。加密錢包支援如 ETH 與 BAT 等的以太坊權杖，以及其他收藏品，並讓您可以使用 Dapps 與其他智慧合約。這些東西全都是針對熟悉以太坊與其他區塊鏈系統或樂於學習的人們。</translation>

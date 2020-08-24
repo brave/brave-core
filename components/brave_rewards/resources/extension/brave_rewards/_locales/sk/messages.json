@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Zrušiť",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Prihlásiť sa",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Overenie peňaženky vám umožní efektívnejšie spravovať vaše finančné prostriedky.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Na vytvorenie účtu Uphold potrebujete minimálne 25 tokenov BAT. <br/> Ak už máte overený účet Uphold, pokračujte v prihlásení.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Pripojené",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Prebieha",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

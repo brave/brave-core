@@ -42,6 +42,12 @@
 <translation id="383680190590774040">rellotge</translation>
 <translation id="3333887201479867589">Premis de Brave</translation>
 <translation id="3159285901314605198">Imatge de Fons</translation>
+<translation id="1776831331757823105">Rellotge</translation>
+<translation id="4643117005422448078">Principals llocs</translation>
+<translation id="7791543448312431591">Afegeix</translation>
+<translation id="7679334366167089823">Guanyeu tokens per veure anuncis que respectin la privadesa.</translation>
+<translation id="1531133232292396145">Comercialitzeu criptomonedes amb Binance directament al vostre navegador.</translation>
+<translation id="2166494527623220386">Comercialitzeu criptomonedes amb Gemini directament al vostre navegador.</translation>
 <translation id="6165508094623778733">Saber més</translation>
 <translation id="8730621377337864115">Fet</translation>
 <translation id="6248988683584659830">Configuració de la cerca</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Dona propina en el moment que trobis joies</translation>
 <translation id="3642432959491988696">Si ho voleu, feu-ho saber a la gent amb una piulada ràpida.</translation>
-<translation id="5984081903757971165">S'ha recuperat {{balance}} {{currency}}. La vostra clau de moneder s'ha verificat i carregat correctament.</translation>
+<translation id="4875485795191140618">La clau de la seva cartera ha estat verificada i carregada amb èxit.</translation>
 <translation id="1083279119532577005">S'ha restablert la cartera!</translation>
 <translation id="7841456038054167122">Tornar a posar les claus o prova claus diferents per favor.</translation>
+<translation id="340102383764929340">La clau de restauració introduïda ja no és compatible. Si us plau, visiteu <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> per obtindre una nova clau.</translation>
 <translation id="2195074481553016770">Ja quasi hem arribat…</translation>
 <translation id="5254740304961202261">Demostra que ets un humà!</translation>
 <translation id="2187043784382239974">Hmmm, no exactament...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">Vist</translation>
 <translation id="2852258589816753010">BAT actualment no està suportat en la vostra regió. Si us plau dirigiu-vos a <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> per a actualitzacions.</translation>
 <translation id="2564425876266960486">Error en crear la targeta Brave Browser BAT</translation>
+<translation id="6473583070570450185">Necessiteu una cartera verificada per accedir</translation>
+<translation id="2106271389438168634">Necessiteu un mínim de 25 BAT per crear una cartera de Uphold. Si us plau, torneu-ho a provar després d'haver verificat la seva cartera amb Uphold.</translation>
 <translation id="7422678632904904341">Quantitat:</translation>
 <translation id="6969783933307596818">Actualitzeu automaticament cada 5 segons</translation>
 <translation id="5025866799968038247">Informació del Saldo</translation>
-<translation id="1642443162274867084">S'ha creat la cartera</translation>
+<translation id="6073289164268847023">Cartera creada:</translation>
 <translation id="6643016212128521049">Esborra</translation>
 <translation id="8949473809474431949">Quantitat aportada:</translation>
 <translation id="4468686134841688885">Creat com:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">Les recompenses han estat desactivades</translation>
 <translation id="3354337256330577726">La contribució automàtica s'ha desactivat</translation>
 <translation id="6727186931929643711">S'ha parat de reintentar</translation>
+<translation id="2059498613853603008">ADVERTÈNCIA: Les dades d'aquesta pàgina poden ser confidencials. Tracteu-les com si fossin les claus privades de la vostra cartera. Aneu amb compte amb qui les compartiu.</translation>
 <translation id="7375125077091615385">Tipus:</translation>
 <translation id="4973347371961481083">Contribucions</translation>
 <translation id="1924618796077284366">Baixant registre complet</translation>
+<translation id="1979114396925139279">Informació de la cartera externa</translation>
 <translation id="5457113250005438886">No vàlid</translation>
-<translation id="7687511348932340294">Informació sobre la clau:</translation>
+<translation id="6161467863097205016">Llavor d'informació clau:</translation>
 <translation id="1907668701131938713">Ensenyem les últimes {{numberOfLines}} línies del registre. Si voleu el registre complet, el podeu baixar més amunt.</translation>
 <translation id="7168491065836975228">Premis interns</translation>
 <translation id="758790787422117549">ID de persona</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">Saldo total</translation>
 <translation id="2223892939866251845">ID d'usuari</translation>
 <translation id="4235360514405112390">Vàlid</translation>
+<translation id="3902084968737576005">Adreça de la cartera:</translation>
 <translation id="2326487656644542536">Informació del Moneder</translation>
-<translation id="3576689061489548788">ID del pagament de cartera:</translation>
+<translation id="8559420016582377654">Identificador de pagament de cartera:</translation>
+<translation id="438586487791444158">Estat de la cartera:</translation>
+<translation id="3368922792935385530">Connectat</translation>
+<translation id="8874184842967597500">No connectat</translation>
+<translation id="4569155249847375786">Verificat</translation>
+<translation id="922103963921062336">Desconnectat (no verificat)</translation>
+<translation id="6521149675246672063">Desconnectat (verificat)</translation>
+<translation id="3248185426436836442">Pendent</translation>
 <translation id="5094577350232361255">quant a</translation>
 <translation id="4918086044614829423">Accepta</translation>
 <translation id="5916290544882167205">Brave Software. Brave és una marca registrada de Brave Software. Els noms del lloc poden ser marques comercials o marques registrades del propietari del lloc</translation>
@@ -327,9 +346,12 @@
 <translation id="7513117072433487074">Els {{currency}} no utilitzats el dia de la seva caducitat seran retornats automàticament al Brave User Growth Pool.</translation>
 <translation id="279567716178902927">Data de caducitat de la donació</translation>
 <translation id="2104073734684466851">Ajuts</translation>
-<translation id="2291686779354188838">Hola, {{nom}}!</translation>
+<translation id="2291686779354188838">Hola, {{name}}!</translation>
 <translation id="1389143276807887637">importa</translation>
 <translation id="7335371657242627509">Inclou a Auto-Contribució</translation>
+<translation id="1864111464094315414">Inicia la sessió</translation>
+<translation id="4556504723624686474">La verificació de la cartera us permet gestionar els vostres fons de manera més eficient.</translation>
+<translation id="4188679602963314994">Necessiteu tindre un mínim de 25 BAT per crear un compte de Uphold. Si us plau, torneu-ho a provar més tard. <ph name="BREAK">&lt;br/&gt;</ph>Si ja teniu un compte Uphold verificat, continueu per accedir.</translation>
 <translation id="3250511771491660127">Fes això mensualment</translation>
 <translation id="6028954173739504682">Gestiona la teva cartera</translation>
 <translation id="7886389832052393750">abril</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">Retirar BAT que hagis afegit al teu moneder de Gratificacions Brave</translation>
 <translation id="8558636200953226885">Però si ho verifiques, pots...</translation>
 <translation id="3354315693758743702">Verificar el teu moneder és opcional.</translation>
-<translation id="4569155249847375786">Verificat</translation>
 <translation id="8465442795593991224">Uphold et pot demanar que verifiquis la teva identitat en funció dels serveis demanats.</translation>
 <translation id="723054503945711909">Brave Software Inc. no processa, emmagatzema, o accedeix a cap informació personal que proporcionis a UPhold quan estableixis un compte amb ells.</translation>
 <translation id="7404779623219601861">Bescanvieu BAT per Targetes Regal</translation>
 <translation id="6215565499749144110">Amb TAP Network, podeu bescanviar els vostres BAT per targetes regal de marques populars.</translation>
-<translation id="526152301446370337">Visiteu TAP.</translation>
 <translation id="6915065518766963119">* Requereix Verificació Uphold.</translation>
+<translation id="651649139059930379">Obtingueu un criptoback del 2% amb the  targeta Uphold</translation>
+<translation id="1109729143147368573">Gasteu les vostres criptomonedes i altres actius amb gairebé 50 milions de comerciants i caixers automàtics d'arreu del món. Gasteu criptomonedes per guanyar criptomonedes!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> sobre les Recompenses de Brave.</translation>
 <translation id="5826706758731195747">Si activeu les Recompenses, esteu d'acord amb <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Guanys estimats d'aquest mes fins ara</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">Esteu cobrant per veure aquesta imatge de fons.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> sobre imatges patrocinades a Recompenses de Brave.</translation>
 <translation id="6113004497629356998">Amaga imatges patrocinades</translation>
+<translation id="2148613324460538318">Afegir targeta</translation>
 <translation id="5977237145327845546">Comenceu una videotrucada privada amb els vostres amics i companys.</translation>
 <translation id="5850325887346946383">Comença la videotrucada</translation>
 <translation id="3651550649176056334">Sobre les vostres dades</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">Resum</translation>
 <translation id="439104575421522802">Sessió Expirada</translation>
 <translation id="8558560988211507902">El token d'accés de Binance ha caducat. Torna't a connectar per continuar utilitzant el giny.</translation>
+<translation id="1543656153506416324">Compreu i feu transaccions amb Gemini</translation>
+<translation id="8960333903621861280">Habiliteu una connexió de Gemini per visualitzar el saldo del vostre saldo compte Gemini i poder comercialitzar amb criptomonedes.</translation>
+<translation id="7604416013180651887">Connecti amb Gemini</translation>
+<translation id="2349109114223854255">El token d'accés de Gemini ha caducat i no s'ha pogut actualitzar. Torneu-vos a connectar.</translation>
+<translation id="4848984536030986115">Incapaç de realitzar la transacció</translation>
+<translation id="7352651011704765696">Quelcom ha anat malament</translation>
+<translation id="7097088316781182926">Confirmar Transacció</translation>
+<translation id="3488255243387417752">Vendre</translation>
+<translation id="7969910554171263591">Obtingueu un pressupost</translation>
+<translation id="1848737374354350807">Balanç</translation>
+<translation id="8285358301500391177">Comprant</translation>
+<translation id="8675476238074172660">Venent</translation>
+<translation id="3081546448594005997">Heu comprat</translation>
+<translation id="8810136648184657966">Heu venut</translation>
+<translation id="1833248467354516560">Preu per unitat</translation>
+<translation id="4763179765154524864">Total Gastat</translation>
+<translation id="8851480289992540512">Total Rebut</translation>
 <translation id="5655621391922317800">Moneders Crypto</translation>
 <translation id="616639131065447379">Benvinguts a Crypto Monedes Brave</translation>
 <translation id="1740464057879304704">Els Moneders Crypto us permeten treballar amb cryptomoneda i actius relacionats a Brave. Els Moneders Crypto són compatibles amb tokens Ethereum com ETH i BAT, així com col·leccionables, i us permet treballar amb Ð aplicacions i altres contractes intel·ligents. Tot això està pensat per a persones familiars amb Ethereum i altres sistemes de bloqueig en cadena — o que estan impacients per aprendre.</translation>

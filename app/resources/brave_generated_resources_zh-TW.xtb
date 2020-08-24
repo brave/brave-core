@@ -22,8 +22,6 @@
 
 安裝該擴充功能即表示您同意 Google Widevine 使用條款。您同意 Brave 不為您使用 Google Widevine 而產生的任何相關損害或損失負責。</translation>
 <translation id="410351446219883937">自動播放</translation>
-<translation id="2240268017737062801">當網站想要自動播放媒體時詢問我</translation>
-<translation id="3371702087847741961">當網站想要自動播放媒體時詢問我（建議使用）</translation>
 <translation id="3218385319396786393">此頁面已禁止自動播放</translation>
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST"/></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">Brave 統計</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">幣安</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">熱門網站</translation>
 <translation id="1776831331757823105">時鐘</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">封鎖指令碼</translation>
 <translation id="519861640102428255">外觀</translation>
 <translation id="4800195524776354947">在 Shields 圖示上顯示封鎖項目的數量</translation>
-<translation id="7498695072878479744">在第三方網站上允許 Google 登入按鈕</translation>
+<translation id="3932286112122164477">在第三方網站上允許 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">網站與 Shields 設定</translation>
 <translation id="8487693399751278191">正在匯入書籤……</translation>
 <translation id="2557899542277210112">為了快速存取，請將您的書籤置於書籤列上。</translation>
+<translation id="2808630562319398131">重設 Brave 獎勵資料…</translation>
 </translationbundle>

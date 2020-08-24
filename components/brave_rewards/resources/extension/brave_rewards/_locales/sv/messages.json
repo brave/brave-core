@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Avbryt",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Inloggning",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Genom att verifiera plånboken kan du hantera dina pengar mer effektivt.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Du måste ha minst 25 BAT för att skapa ett Uphold-konto. Vänligen försök igen senare. <br/> Om du redan har ett verifierat Uphold-konto, fortsätt till inloggningen.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Ansluten",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Väntande",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

@@ -324,7 +324,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Определили сте {{servedAmount}} {{валута}} за създатели, които все още не са се регистрирали да получават вноски. Вашият браузър ще продължава да се опитва да даде своя принос, докато те не потвърдят или изминат 90 дни.",
+    "message": "Определили сте {{reservedAmount}} {{currency}} за създатели, които все още не са се регистрирали да получават вноски. Вашият браузър ще продължава да се опитва да даде своя принос, докато те не потвърдят или изминат 90 дни.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Отказ",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Вход",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Потвърждаването на портфейла ви позволява да управлявате средствата си по-ефективно.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Трябва да имате минимум 25 BAT, за да създадете акаунт в Uphold. Моля, опитайте отново по-късно. <br/> Ако вече имате потвърден акаунт в Uphold, продължете с влизането.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Установена е връзка",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Предстоящо",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

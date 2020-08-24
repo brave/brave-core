@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Prekliči",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Prijava",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Potrditev denarnice vam omogoča, da s svojim sredstvi upravljate učinkoviteje.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Za račun Uphold potrebujete vsaj 25 BAT. Prosimo, poskusite znova kasneje. <br/>Če že imate potrjen uporabniški račun na Uphold, nadaljujte z vpisom.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Povezano",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Na čakanju",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

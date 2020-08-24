@@ -22,8 +22,6 @@
 
 Če namestite to razširitev, se strinjate s pogoji uporabe Google Widevine. S tem soglašate, da družba Brave ni odgovorna za morebitno škodo ali izgube v zvezi z vašo uporabo orodja Google Widevine.</translation>
 <translation id="410351446219883937">Samodejno predvajanje</translation>
-<translation id="2240268017737062801">Vprašaj, če želi spletno mesto samodejno predvajati posnetek</translation>
-<translation id="3371702087847741961">Vprašaj, če želi spletno mesto samodejno predvajati posnetek (priporočljivo).</translation>
 <translation id="3218385319396786393">Samodejno predvajanje je blokirano na tej strani</translation>
 <translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nadaljuj z blokiranjem samodejnega predvajanja</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">Brave statistika</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Najb. prilj.</translation>
 <translation id="1776831331757823105">Ura</translation>
 <translation id="7965178729203412357">Nova identiteta Tor</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="519861640102428255">Poglejte &amp; občutite</translation>
 <translation id="4800195524776354947">Pokaži število blokiranih elementov na ikoni Shields</translation>
-<translation id="7498695072878479744">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
+<translation id="3932286112122164477">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
@@ -235,4 +234,5 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank
 <translation id="5570470519803062774">Nastavitve spletne strani in ščita</translation>
 <translation id="8487693399751278191">Uvozi zaznamke zdaj ...</translation>
 <translation id="2557899542277210112">Za hitrejši dostop zaznamke shranite tukaj, v vrstici za zaznamke.</translation>
+<translation id="2808630562319398131">Ponastavi podatke Brave Rewards ...</translation>
 </translationbundle>

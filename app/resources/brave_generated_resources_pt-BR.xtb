@@ -22,8 +22,6 @@
 
 Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevine. Você concorda que o Brave não é responsável por quaisquer danos ou perdas relacionadas ao seu uso do Google Widevine.</translation>
 <translation id="410351446219883937">Reprodução automática</translation>
-<translation id="2240268017737062801">Perguntar quando um site desejar reproduzir mídia automaticamente</translation>
-<translation id="3371702087847741961">Perguntar quando um site desejar reproduzir mídia automaticamente (recomendado)</translation>
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Sempre permitir a reprodução automática em <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando a reprodução automática</translation>
@@ -46,6 +44,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="8173998484743827990">Estatísticas do Brave</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Principais sites</translation>
 <translation id="1776831331757823105">Relógio</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
@@ -80,7 +79,7 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="519861640102428255">Aparência e comportamento</translation>
 <translation id="4800195524776354947">Mostrar o número de itens bloqueados no ícone do escudo</translation>
-<translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
+<translation id="3932286112122164477">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
 <translation id="5165042248369837294">Permitir tuítes incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir postagens incorporadas no LinkedIn</translation>
@@ -235,4 +234,5 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="5570470519803062774">Configurações de site e segurança (escudos)</translation>
 <translation id="8487693399751278191">Importar favoritos agora...</translation>
 <translation id="2557899542277210112">Para acesso rápido, ponha seus favoritos aqui na barra de favoritos.</translation>
+<translation id="2808630562319398131">Redefinir dados de recompensas do Brave...</translation>
 </translationbundle>

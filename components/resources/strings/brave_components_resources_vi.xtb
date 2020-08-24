@@ -42,6 +42,12 @@
 <translation id="383680190590774040">đồng hồ</translation>
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="3159285901314605198">Ảnh Nền</translation>
+<translation id="1776831331757823105">Đồng hồ</translation>
+<translation id="4643117005422448078">Các trang Hàng đầu</translation>
+<translation id="7791543448312431591">Thêm</translation>
+<translation id="7679334366167089823">Kiếm token bằng cách xem quảng cáo tôn trọng quyền riêng tư.</translation>
+<translation id="1531133232292396145">Mua bán Tiền ảo trên Binance ngay trong trình duyệt của bạn.</translation>
+<translation id="2166494527623220386">Mua bán Tiền ảo trên Gemini ngay trong trình duyệt của bạn.</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8730621377337864115">Đã xong</translation>
 <translation id="6248988683584659830">Cài đặt tìm kiếm</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gửi tiền tip ngay khi bạn tìm thấy điều hay.</translation>
 <translation id="3642432959491988696">Nếu bạn yêu thích, hãy tweet nhanh để cho mọi người biết.</translation>
-<translation id="5984081903757971165">{{balance}} {{currency}} đã được khôi phục. Chìa khóa ví của bạn đã được xác thực và tải thành công.</translation>
+<translation id="4875485795191140618">Khóa ví của bạn đã được xác minh và tải thành công.</translation>
 <translation id="1083279119532577005">Ví đã phục hồi!</translation>
 <translation id="7841456038054167122">Vui lòng nhập lại khóa hoặc thử khóa khác.</translation>
+<translation id="340102383764929340">Khóa khôi phục không được hỗ trợ nữa. Vui lòng truy cập vào <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> để nhận khóa mới.</translation>
 <translation id="2195074481553016770">Sắp hoàn tất…</translation>
 <translation id="5254740304961202261">Chứng minh rằng bạn là con người!</translation>
 <translation id="2187043784382239974">Hmmm, không hẳn...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">Đã xem</translation>
 <translation id="2852258589816753010">Hiện tại BAT không được hỗ trợ tại khu vực của bạn. Vui lòng truy cập <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> để xem thông tin cập nhật.</translation>
 <translation id="2564425876266960486">Đã xảy ra lỗi khi tạo thẻ BAT trên Trình duyệt Brave</translation>
+<translation id="6473583070570450185">Bạn cần có ví đã xác minh để Đăng nhập</translation>
+<translation id="2106271389438168634">Bạn cần có tối thiểu 25 BAT để tạo ví Uphold. Vui lòng thử lại sau khi bạn đã xác minh ví của mình với Uphold.</translation>
 <translation id="7422678632904904341">Số lượng:</translation>
 <translation id="6969783933307596818">Tự động làm mới sau mỗi 5 giây</translation>
 <translation id="5025866799968038247">Thông tin Số dư</translation>
-<translation id="1642443162274867084">Đã tạo ví</translation>
+<translation id="6073289164268847023">Ví đã tạo:</translation>
 <translation id="6643016212128521049">Xóa</translation>
 <translation id="8949473809474431949">Số tiền đã đóng góp:</translation>
 <translation id="4468686134841688885">Được tạo lúc:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">Phần thưởng đã bị tắt</translation>
 <translation id="3354337256330577726">Tự động đóng góp đã bị tắt</translation>
 <translation id="6727186931929643711">Đã dừng thử lại</translation>
+<translation id="2059498613853603008">CẢNH BÁO: Dữ liệu trên trang này có thể là dữ liệu nhạy cảm. Hãy coi các dữ liệu này như khóa riêng tư của ví và thận trọng về người mà bạn chia sẻ dữ liệu.</translation>
 <translation id="7375125077091615385">Loại:</translation>
 <translation id="4973347371961481083">Đóng góp</translation>
 <translation id="1924618796077284366">Tải xuống nhật ký đầy đủ</translation>
+<translation id="1979114396925139279">Thông tin về ví ngoài</translation>
 <translation id="5457113250005438886">Không hợp lệ</translation>
-<translation id="7687511348932340294">Mầm Khóa Thông tin:</translation>
+<translation id="6161467863097205016">Nguồn thông tin về khóa:</translation>
 <translation id="1907668701131938713">Chúng tôi hiển thị {{numberOfLines}} dòng cuối cùng của nhật ký. Nếu bạn muốn toàn bộ nhật ký, bạn có thể tải xuống ở trên.</translation>
 <translation id="7168491065836975228">Phần thưởng nội bộ</translation>
 <translation id="758790787422117549">ID cá nhân</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">Tổng số dư</translation>
 <translation id="2223892939866251845">ID người dùng</translation>
 <translation id="4235360514405112390">Hợp lệ</translation>
+<translation id="3902084968737576005">Địa chỉ ví:</translation>
 <translation id="2326487656644542536">Thông tin ví</translation>
-<translation id="3576689061489548788">ID Ví Thanh toán:</translation>
+<translation id="8559420016582377654">Mã thanh toán của ví:</translation>
+<translation id="438586487791444158">Trạng thái ví:</translation>
+<translation id="3368922792935385530">Đã kết nối</translation>
+<translation id="8874184842967597500">Chưa kết nối</translation>
+<translation id="4569155249847375786">Đã xác thực</translation>
+<translation id="922103963921062336">Đã ngắt kết nối (Chưa xác minh)</translation>
+<translation id="6521149675246672063">Đã ngắt kết nối (Đã xác minh)</translation>
+<translation id="3248185426436836442">Đang chờ xử lý</translation>
 <translation id="5094577350232361255">về</translation>
 <translation id="4918086044614829423">Chấp nhận</translation>
 <translation id="5916290544882167205">Brave Software. Brave là thương hiệu đã đăng ký của Brave Software. Tên các website có thể là thương hiệu hoặc thương hiệu đã đăng ký của chủ sở hữu trang.</translation>
@@ -330,6 +349,9 @@
 <translation id="2291686779354188838">Xin chào, {{name}}!</translation>
 <translation id="1389143276807887637">nhập</translation>
 <translation id="7335371657242627509">Bao gồm trong Tự động Đóng góp</translation>
+<translation id="1864111464094315414">Đăng nhập</translation>
+<translation id="4556504723624686474">Việc xác minh ví cho phép bạn quản lý tiền của mình hiệu quả hơn.</translation>
+<translation id="4188679602963314994">Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Vui lòng thử lại sau. <ph name="BREAK">&lt;br/&gt;</ph>Nếu bạn đã có tài khoản Uphold đã xác minh, hãy tiếp tục đăng nhập.</translation>
 <translation id="3250511771491660127">Làm hàng tháng</translation>
 <translation id="6028954173739504682">Quản lý ví của bạn</translation>
 <translation id="7886389832052393750">Tháng 4</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">Rút BAT mà trước đó có thể bạn đã thêm vào ví Phần thưởng Brave của mình</translation>
 <translation id="8558636200953226885">Nhưng nếu xác minh, bạn có thể...</translation>
 <translation id="3354315693758743702">Không bắt buộc phải xác minh ví của bạn.</translation>
-<translation id="4569155249847375786">Đã xác thực</translation>
 <translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
 <translation id="723054503945711909">Công ty Brave Software Inc. không xử lý, lưu trữ hay truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho Uphold khi bạn thiết lập tài khoản với họ.</translation>
 <translation id="7404779623219601861">Đổi BAT lấy Thẻ quà tặng</translation>
 <translation id="6215565499749144110">Với Mạng TAP, bạn có thể đổi BAT của mình lấy các thẻ quà tặng nhãn hiệu nổi tiếng.</translation>
-<translation id="526152301446370337">Truy cập TAP.</translation>
 <translation id="6915065518766963119">* Cần phải Xác thực Uphold.</translation>
+<translation id="651649139059930379">Hoàn 2% tiền ảo khi dùng thẻ Uphold</translation>
+<translation id="1109729143147368573">Sử dụng tiền ảo và các tài sản khác tại gần 50 triệu điểm kinh doanh và cây ATM trên toàn thế giới. Hãy tiêu tiền ảo để nhận tiền ảo!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/> về Phần thưởng Brave</translation>
 <translation id="5826706758731195747">Bật Rewards nghĩa là bạn đồng ý với <ph name="LINK_BEGIN"/>Điều khoản Dịch vụ<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Doanh thu ước tính đến nay cho tháng này</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">Bạn được trả tiền khi xem hình nền này.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Tìm hiểu thêm<ph name="LINK_END"/> về hình được tài trợ trong Phần thưởng Brave.</translation>
 <translation id="6113004497629356998">Ẩn hình được tài trợ</translation>
+<translation id="2148613324460538318">Thêm Thẻ</translation>
 <translation id="5977237145327845546">Bắt đầu một cuộc gọi video riêng tư với bạn bè và đồng nghiệp của bạn.</translation>
 <translation id="5850325887346946383">Bắt đầu cuộc gọi video</translation>
 <translation id="3651550649176056334">Về dữ liệu của bạn</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">Tóm tắt</translation>
 <translation id="439104575421522802">Phiên kết nối Đã hết hạn</translation>
 <translation id="8558560988211507902">Mã truy cập Binance của bạn đã hết hạn. Vui lòng kết nối lại để tiếp tục sử dụng trình hướng dẫn.</translation>
+<translation id="1543656153506416324">Mua hàng và giao dịch bằng Gemini</translation>
+<translation id="8960333903621861280">Cho phép kết nối với Gemini để xem số dư trong tài khoản Gemini của bạn và mua bán tiền ảo</translation>
+<translation id="7604416013180651887">Kết nối với Gemini</translation>
+<translation id="2349109114223854255">Token truy cập Gemini của bạn đã hết hạn và không làm mới được. Vui lòng kết nối lại.</translation>
+<translation id="4848984536030986115">Không thực hiện được giao dịch</translation>
+<translation id="7352651011704765696">Đã xảy ra sự cố</translation>
+<translation id="7097088316781182926">Xác nhận Giao dịch</translation>
+<translation id="3488255243387417752">Bán</translation>
+<translation id="7969910554171263591">Nhận Báo giá</translation>
+<translation id="1848737374354350807">Số dư:</translation>
+<translation id="8285358301500391177">Đang mua</translation>
+<translation id="8675476238074172660">Đang bán</translation>
+<translation id="3081546448594005997">Bạn đã mua</translation>
+<translation id="8810136648184657966">Bạn đã bán</translation>
+<translation id="1833248467354516560">Đơn Giá</translation>
+<translation id="4763179765154524864">Tổng số Tiền Đã chi</translation>
+<translation id="8851480289992540512">Tổng số Token Đã nhận</translation>
 <translation id="5655621391922317800">Ví Điện tử</translation>
 <translation id="616639131065447379">Chào mừng bạn đến với Ví Tiền điện tử Brave</translation>
 <translation id="1740464057879304704">Ví Tiền điện tử cho phép bạn làm việc với tiền điện tử và các tài sản liên quan trong Brave. Ví Tiền điện tử hỗ trợ các token Ethereum như ETH và BAT, cũng như các bộ sưu tập tiền điện tử, và cho phép bạn làm việc với các ứng dụng và hợp đồng thông minh khác. Tất cả điều này dành cho những người quen thuộc với Ethereum và các hệ thống blockchain khác hoặc hào hứng tìm hiểu.</translation>
