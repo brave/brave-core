@@ -168,7 +168,7 @@ TEST_F(TorNavigationThrottleUnitTest, DeferUntilTorProcessLaunched) {
   test_handle.set_url(url2);
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
       << url2;
-  throttle->OnTorLaunched(true, 5566);
+  throttle->OnTorCircuitEstablished(true);
   EXPECT_TRUE(was_navigation_resumed);
   tor_profile_service()->SetTorLaunchedForTest();
   EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
