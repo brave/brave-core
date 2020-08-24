@@ -82,7 +82,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
   const base::Feature* enabled_features[] = {
     &blink::features::kPrefetchPrivacyChanges,
     &password_manager::features::kPasswordImport,
-    &features::kReducedReferrerGranularity,
+    &blink::features::kReducedReferrerGranularity,
 #if defined(OS_WIN)
     &features::kWinrtGeolocationImplementation,
 #endif
