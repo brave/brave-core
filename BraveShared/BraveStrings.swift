@@ -873,7 +873,7 @@ extension Strings {
         public static let checkboxProtectConnections =
             NSLocalizedString("vpn.checkboxProtectConnections",
                               bundle: .braveShared,
-                              value: "Protects all of your apps (not just Brave)",
+                              value: "Protects you from unwanted connections",
                               comment: "Text for a checkbox to present the user benefits for using Brave VPN")
         
         public static let checkboxFast =
@@ -927,7 +927,7 @@ extension Strings {
         public static let installProfileBody =
             NSLocalizedString("vpn.installProfileBody",
                               bundle: .braveShared,
-                              value: "This profile allows the VPN to automatically connect and secure traffic across your device - in every app, all the time. This VPN connection will be encrypted and routed through Brave's intelligent firewall to block ads and trackers.",
+                              value: "This profile allows the VPN to automatically connect and secure traffic across your device all the time. This VPN connection will be encrypted and routed through Brave's intelligent firewall to block potentially harmful and invasive connections.",
                               comment: "Text explaining how the VPN works.")
         
         public static let installProfileButtonText =
@@ -1029,7 +1029,7 @@ extension Strings {
         public static let settingHeaderBody =
             NSLocalizedString("vpn.settingHeaderBody",
                               bundle: .braveShared,
-                              value: "Protect your connection and block ads and trackers across your whole device.",
+                              value: "Protect your connection and block invasive trackers.",
                               comment: "")
         
         public static let errorCantGetPricesTitle =
