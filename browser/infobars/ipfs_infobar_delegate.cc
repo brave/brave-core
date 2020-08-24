@@ -11,13 +11,18 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
+#include "brave/components/ipfs/common/ipfs_constants.h"
+#include "brave/common/brave_wallet_constants.h"
+#include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "components/infobars/core/infobar.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/views/vector_icons.h"
-
 
 // static
 void IPFSInfoBarDelegate::Create(InfoBarService* infobar_service) {
@@ -26,8 +31,7 @@ void IPFSInfoBarDelegate::Create(InfoBarService* infobar_service) {
           new IPFSInfoBarDelegate())));
 }
 
-IPFSInfoBarDelegate::IPFSInfoBarDelegate() {
-}
+IPFSInfoBarDelegate::IPFSInfoBarDelegate() {}
 
 IPFSInfoBarDelegate::~IPFSInfoBarDelegate() {}
 
@@ -69,6 +73,12 @@ GURL IPFSInfoBarDelegate::GetLinkURL() const {
 }
 
 bool IPFSInfoBarDelegate::Accept() {
+  content::WebContents* web_contents =
+    InfoBarService::WebContentsFromInfoBar(infobar());
+  auto* browser_context = web_contents->GetBrowserContext();
+  user_prefs::UserPrefs::Get(browser_context)->
+      SetInteger(kIPFSResolveMethod,
+          static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_LOCAL));
   g_brave_browser_process->ipfs_client_updater()->Register();
   return true;
 }

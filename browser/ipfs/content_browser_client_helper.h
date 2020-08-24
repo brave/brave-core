@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_IPFS_BROWSER_CONTENT_BROWSER_CLIENT_HELPER_H_
-#define BRAVE_COMPONENTS_IPFS_BROWSER_CONTENT_BROWSER_CLIENT_HELPER_H_
+#ifndef BRAVE_BROWSER_IPFS_CONTENT_BROWSER_CLIENT_HELPER_H_
+#define BRAVE_BROWSER_IPFS_CONTENT_BROWSER_CLIENT_HELPER_H_
 
 #include "base/optional.h"
 #include "content/public/browser/web_contents.h"
@@ -27,7 +27,7 @@ namespace ipfs {
 
 class ContentBrowserClientHelper {
  public:
-  static bool TranslateIPFSURL(const GURL& url, GURL* new_url);
+  static bool TranslateIPFSURL(const GURL& url, GURL* new_url, bool local);
 
   static bool HandleIPFSURLReverseRewrite(GURL* url,
       content::BrowserContext* browser_context);
@@ -54,4 +54,4 @@ class ContentBrowserClientHelper {
 
 }  // namespace ipfs
 
-#endif  // BRAVE_COMPONENTS_IPFS_BROWSER_CONTENT_BROWSER_CLIENT_HELPER_H_
+#endif  // BRAVE_BROWSER_IPFS_CONTENT_BROWSER_CLIENT_HELPER_H_

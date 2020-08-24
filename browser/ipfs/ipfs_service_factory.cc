@@ -8,6 +8,10 @@
 #include "brave/browser/ipfs/ipfs_service.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "extensions/browser/extension_registry_factory.h"
+#include "extensions/browser/extension_system.h"
+#include "extensions/browser/extension_system_provider.h"
+#include "extensions/browser/extensions_browser_client.h"
 
 namespace ipfs {
 
@@ -27,6 +31,9 @@ IpfsServiceFactory::IpfsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "IpfsService",
           BrowserContextDependencyManager::GetInstance()) {
+  DependsOn(extensions::ExtensionRegistryFactory::GetInstance());
+  DependsOn(
+      extensions::ExtensionsBrowserClient::Get()->GetExtensionSystemFactory());
 }
 
 IpfsServiceFactory::~IpfsServiceFactory() {

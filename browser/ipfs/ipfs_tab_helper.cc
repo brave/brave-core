@@ -9,7 +9,11 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/infobars/ipfs_infobar_delegate.h"
+#include "brave/common/pref_names.h"
 #include "chrome/browser/infobars/infobar_service.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "extensions/common/url_pattern.h"
 
@@ -18,8 +22,8 @@ namespace {
 bool IsIPFSURL(const GURL& gurl) {
   // Temporary to manually test the infobar
   static std::vector<URLPattern> updater_patterns({
-      URLPattern(URLPattern::SCHEME_ALL, "https://brianbondy.com/*"),
-      URLPattern(URLPattern::SCHEME_ALL, "https://brave.com/*")
+      URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfs/*"),
+      URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfn/*")
   });
   return std::any_of(
       updater_patterns.begin(), updater_patterns.end(),
@@ -33,13 +37,16 @@ namespace ipfs {
 IPFSTabHelper::~IPFSTabHelper() = default;
 
 IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents) {}
+    : content::WebContentsObserver(web_contents) {
+  pref_service_ = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
+}
 
 void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {
   DCHECK(handle);
   DCHECK(handle->IsInMainFrame());
   active_ = true;
-  if (IsIPFSURL(handle->GetURL())) {
+  if (!pref_service_->GetBoolean(kIPFSBinaryAvailable) &&
+      IsIPFSURL(handle->GetURL())) {
     InfoBarService* infobar_service =
         InfoBarService::FromWebContents(web_contents());
     if (infobar_service) {

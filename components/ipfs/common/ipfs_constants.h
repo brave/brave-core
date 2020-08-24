@@ -9,6 +9,13 @@
 namespace ipfs {
 extern const char kHttpAPIServerEndpoint[];
 extern const char kSwarmPeersAPIURL[];
+
+enum class IPFSResolveMethodTypes {
+  IPFS_GATEWAY,
+  IPFS_LOCAL,
+  IPFS_DISABLED,
+};
+
 }  // namespace ipfs
 
 #endif  // BRAVE_COMPONENTS_IPFS_COMMON_IPFS_CONSTANTS_H_

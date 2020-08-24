@@ -14,6 +14,8 @@ class NavigationHandle;
 class WebContents;
 }  // namespace content
 
+class PrefService;
+
 namespace ipfs {
 
 // Determines if IPFS should be active for a given top-level navigation.
@@ -40,6 +42,7 @@ class IPFSTabHelper
   void DidRedirectNavigation(
       content::NavigationHandle* navigation_handle) override;
 
+  PrefService* pref_service_ = nullptr;
   bool active_ = false;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

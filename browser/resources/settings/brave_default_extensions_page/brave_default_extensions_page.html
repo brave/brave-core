@@ -73,7 +73,7 @@
                               menu-options="[[braveWeb3Providers_]]">
       </settings-dropdown-menu>
     </div>
-    <settings-toggle-button id="ipfsCompanionEnabled"
+    <settings-toggle-button id="braveWalletEnabled"
         class="cr-row"
         pref="{{prefs.brave.wallet.load_on_startup}}"
         label="$i18n{loadCryptoWalletsOnStartupDesc}">
@@ -97,6 +97,15 @@
         sub-label="$i18n{hangoutsEnabledDesc}"
         on-settings-boolean-control-change="onHangoutsEnabledChange_">
     </settings-toggle-button>
+    <template is="dom-if" if="{{ ipfsEnabled_ }}">
+      <div class="settings-box">
+        <div class="start">$i18n{resolveIPFSURLDesc}</div>
+        <settings-dropdown-menu id="ipfsResolveMethodType"
+                                pref="{{prefs.brave.ipfs.resolve_method}}"
+                                menu-options="[[ipfsResolveMethod_]]">
+        </settings-dropdown-menu>
+      </div>
+    </template>
     <settings-toggle-button id="ipfsCompanionEnabled"
         class="cr-row"
         pref="{{prefs.brave.ipfs_companion_enabled}}"

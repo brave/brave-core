@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_SERVICE_H_
-#define BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_SERVICE_H_
+#ifndef BRAVE_BROWSER_IPFS_IPFS_SERVICE_H_
+#define BRAVE_BROWSER_IPFS_IPFS_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -24,6 +24,8 @@ class SharedURLLoaderFactory;
 class SimpleURLLoader;
 }  // namespace network
 
+class PrefRegistrySimple;
+
 namespace ipfs {
 
 class IpfsService : public KeyedService,
@@ -35,6 +37,8 @@ class IpfsService : public KeyedService,
   using GetConnectedPeersCallback = base::OnceCallback<
     void(bool,
          const std::vector<std::string>&)>;
+  static void RegisterPrefs(PrefRegistrySimple* registry);
+  bool IsIPFSExecutableAvailable() const;
 
   // KeyedService
   void Shutdown() override;
@@ -64,6 +68,7 @@ class IpfsService : public KeyedService,
   mojo::Remote<ipfs::mojom::IpfsService> ipfs_service_;
 
   int64_t ipfs_pid_;
+  content::BrowserContext* context_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
@@ -73,4 +78,4 @@ class IpfsService : public KeyedService,
 
 }  // namespace ipfs
 
-#endif  // BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_SERVICE_H_
+#endif  // BRAVE_BROWSER_IPFS_IPFS_SERVICE_H_

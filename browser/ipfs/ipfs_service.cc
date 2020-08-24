@@ -10,11 +10,15 @@
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/service_sandbox_type.h"
 #include "chrome/common/chrome_paths.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/service_process_host.h"
 #include "content/public/browser/storage_partition.h"
@@ -51,7 +55,7 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 namespace ipfs {
 
-IpfsService::IpfsService(content::BrowserContext* context) {
+IpfsService::IpfsService(content::BrowserContext* context) : context_(context) {
   url_loader_factory_ =
       content::BrowserContext::GetDefaultStoragePartition(context)
           ->GetURLLoaderFactoryForBrowserProcess();
@@ -62,6 +66,13 @@ IpfsService::IpfsService(content::BrowserContext* context) {
 
 IpfsService::~IpfsService() = default;
 
+// static
+void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
+  registry->RegisterIntegerPref(kIPFSResolveMethod,
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+  registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
+}
+
 base::FilePath IpfsService::GetIpfsExecutablePath() {
   return g_brave_browser_process->ipfs_client_updater()->GetExecutablePath();
 }
@@ -69,6 +80,9 @@ base::FilePath IpfsService::GetIpfsExecutablePath() {
 void IpfsService::OnExecutableReady(const base::FilePath& path) {
   if (path.empty())
     return;
+
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  prefs->SetBoolean(kIPFSBinaryAvailable, true);
 
   g_brave_browser_process->ipfs_client_updater()->RemoveObserver(this);
   LaunchIfNotRunning(path);
@@ -171,6 +185,11 @@ void IpfsService::OnGetConnectedPeers(
   std::vector<std::string> peers;
   bool success = IPFSJSONParser::GetPeersFromJSON(*response_body, &peers);
   std::move(callback).Run(success, peers);
+}
+
+bool IpfsService::IsIPFSExecutableAvailable() const {
+  PrefService* prefs = user_prefs::UserPrefs::Get(context_);
+  return prefs->GetBoolean(kIPFSBinaryAvailable);
 }
 
 }  // namespace ipfs

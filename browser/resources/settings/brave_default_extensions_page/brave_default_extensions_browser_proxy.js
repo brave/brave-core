@@ -22,6 +22,8 @@ cr.define('settings', function() {
     getRestartNeeded() {}
     getWeb3ProviderList() {}
     wasSignInEnabledAtStartup() {}
+    getIPFSResolveMethodList() {}
+    getIPFSEnabled() {}
   }
 
   /**
@@ -62,6 +64,26 @@ cr.define('settings', function() {
     }
     wasSignInEnabledAtStartup() {
       return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue');
+    }
+    /** @override */
+    getIPFSResolveMethodList() {
+      return new Promise(resolve => {
+        if (!chrome.ipfs) {
+          resolve(false)
+          return
+        }
+        chrome.ipfs.getIPFSResolveMethodList(resolve)
+      })
+    }
+    /** @override */
+    getIPFSEnabled() {
+      return new Promise(resolve => {
+        if (!chrome.ipfs) {
+          resolve(false)
+          return
+        }
+        chrome.ipfs.getIPFSEnabled(resolve)
+      })
     }
   }
 

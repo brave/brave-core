@@ -137,6 +137,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_NUMBER;
   (*s_brave_whitelist)[kLoadCryptoWalletsOnStartup] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // IPFS pref
+  (*s_brave_whitelist)[kIPFSResolveMethod] =
+      settings_api::PrefType::PREF_TYPE_NUMBER;
   // Media Router Pref
   (*s_brave_whitelist)[kBraveEnabledMediaRouter] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;

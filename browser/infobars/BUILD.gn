@@ -46,6 +46,10 @@ source_set("infobars") {
       "ipfs_infobar_delegate.cc",
       "ipfs_infobar_delegate.h",
     ]
+    deps += [
+      "//brave/components/ipfs/common",
+      "//components/user_prefs"
+    ]
   }
 
   if (enable_brave_wayback_machine) {

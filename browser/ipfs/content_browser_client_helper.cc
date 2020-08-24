@@ -14,8 +14,12 @@
 #include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/common/pref_names.h"
 #include "brave/components/ipfs/browser/features.h"
+#include "brave/components/ipfs/common/ipfs_constants.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
@@ -26,12 +30,30 @@
 #include "url/gurl.h"
 #include "net/base/escape.h"
 
+namespace {
+
+bool IsIPFSDisabled(content::BrowserContext* browser_context) {
+  auto* prefs = Profile::FromBrowserContext(browser_context)->GetPrefs();
+  auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
+      prefs->GetInteger(kIPFSResolveMethod));
+  return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_DISABLED;
+}
+
+bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
+  auto* prefs = Profile::FromBrowserContext(browser_context)->GetPrefs();
+  auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
+      prefs->GetInteger(kIPFSResolveMethod));
+  return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;
+}
+
+}  // namespace
+
 namespace ipfs {
 
 // static
 bool ContentBrowserClientHelper::TranslateIPFSURL(
-    const GURL& url, GURL* new_url) {
-  if (!url.SchemeIs(kIPFSScheme)) {
+    const GURL& url, GURL* new_url, bool local) {
+  if (!url.SchemeIs(kIPFSScheme) && !url.SchemeIs(kIPNSScheme)) {
     return false;
   }
 
@@ -50,13 +72,22 @@ bool ContentBrowserClientHelper::TranslateIPFSURL(
       // cid would be [cid]
       cid = cid.substr(0, pos);
     }
-    if (std::all_of(cid.begin(), cid.end(),
+    bool ipfs_scheme = url.scheme() == "ipfs";
+    bool ipns_scheme = url.scheme() == "ipns";
+    if ((ipfs_scheme || ipns_scheme) && std::all_of(cid.begin(), cid.end(),
                     [loc = std::locale{}](char c) {
                       return std::isalnum(c, loc);
                     })) {
       // new_url would be:
       // https://dweb.link/ipfs/[cid]//wiki/Vincent_van_Gogh.html
-      *new_url = GURL(std::string(kDefaultIPFSGateway) + cid + path);
+      if (new_url) {
+        *new_url = GURL(std::string(
+            local ? kDefaultIPFSLocalGateway : kDefaultIPFSGateway) +
+                (ipfs_scheme ? "/ipfs/" : "/ipns/") + cid + path);
+        LOG(ERROR) << "...";
+        VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
+      }
+
       return true;
     }
   }
@@ -80,11 +111,8 @@ void ContentBrowserClientHelper::LoadOrLaunchIPFSURL(
   if (!web_contents)
     return;
 
-  web_contents->GetController().LoadURL(url, content::Referrer(),
-      page_transition, std::string());
-  // TODO(bbondy): We probably want something more like this:
-  /*
-  if (IsWebtorrentEnabled(web_contents->GetBrowserContext())) {
+  auto* browser_context = web_contents->GetBrowserContext();
+  if (!IsIPFSDisabled(browser_context)) {
     web_contents->GetController().LoadURL(url, content::Referrer(),
         page_transition, std::string());
   } else {
@@ -93,14 +121,14 @@ void ContentBrowserClientHelper::LoadOrLaunchIPFSURL(
         web_contents->GetRenderViewHost()->GetRoutingID(), page_transition,
         has_user_gesture, initiating_origin);
   }
-  */
 }
 
 // static
 bool ContentBrowserClientHelper::HandleIPFSURLRewrite(GURL* url,
     content::BrowserContext* browser_context) {
-  if (url->SchemeIs(kIPFSScheme)) {
-    return TranslateIPFSURL(*url, url);
+  if (!IsIPFSDisabled(browser_context) &&
+      (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
+    return TranslateIPFSURL(*url, url, IsIPFSLocalGateway(browser_context));
   }
 
   return false;
@@ -113,7 +141,7 @@ void ContentBrowserClientHelper::HandleIPFSProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const base::Optional<url::Origin>& initiating_origin) {
-  DCHECK(url.SchemeIs(kIPFSScheme));
+  DCHECK(url.SchemeIs(kIPFSScheme) || url.SchemeIs(kIPNSScheme));
   base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                  base::BindOnce(&LoadOrLaunchIPFSURL, url,
                                 std::move(web_contents_getter), page_transition,
@@ -122,11 +150,7 @@ void ContentBrowserClientHelper::HandleIPFSProtocol(
 
 // static
 bool ContentBrowserClientHelper::IsIPFSProtocol(const GURL& url) {
-  if (!base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature))
-    return false;
-
-  GURL new_url;
-  return TranslateIPFSURL(url, &new_url);
+  return TranslateIPFSURL(url, nullptr, false);
 }
 
 }  // namespace ipfs

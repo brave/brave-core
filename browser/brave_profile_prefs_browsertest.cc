@@ -62,6 +62,11 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(
           brave_rewards::prefs::kHideBraveRewardsButton));
+  EXPECT_EQ(
+      browser()->profile()->GetPrefs()->GetInteger(kIPFSResolveMethod),
+      static_cast<int>((BraveWalletWeb3ProviderTypes::IPFS_ASK)));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kIPFSBinaryAvailable));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
   EXPECT_EQ(

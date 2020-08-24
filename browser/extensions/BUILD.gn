@@ -115,6 +115,16 @@ source_set("extensions") {
     ]    
   }
 
+  if (ipfs_enabled) {
+    sources += [
+      "api/ipfs_api.cc",
+      "api/ipfs_api.h",
+    ]
+    deps += [
+      "//brave/components/ipfs/browser"
+    ]
+  }
+
   if (brave_rewards_enabled) {
     deps += [
       "//brave/components/brave_rewards/browser",
