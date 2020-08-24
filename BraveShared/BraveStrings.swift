@@ -873,7 +873,7 @@ extension Strings {
         public static let checkboxProtectConnections =
             NSLocalizedString("vpn.checkboxProtectConnections",
                               bundle: .braveShared,
-                              value: "Protects all of your apps (not just Brave)",
+                              value: "Protects you from unwanted connections",
                               comment: "Text for a checkbox to present the user benefits for using Brave VPN")
         
         public static let checkboxFast =
@@ -927,7 +927,7 @@ extension Strings {
         public static let installProfileBody =
             NSLocalizedString("vpn.installProfileBody",
                               bundle: .braveShared,
-                              value: "This profile allows the VPN to automatically connect and secure traffic across your device - in every app, all the time. This VPN connection will be encrypted and routed through Brave's intelligent firewall to block ads and trackers.",
+                              value: "This profile allows the VPN to automatically connect and secure traffic across your device all the time. This VPN connection will be encrypted and routed through Brave's intelligent firewall to block potentially harmful and invasive connections.",
                               comment: "Text explaining how the VPN works.")
         
         public static let installProfileButtonText =
@@ -1029,7 +1029,7 @@ extension Strings {
         public static let settingHeaderBody =
             NSLocalizedString("vpn.settingHeaderBody",
                               bundle: .braveShared,
-                              value: "Protect your connection and block ads and trackers across your whole device.",
+                              value: "Protect your connection and block invasive trackers.",
                               comment: "")
         
         public static let errorCantGetPricesTitle =
@@ -1449,4 +1449,82 @@ extension Strings {
             comment: "'Brave Offers' is a product name"
         )
     }
+}
+
+// MARK: - Rewards Internals
+extension Strings {
+  public struct RewardsInternals {
+    public static let title = NSLocalizedString("RewardsInternalsTitle", bundle: Bundle.braveShared, value: "Rewards Internals", comment: "'Rewards' as in 'Brave Rewards'")
+    public static let walletInfoHeader = NSLocalizedString("RewardsInternalsWalletInfoHeader", bundle: Bundle.braveShared, value: "Wallet Info", comment: "")
+    public static let keyInfoSeed = NSLocalizedString("RewardsInternalsKeyInfoSeed", bundle: Bundle.braveShared, value: "Key Info Seed", comment: "")
+    public static let valid = NSLocalizedString("RewardsInternalsValid", bundle: Bundle.braveShared, value: "Valid", comment: "")
+    public static let invalid = NSLocalizedString("RewardsInternalsInvalid", bundle: Bundle.braveShared, value: "Invalid", comment: "")
+    public static let walletPaymentID = NSLocalizedString("RewardsInternalsWalletPaymentID", bundle: Bundle.braveShared, value: "Wallet Payment ID", comment: "")
+    public static let walletCreationDate = NSLocalizedString("RewardsInternalsWalletCreationDate", bundle: Bundle.braveShared, value: "Wallet Creation Date", comment: "")
+    public static let deviceInfoHeader = NSLocalizedString("RewardsInternalsDeviceInfoHeader", bundle: Bundle.braveShared, value: "Device Info", comment: "")
+    public static let status = NSLocalizedString("RewardsInternalsStatus", bundle: Bundle.braveShared, value: "Status", comment: "")
+    public static let supported = NSLocalizedString("RewardsInternalsSupported", bundle: Bundle.braveShared, value: "Supported", comment: "")
+    public static let notSupported = NSLocalizedString("RewardsInternalsNotSupported", bundle: Bundle.braveShared, value: "Not supported", comment: "")
+    public static let enrollmentState = NSLocalizedString("RewardsInternalsEnrollmentState", bundle: Bundle.braveShared, value: "Enrollment State", comment: "")
+    public static let enrolled = NSLocalizedString("RewardsInternalsEnrolled", bundle: Bundle.braveShared, value: "Enrolled", comment: "")
+    public static let notEnrolled = NSLocalizedString("RewardsInternalsNotEnrolled", bundle: Bundle.braveShared, value: "Not enrolled", comment: "")
+    public static let balanceInfoHeader = NSLocalizedString("RewardsInternalsBalanceInfoHeader", bundle: Bundle.braveShared, value: "Balance Info", comment: "")
+    public static let totalBalance = NSLocalizedString("RewardsInternalsTotalBalance", bundle: Bundle.braveShared, value: "Total Balance", comment: "")
+    public static let anonymous = NSLocalizedString("RewardsInternalsAnonymous", bundle: Bundle.braveShared, value: "Anonymous", comment: "")
+    public static let logsTitle = NSLocalizedString("RewardsInternalsLogsTitle", bundle: Bundle.braveShared, value: "Logs", comment: "")
+    public static let logsCount = NSLocalizedString("RewardsInternalsLogsCount", bundle: Bundle.braveShared, value: "%d logs shown", comment: "%d will be the number of logs currently being shown, i.e. '10 logs shown'")
+    public static let clearLogsTitle = NSLocalizedString("RewardsInternalsClearLogsTitle", bundle: Bundle.braveShared, value: "Clear Logs", comment: "")
+    public static let clearLogsConfirmation = NSLocalizedString("RewardsInternalsClearLogsConfirmation", bundle: Bundle.braveShared, value: "Are you sure you wish to clear all Rewards logs?", comment: "")
+    public static let promotionsTitle = NSLocalizedString("RewardsInternalsPromotionsTitle", bundle: Bundle.braveShared, value: "Promotions", comment: "")
+    public static let amount = NSLocalizedString("RewardsInternalsAmount", bundle: Bundle.braveShared, value: "Amount", comment: "")
+    public static let type = NSLocalizedString("RewardsInternalsType", bundle: Bundle.braveShared, value: "Type", comment: "")
+    public static let expiresAt = NSLocalizedString("RewardsInternalsExpiresAt", bundle: Bundle.braveShared, value: "Expires At", comment: "")
+    public static let legacyPromotion = NSLocalizedString("RewardsInternalsLegacyPromotion", bundle: Bundle.braveShared, value: "Legacy Promotion", comment: "")
+    public static let version = NSLocalizedString("RewardsInternalsVersion", bundle: Bundle.braveShared, value: "Version", comment: "")
+    public static let claimedAt = NSLocalizedString("RewardsInternalsClaimedAt", bundle: Bundle.braveShared, value: "Claimed at", comment: "")
+    public static let claimID = NSLocalizedString("RewardsInternalsClaimID", bundle: Bundle.braveShared, value: "Claim ID", comment: "")
+    public static let promotionStatusActive = NSLocalizedString("RewardsInternalsPromotionStatusActive", bundle: Bundle.braveShared, value: "Active", comment: "")
+    public static let promotionStatusAttested = NSLocalizedString("RewardsInternalsPromotionStatusAttested", bundle: Bundle.braveShared, value: "Attested", comment: "")
+    public static let promotionStatusCorrupted = NSLocalizedString("RewardsInternalsPromotionStatusCorrupted", bundle: Bundle.braveShared, value: "Corrupted", comment: "")
+    public static let promotionStatusFinished = NSLocalizedString("RewardsInternalsPromotionStatusFinished", bundle: Bundle.braveShared, value: "Finished", comment: "")
+    public static let promotionStatusOver = NSLocalizedString("RewardsInternalsPromotionStatusOver", bundle: Bundle.braveShared, value: "Over", comment: "")
+    public static let contributionsTitle = NSLocalizedString("RewardsInternalsContributionsTitle", bundle: Bundle.braveShared, value: "Contributions", comment: "")
+    public static let rewardsTypeAutoContribute = NSLocalizedString("RewardsInternalsRewardsTypeAutoContribute", bundle: Bundle.braveShared, value: "Auto-Contribute", comment: "")
+    public static let rewardsTypeOneTimeTip = NSLocalizedString("RewardsInternalsRewardsTypeOneTimeTip", bundle: Bundle.braveShared, value: "One time tip", comment: "")
+    public static let rewardsTypeRecurringTip = NSLocalizedString("RewardsInternalsRewardsTypeRecurringTip", bundle: Bundle.braveShared, value: "Recurring tip", comment: "")
+    public static let contributionsStepACOff = NSLocalizedString("RewardsInternalsContributionsStepACOff", bundle: Bundle.braveShared, value: "Auto-Contribute Off", comment: "")
+    public static let contributionsStepRewardsOff = NSLocalizedString("RewardsInternalsContributionsStepRewardsOff", bundle: Bundle.braveShared, value: "Rewards Off", comment: "")
+    public static let contributionsStepACTableEmpty = NSLocalizedString("RewardsInternalsContributionsStepACTableEmpty", bundle: Bundle.braveShared, value: "AC table empty", comment: "'AC' refers to Auto-Contribute")
+    public static let contributionsStepNotEnoughFunds = NSLocalizedString("RewardsInternalsContributionsStepNotEnoughFunds", bundle: Bundle.braveShared, value: "Not enough funds", comment: "")
+    public static let contributionsStepFailed = NSLocalizedString("RewardsInternalsContributionsStepFailed", bundle: Bundle.braveShared, value: "Failed", comment: "")
+    public static let contributionsStepCompleted = NSLocalizedString("RewardsInternalsContributionsStepCompleted", bundle: Bundle.braveShared, value: "Completed", comment: "")
+    public static let contributionsStepStart = NSLocalizedString("RewardsInternalsContributionsStepStart", bundle: Bundle.braveShared, value: "Start", comment: "")
+    public static let contributionsStepPrepare = NSLocalizedString("RewardsInternalsContributionsStepPrepare", bundle: Bundle.braveShared, value: "Prepare", comment: "")
+    public static let contributionsStepReserve = NSLocalizedString("RewardsInternalsContributionsStepReserve", bundle: Bundle.braveShared, value: "Reserve", comment: "")
+    public static let contributionsStepExternalTransaction = NSLocalizedString("RewardsInternalsContributionsStepExternalTransaction", bundle: Bundle.braveShared, value: "External Transaction", comment: "")
+    public static let contributionsStepCreds = NSLocalizedString("RewardsInternalsContributionsStepCreds", bundle: Bundle.braveShared, value: "Credentials", comment: "")
+    public static let contributionProcessorBraveTokens = NSLocalizedString("RewardsInternalsContributionProcessorBraveTokens", bundle: Bundle.braveShared, value: "Brave Tokens", comment: "")
+    public static let contributionProcessorUserFunds = NSLocalizedString("RewardsInternalsContributionProcessorUserFunds", bundle: Bundle.braveShared, value: "User Funds", comment: "")
+    public static let contributionProcessorUphold = NSLocalizedString("RewardsInternalsContributionProcessorUphold", bundle: Bundle.braveShared, value: "Uphold", comment: "")
+    public static let contributionProcessorNone = NSLocalizedString("RewardsInternalsContributionProcessorNone", bundle: Bundle.braveShared, value: "None", comment: "")
+    public static let createdAt = NSLocalizedString("RewardsInternalsCreatedAt", bundle: Bundle.braveShared, value: "Created at", comment: "")
+    public static let step = NSLocalizedString("RewardsInternalsStep", bundle: Bundle.braveShared, value: "Step", comment: "i.e. 'Step: Started'")
+    public static let retryCount = NSLocalizedString("RewardsInternalsRetryCount", bundle: Bundle.braveShared, value: "Retry Count", comment: "")
+    public static let processor = NSLocalizedString("RewardsInternalsProcessor", bundle: Bundle.braveShared, value: "Processor", comment: "")
+    public static let publishers = NSLocalizedString("RewardsInternalsPublishers", bundle: Bundle.braveShared, value: "Publishers", comment: "")
+    public static let publisher = NSLocalizedString("RewardsInternalsPublisher", bundle: Bundle.braveShared, value: "Publisher", comment: "")
+    public static let totalAmount = NSLocalizedString("RewardsInternalsTotalAmount", bundle: Bundle.braveShared, value: "Total amount", comment: "")
+    public static let contributionAmount = NSLocalizedString("RewardsInternalsContributionAmount", bundle: Bundle.braveShared, value: "Contribution amount", comment: "")
+    public static let shareInternalsTitle = NSLocalizedString("RewardsInternalsShareInternalsTitle", bundle: Bundle.braveShared, value: "Share Rewards Internals", comment: "'Rewards' as in 'Brave Rewards'")
+    public static let share = NSLocalizedString("RewardsInternalsShare", bundle: Bundle.braveShared, value: "Share", comment: "")
+    public static let sharableBasicTitle = NSLocalizedString("RewardsInternalsSharableBasicTitle", bundle: Bundle.braveShared, value: "Basic Info", comment: "")
+    public static let sharableBasicDescription = NSLocalizedString("RewardsInternalsSharableBasicDescription", bundle: Bundle.braveShared, value: "Wallet, device & balance info (always shared)", comment: "")
+    public static let sharableLogsDescription = NSLocalizedString("RewardsInternalsSharableLogsDescription", bundle: Bundle.braveShared, value: "Rewards specific logging", comment: "")
+    public static let sharablePromotionsDescription = NSLocalizedString("RewardsInternalsSharablePromotionsDescription", bundle: Bundle.braveShared, value: "Any BAT promotions you have claimed or have pending from Ads or Grants", comment: "")
+    public static let sharableContributionsDescription = NSLocalizedString("RewardsInternalsSharableContributionsDescription", bundle: Bundle.braveShared, value: "Any contributions made to publishers through tipping or auto-contribute", comment: "")
+    public static let sharableDatabaseTitle = NSLocalizedString("RewardsInternalsSharableDatabaseTitle", bundle: Bundle.braveShared, value: "Rewards Database", comment: "")
+    public static let sharableDatabaseDescription = NSLocalizedString("RewardsInternalsSharableDatabaseDescription", bundle: Bundle.braveShared, value: "The internal data store", comment: "")
+    public static let sharingWarningTitle = NSLocalizedString("RewardsInternalsSharingWarningTitle", bundle: Bundle.braveShared, value: "Warning", comment: "")
+    public static let sharingWarningMessage = NSLocalizedString("RewardsInternalsSharingWarningMessage", bundle: Bundle.braveShared, value: "Data on this page may be sensitive. Treat them as you would your wallet private keys. Be careful who you share them with.", comment: "")
+  }
 }
