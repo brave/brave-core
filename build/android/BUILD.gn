@@ -8,10 +8,7 @@ action("sign_app") {
 
   deps = []
   target_sign_app_path = ""
-  if (target_apk_base == "modern") {
-    assert(target_cpu != "arm64" && target_cpu != "x64")
-    target_sign_app_path = "$root_out_dir/apks/ChromeModernPublic.apk"
-  } else if (target_cpu == "arm64" || target_cpu == "x64" ||
+  if (target_cpu == "arm64" || target_cpu == "x64" ||
       target_apk_base == "mono") {
     target_sign_app_path = "$root_out_dir/apks/MonochromePublic.apk"
   } else {
@@ -34,13 +31,7 @@ copy("brave") {
   visibility = [ "*" ]
   deps = []
   sources = []
-  if (target_apk_base == "modern") {
-    assert(target_cpu != "arm64" && target_cpu != "x64")
-    deps += ["//chrome/android:chrome_modern_public_apk"]
-    sources += [
-      "$root_out_dir/apks/ChromeModernPublic.apk"
-    ]
-  } else if (target_cpu == "arm64" || target_cpu == "x64" ||
+  if (target_cpu == "arm64" || target_cpu == "x64" ||
       target_apk_base == "mono") {
     deps += ["//chrome/android:monochrome_public_apk"]
     sources += [
