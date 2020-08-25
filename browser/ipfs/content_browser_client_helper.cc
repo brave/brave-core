@@ -84,7 +84,6 @@ bool ContentBrowserClientHelper::TranslateIPFSURL(
         *new_url = GURL(std::string(
             local ? kDefaultIPFSLocalGateway : kDefaultIPFSGateway) +
                 (ipfs_scheme ? "/ipfs/" : "/ipns/") + cid + path);
-        LOG(ERROR) << "...";
         VLOG(1) << "[IPFS] " << __func__ << " new URL: " << *new_url;
       }
 
