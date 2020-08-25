@@ -13,7 +13,6 @@
   if ((self = [self initWithExternalWallet:defaultWallet])) {
     self.token = dictionary[@"token"] ?: @"";
     self.address = dictionary[@"address"] ?: @"";
-    self.anonAddress = dictionary[@"anon_address"] ?: @"";
     self.status = static_cast<BATWalletStatus>([dictionary[@"status"] integerValue]);
     self.oneTimeString = dictionary[@"one_time_string"] ?: @"";
     self.userName = dictionary[@"user_name"] ?: @"";
@@ -30,7 +29,6 @@
   return @{
     @"token": self.token,
     @"address": self.address,
-    @"anon_address": self.anonAddress,
     @"status": @(self.status),
     @"one_time_string": self.oneTimeString,
     @"user_name": self.userName,
@@ -43,8 +41,8 @@
 
 - (NSString *)description
 {
-  return [NSString stringWithFormat:@"%@: token: %@, address: %@,  anonAddress: %@, status: %ld, ots: %@, username: %@, verifyUrl: %@, addUrl: %@, withdrawUrl: %@, accountUrl: %@",
-          [super description], self.token, self.address, self.anonAddress, self.status, self.oneTimeString, self.userName, self.verifyUrl, self.addUrl, self.withdrawUrl, self.accountUrl];
+  return [NSString stringWithFormat:@"%@: token: %@, address: %@, status: %ld, ots: %@, username: %@, verifyUrl: %@, addUrl: %@, withdrawUrl: %@, accountUrl: %@",
+          [super description], self.token, self.address, self.status, self.oneTimeString, self.userName, self.verifyUrl, self.addUrl, self.withdrawUrl, self.accountUrl];
 }
 
 @end

@@ -227,10 +227,6 @@ void Uphold::GetUser(GetUserCallback callback) {
   user_->Get(callback);
 }
 
-void Uphold::CreateAnonAddressIfNecessary(ledger::ResultCallback callback) {
-  card_->CreateAnonAddressIfNecessary(callback);
-}
-
 void Uphold::SaveTransferFee(ledger::TransferFeePtr transfer_fee) {
   if (!transfer_fee) {
     BLOG(0, "Transfer fee is null");

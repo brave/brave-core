@@ -69,8 +69,6 @@ class Uphold {
 
   void GetUser(GetUserCallback callback);
 
-  void CreateAnonAddressIfNecessary(ledger::ResultCallback callback);
-
   void OnTimer(const uint32_t timer_id);
 
  private:

@@ -22,7 +22,7 @@ namespace braveledger_state {
 StateMigration::StateMigration(bat_ledger::LedgerImpl* ledger) :
     v1_(std::make_unique<StateMigrationV1>(ledger)),
     v2_(std::make_unique<StateMigrationV2>(ledger)),
-    v3_(std::make_unique<StateMigrationV3>(ledger)),
+    v3_(std::make_unique<StateMigrationV3>()),
     v4_(std::make_unique<StateMigrationV4>(ledger)),
     ledger_(ledger) {
   DCHECK(v1_ && v2_ && v3_ && v4_);
