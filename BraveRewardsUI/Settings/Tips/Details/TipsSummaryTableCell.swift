@@ -21,6 +21,7 @@ class TipsSummaryTableCell: UITableViewCell, TableViewReusable {
     $0.font = .systemFont(ofSize: 13.0)
   }).then {
     $0.kindLabel.text = "USD"
+    $0.isHidden = true
   }
   
   let totalTipsThisMonthLabel = UILabel().then {

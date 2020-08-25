@@ -280,10 +280,8 @@ extension AutoContributeDetailViewController: UITableViewDataSource, UITableView
       case .monthlyPayment:
         cell.label.text = Strings.autoContributeMonthlyPayment
         cell.accessoryType = .disclosureIndicator
-        if let dollarAmount = state.ledger.dollarStringForBATAmount(state.ledger.contributionAmount) {
-          let amount = "\(state.ledger.contributionAmount) \(Strings.BAT) (\(dollarAmount))"
-          cell.accessoryLabel?.text = String(format: Strings.settingsAutoContributeUpToValue, amount)
-        }
+        let amount = "\(state.ledger.contributionAmount) \(Strings.BAT)"
+        cell.accessoryLabel?.text = String(format: Strings.settingsAutoContributeUpToValue, amount)
         cell.selectionStyle = .default
       case .nextContribution:
         cell.label.text = Strings.autoContributeNextDate

@@ -94,9 +94,6 @@ extension PendingContributionDetailController: UITableViewDataSource {
         cell.label.text = Strings.pendingContributionAmount
         let value = BATValue(contribution.amount)
         var amountString = "\(value.displayString) \(Strings.BAT)"
-        if let usdValue = state.ledger.dollarStringForBATAmount(value.doubleValue) {
-          amountString.append(" (\(usdValue))")
-        }
         cell.accessoryLabel?.text = amountString
       case .pendingUntil:
         cell.label.text = Strings.pendingContributionPendingUntil

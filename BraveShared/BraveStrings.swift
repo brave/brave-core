@@ -616,10 +616,10 @@ extension Strings {
     public static let OBShieldsDetail = NSLocalizedString("OBShieldsDetail", bundle: Bundle.braveShared, value: "Block privacy-invading trackers so you can browse without being followed around the web", comment: "Detail text for shields onboarding screen")
     public static let OBRewardsTitle = NSLocalizedString("OBRewardsTitle", bundle: Bundle.braveShared, value: "Brave Rewards", comment: "Title for rewards onboarding screen")
     public static let OBAdsOptInTitle = NSLocalizedString("OBAdsOptInTitle", bundle: Bundle.braveShared, value: "Brave Ads is here!", comment: "Title when opting into brave Ads when region becomes available")
-    public static let OBAdsOptInMessage = NSLocalizedString("OBAdsOptInMessage", bundle: Bundle.braveShared, value: "Earn tokens for seeing privacy-respecting ads.", comment: "Message when opting into brave Ads when region becomes available")
-    public static let OBAdsOptInMessageJapan = NSLocalizedString("OBAdsOptInMessageJapan", bundle: Bundle.braveShared, value: "Earn points for seeing privacy-respecting ads.", comment: "Message when opting into brave Ads when region becomes available")
-    public static let OBRewardsDetailInAdRegion = NSLocalizedString("OBRewardsDetailInAdRegion", bundle: Bundle.braveShared, value: "Earn tokens for seeing privacy-respecting ads. Use them to support your favorite sites and creators.", comment: "Detail text for rewards onboarding screen")
-    public static let OBRewardsDetailInAdRegionJapan = NSLocalizedString("OBRewardsDetailInAdRegionJapan", bundle: Bundle.braveShared, value: "Earn points for seeing privacy-respecting ads. Use them to support your favorite sites and creators.", comment: "Detail text for rewards onboarding screen")
+    public static let OBAdsOptInMessage = NSLocalizedString("OBAdsOptInMessage", bundle: Bundle.braveShared, value: "Earn tokens and reward creators for great content while you browse.", comment: "Message when opting into brave Ads when region becomes available")
+    public static let OBAdsOptInMessageJapan = NSLocalizedString("OBAdsOptInMessageJapan", bundle: Bundle.braveShared, value: "Earn points and reward creators for great content while you browse.", comment: "Message when opting into brave Ads when region becomes available")
+    public static let OBRewardsDetailInAdRegion = NSLocalizedString("OBRewardsDetailInAdRegion", bundle: Bundle.braveShared, value: "Earn tokens and reward creators for great content while you browse.", comment: "Detail text for rewards onboarding screen")
+    public static let OBRewardsDetailInAdRegionJapan = NSLocalizedString("OBRewardsDetailInAdRegionJapan", bundle: Bundle.braveShared, value: "Earn points and reward creators for great content while you browse.", comment: "Detail text for rewards onboarding screen")
     public static let OBRewardsDetailOutsideAdRegion = NSLocalizedString("OBRewardsDetailOutsideAdRegion", bundle: Bundle.braveShared, value: "Support your favorite websites and creators based on your attention.", comment: "Detail text for rewards onboarding screen")
     public static let OBRewardsAgreementTitle = NSLocalizedString("OBRewardsAgreementTitle", bundle: Bundle.braveShared, value: "Brave Rewards", comment: "Title for rewards agreement onboarding screen")
     public static let OBRewardsAgreementDetail = NSLocalizedString("OBRewardsAgreementDetail", bundle: Bundle.braveShared, value: "By turning on Rewards, you agree to the", comment: "Detail text for rewards agreement onboarding screen")
@@ -666,13 +666,7 @@ extension Strings {
             NSLocalizedString("ntp.supportWebCreatorsWithTokens",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "You can support web creators with tokens.",
-                comment: "")
-        public static let earnTokensByViewingAds =
-            NSLocalizedString("ntp.earnTokensByViewingAds",
-                tableName: "BraveShared",
-                bundle: .braveShared,
-                value: "Earn tokens by viewing privacy-respecting ads.",
+                value: "Earn tokens and reward creators for great content while you browse.",
                 comment: "")
         public static let youArePaidToSeeThisImage =
             NSLocalizedString("ntp.youArePaidToSeeThisImage",
@@ -696,13 +690,13 @@ extension Strings {
             NSLocalizedString("ntp.getPaidForThisImageTurnRewards",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "Earn tokens for viewing this image. Turn on Brave Rewards to claim your share.",
+                value: "Earn tokens for viewing this image. Turn on Brave Rewards and start supporting creators.",
                 comment: "")
         public static let getPaidForThisImageTurnAds =
             NSLocalizedString("ntp.getPaidForThisImageTurnAds",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "Earn tokens for viewing this image. Turn on Brave Ads to claim your share.",
+                value: "Earn tokens for viewing this image. Turn on Brave Ads and start supporting creators.",
                 comment: "")
         public static let turnRewardsTos =
             NSLocalizedString("ntp.turnRewardsTos",
@@ -720,7 +714,7 @@ extension Strings {
             NSLocalizedString("ntp.learnMoreAboutBrandedImages",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "For every sponsored image you view, you receive 70% of the revenue in tokens. With Brave Ads, you're always in control of the ads you see.",
+                value: "When you view a sponsored image, you earn tokens that can be used to support creators. With Brave Ads, you're always in control of the ads you see.",
                 comment: "")
         public static let goodJob =
             NSLocalizedString("ntp.goodJob",
@@ -732,13 +726,13 @@ extension Strings {
             NSLocalizedString("ntp.earningsReport",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "You earned %@ last month from viewing privacy-respecting ads.",
-                comment: "Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.'")
+                value: "You earned %@ by browsing with Brave.",
+                comment: "Placeholder example: 'You earned 42 BAT by browsing with Brave.'")
         public static let claimRewards =
             NSLocalizedString("ntp.claimRewards",
                 tableName: "BraveShared",
                 bundle: .braveShared,
-                value: "Claim my rewards",
+                value: "Claim Tokens",
                 comment: "")
 
         public static let learnMoreAboutRewards =
