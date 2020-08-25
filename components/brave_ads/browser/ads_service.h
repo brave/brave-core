@@ -44,8 +44,9 @@ using OnToggleSaveAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
 using OnToggleFlagAdCallback =
     base::OnceCallback<void(const std::string&, bool)>;
-using GetTransactionHistoryCallback =
-    base::OnceCallback<void(double, uint64_t, uint64_t)>;
+
+using GetTransactionHistoryCallback = base::OnceCallback<void(
+    const bool, const double, const uint64_t, const uint64_t)>;
 
 class AdsService : public KeyedService {
  public:

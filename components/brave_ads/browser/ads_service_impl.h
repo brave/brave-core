@@ -273,6 +273,7 @@ class AdsServiceImpl : public AdsService,
 
   void OnGetTransactionHistory(
       GetTransactionHistoryCallback callback,
+      const bool success,
       const std::string& json);
 
   void OnRemoveAllHistory(

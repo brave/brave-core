@@ -17,6 +17,7 @@
 #include "bat/ads/mojom.h"
 
 using std::placeholders::_1;
+using std::placeholders::_2;
 
 namespace bat_ads {
 
@@ -170,7 +171,7 @@ void BatAdsImpl::GetTransactionHistory(
       AsWeakPtr(), std::move(callback));
 
   ads_->GetTransactionHistory(std::bind(BatAdsImpl::OnGetTransactionHistory,
-      holder, _1));
+      holder, _1, _2));
 }
 
 void BatAdsImpl::ToggleAdThumbUp(
@@ -270,10 +271,11 @@ void BatAdsImpl::OnRemoveAllHistory(
 
 void BatAdsImpl::OnGetTransactionHistory(
     CallbackHolder<GetTransactionHistoryCallback>* holder,
+    const bool success,
     const ads::StatementInfo& statement) {
   if (holder->is_valid()) {
     const std::string json = statement.ToJson();
-    std::move(holder->get()).Run(json);
+    std::move(holder->get()).Run(success, json);
   }
 
   delete holder;

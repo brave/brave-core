@@ -437,7 +437,12 @@ BATClassAdsBridge(BOOL, isDebug, setDebug, _is_debug)
 
 - (void)detailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings, NSDate *nextPaymentDate))completion
 {
-  ads->GetTransactionHistory(^(ads::StatementInfo list) {
+  ads->GetTransactionHistory(^(bool success, ads::StatementInfo list) {
+    if (!success) {
+      completion(0, 0, nil);
+      return;
+    }
+
     NSDate *nextPaymentDate = nil;
     if (list.next_payment_date_in_seconds > 0) {
       nextPaymentDate = [NSDate dateWithTimeIntervalSince1970:list.next_payment_date_in_seconds];
