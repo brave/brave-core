@@ -9,9 +9,6 @@ import("//testing/test.gni")
 
 source_set("brave_ads_unit_tests") {
   testonly = true
-  # Remove when https://github.com/brave/brave-browser/issues/10616 is resolved
-  check_includes = false
-
   if (brave_ads_enabled) {
     sources = [
       "//brave/components/brave_ads/browser/ads_service_impl_unittest.cc",
@@ -76,14 +73,20 @@ source_set("brave_ads_unit_tests") {
     }
 
     deps = [
+      "//base/test:test_support",
+      "//brave/base:base",
       "//brave/browser:browser_process",
       "//brave/components/brave_ads/browser:browser",
       "//brave/components/brave_ads/browser:testutil",
+      "//brave/components/brave_rewards/browser:browser",
+      "//brave/components/brave_rewards/common:common",
+      "//brave/components/brave_rewards/test:brave_rewards_unit_tests",
+      "//brave/components/challenge_bypass_ristretto",
+      "//brave/test:brave_browser_tests",
       "//brave/vendor/bat-native-ads",
       "//brave/vendor/bat-native-ledger",
       "//brave/vendor/bat-native-rapidjson",
       "//brave/vendor/bat-native-usermodel",
-      "//brave/components/challenge_bypass_ristretto",
       "//chrome/browser:browser",
       "//components/prefs:prefs",
       "//content/test:test_support",
