@@ -77,26 +77,29 @@ TorControl::TorControl(TorControl::Delegate* delegate)
 
 TorControl::~TorControl() = default;
 
-// Start()
-//
-//      Start watching for the Tor control channel.  If we are able to
-//      connect, issue OnTorControlReady to delegate.
-//
-void TorControl::Start(const base::FilePath& watchDirPath,
-                       base::OnceClosure check_complete) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(!running_);
-
-  running_ = true;
+void TorControl::PreStartCheck(const base::FilePath& watchDirPath,
+                               base::OnceClosure check_complete) {
   watch_dir_path_ = std::move(watchDirPath);
   watch_task_runner_->PostTask(
       FROM_HERE,
       base::BindOnce(&TorControl::CheckingOldTorProcess,
                      base::Unretained(this), std::move(check_complete)));
+}
+
+// Start()
+//
+//      Start watching for the Tor control channel.  If we are able to
+//      connect, issue OnTorControlReady to delegate.
+//
+void TorControl::Start() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!watch_dir_path_.empty());
+  CHECK(!running_);
+
+  running_ = true;
   watch_task_runner_->PostTask(
       FROM_HERE,
-      base::BindOnce(&TorControl::StartWatching,
-                     base::Unretained(this)));
+      base::BindOnce(&TorControl::StartWatching, base::Unretained(this)));
 }
 
 void TorControl::StartWatching() {
