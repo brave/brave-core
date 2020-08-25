@@ -55,8 +55,6 @@ static_library("bat-native-ads-standalone") {
 }
 
 source_set("headers") {
-   # Remove when https://github.com/brave/brave-browser/issues/10633 is resolved
-  check_includes = false
   visibility = [
     ":*",
     "//brave/components/brave_ads/test:*",
@@ -83,7 +81,8 @@ source_set("headers") {
   ]
 
   public_deps = [
-    "include/bat/ads/public/interfaces"
+    "include/bat/ads/public/interfaces",
+    "//sql",
   ]
 }
 
