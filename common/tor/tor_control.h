@@ -68,8 +68,11 @@ class TorControl {
 
   static std::unique_ptr<TorControl> Create(Delegate* delegate);
 
-  void Start(const base::FilePath& watchDirPath,
-             base::OnceClosure check_complete);
+  // This has to called before Start(), it will check if orphaned tor process
+  // exists and reap it.
+  void PreStartCheck(const base::FilePath& watchDirPath,
+                     base::OnceClosure check_complete);
+  void Start();
   void Stop();
 
   void Cmd1(const std::string& cmd, CmdCallback callback);
