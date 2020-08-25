@@ -51,7 +51,11 @@ bool SearchProviders::IsSearchEngine(
 
 std::string SearchProviders::ExtractSearchQueryKeywords(
     const std::string& url) {
-  std::string search_query_keywords = "";
+  std::string search_query_keywords;
+
+  if (!IsSearchEngine(url)) {
+    return search_query_keywords;
+  }
 
   const GURL visited_url = GURL(url);
   if (!visited_url.is_valid()) {

@@ -722,6 +722,11 @@ classification::CategoryList AdsImpl::GetCategoriesToServeAd() {
 
   classification::PurchaseIntentWinningCategoryList purchase_intent_categories =
       GetPurchaseIntentWinningCategories();
+  if (purchase_intent_categories.empty()) {
+    BLOG(1, "No purchase intent winning categories");
+    return categories;
+  }
+
   categories.insert(categories.end(),
       purchase_intent_categories.begin(), purchase_intent_categories.end());
 
@@ -737,7 +742,7 @@ void AdsImpl::ServeAdNotificationFromCategories(
   }
 
   if (categories.empty()) {
-    BLOG(1, "No categories to serve targeted ads");
+    BLOG(1, "No pages have been classified to serve targeted ads");
     ServeUntargetedAdNotification();
     return;
   }
@@ -758,63 +763,61 @@ void AdsImpl::OnServeAdNotificationFromCategories(
     const Result result,
     const classification::CategoryList& categories,
     const CreativeAdNotificationList& ads) {
-  auto eligible_ads = GetEligibleAds(ads);
-  if (!eligible_ads.empty()) {
-    ServeAdNotificationWithPacing(eligible_ads);
+  const CreativeAdNotificationList eligible_ads = GetEligibleAds(ads);
+  if (eligible_ads.empty()) {
+    BLOG(1, "No eligible ads found in categories:");
+    for (const auto& category : categories) {
+      BLOG(1, "  " << category);
+    }
+
+    ServeAdNotificationFromParentCategories(categories);
+
     return;
   }
 
-  BLOG(1, "No eligible ads found in categories:");
-  for (const auto& category : categories) {
-    BLOG(1, "  " << category);
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/8486): Brave Ads
-  // Purchase Intent segments should not fall back to parent segments
-  if (ServeAdNotificationFromParentCategories(categories)) {
-    return;
-  }
-
-  ServeUntargetedAdNotification();
+  ServeAdNotificationWithPacing(eligible_ads);
 }
 
-bool AdsImpl::ServeAdNotificationFromParentCategories(
+void AdsImpl::ServeAdNotificationFromParentCategories(
     const classification::CategoryList& categories) {
-  classification::CategoryList parent_categories;
-  for (const auto& category : categories) {
-    auto pos = category.find_last_of(classification::kCategorySeparator);
-    if (pos == std::string::npos) {
-      return false;
-    }
-
-    std::string parent_category = category.substr(0, pos);
-
-    if (std::find(parent_categories.begin(), parent_categories.end(),
-        parent_category) != parent_categories.end()) {
-      continue;
-    }
-
-    parent_categories.push_back(parent_category);
-  }
+  classification::CategoryList parent_categories =
+      classification::GetParentCategories(categories);
 
   BLOG(1, "Serving ad from parent categories:");
   for (const auto& parent_category : parent_categories) {
     BLOG(1, "  " << parent_category);
   }
 
-  const auto callback = std::bind(&AdsImpl::OnServeAdNotificationFromCategories,
-      this, _1, _2, _3);
+  const auto callback = std::bind(
+      &AdsImpl::OnServeAdNotificationFromParentCategories, this, _1, _2, _3);
 
   database::table::CreativeAdNotifications database_table(this);
   database_table.GetCreativeAdNotifications(parent_categories, callback);
+}
 
-  return true;
+void AdsImpl::OnServeAdNotificationFromParentCategories(
+    const Result result,
+    const classification::CategoryList& categories,
+    const CreativeAdNotificationList& ads) {
+  const CreativeAdNotificationList eligible_ads = GetEligibleAds(ads);
+  if (eligible_ads.empty()) {
+    BLOG(1, "No eligible ads found in parent categories:");
+    for (const auto& category : categories) {
+      BLOG(1, "  " << category);
+    }
+
+    ServeUntargetedAdNotification();
+
+    return;
+  }
+
+  ServeAdNotificationWithPacing(eligible_ads);
 }
 
 void AdsImpl::ServeUntargetedAdNotification() {
   BLOG(1, "Serving ad notification from untargeted category");
 
-  std::vector<std::string> categories = {
+  const std::vector<std::string> categories = {
     classification::kUntargeted
   };
 
@@ -829,7 +832,7 @@ void AdsImpl::OnServeUntargetedAdNotification(
     const Result result,
     const classification::CategoryList& categories,
     const CreativeAdNotificationList& ads) {
-  auto eligible_ads = GetEligibleAds(ads);
+  const CreativeAdNotificationList eligible_ads = GetEligibleAds(ads);
   if (eligible_ads.empty()) {
     FailedToServeAdNotification("No eligible ads found");
     return;
@@ -840,16 +843,18 @@ void AdsImpl::OnServeUntargetedAdNotification(
 
 void AdsImpl::ServeAdNotificationWithPacing(
     const CreativeAdNotificationList& ads) {
+  CreativeAdNotificationList eligible_ads;
+
   const auto pacing_filter =
       EligibleAdsFilterFactory::Build(EligibleAdsFilter::Type::kPacing);
   DCHECK(pacing_filter);
+  eligible_ads = pacing_filter->Apply(ads);
 
   const auto priority_filter =
       EligibleAdsFilterFactory::Build(EligibleAdsFilter::Type::kPriority);
   DCHECK(priority_filter);
+  eligible_ads = priority_filter->Apply(eligible_ads);
 
-  const CreativeAdNotificationList eligible_ads =
-      priority_filter->Apply(pacing_filter->Apply(ads));
   if (eligible_ads.empty()) {
     FailedToServeAdNotification("No eligible ads found");
     return;
@@ -859,7 +864,6 @@ void AdsImpl::ServeAdNotificationWithPacing(
 
   const int rand = base::RandInt(0, eligible_ads.size() - 1);
   const CreativeAdNotificationInfo ad = eligible_ads.at(rand);
-
   ShowAdNotification(ad);
 
   SuccessfullyServedAd();

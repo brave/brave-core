@@ -9,13 +9,16 @@
 #include <string>
 #include <vector>
 
+#include "bat/ads/internal/classification/page_classifier/page_classifier.h"
+
 namespace ads {
 namespace classification {
 
-const char kCategorySeparator[] = "-";
-
 std::vector<std::string> SplitCategory(
     const std::string& category);
+
+CategoryList GetParentCategories(
+    const CategoryList& categories);
 
 }  // namespace classification
 }  // namespace ads
