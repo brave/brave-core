@@ -13,6 +13,7 @@
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/classification/classification_util.h"
 #include "bat/ads/internal/classification/page_classifier/page_classifier_util.h"
+#include "bat/ads/internal/logging.h"
 
 namespace ads {
 namespace classification {

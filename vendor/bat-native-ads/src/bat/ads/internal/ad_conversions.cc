@@ -55,9 +55,13 @@ void AdConversions::Initialize(
 void AdConversions::Check(
     const std::string& url) {
   DCHECK(is_initialized_);
-  DCHECK(!url.empty());
 
   if (!ads_->get_ads_client()->ShouldAllowAdConversionTracking()) {
+    return;
+  }
+
+  if (!UrlHasScheme(url)) {
+    BLOG(1, "URL not supported for ad conversions");
     return;
   }
 
