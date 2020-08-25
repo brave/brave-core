@@ -10,10 +10,39 @@
 namespace ads {
 namespace classification {
 
+namespace {
+const char kCategorySeparator[] = "-";
+}  // namespace
+
 std::vector<std::string> SplitCategory(
     const std::string& category) {
   return base::SplitString(category, kCategorySeparator, base::KEEP_WHITESPACE,
       base::SPLIT_WANT_ALL);
+}
+
+CategoryList GetParentCategories(
+    const CategoryList& categories) {
+  CategoryList parent_categories;
+
+  for (const auto& category : categories) {
+    std::string parent_category;
+
+    const size_t pos = category.find_last_of(kCategorySeparator);
+    if (pos != std::string::npos) {
+      parent_category = category.substr(0, pos);
+    } else {
+      parent_category = category;
+    }
+
+    if (std::find(parent_categories.begin(), parent_categories.end(),
+        parent_category) != parent_categories.end()) {
+      continue;
+    }
+
+    parent_categories.push_back(parent_category);
+  }
+
+  return parent_categories;
 }
 
 }  // namespace classification
