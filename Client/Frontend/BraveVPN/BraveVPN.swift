@@ -39,6 +39,20 @@ class BraveVPN {
             BraveVPN.validateReceipt() { expired in
                 if expired == true {
                     BraveVPN.clearConfiguration()
+                    return
+                }
+                
+                if isConnected {
+                    GRDGatewayAPI.shared().getServerStatus { completion in
+                        if completion.responseStatus == .serverOK {
+                            log.debug("VPN server status OK")
+                            return
+                        }
+                        
+                        log.debug("VPN server status failure, migrating to new host")
+                        disconnect()
+                        reconnect()
+                    }
                 }
             }
         }
