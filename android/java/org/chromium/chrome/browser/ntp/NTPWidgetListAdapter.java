@@ -21,8 +21,8 @@ import org.chromium.chrome.R;
 
 import java.util.List;
 
-public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements
-        SwipeAndDragHelper.ActionCompletionContract {
+public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+        implements SwipeAndDragHelper.ActionCompletionContract {
     private List<NTPWidgetItem> widgetList;
     private ItemTouchHelper touchHelper;
 
@@ -30,7 +30,7 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.ntp_widget_list_item_layout, parent, false);
+                            .inflate(R.layout.ntp_widget_list_item_layout, parent, false);
         return new NTPWidgetViewHolder(view);
     }
 

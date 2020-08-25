@@ -15,22 +15,22 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class BraveStatsUtil {
-	public static final short MILLISECONDS_PER_ITEM = 50;
-	/*
-	* Gets string view of specific time in seconds for Brave stats
-	*/
-	public static String getBraveStatsStringFromTime(long seconds) {
-		String result = "";
-		if (seconds > 24 * 60 * 60) {
-			result = result + (seconds / (24 * 60 * 60)) + "d";
-		} else if (seconds > 60 * 60) {
-			result = result + (seconds / (60 * 60)) + "h";
-		} else if (seconds > 60) {
-			result = result + (seconds / 60) + "m";
-		} else {
-			result = result + seconds + "s";
-		}
-		return result;
+    public static final short MILLISECONDS_PER_ITEM = 50;
+    /*
+     * Gets string view of specific time in seconds for Brave stats
+     */
+    public static String getBraveStatsStringFromTime(long seconds) {
+        String result = "";
+        if (seconds > 24 * 60 * 60) {
+            result = result + (seconds / (24 * 60 * 60)) + "d";
+        } else if (seconds > 60 * 60) {
+            result = result + (seconds / (60 * 60)) + "h";
+        } else if (seconds > 60) {
+            result = result + (seconds / 60) + "m";
+        } else {
+            result = result + seconds + "s";
+        }
+        return result;
 	}
 
 	public static Pair<String, String> getBraveStatsStringFormNumberPair(long number, boolean isBytes) {

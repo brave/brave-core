@@ -301,7 +301,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
           long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
           long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(mProfile);
-          long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * BraveStatsUtil.MILLISECONDS_PER_ITEM;
+          long estimatedMillisecondsSaved =
+                  (trackersBlockedCount + adsBlockedCount) * BraveStatsUtil.MILLISECONDS_PER_ITEM;
 
           if (!OnboardingPrefManager.getInstance().isAdsTrackersNotificationStarted()
               && (trackersBlockedCount + adsBlockedCount) > 250

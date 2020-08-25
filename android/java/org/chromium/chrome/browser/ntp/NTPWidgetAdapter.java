@@ -6,34 +6,32 @@
 package org.chromium.chrome.browser.ntp;
 
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Button;
 import android.util.Pair;
 import android.view.ContextThemeWrapper;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.widget.AppCompatImageView;
-
-import org.chromium.chrome.R;
 
 import org.chromium.base.ContextUtils;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
-import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.widget.crypto.binance.CryptoWidgetBottomSheetDialogFragment;
-import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 
 import java.util.ArrayList;
 
 public class NTPWidgetAdapter extends PagerAdapter {
-
     private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
     private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
     private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
@@ -53,8 +51,8 @@ public class NTPWidgetAdapter extends PagerAdapter {
     }
 
     @Override
-    public int getItemPosition (Object object) {
-        int index = views.indexOf (object);
+    public int getItemPosition(Object object) {
+        int index = views.indexOf(object);
         if (index == -1)
             return POSITION_NONE;
         else
@@ -62,8 +60,8 @@ public class NTPWidgetAdapter extends PagerAdapter {
     }
 
     @Override
-    public Object instantiateItem (ViewGroup container, int position) {
-        View v = views.get (position);
+    public Object instantiateItem(ViewGroup container, int position) {
+        View v = views.get(position);
         AppCompatImageView widgetMoreOption = v.findViewById(R.id.widget_more_option);
         if (widgetMoreOption != null) {
             widgetMoreOption.setOnClickListener(new View.OnClickListener() {
@@ -80,48 +78,50 @@ public class NTPWidgetAdapter extends PagerAdapter {
             v.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment = new CryptoWidgetBottomSheetDialogFragment();
-                    // cryptoWidgetBottomSheetDialogFragment.show(getSupportFragmentManager(), "brave_stats_bottom_sheet_dialog_fragment");
+                    // CryptoWidgetBottomSheetDialogFragment cryptoWidgetBottomSheetDialogFragment =
+                    // new CryptoWidgetBottomSheetDialogFragment();
+                    // cryptoWidgetBottomSheetDialogFragment.show(getSupportFragmentManager(),
+                    // "brave_stats_bottom_sheet_dialog_fragment");
                 }
             });
         }
 
-        container.addView (v);
+        container.addView(v);
         return v;
     }
 
     @Override
-    public void destroyItem (ViewGroup container, int position, Object object) {
-        container.removeView(views.get (position));
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        container.removeView(views.get(position));
     }
 
     @Override
-    public int getCount () {
+    public int getCount() {
         return views.size();
     }
 
     @Override
-    public boolean isViewFromObject (View view, Object object) {
+    public boolean isViewFromObject(View view, Object object) {
         return view == object;
     }
 
-    public int addView (View v) {
-        return addView (v, views.size());
+    public int addView(View v) {
+        return addView(v, views.size());
     }
 
-    public int addView (View v, int position) {
+    public int addView(View v, int position) {
         views.add(position, v);
         return position;
     }
 
-    public int removeView (ViewPager pager, View v) {
-        return removeView (pager, views.indexOf(v));
+    public int removeView(ViewPager pager, View v) {
+        return removeView(pager, views.indexOf(v));
     }
 
-    public int removeView (ViewPager pager, int position) {
-        pager.setAdapter (null);
-        views.remove (position);
-        pager.setAdapter (this);
+    public int removeView(ViewPager pager, int position) {
+        pager.setAdapter(null);
+        views.remove(position);
+        pager.setAdapter(this);
         return position;
     }
 
@@ -132,28 +132,40 @@ public class NTPWidgetAdapter extends PagerAdapter {
     private void updateBraveStats(View view) {
         ViewGroup mBraveStatsView = view.findViewById(R.id.brave_stats_layout);
 
-        TextView mAdsBlockedCountTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_ads_count);
-        TextView mDataSavedValueTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_value);
-        TextView mEstTimeSavedCountTextView = (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time_count);
+        TextView mAdsBlockedCountTextView =
+                (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_ads_count);
+        TextView mDataSavedValueTextView =
+                (TextView) mBraveStatsView.findViewById(R.id.brave_stats_data_saved_value);
+        TextView mEstTimeSavedCountTextView =
+                (TextView) mBraveStatsView.findViewById(R.id.brave_stats_text_time_count);
 
-        long trackersBlockedCount = BravePrefServiceBridge.getInstance().getTrackersBlockedCount(profile);
+        long trackersBlockedCount =
+                BravePrefServiceBridge.getInstance().getTrackersBlockedCount(profile);
         long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(profile);
         long dataSaved = BravePrefServiceBridge.getInstance().getDataSaved(profile);
-        long estimatedMillisecondsSaved = (trackersBlockedCount + adsBlockedCount) * BraveStatsUtil.MILLISECONDS_PER_ITEM;
+        long estimatedMillisecondsSaved =
+                (trackersBlockedCount + adsBlockedCount) * BraveStatsUtil.MILLISECONDS_PER_ITEM;
 
-        Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
-        Pair<String, String> dataSavedPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
+        Pair<String, String> adsTrackersPair =
+                BraveStatsUtil.getBraveStatsStringFormNumberPair(adsBlockedCount, false);
+        Pair<String, String> dataSavedPair =
+                BraveStatsUtil.getBraveStatsStringFormNumberPair(dataSaved, true);
 
-        mAdsBlockedCountTextView.setText(String.format(context.getResources().getString(R.string.ntp_stat_text), adsTrackersPair.first, adsTrackersPair.second));
-        mDataSavedValueTextView.setText(String.format(context.getResources().getString(R.string.ntp_stat_text), dataSavedPair.first, dataSavedPair.second));
-        mEstTimeSavedCountTextView.setText(BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
+        mAdsBlockedCountTextView.setText(
+                String.format(context.getResources().getString(R.string.ntp_stat_text),
+                        adsTrackersPair.first, adsTrackersPair.second));
+        mDataSavedValueTextView.setText(
+                String.format(context.getResources().getString(R.string.ntp_stat_text),
+                        dataSavedPair.first, dataSavedPair.second));
+        mEstTimeSavedCountTextView.setText(
+                BraveStatsUtil.getBraveStatsStringFromTime(estimatedMillisecondsSaved / 1000));
     }
 
     private void showPopupMenu(Context context, View view, int position) {
         Context wrapper = new ContextThemeWrapper(context,
                 GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
-                ? R.style.NewTabPopupMenuDark
-                : R.style.NewTabPopupMenuLight);
+                        ? R.style.NewTabPopupMenuDark
+                        : R.style.NewTabPopupMenuLight);
         // Creating the instance of PopupMenu
         PopupMenu popup = new PopupMenu(wrapper, view);
         // Inflating the Popup using xml file

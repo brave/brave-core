@@ -5,16 +5,18 @@
 
 package org.chromium.chrome.browser.ntp;
 
-import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.os.Bundle;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.ContextMenu;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,25 +24,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.util.Pair;
-import android.text.Html;
 
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import com.airbnb.lottie.LottieAnimationView;
-
-import org.chromium.base.ThreadUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.util.PackageUtils;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.TraceEvent;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.base.task.AsyncTask;
@@ -48,13 +46,17 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.compositor.layouts.OverviewModeBehavior;
+import org.chromium.chrome.browser.custom_layout.VerticalViewPager;
 import org.chromium.chrome.browser.explore_sites.ExploreSitesBridge;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.TopSiteTable;
 import org.chromium.chrome.browser.native_page.ContextMenuManager;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
+import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
+import org.chromium.chrome.browser.ntp.NTPWidgetBottomSheetDialogFragment;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.SuperReferralShareDialogFragment;
@@ -70,6 +72,7 @@ import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil
 import org.chromium.chrome.browser.offlinepages.DownloadUiActionFlags;
 import org.chromium.chrome.browser.offlinepages.OfflinePageBridge;
 import org.chromium.chrome.browser.offlinepages.RequestCoordinatorBridge;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -82,12 +85,8 @@ import org.chromium.chrome.browser.tab.TabAttributes;
 import org.chromium.chrome.browser.tab.TabImpl;
 import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.tabmodel.TabModel;
+import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.custom_layout.VerticalViewPager;
-import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
-import org.chromium.chrome.browser.ntp.NTPWidgetBottomSheetDialogFragment;
 
 import java.util.List;
 
@@ -137,9 +136,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
+            public void onPageScrolled(
+                    int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
@@ -147,32 +145,38 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
+            public void onPageScrollStateChanged(int state) {}
         });
+    }
 
-        LayoutInflater inflater = (LayoutInflater) ContextUtils.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mBraveStatsView = inflater.inflate (R.layout.brave_stats_layout, null);
-        ntpWidgetAdapter.addView (mBraveStatsView);
-        View binanceWidgetView = inflater.inflate (R.layout.crypto_widget_layout, null);
-        ntpWidgetAdapter.addView (binanceWidgetView);
-        if (mSiteSectionView != null) {
-            if (!mNTPBackgroundImagesBridge.isSuperReferral()
-                    || !NTPBackgroundImagesBridge.enableSponsoredImages()
-                    || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                ntpWidgetAdapter.addView (mSiteSectionView);
-            }
-        }
-        ntpWidgetAdapter.notifyDataSetChanged();
+    private void addWidgets() {
+        LayoutInflater inflater =
+                (LayoutInflater) ContextUtils.getApplicationContext().getSystemService(
+                        Context.LAYOUT_INFLATER_SERVICE);
 
+        mBraveStatsView = inflater.inflate(R.layout.brave_stats_layout, null);
         mBraveStatsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checkForBraveStats();
             }
         });
-        updateAndShowIndicators(0);
+        ntpWidgetAdapter.addView(mBraveStatsView);
+
+        boolean showPlaceholder = getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
+
+        if (mSiteSectionView != null && !showPlaceholder) {
+            if (!mNTPBackgroundImagesBridge.isSuperReferral()
+                    || !NTPBackgroundImagesBridge.enableSponsoredImages()
+                    || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                ntpWidgetAdapter.addView(mSiteSectionView);
+            }
+        }
+
+        View binanceWidgetView = inflater.inflate(R.layout.crypto_widget_layout, null);
+        ntpWidgetAdapter.addView(binanceWidgetView);
+
+        ntpWidgetAdapter.notifyDataSetChanged();
     }
 
     private void updateAndShowIndicators(int position) {
@@ -307,6 +311,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         assert (activity instanceof BraveActivity);
         mActivity = activity;
         ((BraveActivity)mActivity).dismissShieldsTooltip();
+
+        addWidgets();
+        updateAndShowIndicators(0);
     }
 
     private void showNTPImage(NTPImage ntpImage) {
@@ -630,16 +637,20 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ntpWidgetViewPager.setCurrentItem(ntpWidgetAdapter.getItemPosition(pageToShow), true);
     }
 
-    private NTPWidgetAdapter.NTPWidgetMenuListener ntpWidgetMenuListener = new NTPWidgetAdapter.NTPWidgetMenuListener() {
-        @Override
-        public void onEdit() {
-            NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment = NTPWidgetBottomSheetDialogFragment.newInstance();
-            ntpWidgetBottomSheetDialogFragment.show(((BraveActivity) mActivity).getSupportFragmentManager(), "NTPWidgetBottomSheetDialogFragment");
-        }
+    private NTPWidgetAdapter.NTPWidgetMenuListener ntpWidgetMenuListener =
+            new NTPWidgetAdapter.NTPWidgetMenuListener() {
+                @Override
+                public void onEdit() {
+                    NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment =
+                            NTPWidgetBottomSheetDialogFragment.newInstance();
+                    ntpWidgetBottomSheetDialogFragment.show(
+                            ((BraveActivity) mActivity).getSupportFragmentManager(),
+                            "NTPWidgetBottomSheetDialogFragment");
+                }
 
-        @Override
-        public void onRemove(int position) {
-            removeViewFromWidget(position);
-        }
-    };
+                @Override
+                public void onRemove(int position) {
+                    removeViewFromWidget(position);
+                }
+            };
 }

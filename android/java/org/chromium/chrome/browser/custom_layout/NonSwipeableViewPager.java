@@ -8,11 +8,12 @@
 package org.chromium.chrome.browser.custom_layout;
 
 import android.content.Context;
-import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
+
+import androidx.viewpager.widget.ViewPager;
 
 import java.lang.reflect.Field;
 

@@ -9,12 +9,13 @@ package org.chromium.chrome.browser.onboarding;
 
 import android.app.Activity;
 import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.chromium.chrome.R;
 import org.chromium.base.ApplicationStatus;
-import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.onboarding.NonSwipeableViewPager;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.custom_layout.NonSwipeableViewPager;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.OnboardingViewPagerAdapter;
 

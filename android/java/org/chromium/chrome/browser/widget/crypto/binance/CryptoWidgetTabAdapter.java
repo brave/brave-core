@@ -16,12 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CryptoWidgetTabAdapter extends FragmentStatePagerAdapter {
-
-    List<String> titles = Arrays.asList(
-            "Deposit",
-            "Trade",
-            "Balance"
-    );
+    List<String> titles = Arrays.asList("Deposit", "Trade", "Balance");
 
     public CryptoWidgetTabAdapter(@NonNull FragmentManager fm, int behavior) {
         super(fm, behavior);

@@ -7,12 +7,11 @@ package org.chromium.chrome.browser.custom_layout;
 
 // https://android.googlesource.com/platform/packages/apps/DeskClock/+/master/src/com/android/deskclock/VerticalViewPager.java
 import android.content.Context;
-
-import androidx.viewpager.widget.ViewPager;
-
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.viewpager.widget.ViewPager;
 
 public class VerticalViewPager extends ViewPager {
     public VerticalViewPager(Context context) {

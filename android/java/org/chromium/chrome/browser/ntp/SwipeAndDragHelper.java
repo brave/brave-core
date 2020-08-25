@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SwipeAndDragHelper extends ItemTouchHelper.Callback {
-
     private ActionCompletionContract contract;
 
     SwipeAndDragHelper(ActionCompletionContract contract) {
@@ -20,14 +19,16 @@ public class SwipeAndDragHelper extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+    public int getMovementFlags(
+            @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         int swipeFlags = ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
     @Override
-    public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+    public boolean onMove(@NonNull RecyclerView recyclerView,
+            @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         contract.onViewMoved(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }
@@ -43,13 +44,9 @@ public class SwipeAndDragHelper extends ItemTouchHelper.Callback {
     }
 
     @Override
-    public void onChildDraw(@NonNull Canvas c,
-                            @NonNull RecyclerView recyclerView,
-                            @NonNull RecyclerView.ViewHolder viewHolder,
-                            float dX,
-                            float dY,
-                            int actionState,
-                            boolean isCurrentlyActive) {
+    public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView,
+            @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState,
+            boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             float alpha = 1 - (Math.abs(dX) / recyclerView.getWidth());
             viewHolder.itemView.setAlpha(alpha);

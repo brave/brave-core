@@ -19,20 +19,22 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.chrome.R;
-
 import org.chromium.chrome.browser.ntp.NTPWidgetItem;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment {
-
     private List<NTPWidgetItem> usersList = new ArrayList<NTPWidgetItem>() {
         {
-            add(new NTPWidgetItem("Privacy Stats", "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-            add(new NTPWidgetItem("Favorites", "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-            add(new NTPWidgetItem("Brave Rewards", "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-            add(new NTPWidgetItem("Binance", "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
+            add(new NTPWidgetItem("Privacy Stats",
+                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
+            add(new NTPWidgetItem("Favorites",
+                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
+            add(new NTPWidgetItem("Brave Rewards",
+                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
+            add(new NTPWidgetItem("Binance",
+                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
         }
     };
 
@@ -42,9 +44,8 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_ntp_widget_bottom_sheet_dialog, container, false);
     }
 
@@ -64,4 +65,3 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
         adapter.setUserList(usersList);
     }
 }
-
