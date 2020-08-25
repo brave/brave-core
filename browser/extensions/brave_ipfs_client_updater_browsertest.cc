@@ -3,20 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/command_line.h"
-#include "base/files/file_path.h"
-#include "base/files/file_util.h"
 #include "base/path_service.h"
-#include "base/process/launch.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/extensions/brave_ipfs_client_updater.h"
 #include "brave/common/brave_paths.h"
+#include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "content/public/test/browser_test.h"
 
 using extensions::ExtensionBrowserTest;
 
-static const char kIpfsClientUpdaterComponentTestId[] "";
+static const char kIpfsClientUpdaterComponentTestId[] =
+    "ngicbhhaldfdgmjhilmnleppfpmkgbbk";
 static const char kIpfsClientUpdaterComponentTestBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAncFKJWCX6RqCRYOR0t5a"
     "js7HWIVP3Ne272HZs3MqiaNvo9IikbPd4JnUMeQjLhkXTwxg6Up9Tmrgo3M8T91D"
@@ -33,11 +32,6 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
   void SetUp() override {
     InitEmbeddedTestServer();
     ExtensionBrowserTest::SetUp();
-  }
-
-  void PreRunTestOnMainThread() override {
-    ExtensionBrowserTest::PreRunTestOnMainThread();
-    WaitForIpfsClientUpdaterThread();
   }
 
   void InitEmbeddedTestServer() {
@@ -61,7 +55,7 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
   void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key) {
-    extensions::BraveIpfsClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
+    ipfs::BraveIpfsClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
         component_id, component_base64_public_key);
   }
 
@@ -90,7 +84,7 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
     g_brave_browser_process->ipfs_client_updater()->OnComponentReady(
         ipfs_client_updater->id(), ipfs_client_updater->path(), "");
     WaitForIpfsClientUpdaterThread();
-
+    WaitForMainThreadTasksToFinish();
     return true;
   }
 
@@ -99,6 +93,11 @@ class BraveIpfsClientUpdaterTest : public ExtensionBrowserTest {
         new base::ThreadTestHelper(
             g_brave_browser_process->ipfs_client_updater()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
+  }
+
+  void WaitForMainThreadTasksToFinish() {
+    base::RunLoop loop;
+    loop.RunUntilIdle();
   }
 };
 
@@ -109,27 +108,7 @@ IN_PROC_BROWSER_TEST_F(BraveIpfsClientUpdaterTest, IpfsClientInstalls) {
       kIpfsClientUpdaterComponentTestId,
       kIpfsClientUpdaterComponentTestBase64PublicKey);
   ASSERT_TRUE(InstallIpfsClientUpdater());
-
   base::FilePath executable_path =
       g_brave_browser_process->ipfs_client_updater()->GetExecutablePath();
   ASSERT_TRUE(PathExists(executable_path));
-}
-
-// Load the Ipfs client updater extension and verify that we can launch
-// the client.
-IN_PROC_BROWSER_TEST_F(BraveIpfsClientUpdaterTest, IpfsClientLaunches) {
-  SetComponentIdAndBase64PublicKeyForTest(
-      kIpfsClientUpdaterComponentTestId,
-      kIpfsClientUpdaterComponentTestBase64PublicKey);
-  ASSERT_TRUE(InstallIpfsClientUpdater());
-
-  base::FilePath executable_path =
-      g_brave_browser_process->ipfs_client_updater()->GetExecutablePath();
-  ASSERT_TRUE(PathExists(executable_path));
-
-  base::CommandLine cmd_line(executable_path);
-  base::Process ipfs_client_process =
-      base::LaunchProcess(cmd_line, base::LaunchOptions());
-  ASSERT_TRUE(ipfs_client_process.IsValid());
-  ASSERT_TRUE(ipfs_client_process.Terminate(0, true));
 }

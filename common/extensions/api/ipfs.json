@@ -15,7 +15,7 @@
       {
         "name": "getIPFSResolveMethodList",
         "type": "function",
-        "description": "Get methods for resolving IPFS URLs",
+        "description": "Get methods for resolving IPFS URIs",
         "parameters": [
           {
             "name": "callback",

@@ -659,8 +659,8 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS" desc="Label for a switch control which allows Google login for extension">
         Allow Google login for extensions
       </message>
-      <message name="IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC" desc="The description for how to handle IPFS URLs">
-        Method to resolve IPFS URLs
+      <message name="IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC" desc="The description for how to handle IPFS URIs">
+        Method to resolve IPFS locations
       </message>
       <message name="IDS_IPFS_RESOLVE_OPTION_GATEWAY" desc="Select control value for which IPFS resolve method to use">
         Gateway

@@ -37,7 +37,7 @@ const std::vector<std::string> kVettedExtensions{
     "kpbdcmcgkedhpbcpfndimofjnefgjidd",
     // Test ID: Brave HTTPS Everywhere Updater
     "bhlmpjhncoojbkemjkeppfahkglffilp",
-    // Test ID: Brave Tor Client Updater
+    // Test ID: Brave Tor Client Updater, IPFS Client Updater
     "ngicbhhaldfdgmjhilmnleppfpmkgbbk",
     // Chromium PDF Viewer.
     "mhjfbmdgcfjbbpaeojofohoefgiehjai",

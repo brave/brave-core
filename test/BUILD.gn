@@ -732,6 +732,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/browser/buildflags:buildflags",
     "//brave/components/brave_sync/buildflags:buildflags",
     "//brave/components/brave_wallet/browser/buildflags:buildflags",
+    "//brave/components/ipfs/browser/buildflags:buildflags",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
     "//components/embedder_support",
