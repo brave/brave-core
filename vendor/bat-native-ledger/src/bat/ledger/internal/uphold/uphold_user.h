@@ -6,12 +6,19 @@
 #ifndef BRAVELEDGER_UPHOLD_UPHOLD_USER_H_
 #define BRAVELEDGER_UPHOLD_UPHOLD_USER_H_
 
+#include <memory>
 #include <string>
 
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
+}
+
+namespace ledger {
+namespace endpoint {
+class UpholdServer;
+}
 }
 
 namespace braveledger_uphold {
@@ -35,7 +42,7 @@ struct User {
   ~User();
 };
 
-using GetUserCallback = std::function<void(const ledger::Result, const User)>;
+using GetUserCallback = std::function<void(const ledger::Result, const User&)>;
 
 class UpholdUser {
  public:
@@ -47,12 +54,14 @@ class UpholdUser {
 
  private:
   void OnGet(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const User& user,
       GetUserCallback callback);
 
   UserStatus GetStatus(const std::string& status);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
 };
 
 }  // namespace braveledger_uphold

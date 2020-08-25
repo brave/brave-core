@@ -6,8 +6,8 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "net/http/http_status_code.h"
@@ -20,7 +20,8 @@ namespace braveledger_uphold {
 
 UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
-    uphold_(uphold) {
+    uphold_(uphold),
+    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdTransfer::~UpholdTransfer() = default;
@@ -36,44 +37,22 @@ void UpholdTransfer::Start(
     return;
   }
 
-  auto headers = RequestAuthorization(wallet->token);
-
-  const std::string path = base::StringPrintf(
-      "/v0/me/cards/%s/transactions",
-      wallet->address.c_str());
-
-  const std::string payload = base::StringPrintf(
-      R"({
-        "denomination": { "amount": %f, "currency": "BAT" },
-        "destination": "%s",
-        "message": "%s"
-      })",
-      transaction.amount,
-      transaction.address.c_str(),
-      transaction.message.c_str());
-
-  auto create_callback = std::bind(&UpholdTransfer::OnCreateTransaction,
+  auto url_callback = std::bind(&UpholdTransfer::OnCreateTransaction,
       this,
       _1,
+      _2,
       callback);
-  ledger_->LoadURL(
-      GetAPIUrl(path),
-      headers,
-      payload,
-      "application/json",
-      ledger::UrlMethod::POST,
-      create_callback);
+  uphold_server_->post_transaction()->Request(
+      wallet->token,
+      wallet->address,
+      transaction,
+      url_callback);
 }
 
 void UpholdTransfer::OnCreateTransaction(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const std::string& id,
     ledger::TransactionCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  std::string id;
-  const ledger::Result result =
-      braveledger_response_util::ParseUpholdCreateTransaction(response, &id);
-
   if (result == ledger::Result::EXPIRED_TOKEN) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
@@ -105,36 +84,23 @@ void UpholdTransfer::CommitTransaction(
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
-  auto headers = RequestAuthorization(wallet->token);
 
-  const std::string path = base::StringPrintf(
-      "/v0/me/cards/%s/transactions/%s/commit",
-      wallet->address.c_str(),
-      transaction_id.c_str());
-
-  auto commit_callback = std::bind(&UpholdTransfer::OnCommitTransaction,
+  auto url_callback = std::bind(&UpholdTransfer::OnCommitTransaction,
       this,
       _1,
       transaction_id,
       callback);
-  ledger_->LoadURL(
-      GetAPIUrl(path),
-      headers,
-      "",
-      "application/json",
-      ledger::UrlMethod::POST,
-      commit_callback);
+  uphold_server_->post_transaction_commit()->Request(
+      wallet->token,
+      wallet->address,
+      transaction_id,
+      url_callback);
 }
 
 void UpholdTransfer::OnCommitTransaction(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
     const std::string& transaction_id,
     ledger::TransactionCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckUpholdCommitTransaction(response);
-
   if (result == ledger::Result::EXPIRED_TOKEN) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();

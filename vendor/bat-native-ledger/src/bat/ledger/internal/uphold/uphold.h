@@ -13,11 +13,17 @@
 #include <memory>
 
 #include "base/timer/timer.h"
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
+#include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
+}
+
+namespace ledger {
+namespace endpoint {
+class UpholdServer;
+}
 }
 
 namespace braveledger_uphold {
@@ -80,7 +86,8 @@ class Uphold {
       ledger::ResultCallback callback);
 
   void OnFetchBalance(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const double available,
       FetchBalanceCallback callback);
 
   void SaveTransferFee(ledger::TransferFeePtr transfer_fee);
@@ -101,6 +108,7 @@ class Uphold {
   std::unique_ptr<UpholdUser> user_;
   std::unique_ptr<UpholdAuthorization> authorization_;
   std::unique_ptr<UpholdWallet> wallet_;
+  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };

@@ -7,6 +7,7 @@
 #define BRAVELEDGER_UPHOLD_UPHOLD_TRANSFER_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include "bat/ledger/ledger.h"
@@ -14,6 +15,12 @@
 
 namespace bat_ledger {
 class LedgerImpl;
+}
+
+namespace ledger {
+namespace endpoint {
+class UpholdServer;
+}
 }
 
 namespace braveledger_uphold {
@@ -30,7 +37,8 @@ class UpholdTransfer {
 
  private:
   void OnCreateTransaction(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const std::string& id,
       ledger::TransactionCallback callback);
 
   void CommitTransaction(
@@ -38,12 +46,13 @@ class UpholdTransfer {
       ledger::TransactionCallback callback);
 
   void OnCommitTransaction(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
       const std::string& transaction_id,
       ledger::TransactionCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED
+  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
 };
 
 }  // namespace braveledger_uphold

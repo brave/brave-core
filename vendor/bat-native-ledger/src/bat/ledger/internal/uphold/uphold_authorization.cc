@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/uphold/uphold_authorization.h"
+
 #include <utility>
 
 #include "base/json/json_reader.h"
@@ -10,8 +12,6 @@
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
-#include "bat/ledger/internal/response/response_uphold.h"
-#include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using std::placeholders::_1;
@@ -23,7 +23,8 @@ namespace braveledger_uphold {
 UpholdAuthorization::UpholdAuthorization(
     bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
-    uphold_(uphold) {
+    uphold_(uphold),
+    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdAuthorization::~UpholdAuthorization() = default;
@@ -96,33 +97,19 @@ void UpholdAuthorization::Authorize(
     return;
   }
 
-  auto headers = RequestAuthorization();
-  const std::string payload =
-      base::StringPrintf("code=%s&grant_type=authorization_code", code.c_str());
-  const std::string url = GetAPIUrl("/oauth2/token");
-  auto auth_callback = std::bind(&UpholdAuthorization::OnAuthorize,
+  auto url_callback = std::bind(&UpholdAuthorization::OnAuthorize,
       this,
       _1,
+      _2,
       callback);
 
-  ledger_->LoadURL(
-      url,
-      headers,
-      payload,
-      "application/x-www-form-urlencoded",
-      ledger::UrlMethod::POST,
-      auth_callback);
+  uphold_server_->post_oauth()->Request(code, url_callback);
 }
 
 void UpholdAuthorization::OnAuthorize(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const std::string& token,
     ledger::ExternalWalletAuthorizationCallback callback) {
-  BLOG(7, ledger::UrlResponseToString(__func__, response));
-
-  std::string token;
-  const ledger::Result result =
-      braveledger_response_util::ParseUpholdAuthorization(response, &token);
-
   if (result == ledger::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN, {});

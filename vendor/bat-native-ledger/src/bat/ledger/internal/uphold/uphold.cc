@@ -11,9 +11,9 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/common/time_util.h"
+#include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
-#include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_authorization.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
@@ -40,6 +40,7 @@ Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
     user_(std::make_unique<UpholdUser>(ledger)),
     authorization_(std::make_unique<UpholdAuthorization>(ledger, this)),
     wallet_(std::make_unique<UpholdWallet>(ledger, this)),
+    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)),
     ledger_(ledger) {
 }
 
@@ -134,41 +135,32 @@ void Uphold::FetchBalance(FetchBalanceCallback callback) {
     return;
   }
 
-  auto headers = RequestAuthorization(wallet->token);
-  const std::string url = GetAPIUrl("/v0/me/cards/" + wallet->address);
-
-  auto balance_callback = std::bind(&Uphold::OnFetchBalance,
+  auto url_callback = std::bind(&Uphold::OnFetchBalance,
       this,
       _1,
+      _2,
       callback);
 
-  ledger_->LoadURL(
-      url,
-      headers,
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      balance_callback);
+  uphold_server_->get_card()->Request(
+      wallet->address,
+      wallet->token,
+      url_callback);
 }
 
 void Uphold::OnFetchBalance(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const double available,
     FetchBalanceCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  double available = 0.0;
-  const ledger::Result result =
-      braveledger_response_util::ParseFetchUpholdBalance(response, &available);
   if (result == ledger::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     DisconnectWallet();
-    callback(ledger::Result::EXPIRED_TOKEN, available);
+    callback(ledger::Result::EXPIRED_TOKEN, 0.0);
     return;
   }
 
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get balance");
-    callback(ledger::Result::LEDGER_ERROR, available);
+    callback(ledger::Result::LEDGER_ERROR, 0.0);
     return;
   }
 

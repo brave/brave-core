@@ -7,8 +7,10 @@
 #define BRAVELEDGER_UPHOLD_UPHOLD_AUTHORIZATION_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
+#include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
@@ -31,7 +33,8 @@ class UpholdAuthorization {
 
  private:
   void OnAuthorize(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const std::string& token,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnGetUser(
@@ -46,6 +49,7 @@ class UpholdAuthorization {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED
+  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
 };
 
 }  // namespace braveledger_uphold

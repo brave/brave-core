@@ -10,8 +10,8 @@
 #include "base/strings/stringprintf.h"
 #include "base/values.h"
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold_card.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
@@ -28,13 +28,10 @@ UpdateCard::UpdateCard() :
 
 UpdateCard::~UpdateCard() = default;
 
-}  // namespace braveledger_uphold
-
-namespace braveledger_uphold {
-
 UpholdCard::UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
-    uphold_(uphold) {
+    uphold_(uphold),
+    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdCard::~UpholdCard() = default;
@@ -48,29 +45,19 @@ void UpholdCard::CreateIfNecessary(CreateCardCallback callback) {
     return;
   }
 
-  auto headers = RequestAuthorization(wallet->token);
-  auto check_callback = std::bind(&UpholdCard::OnCreateIfNecessary,
+  auto url_callback = std::bind(&UpholdCard::OnCreateIfNecessary,
       this,
       _1,
+      _2,
       callback);
-  ledger_->LoadURL(
-      GetAPIUrl("/v0/me/cards?q=currency:BAT"),
-      headers,
-      "",
-      "application/json",
-      ledger::UrlMethod::GET,
-      check_callback);
+
+  uphold_server_->get_cards()->Request(wallet->token, url_callback);
 }
 
 void UpholdCard::OnCreateIfNecessary(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const std::string& id,
     CreateCardCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  std::string id;
-  const ledger::Result result =
-      braveledger_response_util::ParseUpholdGetCards(response, kCardName, &id);
-
   if (result == ledger::Result::EXPIRED_TOKEN) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
@@ -95,37 +82,19 @@ void UpholdCard::Create(
     return;
   }
 
-  auto headers = RequestAuthorization(wallet->token);
-  const std::string payload = base::StringPrintf(
-      R"({
-        "label": "%s",
-        "currency": "BAT"
-      })",
-      kCardName);
-
-  auto create_callback = std::bind(&UpholdCard::OnCreate,
+  auto url_callback = std::bind(&UpholdCard::OnCreate,
       this,
       _1,
+      _2,
       callback);
 
-  ledger_->LoadURL(
-      GetAPIUrl("/v0/me/cards"),
-      headers,
-      payload,
-      "application/json",
-      ledger::UrlMethod::POST,
-      create_callback);
+  uphold_server_->post_cards()->Request(wallet->token, url_callback);
 }
 
 void UpholdCard::OnCreate(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const std::string& id,
     CreateCardCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  std::string id;
-  const ledger::Result result =
-      braveledger_response_util::ParseUpholdGetCard(response, &id);
-
   if (result == ledger::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN, "");
@@ -177,7 +146,7 @@ void UpholdCard::OnCreateUpdate(
 
 void UpholdCard::Update(
     const UpdateCard& card,
-    UpdateCardCallback callback) {
+    ledger::ResultCallback callback) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
@@ -186,48 +155,21 @@ void UpholdCard::Update(
     return;
   }
 
-  auto headers = RequestAuthorization(wallet->token);
-
-  base::Value payload(base::Value::Type::DICTIONARY);
-
-  if (!card.label.empty()) {
-    payload.SetStringKey("label", card.label);
-  }
-
-  base::Value settings(base::Value::Type::DICTIONARY);
-  if (card.position > -1) {
-    settings.SetIntKey("position", card.position);
-  }
-  settings.SetBoolKey("starred", card.starred);
-  payload.SetKey("settings", std::move(settings));
-
-  std::string json;
-  base::JSONWriter::Write(payload, &json);
-
-  const auto url = GetAPIUrl((std::string)"/v0/me/cards/" + wallet->address);
-  auto update_callback = std::bind(&UpholdCard::OnUpdate,
+  auto url_callback = std::bind(&UpholdCard::OnUpdate,
       this,
       _1,
       callback);
 
-  ledger_->LoadURL(
-      url,
-      headers,
-      json,
-      "application/json",
-      ledger::UrlMethod::PATCH,
-      update_callback);
+  uphold_server_->patch_card()->Request(
+      wallet->token,
+      wallet->address,
+      card,
+      url_callback);
 }
 
 void UpholdCard::OnUpdate(
-    const ledger::UrlResponse& response,
-    UpdateCardCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  std::string id;
-  const ledger::Result result =
-      braveledger_response_util::ParseUpholdCreateCard(response, &id);
-
+    const ledger::Result result,
+    ledger::ResultCallback callback) {
   if (result == ledger::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN);

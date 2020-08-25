@@ -7,13 +7,20 @@
 #define BRAVELEDGER_UPHOLD_UPHOLD_CARD_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/uphold/uphold.h"
+#include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
+}
+
+namespace ledger {
+namespace endpoint {
+class UpholdServer;
+}
 }
 
 namespace braveledger_uphold {
@@ -29,8 +36,6 @@ struct UpdateCard {
   ~UpdateCard();
 };
 
-using UpdateCardCallback = std::function<void(const ledger::Result)>;
-
 using GetCardAddressesCallback =
     std::function<void(ledger::Result, std::map<std::string, std::string>)>;
 
@@ -44,13 +49,15 @@ class UpholdCard {
 
  private:
   void OnCreateIfNecessary(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const std::string& id,
       CreateCardCallback callback);
 
   void Create(CreateCardCallback callback);
 
   void OnCreate(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      const std::string& id,
       CreateCardCallback callback);
 
   void OnCreateUpdate(
@@ -60,17 +67,18 @@ class UpholdCard {
 
   void Update(
       const UpdateCard& card,
-      UpdateCardCallback callback);
+      ledger::ResultCallback callback);
 
   void OnUpdate(
-      const ledger::UrlResponse& response,
-      UpdateCardCallback callback);
+      const ledger::Result result,
+      ledger::ResultCallback callback);
 
   std::map<std::string, std::string> ParseGetCardAddressResponse(
       const std::string& response);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED
+  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
 };
 
 }  // namespace braveledger_uphold

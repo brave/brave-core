@@ -30,35 +30,6 @@ TEST(UpholdUtilTest, GetClientId) {
   ASSERT_EQ(result, kClientIdStaging);
 }
 
-TEST(UpholdUtilTest, GetClientSecret) {
-  // production
-  ledger::_environment = ledger::Environment::PRODUCTION;
-  std::string result = braveledger_uphold::GetClientSecret();
-  ASSERT_EQ(result, kClientSecretProduction);
-
-  // staging
-  ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetClientSecret();
-  ASSERT_EQ(result, kClientSecretStaging);
-}
-
-TEST(UpholdUtilTest, GetAPIUrl) {
-  // empty path, production
-  ledger::_environment = ledger::Environment::PRODUCTION;
-  std::string result = braveledger_uphold::GetAPIUrl("");
-  ASSERT_EQ(result, kAPIUrlProduction);
-
-  // empty path, staging
-  ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetAPIUrl("");
-  ASSERT_EQ(result, kAPIUrlStaging);
-
-  // with path
-  ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetAPIUrl("/v0/testing");
-  ASSERT_EQ(result, static_cast<std::string>(kAPIUrlStaging) + "/v0/testing");
-}
-
 TEST(UpholdUtilTest, GetFeeAddress) {
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
@@ -188,21 +159,6 @@ TEST(UpholdUtilTest, GetWallet) {
   wallets.insert(std::make_pair(ledger::kWalletUphold, std::move(uphold)));
   result = braveledger_uphold::GetWallet(std::move(wallets));
   ASSERT_EQ(result->address, "12355");
-}
-
-TEST(UpholdUtilTest, RequestAuthorization) {
-  // token is defined
-  auto result = braveledger_uphold::RequestAuthorization("2423423424");
-  ASSERT_EQ(result.at(0),
-      "Authorization: Bearer 2423423424");
-
-
-  // token is not defined
-  ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::RequestAuthorization();
-  ASSERT_EQ(result.at(0),
-      "Authorization: Basic NGMyYjY2NWNhMDYwZDkxMmZlYzVjNzM1YzczNDg1OWEwNjEx"
-      "OGNjODo2N2JmODdkYTA5Njc0OGM1YmMxZTE5NWNmYmRkNTlkYjAwNjYxOGEw");
 }
 
 TEST(UpholdUtilTest, GenerateRandomString) {
