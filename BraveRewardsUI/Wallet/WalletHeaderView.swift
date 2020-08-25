@@ -59,6 +59,7 @@ class WalletHeaderView: UIView {
     $0.textAlignment = .center
     $0.appearanceTextColor = UIColor(white: 1.0, alpha: 0.65)
     $0.font = .systemFont(ofSize: 12.0)
+    $0.isHidden = true
   }
   
   let grantsButton = ActionButton(type: .system).then {

@@ -36,8 +36,6 @@ class BATValueOptionsSelectionViewController: OptionsSelectionViewController<BAT
     if !isSelectionPrecise {
       displayString = String.localizedStringWithFormat(Strings.settingsAutoContributeUpToValue, displayString)
     }
-    let dollarAmount = ledger?.dollarStringForBATAmount(options[indexPath.row].doubleValue) ?? ""
-    
     let attributedText = NSMutableAttributedString(string: displayString, attributes: [
       .foregroundColor: Colors.grey800,
       .font: UIFont.systemFont(ofSize: 14.0, weight: .medium)
@@ -46,11 +44,6 @@ class BATValueOptionsSelectionViewController: OptionsSelectionViewController<BAT
     attributedText.append(NSAttributedString(string: " \(Strings.BAT)", attributes: [
       .foregroundColor: Colors.grey700,
       .font: UIFont.systemFont(ofSize: 12.0)
-    ]))
-    
-    attributedText.append(NSAttributedString(string: " (\(dollarAmount))", attributes: [
-      .foregroundColor: Colors.grey700,
-      .font: UIFont.systemFont(ofSize: 10.0)
     ]))
     
     cell.textLabel?.attributedText = attributedText
