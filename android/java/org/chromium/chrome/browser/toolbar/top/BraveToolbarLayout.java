@@ -21,12 +21,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.PopupWindow;
+import android.util.Pair;
 
 import androidx.appcompat.app.AlertDialog;
 
 import org.chromium.base.ApiCompatibilityUtils;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.MathUtils;
+import org.chromium.base.task.AsyncTask;
+import org.chromium.base.ThreadUtils;
+import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveFeatureList;
@@ -60,21 +64,31 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.chromium.components.browser_ui.styles.ChromeColors;
 import org.chromium.content_public.browser.NavigationHandle;
+import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.url_formatter.UrlFormatter;
 import org.chromium.ui.UiUtils;
 import org.chromium.ui.interpolators.BakedBezierInterpolator;
 import org.chromium.ui.widget.Toast;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
+import org.chromium.chrome.browser.local_database.BraveStatsTable;
+import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
 public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClickListener,
   View.OnLongClickListener,
   BraveRewardsObserver,
   BraveRewardsNativeWorker.PublisherObserver {
   public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
+
+  private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
 
   private ImageButton mBraveShieldsButton;
   private ImageButton mBraveRewardsButton;
@@ -180,6 +194,19 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           return;
         }
         mBraveShieldsHandler.updateValues(tabId);
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()
+            && (block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS)
+                || block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS))) {
+          Log.e("NTP", subresource);
+          addStatsToDb(block_type, subresource, currentTab.getUrlString());
+        }
+      }
+
+      @Override
+      public void savedBandwidth(long savings) {
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+          addSavedBandwidthToDb(savings);
+        }
       }
     };
     // Initially show shields off image. Shields button state will be updated when tab is
@@ -245,7 +272,9 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           updateBraveShieldsButtonState(tab);
           if (!NewTabPage.isNTPUrl(tab.getUrlString())
               && !OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
-              && PackageUtils.isFirstInstall(getContext())) {
+              && PackageUtils.isFirstInstall(getContext())
+              && !UrlUtilities.isInternalScheme(UrlFormatter.fixupUrl(url))
+              && (mBraveShieldsHandler.getAdsBlockedCount(tab.getId()) > 0 || mBraveShieldsHandler.getTackersBlockedCount(tab.getId()) > 0)) {
             PopupWindow mPopupWindow = mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
             OnboardingPrefManager.getInstance().setShieldsTooltipShown(true);
             mPopupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
@@ -283,6 +312,52 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         }
       }
     };
+  }
+
+  private void addSavedBandwidthToDb(long savings) {
+    new AsyncTask<Void>() {
+      @Override
+      protected Void doInBackground() {
+        try {
+          SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(savings, BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+          long rowId = mDatabaseHelper.insertSavedBandwidth(savedBandwidthTable);
+        } catch (Exception e) {
+          // Do nothing if url is invalid.
+          // Just return w/o showing shields popup.
+          return null;
+        }
+        return null;
+      }
+      @Override
+      protected void onPostExecute(Void result) {
+        assert ThreadUtils.runningOnUiThread();
+        if (isCancelled()) return;
+      }
+    } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+  }
+
+  private void addStatsToDb(String statType, String statSite, String url) {
+    new AsyncTask<Void>() {
+      @Override
+      protected Void doInBackground() {
+        try {
+          URL urlObject = new URL(url);
+          URL siteObject = new URL(statSite);
+          BraveStatsTable braveStatsTable = new BraveStatsTable(url, urlObject.getHost(), statType, statSite, siteObject.getHost(), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+          long rowId = mDatabaseHelper.insertStats(braveStatsTable);
+        } catch (Exception e) {
+          // Do nothing if url is invalid.
+          // Just return w/o showing shields popup.
+          return null;
+        }
+        return null;
+      }
+      @Override
+      protected void onPostExecute(Void result) {
+        assert ThreadUtils.runningOnUiThread();
+        if (isCancelled()) return;
+      }
+    } .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
   }
 
   @Override
