@@ -27,8 +27,8 @@
 <translation id="7459000603787995422">ปิดแท็บเมื่อออกจากโปรแกรม</translation>
 <translation id="1680858055899097121">อย่าคงแท็บไว้เมื่อจบการท่องเว็บแต่ละรอบ</translation>
 <translation id="453601949003770390">บล็อก Tracker &amp; โฆษณาแล้ว</translation>
-<translation id="6761596877474675418">บันทึกข้อมูลแล้ว</translation>
-<translation id="3034562645284925177">เวลาที่ประหยัดได้โดยประมาณ</translation>
+<translation id="347604927162577559">ประหยัด\nข้อมูล</translation>
+<translation id="9008534313521214777">เวลาที่ประหยัด\nโดยประมาณ</translation>
 <translation id="6572660632052512096">โหมดเดสก์ท็อป</translation>
 <translation id="1340503115760585811">ใช้งานมุมมองเดสก์ท็อปเมื่อเปิดแท็บใหม่</translation>
 <translation id="7924540991929826186">ใช้เว็บไซต์เวอร์ชันอุปกรณ์มือถือเมื่อเปิดแท็บใหม่ (แนะนำ)</translation>
@@ -56,7 +56,7 @@
 <translation id="316832010181763471">การเตรียมความพร้อมเสิร์ชเอนจิน</translation>
 <translation id="986879628471635371">การแก้ไขปัญหาการเตรียมความพร้อม</translation>
 <translation id="5808759341041733958">เลื่อกเอนจิ้นค้นหาเริ่มต้น</translation>
-<translation id="4428458837269935199">หากต้องการใช้การค้นหาที่เป็นส่วนตัวยิ่งขึ้น ลองใช้ DuckDuckGo</translation>
+<translation id="1331593888918588693">คุณสามารถเปลี่ยนการตั้งค่าในภายหลังได้เสมอในการตั้งค่าแอป</translation>
 <translation id="5317780077021120954">บันทึก</translation>
 <translation id="7053983685419859001">บล็อก</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
@@ -230,6 +230,8 @@
 <translation id="3349204812119681938">รีเซ็ต Brave Rewards</translation>
 <translation id="8782039523249932839">คำสั่งนี้จะลบ Brave วอลเล็ทของคุณและรีเซ็ตข้อมูล Brave Rewards ของคุณทั้งหมด</translation>
 <translation id="6810078320346589989">สร้างบุ๊กมาร์ก</translation>
+<translation id="3396347744975515056">Brave Sync ได้อัปเกรดและต้องการติดตั้ง</translation>
+<translation id="7473245612074035141">เริ่มติดตั้ง</translation>
 <translation id="597993392929850353">สิทธิการใช้งาน Brave</translation>
 <translation id="6336451774241870485">แท็บส่วนตัวใหม่</translation>
 <translation id="6199596294742117349">นี่คือแท็บส่วนตัว</translation>
@@ -250,15 +252,15 @@
 <translation id="4522570452068850558">รายละเอียด</translation>
 <translation id="1486343603936278248">โทเคน</translation>
 <translation id="8713995420537272453">คะแนน</translation>
-<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
-<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
-<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
 <translation id="8522669544471808198">แสดงรูปภาพพื้นหลัง</translation>
 <translation id="3870475560794762985">แสดงรูปภาพที่มีผู้สนับสนุน</translation>
 <translation id="8297488609722895137">ภาพถ่ายโดย <ph name="PHOTO_BY"/></translation>
 <translation id="1605521356929094020">เปิดใช้งาน Brave Ads</translation>
-<translation id="5878330112719288629">ด้วยการแตะ Earn &amp; Give คุณได้ยอมรับ <ph name="TERMS_OF_SERVICE"/></translation>
+<translation id="1873603368604736484">ด้วยการเปิด Rewards คุณได้ยอมรับ<ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">รับรายได้เพื่อดูรูปภาพพื้นหลังนี้</translation>
 <translation id="7136586167396205364">ซ่อนรูปภาพที่มีผู้สนับสนุน</translation>
 <translation id="2927095357213611519">คุณสามารถสนับสนุนผู้สร้างเว็บได้ด้วยโทเคน\nรับโทเคนผ่านการชมโฆษณาที่เกี่ยวข้องกับความเป็นส่วนตัว</translation>
@@ -305,10 +307,9 @@
 <translation id="8851456134224363571">เยี่ยม! คุณช่วยให้คะแนนเราบน Play Store ได้ไหม?</translation>
 <translation id="8668962040900592974">แจ้งให้เราทราบว่าควรปรับปรุงอย่างไรบ้าง</translation>
 <translation id="4406937629441301400">รับโทเคนจากการชมภาพนี้และจ่ายต่อไปยังผู้สร้าง <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">รับโทเคนจากการชมภาพนี้ เปิด Earn &amp; Give เพื่อรับส่วนของคุณ</translation>
+<translation id="7894626572714595717">รับโทเคนจากการชมภาพนี้ เปิด Brave Ads เพื่อรับส่วนของคุณ</translation>
 <translation id="6632345639591919543">คุณกำลังได้รับโทเคนจากการชมภาพนี้\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">คุณกำลังได้รับโทเคนจากการชมภาพนี้</translation>
-<translation id="7952665812649667034">ฉันพร้อมที่จะ Earn &amp; Give</translation>
 <translation id="7877201489035217175">เรียนรู้เพิ่มเติมเกี่ยวกับภาพสปอนเซอร์</translation>
 <translation id="828092975561478703">สำหรับทุกภาพสปอนเซอร์ที่คุณชม คุณจะได้รับ 70% ของรายได้ในรูปโทเคน ด้วย Brave Ads คุณสามารถควบคุมว่าโฆษณาใดที่คุณต้องการเห็นได้เสมอ</translation>
 <translation id="4941539331405513605">บล็อก cross-site cookies</translation>
@@ -342,4 +343,47 @@
 <translation id="915835519491851291">คุณเพิ่งบล็อก tracker &amp; โฆษณา</translation>
 <translation id="3286927551967858325">ลองดู</translation>
 <translation id="2929661208078053609">เยี่ยม!</translation>
+<translation id="4776948189086901857">Brave ทำงานได้ทุกที่</translation>
+<translation id="1606322780901645965">ดาวน์โหลด Brave ที่ brave.com  บนแล็บท็อปหรือแท็บเล็ตเพื่อเว็บที่เร็วและเป็นส่วนตัวมากขึ้น</translation>
+<translation id="8374242949413616101">การป้องกันความเป็นส่วนตัว</translation>
+<translation id="4955406228638026265">Brave หยุดแอปติดตามและโฆษณาจากการเก็บข้อมูลเกี่ยวกับตัวคุณโดยไม่ได้รับอนุญาต</translation>
+<translation id="752842701893882688">ประหยัดข้อมูลและแบตเตอรี่</translation>
+<translation id="5739030256211745023">ปราศจากแอปติดตามและโฆษณา เว็บไซต์ใช้ข้อมูลและแบตเตอรี่น้อยลง คุณอาจยังสามารถประหยัดเงินค่าธรรมเนียมผู้ให้บริการก็ได้</translation>
+<translation id="5440744330377972191">เว็บไซต์โหลดเร็วขึ้น</translation>
+<translation id="3000738865641747653">การโหลดข้อมูลน้อยลงหมายความว่าเว็บไซต์ใน Brave โหลดเร็วขึ้น โดยเร็วกว่าเบราว์เซอร์อื่นได้ถึง 8 เท่า</translation>
+<translation id="8903462729414407077">รับอัปเดตประจำสัปดาห์</translation>
+<translation id="8029219208182772618">รับข้อมูลเกี่ยวกับเว็บไซต์ที่คุณเยี่ยมชมเว็บไซต์ใดที่รุกล้ำความเป็นส่วนตัวมากที่สุด\n\nคุณเท่านั้นที่สามารถเห็นสถิติความเป็นส่วนตัวนี้ ไม่มีข้อมูลส่วนตัวหรือประวัติการค้นหาใดหลุดออกไปจากเบราว์เซอร์ Brave บนอุปกรณ์ของคุณได้</translation>
+<translation id="6170159749517116894">เปิดรายงานความเป็นส่วนตัว</translation>
+<translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
+<translation id="5966707198760109579">สัปดาห์</translation>
+<translation id="8987927404178983737">เดือน</translation>
+<translation id="4302754476737420523">3 เดือน</translation>
+<translation id="8248593573177859437">รายงานความเป็นส่วนตัว</translation>
+<translation id="1274039301958114163">การแจ้งเตือนรายงานความเป็นส่วนตัว</translation>
+<translation id="1581614543353331529">ยังไม่มีข้อมูลให้แสดง</translation>
+<translation id="2401984885421380890">บล็อก\nแอปติดตามและโฆษณาแล้ว</translation>
+<translation id="2662183408296991265">ประหยัดข้อมุล \n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="6814582232712814369">ประหยัดเวลา</translation>
+<translation id="3694122362646626770">เว็บไซต์</translation>
+<translation id="2225863440766607138">แอปติดตาม</translation>
+<translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="6737820963776538947">คุณได้บล็อก <ph name="COUNT"/> แอปติดตามและโฆษณาด้วยเบราว์เซอร์ Brave ในช่วง 3 ชั่วโมงที่ผ่านมา</translation>
+<translation id="3621193901658023971">ค้นหาเว็บสำนักข่าวใหญ่ ๆ เร็วขึ้น 6 เท่า ใน Brave โดยการบล็อกโฆษณาและแอปติดตาม</translation>
+<translation id="7427567994475794038">เปิดรายงานความเป็นส่วนตัวเพื่อดูว่ามีแอปติดตามและโฆษณาถูกบล็อกไปกี่แอปในช่วง 3 เดือนที่ผ่านมา</translation>
+<translation id="2053891538879944400">คุณรักษาข้อมูล <ph name="DATA"/> <ph name="DATA_TEXT"/> ด้วยเบราว์เซอร์ Brave</translation>
+<translation id="8640064498452534195">เปิดรายงานความเป็นส่วนตัวเพื่อดูว่าคุณได้รักษาข้อมูลไว้มากแค่ไหน</translation>
+<translation id="4591582032282435287">เบราว์เซอร์ Brave ใช้แบตเตอรี่น้อยกว่าเฉลี่ย 40%</translation>
+<translation id="1945330434665345785">คุณได้บล็อก <ph name="COUNT"/> แอปติดตามและโฆษณาด้วยเบราว์เซอร์ Brave เมื่อสัปดาห์ที่แล้ว</translation>
+<translation id="2883868922264431515">รับโทเคนโดยการชมโฆษณาที่เคารพความเป็นส่วนตัวและสนับสนุนเว็บไซต์ที่คุณชื่นชอบ</translation>
+<translation id="6840965284166256302">เยี่ยม! คุณได้บล็อก 250 แอปติดตามและโฆษณาด้วยเบราว์เซิอร์ Brave</translation>
+<translation id="2076976911561945584">เยี่ยม! คุณประหยัดข้อมูลไป 10MB ด้วยเบราว์เซอร์ Brave</translation>
+<translation id="6714550233326888315">เยี่ยม! คุณประหยัดเวลาโหลดได้ 10 นาทีด้วยเบราว์เซอร์  Brave</translation>
+<translation id="7408493389591475748">เริ่มท่องเว็บเพื่อดูรายงานความเป็นส่วนตัว</translation>
+<translation id="9080777565335515917">ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นเพื่อการท่องเว็บที่เป็นส่วนตัวและปลอดภัย</translation>
+<translation id="7801488941710395275">อนุญาตให้ brave แสดงสถิติความเป็นส่วนตัวของคุณ</translation>
+<translation id="1763352720905582220">ส่งรายงานความเป็นส่วนตัวประจำสัปดาห์</translation>
+<translation id="1811691435325545066">ล้างข้อมูลรายงานความเป็นส่วนตัวทั้งหมด</translation>
+<translation id="8089997572759938512">รีเซ็ตรายงานความเป็นส่วนตัวของคุณเป็นศูนย์</translation>
+<translation id="2718046830255553131">ล้างข้อมูลรายงานความเป็นส่วนตัวแล้ว</translation>
+<translation id="7559243474426790340">รีเฟรชสถานะ</translation>
 </translationbundle>

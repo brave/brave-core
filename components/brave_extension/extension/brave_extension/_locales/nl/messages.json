@@ -55,6 +55,10 @@
     "message": "Cross-site trackers geblokkeerd",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Geblokkeerde trackers en advertenties",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "Trackers & advertenties geblokkeerd (agressief)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "Alle cookies zijn toegestaan.",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Fingerprinting geblokkeerd",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "Vingerafdrukken geblokkeerd (standaard)",

@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Anulează",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Conectați-vă",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Dacă verificați portofelul, puteți să vă gestionați fondurile mai eficient.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Trebuie să aveți cel puțin 25 BAT pentru a crea un cont Uphold. Încercați din nou mai târziu. <br/> Dacă aveți deja un cont Uphold confirmat, continuați conectarea.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Conectată",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "În așteptare",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

@@ -42,6 +42,12 @@
 <translation id="383680190590774040">kello</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Taustakuva</translation>
+<translation id="1776831331757823105">Kello</translation>
+<translation id="4643117005422448078">Kärkisivustot</translation>
+<translation id="7791543448312431591">Lisää</translation>
+<translation id="7679334366167089823">Tienaa poletteja yksityisyyttä kunnioittavien mainosten katselemisesta.</translation>
+<translation id="1531133232292396145">Käy kryptokauppaa Binancessa suoraan selaimestasi käsin.</translation>
+<translation id="2166494527623220386">Käy kryptokauppaa Geminissä suoraan selaimestasi käsin.</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="6248988683584659830">Hakuasetukset</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tipaa heti, kun löydät jotain mahtavaa.</translation>
 <translation id="3642432959491988696">Jos haluat, voit kertoa ihmisille pikaisella twiitillä.</translation>
-<translation id="5984081903757971165">{{balance}} {{currency}} palautettiin. Kukkarosi avain on vahvistettu ja ladattu onnistuneesti.</translation>
+<translation id="4875485795191140618">Lompakkoavaimesi on todennettu ja ladattu onnistuneesti.</translation>
 <translation id="1083279119532577005">Lompakko palautettu!</translation>
 <translation id="7841456038054167122">Syötä avaimet uudelleen tai kokeile eri avaimia.</translation>
+<translation id="340102383764929340">Syötettyä palautusavainta ei enää tueta. Ole hyvä ja vieraile <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>täällä<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> uuden avaimen saamiseksi.</translation>
 <translation id="2195074481553016770">Melkein valmis…</translation>
 <translation id="5254740304961202261">Todista olevasi ihminen!</translation>
 <translation id="2187043784382239974">Hmmm, ei ihan...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">Katsottu</translation>
 <translation id="2852258589816753010">BATiä ei toistaiseksi tueta alueellasi. Asiaa koskevat päivitykset löytyvät <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>tästä<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> osiosta.</translation>
 <translation id="2564425876266960486">Brave-selaimen BAT-kortin luonnin yhteydessä ilmeni häiriö</translation>
+<translation id="6473583070570450185">Kirjautumiseen vaaditaan todennettu lompakko</translation>
+<translation id="2106271389438168634">Uphold-lompakon luomiseen tarvitaan vähintään 25 BATia. Todenna lompakkosi Upholdilla ja kokeile uudelleen.</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="6969783933307596818">Päivittyy automaattisesti 5 sekunnin välein</translation>
 <translation id="5025866799968038247">Saldon tiedot</translation>
-<translation id="1642443162274867084">Lompakko luotu</translation>
+<translation id="6073289164268847023">Lompakko luotu:</translation>
 <translation id="6643016212128521049">Tyhjennä</translation>
 <translation id="8949473809474431949">Lahjoitettu summa:</translation>
 <translation id="4468686134841688885">Luotu:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">Palkinnot asetettiin pois päältä</translation>
 <translation id="3354337256330577726">Automaattilahjoitus on poissa päältä</translation>
 <translation id="6727186931929643711">Keskeytti uudelleenyrittämisen</translation>
+<translation id="2059498613853603008">VAROITUS: Tämän sivun tiedot saattavat olla arkaluonteisia. Kohtele niitä kuin lompakkosi yksityisiä avaimia. Harkitse kenelle annat näitä tietoja.</translation>
 <translation id="7375125077091615385">Tyyppi:</translation>
 <translation id="4973347371961481083">Lahjoitukset</translation>
 <translation id="1924618796077284366">Lataa koko loki</translation>
+<translation id="1979114396925139279">Ulkopuoliset lompakkotiedot</translation>
 <translation id="5457113250005438886">Ei pätevä</translation>
-<translation id="7687511348932340294">Keskeiset tiedot:</translation>
+<translation id="6161467863097205016">Avaintietolähde:</translation>
 <translation id="1907668701131938713">Näytämme lokikirjausten viimeiset {{numberOfLines}} riviä. Voit ladata lokitiedoston kokonaisuudessaan yltä käsin.</translation>
 <translation id="7168491065836975228">Sisäiset palkinnot</translation>
 <translation id="758790787422117549">Persoonatunnus</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">Kokonaissaldo</translation>
 <translation id="2223892939866251845">Käyttäjän tunnus</translation>
 <translation id="4235360514405112390">Pätevä</translation>
+<translation id="3902084968737576005">Lompakon osoite:</translation>
 <translation id="2326487656644542536">Lompakon tiedot</translation>
-<translation id="3576689061489548788">Lompakkomaksun ID:</translation>
+<translation id="8559420016582377654">Lompakon maksutunniste:</translation>
+<translation id="438586487791444158">Lompakon tila:</translation>
+<translation id="3368922792935385530">Yhdistetty</translation>
+<translation id="8874184842967597500">Ei yhdistetty</translation>
+<translation id="4569155249847375786">Vahvistettu</translation>
+<translation id="922103963921062336">Ei yhteyttä (Ei todennettu)</translation>
+<translation id="6521149675246672063">Ei yhteyttä (Todennettu)</translation>
+<translation id="3248185426436836442">Odottaa</translation>
 <translation id="5094577350232361255">tietoa</translation>
 <translation id="4918086044614829423">Hyväksy</translation>
 <translation id="5916290544882167205">Brave Software. Brave on Brave Softwaren rekisteröity tavaramerkki. Sivustojen nimet voivat olla sivuston omistajan tavaramerkkejä tai rekisteröityjä tavaramerkkejä.</translation>
@@ -330,6 +349,9 @@
 <translation id="2291686779354188838">Hei, {{name}}!</translation>
 <translation id="1389143276807887637">tuo</translation>
 <translation id="7335371657242627509">Lisää automaattisesti osallistuvaksi</translation>
+<translation id="1864111464094315414">Kirjaudu</translation>
+<translation id="4556504723624686474">Lompakon todentaminen mahdollistaa varojesi tehokkaamman hallinnan.</translation>
+<translation id="4188679602963314994">Uphold-tilin luomiseen tarvitaan vähintään 25 BATia. Kokeile myöhemmin uudelleen. <ph name="BREAK">&lt;br/&gt;</ph>Mikäli sinulla on jo todennettu Uphold-tili, voit jatkaa kirjautumalla.</translation>
 <translation id="3250511771491660127">Suorita tämä kuukausittain</translation>
 <translation id="6028954173739504682">Hallitse lompakkoasi</translation>
 <translation id="7886389832052393750">Huhti</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">Nosta BATit, jotka olet saattanut lisätä Brave Rewards -lompakkoosi</translation>
 <translation id="8558636200953226885">Mutta jos vahvistat, voit...</translation>
 <translation id="3354315693758743702">Kukkarosi vahvistaminen on valinnaista.</translation>
-<translation id="4569155249847375786">Vahvistettu</translation>
 <translation id="8465442795593991224">Ylläpito saattaa vaatia sinua vahvistamaan henkilöllisyytesi pyydetyistä palveluista riippuen.</translation>
 <translation id="723054503945711909">Brave Software Inc. ei käsittele, tallenna tai käytä mitään henkilökohtaisia tietoja, joita luovutit Upholdille luodessasi heidän käyttäjätilinsä.</translation>
 <translation id="7404779623219601861">Vaihda BAT-valuuttaa lahjakorteiksi</translation>
 <translation id="6215565499749144110">TAP Networkin avulla voit vaihtaa BAT-valuuttasi suosittujen nimibrändien lahjakorteiksi.</translation>
-<translation id="526152301446370337">Vieraile TAPissa.</translation>
 <translation id="6915065518766963119">* Vaatii Uphold-vahvistuksen.</translation>
+<translation id="651649139059930379">2% cryptoback  Uphold-kortilla</translation>
+<translation id="1109729143147368573">Käytä kryptojasi ja muuta valuuttaasi lähestulkoon 50 miljoonan kauppiaan ja pankkiautomaatin parissa maailmanlaajuisesti. Kuluta kryptoja saadaksesi kryptoja!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/> Brave Rewards -palvelusta</translation>
 <translation id="5826706758731195747">Kun asetat Rewards-toiminnon päälle, hyväksyt  <ph name="LINK_BEGIN"/>palveluehdot<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Tämän kuun arvioidut ansiot tähän mennessä</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">Sinulle maksetaan tämän taustakuvan katselusta.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Lue lisää<ph name="LINK_END"/> maksetuista kuvista Brave Rewards -palvelussa.</translation>
 <translation id="6113004497629356998">Piilota maksetut kuvat</translation>
+<translation id="2148613324460538318">Lisää kortti</translation>
 <translation id="5977237145327845546">Aloita videopuhelu ystäviesi tai kollegoidesi kanssa.</translation>
 <translation id="5850325887346946383">Aloita videopuhelu</translation>
 <translation id="3651550649176056334">Lisätietoja datastasi</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">Yhteenveto</translation>
 <translation id="439104575421522802">Istunto vanhentunut</translation>
 <translation id="8558560988211507902">Binancen käyttöoikeustietueesi on vanhentunut. Ole hyvä ja ota uudestaan yhteys käyttäen pienoissovellusta.</translation>
+<translation id="1543656153506416324">Osta ja vaihda Geminillä</translation>
+<translation id="8960333903621861280">Sallimalla Gemini-yhteyden voit tarkistaa Gemini-saldosi ja käydä kauppaa kryptoilla.</translation>
+<translation id="7604416013180651887">Yhdistä Geminiin</translation>
+<translation id="2349109114223854255">Gemini-käyttöoikeustietueesi on vanhentunut eikä sitä voitu päivittää. Yhdistä uudelleen.</translation>
+<translation id="4848984536030986115">Kaupankäyntiä ei voitu toteuttaa</translation>
+<translation id="7352651011704765696">Jotakin meni vikaan</translation>
+<translation id="7097088316781182926">Vahvista kaupankäynti</translation>
+<translation id="3488255243387417752">Myy</translation>
+<translation id="7969910554171263591">Pyydä tarjous</translation>
+<translation id="1848737374354350807">Saldo</translation>
+<translation id="8285358301500391177">Ostamassa</translation>
+<translation id="8675476238074172660">Myymässä</translation>
+<translation id="3081546448594005997">Ostit kohteen</translation>
+<translation id="8810136648184657966">Myit kohteen</translation>
+<translation id="1833248467354516560">Yksikön hinta</translation>
+<translation id="4763179765154524864">Käytetty yhteensä</translation>
+<translation id="8851480289992540512">Vastaanotettu yhteensä</translation>
 <translation id="5655621391922317800">Kryptokukkarot</translation>
 <translation id="616639131065447379">Tervetuloa Braven Crypto Walletsiin</translation>
 <translation id="1740464057879304704">Crypto Wallets mahdollistaa kryptovaluuttojen ynnä muiden vastaavien varojen käytön Bravessa. Crypto Wallets tukee ETH:n ja BAT:n kaltaisia ethereum-käyttötunnuksia sekä kerättäviä tunnuksia, minkä lisäksi se mahdollistaa Ðsovellusten ynnä muiden älysopimusten käytön. Se on tarkoitettu niille jotka tuntevat ethereumin ynnä muut lohkoketjujärjestelmät — tai tahtovat oppia lisää niistä.</translation>

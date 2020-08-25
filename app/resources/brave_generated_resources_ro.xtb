@@ -22,8 +22,6 @@
 
 Instalând această extensie, sunteți de acord cu termenii de utilizare ai Google Widevine. Sunteți de acord că Brave nu este responsabil pentru nicio problemă sau pierdere a conexiunii în timpul utilizării Google Widevine.</translation>
 <translation id="410351446219883937">Redare automată</translation>
-<translation id="2240268017737062801">Întrebați când un site vrea să redea automat media</translation>
-<translation id="3371702087847741961">Solicită când un site dorește să redea automat media (recomandat)</translation>
 <translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
 <translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuă blocarea autoredării</translation>
@@ -46,6 +44,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="8173998484743827990">Statistici Brave</translation>
 <translation id="5551238871320268996">Brave Împreună</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Site-uri de top</translation>
 <translation id="1776831331757823105">Ceas</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
@@ -80,7 +79,7 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4824468494729001999">Blocare scripturi</translation>
 <translation id="519861640102428255">Aspect și stil</translation>
 <translation id="4800195524776354947">Ascunde numărul de elemente blocate afișat pe pictograma Shields</translation>
-<translation id="7498695072878479744">Permite butoane de conectare Google pe site-uri terțe</translation>
+<translation id="3932286112122164477">Permite butoane de conectare Google pe site-uri terțe</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
 <translation id="5165042248369837294">Permite tweet-uri încorporate Twitter</translation>
 <translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
@@ -235,4 +234,5 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="5570470519803062774">Setări Site și Shields</translation>
 <translation id="8487693399751278191">Se importă marcajele acum...</translation>
 <translation id="2557899542277210112">Pentru acces rapid, rețineți-vă marcajele aici, în bara de marcaje.</translation>
+<translation id="2808630562319398131">Resetați datele Brave Rewards...</translation>
 </translationbundle>

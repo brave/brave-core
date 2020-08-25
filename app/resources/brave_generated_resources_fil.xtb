@@ -22,8 +22,6 @@
 
 Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntunin ng Paggamit ng Google Widevine. Sumasang-ayon kang walang pananagutan ang Brave para sa anumang pinsala o pagkalugi na nauugnay sa paggamit mo ng Google Widevine.</translation>
 <translation id="410351446219883937">Pag-autoplay</translation>
-<translation id="2240268017737062801">Magtanong kapag gustong mag-autoplay ng media ang isang site</translation>
-<translation id="3371702087847741961">Magtanong kapag gustong mag-autoplay ng media ang isang site (inirerekomenda)</translation>
 <translation id="3218385319396786393">Na-block sa page na ito ang pag-autoplay</translation>
 <translation id="4988333904713528597">Palaging payagan ang autoplay sa <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Patuloy na i-block ang pag-autoplay</translation>
@@ -46,6 +44,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="8173998484743827990">Brave Stats</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Nangungunang Sites</translation>
 <translation id="1776831331757823105">Orasan</translation>
 <translation id="7965178729203412357">Bagong Pagkakakilanlan ng Tor</translation>
@@ -80,7 +79,7 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="4824468494729001999">I-block ang mga script</translation>
 <translation id="519861640102428255">Hitsura at Dating</translation>
 <translation id="4800195524776354947">Ipakita ang bilang ng naka-block na item sa icon na Mga Shield</translation>
-<translation id="7498695072878479744">Payagan ang mga Google login button sa mga third party na site</translation>
+<translation id="3932286112122164477">Payagan ang mga Google login button sa mga third party na site</translation>
 <translation id="863171915776379000">Payagan ang mga Facebook login at naka-embed na post</translation>
 <translation id="5165042248369837294">Payagan ang mga Twitter embedded tweet</translation>
 <translation id="958971637207126733">Payagan ang mga naka-embed na post sa LinkedIn</translation>
@@ -235,4 +234,5 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5570470519803062774">Mga Setting ng Site at Mga Shield</translation>
 <translation id="8487693399751278191">I-import ang mga bookmark ngayon...</translation>
 <translation id="2557899542277210112">Para sa mabilis na access, ilagay dito sa bookmarks bar ang iyong mga bookmark.</translation>
+<translation id="2808630562319398131">I-reset ang data ng Mga Reward ng Brave...</translation>
 </translationbundle>

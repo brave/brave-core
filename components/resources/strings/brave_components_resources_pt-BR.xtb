@@ -42,6 +42,12 @@
 <translation id="383680190590774040">relógio</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="3159285901314605198">Imagem de fundo</translation>
+<translation id="1776831331757823105">Relógio</translation>
+<translation id="4643117005422448078">Principais sites</translation>
+<translation id="7791543448312431591">Adicionar</translation>
+<translation id="7679334366167089823">Ganhe tokens assistindo anúncios que respeitam a privacidade.</translation>
+<translation id="1531133232292396145">Negocie criptomoedas no Binance diretamente no seu navegador.</translation>
+<translation id="2166494527623220386">Negocie criptomoedas no Gemini diretamente no seu navegador.</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8730621377337864115">Concluído</translation>
 <translation id="6248988683584659830">Configurações de pesquisa</translation>
@@ -60,7 +66,7 @@
 <translation id="1129265576134014816">Esta Janela Privada é muito mais privada</translation>
 <translation id="805807983419360524">com o Tor</translation>
 <translation id="8958799246752641148">O Tor esconde seu endereço IP dos sites que você visita roteando sua navegação por vários servidores Tor antes de chegar ao seu destino. Essas conexões são criptografadas, então seu ISP ou seu empregador também não’ podem ver quais sites você’está visitando. O Tor pode reduzir a velocidade da navegação e alguns sites podem não funcionar.</translation>
-<translation id="520608572871993342">Usar a Janela Privada apenas altera o que o Brave faz em seu dispositivo — isso não altera o comportamento de mais ninguém. O Tor esconde o seu endereço IP dos sites que você visita, e esconde os sites que você visita do seu ISP ou seu empregador. Abra uma Janela Privada com o Tor a partir do menu, ou com {{ tecla }}.</translation>
+<translation id="520608572871993342">Usar a Janela Privada apenas altera o que o Brave faz em seu dispositivo — isso não altera o comportamento de mais ninguém. O Tor esconde o seu endereço IP dos sites que você visita, e esconde os sites que você visita do seu ISP ou seu empregador. Abra uma Janela Privada com o Tor a partir do menu, ou com {{ key }}.</translation>
 <translation id="6975708438781948564">Saiba mais sobre o Tor no Brave</translation>
 <translation id="4272382368346338917">Filtros Adicionais</translation>
 <translation id="8949292968394988358">Aviso: Ativar muitos filtros pode prejudicar o desempenho</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Faça doações no local à medida que encontra preciosidades.</translation>
 <translation id="3642432959491988696">Se quiser, informe as pessoas com um breve tuíte.</translation>
-<translation id="5984081903757971165">{{balance}} {{currency}} recuperado. Sua senha da carteira foi verificada e carregada com sucesso.</translation>
+<translation id="4875485795191140618">A chave da sua carteira foi confirmada e carregada com sucesso.</translation>
 <translation id="1083279119532577005">Carteira restaurada!</translation>
 <translation id="7841456038054167122">Digite a senha novamente ou tente senhas diferentes.</translation>
+<translation id="340102383764929340">A chave de restauração informada não é mais compatível. Acesse <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para obter uma chave nova.</translation>
 <translation id="2195074481553016770">Quase lá…</translation>
 <translation id="5254740304961202261">Prove que você é humano!</translation>
 <translation id="2187043784382239974">Hmmm, ainda não...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">Visualizado</translation>
 <translation id="2852258589816753010">BAT atualmente não possui suporte para a sua região. Favor consultar <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para receber atualizações.</translation>
 <translation id="2564425876266960486">Erro ao criar o cartão BAT para Navegador Brave</translation>
+<translation id="6473583070570450185">Você precisa de uma carteira confirmada para iniciar a sessão</translation>
+<translation id="2106271389438168634">Você precisa de no mínimo 25 BAT para criar uma conta Uphold. Tente novamente depois de confirmar sua carteira com o Uphold.</translation>
 <translation id="7422678632904904341">Quantia:</translation>
 <translation id="6969783933307596818">Atualizar automaticamente a cada 5 segundos</translation>
 <translation id="5025866799968038247">Informações de saldo</translation>
-<translation id="1642443162274867084">Carteira criada</translation>
+<translation id="6073289164268847023">Carteira criada:</translation>
 <translation id="6643016212128521049">Limpar</translation>
 <translation id="8949473809474431949">Valor da contribuição:</translation>
 <translation id="4468686134841688885">Criado em:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">As recompensas foram desligadas</translation>
 <translation id="3354337256330577726">A contribuição automática foi desligada</translation>
 <translation id="6727186931929643711">Parou de tentar</translation>
+<translation id="2059498613853603008">AVISO: Os dados neste página podem ser sigilosos. Trate-os como se fossem suas chaves privadas de carteira. Tenha cuidado com quem você os compartilha.</translation>
 <translation id="7375125077091615385">Tipo:</translation>
 <translation id="4973347371961481083">Contribuições</translation>
 <translation id="1924618796077284366">Baixar relatório completo</translation>
+<translation id="1979114396925139279">Informações da carteira externa</translation>
 <translation id="5457113250005438886">Inválido</translation>
-<translation id="7687511348932340294">Seed de Informações Importantes:</translation>
+<translation id="6161467863097205016">Semente de informações chave:</translation>
 <translation id="1907668701131938713">Nós mostramos as últimas {{numberOfLines}} linhas do relatório. Se quiser o relatório inteiro, você pode baixá-lo acima.</translation>
 <translation id="7168491065836975228">Qualidades intrínsecas das recompensas</translation>
 <translation id="758790787422117549">ID da Pessoa</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">Saldo total</translation>
 <translation id="2223892939866251845">ID do Usuário</translation>
 <translation id="4235360514405112390">Válido</translation>
+<translation id="3902084968737576005">Endereço da carteira:</translation>
 <translation id="2326487656644542536">Informações de carteira</translation>
-<translation id="3576689061489548788">ID de Pagamento da Carteira:</translation>
+<translation id="8559420016582377654">ID de pagamento da carteira:</translation>
+<translation id="438586487791444158">Status da carteira:</translation>
+<translation id="3368922792935385530">Conectado</translation>
+<translation id="8874184842967597500">Não conectado</translation>
+<translation id="4569155249847375786">Verificado</translation>
+<translation id="922103963921062336">Desconectado (não confirmado)</translation>
+<translation id="6521149675246672063">Desconectado (Confirmado)</translation>
+<translation id="3248185426436836442">Pendente</translation>
 <translation id="5094577350232361255">sobre</translation>
 <translation id="4918086044614829423">Aceitar</translation>
 <translation id="5916290544882167205">Brave Software. Brave é uma marca registrada da Brave Software. Os nomes dos sites podem ser marcas comerciais ou marcas comerciais registradas do proprietário do site.</translation>
@@ -330,6 +349,9 @@
 <translation id="2291686779354188838">Olá, {{name}}!</translation>
 <translation id="1389143276807887637">importar</translation>
 <translation id="7335371657242627509">Incluir em Contribuição Automática</translation>
+<translation id="1864111464094315414">Login</translation>
+<translation id="4556504723624686474">A carteira de confirmação permite que você gerencie seus fundos de forma mais eficiente.</translation>
+<translation id="4188679602963314994">Você precisa ter no mínimo 25 BAT para criar uma conta Uphold. Tente novamente mais tarde. <ph name="BREAK">&lt;br/&gt;</ph>Se já tiver uma conta Uphold confirmada, inicie a sessão.</translation>
 <translation id="3250511771491660127">Faça isso mensalmente</translation>
 <translation id="6028954173739504682">Gerenciar sua carteira</translation>
 <translation id="7886389832052393750">Abril</translation>
@@ -393,7 +415,7 @@
 <translation id="717513177896084801">Enviar gorjeta para {{ user }}</translation>
 <translation id="1110535155349301542">remover</translation>
 <translation id="8204292894173669182">Remover de salvos</translation>
-<translation id="2160578257818656558">Você definiu {{ReservedAmount}} {{currency}} para criadores que ainda não se inscreveram para receber contribuições. Seu navegador vai continuar tentando contribuir até que eles sejam verificados ou até que se passem 90 dias.</translation>
+<translation id="2160578257818656558">Você definiu {{reservedAmount}} {{currency}} para criadores que ainda não se inscreveram para receber contribuições. Seu navegador vai continuar tentando contribuir até que eles sejam verificados ou até que se passem 90 dias.</translation>
 <translation id="8759753423332885148">Saiba mais.</translation>
 <translation id="5939518447894949180">Redefinir</translation>
 <translation id="3157931365184549694">Restaurar</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">Saque BAT que você tenha adicionado anteriormente à sua carteira Brave Rewards</translation>
 <translation id="8558636200953226885">Mas, se você verificar, poderá...</translation>
 <translation id="3354315693758743702">A verificação de sua carteira é opcional.</translation>
-<translation id="4569155249847375786">Verificado</translation>
 <translation id="8465442795593991224">A Uphold pode exigir que você verifique sua identidade com base nos serviços solicitados.</translation>
 <translation id="723054503945711909">A Brave Software Inc. não processa, armazena ou acessa quaisquer informações pessoais que você fornece à Uphold quando estabelece uma conta com eles.</translation>
 <translation id="7404779623219601861">Trocar BAT por vales-presente</translation>
 <translation id="6215565499749144110">Com a TAP Network, você pode trocar sua BAT por vales-presente de marcas famosas.</translation>
-<translation id="526152301446370337">Visite a TAP.</translation>
 <translation id="6915065518766963119">* É necessário uma verificação da Uphold.</translation>
+<translation id="651649139059930379">Ganhe 2% de rebate em criptomoedas com o cartão Uphold</translation>
+<translation id="1109729143147368573">Gaste suas criptomoedas e outros ativos em cerca de 50 milhões de lojas e caixas eletrônicos no mundo todo. Gaste criptomoedas para ganhar criptomoedas!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/> sobre o Brave Rewards</translation>
 <translation id="5826706758731195747">Ao ativar o Rewards, você concorda com os <ph name="LINK_BEGIN"/>Termos de Serviço<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Ganhos estimados até agora neste mês</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">Você está sendo pago para visualizar esta imagem de plano de fundo.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/> sobre imagens patrocinadas em Brave Rewards.</translation>
 <translation id="6113004497629356998">Ocultar imagens patrocinadas</translation>
+<translation id="2148613324460538318">Adicionar cartão</translation>
 <translation id="5977237145327845546">Faça uma chamada de vídeo privada com seus amigos e colegas.</translation>
 <translation id="5850325887346946383">Iniciar chamada de vídeo</translation>
 <translation id="3651550649176056334">Sobre seus dados</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">Resumo</translation>
 <translation id="439104575421522802">Sessão expirada</translation>
 <translation id="8558560988211507902">Seu token de acesso à Binance expirou. Por favor, reconecte-se para continuar usando o widget.</translation>
+<translation id="1543656153506416324">Compre e negocie com a Gemini</translation>
+<translation id="8960333903621861280">Autorize a conexão do Gemini para visualizar o saldo da sua conta Gemini e negociar criptomoedas.</translation>
+<translation id="7604416013180651887">Conectar ao Gemini</translation>
+<translation id="2349109114223854255">Seu token de acesso Gemini expirou e não pode ser recarregado. Reconecte.</translation>
+<translation id="4848984536030986115">Não foi possível realizar a negociação</translation>
+<translation id="7352651011704765696">Algo deu errado</translation>
+<translation id="7097088316781182926">Confirmar negociação</translation>
+<translation id="3488255243387417752">Vender</translation>
+<translation id="7969910554171263591">Peça um orçamento</translation>
+<translation id="1848737374354350807">Saldo</translation>
+<translation id="8285358301500391177">Compra</translation>
+<translation id="8675476238074172660">Venda</translation>
+<translation id="3081546448594005997">Você comprou</translation>
+<translation id="8810136648184657966">Você vendeu</translation>
+<translation id="1833248467354516560">Preço unitário</translation>
+<translation id="4763179765154524864">Total gasto</translation>
+<translation id="8851480289992540512">Total recebido</translation>
 <translation id="5655621391922317800">Carteiras Cripto</translation>
 <translation id="616639131065447379">Bem-vindo ao Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">O Crypto Wallets permite que você opere com criptomoedas e recursos afins no Brave. Crypto Wallets suporta tokens Ethereum como ETH e BAT, além de colecionáveis, e permite que você opere com Ðapps e outros contratos inteligentes. Tudo isso foi feito para pessoas familiarizadas com Ethereum e outros sistemas de Blockchain — ou empolgadas para aprender.</translation>

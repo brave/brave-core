@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "取消",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "登录",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "验证钱包让您可以更有效地管理资金。",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "您需要至少有 25 个 BAT 才能创建“Uphold”帐户。请稍后再试。<br/>如果您已经有通过验证的“Uphold”帐户，请继续登录。",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "已连接",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "等待审批",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

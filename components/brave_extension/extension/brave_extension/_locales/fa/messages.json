@@ -55,6 +55,10 @@
     "message": "ردیاب‌های بین سایتی مسدود شدند",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "ردیاب‌ها و آگهی‌ها مسدود شده‌اند",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "ردیاب‌ها و آگهی‌ها مسدود شده‌اند (تهاجمی)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "همه کوکی‌ها مجاز هستند",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "اثر انگشت مسدود شده است",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "تشخیص اثر انگشت مسدود شد (استاندارد)",

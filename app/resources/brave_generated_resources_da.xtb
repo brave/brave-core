@@ -22,8 +22,6 @@
 
 Ved at installere denne udvidelse accepterer du Google Widevines betingelser for brug. Du accepterer at Brave ikke er ansvarlige for nogen skader eller tab i forbindelse med din brug af Google Widevine.</translation>
 <translation id="410351446219883937">Automatisk afspilning</translation>
-<translation id="2240268017737062801">Spørg når en side automatisk vil afspille indhold</translation>
-<translation id="3371702087847741961">Spørg, når en side vil afspille indhold automatisk (anbefalet)</translation>
 <translation id="3218385319396786393">Autoplay er blevet blokeret på denne side</translation>
 <translation id="4988333904713528597">Slå altid autoplay til <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsæt med at blokere autoplay</translation>
@@ -46,6 +44,7 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="8173998484743827990">Brave Stats</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Topsider</translation>
 <translation id="1776831331757823105">Ur</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
@@ -81,7 +80,7 @@ vindue med Tor</translation>
 <translation id="4824468494729001999">Bloker scripts</translation>
 <translation id="519861640102428255">Se &amp; Føl</translation>
 <translation id="4800195524776354947">Vis antallet af blokerede emner på Skjold-ikonet</translation>
-<translation id="7498695072878479744">Tillad Google login-knapper på tredjeparts sider</translation>
+<translation id="3932286112122164477">Tillad Google login-knapper på tredjeparts sider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
@@ -236,4 +235,5 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS">&lt;a target="_blank" href
 <translation id="5570470519803062774">Indstillinger for side og skjold</translation>
 <translation id="8487693399751278191">Importér bogmærker nu...</translation>
 <translation id="2557899542277210112">For hurtig adgang skal du placere dine bogmærker her på bogmærkelinien.</translation>
+<translation id="2808630562319398131">Nulstil Brave-belønningsdata...</translation>
 </translationbundle>

@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Batal",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Log masuk",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Menentusahkan dompet membolehkan anda menguruskan dana anda dengan lebih berkesan.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Anda perlu mempunyai minimum 25 BAT untuk mencipta sebuah akaun Uphold. Sila cuba lagi kemudian. <br/> Sekiranya anda sudah mempunyai sebuah akaun Uphold yang ditentusahkan, teruskan mengelog masuk.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Disambungkan",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Menunggu",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

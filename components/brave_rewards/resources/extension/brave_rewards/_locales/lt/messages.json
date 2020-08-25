@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Atšaukti",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Prisijungimas",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Kai jūsų piniginė bus patvirtinta, galėsite efektyviau tvarkyti savo pinigus.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Jums reikia turėti mažiausiai 25 BAT, kad galėtumėte susikurti „Uphold“ paskyrą. Bandykite dar kartą vėliau. <br/>Jei jau turite patvirtintą „Uphold“ paskyrą, tęskite, kad prisijungtumėte.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Prijungta",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Laukiama",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "বাতিল করুন",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "লগ-ইন করুন",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "ওয়ালেট যাচাই করলে আপনি আপনার ফান্ড আরো সুদক্ষভাবে পরিচালনা করতে পারবেন।",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "একটি আপহোল্ড অ্যাকাউন্ট তৈরি করতে আপনার অন্তত 25 BAT থাকতে হবে। অনুগ্রহ করে পরে আবার চেষ্টা করুন। <br/> আপনার ইতিমধ্যে একটি যাচাইকৃত আপহোল্ড অ্যাকাউন্ট থাকলে, লগইন করা অবিরত রাখুন।",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "সংযুক্ত",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "বিচারাধীন রয়েছে",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

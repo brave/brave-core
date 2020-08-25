@@ -55,6 +55,10 @@
     "message": "Rastrejadors entre llocs bloquejats",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Rastrejadors i anuncis bloquejats",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "Rastrejadors & anuncis bloquejats (agressiu)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "Totes les galetes permeses",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Impremtes digitals bloquejades",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "Impremtes digitals bloquejades (estàndard)",

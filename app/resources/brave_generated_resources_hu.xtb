@@ -22,8 +22,6 @@
 
 Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhasználási feltételeit. Beleegyezik abba, hogy a Brave nem felelős semmilyen kárért vagy veszteségért, amely a Google Widevine használatával kapcsolatban keletkezik.</translation>
 <translation id="410351446219883937">Automatikus lejátszás</translation>
-<translation id="2240268017737062801">Kérdezze meg, amikor egy honlap automatikusan le akar játszani egy médiát</translation>
-<translation id="3371702087847741961">Kérdezze meg, amikor egy honlap automatikusan le akar játszani valamilyen médiát (javasolt)</translation>
 <translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
 <translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Automatikus lejátszás további blokkolása</translation>
@@ -46,6 +44,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="8173998484743827990">Brave statisztikák</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Népszerű oldalak</translation>
 <translation id="1776831331757823105">Óra</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
@@ -80,7 +79,7 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4824468494729001999">Parancsfájlok letiltása</translation>
 <translation id="519861640102428255">Megjelenés és kezelés</translation>
 <translation id="4800195524776354947">Blokkolt elemek számának megjelenítése a Pajzs ikonon</translation>
-<translation id="7498695072878479744">Google-bejelentkezési gombok engedélyezése külső webhelyeken</translation>
+<translation id="3932286112122164477">Google-bejelentkezési gombok engedélyezése külső webhelyeken</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
@@ -235,4 +234,5 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="5570470519803062774">Webhely és pajzsok beállításai</translation>
 <translation id="8487693399751278191">Importáld a könyvjelzőket...</translation>
 <translation id="2557899542277210112">A gyors eléréshez, tedd könyvjelzőidet ide, a könyvjelzősávba.</translation>
+<translation id="2808630562319398131">Brave Rewards adatok újraállítása...</translation>
 </translationbundle>

@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Otkaži",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Пријављивање",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Verifikovanje novčanika omogućava vam efikasnije upravljanje vašim sredstvima.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Morate imati najmanje 25 BAT-a da biste kreirali Uphold nalog. Pokušajte ponovo kasnije. <br/> Ako već imate verifikovani Uphold nalog, nastavite sa prijavljivanjem.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Повезан",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "U toku",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

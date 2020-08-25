@@ -42,6 +42,12 @@
 <translation id="383680190590774040">orasan</translation>
 <translation id="3333887201479867589">Mga Reward ng Brave</translation>
 <translation id="3159285901314605198">Imahe sa Background</translation>
+<translation id="1776831331757823105">Orasan</translation>
+<translation id="4643117005422448078">Nangungunang Sites</translation>
+<translation id="7791543448312431591">Idagdag</translation>
+<translation id="7679334366167089823">Makakuha ng mga token para sa panonood ng mga ad na nagpapahalaga sa privacy.</translation>
+<translation id="1531133232292396145">Mag-trade ng Crypto sa Binance nang direkta sa iyong browser.</translation>
+<translation id="2166494527623220386">Mag-trade ng Crypto sa Gemini nang direkta sa iyong browser.</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="8730621377337864115">Tapos na</translation>
 <translation id="6248988683584659830">Mga setting ng paghahanap</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Magbigay kaagad ng tip kapag nakahanap ka ng mga gem.</translation>
 <translation id="3642432959491988696">Kung gusto mo, ipaalam ito sa mga tao gamit ang isang maikling tweet.</translation>
-<translation id="5984081903757971165">Na-recover ang {{balance}} {{currency}}. Na-verify at na-load na ang key ng wallet mo.</translation>
+<translation id="4875485795191140618">Na-verify at matagumpay na na-load ang key ng wallet mo.</translation>
 <translation id="1083279119532577005">Na-restore ang wallet!</translation>
 <translation id="7841456038054167122">Pakilagay muli ang mga key o sumubok ng ibang mga key.</translation>
+<translation id="340102383764929340">Hindi na sinusuportahan ang key sa pag-restore. Pakibisita ang <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para kumuha ng bagong key.</translation>
 <translation id="2195074481553016770">Malapit na…</translation>
 <translation id="5254740304961202261">Patunayan na tao ka!</translation>
 <translation id="2187043784382239974">Hmmm, may mali...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">Natingnan</translation>
 <translation id="2852258589816753010">Hindi kasalukuyang sinusuportahan sa iyong rehiyon ang BAT. Mangyaring sumangguni <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>dito<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para sa mga update.</translation>
 <translation id="2564425876266960486">Nagka-error sa paggawa ng Brave Browser BAT</translation>
+<translation id="6473583070570450185">Kailangan mo ng na-verify na wallet upang Mag-log in</translation>
+<translation id="2106271389438168634">Kailangan mo ng minimum na 25 BAT para makagawa ng wallet sa Uphold. Pakisubukang muli pagkatapos mong ma-verify ang iyong wallet sa Uphold.</translation>
 <translation id="7422678632904904341">Halaga:</translation>
 <translation id="6969783933307596818">Awtomatikong mag-refresh kada 5 segundo</translation>
 <translation id="5025866799968038247">Impormasyon ng balanse</translation>
-<translation id="1642443162274867084">Nagawa na ang wallet</translation>
+<translation id="6073289164268847023">Nagawa ang wallet:</translation>
 <translation id="6643016212128521049">I-clear</translation>
 <translation id="8949473809474431949">Inambag na halaga:</translation>
 <translation id="4468686134841688885">Ginawa noong:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">Na-off ang Rewards</translation>
 <translation id="3354337256330577726">Na-off ang Auto-contribute</translation>
 <translation id="6727186931929643711">Ihinto ang pag-retry</translation>
+<translation id="2059498613853603008">BABALA: Posibleng sensitibo ang data sa page na ito. Ingatan ang mga ito gaya ng pag-iingat mo sa mga pribadong key ng wallet mo. Mag-ingat sa pagbabahagi nito sa iba.</translation>
 <translation id="7375125077091615385">Uri:</translation>
 <translation id="4973347371961481083">Mga kontribusyon</translation>
 <translation id="1924618796077284366">I-download ang buong log</translation>
+<translation id="1979114396925139279">Impormasyon ng external na wallet</translation>
 <translation id="5457113250005438886">Hindi wasto</translation>
-<translation id="7687511348932340294">Key Info Seed:</translation>
+<translation id="6161467863097205016">Seed ng impormasyon ng key:</translation>
 <translation id="1907668701131938713">Ipinapakita namin ang huling {{numberOfLines}} linya ng log. Kung gusto mo ang buong log, puwede mo itong i-download sa itaas.</translation>
 <translation id="7168491065836975228">Rewards internals</translation>
 <translation id="758790787422117549">Persona ID</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">Kabuuang balanse</translation>
 <translation id="2223892939866251845">User ID</translation>
 <translation id="4235360514405112390">Wasto</translation>
+<translation id="3902084968737576005">Address ng wallet:</translation>
 <translation id="2326487656644542536">Impormasyon ng Wallet</translation>
-<translation id="3576689061489548788">Wallet Payment ID:</translation>
+<translation id="8559420016582377654">ID sa pagbabayad sa wallet:</translation>
+<translation id="438586487791444158">Status ng wallet:</translation>
+<translation id="3368922792935385530">Nakakonekta</translation>
+<translation id="8874184842967597500">Hindi nakakonekta</translation>
+<translation id="4569155249847375786">Na-verify</translation>
+<translation id="922103963921062336">Nadiskonekta (Hindi na-verify)</translation>
+<translation id="6521149675246672063">Nadiskonekta (Na-verify)</translation>
+<translation id="3248185426436836442">Nakabinbin</translation>
 <translation id="5094577350232361255">tungkol sa</translation>
 <translation id="4918086044614829423">Tanggapin</translation>
 <translation id="5916290544882167205">Brave Software. Ang Brave ay isang rehistradong trademark ng Brave Software. Ang mga pangalan ng site ay maaaring mga trademark o mga rehistradong trademark ng may-ari ng site.</translation>
@@ -330,6 +349,9 @@
 <translation id="2291686779354188838">Kumusta, {{name}}!</translation>
 <translation id="1389143276807887637">i-import</translation>
 <translation id="7335371657242627509">Isama sa Awtomatikong Pag-ambag</translation>
+<translation id="1864111464094315414">Mag-login</translation>
+<translation id="4556504723624686474">Nagbibigay-daan sa iyo ang pag-verify sa wallet na mas mabisa mong mapamahalaan ang iyong mga pondo.</translation>
+<translation id="4188679602963314994">Kailangang may minimum ka na 25 BAT para makagawa ng Uphold account. Pakisubukang muli sa ibang pagkakataon. <ph name="BREAK">&lt;br/&gt;</ph>Kung mayroon ka nang na-verify na Uphold account, magpatuloy sa pag-log in.</translation>
 <translation id="3250511771491660127">Gawin itong buwan-buwan</translation>
 <translation id="6028954173739504682">Pamahalaan ang Iyong Wallet</translation>
 <translation id="7886389832052393750">Abr</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">Mag-withdraw ng BAT na puwedeng dati mong naidagdag sa iyong Brave Rewards wallet</translation>
 <translation id="8558636200953226885">Gayunpaman, kung magve-verify ka, maaari mong gawin ang mga sumusunod...</translation>
 <translation id="3354315693758743702">Opsyonal ang pag-verify sa iyong wallet.</translation>
-<translation id="4569155249847375786">Na-verify</translation>
 <translation id="8465442795593991224">Puwedeng hilingin sa iyo ng Uphold na i-verify mo ang iyong pagkakakilanlan batay sa mga hiniling na serbisyo.</translation>
 <translation id="723054503945711909">Hindi pinoproseso, sino-store, o ina-access ng Brave Software Inc. ang anuman sa personal na impormasyon na ibinigay mo sa Uphold noong gumawa ka ng account sa kanila.</translation>
 <translation id="7404779623219601861">I-redeem ang BAT para sa Mga Gift Card</translation>
 <translation id="6215565499749144110">Gamit ang TAP Network, mare-redeem mo ang iyong BAT para sa mga gift card ng mga sikat na tatak.</translation>
-<translation id="526152301446370337">Bisitahin ang TAP.</translation>
 <translation id="6915065518766963119">* Kailangan ng Pag-verify sa Uphold.</translation>
+<translation id="651649139059930379">Makakuha ng 2% cryptoback gamit ang Uphold card</translation>
+<translation id="1109729143147368573">Gastusin ang iyong crypto at ina pang asset sa halos 50 milyong merchant at ATM sa buong mundo. Gumastos ng crypto para makakuha ng crypto!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/> tungkol sa Brave Rewards</translation>
 <translation id="5826706758731195747">Sa pamamagitan ng pag-on sa Rewards, sumasang-ayon ka sa <ph name="LINK_BEGIN"/>Mga Tuntunin ng Serbsisyo<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Mga tinatantiyang kita sa kasalukuyan ngayong buwang ito</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">Binabayaran k’a para tingnan ang larawan sa background na ito.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/> tungkol sa mga naka-sponsor na larawan sa Brave Rewards.</translation>
 <translation id="6113004497629356998">Itago ang mga naka-sponsor na larawan</translation>
+<translation id="2148613324460538318">Magdagdag ng Card</translation>
 <translation id="5977237145327845546">Magsimula ng pribadong video call kasama ang iyong mga kaibigan at katrabaho.</translation>
 <translation id="5850325887346946383">Simulan ang video call</translation>
 <translation id="3651550649176056334">Tungkol sa iyong data</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">Buod</translation>
 <translation id="439104575421522802">Nag-expire ang Session</translation>
 <translation id="8558560988211507902">Nag-expire ang Binance access token mo. Paki-connect ulit para ituloy ang paggamit sa widget.</translation>
+<translation id="1543656153506416324">Bumili at mag-trade gamit ang Gemini</translation>
+<translation id="8960333903621861280">I-enable ang isang koneksyon sa Gemini para makita ang balanse ng iyong Gemini account at mag-trade ng crypto.</translation>
+<translation id="7604416013180651887">Kumonekta sa Gemini</translation>
+<translation id="2349109114223854255">Nag-expire na ang iyong token ng access sa Gemini at hindi ito ma-refresh. Mangyaring kumonektang muli.</translation>
+<translation id="4848984536030986115">Hindi magawa ang trade</translation>
+<translation id="7352651011704765696">Nagkaproblema</translation>
+<translation id="7097088316781182926">Kumpirmahin ang Trade</translation>
+<translation id="3488255243387417752">Magbenta</translation>
+<translation id="7969910554171263591">Kumuha ng Quote</translation>
+<translation id="1848737374354350807">Balanse</translation>
+<translation id="8285358301500391177">Bumibili</translation>
+<translation id="8675476238074172660">Nagbebenta</translation>
+<translation id="3081546448594005997">Bumili ka ng</translation>
+<translation id="8810136648184657966">Nagbenta ka ng</translation>
+<translation id="1833248467354516560">Presyo ng Unit</translation>
+<translation id="4763179765154524864">Kabuuang Ginastos</translation>
+<translation id="8851480289992540512">Kabuuang Natanggap</translation>
 <translation id="5655621391922317800">Mga Crypto Wallet</translation>
 <translation id="616639131065447379">Maligayang pagdating sa Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Nagbibigay-daan sa iyo ang Crypto Wallets na makagamit ng cryptocurrency at mga nauugnay na asset sa Brave. Sinusuportahan ng Crypto Wallets ang mga Ethereum token gaya ng ETH at BAT, pati na rin ang mga collectible, at nagbibigay-daan ito sa iyong makagamit ng Ðmga app at iba pang smart contract. Ang lahat ng ito ay nilayon para sa mga taong pamilyar sa Ethereum at iba pang blockchain system — o nasasabik na matutunan ang mga ito.</translation>

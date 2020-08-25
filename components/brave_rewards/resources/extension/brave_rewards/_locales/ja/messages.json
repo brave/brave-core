@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "キャンセル",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "ログイン",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "ウォレットを認証すると、資金をより効率的に管理することができます。",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Upholdアカウントを作成するには、最低25 BATが必要です。後でもう一度やり直してください。 <br/>すでに認証済みのUpholdアカウントをお持ちの場合は、ログインを続けてください。",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "接続済み",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "保留中",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

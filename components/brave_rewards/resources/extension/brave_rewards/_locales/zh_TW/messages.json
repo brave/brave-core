@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "取消",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "登入",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "驗證錢包讓您能更有效率地管理基金。",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "您至少需有 25 BAT 才能建立 Uphold 帳戶。請稍後再試。<br/>如果您已有經驗證的 Uphold 帳戶，請繼續登入。",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "已連線",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "未定",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

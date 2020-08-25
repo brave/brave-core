@@ -22,8 +22,6 @@
 
 Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevine. Anda bersetuju bahawa Brave tidak bertanggungjawab terhadap sebarang kerosakan atau ganti rugi berhubung dengan penggunaan Google Widevine.</translation>
 <translation id="410351446219883937">Main automatik</translation>
-<translation id="2240268017737062801">Tanya bila laman mahu memain automatik media</translation>
-<translation id="3371702087847741961">Tanya apabila laman mahu memainkan media (disyorkan)</translation>
 <translation id="3218385319396786393">Main automatik telah disekat di halaman ini</translation>
 <translation id="4988333904713528597">Sentiasa benarkan automain pada <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Teruskan menyekat autoplay</translation>
@@ -46,6 +44,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="8173998484743827990">Statistik Brave</translation>
 <translation id="5551238871320268996">Brave Bersama</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Laman Popular</translation>
 <translation id="1776831331757823105">Jam</translation>
 <translation id="7965178729203412357">Identiti Tor Baharu</translation>
@@ -80,7 +79,7 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="4824468494729001999">Sekat skrip</translation>
 <translation id="519861640102428255">Rupa &amp; Rasa</translation>
 <translation id="4800195524776354947">Paparkan bilangan item yang disekat pada ikon Perisai</translation>
-<translation id="7498695072878479744">Membenarkan butang log masuk Google di tapak pihak ketiga</translation>
+<translation id="3932286112122164477">Membenarkan butang log masuk Google di tapak pihak ketiga</translation>
 <translation id="863171915776379000">Benarkan log masuk Facebook dan catatan yang dimasukkan.</translation>
 <translation id="5165042248369837294">Benarkan Twitter memasukkan tweet</translation>
 <translation id="958971637207126733">Benarkan hantaran terbenam LinkedIn</translation>
@@ -235,4 +234,5 @@ Dengan memasang sambungan, anda bersetuju dengan Terma Penggunaan Google Widevin
 <translation id="5570470519803062774">Tetapan Tapak dan Perisai</translation>
 <translation id="8487693399751278191">Import penanda buku sekarang...</translation>
 <translation id="2557899542277210112">Untuk akses pantas, letakkan penanda buku anda di sini di atas bar penanda buku.</translation>
+<translation id="2808630562319398131">Setkan semula data Ganjaran Brave...</translation>
 </translationbundle>
