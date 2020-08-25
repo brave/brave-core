@@ -69,6 +69,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kSmsReceiver,
       &features::kVideoPlaybackQuality,
       &features::kTabHoverCards,
+      &password_manager::features::kPasswordCheck,
       &safe_browsing::kEnhancedProtection,
   };
 
