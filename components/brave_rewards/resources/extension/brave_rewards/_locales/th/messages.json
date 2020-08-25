@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "ยกเลิก",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "ลงชื่อเข้าใช้",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "การยืนยันวอลเล็ตให้คุณจัดการเงินทุนได้อย่างมีประสิทธิภาพมากขึ้น",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "คุณต้องมีอย่างน้อย 25 BAT เพื่อสร้างบัญชี Uphold โปรดลองใหม่ภายหลัง <br/> หากคุณมีบัญชี Uphold ที่ยืนยันตัวตนแล้ว ดำเนินการต่อที่หน้าล็อกอิน",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "เชื่อมต่อแล้ว",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "รอดำเนินการ",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

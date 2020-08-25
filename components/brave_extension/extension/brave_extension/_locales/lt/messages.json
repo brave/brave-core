@@ -55,6 +55,10 @@
     "message": "Kelių svetainių sekikliai užblokuoti",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Sekikliai ir reklamos užblokuoti",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "Sekikliai ir reklamos blokuojami (agresyvus)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "Leidžiami visi slapukai",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Kontrolinių kodų kūrimas užblokuotas",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "Kontrolinių kodų kūrimas blokuojamas (standartiškai)",

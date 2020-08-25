@@ -27,8 +27,7 @@
 <translation id="7459000603787995422">退出时关闭标签页</translation>
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="453601949003770390">已拦截跟踪器和广告</translation>
-<translation id="6761596877474675418">数据已保存</translation>
-<translation id="3034562645284925177">预计节省时间</translation>
+<translation id="347604927162577559">数据\n已节省</translation>
 <translation id="6572660632052512096">桌面模式</translation>
 <translation id="1340503115760585811">使用桌面模式打开新标签页</translation>
 <translation id="7924540991929826186">将新标签页用于移动版网站上（推荐）</translation>
@@ -56,7 +55,7 @@
 <translation id="316832010181763471">搜索引擎启动过程</translation>
 <translation id="986879628471635371">对启动过程进行故障排除</translation>
 <translation id="5808759341041733958">请选择默认搜索引擎</translation>
-<translation id="4428458837269935199">要获得更私密的搜索体验，请尝试 DuckDuckGo。</translation>
+<translation id="1331593888918588693">您以后随时可以在应用设置中更改自己的偏好。</translation>
 <translation id="5317780077021120954">保存</translation>
 <translation id="7053983685419859001">拦截</translation>
 <translation id="5806601733251372221">Brave 屏蔽</translation>
@@ -221,6 +220,8 @@
 <translation id="3349204812119681938">重设 Brave 奖励</translation>
 <translation id="8782039523249932839">这会删除您的 Brave 钱包并重置您的所有 Brave 奖励数据</translation>
 <translation id="6810078320346589989">创建一个书签</translation>
+<translation id="3396347744975515056">Brave 同步已升级，并需要进行设置</translation>
+<translation id="7473245612074035141">开始设置</translation>
 <translation id="597993392929850353">Brave 执照</translation>
 <translation id="6336451774241870485">新的私有标签页</translation>
 <translation id="6199596294742117349">这是一个私人标签页</translation>
@@ -241,15 +242,15 @@
 <translation id="4522570452068850558">详细信息</translation>
 <translation id="1486343603936278248">代币</translation>
 <translation id="8713995420537272453">积分</translation>
-<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
-<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
-<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="2802462801862186499">1.000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10.000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">新标签页</translation>
 <translation id="8522669544471808198">显示背景图片</translation>
 <translation id="3870475560794762985">显示赞助图片</translation>
 <translation id="8297488609722895137">照片提供者：<ph name="PHOTO_BY"/></translation>
 <translation id="1605521356929094020">开启 Brave Ads</translation>
-<translation id="5878330112719288629">启用 Rewards 即表示您同意<ph name="TERMS_OF_SERVICE"/>。</translation>
+<translation id="1873603368604736484">启用 Rewards 即表示您同意<ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">您查看此背景图片将获得报酬。</translation>
 <translation id="7136586167396205364">隐藏赞助图片</translation>
 <translation id="2927095357213611519">您可以使用代币来支持网站创建者。\n您可以通过观看尊重隐私的广告赚取代币。</translation>
@@ -296,10 +297,9 @@
 <translation id="8851456134224363571">太好了！您是否愿意在游戏商店给我们打分？</translation>
 <translation id="8668962040900592974">让我们知道如何改进</translation>
 <translation id="4406937629441301400">获取观看此图片的代币，并将其支付给创作者。<ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">为观看此图片获取代币。打开“赚”和“给”来索取您的份额。</translation>
+<translation id="7894626572714595717">因查看此图片而赚得了一些令牌。启用“Brave Ads”领取您的份额。</translation>
 <translation id="6632345639591919543">您在为观看这张图片赚取代币。\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">您在为观看这张图片赚取代币。</translation>
-<translation id="7952665812649667034">我准备好了赚取和提供</translation>
 <translation id="7877201489035217175">了解有关赞助图片的更多信息</translation>
 <translation id="828092975561478703">对于您查看的每一个赞助图片，您将获得 70% 的代币收入。有了 Brave Ads，您总能掌控您看到的广告。</translation>
 <translation id="4941539331405513605">阻止跨站点 cookie</translation>
@@ -333,4 +333,47 @@
 <translation id="915835519491851291">您刚刚拦截了部分跟踪器和广告</translation>
 <translation id="3286927551967858325">看一下</translation>
 <translation id="2929661208078053609">干得好！</translation>
+<translation id="4776948189086901857">Brave 无处不在</translation>
+<translation id="1606322780901645965">要想获取更快、更隐私的网络，赶快在您的笔记本电脑或平板电脑上到 brave.com 上下载 Brave 吧。</translation>
+<translation id="8374242949413616101">隐私保护</translation>
+<translation id="4955406228638026265">Brave 会阻止广告和跟踪者在未经您同意的情况下收集有关您的信息。</translation>
+<translation id="752842701893882688">保存数据和电池</translation>
+<translation id="5739030256211745023">没有广告和跟踪器，网站使用的数据和电池更少。您甚至可以节省承运人收取的费用。</translation>
+<translation id="5440744330377972191">网站加载速度更快</translation>
+<translation id="3000738865641747653">加载的数据较少意味着 Brave 上的网站的加载速度更快 - 其速度是其他浏览器的 8 倍。</translation>
+<translation id="8903462729414407077">获取每周更新</translation>
+<translation id="8029219208182772618">被告知您访问的网站对隐私的侵犯最大。\n\n只有您可以看到这些隐私统计信息。没有任何个人数据或浏览历史记录会离开您设备上的 Brave 浏览器。</translation>
+<translation id="6170159749517116894">打开隐私报告</translation>
+<translation id="6165508094623778733">了解详情</translation>
+<translation id="5966707198760109579">周</translation>
+<translation id="8987927404178983737">月</translation>
+<translation id="4302754476737420523">3 个月</translation>
+<translation id="8248593573177859437">隐私报告</translation>
+<translation id="1274039301958114163">隐私报告通知</translation>
+<translation id="1581614543353331529">尚无数据可显示</translation>
+<translation id="2401984885421380890">跟踪器和广告\n已被屏蔽</translation>
+<translation id="2662183408296991265">已节省的数据\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="6814582232712814369">节省了时间</translation>
+<translation id="3694122362646626770">网站</translation>
+<translation id="2225863440766607138">跟踪器</translation>
+<translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="6737820963776538947">您在过去 3 小时内用 Brave 浏览器屏蔽了 <ph name="COUNT"/> 个跟踪器和广告。</translation>
+<translation id="3621193901658023971">通过屏蔽跟踪器和广告将 Brave 的主要新闻网站上的浏览速度提高 6 倍。</translation>
+<translation id="7427567994475794038">启用“隐私报告”查看一下在过去 3 小时内有多少跟踪器和广告被屏蔽了。</translation>
+<translation id="2053891538879944400">您用 Brave 浏览器节省了 <ph name="DATA"/> <ph name="DATA_TEXT"/> 的数据。</translation>
+<translation id="8640064498452534195">打开“隐私报告”看看您已节省了多少数据。</translation>
+<translation id="4591582032282435287">Brave 的浏览器平均节省 40% 的电池。</translation>
+<translation id="1945330434665345785">您上周用 Brave  屏蔽了 <ph name="COUNT"/> 个跟踪器和广告。</translation>
+<translation id="2883868922264431515">通过查看尊重隐私的广告来赚取令牌和支持您喜欢的网站。</translation>
+<translation id="6840965284166256302">太好了！您已经用 Brave 浏览器屏蔽了 250 个跟踪器和广告。</translation>
+<translation id="2076976911561945584">太好了！您已经用 Brave 浏览器节省了 10MB 。</translation>
+<translation id="6714550233326888315">太好了！您已经用 Brave 浏览器节省了 10 分钟的加载时间。</translation>
+<translation id="7408493389591475748">开始浏览以查看隐私报告</translation>
+<translation id="9080777565335515917">将 Brave 设为您的默认浏览器，以进行安全的私人浏览。</translation>
+<translation id="7801488941710395275">允许 brave 显示您的隐私统计数据</translation>
+<translation id="1763352720905582220">发送每周的隐私报告</translation>
+<translation id="1811691435325545066">清除所有隐私报告数据</translation>
+<translation id="8089997572759938512">将您的隐私报告重置为零</translation>
+<translation id="2718046830255553131">隐私报告数据已清除。</translation>
+<translation id="7559243474426790340">刷新状态</translation>
 </translationbundle>

@@ -22,8 +22,6 @@
 
 En installant cette extension, vous acceptez les conditions d'utilisation de Google Widevine. Vous acceptez le fait que Brave ne peut être tenu responsable pour aucun dommage ou aucune perte en rapport avec votre utilisation de Google Widevine.</translation>
 <translation id="410351446219883937">Lecture automatique</translation>
-<translation id="2240268017737062801">Demander lorsqu'un site veut lire automatiquement un média</translation>
-<translation id="3371702087847741961">Demander lorsqu'un site souhaite lire automatiquement le contenu multimédia (recommandé)</translation>
 <translation id="3218385319396786393">La lecture automatique a été bloquée sur cette page</translation>
 <translation id="4988333904713528597">Toujours autoriser la lecture automatique sur <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuer le blocage de la lecture automatique</translation>
@@ -46,6 +44,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="8173998484743827990">Statistiques de Brave</translation>
 <translation id="5551238871320268996">Brave, ensemble</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Meilleurs sites</translation>
 <translation id="1776831331757823105">Horloge</translation>
 <translation id="7965178729203412357">Nouvelle identité Tor</translation>
@@ -80,7 +79,7 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4824468494729001999">Bloquer les scripts</translation>
 <translation id="519861640102428255">Apparence</translation>
 <translation id="4800195524776354947">Afficher le nombre d'éléments bloqués sur l'icône de boucliers</translation>
-<translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
+<translation id="3932286112122164477">Autoriser les boutons de connexion Google sur les sites tiers</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
 <translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
@@ -235,4 +234,5 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5570470519803062774">Paramètres du site et des boucliers</translation>
 <translation id="8487693399751278191">Importer des signets maintenant...</translation>
 <translation id="2557899542277210112">Pour un accès rapide, placez vos signets ici sur la barre de signets.</translation>
+<translation id="2808630562319398131">Réinitialiser les données de Brave Rewards...</translation>
 </translationbundle>

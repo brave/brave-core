@@ -22,8 +22,6 @@
 
 Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Aceptas que Brave no es responsable por daños o pérdidas en relación con tu uso de Google Widevine.</translation>
 <translation id="410351446219883937">Reproducción automática</translation>
-<translation id="2240268017737062801">Preguntar cuando un sitio web desea reproducir automáticamente contenido multimedia</translation>
-<translation id="3371702087847741961">Preguntar cuando un sitio web desee reproducir automáticamente contenido multimedia (recomendado)</translation>
 <translation id="3218385319396786393">La reproducción automática se ha bloqueado en esta página</translation>
 <translation id="4988333904713528597">Permitir siempre la reproducción automática en <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Continuar bloqueando la reproducción automática</translation>
@@ -46,6 +44,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="8173998484743827990">Estadísticas de Brave</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Sitios populares</translation>
 <translation id="1776831331757823105">Reloj</translation>
 <translation id="7965178729203412357">Nueva identidad Tor</translation>
@@ -80,7 +79,7 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="519861640102428255">Aspecto de Escudos</translation>
 <translation id="4800195524776354947">Mostrar el número de elementos bloqueados en el icono de los Escudos</translation>
-<translation id="7498695072878479744">Permitir botones de acceso a Google en sitios externos</translation>
+<translation id="3932286112122164477">Permitir botones de acceso a Google en sitios externos</translation>
 <translation id="863171915776379000">Permitir los inicios de sesión de Facebook y los mensajes incrustados</translation>
 <translation id="5165042248369837294">Permitir tweets incrustados de Twitter</translation>
 <translation id="958971637207126733">Permitir mensajes incrustados de LinkedIn</translation>
@@ -235,4 +234,5 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="5570470519803062774">Configuración del sitio y de los Escudos</translation>
 <translation id="8487693399751278191">Importar marcadores ahora...</translation>
 <translation id="2557899542277210112">Para acceder de forma rápida, coloca los marcadores aquí en la barra de marcadores</translation>
+<translation id="2808630562319398131">Restablecer los datos de recompensas de Brave...</translation>
 </translationbundle>

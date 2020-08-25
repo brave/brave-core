@@ -22,8 +22,6 @@
 
 এই এক্সটেনশনটি ইনস্টল করে আপনি Google Widevine এর ব্যবহারের শর্তাবলীর সাথে সম্মত হচ্ছেন| আপনি সম্মত হচ্ছেন আপনার Google Widevine এর ব্যবহারের সাথে সম্পর্কিত কোনো ক্ষতি বা লোকসানের জন্য Brave দায়ী নয়|</translation>
 <translation id="410351446219883937">স্বয়ংক্রিয়ভাবে চালান</translation>
-<translation id="2240268017737062801">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন</translation>
-<translation id="3371702087847741961">কোনও সাইট মিডিয়া অটোপ্লে করতে চাইলে জিজ্ঞাসা করুন (সুপারিশকৃত)</translation>
 <translation id="3218385319396786393">এই পৃষ্ঠাতে স্বয়ংক্রিয়ভাবে চালানো  ব্লক করা হয়েছে</translation>
 <translation id="4988333904713528597">সর্বদা <ph name="HOST"/> এ স্বতঃ চলার অনুমতি দিন</translation>
 <translation id="4150684676757176434">অটোপ্লে ব্লক করা চালিয়ে যান</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">Brave পরিসংখ্যান</translation>
 <translation id="5551238871320268996">একসাথে ব্রেভ</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">সেরা সাইটগুলি</translation>
 <translation id="1776831331757823105">ঘড়ি</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">স্ক্রিপ্টগুলি ব্লক করুন</translation>
 <translation id="519861640102428255">দেখুন &amp; অনুভব করুন</translation>
 <translation id="4800195524776354947">শিল্ডস আইকনে অবরুদ্ধ উপকরণগুলির সংখ্যা দেখান</translation>
-<translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
+<translation id="3932286112122164477">তৃতীয় পক্ষের সাইটগুলিতে গুগল লগইন বোতামগুলিকে মঞ্জুর করুন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">সাইট এবং শিল্ডগুলির সেটিং-গুলি</translation>
 <translation id="8487693399751278191">বুকমার্কগুলি এখনই আমদানি করুন...</translation>
 <translation id="2557899542277210112">দ্রুত ব্যবহারের জন্য, আপনার বুকমার্কগুলি এখানে বুকমার্ক বারে রাখুন।</translation>
+<translation id="2808630562319398131">Brave Rewards এর ডেটা রিসেট করুন...</translation>
 </translationbundle>

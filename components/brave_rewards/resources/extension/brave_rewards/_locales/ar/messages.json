@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "إلغاء",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "تسجيل الدخول",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "تفعيل المحفظة يتيح لك إدارة أموالك بشكل أكثر كفاءة.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "يجب أن يكون لديك 25 BAT كحد أدنى لإنشاء حساب على Uphold. الرجاء إعادة المحاولة في وقت لاحق. <br/> إذا كان لديك بالفعل حساب مفعل على Uphold، فتابع لتسجيل الدخول.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "متصل",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "معلَّق",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

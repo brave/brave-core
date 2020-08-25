@@ -27,8 +27,8 @@
 <translation id="7459000603787995422">Cerrar pestañas al salir</translation>
 <translation id="1680858055899097121">No guardar las pestañas entre sesiones de navegación</translation>
 <translation id="453601949003770390">Rastreadores y anuncios bloqueados</translation>
-<translation id="6761596877474675418">Datos guardados</translation>
-<translation id="3034562645284925177">Tiempo Estimado Ahorrado</translation>
+<translation id="347604927162577559">Datos/nahorrados</translation>
+<translation id="9008534313521214777">Estimación de tiempo/nahorrado</translation>
 <translation id="6572660632052512096">Modo Escritorio</translation>
 <translation id="1340503115760585811">Habilitar Vista de Escritorio para nuevas pestañas</translation>
 <translation id="7924540991929826186">Usa las versiones móviles de sitios para nuevas pestañas (recomendado)</translation>
@@ -56,7 +56,7 @@
 <translation id="316832010181763471">Visita guiada al motor de búsqueda</translation>
 <translation id="986879628471635371">Introducción a la solución de problemas</translation>
 <translation id="5808759341041733958">Elige el motor de búsqueda predeterminado</translation>
-<translation id="4428458837269935199">Para disfrutar de una experiencia de búsqueda más privada, prueba DuckDuckGo.</translation>
+<translation id="1331593888918588693">Siempre puede cambiar sus preferencias más tarde en los ajustes de la aplicación.</translation>
 <translation id="5317780077021120954">Guardar</translation>
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="5806601733251372221">Escudos Brave</translation>
@@ -230,6 +230,8 @@ para apoyarlos.</translation>
 <translation id="3349204812119681938">Restablecer Brave Rewards</translation>
 <translation id="8782039523249932839">Esto eliminará tu monedero Brave y restablecerá todos tus datos de Brave Rewards.</translation>
 <translation id="6810078320346589989">Crear un marcador</translation>
+<translation id="3396347744975515056">Brave Sync ha sido actualizado y requiere configuración</translation>
+<translation id="7473245612074035141">Iniciar la configuración</translation>
 <translation id="597993392929850353">Licencia de Brave</translation>
 <translation id="6336451774241870485">Nueva pestaña privada</translation>
 <translation id="6199596294742117349">Esta es una Pestaña Privada</translation>
@@ -250,15 +252,15 @@ para apoyarlos.</translation>
 <translation id="4522570452068850558">Detalles</translation>
 <translation id="1486343603936278248">token</translation>
 <translation id="8713995420537272453">punto</translation>
-<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
-<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
-<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="2802462801862186499">1000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10 000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Página Nueva Pestaña</translation>
 <translation id="8522669544471808198">Mostrar imágenes de fondo</translation>
 <translation id="3870475560794762985">Mostrar imágenes patrocinadas</translation>
 <translation id="8297488609722895137">Fotografía de <ph name="PHOTO_BY"/></translation>
 <translation id="1605521356929094020">Activar Brave Ads</translation>
-<translation id="5878330112719288629">Al pulsar en “Ganar y dar”, acepta las <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="1873603368604736484">Al activar las Recompensas, acepta los <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Recibes pagos por visualizar esta imagen de fondo.</translation>
 <translation id="7136586167396205364">Ocultar las imágenes patrocinadas</translation>
 <translation id="2927095357213611519">Puedes apoyar a los creadores de la web con tokens.\nRecibe tokens por visualizar anuncios respetuosos con la privacidad.</translation>
@@ -305,10 +307,9 @@ para apoyarlos.</translation>
 <translation id="8851456134224363571">¡Fantástico! ¿Le importaría darnos una calificación en Play Store?</translation>
 <translation id="8668962040900592974">Díganos qué podemos hacer para mejorar</translation>
 <translation id="4406937629441301400">Gane vales por ver esta imagen y pague a los creadores por adelantado. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">Gane vales por ver esta imagen. Active “Ganar y dar” para reclamar su parte.</translation>
+<translation id="7894626572714595717">Gane tokens por ver esta imagen. Active los anuncios de Brave para solicitar su parte.</translation>
 <translation id="6632345639591919543">Está ganando vales por ver esta imagen.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Estás ganando tokens por ver esta imagen.</translation>
-<translation id="7952665812649667034">Estoy listo para ganar y dar</translation>
 <translation id="7877201489035217175">Obtener más información sobre las imágenes patrocinadas</translation>
 <translation id="828092975561478703">Por cada imagen patrocinada que vea, recibirá el 70 % de los ingresos en vales. Con Brave Ads, siempre controla los anuncios que ve.</translation>
 <translation id="4941539331405513605">Bloquear las cookies de terceros</translation>
@@ -342,4 +343,47 @@ para apoyarlos.</translation>
 <translation id="915835519491851291">Acabas de bloquear algunos rastreadores y anuncios.</translation>
 <translation id="3286927551967858325">Echa un vistazo</translation>
 <translation id="2929661208078053609">¡Bien!</translation>
+<translation id="4776948189086901857">Brave funciona en todas partes</translation>
+<translation id="1606322780901645965">Descargue Brave en brave.com en su portátil o tableta para tener una web más privada</translation>
+<translation id="8374242949413616101">Protección de privacidad</translation>
+<translation id="4955406228638026265">Brave evita que rastreadores y anuncios recojan información sobre usted sin su consentimiento.</translation>
+<translation id="752842701893882688">Ahorre datos y batería</translation>
+<translation id="5739030256211745023">Sin anuncios ni rastreadores, los sitios web utilizan menos datos y batería. Podría incluso ahorrar dinero en las tarifas del operador.</translation>
+<translation id="5440744330377972191">Los sitios web se cargan más deprisa.</translation>
+<translation id="3000738865641747653">Cargar menos datos significa que los sitios web se cargan más rápido en Brave: hasta 8 veces más rápido que otros navegadores.</translation>
+<translation id="8903462729414407077">Obtenga actualizaciones semanales</translation>
+<translation id="8029219208182772618">Obtenga información sobre cuáles de los sitios web que visita invaden más la privacidad.\n\nSolo usted puede ver estas estadísticas de privacidad. Ningún dato personal o historial de navegación sale nunca del navegador Brave de su dispositivo.</translation>
+<translation id="6170159749517116894">Activar informes de privacidad</translation>
+<translation id="6165508094623778733">Más información</translation>
+<translation id="5966707198760109579">Semana</translation>
+<translation id="8987927404178983737">Mes</translation>
+<translation id="4302754476737420523">3 meses</translation>
+<translation id="8248593573177859437">Informe de privacidad</translation>
+<translation id="1274039301958114163">Notificación de informe de privacidad</translation>
+<translation id="1581614543353331529">Todavía no hay datos para mostrar</translation>
+<translation id="2401984885421380890">Rastreadores y anuncios\nbloqueados</translation>
+<translation id="2662183408296991265">Datos guardados\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="6814582232712814369">Tiempo ahorrado</translation>
+<translation id="3694122362646626770">Sitios web</translation>
+<translation id="2225863440766607138">Rastreadores</translation>
+<translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="6737820963776538947">Ha bloqueado <ph name="COUNT"/> rastreadores y anuncios con el navegador Brave en las últimas 3 horas.</translation>
+<translation id="3621193901658023971">Navegue hasta 6 veces más rápido en los principales sitios de noticias con Brave al bloquear rastreadores y anuncios.</translation>
+<translation id="7427567994475794038">Active los informes de privacidad para ver cuántos rastreadores y anuncios se han bloqueado en las últimas 3 horas.</translation>
+<translation id="2053891538879944400">Ha ahorrado <ph name="DATA"/> <ph name="DATA_TEXT"/> datos con el navegador Brave.</translation>
+<translation id="8640064498452534195">Active los informes de privacidad para ver cuántos datos ha ahorrado.</translation>
+<translation id="4591582032282435287">El navegador Brave utiliza un 40 % menos de batería en promedio.</translation>
+<translation id="1945330434665345785">Bloqueó <ph name="COUNT"/> rastreadores y anuncios con el navegador Brave la semana pasada.</translation>
+<translation id="2883868922264431515">Gane tokens al ver anuncios que respetan la privacidad y apoye a sus sitios web favoritos.</translation>
+<translation id="6840965284166256302">¡Bien! Ha bloqueado 250 rastreadores y anuncios con el navegador Brave.</translation>
+<translation id="2076976911561945584">¡Bien! Ha ahorrado 10 MB con el navegador Brave.</translation>
+<translation id="6714550233326888315">¡Bien! Ha ahorrado 10 minutos de tiempo de carga con el navegador Brave.</translation>
+<translation id="7408493389591475748">Empiece a navegar para ver el informe de privacidad</translation>
+<translation id="9080777565335515917">Establezca Brave como su navegador predeterminado para tener una navegación privada y segura.</translation>
+<translation id="7801488941710395275">Permite a brave mostrar sus estadísticas de privacidad.</translation>
+<translation id="1763352720905582220">Envía un informe de privacidad semanal</translation>
+<translation id="1811691435325545066">Eliminar todos los datos de informes de privacidad</translation>
+<translation id="8089997572759938512">Restablezca sus informes de privacidad a cero</translation>
+<translation id="2718046830255553131">Se han borrado los datos de los informes de privacidad.</translation>
+<translation id="7559243474426790340">Actualizar estado</translation>
 </translationbundle>

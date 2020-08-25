@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "ರದ್ದುಗೊಳಿಸಿ",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "'ಲಾಗಿನ್",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "ವಾಲೆಟ್ ಅನ್ನು ಪರಿಶೀಲಿಸುವುದು ನಿಮ್ಮ ಫಂಡ್‌ಗಳನ್ನು ಹೆಚ್ಚು ದಕ್ಷತೆಯಿಂದ ನಿರ್ವಹಿಸಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ರಚಿಸಲು ನೀವು ಕನಿಷ್ಠ 25 BAT ಹೊಂದಿರಬೇಕಾಗುತ್ತದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ. <br/> ನೀವು ಈಗಾಗಲೇ ಪರಿಶೀಲಿಸಲ್ಪಟ್ಟ ಅಪ್‌ಹೋಲ್ಡ್ ಖಾತೆಯನ್ನು ಹೊಂದಿದ್ದರೆ, ಲಾಗಿನ್ ಮಾಡಲು ಮುಂದುವರಿಯಿರಿ.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "ಸಂಪರ್ಕಿಸಲಾಗಿದೆ",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "ಬಾಕಿ ಉಳಿದಿರುವುದು",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

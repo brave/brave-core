@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Elvetés",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Bejelentkezés",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Ellenőrzött pénztárcával hatékonyabban kezelheted alapjaidat.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Uphold fiók létrehozásához minimum 25 BAT-od kell legyen. Próbáld újra később. <br/>Ha már van egy ellenőrzött Uphold fiókod, folytasd a bejelentkezést.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Kapcsolódva",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Várakozó",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

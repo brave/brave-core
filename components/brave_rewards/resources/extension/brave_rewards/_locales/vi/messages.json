@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Hủy",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Đăng nhập",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Việc xác minh ví cho phép bạn quản lý tiền của mình hiệu quả hơn.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Bạn cần có tối thiểu 25 BAT để tạo tài khoản Uphold. Vui lòng thử lại sau. <br/> Nếu bạn đã có tài khoản Uphold đã xác minh, hãy tiếp tục đăng nhập.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Đã kết nối",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Đang chờ xử lý",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

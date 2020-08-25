@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Annuler",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Connexion",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "La vérification du portefeuille vous permet de gérer vos fonds plus efficacement.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Vous devez disposer d'un minimum de 25 BAT pour créer un compte Uphold. Veuillez réessayer plus tard. <br/> Si vous avez déjà un compte Uphold vérifié, continuez en vous connectant.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Connecté",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "En attente",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

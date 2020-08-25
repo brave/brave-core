@@ -42,6 +42,12 @@
 <translation id="383680190590774040">שעון</translation>
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="3159285901314605198">תמונת רקע</translation>
+<translation id="1776831331757823105">שעון</translation>
+<translation id="4643117005422448078">אתרים מובילים</translation>
+<translation id="7791543448312431591">הוספה</translation>
+<translation id="7679334366167089823">הרוויחו טוקנים עבור צפייה בפרסומות השומרות על הפרטיות.</translation>
+<translation id="1531133232292396145">סחרו בקריפטו ב-Binance ישירות בדפדפן שלכם.</translation>
+<translation id="2166494527623220386">סחר בקריפטו ב-Gemini ישירות בדפדפן שלכם.</translation>
 <translation id="6165508094623778733">למדו עוד</translation>
 <translation id="8730621377337864115">סיום</translation>
 <translation id="6248988683584659830">הגדרות חיפוש</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">טוויטר</translation>
 <translation id="3920963435109110161">תגמלו מיידית, כשתגלו אוצרות</translation>
 <translation id="3642432959491988696">אם את/ה רוצה, באפשרותך ליידע אנשים בציוץ זריז.</translation>
-<translation id="5984081903757971165">{{balance}} {{currency}} הוחזרה. מפתח הארנק שלך אומת ונטען בהצלחה.</translation>
+<translation id="4875485795191140618">מפתח הארנק שלכם אומת ונטען בהצלחה.</translation>
 <translation id="1083279119532577005">הארנק שוחזר!</translation>
 <translation id="7841456038054167122">אנא הכניסו מחדש את המפתחות או נסו מפתחות שונים.</translation>
+<translation id="340102383764929340">מפתח השחזור שהוזן אינו נתמך יותר. נא לבקר ב-<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> לקבלת מפתח חדש.</translation>
 <translation id="2195074481553016770">כמעט שם</translation>
 <translation id="5254740304961202261">הוכיחו שהנכם בני אדם!</translation>
 <translation id="2187043784382239974">הממ... לא בדיוק...</translation>
@@ -188,10 +195,12 @@
 <translation id="2852258589816753010">BAT אינו נתמך כרגע באזורך. נא להתעדכן ב-
 <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph></translation>
 <translation id="2564425876266960486">אירעה שגיאה ביצירת כרטיס BAT של דפדפן Brave</translation>
+<translation id="6473583070570450185">נדרש לכם ארנק מאומת כדי להתחבר</translation>
+<translation id="2106271389438168634">נדרשים לכם מינימום של 25 BAT כדי ליצור ארנק Uphold. נא לנסות שוב לאחר שאימתתם את הארנק שלכם באמצעות Uphold.</translation>
 <translation id="7422678632904904341">סכום:</translation>
 <translation id="6969783933307596818">רענן אוטומטית כל 5 שניות</translation>
 <translation id="5025866799968038247">מידע על יתרה</translation>
-<translation id="1642443162274867084">הארנק נוצר</translation>
+<translation id="6073289164268847023">ארנק נוצר:</translation>
 <translation id="6643016212128521049">ניקוי</translation>
 <translation id="8949473809474431949">הסכום שנתרם:</translation>
 <translation id="4468686134841688885">נוצר ב:</translation>
@@ -211,11 +220,13 @@
 <translation id="386483240851194811">Rewards כובתה</translation>
 <translation id="3354337256330577726">התרומה האוטומטית כובתה</translation>
 <translation id="6727186931929643711">ניסיונות חוזרים הופסקו</translation>
+<translation id="2059498613853603008">אזהרה: הנתונים בדף זה עשויים להיות רגישים. התייחסו אליהם כמו אל המפתחות הפרטיים של הארנק שלכם. היו זהירים לגבי מי שאתם משתפים אותם איתו.</translation>
 <translation id="7375125077091615385">סוג:</translation>
 <translation id="4973347371961481083">תרומות</translation>
 <translation id="1924618796077284366">הורד יומן מלא</translation>
+<translation id="1979114396925139279">פרטי ארנק חיצוני</translation>
 <translation id="5457113250005438886">לא תקף</translation>
-<translation id="7687511348932340294">זרע מידע מפתח</translation>
+<translation id="6161467863097205016">גרעין מידע מפתח:</translation>
 <translation id="1907668701131938713">אנו מציגים את {{numberOfLines}} השורות האחרונות של היומן. אם הנך חפצ/ה בכל היומן, באפשרותך להוריד אותו למעלה.</translation>
 <translation id="7168491065836975228">החלקים הפנימיים של Rewards</translation>
 <translation id="758790787422117549">מזהה אישיות</translation>
@@ -249,8 +260,16 @@
 <translation id="6672180611914406778">יתרה כוללת</translation>
 <translation id="2223892939866251845">מזהה משתמש</translation>
 <translation id="4235360514405112390">תקף</translation>
+<translation id="3902084968737576005">כתובת ארנק:</translation>
 <translation id="2326487656644542536">פרטי ארנק</translation>
-<translation id="3576689061489548788">מזהה תשלום ארנק:</translation>
+<translation id="8559420016582377654">מזהה תשלום ארנק:</translation>
+<translation id="438586487791444158">סטטוס ארנק:</translation>
+<translation id="3368922792935385530">מחובר</translation>
+<translation id="8874184842967597500">לא מחובר</translation>
+<translation id="4569155249847375786">מאומת</translation>
+<translation id="922103963921062336">מנותק (לא מאומת)</translation>
+<translation id="6521149675246672063">מנותק (מאומת)</translation>
+<translation id="3248185426436836442">בהמתנה</translation>
 <translation id="5094577350232361255">אודות</translation>
 <translation id="4918086044614829423">אשר</translation>
 <translation id="5916290544882167205">Brave .Brave Software הוא סימן מסחרי רשום של Brave Software. שמות אתרים עשויים להיות סימנים מסחריים או סימנים מסחריים רשומים של בעל האתר.</translation>
@@ -332,6 +351,9 @@
 <translation id="2291686779354188838">שלום, {{name}}!</translation>
 <translation id="1389143276807887637">ייבוא</translation>
 <translation id="7335371657242627509">כלול בתרומות העצמיות</translation>
+<translation id="1864111464094315414">התחבר</translation>
+<translation id="4556504723624686474">אימות הארנק מאפשר לכם לנהל את הכספים שלכם בצורה יעילה יותר.</translation>
+<translation id="4188679602963314994">נדרשים לכם מינימום של 25 BAT כדי ליצור חשבון Uphold. נא לנסות שוב מאוחר יותר. <ph name="BREAK">&lt;br/&gt;</ph>If יש לכם כבר חשבון Uphold מאומת, המשיכו להתחברות.</translation>
 <translation id="3250511771491660127">הפוך את זה חודשי</translation>
 <translation id="6028954173739504682">ניהול הארנק שלכם</translation>
 <translation id="7886389832052393750">אפריל</translation>
@@ -527,13 +549,13 @@
 <translation id="9096003370755878766">משיכת BAT שייתכן שהוספת בעבר לארנק Brave Rewards שלך</translation>
 <translation id="8558636200953226885">אבל אם תאמת/י, תוכל/י...</translation>
 <translation id="3354315693758743702">אימות הארנק שלך הוא אופציונלי.</translation>
-<translation id="4569155249847375786">מאומת</translation>
 <translation id="8465442795593991224">Uphold עשויה לדרוש ממך לאמת את זהותך על בסיס השירותים המבוקשים.</translation>
 <translation id="723054503945711909">חברת .Brave Software Inc אינה מעבדת, מאחסנת או ניגשת לשום מידע אישי שהנך מוסר/ת ל-Uphold בעת פתיחת חשבון אצלם.</translation>
 <translation id="7404779623219601861">מימוש BAT עבור כרטיסי מתנה</translation>
 <translation id="6215565499749144110">עם רשת TAP, באפשרותך לממש את ה-BAT שלך עבור כרטיסי מתנה של שמות מותגים פופולריים.</translation>
-<translation id="526152301446370337">בקר/י ב-TAP.</translation>
 <translation id="6915065518766963119">* דורש אימות Uphold</translation>
+<translation id="651649139059930379">קבלו 2% קריפטו בחזרה עם כרטיס  Uphold</translation>
+<translation id="1109729143147368573">הוציאו את הקריפטו והנכסים האחרים שלכם אצל כמעט 50 מיליון סוחרים וכספומטים ברחבי העולם. הוציאו קריפטו כדי לקבל קריפטו!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> אודות Brave Rewards</translation>
 <translation id="5826706758731195747">בהפעלת Rewards הנכם מסכימים ל<ph name="LINK_BEGIN"/>תנאי השירות<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">רווחים משוערים עד כה לחודש זה</translation>
@@ -554,6 +576,7 @@
 <translation id="6759185676704303656">הנכם #8217; מקבלים תשלום עבור צפייה בתמונת רקע זו.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>למדו עוד<ph name="LINK_END"/> על אודות תמונות ממומנות ב-Brave Rewards.</translation>
 <translation id="6113004497629356998">הסתר תמונות ממומנות</translation>
+<translation id="2148613324460538318">הוסף כרטיס</translation>
 <translation id="5977237145327845546">התחל שיחת וידאו פרטית עם חבריך ועמיתיך.</translation>
 <translation id="5850325887346946383">התחל שיחת וידאו</translation>
 <translation id="3651550649176056334">לגבי הנתונים שלך</translation>
@@ -599,6 +622,23 @@
 <translation id="2956070106555335453">סיכום</translation>
 <translation id="439104575421522802">זמן הפעילות תם</translation>
 <translation id="8558560988211507902">תוקפו של אסימון הגישה שלך ל-Binance פג. יש להתחבר מחדש כדי להמשיך ולהשתמש ברכיב.</translation>
+<translation id="1543656153506416324">רכשו וסחרו עם Gemini</translation>
+<translation id="8960333903621861280">אפשר חיבור Gemini כדי להציג את יתרת חשבון Gemini שלך ולסחור בקריפטו.</translation>
+<translation id="7604416013180651887">התחבר ל-Gemini</translation>
+<translation id="2349109114223854255">פג תוקף טוקן הגישה ל-Gemini שלכם ולא ניתן היה לרענן אותו. נא להתחבר מחדש.</translation>
+<translation id="4848984536030986115">לא ניתן לבצע סחר</translation>
+<translation id="7352651011704765696">משהו השתבש</translation>
+<translation id="7097088316781182926">אשר סחר</translation>
+<translation id="3488255243387417752">מכירה</translation>
+<translation id="7969910554171263591">קבלו ציטוט</translation>
+<translation id="1848737374354350807">יתרה</translation>
+<translation id="8285358301500391177">רוכש</translation>
+<translation id="8675476238074172660">מוכר</translation>
+<translation id="3081546448594005997">רכשתם</translation>
+<translation id="8810136648184657966">מכרתם</translation>
+<translation id="1833248467354516560">מחיר ליחידה</translation>
+<translation id="4763179765154524864">הוצאה כוללת</translation>
+<translation id="8851480289992540512">סך הכל שהתקבל</translation>
 <translation id="5655621391922317800">ארנקי קריפטו</translation>
 <translation id="616639131065447379">ברוכים הבאים לארנקי קריפטו Brave</translation>
 <translation id="1740464057879304704">ארנקי קריפטו מאפשרים לך לעבוד עם מטבע קריפטו ונכסים קשורים ב-Brave. ארנקי קריפטו תומכים בטוקני את'ריום כמו ETH ו-BAT, כמו גם דברים שניתן לאסוף, ומאפשרים לך לעבוד עם  Ðאפליקציות וחוזים חכמים אחרים. כל זה מיועד לאנשים שמכירים את את'ריום ומערכות בלוקצ'יין אחרות — או שנלהבים ללמוד.</translation>

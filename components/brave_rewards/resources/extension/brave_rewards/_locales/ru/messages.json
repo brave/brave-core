@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Отмена",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Вход",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Верификация кошелька позволит вам более эффективно управлять своими средствами.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Для создания аккаунта Uphold вам нужно иметь минимум 25 BAT. Пожалуйста, повторите попытку позже. <br/> Если у вас уже есть подтвержденный аккаунт Uphold, выполните вход в систему.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Подключено",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "В ожидании",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

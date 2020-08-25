@@ -22,8 +22,6 @@
 
 Genom att installera detta tillägg godkänner du användarvillkoren för Google Widevine. Du accepterar att Brave inte kan hållas ansvarig för skada eller förlust till följd av din användning av Google Widevine.</translation>
 <translation id="410351446219883937">Autospela</translation>
-<translation id="2240268017737062801">Fråga när en sida vill autospela media</translation>
-<translation id="3371702087847741961">Fråga när en webbplats vill autospela media (rekommenderas)</translation>
 <translation id="3218385319396786393">Autouppspelning blockerades på denna sida</translation>
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
@@ -46,6 +44,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="8173998484743827990">Brave-statistik</translation>
 <translation id="5551238871320268996">Brave tillsammans</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Toppsajter</translation>
 <translation id="1776831331757823105">Klocka</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
@@ -80,7 +79,7 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="4824468494729001999">Blockera skript</translation>
 <translation id="519861640102428255">Utseende och känsla</translation>
 <translation id="4800195524776354947">Visa antalet saker som blockeras på ikonen med en sköld</translation>
-<translation id="7498695072878479744">Tillåt Googles inloggningsknappar på tredjepartssajter</translation>
+<translation id="3932286112122164477">Tillåt Googles inloggningsknappar på tredjepartssajter</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
@@ -235,4 +234,5 @@ Genom att installera detta tillägg godkänner du användarvillkoren för Google
 <translation id="5570470519803062774">Inställningar för sajt och sköld</translation>
 <translation id="8487693399751278191">Importera bokmärken nu ...</translation>
 <translation id="2557899542277210112">För snabb åtkomst kan du lägga dina bokmärken här.</translation>
+<translation id="2808630562319398131">Återställ data för Brave Rewards...</translation>
 </translationbundle>

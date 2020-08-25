@@ -55,6 +55,10 @@
     "message": "Saitidevahelised jälitajad on blokeeritud",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Blokeeritud jälitajad ja reklaamid",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "Jälgijad ja reklaamid blokeeritud (põhjalik)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -84,12 +88,16 @@
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
-    "message": "Küpsisefailid on blokeeritud",
+    "message": "Küpsised blokeeritud",
     "description": "Message for the option in the cookies select field to block all cookies"
   },
   "allCookiesAllowed": {
-    "message": "Kõik lubatud küpsisefailid",
+    "message": "Kõik küpsised lubatud",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Seadmetuvastus blokeeritud",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "Sõrmejälje lugemine blokeeritud (standard)",
@@ -100,7 +108,7 @@
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {
-    "message": "Luba sõrmejälje lugemine igal pool",
+    "message": "Luba seadmetuvastus igal pool",
     "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
   },
   "deviceRecognitionAttempts": {
