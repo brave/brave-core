@@ -16,7 +16,6 @@ import {
 import AddCardIcon from './assets/add-icon'
 
 interface Props {
-  isAlone: boolean
   stackPosition: number
   onAddCard: () => void
 }
@@ -24,10 +23,10 @@ interface Props {
 class AddCard extends React.PureComponent<Props, {}> {
 
   render () {
-    const { isAlone, onAddCard, stackPosition } = this.props
+    const { onAddCard, stackPosition } = this.props
 
     return (
-      <StyledTitleTab onClick={onAddCard} isAlone={isAlone} stackPosition={stackPosition}>
+      <StyledTitleTab onClick={onAddCard} stackPosition={stackPosition}>
         <Header>
           <StyledTitle>
             <StyledAddIcon>

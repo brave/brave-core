@@ -674,8 +674,8 @@ class NewTabPage extends React.Component<Props, State> {
 
   renderCryptoContent () {
     const { newTabData } = this.props
-    const { widgetStackOrder, textDirection, showAddCard } = newTabData
-    const allHidden = this.allWidgetsHidden()
+    const { widgetStackOrder, textDirection } = newTabData
+    const shouldShowAddCard = !this.allWidgetsHidden()
 
     if (!widgetStackOrder.length) {
       return null
@@ -683,16 +683,15 @@ class NewTabPage extends React.Component<Props, State> {
 
     return (
       <Page.GridItemWidgetStack>
-        {showAddCard &&
+        {shouldShowAddCard &&
           <AddCard
             isCrypto={true}
             menuPosition={'left'}
             widgetTitle={getLocale('addCardWidgetTitle')}
             textDirection={textDirection}
-            hideMenu={!allHidden}
+            hideMenu={true}
             hideWidget={this.disableAddCard}
             onAddCard={this.toggleSettingsAddCard}
-            isAlone={allHidden}
             stackPosition={0}
           />
         }
