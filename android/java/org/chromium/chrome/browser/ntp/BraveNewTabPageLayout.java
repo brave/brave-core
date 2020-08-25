@@ -87,6 +87,7 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.custom_layout.VerticalViewPager;
 import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
+import org.chromium.chrome.browser.ntp.NTPWidgetBottomSheetDialogFragment;
 
 import java.util.List;
 
@@ -632,7 +633,8 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private NTPWidgetAdapter.NTPWidgetMenuListener ntpWidgetMenuListener = new NTPWidgetAdapter.NTPWidgetMenuListener() {
         @Override
         public void onEdit() {
-
+            NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment = NTPWidgetBottomSheetDialogFragment.newInstance();
+            ntpWidgetBottomSheetDialogFragment.show(((BraveActivity) mActivity).getSupportFragmentManager(), "NTPWidgetBottomSheetDialogFragment");
         }
 
         @Override
