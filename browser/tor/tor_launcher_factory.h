@@ -73,6 +73,8 @@ class TorLauncherFactory : public tor::TorControl::Delegate {
 
   void KillOldTorProcess(base::ProcessId id);
 
+  void RelaunchTor();
+
   bool is_starting_;
   bool is_connected_;
 
