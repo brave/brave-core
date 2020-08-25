@@ -144,10 +144,11 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetRewardsMainEnabled(bool enabled);
   void GetExcludedSites(const base::ListValue* args);
 
-  void OnTransactionHistory(
-      double estimated_pending_rewards,
-      uint64_t next_payment_date_in_seconds,
-      uint64_t ad_notifications_received_this_month);
+  void OnGetTransactionHistory(
+      const bool success,
+      const double estimated_pending_rewards,
+      const uint64_t next_payment_date_in_seconds,
+      const uint64_t ad_notifications_received_this_month);
 
   void OnGetRecurringTips(
     std::unique_ptr<brave_rewards::ContentSiteList> list);
@@ -1453,35 +1454,42 @@ void RewardsDOMHandler::OnPublisherListNormalized(
 void RewardsDOMHandler::GetTransactionHistory(
     const base::ListValue* args) {
   ads_service_->GetTransactionHistory(base::Bind(
-      &RewardsDOMHandler::OnTransactionHistory,
+      &RewardsDOMHandler::OnGetTransactionHistory,
       weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnTransactionHistory(
-    double estimated_pending_rewards,
-    uint64_t next_payment_date_in_seconds,
-    uint64_t ad_notifications_received_this_month) {
-  if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue history;
-
-    history.SetDouble("adsEstimatedPendingRewards",
-        estimated_pending_rewards);
-
-    if (next_payment_date_in_seconds == 0) {
-      history.SetString("adsNextPaymentDate", "");
-    } else {
-      base::Time next_payment_date =
-          base::Time::FromDoubleT(next_payment_date_in_seconds);
-      history.SetString("adsNextPaymentDate",
-          base::TimeFormatWithPattern(next_payment_date, "MMMd"));
-    }
-
-    history.SetInteger("adsAdNotificationsReceivedThisMonth",
-        ad_notifications_received_this_month);
-
-    web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.transactionHistory", history);
+void RewardsDOMHandler::OnGetTransactionHistory(
+    const bool success,
+    const double estimated_pending_rewards,
+    const uint64_t next_payment_date_in_seconds,
+    const uint64_t ad_notifications_received_this_month) {
+  if (!success) {
+    return;
   }
+
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::DictionaryValue history;
+
+  history.SetDouble("adsEstimatedPendingRewards",
+      estimated_pending_rewards);
+
+  if (next_payment_date_in_seconds == 0) {
+    history.SetString("adsNextPaymentDate", "");
+  } else {
+    base::Time next_payment_date =
+        base::Time::FromDoubleT(next_payment_date_in_seconds);
+    history.SetString("adsNextPaymentDate",
+        base::TimeFormatWithPattern(next_payment_date, "MMMd"));
+  }
+
+  history.SetInteger("adsAdNotificationsReceivedThisMonth",
+      ad_notifications_received_this_month);
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards.transactionHistory", history);
 }
 
 void RewardsDOMHandler::OnTransactionHistoryChanged(
@@ -1494,7 +1502,7 @@ void RewardsDOMHandler::OnTransactionHistoryChanged(
 
 void RewardsDOMHandler::OnAdRewardsChanged() {
   ads_service_->GetTransactionHistory(base::Bind(
-      &RewardsDOMHandler::OnTransactionHistory,
+      &RewardsDOMHandler::OnGetTransactionHistory,
       weak_factory_.GetWeakPtr()));
 }
 

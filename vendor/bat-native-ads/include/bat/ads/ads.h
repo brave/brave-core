@@ -29,7 +29,7 @@ using ShutdownCallback = std::function<void(const Result)>;
 using RemoveAllHistoryCallback = std::function<void(const Result)>;
 
 using GetTransactionHistoryCallback =
-    std::function<void(const StatementInfo&)>;
+    std::function<void(const bool, const StatementInfo&)>;
 
 // |_environment| indicates that URL requests should use production, staging or
 // development servers but can be overridden via command-line arguments

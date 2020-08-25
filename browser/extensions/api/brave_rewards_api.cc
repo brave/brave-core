@@ -1093,12 +1093,13 @@ BraveRewardsGetAdsEstimatedEarningsFunction::Run() {
   }
 
   ads_service_->GetTransactionHistory(base::Bind(
-        &BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings,
-        this));
+      &BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings,
+      this));
   return RespondLater();
 }
 
 void BraveRewardsGetAdsEstimatedEarningsFunction::OnAdsEstimatedEarnings(
+    const bool success,
     const double estimated_pending_rewards,
     const uint64_t next_payment_date_in_seconds,
     const uint64_t ad_notifications_received_this_month) {

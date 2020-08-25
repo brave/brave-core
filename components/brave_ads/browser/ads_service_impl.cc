@@ -411,6 +411,7 @@ void AdsServiceImpl::GetAdsHistory(
 void AdsServiceImpl::GetTransactionHistory(
     GetTransactionHistoryCallback callback) {
   if (!connected()) {
+    std::move(callback).Run(/* success */ false, 0.0, 0, 0);
     return;
   }
 
@@ -1209,11 +1210,17 @@ void AdsServiceImpl::OnGetAdsHistory(
 
 void AdsServiceImpl::OnGetTransactionHistory(
     GetTransactionHistoryCallback callback,
+    const bool success,
     const std::string& json) {
+  if (!success) {
+    std::move(callback).Run(success, 0.0, 0, 0);
+    return;
+  }
+
   ads::StatementInfo statement;
   statement.FromJson(json);
 
-  std::move(callback).Run(statement.estimated_pending_rewards,
+  std::move(callback).Run(success, statement.estimated_pending_rewards,
       statement.next_payment_date_in_seconds,
           statement.ad_notifications_received_this_month);
 }

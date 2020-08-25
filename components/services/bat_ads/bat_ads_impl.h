@@ -167,6 +167,7 @@ class BatAdsImpl :
 
   static void OnGetTransactionHistory(
     CallbackHolder<GetTransactionHistoryCallback>* holder,
+    const bool success,
     const ads::StatementInfo& statement);
 
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;

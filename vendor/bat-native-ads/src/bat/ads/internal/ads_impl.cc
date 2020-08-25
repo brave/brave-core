@@ -1351,11 +1351,12 @@ void AdsImpl::UpdateAdRewards(
 
 void AdsImpl::GetTransactionHistory(
     GetTransactionHistoryCallback callback) {
+  StatementInfo statement;
+
   if (!IsInitialized()) {
+    callback(/* success */ false, statement);
     return;
   }
-
-  StatementInfo statement;
 
   statement.estimated_pending_rewards =
       get_ad_rewards()->GetEstimatedPendingRewards();
@@ -1372,7 +1373,7 @@ void AdsImpl::GetTransactionHistory(
       GetTransactions(0, to_timestamp_in_seconds);
   statement.transactions = transactions;
 
-  callback(statement);
+  callback(/* success */ true, statement);
 }
 
 TransactionList AdsImpl::GetTransactions(
