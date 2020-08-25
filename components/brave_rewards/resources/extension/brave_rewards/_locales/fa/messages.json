@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "لغو",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "ورود به سیستم",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "تأیید کیف پول به شما امکان می‌دهد سرمایه‌های خود را کارآمدتر مدیریت کنید.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "برای ایجاد یک حساب Uphold، به حداقل 25 BAT نیاز دارید. لطفاً بعداً دوباره امتحان کنید. <br/>اگر یک حساب تأییدشده Uphold دارید، ورود به سیستم را ادامه دهید.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "متصل",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "معوق",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

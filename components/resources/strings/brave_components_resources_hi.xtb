@@ -42,6 +42,12 @@
 <translation id="383680190590774040">घड़ी</translation>
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="3159285901314605198">बैकग्राउंड इमेज</translation>
+<translation id="1776831331757823105">घड़ी</translation>
+<translation id="4643117005422448078">शीर्ष साइट्स</translation>
+<translation id="7791543448312431591">जोड़ें</translation>
+<translation id="7679334366167089823">गोपनीयता-सम्मान वाले विज्ञापन देखने के लिए टोकन कमाएँ।</translation>
+<translation id="1531133232292396145">सीधे अपने ब्राउज़र में Binance पर क्रिप्टो ट्रेड करें।</translation>
+<translation id="2166494527623220386">सीधे अपने ब्राउज़र में Gemini पर ट्रेड क्रिप्टो करें।</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8730621377337864115">पूर्ण</translation>
 <translation id="6248988683584659830">खोज सेटिंग्स.</translation>
@@ -98,7 +104,7 @@
 <translation id="7954950242989581218">सुरक्षित और अच्छा ब्राउज़ करें</translation>
 <translation id="2188651882929633653">Brave शील्ड उस क्रीपी स्टफ को ब्लॉक करता है जो आपको पूरे वेब पर ट्रैक करने की कोशिश करता है अधिकांश विज्ञापनों सहित. शील्ड को डाउन सेट करेंयदि कोई साइटकाम नहीं कर रही है. Brave कुछ फ़ीचर्स के समग्र उपयोग का अनुमान लगाने के लिए <ph name="BEGIN_LINK_P3A">&lt;a target="_blank" href="$1"&gt;</ph>पूरी तरह से निजी प्रोडक्ट एनालिटिक्स का<ph name="END_LINK_P3A">&lt;/a&gt;</ph> उपयोग करता है. आप इसे सेटिंग्स में बंद कर सकते<ph name="BEGIN_LINK_P3A_SETTINGS">&lt;a target="_blank" href="$2"&gt;</ph>Settings<ph name="END_LINK_P3A_SETTINGS">&lt;/a&gt;</ph>.</translation>
 <translation id="1919345977826869612">विज्ञापन</translation>
-<translation id="2128226640852355533">Brave विज्ञापन देखकर {{मुद्रा}} अर्जित करें। दर्शाए गए विज्ञापन आपके ब्राउज़िंग व्यवहार के अनुसार, आपकी रुचियों पर आधारित हैं। कोई भी व्यक्तिगत डेटा या ब्राउज़िंग विवरण कभी भी आपके ब्राउज़र से बाहर नहीं जाते हैं।</translation>
+<translation id="2128226640852355533">Brave विज्ञापन देखकर {{currency}} अर्जित करें। दर्शाए गए विज्ञापन आपके ब्राउज़िंग व्यवहार के अनुसार, आपकी रुचियों पर आधारित हैं। कोई भी व्यक्तिगत डेटा या ब्राउज़िंग विवरण कभी भी आपके ब्राउज़र से बाहर नहीं जाते हैं।</translation>
 <translation id="6112368337882254910">स्वतः-योगदान</translation>
 <translation id="3742599705619405136">प्रकाशकों और सामग्री रचनाकारों का समर्थन करने का एक स्वचालित तरीका।  मासिक भुगतान सेट करें और सामान्य रूप से ब्राउज़ करें।  Brave सत्यापित साइटें जो आप देखते हैं, वे आपके योगदान को स्वचालित रूप से प्राप्त करेंगी, जो कि आपके ध्यान में Brave द्वारा मापी गई हैं।</translation>
 <translation id="20281847067919078">अनुमानित लंबित पुरस्कार</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">ट्विटर</translation>
 <translation id="3920963435109110161">जैसे ही आप रत्न ढूंढने में सफल होते है तभी उसी वक़्त टिप अर्जित करें.</translation>
 <translation id="3642432959491988696">अगर पसंद आए तो, लोगों को तुरन्त एक ट्वीट कर बताएं।</translation>
-<translation id="5984081903757971165">{{balance}} {{currency}} बरामद हुई।  आपकी वॉलेट कुंजी को सफलतापूर्वक सत्यापित और लोड कर दिया गया है।</translation>
+<translation id="4875485795191140618">आपकी वॉलेट की को सफलतापूर्वक सत्यापित और लोड कर दिया गया है।</translation>
 <translation id="1083279119532577005">वॉलेट पुनःस्थापित!</translation>
 <translation id="7841456038054167122">कृपया कुंजी पुनः दर्ज करें या विभिन्न कुंजी का प्रयास करें।</translation>
+<translation id="340102383764929340">डाली गई रीस्टोर की ज़्यादा सपोर्ट नहीं करती है। कृपया नई की पाने के लिए<ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt; </ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> पर जाएं;</translation>
 <translation id="2195074481553016770">लगभग पहुँच गए …</translation>
 <translation id="5254740304961202261">साबित करें की आप इंसान हैं!</translation>
 <translation id="2187043784382239974">हमम, काफी नहीं ...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">देखा गया</translation>
 <translation id="2852258589816753010">वर्तमान में आपके क्षेत्र में BAT समर्थित नहीं है। अपडेट के लिए कृपया <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> को देखें।</translation>
 <translation id="2564425876266960486">Brave ब्राउज़र BAT कार्ड निर्माण में समस्या हुई है</translation>
+<translation id="6473583070570450185">लॉग इन करने के लिए आपको एक सत्यापित वॉलेट ज़रूरत है</translation>
+<translation id="2106271389438168634">Uphold वॉलेट बनाने के लिए आपको न्यूनतम 25 BAT की ज़रूरत होती है। Uphold के साथ अपने वॉलेट को सत्यापित करने के बाद कृपया फिर कोशिश करें।</translation>
 <translation id="7422678632904904341">मात्रा</translation>
 <translation id="6969783933307596818">हर 5 सेकंड में स्वचालित रूप से रिफ़्रेश करें</translation>
 <translation id="5025866799968038247">शेष की जानकारी</translation>
-<translation id="1642443162274867084">बटुआ बनाया गया</translation>
+<translation id="6073289164268847023">वॉलेट बनाया गया:</translation>
 <translation id="6643016212128521049">साफ़ करें</translation>
 <translation id="8949473809474431949">योगदान राशि:</translation>
 <translation id="4468686134841688885">बनाया गया:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">इनाम बंद कर दिए गए थे</translation>
 <translation id="3354337256330577726">ऑटो-योगदान बंद कर दिया गया था</translation>
 <translation id="6727186931929643711">पुनः प्रयास करना बंद कर दिया है</translation>
+<translation id="2059498613853603008">चेतावनी: इस पेज का डेटा संवेदनशील हो सकता है। उनके साथ वैसा ही व्यवहार करें जैसाकि आप अपने वॉलेट की निजी की के साथ करेंगे। सावधान रहें कि आप उन्हें किसके साथ साझा करते हैं।</translation>
 <translation id="7375125077091615385">प्रकार:</translation>
 <translation id="4973347371961481083">योगदान</translation>
 <translation id="1924618796077284366">पूर्ण लॉग डाउनलोड करें</translation>
+<translation id="1979114396925139279">बाहरी वॉलेट जानकारी</translation>
 <translation id="5457113250005438886">अमान्य</translation>
-<translation id="7687511348932340294">मुख्य जानकारी का स्थान:</translation>
+<translation id="6161467863097205016">मुख्य जानकारी बिंदु:</translation>
 <translation id="1907668701131938713">हम लॉग की अंतिम {{numberOfLines}} लाइनें दिखाते हैं। यदि आप संपूर्ण लॉग चाहते हैं, तो आप इसे ऊपर से डाउनलोड कर सकते हैं।</translation>
 <translation id="7168491065836975228">पुरस्कार आतंरिक</translation>
 <translation id="758790787422117549">पर्सोना ID</translation>
@@ -248,8 +259,16 @@
 <translation id="6672180611914406778">कुल शेष</translation>
 <translation id="2223892939866251845">उपयोगकर्ता ID</translation>
 <translation id="4235360514405112390">मान्य</translation>
+<translation id="3902084968737576005">वॉलेट एड्रेस:</translation>
 <translation id="2326487656644542536">वॉलेट की जानकारी</translation>
-<translation id="3576689061489548788">वॉलेट भुगतान आईडी:</translation>
+<translation id="8559420016582377654">वॉलेट पेमेंट आईडी::</translation>
+<translation id="438586487791444158">वॉलेट स्थिति:</translation>
+<translation id="3368922792935385530">कनेक्टेड</translation>
+<translation id="8874184842967597500">कनेक्ट नहीं है</translation>
+<translation id="4569155249847375786">सत्यापित है</translation>
+<translation id="922103963921062336">डिस्कनेक्ट किया गया (सत्यापित नहीं)</translation>
+<translation id="6521149675246672063">डिस्कनेक्ट किया गया (सत्यापित)</translation>
+<translation id="3248185426436836442">लंबित है</translation>
 <translation id="5094577350232361255">बारे में</translation>
 <translation id="4918086044614829423">स्वीकार करें</translation>
 <translation id="5916290544882167205">Brave सॉफ़्टवेयर। Brave, Brave सॉफ़्टवेयर का एक पंजीकृत ट्रेडमार्क है। साइट के नाम साइट के मालिकों के ट्रेडमार्क या पंजीकृत ट्रेडमार्क हो सकते हैं।</translation>
@@ -298,7 +317,7 @@
 <translation id="1767561995429774671">सहयोग करें</translation>
 <translation id="2030909064203578811">स्वतः-योगदान निर्धारण</translation>
 <translation id="6896758677409633944">कॉपी बनाएं</translation>
-<translation id="7071388534095161437">आप ’ वर्तमान में हर महीने इस साइट पर {{current Donation}} भेज रहें है.</translation>
+<translation id="7071388534095161437">आप ’ वर्तमान में हर महीने इस साइट पर {{currentDonation}} भेज रहें है.</translation>
 <translation id="4932733599132424254">तिथि</translation>
 <translation id="1366855498335432549">जमा</translation>
 <translation id="3552003743293281224">जमां करें</translation>
@@ -325,12 +344,15 @@
 <translation id="418343137736963579">स्वतः-योगदान से बाहर कुल साइटों की संख्या</translation>
 <translation id="1759104587873258696">पर समय सीमा समाप्त</translation>
 <translation id="6149218349077925111">के लिए</translation>
-<translation id="7513117072433487074">समाप्ति तिथि तक {{मुद्रा}} का उपयोग नहीं करने पर, यह स्वचालित रूप से Brave उपयोगकर्ता विकास पूल में वापस आ जाएगी।</translation>
+<translation id="7513117072433487074">समाप्ति तिथि तक {{currency}} का उपयोग नहीं करने पर, यह स्वचालित रूप से Brave उपयोगकर्ता विकास पूल में वापस आ जाएगी।</translation>
 <translation id="279567716178902927">अनुदान समाप्ति तिथि</translation>
 <translation id="2104073734684466851">अनुदान</translation>
-<translation id="2291686779354188838">नमस्ते, {{नाम}}!</translation>
+<translation id="2291686779354188838">नमस्ते, {{name}}!</translation>
 <translation id="1389143276807887637">आयात</translation>
 <translation id="7335371657242627509">ऑटो-योगदान को शामिल करें</translation>
+<translation id="1864111464094315414">प्रवेश करें</translation>
+<translation id="4556504723624686474">वॉलेट को सत्यापित करने से आप अपने फंड को अधिक कुशलता से प्रबंधित कर सकते हैं।</translation>
+<translation id="4188679602963314994">Uphold खाता बनाने के लिए आपके पास न्यूनतम 25 BAT होना आवश्यक है। बाद में फिर से कोशिश करें। <ph name="BREAK">&lt;br/&gt;</ph> यदि आपके पास पहले से सत्यापित Uphold खाता है, तो लॉग इन करना जारी रखें</translation>
 <translation id="3250511771491660127">इसे मासिक बनाएं</translation>
 <translation id="6028954173739504682">अपना वॉलेट प्रबंधित करें</translation>
 <translation id="7886389832052393750">अप्रैल</translation>
@@ -359,8 +381,8 @@
 <translation id="5736183007277264868">अभी कोई टोकन अनुदान उपलब्ध नहीं है।</translation>
 <translation id="8307851765167460403">अभी तक कोई गतिविधि नहीं…</translation>
 <translation id="8589748782214271192">नहीं, धन्यवाद</translation>
-<translation id="4420084541981425487">पर्याप्त {{मुद्रा}} नहीं है।</translation>
-<translation id="6330068272761277483">पर्याप्त {{मुद्रा}} नहीं है। कृपया</translation>
+<translation id="4420084541981425487">पर्याप्त {{currency}} नहीं है।</translation>
+<translation id="6330068272761277483">पर्याप्त {{currency}} नहीं है। कृपया</translation>
 <translation id="3630697955794050612">बंद</translation>
 <translation id="4921250468871504777">ठीक है</translation>
 <translation id="7866482334467279021">पर</translation>
@@ -389,8 +411,8 @@
 <translation id="108052542935515756">के साथ आप शुरू कर सकते हैं</translation>
 <translation id="194625454574835815">रिकवरी कुंजी</translation>
 <translation id="6354568176665589146">आवर्ती</translation>
-<translation id="2391095793008133394">उनके पोस्ट के लिए टिप {{ उपयोगकर्ता }}:</translation>
-<translation id="7557413530932469222">उनके पोस्ट के लिए टिप {{ उपयोगकर्ता }}!</translation>
+<translation id="2391095793008133394">उनके पोस्ट के लिए टिप {{user}}:</translation>
+<translation id="7557413530932469222">उनके पोस्ट के लिए टिप {{user}}!</translation>
 <translation id="717513177896084801">टिप {{ user }}</translation>
 <translation id="1110535155349301542">हटाना</translation>
 <translation id="8204292894173669182">सेव्ड से हटा दें</translation>
@@ -509,7 +531,7 @@
 <translation id="4947094120398792493">आपका रिवार्ड आपके ब्रेव रिवार्ड्स वॉलेट में आएगा है।</translation>
 <translation id="39734939514946950">आपकी रिवार्ड राशि</translation>
 <translation id="2151535059686617995">आज’ आपका भाग्यशाली दिन है!</translation>
-<translation id="5030988785798407804">आपका {{मुद्रा}} अनुदान जल्द ही आने वाला है।</translation>
+<translation id="5030988785798407804">आपका {{currency}} अनुदान जल्द ही आने वाला है।</translation>
 <translation id="2132683977638223450">मुफ़्त अंक अनुदान</translation>
 <translation id="7512440811010447157">सत्यापित करें</translation>
 <translation id="8030169304546394654">डिसकनेक्ट करें</translation>
@@ -526,13 +548,13 @@
 <translation id="9096003370755878766">BAT को निकले जिसे आपने पहले अपने Brave Rewards वॉलेट में जोड़ा होगा</translation>
 <translation id="8558636200953226885">लेकिन यदि आप सत्यापित करते हैं, तो आप कर सकते हैं...</translation>
 <translation id="3354315693758743702">आपके वॉलेट का सत्यापन वैकल्पिक है।</translation>
-<translation id="4569155249847375786">सत्यापित है</translation>
 <translation id="8465442795593991224">अनुरोध की गई सेवाओं के आधार पर आपको अपनी पहचान सत्यापित करने के लिए Uphold की आवश्यकता हो सकती है।</translation>
 <translation id="723054503945711909">Brave Software Inc. एसे किसी भी व्यक्तिगत जानकारी को प्रोसेस, स्टोर या एक्सेस नहीं करता है, जिसे आप उनके साथ एक खाता स्थापित करते समय Uphold को प्रदान करते हैं।</translation>
 <translation id="7404779623219601861">उपहार कार्ड के लिए BAT को रिडीम करें</translation>
 <translation id="6215565499749144110">TAP नेटवर्क के साथ, आप अपने BAT को लोकप्रिय नाम-ब्रांड के उपहार कार्ड के लिए रिडीम कर सकते हैं।</translation>
-<translation id="526152301446370337">TAP पर जाएँ।</translation>
 <translation id="6915065518766963119">* अपहोल्ड सत्यापन की आवश्यकता है।</translation>
+<translation id="651649139059930379">Uphold कार्ड के साथ 2% क्रिप्टोबैक प्राप्त करें</translation>
+<translation id="1109729143147368573">दुनिया भर में लगभग 50 मिलियन व्यापारियों और एटीएम में अपनी क्रिप्टो और अन्य संपत्ति को खर्च करें। क्रिप्टो प्राप्त करने के लिए क्रिप्टो खर्च करें!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Brave रिवॉर्ड्स<ph name="LINK_END"/> के बारे में अधिक जानें</translation>
 <translation id="5826706758731195747">रिवार्ड को चालू कर, आप <ph name="LINK_BEGIN"/>सेवा की शर्तों <ph name="LINK_END"/>से सहमत होते हैं।</translation>
 <translation id="8344084848798035850">इस महीने की अब तक की अनुमानित कमाई</translation>
@@ -553,6 +575,7 @@
 <translation id="6759185676704303656">आप’ इस बैकग्राउंड इमेज को देखने के लिए भुगतान कर रहे हैं।</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Brave रिवॉर्ड्स में<ph name="LINK_END"/> स्पांसर्ड इमेजों के बारे में अधिक जानें।</translation>
 <translation id="6113004497629356998">स्पांसर्ड इमेजों को छिपाएँ</translation>
+<translation id="2148613324460538318">कार्ड जोड़ें</translation>
 <translation id="5977237145327845546">अपने दोस्तों और सहकर्मियों के साथ एक निजी वीडियो कॉल शुरू करें।</translation>
 <translation id="5850325887346946383">वीडियो कॉल शुरू करें</translation>
 <translation id="3651550649176056334">आपके डेटा के बारे में</translation>
@@ -598,6 +621,23 @@
 <translation id="2956070106555335453">सारांश</translation>
 <translation id="439104575421522802">सेशन समाप्त हो गया</translation>
 <translation id="8558560988211507902">आपका Binance एक्सेस टोकन समाप्त हो गया है. कृपया विजेट का उपयोग जारी रखने के लिए पुन: कनेक्ट करें.</translation>
+<translation id="1543656153506416324">Gemini के साथ खरीदारी और व्यापार करें</translation>
+<translation id="8960333903621861280">अपने Gemini खाता बैलेंस और ट्रेड क्रिप्टो को देखने के लिए Gemini कनेक्शन को चालू करें।</translation>
+<translation id="7604416013180651887">Gemini से कनेक्ट करें</translation>
+<translation id="2349109114223854255">आपके Gemini एक्सेस टोकन की समय सीमा समाप्त हो गई है और उसे रिफ़्रेश नहीं किया जा सका। कृपया फिर से कनेक्ट करें।</translation>
+<translation id="4848984536030986115">व्यापार करने में असमर्थ</translation>
+<translation id="7352651011704765696">कुछ गलत हो गया</translation>
+<translation id="7097088316781182926">व्यापार की पुष्टि करें</translation>
+<translation id="3488255243387417752">बेचना</translation>
+<translation id="7969910554171263591">एक मूल्य प्राप्त करें</translation>
+<translation id="1848737374354350807">शेष</translation>
+<translation id="8285358301500391177">खरीदना</translation>
+<translation id="8675476238074172660">बेचना</translation>
+<translation id="3081546448594005997">आपने ख़रीदा</translation>
+<translation id="8810136648184657966">तुमने बेचा</translation>
+<translation id="1833248467354516560">यूनिट मूल्य</translation>
+<translation id="4763179765154524864">कुल खर्च किया</translation>
+<translation id="8851480289992540512">कुल प्राप्त हुआ</translation>
 <translation id="5655621391922317800">क्रिप्टो वॉलेट</translation>
 <translation id="616639131065447379">Brave क्रिप्टो वॉलेट में स्वागत है</translation>
 <translation id="1740464057879304704">क्रिप्टो वॉलेट आपको Brave में क्रिप्टोकरेंसी और संबंधित एसेट के साथ काम करने की सुविधा देता है। क्रिप्टो वॉलेट ETH और BAT जैसे एथेरियम टोकन के समर्थन के साथ ही संग्रहणीय है और आपको ऐप्स और अन्य स्मार्ट अनुबंधों के साथ काम करने की सुविधा देता है। यह सब उन लोगों के लिए है जो एथेरियम और अन्य ब्लॉकचैन सिस्टम से परिचित हैं या सीखने के लिए उत्साहित हैं।</translation>

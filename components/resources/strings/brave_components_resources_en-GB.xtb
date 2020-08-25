@@ -42,6 +42,12 @@
 <translation id="383680190590774040">clock</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Background Image</translation>
+<translation id="1776831331757823105">Clock</translation>
+<translation id="4643117005422448078">Top sites</translation>
+<translation id="7791543448312431591">Add</translation>
+<translation id="7679334366167089823">Earn tokens for watching privacy-respecting ads.</translation>
+<translation id="1531133232292396145">Trade crypto on Binance directly in your browser.</translation>
+<translation id="2166494527623220386">Trade crypto on Gemini directly in your browser.</translation>
 <translation id="6165508094623778733">Learn more</translation>
 <translation id="8730621377337864115">Done</translation>
 <translation id="6248988683584659830">Search settings</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tip on the spot as you find gems.</translation>
 <translation id="3642432959491988696">If you like, let people know with a quick tweet.</translation>
-<translation id="5984081903757971165">{{balance}} {{currency}} was recovered. Your wallet key has been verified and loaded successfully.</translation>
+<translation id="4875485795191140618">Your wallet key has been verified and loaded successfully.</translation>
 <translation id="1083279119532577005">Wallet restored!</translation>
 <translation id="7841456038054167122">Please re-enter keys or try different keys.</translation>
+<translation id="340102383764929340">The restore key entered is not supported anymore. Please visit <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> to get a new key.</translation>
 <translation id="2195074481553016770">Almost there!</translation>
 <translation id="5254740304961202261">Prove that you are human!</translation>
 <translation id="2187043784382239974">Hmmm, not quite...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">Viewed</translation>
 <translation id="2852258589816753010">BAT is not currently supported in your region. Please refer to <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for updates.</translation>
 <translation id="2564425876266960486">Error creating Brave Browser BAT card</translation>
+<translation id="6473583070570450185">You need a verified wallet to login</translation>
+<translation id="2106271389438168634">You need a minimum of 25 BAT to create an Uphold wallet. Please try again after you have verified your wallet with Uphold.</translation>
 <translation id="7422678632904904341">Amount:</translation>
 <translation id="6969783933307596818">Automatically refresh every 5 seconds</translation>
 <translation id="5025866799968038247">Balance info</translation>
-<translation id="1642443162274867084">Wallet created</translation>
+<translation id="6073289164268847023">Wallet created:</translation>
 <translation id="6643016212128521049">Clear</translation>
 <translation id="8949473809474431949">Contributed amount:</translation>
 <translation id="4468686134841688885">Created at:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">Rewards was turned off</translation>
 <translation id="3354337256330577726">Auto-contribute was turned off</translation>
 <translation id="6727186931929643711">Stopped retrying</translation>
+<translation id="2059498613853603008">WARNING: data on this page may be sensitive. Treat them as you would your wallet private keys. Be careful who you share them with.</translation>
 <translation id="7375125077091615385">Type:</translation>
 <translation id="4973347371961481083">Contributions</translation>
 <translation id="1924618796077284366">Download full log</translation>
+<translation id="1979114396925139279">External wallet info</translation>
 <translation id="5457113250005438886">Invalid</translation>
-<translation id="7687511348932340294">Key Info Seed:</translation>
+<translation id="6161467863097205016">Key info seed:</translation>
 <translation id="1907668701131938713">We show the last {{numberOfLines}} lines of the log. If you want the whole log, you can download it above.</translation>
 <translation id="7168491065836975228">Rewards internals</translation>
 <translation id="758790787422117549">Persona ID</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">Total balance</translation>
 <translation id="2223892939866251845">User ID</translation>
 <translation id="4235360514405112390">Valid</translation>
+<translation id="3902084968737576005">Wallet address:</translation>
 <translation id="2326487656644542536">Wallet info</translation>
-<translation id="3576689061489548788">Wallet Payment ID:</translation>
+<translation id="8559420016582377654">Wallet payment ID:</translation>
+<translation id="438586487791444158">Wallet status:</translation>
+<translation id="3368922792935385530">Connected</translation>
+<translation id="8874184842967597500">Not connected</translation>
+<translation id="4569155249847375786">Verified</translation>
+<translation id="922103963921062336">Disconnected (not verified)</translation>
+<translation id="6521149675246672063">Disconnected (verified)</translation>
+<translation id="3248185426436836442">Pending</translation>
 <translation id="5094577350232361255">about</translation>
 <translation id="4918086044614829423">Accept</translation>
 <translation id="5916290544882167205">Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</translation>
@@ -330,6 +349,9 @@
 <translation id="2291686779354188838">Hello, {{name}}!</translation>
 <translation id="1389143276807887637">import</translation>
 <translation id="7335371657242627509">Include in Auto-Contribute</translation>
+<translation id="1864111464094315414">Login</translation>
+<translation id="4556504723624686474">Verifying wallet allows you to manage your funds more efficiently.</translation>
+<translation id="4188679602963314994">You need to have minimum 25 BAT to create an Uphold account. Please try again later. <ph name="BREAK">&lt;br/&gt;</ph>If you already have a verified Uphold account, continue to login.</translation>
 <translation id="3250511771491660127">Make this monthly</translation>
 <translation id="6028954173739504682">Manage Your Wallet</translation>
 <translation id="7886389832052393750">Apr</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">Withdraw BAT that you may have previously added to your Brave Rewards wallet</translation>
 <translation id="8558636200953226885">But if you verify, you can...</translation>
 <translation id="3354315693758743702">Verifying your wallet is optional.</translation>
-<translation id="4569155249847375786">Verified</translation>
 <translation id="8465442795593991224">Uphold may require you to verify your identity based on services requested.</translation>
 <translation id="723054503945711909">Brave Software Inc. does not process, store or access any of the personal information that you provide to Uphold when you create an account with them.</translation>
 <translation id="7404779623219601861">Redeem BAT for gift cards</translation>
 <translation id="6215565499749144110">With TAP Network, you can redeem your BAT for popular name-brand gift cards.</translation>
-<translation id="526152301446370337">Visit TAP.</translation>
 <translation id="6915065518766963119">* Requires Uphold verification.</translation>
+<translation id="651649139059930379">Get 2% crypto back with the Uphold card</translation>
+<translation id="1109729143147368573">Spend your crypto and other assets at nearly 50 million merchants and ATMs worldwide. Spend crypto to get crypto!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> about Brave Rewards</translation>
 <translation id="5826706758731195747">By turning on Rewards, you agree to the <ph name="LINK_BEGIN"/>Terms of Service<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Estimated earnings so far this month</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">You’re getting paid to view this background image.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/> about sponsored images in Brave Rewards.</translation>
 <translation id="6113004497629356998">Hide sponsored images</translation>
+<translation id="2148613324460538318">Add card</translation>
 <translation id="5977237145327845546">Start a private video call with your friends and colleagues.</translation>
 <translation id="5850325887346946383">Start video call</translation>
 <translation id="3651550649176056334">About your data</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">Summary</translation>
 <translation id="439104575421522802">Session expired</translation>
 <translation id="8558560988211507902">Your Binance access token has expired. Please reconnect to continue using the widget.</translation>
+<translation id="1543656153506416324">Purchase and trade with Gemini</translation>
+<translation id="8960333903621861280">Enable a Gemini connection to view your Gemini account balance and trade crypto.</translation>
+<translation id="7604416013180651887">Connect to Gemini</translation>
+<translation id="2349109114223854255">Your Gemini access token has expired and could not be refreshed. Please reconnect.</translation>
+<translation id="4848984536030986115">Unable to perform trade</translation>
+<translation id="7352651011704765696">Something went wrong</translation>
+<translation id="7097088316781182926">Confirm trade</translation>
+<translation id="3488255243387417752">Sell</translation>
+<translation id="7969910554171263591">Get a quote</translation>
+<translation id="1848737374354350807">Balance</translation>
+<translation id="8285358301500391177">Buying</translation>
+<translation id="8675476238074172660">Selling</translation>
+<translation id="3081546448594005997">You bought</translation>
+<translation id="8810136648184657966">You sold</translation>
+<translation id="1833248467354516560">Unit price</translation>
+<translation id="4763179765154524864">Total spent</translation>
+<translation id="8851480289992540512">Total received</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="616639131065447379">Welcome to Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets lets you work with cryptocurrency and related assets in Brave. Crypto Wallets supports Ethereum tokens like ETH and BAT, as well as collectibles, and lets you work with Ðapps and other smart contracts. All this is meant for people who are familiar with Ethereum and other blockchain systems — or are excited to learn.</translation>

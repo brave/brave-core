@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Ακύρωση",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Σύνδεση",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Η επαλήθευση του πορτοφολιού σάς επιτρέπει να διαχειρίζεστε τα χρήματά σας πιο αποτελεσματικά.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Θα πρέπει να έχετε τουλάχιστον 25 BAT για να δημιουργήσετε έναν λογαριασμό Uphold. Παρακαλώ δοκιμάστε ξανά αργότερα. <br/> Εάν έχετε ήδη επαληθευμένο λογαριασμό Uphold, συνδεθείτε.\n",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Σε σύνδεση",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Εκκρεμεί",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

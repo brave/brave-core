@@ -22,8 +22,6 @@
 
 โดยการติดตั้งส่วนขยายนี้ คุณได้ยอมรับข้อตกลงการใช้งาน Google Widevine คุณได้ตกลงว่า Brave จะไม่รับผิดชอบต่อความเสียหายหรือสูญหายในการเชื่อมต่อการใช้ Google Widevine ของคุณ</translation>
 <translation id="410351446219883937">เล่นอัตโนมัติ</translation>
-<translation id="2240268017737062801">ถามเมื่อเว็บต้องการเล่นสื่ออัตโนมัติ</translation>
-<translation id="3371702087847741961">ถามเมื่อเว็บต้องการเล่นสื่ออัตโนมัติ(แนะนำ)</translation>
 <translation id="3218385319396786393">การเล่นอัตโนมัติถูกบล็อกในหน้านี้</translation>
 <translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST"/> เสมอ</translation>
 <translation id="4150684676757176434">ทำการบล็อกการเล่นอัตโนมัติต่อ</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">สถิติ Brave</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">ไซต์ยอดนิยม</translation>
 <translation id="1776831331757823105">นาฬิกา</translation>
 <translation id="7965178729203412357">ตัวตน Tor ใหม่</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">บล็อกสคริปต์</translation>
 <translation id="519861640102428255">ดูและรู้สึก</translation>
 <translation id="4800195524776354947">แสดงจำนวนรายการที่ถูกบล็อคบนไอคอนชิลด์</translation>
-<translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
+<translation id="3932286112122164477">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บไซต์ภายนอก</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">การตั้งค่าเว็บไซต์และชิลด์</translation>
 <translation id="8487693399751278191">นำเข้าบุ๊กมาร์กเดี๋ยวนี้...</translation>
 <translation id="2557899542277210112">สำหรับการเข้าถึงแบบด่วน วางบุ๊กมาร์กไว้ที่นี่บนแถบบุ๊กมาร์ก</translation>
+<translation id="2808630562319398131">รีเซ็ตข้อมูล Brave Rewards...</translation>
 </translationbundle>

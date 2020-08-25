@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Batal",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Masuk",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Memverifikasi dompet mengizinkan Anda mengelola dana dengan lebih efisien.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Anda perlu memiliki minimal 25 BAT untuk membuat akun Uphold. Silakan coba kembali nanti. <br/> Jika Anda sudah memiliki akun Uphold yang terverifikasi, lanjutkan ke masuk akun.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Tersambung",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Tertunda",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

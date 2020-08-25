@@ -55,6 +55,10 @@
     "message": "क्रॉस-साइट ट्रैकर्स ब्लॉक किए गए",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "ट्रैकर्स और विज्ञापन को ब्लॉक किया",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "ट्रैकर्स और विज्ञापन ब्लॉक किए गए (प्रभाशाली)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "सभी कुकीज़ स्वीकार की गईं",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "फिंगरप्रिंटिंग ब्लॉक किया गया",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "फ़िंगरप्रिंटिंग ब्लॉक की गई है (सामान्य)",

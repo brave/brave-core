@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Zrušit",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Přihlásit",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Ověření peněženky vám umožní efektivněji spravovat své finanční prostředky.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Pokud chcete vytvořit účet služby Uphold, musíte mít alespoň 25 BAT. Zkuste to prosím znovu později. <br/> Pokud již máte ověřený účet služby Uphold, pokračujte přihlášením.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Připojeno",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Probíhá",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Annuleren",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Aanmelden",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Door uw portemonnee te verifiëren, kunt u uw geld efficiënter beheren.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "U moet minimaal 25 BAT hebben om een Uphold account aan te maken. Probeer het later opnieuw. <br/> Als u al een geverifieerde Uphold-account hebt, ga dan verder met inloggen.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Verbonden",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "In afwachting",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

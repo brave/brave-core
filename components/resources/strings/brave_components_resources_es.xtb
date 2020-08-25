@@ -42,6 +42,12 @@
 <translation id="383680190590774040">reloj</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Imagen de fondo</translation>
+<translation id="1776831331757823105">Reloj</translation>
+<translation id="4643117005422448078">Sitios populares</translation>
+<translation id="7791543448312431591">Añadir</translation>
+<translation id="7679334366167089823">Gane tokens por ver anuncios que respetan la privacidad.</translation>
+<translation id="1531133232292396145">Invierta en criptomonedas en Binance directamente con su navegador.</translation>
+<translation id="2166494527623220386">Invierta en criptomonedas en Gemini directamente desde el navegador.</translation>
 <translation id="6165508094623778733">Más información</translation>
 <translation id="8730621377337864115">Listo</translation>
 <translation id="6248988683584659830">Buscar ajustes</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Envía una propina cuando veas algo que te guste.</translation>
 <translation id="3642432959491988696">Si te gusta, compártelo con los demás con un tweet.</translation>
-<translation id="5984081903757971165">Se ha recuperado {{balance}} {{currency}}. La clave de tu de monedero ha sido verificada y cargada correctamente.</translation>
+<translation id="4875485795191140618">La clave de su cartera se ha verificado y cargado correctamente.</translation>
 <translation id="1083279119532577005">¡Monedero restablecido!</translation>
 <translation id="7841456038054167122">Por favor vuelve a introducir las claves o prueba otras diferentes.</translation>
+<translation id="340102383764929340">La clave de restablecimiento introducida ya no se acepta. Visite <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para obtener una clave nueva.</translation>
 <translation id="2195074481553016770">Ya casi estamos…</translation>
 <translation id="5254740304961202261">¡Prueba que eres humano!</translation>
 <translation id="2187043784382239974">Hmmm, no del todo...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">Visto</translation>
 <translation id="2852258589816753010">BAT no está disponible actualmente en tu región. Consulta <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>esto<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> para ver las novedades.</translation>
 <translation id="2564425876266960486">Error al crear tarjeta BAT de Brave Browser</translation>
+<translation id="6473583070570450185">Necesita una cartera verificada para iniciar sesión</translation>
+<translation id="2106271389438168634">Necesita un mínimo de 25 BAT para crear una cartera en Uphold. Inténtelo de nuevo después de haber verificado su cartera con Uphold.</translation>
 <translation id="7422678632904904341">Cantidad:</translation>
 <translation id="6969783933307596818">Se refresca automáticamente cada 5 segundos</translation>
 <translation id="5025866799968038247">Información del saldo</translation>
-<translation id="1642443162274867084">Monedero creado</translation>
+<translation id="6073289164268847023">Cartera creada:</translation>
 <translation id="6643016212128521049">Eliminar</translation>
 <translation id="8949473809474431949">Cantidad contribuida:</translation>
 <translation id="4468686134841688885">Creada el:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">Se ha desactivado Brave Rewards</translation>
 <translation id="3354337256330577726">Se desactivó la contribución automática</translation>
 <translation id="6727186931929643711">Se ha dejado de reintentar</translation>
+<translation id="2059498613853603008">ADVERTENCIA: los datos de esta página pueden ser confidenciales. Trátelos como trataría las claves privadas de su cartera. Tenga cuidado respecto a con quién los comparte.</translation>
 <translation id="7375125077091615385">Tipo:</translation>
 <translation id="4973347371961481083">Contribuciones</translation>
 <translation id="1924618796077284366">Descargar el registro completo</translation>
+<translation id="1979114396925139279">Información externa de la cartera</translation>
 <translation id="5457113250005438886">No válido</translation>
-<translation id="7687511348932340294">Información sobre la frase de recuperación:</translation>
+<translation id="6161467863097205016">Semilla de información clave:</translation>
 <translation id="1907668701131938713">Mostramos las últimas {{numberOfLines}} líneas del registro. Si deseas el registro completo, puedes descargarlo arriba.</translation>
 <translation id="7168491065836975228">Recompensas internas</translation>
 <translation id="758790787422117549">ID Persona</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">Saldo total</translation>
 <translation id="2223892939866251845">ID Usuario</translation>
 <translation id="4235360514405112390">Válido</translation>
+<translation id="3902084968737576005">Dirección de la cartera:</translation>
 <translation id="2326487656644542536">Información del monedero</translation>
-<translation id="3576689061489548788">ID Pago Monedero:</translation>
+<translation id="8559420016582377654">Identificación de pago de la cartera:</translation>
+<translation id="438586487791444158">Estado de la cartera:</translation>
+<translation id="3368922792935385530">Conectado</translation>
+<translation id="8874184842967597500">No conectado</translation>
+<translation id="4569155249847375786">Verificado</translation>
+<translation id="922103963921062336">Desconectado (no verificado)</translation>
+<translation id="6521149675246672063">Desconectado (verificado)</translation>
+<translation id="3248185426436836442">Pendiente</translation>
 <translation id="5094577350232361255">acerca de</translation>
 <translation id="4918086044614829423">Aceptar</translation>
 <translation id="5916290544882167205">Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas del propietario del sitio.</translation>
@@ -330,6 +349,9 @@
 <translation id="2291686779354188838">¡Hola, {{name}}!</translation>
 <translation id="1389143276807887637">importar</translation>
 <translation id="7335371657242627509">Incluir en Contribución Automática</translation>
+<translation id="1864111464094315414">Acceder</translation>
+<translation id="4556504723624686474">Verificar su cartera le permite gestionar sus fondos de manera más eficaz.</translation>
+<translation id="4188679602963314994">Tiene que tener al menos 25 BAT para crear una cuenta en Uphold. Inténtelo de nuevo más tarde. <ph name="BREAK">&lt;br/&gt;</ph>Si ya tiene una cuenta verificada en Uphold, continúe para iniciar sesión.</translation>
 <translation id="3250511771491660127">Hacerlo mensualmente</translation>
 <translation id="6028954173739504682">Gestiona tu Monedero</translation>
 <translation id="7886389832052393750">Abril</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">Extrae los BAT que hayas podido añadir previamente a tu monedero de Brave Rewards</translation>
 <translation id="8558636200953226885">Pero si lo verificas, podrás...</translation>
 <translation id="3354315693758743702">Verificar tu monedero es opcional.</translation>
-<translation id="4569155249847375786">Verificado</translation>
 <translation id="8465442795593991224">Uphold puede requerir que verifiques tu identidad en base a los servicios solicitados.</translation>
 <translation id="723054503945711909">Brave Software Inc. no procesa, almacena o accede a ninguna información personal que hayas proporcionado a Uphold al crear una cuenta con ellos.</translation>
 <translation id="7404779623219601861">Canjear BAT para las tarjetas de regalo</translation>
 <translation id="6215565499749144110">Con TAP Network, puedes canjear tus BAT por tarjetas de regalo de marcas populares.</translation>
-<translation id="526152301446370337">Visita TAP.</translation>
 <translation id="6915065518766963119">* Requiere la verificación de Uphold.</translation>
+<translation id="651649139059930379">Obtenga un 2 % de Cryptoback con la tarjeta Uphold</translation>
+<translation id="1109729143147368573">Gaste sus criptomonedas y otros activos en casi 50 millones de comercios y cajeros automáticos de todo el mundo. Gaste criptomonedas para obtener criptomonedas.</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/> sobre Brave Rewards</translation>
 <translation id="5826706758731195747">Al activar Brave Rewards, aceptas los <ph name="LINK_BEGIN"/>Términos del Servicio<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Ganancias estimadas en el mes actual</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">Recibes pagos por visualizar esta imagen de fondo.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Saber más<ph name="LINK_END"/> sobre las imágenes patrocinadas en Brave Rewards.</translation>
 <translation id="6113004497629356998">Ocultar imágenes patrocinadas</translation>
+<translation id="2148613324460538318">Añadir Tarjeta</translation>
 <translation id="5977237145327845546">Inicie una videollamada privada con sus amigos y colegas.</translation>
 <translation id="5850325887346946383">Iniciar videollamada</translation>
 <translation id="3651550649176056334">Acerca de tus datos</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">Resumen</translation>
 <translation id="439104575421522802">Sesión caducada</translation>
 <translation id="8558560988211507902">Tu clave de acceso a Binance ha caducado. Vuelve a conectarte para seguir usando el widget.</translation>
+<translation id="1543656153506416324">Compre y negocie con Gemini</translation>
+<translation id="8960333903621861280">Active una conexión a Gemini para ver el saldo de su cuenta de Gemini e invertir en criptomonedas.</translation>
+<translation id="7604416013180651887">Conéctese a Gemini</translation>
+<translation id="2349109114223854255">Su token de acceso a Gemini ha caducado y no se ha podido actualizar. Vuelva a conectarse.</translation>
+<translation id="4848984536030986115">No se ha podido hacer la operación</translation>
+<translation id="7352651011704765696">Algo ha ido mal</translation>
+<translation id="7097088316781182926">Confirmar operación</translation>
+<translation id="3488255243387417752">Vender</translation>
+<translation id="7969910554171263591">Obtenga un presupuesto</translation>
+<translation id="1848737374354350807">Saldo</translation>
+<translation id="8285358301500391177">Comprando</translation>
+<translation id="8675476238074172660">Vendiendo</translation>
+<translation id="3081546448594005997">Compró</translation>
+<translation id="8810136648184657966">Vendió</translation>
+<translation id="1833248467354516560">Precio unitario</translation>
+<translation id="4763179765154524864">Total gastado</translation>
+<translation id="8851480289992540512">Total recibido</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="616639131065447379">Te damos la bienvenida a Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Crypto Wallets le permite operar con criptomonedas y activos relacionados en Brave. Crypto Wallets admite vales ethereum, como ETH y BAT y también coleccionables. Además, le permite trabajar con Ðaplicaciones y otros contratos inteligentes. Todas las funciones están destinadas a la gente que está familiarizada con ethereum y otros sistemas de cadena de bloques — o que esté dispuesta a aprender.</translation>

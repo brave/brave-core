@@ -55,6 +55,10 @@
     "message": "Đã chặn các bộ theo dõi trên mọi website",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Trình theo dõi và quảng cáo bị chặn",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "Trình theo dõi và quảng cáo đã bị chặn (tích cực)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "Đã cho phép toàn bộ cookie",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Đã chặn tính năng tạo dấu vân tay",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "Vân tay bị chặn (tiêu chuẩn)",

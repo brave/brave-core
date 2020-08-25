@@ -22,8 +22,6 @@
 
 Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với các Điều khoản Sử dụng của Google Widevine. Bạn đồng ý rằng Brave không chịu trách nhiệm đối với bất kỳ thiệt hại hoặc tổn thất nào liên quan đến việc bạn sử dụng Google Widevine.</translation>
 <translation id="410351446219883937">Tự động phát</translation>
-<translation id="2240268017737062801">Hỏi khi nào trang muốn tự động phát phương tiện</translation>
-<translation id="3371702087847741961">Hỏi khi nào trang muốn tự động phát phương tiện (khuyên dùng)</translation>
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
@@ -46,6 +44,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="8173998484743827990">Số liệu thống kê Brave</translation>
 <translation id="5551238871320268996">Brave Cùng nhau</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Các trang Hàng đầu</translation>
 <translation id="1776831331757823105">Đồng hồ</translation>
 <translation id="7965178729203412357">Danh tính Tor mới</translation>
@@ -80,7 +79,7 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4824468494729001999">Chặn các tập lệnh script</translation>
 <translation id="519861640102428255">Giao diện</translation>
 <translation id="4800195524776354947">Hiển thị số lượng các mục bị chặn trên biểu tượng Khiên</translation>
-<translation id="7498695072878479744">Cho phép các nút đăng nhập Google trên các website bên thứ ba</translation>
+<translation id="3932286112122164477">Cho phép các nút đăng nhập Google trên các website bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
@@ -235,4 +234,5 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="5570470519803062774">Cài đặt Trang và Khiên</translation>
 <translation id="8487693399751278191">Nhập dấu trang ngay...</translation>
 <translation id="2557899542277210112">Để truy cập nhanh, hãy đặt dấu trang của bạn ở đây trên thanh dấu trang.</translation>
+<translation id="2808630562319398131">Thiết lập lại dữ liệu Brave Rewards...</translation>
 </translationbundle>

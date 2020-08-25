@@ -22,8 +22,6 @@
 
 Чрез инсталирането на това разширение приемате Общите условия на Google Widevine. Вие се съгласявате, че Brave не носи отговорност за щети или загуби във връзка с използването на Google Widevine.</translation>
 <translation id="410351446219883937">Автоматично изпълнение</translation>
-<translation id="2240268017737062801">Попитайте, когато даден сайт иска автоматично да възпроизвежда медия</translation>
-<translation id="3371702087847741961">Питане когато сайтът иска автоматично да възпроизвежда медия (препоръчва се)</translation>
 <translation id="3218385319396786393">Autoplay беше блокиран на тази страница</translation>
 <translation id="4988333904713528597">Винаги разрешавайте автоматичното възпроизвеждане на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продължаване на блокирането на автоматичното възпроизвеждане</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">Статистика за Brave</translation>
 <translation id="5551238871320268996">Brave заедно</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Т</translation>
 <translation id="1776831331757823105">Часовник</translation>
 <translation id="7965178729203412357">Нова идентичност на Tor</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">Блокиране на скриптове</translation>
 <translation id="519861640102428255">Изглед &amp; усещане</translation>
 <translation id="4800195524776354947">Покажете броя на блокираните елементи на иконата Shields</translation>
-<translation id="7498695072878479744">Разрешаване на бутони за вход в Google на сайтове на трети страни</translation>
+<translation id="3932286112122164477">Разрешаване на бутони за вход в Google на сайтове на трети страни</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
 <translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
 <translation id="958971637207126733">Разреши вградени публикации на LinkedIn</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">Настройки на сайта и щитове</translation>
 <translation id="8487693399751278191">Импортиране на отметките сега...</translation>
 <translation id="2557899542277210112">За бърз достъп поставете отметките си тук на лентата с отметки.</translation>
+<translation id="2808630562319398131">Нулиране на данните за Brave Награди...</translation>
 </translationbundle>

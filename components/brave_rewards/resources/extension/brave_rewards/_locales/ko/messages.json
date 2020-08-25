@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "취소",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "로그인",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "지갑을 인증하면 자금을 보다 효율적으로 관리할 수 있습니다.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Uphold 계정을 만들려면 최소 25 BAT가 있어야 합니다. 나중에 다시 시도하십시오. <br/> 이미 확인된 Uphold 계정이 있는 경우 로그인을 계속하십시오.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "연결됨",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "대기 중",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

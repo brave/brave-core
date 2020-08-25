@@ -41,6 +41,13 @@
 <translation id="8173998484743827990">Brave-statistikk</translation>
 <translation id="383680190590774040">klokke</translation>
 <translation id="3333887201479867589">Brave-belønninger</translation>
+<translation id="1776831331757823105">Klokke</translation>
+<translation id="4643117005422448078">Populære nettsteder</translation>
+<translation id="3159285901314605198">Bakgrunnsbilde</translation>
+<translation id="7791543448312431591">Legg til</translation>
+<translation id="7679334366167089823">Tjen polletter på å se annonser som respekterer personvernet ditt.</translation>
+<translation id="1531133232292396145">Handle krypto på Binance, direkte i nettleseren din.</translation>
+<translation id="2166494527623220386">Trade i krypto på Gemini, direkte i nettleseren din.</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8730621377337864115">Ferdig</translation>
 <translation id="6248988683584659830">Søkeinnstillinger</translation>
@@ -160,9 +167,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gi tips på stedet når du finner skatter.</translation>
 <translation id="3642432959491988696">Spre budskapet med en rask tweet om du vil.</translation>
-<translation id="5984081903757971165">{{balance}} {{currency}} er gjenopprettet. Lommeboknøkkelen din er verifisert og lastet inn.</translation>
+<translation id="4875485795191140618">Verifiseringen og lastingen av lommeboknøkkelen din var vellykket.</translation>
 <translation id="1083279119532577005">Lommebok gjenopprettet!</translation>
 <translation id="7841456038054167122">Vennligst tast inn nøkler på nytt, eller prøv andre nøkler.</translation>
+<translation id="340102383764929340">Gjenopprett-nøkkelen støttes ikke lenger. Vennligst besøk <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for å få en ny nøkkel.</translation>
 <translation id="2195074481553016770">Nesten der…</translation>
 <translation id="5254740304961202261">Bevis at du er et menneske!</translation>
 <translation id="2187043784382239974">Hm, ikke helt...</translation>
@@ -182,16 +190,20 @@
 <translation id="6805660603861526473">Vist</translation>
 <translation id="2852258589816753010">BAT støttes for tiden ikke i din region. Se <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>her<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> for oppdateringer.</translation>
 <translation id="2564425876266960486">Feil ved oppretting av BAT-kort for Brave-nettleseren</translation>
+<translation id="6473583070570450185">Du må ha en verifisert lommebok for å Logge inn</translation>
+<translation id="2106271389438168634">Du må ha minst 25 BAT for å opprette en Uphold-lommebok. Vennligst prøv igjen etter at du har verifisert lommeboken din med Uphold.</translation>
 <translation id="7422678632904904341">Beløp:</translation>
 <translation id="5025866799968038247">Saldoinformasjon</translation>
-<translation id="1642443162274867084">Lommebok opprettet</translation>
+<translation id="6073289164268847023">Lommebok opprettet:</translation>
 <translation id="6643016212128521049">Tøm</translation>
 <translation id="6325525973963619867">Mislyktes</translation>
 <translation id="583281660410589416">Ukjent</translation>
 <translation id="8654112359048700618">Forbered</translation>
+<translation id="2059498613853603008">ADVARSEL: Data på denne siden kan være sensitive. Behandle dem slik du ville behandlet lommeboken din eller nøklene dine. Vær forsiktig med hensyn til hvem du deler dem med.</translation>
 <translation id="7375125077091615385">Type:</translation>
+<translation id="1979114396925139279">Info om ekstern lommebok</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
-<translation id="7687511348932340294">Nøkkelinformasjon:</translation>
+<translation id="6161467863097205016">Nøkkelinso seed:</translation>
 <translation id="758790787422117549">Person-ID</translation>
 <translation id="3671566813999349838">Sum</translation>
 <translation id="751223241692981112">Gjort krav på</translation>
@@ -218,8 +230,16 @@
 <translation id="6672180611914406778">Total saldo</translation>
 <translation id="2223892939866251845">Bruker-ID</translation>
 <translation id="4235360514405112390">Gyldig</translation>
+<translation id="3902084968737576005">Lommebokadresse</translation>
 <translation id="2326487656644542536">Lommebokinformasjon</translation>
-<translation id="3576689061489548788">Wallet betalings-ID:</translation>
+<translation id="8559420016582377654">Lommebok-betalings-ID:</translation>
+<translation id="438586487791444158">Status for lommebok:</translation>
+<translation id="3368922792935385530">Tilkoblet</translation>
+<translation id="8874184842967597500">Ikke tilkoblet</translation>
+<translation id="4569155249847375786">Verifisert</translation>
+<translation id="922103963921062336">Frakoblet (ikke verifisert)</translation>
+<translation id="6521149675246672063">Frakoblet (Verifisert)</translation>
+<translation id="3248185426436836442">Påventende</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Aksepter</translation>
 <translation id="5916290544882167205">Brave Software. Brave er et registrert varemerke for Brave Software. Navn på nettsteder kan være varemerker eller registrerte varemerker for eieren av det aktuelle nettstedet.</translation>
@@ -229,7 +249,7 @@
 <translation id="4241224519481557898">Kategori</translation>
 <translation id="3080423471207781945">Maksimalt antall mottatte annonser pr. time:</translation>
 <translation id="2631006050119455616">Lagret</translation>
-<translation id="2155330833364281539">Annonser du har mottatt de siste {{totalDays}} dagene</translation>
+<translation id="2155330833364281539">Annonser du har mottatt de siste {{totalDays}} dagene</translation>
 <translation id="8863685593846905344">Annonsehistorikk</translation>
 <translation id="2777306694585938662">Ads-belønninger er mottatt</translation>
 <translation id="5212777575344695266">Merk som usømmelig</translation>
@@ -301,6 +321,9 @@
 <translation id="2291686779354188838">Hallo, {{name}}!</translation>
 <translation id="1389143276807887637">importer</translation>
 <translation id="7335371657242627509">Inkluder i auto-bidrag</translation>
+<translation id="1864111464094315414">Pålogging</translation>
+<translation id="4556504723624686474">Når du verifiserer lommeboken din, kan du administere midlene dine mer effektivt.</translation>
+<translation id="4188679602963314994">Du må ha minst 25 BAT for å opprette en Uphold-konto. Vennligst prøv igjen senere. <ph name="BREAK">&lt;br/&gt;</ph> Dersom du allerede har en verifisert Uphold-konto: Fortsett til innloggingen.</translation>
 <translation id="3250511771491660127">Gjør dette månedlig</translation>
 <translation id="6028954173739504682">Administrer lommeboken din</translation>
 <translation id="7886389832052393750">apr</translation>
@@ -364,7 +387,7 @@
 <translation id="717513177896084801">Tips {{ user }}</translation>
 <translation id="1110535155349301542">fjern</translation>
 <translation id="8204292894173669182">Fjern fra Lagrede</translation>
-<translation id="2160578257818656558">Du har satt av {{reservedAmount}} {{currency}} til skapere som ennå ikke har registrert seg for å motta bidrag. Nettleseren din fortsetter å prøve å bidra til vedkommende har verifisert seg, eller til det har gått 90 dager.</translation>
+<translation id="2160578257818656558">Du har satt av {{reservedAmount}} {{currency}} til skapere som ennå ikke har registrert seg for å motta bidrag. Nettleseren din fortsetter å prøve å bidra til vedkommende har verifisert seg, eller til det har gått 90 dager.</translation>
 <translation id="8759753423332885148">Finn ut mer.</translation>
 <translation id="5939518447894949180">Tilbakestill</translation>
 <translation id="3157931365184549694">Gjenopprett</translation>
@@ -487,13 +510,13 @@
 <translation id="9096003370755878766">Ta ut BAT som du kan ha satt inn i Brave Rewards-lommeboken din tidligere</translation>
 <translation id="8558636200953226885">Men hvis du verifiserer, kan du …</translation>
 <translation id="3354315693758743702">Det er valgfritt å verifisere lommeboken.</translation>
-<translation id="4569155249847375786">Verifisert</translation>
 <translation id="8465442795593991224">Uphold kan kreve at du verifiserer identiteten din basert på tjenestene du har forespurt.</translation>
 <translation id="723054503945711909">Brave Software Inc. verken behandler, lagrer eller bruker noen av de personlige opplysningene som du gir til Uphold når du oppretter konto hos dem.</translation>
 <translation id="7404779623219601861">Løs inn BAT i gavekort</translation>
 <translation id="6215565499749144110">Med TAP Network kan du løse inn BAT i gavekort fra populære merkenavn.</translation>
-<translation id="526152301446370337">Besøk TAP.</translation>
 <translation id="6915065518766963119">* Krever Uphold-verifisering.</translation>
+<translation id="651649139059930379">Få 2 % cryptoback med Uphold-kortet</translation>
+<translation id="1109729143147368573">Bruk kryptoen din og andre aktiva hos nesten 50 millioner selgere og minibanker over hele verden. Bruk krypto for å få krypto!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Les mer<ph name="LINK_END"/> om Brave Rewards</translation>
 <translation id="5826706758731195747">Når du slår på Rewards, samtykker du i <ph name="LINK_BEGIN"/>tjenestevilkårene<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Beregnet fortjeneste så langt denne måneden</translation>
@@ -514,6 +537,7 @@
 <translation id="6759185676704303656">Du får betalt for å se på dette bakgrunnsbildet.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Få mer informasjon<ph name="LINK_END"/> om sponsede bilder i Brave Rewards.</translation>
 <translation id="6113004497629356998">Skjul sponsede bilder</translation>
+<translation id="2148613324460538318">Legg til kort</translation>
 <translation id="5977237145327845546">Start en privat videosamtale med dine venner og kolleger.</translation>
 <translation id="5850325887346946383">Start videosamtale</translation>
 <translation id="3651550649176056334">Om dine data</translation>
@@ -559,6 +583,23 @@
 <translation id="2956070106555335453">Sammendrag</translation>
 <translation id="439104575421522802">Økten er utløpt</translation>
 <translation id="8558560988211507902">Binance-tilgangstokenet ditt er utløpt. Koble til på nytt for å fortsette å bruke widgeten.</translation>
+<translation id="1543656153506416324">Kjøp og trade med Gemini</translation>
+<translation id="8960333903621861280">Aktiver en Gemini-forbindelse for å se saldoen for Gemini-kontoen din og handle med krypto.</translation>
+<translation id="7604416013180651887">Koble til Gemini</translation>
+<translation id="2349109114223854255">Din pollett for Gemini-tilgang har utløpt og kunne ikke fornyes. Vennligst koble til på nytt.</translation>
+<translation id="4848984536030986115">Kan ikke gjennomføre handel</translation>
+<translation id="7352651011704765696">Noe gikk galt</translation>
+<translation id="7097088316781182926">Bekreft handel</translation>
+<translation id="3488255243387417752">Selg</translation>
+<translation id="7969910554171263591">Få et pristilbud</translation>
+<translation id="1848737374354350807">Saldo</translation>
+<translation id="8285358301500391177">Kjøper</translation>
+<translation id="8675476238074172660">Selge</translation>
+<translation id="3081546448594005997">Du kjøpte</translation>
+<translation id="8810136648184657966">Du solgte</translation>
+<translation id="1833248467354516560">Enhetspris</translation>
+<translation id="4763179765154524864">Totalt brukt</translation>
+<translation id="8851480289992540512">Mottatt totalt</translation>
 <translation id="5655621391922317800">Kryptolommebøker</translation>
 <translation id="616639131065447379">Velkommen til Braves kryptolommebok</translation>
 <translation id="1740464057879304704">Kryptolommeboken lar deg jobbe med kryptovaluta og relaterte aktiva i Brave. Kryptolommeboken støtter både Ethereum-tokener som ETH og BAT og samleobjekter, og lar deg jobbe med Ðapper og andre smartkontrakter. Alt dette er ment for folk som er kjent med Ethereum og andre blokkjedesystemer, — eller er ivrige etter å lære.</translation>

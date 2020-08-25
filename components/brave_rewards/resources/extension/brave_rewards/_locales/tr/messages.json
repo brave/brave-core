@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "İptal et",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Oturum Aç",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Cüzdanın onaylanması, paranızı daha etkili bir biçimde yönetmenize imkan verir.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Bir Uphold hesabı açabilmek için en az 25 BAT'ınızın olması gerekiyor. Lütfen daha sonra tekrar deneyin. <br/> Zaten onaylanmış bir Uphold hesabınız varsa, giriş yapın.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Bağlı",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Beklemede",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

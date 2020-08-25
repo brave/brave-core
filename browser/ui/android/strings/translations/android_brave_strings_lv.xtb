@@ -27,8 +27,8 @@
 <translation id="7459000603787995422">Izejot aizvērt cilnes</translation>
 <translation id="1680858055899097121">Nesaglabāt cilnes pārlūkošanas sesiju starplaikos</translation>
 <translation id="453601949003770390">Izsekotāji un Ads ir bloķēti</translation>
-<translation id="6761596877474675418">Dati saglabāti</translation>
-<translation id="3034562645284925177">Aprēķinātais ietaupītais laiks</translation>
+<translation id="347604927162577559">Ietaupītie\ndati</translation>
+<translation id="9008534313521214777">Apr. ietaupītais\nlaks</translation>
 <translation id="6572660632052512096">Darbvirsmas režīms</translation>
 <translation id="1340503115760585811">Aktivizēt darbvirsmas skatu jaunām cilnēm</translation>
 <translation id="7924540991929826186">Jaunās cilnēs atvērt vietnes mobilo tālruņu versiju (ieteicams)</translation>
@@ -56,17 +56,21 @@
 <translation id="316832010181763471">Meklētājprogrammas pievienošana</translation>
 <translation id="986879628471635371">Traucējummeklēšanas pievienošana</translation>
 <translation id="5808759341041733958">Izvēlēties noklusējuma meklētājprogrammu</translation>
-<translation id="4428458837269935199">Izmantojiet DuckDuckGo, lai meklējumi būtu vēl privātāki.</translation>
+<translation id="1331593888918588693">Savas preferences vienmēr varēsiet mainīt lietotnes iestatījumos.</translation>
 <translation id="5317780077021120954">Saglabāt</translation>
 <translation id="7053983685419859001">Bloķēt</translation>
 <translation id="5806601733251372221">Brave aizsargi</translation>
 <translation id="2880356288762235261">novērš konfidencialitāti aizskarošas reklāmas un izsekotājus, lai jūs varētu veikt tīmekļa pārlūkošanu bez sajūtas, ka tiekat izsekoti.</translation>
+<translation id="8537217141725709400">Nopelniet <ph name="TOKEN"/></translation>
 <translation id="3333887201479867589">Brave balvas</translation>
+<translation id="5870330605209713397">apskatot privātumu cienošas reklāmas, un pēc noklusējuma atbalstiet savas iecienītas vietnes un satura veidotājus.</translation>
 <translation id="821707262661492716">par konfidencialitāti cienošu reklāmu skatīšanu.</translation>
-<translation id="4281844954008187215">Pakalpojuma noteikumi</translation>
+<translation id="8267692331246948056">Pieskaroties Pelnīt un ziedot, jūs piekrītat</translation>
+<translation id="4281844954008187215">Pakalpojuma noteikumiem</translation>
 <translation id="6871397658902960384">Sākt pārlūkošanu</translation>
 <translation id="454386012157232640">Es neredzēju reklāmu</translation>
 <translation id="1448877943847791441">Brave jums parādīs pirmo reklāmu pēc</translation>
+<translation id="4410793187232041318">Tagad jūs pelnīsiet marķierus ar Brave Ads.</translation>
 <translation id="6511854390690723657">Šī ir jūsu pirmā Brave reklāma. Pieskarieties, lai uzzinātu vairāk.</translation>
 <translation id="4930714375720679147">Ieslēgt</translation>
 <translation id="2453860139492968684">Pabeigt</translation>
@@ -113,10 +117,13 @@
 <translation id="4254029385847607686">DECEMBRIS</translation>
 <translation id="1916285746997567466">Esiet gatavi izbaudīt
 nākamo internetu!</translation>
+<translation id="3540580927110899945">Tagad varat nopelnīt <ph name="TOKEN"/>, skatoties
+privātumu cienošas reklāmas.</translation>
 <translation id="1327938628925645979">PIEVIENOTIES REWARDS</translation>
 <translation id="5567439033041178034">UZZINĀT VAIRĀK</translation>
 <translation id="3780605330121608425">Jūsu maks</translation>
 <translation id="8845154268466251503">Pamata uzmanības marķieris (BAT)</translation>
+<translation id="7837083325641186736"><ph name="VALUE"/></translation>
 <translation id="3826081199286264109">USD</translation>
 <translation id="2104073734684466851">Piešķīrumi</translation>
 <translation id="1165667598801520610">Pievienot līdzekļus</translation>
@@ -146,6 +153,7 @@ mēnesī...</translation>
 <translation id="5463954686005964104">Dot dzeramnaudu šai vietnei katru mēnesi</translation>
 <translation id="7530570094705720669">Maka izveide</translation>
 <translation id="937392350501765664"><ph name="MONTH"/> <ph name="YEAR"/></translation>
+<translation id="4751553692764711651">Jūs esat ziedojis <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/>.</translation>
 <translation id="7997676409547731821">Jūsu ieplānotais ikmēneša automātiskās ziedošanas un ikmēneša dzeramnauda maksājums netika izpildīts nepietiekamu līdzekļu dēļ. Mēs mēģināsim vēlreiz pēc 30 dienām.</translation>
 <translation id="5306913077198665897">Apstrādājot jūsu dzeramnaudas maksājumu, radās kļūda. Lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="2429828319207652823">Apstrādājot jūsu ieguldījumu, radās kļūda.</translation>
@@ -164,6 +172,8 @@ mēnesī...</translation>
 <translation id="4292832015778676417">nopelnīts no reklāmām</translation>
 <translation id="683765328936486920">vietnē YouTube</translation>
 <translation id="8969049974285901797">vietnē Twitch</translation>
+<translation id="4376933248999950592">Jūs esat atvēlējis <ph name="BAT_VALUE"/>  <ph name="BAT_TEXT"/> satura veidotājiem, kuri vēl nav pieteikušies saņemt ziedojumus. Jūsu pārlūks turpinās mēģināt ziedot, līdz tie pieteiksies vai līdz būs pagājušas 90 dienas.</translation>
+<translation id="3101693828171454453">Nepietiek <ph name="TOKEN"/></translation>
 <translation id="6940273954212603510">lūdzu</translation>
 <translation id="1036277985068412734">pievienot līdzekļus</translation>
 <translation id="3492491948683276944">iestatiet ikmēneša dzeramnaudu</translation>
@@ -214,12 +224,15 @@ mēnesī...</translation>
 <translation id="327726072512457161">Aizvērt iestatījumus</translation>
 <translation id="8050847734948770789">Iespējot Brave balvas</translation>
 <translation id="9187185473011056079">Es piekrītu!</translation>
+<translation id="8185825081026121627">Nopelniet pamata uzmanības marķieri, skatoties privātumu ievērojošas Brave Rewards reklāmas.</translation>
 <translation id="5321518976657560663">Atiestates kļūda</translation>
 <translation id="4114170343590425996">Radās kļūda, kas atiestatīja Brave Rewards. Lūdzu, vēlreiz atveriet Brave un mēģiniet vēlreiz.</translation>
 <translation id="6393502589311632553">Radīt reklāmas, kad nelietojat Brave</translation>
 <translation id="3349204812119681938">Atiestatīt Brave Rewards</translation>
 <translation id="8782039523249932839">Šīs darbības rezultātā tiks dzēsts jūsu Brave maks un atiestatīti jūsu Brave balvu dati</translation>
 <translation id="6810078320346589989">Izveidojiet grāmatzīmi</translation>
+<translation id="3396347744975515056">Brave sinhronizācijas pakalpojums ir atjaunināts, un to nepieciešams iestatīt</translation>
+<translation id="7473245612074035141">Sākt iestatīšanu</translation>
 <translation id="597993392929850353">Brave licence</translation>
 <translation id="6336451774241870485">Jauna inkognito cilne</translation>
 <translation id="6199596294742117349">Šī ir inkognito cilne</translation>
@@ -240,15 +253,15 @@ mēnesī...</translation>
 <translation id="4522570452068850558">Informācija</translation>
 <translation id="1486343603936278248">marķieris</translation>
 <translation id="8713995420537272453">punkts</translation>
-<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
-<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
-<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="2802462801862186499">1000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10 000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Jaunas cilnes lapa</translation>
 <translation id="8522669544471808198">Rādīt fona attēlus</translation>
 <translation id="3870475560794762985">Rādīt sponsorētos attēlus</translation>
 <translation id="8297488609722895137">Fotografēja <ph name="PHOTO_BY"/></translation>
 <translation id="1605521356929094020">Ieslēgt Brave reklāmas</translation>
-<translation id="5878330112719288629">Pieskaroties opcijai Earn &amp; Give, jūs piekrītat <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="1873603368604736484">Ieslēdzot balvas, jūs piekrītat <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Nopelniet, apskatot šo fona attēlu.</translation>
 <translation id="7136586167396205364">Paslēpt sponsorētos attēlus</translation>
 <translation id="2927095357213611519">Jūs varat atbalstīt tīmekļa satura veidotājus ar marķieriem.\nPelniet marķierus, skatoties konfidencialitāti cienošas reklāmas.</translation>
@@ -295,10 +308,9 @@ mēnesī...</translation>
 <translation id="8851456134224363571">Lieliski! Vai vēlaties novērtēt mūs Play Store?</translation>
 <translation id="8668962040900592974">Pastāstiet, kā mēs varam kļūt labāki</translation>
 <translation id="4406937629441301400">Nopelniet marķierus par šī attēla apskatīšanu un pārsūtiet maksājumu satura veidotājiem. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">Nopelniet marķierus par šī attēla apskatīšanu. Ieslēdziet pakalpojumu Earn &amp; Give, lai saņemtu savu daļu.</translation>
+<translation id="7894626572714595717">Nopelniet žetonus, apskatot šo attēlu. Ieslēdziet Brave Ads, lai pieteiktos uz nopelnīto.</translation>
 <translation id="6632345639591919543">Jūs nopelnāt marķierus par šī attēla apskatīšanu.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Jūs pelnāt marķierus par šī attēla apskatīšanu.</translation>
-<translation id="7952665812649667034">Esmu gatavs Earn &amp; Give</translation>
 <translation id="7877201489035217175">Uzzināt vairāk par sponsorētajiem attēliem</translation>
 <translation id="828092975561478703">Par katru apskatīto sponsorēto attēlu jūs saņemat 70 % peļņas marķieros. Izmantojot Brave reklāmas, jūs vienmēr kontrolējat redzamās reklāmas.</translation>
 <translation id="4941539331405513605">Bloķēt starpvietņu sīkfailus</translation>
@@ -332,4 +344,47 @@ mēnesī...</translation>
 <translation id="915835519491851291">Jūs tikko bloķējāt dažus izsekotājus un reklāmas.</translation>
 <translation id="3286927551967858325">Skatīt</translation>
 <translation id="2929661208078053609">Lieliski!</translation>
+<translation id="4776948189086901857">Brave darbojas visur.</translation>
+<translation id="1606322780901645965">Lejupielādējiet Brave no brave.com savā datorā vai planšetē ātrākai un privātākai tīkla pārlūkošanai</translation>
+<translation id="8374242949413616101">Privātuma aizsardzība</translation>
+<translation id="4955406228638026265">Brave neļauj reklāmām un izsekotājiem ievākt informāciju par jums bez jūsu piekrišanas.</translation>
+<translation id="752842701893882688">Ietaupiet datus un bateriju</translation>
+<translation id="5739030256211745023">Bez reklāmām un izsekotājiem vietnes patērē mazāk datu un baterijas. Varbūt jums izdosies ietaupīt pat uz operatora rēķinu.</translation>
+<translation id="5440744330377972191">Vietnes ielādējas ātrāk</translation>
+<translation id="3000738865641747653">Ielādējot mazāk datu, vietnes ar Brave atveras ātrāk — pat 8x ātrāk nekā citos pārlūkos.</translation>
+<translation id="8903462729414407077">Saņemiet iknedēļas jaunumus</translation>
+<translation id="8029219208182772618">Uzziniet, kuras no apmeklētajām vietnēm visvairāk apdraud privātumu.\n\nVienīgi jūs redzat privātuma statistiku. Personīgie dati un pārlūkošanas vēsture nepametīs Brave pārlūku tavā ierīcē.</translation>
+<translation id="6170159749517116894">Ieslēgt privātuma ziņojumus</translation>
+<translation id="6165508094623778733">Uzziniet vairāk</translation>
+<translation id="5966707198760109579">Nedēļa</translation>
+<translation id="8987927404178983737">Mēnesis</translation>
+<translation id="4302754476737420523">3 mēneši</translation>
+<translation id="8248593573177859437">Privātuma ziņojums</translation>
+<translation id="1274039301958114163">Privātuma ziņojuma paziņojums</translation>
+<translation id="1581614543353331529">Vēl nav uzrādāmu datu</translation>
+<translation id="2401984885421380890">Bloķētie izsekotāji\nun reklāmas</translation>
+<translation id="2662183408296991265">Ietaupītie dati\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="6814582232712814369">Ietaupītais laiks</translation>
+<translation id="3694122362646626770">Vietnes</translation>
+<translation id="2225863440766607138">Izsekotāji</translation>
+<translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="6737820963776538947">Pēdējās 3 stundās Brave pārlūkā jūs esat nobloķējis <ph name="COUNT"/> izsekotājus un reklāmas.</translation>
+<translation id="3621193901658023971">Pārlūkojiet lielākās ziņu lapas ar Brave pat 6x ātrāk, bloķējot izsekotājus un reklāmas.</translation>
+<translation id="7427567994475794038">Ieslēdziet privātuma ziņojumus, lai redzētu, cik izsekotāju un reklāmu bloķēts pēdējo 3 stundu laikā.</translation>
+<translation id="2053891538879944400">Ar Brave pārlūku jūs esat ietaupījis <ph name="DATA"/> <ph name="DATA_TEXT"/> datu.</translation>
+<translation id="8640064498452534195">Ieslēdziet privātuma ziņojumus, lai redzētu, cik datu esat ietaupījis.</translation>
+<translation id="4591582032282435287">Brave pārlūks patērē vidēji par 40 % mazāk baterijas.</translation>
+<translation id="1945330434665345785">Ar Brave pārlūku jūs pēdējā nedēļā esat bloķējis <ph name="COUNT"/> izsekotājus un reklāmas.</translation>
+<translation id="2883868922264431515">Nopelniet marķierus, skatot privātumu cienošas reklāmas, un atbalstiet savas iecienītās vietnes.</translation>
+<translation id="6840965284166256302">Lieliski! Ar Brave pārlūku jūs esat nobloķējis 250 izsekotāju un reklāmu.</translation>
+<translation id="2076976911561945584">Lieliski! Ar Brave pārlūku, jūs esat ietaupījis 10 MB.</translation>
+<translation id="6714550233326888315">Lieliski! Ar Brave pārlūku, jūs esat ietaupījis 10 minūtes ielādes laika.</translation>
+<translation id="7408493389591475748">Sāciet pārlūkot, lai redzētu privātuma ziņojumus</translation>
+<translation id="9080777565335515917">Iestatiet Brave kā savu noklusējuma pārlūku privātai un drošai pārlūkošanai.</translation>
+<translation id="7801488941710395275">Ļauj Brave rādīt jūsu privātuma statistiku</translation>
+<translation id="1763352720905582220">Sūta iknedēļas privātuma ziņojumu</translation>
+<translation id="1811691435325545066">Notīrīt visus privātuma ziņojumu datus</translation>
+<translation id="8089997572759938512">Atiestata jūsu privātuma ziņojumus uz nulli</translation>
+<translation id="2718046830255553131">Privātuma ziņojumu dati notīrīti.</translation>
+<translation id="7559243474426790340">Pārlādēt stāvokli</translation>
 </translationbundle>

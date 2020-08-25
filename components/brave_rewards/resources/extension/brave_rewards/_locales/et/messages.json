@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Tühista",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Sisselogimine",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Rahakoti kinnitamine võimaldab sul hallata oma raha tõhusamalt.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Upholdi konto loomiseks peab sul olema vähemalt 25 BATi. Proovi hiljem uuesti. <br/> Kui sul on juba kinnitatud Upholdi konto, jätka sisselogimisega.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Ühendatud",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Ootel",
+    "description": "Status button that tells user that he is currently pending"
   }
 }
