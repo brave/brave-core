@@ -5,9 +5,11 @@
 
 #include "brave/browser/tor/tor_launcher_factory.h"
 
-#include "base/task/post_task.h"
+#include <utility>
+
 #include "base/bind.h"
 #include "base/process/kill.h"
+#include "base/task/post_task.h"
 #include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/service_sandbox_type.h"
@@ -132,7 +134,7 @@ void TorLauncherFactory::RemoveObserver(tor::TorProfileServiceImpl* service) {
 }
 
 void TorLauncherFactory::OnTorLauncherCrashed() {
-  LOG(ERROR) << "Tor Launcher Crashed";
+  LOG(INFO) << "Tor Launcher Crashed";
   is_starting_ = false;
   for (auto& observer : observers_)
     observer.NotifyTorLauncherCrashed();
@@ -140,7 +142,7 @@ void TorLauncherFactory::OnTorLauncherCrashed() {
 
 void TorLauncherFactory::OnTorCrashed(int64_t pid) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "Tor Process(" << pid << ") Crashed";
+  LOG(INFO) << "Tor Process(" << pid << ") Crashed";
   is_starting_ = false;
   is_connected_ = false;
   for (auto& observer : observers_)
@@ -170,7 +172,7 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
 
 void TorLauncherFactory::OnTorControlReady() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "TOR CONTROL: Ready!";
+  VLOG(2) << "TOR CONTROL: Ready!";
   control_->GetVersion(
       base::BindOnce(&TorLauncherFactory::GotVersion,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -183,31 +185,29 @@ void TorLauncherFactory::OnTorControlReady() {
                       base::DoNothing::Once<bool>());
   control_->Subscribe(tor::TorControlEvent::STATUS_GENERAL,
                       base::DoNothing::Once<bool>());
-#if 0
   control_->Subscribe(tor::TorControlEvent::STREAM,
                       base::DoNothing::Once<bool>());
-#endif
 }
 
 void TorLauncherFactory::GotVersion(bool error, const std::string& version) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (error) {
-    LOG(ERROR) << "Failed to get version!";
+    VLOG(1) << "Failed to get version!";
     return;
   }
-  LOG(ERROR) << "Tor version: " << version;
+  VLOG(2) << "Tor version: " << version;
 }
 
 void TorLauncherFactory::GotSOCKSListeners(
     bool error, const std::vector<std::string>& listeners) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   if (error) {
-    LOG(ERROR) << "Failed to get SOCKS listeners!";
+    VLOG(1) << "Failed to get SOCKS listeners!";
     return;
   }
-  LOG(ERROR) << "Tor SOCKS listeners: ";
+  VLOG(2) << "Tor SOCKS listeners: ";
   for (auto& listener : listeners) {
-    LOG(ERROR) << listener;
+    VLOG(2) << listener;
   }
   std::string tor_proxy_uri = kTorProxyScheme + listeners[0];
   // Remove extra quotes
@@ -220,12 +220,12 @@ void TorLauncherFactory::GotSOCKSListeners(
 
 void TorLauncherFactory::OnTorClosed() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "TOR CONTROL: Closed!";
+  VLOG(2) << "TOR CONTROL: Closed!";
 }
 
 void TorLauncherFactory::OnTorCleanupNeeded(base::ProcessId id) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "Killing old tor process pid=" << id;
+  VLOG(2) << "Killing old tor process pid=" << id;
   // Dispatch to launcher thread
   content::GetProcessLauncherTaskRunner()
     ->PostTask(FROM_HERE,
@@ -254,14 +254,14 @@ void TorLauncherFactory::OnTorEvent(
     tor::TorControlEvent event, const std::string& initial,
     const std::map<std::string, std::string>& extra) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "TOR CONTROL: event "
+  VLOG(3) << "TOR CONTROL: event "
              << (*tor::kTorControlEventByEnum.find(event)).second
              << ": " << initial;
   if (event == tor::TorControlEvent::STATUS_CLIENT) {
     if (initial.find("BOOTSTRAP") != std::string::npos) {
       const char prefix[] = "PROGRESS=";
       size_t progress_start = initial.find(prefix);
-      size_t progress_length = initial.substr(progress_start).find(" ") ;
+      size_t progress_length = initial.substr(progress_start).find(" ");
       // Dispatch progress
       const std::string percentage =
         initial.substr(progress_start + strlen(prefix),
@@ -281,25 +281,25 @@ void TorLauncherFactory::OnTorEvent(
 
 void TorLauncherFactory::OnTorRawCmd(const std::string& cmd) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "TOR CONTROL: command: " << cmd;
+  VLOG(3) << "TOR CONTROL: command: " << cmd;
 }
 
 void TorLauncherFactory::OnTorRawAsync(
     const std::string& status, const std::string& line) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "TOR CONTROL: async " << status << " " << line;
+  VLOG(3) << "TOR CONTROL: async " << status << " " << line;
 }
 
 void TorLauncherFactory::OnTorRawMid(
     const std::string& status, const std::string& line) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "TOR CONTROL: mid " << status << "-" << line;
+  VLOG(3) << "TOR CONTROL: mid " << status << "-" << line;
 }
 
 void TorLauncherFactory::OnTorRawEnd(
     const std::string& status, const std::string& line) {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
-  LOG(ERROR) << "TOR CONTROL: end " << status << " " << line;
+  VLOG(3) << "TOR CONTROL: end " << status << " " << line;
 }
 
 ScopedTorLaunchPreventerForTest::ScopedTorLaunchPreventerForTest() {

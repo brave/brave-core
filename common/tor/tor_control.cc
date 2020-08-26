@@ -48,7 +48,7 @@ constexpr base::TaskTraits kWatchTaskTraits = {
   base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT
 };
 
-}
+}  // namespace
 
 // static
 std::unique_ptr<TorControl> TorControl::Create(TorControl::Delegate* delegate) {
@@ -94,7 +94,7 @@ void TorControl::PreStartCheck(const base::FilePath& watchDirPath,
 void TorControl::Start() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!watch_dir_path_.empty());
-  CHECK(!running_);
+  DCHECK(!running_);
 
   running_ = true;
   watch_task_runner_->PostTask(
@@ -104,7 +104,7 @@ void TorControl::Start() {
 
 void TorControl::StartWatching() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  CHECK(!watcher_);
+  DCHECK(!watcher_);
 
   // Create a watcher and start watching.
   watcher_ = std::make_unique<base::FilePathWatcher>();
@@ -115,7 +115,7 @@ void TorControl::StartWatching() {
                        base::BindRepeating(&TorControl::WatchDirChanged,
                                            base::Unretained(this)))) {
     // Never mind -- destroy the watcher and stop everything else.
-    LOG(ERROR) << "tor: failed to watch directory";
+    VLOG(0) << "tor: failed to watch directory";
     watcher_.reset();
     return;
   }
@@ -131,7 +131,7 @@ void TorControl::StartWatching() {
 //
 void TorControl::Stop() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  CHECK(running_);
+  DCHECK(running_);
 
   running_ = false;
   async_events_.clear();
@@ -154,7 +154,7 @@ void TorControl::StopWatching() {
 void TorControl::CheckingOldTorProcess(base::OnceClosure callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
   base::ProcessId id;
-  if (EatOldPid(id))
+  if (EatOldPid(&id))
     NotifyTorCleanupNeeded(std::move(id));
   owner_task_runner_->PostTask(FROM_HERE,
                                std::move(callback));
@@ -173,12 +173,12 @@ void TorControl::CheckingOldTorProcess(base::OnceClosure callback) {
 //
 void TorControl::WatchDirChanged(const base::FilePath& path, bool error) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  LOG(ERROR) << "tor: watch directory changed";
+  VLOG(2) << "tor: watch directory changed";
 
   if (polling_) {
     repoll_ = true;
   } else {
-    CHECK(!repoll_);
+    DCHECK(!repoll_);
     polling_ = true;
     Poll();
   }
@@ -193,7 +193,7 @@ void TorControl::WatchDirChanged(const base::FilePath& path, bool error) {
 //
 void TorControl::Poll() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  CHECK(polling_);
+  DCHECK(polling_);
 
   std::vector<uint8_t> cookie;
   base::Time cookie_mtime;
@@ -211,7 +211,7 @@ void TorControl::Poll() {
   // port is older but the file system resolution is just not enough
   // to distinguish them.
   if (cookie_mtime < port_mtime) {
-    LOG(ERROR) << "tor: tossing stale cookie";
+    VLOG(0) << "tor: tossing stale cookie";
     return Polled();
   }
 
@@ -230,43 +230,43 @@ void TorControl::Poll() {
 bool TorControl::EatControlCookie(std::vector<uint8_t>& cookie,
                                   base::Time& mtime) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  CHECK(polling_);
+  DCHECK(polling_);
 
   // Open the control auth cookie file.
-  base::FilePath cookiepath = watch_dir_path_.AppendASCII("control_auth_cookie");
+  base::FilePath cookiepath =
+    watch_dir_path_.AppendASCII("control_auth_cookie");
   base::File cookiefile(cookiepath,
                         base::File::FLAG_OPEN|base::File::FLAG_READ);
   if (!cookiefile.IsValid()) {
-    LOG(ERROR) << "tor: failed to open control auth cookie";
+    VLOG(0) << "tor: failed to open control auth cookie";
     return false;
   }
 
   // Get the file's info, including modification time.
   base::File::Info info;
   if (!cookiefile.GetInfo(&info)) {
-    LOG(ERROR) << "tor: failed to stat control auth cookie";
+    VLOG(0) << "tor: failed to stat control auth cookie";
     return false;
   }
 
   // Read up to 33 octets.  We should need no more than 32, so 33 will
   // indicate the file is abnormally large.
-  constexpr size_t bufsiz = 33;
-  char buf[bufsiz];
-  int nread = cookiefile.ReadAtCurrentPos(buf, bufsiz);
+  constexpr size_t kBufSiz = 33;
+  char buf[kBufSiz];
+  int nread = cookiefile.ReadAtCurrentPos(buf, kBufSiz);
   if (nread < 0) {
-    LOG(ERROR) << "tor: failed to read Tor control auth cookie";
+    VLOG(0) << "tor: failed to read Tor control auth cookie";
     return false;
   }
   if (nread > 32) {
-    LOG(ERROR) << "tor: control auth cookie too large";
+    VLOG(0) << "tor: control auth cookie too large";
     return false;
   }
 
   // Success!
   cookie.assign(buf, buf + nread);
   mtime = info.last_accessed;
-  // XXX DEBUG
-  LOG(ERROR) << "Control cookie " << base::HexEncode(buf, nread)
+  VLOG(3) << "Control cookie " << base::HexEncode(buf, nread)
              << ", mtime " << mtime;
   return true;
 }
@@ -278,20 +278,20 @@ bool TorControl::EatControlCookie(std::vector<uint8_t>& cookie,
 //
 bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  CHECK(polling_);
+  DCHECK(polling_);
 
   // Open the control port file.
   base::FilePath portpath = watch_dir_path_.AppendASCII("controlport");
   base::File portfile(portpath, base::File::FLAG_OPEN|base::File::FLAG_READ);
   if (!portfile.IsValid()) {
-    LOG(ERROR) << "tor: failed to open control port";
+    VLOG(0) << "tor: failed to open control port";
     return false;
   }
 
   // Get the file's info, including modification time.
   base::File::Info info;
   if (!portfile.GetInfo(&info)) {
-    LOG(ERROR) << "tor: failed to stat control port";
+    VLOG(0) << "tor: failed to stat control port";
     return false;
   }
 
@@ -303,17 +303,18 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   const char mintmpl[] = "PORT=1.1.1.1:1\n";
   const char maxtmpl[] = "PORT=255.255.255.255:65535\n";
 #endif
-  char buf[strlen(maxtmpl)];
+  const size_t kBufSiz = strlen(maxtmpl);
+  char buf[kBufSiz];
   int nread = portfile.ReadAtCurrentPos(buf, sizeof buf);
   if (nread < 0) {
-    LOG(ERROR) << "tor: failed to read control port";
+    VLOG(0) << "tor: failed to read control port";
     return false;
   }
   if (static_cast<size_t>(nread) < strlen(mintmpl)) {
-    LOG(ERROR) << "tor: control port truncated";
+    VLOG(0) << "tor: control port truncated";
     return false;
   }
-  CHECK(static_cast<size_t>(nread) <= sizeof buf);
+  DCHECK(static_cast<size_t>(nread) <= sizeof buf);
 
   std::string text(buf, 0, nread);
 
@@ -324,15 +325,15 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
 #else
       !base::EndsWith(text, "\n", base::CompareCase::SENSITIVE)) {
 #endif
-    LOG(ERROR) << "tor: invalid control port: "
-               << "`" << text << ";"; // XXX escape
+    VLOG(0) << "tor: invalid control port: "
+               << "`" << text << ";";  // XXX escape
     return false;
   }
 
   // Verify that it's localhost.
   const char expected[] = "PORT=127.0.0.1:";
   if (!base::StartsWith(text, expected, base::CompareCase::SENSITIVE)) {
-    LOG(ERROR) << "tor: control port has non-local control address";
+    VLOG(0) << "tor: control port has non-local control address";
     return false;
   }
 
@@ -343,45 +344,50 @@ bool TorControl::EatControlPort(int& port, base::Time& mtime) {
   std::string portstr(text, strlen(expected), nread - 1 - strlen(expected));
 #endif
   if (!base::StringToInt(portstr, &port)) {
-    LOG(ERROR) << "tor: failed to parse control port: "
-               << "`" << portstr << "'"; // XXX escape
+    VLOG(0) << "tor: failed to parse control port: "
+               << "`" << portstr << "'";  // XXX escape
     return false;
   }
   mtime = info.last_modified;
-  // XXX DEBUG
-  LOG(ERROR) << "Control port " << port << ", mtime " << mtime;
+  VLOG(3) << "Control port " << port << ", mtime " << mtime;
   return true;
 }
 
-bool TorControl::EatOldPid(base::ProcessId& id) {
+bool TorControl::EatOldPid(base::ProcessId* id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
+  DCHECK(id);
 
   // Open the tor pid file.
   base::FilePath pidpath = watch_dir_path_.AppendASCII("tor.pid");
   base::File pidfile(pidpath,
                         base::File::FLAG_OPEN|base::File::FLAG_READ);
   if (!pidfile.IsValid()) {
-    LOG(ERROR) << "tor: failed to open tor.pid";
+    VLOG(0) << "tor: failed to open tor.pid";
     return false;
   }
 
-  const char maxpid[] = "4194304";
-  char buf[strlen(maxpid)];
+#if defined(OS_WIN)
+  const char maxpid[] = "4294967292";  // 0xFFFFFFFC
+#else
+  const char maxpid[] = "4194304";  // 0x400000
+#endif
+  const size_t kBufSiz = strlen(maxpid);
+  char buf[kBufSiz];
   int nread = pidfile.ReadAtCurrentPos(buf, sizeof buf);
   if (nread < 0) {
-    LOG(ERROR) << "tor: failed to read tor pid file";
+    VLOG(0) << "tor: failed to read tor pid file";
     return false;
   }
 
   std::string pid(buf, 0, nread - 1);
 #if defined(OS_WIN)
-  id = stoul(pid, nullptr);
+  *id = stoul(pid, nullptr);
 #else
-  if (!base::StringToInt(pid, &id)) {
-    LOG(ERROR) << "tor: failed to parse tor pid";
+  if (!base::StringToInt(pid, id)) {
+    VLOG(0) << "tor: failed to parse tor pid";
     return false;
   }
- #endif
+#endif
   return true;
 }
 
@@ -394,16 +400,16 @@ bool TorControl::EatOldPid(base::ProcessId& id) {
 //
 void TorControl::Polled() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(watch_sequence_checker_);
-  CHECK(polling_);
+  DCHECK(polling_);
 
   if (repoll_) {
-    LOG(ERROR) << "tor: retrying control connection";
+    VLOG(2) << "tor: retrying control connection";
     repoll_ = false;
     watch_task_runner_->PostTask(
         FROM_HERE,
         base::BindOnce(&TorControl::Poll, base::Unretained(this)));
   } else {
-    LOG(ERROR) << "tor: control connection not yet ready";
+    VLOG(2) << "tor: control connection not yet ready";
     polling_ = false;
   }
 }
@@ -418,8 +424,7 @@ void TorControl::Polled() {
 //
 void TorControl::OpenControl(int portno, std::vector<uint8_t> cookie) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  // XXX DEBUG
-  LOG(ERROR) << __func__ << " " << base::HexEncode(cookie.data(), cookie.size());
+  VLOG(3) << __func__ << " " << base::HexEncode(cookie.data(), cookie.size());
 
   net::AddressList addrlist =
     net::AddressList::CreateFromIPAddress(net::IPAddress::IPv4Localhost(),
@@ -447,7 +452,7 @@ void TorControl::Connected(std::vector<uint8_t> cookie, int rv) {
     // Connection failed but there may have been more watch directory
     // activity while we were waiting.  If so, try again; if not, go
     // back to watching and waiting.
-    LOG(ERROR) << "tor: control connection failed: "
+    VLOG(1) << "tor: control connection failed: "
                << net::ErrorToString(rv);
     watch_task_runner_->PostTask(
         FROM_HERE,
@@ -475,10 +480,10 @@ void TorControl::Authenticated(bool error,
       error = true;
   }
   if (error) {
-    LOG(ERROR) << "tor: control authentication failed";
+    VLOG(0) << "tor: control authentication failed";
     return;
   }
-  LOG(ERROR) << "tor: control connection ready";
+  VLOG(2) << "tor: control connection ready";
   NotifyTorControlReady();
 }
 
@@ -554,14 +559,14 @@ void TorControl::DoUnsubscribe(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
   // We had better already be subscribed.
-  CHECK(async_events_[event] >= 1);
+  DCHECK_GE(async_events_[event], 1u);
   if (--async_events_[event] != 0) {
     bool error = false;
     std::move(callback).Run(error);
     return;
   }
 
-  CHECK(async_events_[event] == 0);
+  DCHECK_EQ(async_events_[event], 0u);
   async_events_.erase(event);
   Cmd1(SetEventsCmd(),
        base::BindOnce(&TorControl::Unsubscribed,
@@ -572,7 +577,7 @@ void TorControl::Unsubscribed(
     TorControlEvent event, base::OnceCallback<void(bool error)> callback,
     bool error, const std::string& status, const std::string& reply) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(async_events_.count(event) == 0);
+  DCHECK_EQ(async_events_.count(event), 0u);
   if (!error) {
     if (status != "250")
       error = true;
@@ -591,7 +596,7 @@ std::string TorControl::SetEventsCmd() {
   cmds << "SETEVENTS";
   for (const auto& entry : async_events_) {
     const auto& found = kTorControlEventByEnum.find(entry.first);
-    CHECK(found != kTorControlEventByEnum.end());
+    DCHECK(found != kTorControlEventByEnum.end());
     cmds << " " << (*found).second;
   }
   return cmds.str();
@@ -640,8 +645,7 @@ void TorControl::DoCmd(std::string cmd,
   }
   writeq_.push(cmd + "\r\n");
   cmdq_.push(
-    std::make_pair<PerLineCallback, CmdCallback>(
-      std::move(perline), std::move(callback)));
+    std::make_pair(std::move(perline), std::move(callback)));
   if (!writing_) {
     writing_ = true;
     StartWrite();
@@ -678,7 +682,7 @@ void TorControl::GetVersionLine(std::string* version,
   if (status != "250" ||
       !base::StartsWith(reply, prefix, base::CompareCase::SENSITIVE) ||
       !version->empty()) {
-    LOG(ERROR) << "tor: unexpected `GETINFO version' reply";
+    VLOG(0) << "tor: unexpected `GETINFO version' reply";
     return;
   }
   *version = reply.substr(strlen(prefix));
@@ -720,7 +724,7 @@ void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
   const char prefix[] = "net/listeners/socks=";
   if (status != "250" ||
       !base::StartsWith(reply, prefix, base::CompareCase::SENSITIVE)) {
-    LOG(ERROR) << "tor: unexpected `GETINFO net/listeners/socks' reply";
+    VLOG(0) << "tor: unexpected `GETINFO net/listeners/socks' reply";
     return;
   }
   listeners->push_back(reply.substr(strlen(prefix)));
@@ -728,8 +732,9 @@ void TorControl::GetSOCKSListenersLine(std::vector<std::string>* listeners,
 
 void TorControl::GetSOCKSListenersDone(
     std::unique_ptr<std::vector<std::string>> listeners,
-    base::OnceCallback<void(bool error,
-                            const std::vector<std::string>& listeners)> callback,
+    base::OnceCallback<void(
+        bool error,
+        const std::vector<std::string>& listeners)> callback,
     bool error, const std::string& status, const std::string& reply) {
   if (error ||
       status != "250" ||
@@ -756,9 +761,9 @@ void TorControl::GetSOCKSListenersDone(
 //
 void TorControl::StartWrite() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(writing_);
-  CHECK(!writeq_.empty());
-  CHECK(!cmdq_.empty());
+  DCHECK(writing_);
+  DCHECK(!writeq_.empty());
+  DCHECK(!cmdq_.empty());
   auto buf = base::MakeRefCounted<net::StringIOBuffer>(writeq_.front());
   writeiobuf_ = base::MakeRefCounted<net::DrainableIOBuffer>(buf, buf->size());
   writeq_.pop();
@@ -799,8 +804,8 @@ static std::string escapify(const char *buf, int len) {
 //
 void TorControl::DoWrites() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(writing_);
-  CHECK(writeiobuf_);
+  DCHECK(writing_);
+  DCHECK(writeiobuf_);
   int rv;
   while ((rv = socket_->Write(writeiobuf_.get(), writeiobuf_->size(),
                               base::BindOnce(&TorControl::WriteDoneAsync,
@@ -823,8 +828,8 @@ void TorControl::DoWrites() {
 //
 void TorControl::WriteDoneAsync(int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(writing_);
-  CHECK(writeiobuf_);
+  DCHECK(writing_);
+  DCHECK(writeiobuf_);
   WriteDone(rv);
   if (writing_)
     DoWrites();
@@ -842,11 +847,11 @@ void TorControl::WriteDoneAsync(int rv) {
 //
 void TorControl::WriteDone(int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(writing_);
-  CHECK(writeiobuf_);
+  DCHECK(writing_);
+  DCHECK(writeiobuf_);
   // Bail if error.
   if (rv < 0) {
-    LOG(ERROR) << "tor: control write error: " << net::ErrorToString(rv);
+    VLOG(1) << "tor: control write error: " << net::ErrorToString(rv);
     Error();
     return;
   }
@@ -878,12 +883,12 @@ void TorControl::WriteDone(int rv) {
 //
 void TorControl::StartRead() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(reading_);
-  CHECK(!cmdq_.empty() || !async_events_.empty());
+  DCHECK(reading_);
+  DCHECK(!cmdq_.empty() || !async_events_.empty());
   readiobuf_ = base::MakeRefCounted<net::GrowableIOBuffer>();
   readiobuf_->SetCapacity(kTorBufferSize);
   read_start_ = 0;
-  CHECK(readiobuf_->RemainingCapacity());
+  DCHECK(readiobuf_->RemainingCapacity());
 }
 
 // DoReads()
@@ -895,10 +900,10 @@ void TorControl::StartRead() {
 //
 void TorControl::DoReads() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(reading_);
-  CHECK(readiobuf_);
+  DCHECK(reading_);
+  DCHECK(readiobuf_);
   int rv;
-  CHECK(readiobuf_->RemainingCapacity());
+  DCHECK(readiobuf_->RemainingCapacity());
   while ((rv = socket_->Read(readiobuf_.get(), readiobuf_->RemainingCapacity(),
                              base::BindOnce(&TorControl::ReadDoneAsync,
                                             base::Unretained(this))))
@@ -906,7 +911,7 @@ void TorControl::DoReads() {
     ReadDone(rv);
     if (!reading_)
       break;
-    CHECK(readiobuf_->RemainingCapacity());
+    DCHECK(readiobuf_->RemainingCapacity());
   }
 }
 
@@ -920,11 +925,11 @@ void TorControl::DoReads() {
 //
 void TorControl::ReadDoneAsync(int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(reading_);
-  CHECK(readiobuf_);
+  DCHECK(reading_);
+  DCHECK(readiobuf_);
   ReadDone(rv);
   if (reading_) {
-    CHECK(readiobuf_->RemainingCapacity());
+    DCHECK(readiobuf_->RemainingCapacity());
     DoReads();
   }
 }
@@ -939,15 +944,15 @@ void TorControl::ReadDoneAsync(int rv) {
 //
 void TorControl::ReadDone(int rv) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
-  CHECK(reading_);
-  CHECK(readiobuf_);
+  DCHECK(reading_);
+  DCHECK(readiobuf_);
   if (rv < 0) {
-    LOG(ERROR) << "tor: control read error: " << net::ErrorToString(rv);
+    VLOG(1) << "tor: control read error: " << net::ErrorToString(rv);
     Error();
     return;
   }
   if (rv == 0) {
-    LOG(ERROR) << "tor: control closed prematurely";
+    VLOG(1) << "tor: control closed prematurely";
     Error();
     return;
   }
@@ -958,7 +963,7 @@ void TorControl::ReadDone(int rv) {
       if (data[i] == 0x0d) {            // CR
         read_cr_ = true;
       } else if (data[i] == 0x0a) {     // LF
-        LOG(ERROR) << "tor: stray line feed";
+        VLOG(1) << "tor: stray line feed";
         Error();
         return;
       } else {
@@ -980,7 +985,7 @@ void TorControl::ReadDone(int rv) {
         }
       } else {
         // CR seen, but not LF.  Bad.
-        LOG(ERROR) << "tor: stray carriage return";
+        VLOG(1) << "tor: stray carriage return";
         Error();
         return;
       }
@@ -990,11 +995,11 @@ void TorControl::ReadDone(int rv) {
   // If we've walked up to the end of the buffer, try shifting it to
   // the beginning to make room; if there's no more room, fail --
   // lines shouldn't be this long.
-  CHECK(rv <= readiobuf_->RemainingCapacity());
+  DCHECK(rv <= readiobuf_->RemainingCapacity());
   if (readiobuf_->RemainingCapacity() == rv) {
     if (read_start_ == 0) {
       // Line is too long.
-      LOG(ERROR) << "tor: control line too long";
+      VLOG(1) << "tor: control line too long";
       Error();
       return;
     }
@@ -1007,7 +1012,7 @@ void TorControl::ReadDone(int rv) {
     // Otherwise, just advance the offset by the size of this input.
     readiobuf_->set_offset(readiobuf_->offset() + rv);
   }
-  CHECK(readiobuf_->RemainingCapacity());
+  DCHECK(readiobuf_->RemainingCapacity());
 
   // If we've processed every byte in the input so far, and there's no
   // more command callbacks queued or asynchronous events registered,
@@ -1033,7 +1038,7 @@ bool TorControl::ReadLine(const std::string& line) {
 
   if (line.size() < 4) {
     // Line is too short.
-    LOG(ERROR) << "tor: control line too short";
+    VLOG(1) << "tor: control line too short";
     Error();
     return false;
   }
@@ -1072,14 +1077,14 @@ bool TorControl::ReadLine(const std::string& line) {
           // Bail if we don't recognize the event name.
           const auto& found = kTorControlEventByName.find(event_name);
           if (found == kTorControlEventByName.end()) {
-            LOG(ERROR) << "tor: unknown event: " << event_name; // XXX escape
+            VLOG(1) << "tor: unknown event: " << event_name;  // XXX escape
             return false;
           }
           const TorControlEvent event = (*found).second;
 
           // Ignore if we don't think we're subscribed to this.
           if (!async_events_.count(event)) {
-            LOG(ERROR) << "tor: spurious event: " << event_name;
+            VLOG(1) << "tor: spurious event: " << event_name;
             return true;
           }
 
@@ -1123,13 +1128,13 @@ bool TorControl::ReadLine(const std::string& line) {
             return true;
           }
           std::string key, value;
-          if (!ParseKV(reply, key, value)) {
-            LOG(ERROR) << "tor: invalid async continuation line";
+          if (!ParseKV(reply, &key, &value)) {
+            VLOG(1) << "tor: invalid async continuation line";
             Error();
             return false;
           }
           if (async_->extra.count(key)) {
-            LOG(ERROR) << "tor: duplicate key in async continuation line";
+            VLOG(1) << "tor: duplicate key in async continuation line";
             Error();
             return false;
           }
@@ -1141,13 +1146,13 @@ bool TorControl::ReadLine(const std::string& line) {
           // we're skipping.
           if (!async_->skip) {
             std::string key, value;
-            if (!ParseKV(reply, key, value)) {
-              LOG(ERROR) << "tor: invalid async event";
+            if (!ParseKV(reply, &key, &value)) {
+              VLOG(1) << "tor: invalid async event";
               Error();
               return false;
             }
             if (async_->extra.count(key)) {
-              LOG(ERROR) << "tor: duplicate key in async event";
+              VLOG(1) << "tor: duplicate key in async event";
               Error();
               return false;
             }
@@ -1177,7 +1182,7 @@ bool TorControl::ReadLine(const std::string& line) {
         }
         return true;
       case '+':
-        LOG(ERROR) << "tor: NYI: control data reply";
+        VLOG(2) << "tor: NYI: control data reply";
         // XXX Just ignore it for now.
         return true;
       case ' ':
@@ -1193,7 +1198,7 @@ bool TorControl::ReadLine(const std::string& line) {
   }
 
   // Not reached if the line is well-formed.
-  LOG(ERROR) << "tor: malformed control line: "
+  VLOG(1) << "tor: malformed control line: "
              << escapify(line.data(), line.size());
   Error();
   return false;
@@ -1209,7 +1214,9 @@ TorControl::Async::~Async() = default;
 void TorControl::Error() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(io_sequence_checker_);
 
-  LOG(ERROR) << "tor: closing control on " << (running_ ? "request" : "error");
+  VLOG(1) << "tor: closing control on " << (running_ ? "request" : "error");
+
+  NotifyTorClosed();
 
   // Invoke all callbacks with errors and clear read state.
   while (!cmdq_.empty()) {
@@ -1338,9 +1345,9 @@ void TorControl::NotifyTorRawEnd(const std::string& status,
 // static
 bool TorControl::ParseKV(
     const std::string& string,
-    std::string& key, std::string& value) {
+    std::string* key, std::string* value) {
   size_t end;
-  return ParseKV(string, key, value, end) && end == string.size();
+  return ParseKV(string, key, value, &end) && end == string.size();
 }
 
 // ParseKV(string, key, value, end)
@@ -1353,7 +1360,8 @@ bool TorControl::ParseKV(
 // static
 bool TorControl::ParseKV(
     const std::string& string,
-    std::string& key, std::string& value, size_t& end) {
+    std::string* key, std::string* value, size_t* end) {
+  DCHECK(key && value && end);
   // Search for `=' -- it had better be there.
   size_t eq = string.find("=");
   if (eq == std::string::npos)
@@ -1362,9 +1370,9 @@ bool TorControl::ParseKV(
 
   // If we're at the end of the string, value is empt.
   if (vstart == string.size()) {
-    key = string.substr(0, eq);
-    value = "";
-    end = string.size();
+    *key = string.substr(0, eq);
+    *value = "";
+    *end = string.size();
     return true;
   }
 
@@ -1375,10 +1383,10 @@ bool TorControl::ParseKV(
     if ((i = string.find(" ", vstart)) != std::string::npos) {
       // Delimited.  Stop at the delimiter, and consume it.
       vend = i;
-      end = vend + 1;
+      *end = vend + 1;
     } else {
       // Not delimited.  Stop at the end of string.
-      end = vend;
+      *end = vend;
     }
 
     // Check for internal quotes; they are forbidden.
@@ -1386,18 +1394,18 @@ bool TorControl::ParseKV(
       return false;
 
     // Extract the key and value and we're done.
-    key = string.substr(0, eq);
-    value = string.substr(vstart, vend - vstart);
+    *key = string.substr(0, eq);
+    *value = string.substr(vstart, vend - vstart);
     return true;
   }
 
   // Quoted string.  Parse it, and consume trailing spaces.
   if (!ParseQuoted(string.substr(eq + 1), value, end))
     return false;
-  key = string.substr(0, eq);
-  end += eq + 1;
-  while (end < string.size() && string[end] == ' ')
-    end++;
+  *key = string.substr(0, eq);
+  *end += eq + 1;
+  while (*end < string.size() && string[*end] == ' ')
+    (*end)++;
   return true;
 }
 
@@ -1410,7 +1418,7 @@ bool TorControl::ParseKV(
 //
 // static
 bool TorControl::ParseQuoted(const std::string& string,
-                                 std::string& value, size_t& end) {
+                                 std::string* value, size_t* end) {
   enum {
     REJECT,
     ACCEPT,
@@ -1433,7 +1441,7 @@ bool TorControl::ParseQuoted(const std::string& string,
       default:
       case REJECT:
       case ACCEPT:
-        CHECK(0);
+        DCHECK(0);
         S = REJECT;
         break;
       case START:
@@ -1493,8 +1501,8 @@ bool TorControl::ParseQuoted(const std::string& string,
       case REJECT:
         return false;
       case ACCEPT:
-        value = buf.substr(0, pos);
-        end = i + 1;
+        *value = buf.substr(0, pos);
+        *end = i + 1;
         return true;
       default:
         break;

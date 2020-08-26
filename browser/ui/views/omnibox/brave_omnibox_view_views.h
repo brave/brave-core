@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_OMNIBOX_BRAVE_OMNIBOX_VIEW_VIEWS_H_
 
 #include <memory>
+#include <string>
 
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "chrome/browser/ui/views/omnibox/omnibox_view_views.h"
