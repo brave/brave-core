@@ -22,8 +22,6 @@
 
 ಈ ವಿಸ್ತರಣೆಯನ್ನು ಸ್ಥಾಪಿಸುವ ಮೂಲಕ, ನೀವು Google Widevine ಬಳಕೆಯ ನಿಯಮಗಳಿಗೆ ಒಪ್ಪಿಗೆ ಸೂಚಿಸುತ್ತಿದ್ದೀರಿ. ನಿಮ್ಮ Google Widevine ಬಳಕೆಗೆ ಸಂಬಂಧಿಸಿದಂತೆ ಉಂಟಾಗುವ ಯಾವುದೇ ಹಾನಿಗಳು ಅಥವಾ ನಷ್ಟಗಳಿಗೆ Brave ಜವಾಬ್ದಾರರಲ್ಲ ಎಂಬುದನ್ನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೀರಿ.</translation>
 <translation id="410351446219883937">ಸ್ವಯಂಪ್ಲೇ</translation>
-<translation id="2240268017737062801">ಸೈಟ್ ಮೀಡಿಯಾ ಸ್ವಯಂಪ್ಲೇ ಮಾಡಲು ಬಯಸಿದಾಗ ಕೇಳಿ</translation>
-<translation id="3371702087847741961">ಸೈಟ್ ಮೀಡಿಯಾ ಸ್ವಯಂಪ್ಲೇ ಮಾಡಲು ಬಯಸಿದಾಗ ಕೇಳಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
 <translation id="3218385319396786393">ಈ ಪುಟದಲ್ಲಿ ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="4988333904713528597"><ph name="HOST"/> ನಲ್ಲಿ ಯಾವಾಗಲೂ ಸ್ವಯಂಪ್ಲೇ ಅನುಮತಿಸಿ</translation>
 <translation id="4150684676757176434">ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸುವಿಕೆಯನ್ನು ಮುಂದುವರಿಸಿ</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">Brave ಅಂಕಿಅಂಶಗಳು</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">ಜೆಮಿನಿ</translation>
 <translation id="4643117005422448078">ಟಾಪ್ ಸೈಟ್‌ಗಳು</translation>
 <translation id="1776831331757823105">ಗಡಿಯಾರ</translation>
 <translation id="7965178729203412357">ಹೊಸ Tor ಗುರುತಿಸುವಿಕೆ</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">ನಿರ್ಬಂಧಿತ ಲಿಪಿಗಳು</translation>
 <translation id="519861640102428255">ನೋಡು &amp; ಭಾವಿಸು</translation>
 <translation id="4800195524776354947">ಶೀಲ್ಡ್‌ಗಳ ಐಕಾನ್‌ನಲ್ಲಿ ನಿರ್ಬಂಧಿಸಲಾದ ಐಟಂಗಳ ಸಂಖ್ಯೆಯನ್ನು ತೋರಿಸಿ</translation>
-<translation id="7498695072878479744">Google ಲಾಗಿನ್ ಬಟನ್‌ಗಳನ್ನು ತೃತೀಯ ಪಕ್ಷದ ಸೈಟ್‌ಗಳಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
+<translation id="3932286112122164477">Google ಲಾಗಿನ್ ಬಟನ್‌ಗಳನ್ನು ತೃತೀಯ ಪಕ್ಷದ ಸೈಟ್‌ಗಳಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="863171915776379000">ಫೇಸ್‌ಬುಕ್ ಲಾಗಿನ್‌ಗಳನ್ನು ಮತ್ತು ಎಂಬೆಡ್ ಮಾಡಿದ ಪೋಸ್ಟ್‌ಗಳನ್ಮು ಅನುಮತಿಸಿ</translation>
 <translation id="5165042248369837294">ಎಂಬೆಡ್ ಮಾಡಿದ ಟ್ವೀಟ್‌ಗಳನ್ನು ಟ್ವಿಟರ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="958971637207126733">ಎಂಬೆಡ್ ಮಾಡಲಾದ ಫೋಸ್ಟ್‌ಗಳನ್ನು LinkedIn ನಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">ಸೈಟ್ ಮತ್ತು ಶೀಲ್ಡ್‌ಗಳ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="8487693399751278191">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಈಗ ಆಮದು ಮಾಡಿ...</translation>
 <translation id="2557899542277210112">ತ್ವರಿತ ಪ್ರವೇಶಕ್ಕಾಗಿ, ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಇಲ್ಲಿ ಇರಿಸಿ.</translation>
+<translation id="2808630562319398131">Brave Rewards ಡೇಟಾ ಮರುಹೊಂದಿಸಿ...</translation>
 </translationbundle>

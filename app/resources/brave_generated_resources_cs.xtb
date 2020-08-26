@@ -22,8 +22,6 @@
 
 Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Google Widevine. Souhlasíte s tím, že společnost Brave neodpovídá za škody ani ztráty související s používáním služby Google Widevine.</translation>
 <translation id="410351446219883937">Automatické přehrávání</translation>
-<translation id="2240268017737062801">Dotázat se, pokud stránka hodlá automaticky spouštět multimediální soubory</translation>
-<translation id="3371702087847741961">Dotázat se, pokud stránka hodlá automaticky přehrávat multimediální soubory (doporučeno)</translation>
 <translation id="3218385319396786393">Automatické přehrávání bylo na této stránce zablokováno</translation>
 <translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
@@ -46,6 +44,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="8173998484743827990">Statistiky Brave</translation>
 <translation id="5551238871320268996">Brave Spolu</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Top weby</translation>
 <translation id="1776831331757823105">Hodiny</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
@@ -80,7 +79,7 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4824468494729001999">Blokovat skripty</translation>
 <translation id="519861640102428255">Vzhled a dojem</translation>
 <translation id="4800195524776354947">Ukázat na ikoně štítů počet zablokovaných položek</translation>
-<translation id="7498695072878479744">Povolit na webech třetích stran přihlašovací tlačítka Google</translation>
+<translation id="3932286112122164477">Povolit na webech třetích stran přihlašovací tlačítka Google</translation>
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="5165042248369837294">Povolit sdílení tweetů z Twitteru</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
@@ -235,4 +234,5 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="5570470519803062774">Nastavení webů a štítů</translation>
 <translation id="8487693399751278191">Importovat záložky ihned...</translation>
 <translation id="2557899542277210112">Pro rychlý přístup umístěte své záložky sem na lištu záložek.</translation>
+<translation id="2808630562319398131">Obnovit údaje o odměnách Brave Rewards...</translation>
 </translationbundle>

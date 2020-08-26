@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Atcelt",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Pieteikties",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Maka verifikācija ļauj pārvaldīt līdzekļus efektīvāk.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Lai izveidotu Uphold kontu, jums vajag vismaz 25 BAT. Lūdzu, mēģiniet vēlreiz vēlāk. <br/> Ja jums jau ir verificēts Uphold konts, turpiniet pieteikties. ",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "pievienots",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Gaida",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

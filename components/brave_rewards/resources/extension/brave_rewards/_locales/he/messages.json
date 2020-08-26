@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "ביטול",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "התחבר",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "אימות הארנק מאפשר לכם לנהל את הכספים שלכם בצורה יעילה יותר.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "נדרשים לכם מינימום של 25 BAT כדי ליצור חשבון Uphold. נא לנסות שוב מאוחר יותר. <br/> אם כבר יש לכם חשבון Uphold מאומת, המשיכו להתחברות.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "מחובר",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "בהמתנה",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

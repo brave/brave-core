@@ -21,8 +21,6 @@
 <translation id="8410111618231938546">Google Widevineє частиною коду Digital Rights Management (DRM), яким ми у Brave Software не володіємо і не можемо перевіряти. Код Google Widevine завантажується з серверів Google, не з наших серверів. Він завантажується тільки якщо ви увімкнете таку опцію. Ми не заохочуємо використання DRM, але ми поважаємо вибір користувача і беремо до уваги те, що деякі з користувачів Brave захочуть використовувати сервіси, які його вимагають.
 Встановлюючи це розширення, ви погоджуєтесь з Умовами використання Google Widevine. Ви погоджуєтесь з тим, що Brave не несе жодної відповідальності за будь-яку шкоду або збитки, що настали у зв'язку з вашим використаням Google Widevine.</translation>
 <translation id="410351446219883937">Автоматичне відтворення</translation>
-<translation id="2240268017737062801">Запитувати, коли сайт хоче автоматично програвати медіа</translation>
-<translation id="3371702087847741961">Запитувати, коли сайт хоче автоматично програвати медіа (рекомендовано)</translation>
 <translation id="3218385319396786393">Автопрогравання заблоковано на цій сторінці</translation>
 <translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
@@ -45,6 +43,7 @@
 <translation id="8173998484743827990">Статистика Brave</translation>
 <translation id="5551238871320268996">Сильні разом з Brave</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Найкращі сайти</translation>
 <translation id="1776831331757823105">Годинник</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
@@ -79,7 +78,7 @@
 <translation id="4824468494729001999">Блокувати скрипти</translation>
 <translation id="519861640102428255">Дивіться таamp;amp; Відчувайте</translation>
 <translation id="4800195524776354947">Показати кількість блокованих зображень на іконці Щитів</translation>
-<translation id="7498695072878479744">Дозволити кнопки входу Google на сайтах третіх сторін</translation>
+<translation id="3932286112122164477">Дозволити кнопки входу Google на сайтах третіх сторін</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
 <translation id="958971637207126733">Дозволити вбудовані пости LinkedIn</translation>
@@ -234,4 +233,5 @@
 <translation id="5570470519803062774">Налаштування Сайту та Щитів</translation>
 <translation id="8487693399751278191">Імпортувати закладки зараз...</translation>
 <translation id="2557899542277210112">Для швидкого доступу розмістіть свої закладки тут – на панелі закладок.</translation>
+<translation id="2808630562319398131">Скинути дані Винагород Brave...</translation>
 </translationbundle>

@@ -22,8 +22,6 @@
 
 Εγκαθιστώντας αυτήν την επέκταση, συμφωνείτε με τους Όρους Χρήσης του Google Widevine. Συμφωνείτε ότι η Brave δεν ευθύνεται για οποιεσδήποτε ζημίες ή απώλειες σε σχέση με τη χρήση του Google Widevine.</translation>
 <translation id="410351446219883937">Αυτόματη εκτέλεση</translation>
-<translation id="2240268017737062801">Ερώτηση όταν μια ιστοσελίδα θέλει να γίνεται αυτόματη αναπαραγωγή μέσων</translation>
-<translation id="3371702087847741961">Ερώτηση όταν μια ιστοσελίδα θέλει να γίνεται αυτόματη αναπαραγωγή μέσων (προτείνεται)</translation>
 <translation id="3218385319396786393">Η αυτόματη αναπαραγωγή έχει αποκλειστεί σε αυτή τη σελίδα</translation>
 <translation id="4988333904713528597">Να επιτρέπεται πάντα η αυτόματη αναπαραγωγή στο <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Συνέχιση του αποκλεισμού της αυτόματης εκτέλεσης</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">Στατιστικά Brave</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Κορυφαίοι Ιστότοποι</translation>
 <translation id="1776831331757823105">Ρολόι</translation>
 <translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">Αποκλεισμός διαλόγων</translation>
 <translation id="519861640102428255">Δείτε &amp; Αισθανθείτε</translation>
 <translation id="4800195524776354947">Εμφάνιση του αριθμού των μπλοκαρισμένων στοιχείων στο εικονίδιο Ασπίδες</translation>
-<translation id="7498695072878479744">Επιτρέψτε κουμπιά σύνδεσης Google σε ιστοτόπους τρίτων</translation>
+<translation id="3932286112122164477">Επιτρέψτε κουμπιά σύνδεσης Google σε ιστοτόπους τρίτων</translation>
 <translation id="863171915776379000">Επιτρέψτε σύνδεση με Facebook και ενσωματωμένες αναρτήσεις</translation>
 <translation id="5165042248369837294">Επιτρέψτε στο Twitter ενσωματωμένα tweet</translation>
 <translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">Ρυθμίσεις Ιστοτόπου και Ασπίδων</translation>
 <translation id="8487693399751278191">Εισαγωγή σελιδοδεικτών τώρα...</translation>
 <translation id="2557899542277210112">Για γρήγορη πρόσβαση, τοποθετήστε τους σελιδοδείκτες σας εδώ στη μπάρα σελιδοδεικτών</translation>
+<translation id="2808630562319398131">Επαναφορά δεδομένων ανταμοιβών του Brave...</translation>
 </translationbundle>

@@ -55,6 +55,10 @@
     "message": "ক্রশ-সাইট ট্র্যাকারগুলি ব্লক করা হয়েছে",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "ট্র্যাকার ও বিজ্ঞাপনগুলি ব্লক করা হয়েছে",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "ট্র্যাকারগুলি এবং বিজ্ঞাপনগুলি অবরুদ্ধ করা হয়েছে (আক্রমণাত্মক)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "সমস্ত কুকি অনুমোদন করা হয়েছে",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "আঙুলের ছাপ ব্লক করা হয়েছে",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "ফ্রিঙ্গারপ্রিন্টিং ব্লক করা হয়েছে (আদর্শ)",

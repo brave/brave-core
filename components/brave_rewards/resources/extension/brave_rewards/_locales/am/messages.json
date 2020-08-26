@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "ይቅር",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "ግባ",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "ዋሌትን ማረጋገጥ ገንዘብዎን በብቃት እንዲያስተዳድሩ ይፈቅድልዎታል።",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "የመያዣ መለያ ለመፍጠር ቢያንስ 25 BAT ያስፈልግዎታል። እባክዎን ቆየት ብለው ይሞክሩ። <br/> አስቀድሞ የተረጋገጠ የመያዣ መለያ ካለዎት መግባትዎን ይቀጥሉ።",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "ተያይዟል",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "በመጠበቅ ላይ",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

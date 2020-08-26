@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Скасувати",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Вхід",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Верифікація гаманця дозволить вам більш ефективно керувати власними коштами.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Для створення рахунку Uphold вам потрібно мати принаймні 25 BAT. Будь ласка, повторіть спробу пізніше. <br/> Якщо ви вже маєте верифікований рахунок Uphold, виконайте вхід у систему.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Підключено",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "В очікуванні",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

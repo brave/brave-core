@@ -55,6 +55,10 @@
     "message": "Siteler arası iz sürücüler engellendi",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Engellenen izleyiciler & reklamlar",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "İzleyiciler ve reklamlar engellendi (agresif)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "Tüm çerezlere izin verildi",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Engellenen parmak izleri",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "Parmak izi engelli (standart)",
@@ -172,7 +180,7 @@
     "description": "Message for context menu that resets the site filters for cosmetic filtering"
   },
   "resetAllFilterSettings": {
-    "message": "Bu site için CSS kurallarını temizle",
+    "message": "Tüm siteler için CSS kurallarını temizle",
     "description": "Message for context menu that resets all cosmetic filters"
   },
   "advancedView": {

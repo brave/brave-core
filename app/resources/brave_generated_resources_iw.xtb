@@ -22,8 +22,6 @@
 
 בעת התקנת התוסף הזה, אתם מסכימים לתנאי השימוש של Google Widevine. אתם מסכימים גם ש-Brave אינם אחראים לכל נזקים או הפסדים בהקשר השימוש שלכם ב-Google Widevine.</translation>
 <translation id="410351446219883937">הפעלה אוטומטית</translation>
-<translation id="2240268017737062801">שאלו אותי כאשר אתר רוצה לנגן מדיה בצורה אוטומטית</translation>
-<translation id="3371702087847741961">שאל כאשר אתר רוצה להפעיל מדיה באופן אוטומטי (מומלץ)</translation>
 <translation id="3218385319396786393">ההפעלה האוטומטית נחסמה בדף זה</translation>
 <translation id="4988333904713528597">הרשו תמיד הפעלה אוטומטית ל-<ph name="HOST"/></translation>
 <translation id="4150684676757176434">המשיכו לחסום הפעלה אוטומטית</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">נתונים סטטיסטיים של Brave</translation>
 <translation id="5551238871320268996">Brave ביחד</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">אתרים מובילים</translation>
 <translation id="1776831331757823105">שעון</translation>
 <translation id="7965178729203412357">זהות Tor חדשה</translation>
@@ -81,7 +80,7 @@
 <translation id="4824468494729001999">חסום סקריפטים</translation>
 <translation id="519861640102428255">מראה  &amp; תחושה</translation>
 <translation id="4800195524776354947">הצג את מספר הפריטים החסומים בסמל Shields</translation>
-<translation id="7498695072878479744">אפשר לחצני כניסה של גוגל באתרי צד שלישי</translation>
+<translation id="3932286112122164477">אפשר לחצני כניסה של גוגל באתרי צד שלישי</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
 <translation id="958971637207126733">נא לאפשר פוסטים מוטבעים</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">הגדרות אתר ו-Shields</translation>
 <translation id="8487693399751278191">ייבא סימניות עכשיו...</translation>
 <translation id="2557899542277210112">לגישה מהירה, יש למקם את הסימניות שלך כאן בסרגל הסימניות.</translation>
+<translation id="2808630562319398131">אפס נתוני Brave Rewards...</translation>
 </translationbundle>

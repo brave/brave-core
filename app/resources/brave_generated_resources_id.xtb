@@ -22,8 +22,6 @@
 
 Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Widevine. Anda setuju bahwa Brave tidak bertanggung jawab untuk setiap kerusakan atau kerugian sehubungan dengan penggunaan Google Widevine.</translation>
 <translation id="410351446219883937">Putar otomatis</translation>
-<translation id="2240268017737062801">Tanya ketika situs ingin memutar otomatis media</translation>
-<translation id="3371702087847741961">Tanya ketika situs ingin memainkan media secara otomatis (direkomendasikan)</translation>
 <translation id="3218385319396786393">Putar otomatis pada laman ini diblokir</translation>
 <translation id="4988333904713528597">Selalu izinkan putar otomatis di <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Lanjutkan memblokir putar otomatis</translation>
@@ -46,6 +44,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="8173998484743827990">Statistik Brave</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Situs Teratas</translation>
 <translation id="1776831331757823105">Jam</translation>
 <translation id="7965178729203412357">Identitas Tor Baru</translation>
@@ -80,7 +79,7 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="4824468494729001999">Blokir skrip</translation>
 <translation id="519861640102428255">Tampilan &amp; Rasa</translation>
 <translation id="4800195524776354947">Tampilkan jumlah objek yang diblokir pada ikon Perisai</translation>
-<translation id="7498695072878479744">Izinkan tombol login Google di situs pihak ketiga</translation>
+<translation id="3932286112122164477">Izinkan tombol login Google di situs pihak ketiga</translation>
 <translation id="863171915776379000">Izinkan tombol masuk Facebook dan kiriman tersemat</translation>
 <translation id="5165042248369837294">Izinkan tweet tersemat Twitter</translation>
 <translation id="958971637207126733">Izinkan kiriman tersemat LinkedIn</translation>
@@ -235,4 +234,5 @@ Dengan memasang ekstensi ini, Anda menyetujui Persyaratan Penggunaan Google Wide
 <translation id="5570470519803062774">Pengaturan Situs dan Perisai</translation>
 <translation id="8487693399751278191">Impor bookmark sekarang...</translation>
 <translation id="2557899542277210112">Untuk akses cepat, letakkan bookmark Anda di bilah bookmark.</translation>
+<translation id="2808630562319398131">Atur ulang data Brave Reward...</translation>
 </translationbundle>

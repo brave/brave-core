@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Odustani",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Prijava",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Provjerom novčanika možete učinkovitije upravljati svojim sredstvima.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Treba vam najmanje 25 BATA za stvaranje računa za uslugu Uphold. Pokušajte ponovno kasnije. <br/> Ako ste već provjerili račun za uslugu Uphold, nastavite do prijave.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Spojeno",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Na čekanju",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

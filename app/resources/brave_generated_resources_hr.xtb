@@ -22,8 +22,6 @@
 
 Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtke Google. Potvrđujete da Brave ne odgovora ni za kakvu štetu ni gubitke povezane s vašom uporabom Googleova rješenja Widevine.</translation>
 <translation id="410351446219883937">Automatska reprodukcija</translation>
-<translation id="2240268017737062801">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije</translation>
-<translation id="3371702087847741961">Traži dopuštenje kada mrežno mjesto želi automatski reproducirati medije (preporučeno)</translation>
 <translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
 <translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Nastavi blokirati automatsku reprodukciju</translation>
@@ -46,6 +44,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="8173998484743827990">Stanja Brave</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Burza Gemini</translation>
 <translation id="4643117005422448078">Najpopularnija mrežna mjesta</translation>
 <translation id="1776831331757823105">Sat</translation>
 <translation id="7965178729203412357">Novi identitet za Tor</translation>
@@ -80,7 +79,7 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="519861640102428255">Pogledajte &amp; osjetite</translation>
 <translation id="4800195524776354947">Prikaži broj blokiranih stavki na ikoni Štitnici</translation>
-<translation id="7498695072878479744">Dopusti gumbe za prijavu u uslugu Google na mrežnim mjestima trećih strana</translation>
+<translation id="3932286112122164477">Dopusti gumbe za prijavu u uslugu Google na mrežnim mjestima trećih strana</translation>
 <translation id="863171915776379000">Dopusti prijave u društvenu mrežu Facebook i ugrađene objave</translation>
 <translation id="5165042248369837294">Dopusti ugrađene objave na društvenoj mreži Twitter</translation>
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
@@ -235,4 +234,5 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="5570470519803062774">Postavke mjesta i štita</translation>
 <translation id="8487693399751278191">Sada uvezite knjiške oznake...</translation>
 <translation id="2557899542277210112">Za brzo pristupanje postavite svoje knjiške oznake ovdje na traku za knjiške oznake.</translation>
+<translation id="2808630562319398131">Ponovno postavite podatke za Brave Rewards...</translation>
 </translationbundle>
