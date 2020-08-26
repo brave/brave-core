@@ -43,3 +43,22 @@ void BraveProfileMenuView::OnExitProfileButtonClicked() {
     ProfileMenuView::OnExitProfileButtonClicked();
   }
 }
+
+void BraveProfileMenuView::BuildMenu() {
+  Profile* profile = browser()->profile();
+  if (profile->IsRegularProfile()) {
+    BuildIdentity();
+    BuildAutofillButtons();
+  } else if (profile->IsGuestSession()) {
+    BuildGuestIdentity();
+  } else {
+    NOTREACHED();
+  }
+
+//  ChromeOS doesn't support multi-profile.
+#if !defined(OS_CHROMEOS)
+  BuildProfileManagementHeading();
+  BuildSelectableProfiles();
+  BuildProfileManagementFeatureButtons();
+#endif
+}
