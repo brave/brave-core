@@ -55,6 +55,10 @@
     "message": "跨站点跟踪器已拦截",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "跟踪器和广告被屏蔽",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
     "message": "跟踪器和广告被屏蔽（攻击性）",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
@@ -90,6 +94,10 @@
   "allCookiesAllowed": {
     "message": "已允许所有Cookies",
     "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "指纹被屏蔽",
+    "description": "Message for the option in the fingerprinting field in read only view"
   },
   "standardFingerprinting": {
     "message": "已拦截指纹识别（标准）",

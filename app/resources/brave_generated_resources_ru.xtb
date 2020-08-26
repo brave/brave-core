@@ -22,8 +22,6 @@
 
 Установив данное расширение, вы соглашаетесь с Условиями пользования Google Widevine. Вы соглашаетесь с тем, что Brave не несет ответственности за любой ущерб или убытки, причиненные в связи с использованием вами Google Widevine.</translation>
 <translation id="410351446219883937">Автовоспроизведение</translation>
-<translation id="2240268017737062801">Спрашивать, когда сайт хочет автоматически воспроизводить аудио или видео</translation>
-<translation id="3371702087847741961">Спрашивать, когда сайт хочет автоматически воспроизвести медиафайлы (рекомендуется)</translation>
 <translation id="3218385319396786393">На этой странице заблокирован автозапуск</translation>
 <translation id="4988333904713528597">Всегда разрешать автоматическое воспроизведение на <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Продолжить блокирование автоматического воспроизведения</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">Статистика Brave</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Лучшие сайты</translation>
 <translation id="1776831331757823105">Часы</translation>
 <translation id="7965178729203412357">Новый Tor-идентификатор</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">Блокировать скрипты</translation>
 <translation id="519861640102428255">Смотрите и чувствуйте</translation>
 <translation id="4800195524776354947">Показывать количество заблокированных элементов на значке Shields</translation>
-<translation id="7498695072878479744">Разрешить кнопки входа через Google на сторонних сайтах</translation>
+<translation id="3932286112122164477">Разрешить кнопки входа через Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
 <translation id="958971637207126733">Разрешить встроенные сообщения LinkedIn</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">Настройки сайта и Shields</translation>
 <translation id="8487693399751278191">Импортировать закладки...</translation>
 <translation id="2557899542277210112">Разместите свои закладки на панели закладок для быстрого доступа.</translation>
+<translation id="2808630562319398131">Сбросить данные Вознаграждений Brave...</translation>
 </translationbundle>

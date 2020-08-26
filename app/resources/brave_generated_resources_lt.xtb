@@ -22,8 +22,6 @@
 
 Įdiegdami šį plėtinį sutinkate su „Google Widevine“ naudojimo sąlygomis. Sutinkate, kad „Brave“ nebus atsakinga už jokią žalą ar nuostolius, patirtus dėl naudojimosi „Google Widevine“.</translation>
 <translation id="410351446219883937">Leisti automatiškai</translation>
-<translation id="2240268017737062801">Paklausti, kai svetainė nori automatiškai leisti mediją</translation>
-<translation id="3371702087847741961">Paklausti, kai svetainė nori automatiškai leisti mediją (rekomenduojama)</translation>
 <translation id="3218385319396786393">Šiame puslapyje automatinio leidimo funkcija buvo užblokuota</translation>
 <translation id="4988333904713528597">Visada leisti automatinį leidimą svetainėje <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
@@ -46,6 +44,7 @@
 <translation id="8173998484743827990">„Brave“ statistiniai duomenys</translation>
 <translation id="5551238871320268996">„Brave Together“</translation>
 <translation id="6966052266404721769">„Binance“</translation>
+<translation id="8533411848724153701">„Gemini“</translation>
 <translation id="4643117005422448078">Populiariausios svetainės</translation>
 <translation id="1776831331757823105">Laikrodis</translation>
 <translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
@@ -80,7 +79,7 @@
 <translation id="4824468494729001999">Blokuoti scenarijus</translation>
 <translation id="519861640102428255">Išvaizda ir turinys</translation>
 <translation id="4800195524776354947">Skydų piktogramoje rodyti užblokuotų elementų skaičių</translation>
-<translation id="7498695072878479744">Trečiųjų šalių svetainėse leisti „Google“ prisijungimo mygtukus</translation>
+<translation id="3932286112122164477">Trečiųjų šalių svetainėse leisti „Google“ prisijungimo mygtukus</translation>
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
 <translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
@@ -235,4 +234,5 @@
 <translation id="5570470519803062774">Svetainės ir skydų nuostatos</translation>
 <translation id="8487693399751278191">Importuoti žymes dabar...</translation>
 <translation id="2557899542277210112">Savo žymes pasieksite greičiau, jei įkelsite į žymių juostą.</translation>
+<translation id="2808630562319398131">Iš naujo nustatyti „Brave Rewards“ duomenis...</translation>
 </translationbundle>

@@ -42,6 +42,12 @@
 <translation id="383680190590774040">Klok</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="3159285901314605198">Achtergrondafbeelding</translation>
+<translation id="1776831331757823105">Klok</translation>
+<translation id="4643117005422448078">Top websites</translation>
+<translation id="7791543448312431591">Toevoegen</translation>
+<translation id="7679334366167089823">Verdien tokens voor het bekijken van privacy-respecterende advertenties.</translation>
+<translation id="1531133232292396145">Rechtstreeks in uw browser in crypto handelen op Binance.</translation>
+<translation id="2166494527623220386">Rechtstreeks in uw browser in crypto handelen op Gemini.</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8730621377337864115">Gereed</translation>
 <translation id="6248988683584659830">Zoekinstellingen</translation>
@@ -165,9 +171,10 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Geef meteen een fooi als je juweeltjes vindt.</translation>
 <translation id="3642432959491988696">Laat anderen het weten met een korte tweet.</translation>
-<translation id="5984081903757971165">{{balance}} {{currency}} is herstel. Je walletsleutel is geverifieerd en succesvol geladen.</translation>
+<translation id="4875485795191140618">Uw portemonneesleutel is geverifieerd en met succes geladen.</translation>
 <translation id="1083279119532577005">Wallet hersteld!</translation>
 <translation id="7841456038054167122">Voor de sleutels alsjeblieft opnieuw in of probeer andere sleutels</translation>
+<translation id="340102383764929340">De ingevoerde herstelsleutel wordt niet meer ondersteund. Ga naar <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="http://brave.com/faq#convert-old-keys"&gt;</ph>here<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> voor een nieuwe sleutel.</translation>
 <translation id="2195074481553016770">Bijna klaar...</translation>
 <translation id="5254740304961202261">Bewijs dat je een mens bent!</translation>
 <translation id="2187043784382239974">Hmmm, niet helemaal ...</translation>
@@ -187,10 +194,12 @@
 <translation id="6805660603861526473">Bekeken</translation>
 <translation id="2852258589816753010">BAT wordt momenteel niet in uw regio ondersteund. Kijk <ph name="BEGIN_LINK_REGION_TEXT">&lt;a target="_blank" href="$1"&gt;</ph>hier<ph name="END_LINK_REGION_TEXT">&lt;/a&gt;</ph> voor updates.</translation>
 <translation id="2564425876266960486">Fout tijdens het aanmaken van de Brave Browser BAT-kaart</translation>
+<translation id="6473583070570450185">U heeft een geverifieerde portemonnee nodig om in te loggen</translation>
+<translation id="2106271389438168634">U moet minimaal 25 BAT hebben om een Uphold portemonnee aan te maken. Probeer het later opnieuw nadat u uw portemonnee met Uphold hebt geverifieerd.</translation>
 <translation id="7422678632904904341">Bedrag:</translation>
 <translation id="6969783933307596818">Automatisch elke 5 seconden ververst</translation>
 <translation id="5025866799968038247">Saldo info</translation>
-<translation id="1642443162274867084">Wallet aangemaakt</translation>
+<translation id="6073289164268847023">Portemonnee aangemaakt:</translation>
 <translation id="6643016212128521049">Wissen</translation>
 <translation id="8949473809474431949">Contributie bedrag:</translation>
 <translation id="4468686134841688885">Gecreëerd op:</translation>
@@ -210,11 +219,13 @@
 <translation id="386483240851194811">Rewards was uitgeschakeld</translation>
 <translation id="3354337256330577726">Auto-contributie was uitgeschakeld</translation>
 <translation id="6727186931929643711">Gestopt met opnieuw proberen</translation>
+<translation id="2059498613853603008">WAARSCHUWING: De gegevens op deze pagina kunnen gevoelig zijn. Behandel ze zoals u uw persoonlijke portemonneesleutels zou behandelen. Wees voorzichtig met wie u dit deelt.</translation>
 <translation id="7375125077091615385">Type:</translation>
 <translation id="4973347371961481083">Contributies</translation>
 <translation id="1924618796077284366">Download de volledige logbestanden</translation>
+<translation id="1979114396925139279">Externe portemonneegegevens</translation>
 <translation id="5457113250005438886">Ongeldig</translation>
-<translation id="7687511348932340294">Sleutel Info Seed:</translation>
+<translation id="6161467863097205016">Sleutelinformatie seed:</translation>
 <translation id="1907668701131938713">We tonen de laatste {{numberOfLines}} regels van het logbestand. Als je het volledige logbestand wil, kun je het boven downloaden.</translation>
 <translation id="7168491065836975228">Interne beloning</translation>
 <translation id="758790787422117549">Persoonlijk ID</translation>
@@ -247,8 +258,16 @@
 <translation id="6672180611914406778">Totaalsaldo</translation>
 <translation id="2223892939866251845">Gebruikers-ID</translation>
 <translation id="4235360514405112390">Geldig</translation>
+<translation id="3902084968737576005">Portemonnee-adres:</translation>
 <translation id="2326487656644542536">Portemonnee-info</translation>
-<translation id="3576689061489548788">Wallet Betalings-ID:</translation>
+<translation id="8559420016582377654">Betaal-ID portemonnee:</translation>
+<translation id="438586487791444158">Portemonneestatus:</translation>
+<translation id="3368922792935385530">Verbonden</translation>
+<translation id="8874184842967597500">Niet verbonden</translation>
+<translation id="4569155249847375786">Geverifieerd</translation>
+<translation id="922103963921062336">Verbinding verbroken (niet geverifieerd)</translation>
+<translation id="6521149675246672063">Verbinding verbroken (geverifieerd)</translation>
+<translation id="3248185426436836442">In afwachting</translation>
 <translation id="5094577350232361255">over</translation>
 <translation id="4918086044614829423">Accepteren</translation>
 <translation id="5916290544882167205">Brave Software. Brave is een geregistreerd handelsmerk van Brave Software. Sitenamen kunnen handelsmerken of geregistreerde handelsmerken zijn van de site-eigenaar.</translation>
@@ -330,6 +349,9 @@
 <translation id="2291686779354188838">Hallo, {{name}}!</translation>
 <translation id="1389143276807887637">importeer</translation>
 <translation id="7335371657242627509">Deelname aan Auto-Contribute</translation>
+<translation id="1864111464094315414">Aanmelden</translation>
+<translation id="4556504723624686474">Door uw portemonnee te verifiëren, kunt u uw geld efficiënter beheren.</translation>
+<translation id="4188679602963314994">U moet minimaal 25 BAT hebben om een Uphold account aan te maken. Probeer het later opnieuw. <ph name="BREAK">&lt;br/&gt;</ph>Als u al een geverifieerde Uphold-account hebt, ga dan verder met inloggen.</translation>
 <translation id="3250511771491660127">Laat dit maandelijks plaatsvinden</translation>
 <translation id="6028954173739504682">Je wallet beheren</translation>
 <translation id="7886389832052393750">Apr</translation>
@@ -525,13 +547,13 @@
 <translation id="9096003370755878766">Neem BAT op die je mogelijk eerder aan je Brave Rewards-portemonnee hebt toegevoegd</translation>
 <translation id="8558636200953226885">Maar als u verifieert, kunt u...</translation>
 <translation id="3354315693758743702">Verificatie van uw portemonnee is optioneel.</translation>
-<translation id="4569155249847375786">Geverifieerd</translation>
 <translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
 <translation id="723054503945711909">Brave Software Inc. verwerkt, bewaart of heeft geen toegang tot de persoonlijke informatie die je verstrekt aan Uphold wanneer je een account bij hen aanmaakt.</translation>
 <translation id="7404779623219601861">BAT inwisselen voor cadeaubonnen</translation>
 <translation id="6215565499749144110">Met TAP Network kun je je BAT inwisselen voor populaire cadeaubonnen van bekende merken.</translation>
-<translation id="526152301446370337">Ga naar TAP.</translation>
 <translation id="6915065518766963119">* Vereist verdere verificatie.</translation>
+<translation id="651649139059930379">Krijg 2% cryptoback met de Uphold card</translation>
+<translation id="1109729143147368573">Besteed uw crypto en andere activa bij zo'n 50 miljoen handelaren en geldautomaten over de hele wereld. Besteed crypto om crypto te krijgen!</translation>
 <translation id="4360054110030715117"><ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/> over Brave Rewards</translation>
 <translation id="5826706758731195747">Door Rewards aan te zetten, ga je akkoord met de <ph name="LINK_BEGIN"/>Algemene Voorwaarden<ph name="LINK_END"/>.</translation>
 <translation id="8344084848798035850">Geschatte inkomsten tot nu toe deze maand</translation>
@@ -552,6 +574,7 @@
 <translation id="6759185676704303656">Je wordt betaald om deze achtergrondafbeelding te bekijken.</translation>
 <translation id="1749232564087138444"><ph name="LINK_BEGIN"/>Leer meer<ph name="LINK_END"/> over gesponsorde afbeeldingen in Brave Rewards.</translation>
 <translation id="6113004497629356998">Verberg gesponsorde afbeeldingen</translation>
+<translation id="2148613324460538318">Voeg een Pas toe</translation>
 <translation id="5977237145327845546">Start een privé-videogesprek met je vrienden en collega's.</translation>
 <translation id="5850325887346946383">Start videogesprek</translation>
 <translation id="3651550649176056334">Over jouw gegevens</translation>
@@ -597,6 +620,23 @@
 <translation id="2956070106555335453">Samenvatting</translation>
 <translation id="439104575421522802">Sessie is verlopen</translation>
 <translation id="8558560988211507902">Je Binance-toegangstoken is verlopen. Maak opnieuw verbinding om de widget te blijven gebruiken.</translation>
+<translation id="1543656153506416324">Koop en handel met Gemini</translation>
+<translation id="8960333903621861280">Schakel een Gemini-verbinding in om de balans van uw Gemini-account en te bekijken en crypto te verhandelen.</translation>
+<translation id="7604416013180651887">Maak verbinding met Gemini</translation>
+<translation id="2349109114223854255">Uw Gemini-toegangspas is verlopen en kon niet worden ververst. Maak alstublieft opnieuw verbinding.</translation>
+<translation id="4848984536030986115">Niet in staat om te handelen</translation>
+<translation id="7352651011704765696">Er ging iets fout</translation>
+<translation id="7097088316781182926">Handel bevestigen</translation>
+<translation id="3488255243387417752">Verkopen</translation>
+<translation id="7969910554171263591">Vraag een offerte aan</translation>
+<translation id="1848737374354350807">Balans:</translation>
+<translation id="8285358301500391177">Kopen</translation>
+<translation id="8675476238074172660">Verkopen</translation>
+<translation id="3081546448594005997">U kocht</translation>
+<translation id="8810136648184657966">U verkocht</translation>
+<translation id="1833248467354516560">Prijs per eenheid</translation>
+<translation id="4763179765154524864">Totaaluitgaven</translation>
+<translation id="8851480289992540512">Totaal ontvangen</translation>
 <translation id="5655621391922317800">Crypto Wallets</translation>
 <translation id="616639131065447379">Welkom bij Brave Crypto Wallets</translation>
 <translation id="1740464057879304704">Met Crypto Wallets kun je werken met cryptocurrency en aanverwante middelen in Brave. Crypto Wallets ondersteunt Ethereum tokens zoals ETH en BAT, evenals collectibles, en staat je toe om te werken met Ðapps en andere slimme contracten. Dit alles is bedoeld voor mensen die bekend zijn met Ethereum en andere blockchain-systemen — of die het graag willen leren.</translation>

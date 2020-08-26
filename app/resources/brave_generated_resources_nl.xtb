@@ -22,8 +22,6 @@
 
 Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruikersvoorwaarden. Je gaat er mee akkoord dat Brave niet verantwoordelijk is voor enige schade of verliezen gerelateerd aan je gebruik van Google Widevine</translation>
 <translation id="410351446219883937">Automatisch afspelen</translation>
-<translation id="2240268017737062801">Vraag als een site media automatisch wil afspelen</translation>
-<translation id="3371702087847741961">Vraag als een website media automatisch wil afspelen (aangeraden)</translation>
 <translation id="3218385319396786393">Automatisch afspelen is op deze pagina geblokkeerd</translation>
 <translation id="4988333904713528597">Automatisch afspelen altijd toestaan in <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Blijf automatisch afspelen blokkeren</translation>
@@ -47,6 +45,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="8173998484743827990">Brave statistieken</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Top websites</translation>
 <translation id="1776831331757823105">Klok</translation>
 <translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
@@ -81,7 +80,7 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="4824468494729001999">Blokkeer scripts</translation>
 <translation id="519861640102428255">Look &amp; Feel</translation>
 <translation id="4800195524776354947">Toon het aantal geblokkeerde items op het schild-icoontje</translation>
-<translation id="7498695072878479744">Sta Google-inlogknoppen toe op sites van externe partijen</translation>
+<translation id="3932286112122164477">Sta Google-inlogknoppen toe op sites van externe partijen</translation>
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
 <translation id="5165042248369837294">Embedded tweets van Twitter toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
@@ -236,4 +235,5 @@ suggesties voor automatisch aanvullen</translation>
 <translation id="5570470519803062774">Site- en Shields-instellingen</translation>
 <translation id="8487693399751278191">Importeer nu bladwijzers...</translation>
 <translation id="2557899542277210112">Voor een snelle toegang kun je hier bladwijzers op de bladwijzerbalk plaatsen.</translation>
+<translation id="2808630562319398131">Brave Rewards-gegevens resetten...</translation>
 </translationbundle>

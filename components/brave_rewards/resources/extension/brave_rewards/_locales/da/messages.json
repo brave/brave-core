@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Annuller",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Login",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Bekræftelse af en wallet giver dig mulighed for at administrere dine midler mere effektivt.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Du skal bruge minimum 25 BAT for at oprette en Uphold-wallet. Prøv venligst igen senere. <br/> Hvis du allerede har en bekræftet Uphold-konto, skal du logge ind.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Tilsluttet",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Afventer ",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

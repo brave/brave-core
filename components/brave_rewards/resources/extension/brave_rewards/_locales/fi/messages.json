@@ -598,5 +598,29 @@
         "example": "John"
       }
     }
+  },
+  "cancel":  {
+    "message": "Peruuta",
+    "description": "Text for cancel button"
+  },
+  "login":  {
+    "message": "Kirjaudu",
+    "description": "Text for login button"
+  },
+  "loginMessageTitle":  {
+    "message": "Lompakon todentaminen mahdollistaa varojesi tehokkaamman hallinnan.",
+    "description": "Text for login button"
+  },
+  "loginMessageText":  {
+    "message": "Uphold-tilin luomiseen tarvitaan vähintään 25 BATia. Kokeile myöhemmin uudelleen. <br/> Mikäli sinulla on jo todennettu Uphold-tili, voit jatkaa kirjautumalla.",
+    "description": "Text for login button"
+  },
+  "walletConnected":  {
+    "message": "Yhdistetty",
+    "description": "Status button that tells user that he is connected"
+  },
+  "walletPending":  {
+    "message": "Odottaa",
+    "description": "Status button that tells user that he is currently pending"
   }
 }

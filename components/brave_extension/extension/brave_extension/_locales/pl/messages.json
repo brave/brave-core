@@ -55,12 +55,16 @@
     "message": "Zablokowane skrypty śledzące",
     "description": "Message for the scripts blocked row label"
   },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Zablokowano narzędzia do monitorowania oraz reklamy",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
   "aggressiveAdsTrackersBlocking": {
-    "message": "Blokowanie trackerów i reklam (agresywne)",
+    "message": "Blokuj skrypty śledzące i reklamy (agresywnie)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
   },
   "standardAdsTrackersBlocking": {
-    "message": "Blokowanie trackerów i reklam (standardowe)",
+    "message": "Blokuj skrypty śledzące i reklamy (standardowo)",
     "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
   },
   "allowAdsTrackers": {
@@ -91,12 +95,16 @@
     "message": "Wszystkie pliki cookie dozwolone",
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
+  "readOnlyFingerprinting": {
+    "message": "Zablokowano funkcję odcisku palca",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
   "standardFingerprinting": {
-    "message": "Zablokowane rozpoznawanie urządzenia (standardowe)",
+    "message": "Zablokuj rozpoznawanie urządzenia (standardowe)",
     "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
   },
   "strictFingerprinting": {
-    "message": "Zablokowane rozpoznawanie urządzenia (ścisłe, strona może nie działać)",
+    "message": "Zablokuj rozpoznawanie urządzenia (ścisłe, strona może nie działać)",
     "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
   },
   "allowAllFingerprinting": {

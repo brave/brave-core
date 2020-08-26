@@ -27,8 +27,8 @@
 <translation id="7459000603787995422">Fermer les onglets à la sortie</translation>
 <translation id="1680858055899097121">Ne persistez pas dans les onglets entre les sessions de navigation</translation>
 <translation id="453601949003770390">Traqueurs et publicité bloqués</translation>
-<translation id="6761596877474675418">Données sauvegardées</translation>
-<translation id="3034562645284925177">Gain de temps estimé</translation>
+<translation id="347604927162577559">Données\nsauvegardées</translation>
+<translation id="9008534313521214777">Temps gagné\nestimé</translation>
 <translation id="6572660632052512096">Mode bureau</translation>
 <translation id="1340503115760585811">Activer l'affichage de bureau pour les nouveaux onglets</translation>
 <translation id="7924540991929826186">Utilisez les versions mobiles des sites pour les nouveaux onglets (recommandé)</translation>
@@ -56,7 +56,7 @@
 <translation id="316832010181763471">Intégration du moteur de recherche</translation>
 <translation id="986879628471635371">Dépannage intégré</translation>
 <translation id="5808759341041733958">Choisissez un moteur de recherche par défaut</translation>
-<translation id="4428458837269935199">Pour une expérience de recherche plus discrète, essayez DuckDuckGo.</translation>
+<translation id="1331593888918588693">Vous pouvez toujours changer votre préférence plus tard dans les réglages de publicité.</translation>
 <translation id="5317780077021120954">Enregistrer</translation>
 <translation id="7053983685419859001">Bloquer</translation>
 <translation id="5806601733251372221">Boucliers de Brave</translation>
@@ -229,6 +229,8 @@ mois-ci...</translation>
 <translation id="3349204812119681938">Réinitialiser Brave Rewards</translation>
 <translation id="8782039523249932839">Ceci supprimera votre porte-monnaie Brave et réinitialisera toutes vos données Brave Rewards</translation>
 <translation id="6810078320346589989">Créer un signet</translation>
+<translation id="3396347744975515056">Brave Synch a été mis à jour et nécessite une réinitiallisation</translation>
+<translation id="7473245612074035141">Commencer la configuration</translation>
 <translation id="597993392929850353">Licence Brave</translation>
 <translation id="6336451774241870485">Nouvel onglet de navigation privée</translation>
 <translation id="6199596294742117349">Ceci est un onglet privé</translation>
@@ -249,15 +251,15 @@ mois-ci...</translation>
 <translation id="4522570452068850558">Détails</translation>
 <translation id="1486343603936278248">jeton</translation>
 <translation id="8713995420537272453">point</translation>
-<translation id="6678056861663824314">1 <ph name="TIP"/></translation>
-<translation id="4065726515175370979">5 <ph name="TIP"/></translation>
-<translation id="8171148564903208264">10 <ph name="TIP"/></translation>
+<translation id="2802462801862186499">1 000 <ph name="TIP"/></translation>
+<translation id="3215472762156924589">5.000 <ph name="TIP"/></translation>
+<translation id="487252517537426371">10 000 <ph name="TIP"/></translation>
 <translation id="7781069478569868053">Nouvel onglet</translation>
 <translation id="8522669544471808198">Afficher les images de fond</translation>
 <translation id="3870475560794762985">Afficher les images sponsorisées</translation>
 <translation id="8297488609722895137">Photo de <ph name="PHOTO_BY"/></translation>
 <translation id="1605521356929094020">Activez les publicités Brave</translation>
-<translation id="5878330112719288629">En tapant Gagner et Donner, vous acceptez les <ph name="TERMS_OF_SERVICE"/>.</translation>
+<translation id="1873603368604736484">En activant les Récompenses, vous acceptez les <ph name="TERMS_OF_SERVICE"/>.</translation>
 <translation id="3794079107601824147">Faites-vous payer pour voir cette image de fond.</translation>
 <translation id="7136586167396205364">Cacher les images sponsorisées</translation>
 <translation id="2927095357213611519">Vous pouvez aider les créateurs de sites Web avec des jetons.\nGagnez des jetons en regardant des publicités respectueuses de la vie privée.</translation>
@@ -304,10 +306,9 @@ mois-ci...</translation>
 <translation id="8851456134224363571">Génial ! Pourriez-vous nous laisser une note sur le Play Store ?</translation>
 <translation id="8668962040900592974">Faites-nous savoir comment nous pouvons nous améliorer</translation>
 <translation id="4406937629441301400">Gagnez des jetons pour la visualisation de cette image et reversez-la aux créateurs. <ph name="LEARN_MORE"/></translation>
-<translation id="8693132237667961044">Gagnez des jetons pour voir cette image. Activez Gagner et Donner pour réclamer votre part.</translation>
+<translation id="7894626572714595717">Gagnez des jetons en regardant cette image. Activez Brave Ads pour réclamer votre part.</translation>
 <translation id="6632345639591919543">Vous gagnez des jetons pour la visualisation de cette image.\n<ph name="LEARN_MORE"/></translation>
 <translation id="1465733111003593696">Vous gagnez des jetons pour avoir vu cette image.</translation>
-<translation id="7952665812649667034">Je suis prêt à Gagner et Donner</translation>
 <translation id="7877201489035217175">En savoir plus sur les images sponsorisées</translation>
 <translation id="828092975561478703">Pour chaque image sponsorisée que vous regardez, vous recevez 70 % des recettes sous forme de jetons. Avec Brave Ads, vous êtes toujours en contrôle des publicités que vous voyez.</translation>
 <translation id="4941539331405513605">Bloquer les cookies intersites</translation>
@@ -341,4 +342,47 @@ mois-ci...</translation>
 <translation id="915835519491851291">Vous venez de bloquer quelques traqueurs et publicités.</translation>
 <translation id="3286927551967858325">Jeter un coup d'œil</translation>
 <translation id="2929661208078053609">Bien!</translation>
+<translation id="4776948189086901857">Brave fonctionne partout</translation>
+<translation id="1606322780901645965">Téléchargez Brave sur brave.com sur votre ordinateur ou votre tablette pour une navigation web plus rapide et confidentielle</translation>
+<translation id="8374242949413616101">Protection de la confidentialité</translation>
+<translation id="4955406228638026265">Brave empêche les publicités et les traqueurs de collecter des informations à propos de vous sans votre consentement.</translation>
+<translation id="752842701893882688">Économisez des données et votre batterie</translation>
+<translation id="5739030256211745023">Sans publicités et traqueurs, les sites web utilisent moins de données et de batterie. Vous pourriez même économiser de l'argent sur vos frais d'opérateur.</translation>
+<translation id="5440744330377972191">Les sites web chargent plus rapidement</translation>
+<translation id="3000738865641747653">Télécharger moins de données signifie que les site web se chargent plus vite sur Brave -- jusqu'à 8x plus vite que les autres navigateurs.</translation>
+<translation id="8903462729414407077">Obtenir des mises à jour hebdomadaires</translation>
+<translation id="8029219208182772618">Soyez informé sur les sites web que vous visitez qui sont les plus invasifs au niveau de la confidentialité.\n\nSeul vous pouvez voir ces statistiques de confidentialité. Aucune donnée personnelle ni aucun historique de navigation ne quitte le navigateur Brave sur votre appareil.</translation>
+<translation id="6170159749517116894">Activer les rapports de confidentialité</translation>
+<translation id="6165508094623778733">En savoir plus</translation>
+<translation id="5966707198760109579">Semaine</translation>
+<translation id="8987927404178983737">Mois</translation>
+<translation id="4302754476737420523">3 mois</translation>
+<translation id="8248593573177859437">Rapport de confidentialité</translation>
+<translation id="1274039301958114163">Notification de rapport de confidentialité</translation>
+<translation id="1581614543353331529">Encore aucunes données à afficher</translation>
+<translation id="2401984885421380890">Traqueurs &amp; publicités\nbloqués</translation>
+<translation id="2662183408296991265">Données sauvegardées\n(<ph name="DATA_SAVED"/>)</translation>
+<translation id="6814582232712814369">Temps gagné</translation>
+<translation id="3694122362646626770">Sites web</translation>
+<translation id="2225863440766607138">Traqueurs</translation>
+<translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
+<translation id="6737820963776538947">Vous avez bloqué <ph name="COUNT"/> traqueurs &amp; de publicité avec le navigateur Brave dans les 3 dernières heures.</translation>
+<translation id="3621193901658023971">Naviguez jusqu'à 6x plus vite sur les sites de nouvelles majeurs avec Brave en bloquant les traqueurs et les publicités.</translation>
+<translation id="7427567994475794038">Activez les rapports de confidentialité pour voir combien de traqueurs et de publicités ont été bloqués dans les 3 derniers jours.</translation>
+<translation id="2053891538879944400">Vous avez économisé <ph name="DATA"/> <ph name="DATA_TEXT"/> de données avec le navigateur Brave.</translation>
+<translation id="8640064498452534195">Activez les Rapports de confidentialité pour voir combien de données vous avez sauvegardées.</translation>
+<translation id="4591582032282435287">Le navigateur Brave utilise 40 % moins de batterie que la moyenne.</translation>
+<translation id="1945330434665345785">Vous avez bloqué <ph name="COUNT"/> traqueurs et publicités avec le navigateur Brave la semaine dernière.</translation>
+<translation id="2883868922264431515">Gagnez des jetons en regardant des publicités respectant la confidentialité et en soutenant vos sites web favoris.</translation>
+<translation id="6840965284166256302">Bravo! Vous avez bloqué 250 traqueurs et publicités avec le navigateur Brave.</translation>
+<translation id="2076976911561945584">Bien! Vous avez économisé 10 MB avec le navigateur Brave.</translation>
+<translation id="6714550233326888315">Bravo! Vous avez gagné 10 min. de temps de chargement avec le navigateur Brave.</translation>
+<translation id="7408493389591475748">Commencez à naviguer pour voir les rapports de confidentialité</translation>
+<translation id="9080777565335515917">Configurez Brave comme navigateur par défaut pour une navigation confidentielle et sûre.</translation>
+<translation id="7801488941710395275">Autoriser Brave à afficher vos statistiques de confidentialité</translation>
+<translation id="1763352720905582220">Envoie un rapport de confidentialité hebdomadaire</translation>
+<translation id="1811691435325545066">Effacer toutes les données de rapports de confidentialité</translation>
+<translation id="8089997572759938512">Réinitialise vos rapports de confidentialité à zéro</translation>
+<translation id="2718046830255553131">Les données de rapports de confidentialité ont été effacées.</translation>
+<translation id="7559243474426790340">Actualiser l'état</translation>
 </translationbundle>

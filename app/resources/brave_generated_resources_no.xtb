@@ -22,8 +22,6 @@
 
 Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. Du samtykker til at Brave ikke er ansvarlig for noen skade eller tap i forbindelse med din bruk av Google Widevine.</translation>
 <translation id="410351446219883937">Autospill</translation>
-<translation id="2240268017737062801">Spør når en nettside ønsker å autoavspille media</translation>
-<translation id="3371702087847741961">Spør når et nettsted vil automatisk spille av media (anbefalt)</translation>
 <translation id="3218385319396786393">Autospill var blokkert på denne siden</translation>
 <translation id="4988333904713528597">Tillat alltid automatisk visning av <ph name="HOST"/></translation>
 <translation id="4150684676757176434">Fortsett å blokkere autoavspilling</translation>
@@ -46,6 +44,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="8173998484743827990">Brave-statistikk</translation>
 <translation id="5551238871320268996">Brave Sammen</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Populære nettsteder</translation>
 <translation id="1776831331757823105">Klokke</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
@@ -77,7 +76,7 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4824468494729001999">Blokker skript</translation>
 <translation id="519861640102428255">Utseende og funksjonalitet</translation>
 <translation id="4800195524776354947">Vis antall blokkerte elementer på Shields-ikonet</translation>
-<translation id="7498695072878479744">Tillat Google-påloggingsknapper på tredjepartsnettsteder</translation>
+<translation id="3932286112122164477">Tillat Google-påloggingsknapper på tredjepartsnettsteder</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
@@ -214,4 +213,5 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="5570470519803062774">Innstillinger for nettstedet og Shields</translation>
 <translation id="8487693399751278191">Importer bokmerker nå ...</translation>
 <translation id="2557899542277210112">For rask tilgang, plasser dine bokmerker her på bokmerkeraden.</translation>
+<translation id="2808630562319398131">Tilbakestill Brave Rewards-data …</translation>
 </translationbundle>

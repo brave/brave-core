@@ -22,8 +22,6 @@
 
 Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevine Nutzungsbedingungen einverstanden. Sie stimmen zu, dass Brave nicht für Schäden oder Verluste im Zusammenhang mit Ihrer Nutzung von Google Widevine verantwortlich ist.</translation>
 <translation id="410351446219883937">Automatische Wiedergabe</translation>
-<translation id="2240268017737062801">Fragen, wenn eine Website Medien von selbst abspielen möchte</translation>
-<translation id="3371702087847741961">Fragen, wenn eine Website Medien automatisch abspielen will (empfohlen)</translation>
 <translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
 <translation id="4988333904713528597">Autoplay auf <ph name="HOST"/> immer erlauben?</translation>
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
@@ -46,6 +44,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="8173998484743827990">Brave-Statistiken</translation>
 <translation id="5551238871320268996">Brave Together</translation>
 <translation id="6966052266404721769">Binance</translation>
+<translation id="8533411848724153701">Gemini</translation>
 <translation id="4643117005422448078">Führende Websites</translation>
 <translation id="1776831331757823105">Uhr</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
@@ -80,7 +79,7 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4824468494729001999">JavaScript blockieren</translation>
 <translation id="519861640102428255">Look and Feel</translation>
 <translation id="4800195524776354947">Zahl der blockierten Elemente auf dem Shields-Icon anzeigen</translation>
-<translation id="7498695072878479744">Google-Anmelde-Buttons auf Drittwebsites erlauben</translation>
+<translation id="3932286112122164477">Google-Anmelde-Buttons auf Drittwebsites erlauben</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
@@ -235,4 +234,5 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="5570470519803062774">Website- und Sicherheitseinstellungen</translation>
 <translation id="8487693399751278191">Lesezeichen jetzt importieren ...</translation>
 <translation id="2557899542277210112">Für schnellen Zugriff platzieren Sie Ihre Lesezeichen hier auf der Lesezeichenleiste.</translation>
+<translation id="2808630562319398131">Brave-Rewards-Daten zurücksetzen</translation>
 </translationbundle>
