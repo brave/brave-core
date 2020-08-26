@@ -62,20 +62,24 @@ public class NTPWidgetManager {
     public List<NTPWidgetItem> getWidgetList() {
         Map<Integer, NTPWidgetItem> ntpWidgetMap = new TreeMap<>();
         if (getPrivateStatsWidget() != -1) {
-            ntpWidgetMap.put(getPrivateStatsWidget(), new NTPWidgetItem(PREF_PRIVATE_STATS, "Privacy Stats",
-                             "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
+            ntpWidgetMap.put(getPrivateStatsWidget(),
+                    new NTPWidgetItem(PREF_PRIVATE_STATS, "Privacy Stats",
+                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
         }
         if (getFavoritesWidget() != -1) {
-            ntpWidgetMap.put(getFavoritesWidget(), new NTPWidgetItem(PREF_FAVORITES, "Favorites",
-                             "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
+            ntpWidgetMap.put(getFavoritesWidget(),
+                    new NTPWidgetItem(PREF_FAVORITES, "Favorites",
+                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
         }
         if (getBraveRewardsWidget() != -1) {
-            ntpWidgetMap.put(getBraveRewardsWidget(), new NTPWidgetItem(PREF_BRAVE_REWARDS, "Brave Rewards",
-                             "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
+            ntpWidgetMap.put(getBraveRewardsWidget(),
+                    new NTPWidgetItem(PREF_BRAVE_REWARDS, "Brave Rewards",
+                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
         }
         if (getBinanceWidget() != -1) {
-            ntpWidgetMap.put(getBinanceWidget(), new NTPWidgetItem(PREF_BINANCE, "Binance",
-                             "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
+            ntpWidgetMap.put(getBinanceWidget(),
+                    new NTPWidgetItem(PREF_BINANCE, "Binance",
+                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
         }
 
         return new ArrayList<NTPWidgetItem>(ntpWidgetMap.values());

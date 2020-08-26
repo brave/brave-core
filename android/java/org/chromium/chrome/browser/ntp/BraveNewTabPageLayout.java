@@ -179,6 +179,9 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
                     }
                 }
             } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BRAVE_REWARDS)) {
+                View braveRewardsWidgetView =
+                        inflater.inflate(R.layout.brave_rewards_widget_layout, null);
+                ntpWidgetAdapter.addView(braveRewardsWidgetView);
             } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
                 View binanceWidgetView = inflater.inflate(R.layout.crypto_widget_layout, null);
                 ntpWidgetAdapter.addView(binanceWidgetView);
