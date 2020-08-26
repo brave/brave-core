@@ -1,0 +1,11 @@
+source_set("browser") {
+  sources = [
+    "ephemeral_storage_tab_helper.cc",
+    "ephemeral_storage_tab_helper.h",
+  ]
+
+  deps = [
+    "//brave/third_party/blink/renderer:renderer",
+    "//content/public/browser",
+  ]
+}

@@ -8,6 +8,7 @@
 
 #include "base/feature_list.h"
 #include "third_party/blink/renderer/modules/modules_export.h"
+#include "third_party/blink/renderer/platform/supplementable.h"
 
 namespace blink {
 
@@ -17,14 +18,30 @@ class StorageArea;
 
 MODULES_EXPORT extern const base::Feature kBraveEphemeralStorage;
 
-class BraveDOMWindowStorage {
+class BraveDOMWindowStorage final
+    : public GarbageCollected<BraveDOMWindowStorage>,
+      public Supplement<LocalDOMWindow> {
+  USING_GARBAGE_COLLECTED_MIXIN(BraveDOMWindowStorage);
+
  public:
+  static const char kSupplementName[];
+
+  static BraveDOMWindowStorage& From(LocalDOMWindow&);
   static StorageArea* sessionStorage(LocalDOMWindow&, ExceptionState&);
   static StorageArea* localStorage(LocalDOMWindow&, ExceptionState&);
 
+  StorageArea* sessionStorage(ExceptionState&);
+  StorageArea* localStorage(ExceptionState&);
+  StorageArea* ephemeralSessionStorage(StorageArea*);
+  StorageArea* ephemeralLocalStorage(StorageArea*);
+
+  explicit BraveDOMWindowStorage(LocalDOMWindow&);
+
+  void Trace(Visitor*) const override;
+
  private:
-  BraveDOMWindowStorage();
-  ~BraveDOMWindowStorage();
+  mutable Member<StorageArea> ephemeral_session_storage_;
+  mutable Member<StorageArea> ephemeral_local_storage_;
 };
 
 }  // namespace blink
