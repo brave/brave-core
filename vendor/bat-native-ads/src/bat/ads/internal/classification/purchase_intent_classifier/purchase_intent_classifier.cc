@@ -47,6 +47,15 @@ bool PurchaseIntentClassifier::IsInitialized() {
 bool PurchaseIntentClassifier::Initialize(
     const std::string& json) {
   is_initialized_ = FromJson(json);
+
+  if (is_initialized_) {
+    BLOG(1, "Parsed purchase intent user model version " << version_
+        << " with a signal level of " << signal_level_ << ", classification "
+            "threshold of " << classification_threshold_ << " and a signal "
+                "decay time window of " << signal_decay_time_window_in_seconds_
+                    << " seconds");
+  }
+
   return is_initialized_;
 }
 
@@ -81,9 +90,7 @@ PurchaseIntentSignalInfo PurchaseIntentClassifier::MaybeExtractIntentSignal(
     return purchase_intent_signal;
   }
 
-  if (!SearchProviders::IsSearchEngine(url) &&
-      SameSite(url, ads_->get_previous_tab_url())) {
-    BLOG(1, "Visited URL is not supported for extracting purchase intent");
+  if (SameSite(url, ads_->get_previous_tab_url())) {
     return purchase_intent_signal;
   }
 
@@ -135,6 +142,11 @@ PurchaseIntentClassifier::GetWinningCategories(
 
 bool PurchaseIntentClassifier::FromJson(
     const std::string& json) {
+  version_ = 0;
+  signal_level_ = 0;
+  classification_threshold_ = 0;
+  signal_decay_time_window_in_seconds_ = 0;
+
   base::Optional<base::Value> root = base::JSONReader::Read(json);
   if (!root) {
     BLOG(1, "Failed to load from JSON, root missing");
@@ -215,6 +227,7 @@ bool PurchaseIntentClassifier::FromJson(
     return false;
   }
 
+  segment_keywords_.clear();
   for (base::DictionaryValue::Iterator it(*dict2); !it.IsAtEnd();
       it.Advance()) {
     SegmentKeywordInfo info;
@@ -245,6 +258,7 @@ bool PurchaseIntentClassifier::FromJson(
     return false;
   }
 
+  funnel_keywords_.clear();
   for (base::DictionaryValue::Iterator it(*dict); !it.IsAtEnd();
       it.Advance()) {
     FunnelKeywordInfo info;
@@ -272,6 +286,8 @@ bool PurchaseIntentClassifier::FromJson(
   }
 
   // For each set of sites and segments
+  sites_.clear();
+
   for (auto& set : *list1) {
     if (!set.is_dict()) {
       BLOG(1, "Failed to load from JSON, site set not of type dict");

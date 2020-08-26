@@ -245,8 +245,12 @@ class AdsImpl
       const Result result,
       const classification::CategoryList& categories,
       const CreativeAdNotificationList& ads);
-  bool ServeAdNotificationFromParentCategories(
+  void ServeAdNotificationFromParentCategories(
       const classification::CategoryList& categories);
+  void OnServeAdNotificationFromParentCategories(
+      const Result result,
+      const classification::CategoryList& categories,
+      const CreativeAdNotificationList& ads);
   void ServeUntargetedAdNotification();
   void OnServeUntargetedAdNotification(
       const Result result,
