@@ -30,6 +30,9 @@ void BraveProfileMenuView::BuildIdentity() {
 // We don't want autofill buttons in this menu.
 void BraveProfileMenuView::BuildAutofillButtons() {}
 
+// We don't want to show any Chromium sync info.
+void BraveProfileMenuView::BuildSyncInfo() {}
+
 gfx::ImageSkia BraveProfileMenuView::GetSyncIcon() const {
   // We don't need sync overlay.
   return gfx::ImageSkia();
