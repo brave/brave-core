@@ -41,28 +41,30 @@ public class BravePrivacySettings extends PrivacySettings {
     private ChromeSwitchPreference mSearchSuggestions;
     private ChromeSwitchPreference mAutocompleteTopSites;
     private ChromeSwitchPreference mAutocompleteBraveSuggestedSites;
+    private ChromeBaseCheckBoxPreference mHttpsePref;
+    private ChromeBaseCheckBoxPreference mAdBlockPref;
+    private ChromeBaseCheckBoxPreference mFingerprintingProtectionPref;
+    private ChromeBaseCheckBoxPreference mCloseTabsOnExitPref;
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
-
         super.onCreatePreferences(savedInstanceState, rootKey);
 
-        ChromeBaseCheckBoxPreference httpsePref =
-                (ChromeBaseCheckBoxPreference) findPreference(PREF_HTTPSE);
-        httpsePref.setOnPreferenceChangeListener(this);
+        SettingsUtils.addPreferencesFromResource(this, R.xml.brave_privacy_preferences);
 
-        ChromeBaseCheckBoxPreference adBlockPref =
-                (ChromeBaseCheckBoxPreference) findPreference(PREF_AD_BLOCK);
-        adBlockPref.setOnPreferenceChangeListener(this);
+        mHttpsePref = (ChromeBaseCheckBoxPreference) findPreference(PREF_HTTPSE);
+        mHttpsePref.setOnPreferenceChangeListener(this);
 
-        ChromeBaseCheckBoxPreference fingerprintingProtectionPref =
+        mAdBlockPref = (ChromeBaseCheckBoxPreference) findPreference(PREF_AD_BLOCK);
+        mAdBlockPref.setOnPreferenceChangeListener(this);
+
+        mFingerprintingProtectionPref =
                 (ChromeBaseCheckBoxPreference) findPreference(PREF_FINGERPRINTING_PROTECTION);
-        fingerprintingProtectionPref.setOnPreferenceChangeListener(this);
+        mFingerprintingProtectionPref.setOnPreferenceChangeListener(this);
 
-        ChromeBaseCheckBoxPreference closeTabsOnExitPref =
+        mCloseTabsOnExitPref =
                 (ChromeBaseCheckBoxPreference) findPreference(PREF_CLOSE_TABS_ON_EXIT);
-        closeTabsOnExitPref.setOnPreferenceChangeListener(this);
+        mCloseTabsOnExitPref.setOnPreferenceChangeListener(this);
 
         mSearchSuggestions = (ChromeSwitchPreference) findPreference(PREF_SEARCH_SUGGESTIONS);
         mSearchSuggestions.setOnPreferenceChangeListener(this);
@@ -115,13 +117,18 @@ public class BravePrivacySettings extends PrivacySettings {
     private void updatePreferences() {
         removePreferenceIfPresent(PREF_SYNC_AND_SERVICES_LINK);
         mSearchSuggestions.setChecked(mPrefServiceBridge.getBoolean(Pref.SEARCH_SUGGEST_ENABLED));
-        mSearchSuggestions.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 1);
+        int order = findPreference(PREF_CLEAR_BROWSING_DATA).getOrder();
+        mCloseTabsOnExitPref.setOrder(++order);
+        mHttpsePref.setOrder(++order);
+        mAdBlockPref.setOrder(++order);
+        mFingerprintingProtectionPref.setOrder(++order);
+        mSearchSuggestions.setOrder(++order);
         mAutocompleteTopSites
                 .setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.TOP_SITE_SUGGESTIONS_ENABLED));
-        mAutocompleteTopSites.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 2);
+        mAutocompleteTopSites.setOrder(++order);
         mAutocompleteBraveSuggestedSites.setChecked(
                 UserPrefs.get(Profile.getLastUsedRegularProfile()).getBoolean(BravePref.BRAVE_SUGGESTED_SITE_SUGGESTIONS_ENABLED));
-        mAutocompleteBraveSuggestedSites.setOrder(findPreference(PREF_CLEAR_BROWSING_DATA).getOrder() + 3);
+        mAutocompleteBraveSuggestedSites.setOrder(++order);
     }
 
     private void removePreferenceIfPresent(String key) {
