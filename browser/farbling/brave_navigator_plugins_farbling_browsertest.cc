@@ -113,6 +113,7 @@ class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
 };
 
 // Tests results of farbling known values
+// https://github.com/brave/brave-browser/issues/9435
 IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
                        FarbleNavigatorPlugins) {
   // Farbling level: off
@@ -186,4 +187,67 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
           "domAutomationController.send(navigator.plugins[1][0].description);",
           contents()),
       "qVKly58ePHDBgQoUqVKFix48.fvXLlSJ");
+}
+
+// Tests that names of built-in plugins get farbled by default
+// https://github.com/brave/brave-browser/issues/10597
+IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
+                       FarbleNavigatorPluginsBuiltin) {
+  // Farbling level: off
+  AllowFingerprinting();
+  NavigateToURLUntilLoadStop(farbling_url());
+  int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+  EXPECT_EQ(off_length, 2);
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[0].name);",
+                contents()),
+            "Chrome PDF Plugin");
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[1].name);",
+                contents()),
+            "Chrome PDF Viewer");
+
+  // Farbling level: balanced (default)
+  SetFingerprintingDefault();
+  NavigateToURLUntilLoadStop(farbling_url());
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[1].name);",
+                contents()),
+            "Brave PDF plug in");
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[2].name);",
+                contents()),
+            "Chrome PDF and PS plug-in");
+}
+
+// Tests that names of built-in plugins that get farbled will reset to their
+// original names when fingerprinting is turned off
+// https://github.com/brave/brave-browser/issues/11278
+IN_PROC_BROWSER_TEST_F(BraveNavigatorPluginsFarblingBrowserTest,
+                       FarbleNavigatorPluginsReset) {
+  // Farbling level: balanced (default)
+  SetFingerprintingDefault();
+  NavigateToURLUntilLoadStop(farbling_url());
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[1].name);",
+                contents()),
+            "Brave PDF plug in");
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[2].name);",
+                contents()),
+            "Chrome PDF and PS plug-in");
+
+  // Farbling level: off
+  AllowFingerprinting();
+  NavigateToURLUntilLoadStop(farbling_url());
+  int off_length = ExecScriptGetInt(kPluginsLengthScript, contents());
+  EXPECT_EQ(off_length, 2);
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[0].name);",
+                contents()),
+            "Chrome PDF Plugin");
+  EXPECT_EQ(ExecScriptGetStr(
+                "domAutomationController.send(navigator.plugins[1].name);",
+                contents()),
+            "Chrome PDF Viewer");
 }
