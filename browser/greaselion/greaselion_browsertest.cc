@@ -262,7 +262,15 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionRunAtDefault) {
   EXPECT_EQ(title, "PAGE_FIRST");
 }
 
-IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
+#if defined(OS_WIN)
+// Disabled in https://github.com/brave/brave-browser/issues/11433.
+#define MAYBE_ScriptInjectionWithPrecondition \
+    DISABLED_ScriptInjectionWithPrecondition
+#else
+#define MAYBE_ScriptInjectionWithPrecondition ScriptInjectionWithPrecondition
+#endif
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
+                       MAYBE_ScriptInjectionWithPrecondition) {
   ASSERT_TRUE(InstallMockExtension());
 
   GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
