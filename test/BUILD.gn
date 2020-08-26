@@ -575,6 +575,7 @@ test("brave_browser_tests") {
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_autoplay_browsertest.cc",
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_browsertest.cc",
     "//brave/components/content_settings/renderer/brave_content_settings_agent_impl_flash_browsertest.cc",
+    "//brave/components/ephemeral_storage/browser/ephemeral_storage_browsertest.cc",
     "//brave/components/l10n/browser/locale_helper_mock.cc",
     "//brave/components/l10n/browser/locale_helper_mock.h",
     "//brave/third_party/blink/renderer/modules/brave/navigator_browsertest.cc",

@@ -137,6 +137,7 @@ source_set("browser_process") {
     "//brave/components/brave_wayback_machine:buildflags",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/ephemeral_storage/browser",
     "//brave/components/greaselion/browser/buildflags",
     "//brave/components/ipfs/browser/buildflags",
     "//brave/components/l10n/browser",
