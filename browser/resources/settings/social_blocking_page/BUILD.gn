@@ -22,7 +22,7 @@ polymer_modulizer("social_blocking_page") {
   html_file = "social_blocking_page.html"
   html_type = "dom-module"
   auto_imports = settings_auto_imports + [
-    "brave/browser/resources/settings/social_blocking_page/social_blocking_page_proxy.html|SocialBlockingPageProxy, SocialBlockingPageProxyImpl",
+    "brave/browser/resources/settings/social_blocking_page/social_blocking_page_proxy.html|SocialBlockingPageProxyImpl",
   ]
   namespace_rewrites = settings_namespace_rewrites
 }
