@@ -11,7 +11,6 @@
 #include "bat/ledger/internal/credentials/credentials_common.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/response/response_credentials.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -75,56 +74,6 @@ void CredentialsCommon::BlindedCredsSaved(
   }
 
   callback(ledger::Result::LEDGER_OK);
-}
-
-void CredentialsCommon::GetSignedCredsFromResponse(
-    const CredentialsTrigger& trigger,
-    const ledger::UrlResponse& response,
-    ledger::ResultCallback callback) {
-  base::Value parsed_response(base::Value::Type::DICTIONARY);
-  const ledger::Result result =
-      braveledger_response_util::ParseSignedCreds(response, &parsed_response);
-
-  if (result == ledger::Result::RETRY_SHORT) {
-    callback(ledger::Result::RETRY_SHORT);
-    return;
-  }
-
-  if (result != ledger::Result::LEDGER_OK || parsed_response.DictSize() != 3) {
-    BLOG(0, "Parsing failed");
-    callback(ledger::Result::RETRY);
-    return;
-  }
-
-  auto* signed_creds = parsed_response.FindListKey("signed_creds");
-  if (!signed_creds || signed_creds->GetList().empty()) {
-    BLOG(0, "Failed to parse signed creds");
-    callback(ledger::Result::RETRY);
-    return;
-  }
-
-  auto* public_key = parsed_response.FindStringKey("public_key");
-  if (!public_key || public_key->empty()) {
-    BLOG(0, "Public key is empty");
-    callback(ledger::Result::RETRY);
-    return;
-  }
-
-  auto* batch_proof = parsed_response.FindStringKey("batch_proof");
-  if (!batch_proof || batch_proof->empty()) {
-    BLOG(0, "Batch proof is empty");
-    callback(ledger::Result::RETRY);
-    return;
-  }
-
-  auto creds_batch = ledger::CredsBatch::New();
-  creds_batch->trigger_id = trigger.id;
-  creds_batch->trigger_type = trigger.type;
-  base::JSONWriter::Write(*signed_creds, &creds_batch->signed_creds);
-  creds_batch->public_key = *public_key;
-  creds_batch->batch_proof = *batch_proof;
-
-  ledger_->database()->SaveSignedCreds(std::move(creds_batch), callback);
 }
 
 void CredentialsCommon::SaveUnblindedCreds(

@@ -60,8 +60,6 @@ namespace braveledger_credentials {
       const std::string& suggestion_encoded,
       base::Value* result);
 
-  std::string GenerateRedeemTokensPayload(const CredentialsRedeem& redeem);
-
 }  // namespace braveledger_credentials
 
 #endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_UTIL_H_

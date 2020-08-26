@@ -10,8 +10,6 @@
 #include "base/values.h"
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_sku.h"
-#include "bat/ledger/internal/response/response_sku.h"
 #include "bat/ledger/internal/sku/sku_transaction.h"
 #include "bat/ledger/internal/sku/sku_util.h"
 
@@ -44,7 +42,8 @@ ledger::SKUTransactionType GetTransactionTypeFromWalletType(
 namespace braveledger_sku {
 
 SKUTransaction::SKUTransaction(bat_ledger::LedgerImpl* ledger) :
-    ledger_(ledger) {
+    ledger_(ledger),
+    payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
 }
 
@@ -178,42 +177,30 @@ void SKUTransaction::SendExternalTransaction(
     return;
   }
 
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey(
-      "externalTransactionId",
-      transaction.external_transaction_id);
-  body.SetStringKey(
-      "kind",
-      ConvertTransactionTypeToString(transaction.type));
-
-  std::string json;
-  base::JSONWriter::Write(body, &json);
-
   auto url_callback = std::bind(&SKUTransaction::OnSendExternalTransaction,
       this,
       _1,
       callback);
 
-  const std::string url = braveledger_request_util::GetCreateTransactionURL(
-      transaction.order_id,
-      transaction.type);
-
-  ledger_->LoadURL(
-      url,
-      {},
-      json,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+  switch (transaction.type) {
+    case ledger::SKUTransactionType::NONE:
+    case ledger::SKUTransactionType::TOKENS:
+    case ledger::SKUTransactionType::ANONYMOUS_CARD: {
+      NOTREACHED();
+      return;
+    }
+    case ledger::SKUTransactionType::UPHOLD: {
+      payment_server_->post_transaction_uphold()->Request(
+          transaction,
+          url_callback);
+      return;
+    }
+  }
 }
 
 void SKUTransaction::OnSendExternalTransaction(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckSendExternalTransaction(response);
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "External transaction not sent");
     callback(ledger::Result::RETRY);

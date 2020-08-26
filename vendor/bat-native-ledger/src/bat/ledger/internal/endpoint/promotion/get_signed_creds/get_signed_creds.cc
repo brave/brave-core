@@ -34,7 +34,7 @@ using std::placeholders::_1;
 //   "signedCreds": [
 //     "ijSZoLLG+EnRN916RUQcjiV6c4Wb6ItbnxXBFhz81EQ=",
 //     "dj6glCJ2roHYcTFcXF21IrKx1uT/ptM7SJEdiEE1fG8=",
-//     "nCF9a4KuASICVC0zrx2wGnllgIUxBMnylpu5SA+oBjI=",
+//     "nCF9a4KuASICVC0zrx2wGnllgIUxBMnylpu5SA+oBjI="
 //   ],
 //   "batchProof": "zx0cdJhaB/OdYcUtnyXdi+lsoniN2vRTZ1w0U4D7Mgeu1I7RwB+tYKNgFU",
 //   "publicKey": "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I="

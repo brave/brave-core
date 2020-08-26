@@ -10,7 +10,7 @@ namespace ledger {
 namespace endpoint {
 
 RewardsServer::RewardsServer(bat_ledger::LedgerImpl* ledger):
-    get_prefix_list_(new rewards::GetPrefixList(ledger)) {
+    get_prefix_list_(std::make_unique<rewards::GetPrefixList>(ledger)) {
 }
 
 RewardsServer::~RewardsServer() = default;

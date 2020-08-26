@@ -53,8 +53,6 @@
 using ::testing::NiceMock;
 using ::testing::Return;
 
-using braveledger_request_util::ServerTypes;
-
 namespace {
 
 using RewardsNotificationType =

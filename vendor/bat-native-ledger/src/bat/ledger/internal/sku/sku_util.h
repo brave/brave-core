@@ -13,9 +13,6 @@
 
 namespace braveledger_sku {
 
-std::string ConvertTransactionTypeToString(
-    const ledger::SKUTransactionType type);
-
 std::string GetBraveDestination(const std::string& wallet_type);
 
 std::string GetAnonCardDestination();

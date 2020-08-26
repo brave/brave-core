@@ -30,7 +30,8 @@ namespace braveledger_publisher {
 PublisherPrefixListUpdater::PublisherPrefixListUpdater(
     bat_ledger::LedgerImpl* ledger)
       : ledger_(ledger),
-      rewards_server_(new ledger::endpoint::RewardsServer(ledger)) {}
+      rewards_server_(
+          std::make_unique<ledger::endpoint::RewardsServer>(ledger)) {}
 
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 

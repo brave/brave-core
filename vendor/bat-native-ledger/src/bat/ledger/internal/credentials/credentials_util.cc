@@ -272,36 +272,4 @@ bool GenerateSuggestionMock(
   return true;
 }
 
-std::string GenerateRedeemTokensPayload(const CredentialsRedeem& redeem) {
-  base::Value data(base::Value::Type::DICTIONARY);
-  data.SetStringKey(
-      "type",
-      ConvertRewardTypeToString(redeem.type));
-  if (!redeem.order_id.empty()) {
-    data.SetStringKey("orderId", redeem.order_id);
-  }
-  data.SetStringKey("channel", redeem.publisher_key);
-
-  const bool is_sku =
-      redeem.processor == ledger::ContributionProcessor::UPHOLD ||
-      redeem.processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS;
-
-  std::string data_json;
-  base::JSONWriter::Write(data, &data_json);
-  std::string data_encoded;
-  base::Base64Encode(data_json, &data_encoded);
-
-  base::Value credentials(base::Value::Type::LIST);
-  GenerateCredentials(redeem.token_list, data_encoded, &credentials);
-
-  const std::string data_key = is_sku ? "vote" : "suggestion";
-  base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey(data_key, data_encoded);
-  payload.SetKey("credentials", std::move(credentials));
-
-  std::string json;
-  base::JSONWriter::Write(payload, &json);
-  return json;
-}
-
 }  // namespace braveledger_credentials

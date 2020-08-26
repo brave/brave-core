@@ -54,7 +54,7 @@ TEST_F(PostClaimUpholdTest, ServerOK) {
             ledger::UrlResponse response;
             response.status_code = 200;
             response.url = url;
-            response.body = R"({})";
+            response.body = "";
             callback(response);
           }));
 

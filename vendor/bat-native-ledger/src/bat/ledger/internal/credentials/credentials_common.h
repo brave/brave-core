@@ -30,11 +30,6 @@ class CredentialsCommon {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
-  void GetSignedCredsFromResponse(
-      const CredentialsTrigger& trigger,
-      const ledger::UrlResponse& response,
-      ledger::ResultCallback callback);
-
   void SaveUnblindedCreds(
       const uint64_t expires_at,
       const double token_value,

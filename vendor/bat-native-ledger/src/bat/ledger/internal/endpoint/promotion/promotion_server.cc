@@ -10,24 +10,26 @@ namespace ledger {
 namespace endpoint {
 
 PromotionServer::PromotionServer(bat_ledger::LedgerImpl* ledger):
-    get_available_(new promotion::GetAvailable(ledger)),
-    post_creds_(new promotion::PostCreds(ledger)),
-    get_signed_creds_(new promotion::GetSignedCreds(ledger)),
-    post_clobbered_claims_(new promotion::PostClobberedClaims(ledger)),
-    post_bat_loss_(new promotion::PostBatLoss(ledger)),
-    post_wallet_brave_(new promotion::PostWalletBrave(ledger)),
-    get_recover_wallet_(new promotion::GetRecoverWallet(ledger)),
-    post_claim_uphold_(new promotion::PostClaimUphold(ledger)),
-    get_wallet_balance_(new promotion::GetWalletBalance(ledger)),
-    post_captcha_(new promotion::PostCaptcha(ledger)),
-    get_captcha_(new promotion::GetCaptcha(ledger)),
-    put_captcha_(new promotion::PutCaptcha(ledger)),
-    post_safetynet_(new promotion::PostSafetynet(ledger)),
-    put_safetynet_(new promotion::PutSafetynet(ledger)),
-    post_devicecheck_(new promotion::PostDevicecheck(ledger)),
-    put_devicecheck_(new promotion::PutDevicecheck(ledger)),
-    post_suggestions_(new promotion::PostSuggestions(ledger)),
-    post_suggestions_claim_(new promotion::PostSuggestionsClaim(ledger)) {
+    get_available_(std::make_unique<promotion::GetAvailable>(ledger)),
+    post_creds_(std::make_unique<promotion::PostCreds>(ledger)),
+    get_signed_creds_(std::make_unique<promotion::GetSignedCreds>(ledger)),
+    post_clobbered_claims_(
+        std::make_unique<promotion::PostClobberedClaims>(ledger)),
+    post_bat_loss_(std::make_unique<promotion::PostBatLoss>(ledger)),
+    post_wallet_brave_(std::make_unique<promotion::PostWalletBrave>(ledger)),
+    get_recover_wallet_(std::make_unique<promotion::GetRecoverWallet>(ledger)),
+    post_claim_uphold_(std::make_unique<promotion::PostClaimUphold>(ledger)),
+    get_wallet_balance_(std::make_unique<promotion::GetWalletBalance>(ledger)),
+    post_captcha_(std::make_unique<promotion::PostCaptcha>(ledger)),
+    get_captcha_(std::make_unique<promotion::GetCaptcha>(ledger)),
+    put_captcha_(std::make_unique<promotion::PutCaptcha>(ledger)),
+    post_safetynet_(std::make_unique<promotion::PostSafetynet>(ledger)),
+    put_safetynet_(std::make_unique<promotion::PutSafetynet>(ledger)),
+    post_devicecheck_(std::make_unique<promotion::PostDevicecheck>(ledger)),
+    put_devicecheck_(std::make_unique<promotion::PutDevicecheck>(ledger)),
+    post_suggestions_(std::make_unique<promotion::PostSuggestions>(ledger)),
+    post_suggestions_claim_(
+        std::make_unique<promotion::PostSuggestionsClaim>(ledger)) {
 }
 
 PromotionServer::~PromotionServer() = default;

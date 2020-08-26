@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "bat/ledger/internal/credentials/credentials_common.h"
+#include "bat/ledger/internal/endpoint/payment/payment_server.h"
 
 namespace braveledger_credentials {
 
@@ -53,7 +54,7 @@ class CredentialsSKU : public Credentials {
       ledger::ResultCallback callback) override;
 
   void OnClaim(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
@@ -67,7 +68,8 @@ class CredentialsSKU : public Credentials {
       ledger::ResultCallback callback);
 
   void OnFetchSignedCreds(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
+      ledger::CredsBatchPtr batch,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
@@ -87,13 +89,14 @@ class CredentialsSKU : public Credentials {
       ledger::ResultCallback callback) override;
 
   void OnRedeemTokens(
-      const ledger::UrlResponse& response,
+      const ledger::Result result,
       const std::vector<std::string>& token_id_list,
       const CredentialsRedeem& redeem,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;
+  std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
 };
 
 }  // namespace braveledger_credentials

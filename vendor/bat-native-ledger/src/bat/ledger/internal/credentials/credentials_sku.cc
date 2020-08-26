@@ -14,9 +14,6 @@
 #include "bat/ledger/internal/credentials/credentials_sku.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_sku.h"
-#include "bat/ledger/internal/request/request_util.h"
-#include "bat/ledger/internal/response/response_sku.h"
 #include "bat/ledger/internal/static_values.h"
 
 using std::placeholders::_1;
@@ -76,7 +73,8 @@ namespace braveledger_credentials {
 
 CredentialsSKU::CredentialsSKU(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
-    common_(std::make_unique<CredentialsCommon>(ledger))  {
+    common_(std::make_unique<CredentialsCommon>(ledger)),
+    payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_ && common_);
 }
 
@@ -229,44 +227,26 @@ void CredentialsSKU::Claim(
     return;
   }
 
-  DCHECK_EQ(trigger.data.size(), 2ul);
-  base::Value body(base::Value::Type::DICTIONARY);
-  body.SetStringKey("itemId", trigger.data[0]);
-  body.SetStringKey("type", ConvertItemTypeToString(trigger.data[1]));
-  body.SetKey("blindedCreds", base::Value(std::move(*blinded_creds)));
-
-  std::string json;
-  base::JSONWriter::Write(body, &json);
-
-  const std::string sign_url = base::StringPrintf(
-      "post /v1/orders/%s/credentials",
-      trigger.id.c_str());
-
-  const std::string url =
-      braveledger_request_util::GetOrderCredentialsURL(trigger.id);
   auto url_callback = std::bind(&CredentialsSKU::OnClaim,
       this,
       _1,
       trigger,
       callback);
 
-  ledger_->LoadURL(
-      url,
-      {},
-      json,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
+
+  DCHECK_EQ(trigger.data.size(), 2ul);
+  payment_server_->post_credentials()->Request(
+      trigger.id,
+      trigger.data[0],
+      ConvertItemTypeToString(trigger.data[1]),
+      std::move(blinded_creds),
       url_callback);
 }
 
 void CredentialsSKU::OnClaim(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckClaimSKUCreds(response);
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Failed to claim SKU creds");
     callback(ledger::Result::RETRY);
@@ -291,7 +271,7 @@ void CredentialsSKU::ClaimStatusSaved(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Claim status not saved");
+    BLOG(0, "Claim status not saved: " << result);
     callback(ledger::Result::RETRY);
     return;
   }
@@ -302,41 +282,45 @@ void CredentialsSKU::ClaimStatusSaved(
 void CredentialsSKU::FetchSignedCreds(
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  const std::string url = braveledger_request_util::GetOrderCredentialsURL(
-      trigger.id,
-      trigger.data[0]);
   auto url_callback = std::bind(&CredentialsSKU::OnFetchSignedCreds,
       this,
       _1,
+      _2,
       trigger,
       callback);
 
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, url_callback);
+  payment_server_->get_credentials()->Request(
+      trigger.id,
+      trigger.data[0],
+      url_callback);
 }
 
 void CredentialsSKU::OnFetchSignedCreds(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    ledger::CredsBatchPtr batch,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
+  if (result != ledger::Result::LEDGER_OK) {
+    BLOG(0, "Couldn't fetch credentials: " << result);
+    callback(result);
+    return;
+  }
+
+  batch->trigger_id = trigger.id;
+  batch->trigger_type = trigger.type;
 
   auto get_callback = std::bind(&CredentialsSKU::SignedCredsSaved,
       this,
       _1,
       trigger,
       callback);
-  common_->GetSignedCredsFromResponse(trigger, response, get_callback);
+  ledger_->database()->SaveSignedCreds(std::move(batch), get_callback);
 }
 
 void CredentialsSKU::SignedCredsSaved(
     const ledger::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::RETRY_SHORT) {
-    callback(ledger::Result::RETRY_SHORT);
-    return;
-  }
-
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Signed creds were not saved");
     callback(ledger::Result::RETRY);
@@ -437,30 +421,16 @@ void CredentialsSKU::RedeemTokens(
       redeem,
       callback);
 
-  const std::string payload = GenerateRedeemTokensPayload(redeem);
-  const std::string url =
-      braveledger_request_util::GetRedeemSKUUrl();
-
-  ledger_->LoadURL(
-      url,
-      {},
-      payload,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+  payment_server_->post_votes()->Request(redeem, url_callback);
 }
 
 void CredentialsSKU::OnRedeemTokens(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
     const std::vector<std::string>& token_id_list,
     const CredentialsRedeem& redeem,
     ledger::ResultCallback callback) {
-  BLOG(6, ledger::UrlResponseToString(__func__, response));
-
-  const ledger::Result result =
-      braveledger_response_util::CheckRedeemSKUTokens(response);
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(0, "Failed to parse redeem SKU tokens response");
+    BLOG(0, "Failed to submit tokens");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
