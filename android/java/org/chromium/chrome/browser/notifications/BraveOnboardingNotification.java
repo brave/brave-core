@@ -81,6 +81,10 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
         if (action != null && action.equals(DEEP_LINK)) {
             if (braveActivity != null) {
                 braveActivity.openRewardsPanel();
+                Intent launchIntent = new Intent(Intent.ACTION_MAIN);
+                launchIntent.setPackage(context.getPackageName());
+                launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(launchIntent);
             } else {
                 intent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE, RetentionNotificationUtil.DAY_10);
                 RetentionNotificationPublisher.backgroundNotificationAction(context, intent);
