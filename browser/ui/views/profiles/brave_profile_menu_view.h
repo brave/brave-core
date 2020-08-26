@@ -22,6 +22,7 @@ class BraveProfileMenuView : public ProfileMenuView {
   void BuildIdentity() override;
   void BuildAutofillButtons() override;
   void BuildSyncInfo() override;
+  void BuildFeatureButtons() override;
   gfx::ImageSkia GetSyncIcon() const override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveProfileMenuView);

@@ -13,8 +13,10 @@
 #define BuildAutofillButtons virtual BuildAutofillButtons
 #define BuildIdentity virtual BuildIdentity
 #define BuildSyncInfo virtual BuildSyncInfo
+#define BuildFeatureButtons virtual BuildFeatureButtons
 
 #include "../../../../../../../chrome/browser/ui/views/profiles/profile_menu_view.h"
+#undef BuildFeatureButtons
 #undef BuildSyncInfo
 #undef BuildIdentity
 #undef BuildAutofillButtons
