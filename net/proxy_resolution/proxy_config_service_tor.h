@@ -35,7 +35,7 @@ class ProxyResolutionService;
 class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
  public:
   ProxyConfigServiceTor();
-  ProxyConfigServiceTor(const std::string& proxy_uri);
+  explicit ProxyConfigServiceTor(const std::string& proxy_uri);
   ~ProxyConfigServiceTor() override;
 
   void UpdateProxyURI(const std::string& proxy_uri);

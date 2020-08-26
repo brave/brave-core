@@ -3,12 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_TOR_TOR_CONTROL_H_
-#define BRAVE_BROWSER_TOR_TOR_CONTROL_H_
+#ifndef BRAVE_COMMON_TOR_TOR_CONTROL_H_
+#define BRAVE_COMMON_TOR_TOR_CONTROL_H_
 
 #include <map>
+#include <memory>
 #include <queue>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include "brave/common/tor/tor_control_event.h"
 
@@ -63,7 +66,7 @@ class TorControl {
                              const std::string& line) {}
   };
 
-  TorControl(TorControl::Delegate* delegate);
+  explicit TorControl(TorControl::Delegate* delegate);
   virtual ~TorControl();
 
   static std::unique_ptr<TorControl> Create(Delegate* delegate);
@@ -97,11 +100,11 @@ class TorControl {
   FRIEND_TEST_ALL_PREFIXES(TorControlTest, ParseKV);
 
   static bool ParseKV(const std::string& string,
-                      std::string& key, std::string& value);
+                      std::string* key, std::string* value);
   static bool ParseKV(const std::string& string,
-                      std::string& key, std::string& value, size_t& end);
+                      std::string* key, std::string* value, size_t* end);
   static bool ParseQuoted(const std::string& string,
-                          std::string& value, size_t& end);
+                          std::string* value, size_t* end);
 
  private:
   bool running_;
@@ -155,7 +158,7 @@ class TorControl {
   void Polled();
   bool EatControlCookie(std::vector<uint8_t>&, base::Time&);
   bool EatControlPort(int&, base::Time&);
-  bool EatOldPid(base::ProcessId& id);
+  bool EatOldPid(base::ProcessId* id);
 
   void OpenControl(int port, std::vector<uint8_t> cookie);
   void Connected(std::vector<uint8_t> cookie, int rv);
@@ -177,8 +180,8 @@ class TorControl {
                              const std::string& reply);
   void GetSOCKSListenersDone(
       std::unique_ptr<std::vector<std::string>> listeners,
-      base::OnceCallback<void(bool error,
-                            const std::vector<std::string>& listeners)> callback,
+      base::OnceCallback<void(
+          bool error, const std::vector<std::string>& listeners)> callback,
     bool error, const std::string& status, const std::string& reply);
 
   void DoSubscribe(
@@ -229,4 +232,4 @@ class TorControl {
 
 }  // namespace tor
 
-#endif  // BRAVE_BROWSER_TOR_TOR_CONTROL_H_
+#endif  // BRAVE_COMMON_TOR_TOR_CONTROL_H_
