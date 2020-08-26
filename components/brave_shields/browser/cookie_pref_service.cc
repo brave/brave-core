@@ -10,6 +10,7 @@
 #include "base/bind.h"
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
@@ -38,10 +39,24 @@ void SetCookieControlTypeFromPrefs(HostContentSettingsMap* map,
   SetCookieControlType(map, control_type, GURL(), local_state);
 }
 
+content_settings::CookieControlsMode ControlTypeToCookieControlsMode(
+    ControlType type) {
+  switch (type) {
+    case ControlType::BLOCK_THIRD_PARTY:
+    case ControlType::BLOCK:
+      return content_settings::CookieControlsMode::kBlockThirdParty;
+    default:
+      return content_settings::CookieControlsMode::kOff;
+  }
+}
+
 void SetCookiePrefDefaults(HostContentSettingsMap* map, PrefService* prefs) {
   auto type = GetCookieControlType(map, GURL());
   prefs->SetBoolean(prefs::kBlockThirdPartyCookies,
                     type == ControlType::BLOCK_THIRD_PARTY);
+
+  prefs->SetInteger(prefs::kCookieControlsMode,
+                    static_cast<int>(ControlTypeToCookieControlsMode(type)));
 
   if (type == ControlType::BLOCK) {
     prefs->SetInteger("profile.default_content_setting_values.cookies",
