@@ -97,13 +97,13 @@ void PutSafetynet::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(nonce),
-      {},
-      GeneratePayload(token),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::PUT,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(nonce);
+  request->content = GeneratePayload(token);
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::PUT;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PutSafetynet::OnRequest(

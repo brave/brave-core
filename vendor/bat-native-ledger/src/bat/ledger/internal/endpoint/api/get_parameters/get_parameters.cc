@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "bat/ledger/internal/endpoint/api/get_parameters/get_parameters.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/api/api_util.h"
@@ -173,7 +175,10 @@ void GetParameters::Request(GetParametersCallback callback) {
       this,
       _1,
       callback);
-  ledger_->LoadURL(GetUrl(), {}, "", "", ledger::UrlMethod::GET, url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetParameters::OnRequest(

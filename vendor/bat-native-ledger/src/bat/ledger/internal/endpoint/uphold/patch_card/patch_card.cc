@@ -71,13 +71,14 @@ void PatchCard::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(address),
-      RequestAuthorization(token),
-      GeneratePayload(card),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::PATCH,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(address);
+  request->content = GeneratePayload(card);
+  request->headers = RequestAuthorization(token);
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::PATCH;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PatchCard::OnRequest(

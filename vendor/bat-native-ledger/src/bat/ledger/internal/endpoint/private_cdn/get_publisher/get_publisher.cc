@@ -229,13 +229,10 @@ void GetPublisher::Request(
       _1,
       publisher_key,
       callback);
-  ledger_->LoadURL(
-      GetUrl(hash_prefix),
-      {},
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(hash_prefix);
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetPublisher::OnRequest(

@@ -119,13 +119,13 @@ void PostTransactionAnon::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(order_id),
-      {},
-      GeneratePayload(amount, order_id, destination),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(order_id);
+  request->content = GeneratePayload(amount, order_id, destination);
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostTransactionAnon::OnRequest(

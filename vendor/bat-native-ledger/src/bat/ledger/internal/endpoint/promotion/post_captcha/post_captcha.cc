@@ -115,13 +115,13 @@ void PostCaptcha::Request(PostCaptchaCallback callback) {
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(),
-      {},
-      GeneratePayload(),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+    auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  request->content = GeneratePayload();
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostCaptcha::OnRequest(

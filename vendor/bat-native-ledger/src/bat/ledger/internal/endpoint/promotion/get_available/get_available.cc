@@ -217,13 +217,10 @@ void GetAvailable::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(platform),
-      {},
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(platform);
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetAvailable::OnRequest(

@@ -2,7 +2,10 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "bat/ledger/internal/endpoint/rewards/get_prefix_list/get_prefix_list.h"
+
+#include <utility>
 
 #include "bat/ledger/internal/endpoint/rewards/rewards_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -46,7 +49,10 @@ void GetPrefixList::Request(GetPrefixListCallback callback) {
       this,
       _1,
       callback);
-  ledger_->LoadURL(GetUrl(), {}, "", "", ledger::UrlMethod::GET, url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetPrefixList::OnRequest(

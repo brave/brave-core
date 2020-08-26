@@ -173,13 +173,13 @@ void PostOrder::Request(
       _1,
       items,
       callback);
-  ledger_->LoadURL(
-      GetUrl(),
-      {},
-      GeneratePayload(items),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  request->content = GeneratePayload(items);
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostOrder::OnRequest(

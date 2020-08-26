@@ -345,7 +345,10 @@ void GitHub::OnPublisherPanelInfo(
 void GitHub::FetchDataFromUrl(
     const std::string& url,
     ledger::LoadURLCallback callback) {
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = url;
+  request->skip_log = true;
+  ledger_->LoadURL(std::move(request), callback);
 }
 
 void GitHub::OnUserPage(
@@ -477,11 +480,14 @@ void GitHub::SaveMediaInfo(
   auto user_name = data.find("user_name");
   std::string url = GetProfileAPIURL(user_name->second);
 
-  auto get_callback = std::bind(&GitHub::OnMetaDataGet,
+  auto url_callback = std::bind(&GitHub::OnMetaDataGet,
       this,
       std::move(callback),
       _1);
 
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, get_callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = url;
+  request->skip_log = true;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 }  // namespace braveledger_media

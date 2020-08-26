@@ -110,13 +110,9 @@ void GetWalletBalance::Request(GetWalletBalanceCallback callback) {
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(),
-      {},
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetWalletBalance::OnRequest(

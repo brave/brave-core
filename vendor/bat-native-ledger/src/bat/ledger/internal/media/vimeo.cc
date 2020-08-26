@@ -281,7 +281,10 @@ std::string Vimeo::GetVideoIdFromVideoPage(const std::string& data) {
 void Vimeo::FetchDataFromUrl(
     const std::string& url,
     ledger::LoadURLCallback callback) {
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = url;
+  request->skip_log = true;
+  ledger_->LoadURL(std::move(request), callback);
 }
 
 void Vimeo::OnMediaActivityError(uint64_t window_id) {

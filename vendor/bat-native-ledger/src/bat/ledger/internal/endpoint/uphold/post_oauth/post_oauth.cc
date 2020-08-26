@@ -5,6 +5,8 @@
 
 #include "bat/ledger/internal/endpoint/uphold/post_oauth/post_oauth.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_utils.h"
@@ -81,13 +83,14 @@ void PostOauth::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(),
-      RequestAuthorization(),
-      GeneratePayload(code),
-      "application/x-www-form-urlencoded",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  request->content = GeneratePayload(code);
+  request->headers = RequestAuthorization();
+  request->content_type = "application/x-www-form-urlencoded";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostOauth::OnRequest(

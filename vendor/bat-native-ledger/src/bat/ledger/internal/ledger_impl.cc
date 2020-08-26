@@ -110,26 +110,22 @@ braveledger_database::Database* LedgerImpl::database() const {
 }
 
 void LedgerImpl::LoadURL(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& content_type,
-    const ledger::UrlMethod method,
+    ledger::UrlRequestPtr request,
     ledger::LoadURLCallback callback) {
+  DCHECK(request);
   if (shutting_down_) {
-    BLOG(1,  url + " will not be executed as we are shutting down");
+    BLOG(1, request->url + " will not be executed as we are shutting down");
     return;
   }
 
-  BLOG(5, ledger::UrlRequestToString(url, headers, content, content_type,
-      method));
-
-  auto request = ledger::UrlRequest::New();
-  request->url = url;
-  request->method = method;
-  request->headers = headers;
-  request->content = content;
-  request->content_type = content_type;
+  if (!request->skip_log) {
+    BLOG(5, ledger::UrlRequestToString(
+        request->url,
+        request->headers,
+        request->content,
+        request->content_type,
+        request->method));
+  }
 
   ledger_client_->LoadURL(std::move(request), callback);
 }

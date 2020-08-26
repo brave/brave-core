@@ -91,13 +91,13 @@ void PostBatLoss::Request(
       _1,
       callback);
 
-  ledger_->LoadURL(
-      GetUrl(version),
-      headers,
-      payload,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(version);
+  request->content = payload;
+  request->headers = headers;
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostBatLoss::OnRequest(

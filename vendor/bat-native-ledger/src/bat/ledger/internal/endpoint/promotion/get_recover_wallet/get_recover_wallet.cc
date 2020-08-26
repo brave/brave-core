@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 #include "bat/ledger/internal/endpoint/promotion/get_recover_wallet/get_recover_wallet.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
@@ -103,13 +105,10 @@ void GetRecoverWallet::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(public_key_hex),
-      {},
-      "",
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::GET,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(public_key_hex);
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetRecoverWallet::OnRequest(

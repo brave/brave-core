@@ -5,6 +5,8 @@
 
 #include "bat/ledger/internal/endpoint/uphold/post_cards/post_cards.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_utils.h"
@@ -86,13 +88,14 @@ void PostCards::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(),
-      RequestAuthorization(token),
-      GeneratePayload(),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  request->content = GeneratePayload();
+  request->headers = RequestAuthorization(token);
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostCards::OnRequest(

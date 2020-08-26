@@ -89,13 +89,10 @@ void GetCaptcha::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(captcha_id),
-      {},
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(captcha_id);
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetCaptcha::OnRequest(
