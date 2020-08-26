@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_button_container.h"
 
+#include <memory>
+
 #include "brave/browser/ui/views/infobars/brave_wayback_machine_infobar_throbber.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
