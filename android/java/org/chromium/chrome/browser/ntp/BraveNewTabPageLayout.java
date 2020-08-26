@@ -57,6 +57,8 @@ import org.chromium.chrome.browser.native_page.ContextMenuManager;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
 import org.chromium.chrome.browser.ntp.NTPWidgetBottomSheetDialogFragment;
+import org.chromium.chrome.browser.ntp.NTPWidgetItem;
+import org.chromium.chrome.browser.ntp.NTPWidgetManager;
 import org.chromium.chrome.browser.ntp.NewTabPageLayout;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.SuperReferralShareDialogFragment;
@@ -106,7 +108,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private ViewGroup mainLayout;
     private DatabaseHelper mDatabaseHelper;
 
-    private View mBraveStatsView;
     private ViewGroup mSiteSectionView;
     private LottieAnimationView mBadgeAnimationView;
     private VerticalViewPager ntpWidgetViewPager;
@@ -131,7 +132,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         ntpWidgetViewPager = findViewById(R.id.ntp_widget_view_pager);
         ntpWidgetAdapter = new NTPWidgetAdapter();
-        ntpWidgetAdapter.setNTPWidgetMenuListener(ntpWidgetMenuListener);
+        ntpWidgetAdapter.setNTPWidgetListener(ntpWidgetListener);
         ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
 
         ntpWidgetViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -150,32 +151,39 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     }
 
     private void addWidgets() {
+        ntpWidgetAdapter.clearViews();
+        ntpWidgetAdapter.notifyDataSetChanged();
         LayoutInflater inflater =
                 (LayoutInflater) ContextUtils.getApplicationContext().getSystemService(
                         Context.LAYOUT_INFLATER_SERVICE);
 
-        mBraveStatsView = inflater.inflate(R.layout.brave_stats_layout, null);
-        mBraveStatsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkForBraveStats();
-            }
-        });
-        ntpWidgetAdapter.addView(mBraveStatsView);
+        for (NTPWidgetItem ntpWidgetItem : NTPWidgetManager.getInstance().getWidgetList()) {
+            if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_PRIVATE_STATS)) {
+                View mBraveStatsView = inflater.inflate(R.layout.brave_stats_layout, null);
+                mBraveStatsView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        checkForBraveStats();
+                    }
+                });
+                ntpWidgetAdapter.addView(mBraveStatsView);
+            } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_FAVORITES)) {
+                boolean showPlaceholder =
+                        getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
 
-        boolean showPlaceholder = getTileGroup().hasReceivedData() && getTileGroup().isEmpty();
-
-        if (mSiteSectionView != null && !showPlaceholder) {
-            if (!mNTPBackgroundImagesBridge.isSuperReferral()
-                    || !NTPBackgroundImagesBridge.enableSponsoredImages()
-                    || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-                ntpWidgetAdapter.addView(mSiteSectionView);
+                if (mSiteSectionView != null && !showPlaceholder) {
+                    if (!mNTPBackgroundImagesBridge.isSuperReferral()
+                            || !NTPBackgroundImagesBridge.enableSponsoredImages()
+                            || Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                        ntpWidgetAdapter.addView(mSiteSectionView);
+                    }
+                }
+            } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BRAVE_REWARDS)) {
+            } else if (ntpWidgetItem.getWidgetType().equals(NTPWidgetManager.PREF_BINANCE)) {
+                View binanceWidgetView = inflater.inflate(R.layout.crypto_widget_layout, null);
+                ntpWidgetAdapter.addView(binanceWidgetView);
             }
         }
-
-        View binanceWidgetView = inflater.inflate(R.layout.crypto_widget_layout, null);
-        ntpWidgetAdapter.addView(binanceWidgetView);
-
         ntpWidgetAdapter.notifyDataSetChanged();
     }
 
@@ -200,8 +208,6 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
             BraveStatsUtil.showBraveStats();
         } else {
-            setWidgetCurrentPage(mBraveStatsView);
-            ntpWidgetAdapter.notifyDataSetChanged();
             ((BraveActivity)mActivity).showOnboardingV2(true);
         }
     }
@@ -637,20 +643,34 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         ntpWidgetViewPager.setCurrentItem(ntpWidgetAdapter.getItemPosition(pageToShow), true);
     }
 
-    private NTPWidgetAdapter.NTPWidgetMenuListener ntpWidgetMenuListener =
-            new NTPWidgetAdapter.NTPWidgetMenuListener() {
+    private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener =
+            new NTPWidgetAdapter.NTPWidgetListener() {
                 @Override
-                public void onEdit() {
+                public void onMenuEdit() {
                     NTPWidgetBottomSheetDialogFragment ntpWidgetBottomSheetDialogFragment =
                             NTPWidgetBottomSheetDialogFragment.newInstance();
+                    ntpWidgetBottomSheetDialogFragment.setNTPWidgetListener(ntpWidgetListener);
                     ntpWidgetBottomSheetDialogFragment.show(
                             ((BraveActivity) mActivity).getSupportFragmentManager(),
                             "NTPWidgetBottomSheetDialogFragment");
                 }
 
                 @Override
-                public void onRemove(int position) {
+                public void onMenuRemove(int position) {
                     removeViewFromWidget(position);
                 }
+
+                @Override
+                public void onBottomSheetDismiss() {
+                    if (ntpWidgetAdapter != null) {
+                        ntpWidgetViewPager.setAdapter(null);
+                        ntpWidgetViewPager.setAdapter(ntpWidgetAdapter);
+                        addWidgets();
+                        updateAndShowIndicators(0);
+                    }
+                }
+
+                @Override
+                public void removeFromBottomSheet() {}
             };
 }

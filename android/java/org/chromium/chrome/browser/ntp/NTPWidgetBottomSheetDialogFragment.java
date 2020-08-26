@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,24 +20,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ntp.NTPWidgetItem;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
+import org.chromium.chrome.browser.ntp.NTPWidgetManager;
 
 public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment {
-    private List<NTPWidgetItem> usersList = new ArrayList<NTPWidgetItem>() {
-        {
-            add(new NTPWidgetItem("Privacy Stats",
-                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-            add(new NTPWidgetItem("Favorites",
-                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-            add(new NTPWidgetItem("Brave Rewards",
-                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-            add(new NTPWidgetItem("Binance",
-                    "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-        }
-    };
+    private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
+    private NTPWidgetListAdapter ntpWidgetListAdapter;
+
+    public void setNTPWidgetListener(NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener) {
+        this.ntpWidgetListener = ntpWidgetListener;
+    }
 
     static NTPWidgetBottomSheetDialogFragment newInstance() {
         return new NTPWidgetBottomSheetDialogFragment();
@@ -55,13 +48,24 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
 
         RecyclerView userRecyclerView = view.findViewById(R.id.recyclerview_user_list);
         userRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        NTPWidgetListAdapter adapter = new NTPWidgetListAdapter();
-        SwipeAndDragHelper swipeAndDragHelper = new SwipeAndDragHelper(adapter);
+        ntpWidgetListAdapter = new NTPWidgetListAdapter();
+        SwipeAndDragHelper swipeAndDragHelper = new SwipeAndDragHelper(ntpWidgetListAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
-        adapter.setTouchHelper(touchHelper);
-        userRecyclerView.setAdapter(adapter);
+        ntpWidgetListAdapter.setTouchHelper(touchHelper);
+        ntpWidgetListAdapter.setNTPWidgetListener(ntpWidgetListener);
+        userRecyclerView.setAdapter(ntpWidgetListAdapter);
         touchHelper.attachToRecyclerView(userRecyclerView);
 
-        adapter.setUserList(usersList);
+        ntpWidgetListAdapter.setWidgetList(NTPWidgetManager.getInstance().getWidgetList());
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        for (int i = 0; i < ntpWidgetListAdapter.getWidgetList().size(); i++) {
+            NTPWidgetManager.getInstance().setWidget(
+                    ntpWidgetListAdapter.getWidgetList().get(i).getWidgetType(), i);
+        }
+        ntpWidgetListener.onBottomSheetDismiss();
     }
 }

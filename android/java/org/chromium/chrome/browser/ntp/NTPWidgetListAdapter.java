@@ -18,6 +18,8 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
+import org.chromium.chrome.browser.ntp.NTPWidgetManager;
 
 import java.util.List;
 
@@ -25,6 +27,12 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
         implements SwipeAndDragHelper.ActionCompletionContract {
     private List<NTPWidgetItem> widgetList;
     private ItemTouchHelper touchHelper;
+
+    private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
+
+    public void setNTPWidgetListener(NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener) {
+        this.ntpWidgetListener = ntpWidgetListener;
+    }
 
     @NonNull
     @Override
@@ -56,23 +64,30 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
         return widgetList == null ? 0 : widgetList.size();
     }
 
-    void setUserList(List<NTPWidgetItem> usersList) {
-        this.widgetList = usersList;
+    public void setWidgetList(List<NTPWidgetItem> widgetList) {
+        this.widgetList = widgetList;
         notifyDataSetChanged();
+    }
+
+    public List<NTPWidgetItem> getWidgetList() {
+        return this.widgetList;
     }
 
     @Override
     public void onViewMoved(int oldPosition, int newPosition) {
         NTPWidgetItem targetNTPWidgetItem = widgetList.get(oldPosition);
-        NTPWidgetItem NTPWidgetItem = new NTPWidgetItem(targetNTPWidgetItem);
+        NTPWidgetItem ntpWidgetItem = new NTPWidgetItem(targetNTPWidgetItem);
         widgetList.remove(oldPosition);
-        widgetList.add(newPosition, NTPWidgetItem);
+        widgetList.add(newPosition, ntpWidgetItem);
         notifyItemMoved(oldPosition, newPosition);
     }
 
     @Override
     public void onViewSwiped(int position) {
+        NTPWidgetItem ntpWidgetItem = widgetList.get(position);
+        NTPWidgetManager.getInstance().setWidget(ntpWidgetItem.getWidgetType(), -1);
         widgetList.remove(position);
+        ntpWidgetListener.removeFromBottomSheet();
         notifyItemRemoved(position);
     }
 

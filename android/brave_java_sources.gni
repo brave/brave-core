@@ -67,6 +67,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/ntp/NTPWidgetBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/NTPWidgetItem.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/NTPWidgetListAdapter.java",
+  "../../brave/android/java/org/chromium/chrome/browser/ntp/NTPWidgetManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp/SwipeAndDragHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/ntp_background_images/RewardsBottomSheetDialogFragment.java",

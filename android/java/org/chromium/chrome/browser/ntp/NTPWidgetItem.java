@@ -6,17 +6,24 @@
 package org.chromium.chrome.browser.ntp;
 
 class NTPWidgetItem {
+    private String widgetType;
     private String widgetTitle;
     private String widgetText;
 
-    NTPWidgetItem(String widgetTitle, String widgetText) {
+    NTPWidgetItem(String widgetType, String widgetTitle, String widgetText) {
+        this.widgetType = widgetType;
         this.widgetTitle = widgetTitle;
         this.widgetText = widgetText;
     }
 
     NTPWidgetItem(NTPWidgetItem ntpWidgetItem) {
+        this.widgetType = ntpWidgetItem.widgetType;
         this.widgetTitle = ntpWidgetItem.widgetTitle;
         this.widgetText = ntpWidgetItem.widgetText;
+    }
+
+    String getWidgetType() {
+        return widgetType;
     }
 
     String getWidgetTitle() {

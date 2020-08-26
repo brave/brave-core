@@ -39,15 +39,17 @@ public class NTPWidgetAdapter extends PagerAdapter {
     private ArrayList<View> views = new ArrayList<View>();
     private Context context = ContextUtils.getApplicationContext();
     private Profile profile = Profile.getLastUsedRegularProfile();
-    private NTPWidgetMenuListener ntpWidgetMenuListener;
+    private NTPWidgetListener ntpWidgetListener;
 
-    public interface NTPWidgetMenuListener {
-        void onEdit();
-        void onRemove(int position);
+    public interface NTPWidgetListener {
+        void onMenuEdit();
+        void onMenuRemove(int position);
+        void onBottomSheetDismiss();
+        void removeFromBottomSheet();
     }
 
-    public void setNTPWidgetMenuListener(NTPWidgetMenuListener ntpWidgetMenuListener) {
-        this.ntpWidgetMenuListener = ntpWidgetMenuListener;
+    public void setNTPWidgetListener(NTPWidgetListener ntpWidgetListener) {
+        this.ntpWidgetListener = ntpWidgetListener;
     }
 
     @Override
@@ -125,6 +127,10 @@ public class NTPWidgetAdapter extends PagerAdapter {
         return position;
     }
 
+    public void clearViews() {
+        views.clear();
+    }
+
     public View getView(int position) {
         return views.get(position);
     }
@@ -176,9 +182,9 @@ public class NTPWidgetAdapter extends PagerAdapter {
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.edit) {
-                    ntpWidgetMenuListener.onEdit();
+                    ntpWidgetListener.onMenuEdit();
                 } else if (id == R.id.remove) {
-                    ntpWidgetMenuListener.onRemove(position);
+                    ntpWidgetListener.onMenuRemove(position);
                 }
                 return true;
             }
