@@ -9,6 +9,8 @@ import { bindActionCreators } from 'redux'
 
 // Components
 import App from './components/app'
+import { ThemeProvider } from 'brave-ui/theme'
+import Theme from 'brave-ui/theme/brave-default'
 
 // Utils
 import store from './store'
@@ -17,17 +19,30 @@ import * as ipfsActions from './actions/ipfs_actions'
 window.cr.define('ipfs', function () {
   'use strict'
 
+  function getDaemonStatus() {
+    const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
+    actions.getDaemonStatus()
+  }
 
   function getConnectedPeers() {
     const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
     actions.getConnectedPeers()
   }
 
+  function getAddressesConfig() {
+    const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
+    actions.getAddressesConfig()
+  }
+
   function initialize () {
+    getDaemonStatus()
     getConnectedPeers()
+    getAddressesConfig()
     render(
       <Provider store={store}>
-        <App />
+        <ThemeProvider theme={Theme}>
+          <App />
+        </ThemeProvider>
       </Provider>,
       document.getElementById('root'))
     window.i18nTemplate.process(window.document, window.loadTimeData)
@@ -38,9 +53,21 @@ window.cr.define('ipfs', function () {
     actions.onGetConnectedPeers(peerCount)
   }
 
+  function onGetAddressesConfig (addressesConfig: IPFS.AddressesConfig) {
+    const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
+    actions.onGetAddressesConfig(addressesConfig)
+  }
+
+  function onGetDaemonStatus (daemonStatus: IPFS.DaemonStatus) {
+    const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
+    actions.onGetDaemonStatus(daemonStatus)
+  }
+
   return {
     initialize,
-    onGetConnectedPeers
+    onGetConnectedPeers,
+    onGetAddressesConfig,
+    onGetDaemonStatus,
   }
 })
 

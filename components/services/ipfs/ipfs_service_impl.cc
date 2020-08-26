@@ -96,23 +96,17 @@ void IpfsServiceImpl::Cleanup() {
   if (in_shutdown_) return;
   in_shutdown_ = true;
 
+  int64_t pid = -1;
   if (ipfs_process_.IsValid()) {
+    pid = ipfs_process_.Pid();
     ipfs_process_.Terminate(0, true);
 #if defined(OS_POSIX)
     TearDownPipeHack();
 #endif
-#if defined(OS_MACOSX)
-    base::PostTask(
-        FROM_HERE,
-        {base::ThreadPool(),
-         base::MayBlock(),
-         base::TaskPriority::BEST_EFFORT},
-        base::BindOnce(
-          &base::EnsureProcessTerminated, Passed(&ipfs_process_)));
-#else
     base::EnsureProcessTerminated(std::move(ipfs_process_));
-#endif
   }
+  if (crash_handler_callback_)
+    std::move(crash_handler_callback_).Run(pid);
 }
 
 void IpfsServiceImpl::Launch(
@@ -200,11 +194,11 @@ void IpfsServiceImpl::MonitorChild() {
 
         if ((pid = waitpid(-1, &status, WNOHANG)) != -1) {
           if (WIFSIGNALED(status)) {
-            LOG(ERROR) << "ipfs got terminated by signal " << WTERMSIG(status);
+            VLOG(0) << "ipfs got terminated by signal " << WTERMSIG(status);
           } else if (WCOREDUMP(status)) {
-            LOG(ERROR) << "ipfs coredumped";
+            VLOG(0) << "ipfs coredumped";
           } else if (WIFEXITED(status)) {
-            LOG(ERROR) << "ipfs exit (" << WEXITSTATUS(status) << ")";
+            VLOG(0) << "ipfs exit (" << WEXITSTATUS(status) << ")";
           }
           ipfs_process_.Close();
           if (receiver_.is_bound() && crash_handler_callback_) {

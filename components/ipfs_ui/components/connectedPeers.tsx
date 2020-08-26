@@ -4,6 +4,8 @@
 
 import * as React from 'react'
 
+import { Section } from '../style'
+
 interface Props {
   peerCount: number
 }
@@ -15,10 +17,12 @@ export class ConnectedPeers extends React.Component<Props, {}> {
 
   render () {
     return (
-      <div>
-        <span i18n-content='connectedPeersTitle'/>
-        {this.props.peerCount}
-      </div>
+      <Section>
+        <div>
+          <span i18n-content='connectedPeersTitle'/>
+          {this.props.peerCount}
+        </div>
+      </Section>
     )
   }
 }

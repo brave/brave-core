@@ -7,7 +7,10 @@
 
 namespace ipfs {
 
-const char kHttpAPIServerEndpoint[] = "http://localhost:5001";
-const char kSwarmPeersAPIURL[] = "http://localhost:5001/api/v0/swarm/peers";
-
+const char kServerEndpoint[] = "http://localhost:5001";
+const char kSwarmPeersPath[] = "/api/v0/swarm/peers";
+const char kConfigPath[] = "/api/v0/config";
+const char kArgQueryParam[] = "arg";
+const char kAddressesField[] = "Addresses";
+const char kShutdownPath[] = "/api/v0/shutdown";
 }  // namespace ipfs

@@ -6,14 +6,18 @@
 #ifndef BRAVE_BROWSER_IPFS_IPFS_SERVICE_H_
 #define BRAVE_BROWSER_IPFS_IPFS_SERVICE_H_
 
+#include <list>
 #include <memory>
 #include <string>
 #include <vector>
 
+#include "brave/components/ipfs/browser/addresses_config.h"
 #include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote.h"
+
+class GURL;
 
 namespace content {
 class BrowserContext;
@@ -37,6 +41,13 @@ class IpfsService : public KeyedService,
   using GetConnectedPeersCallback = base::OnceCallback<
     void(bool,
          const std::vector<std::string>&)>;
+  using GetAddressesConfigCallback = base::OnceCallback<
+    void(bool,
+         const ipfs::AddressesConfig&)>;
+  using LaunchDaemonCallback = base::OnceCallback<void(bool)>;
+  using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
+
+  bool IsDaemonLaunched() const;
   static void RegisterPrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
 
@@ -44,11 +55,17 @@ class IpfsService : public KeyedService,
   void Shutdown() override;
 
   void GetConnectedPeers(GetConnectedPeersCallback callback);
+  void GetAddressesConfig(GetAddressesConfigCallback callback);
+  void LaunchDaemon(LaunchDaemonCallback callback);
+  void ShutdownDaemon(ShutdownDaemonCallback callback);
 
  protected:
   base::FilePath GetIpfsExecutablePath();
 
  private:
+  using SimpleURLLoaderList =
+      std::list<std::unique_ptr<network::SimpleURLLoader>>;
+
   // BraveIpfsClientUpdater::Observer
   void OnExecutableReady(const base::FilePath& path) override;
 
@@ -59,19 +76,27 @@ class IpfsService : public KeyedService,
   // Launches the ipfs service in an utility process.
   void LaunchIfNotRunning(const base::FilePath& executable_path);
 
-  void OnGetConnectedPeers(GetConnectedPeersCallback,
+  std::unique_ptr<network::SimpleURLLoader> CreateURLLoader(const GURL& gurl);
+
+  void OnGetConnectedPeers(SimpleURLLoaderList::iterator iter,
+                           GetConnectedPeersCallback,
                            std::unique_ptr<std::string> response_body);
+  void OnGetAddressesConfig(SimpleURLLoaderList::iterator iter,
+                            GetAddressesConfigCallback callback,
+                            std::unique_ptr<std::string> response_body);
 
   // The remote to the ipfs service running on an utility process. The browser
   // will not launch a new ipfs service process if this remote is already
   // bound.
   mojo::Remote<ipfs::mojom::IpfsService> ipfs_service_;
 
-  int64_t ipfs_pid_;
+  int64_t ipfs_pid_ = -1;
   content::BrowserContext* context_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  std::unique_ptr<network::SimpleURLLoader> url_loader_;
+  SimpleURLLoaderList url_loaders_;
+
+  LaunchDaemonCallback launch_daemon_callback_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);
 };

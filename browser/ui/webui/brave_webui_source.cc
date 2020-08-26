@@ -785,6 +785,14 @@ void CustomizeWebUIHTMLSource(const std::string &name,
 #if BUILDFLAG(IPFS_ENABLED)
       std::string("ipfs"), {
         { "connectedPeersTitle", IDS_IPFS_CONNECTED_PEERS_TITLE },
+        { "addressesConfigTitle", IDS_IPFS_ADDRESSES_CONFIG_TITLE },
+        { "daemonStatusTitle", IDS_IPFS_DAEMON_STATUS_TITLE },
+        { "api", IDS_IPFS_API },
+        { "gateway", IDS_IPFS_GATEWAY },
+        { "swarm", IDS_IPFS_SWARM },
+        { "launched", IDS_IPFS_LAUNCHED },
+        { "launch", IDS_IPFS_LAUNCH },
+        { "shutdown", IDS_IPFS_SHUTDOWN },
       }
     }, {
 #endif

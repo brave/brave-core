@@ -7,8 +7,13 @@
 #define BRAVE_COMPONENTS_IPFS_COMMON_IPFS_CONSTANTS_H_
 
 namespace ipfs {
-extern const char kHttpAPIServerEndpoint[];
-extern const char kSwarmPeersAPIURL[];
+
+extern const char kServerEndpoint[];
+extern const char kSwarmPeersPath[];
+extern const char kConfigPath[];
+extern const char kArgQueryParam[];
+extern const char kAddressesField[];
+extern const char kShutdownPath[];
 
 enum class IPFSResolveMethodTypes {
   IPFS_GATEWAY,

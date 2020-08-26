@@ -10,6 +10,14 @@ export const defaultState: IPFS.State = {
   connectedPeers: {
     peerCount: 0
   },
+  addressesConfig: {
+    api: "",
+    gateway: "",
+    swarm: []
+  },
+  daemonStatus: {
+    launched: false
+  }
 }
 
 export const getLoadTimeData = (state: IPFS.State): IPFS.State => {

@@ -1,5 +1,7 @@
 source_set("browser") {
   sources = [
+    "addresses_config.cc",
+    "addresses_config.h",
     "brave_ipfs_client_updater.cc",
     "brave_ipfs_client_updater.h",
     "features.cc",

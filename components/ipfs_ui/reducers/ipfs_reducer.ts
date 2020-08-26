@@ -21,7 +21,6 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
       chrome.send('ipfs.getConnectedPeers')
       break
     case types.IPFS_ON_GET_CONNECTED_PEERS:
-      console.log('action on get connected peers:', action)
       state = {
         ...state,
         connectedPeers: {
@@ -29,6 +28,30 @@ const ipfsReducer: Reducer<IPFS.State | undefined> = (state: IPFS.State | undefi
           peerCount: action.payload.peerCount
         }
       }
+      break
+    case types.IPFS_GET_ADDRESSES_CONFIG:
+      chrome.send('ipfs.getAddressesConfig')
+      break
+    case types.IPFS_ON_GET_ADDRESSES_CONFIG:
+      state = {
+        ...state,
+        addressesConfig: action.payload.addressesConfig
+      }
+      break
+    case types.IPFS_GET_DAEMON_STATUS:
+      chrome.send('ipfs.getDaemonStatus')
+      break
+    case types.IPFS_ON_GET_DAEMON_STATUS:
+      state = {
+        ...state,
+        daemonStatus: action.payload.daemonStatus
+      }
+      break
+    case types.IPFS_LAUNCH_DAEMON:
+      chrome.send('ipfs.launchDaemon')
+      break
+    case types.IPFS_SHUTDOWN_DAEMON:
+      chrome.send('ipfs.shutdownDaemon')
       break
     default:
       break

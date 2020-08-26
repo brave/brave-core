@@ -27,8 +27,8 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_set.h"
-#include "url/gurl.h"
 #include "net/base/escape.h"
+#include "url/gurl.h"
 
 namespace {
 

@@ -249,6 +249,7 @@ source_set("ui") {
 
   if (ipfs_enabled) {
     deps += [
+      "//brave/components/ipfs/browser",
       "//brave/components/ipfs_ui:generated_resources",
     ]
   }

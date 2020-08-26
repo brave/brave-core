@@ -62,3 +62,61 @@ bool IPFSJSONParser::GetPeersFromJSON(
 
   return true;
 }
+
+// static
+// Response Format for /api/v0/config?arg=Addresses
+// {
+//    "Key": "Addresses",
+//    "Value":
+//      {
+//        "API": "<string>",
+//        "Announce": [],
+//        "Gateway": "<int>",
+//        "NoAnnounce":[],
+//        "Swarm": [
+//          <string>
+//        ]
+//      }
+// }
+bool IPFSJSONParser::GetAddressesConfigFromJSON(const std::string& json,
+                                ipfs::AddressesConfig* config) {
+  base::JSONReader::ValueWithError value_with_error =
+      base::JSONReader::ReadAndReturnValueWithError(
+          json, base::JSONParserOptions::JSON_PARSE_RFC);
+  base::Optional<base::Value>& records_v = value_with_error.value;
+
+  if (!records_v) {
+    VLOG(1) << "Invalid response, could not parse JSON, JSON is: " << json;
+    return false;
+  }
+
+  const base::DictionaryValue* response_dict;
+  if (!records_v->GetAsDictionary(&response_dict)) {
+    return false;
+  }
+
+  const base::DictionaryValue* val_dict;
+  if (!response_dict->GetDictionary("Value", &val_dict)) {
+    return false;
+  }
+
+  const std::string* api = val_dict->FindStringKey("API");
+  const std::string* gateway = val_dict->FindStringKey("Gateway");
+  const base::Value* swarm = val_dict->FindListKey("Swarm");
+  if (!api || !gateway || !swarm) {
+    VLOG(1) << "Invalid response, missing required keys in value dictionary.";
+    return false;
+  }
+
+  config->api = *api;
+  config->gateway = *gateway;
+  for (const base::Value &val : swarm->GetList()) {
+    if (!val.is_string()) {
+      continue;
+    }
+
+    config->swarm.push_back(val.GetString());
+  }
+
+  return true;
+}

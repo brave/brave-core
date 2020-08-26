@@ -13,7 +13,9 @@
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "content/public/browser/web_ui_message_handler.h"
 
-class PrefChangeRegistrar;
+namespace ipfs {
+struct AddressesConfig;
+}  // namespace ipfs
 
 class IPFSDOMHandler : public content::WebUIMessageHandler {
  public:
@@ -27,6 +29,14 @@ class IPFSDOMHandler : public content::WebUIMessageHandler {
   void HandleGetConnectedPeers(const base::ListValue* args);
   void OnGetConnectedPeers(bool success,
                            const std::vector<std::string>& peers);
+  void HandleGetAddressesConfig(const base::ListValue* args);
+  void OnGetAddressesConfig(bool success,
+                            const ipfs::AddressesConfig& config);
+  void HandleGetDaemonStatus(const base::ListValue* args);
+  void HandleLaunchDaemon(const base::ListValue* args);
+  void OnLaunchDaemon(bool success);
+  void HandleShutdownDaemon(const base::ListValue* args);
+  void OnShutdownDaemon(bool success);
 
   base::WeakPtrFactory<IPFSDOMHandler> weak_ptr_factory_;
 
@@ -40,14 +50,6 @@ class IPFSUI : public BasicUI {
   ~IPFSUI() override;
 
  private:
-  // BasicUI overrides:
-  void UpdateWebUIProperties() override;
-
-  void CustomizeWebUIProperties(content::RenderFrameHost* render_frame_host);
-  void OnPreferenceChanged();
-
-  std::unique_ptr<PrefChangeRegistrar> pref_change_registrar_;
-
   DISALLOW_COPY_AND_ASSIGN(IPFSUI);
 };
 

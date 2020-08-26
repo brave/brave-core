@@ -13,3 +13,20 @@ export const onGetConnectedPeers = (peerCount: number) =>
   action(types.IPFS_ON_GET_CONNECTED_PEERS, {
     peerCount
   })
+
+export const getAddressesConfig = () => action(types.IPFS_GET_ADDRESSES_CONFIG)
+
+export const onGetAddressesConfig = (addressesConfig: IPFS.AddressesConfig) =>
+  action(types.IPFS_ON_GET_ADDRESSES_CONFIG, {
+    addressesConfig
+  })
+
+export const getDaemonStatus = () => action(types.IPFS_GET_DAEMON_STATUS)
+
+export const onGetDaemonStatus = (daemonStatus: IPFS.DaemonStatus) =>
+  action(types.IPFS_ON_GET_DAEMON_STATUS, {
+    daemonStatus
+  })
+
+export const launchDaemon = () => action(types.IPFS_LAUNCH_DAEMON)
+export const shutdownDaemon = () => action(types.IPFS_SHUTDOWN_DAEMON)

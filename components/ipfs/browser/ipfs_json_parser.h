@@ -9,10 +9,14 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/ipfs/browser/addresses_config.h"
+
 class IPFSJSONParser {
  public:
   static bool GetPeersFromJSON(const std::string& json,
                                std::vector<std::string>* peers);
+  static bool GetAddressesConfigFromJSON(const std::string& json,
+                                         ipfs::AddressesConfig* config);
 };
 
 #endif  // BRAVE_COMPONENTS_IPFS_BROWSER_IPFS_JSON_PARSER_H_
