@@ -87,7 +87,8 @@ gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   // Call base class to get the width.
   gfx::Size size = DownloadItemView::CalculatePreferredSize();
   // Calculate the height accounting for the extra line.
-  int child_height = file_name_label_->GetLineHeight() + kBraveVerticalTextPadding +
+  int child_height = file_name_label_->GetLineHeight() +
+                     kBraveVerticalTextPadding +
                      origin_url_font_list_.GetHeight() +
                      kBraveVerticalTextPadding + status_label_->GetLineHeight();
   if (IsShowingWarningDialog()) {
