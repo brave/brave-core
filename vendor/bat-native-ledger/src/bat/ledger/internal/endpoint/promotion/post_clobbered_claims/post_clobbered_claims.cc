@@ -64,13 +64,12 @@ void PostClobberedClaims::Request(
       _1,
       callback);
 
-  ledger_->LoadURL(
-      GetUrl(),
-      {},
-      GeneratePayload(std::move(corrupted_claims)),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  request->content = GeneratePayload(std::move(corrupted_claims));
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostClobberedClaims::OnRequest(

@@ -29,17 +29,14 @@ void OnLoadURL(
 }
 
 void BatLedgerClientMojoBridge::LoadURL(
-    const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& contentType,
-    const ledger::UrlMethod method,
+    ledger::UrlRequestPtr request,
     ledger::LoadURLCallback callback) {
   if (!Connected())
     return;
 
-  bat_ledger_client_->LoadURL(url, headers, content, contentType,
-      method, base::BindOnce(&OnLoadURL, std::move(callback)));
+  bat_ledger_client_->LoadURL(
+      std::move(request),
+      base::BindOnce(&OnLoadURL, std::move(callback)));
 }
 
 void BatLedgerClientMojoBridge::OnReconcileComplete(

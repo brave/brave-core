@@ -93,13 +93,13 @@ void PostDevicecheck::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(),
-      {},
-      GeneratePayload(key),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  request->content = GeneratePayload(key);
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostDevicecheck::OnRequest(

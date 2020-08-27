@@ -70,11 +70,7 @@ class LedgerImpl : public ledger::Ledger {
   virtual braveledger_database::Database* database() const;
 
   virtual void LoadURL(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const ledger::UrlMethod method,
+      ledger::UrlRequestPtr request,
       ledger::LoadURLCallback callback);
 
  private:

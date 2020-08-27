@@ -42,18 +42,14 @@ class GetMeTest : public testing::Test {
 };
 
 TEST_F(GetMeTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 200;
-            response.url = url;
+            response.url = request->url;
             response.body = R"({
              "address": {
                "city": "Anytown",
@@ -161,18 +157,14 @@ TEST_F(GetMeTest, ServerOK) {
 }
 
 TEST_F(GetMeTest, ServerError401) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 401;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));
@@ -186,18 +178,14 @@ TEST_F(GetMeTest, ServerError401) {
 }
 
 TEST_F(GetMeTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 453;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));

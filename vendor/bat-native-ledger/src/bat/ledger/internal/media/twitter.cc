@@ -399,7 +399,10 @@ void Twitter::SavePublisherInfo(
 void Twitter::FetchDataFromUrl(
     const std::string& url,
     ledger::LoadURLCallback callback) {
-  ledger_->LoadURL(url, {}, "", "", ledger::UrlMethod::GET, callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = url;
+  request->skip_log = true;
+  ledger_->LoadURL(std::move(request), callback);
 }
 
 void Twitter::OnMediaActivityError(const ledger::VisitData& visit_data,

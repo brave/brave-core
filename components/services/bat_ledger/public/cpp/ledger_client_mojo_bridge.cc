@@ -116,17 +116,14 @@ void LedgerClientMojoBridge::OnLoadURL(
   }
 }
 
-void LedgerClientMojoBridge::LoadURL(const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& contentType,
-    ledger::UrlMethod method,
+void LedgerClientMojoBridge::LoadURL(
+    ledger::UrlRequestPtr request,
     LoadURLCallback callback) {
   // deleted in OnLoadURL
   auto* holder = new CallbackHolder<LoadURLCallback>(
       AsWeakPtr(), std::move(callback));
-  ledger_client_->LoadURL(url, headers, content, contentType,
-      method,
+  ledger_client_->LoadURL(
+      std::move(request),
       std::bind(LedgerClientMojoBridge::OnLoadURL, holder, _1));
 }
 

@@ -42,18 +42,14 @@ class GetAvailableTest : public testing::Test {
 };
 
 TEST_F(GetAvailableTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 200;
-            response.url = url;
+            response.url = request->url;
             response.body = R"({
              "promotions": [
                {
@@ -101,18 +97,14 @@ TEST_F(GetAvailableTest, ServerOK) {
 }
 
 TEST_F(GetAvailableTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 400;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));
@@ -130,18 +122,14 @@ TEST_F(GetAvailableTest, ServerError400) {
 }
 
 TEST_F(GetAvailableTest, ServerError404) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 404;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));
@@ -159,18 +147,14 @@ TEST_F(GetAvailableTest, ServerError404) {
 }
 
 TEST_F(GetAvailableTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 500;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));
@@ -188,18 +172,14 @@ TEST_F(GetAvailableTest, ServerError500) {
 }
 
 TEST_F(GetAvailableTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 453;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));
@@ -217,18 +197,14 @@ TEST_F(GetAvailableTest, ServerErrorRandom) {
 }
 
 TEST_F(GetAvailableTest, ServerWrongResponse) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 200;
-            response.url = url;
+            response.url = request->url;
             response.body =  R"({
              "promotions": [
                 {

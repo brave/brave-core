@@ -84,13 +84,13 @@ void PostSuggestionsClaim::Request(
       ledger_->state()->GetPaymentId(),
       ledger_->state()->GetRecoverySeed());
 
-  ledger_->LoadURL(
-      GetUrl(),
-      headers,
-      payload,
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  request->content = payload;
+  request->headers = headers;
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostSuggestionsClaim::OnRequest(

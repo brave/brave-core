@@ -128,9 +128,10 @@ void Reddit::FetchDataFromUrl(
     reddit_url = reddit_url.ReplaceComponents(replacements);
   }
 
-  const std::string load_url = reddit_url.spec();
-
-  ledger_->LoadURL(load_url, {}, "", "", ledger::UrlMethod::GET, callback);
+  auto request = ledger::UrlRequest::New();
+  request->url = reddit_url.spec();
+  request->skip_log = true;
+  ledger_->LoadURL(std::move(request), callback);
 }
 
 // static

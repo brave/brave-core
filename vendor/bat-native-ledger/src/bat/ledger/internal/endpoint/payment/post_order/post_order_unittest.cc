@@ -43,18 +43,14 @@ class PostOrderTest : public testing::Test {
 };
 
 TEST_F(PostOrderTest, ServerOK) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 201;
-            response.url = url;
+            response.url = request->url;
             response.body = R"({
               "id": "f2e6494e-fb21-44d1-90e9-b5408799acd8",
               "createdAt": "2020-06-10T18:58:21.378752Z",
@@ -115,18 +111,14 @@ TEST_F(PostOrderTest, ServerOK) {
 }
 
 TEST_F(PostOrderTest, ServerError400) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 400;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));
@@ -147,18 +139,14 @@ TEST_F(PostOrderTest, ServerError400) {
 }
 
 TEST_F(PostOrderTest, ServerError500) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 500;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));
@@ -179,18 +167,14 @@ TEST_F(PostOrderTest, ServerError500) {
 }
 
 TEST_F(PostOrderTest, ServerErrorRandom) {
-  ON_CALL(*mock_ledger_client_, LoadURL(_, _, _, _, _, _))
+  ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              const std::string& url,
-              const std::vector<std::string>& headers,
-              const std::string& content,
-              const std::string& contentType,
-              const ledger::UrlMethod method,
+              ledger::UrlRequestPtr request,
               ledger::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 453;
-            response.url = url;
+            response.url = request->url;
             response.body = "";
             callback(response);
           }));

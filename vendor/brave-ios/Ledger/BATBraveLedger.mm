@@ -1726,17 +1726,21 @@ BATLedgerBridge(BOOL,
   self.commonOps.customUserAgent = [customUserAgent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
-- (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::UrlMethod)method callback:(ledger::LoadURLCallback)callback
-{  
+- (void)loadURL:(ledger::UrlRequestPtr)request callback:(ledger::LoadURLCallback)callback
+{
   std::map<ledger::UrlMethod, std::string> methodMap {
     {ledger::UrlMethod::GET, "GET"},
     {ledger::UrlMethod::POST, "POST"},
     {ledger::UrlMethod::PUT, "PUT"}
   };
-  
-  const auto copiedURL = [NSString stringWithUTF8String:url.c_str()];
-  
-  return [self.commonOps loadURLRequest:url headers:headers content:content content_type:contentType method:methodMap[method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
+
+  if (!request) {
+    request = ledger::UrlRequest::New();
+  }
+
+  const auto copiedURL = [NSString stringWithUTF8String:request->url.c_str()];
+
+  return [self.commonOps loadURLRequest:request->url headers:request->headers content:request->content content_type:request->content_type method:methodMap[request->method] callback:^(const std::string& errorDescription, int statusCode, const std::string &response, const std::map<std::string, std::string> &headers) {
     ledger::UrlResponse url_response;
     url_response.url = copiedURL.UTF8String;
     url_response.error = errorDescription;

@@ -5,6 +5,8 @@
 
 #include "bat/ledger/internal/endpoint/uphold/get_cards/get_cards.h"
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/uphold/uphold_utils.h"
@@ -85,13 +87,11 @@ void GetCards::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(),
-      RequestAuthorization(token),
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl();
+  request->headers = RequestAuthorization(token);
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetCards::OnRequest(

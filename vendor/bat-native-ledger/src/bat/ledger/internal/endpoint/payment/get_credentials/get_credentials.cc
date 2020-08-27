@@ -114,13 +114,10 @@ void GetCredentials::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(order_id, item_id),
-      {},
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(order_id, item_id);
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetCredentials::OnRequest(

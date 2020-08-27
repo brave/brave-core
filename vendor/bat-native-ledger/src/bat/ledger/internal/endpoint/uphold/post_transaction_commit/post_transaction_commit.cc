@@ -57,13 +57,13 @@ void PostTransactionCommit::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(address, transaction_id),
-      RequestAuthorization(token),
-      "",
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(address, transaction_id);
+  request->headers = RequestAuthorization(token);
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostTransactionCommit::OnRequest(

@@ -167,8 +167,7 @@ interface BatLedgerClient {
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
 
-  LoadURL(string url, array<string> headers, string content,
-      string content_type, ledger.mojom.UrlMethod method) => (ledger.mojom.UrlResponse response);
+  LoadURL(ledger.mojom.UrlRequest request) => (ledger.mojom.UrlResponse response);
 
   [Sync]
   URIEncode(string value) => (string encoded_value);

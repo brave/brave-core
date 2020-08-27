@@ -519,6 +519,15 @@ struct SKUTransaction {
   uint64 created_at;
 };
 
+struct UrlRequest {
+  string url;
+  UrlMethod method = UrlMethod.GET;
+  array<string> headers;
+  string content;
+  string content_type;
+  bool skip_log;
+};
+
 struct UrlResponse {
   string url;
   string error;

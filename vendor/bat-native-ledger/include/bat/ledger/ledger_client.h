@@ -91,11 +91,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual void LoadURL(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& contentType,
-      const ledger::UrlMethod method,
+      ledger::UrlRequestPtr request,
       ledger::LoadURLCallback callback) = 0;
 
   virtual void Log(

@@ -82,13 +82,13 @@ void PostTransactionUphold::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(transaction.order_id),
-      {},
-      GeneratePayload(transaction),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(transaction.order_id);
+  request->content = GeneratePayload(transaction);
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostTransactionUphold::OnRequest(

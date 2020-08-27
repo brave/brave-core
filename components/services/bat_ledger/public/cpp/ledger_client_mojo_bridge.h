@@ -47,12 +47,9 @@ class LedgerClientMojoBridge :
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;
 
-  void LoadURL(const std::string& url,
-    const std::vector<std::string>& headers,
-    const std::string& content,
-    const std::string& contentType,
-    ledger::UrlMethod method,
-    LoadURLCallback callback) override;
+  void LoadURL(
+      ledger::UrlRequestPtr request,
+      LoadURLCallback callback) override;
 
   void PublisherListNormalized(ledger::PublisherInfoList list) override;
 

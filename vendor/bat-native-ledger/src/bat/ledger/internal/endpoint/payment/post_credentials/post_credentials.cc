@@ -82,13 +82,13 @@ void PostCredentials::Request(
       this,
       _1,
       callback);
-  ledger_->LoadURL(
-      GetUrl(order_id),
-      {},
-      GeneratePayload(item_id, type, std::move(blinded_creds)),
-      "application/json; charset=utf-8",
-      ledger::UrlMethod::POST,
-      url_callback);
+
+  auto request = ledger::UrlRequest::New();
+  request->url = GetUrl(order_id);
+  request->content = GeneratePayload(item_id, type, std::move(blinded_creds));
+  request->content_type = "application/json; charset=utf-8";
+  request->method = ledger::UrlMethod::POST;
+  ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostCredentials::OnRequest(
