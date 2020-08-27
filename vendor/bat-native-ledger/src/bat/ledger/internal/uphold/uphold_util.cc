@@ -20,27 +20,10 @@ std::string GetClientId() {
       : kClientIdStaging;
 }
 
-std::string GetClientSecret() {
-  return ledger::_environment == ledger::Environment::PRODUCTION
-      ? kClientSecretProduction
-      : kClientSecretStaging;
-}
-
 std::string GetUrl() {
   return ledger::_environment == ledger::Environment::PRODUCTION
       ? kUrlProduction
       : kUrlStaging;
-}
-
-std::string GetAPIUrl(const std::string& path) {
-  std::string url;
-  if (ledger::_environment == ledger::Environment::PRODUCTION) {
-    url = kAPIUrlProduction;
-  } else {
-    url = kAPIUrlStaging;
-  }
-
-  return url + path;
 }
 
 std::string GetFeeAddress() {
@@ -128,30 +111,7 @@ ledger::ExternalWalletPtr GetWallet(
   return nullptr;
 }
 
-std::vector<std::string> RequestAuthorization(
-    const std::string& token) {
-  std::vector<std::string> headers;
 
-  if (!token.empty()) {
-    headers.push_back("Authorization: Bearer " + token);
-    return headers;
-  }
-
-  const std::string id = GetClientId();
-  const std::string secret = GetClientSecret();
-
-  std::string user;
-  base::Base64Encode(
-      base::StringPrintf(
-          "%s:%s",
-          id.c_str(),
-          secret.c_str()),
-      &user);
-
-  headers.push_back("Authorization: Basic " + user);
-
-  return headers;
-}
 
 std::string GenerateRandomString(bool testing) {
   if (testing) {

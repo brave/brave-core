@@ -9,8 +9,8 @@
 #include <utility>
 
 #include "base/json/json_reader.h"
+#include "bat/ledger/internal/endpoint/uphold/uphold_server.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/response/response_uphold.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 
 using std::placeholders::_1;
@@ -28,11 +28,9 @@ User::User() :
 
 User::~User() = default;
 
-}  // namespace braveledger_uphold
-
-namespace braveledger_uphold {
-
-UpholdUser::UpholdUser(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+UpholdUser::UpholdUser(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger),
+    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdUser::~UpholdUser() = default;
@@ -48,31 +46,19 @@ void UpholdUser::Get(GetUserCallback callback) {
     return;
   }
 
-  const auto headers = RequestAuthorization(wallet->token);
-  const std::string url = GetAPIUrl("/v0/me");
-
-  auto user_callback = std::bind(&UpholdUser::OnGet,
+  auto url_callback = std::bind(&UpholdUser::OnGet,
       this,
       _1,
+      _2,
       callback);
-  ledger_->LoadURL(
-      url,
-      headers,
-      "",
-      "",
-      ledger::UrlMethod::GET,
-      user_callback);
+
+  uphold_server_->get_me()->Request(wallet->token, url_callback);
 }
 
 void UpholdUser::OnGet(
-    const ledger::UrlResponse& response,
+    const ledger::Result result,
+    const User& user,
     GetUserCallback callback) {
-  BLOG(7, ledger::UrlResponseToString(__func__, response));
-
-  User user;
-  const ledger::Result result =
-      braveledger_response_util::ParseUpholdGetUser(response, &user);
-
   if (result == ledger::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
     callback(ledger::Result::EXPIRED_TOKEN, user);

@@ -282,18 +282,12 @@ void RewardsBrowserTestResponse::Get(
     }
   }
 
-  if (base::StartsWith(
-      url,
-      braveledger_uphold::GetAPIUrl("/oauth2/token"),
-      base::CompareCase::INSENSITIVE_ASCII)) {
+  if (url.find("/oauth2/token") != std::string::npos) {
     *response = uphold_auth_resp_;
     return;
   }
 
-  if (base::StartsWith(
-      url,
-      braveledger_uphold::GetAPIUrl("/v0/me/cards"),
-      base::CompareCase::INSENSITIVE_ASCII)) {
+  if (url.find("/v0/me/cards") != std::string::npos) {
     if (base::EndsWith(
         url,
         "transactions",
@@ -313,10 +307,7 @@ void RewardsBrowserTestResponse::Get(
     return;
   }
 
-  if (base::StartsWith(
-      url,
-      braveledger_uphold::GetAPIUrl("/v0/me"),
-      base::CompareCase::INSENSITIVE_ASCII)) {
+  if (url.find("/v0/me") != std::string::npos) {
     *response = rewards_browsertest_util::GetUpholdUser(verified_wallet_);
     return;
   }
