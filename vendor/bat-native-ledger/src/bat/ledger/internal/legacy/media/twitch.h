@@ -12,8 +12,8 @@
 #include <utility>
 
 #include "base/gtest_prod_util.h"
+#include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/media/helper.h"
 
 namespace bat_ledger {
 class LedgerImpl;

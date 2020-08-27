@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "bat/ledger/internal/media/helper.h"
+#include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

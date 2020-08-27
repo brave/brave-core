@@ -13,7 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/media/github.h"
+#include "bat/ledger/internal/legacy/media/github.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
