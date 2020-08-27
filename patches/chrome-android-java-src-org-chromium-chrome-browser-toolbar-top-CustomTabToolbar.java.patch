@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/CustomTabToolbar.java b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/CustomTabToolbar.java
-index eec894e7873c1fc427c77e65c9ea8b6f45113a87..f32481b28e97d597dd5749cb1d98cefba052c0b8 100644
+index 2ce4f56440a42c2989ec46bfa8ad5c78f4931c3c..e46929e018bb819d13c22cb3f2a18dd6d4faa10c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/CustomTabToolbar.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/toolbar/top/CustomTabToolbar.java
 @@ -91,7 +91,7 @@ import java.util.regex.Pattern;

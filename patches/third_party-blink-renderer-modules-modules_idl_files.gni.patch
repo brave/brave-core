@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/modules_idl_files.gni b/third_party/blink/renderer/modules/modules_idl_files.gni
-index 038765a9bc58aa36750b7443e2e50a601d3ab388..910e5f01e062d6320675abfcce1c6bb97ea7c056 100644
+index c0aeb9ea0d6a6ad74571c7c5e43051955b29a327..db4d29cba41f050c23a50843f0dd77bc2f15ff14 100644
 --- a/third_party/blink/renderer/modules/modules_idl_files.gni
 +++ b/third_party/blink/renderer/modules/modules_idl_files.gni
-@@ -140,6 +140,7 @@ _idl_imports = [
+@@ -141,6 +141,7 @@ _idl_imports = [
  if (!is_android) {
    _idl_imports += [ "//third_party/blink/renderer/modules/serial/idls.gni" ]
  }

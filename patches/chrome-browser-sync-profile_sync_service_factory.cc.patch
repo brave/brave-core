@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/sync/profile_sync_service_factory.cc b/chrome/browser/sync/profile_sync_service_factory.cc
-index dbb9a424c0fd21683de1f6b8b0af2a42d7067a99..628b727c507546a76b3ca29ebe0db1fca14af29e 100644
+index 8b3b7aad21bf40af75a9d70d751873697091c31d..65d2ce420da17741d0210febb9dc0838129615c3 100644
 --- a/chrome/browser/sync/profile_sync_service_factory.cc
 +++ b/chrome/browser/sync/profile_sync_service_factory.cc
-@@ -268,7 +268,7 @@ KeyedService* ProfileSyncServiceFactory::BuildServiceInstanceFor(
+@@ -266,7 +266,7 @@ KeyedService* ProfileSyncServiceFactory::BuildServiceInstanceFor(
    }
  
    auto pss =
 -      std::make_unique<syncer::ProfileSyncService>(std::move(init_params));
 +      std::make_unique<syncer::BraveProfileSyncService>(std::move(init_params));
+   pss->Initialize();
  
- #if defined(OS_WIN)
-   if (!local_sync_backend_enabled)
+   // Hook PSS into PersonalDataManager (a circular dependency).

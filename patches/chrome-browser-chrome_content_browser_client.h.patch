@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_content_browser_client.h b/chrome/browser/chrome_content_browser_client.h
-index 1293c7788d960f81a13ba0fa5c83674ca5a21d15..fdd86a27953ae63af8c23c0a046275201674dc2a 100644
+index a47818dc2f0f7b1f395f377f3c879299597e7be8..84ad4a4d05a8d98240fde76acabdf42ed2261e79 100644
 --- a/chrome/browser/chrome_content_browser_client.h
 +++ b/chrome/browser/chrome_content_browser_client.h
-@@ -702,6 +702,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+@@ -705,6 +705,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
    }
  
   private:
