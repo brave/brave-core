@@ -11,6 +11,30 @@
 #include "bat/ledger/internal/credentials/credentials_redeem.h"
 #include "bat/ledger/ledger.h"
 
+// POST /v1/suggestions
+//
+// Request body:
+// {
+//   "credentials": [
+//     {
+//       "t": "",
+//       "publicKey": "",
+//       "signature": ""
+//     }
+//   ],
+//   "suggestion": "base64_string"
+// }
+//
+// Success code:
+// HTTP_OK (200)
+//
+// Error codes:
+// HTTP_BAD_REQUEST (400)
+// HTTP_SERVICE_UNAVAILABLE (503)
+//
+// Response body:
+// {Empty}
+
 namespace bat_ledger {
 class LedgerImpl;
 }

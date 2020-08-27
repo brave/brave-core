@@ -10,6 +10,22 @@
 
 #include "bat/ledger/ledger.h"
 
+// POST /v1/wallets/{payment_id}/events/batloss/{version}
+//
+// Request body:
+// {
+//   "amount": 20.5
+// }
+//
+// Success code:
+// HTTP_OK (200)
+//
+// Error Codes:
+// HTTP_INTERNAL_SERVER_ERROR (500)
+//
+// Response body:
+// {Empty}
+
 namespace bat_ledger {
 class LedgerImpl;
 }

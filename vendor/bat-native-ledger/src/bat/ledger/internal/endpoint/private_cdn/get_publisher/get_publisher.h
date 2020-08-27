@@ -10,6 +10,17 @@
 
 #include "bat/ledger/ledger.h"
 
+// GET /publishers/prefixes/{prefix}
+//
+// Success code:
+// HTTP_OK (200)
+//
+// Error codes:
+// HTTP_NOT_FOUND (404)
+//
+// Response body:
+// See https://github.com/brave/brave-core/blob/master/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/protos/channel_response.proto
+
 namespace bat_ledger {
 class LedgerImpl;
 }

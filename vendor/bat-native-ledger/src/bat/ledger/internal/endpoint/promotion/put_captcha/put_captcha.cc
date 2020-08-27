@@ -14,33 +14,6 @@
 
 using std::placeholders::_1;
 
-// PUT /v1/captchas/{captcha_id}
-//
-// Request body:
-// {
-//   "solution": {
-//     "x": 10,
-//     "y": 50
-//   }
-// }
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_UNAUTHORIZED (401)
-// HTTP_INTERNAL_SERVER_ERROR (500)
-//
-// Response Format (success):
-// {Empty}
-//
-// Response Format (error):
-// {
-//   "message": "Error solving captcha",
-//   "code": 401
-// }
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {

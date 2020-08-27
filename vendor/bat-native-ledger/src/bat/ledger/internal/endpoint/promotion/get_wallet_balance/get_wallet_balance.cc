@@ -15,24 +15,6 @@
 
 using std::placeholders::_1;
 
-// GET /v3/wallet/uphold/{payment_id}
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_NOT_FOUND (404)
-// HTTP_SERVICE_UNAVAILABLE (503)
-//
-// Response body:
-// {
-//  "total": 0.0
-//  "spendable": 0.0
-//  "confirmed": 0.0
-//  "unconfirmed": 0.0
-// }
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {

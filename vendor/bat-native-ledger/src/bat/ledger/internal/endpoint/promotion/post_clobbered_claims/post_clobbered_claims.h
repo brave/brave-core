@@ -13,6 +13,23 @@ CLAIMS_POST_CLOBBERED_CLAIMS_H_
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 
+// POST /v1/promotions/reportclobberedclaims
+//
+// Request body:
+// {
+//   "claimIds": ["asfeq4gerg34gl3g34lg34g"]
+// }
+//
+// Success code:
+// HTTP_OK (200)
+//
+// Error Codes:
+// HTTP_BAD_REQUEST (400)
+// HTTP_INTERNAL_SERVER_ERROR (500)
+//
+// Response body:
+// {Empty}
+
 namespace bat_ledger {
 class LedgerImpl;
 }

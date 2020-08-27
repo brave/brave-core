@@ -16,30 +16,6 @@
 
 using std::placeholders::_1;
 
-// POST /v1/suggestions
-//
-// Request body:
-// {
-//   "credentials": [
-//     {
-//       "t": "",
-//       "publicKey": "",
-//       "signature": ""
-//     }
-//   ],
-//   "suggestion": "base64_string"
-// }
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_SERVICE_UNAVAILABLE (503)
-//
-// Response body:
-// {Empty}
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {

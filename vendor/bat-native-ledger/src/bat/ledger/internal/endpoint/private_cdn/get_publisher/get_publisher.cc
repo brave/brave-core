@@ -18,18 +18,6 @@
 
 using std::placeholders::_1;
 
-// GET /publishers/prefixes/{prefix}
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_NOT_FOUND (404)
-//
-// Response body:
-// See https://github.com/brave/brave-core/blob/master/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/protos/channel_response.proto
-
-
 // Due to privacy concerns, the request length must be consistent
 // for all publisher lookups. Do not add URL parameters or headers
 // whose size will vary depending on the publisher key.

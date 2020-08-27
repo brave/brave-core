@@ -17,30 +17,6 @@
 
 using std::placeholders::_1;
 
-// POST /v1/suggestions/claim
-//
-// Request body:
-// {
-//   "credentials": [
-//     {
-//       "t": "",
-//       "publicKey": "",
-//       "signature": ""
-//     }
-//   ],
-//   "paymentId": "83b3b77b-e7c3-455b-adda-e476fa0656d2"
-// }
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_SERVICE_UNAVAILABLE (503)
-//
-// Response body:
-// {Empty}
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {

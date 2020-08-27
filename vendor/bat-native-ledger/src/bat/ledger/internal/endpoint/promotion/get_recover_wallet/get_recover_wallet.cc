@@ -12,26 +12,6 @@
 
 using std::placeholders::_1;
 
-// GET /v3/wallet/recover/{public_key}
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_NOT_FOUND (404)
-//
-// Response body:
-// {
-//  "paymentId": "d59d4b69-f66e-4ee8-9c88-1c522e02ffd3",
-//  "walletProvider": {
-//    "id": "a9d12d76-2b6d-4f8b-99df-bb801bff9407",
-//    "name": "uphold"
-//  },
-//  "altcurrency": "BAT",
-//  "publicKey": "79d7da2a756cc8d9403d0353a64fae5698e01b44a2c2745"
-// }
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {

@@ -10,6 +10,26 @@
 
 #include "bat/ledger/ledger.h"
 
+// POST /v1/devicecheck/attestations
+//
+// Request body:
+// {
+//   "paymentId": "83b3b77b-e7c3-455b-adda-e476fa0656d2"
+//   "publicKeyHash": "f3f2f3ffqdwfqwfwqfd"
+// }
+//
+// Success code:
+// HTTP_OK (200)
+//
+// Error codes:
+// HTTP_BAD_REQUEST (400)
+// HTTP_UNAUTHORIZED (401)
+//
+// Response body:
+// {
+//   "nonce": "c4645786-052f-402f-8593-56af2f7a21ce"
+// }
+
 namespace bat_ledger {
 class LedgerImpl;
 }
