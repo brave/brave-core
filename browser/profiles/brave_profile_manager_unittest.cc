@@ -265,5 +265,4 @@ TEST_F(BraveProfileManagerTest, ProxyConfigMonitorInTorProfile) {
   const std::string& proxy_uri =
     config.value().proxy_rules().single_proxies.Get().ToURI();
   EXPECT_EQ(proxy_uri, "socks5://127.0.0.1:5566");
-
 }
