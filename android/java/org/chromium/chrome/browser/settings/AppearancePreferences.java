@@ -29,6 +29,7 @@ import org.chromium.ui.base.DeviceFormFactor;
 public class AppearancePreferences extends BravePreferenceFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
     public static final String PREF_HIDE_BRAVE_REWARDS_ICON = "hide_brave_rewards_icon";
+    public static final String PREF_BRAVE_NIGHT_MODE_ENABLED = "brave_night_mode_enabled_key";
     private BraveRewardsNativeWorker mBraveRewardsNativeWorker;
 
     @Override
@@ -81,6 +82,15 @@ public class AppearancePreferences extends BravePreferenceFragment
                     .setChecked(!isTablet
                             && BottomToolbarConfiguration.isBottomToolbarEnabled());
         }
+
+        Preference nightModeEnabled =
+                findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
+        nightModeEnabled.setOnPreferenceChangeListener(this);
+        if (nightModeEnabled instanceof ChromeSwitchPreference) {
+            ((ChromeSwitchPreference) nightModeEnabled)
+                    .setChecked(ChromeFeatureList.isEnabled(
+                        BraveFeatureList.FORCE_WEB_CONTENTS_DARK_MODE));
+        }
     }
 
     @Override
@@ -118,7 +128,12 @@ public class AppearancePreferences extends BravePreferenceFragment
             sharedPreferencesEditor.putBoolean(PREF_HIDE_BRAVE_REWARDS_ICON, (boolean) newValue);
             sharedPreferencesEditor.apply();
             BraveRelaunchUtils.askForRelaunch(getActivity());
+        } else if (PREF_BRAVE_NIGHT_MODE_ENABLED.equals(key)) {
+            BraveFeatureList.enableFeature(
+                BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue);
+            BraveRelaunchUtils.askForRelaunch(getActivity());
         }
+
         return true;
     }
 

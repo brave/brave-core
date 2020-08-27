@@ -1302,6 +1302,9 @@ until they verify, or until 90 days have passed.
       <message name="IDS_BRAVE_UI_REFRESH_PUBLISHER_STATUS" desc="A button that allows to refresh publisher status">
         Refresh Status
       </message>
+      <message name="IDS_NIGHT_MODE_ENABLE" desc="Menu item for enabling dark mode for webcontent.">
+        Enable "Night Mode" (Experimental)
+      </message>
     </messages>
   </release>
 </grit>
