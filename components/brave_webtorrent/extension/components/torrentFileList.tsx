@@ -63,7 +63,7 @@ export default class TorrentFileList extends React.PureComponent<Props, {}> {
         const suffix = /^https?:/.test(torrentId) ? '#ix=' + ix : '&ix=' + ix
         const href = torrentId + suffix
         return (
-          <a href={href} target='_blank'>
+          <a href={href} target='_blank' rel='noopener'>
             {' '}
             {file.name}{' '}
           </a>
