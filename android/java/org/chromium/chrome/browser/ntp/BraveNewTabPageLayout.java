@@ -294,6 +294,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
+        ((BraveActivity)mActivity).dismissShieldsTooltip();
     }
 
     @Override
