@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.notifications.BraveAdsNotificationBuilder;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
@@ -24,7 +25,6 @@ import org.chromium.components.browser_ui.notifications.NotificationManagerProxy
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.NotificationWrapper;
 import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
-import org.chromium.chrome.browser.BraveActivity;
 
 import java.util.Locale;
 

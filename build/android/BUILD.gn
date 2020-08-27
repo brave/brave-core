@@ -136,10 +136,10 @@ java_strings_grd("android_brave_strings_grd") {
 
 generate_jni("jni_headers") {
   sources = [
-    "//brave/android/java/org/chromium/chrome/browser/BraveActivity.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveFeatureList.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRelaunchUtils.java",
     "//brave/android/java/org/chromium/chrome/browser/BraveRewardsNativeWorker.java",
+    "//brave/android/java/org/chromium/chrome/browser/app/BraveActivity.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationSettingsBridge.java",
     "//brave/android/java/org/chromium/chrome/browser/ntp_background_images/NTPBackgroundImagesBridge.java",
