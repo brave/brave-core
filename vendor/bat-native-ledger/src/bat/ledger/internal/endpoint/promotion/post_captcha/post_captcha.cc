@@ -15,25 +15,6 @@
 
 using std::placeholders::_1;
 
-// POST /v1/captchas
-//
-// Request body:
-// {
-//   "paymentId": "83b3b77b-e7c3-455b-adda-e476fa0656d2"
-// }
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-//
-// Response body:
-// {
-//   "hint": "circle",
-//   "captchaId": "d155d2d2-2627-425b-9be8-44ae9f541762"
-// }
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {

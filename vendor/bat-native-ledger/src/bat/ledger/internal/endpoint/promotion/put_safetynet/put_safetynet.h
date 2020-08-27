@@ -10,6 +10,30 @@
 
 #include "bat/ledger/ledger.h"
 
+// PUT /v2/attestations/safetynet/{nonce}
+//
+// Request body:
+// {
+//   "token": "dfasdfasdpflsadfplf2r23re2"
+// }
+//
+// Success:
+// HTTP_OK (200)
+//
+// Error codes:
+// HTTP_BAD_REQUEST (400)
+// HTTP_UNAUTHORIZED (401)
+// HTTP_INTERNAL_SERVER_ERROR (500)
+//
+// Response body (success):
+// {Empty}
+//
+// Response body (error):
+// {
+//   "message": "Error solving captcha",
+//   "code": 401
+// }
+
 namespace bat_ledger {
 class LedgerImpl;
 }

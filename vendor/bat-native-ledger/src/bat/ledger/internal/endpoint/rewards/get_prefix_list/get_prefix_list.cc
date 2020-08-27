@@ -10,14 +10,6 @@
 
 using std::placeholders::_1;
 
-// GET /publishers/prefix-list
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Response body:
-// blob
-
 namespace ledger {
 namespace endpoint {
 namespace rewards {

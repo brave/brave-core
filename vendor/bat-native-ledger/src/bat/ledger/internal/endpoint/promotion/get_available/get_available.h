@@ -11,6 +11,37 @@
 
 #include "bat/ledger/ledger.h"
 
+// GET /v1/promotions?migrate=true&paymentId={payment_id}&platform={platform}
+//
+// Success code:
+// HTTP_OK (200)
+//
+// Error codes:
+// HTTP_BAD_REQUEST (400)
+// HTTP_NOT_FOUND (404)
+// HTTP_INTERNAL_SERVER_ERROR (500)
+//
+// Response body:
+// {
+//   "promotions": [
+//     {
+//       "id": "83b3b77b-e7c3-455b-adda-e476fa0656d2",
+//       "createdAt": "2020-06-08T15:04:45.352584Z",
+//       "expiresAt": "2020-10-08T15:04:45.352584Z",
+//       "version": 5,
+//       "suggestionsPerGrant": 120,
+//       "approximateValue": "30",
+//       "type": "ugp",
+//       "available": true,
+//       "platform": "desktop",
+//       "publicKeys": [
+//         "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I="
+//       ],
+//       "legacyClaimed": false
+//     }
+//   ]
+// }
+
 namespace bat_ledger {
 class LedgerImpl;
 }

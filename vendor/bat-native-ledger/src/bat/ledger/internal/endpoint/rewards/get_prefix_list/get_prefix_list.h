@@ -10,6 +10,14 @@
 
 #include "bat/ledger/ledger.h"
 
+// GET /publishers/prefix-list
+//
+// Success code:
+// HTTP_OK (200)
+//
+// Response body:
+// blob
+
 namespace bat_ledger {
 class LedgerImpl;
 }

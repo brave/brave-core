@@ -20,27 +20,6 @@
 
 using std::placeholders::_1;
 
-// POST /v3/wallet/uphold/{payment_id}/claim
-//
-// Request body:
-// {
-//   "signedLinkingRequest": "......",
-//   "anonymousAddress": "asfeq4gerg34gl3g34lg34g"
-// }
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_FORBIDDEN (403)
-// HTTP_NOT_FOUND (404)
-// HTTP_CONFLICT (409)
-// HTTP_INTERNAL_SERVER_ERROR (500)
-//
-// Response body:
-// {Empty}
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {

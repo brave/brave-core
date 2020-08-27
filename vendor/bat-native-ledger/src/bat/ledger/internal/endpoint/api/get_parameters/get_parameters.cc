@@ -12,45 +12,6 @@
 
 using std::placeholders::_1;
 
-// GET /v1/parameters
-// GET /v1/parameters?currency={currency}
-//
-// Success code:
-// HTTP_OK (200)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_INTERNAL_SERVER_ERROR (500)
-//
-// Response body:
-// {
-//   "batRate": 0.2476573499489187,
-//   "autocontribute": {
-//     "choices": [
-//       5,
-//       10,
-//       15,
-//       20,
-//       25,
-//       50,
-//       100
-//     ],
-//     "defaultChoice": 20
-//   },
-//   "tips": {
-//     "defaultTipChoices": [
-//       1,
-//       10,
-//       100
-//     ],
-//     "defaultMonthlyChoices": [
-//       1,
-//       10,
-//       100
-//     ]
-//   }
-// }
-
 namespace ledger {
 namespace endpoint {
 namespace api {

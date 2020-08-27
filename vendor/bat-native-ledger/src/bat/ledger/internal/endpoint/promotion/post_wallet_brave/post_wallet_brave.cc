@@ -16,23 +16,6 @@
 
 using std::placeholders::_1;
 
-// POST /v3/wallet/brave
-//
-// Request body:
-// {Empty}
-//
-// Success code:
-// HTTP_CREATED (201)
-//
-// Error codes:
-// HTTP_BAD_REQUEST (400)
-// HTTP_SERVICE_UNAVAILABLE (503)
-//
-// Response body:
-// {
-//  "paymentId": "37742974-3b80-461a-acfb-937e105e5af4"
-// }
-
 namespace ledger {
 namespace endpoint {
 namespace promotion {
