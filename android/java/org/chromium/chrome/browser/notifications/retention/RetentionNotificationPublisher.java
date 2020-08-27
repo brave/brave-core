@@ -18,7 +18,7 @@ import org.chromium.base.ApplicationStatus;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 import org.chromium.chrome.browser.ntp.NewTabPage;
 import org.chromium.components.embedder_support.util.UrlConstants;
-import org.chromium.chrome.browser.BraveActivity;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.BraveAdsNativeHelper;

@@ -16,11 +16,11 @@ import org.json.JSONObject;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.BraveActivity;
 import org.chromium.chrome.browser.BraveRewardsBalance;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsObserver;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.externalnav.BraveExternalNavigationHandler;
 import org.chromium.components.external_intents.ExternalNavigationParams;
 

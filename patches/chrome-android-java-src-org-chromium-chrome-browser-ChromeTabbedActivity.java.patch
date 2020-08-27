@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index a8d1f98cf2e96762e7bfdfed0c83866ecb0a2b68..b623dc7ec5cecb11d499b716ba12b5100068a6ab 100644
+index a8d1f98cf2e96762e7bfdfed0c83866ecb0a2b68..01bd3859f4171891cc79486bca9dea4b6aa02b0c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 @@ -184,7 +184,7 @@ import java.util.Locale;
@@ -7,7 +7,7 @@ index a8d1f98cf2e96762e7bfdfed0c83866ecb0a2b68..b623dc7ec5cecb11d499b716ba12b510
   * are accessible via a chrome specific tab switching UI.
   */
 -public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent>
-+public class ChromeTabbedActivity extends BraveActivity<ChromeActivityComponent>
++public class ChromeTabbedActivity extends org.chromium.chrome.browser.app.BraveActivity<ChromeActivityComponent>
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
