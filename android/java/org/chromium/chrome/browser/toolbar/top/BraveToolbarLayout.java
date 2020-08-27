@@ -119,6 +119,8 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private boolean mIsInitialNotificationPosted; // initial red circle notification
   private boolean mIsRewardsEnabled;
 
+  private PopupWindow mShieldsTooltipPopupWindow;
+
   public BraveToolbarLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
   }
@@ -209,6 +211,19 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 || block_type.equals(BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS))) {
           addStatsToDb(block_type, subresource, currentTab.getUrlString());
         }
+        if (!OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
+            && PackageUtils.isFirstInstall(getContext())) {
+          mShieldsTooltipPopupWindow = mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
+          OnboardingPrefManager.getInstance().setShieldsTooltipShown(true);
+          mShieldsTooltipPopupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              mShieldsTooltipPopupWindow.dismiss();
+              mShieldsTooltipPopupWindow = null;
+              showShieldsMenu(mBraveShieldsButton);
+            }
+          });
+        }
       }
 
       @Override
@@ -237,11 +252,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
     SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
     if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS)
-            && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
-            && !sharedPreferences.getBoolean(
-                    AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)
-            && mRewardsLayout != null) {
-        mRewardsLayout.setVisibility(View.VISIBLE);
+        && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
+        && !sharedPreferences.getBoolean(
+          AppearancePreferences.PREF_HIDE_BRAVE_REWARDS_ICON, false)
+        && mRewardsLayout != null) {
+      mRewardsLayout.setVisibility(View.VISIBLE);
     }
     if (mShieldsLayout != null) {
       updateShieldsLayoutBackground(!(mRewardsLayout != null && mRewardsLayout.getVisibility() == View.VISIBLE));
@@ -274,6 +289,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           updateBraveShieldsButtonState(tab);
         }
         mBraveShieldsHandler.clearBraveShieldsCount(tab.getId());
+        dismissShieldsTooltip();
       }
 
       @Override
@@ -308,22 +324,6 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
             RetentionNotificationUtil.scheduleNotification(getContext(), RetentionNotificationUtil.BRAVE_STATS_TIME);
             OnboardingPrefManager.getInstance().setTimeSavedNotificationStarted(true);
           }
-
-          if (!NewTabPage.isNTPUrl(tab.getUrlString())
-              && !OnboardingPrefManager.getInstance().hasShieldsTooltipShown()
-              && PackageUtils.isFirstInstall(getContext())
-              && !UrlUtilities.isInternalScheme(UrlFormatter.fixupUrl(url))
-              && (mBraveShieldsHandler.getAdsBlockedCount(tab.getId()) > 0 || mBraveShieldsHandler.getTackersBlockedCount(tab.getId()) > 0)) {
-            PopupWindow mPopupWindow = mBraveShieldsHandler.showPopupMenu(mBraveShieldsButton, true);
-            OnboardingPrefManager.getInstance().setShieldsTooltipShown(true);
-            mPopupWindow.getContentView().setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                mPopupWindow.dismiss();
-                showShieldsMenu(mBraveShieldsButton);
-              }
-            });
-          }
         }
       }
 
@@ -351,6 +351,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
         }
       }
     };
+  }
+
+  public void dismissShieldsTooltip() {
+    if (mShieldsTooltipPopupWindow != null) {
+      mShieldsTooltipPopupWindow.dismiss();
+    }
   }
 
   private void addSavedBandwidthToDb(long savings) {
