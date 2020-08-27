@@ -749,6 +749,9 @@ are declared in tools/grit/grit_rule.gni.
       <if expr="is_macosx">
         </if>
 
+      <if expr="is_macosx">
+        </if>
+
       <if expr="is_android">
         </if>
       <if expr="use_titlecase">

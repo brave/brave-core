@@ -694,19 +694,10 @@ Brave is unable to recover your settings.
       <!-- Dice Web Signin Interception Bubble-->
       <if expr="not chromeos and not is_android">
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
-          Create new Brave space for <ph name="NEW_USER">$1<ex>Bob</ex></ph>?
+          Create your own profile in Brave?
         </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_MIXED_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is a personal account and the existing account is a managed account">
-          You signed-in with a work account. Would you like to create a new Brave space for <ph name="NEW_USER">$1<ex>Bob</ex></ph> to keep your personal data separate?
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
-          You signed-in with a new account in <ph name="EXISTING_USER">$1<ex>Elisa</ex></ph>’s space. Would you like to create a new Brave space for <ph name="NEW_USER">$2<ex>Bob</ex></ph> to keep your data separate?
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is managed">
-          You signed-in with a Work account in <ph name="EXISTING_USER">$1<ex>Elisa</ex></ph>’s space. Would you like to create a new Brave space for <ph name="WORK_DOMAIN">$2<ex>example.com</ex></ph> to keep your data separate?
-        </message>
-        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
-          Create new Brave Work space?
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is managed and the existing account is personal">
+          To separate personal and <ph name="NEW_USER">$1<ex>example.com</ex></ph> browsing, create a new profile in Brave
         </message>
       </if>
 
@@ -1142,16 +1133,19 @@ Brave is unable to recover your settings.
       <!-- Profile Picker -->
       <if expr="not chromeos and not is_android">
         <message name="IDS_PROFILE_PICKER_MAIN_VIEW_TITLE" desc="Profile picker main view title">
-          Pick your Brave Space
+          Who's using Brave?
         </message>
         <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE" desc="Profile picker main view subtitle">
-          Use Brave Spaces to keep your browsing organized on this device
+          Use different profiles in Brave to separate work and personal browsing, or for different profiles who use this device
         </message>
         <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_SIGNED_IN_PROFILE" desc="Remove warning message shown for signed in profiles shown when the user selects remove from the 3 dotted menu">
-          This space’s browsing data will be deleted from this device. To recover the data, sign in to Brave as
+          This will permanently delete your browsing data from this device. To recover the data, sign in to Brave as
         </message>
-        <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_TITLE" desc="Profile picker profile type choice         title">
-          Set up your new Brave Space
+        <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_TITLE" desc="Profile picker profile type choice title">
+          Set up your new Brave profile
+        </message>
+        <message name="IDS_PROFILE_PICKER_ASK_ON_STARTUP" desc="Text for the checkbox on the profile picker main view">
+          Ask when I open Brave
         </message>
       </if>
 

@@ -82,6 +82,9 @@
     <message name="IDS_MANAGEMENT_DEVICE_REPORTING" desc="Title of the types of device reporting section of the page">
       Device
     </message>
+    <message name="IDS_MANAGEMENT_PROXY_SERVER_PRIVACY_DISCLOSURE" desc="Message stating that administrators can see user's traffic when connected to a proxy server.">
+      Administrators of this device have configured your network connection, which may allow them to see your network traffic, including which websites you visit.
+    </message>
     <message name="IDS_MANAGEMENT_DEVICE_CONFIGURATION" desc="Message telling users that their administrator has set some specific policies on their device">
       Your administrator can see:
     </message>
@@ -120,9 +123,6 @@
     </message>
     <message name="IDS_MANAGEMENT_REPORT_ANDROID_APPLICATIONS" desc="Message stating that administrators can see user's installed Android applications.">
       Which Google Play apps you have installed
-    </message>
-    <message name="IDS_MANAGEMENT_REPORT_PROXY_SERVER" desc="Message stating that administrators can see user's traffic when connected to a proxy server.">
-      Websites you visit and the contents of not secure pages
     </message>
     <message name="IDS_MANAGEMENT_REPORT_PLUGIN_VM" desc="Message telling users that Plugin VM can collect data.">
       Your administrator has allowed <ph name="APP_NAME">$1<ex>Plugin VM</ex></ph> to collect diagnostics data to improve the product experience. See <ph name="BEGIN_LINK">&lt;a target="_blank" href="https://www.parallels.com/pcep"&gt;</ph>https://www.parallels.com/pcep<ph name="END_LINK">&lt;/a&gt;</ph> for more information.

@@ -5801,8 +5801,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Save button text for password manager">
           Save
         </message>
-        <message name="IDS_PASSWORD_MANAGER_MOVE_BUTTON" desc="Move button text for password manager">
+        <message name="IDS_PASSWORD_MANAGER_MOVE_BUBBLE_OK_BUTTON" desc="Text for the ok button in the password manager move bubble.">
           Move
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_MOVE_BUBBLE_CANCEL_BUTTON" desc="Text for the cancel button in the password manager move bubble.">
+          No thanks
         </message>
         <if expr="use_titlecase">
           <message name="IDS_PASSWORD_MANAGER_UPDATE_BUTTON" desc="In Title Case: Update button text for password manager">
@@ -7535,10 +7538,22 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- Dice Web Signin Interception Bubble-->
       <if expr="not chromeos and not is_android">
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_NEW_PROFILE_BUTTON_LABEL" desc="Label of the confirmation button in the web signin interception bubble">
-          New Profile
+          Create
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_BUBBLE_CANCEL_BUTTON_LABEL" desc="Label of the cancel button in the web signin interception bubble">
-          Cancel
+          No thanks
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_BUBBLE_DESC" desc="Body of the web signin interception bubble">
+          To keep your browsing separate, you can create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_CONSUMER_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when the new account is personal and the existing account is managed">
+          To separate personal and <ph name="EXISTING_USER">$2<ex>example.com</ex></ph> browsing, create a new profile for <ph name="NEW_USER">$1<ex>Bob</ex></ph>
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_ENTERPRISE_BUBBLE_DESC" desc="Body of the web signin interception bubble when both accounts are managed">
+          To separate your <ph name="NEW_USER">$1<ex>example.com</ex></ph> browsing from your <ph name="EXISTING_USER">$2<ex>example.com</ex></ph> browsing, create a new profile
+        </message>
+        <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_TITLE" desc="Title of the web signin interception bubble">
+          Create a new profile for work?
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_PROFILE_NAME" desc="Default name for work profiles created after signin interception">
           Work
@@ -7594,26 +7609,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Account password storage reauth tab modal dialog -->
-      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_SAVE_TITLE" desc="Title of the account password storage reauth tab modal dialog. The dialog was shown because the user requested to save a password to their Brave account.">
-        Save this and other passwords in your Brave sync chain?
-      </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_SHOW_TITLE" desc="Title of the account password storage reauth tab modal dialog. The dialog was shown because the user requested to get passwords from their Brave account.">
-        Show passwords from your Brave sync chain
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_TITLE" desc="Title of the account password storage reauth tab modal dialog.">
+        Use your Brave sync chain to save and fill passwords?
       </message>
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_DESC" desc="Body of the account password storage reauth tab modal dialog.">
-        Your passwords from your Brave sync chain will also be available on this device while you're signed in
+        Passwords from your Brave sync chain will also be available on this device while you're signed in
       </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_SAVE_BUTTON_LABEL" desc="Label of the confirmation button in the account password storage reauth tab modal dialog. The dialog was shown because the user requested to save a password to their Brave account.">
-        Save
-      </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_SHOW_BUTTON_LABEL" desc="Label of the confirmation button in the account password storage reauth tab modal dialog. The dialog was shown because the user requested to get passwords from their Brave account.">
-        Show
+      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the account password storage reauth tab modal dialog.">
+        Yes
       </message>
       <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_CLOSE_BUTTON_LABEL" desc="Label of the close button in the account password storage reauth tab modal dialog.">
-        Cancel
-      </message>
-      <message name="IDS_ACCOUNT_PASSWORDS_REAUTH_NEXT_BUTTON_LABEL" desc="Label of the next button in the account password storage reauth tab modal dialog. This button invites the user to authenticate to unlock the account password storage.">
-        Next
+        No thanks
       </message>
 
       <message name="IDS_PLUGIN_OUTDATED_PROMPT" desc="Infobar message when an outdated plugin was disabled">
@@ -8630,6 +8636,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_BLOCKED_GEOLOCATION_NO_ACTION" desc="Radio button choice to continue blocking a site from accessing the system location.">
         Continue blocking this site from accessing your location
       </message>
+      <message name="IDS_GEOLOCATION" desc="Description text next to the location icon inside the pop-up bubble which describes that the location permission is blocked on an OS level.">
+          Location
+      </message>
+      <if expr="is_macosx">
+        <message name="IDS_GEOLOCATION_TURNED_OFF_IN_MACOS" desc="Title for the geolocation bubble that is used when a site requests geolocation, but geolocation is blocked on an OS level in macOS.">
+          Location is turned off in Mac System Preferences
+        </message>
+        <message name="IDS_GEOLOCATION_TURNED_OFF" desc="Description text in the omnibox icon showing when location permission is blocked on an OS level in macOS.">
+          Location turned off
+        </message>
+      </if>
 
       <!-- Web MIDI messages -->
       <message name="IDS_ALLOWED_MIDI_SYSEX_TITLE" desc="Title of the info bubble shown when a site is allowed to use MIDI system exclusive messages.">
@@ -9331,7 +9348,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
 
       <!--Cloud printing deprecation messages for chrome://devices & Print Preview-->
       <message name="IDS_CLOUD_PRINTING_NOT_SUPPORTED_WARNING" desc="Warning shown to the user to inform them that cloud printing will no longer be supported.">
-        Cloud printing will no longer be supported after December 31. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a is="action-link" href="$1" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
+        Cloud printing will no longer be supported after December 31. <ph name="BEGIN_LINK_LEARN_MORE">&lt;a href="$1<ex>https://google.com/</ex>" target="_blank"&gt;</ph>Learn more<ph name="END_LINK_LEARN_MORE">&lt;/a&gt;</ph>
       </message>
       <message name="IDS_CLOUD_PRINTING_NOT_SUPPORTED_WARNING_ENTERPRISE" desc="Warning shown to users managed by enterprise policy to inform them that cloud printing will no longer be supported.">
         Cloud printing will no longer be supported after December 31. Contact your administrator.

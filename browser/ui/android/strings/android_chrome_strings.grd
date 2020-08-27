@@ -509,6 +509,9 @@ CHAR-LIMIT guidelines:
       <message name="IDS_PASSWORD_NO_RESULT" desc="Text when a password search returned no results.">
         Can’t find that password. Check your spelling and try again.
       </message>
+      <message name="IDS_PASSWORD_EDIT_HINT" desc="Small hint on the editing screens that advises users to store the same password as they use on the currently edited site.">
+        Make sure the password you are saving matches your password for <ph name="SITE">%1$s<ex>example.com</ex></ph>
+      </message>
       <message name="IDS_PASSWORD_ENTRY_VIEWER_TITLE" desc="Title of the overview screen for a saved password.">
         Saved password
       </message>
@@ -1674,8 +1677,11 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_HINT_SYNC_AUTH_ERROR" desc="Hint message to resolve sync auth error.">
         Sign in again to start sync
       </message>
-      <message name="IDS_HINT_SYNC_RETRIEVE_KEYS" desc="Hint message to resolve sync encryption error.">
+      <message name="IDS_HINT_SYNC_RETRIEVE_KEYS_LEGACY" desc="Hint message to resolve sync encryption error.">
         Fix now
+      </message>
+      <message name="IDS_HINT_SYNC_RETRIEVE_KEYS" desc="Hint message to resolve sync encryption error.">
+        Error syncing passwords
       </message>
       <message name="IDS_HINT_PASSPHRASE_REQUIRED" desc="Hint message to resolve passphrase required error.">
         Enter your passphrase to start sync
@@ -1705,6 +1711,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SYNC_SETUP_INCOMPLETE_ERROR_CARD_CONFIRM_BUTTON" desc="Positive button text for advanced sync interrupted error in sync error cards.">
         Confirm sync
+      </message>
+      <message name="IDS_SYNC_SETUP_INCOMPLETE_ERROR_CARD_CANCEL_BUTTON" desc="Negative button text for advanced sync interrupted error in sync error cards. This button turns off Sync.">
+        Cancel sync setup
       </message>
       <message name="IDS_TRUSTED_VAULT_ERROR_CARD_BUTTON" desc="Button text for trusted vault error in sync error cards.">
         Unlock with Screen Lock
@@ -2380,6 +2389,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_FRE_WELCOME" desc="Text for greeting the user on Brave First Run">
         Welcome to Brave
       </message>
+      <message name="IDS_FRE_BROWSER_MANAGED_BY_ORGANIZATION" desc="Text that indicates the browser is managed by policy">
+        Your browser is managed by your organization
+      </message>
 
       <!-- Account Signin Strings -->
       <message name="IDS_SIGNIN_ADD_ACCOUNT" desc="Text for adding another Brave sync chain">
@@ -2425,6 +2437,15 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_SIGNIN_TITLE" desc="The title of the account picker bottom sheet tells that the user is in the process of signing in with their Brave sync chain">
         Signing in...
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_BOTTOM_SHEET_ERROR_TITLE" desc="The title of the account picker bottom sheet when something went wrong in the sign-in process">
+        Something went wrong
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_GENERAL_ERROR_SUBTITLE" desc="The subtitle of the account picker bottom sheet when something went wrong in the sign-in process">
+        Brave couldn’t verify your information
+      </message>
+      <message name="IDS_SIGNIN_ACCOUNT_PICKER_GENERAL_ERROR_BUTTON" desc="Button text of the account picker bottom sheet when something went wrong in the sign-in process. User can try again if they click it.">
+        Try again
       </message>
 
       <!-- Personalized Signin Promos Strings -->
@@ -3058,6 +3079,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_CONTEXTUAL_SEARCH_QUICK_ACTION_CAPTION_GENERIC_WEBSITE" desc="Caption displayed in the Contextual Search bar prompting the user to navigate to a web page.">
         Go to page
       </message>
+      <message name="IDS_CONTEXTUAL_SEARCH_IPH_ENABLE" desc="An in-product-help message for the Touch to Search feature on Brave Android. The message encourages users to let Brave Search servers have access to the page content to get better translations.">
+        To get better translations, let Brave Search use the current page
+      </message>
       <message name="IDS_CONTEXTUAL_SEARCH_IPH_ENTITY" desc="An in-product-help message for the Tap to Search feature on Brave Android. The message encourages users to open a panel that contains search results for the word or phrase they tapped on.">
         See instant search results in this panel
       </message>
@@ -3090,6 +3114,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <!-- Omnibox Autocomplete -->
       <message name="IDS_OMNIBOX_CONFIRM_DELETE" desc="A message within a modal dialog that confirms the user wants to delete a suggestion from the list dropdown in the omnibox">
         Remove suggestion from history?
+      </message>
+      <message name="IDS_MOST_VISITED_TILES_HEADER" desc="A header above a row with most visited tiles carousel in the Omnibox suggestions dropdown">
+        Frequently visited
       </message>
 
       <!-- Undo Bar -->
@@ -3352,8 +3379,8 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_TWA_QUALITY_ENFORCEMENT_VIOLATION_ERROR" desc="Text shown on a toast when TWA violation 404.">
         <ph name="ERROR_CODE">%1$s<ex>404</ex></ph> on <ph name="VIOLATED_URL">%2$s<ex>https://example.com/</ex></ph>
       </message>
-      <message name="IDS_TWA_QUALITY_ENFORCEMENT_VIOLATION_ASSERT_LINK" desc="Text shown on a toast when TWA violate the quality enforcement criteria: digital assert link verification failed.">
-        Digital assert links verification failed on <ph name="VIOLATED_URL">%1$s<ex>https://example.com/</ex></ph>
+      <message name="IDS_TWA_QUALITY_ENFORCEMENT_VIOLATION_ASSET_LINK" desc="Text shown on a toast when TWA violate the quality enforcement criteria: digital asset link verification failed.">
+        Digital asset links verification failed on <ph name="VIOLATED_URL">%1$s<ex>https://example.com/</ex></ph>
       </message>
       <message name="IDS_TWA_QUALITY_ENFORCEMENT_VIOLATION_OFFLINE" desc="Text shown on a toast when TWA violate the quality enforcement criteria: page unavailable offline.">
         Page unavailable offline: <ph name="VIOLATED_URL">%1$s<ex>https://example.com/</ex></ph>
@@ -3527,11 +3554,29 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       <message name="IDS_IPH_IDENTITY_DISC_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text prompting the user that tapping identity disc will navigate to 'Sync and Brave services' settings page.">
         To manage your Brave account, tap the "Manage account" button
       </message>
+      <message name="IDS_IPH_NTP_WITHOUT_FEED_TEXT" desc="The in-product-help message to open the new tab page with personalized top sites.">
+        See your top sites
+      </message>
+      <message name="IDS_IPH_NTP_WITHOUT_FEED_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open the new tab page with personalized top sites. The 'Home' button name should match TC ID 2821179408673282599.">
+        To see your top sites, tap the Home button
+      </message>
+      <message name="IDS_IPH_NTP_WITH_FEED_TEXT" desc="The in-product-help message to open the new tab page with personalized top sites and stories.">
+        See top sites and stories for you
+      </message>
+      <message name="IDS_IPH_NTP_WITH_FEED_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open the new tab page with personalized top sites and stories. The 'Home' button name should match TC ID 2821179408673282599.">
+        To see top sites and stories for you, tap the Home button
+      </message>
       <message name="IDS_IPH_PREVIEWS_OMNIBOX_UI_TEXT" desc="The in-product-help text informing the user that the displayed page was modified to make it load faster or use less data. Prompts the user to tap the message and load the original, unaltered, page if they would like. The 'Lite page provided by Brave.' sentence should match TC ID 373879247902731825">
         Lite page provided by Brave. Tap to load the original.
       </message>
       <message name="IDS_IPH_PREVIEWS_OMNIBOX_UI_ACCESSIBILITY_TEXT" desc="The in-product-help text informing the user that the displayed page was modified to make it load faster or use less data. Prompts the user to tap the message and load the original, unaltered, page if they would like. The 'Lite page provided by Brave.' sentence should match TC ID 373879247902731825">
         Lite page provided by Brave. Tap the load original button to load the original page.
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_TEXT" desc="The in-product-help message to open the tab switcher.">
+        Open tabs to visit different pages at the same time
+      </message>
+      <message name="IDS_IPH_TAB_SWITCHER_ACCESSIBILITY_TEXT" desc="The in-product-help accessibility text to open the new tab page. The 'open tabs' button name should match TC 3108541343994525384">
+        To open tabs and visit different pages at the same time, tap the open tabs button
       </message>
       <message name="IDS_IPH_TRANSLATE_MENU_BUTTON_TEXT" desc="The in-product-help message after a successful navigation prompting user to translate current page.">
         Translate this page to any language
