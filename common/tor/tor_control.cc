@@ -131,7 +131,8 @@ void TorControl::StartWatching() {
 //
 void TorControl::Stop() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(running_);
+  if (!running_)
+    return;
 
   running_ = false;
   async_events_.clear();

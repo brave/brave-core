@@ -27,6 +27,8 @@ class BraveOmniboxViewViews : public OmniboxViewViews,
   ~BraveOmniboxViewViews() override;
 
  private:
+  friend class BraveOmniboxViewViewsTest;
+  FRIEND_TEST_ALL_PREFIXES(BraveOmniboxViewViewsTest, TorInitProgress);
   // tor::TorLauncherServiceObserver:
   void OnTorCircuitEstablished(bool result) override;
   void OnTorInitializing(const std::string& percentage) override;
