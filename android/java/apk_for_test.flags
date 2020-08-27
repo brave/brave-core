@@ -69,3 +69,7 @@
     *** getSearchEngineSourceType(...);
     *** sortAndFilterUnnecessaryTemplateUrl(...);
 }
+
+-keep class org.chromium.base.CommandLineInitUtil {
+    *** initCommandLine(...);
+}

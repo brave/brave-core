@@ -39,6 +39,7 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/sync/settings/ManageSyncSettings"));
         Assert.assertTrue(classExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter"));
+        Assert.assertTrue(classExists("org/chromium/base/CommandLineInitUtil"));
     }
 
     @Test
@@ -65,6 +66,7 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists(
                 "org/chromium/chrome/browser/search_engines/settings/SearchEngineAdapter",
                 "sortAndFilterUnnecessaryTemplateUrl"));
+        Assert.assertTrue(methodExists("org/chromium/base/CommandLineInitUtil", "initCommandLine"));
     }
 
     @Test
