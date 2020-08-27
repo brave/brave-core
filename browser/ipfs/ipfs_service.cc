@@ -11,6 +11,7 @@
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/ipfs/ipfs_service_observer.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
@@ -157,6 +158,10 @@ void IpfsService::OnIpfsLaunched(bool result, int64_t pid) {
   if (!launch_daemon_callback_.is_null()) {
     std::move(launch_daemon_callback_).Run(result && pid > 0);
   }
+
+  for (auto& observer : observers_) {
+    observer.OnIpfsLaunched(result, pid);
+  }
 }
 
 void IpfsService::Shutdown() {
@@ -294,6 +299,18 @@ void IpfsService::ShutdownDaemon(ShutdownDaemonCallback callback) {
 bool IpfsService::IsIPFSExecutableAvailable() const {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   return prefs->GetBoolean(kIPFSBinaryAvailable);
+}
+
+void IpfsService::AddObserver(IpfsServiceObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void IpfsService::RemoveObserver(IpfsServiceObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void IpfsService::RegisterIpfsClientUpdater() {
+  g_brave_browser_process->ipfs_client_updater()->Register();
 }
 
 }  // namespace ipfs

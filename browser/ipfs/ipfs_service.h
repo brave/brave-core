@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/observer_list.h"
 #include "brave/components/ipfs/browser/addresses_config.h"
 #include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
@@ -32,6 +33,8 @@ class PrefRegistrySimple;
 
 namespace ipfs {
 
+class IpfsServiceObserver;
+
 class IpfsService : public KeyedService,
                     public BraveIpfsClientUpdater::Observer {
  public:
@@ -47,9 +50,13 @@ class IpfsService : public KeyedService,
   using LaunchDaemonCallback = base::OnceCallback<void(bool)>;
   using ShutdownDaemonCallback = base::OnceCallback<void(bool)>;
 
+  void AddObserver(IpfsServiceObserver* observer);
+  void RemoveObserver(IpfsServiceObserver* observer);
+
   bool IsDaemonLaunched() const;
   static void RegisterPrefs(PrefRegistrySimple* registry);
   bool IsIPFSExecutableAvailable() const;
+  void RegisterIpfsClientUpdater();
 
   // KeyedService
   void Shutdown() override;
@@ -92,6 +99,7 @@ class IpfsService : public KeyedService,
 
   int64_t ipfs_pid_ = -1;
   content::BrowserContext* context_;
+  base::ObserverList<IpfsServiceObserver> observers_;
 
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   SimpleURLLoaderList url_loaders_;

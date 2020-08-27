@@ -88,6 +88,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(IPFS_ENABLED)
 #include "brave/browser/ipfs/content_browser_client_helper.h"
+#include "brave/browser/ipfs/ipfs_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -517,6 +518,11 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle);
   if (tor_navigation_throttle)
     throttles.push_back(std::move(tor_navigation_throttle));
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+  throttles.push_back(
+      std::make_unique<ipfs::IpfsNavigationThrottle>(handle));
 #endif
 
   return throttles;
