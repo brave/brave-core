@@ -362,11 +362,6 @@ class BraveVPN {
     /// in this case it tries to reconfigure the vpn before connecting to it.
     static func connectOrMigrateToNewNode(completion: @escaping ((VPNConfigStatus) -> Void)) {
         helper.configureAndConnectVPN { message, status in
-            if status != .success {
-                completion(.error(type: .loadConfigError))
-                return
-            }
-            
             switch status {
             case .success:
                 completion(.success)
