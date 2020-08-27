@@ -32,10 +32,10 @@ public class BraveAndroidSyncSettings extends AndroidSyncSettings {
     // We need to override this to make able
     // DevicePickerBottomSheetContent.createContentView send the link
     // For Brave we don't have an account in Android system account,
-    // so pretend sync for Brave "account" is always on when sync is requsted
+    // so pretend sync for Brave "account" is always on when sync is configured
     @Override
     public boolean isChromeSyncEnabled() {
         ProfileSyncService profileSyncService = ProfileSyncService.get();
-        return profileSyncService != null && profileSyncService.isSyncRequested();
+        return profileSyncService != null && profileSyncService.isFirstSetupComplete();
     }
 }
