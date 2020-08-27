@@ -361,10 +361,10 @@
         Menu
       </message>
       <if expr="is_android">
-        <message name="IDS_SHOW" desc="Generic label to show content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
+        <message name="IDS_SHOW_CONTENT" desc="Generic label to show content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
           Show
         </message>
-        <message name="IDS_HIDE" desc="Generic label to hide content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
+        <message name="IDS_HIDE_CONTENT" desc="Generic label to hide content for a feature. [CHAR-LIMIT=20]" formatter_data="android_java">
           Hide
         </message>
       </if>

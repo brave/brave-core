@@ -116,5 +116,8 @@
     </if>
 
   <if expr="not chromeos and not is_android">
+    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the private button in profile card menu">
+      Private
+    </message>
     </if>
 </grit-part>

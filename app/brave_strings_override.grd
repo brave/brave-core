@@ -299,6 +299,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
 
       <if expr="not chromeos and not is_android">
+        <message name="IDS_PROFILE_PICKER_MAIN_VIEW_SUBTITLE" desc="Profile picker main view subtitle">
+          Use different profiles in Brave to separate work and personal browsing, or for different profiles who use this device
+        </message>
         </if>
 
     </messages>

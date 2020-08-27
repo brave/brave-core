@@ -662,13 +662,10 @@
     </message>
   </if>
 
-  <!-- Profile Picker -->
   <if expr="not chromeos and not is_android">
+    <!-- Profile Picker -->
     <message name="IDS_PROFILE_PICKER_ADD_SPACE_BUTTON" desc="Text for the add space button on the profile picker main view">
-      Add Space
-    </message>
-    <message name="IDS_PROFILE_PICKER_ASK_ON_STARTUP" desc="Text for the checkbox on the profile picker main view">
-      Ask on startup
+      Add
     </message>
     <message name="IDS_PROFILE_PICKER_BROWSE_AS_GUEST_BUTTON" desc="Text for the profile picker main view button that launches guest session.">
       Browse as Guest
@@ -677,13 +674,19 @@
       Back
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_BUTTON_NAME" desc="Text to be spoken when the focus is set to the menu button of the profile card on the picker main screen or shown on hover.">
-      Options menu for <ph name="PROFILE_LOCAL_NAME">$1<ex>Personal</ex></ph>
+      Customize your profile, including its name
     </message>
-    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_REMOVE_TEXT" desc="Text of the remove button in profile card menu and on the title of the remove warning.">
+    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_REMOVE_TEXT" desc="Text of the remove button in profile card menu.">
       Remove
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_REMOVE_CONFIRM" desc="Text of the remove button in the remove warning.">
+      Remove this profile
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_MENU_CUSTOMIZE_TEXT" desc="Text of the customize button in profile card menu">
       Customize
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_MENU_INCOGNITO_TEXT" desc="Text of the private button in profile card menu">
+      Private
     </message>
     <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_LOCAL_PROFILE" desc="Main text shown as a warning when attempting to remove an user.">
       This will permanently delete your browsing data from this device.
@@ -703,7 +706,7 @@
     <message name="IDS_PROFILE_PICKER_REMOVE_WARNING_CALCULATING" desc="This is shown next to the loading statistics in the remove action menu. All occurrences of '...' will be eventually replaced by numbers when the statistics are loaded.">
       ...
     </message>
-    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE" desc="Profile picker profile type choice     subtitle">
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_PROFILE_TYPE_CHOICE_SUBTITLE" desc="Profile picker profile type choice subtitle">
       Sign in to Sync your bookmarks, passwords, history and more on all your devices
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_SIGNIN_BUTTON_LABEL" desc="Label for a button that prompts user to sign in">
@@ -711,6 +714,30 @@
     </message>
     <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_NOT_NOW_BUTTON_LABEL" desc="Label for a button to decline a prompt to sign in">
       Not now
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_TITLE" desc="Title for the local profile customiztion screen on the picker.">
+      Customize your profile
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_THEME_TEXT" desc="Text of a section to pick a color for the profile.">
+      Pick a theme color
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_AVATAR_TEXT" desc="Text of a section to pick an avatar for the profile.">
+      Pick an avatar
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_DONE" desc="Label of a button to finish the profile creation.">
+      Done
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_AVATAR_OK" desc="Label of a button to confirm avatar selection.">
+      OK
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_AVATAR_CANCEL" desc="Label of a button to cancel avatar selection.">
+      Cancel
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_INPUT_NAME" desc="Name of the input to configure the profile name in the profile customization window.">
+      Example: Work, Personal, Kids, or a name
+    </message>
+    <message name="IDS_PROFILE_PICKER_PROFILE_CREATION_FLOW_LOCAL_PROFILE_CREATION_SHORTCUT_TEXT" desc="Text of a box creating a desktop shortcut for the profile.">
+      Create a desktop shortcut
     </message>
   </if>
 </grit-part>

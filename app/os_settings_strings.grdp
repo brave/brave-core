@@ -1016,7 +1016,7 @@
      Bookmarks, passwords, and other browser data are synced with the primary account.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_CHILD_SECOND_MESSAGE" desc="Description of the Account Manager Settings page for child users. Shown just below the link to learn more about account management.">
-    Adding a school account enables easy sign-in to websites and extensions as a student while still operating under parental controls.
+    Adding a school account enables easy sign-in to websites, extensions, and apps as a student while still operating under parental controls.
   </message>
   <message name="IDS_SETTINGS_ACCOUNT_MANAGER_LIST_HEADER" desc="List header for Account List in Account Manager Settings page.">
     Accounts
@@ -1150,7 +1150,7 @@
     Give Linux apps permission to access USB devices. Linux won't remember a USB device after it's removed.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
-    Only Android devices are currently supported.
+    Only supported devices are shown.
   </message>
   <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no avaiable USB devices.">
     Available USB devices will appear here.
