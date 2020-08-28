@@ -53,6 +53,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
     private static final String PREF_HOMEPAGE = "homepage";
     private static final String PREF_USE_CUSTOM_TABS = "use_custom_tabs";
     private static final String PREF_LANGUAGES = "languages";
+    private static final String PREF_BRAVE_LANGUAGES = "brave_languages";
     private static final String PREF_RATE_BRAVE = "rate_brave";
     private static final String PREF_BRAVE_STATS = "brave_stats";
 
@@ -90,6 +91,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         removePreferenceIfPresent(MainSettings.PREF_SYNC_AND_SERVICES);
         removePreferenceIfPresent(MainSettings.PREF_SEARCH_ENGINE);
         removePreferenceIfPresent(MainSettings.PREF_UI_THEME);
+        removePreferenceIfPresent(PREF_LANGUAGES);
 
         updateSearchEnginePreference();
         updateControlSectionPreferences();
@@ -139,7 +141,7 @@ public class BraveMainPreferencesBase extends BravePreferenceFragment {
         findPreference(PREF_SYNC).setOrder(++order);
         findPreference(PREF_ACCESSIBILITY).setOrder(++order);
         findPreference(PREF_CONTENT_SETTINGS).setOrder(++order);
-        findPreference(PREF_LANGUAGES).setOrder(++order);
+        findPreference(PREF_BRAVE_LANGUAGES).setOrder(++order);
         findPreference(MainSettings.PREF_DATA_REDUCTION).setOrder(++order);
         findPreference(MainSettings.PREF_DOWNLOADS).setOrder(++order);
         // This preference doesn't exist by default in Release mode

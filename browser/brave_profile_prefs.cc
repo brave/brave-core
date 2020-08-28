@@ -72,6 +72,7 @@
 #if defined(OS_ANDROID)
 #include "components/feed/core/shared_prefs/pref_names.h"
 #include "components/ntp_tiles/pref_names.h"
+#include "components/translate/core/browser/translate_pref_names.h"
 #endif
 
 using extensions::FeatureSwitch;
@@ -156,6 +157,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
                                 base::Value(false));
   registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,
+                                base::Value(false));
+  // Translate is not available on Android
+  registry->SetDefaultPrefValue(prefs::kOfferTranslateEnabled,
                                 base::Value(false));
 #endif
 

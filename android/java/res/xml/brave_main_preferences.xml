@@ -73,4 +73,9 @@
         android:key="brave_sync_layout"
         android:order="22"
         android:title="@string/sync_category_title"/>
+    <Preference
+        android:fragment="org.chromium.chrome.browser.language.settings.BraveLanguageSettings"
+        android:key="brave_languages"
+        android:order="23"
+        android:title="@string/language_settings"/>
 </PreferenceScreen>
