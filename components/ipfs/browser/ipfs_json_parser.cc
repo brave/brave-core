@@ -57,7 +57,7 @@ bool IPFSJSONParser::GetPeersFromJSON(
       continue;
     }
 
-    peers->push_back(addr->GetString() + "/" + peer->GetString());
+    peers->push_back(addr->GetString() + "/p2p/" + peer->GetString());
   }
 
   return true;

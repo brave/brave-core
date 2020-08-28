@@ -17,14 +17,14 @@ TEST_F(IPFSJSONParserTest, GetPeersFromJSON) {
       {
         "Peers": [
           {
-            "Addr": "10.8.0.206",
+            "Addr": "/ip4/10.8.0.206/tcp/4001",
             "Direction": "0",
             "Latency": "",
             "Muxer": "",
             "Peer": "QmaNcj4BMFQgE884rZSMqWEcqquWuv8QALzhpvPeHZGddd"
           },
           {
-            "Addr": "10.8.0.207",
+            "Addr": "/ip4/10.8.0.207/tcp/4001",
             "Direction": "0",
             "Latency": "",
             "Muxer": "",
@@ -35,7 +35,36 @@ TEST_F(IPFSJSONParserTest, GetPeersFromJSON) {
 
   ASSERT_EQ(peers.size(), uint64_t(2));
   ASSERT_EQ(peers[0],
-            "10.8.0.206/QmaNcj4BMFQgE884rZSMqWEcqquWuv8QALzhpvPeHZGddd");
+      "/ip4/10.8.0.206/tcp/4001/p2p/QmaNcj4BMFQgE884rZSMqWEcqquWuv8QALzhpvPeHZGddd");  // NOLINT
   ASSERT_EQ(peers[1],
-            "10.8.0.207/QmaNcj4BMFQgE884rZSMqWEcqquWuv8QALzhpvPeHZGeee");
+      "/ip4/10.8.0.207/tcp/4001/p2p/QmaNcj4BMFQgE884rZSMqWEcqquWuv8QALzhpvPeHZGeee");  // NOLINT
+}
+
+TEST_F(IPFSJSONParserTest, GetAddressesConfigFromJSON) {
+  ipfs::AddressesConfig config;
+  ASSERT_TRUE(IPFSJSONParser::GetAddressesConfigFromJSON(R"({
+      "Key": "Addresses",
+      "Value":
+        {
+          "API": "/ip4/127.0.0.1/tcp/5001",
+          "Announce": [],
+          "Gateway": "/ip4/127.0.0.1/tcp/8080",
+          "NoAnnounce": [],
+          "Swarm": [
+            "/ip4/0.0.0.0/tcp/4001",
+            "/ip6/::/tcp/4001",
+            "/ip4/0.0.0.0/udp/4001/quic",
+            "/ip6/::/udp/4001/quic"
+          ]
+        }
+      })", &config));
+
+  ASSERT_EQ(config.api, "/ip4/127.0.0.1/tcp/5001");
+  ASSERT_EQ(config.gateway, "/ip4/127.0.0.1/tcp/8080");
+  ASSERT_EQ(config.swarm, (std::vector<std::string>{
+      "/ip4/0.0.0.0/tcp/4001",
+      "/ip6/::/tcp/4001",
+      "/ip4/0.0.0.0/udp/4001/quic",
+      "/ip6/::/udp/4001/quic"
+  }));
 }

@@ -17,8 +17,7 @@
 #include "brave/components/services/ipfs/public/mojom/ipfs_service.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/remote.h"
-
-class GURL;
+#include "url/gurl.h"
 
 namespace content {
 class BrowserContext;
@@ -66,6 +65,9 @@ class IpfsService : public KeyedService,
   void LaunchDaemon(LaunchDaemonCallback callback);
   void ShutdownDaemon(ShutdownDaemonCallback callback);
 
+  void SetIpfsLaunchedForTest(bool launched);
+  void SetServerEndpointForTest(const GURL& gurl);
+
  protected:
   base::FilePath GetIpfsExecutablePath();
 
@@ -105,6 +107,9 @@ class IpfsService : public KeyedService,
   SimpleURLLoaderList url_loaders_;
 
   LaunchDaemonCallback launch_daemon_callback_;
+
+  bool is_ipfs_launched_for_test_ = false;
+  GURL server_endpoint_;
 
   DISALLOW_COPY_AND_ASSIGN(IpfsService);
 };

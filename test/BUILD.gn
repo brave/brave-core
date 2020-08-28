@@ -231,11 +231,14 @@ test("brave_unit_tests") {
 
   if (ipfs_enabled) {
     sources += [
+      "//brave/browser/ipfs/ipfs_navigation_throttle_unittest.cc",
       "//brave/components/ipfs/browser/ipfs_json_parser_unittest.cc",
+      "//brave/components/ipfs/common/ipfs_utils_unittest.cc",
     ]
 
     deps += [
       "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
     ]
   }
 
@@ -685,6 +688,7 @@ test("brave_browser_tests") {
   if (ipfs_enabled) {
     sources += [
       "//brave/browser/extensions/brave_ipfs_client_updater_browsertest.cc",
+      "//brave/browser/ipfs/ipfs_service_browsertest.cc",
     ]
   }
 

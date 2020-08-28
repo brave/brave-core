@@ -16,7 +16,7 @@ namespace ipfs {
 bool IpfsUtils::IsIPFSURL(const GURL& gurl) {
   static std::vector<URLPattern> updater_patterns({
       URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfs/*"),
-      URLPattern(URLPattern::SCHEME_ALL, "*://*/ipfn/*")
+      URLPattern(URLPattern::SCHEME_ALL, "*://*/ipns/*")
   });
   return std::any_of(
       updater_patterns.begin(), updater_patterns.end(),

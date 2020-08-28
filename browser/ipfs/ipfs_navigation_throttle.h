@@ -8,6 +8,7 @@
 
 #include "content/public/browser/navigation_throttle.h"
 
+#include "base/gtest_prod_util.h"
 #include "brave/browser/ipfs/ipfs_service_observer.h"
 
 namespace content {
@@ -33,6 +34,8 @@ class IpfsNavigationThrottle : public content::NavigationThrottle,
   const char* GetNameForLogging() override;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(IpfsNavigationThrottleUnitTest,
+                           DeferUntilIpfsProcessLaunched);
   // IpfsServiceObserver:
   void OnIpfsLaunched(bool result, int64_t pid) override;
 

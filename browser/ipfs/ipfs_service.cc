@@ -16,6 +16,7 @@
 #include "brave/components/ipfs/browser/ipfs_json_parser.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/service_sandbox_type.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -61,7 +62,15 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 namespace ipfs {
 
-IpfsService::IpfsService(content::BrowserContext* context) : context_(context) {
+IpfsService::IpfsService(content::BrowserContext* context)
+  : context_(context),
+    server_endpoint_(GURL(kServerEndpoint)) {
+  // Return early since g_brave_browser_process and ipfs_client_updater are not
+  // available in unit tests.
+  if (Profile::FromBrowserContext(context)->AsTestingProfile()) {
+    return;
+  }
+
   url_loader_factory_ =
       content::BrowserContext::GetDefaultStoragePartition(context)
           ->GetURLLoaderFactoryForBrowserProcess();
@@ -70,7 +79,8 @@ IpfsService::IpfsService(content::BrowserContext* context) : context_(context) {
   // Brave's path is running (brave-ipfs), which is leftover from browser
   // crash, send a shutdown request if so.
 
-  g_brave_browser_process->ipfs_client_updater()->AddObserver(this);
+  if (g_brave_browser_process)
+    g_brave_browser_process->ipfs_client_updater()->AddObserver(this);
   OnExecutableReady(GetIpfsExecutablePath());
 }
 
@@ -94,7 +104,8 @@ void IpfsService::OnExecutableReady(const base::FilePath& path) {
   PrefService* prefs = user_prefs::UserPrefs::Get(context_);
   prefs->SetBoolean(kIPFSBinaryAvailable, true);
 
-  g_brave_browser_process->ipfs_client_updater()->RemoveObserver(this);
+  if (g_brave_browser_process)
+    g_brave_browser_process->ipfs_client_updater()->RemoveObserver(this);
   LaunchIfNotRunning(path);
 }
 
@@ -179,16 +190,19 @@ std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
   request->url = gurl;
   request->method = "POST";
   request->headers.SetHeader(net::HttpRequestHeaders::kOrigin,
-                             kServerEndpoint);
+                             server_endpoint_.spec());
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   return url_loader;
 }
 
 void IpfsService::GetConnectedPeers(GetConnectedPeersCallback callback) {
-  std::string urlStr;
-  base::StrAppend(&urlStr, {kServerEndpoint, kSwarmPeersPath});
-  auto url_loader = CreateURLLoader(GURL(urlStr));
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, std::vector<std::string>{});
+    return;
+  }
+
+  auto url_loader = CreateURLLoader(server_endpoint_.Resolve(kSwarmPeersPath));
   auto iter = url_loaders_.insert(url_loaders_.begin(), std::move(url_loader));
 
   iter->get()->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
@@ -223,9 +237,12 @@ void IpfsService::OnGetConnectedPeers(
 }
 
 void IpfsService::GetAddressesConfig(GetAddressesConfigCallback callback) {
-  std::string urlStr;
-  base::StrAppend(&urlStr, {kServerEndpoint, kConfigPath});
-  GURL gurl = net::AppendQueryParameter(GURL(urlStr),
+  if (!IsDaemonLaunched()) {
+    std::move(callback).Run(false, AddressesConfig());
+    return;
+  }
+
+  GURL gurl = net::AppendQueryParameter(server_endpoint_.Resolve(kConfigPath),
                                         kArgQueryParam,
                                         kAddressesField);
   auto url_loader = CreateURLLoader(gurl);
@@ -265,6 +282,9 @@ void IpfsService::OnGetAddressesConfig(
 }
 
 bool IpfsService::IsDaemonLaunched() const {
+  if (is_ipfs_launched_for_test_)
+    return true;
+
   return ipfs_pid_ > 0;
 }
 
@@ -310,7 +330,16 @@ void IpfsService::RemoveObserver(IpfsServiceObserver* observer) {
 }
 
 void IpfsService::RegisterIpfsClientUpdater() {
-  g_brave_browser_process->ipfs_client_updater()->Register();
+  if (g_brave_browser_process)
+    g_brave_browser_process->ipfs_client_updater()->Register();
+}
+
+void IpfsService::SetIpfsLaunchedForTest(bool launched) {
+  is_ipfs_launched_for_test_ = launched;
+}
+
+void IpfsService::SetServerEndpointForTest(const GURL& gurl) {
+  server_endpoint_ = gurl;
 }
 
 }  // namespace ipfs
