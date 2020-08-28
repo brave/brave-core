@@ -6,10 +6,10 @@
 #include <map>
 #include <utility>
 
-#include "bat/ledger/internal/media/github.h"
-#include "testing/gtest/include/gtest/gtest.h"
-#include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/legacy/media/github.h"
 #include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/ledger.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=MediaGitHubTest.*
 

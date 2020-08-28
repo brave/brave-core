@@ -10,12 +10,12 @@
 #include <map>
 #include <memory>
 
-#include "bat/ledger/internal/media/reddit.h"
-#include "bat/ledger/internal/media/twitch.h"
-#include "bat/ledger/internal/media/twitter.h"
-#include "bat/ledger/internal/media/vimeo.h"
-#include "bat/ledger/internal/media/youtube.h"
-#include "bat/ledger/internal/media/github.h"
+#include "bat/ledger/internal/legacy/media/github.h"
+#include "bat/ledger/internal/legacy/media/reddit.h"
+#include "bat/ledger/internal/legacy/media/twitch.h"
+#include "bat/ledger/internal/legacy/media/twitter.h"
+#include "bat/ledger/internal/legacy/media/vimeo.h"
+#include "bat/ledger/internal/legacy/media/youtube.h"
 #include "bat/ledger/ledger.h"
 
 namespace bat_ledger {

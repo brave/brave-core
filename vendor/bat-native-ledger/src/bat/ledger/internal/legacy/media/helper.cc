@@ -3,9 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/legacy/media/helper.h"
+
 #include "base/base64.h"
 #include "base/json/json_reader.h"
-#include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/legacy/bat_helper.h"
 
 namespace braveledger_media {

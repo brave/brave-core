@@ -5,7 +5,7 @@
 
 #include <utility>
 
-#include "bat/ledger/internal/media/twitch.h"
+#include "bat/ledger/internal/legacy/media/twitch.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
