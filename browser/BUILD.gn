@@ -262,6 +262,7 @@ source_set("browser_process") {
       "//brave/build/android:jni_headers",
       "//chrome/android:jni_headers",
       "//components/ntp_tiles",
+      "//components/translate/core/browser",
     ]
   }
 
