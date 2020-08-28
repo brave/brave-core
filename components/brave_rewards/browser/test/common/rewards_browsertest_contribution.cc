@@ -43,14 +43,16 @@ void RewardsBrowserTestContribution::TipViaCode(
   multiple_tip_reconcile_count_ = 0;
 
   bool should_contribute = number_of_contributions > 0;
-  auto site = std::make_unique<brave_rewards::ContentSite>();
-  site->id = publisher_key;
-  site->name = publisher_key;
-  site->url = publisher_key;
-  site->status = static_cast<int>(status);
-  site->provider = "";
-  site->favicon_url = "";
-  rewards_service_->OnTip(publisher_key, amount, recurring, std::move(site));
+  auto publisher = ledger::PublisherInfo::New();
+  publisher->id = publisher_key;
+  publisher->name = publisher_key;
+  publisher->url = publisher_key;
+  publisher->status = status;
+  rewards_service_->OnTip(
+      publisher_key,
+      amount,
+      recurring,
+      std::move(publisher));
 
   if (recurring) {
     return;
@@ -259,8 +261,8 @@ void RewardsBrowserTestContribution::WaitForPendingTipToBeSaved() {
 
 void RewardsBrowserTestContribution::OnPendingContributionSaved(
     brave_rewards::RewardsService* rewards_service,
-    int result) {
-  if (result != 0) {
+    const ledger::Result result) {
+  if (result != ledger::Result::LEDGER_OK) {
     return;
   }
 
@@ -281,31 +283,28 @@ void RewardsBrowserTestContribution::WaitForTipReconcileCompleted() {
 
 void RewardsBrowserTestContribution::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
-    unsigned int result,
+    const ledger::Result result,
     const std::string& contribution_id,
     const double amount,
-    const int32_t type,
-    const int32_t processor) {
-  const auto converted_result = static_cast<ledger::Result>(result);
-  const auto converted_type = static_cast<ledger::RewardsType>(type);
-
-  if (converted_result == ledger::Result::LEDGER_OK) {
+    const ledger::RewardsType type,
+    const ledger::ContributionProcessor processor) {
+  if (result == ledger::Result::LEDGER_OK) {
     UpdateContributionBalance(
         amount,
         true,
-        static_cast<ledger::ContributionProcessor>(processor));
+        processor);
   }
 
-  if (converted_type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+  if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
     ac_reconcile_completed_ = true;
-    ac_reconcile_status_ = converted_result;
+    ac_reconcile_status_ = result;
     if (wait_for_ac_completed_loop_) {
       wait_for_ac_completed_loop_->Quit();
     }
 
     // Multiple ac
     multiple_ac_reconcile_count_++;
-    multiple_ac_reconcile_status_.push_back(converted_result);
+    multiple_ac_reconcile_status_.push_back(result);
 
     if (multiple_ac_reconcile_count_ == multiple_ac_reconcile_needed_) {
       multiple_ac_reconcile_completed_ = true;
@@ -315,22 +314,22 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
     }
   }
 
-  if (converted_type == ledger::RewardsType::ONE_TIME_TIP ||
-      converted_type == ledger::RewardsType::RECURRING_TIP) {
-    if (converted_result == ledger::Result::LEDGER_OK) {
+  if (type == ledger::RewardsType::ONE_TIME_TIP ||
+      type == ledger::RewardsType::RECURRING_TIP) {
+    if (result == ledger::Result::LEDGER_OK) {
       reconciled_tip_total_ += amount;
     }
 
     // Single tip tracking
     tip_reconcile_completed_ = true;
-    tip_reconcile_status_ = converted_result;
+    tip_reconcile_status_ = result;
     if (wait_for_tip_completed_loop_) {
       wait_for_tip_completed_loop_->Quit();
     }
 
     // Multiple tips
     multiple_tip_reconcile_count_++;
-    multiple_tip_reconcile_status_.push_back(converted_result);
+    multiple_tip_reconcile_status_.push_back(result);
 
     if (multiple_tip_reconcile_count_ == multiple_tip_reconcile_needed_) {
       multiple_tip_reconcile_completed_ = true;

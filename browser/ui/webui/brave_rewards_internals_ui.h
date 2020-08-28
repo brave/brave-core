@@ -12,10 +12,6 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/basic_ui.h"
 
-namespace brave_rewards {
-struct RewardsInternalsInfo;
-}  // namespace brave_rewards
-
 class BraveRewardsInternalsUI : public BasicUI {
  public:
   BraveRewardsInternalsUI(content::WebUI* web_ui, const std::string& host);

@@ -6,7 +6,7 @@
 #include <map>
 
 #include "base/files/scoped_temp_dir.h"
-#include "brave/components/brave_rewards/browser/rewards_parameters.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -24,26 +24,28 @@ using ::testing::_;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
-  MOCK_METHOD2(OnWalletInitialized, void(RewardsService*, int32_t));
+  MOCK_METHOD2(OnWalletInitialized,
+      void(RewardsService*, const ledger::Result));
   MOCK_METHOD3(OnFetchPromotions, void(RewardsService*,
-      const uint32_t,
-      const std::vector<brave_rewards::Promotion>& list));
-  MOCK_METHOD2(OnRecoverWallet, void(RewardsService*, const int32_t));
-  MOCK_METHOD3(OnPromotionFinished, void(RewardsService*,
-      const uint32_t,
-      brave_rewards::Promotion));
+      const ledger::Result result,
+      const ledger::PromotionList& list));
+  MOCK_METHOD2(OnRecoverWallet, void(RewardsService*, const ledger::Result));
+  MOCK_METHOD3(OnPromotionFinished, void(
+      RewardsService*,
+      const ledger::Result,
+      ledger::PromotionPtr));
   MOCK_METHOD1(OnContentSiteUpdated, void(RewardsService*));
   MOCK_METHOD6(OnReconcileComplete, void(
       RewardsService*,
-      unsigned int,
+      const ledger::Result,
       const std::string&,
       const double,
-      const int32_t,
-      const int32_t));
+      const ledger::RewardsType,
+      const ledger::ContributionProcessor));
   MOCK_METHOD2(OnGetRecurringTips,
-      void(RewardsService*, const brave_rewards::ContentSiteList&));
+      void(RewardsService*, ledger::PublisherInfoList list));
   MOCK_METHOD2(OnPublisherBanner,
-      void(RewardsService*, const brave_rewards::PublisherBanner));
+      void(RewardsService*, ledger::PublisherBannerPtr banner));
   MOCK_METHOD4(OnPanelPublisherInfo,
       void(RewardsService*, int, ledger::PublisherInfoPtr, uint64_t));
   MOCK_METHOD2(OnAdsEnabled, void(RewardsService*, bool));

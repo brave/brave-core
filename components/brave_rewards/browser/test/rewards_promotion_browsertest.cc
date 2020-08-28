@@ -127,12 +127,14 @@ class RewardsPromotionBrowserTest : public InProcessBrowserTest {
 
     // Ensure that promotion looks as expected
     auto promotion = promotion_->GetPromotion();
-    EXPECT_STREQ(std::to_string(promotion.amount).c_str(), "30.000000");
     EXPECT_STREQ(
-        promotion.promotion_id.c_str(),
+        std::to_string(promotion->approximate_value).c_str(),
+        "30.000000");
+    EXPECT_STREQ(
+        promotion->id.c_str(),
         promotion_->GetPromotionId().c_str());
-    EXPECT_EQ(promotion.type, 0u);
-    EXPECT_EQ(promotion.expires_at, 1740816427ull);
+    EXPECT_EQ(promotion->type, ledger::PromotionType::UGP);
+    EXPECT_EQ(promotion->expires_at, 1740816427ull);
 
     // Check that promotion notification shows the appropriate amount
     const std::string selector = use_panel

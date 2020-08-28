@@ -44,19 +44,12 @@
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
-#include "brave/components/brave_rewards/browser/auto_contribution_props.h"
-#include "brave/components/brave_rewards/browser/balance_report.h"
-#include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/contribution_info.h"
-#include "brave/components/brave_rewards/browser/event_log.h"
 #include "brave/components/brave_rewards/browser/file_util.h"
 #include "brave/components/brave_rewards/browser/logging.h"
 #include "brave/components/brave_rewards/browser/logging_util.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_p3a.h"
-#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/static_values.h"
 #include "brave/components/brave_rewards/browser/switches.h"
@@ -112,22 +105,6 @@ const int kDiagnosticLogMaxVerboseLevel = 6;
 const int kTailDiagnosticLogToNumLines = 20000;
 const int kDiagnosticLogMaxFileSize = 10 * (1024 * 1024);
 const char pref_prefix[] = "brave.rewards";
-
-ContentSite PublisherInfoToContentSite(
-    const ledger::PublisherInfo& publisher_info) {
-  ContentSite content_site(publisher_info.id);
-  content_site.percentage = publisher_info.percent;
-  content_site.status = static_cast<uint32_t>(publisher_info.status);
-  content_site.excluded = static_cast<int>(publisher_info.excluded);
-  content_site.name = publisher_info.name;
-  content_site.url = publisher_info.url;
-  content_site.provider = publisher_info.provider;
-  content_site.favicon_url = publisher_info.favicon_url;
-  content_site.id = publisher_info.id;
-  content_site.weight = publisher_info.weight;
-  content_site.reconcile_stamp = publisher_info.reconcile_stamp;
-  return content_site;
-}
 
 std::string URLMethodToRequestType(ledger::UrlMethod method) {
   switch (method) {
@@ -526,7 +503,7 @@ void RewardsServiceImpl::OnCreateWallet(
     CreateWalletCallback callback,
     ledger::Result result) {
   OnWalletInitialized(result);
-  std::move(callback).Run(static_cast<int32_t>(result));
+  std::move(callback).Run(result);
 }
 
 void RewardsServiceImpl::AddPrivateObserver(
@@ -639,13 +616,7 @@ void RewardsServiceImpl::GetExcludedList(
 void RewardsServiceImpl::OnGetContentSiteList(
     const GetContentSiteListCallback& callback,
     ledger::PublisherInfoList list) {
-  std::unique_ptr<ContentSiteList> site_list(new ContentSiteList);
-
-  for (auto &publisher : list) {
-    site_list->push_back(PublisherInfoToContentSite(*publisher));
-  }
-
-  callback.Run(std::move(site_list));
+  callback.Run(std::move(list));
 }
 
 void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
@@ -863,26 +834,17 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
       prefs::kBraveRewardsEnabled));
 
   for (auto& observer : observers_) {
-    observer.OnWalletInitialized(this, static_cast<int>(result));
+    observer.OnWalletInitialized(this, result);
   }
 }
 
 void RewardsServiceImpl::OnGetAutoContributeProperties(
     const GetAutoContributePropertiesCallback& callback,
-    ledger::AutoContributePropertiesPtr props) {
-  if (!props) {
+    ledger::AutoContributePropertiesPtr properties) {
+  if (!properties) {
     callback.Run(nullptr);
     return;
   }
-
-  auto properties = std::make_unique<brave_rewards::AutoContributeProps>();
-  properties->enabled_contribute = props->enabled_contribute;
-  properties->contribution_min_time = props->contribution_min_time;
-  properties->contribution_min_visits = props->contribution_min_visits;
-  properties->contribution_non_verified =
-    props->contribution_non_verified;
-  properties->contribution_videos = props->contribution_videos;
-  properties->reconcile_stamp = props->reconcile_stamp;
 
   callback.Run(std::move(properties));
 }
@@ -890,18 +852,7 @@ void RewardsServiceImpl::OnGetAutoContributeProperties(
 void RewardsServiceImpl::OnGetRewardsInternalsInfo(
     GetRewardsInternalsInfoCallback callback,
     ledger::RewardsInternalsInfoPtr info) {
-  if (!info) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  auto rewards_internals_info =
-      std::make_unique<brave_rewards::RewardsInternalsInfo>();
-  rewards_internals_info->payment_id = info->payment_id;
-  rewards_internals_info->is_key_info_seed_valid = info->is_key_info_seed_valid;
-  rewards_internals_info->boot_stamp = info->boot_stamp;
-
-  std::move(callback).Run(std::move(rewards_internals_info));
+  std::move(callback).Run(std::move(info));
 }
 
 void RewardsServiceImpl::GetAutoContributeProperties(
@@ -927,11 +878,11 @@ void RewardsServiceImpl::OnReconcileComplete(
   for (auto& observer : observers_)
     observer.OnReconcileComplete(
         this,
-        static_cast<int>(result),
+        result,
         contribution->contribution_id,
         contribution->amount,
-        static_cast<int>(contribution->type),
-        static_cast<int>(contribution->processor));
+        contribution->type,
+        contribution->processor);
 }
 
 void RewardsServiceImpl::LoadLedgerState(
@@ -1125,20 +1076,7 @@ void RewardsServiceImpl::OnURLLoaderComplete(
 
 void RewardsServiceImpl::OnGetRewardsParameters(
     GetRewardsParametersCallback callback,
-    ledger::RewardsParametersPtr properties) {
-  if (!properties) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  std::unique_ptr<brave_rewards::RewardsParameters> parameters(
-      new brave_rewards::RewardsParameters);
-  parameters->rate = properties->rate;
-  parameters->auto_contribute_choice = properties->auto_contribute_choice;
-  parameters->auto_contribute_choices = properties->auto_contribute_choices;
-  parameters->tip_choices = properties->tip_choices;
-  parameters->monthly_tip_choices = properties->monthly_tip_choices;
-
+    ledger::RewardsParametersPtr parameters) {
   std::move(callback).Run(std::move(parameters));
 }
 
@@ -1157,24 +1095,13 @@ void RewardsServiceImpl::GetRewardsParameters(
 void RewardsServiceImpl::OnFetchPromotions(
     const ledger::Result result,
     ledger::PromotionList promotions) {
-  std::vector<brave_rewards::Promotion> list;
-
-  for (auto & promotion : promotions) {
-    if (!promotion) {
-      continue;
+  for (auto& observer : observers_) {
+    ledger::PromotionList promotions_clone;
+    for (auto& promotion : promotions) {
+      promotions_clone.push_back(promotion->Clone());
     }
-
-    brave_rewards::Promotion properties;
-    properties.promotion_id = promotion->id;
-    properties.amount = promotion->approximate_value;
-    properties.expires_at = promotion->expires_at;
-    properties.type = static_cast<uint32_t>(promotion->type);
-    properties.status = static_cast<uint32_t>(promotion->status);
-    list.push_back(properties);
+    observer.OnFetchPromotions(this, result, std::move(promotions_clone));
   }
-
-  for (auto& observer : observers_)
-    observer.OnFetchPromotions(this, static_cast<int>(result), list);
 }
 
 void RewardsServiceImpl::FetchPromotions() {
@@ -1231,22 +1158,18 @@ void RewardsServiceImpl::OnClaimPromotion(
   std::string id;
 
   if (result != ledger::Result::LEDGER_OK) {
-    std::move(callback).Run(static_cast<int32_t>(result), image, hint, id);
+    std::move(callback).Run(result, image, hint, id);
     return;
   }
 
   ParseCaptchaResponse(response, &image, &id, &hint);
 
   if (image.empty() || hint.empty() || id.empty()) {
-    std::move(callback).Run(static_cast<int32_t>(result), "", "", "");
+    std::move(callback).Run(result, "", "", "");
     return;
   }
 
-  std::move(callback).Run(
-      static_cast<int32_t>(result),
-      image,
-      hint,
-      id);
+  std::move(callback).Run(result, image, hint, id);
 }
 
 void RewardsServiceImpl::AttestationAndroid(
@@ -1255,14 +1178,12 @@ void RewardsServiceImpl::AttestationAndroid(
     const ledger::Result result,
     const std::string& nonce) {
   if (result != ledger::Result::LEDGER_OK) {
-    std::move(callback).Run(static_cast<int32_t>(result), nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
   if (nonce.empty()) {
-    std::move(callback).Run(
-        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
-        nullptr);
+    std::move(callback).Run(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -1291,9 +1212,7 @@ void RewardsServiceImpl::OnAttestationAndroid(
   }
 
   if (!token_received) {
-    std::move(callback).Run(
-        static_cast<int32_t>(ledger::Result::LEDGER_ERROR),
-        nullptr);
+    std::move(callback).Run(ledger::Result::LEDGER_ERROR, nullptr);
   }
 
   base::Value solution(base::Value::Type::DICTIONARY);
@@ -1361,7 +1280,7 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) {
 
 void RewardsServiceImpl::OnRecoverWallet(const ledger::Result result) {
   for (auto& observer : observers_) {
-    observer.OnRecoverWallet(this, static_cast<int>(result));
+    observer.OnRecoverWallet(this, result);
   }
 }
 
@@ -1385,23 +1304,13 @@ void RewardsServiceImpl::OnAttestPromotion(
     AttestPromotionCallback callback,
     const ledger::Result result,
     ledger::PromotionPtr promotion) {
-  const auto result_converted = static_cast<int>(result);
   if (result != ledger::Result::LEDGER_OK) {
-    std::move(callback).Run(result_converted, nullptr);
+    std::move(callback).Run(result, nullptr);
     return;
   }
 
-  brave_rewards::Promotion brave_promotion;
-  brave_promotion.amount = promotion->approximate_value;
-  brave_promotion.promotion_id = promotion->id;
-  brave_promotion.expires_at = promotion->expires_at;
-  brave_promotion.type = static_cast<int>(promotion->type);
-
   for (auto& observer : observers_) {
-    observer.OnPromotionFinished(
-        this,
-        result_converted,
-        brave_promotion);
+    observer.OnPromotionFinished(this, result, promotion->Clone());
   }
 
   if (promotion->type == ledger::PromotionType::ADS) {
@@ -1411,9 +1320,7 @@ void RewardsServiceImpl::OnAttestPromotion(
     }
   }
 
-  auto brave_promotion_ptr =
-      std::make_unique<brave_rewards::Promotion>(brave_promotion);
-  std::move(callback).Run(result_converted, std::move(brave_promotion_ptr));
+  std::move(callback).Run(result, std::move(promotion));
 }
 
 void RewardsServiceImpl::GetReconcileStamp(
@@ -1786,34 +1693,11 @@ void RewardsServiceImpl::TriggerOnRewardsMainEnabled(
     observer.OnRewardsMainEnabled(this, rewards_main_enabled);
 }
 
-void LedgerToServiceBalanceReport(
-    ledger::BalanceReportInfoPtr report,
-    brave_rewards::BalanceReport* new_report) {
-  if (!report || !new_report) {
-    return;
-  }
-
-  new_report->id = report->id;
-  new_report->grants = report->grants;
-  new_report->earning_from_ads = report->earning_from_ads;
-  new_report->auto_contribute = report->auto_contribute;
-  new_report->recurring_donation = report->recurring_donation;
-  new_report->one_time_donation = report->one_time_donation;
-}
-
 void RewardsServiceImpl::OnGetBalanceReport(
     GetBalanceReportCallback callback,
     const ledger::Result result,
     ledger::BalanceReportInfoPtr report) {
-  brave_rewards::BalanceReport newReport;
-  const int32_t converted_result = static_cast<int32_t>(result);
-  if (result == ledger::Result::LEDGER_ERROR || !report) {
-    std::move(callback).Run(converted_result, newReport);
-    return;
-  }
-
-  LedgerToServiceBalanceReport(std::move(report), &newReport);
-  std::move(callback).Run(converted_result, newReport);
+  std::move(callback).Run(result, std::move(report));
 }
 
 void RewardsServiceImpl::GetBalanceReport(
@@ -1821,8 +1705,7 @@ void RewardsServiceImpl::GetBalanceReport(
     const uint32_t year,
     GetBalanceReportCallback callback) {
   if (!Connected()) {
-    brave_rewards::BalanceReport newReport;
-    std::move(callback).Run(0, newReport);
+    std::move(callback).Run(ledger::Result::LEDGER_OK, nullptr);
     return;
   }
 
@@ -1894,7 +1777,7 @@ void RewardsServiceImpl::OnPanelPublisherInfo(
 
   for (auto& observer : private_observers_)
     observer.OnPanelPublisherInfo(this,
-                                  static_cast<int>(result),
+                                  result,
                                   info.get(),
                                   windowId);
 }
@@ -1984,26 +1867,7 @@ void RewardsServiceImpl::GetPublisherBanner(
 void RewardsServiceImpl::OnPublisherBanner(
     GetPublisherBannerCallback callback,
     ledger::PublisherBannerPtr banner) {
-  std::unique_ptr<brave_rewards::PublisherBanner> new_banner;
-  new_banner.reset(new brave_rewards::PublisherBanner());
-
-  if (!banner) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  new_banner->publisher_key = banner->publisher_key;
-  new_banner->title = banner->title;
-  new_banner->name = banner->name;
-  new_banner->description = banner->description;
-  new_banner->background = banner->background;
-  new_banner->logo = banner->logo;
-  new_banner->amounts = banner->amounts;
-  new_banner->links = base::FlatMapToMap(banner->links);
-  new_banner->provider = banner->provider;
-  new_banner->status = static_cast<uint32_t>(banner->status);
-
-  std::move(callback).Run(std::move(new_banner));
+  std::move(callback).Run(std::move(banner));
 }
 
 void RewardsServiceImpl::OnSaveRecurringTip(
@@ -2042,18 +1906,7 @@ void RewardsServiceImpl::OnMediaInlineInfoSaved(
     SaveMediaInfoCallback callback,
     const ledger::Result result,
     ledger::PublisherInfoPtr publisher) {
-  if (!Connected()) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-
-  std::unique_ptr<brave_rewards::ContentSite> site;
-
-  if (result == ledger::Result::LEDGER_OK) {
-    site = std::make_unique<brave_rewards::ContentSite>(
-        PublisherInfoToContentSite(*publisher));
-  }
-  std::move(callback).Run(std::move(site));
+  std::move(callback).Run(std::move(publisher));
 }
 
 void RewardsServiceImpl::SaveInlineMediaInfo(
@@ -2075,16 +1928,7 @@ void RewardsServiceImpl::SaveInlineMediaInfo(
 void RewardsServiceImpl::OnGetRecurringTips(
     GetRecurringTipsCallback callback,
     ledger::PublisherInfoList list) {
-    std::unique_ptr<brave_rewards::ContentSiteList> new_list(
-      new brave_rewards::ContentSiteList);
-
-  for (auto& publisher : list) {
-    brave_rewards::ContentSite site = PublisherInfoToContentSite(*publisher);
-    site.percentage = publisher->weight;
-    new_list->push_back(site);
-  }
-
-  std::move(callback).Run(std::move(new_list));
+  std::move(callback).Run(std::move(list));
 }
 
 void RewardsServiceImpl::GetRecurringTips(
@@ -2102,16 +1946,7 @@ void RewardsServiceImpl::GetRecurringTips(
 void RewardsServiceImpl::OnGetOneTimeTips(
     GetRecurringTipsCallback callback,
     ledger::PublisherInfoList list) {
-    std::unique_ptr<brave_rewards::ContentSiteList> new_list(
-      new brave_rewards::ContentSiteList);
-
-  for (auto& publisher : list) {
-    brave_rewards::ContentSite site = PublisherInfoToContentSite(*publisher);
-    site.percentage = publisher->weight;
-    new_list->push_back(site);
-  }
-
-  std::move(callback).Run(std::move(new_list));
+  std::move(callback).Run(std::move(list));
 }
 
 void RewardsServiceImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
@@ -2599,20 +2434,14 @@ void RewardsServiceImpl::OnTip(
     const std::string& publisher_key,
     const double amount,
     const bool recurring,
-    std::unique_ptr<brave_rewards::ContentSite> site) {
-  if (!Connected() || !site) {
+    ledger::PublisherInfoPtr publisher) {
+  if (!Connected() || !publisher) {
     return;
   }
-
-  auto info = ledger::PublisherInfo::New();
-  info->id = publisher_key;
-  info->name = site->name;
-  info->url = site->url;
-  info->provider = site->provider;
-  info->favicon_url = site->favicon_url;
+  publisher->id = publisher_key;
 
   bat_ledger_->SavePublisherInfo(
-      std::move(info),
+      std::move(publisher),
       base::BindOnce(&RewardsServiceImpl::OnTipPublisherSaved,
           AsWeakPtr(),
           publisher_key,
@@ -2738,15 +2567,14 @@ void RewardsServiceImpl::GetPendingContributionsTotal(
 
 void RewardsServiceImpl::PublisherListNormalized(
     ledger::PublisherInfoList list) {
-  ContentSiteList site_list;
-  for (const auto& publisher : list) {
-    if (publisher->percent >= 1) {
-      site_list.push_back(PublisherInfoToContentSite(*publisher));
-    }
-  }
-
   for (auto& observer : observers_) {
-    observer.OnPublisherListNormalized(this, site_list);
+    ledger::PublisherInfoList new_list;
+    for (const auto& publisher : list) {
+      if (publisher->percent >= 1) {
+        new_list.push_back(publisher->Clone());
+      }
+    }
+    observer.OnPublisherListNormalized(this, std::move(new_list));
   }
 }
 
@@ -2754,9 +2582,7 @@ void RewardsServiceImpl::RefreshPublisher(
     const std::string& publisher_key,
     RefreshPublisherCallback callback) {
   if (!Connected()) {
-    std::move(callback).Run(
-        static_cast<uint32_t>(ledger::PublisherStatus::NOT_VERIFIED),
-        "");
+    std::move(callback).Run(ledger::PublisherStatus::NOT_VERIFIED, "");
     return;
   }
   bat_ledger_->RefreshPublisher(
@@ -2771,7 +2597,7 @@ void RewardsServiceImpl::OnRefreshPublisher(
     RefreshPublisherCallback callback,
     const std::string& publisher_key,
     ledger::PublisherStatus status) {
-  std::move(callback).Run(static_cast<uint32_t>(status), publisher_key);
+  std::move(callback).Run(status, publisher_key);
 }
 
 const RewardsNotificationService::RewardsNotificationsMap&
@@ -2833,36 +2659,10 @@ void RewardsServiceImpl::OnShareURL(
   std::move(callback).Run(url);
 }
 
-PendingContributionInfo PendingContributionLedgerToRewards(
-    const ledger::PendingContributionInfoPtr contribution) {
-  PendingContributionInfo info;
-  info.id = contribution->id;
-  info.publisher_key = contribution->publisher_key;
-  info.type = static_cast<int>(contribution->type);
-  info.status = static_cast<uint32_t>(contribution->status);
-  info.name = contribution->name;
-  info.url = contribution->url;
-  info.provider = contribution->provider;
-  info.favicon_url = contribution->favicon_url;
-  info.amount = contribution->amount;
-  info.added_date = contribution->added_date;
-  info.viewing_id = contribution->viewing_id;
-  info.expiration_date = contribution->expiration_date;
-  return info;
-}
-
 void RewardsServiceImpl::OnGetPendingContributions(
     GetPendingContributionsCallback callback,
     ledger::PendingContributionInfoList list) {
-  std::unique_ptr<brave_rewards::PendingContributionInfoList> new_list(
-      new brave_rewards::PendingContributionInfoList);
-  for (auto &item : list) {
-    brave_rewards::PendingContributionInfo new_contribution =
-        PendingContributionLedgerToRewards(std::move(item));
-    new_list->push_back(new_contribution);
-  }
-
-  std::move(callback).Run(std::move(new_list));
+  std::move(callback).Run(std::move(list));
 }
 
 void RewardsServiceImpl::GetPendingContributions(
@@ -2880,7 +2680,7 @@ void RewardsServiceImpl::GetPendingContributions(
 void RewardsServiceImpl::OnPendingContributionRemoved(
   const ledger::Result result) {
   for (auto& observer : observers_) {
-    observer.OnPendingContributionRemoved(this, static_cast<int>(result));
+    observer.OnPendingContributionRemoved(this, result);
   }
 }
 
@@ -2898,7 +2698,7 @@ void RewardsServiceImpl::RemovePendingContribution(const uint64_t id) {
 void RewardsServiceImpl::OnRemoveAllPendingContributions(
   const ledger::Result result) {
   for (auto& observer : observers_) {
-    observer.OnPendingContributionRemoved(this, static_cast<int>(result));
+    observer.OnPendingContributionRemoved(this, result);
   }
 }
 
@@ -2930,9 +2730,8 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
     }
     case ledger::Result::PENDING_PUBLISHER_REMOVED:
     {
-      const auto result = static_cast<int>(ledger::Result::LEDGER_OK);
       for (auto& observer : observers_) {
-        observer.OnPendingContributionRemoved(this, result);
+        observer.OnPendingContributionRemoved(this, ledger::Result::LEDGER_OK);
       }
       break;
     }
@@ -2951,27 +2750,26 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
   }
 }
 
-void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
-                                        const ledger::Result result,
-                                        ledger::BalancePtr balance) {
-  auto new_balance = std::make_unique<brave_rewards::Balance>();
-
+void RewardsServiceImpl::OnFetchBalance(
+    FetchBalanceCallback callback,
+    const ledger::Result result,
+    ledger::BalancePtr balance) {
   if (balance) {
-    new_balance->total = balance->total;
-    new_balance->wallets = base::FlatMapToMap(balance->wallets);
-
     if (balance->total > 0) {
       profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
     }
 
     // Record stats.
-    double balance_minus_grant = CalcWalletBalanceForP3A(balance->wallets,
-                                                         balance->user_funds);
-    RecordWalletBalanceP3A(true, true,
-                           static_cast<size_t>(balance_minus_grant));
+    double balance_minus_grant = CalcWalletBalanceForP3A(
+        balance->wallets,
+        balance->user_funds);
+    RecordWalletBalanceP3A(
+        true,
+        true,
+        static_cast<size_t>(balance_minus_grant));
   }
 
-  std::move(callback).Run(static_cast<int>(result), std::move(new_balance));
+  std::move(callback).Run(result, std::move(balance));
 }
 
 void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
@@ -3087,23 +2885,7 @@ void RewardsServiceImpl::OnGetExternalWallet(
     GetExternalWalletCallback callback,
     const ledger::Result result,
     ledger::ExternalWalletPtr wallet) {
-  auto external =
-      std::make_unique<brave_rewards::ExternalWallet>();
-
-  if (wallet) {
-    external->token = wallet->token;
-    external->address = wallet->address;
-    external->status = static_cast<int>(wallet->status);
-    external->type = wallet_type;
-    external->verify_url = wallet->verify_url;
-    external->add_url = wallet->add_url;
-    external->withdraw_url = wallet->withdraw_url;
-    external->user_name = wallet->user_name;
-    external->account_url = wallet->account_url;
-    external->login_url = wallet->login_url;
-  }
-
-  std::move(callback).Run(static_cast<int>(result), std::move(external));
+  std::move(callback).Run(result, std::move(wallet));
 }
 
 void RewardsServiceImpl::GetExternalWallet(
@@ -3151,7 +2933,7 @@ void RewardsServiceImpl::OnProcessExternalWalletAuthorization(
     ProcessRewardsPageUrlCallback callback,
     const ledger::Result result,
     const std::map<std::string, std::string>& args) {
-  std::move(callback).Run(static_cast<int>(result), wallet_type, action, args);
+  std::move(callback).Run(result, wallet_type, action, args);
 }
 
 void RewardsServiceImpl::ProcessRewardsPageUrl(
@@ -3165,8 +2947,7 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
       base::SPLIT_WANT_NONEMPTY);
 
   if (path_items.size() < 2) {
-    const auto result = static_cast<int>(ledger::Result::LEDGER_ERROR);
-    std::move(callback).Run(result, "", "", {});
+    std::move(callback).Run(ledger::Result::LEDGER_ERROR, "", "", {});
     return;
   }
 
@@ -3195,10 +2976,8 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
     }
   }
 
-  const auto result = static_cast<int>(ledger::Result::LEDGER_ERROR);
-
   std::move(callback).Run(
-      result,
+      ledger::Result::LEDGER_ERROR,
       wallet_type,
       action,
       {});
@@ -3208,7 +2987,7 @@ void RewardsServiceImpl::OnDisconnectWallet(
     const std::string& wallet_type,
     const ledger::Result result) {
   for (auto& observer : observers_) {
-    observer.OnDisconnectWallet(this, static_cast<int>(result), wallet_type);
+    observer.OnDisconnectWallet(this, result, wallet_type);
   }
 }
 
@@ -3500,7 +3279,7 @@ void RewardsServiceImpl::GetAnonWalletStatus(
 void RewardsServiceImpl::OnGetAnonWalletStatus(
     GetAnonWalletStatusCallback callback,
     const ledger::Result result) {
-  std::move(callback).Run(static_cast<uint32_t>(result));
+  std::move(callback).Run(result);
 }
 
 void RewardsServiceImpl::GetMonthlyReport(
@@ -3519,74 +3298,11 @@ void RewardsServiceImpl::GetMonthlyReport(
           std::move(callback)));
 }
 
-void ConvertLedgerToServiceTransactionReportList(
-    ledger::TransactionReportInfoList list,
-    std::vector<TransactionReportInfo>* converted_list) {
-  DCHECK(converted_list);
-
-  TransactionReportInfo info;
-  for (const auto& item : list) {
-    info.amount = item->amount;
-    info.type = static_cast<uint32_t>(item->type);
-    info.processor = static_cast<uint32_t>(item->processor);
-    info.created_at = item->created_at;
-
-    converted_list->push_back(info);
-  }
-}
-
-void ConvertLedgerToServiceContributionReportList(
-    ledger::ContributionReportInfoList list,
-    std::vector<ContributionReportInfo>* converted_list) {
-  DCHECK(converted_list);
-
-  ContributionReportInfo info;
-  for (auto& item : list) {
-    info.amount = item->amount;
-    info.type = static_cast<uint32_t>(item->type);
-    info.processor = static_cast<uint32_t>(item->processor);
-    info.created_at = item->created_at;
-    info.publishers = {};
-    for (auto& publisher : item->publishers) {
-      info.publishers.push_back(PublisherInfoToContentSite(*publisher));
-    }
-
-    converted_list->push_back(info);
-  }
-}
-
 void RewardsServiceImpl::OnGetMonthlyReport(
     GetMonthlyReportCallback callback,
     const ledger::Result result,
     ledger::MonthlyReportInfoPtr report) {
-  MonthlyReport monthly_report;
-
-  if (result != ledger::Result::LEDGER_OK || !report) {
-    std::move(callback).Run(monthly_report);
-    return;
-  }
-
-  BalanceReport balance_report;
-  LedgerToServiceBalanceReport(std::move(report->balance), &balance_report);
-  monthly_report.balance = balance_report;
-
-  std::vector<TransactionReportInfo> transaction_report;
-  if (!report->transactions.empty()) {
-    ConvertLedgerToServiceTransactionReportList(
-        std::move(report->transactions),
-        &transaction_report);
-  }
-  monthly_report.transactions = transaction_report;
-
-  std::vector<ContributionReportInfo> contribution_report;
-  if (!report->contributions.empty()) {
-    ConvertLedgerToServiceContributionReportList(
-        std::move(report->contributions),
-        &contribution_report);
-  }
-  monthly_report.contributions = contribution_report;
-
-  std::move(callback).Run(monthly_report);
+  std::move(callback).Run(std::move(report));
 }
 
 void RewardsServiceImpl::ReconcileStampReset() {
@@ -3636,7 +3352,7 @@ void RewardsServiceImpl::GetCreateScript(
 
 void RewardsServiceImpl::PendingContributionSaved(const ledger::Result result) {
   for (auto& observer : observers_) {
-    observer.OnPendingContributionSaved(this, static_cast<int>(result));
+    observer.OnPendingContributionSaved(this, result);
   }
 }
 
@@ -3682,27 +3398,7 @@ void RewardsServiceImpl::GetAllContributions(
 void RewardsServiceImpl::OnGetAllContributions(
     GetAllContributionsCallback callback,
     ledger::ContributionInfoList contributions) {
-  std::vector<brave_rewards::ContributionInfo> converted;
-  for (const auto& contribution_item : contributions) {
-    brave_rewards::ContributionInfo contribution;
-    contribution.contribution_id = contribution_item->contribution_id;
-    contribution.amount = contribution_item->amount;
-    contribution.type = static_cast<int>(contribution_item->type);
-    contribution.step = static_cast<int>(contribution_item->step);
-    contribution.retry_count = contribution_item->retry_count;
-    contribution.created_at = contribution_item->created_at;
-    contribution.processor = static_cast<int>(contribution_item->processor);
-    for (const auto& publisher_item : contribution_item->publishers) {
-      brave_rewards::ContributionPublisher publisher;
-      publisher.contribution_id = publisher_item->contribution_id;
-      publisher.publisher_key = publisher_item->publisher_key;
-      publisher.total_amount = publisher_item->total_amount;
-      publisher.contributed_amount = publisher_item->contributed_amount;
-      contribution.publishers.push_back(std::move(publisher));
-    }
-    converted.push_back(std::move(contribution));
-  }
-  std::move(callback).Run(std::move(converted));
+  std::move(callback).Run(std::move(contributions));
 }
 
 void RewardsServiceImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
@@ -3719,25 +3415,14 @@ void RewardsServiceImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
 void RewardsServiceImpl::OnGetAllPromotions(
     GetAllPromotionsCallback callback,
     base::flat_map<std::string, ledger::PromotionPtr> promotions) {
-  std::vector<brave_rewards::Promotion> converted_rewards;
+  ledger::PromotionList list;
   for (const auto& promotion : promotions) {
     if (!promotion.second) {
       continue;
     }
-
-    brave_rewards::Promotion properties;
-    properties.promotion_id = promotion.second->id;
-    properties.amount = promotion.second->approximate_value;
-    properties.expires_at = promotion.second->expires_at;
-    properties.type = static_cast<uint32_t>(promotion.second->type);
-    properties.status = static_cast<uint32_t>(promotion.second->status);
-    properties.claimed_at = promotion.second->claimed_at;
-    properties.legacy_claimed = promotion.second->legacy_claimed;
-    properties.claim_id = promotion.second->claim_id;
-    properties.version = promotion.second->version;
-    converted_rewards.push_back(properties);
+    list.push_back(promotion.second->Clone());
   }
-  std::move(callback).Run(std::move(converted_rewards));
+  std::move(callback).Run(std::move(list));
 }
 
 void RewardsServiceImpl::ClearAllNotifications() {
@@ -3817,16 +3502,7 @@ void RewardsServiceImpl::GetEventLogs(GetEventLogsCallback callback) {
 void RewardsServiceImpl::OnGetEventLogs(
     GetEventLogsCallback callback,
     ledger::EventLogs logs) {
-  std::vector<brave_rewards::EventLog> event_logs;
-  for (const auto& log : logs) {
-    brave_rewards::EventLog properties;
-    properties.event_log_id = log->event_log_id;
-    properties.key = log->key;
-    properties.value = log->value;
-    properties.created_at = log->created_at;
-    event_logs.push_back(properties);
-  }
-  std::move(callback).Run(std::move(event_logs));
+  std::move(callback).Run(std::move(logs));
 }
 
 }  // namespace brave_rewards

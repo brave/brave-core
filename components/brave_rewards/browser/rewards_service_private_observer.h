@@ -12,16 +12,17 @@
 namespace brave_rewards {
 
 class RewardsService;
-struct BalanceReport;
 
 class RewardsServicePrivateObserver : public base::CheckedObserver {
  public:
   ~RewardsServicePrivateObserver() override {}
+
   virtual void OnPanelPublisherInfo(
       RewardsService* rewards_service,
-      int error_code,
+      const ledger::Result result,
       const ledger::PublisherInfo* info,
       uint64_t windowId) {}
+
   virtual void OnRewardsMainEnabled(
       RewardsService* rewards_service,
       bool rewards_main_enabled) {}

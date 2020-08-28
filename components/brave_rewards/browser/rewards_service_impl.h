@@ -30,10 +30,7 @@
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "brave/components/brave_rewards/browser/balance_report.h"
-#include "brave/components/brave_rewards/browser/content_site.h"
 #include "ui/gfx/image/image.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 #if defined(OS_ANDROID)
@@ -268,7 +265,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       const double amount,
       const bool recurring,
-      std::unique_ptr<brave_rewards::ContentSite> site) override;
+      ledger::PublisherInfoPtr publisher) override;
 
   void OnTip(
       const std::string& publisher_key,
@@ -363,7 +360,7 @@ class RewardsServiceImpl : public RewardsService,
                               const std::string& data);
   void OnGetRewardsParameters(
       GetRewardsParametersCallback callback,
-      ledger::RewardsParametersPtr properties);
+      ledger::RewardsParametersPtr parameters);
   void OnFetchPromotions(
     const ledger::Result result,
     ledger::PromotionList promotions);

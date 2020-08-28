@@ -61,9 +61,8 @@ void EnableRewardsViaCode(
   base::RunLoop run_loop;
   bool wallet_created = false;
   rewards_service->CreateWallet(
-      base::BindLambdaForTesting([&](int32_t result) {
-        wallet_created =
-            (result == static_cast<int32_t>(ledger::Result::WALLET_CREATED));
+      base::BindLambdaForTesting([&](const ledger::Result result) {
+        wallet_created = result == ledger::Result::WALLET_CREATED;
         run_loop.Quit();
       }));
 

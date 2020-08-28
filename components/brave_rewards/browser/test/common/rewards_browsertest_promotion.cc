@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
@@ -35,9 +37,9 @@ void RewardsBrowserTestPromotion::WaitForPromotionInitialization() {
 
 void RewardsBrowserTestPromotion::OnFetchPromotions(
     brave_rewards::RewardsService* rewards_service,
-    unsigned int result,
-    const std::vector<brave_rewards::Promotion>& promotions) {
-  ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
+    const ledger::Result result,
+    const ledger::PromotionList& list) {
+  ASSERT_EQ(result, ledger::Result::LEDGER_OK);
   initialized_ = true;
 
   if (wait_for_initialization_loop_) {
@@ -58,14 +60,14 @@ void RewardsBrowserTestPromotion::WaitForPromotionFinished(
 
 void RewardsBrowserTestPromotion::OnPromotionFinished(
     brave_rewards::RewardsService* rewards_service,
-    const uint32_t result,
-    brave_rewards::Promotion promotion) {
+    const ledger::Result result,
+    ledger::PromotionPtr promotion) {
   if (should_succeed_) {
     ASSERT_EQ(static_cast<ledger::Result>(result), ledger::Result::LEDGER_OK);
   }
 
   finished_ = true;
-  promotion_ = promotion;
+  promotion_ = std::move(promotion);
 
   if (wait_for_finished_loop_) {
     wait_for_finished_loop_->Quit();
@@ -89,8 +91,8 @@ void RewardsBrowserTestPromotion::OnUnblindedTokensReady(
   }
 }
 
-brave_rewards::Promotion RewardsBrowserTestPromotion::GetPromotion() {
-  return promotion_;
+ledger::PromotionPtr RewardsBrowserTestPromotion::GetPromotion() {
+  return promotion_->Clone();
 }
 
 std::string RewardsBrowserTestPromotion::GetPromotionId() {
