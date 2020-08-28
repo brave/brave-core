@@ -211,6 +211,10 @@ declare namespace chrome.rewardsNotifications {
   }
 }
 
+declare namespace chrome.greaselion {
+  const isGreaselionExtension: (id: string, callback: (valid: boolean) => void) => {}
+}
+
 type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'
 
 interface BlockDetails {

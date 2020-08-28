@@ -28,6 +28,8 @@ source_set("extensions") {
     "api/brave_shields_api.h",
     "api/brave_theme_api.cc",
     "api/brave_theme_api.h",
+    "api/greaselion_api.cc",
+    "api/greaselion_api.h",
     "api/rewards_notifications_api.cc",
     "api/rewards_notifications_api.h",
     "api/settings_private/brave_prefs_util.cc",

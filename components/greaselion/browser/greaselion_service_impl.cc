@@ -189,6 +189,11 @@ GreaselionServiceImpl::~GreaselionServiceImpl() {
   extension_registry_->RemoveObserver(this);
 }
 
+bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
+  return std::find(greaselion_extensions_.begin(), greaselion_extensions_.end(),
+                   id) != greaselion_extensions_.end();
+}
+
 void GreaselionServiceImpl::UpdateInstalledExtensions() {
   if (update_in_progress_)
     return;

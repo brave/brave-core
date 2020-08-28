@@ -34,6 +34,7 @@ class GreaselionService : public KeyedService,
 
   virtual void SetFeatureEnabled(GreaselionFeature feature, bool enabled) = 0;
   virtual void UpdateInstalledExtensions() = 0;
+  virtual bool IsGreaselionExtension(const std::string& id) = 0;
   virtual bool ready() = 0;
 
   // implementation of our own observers
