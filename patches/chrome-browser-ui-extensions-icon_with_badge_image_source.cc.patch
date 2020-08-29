@@ -1,24 +1,20 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
-index 3c34596d3e4973d06fcae9512412baada4cd9d35..1b6fd8bc2391982d666bb61080b4ba0fdb05dc09 100644
+index 0a0b06b2c656020ce1bc35f2db3387953c74f213..6a2b547d20fb6f8a02718698db4fc145a1f7f167 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
-@@ -146,14 +146,18 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
+@@ -146,6 +146,7 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
    gfx::ImageSkiaRep rep = skia.GetRepresentation(canvas->image_scale());
    if (rep.scale() != canvas->image_scale()) {
-     skia.AddRepresentation(ScaleImageSkiaRep(
--        rep, ExtensionAction::ActionIconSize(), canvas->image_scale()));
-+        rep, GetCustomGraphicSize().value_or(ExtensionAction::ActionIconSize()), canvas->image_scale()));
+     skia.AddRepresentation(
++        BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_DRAW_1
+         ScaleImageSkiaRep(rep, extensions::ExtensionAction::ActionIconSize(),
+                           canvas->image_scale()));
    }
-   if (grayscale_)
-     skia = gfx::ImageSkiaOperations::CreateHSLShiftedImage(skia, {-1, 0, 0.6});
- 
-   int x_offset =
-+    GetCustomGraphicXOffset().has_value() ?
-+      GetCustomGraphicXOffset().value() :
-       std::floor((size().width() - ExtensionAction::ActionIconSize()) / 2.0);
-   int y_offset =
-+    GetCustomGraphicYOffset().has_value() ?
-+      GetCustomGraphicYOffset().value() :
-       std::floor((size().height() - ExtensionAction::ActionIconSize()) / 2.0);
+@@ -156,6 +157,7 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
+       (size().width() - extensions::ExtensionAction::ActionIconSize()) / 2.0);
+   int y_offset = std::floor(
+       (size().height() - extensions::ExtensionAction::ActionIconSize()) / 2.0);
++  BRAVE_ICON_WITH_BADGE_IMAGE_SOURCE_DRAW_2
    canvas->DrawImageInt(skia, x_offset, y_offset);
  
+   // Draw a badge on the provided browser action icon's canvas.
