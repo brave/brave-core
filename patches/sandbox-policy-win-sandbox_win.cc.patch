@@ -1,0 +1,12 @@
+diff --git a/sandbox/policy/win/sandbox_win.cc b/sandbox/policy/win/sandbox_win.cc
+index 9b613183da9f80195cd8a3c2511478b8f4a316a0..81fa2d9873cb2c09d2f06c8629b1160162867950 100644
+--- a/sandbox/policy/win/sandbox_win.cc
++++ b/sandbox/policy/win/sandbox_win.cc
+@@ -887,6 +887,7 @@ ResultCode SandboxWin::StartSandboxedProcess(
+       launcher_process_command_line.HasSwitch(switches::kNoSandbox)) {
+     base::LaunchOptions options;
+     options.handles_to_inherit = handles_to_inherit;
++    BraveLaunchOption(cmd_line, &options);
+     BOOL in_job = true;
+     // Prior to Windows 8 nested jobs aren't possible.
+     if (sandbox_type == SandboxType::kNetwork &&

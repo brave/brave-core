@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationWrapperBuilderFactory.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationWrapperBuilderFactory.java
+index cf33525790377668a857f209c651a6759a6e30a5..f83e924c6d7caef6f87f2b01d7998ca46bbabe81 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationWrapperBuilderFactory.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationWrapperBuilderFactory.java
+@@ -71,7 +71,7 @@ public class NotificationWrapperBuilderFactory {
+         }
+ 
+         NotificationManagerProxyImpl notificationManagerProxy =
+-                new NotificationManagerProxyImpl(context);
++                new BraveNotificationManagerProxyImpl(context);
+ 
+         ChannelsInitializer channelsInitializer = new ChannelsInitializer(notificationManagerProxy,
+                 ChromeChannelDefinitions.getInstance(), context.getResources());

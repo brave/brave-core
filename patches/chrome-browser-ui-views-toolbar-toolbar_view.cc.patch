@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index bb07dd6f1b445be81d31319a738f1b058e8b5e3c..bcae1d7023465bed030fc00da9bd285b8548198f 100644
+index 31fec4eea29c7e1a284d4e30e74a8b48723cb9e0..ed2c6d8c65f2146a184cc081ad0609007f227ef3 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -242,7 +242,7 @@ void ToolbarView::Init() {
+@@ -286,7 +286,7 @@ void ToolbarView::Init() {
+   } else {
+     // TODO(crbug.com/932818): Remove this once the
+     // |kAutofillEnableToolbarStatusChip| is fully launched.
+-    avatar_ = AddChildView(std::make_unique<AvatarToolbarButton>(browser_));
++    avatar_ = AddChildView(std::make_unique<BraveAvatarToolbarButton>(browser_));
+     avatar_->SetVisible(show_avatar_toolbar_button);
+   }
  
-   std::unique_ptr<AvatarToolbarButton> avatar;
-   if (show_avatar_toolbar_button)
--    avatar = std::make_unique<AvatarToolbarButton>(browser_);
-+    avatar = std::make_unique<BraveAvatarToolbarButton>(browser_);
- 
-   // Always add children in order from left to right, for accessibility.
-   back_ = AddChildView(std::move(back));
