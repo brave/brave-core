@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/settings/privacy_page/cookies_page.html b/chrome/browser/resources/settings/privacy_page/cookies_page.html
+index c0148005ffbcfe1f1540321dfbaa06341afedeee..3d6c97a322923f12b1a0216c8b7d0ac23e8e8947 100644
+--- a/chrome/browser/resources/settings/privacy_page/cookies_page.html
++++ b/chrome/browser/resources/settings/privacy_page/cookies_page.html
+@@ -82,6 +82,7 @@
+             </div>
+           </settings-collapse-radio-button>
+         </template>
++<if expr="_google_chrome">
+         <settings-collapse-radio-button id="blockThirdParty"
+             pref="[[prefs.generated.cookie_primary_setting]]"
+             name="[[cookiePrimarySettingEnum_.BLOCK_THIRD_PARTY]]"
+@@ -97,6 +98,7 @@
+             </div>
+           </div>
+         </settings-collapse-radio-button>
++</if>        
+         <settings-collapse-radio-button id="blockAll"
+             pref="[[blockAllPref_]]"
+             name="[[cookiePrimarySettingEnum_.BLOCK_ALL]]"
