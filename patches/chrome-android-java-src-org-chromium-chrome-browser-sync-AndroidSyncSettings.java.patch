@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
-index 77a03229de8ff36630ac3dfca718d4641b26950b..4b90aff6e303c3b3cbe51cd53e6a07e3128ba849 100644
+index bba285e86760495565a4ec622569c4761f610069..57db76ddcd7d8e3bb072e74a521ba9c9d9047e61 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
-@@ -68,7 +68,7 @@ public class AndroidSyncSettings {
+@@ -73,7 +73,7 @@ public class AndroidSyncSettings {
          ThreadUtils.assertOnUiThread();
          if (sInstance == null) {
              SyncContentResolverDelegate contentResolver = new SystemSyncContentResolverDelegate();

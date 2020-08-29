@@ -1,11 +1,11 @@
 diff --git a/extensions/browser/extension_event_histogram_value.h b/extensions/browser/extension_event_histogram_value.h
-index 626f5a033622f799a443debc63e6e7335766eb8b..790c127004a64f9bf13594f3d23969de7da7cd40 100644
+index 5ba39dad92c1daa65691fbc201db83b0d1b8c295..b3b7d03a3d5fd7c8e53a127dc240396da0d3a5b2 100644
 --- a/extensions/browser/extension_event_histogram_value.h
 +++ b/extensions/browser/extension_event_histogram_value.h
-@@ -478,6 +478,20 @@ enum HistogramValue {
-   INPUT_IME_ON_ASSISTIVE_WINDOW_BUTTON_CLICKED = 456,
-   INPUT_IME_ON_SUGGESTIONS_CHANGED = 457,
+@@ -480,6 +480,20 @@ enum HistogramValue {
    INPUT_IME_ON_INPUT_METHOD_OPTIONS_CHANGED = 458,
+   CERTIFICATEPROVIDER_ON_CERTIFICATES_UPDATE_REQUESTED = 459,
+   CERTIFICATEPROVIDER_ON_SIGNATURE_REQUESTED = 460,
 +
 +  BRAVE_START = 600,
 +  BRAVE_AD_BLOCKED,

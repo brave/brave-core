@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index 571727c4b2b6ebdea32c6896341490306e001067..58d6db27546c0e788cccefd1ba936a6c31cacb4a 100644
+index 047b71e07ebd4851093290da359bc8595cbcdf68..23582a9504dbc939a7c2e3e98debdf78e02d0ccf 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -12,6 +12,7 @@ import("//third_party/icu/config.gni")
@@ -10,7 +10,7 @@ index 571727c4b2b6ebdea32c6896341490306e001067..58d6db27546c0e788cccefd1ba936a6c
  
  declare_args() {
    # The Chrome archive is compressed in official builds to reduce the size of
-@@ -185,6 +186,9 @@ template("generate_mini_installer") {
+@@ -190,6 +191,9 @@ template("generate_mini_installer") {
        "//third_party/icu:icudata",
        chrome_dll_target,
      ]

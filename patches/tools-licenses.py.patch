@@ -1,5 +1,5 @@
 diff --git a/tools/licenses.py b/tools/licenses.py
-index dd946fcc7c3506c0abd4237bdcfc8d0c818ac93d..8dba2fcc98f6721523765fcdebac243aa378b7db 100755
+index 5d27b2ec23386d4627e4504f199a99af41ed601b..63ed73662f597f8f467ff5ac90cc110a324abc8f 100755
 --- a/tools/licenses.py
 +++ b/tools/licenses.py
 @@ -35,6 +35,7 @@ else:
@@ -18,7 +18,7 @@ index dd946fcc7c3506c0abd4237bdcfc8d0c818ac93d..8dba2fcc98f6721523765fcdebac243a
  
  # Special value for 'License File' field used to indicate that the license file
  # should not be used in about:credits.
-@@ -498,7 +500,8 @@ def FindThirdPartyDirs(prune_paths, root):
+@@ -497,7 +499,8 @@ def FindThirdPartyDirs(prune_paths, root):
        if skip in dirs:
          dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index dd946fcc7c3506c0abd4237bdcfc8d0c818ac93d..8dba2fcc98f6721523765fcdebac243a
        # Add all subdirectories that are not marked for skipping.
        for dir in dirs:
          dirpath = os.path.join(path, dir)
-@@ -683,7 +686,8 @@ def GenerateCredits(
+@@ -682,7 +685,8 @@ def GenerateCredits(
    for path in third_party_dirs:
      try:
        metadata = ParseDir(path, _REPOSITORY_ROOT)

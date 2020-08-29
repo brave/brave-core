@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-index c80f25fc846100e3877a9dcdd89d9baf3a80aaaa..8b5a64f66e8170eceba79a23ce71daa2385ec665 100644
+index 0ee14007ed077f7073a02616a3da325535e5648d..5c67971645c05af77487db4fb7957ff57b6d8d0a 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.cc
-@@ -220,6 +220,7 @@ void AvatarToolbarButton::NotifyClick(const ui::Event& event) {
+@@ -240,6 +240,7 @@ void AvatarToolbarButton::NotifyClick(const ui::Event& event) {
  }
  
  base::string16 AvatarToolbarButton::GetAvatarTooltipText() const {

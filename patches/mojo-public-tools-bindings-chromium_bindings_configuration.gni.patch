@@ -1,5 +1,5 @@
 diff --git a/mojo/public/tools/bindings/chromium_bindings_configuration.gni b/mojo/public/tools/bindings/chromium_bindings_configuration.gni
-index e40fa41f5b9e91bbadc587917f331d520b5d7d41..e9f0a7fa829ebf959958751b9b23577baee3136e 100644
+index 7fcae9b310238d216b993b1719220c07ed3db752..017bff74dbf172038a8753e9783791074b4e7833 100644
 --- a/mojo/public/tools/bindings/chromium_bindings_configuration.gni
 +++ b/mojo/public/tools/bindings/chromium_bindings_configuration.gni
 @@ -4,6 +4,7 @@

@@ -1,5 +1,5 @@
 diff --git a/build/config/BUILDCONFIG.gn b/build/config/BUILDCONFIG.gn
-index 4cc6bfc45e647e656934b331793faef1ba0f4b14..656506b35c04f20e44f843af178b1edbb99c5e85 100644
+index 284a7da8868dc7fc46768c9ea92cc1506d887c02..3d891864428b542384c9f49c3ac56fbb46e68b83 100644
 --- a/build/config/BUILDCONFIG.gn
 +++ b/build/config/BUILDCONFIG.gn
 @@ -419,6 +419,7 @@ set_sources_assignment_filter(sources_assignment_filter)

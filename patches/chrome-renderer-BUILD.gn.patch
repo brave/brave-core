@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index c35fa9d75f4d655e337a578b6a3126f3dad496b2..4f951ac0c761a6634d39ff03a186bea1beaba6d5 100644
+index dba9d4e87d5e612b6604dbbd1c7f2a493c393f42..39973171d54dc95e96ef780ac111b992f225550a 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
-@@ -140,6 +140,7 @@ static_library("renderer") {
+@@ -133,6 +133,7 @@ static_library("renderer") {
    public_deps = [ "//components/contextual_search:buildflags" ]
  
    deps = [
