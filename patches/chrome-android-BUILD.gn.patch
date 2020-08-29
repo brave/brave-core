@@ -1,13 +1,13 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 38260acc3945fea99c28e5f173c1c701983d2139..028587c5cf3962eed26cfd5b311d66294ac5622b 100644
+index 7d145ac9bc1b43f246ae3d749d639af5703b0638..041903ff75d512c35706f3bba09df1342a916e7b 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -221,6 +221,7 @@ android_resources("chrome_app_java_resources") {
+@@ -222,6 +222,7 @@ android_resources("chrome_app_java_resources") {
      "//third_party/android_deps:androidx_recyclerview_recyclerview_java",
      "//third_party/android_deps:com_google_android_material_material_java",
    ]
 +  deps += brave_chrome_app_java_resources_deps sources += brave_java_resources
-   custom_package = "org.chromium.chrome"
+   create_srcjar = false
  }
  
 @@ -499,6 +500,7 @@ android_library("chrome_java") {

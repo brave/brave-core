@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/cookies_page.html b/chrome/browser/resources/settings/privacy_page/cookies_page.html
-index c0148005ffbcfe1f1540321dfbaa06341afedeee..3d6c97a322923f12b1a0216c8b7d0ac23e8e8947 100644
+index c0148005ffbcfe1f1540321dfbaa06341afedeee..537f625ddf43efbc2de6bc3eaf9c6b5c433cd945 100644
 --- a/chrome/browser/resources/settings/privacy_page/cookies_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/cookies_page.html
 @@ -82,6 +82,7 @@
@@ -14,7 +14,7 @@ index c0148005ffbcfe1f1540321dfbaa06341afedeee..3d6c97a322923f12b1a0216c8b7d0ac2
              </div>
            </div>
          </settings-collapse-radio-button>
-+</if>        
++</if>
          <settings-collapse-radio-button id="blockAll"
              pref="[[blockAllPref_]]"
              name="[[cookiePrimarySettingEnum_.BLOCK_ALL]]"

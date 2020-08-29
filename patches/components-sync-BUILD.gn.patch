@@ -1,10 +1,10 @@
 diff --git a/components/sync/BUILD.gn b/components/sync/BUILD.gn
-index 8ee5e2d2c0c399516ff5dc8187124e91a943594c..38b616a6bd3a3e812255d66291f023e0e9b835be 100644
+index 3fa43324ec4212b0a9a5a07eeaf21f333f66f5fd..d4f8d8cde096cecd41d4ba2b0193f2c8c2197f63 100644
 --- a/components/sync/BUILD.gn
 +++ b/components/sync/BUILD.gn
-@@ -382,6 +382,7 @@ jumbo_static_library("rest_of_sync") {
-     "syncable/write_transaction_info.cc",
-     "syncable/write_transaction_info.h",
+@@ -306,6 +306,7 @@ jumbo_static_library("rest_of_sync") {
+     "nigori/pending_local_nigori_commit.cc",
+     "nigori/pending_local_nigori_commit.h",
    ]
 +  sources += brave_components_sync_sources
  

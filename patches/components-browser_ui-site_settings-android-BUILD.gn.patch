@@ -1,5 +1,5 @@
 diff --git a/components/browser_ui/site_settings/android/BUILD.gn b/components/browser_ui/site_settings/android/BUILD.gn
-index 28cbf5f0138f0af5413d4916da8439005303d7d7..04a24173d795e708218c3970bd2b2ff2e801b87b 100644
+index 5a285fd0961e2d4c78c85ae46484e9adf2fdb160..0c59dfa094a0b041f76ff60a326668c61c0272be 100644
 --- a/components/browser_ui/site_settings/android/BUILD.gn
 +++ b/components/browser_ui/site_settings/android/BUILD.gn
 @@ -74,6 +74,7 @@ android_library("java") {
@@ -10,7 +10,7 @@ index 28cbf5f0138f0af5413d4916da8439005303d7d7..04a24173d795e708218c3970bd2b2ff2
    annotation_processor_deps = [ "//base/android/jni_generator:jni_processor" ]
    deps = [
      ":java_resources",
-@@ -208,5 +209,6 @@ android_resources("java_resources") {
+@@ -210,5 +211,6 @@ android_resources("java_resources") {
      "//components/permissions/android:java_resources",
      "//third_party/android_deps:android_support_v7_appcompat_java",
    ]
