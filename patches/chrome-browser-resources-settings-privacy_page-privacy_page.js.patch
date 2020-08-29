@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.js b/chrome/browser/resources/settings/privacy_page/privacy_page.js
-index 970352dadf7e4f1429fbc528bee4905b6d2b8c79..92589b01fe06bd3a996234aaefe3a69bdf25dff2 100644
+index 7f587b3fbfc366410307ded5d65dbe339c331e2c..47b3718289ef6d67d532bc8fc5b162ca06223a90 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.js
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.js
-@@ -22,6 +22,7 @@ import '../prefs/prefs.m.js';
+@@ -17,6 +17,7 @@ import '../prefs/prefs.m.js';
  import '../settings_page/settings_animated_pages.m.js';
  import '../settings_page/settings_subpage.m.js';
  import '../settings_shared_css.m.js';

@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
-index 84ccfac4a2c9306c53eff4d7dc445d34ee71244b..83a7151795e1e56513fccf91d72989d387497387 100644
+index 632c82b559a8dbd62cc2052c2e27cbd1b384cea4..cf0c31a03cc0e1a012aad71eea0185e6fb91ee6a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/SyncAndServicesSettings.java
-@@ -75,7 +75,7 @@ import org.chromium.ui.widget.ButtonCompat;
+@@ -76,7 +76,7 @@ import org.chromium.ui.widget.ButtonCompat;
  /**
   * Settings fragment to enable Sync and other services that communicate with Google.
   */

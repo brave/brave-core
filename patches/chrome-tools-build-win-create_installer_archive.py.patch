@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index ffbf9ec0727b9a81eb4b8488ae67b797ec81a437..8d9052c3f6b6e068c5409d695362f187c142382a 100755
+index 818e836776cb99acb7e6e64bd5ebd3ac26c58c33..142d09ef2468b2666552296379f5d57916a837fd 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -42,6 +42,7 @@ SETUP_PATCH_FILE_PREFIX = "setup_patch"
@@ -10,7 +10,7 @@ index ffbf9ec0727b9a81eb4b8488ae67b797ec81a437..8d9052c3f6b6e068c5409d695362f187
  
  g_archive_inputs = []
  
-@@ -112,6 +113,7 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
+@@ -113,6 +114,7 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
    if enable_hidpi == '1':
      CopySectionFilesToStagingDir(config, 'HIDPI', staging_dir, build_dir,
                                   verbose)
@@ -18,7 +18,7 @@ index ffbf9ec0727b9a81eb4b8488ae67b797ec81a437..8d9052c3f6b6e068c5409d695362f187
  
    if include_snapshotblob == '1':
      CopySectionFilesToStagingDir(config, 'SNAPSHOTBLOB', staging_dir, build_dir,
-@@ -179,7 +181,7 @@ def GetPrevVersion(build_dir, temp_dir, last_chrome_installer, output_name):
+@@ -184,7 +186,7 @@ def GetPrevVersion(build_dir, temp_dir, last_chrome_installer, output_name):
                                     output_name + ARCHIVE_SUFFIX)
    cmd = [lzma_exec,
           'x',
@@ -27,7 +27,7 @@ index ffbf9ec0727b9a81eb4b8488ae67b797ec81a437..8d9052c3f6b6e068c5409d695362f187
           prev_archive_file,
           'Chrome-bin/*/chrome.dll',]
    RunSystemCommand(cmd, options.verbose)
-@@ -551,6 +553,7 @@ def main(options):
+@@ -558,6 +560,7 @@ def main(options):
    if prev_version:
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
@@ -35,7 +35,7 @@ index ffbf9ec0727b9a81eb4b8488ae67b797ec81a437..8d9052c3f6b6e068c5409d695362f187
  
    # Name of the archive file built (for example - chrome.7z or
    # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
-@@ -622,6 +625,7 @@ def _ParseOptions():
+@@ -631,6 +634,7 @@ def _ParseOptions():
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)

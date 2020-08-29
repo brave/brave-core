@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-index a6abcb78a33ec43ce42d390fe8bd1beefd201162..4ae6d14c6303aa18a30f44a3927761049bf26292 100644
+index 687aa0dab62f8db0e6aeca315861a4407c8f672a..0870532a4097fed6b58d903a0dd9f1507b1211f6 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
-@@ -189,7 +189,7 @@ import java.util.Locale;
+@@ -179,7 +179,7 @@ import java.util.Locale;
   * This is the main activity for ChromeMobile when not running in document mode.  All the tabs
   * are accessible via a chrome specific tab switching UI.
   */
@@ -11,7 +11,7 @@ index a6abcb78a33ec43ce42d390fe8bd1beefd201162..4ae6d14c6303aa18a30f44a392776104
          implements ChromeAccessibilityUtil.Observer {
      private static final String TAG = "ChromeTabbedActivity";
  
-@@ -1133,7 +1133,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1131,7 +1131,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          if (ReengagementNotificationController.isEnabled()) {
              if (mCallbackController != null) {
                  new OneShotCallback<>(
@@ -20,7 +20,7 @@ index a6abcb78a33ec43ce42d390fe8bd1beefd201162..4ae6d14c6303aa18a30f44a392776104
                              assert profile != null : "Unexpectedly null profile from TabModel.";
                              if (profile == null) return;
  
-@@ -1710,7 +1710,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1667,7 +1667,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
  
      @Override
      public AppMenuPropertiesDelegate createAppMenuPropertiesDelegate() {
@@ -29,7 +29,7 @@ index a6abcb78a33ec43ce42d390fe8bd1beefd201162..4ae6d14c6303aa18a30f44a392776104
                  getMultiWindowModeStateDispatcher(), getTabModelSelector(), getToolbarManager(),
                  getWindow().getDecorView(), this,
                  mOverviewModeController.mOverviewModeBehaviorSupplier, mBookmarkBridgeSupplier);
-@@ -1733,9 +1733,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -1691,9 +1691,9 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
                  }
              };
          }
@@ -41,7 +41,7 @@ index a6abcb78a33ec43ce42d390fe8bd1beefd201162..4ae6d14c6303aa18a30f44a392776104
                          tabDelegateFactorySupplier, true, overviewNTPCreator));
      }
  
-@@ -2124,7 +2124,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
+@@ -2082,7 +2082,7 @@ public class ChromeTabbedActivity extends ChromeActivity<ChromeActivityComponent
          }
      }
  

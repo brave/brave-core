@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/startup_tab_provider.cc b/chrome/browser/ui/startup/startup_tab_provider.cc
-index 3e5b36df42984e97161011c1d6696edc2e9667d0..dd9e3350acd0841c49784b77669e39ac05388281 100644
+index ab549af27db8ea71bb2d66662f09f66e6e1c6dad..5c8b56bdd26d9683e8080056d64a4404e287f946 100644
 --- a/chrome/browser/ui/startup/startup_tab_provider.cc
 +++ b/chrome/browser/ui/startup/startup_tab_provider.cc
 @@ -143,7 +143,11 @@ StartupTabs StartupTabProviderImpl::GetExtensionCheckupTabs(

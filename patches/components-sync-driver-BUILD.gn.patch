@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/BUILD.gn b/components/sync/driver/BUILD.gn
-index ab9eca7b82246f8473c7d1c6dfc7f06105d0f01d..c571c5fa2be1b4ca249bb5339599234fd81a355e 100644
+index 7d46802a7fa96c88424908204edb2effd4891b67..49d2f263d172af43f50b76b0abf703ecd2c9f18c 100644
 --- a/components/sync/driver/BUILD.gn
 +++ b/components/sync/driver/BUILD.gn
-@@ -128,6 +128,7 @@ jumbo_static_library("driver") {
+@@ -126,6 +126,7 @@ jumbo_static_library("driver") {
    defines = [ "SYNC_USER_AGENT_PRODUCT=$sync_user_agent_product" ]
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]

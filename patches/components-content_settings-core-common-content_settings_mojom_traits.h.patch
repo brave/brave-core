@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_mojom_traits.h b/components/content_settings/core/common/content_settings_mojom_traits.h
-index 2192c55d2b760d967f213902cf0df1760d280fc8..1cefc7113e543b8ab528ae98ca2cf824055461fd 100644
+index 7ffaa9b4ec4338ead98b6d30ac188c73e3b07542..5fe94e46719386dfe3c2cc5c137109b58861871e 100644
 --- a/components/content_settings/core/common/content_settings_mojom_traits.h
 +++ b/components/content_settings/core/common/content_settings_mojom_traits.h
-@@ -152,6 +152,7 @@ struct StructTraits<
+@@ -147,6 +147,7 @@ struct StructTraits<
    static bool Read(
        content_settings::mojom::RendererContentSettingRulesDataView data,
        RendererContentSettingRules* out);

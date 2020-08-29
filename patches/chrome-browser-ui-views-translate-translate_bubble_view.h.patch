@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/translate/translate_bubble_view.h b/chrome/browser/ui/views/translate/translate_bubble_view.h
-index 08fb36fae40052aa0efadba18157dfa9e7612160..b2ab7493fbb39791ae56ca834df8b09323e8c7ea 100644
+index aaff954e159b5c367c6a8682b13e0546fb90988a..3e7a50174b98b4f9776c7698634b8a277c9583db 100644
 --- a/chrome/browser/ui/views/translate/translate_bubble_view.h
 +++ b/chrome/browser/ui/views/translate/translate_bubble_view.h
 @@ -105,6 +105,7 @@ class TranslateBubbleView : public LocationBarBubbleDelegateView,

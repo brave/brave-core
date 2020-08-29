@@ -1,14 +1,18 @@
 diff --git a/ui/views/controls/button/md_text_button.h b/ui/views/controls/button/md_text_button.h
-index 1d293a70166cdc702d33789ffab28674c5e6f169..4af09cdc276cf5cb1423c73f5fb8858f7b51384c 100644
+index 6688bc4a01e544847e54e1974ee528759d4c44b2..2bcc0ca1e5d5b310d17b4fa233d7169dc3031229 100644
 --- a/ui/views/controls/button/md_text_button.h
 +++ b/ui/views/controls/button/md_text_button.h
-@@ -60,7 +60,9 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+@@ -60,11 +60,13 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
    MdTextButton(ButtonListener* listener, int button_context);
  
   private:
 +  friend class BraveTextButton;
    void UpdatePadding();
-+  virtual
-   void UpdateColors();
    gfx::Insets CalculateDefaultPadding() const;
  
+   void UpdateTextColor();
+   virtual void UpdateBackgroundColor();
++  virtual
+   void UpdateColors();
+ 
+   // True if this button uses prominent styling (blue fill, etc.).

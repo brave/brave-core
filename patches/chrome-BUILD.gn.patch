@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index f06eeeee05c8f645e4a5c640da69c524156e9ff0..345bd5ef4b8c10996ce91e67671a858adb56cc59 100644
+index 5eb707b31f976cf4e17fbe3f51062819f1cc7a07..7fa6d7c2282314716be2f9164294fbfe518fe209 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -146,6 +146,10 @@ if (!is_android && !is_mac) {
@@ -60,7 +60,7 @@ index f06eeeee05c8f645e4a5c640da69c524156e9ff0..345bd5ef4b8c10996ce91e67671a858a
  
    compile_entitlements("entitlements") {
      entitlements_templates = [ "app/app-entitlements.plist" ]
-@@ -617,7 +625,7 @@ if (is_win) {
+@@ -622,7 +630,7 @@ if (is_win) {
  
        output_name = chrome_helper_name + invoker.helper_name_suffix
  
@@ -69,7 +69,7 @@ index f06eeeee05c8f645e4a5c640da69c524156e9ff0..345bd5ef4b8c10996ce91e67671a858a
        extra_substitutions = [
          "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
          "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
-@@ -1005,6 +1013,10 @@ if (is_win) {
+@@ -1011,6 +1019,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -80,7 +80,7 @@ index f06eeeee05c8f645e4a5c640da69c524156e9ff0..345bd5ef4b8c10996ce91e67671a858a
  
      ldflags = [ "-Wl,-install_name,@executable_path/../Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full/$chrome_framework_name" ]
  
-@@ -1162,6 +1174,7 @@ if (is_win) {
+@@ -1168,6 +1180,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -88,7 +88,7 @@ index f06eeeee05c8f645e4a5c640da69c524156e9ff0..345bd5ef4b8c10996ce91e67671a858a
      "//chrome/browser",
      "//chrome/common",
      "//components/gwp_asan/buildflags",
-@@ -1236,12 +1249,13 @@ group("child_dependencies") {
+@@ -1243,12 +1256,13 @@ group("child_dependencies") {
        # this is OK because all of content is linked into one library.
        "//content/browser",
      ]
@@ -103,7 +103,7 @@ index f06eeeee05c8f645e4a5c640da69c524156e9ff0..345bd5ef4b8c10996ce91e67671a858a
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
  
-@@ -1295,6 +1309,7 @@ group("resources") {
+@@ -1302,6 +1316,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
