@@ -1,9 +1,9 @@
 diff --git a/components/content_settings/core/common/content_settings.mojom b/components/content_settings/core/common/content_settings.mojom
-index cb8b3d2aaa2e3e305a2c4578e982bee8e46ddd71..8dfb42ff38bffffebed9a58d2329002e976a3937 100644
+index 7df2cdb7328c7d3137ac406763128fcc8deef4e7..2b72dd5b731eee70474148b67280faa984f06d8e 100644
 --- a/components/content_settings/core/common/content_settings.mojom
 +++ b/components/content_settings/core/common/content_settings.mojom
-@@ -78,4 +78,7 @@ struct RendererContentSettingRules {
-   array<ContentSettingPatternSource> client_hints_rules;
+@@ -77,4 +77,7 @@ struct RendererContentSettingRules {
+   array<ContentSettingPatternSource> script_rules;
    array<ContentSettingPatternSource> popup_redirect_rules;
    array<ContentSettingPatternSource> mixed_content_rules;
 +  array<ContentSettingPatternSource> autoplay_rules;

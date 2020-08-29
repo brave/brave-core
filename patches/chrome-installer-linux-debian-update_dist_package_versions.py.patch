@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/debian/update_dist_package_versions.py b/chrome/installer/linux/debian/update_dist_package_versions.py
-index 5ee9cb6802f84a04268de615e421e662dd01f181..1fd1946db5237fbfaf5f361a9038ae8169e9e7cf 100755
+index cf7485fc7c766d79c9f77b6892f3c398ba9d9a16..6e2eb9e70c1da473c320eb325d6befa0c240e3d5 100755
 --- a/chrome/installer/linux/debian/update_dist_package_versions.py
 +++ b/chrome/installer/linux/debian/update_dist_package_versions.py
-@@ -43,6 +43,7 @@ PACKAGE_FILTER = set([
+@@ -42,6 +42,7 @@ PACKAGE_FILTER = set([
      "libatk-bridge2.0-0",
      "libc6",
      "libcairo2",
@@ -10,7 +10,7 @@ index 5ee9cb6802f84a04268de615e421e662dd01f181..1fd1946db5237fbfaf5f361a9038ae81
      "libcups2",
      "libdbus-1-3",
      "libdrm2",
-@@ -72,6 +73,7 @@ PACKAGE_FILTER = set([
+@@ -71,6 +72,7 @@ PACKAGE_FILTER = set([
      "libxrender1",
      "libxss1",
      "libxtst6",

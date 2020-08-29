@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index d26ffeb348d80de25131d27d620bf5712d4a9e29..d2720901b8c0a304d1fffe96597cc99a5cbfbd98 100644
+index 0d31cd45655970d88116515f853e215bcd70f81f..8743dee3be45e4485e8bfdbf52e6e13e8eba4712 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -450,7 +450,7 @@ void LocationBarView::OnKeywordFaviconFetched(const gfx::Image& icon) {
+@@ -461,7 +461,7 @@ void LocationBarView::OnKeywordFaviconFetched(const gfx::Image& icon) {
    selected_keyword_view_->SetCustomImage(icon);
  }
  
@@ -11,7 +11,7 @@ index d26ffeb348d80de25131d27d620bf5712d4a9e29..d2720901b8c0a304d1fffe96597cc99a
    if (!IsInitialized())
      return;
  
-@@ -557,6 +557,7 @@ void LocationBarView::Layout() {
+@@ -568,6 +568,7 @@ void LocationBarView::Layout() {
      }
    };
  

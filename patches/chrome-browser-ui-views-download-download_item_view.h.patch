@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/download/download_item_view.h b/chrome/browser/ui/views/download/download_item_view.h
-index 0bfc2e08d39bceb436b23abfe17319809f9f742a..38c6aea6e70fd9b6c00dac6e365418a2311c35a4 100644
+index 18ea015545bee824ca77734a49a0bb9966df54d6..6b3a695cae49ab437a152b2d50f82099bdf71ad1 100644
 --- a/chrome/browser/ui/views/download/download_item_view.h
 +++ b/chrome/browser/ui/views/download/download_item_view.h
-@@ -107,6 +107,7 @@ class DownloadItemView : public views::View,
-   gfx::Size CalculatePreferredSize() const override;
+@@ -108,6 +108,7 @@ class DownloadItemView : public views::View,
+   void OnPaintBackground(gfx::Canvas* canvas) override;
    void OnPaint(gfx::Canvas* canvas) override;
    void OnThemeChanged() override;
 +  BRAVE_DOWNLOAD_DOWNLOAD_ITEM_VIEW_H_

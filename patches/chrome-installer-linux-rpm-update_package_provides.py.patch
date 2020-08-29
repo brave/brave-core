@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/rpm/update_package_provides.py b/chrome/installer/linux/rpm/update_package_provides.py
-index 615292c11780a943ed7d7644dc640b8c9ca74f11..3cf430e908717513395a61bfb627559b8093c52c 100755
+index 045f6051a390632620575819df5d4d9a28b885f0..a974aeae050347ccaf492d7f367a51c38bf3993d 100755
 --- a/chrome/installer/linux/rpm/update_package_provides.py
 +++ b/chrome/installer/linux/rpm/update_package_provides.py
-@@ -34,6 +34,7 @@ LIBRARY_FILTER = set([
+@@ -33,6 +33,7 @@ LIBRARY_FILTER = set([
      "libatspi.so.0",
      "libc.so",
      "libcairo.so",
@@ -10,7 +10,7 @@ index 615292c11780a943ed7d7644dc640b8c9ca74f11..3cf430e908717513395a61bfb627559b
      "libcups.so",
      "libdbus-1.so",
      "libdrm.so.2",
-@@ -54,13 +55,17 @@ LIBRARY_FILTER = set([
+@@ -53,13 +54,17 @@ LIBRARY_FILTER = set([
      "libnssutil3.so",
      "libpango-1.0.so",
      "libpangocairo-1.0.so",

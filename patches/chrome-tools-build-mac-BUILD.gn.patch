@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/mac/BUILD.gn b/chrome/tools/build/mac/BUILD.gn
-index 2189d4c9ee07a9abecd26f6e8d170b72a1210800..7501f0a2c7eddf41169fcd981722248b6a1368e4 100644
+index 6bd3e8d2e5b6335adfb01e81881073b0629e71dc..d166a66297a104efed639a8621d7483ba6bc9e2a 100644
 --- a/chrome/tools/build/mac/BUILD.gn
 +++ b/chrome/tools/build/mac/BUILD.gn
 @@ -4,6 +4,7 @@

@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index d246624806755dcc7a843d7045c88422d0df05ac..5b74316edc235bc3051663487d58f66f4ba5cdf9 100644
+index 33807b785fd51cfaca45bb5618c2d1b9d531432e..3def260b851083aa61ba9bd19e3d86079288c95d 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -61,6 +61,7 @@ class AvatarToolbarButton : public ToolbarButton,
-   static const char kAvatarToolbarButtonClassName[];
+@@ -70,6 +70,7 @@ class AvatarToolbarButton : public ToolbarButton,
+   void NotifyClick(const ui::Event& event) override;
  
   private:
 +  friend class BraveAvatarToolbarButton;
