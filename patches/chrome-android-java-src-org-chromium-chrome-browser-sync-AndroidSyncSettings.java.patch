@@ -1,22 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
-index 96bcb02695a403dd5e4a927407206ed6221b2b22..9f53f01f220d6fd476b870c2e14b23416cbdbc86 100644
+index 77a03229de8ff36630ac3dfca718d4641b26950b..4b90aff6e303c3b3cbe51cd53e6a07e3128ba849 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/AndroidSyncSettings.java
-@@ -79,7 +79,7 @@ public class AndroidSyncSettings {
-             if (sInstance == null) {
-                 SyncContentResolverDelegate contentResolver =
-                         new SystemSyncContentResolverDelegate();
--                sInstance = new AndroidSyncSettings(contentResolver);
-+                sInstance = new BraveAndroidSyncSettings(contentResolver);
-             }
-             return sInstance;
+@@ -68,7 +68,7 @@ public class AndroidSyncSettings {
+         ThreadUtils.assertOnUiThread();
+         if (sInstance == null) {
+             SyncContentResolverDelegate contentResolver = new SystemSyncContentResolverDelegate();
+-            sInstance = new AndroidSyncSettings(contentResolver);
++            sInstance = new BraveAndroidSyncSettings(contentResolver);
          }
-@@ -105,7 +105,7 @@ public class AndroidSyncSettings {
-      * @param callback Callback that will be called after updating account is finished. Boolean
-      *                 passed to the callback indicates whether syncability was changed.
-      */
--    private AndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate,
-+    public AndroidSyncSettings(SyncContentResolverDelegate syncContentResolverDelegate,
-             @Nullable Callback<Boolean> callback) {
-         mContractAuthority = ContextUtils.getApplicationContext().getPackageName();
-         mSyncContentResolverDelegate = syncContentResolverDelegate;
+         return sInstance;
+     }
