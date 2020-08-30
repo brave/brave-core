@@ -99,16 +99,20 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
 
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.brave_stats_bottom_sheet, null);
+        final View view = LayoutInflater.from(getContext()).inflate(R.layout.brave_stats_bottom_sheet, null);
 
         emptyDataLayout = view.findViewById(R.id.brave_stats_empty_layout);
 
-            getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
-                View bottomSheetInternal = d.findViewById(com.google.android.material.R.id.design_bottom_sheet);
-                bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+                View bottomSheetInternal = (View)view.getParent();
+                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+                if (!isTablet) {
+                    bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
+                }
+                bottomSheetInternal.requestLayout();
             }
         });
 
@@ -166,12 +170,9 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         dialog.setContentView(view);
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-
+    private void setWidthForDialog() {
         boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if (isTablet || (!isTablet && newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)) {
+        if (isTablet) {
             getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
         } else {
             getDialog().getWindow().setLayout(-1, -1);
@@ -179,14 +180,15 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
     }
 
     @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setWidthForDialog();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if (isTablet || (!isTablet && ConfigurationUtils.isLandscape(getActivity()))) {
-            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
-        } else {
-            getDialog().getWindow().setLayout(-1, -1);
-        }
+        setWidthForDialog();
     }
 
     @Override
