@@ -15,6 +15,7 @@ def SignAndCopyPreSignedBinaries(skip_signing, output_dir, staging_dir, current_
     if not skip_signing:
         from sign_binaries import sign_binaries
         sign_binaries(staging_dir)
+        sign_binaries(output_dir, ('setup.exe'))
         """Copies already signed three binaries - brave.exe and chrome.dll
         These files are signed during the build phase to create widevine sig files.
         """
