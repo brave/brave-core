@@ -37,7 +37,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     private static String BRAVE_ONBOARDING_ORIGIN_EN = "https://brave.com/my-first-ad/";
     private static String BRAVE_ONBOARDING_ORIGIN_DE = "https://brave.com/de/my-first-ad/";
     private static String BRAVE_ONBOARDING_ORIGIN_FR = "https://brave.com/fr/my-first-ad/";
-    private static final String DEEP_LINK = "deep_link";
+    public static final String DEEP_LINK = "deep_link";
 
     private static final String COUNTRY_CODE_DE = "de_DE";
     private static final String COUNTRY_CODE_FR = "fr_FR";
@@ -66,7 +66,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
         notificationManager.notify(notification);
     }
 
-    private static PendingIntentProvider getDeepLinkIntent(Context context) {
+    public static PendingIntentProvider getDeepLinkIntent(Context context) {
         Intent intent = new Intent(context, BraveOnboardingNotification.class);
         intent.setAction(DEEP_LINK);
         return new PendingIntentProvider(
