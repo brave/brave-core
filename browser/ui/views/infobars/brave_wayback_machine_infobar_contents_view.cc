@@ -193,7 +193,8 @@ void BraveWaybackMachineInfoBarContentsView::InitializeChildren() {
 
 views::Label* BraveWaybackMachineInfoBarContentsView::CreateLabel(
     const base::string16& text) {
-  views::Label* label = new views::Label(text, CONTEXT_BODY_TEXT_LARGE);
+  views::Label* label =
+      new views::Label(text, views::style::CONTEXT_DIALOG_BODY_TEXT);
   labels_.push_back(label);
   label->SetBackgroundColor(GetColor(kInfoBarLabelBackgroundColor));
   label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
