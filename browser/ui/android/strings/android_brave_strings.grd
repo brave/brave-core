@@ -1261,7 +1261,7 @@ until they verify, or until 90 days have passed.
         Turn on Privacy Reports to see how much data you've saved.
       </message>
       <message name="IDS_NOTIFICATION_MARKETING" desc="Marketing notification text">
-        Brave browser uses 40% less battery on average.
+        Brave browser uses 40% less battery on average.🔋
       </message>
       <message name="IDS_NOTIFICATION_WEEKLY_STATS" desc="Weekly stats notification text">
         You blocked <ph name="COUNT">%1$s</ph> trackers &amp; ads with Brave browser last week.
@@ -1270,13 +1270,13 @@ until they verify, or until 90 days have passed.
         Earn tokens by viewing privacy-respecting ads and support your favorite websites.
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_STATS_TRACKERS" desc="Rewards notification text">
-        Nice! You've blocked 250 trackers &amp; ads with Brave browser.
+        Nice! You've blocked 250 trackers &amp; ads with Brave browser.🔥
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_STATS_DATA" desc="Rewards notification text">
-        Nice! You've saved 10MB with Brave browser.
+        Nice! You've saved 10MB with Brave browser.🔋
       </message>
       <message name="IDS_NOTIFICATION_BRAVE_STATS_TIME" desc="Rewards notification text">
-        Nice! You've saved 10 Mins of loading time with Brave browser.
+        Nice! You've saved 10 Mins of loading time with Brave browser.💨💨
       </message>
       <message name="IDS_START_BROWSING_TO_SEE" desc="Brave stats empty text">
         Start browsing to see privacy reporting
