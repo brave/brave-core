@@ -30,13 +30,13 @@ class PostTransactionTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostTransaction> transaction_;
 
   PostTransactionTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     transaction_ = std::make_unique<PostTransaction>(mock_ledger_impl_.get());
   }
 };
@@ -126,7 +126,7 @@ TEST_F(PostTransactionTest, ServerOK) {
             callback(response);
           }));
 
-  braveledger_uphold::Transaction transaction;
+  ::ledger::uphold::Transaction transaction;
   transaction.amount = 1.0;
   transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
 
@@ -153,7 +153,7 @@ TEST_F(PostTransactionTest, ServerError401) {
             callback(response);
           }));
 
-  braveledger_uphold::Transaction transaction;
+  ::ledger::uphold::Transaction transaction;
   transaction.amount = 1.0;
   transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
 
@@ -180,7 +180,7 @@ TEST_F(PostTransactionTest, ServerErrorRandom) {
             callback(response);
           }));
 
-  braveledger_uphold::Transaction transaction;
+  ::ledger::uphold::Transaction transaction;
   transaction.amount = 1.0;
   transaction.address = "6654ecb0-6079-4f6c-ba58-791cc890a561";
 

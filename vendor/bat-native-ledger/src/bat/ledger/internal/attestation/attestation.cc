@@ -9,7 +9,7 @@
 namespace ledger {
 namespace attestation {
 
-Attestation::Attestation(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+Attestation::Attestation(LedgerImpl* ledger) : ledger_(ledger) {
 }
 
 Attestation::~Attestation() = default;

@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PutSafetynet::PutSafetynet(bat_ledger::LedgerImpl* ledger):
+PutSafetynet::PutSafetynet(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

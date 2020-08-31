@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-PostTransaction::PostTransaction(bat_ledger::LedgerImpl* ledger):
+PostTransaction::PostTransaction(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -36,7 +36,7 @@ std::string PostTransaction::GetUrl(const std::string& address) {
 }
 
 std::string PostTransaction::GeneratePayload(
-    const braveledger_uphold::Transaction& transaction) {
+    const ::ledger::uphold::Transaction& transaction) {
   base::Value denomination(base::Value::Type::DICTIONARY);
   denomination.SetDoubleKey("amount", transaction.amount);
   denomination.SetStringKey("currency", "BAT");
@@ -94,7 +94,7 @@ ledger::Result PostTransaction::ParseBody(
 void PostTransaction::Request(
     const std::string& token,
     const std::string& address,
-    const braveledger_uphold::Transaction& transaction,
+    const ::ledger::uphold::Transaction& transaction,
     PostTransactionCallback callback) {
   auto url_callback = std::bind(&PostTransaction::OnRequest,
       this,

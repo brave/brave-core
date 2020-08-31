@@ -18,10 +18,11 @@ const char kTableName[] = "server_publisher_banner";
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger),
     links_(std::make_unique<DatabaseServerPublisherLinks>(ledger)),
     amounts_(std::make_unique<DatabaseServerPublisherAmounts>(ledger)) {
@@ -196,4 +197,5 @@ void DatabaseServerPublisherBanner::OnGetRecordAmounts(
   callback(std::move(banner_pointer));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

@@ -10,7 +10,7 @@
 namespace ledger {
 namespace endpoint {
 
-UpholdServer::UpholdServer(bat_ledger::LedgerImpl* ledger):
+UpholdServer::UpholdServer(LedgerImpl* ledger):
     post_oauth_(std::make_unique<uphold::PostOauth>(ledger)),
     get_cards_(std::make_unique<uphold::GetCards>(ledger)),
     get_card_(std::make_unique<uphold::GetCard>(ledger)),

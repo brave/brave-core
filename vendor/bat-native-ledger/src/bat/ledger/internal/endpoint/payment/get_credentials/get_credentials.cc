@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-GetCredentials::GetCredentials(bat_ledger::LedgerImpl* ledger):
+GetCredentials::GetCredentials(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

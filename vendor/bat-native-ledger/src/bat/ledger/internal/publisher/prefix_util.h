@@ -8,7 +8,8 @@
 
 #include <string>
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 extern const size_t kMinPrefixSize;
 extern const size_t kMaxPrefixSize;
@@ -23,6 +24,7 @@ std::string GetHashPrefixInHex(
     const std::string& publisher_key,
     size_t prefix_size);
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_PREFIX_UTIL_H_

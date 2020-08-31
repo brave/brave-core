@@ -12,11 +12,10 @@
 #include "bat/ledger/internal/sku/sku_brave.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_sku {
+namespace sku {
 
 enum SKUType {
   kBrave = 0,
@@ -26,10 +25,11 @@ enum SKUType {
 class SKUFactory {
  public:
   static std::unique_ptr<SKU> Create(
-      bat_ledger::LedgerImpl* ledger,
+      LedgerImpl* ledger,
       const SKUType type);
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_FACTORY_H_

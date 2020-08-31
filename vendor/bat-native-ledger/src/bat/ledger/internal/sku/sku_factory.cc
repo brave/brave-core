@@ -6,10 +6,11 @@
 #include "bat/ledger/internal/sku/sku_factory.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
 std::unique_ptr<SKU> SKUFactory::Create(
-    bat_ledger::LedgerImpl* ledger,
+    LedgerImpl* ledger,
     const SKUType type) {
   DCHECK(ledger);
 
@@ -24,4 +25,5 @@ std::unique_ptr<SKU> SKUFactory::Create(
   }
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

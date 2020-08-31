@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PutDevicecheck::PutDevicecheck(bat_ledger::LedgerImpl* ledger):
+PutDevicecheck::PutDevicecheck(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

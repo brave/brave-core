@@ -12,15 +12,14 @@
 
 // npm run test -- brave_unit_tests --filter='PrefixListReaderTest.*'
 
-using publishers_pb::PublisherPrefixList;
-
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 class PrefixListReaderTest : public testing::Test {
  protected:
   template<typename F>
   PrefixListReader::ParseError TestParse(F init) {
-    PublisherPrefixList message;
+    publishers_pb::PublisherPrefixList message;
     message.set_prefix_size(4);
     init(&message);
 
@@ -43,9 +42,9 @@ TEST_F(PrefixListReaderTest, ValidInput) {
     "cake"
     "dear";
 
-  PublisherPrefixList list;
+  publishers_pb::PublisherPrefixList list;
   list.set_prefix_size(prefix_size);
-  list.set_compression_type(PublisherPrefixList::NO_COMPRESSION);
+  list.set_compression_type(publishers_pb::PublisherPrefixList::NO_COMPRESSION);
   list.set_uncompressed_size(prefix_data.length());
   list.set_prefixes(prefix_data);
 
@@ -119,7 +118,8 @@ TEST_F(PrefixListReaderTest, InvalidInput) {
         list->set_prefixes("----");
         list->set_uncompressed_size(4);
         list->set_compression_type(
-           static_cast<PublisherPrefixList::CompressionType>(1000));
+           static_cast<publishers_pb::PublisherPrefixList::CompressionType>(
+               1000));
       }),
       PrefixListReader::ParseError::kUnknownCompressionType);
 
@@ -135,7 +135,8 @@ TEST_F(PrefixListReaderTest, BrotliCompression) {
   ASSERT_EQ(
       TestParse([](auto* list) {
         list->set_uncompressed_size(16);
-        list->set_compression_type(PublisherPrefixList::BROTLI_COMPRESSION);
+        list->set_compression_type(
+            publishers_pb::PublisherPrefixList::BROTLI_COMPRESSION);
       }),
       PrefixListReader::ParseError::kUnableToDecompress);
 
@@ -147,9 +148,10 @@ TEST_F(PrefixListReaderTest, BrotliCompression) {
 
   std::string prefixes(compressed, sizeof(compressed) / sizeof(char));
 
-  PublisherPrefixList list;
+  publishers_pb::PublisherPrefixList list;
   list.set_prefix_size(4);
-  list.set_compression_type(PublisherPrefixList::BROTLI_COMPRESSION);
+  list.set_compression_type(
+      publishers_pb::PublisherPrefixList::BROTLI_COMPRESSION);
   list.set_uncompressed_size(32);
   list.set_prefixes(prefixes);
 
@@ -170,4 +172,5 @@ TEST_F(PrefixListReaderTest, BrotliCompression) {
   ASSERT_EQ(uncompressed, "aaaabbbbccccddddeeeeffffgggghhhh");
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

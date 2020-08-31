@@ -21,7 +21,8 @@ namespace {
   const char contribution_id[] = "60770beb-3cfb-4550-a5db-deccafb5c790";
 }  // namespace
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
 class UnblindedTest : public ::testing::Test {
  private:
@@ -29,16 +30,16 @@ class UnblindedTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Unblinded> unblinded_;
-  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
+  std::unique_ptr<database::MockDatabase> mock_database_;
 
   UnblindedTest() {
       mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
-      mock_ledger_impl_ = std::make_unique<bat_ledger::MockLedgerImpl>
+      mock_ledger_impl_ = std::make_unique<ledger::MockLedgerImpl>
           (mock_ledger_client_.get());
       unblinded_ = std::make_unique<Unblinded>(mock_ledger_impl_.get());
-      mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+      mock_database_ = std::make_unique<database::MockDatabase>(
         mock_ledger_impl_.get());
   }
 
@@ -89,4 +90,5 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
       });
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

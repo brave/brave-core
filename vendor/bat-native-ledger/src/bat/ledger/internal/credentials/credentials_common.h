@@ -15,15 +15,14 @@
 #include "bat/ledger/internal/credentials/credentials.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_credentials {
+namespace credential {
 
 class CredentialsCommon {
  public:
-  explicit CredentialsCommon(bat_ledger::LedgerImpl* ledger);
+  explicit CredentialsCommon(LedgerImpl* ledger);
   ~CredentialsCommon();
 
   void GetBlindedCreds(
@@ -48,9 +47,10 @@ class CredentialsCommon {
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_COMMON_H_

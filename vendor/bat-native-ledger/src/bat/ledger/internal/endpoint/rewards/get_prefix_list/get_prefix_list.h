@@ -18,11 +18,9 @@
 // Response body:
 // blob
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace rewards {
 
@@ -32,7 +30,7 @@ using GetPrefixListCallback = std::function<void(
 
 class GetPrefixList {
  public:
-  explicit GetPrefixList(bat_ledger::LedgerImpl* ledger);
+  explicit GetPrefixList(LedgerImpl* ledger);
   ~GetPrefixList();
 
   void Request(GetPrefixListCallback callback);
@@ -46,7 +44,7 @@ class GetPrefixList {
       const ledger::UrlResponse& response,
       GetPrefixListCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace rewards

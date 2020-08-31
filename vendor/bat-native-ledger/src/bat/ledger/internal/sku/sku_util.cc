@@ -9,7 +9,8 @@
 #include "bat/ledger/internal/sku/sku_util.h"
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
 const char kAnonCardDestinationDev[] =
     "9094c3f2-b3ae-438f-bd59-92aaad92de5c";
@@ -72,4 +73,5 @@ std::string GetUpholdDestination() {
   return kUpholdDestinationDev;
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

@@ -13,9 +13,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ContributionMonthly::ContributionMonthly(bat_ledger::LedgerImpl* ledger) :
+ContributionMonthly::ContributionMonthly(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -155,4 +156,5 @@ void ContributionMonthly::OnHasSufficientBalance(
   callback(balance >= total);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

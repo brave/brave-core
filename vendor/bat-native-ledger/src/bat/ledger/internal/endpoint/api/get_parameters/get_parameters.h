@@ -49,11 +49,9 @@
 //   }
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace api {
 
@@ -63,7 +61,7 @@ using GetParametersCallback = std::function<void(
 
 class GetParameters {
  public:
-  explicit GetParameters(bat_ledger::LedgerImpl* ledger);
+  explicit GetParameters(LedgerImpl* ledger);
   ~GetParameters();
 
   void Request(GetParametersCallback callback);
@@ -81,7 +79,7 @@ class GetParameters {
       const ledger::UrlResponse& response,
       GetParametersCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace api

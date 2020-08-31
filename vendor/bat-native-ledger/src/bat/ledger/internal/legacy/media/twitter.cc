@@ -126,7 +126,7 @@ bool IsExcludedScreenName(const std::string& path) {
 
 namespace braveledger_media {
 
-Twitter::Twitter(bat_ledger::LedgerImpl* ledger):
+Twitter::Twitter(ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 

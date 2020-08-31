@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetSignedCreds::GetSignedCreds(bat_ledger::LedgerImpl* ledger):
+GetSignedCreds::GetSignedCreds(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

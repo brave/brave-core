@@ -19,10 +19,11 @@ const char kTableName[] = "server_publisher_amounts";
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseServerPublisherAmounts::DatabaseServerPublisherAmounts(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -131,4 +132,5 @@ void DatabaseServerPublisherAmounts::OnGetRecord(
   callback(amounts);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

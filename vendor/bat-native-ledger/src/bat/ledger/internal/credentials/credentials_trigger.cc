@@ -5,7 +5,8 @@
 
 #include "bat/ledger/internal/credentials/credentials_trigger.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 CredentialsTrigger::CredentialsTrigger() = default;
 
@@ -14,4 +15,5 @@ CredentialsTrigger::CredentialsTrigger(
 
 CredentialsTrigger::~CredentialsTrigger() = default;
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

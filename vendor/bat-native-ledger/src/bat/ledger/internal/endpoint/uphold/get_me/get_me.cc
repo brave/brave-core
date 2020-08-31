@@ -17,24 +17,24 @@ using std::placeholders::_1;
 
 namespace {
 
-braveledger_uphold::UserStatus GetUserStatus(const std::string& status) {
+ledger::uphold::UserStatus GetUserStatus(const std::string& status) {
   if (status == "pending") {
-    return braveledger_uphold::UserStatus::PENDING;
+    return ledger::uphold::UserStatus::PENDING;
   }
 
   if (status == "restricted") {
-    return braveledger_uphold::UserStatus::RESTRICTED;
+    return ledger::uphold::UserStatus::RESTRICTED;
   }
 
   if (status == "blocked") {
-    return braveledger_uphold::UserStatus::BLOCKED;
+    return ledger::uphold::UserStatus::BLOCKED;
   }
 
   if (status == "ok") {
-    return braveledger_uphold::UserStatus::OK;
+    return ledger::uphold::UserStatus::OK;
   }
 
-  return braveledger_uphold::UserStatus::EMPTY;
+  return ledger::uphold::UserStatus::EMPTY;
 }
 
 }  // namespace
@@ -43,7 +43,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-GetMe::GetMe(bat_ledger::LedgerImpl* ledger):
+GetMe::GetMe(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -68,7 +68,7 @@ ledger::Result GetMe::CheckStatusCode(const int status_code) {
 
 ledger::Result GetMe::ParseBody(
     const std::string& body,
-    braveledger_uphold::User* user) {
+    ::ledger::uphold::User* user) {
   DCHECK(user);
 
   base::Optional<base::Value> value = base::JSONReader::Read(body);
@@ -131,7 +131,7 @@ void GetMe::OnRequest(
     GetMeCallback callback) {
   ledger::LogUrlResponse(__func__, response, true);
 
-  braveledger_uphold::User user;
+  ::ledger::uphold::User user;
   ledger::Result result = CheckStatusCode(response.status_code);
   if (result != ledger::Result::LEDGER_OK) {
     callback(result, user);

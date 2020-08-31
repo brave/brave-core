@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-PostTransactionCommit::PostTransactionCommit(bat_ledger::LedgerImpl* ledger):
+PostTransactionCommit::PostTransactionCommit(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

@@ -104,11 +104,9 @@
 //   }
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace uphold {
 
@@ -118,20 +116,20 @@ using PostTransactionCallback = std::function<void(
 
 class PostTransaction {
  public:
-  explicit PostTransaction(bat_ledger::LedgerImpl* ledger);
+  explicit PostTransaction(LedgerImpl* ledger);
   ~PostTransaction();
 
   void Request(
       const std::string& token,
       const std::string& address,
-      const braveledger_uphold::Transaction& transaction,
+      const ::ledger::uphold::Transaction& transaction,
       PostTransactionCallback callback);
 
  private:
   std::string GetUrl(const std::string& address);
 
   std::string GeneratePayload(
-      const braveledger_uphold::Transaction& transaction);
+      const ::ledger::uphold::Transaction& transaction);
 
   ledger::Result CheckStatusCode(const int status_code);
 
@@ -143,7 +141,7 @@ class PostTransaction {
       const ledger::UrlResponse& response,
       PostTransactionCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace uphold

@@ -10,7 +10,8 @@
 
 #include "base/strings/string_piece.h"
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 using PrefixIteratorBase =
   std::iterator<std::random_access_iterator_tag, base::StringPiece>;
@@ -19,8 +20,6 @@ using PrefixIteratorBase =
 // uncompressed prefix list, suitable for binary search
 class PrefixIterator : public PrefixIteratorBase {
  public:
-  using difference_type = PrefixIteratorBase::difference_type;
-
   PrefixIterator(const char* data, size_t index, size_t size)
       : data_(data), index_(index), size_(size) {}
 
@@ -66,7 +65,8 @@ class PrefixIterator : public PrefixIteratorBase {
     return PrefixIterator(data_, index_ + rhs.index_, size_);
   }
 
-  difference_type operator-(const PrefixIterator& rhs) const {
+  PrefixIteratorBase::difference_type operator-(
+      const PrefixIterator& rhs) const {
     return index_ - rhs.index_;
   }
 
@@ -108,6 +108,7 @@ class PrefixIterator : public PrefixIteratorBase {
   size_t size_;
 };
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_PREFIX_ITERATOR_H_

@@ -23,11 +23,9 @@
 // Response body:
 // {PNG data}
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -37,7 +35,7 @@ using GetCaptchaCallback = std::function<void(
 
 class GetCaptcha {
  public:
-  explicit GetCaptcha(bat_ledger::LedgerImpl* ledger);
+  explicit GetCaptcha(LedgerImpl* ledger);
   ~GetCaptcha();
 
   void Request(
@@ -57,7 +55,7 @@ class GetCaptcha {
       const ledger::UrlResponse& response,
       GetCaptchaCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

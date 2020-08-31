@@ -14,7 +14,8 @@
 
 // npm run test -- brave_unit_tests --filter=PromotionUtilTest.*
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 class PromotionUtilTest : public testing::Test {
  public:
@@ -121,4 +122,5 @@ TEST_F(PromotionUtilTest, UnBlindCredsCredsNotCorrect) {
   EXPECT_EQ(unblinded_encoded_tokens.size(), 0u);
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

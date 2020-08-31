@@ -17,9 +17,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
-CredentialsPromotion::CredentialsPromotion(bat_ledger::LedgerImpl* ledger) :
+CredentialsPromotion::CredentialsPromotion(LedgerImpl* ledger) :
     ledger_(ledger),
     common_(std::make_unique<CredentialsCommon>(ledger)),
     promotion_server_(
@@ -502,4 +503,5 @@ void CredentialsPromotion::OnRedeemTokens(
       callback);
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

@@ -16,9 +16,10 @@ const int kCurrentVersionNumber = 5;
 
 }  // namespace
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigration::StateMigration(bat_ledger::LedgerImpl* ledger) :
+StateMigration::StateMigration(LedgerImpl* ledger) :
     v1_(std::make_unique<StateMigrationV1>(ledger)),
     v2_(std::make_unique<StateMigrationV2>(ledger)),
     v3_(std::make_unique<StateMigrationV3>()),
@@ -89,4 +90,5 @@ void StateMigration::OnMigration(
   Migrate(callback);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

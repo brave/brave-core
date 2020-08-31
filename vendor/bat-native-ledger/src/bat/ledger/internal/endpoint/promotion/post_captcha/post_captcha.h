@@ -29,11 +29,9 @@
 //   "captchaId": "d155d2d2-2627-425b-9be8-44ae9f541762"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -44,7 +42,7 @@ using PostCaptchaCallback = std::function<void(
 
 class PostCaptcha {
  public:
-  explicit PostCaptcha(bat_ledger::LedgerImpl* ledger);
+  explicit PostCaptcha(LedgerImpl* ledger);
   ~PostCaptcha();
 
   void Request(PostCaptchaCallback callback);
@@ -65,7 +63,7 @@ class PostCaptcha {
       const ledger::UrlResponse& response,
       PostCaptchaCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

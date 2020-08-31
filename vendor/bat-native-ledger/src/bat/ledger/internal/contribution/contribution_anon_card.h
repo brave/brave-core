@@ -13,15 +13,14 @@
 #include "bat/ledger/internal/endpoint/payment/payment_server.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionAnonCard {
  public:
-  explicit ContributionAnonCard(bat_ledger::LedgerImpl* ledger);
+  explicit ContributionAnonCard(LedgerImpl* ledger);
 
   ~ContributionAnonCard();
 
@@ -36,9 +35,10 @@ class ContributionAnonCard {
       const ledger::Result result,
       ledger::TransactionCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_ANON_FUNDS_H_

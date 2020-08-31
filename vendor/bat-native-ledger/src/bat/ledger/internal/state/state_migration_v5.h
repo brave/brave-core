@@ -8,23 +8,23 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_state {
+namespace state {
 
 class StateMigrationV5 {
  public:
-  explicit StateMigrationV5(bat_ledger::LedgerImpl* ledger);
+  explicit StateMigrationV5(LedgerImpl* ledger);
   ~StateMigrationV5();
 
   void Migrate(ledger::ResultCallback callback);
 
  private:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_BAT_STATE_STATE_MIGRATION_V5_H_

@@ -11,11 +11,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseUnblindedToken: public DatabaseTable {
  public:
-  explicit DatabaseUnblindedToken(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseUnblindedToken(LedgerImpl* ledger);
   ~DatabaseUnblindedToken() override;
 
   void InsertOrUpdateList(
@@ -60,6 +61,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
       ledger::ResultCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_UNBLINDED_TOKEN_H_

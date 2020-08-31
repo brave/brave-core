@@ -14,7 +14,8 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
@@ -23,7 +24,7 @@ const char kTableName[] = "contribution_queue_publishers";
 }  // namespace
 
 DatabaseContributionQueuePublishers::DatabaseContributionQueuePublishers(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -132,4 +133,5 @@ void DatabaseContributionQueuePublishers::OnGetRecordsByQueueId(
   callback(std::move(list));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

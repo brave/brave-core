@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetRecoverWallet::GetRecoverWallet(bat_ledger::LedgerImpl* ledger):
+GetRecoverWallet::GetRecoverWallet(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

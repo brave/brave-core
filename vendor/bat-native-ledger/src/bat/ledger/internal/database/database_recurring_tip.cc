@@ -13,7 +13,8 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
@@ -24,7 +25,7 @@ const char kTableName[] = "recurring_donation";
 }  // namespace
 
 DatabaseRecurringTip::DatabaseRecurringTip(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -171,4 +172,5 @@ void DatabaseRecurringTip::DeleteRecord(
       transaction_callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

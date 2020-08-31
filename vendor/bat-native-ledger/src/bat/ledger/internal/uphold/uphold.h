@@ -16,17 +16,14 @@
 #include "bat/ledger/internal/uphold/uphold_user.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 class UpholdServer;
 }
-}
 
-namespace braveledger_uphold {
+namespace uphold {
 
 struct Transaction {
   std::string address;
@@ -45,7 +42,7 @@ using CreateCardCallback =
 
 class Uphold {
  public:
-  explicit Uphold(bat_ledger::LedgerImpl* ledger);
+  explicit Uphold(LedgerImpl* ledger);
 
   ~Uphold();
 
@@ -109,9 +106,10 @@ class Uphold {
   std::unique_ptr<UpholdAuthorization> authorization_;
   std::unique_ptr<UpholdWallet> wallet_;
   std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger
 #endif  // BRAVELEDGER_UPHOLD_UPHOLD_H_

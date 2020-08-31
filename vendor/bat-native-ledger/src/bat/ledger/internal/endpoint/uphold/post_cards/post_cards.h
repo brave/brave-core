@@ -76,11 +76,9 @@
 //   ]
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace uphold {
 
@@ -90,7 +88,7 @@ using PostCardsCallback = std::function<void(
 
 class PostCards {
  public:
-  explicit PostCards(bat_ledger::LedgerImpl* ledger);
+  explicit PostCards(LedgerImpl* ledger);
   ~PostCards();
 
   void Request(
@@ -112,7 +110,7 @@ class PostCards {
       const ledger::UrlResponse& response,
       PostCardsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace uphold

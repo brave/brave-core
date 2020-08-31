@@ -13,7 +13,8 @@
 #include "bat/ledger/ledger.h"
 #include "sql/database.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 const size_t kBatchLimit = 999;
 
@@ -66,6 +67,7 @@ std::string GetStringColumn(ledger::DBRecord* record, const int index);
 
 std::string GenerateStringInCase(const std::vector<std::string>& items);
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_UTIL_H_

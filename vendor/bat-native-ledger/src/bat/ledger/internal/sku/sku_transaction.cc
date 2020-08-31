@@ -39,9 +39,10 @@ ledger::SKUTransactionType GetTransactionTypeFromWalletType(
 
 }  // namespace
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
-SKUTransaction::SKUTransaction(bat_ledger::LedgerImpl* ledger) :
+SKUTransaction::SKUTransaction(LedgerImpl* ledger) :
     ledger_(ledger),
     payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
@@ -210,4 +211,5 @@ void SKUTransaction::OnSendExternalTransaction(
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

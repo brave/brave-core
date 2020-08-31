@@ -25,7 +25,7 @@ using PublisherStatusMap = std::map<std::string, PublisherStatusData>;
 
 struct RefreshTaskInfo {
   RefreshTaskInfo(
-      bat_ledger::LedgerImpl* ledger,
+      ledger::LedgerImpl* ledger,
       PublisherStatusMap&& status_map,
       std::function<void(PublisherStatusMap)> callback)
       : ledger(ledger),
@@ -33,7 +33,7 @@ struct RefreshTaskInfo {
         current(map.begin()),
         callback(callback) {}
 
-  bat_ledger::LedgerImpl* ledger;
+  ledger::LedgerImpl* ledger;
   PublisherStatusMap map;
   PublisherStatusMap::iterator current;
   std::function<void(PublisherStatusMap)> callback;
@@ -85,7 +85,7 @@ void RefreshNext(std::shared_ptr<RefreshTaskInfo> task_info) {
 }
 
 void RefreshPublisherStatusMap(
-    bat_ledger::LedgerImpl* ledger,
+    ledger::LedgerImpl* ledger,
     PublisherStatusMap&& status_map,
     std::function<void(PublisherStatusMap)> callback) {
   DCHECK(ledger);
@@ -97,10 +97,11 @@ void RefreshPublisherStatusMap(
 
 }  // namespace
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 void RefreshPublisherStatus(
-    bat_ledger::LedgerImpl* ledger,
+    LedgerImpl* ledger,
     ledger::PublisherInfoList&& info_list,
     ledger::PublisherInfoListCallback callback) {
   DCHECK(ledger);
@@ -123,7 +124,7 @@ void RefreshPublisherStatus(
 }
 
 void RefreshPublisherStatus(
-    bat_ledger::LedgerImpl* ledger,
+    LedgerImpl* ledger,
     ledger::PendingContributionInfoList&& info_list,
     ledger::PendingContributionInfoListCallback callback) {
   DCHECK(ledger);
@@ -145,4 +146,5 @@ void RefreshPublisherStatus(
       });
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

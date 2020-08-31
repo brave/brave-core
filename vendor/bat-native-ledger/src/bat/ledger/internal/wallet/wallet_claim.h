@@ -13,16 +13,14 @@
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace wallet {
 
 class WalletClaim {
  public:
-  explicit WalletClaim(bat_ledger::LedgerImpl* ledger);
+  explicit WalletClaim(LedgerImpl* ledger);
   ~WalletClaim();
 
   void Start(ledger::ResultCallback callback);
@@ -37,8 +35,8 @@ class WalletClaim {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_uphold::Uphold> uphold_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<uphold::Uphold> uphold_;
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 

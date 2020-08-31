@@ -62,7 +62,7 @@ std::string GetUserFundsSKU() {
 
 void GetCredentialTrigger(
     ledger::SKUOrderPtr order,
-    braveledger_credentials::CredentialsTrigger* trigger) {
+    ledger::credential::CredentialsTrigger* trigger) {
   DCHECK(trigger);
 
   if (!order || order->items.size() != 1) {
@@ -81,18 +81,19 @@ void GetCredentialTrigger(
 
 }  // namespace
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ContributionSKU::ContributionSKU(bat_ledger::LedgerImpl* ledger) :
+ContributionSKU::ContributionSKU(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
-  credentials_ = braveledger_credentials::CredentialsFactory::Create(
+  credentials_ = credential::CredentialsFactory::Create(
       ledger_,
       ledger::CredsBatchType::SKU);
   DCHECK(credentials_);
-  sku_ = braveledger_sku::SKUFactory::Create(
+  sku_ = sku::SKUFactory::Create(
       ledger_,
-      braveledger_sku::SKUType::kBrave);
+      sku::SKUType::kBrave);
   DCHECK(sku_);
 }
 
@@ -258,7 +259,7 @@ void ContributionSKU::TransactionStepSaved(
   }
 
   DCHECK_EQ((*shared_order)->items.size(), 1ul);
-  braveledger_credentials::CredentialsTrigger trigger;
+  credential::CredentialsTrigger trigger;
   GetCredentialTrigger((*shared_order)->Clone(), &trigger);
 
   credentials_->Start(trigger, callback);
@@ -344,7 +345,7 @@ void ContributionSKU::GetUnblindedTokens(
     return;
   }
 
-  braveledger_credentials::CredentialsRedeem redeem;
+  credential::CredentialsRedeem redeem;
   redeem.type = ledger::RewardsType::PAYMENT;
   redeem.processor = ledger::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = token_list;
@@ -361,7 +362,7 @@ void ContributionSKU::GetUnblindedTokens(
 
 void ContributionSKU::GetOrderMerchant(
     ledger::SKUOrderPtr order,
-    const braveledger_credentials::CredentialsRedeem& redeem,
+    const credential::CredentialsRedeem& redeem,
     ledger::TransactionCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
@@ -369,7 +370,7 @@ void ContributionSKU::GetOrderMerchant(
     return;
   }
 
-  braveledger_credentials::CredentialsRedeem new_redeem = redeem;
+  credential::CredentialsRedeem new_redeem = redeem;
   new_redeem.publisher_key = order->location;
 
   auto creds_callback = std::bind(&ContributionSKU::OnRedeemTokens,
@@ -546,7 +547,7 @@ void ContributionSKU::RetryExternalTransactionStep(
     return;
   }
 
-  braveledger_credentials::CredentialsTrigger trigger;
+  credential::CredentialsTrigger trigger;
   GetCredentialTrigger(order->Clone(), &trigger);
   auto complete_callback = std::bind(&ContributionSKU::Completed,
       this,
@@ -557,4 +558,5 @@ void ContributionSKU::RetryExternalTransactionStep(
   credentials_->Start(trigger, complete_callback);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

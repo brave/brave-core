@@ -19,7 +19,8 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseActivityInfoTest : public ::testing::Test {
  private:
@@ -27,17 +28,17 @@ class DatabaseActivityInfoTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabaseActivityInfo> activity_;
-  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
+  std::unique_ptr<database::MockDatabase> mock_database_;
 
   DatabaseActivityInfoTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     activity_ = std::make_unique<DatabaseActivityInfo>(mock_ledger_impl_.get());
-    mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+    mock_database_ = std::make_unique<database::MockDatabase>(
         mock_ledger_impl_.get());
   }
 
@@ -213,4 +214,5 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
   activity_->DeleteRecord("publisher_key", [](const ledger::Result){});
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

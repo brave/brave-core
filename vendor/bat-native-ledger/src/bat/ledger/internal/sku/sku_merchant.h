@@ -14,15 +14,14 @@
 #include "bat/ledger/internal/sku/sku_common.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_sku {
+namespace sku {
 
 class SKUMerchant : public SKU  {
  public:
-  explicit SKUMerchant(bat_ledger::LedgerImpl* ledger);
+  explicit SKUMerchant(LedgerImpl* ledger);
   ~SKUMerchant() override;
 
   void Process(
@@ -54,10 +53,11 @@ class SKUMerchant : public SKU  {
       const ledger::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<SKUCommon> common_;
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_MERCHANT_H_

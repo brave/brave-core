@@ -28,11 +28,9 @@
 //  "unconfirmed": 0.0
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -42,7 +40,7 @@ using GetWalletBalanceCallback = std::function<void(
 
 class GetWalletBalance {
  public:
-  explicit GetWalletBalance(bat_ledger::LedgerImpl* ledger);
+  explicit GetWalletBalance(LedgerImpl* ledger);
   ~GetWalletBalance();
 
   void Request(GetWalletBalanceCallback callback);
@@ -60,7 +58,7 @@ class GetWalletBalance {
       const ledger::UrlResponse& response,
       GetWalletBalanceCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

@@ -5,7 +5,8 @@
 
 #include "bat/ledger/internal/state/state_migration_v3.h"
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
 StateMigrationV3::StateMigrationV3() = default;
 
@@ -18,4 +19,5 @@ void StateMigrationV3::Migrate(ledger::ResultCallback callback) {
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

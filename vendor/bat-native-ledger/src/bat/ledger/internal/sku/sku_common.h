@@ -14,15 +14,14 @@
 #include "bat/ledger/internal/sku/sku_transaction.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_sku {
+namespace sku {
 
 class SKUCommon {
  public:
-  explicit SKUCommon(bat_ledger::LedgerImpl* ledger);
+  explicit SKUCommon(LedgerImpl* ledger);
   ~SKUCommon();
 
   void CreateOrder(
@@ -49,11 +48,12 @@ class SKUCommon {
       ledger::SKUTransactionPtr transaction,
       ledger::SKUOrderCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<SKUOrder> order_;
   std::unique_ptr<SKUTransaction> transaction_;
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_COMMON_H_

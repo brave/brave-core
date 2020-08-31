@@ -18,17 +18,16 @@
 #include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_promotion {
+namespace promotion {
 
 class PromotionTransfer;
 
 class Promotion {
  public:
-  explicit Promotion(bat_ledger::LedgerImpl* ledger);
+  explicit Promotion(LedgerImpl* ledger);
   ~Promotion();
 
   void Initialize();
@@ -145,13 +144,14 @@ class Promotion {
 
   std::unique_ptr<ledger::attestation::AttestationImpl> attestation_;
   std::unique_ptr<PromotionTransfer> transfer_;
-  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
+  std::unique_ptr<credential::Credentials> credentials_;
   std::unique_ptr<ledger::endpoint::PromotionServer> promotion_server_;
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer last_check_timer_;
   base::OneShotTimer retry_timer_;
 };
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PROMOTION_H_

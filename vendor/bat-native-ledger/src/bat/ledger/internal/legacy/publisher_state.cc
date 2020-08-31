@@ -12,9 +12,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
-LegacyPublisherState::LegacyPublisherState(bat_ledger::LedgerImpl* ledger) :
+LegacyPublisherState::LegacyPublisherState(ledger::LedgerImpl* ledger) :
   ledger_(ledger),
   state_(new ledger::PublisherSettingsProperties) {
 }
@@ -88,4 +89,5 @@ void LegacyPublisherState::GetAllBalanceReports(
   }
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

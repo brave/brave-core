@@ -69,9 +69,10 @@ std::string ConvertItemTypeToString(const std::string& type) {
 
 }  // namespace
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
-CredentialsSKU::CredentialsSKU(bat_ledger::LedgerImpl* ledger) :
+CredentialsSKU::CredentialsSKU(LedgerImpl* ledger) :
     ledger_(ledger),
     common_(std::make_unique<CredentialsCommon>(ledger)),
     payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
@@ -449,4 +450,5 @@ void CredentialsSKU::OnRedeemTokens(
       callback);
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

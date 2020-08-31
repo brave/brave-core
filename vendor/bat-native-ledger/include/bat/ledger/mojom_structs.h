@@ -13,6 +13,7 @@
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h"
 #include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom.h"
 
+// TODO add types namespace
 namespace ledger {
 /**
  * LEDGER

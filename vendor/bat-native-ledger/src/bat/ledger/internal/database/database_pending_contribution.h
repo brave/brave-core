@@ -12,11 +12,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabasePendingContribution: public DatabaseTable {
  public:
-  explicit DatabasePendingContribution(bat_ledger::LedgerImpl* ledger);
+  explicit DatabasePendingContribution(LedgerImpl* ledger);
   ~DatabasePendingContribution() override;
 
   void InsertOrUpdateList(
@@ -41,6 +42,7 @@ class DatabasePendingContribution: public DatabaseTable {
       ledger::PendingContributionInfoListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_PENDING_CONTRIBUTION_H_

@@ -9,7 +9,8 @@
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/static_values.h"
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
 ledger::ReportType GetReportTypeFromRewardsType(
     const ledger::RewardsType type) {
@@ -93,4 +94,5 @@ int32_t GetVotesFromAmount(const double amount) {
   return std::floor(amount / braveledger_ledger::_vote_price);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

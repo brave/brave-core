@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-PostCards::PostCards(bat_ledger::LedgerImpl* ledger):
+PostCards::PostCards(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -33,7 +33,7 @@ std::string PostCards::GetUrl() {
 
 std::string PostCards::GeneratePayload() {
   base::Value payload(base::Value::Type::DICTIONARY);
-  payload.SetStringKey("label", braveledger_uphold::kCardName);
+  payload.SetStringKey("label", ::ledger::uphold::kCardName);
   payload.SetStringKey("currency", "BAT");
 
   std::string json;

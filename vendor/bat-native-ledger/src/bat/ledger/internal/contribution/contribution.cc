@@ -25,8 +25,6 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-using braveledger_time_util::GetRandomizedDelay;
-
 namespace {
 ledger::ContributionStep ConvertResultIntoContributionStep(
     const ledger::Result result) {
@@ -57,14 +55,15 @@ ledger::ContributionStep ConvertResultIntoContributionStep(
 
 }  // namespace
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
+Contribution::Contribution(LedgerImpl* ledger) :
     ledger_(ledger),
     unverified_(std::make_unique<Unverified>(ledger)),
     unblinded_(std::make_unique<Unblinded>(ledger)),
     sku_(std::make_unique<ContributionSKU>(ledger)),
-    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
+    uphold_(std::make_unique<uphold::Uphold>(ledger)),
     monthly_(std::make_unique<ContributionMonthly>(ledger)),
     ac_(std::make_unique<ContributionAC>(ledger)),
     tip_(std::make_unique<ContributionTip>(ledger)),
@@ -87,7 +86,8 @@ void Contribution::Initialize() {
 void Contribution::CheckContributionQueue() {
   base::TimeDelta delay = ledger::is_testing
       ? base::TimeDelta::FromSeconds(1)
-      : GetRandomizedDelay(base::TimeDelta::FromSeconds(15));
+      : braveledger_time_util::GetRandomizedDelay(
+          base::TimeDelta::FromSeconds(15));
 
   BLOG(1, "Queue timer set for " << delay);
 
@@ -318,7 +318,7 @@ void Contribution::CreateNewEntry(
   }
 
   const double wallet_balance =
-      ledger::wallet::WalletBalance::GetPerWalletBalance(
+      wallet::WalletBalance::GetPerWalletBalance(
           wallet_type,
           balance->wallets);
   if (wallet_balance == 0) {
@@ -593,7 +593,8 @@ void Contribution::Result(
   if (result == ledger::Result::RETRY) {
     SetRetryTimer(
         contribution_id,
-        GetRandomizedDelay(base::TimeDelta::FromSeconds(45)));
+        braveledger_time_util::GetRandomizedDelay(
+            base::TimeDelta::FromSeconds(45)));
     return;
   }
 
@@ -618,11 +619,13 @@ void Contribution::OnResult(
         ledger::ContributionProcessor::BRAVE_TOKENS) {
       SetRetryTimer(
           contribution->contribution_id,
-          GetRandomizedDelay(base::TimeDelta::FromSeconds(45)));
+          braveledger_time_util::GetRandomizedDelay(
+              base::TimeDelta::FromSeconds(45)));
     } else {
       SetRetryTimer(
           contribution->contribution_id,
-          GetRandomizedDelay(base::TimeDelta::FromSeconds(450)));
+          braveledger_time_util::GetRandomizedDelay(
+              base::TimeDelta::FromSeconds(450)));
     }
 
     return;
@@ -781,11 +784,12 @@ void Contribution::GetRecurringTips(
       ledger::PublisherInfoList list) {
     // The publisher status field may be expired. Attempt to refresh
     // expired publisher status values before executing callback.
-    braveledger_publisher::RefreshPublisherStatus(
+    publisher::RefreshPublisherStatus(
         ledger_,
         std::move(list),
         callback);
   });
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

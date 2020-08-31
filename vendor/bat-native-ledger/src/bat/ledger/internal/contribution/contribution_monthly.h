@@ -8,15 +8,14 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionMonthly {
  public:
-  explicit ContributionMonthly(bat_ledger::LedgerImpl* ledger);
+  explicit ContributionMonthly(LedgerImpl* ledger);
 
   ~ContributionMonthly();
 
@@ -46,8 +45,9 @@ class ContributionMonthly {
       const double balance,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_MONTHLY_H_

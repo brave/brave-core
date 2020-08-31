@@ -12,9 +12,10 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigrationV2::StateMigrationV2(bat_ledger::LedgerImpl* ledger) :
+StateMigrationV2::StateMigrationV2(LedgerImpl* ledger) :
     ledger_(ledger) {
 }
 
@@ -93,4 +94,5 @@ void StateMigrationV2::OnLoadState(
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

@@ -13,15 +13,14 @@
 #include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/internal/sku/sku_factory.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionSKU {
  public:
-  explicit ContributionSKU(bat_ledger::LedgerImpl* ledger);
+  explicit ContributionSKU(LedgerImpl* ledger);
   ~ContributionSKU();
 
   void AutoContribution(
@@ -89,7 +88,7 @@ class ContributionSKU {
 
   void GetOrderMerchant(
       ledger::SKUOrderPtr order,
-      const braveledger_credentials::CredentialsRedeem& redeem,
+      const credential::CredentialsRedeem& redeem,
       ledger::TransactionCallback callback);
 
   void OnRedeemTokens(
@@ -118,10 +117,11 @@ class ContributionSKU {
       ledger::SKUOrderPtr order,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_credentials::Credentials> credentials_;
-  std::unique_ptr<braveledger_sku::SKU> sku_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<credential::Credentials> credentials_;
+  std::unique_ptr<sku::SKU> sku_;
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_SKU_H_

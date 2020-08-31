@@ -23,7 +23,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-Vimeo::Vimeo(bat_ledger::LedgerImpl* ledger):
+Vimeo::Vimeo(ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 

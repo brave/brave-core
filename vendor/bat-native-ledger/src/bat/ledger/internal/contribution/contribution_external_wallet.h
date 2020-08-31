@@ -12,17 +12,16 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionExternalWallet {
  public:
   explicit ContributionExternalWallet(
-      bat_ledger::LedgerImpl* ledger,
-      braveledger_uphold::Uphold* uphold);
+      LedgerImpl* ledger,
+      uphold::Uphold* uphold);
 
   ~ContributionExternalWallet();
 
@@ -60,9 +59,10 @@ class ContributionExternalWallet {
       const bool single_publisher,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  braveledger_uphold::Uphold* uphold_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
+  uphold::Uphold* uphold_;  // NOT OWNED
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_EXTERNAL_WALLET_H_

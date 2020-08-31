@@ -12,11 +12,12 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
 ContributionExternalWallet::ContributionExternalWallet(
-    bat_ledger::LedgerImpl* ledger,
-    braveledger_uphold::Uphold* uphold) :
+    LedgerImpl* ledger,
+    uphold::Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold) {
   DCHECK(ledger_ && uphold_);
@@ -41,7 +42,7 @@ void ContributionExternalWallet::Process(
     return;
   }
 
-  auto wallet = braveledger_uphold::GetWallet(std::move(wallets));
+  auto wallet = uphold::GetWallet(std::move(wallets));
 
   if (!wallet) {
     BLOG(0, "External wallet null");
@@ -189,4 +190,5 @@ void ContributionExternalWallet::Retry(
   Process(contribution->contribution_id, callback);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

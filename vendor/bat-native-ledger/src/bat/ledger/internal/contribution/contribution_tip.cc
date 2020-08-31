@@ -12,9 +12,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ContributionTip::ContributionTip(bat_ledger::LedgerImpl* ledger) :
+ContributionTip::ContributionTip(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -128,4 +129,5 @@ void ContributionTip::OnSavePending(
   callback(result);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

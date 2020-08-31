@@ -18,16 +18,14 @@
 #include "bat/ledger/internal/wallet/wallet_recover.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace wallet {
 
 class Wallet {
  public:
-  explicit Wallet(bat_ledger::LedgerImpl* ledger);
+  explicit Wallet(LedgerImpl* ledger);
   ~Wallet();
 
   void CreateWalletIfNecessary(ledger::ResultCallback callback);
@@ -60,12 +58,12 @@ class Wallet {
   void DisconnectAllWallets(ledger::ResultCallback callback);
 
  private:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<WalletCreate> create_;
   std::unique_ptr<WalletRecover> recover_;
   std::unique_ptr<WalletBalance> balance_;
   std::unique_ptr<WalletClaim> claim_;
-  std::unique_ptr<braveledger_uphold::Uphold> uphold_;
+  std::unique_ptr<uphold::Uphold> uphold_;
 };
 
 }  // namespace wallet

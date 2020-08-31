@@ -38,11 +38,9 @@
 //   "claimId": "53714048-9675-419e-baa3-369d85a2facb"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -52,7 +50,7 @@ using PostCredsCallback = std::function<void(
 
 class PostCreds {
  public:
-  explicit PostCreds(bat_ledger::LedgerImpl* ledger);
+  explicit PostCreds(LedgerImpl* ledger);
   ~PostCreds();
 
   void Request(
@@ -75,7 +73,7 @@ class PostCreds {
       const ledger::UrlResponse& response,
       PostCredsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

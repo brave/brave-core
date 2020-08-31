@@ -26,11 +26,9 @@
 // Response body:
 // {Empty}
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -38,7 +36,7 @@ using PostBatLossCallback = std::function<void(const ledger::Result result)>;
 
 class PostBatLoss {
  public:
-  explicit PostBatLoss(bat_ledger::LedgerImpl* ledger);
+  explicit PostBatLoss(LedgerImpl* ledger);
   ~PostBatLoss();
 
   void Request(
@@ -57,7 +55,7 @@ class PostBatLoss {
       const ledger::UrlResponse& response,
       PostBatLossCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

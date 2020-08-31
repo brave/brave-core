@@ -16,15 +16,14 @@
 #include "base/timer/timer.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class Unverified {
  public:
-  explicit Unverified(bat_ledger::LedgerImpl* ledger);
+  explicit Unverified(LedgerImpl* ledger);
 
   ~Unverified();
 
@@ -55,9 +54,10 @@ class Unverified {
       const ledger::Result result,
       const uint64_t pending_contribution_id);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer unverified_publishers_timer_;
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_UNVERIFIED_H_

@@ -46,10 +46,11 @@ std::string GetTypeColumn(ledger::ReportType type) {
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseBalanceReport::DatabaseBalanceReport(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -361,4 +362,5 @@ void DatabaseBalanceReport::DeleteAllRecords(
       transaction_callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

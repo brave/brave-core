@@ -14,9 +14,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_api {
+namespace ledger {
+namespace api {
 
-APIParameters::APIParameters(bat_ledger::LedgerImpl* ledger) :
+APIParameters::APIParameters(LedgerImpl* ledger) :
     ledger_(ledger),
     api_server_(std::make_unique<ledger::endpoint::APIServer>(ledger)) {
   DCHECK(ledger_ && api_server_);
@@ -103,4 +104,5 @@ void APIParameters::SetRefreshTimer(
           [](ledger::RewardsParametersPtr) {}));
 }
 
-}  // namespace braveledger_api
+}  // namespace api
+}  // namespace ledger

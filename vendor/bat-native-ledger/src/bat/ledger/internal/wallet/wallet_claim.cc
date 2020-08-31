@@ -26,9 +26,9 @@ namespace {
 namespace ledger {
 namespace wallet {
 
-WalletClaim::WalletClaim(bat_ledger::LedgerImpl* ledger) :
+WalletClaim::WalletClaim(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
+    uphold_(std::make_unique<uphold::Uphold>(ledger)),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }
 
@@ -60,7 +60,7 @@ void WalletClaim::OnBalance(
   }
 
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
+  auto wallet_ptr = uphold::GetWallet(std::move(wallets));
 
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");

@@ -14,7 +14,8 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
@@ -23,7 +24,7 @@ const char kTableName[] = "event_log";
 }  // namespace
 
 DatabaseEventLog::DatabaseEventLog(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -159,4 +160,5 @@ void DatabaseEventLog::OnGetAllRecords(
   callback(std::move(list));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

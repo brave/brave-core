@@ -20,7 +20,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-YouTube::YouTube(bat_ledger::LedgerImpl* ledger):
+YouTube::YouTube(ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 

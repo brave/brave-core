@@ -15,9 +15,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
-SKUOrder::SKUOrder(bat_ledger::LedgerImpl* ledger) :
+SKUOrder::SKUOrder(LedgerImpl* ledger) :
     ledger_(ledger),
     payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
@@ -75,4 +76,5 @@ void SKUOrder::OnCreateSave(
   callback(ledger::Result::LEDGER_OK, order_id);
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

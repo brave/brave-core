@@ -12,9 +12,10 @@
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration_v4.h"
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigrationV5::StateMigrationV5(bat_ledger::LedgerImpl* ledger) :
+StateMigrationV5::StateMigrationV5(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -70,4 +71,5 @@ void StateMigrationV5::Migrate(ledger::ResultCallback callback) {
   ledger_->database()->SaveEventLogs(events, callback);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

@@ -34,7 +34,7 @@ std::vector<std::string> RequestAuthorization(const std::string& token) {
     return headers;
   }
 
-  const std::string id = braveledger_uphold::GetClientId();
+  const std::string id = ::ledger::uphold::GetClientId();
   const std::string secret = GetClientSecret();
 
   std::string user;

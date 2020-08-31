@@ -15,6 +15,7 @@
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/export.h"
 
+// TODO should we put this in client namespace?
 namespace ledger {
 
 using PublisherInfoCallback =

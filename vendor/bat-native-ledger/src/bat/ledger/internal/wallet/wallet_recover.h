@@ -15,16 +15,14 @@
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace wallet {
 
 class WalletRecover {
  public:
-  explicit WalletRecover(bat_ledger::LedgerImpl* ledger);
+  explicit WalletRecover(LedgerImpl* ledger);
   ~WalletRecover();
 
   void Start(
@@ -38,7 +36,7 @@ class WalletRecover {
       const std::vector<uint8_t>& new_seed,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 

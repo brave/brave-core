@@ -174,7 +174,7 @@ class RewardsDatabaseBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(meta_table_.Init(
         &db_,
         version,
-        braveledger_database::GetCompatibleVersion()));
+        ledger::database::GetCompatibleVersion()));
   }
 
   std::string GetExpectedSchemaString() {
@@ -250,7 +250,7 @@ IN_PROC_BROWSER_TEST_F(RewardsDatabaseBrowserTest, SchemaCheck_2) {
     EXPECT_EQ(schema, GetExpectedSchemaString());
     ASSERT_EQ(
         GetTableVersionNumber(),
-        braveledger_database::GetCurrentVersion());
+        ledger::database::GetCurrentVersion());
   }
 }
 

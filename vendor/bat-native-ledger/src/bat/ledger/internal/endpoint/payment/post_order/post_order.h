@@ -56,11 +56,9 @@
 //   ]
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace payment {
 
@@ -70,7 +68,7 @@ using PostOrderCallback = std::function<void(
 
 class PostOrder {
  public:
-  explicit PostOrder(bat_ledger::LedgerImpl* ledger);
+  explicit PostOrder(LedgerImpl* ledger);
   ~PostOrder();
 
   void Request(
@@ -94,7 +92,7 @@ class PostOrder {
       const std::vector<ledger::SKUOrderItem>& items,
       PostOrderCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace payment

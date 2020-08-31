@@ -43,11 +43,9 @@ POST_TRANSACTION_ANON_H_
 //   "amount": "1"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace payment {
 
@@ -56,7 +54,7 @@ using PostTransactionAnonCallback = std::function<void(
 
 class PostTransactionAnon {
  public:
-  explicit PostTransactionAnon(bat_ledger::LedgerImpl* ledger);
+  explicit PostTransactionAnon(LedgerImpl* ledger);
   ~PostTransactionAnon();
 
   void Request(
@@ -79,7 +77,7 @@ class PostTransactionAnon {
       const ledger::UrlResponse& response,
       PostTransactionAnonCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace payment

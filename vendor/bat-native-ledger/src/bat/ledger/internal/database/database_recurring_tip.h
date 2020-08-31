@@ -10,11 +10,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseRecurringTip: public DatabaseTable {
  public:
-  explicit DatabaseRecurringTip(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseRecurringTip(LedgerImpl* ledger);
   ~DatabaseRecurringTip() override;
 
   void InsertOrUpdate(
@@ -33,6 +34,7 @@ class DatabaseRecurringTip: public DatabaseTable {
       ledger::PublisherInfoListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_RECURRING_TIP_H_

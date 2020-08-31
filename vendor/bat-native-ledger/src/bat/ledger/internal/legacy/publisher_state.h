@@ -14,15 +14,16 @@
 #include "bat/ledger/internal/legacy/publisher_settings_properties.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 class LegacyPublisherState {
  public:
-  explicit LegacyPublisherState(bat_ledger::LedgerImpl* ledger);
+  explicit LegacyPublisherState(ledger::LedgerImpl* ledger);
 
   ~LegacyPublisherState();
 
@@ -46,10 +47,11 @@ class LegacyPublisherState {
       const std::string& data,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::PublisherSettingsProperties> state_;
 };
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_LEGACY_PUBLISHER_STATE_H_

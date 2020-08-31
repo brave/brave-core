@@ -31,13 +31,13 @@ class PostVotesTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PostVotes> votes_;
 
   PostVotesTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     votes_ = std::make_unique<PostVotes>(mock_ledger_impl_.get());
   }
 };
@@ -59,7 +59,7 @@ TEST_F(PostVotesTest, ServerOK) {
   token.token_value = "s1OrSZUvo/33u3Y866mQaG/b6d94TqMThLal4+DSX4UrR4jT+GtTErim+FtEyZ7nebNGRoUDxObiUni9u8BB0DIT2aya6rYWko64IrXJWpbf0SVHnQFVYNyX64NjW9R6";  // NOLINT
   token.public_key = "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I=";
 
-  braveledger_credentials::CredentialsRedeem redeem;
+  credential::CredentialsRedeem redeem;
   redeem.publisher_key = "brave.com";
   redeem.type = ledger::RewardsType::ONE_TIME_TIP;
   redeem.processor = ledger::ContributionProcessor::UPHOLD;
@@ -91,7 +91,7 @@ TEST_F(PostVotesTest, ServerError400) {
   token.token_value = "s1OrSZUvo/33u3Y866mQaG/b6d94TqMThLal4+DSX4UrR4jT+GtTErim+FtEyZ7nebNGRoUDxObiUni9u8BB0DIT2aya6rYWko64IrXJWpbf0SVHnQFVYNyX64NjW9R6";  // NOLINT
   token.public_key = "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I=";
 
-  braveledger_credentials::CredentialsRedeem redeem;
+  credential::CredentialsRedeem redeem;
   redeem.publisher_key = "brave.com";
   redeem.type = ledger::RewardsType::ONE_TIME_TIP;
   redeem.processor = ledger::ContributionProcessor::UPHOLD;
@@ -123,7 +123,7 @@ TEST_F(PostVotesTest, ServerError500) {
   token.token_value = "s1OrSZUvo/33u3Y866mQaG/b6d94TqMThLal4+DSX4UrR4jT+GtTErim+FtEyZ7nebNGRoUDxObiUni9u8BB0DIT2aya6rYWko64IrXJWpbf0SVHnQFVYNyX64NjW9R6";  // NOLINT
   token.public_key = "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I=";
 
-  braveledger_credentials::CredentialsRedeem redeem;
+  credential::CredentialsRedeem redeem;
   redeem.publisher_key = "brave.com";
   redeem.type = ledger::RewardsType::ONE_TIME_TIP;
   redeem.processor = ledger::ContributionProcessor::UPHOLD;
@@ -155,7 +155,7 @@ TEST_F(PostVotesTest, ServerErrorRandom) {
   token.token_value = "s1OrSZUvo/33u3Y866mQaG/b6d94TqMThLal4+DSX4UrR4jT+GtTErim+FtEyZ7nebNGRoUDxObiUni9u8BB0DIT2aya6rYWko64IrXJWpbf0SVHnQFVYNyX64NjW9R6";  // NOLINT
   token.public_key = "dvpysTSiJdZUPihius7pvGOfngRWfDiIbrowykgMi1I=";
 
-  braveledger_credentials::CredentialsRedeem redeem;
+  credential::CredentialsRedeem redeem;
   redeem.publisher_key = "brave.com";
   redeem.type = ledger::RewardsType::ONE_TIME_TIP;
   redeem.processor = ledger::ContributionProcessor::UPHOLD;

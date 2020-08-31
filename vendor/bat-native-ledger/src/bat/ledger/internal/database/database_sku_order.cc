@@ -12,7 +12,8 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
@@ -21,7 +22,7 @@ const char kTableName[] = "sku_order";
 }  // namespace
 
 DatabaseSKUOrder::DatabaseSKUOrder(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger),
     items_(std::make_unique<DatabaseSKUOrderItems>(ledger)) {
 }
@@ -272,4 +273,5 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
       transaction_callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

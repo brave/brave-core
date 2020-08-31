@@ -17,7 +17,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostClobberedClaims::PostClobberedClaims(bat_ledger::LedgerImpl* ledger):
+PostClobberedClaims::PostClobberedClaims(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

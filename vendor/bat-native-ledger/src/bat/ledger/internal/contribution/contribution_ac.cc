@@ -13,9 +13,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ContributionAC::ContributionAC(bat_ledger::LedgerImpl* ledger) :
+ContributionAC::ContributionAC(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -105,4 +106,5 @@ void ContributionAC::QueueSaved(const ledger::Result result) {
   ledger_->contribution()->CheckContributionQueue();
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

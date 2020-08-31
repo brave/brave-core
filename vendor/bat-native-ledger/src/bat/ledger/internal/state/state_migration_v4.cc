@@ -6,9 +6,10 @@
 
 #include "bat/ledger/internal/ledger_impl.h"
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigrationV4::StateMigrationV4(bat_ledger::LedgerImpl* ledger) :
+StateMigrationV4::StateMigrationV4(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -19,4 +20,5 @@ void StateMigrationV4::Migrate(ledger::ResultCallback callback) {
   ledger_->ledger_client()->DeleteLog(callback);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

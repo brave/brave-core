@@ -27,11 +27,9 @@
 //  "paymentId": "37742974-3b80-461a-acfb-937e105e5af4"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -41,7 +39,7 @@ using PostWalletBraveCallback = std::function<void(
 
 class PostWalletBrave {
  public:
-  explicit PostWalletBrave(bat_ledger::LedgerImpl* ledger);
+  explicit PostWalletBrave(LedgerImpl* ledger);
   ~PostWalletBrave();
 
   void Request(PostWalletBraveCallback callback);
@@ -59,7 +57,7 @@ class PostWalletBrave {
       const ledger::UrlResponse& response,
       PostWalletBraveCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

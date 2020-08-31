@@ -15,7 +15,6 @@
 #include "bat/ledger/internal/ledger_impl.h"
 
 using std::placeholders::_1;
-using braveledger_publisher::PrefixIterator;
 
 namespace {
 
@@ -24,13 +23,14 @@ const char kTableName[] = "publisher_prefix_list";
 constexpr size_t kHashPrefixSize = 4;
 constexpr size_t kMaxInsertRecords = 100'000;
 
-std::tuple<PrefixIterator, std::string, size_t> GetPrefixInsertList(
-    PrefixIterator begin,
-    PrefixIterator end) {
+std::tuple<ledger::publisher::PrefixIterator, std::string, size_t>
+GetPrefixInsertList(
+    ledger::publisher::PrefixIterator begin,
+    ledger::publisher::PrefixIterator end) {
   DCHECK(begin != end);
   size_t count = 0;
   std::string values;
-  PrefixIterator iter = begin;
+  ledger::publisher::PrefixIterator iter = begin;
   for (iter = begin;
        iter != end && count < kMaxInsertRecords;
        ++count, ++iter) {
@@ -48,10 +48,12 @@ std::tuple<PrefixIterator, std::string, size_t> GetPrefixInsertList(
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+
+namespace database {
 
 DatabasePublisherPrefixList::DatabasePublisherPrefixList(
-    bat_ledger::LedgerImpl* ledger)
+    LedgerImpl* ledger)
     : DatabaseTable(ledger) {}
 
 DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;
@@ -59,7 +61,7 @@ DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;
 void DatabasePublisherPrefixList::Search(
     const std::string& publisher_key,
     ledger::SearchPublisherPrefixListCallback callback) {
-  std::string hex = braveledger_publisher::GetHashPrefixInHex(
+  std::string hex = publisher::GetHashPrefixInHex(
       publisher_key,
       kHashPrefixSize);
 
@@ -94,7 +96,7 @@ void DatabasePublisherPrefixList::Search(
 }
 
 void DatabasePublisherPrefixList::Reset(
-    std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
+    std::unique_ptr<publisher::PrefixListReader> reader,
     ledger::ResultCallback callback) {
   if (reader_) {
     BLOG(1, "Publisher prefix list batch insert in progress");
@@ -111,7 +113,7 @@ void DatabasePublisherPrefixList::Reset(
 }
 
 void DatabasePublisherPrefixList::InsertNext(
-    PrefixIterator begin,
+    ::ledger::publisher::PrefixIterator begin,
     ledger::ResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
@@ -139,7 +141,7 @@ void DatabasePublisherPrefixList::InsertNext(
 
   transaction->commands.push_back(std::move(command));
 
-  auto iter = std::get<PrefixIterator>(insert_tuple);
+  auto iter = std::get<::ledger::publisher::PrefixIterator>(insert_tuple);
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
@@ -162,4 +164,5 @@ void DatabasePublisherPrefixList::InsertNext(
       });
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

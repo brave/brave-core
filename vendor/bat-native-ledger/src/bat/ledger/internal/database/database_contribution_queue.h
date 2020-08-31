@@ -12,11 +12,12 @@
 #include "bat/ledger/internal/database/database_contribution_queue_publishers.h"
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseContributionQueue: public DatabaseTable {
  public:
-  explicit DatabaseContributionQueue(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseContributionQueue(LedgerImpl* ledger);
   ~DatabaseContributionQueue() override;
 
   void InsertOrUpdate(
@@ -47,6 +48,7 @@ class DatabaseContributionQueue: public DatabaseTable {
   std::unique_ptr<DatabaseContributionQueuePublishers> publishers_;
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_CONTRIBUTION_QUEUE_H_

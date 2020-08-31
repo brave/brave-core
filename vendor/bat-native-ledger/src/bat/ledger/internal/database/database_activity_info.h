@@ -10,11 +10,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseActivityInfo: public DatabaseTable {
  public:
-  explicit DatabaseActivityInfo(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseActivityInfo(LedgerImpl* ledger);
   ~DatabaseActivityInfo() override;
 
   void InsertOrUpdate(
@@ -45,6 +46,7 @@ class DatabaseActivityInfo: public DatabaseTable {
       ledger::PublisherInfoListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_ACTIVITY_INFO_H_

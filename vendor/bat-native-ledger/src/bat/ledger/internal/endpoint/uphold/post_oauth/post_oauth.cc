@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-PostOauth::PostOauth(bat_ledger::LedgerImpl* ledger):
+PostOauth::PostOauth(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

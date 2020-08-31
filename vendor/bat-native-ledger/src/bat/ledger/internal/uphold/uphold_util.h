@@ -12,7 +12,8 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 const char kUrlStaging[] = "https://sandbox.uphold.com";
 const char kUrlProduction[] = "https://uphold.com";
@@ -50,6 +51,7 @@ ledger::ExternalWalletPtr GenerateLinks(ledger::ExternalWalletPtr wallet);
 
 std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet);
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_UPHOLD_UPHOLD_UTIL_H_

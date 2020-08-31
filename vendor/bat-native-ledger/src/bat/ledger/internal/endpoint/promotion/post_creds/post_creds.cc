@@ -11,7 +11,7 @@
 #include "bat/ledger/internal/endpoint/promotion/post_creds/post_creds.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostCreds::PostCreds(bat_ledger::LedgerImpl* ledger):
+PostCreds::PostCreds(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

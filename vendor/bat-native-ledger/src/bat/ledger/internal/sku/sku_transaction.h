@@ -13,15 +13,14 @@
 #include "bat/ledger/internal/endpoint/payment/payment_server.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_sku {
+namespace sku {
 
 class SKUTransaction {
  public:
-  explicit SKUTransaction(bat_ledger::LedgerImpl* ledger);
+  explicit SKUTransaction(LedgerImpl* ledger);
   ~SKUTransaction();
 
   void Create(
@@ -58,10 +57,11 @@ class SKUTransaction {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_TRANSACTION_H_

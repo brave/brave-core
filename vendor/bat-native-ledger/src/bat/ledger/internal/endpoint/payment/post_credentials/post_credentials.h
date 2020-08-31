@@ -35,11 +35,10 @@
 // Response body:
 // {Empty}
 
-namespace bat_ledger {
-class LedgerImpl;
-}
 
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace payment {
 
@@ -48,7 +47,7 @@ using PostCredentialsCallback = std::function<void(
 
 class PostCredentials {
  public:
-  explicit PostCredentials(bat_ledger::LedgerImpl* ledger);
+  explicit PostCredentials(LedgerImpl* ledger);
   ~PostCredentials();
 
   void Request(
@@ -72,7 +71,7 @@ class PostCredentials {
       const ledger::UrlResponse& response,
       PostCredentialsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace payment

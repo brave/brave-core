@@ -11,11 +11,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseContributionInfoPublishers: public DatabaseTable {
  public:
-  explicit DatabaseContributionInfoPublishers(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseContributionInfoPublishers(LedgerImpl* ledger);
   ~DatabaseContributionInfoPublishers() override;
 
   void InsertOrUpdate(
@@ -45,6 +46,7 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
       ContributionPublisherPairListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_CONTRIBUTION_INFO_PUBLISHERS_H_

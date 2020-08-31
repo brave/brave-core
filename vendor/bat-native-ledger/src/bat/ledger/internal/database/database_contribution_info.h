@@ -13,11 +13,12 @@
 #include "bat/ledger/internal/database/database_contribution_info_publishers.h"
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseContributionInfo: public DatabaseTable {
  public:
-  explicit DatabaseContributionInfo(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseContributionInfo(LedgerImpl* ledger);
   ~DatabaseContributionInfo() override;
 
   void InsertOrUpdate(
@@ -95,6 +96,7 @@ class DatabaseContributionInfo: public DatabaseTable {
   std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_CONTRIBUTION_INFO_H_

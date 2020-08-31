@@ -16,9 +16,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
-UpholdWallet::UpholdWallet(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
+UpholdWallet::UpholdWallet(LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold) {
 }
@@ -206,4 +207,5 @@ ledger::WalletStatus UpholdWallet::GetNewStatus(
   return new_status;
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

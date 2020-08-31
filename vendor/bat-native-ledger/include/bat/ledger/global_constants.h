@@ -13,6 +13,7 @@
 
 #include "bat/ledger/export.h"
 
+// TODO add constants namespace
 namespace ledger {
 
 const char kClearFavicon[] = "clear";

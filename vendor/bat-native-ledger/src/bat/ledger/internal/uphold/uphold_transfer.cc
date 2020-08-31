@@ -16,9 +16,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
-UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
+UpholdTransfer::UpholdTransfer(LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold),
     uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
@@ -115,4 +116,5 @@ void UpholdTransfer::OnCommitTransaction(
   callback(ledger::Result::LEDGER_OK, transaction_id);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

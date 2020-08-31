@@ -21,11 +21,9 @@
 // Response body:
 // See https://github.com/brave/brave-core/blob/master/vendor/bat-native-ledger/src/bat/ledger/internal/publisher/protos/channel_response.proto
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace private_cdn {
 
@@ -35,7 +33,7 @@ using GetPublisherCallback = std::function<void(
 
 class GetPublisher {
  public:
-  explicit GetPublisher(bat_ledger::LedgerImpl* ledger);
+  explicit GetPublisher(LedgerImpl* ledger);
   ~GetPublisher();
 
   void Request(
@@ -58,7 +56,7 @@ class GetPublisher {
       const std::string& publisher_key,
       GetPublisherCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace private_cdn

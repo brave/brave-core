@@ -18,21 +18,21 @@
 
 using std::placeholders::_1;
 
-namespace bat_ledger {
+namespace ledger {
 
 LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     ledger_client_(client),
-    promotion_(std::make_unique<braveledger_promotion::Promotion>(this)),
-    publisher_(std::make_unique<braveledger_publisher::Publisher>(this)),
+    promotion_(std::make_unique<promotion::Promotion>(this)),
+    publisher_(std::make_unique<publisher::Publisher>(this)),
     media_(std::make_unique<braveledger_media::Media>(this)),
     contribution_(
-        std::make_unique<braveledger_contribution::Contribution>(this)),
-    wallet_(std::make_unique<ledger::wallet::Wallet>(this)),
-    database_(std::make_unique<braveledger_database::Database>(this)),
-    report_(std::make_unique<braveledger_report::Report>(this)),
-    state_(std::make_unique<braveledger_state::State>(this)),
-    api_(std::make_unique<braveledger_api::API>(this)),
-    recovery_(std::make_unique<ledger::recovery::Recovery>(this)),
+        std::make_unique<contribution::Contribution>(this)),
+    wallet_(std::make_unique<wallet::Wallet>(this)),
+    database_(std::make_unique<database::Database>(this)),
+    report_(std::make_unique<report::Report>(this)),
+    state_(std::make_unique<state::State>(this)),
+    api_(std::make_unique<api::API>(this)),
+    recovery_(std::make_unique<recovery::Recovery>(this)),
     initialized_task_scheduler_(false),
     initializing_(false),
     last_tab_active_time_(0),
@@ -52,9 +52,9 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
       {base::ThreadPool(), base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 
-  sku_ = braveledger_sku::SKUFactory::Create(
+  sku_ = sku::SKUFactory::Create(
       this,
-      braveledger_sku::SKUType::kMerchant);
+      sku::SKUType::kMerchant);
   DCHECK(sku_);
 }
 
@@ -69,15 +69,15 @@ ledger::LedgerClient* LedgerImpl::ledger_client() const {
   return ledger_client_;
 }
 
-braveledger_state::State* LedgerImpl::state() const {
+state::State* LedgerImpl::state() const {
   return state_.get();
 }
 
-braveledger_promotion::Promotion* LedgerImpl::promotion() const {
+promotion::Promotion* LedgerImpl::promotion() const {
   return promotion_.get();
 }
 
-braveledger_publisher::Publisher* LedgerImpl::publisher() const {
+publisher::Publisher* LedgerImpl::publisher() const {
   return publisher_.get();
 }
 
@@ -85,27 +85,27 @@ braveledger_media::Media* LedgerImpl::media() const {
   return media_.get();
 }
 
-braveledger_contribution::Contribution* LedgerImpl::contribution() const {
+contribution::Contribution* LedgerImpl::contribution() const {
   return contribution_.get();
 }
 
-ledger::wallet::Wallet* LedgerImpl::wallet() const {
+wallet::Wallet* LedgerImpl::wallet() const {
   return wallet_.get();
 }
 
-braveledger_report::Report* LedgerImpl::report() const {
+report::Report* LedgerImpl::report() const {
   return report_.get();
 }
 
-braveledger_sku::SKU* LedgerImpl::sku() const {
+sku::SKU* LedgerImpl::sku() const {
   return sku_.get();
 }
 
-braveledger_api::API* LedgerImpl::api() const {
+api::API* LedgerImpl::api() const {
   return api_.get();
 }
 
-braveledger_database::Database* LedgerImpl::database() const {
+database::Database* LedgerImpl::database() const {
   return database_.get();
 }
 
@@ -651,7 +651,7 @@ void LedgerImpl::GetPendingContributions(
       ledger::PendingContributionInfoList list) {
     // The publisher status field may be expired. Attempt to refresh
     // expired publisher status values before executing callback.
-    braveledger_publisher::RefreshPublisherStatus(
+    publisher::RefreshPublisherStatus(
         this,
         std::move(list),
         callback);
@@ -781,4 +781,4 @@ void LedgerImpl::GetEventLogs(ledger::GetEventLogsCallback callback) {
   database()->GetLastEventLogs(callback);
 }
 
-}  // namespace bat_ledger
+}  // namespace ledger

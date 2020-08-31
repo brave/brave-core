@@ -19,7 +19,8 @@ using ::testing::_;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 class UpholdTest : public testing::Test {
  private:
@@ -27,13 +28,13 @@ class UpholdTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Uphold> uphold_;
 
   UpholdTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     uphold_ = std::make_unique<Uphold>(mock_ledger_impl_.get());
   }
 };
@@ -62,4 +63,5 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
   uphold_->FetchBalance(callback);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

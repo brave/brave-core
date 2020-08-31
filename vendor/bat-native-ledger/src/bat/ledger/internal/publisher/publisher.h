@@ -14,18 +14,17 @@
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_publisher {
+namespace publisher {
 
 class PublisherPrefixListUpdater;
 class ServerPublisherFetcher;
 
 class Publisher {
  public:
-  explicit Publisher(bat_ledger::LedgerImpl* ledger);
+  explicit Publisher(LedgerImpl* ledger);
 
   ~Publisher();
 
@@ -179,7 +178,7 @@ class Publisher {
       const std::string& publisher_key,
       ledger::GetServerPublisherInfoCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PublisherPrefixListUpdater> prefix_list_updater_;
   std::unique_ptr<ServerPublisherFetcher> server_publisher_fetcher_;
 
@@ -189,6 +188,7 @@ class Publisher {
   FRIEND_TEST_ALL_PREFIXES(PublisherTest, synopsisNormalizerInternal);
 };
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_PUBLISHER_H_

@@ -14,11 +14,12 @@
 #include "bat/ledger/internal/credentials/credentials_common.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 class CredentialsPromotion : public Credentials {
  public:
-  explicit CredentialsPromotion(bat_ledger::LedgerImpl* ledger);
+  explicit CredentialsPromotion(LedgerImpl* ledger);
   ~CredentialsPromotion() override;
 
   void Start(
@@ -114,11 +115,12 @@ class CredentialsPromotion : public Credentials {
       const CredentialsRedeem& redeem,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;
   std::unique_ptr<ledger::endpoint::PromotionServer> promotion_server_;
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_PROMOTION_H_

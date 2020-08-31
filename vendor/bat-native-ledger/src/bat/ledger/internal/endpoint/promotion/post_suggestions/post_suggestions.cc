@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSuggestions::PostSuggestions(bat_ledger::LedgerImpl* ledger):
+PostSuggestions::PostSuggestions(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -32,11 +32,11 @@ std::string PostSuggestions::GetUrl() {
 }
 
 std::string PostSuggestions::GeneratePayload(
-    const braveledger_credentials::CredentialsRedeem& redeem) {
+    const credential::CredentialsRedeem& redeem) {
   base::Value data(base::Value::Type::DICTIONARY);
   data.SetStringKey(
       "type",
-      braveledger_credentials::ConvertRewardTypeToString(redeem.type));
+      credential::ConvertRewardTypeToString(redeem.type));
   if (!redeem.order_id.empty()) {
     data.SetStringKey("orderId", redeem.order_id);
   }
@@ -52,7 +52,7 @@ std::string PostSuggestions::GeneratePayload(
   base::Base64Encode(data_json, &data_encoded);
 
   base::Value credentials(base::Value::Type::LIST);
-  braveledger_credentials::GenerateCredentials(
+  credential::GenerateCredentials(
       redeem.token_list,
       data_encoded,
       &credentials);
@@ -86,7 +86,7 @@ ledger::Result PostSuggestions::CheckStatusCode(const int status_code) {
 }
 
 void PostSuggestions::Request(
-    const braveledger_credentials::CredentialsRedeem& redeem,
+    const credential::CredentialsRedeem& redeem,
     PostSuggestionsCallback callback) {
   auto url_callback = std::bind(&PostSuggestions::OnRequest,
       this,

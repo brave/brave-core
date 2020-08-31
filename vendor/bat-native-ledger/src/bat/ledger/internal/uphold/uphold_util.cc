@@ -12,7 +12,8 @@
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "crypto/random.h"
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 std::string GetClientId() {
   return ledger::_environment == ledger::Environment::PRODUCTION
@@ -195,4 +196,5 @@ std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet) {
   return url;
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

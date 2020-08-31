@@ -20,10 +20,11 @@ const char kTableName[] = "publisher_info";
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabasePublisherInfo::DatabasePublisherInfo(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -365,4 +366,5 @@ void DatabasePublisherInfo::OnGetExcludedList(
   callback(std::move(list));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

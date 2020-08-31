@@ -11,11 +11,9 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace attestation {
 
 using StartCallback =
@@ -26,7 +24,7 @@ using ConfirmCallback =
 
 class Attestation {
  public:
-  explicit Attestation(bat_ledger::LedgerImpl* ledger);
+  explicit Attestation(LedgerImpl* ledger);
   virtual ~Attestation();
 
   virtual void Start(const std::string& payload, StartCallback callback) = 0;
@@ -36,7 +34,7 @@ class Attestation {
       ConfirmCallback callback) = 0;
 
  protected:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace attestation

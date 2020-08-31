@@ -32,7 +32,7 @@ static const std::vector<std::string> _twitch_events = {
     "video-play",
     "video_error"};
 
-Twitch::Twitch(bat_ledger::LedgerImpl* ledger):
+Twitch::Twitch(ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 

@@ -10,15 +10,14 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class ContributionTip {
  public:
-  explicit ContributionTip(bat_ledger::LedgerImpl* ledger);
+  explicit ContributionTip(LedgerImpl* ledger);
 
   ~ContributionTip();
 
@@ -47,8 +46,9 @@ class ContributionTip {
       const ledger::Result result,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_TIP_H_

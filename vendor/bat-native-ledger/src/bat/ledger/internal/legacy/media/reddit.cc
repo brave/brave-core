@@ -23,7 +23,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-Reddit::Reddit(bat_ledger::LedgerImpl* ledger): ledger_(ledger) {
+Reddit::Reddit(ledger::LedgerImpl* ledger): ledger_(ledger) {
 }
 
 Reddit::~Reddit() {

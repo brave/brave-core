@@ -33,7 +33,8 @@ using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::UnblindedToken;
 
-namespace braveledger_promotion {
+namespace ledger {
+namespace promotion {
 
 namespace {
 
@@ -41,7 +42,7 @@ const int kFetchPromotionsThresholdInSeconds =
     10 * base::Time::kSecondsPerMinute;
 
 void HandleExpiredPromotions(
-    bat_ledger::LedgerImpl* ledger_impl,
+    LedgerImpl* ledger_impl,
     ledger::PromotionMap* promotions) {
   DCHECK(promotions);
   if (!promotions) {
@@ -72,7 +73,7 @@ void HandleExpiredPromotions(
 
 }  // namespace
 
-Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
+Promotion::Promotion(LedgerImpl* ledger) :
     attestation_(std::make_unique<ledger::attestation::AttestationImpl>
         (ledger)),
     transfer_(std::make_unique<PromotionTransfer>(ledger)),
@@ -80,7 +81,7 @@ Promotion::Promotion(bat_ledger::LedgerImpl* ledger) :
         std::make_unique<ledger::endpoint::PromotionServer>(ledger)),
     ledger_(ledger) {
   DCHECK(ledger_);
-  credentials_ = braveledger_credentials::CredentialsFactory::Create(
+  credentials_ = credential::CredentialsFactory::Create(
       ledger_,
       ledger::CredsBatchType::PROMOTION);
   DCHECK(credentials_);
@@ -469,7 +470,7 @@ void Promotion::GetCredentials(
     return;
   }
 
-  braveledger_credentials::CredentialsTrigger trigger;
+  credential::CredentialsTrigger trigger;
   trigger.id = promotion->id;
   trigger.size = promotion->suggestions;
   trigger.type = ledger::CredsBatchType::PROMOTION;
@@ -645,7 +646,7 @@ void Promotion::CheckForCorruptedCreds(ledger::CredsBatchList list) {
 
     std::vector<std::string> unblinded_encoded_tokens;
     std::string error;
-    bool result = braveledger_credentials::UnBlindCreds(
+    bool result = credential::UnBlindCreds(
         *item,
         &unblinded_encoded_tokens,
         &error);
@@ -764,4 +765,5 @@ void Promotion::OnLastCheckTimerElapsed() {
   Fetch([](ledger::Result, ledger::PromotionList) {});
 }
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger

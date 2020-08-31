@@ -32,9 +32,10 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
-Database::Database(bat_ledger::LedgerImpl* ledger) :
+Database::Database(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 
@@ -519,7 +520,7 @@ void Database::SearchPublisherPrefixList(
 }
 
 void Database::ResetPublisherPrefixList(
-    std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
+    std::unique_ptr<publisher::PrefixListReader> reader,
     ledger::ResultCallback callback) {
   publisher_prefix_list_->Reset(std::move(reader), callback);
 }
@@ -662,4 +663,5 @@ void Database::GetSpendableUnblindedTokensByBatchTypes(
   unblinded_token_->GetSpendableRecordListByBatchTypes(batch_types, callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

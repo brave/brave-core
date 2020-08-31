@@ -258,7 +258,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
     const GURL current_url = contents()->GetURL();
     ASSERT_TRUE(base::StartsWith(
         current_url.spec(),
-        braveledger_uphold::GetUrl() + "/authorize/",
+        ledger::uphold::GetUrl() + "/authorize/",
         base::CompareCase::INSENSITIVE_ASCII));
   }
 
@@ -272,7 +272,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, DISABLED_NotVerifiedWallet) {
     const GURL current_url = contents()->GetURL();
     ASSERT_TRUE(base::StartsWith(
         current_url.spec(),
-        braveledger_uphold::GetUrl() + "/signup/step2",
+        ledger::uphold::GetUrl() + "/signup/step2",
         base::CompareCase::INSENSITIVE_ASCII));
   }
 }

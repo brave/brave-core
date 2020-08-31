@@ -20,9 +20,9 @@ using std::placeholders::_2;
 namespace ledger {
 namespace wallet {
 
-WalletBalance::WalletBalance(bat_ledger::LedgerImpl* ledger) :
+WalletBalance::WalletBalance(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
+    uphold_(std::make_unique<uphold::Uphold>(ledger)),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }
 

@@ -12,11 +12,12 @@
 #include "bat/ledger/internal/database/database.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class MockDatabase : public Database {
  public:
-  explicit MockDatabase(bat_ledger::LedgerImpl* ledger);
+  explicit MockDatabase(LedgerImpl* ledger);
 
   ~MockDatabase() override;
 
@@ -36,6 +37,7 @@ class MockDatabase : public Database {
       void(ledger::GetAllPromotionsCallback callback));
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BAT_LEDGER_DATABASE_DATABASE_MOCK_H_

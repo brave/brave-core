@@ -18,7 +18,7 @@ using std::placeholders::_3;
 namespace ledger {
 namespace attestation {
 
-AttestationIOS::AttestationIOS(bat_ledger::LedgerImpl* ledger) :
+AttestationIOS::AttestationIOS(LedgerImpl* ledger) :
     Attestation(ledger),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
 }

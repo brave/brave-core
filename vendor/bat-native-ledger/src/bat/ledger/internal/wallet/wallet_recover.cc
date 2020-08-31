@@ -20,7 +20,7 @@ using std::placeholders::_2;
 namespace ledger {
 namespace wallet {
 
-WalletRecover::WalletRecover(bat_ledger::LedgerImpl* ledger) :
+WalletRecover::WalletRecover(LedgerImpl* ledger) :
     ledger_(ledger),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
   DCHECK(ledger_);

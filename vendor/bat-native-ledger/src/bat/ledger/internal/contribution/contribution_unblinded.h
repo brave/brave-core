@@ -16,11 +16,10 @@
 #include "bat/ledger/internal/credentials/credentials_factory.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_contribution {
+namespace contribution {
 
 using GetContributionInfoAndUnblindedTokensCallback = std::function<void(
     ledger::ContributionInfoPtr contribution,
@@ -30,7 +29,7 @@ using Winners = std::map<std::string, uint32_t>;
 
 class Unblinded {
  public:
-  explicit Unblinded(bat_ledger::LedgerImpl* ledger);
+  explicit Unblinded(LedgerImpl* ledger);
   ~Unblinded();
 
   void Start(
@@ -132,10 +131,11 @@ class Unblinded {
       std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_credentials::Credentials> credentials_promotion_;
-  std::unique_ptr<braveledger_credentials::Credentials> credentials_sku_;
+  LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<credential::Credentials> credentials_promotion_;
+  std::unique_ptr<credential::Credentials> credentials_sku_;
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UNBLINDED_H_

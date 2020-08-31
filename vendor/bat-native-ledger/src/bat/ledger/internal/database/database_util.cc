@@ -16,7 +16,8 @@ const int kCompatibleVersionNumber = 1;
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 void BindNull(
     ledger::DBCommand* command,
@@ -202,4 +203,5 @@ std::string GenerateStringInCase(const std::vector<std::string>& items) {
   return base::StringPrintf("\"%s\"", items_join.c_str());
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

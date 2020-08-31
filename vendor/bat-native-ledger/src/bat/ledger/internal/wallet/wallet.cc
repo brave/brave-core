@@ -20,13 +20,13 @@
 namespace ledger {
 namespace wallet {
 
-Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
+Wallet::Wallet(LedgerImpl* ledger) :
     ledger_(ledger),
     create_(std::make_unique<WalletCreate>(ledger)),
     recover_(std::make_unique<WalletRecover>(ledger)),
     balance_(std::make_unique<WalletBalance>(ledger)),
     claim_(std::make_unique<WalletClaim>(ledger)),
-    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)) {
+    uphold_(std::make_unique<uphold::Uphold>(ledger)) {
 }
 
 Wallet::~Wallet() = default;

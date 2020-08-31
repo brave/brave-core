@@ -16,17 +16,16 @@
 #include "bat/ledger/internal/endpoint/rewards/rewards_server.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_publisher {
+namespace publisher {
 
 // Automatically updates the publisher prefix list store on regular
 // intervals.
 class PublisherPrefixListUpdater {
  public:
-  explicit PublisherPrefixListUpdater(bat_ledger::LedgerImpl* ledger);
+  explicit PublisherPrefixListUpdater(LedgerImpl* ledger);
 
   PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
   PublisherPrefixListUpdater& operator=(
@@ -54,7 +53,7 @@ class PublisherPrefixListUpdater {
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;
@@ -62,6 +61,7 @@ class PublisherPrefixListUpdater {
   std::unique_ptr<ledger::endpoint::RewardsServer> rewards_server_;
 };
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_PUBLISHER_PREFIX_LIST_UPDATER_H_

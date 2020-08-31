@@ -12,11 +12,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabasePromotion: public DatabaseTable {
  public:
-  explicit DatabasePromotion(bat_ledger::LedgerImpl* ledger);
+  explicit DatabasePromotion(LedgerImpl* ledger);
   ~DatabasePromotion() override;
 
   void InsertOrUpdate(
@@ -75,6 +76,7 @@ class DatabasePromotion: public DatabaseTable {
       ledger::GetPromotionListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_PROMOTION_H_

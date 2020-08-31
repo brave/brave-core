@@ -15,7 +15,7 @@
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
@@ -23,7 +23,7 @@ namespace braveledger_media {
 
 class Twitch {
  public:
-  explicit Twitch(bat_ledger::LedgerImpl* ledger);
+  explicit Twitch(ledger::LedgerImpl* ledger);
 
   ~Twitch();
 
@@ -122,7 +122,7 @@ class Twitch {
                          const std::string& channel_id,
                          const std::string& publisher_key = "");
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, ledger::MediaEventInfo> twitch_events;
 
   // For testing purposes

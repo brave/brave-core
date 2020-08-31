@@ -21,7 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetAvailable::GetAvailable(bat_ledger::LedgerImpl* ledger):
+GetAvailable::GetAvailable(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -111,7 +111,7 @@ ledger::Result GetAvailable::ParseBody(
       continue;
     }
     promotion->type =
-        braveledger_promotion::ConvertStringToPromotionType(*type);
+        ::ledger::promotion::ConvertStringToPromotionType(*type);
 
     const auto suggestions = item.FindIntKey("suggestionsPerGrant");
     if (!suggestions) {

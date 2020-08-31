@@ -13,11 +13,12 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_report {
+namespace ledger {
+namespace report {
 
 class Report {
  public:
-  explicit Report(bat_ledger::LedgerImpl* ledger);
+  explicit Report(LedgerImpl* ledger);
 
   ~Report();
 
@@ -52,9 +53,10 @@ class Report {
       ledger::BalanceReportInfoList reports,
       ledger::GetAllMonthlyReportIdsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_report
+}  // namespace report
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_REPORT_REPORT_H_

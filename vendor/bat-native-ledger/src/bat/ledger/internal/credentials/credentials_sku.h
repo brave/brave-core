@@ -14,11 +14,12 @@
 #include "bat/ledger/internal/credentials/credentials_common.h"
 #include "bat/ledger/internal/endpoint/payment/payment_server.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 class CredentialsSKU : public Credentials {
  public:
-  explicit CredentialsSKU(bat_ledger::LedgerImpl* ledger);
+  explicit CredentialsSKU(LedgerImpl* ledger);
   ~CredentialsSKU() override;
 
   void Start(
@@ -94,11 +95,12 @@ class CredentialsSKU : public Credentials {
       const CredentialsRedeem& redeem,
       ledger::ResultCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;
   std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_SKU_H_

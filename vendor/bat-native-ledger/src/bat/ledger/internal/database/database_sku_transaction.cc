@@ -13,7 +13,8 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
@@ -22,7 +23,7 @@ const char kTableName[] = "sku_transaction";
 }  // namespace
 
 DatabaseSKUTransaction::DatabaseSKUTransaction(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -179,4 +180,5 @@ void DatabaseSKUTransaction::OnGetRecord(
   callback(std::move(info));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

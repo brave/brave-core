@@ -13,7 +13,8 @@
 
 // npm run test -- brave_unit_tests --filter=UpholdUtilTest.*
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 class UpholdUtilTest : public testing::Test {
 };
@@ -21,24 +22,24 @@ class UpholdUtilTest : public testing::Test {
 TEST(UpholdUtilTest, GetClientId) {
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
-  std::string result = braveledger_uphold::GetClientId();
+  std::string result = uphold::GetClientId();
   ASSERT_EQ(result, kClientIdProduction);
 
   // staging
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetClientId();
+  result = uphold::GetClientId();
   ASSERT_EQ(result, kClientIdStaging);
 }
 
 TEST(UpholdUtilTest, GetFeeAddress) {
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
-  std::string result = braveledger_uphold::GetFeeAddress();
+  std::string result = uphold::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressProduction);
 
   // staging
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetFeeAddress();
+  result = uphold::GetFeeAddress();
   ASSERT_EQ(result, kFeeAddressStaging);
 }
 
@@ -46,7 +47,7 @@ TEST(UpholdUtilTest, GetAuthorizeUrl) {
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
   std::string result =
-      braveledger_uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
+      uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
   ASSERT_EQ(result,
       "https://uphold.com/authorize/"
       "6d8d9473ed20be627f71ed46e207f40c004c5b1a?scope=accounts:read "
@@ -57,7 +58,7 @@ TEST(UpholdUtilTest, GetAuthorizeUrl) {
 
   // staging
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
+  result = uphold::GetAuthorizeUrl("rdfdsfsdfsdf", true);
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/authorize/"
       "4c2b665ca060d912fec5c735c734859a06118cc8?scope=accounts:read "
@@ -68,7 +69,7 @@ TEST(UpholdUtilTest, GetAuthorizeUrl) {
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
   result =
-      braveledger_uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
+      uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
   ASSERT_EQ(result,
       "https://uphold.com/authorize/"
       "6d8d9473ed20be627f71ed46e207f40c004c5b1a?scope=accounts:read "
@@ -79,7 +80,7 @@ TEST(UpholdUtilTest, GetAuthorizeUrl) {
 
   // staging
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
+  result = uphold::GetAuthorizeUrl("rdfdsfsdfsdf", false);
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/authorize/"
       "4c2b665ca060d912fec5c735c734859a06118cc8?scope=accounts:read "
@@ -91,34 +92,34 @@ TEST(UpholdUtilTest, GetAuthorizeUrl) {
 
 TEST(UpholdUtilTest, GetAddUrl) {
   // empty string
-  std::string result = braveledger_uphold::GetAddUrl("");
+  std::string result = uphold::GetAddUrl("");
   ASSERT_EQ(result, "");
 
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
-  result = braveledger_uphold::GetAddUrl("9324i5i32459i");
+  result = uphold::GetAddUrl("9324i5i32459i");
   ASSERT_EQ(result, "https://uphold.com/dashboard/cards/9324i5i32459i/add");
 
   // staging
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetAddUrl("9324i5i32459i");
+  result = uphold::GetAddUrl("9324i5i32459i");
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/add");
 }
 
 TEST(UpholdUtilTest, GetWithdrawUrl) {
   // empty string
-  std::string result = braveledger_uphold::GetWithdrawUrl("");
+  std::string result = uphold::GetWithdrawUrl("");
   ASSERT_EQ(result, "");
 
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
-  result = braveledger_uphold::GetWithdrawUrl("9324i5i32459i");
+  result = uphold::GetWithdrawUrl("9324i5i32459i");
   ASSERT_EQ(result, "https://uphold.com/dashboard/cards/9324i5i32459i/use");
 
   // staging
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetWithdrawUrl("9324i5i32459i");
+  result = uphold::GetWithdrawUrl("9324i5i32459i");
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/dashboard/cards/9324i5i32459i/use");
 }
@@ -126,14 +127,14 @@ TEST(UpholdUtilTest, GetWithdrawUrl) {
 TEST(UpholdUtilTest, GetSecondStepVerify) {
   // production
   ledger::_environment = ledger::Environment::PRODUCTION;
-  std::string result = braveledger_uphold::GetSecondStepVerify();
+  std::string result = uphold::GetSecondStepVerify();
   ASSERT_EQ(result,
       "https://uphold.com/signup/step2?"
       "application_id=6d8d9473ed20be627f71ed46e207f40c004c5b1a&intention=kyc");
 
   // staging
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GetSecondStepVerify();
+  result = uphold::GetSecondStepVerify();
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/signup/step2?"
       "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&intention=kyc");
@@ -143,32 +144,32 @@ TEST(UpholdUtilTest, GetWallet) {
   // no wallets
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
   ledger::ExternalWalletPtr result =
-      braveledger_uphold::GetWallet(std::move(wallets));
+      uphold::GetWallet(std::move(wallets));
   ASSERT_TRUE(!result);
 
   // different wallet
   auto diff = ledger::ExternalWallet::New();
   diff->address = "add1";
   wallets.insert(std::make_pair("different", std::move(diff)));
-  result = braveledger_uphold::GetWallet(std::move(wallets));
+  result = uphold::GetWallet(std::move(wallets));
   ASSERT_TRUE(!result);
 
   // uphold wallet
   auto uphold = ledger::ExternalWallet::New();
   uphold->address = "12355";
   wallets.insert(std::make_pair(ledger::kWalletUphold, std::move(uphold)));
-  result = braveledger_uphold::GetWallet(std::move(wallets));
+  result = uphold::GetWallet(std::move(wallets));
   ASSERT_EQ(result->address, "12355");
 }
 
 TEST(UpholdUtilTest, GenerateRandomString) {
   // string for testing
-  auto result = braveledger_uphold::GenerateRandomString(true);
+  auto result = uphold::GenerateRandomString(true);
   ASSERT_EQ(result, "123456789");
 
   // random string
   ledger::_environment = ledger::Environment::STAGING;
-  result = braveledger_uphold::GenerateRandomString(false);
+  result = uphold::GenerateRandomString(false);
   ASSERT_EQ(result.length(), 64u);
 }
 
@@ -180,7 +181,7 @@ TEST(UpholdUtilTest, GenerateLinks) {
 
   // Not connected
   wallet->status = ledger::WalletStatus::NOT_CONNECTED;
-  auto result = braveledger_uphold::GenerateLinks(wallet->Clone());
+  auto result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(result->verify_url,
@@ -194,7 +195,7 @@ TEST(UpholdUtilTest, GenerateLinks) {
 
   // Connected
   wallet->status = ledger::WalletStatus::CONNECTED;
-  result = braveledger_uphold::GenerateLinks(wallet->Clone());
+  result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url,
       "https://sandbox.uphold.com/dashboard/cards/123123123124234234234/add");
   ASSERT_EQ(result->withdraw_url,
@@ -207,7 +208,7 @@ TEST(UpholdUtilTest, GenerateLinks) {
 
   // Verified
   wallet->status = ledger::WalletStatus::VERIFIED;
-  result = braveledger_uphold::GenerateLinks(wallet->Clone());
+  result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url,
       "https://sandbox.uphold.com/dashboard/cards/123123123124234234234/add");
   ASSERT_EQ(result->withdraw_url,
@@ -217,7 +218,7 @@ TEST(UpholdUtilTest, GenerateLinks) {
 
   // Disconnected Non-Verified
   wallet->status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
-  result = braveledger_uphold::GenerateLinks(wallet->Clone());
+  result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(result->verify_url,
@@ -231,7 +232,7 @@ TEST(UpholdUtilTest, GenerateLinks) {
 
   // Disconnected Verified
   wallet->status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
-  result = braveledger_uphold::GenerateLinks(wallet->Clone());
+  result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url, "");
   ASSERT_EQ(result->withdraw_url, "");
   ASSERT_EQ(result->verify_url,
@@ -245,7 +246,7 @@ TEST(UpholdUtilTest, GenerateLinks) {
 
   // Pending
   wallet->status = ledger::WalletStatus::PENDING;
-  result = braveledger_uphold::GenerateLinks(wallet->Clone());
+  result = uphold::GenerateLinks(wallet->Clone());
   ASSERT_EQ(result->add_url,
           "https://sandbox.uphold.com/signup/step2?"
           "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
@@ -269,7 +270,7 @@ TEST(UpholdUtilTest, GenerateVerifyLink) {
 
   // Not connected
   wallet->status = ledger::WalletStatus::NOT_CONNECTED;
-  auto result = braveledger_uphold::GenerateVerifyLink(wallet->Clone());
+  auto result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a06"
       "118cc8?scope=accounts:read "
@@ -280,19 +281,19 @@ TEST(UpholdUtilTest, GenerateVerifyLink) {
 
   // Connected
   wallet->status = ledger::WalletStatus::CONNECTED;
-  result = braveledger_uphold::GenerateVerifyLink(wallet->Clone());
+  result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/signup/step2?application_id="
       "4c2b665ca060d912fec5c735c734859a06118cc8&intention=kyc");
 
   // Verified
   wallet->status = ledger::WalletStatus::VERIFIED;
-  result = braveledger_uphold::GenerateVerifyLink(wallet->Clone());
+  result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result, "");
 
   // Disconnected Non-Verified
   wallet->status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
-  result = braveledger_uphold::GenerateVerifyLink(wallet->Clone());
+  result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a06"
       "118cc8?scope=accounts:read "
@@ -303,7 +304,7 @@ TEST(UpholdUtilTest, GenerateVerifyLink) {
 
   // Disconnected Verified
   wallet->status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
-  result = braveledger_uphold::GenerateVerifyLink(wallet->Clone());
+  result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
       "https://sandbox.uphold.com/authorize/4c2b665ca060d912fec5c735c734859a06"
       "118cc8?scope=accounts:read "
@@ -314,11 +315,12 @@ TEST(UpholdUtilTest, GenerateVerifyLink) {
 
   // Pending
   wallet->status = ledger::WalletStatus::PENDING;
-  result = braveledger_uphold::GenerateVerifyLink(wallet->Clone());
+  result = uphold::GenerateVerifyLink(wallet->Clone());
   ASSERT_EQ(result,
           "https://sandbox.uphold.com/signup/step2?"
           "application_id=4c2b665ca060d912fec5c735c734859a06118cc8&"
           "intention=kyc");
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

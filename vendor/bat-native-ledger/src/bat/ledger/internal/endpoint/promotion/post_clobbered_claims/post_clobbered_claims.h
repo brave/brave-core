@@ -30,11 +30,9 @@ CLAIMS_POST_CLOBBERED_CLAIMS_H_
 // Response body:
 // {Empty}
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -43,7 +41,7 @@ using PostClobberedClaimsCallback = std::function<void(
 
 class PostClobberedClaims {
  public:
-  explicit PostClobberedClaims(bat_ledger::LedgerImpl* ledger);
+  explicit PostClobberedClaims(LedgerImpl* ledger);
   ~PostClobberedClaims();
 
   void Request(
@@ -61,7 +59,7 @@ class PostClobberedClaims {
       const ledger::UrlResponse& response,
       PostClobberedClaimsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

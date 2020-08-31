@@ -42,11 +42,9 @@ POST_TRANSACTION_UPHOLD_H_
 //   "amount": "1"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace payment {
 
@@ -55,7 +53,7 @@ using PostTransactionUpholdCallback = std::function<void(
 
 class PostTransactionUphold {
  public:
-  explicit PostTransactionUphold(bat_ledger::LedgerImpl* ledger);
+  explicit PostTransactionUphold(LedgerImpl* ledger);
   ~PostTransactionUphold();
 
   void Request(
@@ -73,7 +71,7 @@ class PostTransactionUphold {
       const ledger::UrlResponse& response,
       PostTransactionUpholdCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace payment

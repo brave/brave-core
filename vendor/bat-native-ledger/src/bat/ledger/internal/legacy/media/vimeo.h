@@ -16,7 +16,7 @@
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
@@ -24,7 +24,7 @@ namespace braveledger_media {
 
 class Vimeo {
  public:
-  explicit Vimeo(bat_ledger::LedgerImpl* ledger);
+  explicit Vimeo(ledger::LedgerImpl* ledger);
 
   ~Vimeo();
 
@@ -127,7 +127,7 @@ class Vimeo {
     const std::string& publisher_key = "",
     const std::string& publisher_favicon = "");
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, ledger::MediaEventInfo> events;
 
   // For testing purposes

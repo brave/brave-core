@@ -8,6 +8,7 @@
 
 #include <string>
 
+// TOOD add option namespace and drop option from variables
 namespace ledger {
   const char kOptionPublisherListRefreshInterval[] =
       "publisher_list_refresh_interval";

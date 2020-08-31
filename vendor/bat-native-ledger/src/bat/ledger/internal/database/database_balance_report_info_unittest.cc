@@ -18,7 +18,8 @@
 using ::testing::_;
 using ::testing::Invoke;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseBalanceReportTest : public ::testing::Test {
  private:
@@ -26,14 +27,14 @@ class DatabaseBalanceReportTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabaseBalanceReport> balance_report_;
 
   DatabaseBalanceReportTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     balance_report_ =
         std::make_unique<DatabaseBalanceReport>(mock_ledger_impl_.get());
   }
@@ -155,4 +156,5 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
   balance_report_->DeleteAllRecords([](ledger::Result) {});
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

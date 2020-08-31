@@ -11,7 +11,8 @@
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/publisher/protos/publisher_prefix_list.pb.h"
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 PrefixListReader::PrefixListReader() : prefix_size_(kMinPrefixSize) {}
 
@@ -31,9 +32,7 @@ PrefixListReader::~PrefixListReader() = default;
 
 PrefixListReader::ParseError PrefixListReader::Parse(
     const std::string& contents) {
-  using publishers_pb::PublisherPrefixList;
-
-  PublisherPrefixList message;
+  publishers_pb::PublisherPrefixList message;
   if (!message.ParseFromString(contents)) {
     return ParseError::kInvalidProtobufMessage;
   }
@@ -50,11 +49,11 @@ PrefixListReader::ParseError PrefixListReader::Parse(
 
   std::string uncompressed;
   switch (message.compression_type()) {
-    case PublisherPrefixList::NO_COMPRESSION: {
+    case publishers_pb::PublisherPrefixList::NO_COMPRESSION: {
       uncompressed = std::move(*message.mutable_prefixes());
       break;
     }
-    case PublisherPrefixList::BROTLI_COMPRESSION: {
+    case publishers_pb::PublisherPrefixList::BROTLI_COMPRESSION: {
       bool decoded = braveledger_helpers::DecodeBrotliString(
           message.prefixes(),
           uncompressed_size,
@@ -96,4 +95,5 @@ PrefixListReader::ParseError PrefixListReader::Parse(
   return ParseError::kNone;
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

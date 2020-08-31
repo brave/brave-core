@@ -20,7 +20,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-GetCards::GetCards(bat_ledger::LedgerImpl* ledger):
+GetCards::GetCards(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -66,7 +66,7 @@ ledger::Result GetCards::ParseBody(
       continue;
     }
 
-    if (*label == braveledger_uphold::kCardName) {
+    if (*label == ::ledger::uphold::kCardName) {
       const auto* id_str = it.FindStringKey("id");
       if (!id_str) {
         continue;

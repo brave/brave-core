@@ -11,15 +11,14 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_uphold {
+namespace uphold {
 
 class UpholdWallet {
  public:
-  explicit UpholdWallet(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
+  explicit UpholdWallet(LedgerImpl* ledger, Uphold* uphold);
 
   ~UpholdWallet();
 
@@ -40,9 +39,10 @@ class UpholdWallet {
       const ledger::WalletStatus old_status,
       const User& user);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED
 };
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger
 #endif  // BRAVELEDGER_UPHOLD_UPHOLD_WALLET_H_

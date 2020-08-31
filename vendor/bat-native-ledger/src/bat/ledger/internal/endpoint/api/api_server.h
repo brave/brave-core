@@ -11,16 +11,14 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/endpoint/api/get_parameters/get_parameters.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 
 class APIServer {
  public:
-  explicit APIServer(bat_ledger::LedgerImpl* ledger);
+  explicit APIServer(LedgerImpl* ledger);
   ~APIServer();
 
   api::GetParameters* get_parameters() const;

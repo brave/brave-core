@@ -90,21 +90,21 @@ void GenerateActivityFilterBind(
 
   int column = 0;
   if (!filter->id.empty()) {
-    braveledger_database::BindString(command, column++, filter->id);
+    ledger::database::BindString(command, column++, filter->id);
   }
 
   if (filter->reconcile_stamp > 0) {
-    braveledger_database::BindInt64(command, column++, filter->reconcile_stamp);
+    ledger::database::BindInt64(command, column++, filter->reconcile_stamp);
   }
 
   if (filter->min_duration > 0) {
-    braveledger_database::BindInt(command, column++, filter->min_duration);
+    ledger::database::BindInt(command, column++, filter->min_duration);
   }
 
   if (filter->excluded != ledger::ExcludeFilter::FILTER_ALL &&
       filter->excluded !=
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
-    braveledger_database::BindInt(
+    ledger::database::BindInt(
         command,
         column++,
         static_cast<int32_t>(filter->excluded));
@@ -112,27 +112,28 @@ void GenerateActivityFilterBind(
 
   if (filter->excluded ==
       ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
-    braveledger_database::BindInt(
+    ledger::database::BindInt(
         command,
         column++,
         static_cast<int>(ledger::PublisherExclude::EXCLUDED));
   }
 
   if (filter->percent > 0) {
-    braveledger_database::BindInt(command, column++, filter->percent);
+    ledger::database::BindInt(command, column++, filter->percent);
   }
 
   if (filter->min_visits > 0) {
-    braveledger_database::BindInt(command, column++, filter->min_visits);
+    ledger::database::BindInt(command, column++, filter->min_visits);
   }
 }
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseActivityInfo::DatabaseActivityInfo(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -356,4 +357,5 @@ void DatabaseActivityInfo::DeleteRecord(
       transaction_callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

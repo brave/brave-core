@@ -20,9 +20,9 @@
 
 using ::testing::_;
 using ::testing::Invoke;
-using braveledger_publisher::PrefixListReader;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabasePublisherPrefixListTest : public ::testing::Test {
  private:
@@ -30,22 +30,23 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::string execute_script_;
   std::unique_ptr<DatabasePublisherPrefixList> database_prefix_list_;
 
   DatabasePublisherPrefixListTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     database_prefix_list_ = std::make_unique<DatabasePublisherPrefixList>(
         mock_ledger_impl_.get());
   }
 
   ~DatabasePublisherPrefixListTest() override {}
 
-  std::unique_ptr<PrefixListReader> CreateReader(uint32_t prefix_count) {
-    auto reader = std::make_unique<PrefixListReader>();
+  std::unique_ptr<::ledger::publisher::PrefixListReader>
+  CreateReader(uint32_t prefix_count) {
+    auto reader = std::make_unique<::ledger::publisher::PrefixListReader>();
     if (prefix_count == 0) {
       return reader;
     }
@@ -117,4 +118,5 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
   EXPECT_EQ(commands[4], "---");
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

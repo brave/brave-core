@@ -80,11 +80,9 @@
 //   ]
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace uphold {
 
@@ -92,19 +90,19 @@ using PatchCardCallback = std::function<void(const ledger::Result result)>;
 
 class PatchCard {
  public:
-  explicit PatchCard(bat_ledger::LedgerImpl* ledger);
+  explicit PatchCard(LedgerImpl* ledger);
   ~PatchCard();
 
   void Request(
       const std::string& token,
       const std::string& address,
-      const braveledger_uphold::UpdateCard& card,
+      const ::ledger::uphold::UpdateCard& card,
       PatchCardCallback callback);
 
  private:
   std::string GetUrl(const std::string& address);
 
-  std::string GeneratePayload(const braveledger_uphold::UpdateCard& card);
+  std::string GeneratePayload(const ::ledger::uphold::UpdateCard& card);
 
   ledger::Result CheckStatusCode(const int status_code);
 
@@ -112,7 +110,7 @@ class PatchCard {
       const ledger::UrlResponse& response,
       PatchCardCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace uphold

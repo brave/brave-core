@@ -12,7 +12,8 @@
 
 #include "bat/ledger/mojom_structs.h"
 
-namespace braveledger_promotion {
+namespace ledger {
+namespace promotion {
 
 std::string ParseOSToString(ledger::OperatingSystem os);
 
@@ -25,6 +26,7 @@ ledger::ReportType ConvertPromotionTypeToReportType(
 
 std::vector<ledger::PromotionType> GetEligiblePromotions();
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PROMOTION_PROMOTION_UTIL_H_

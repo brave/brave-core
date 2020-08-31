@@ -106,11 +106,9 @@ POST_TRANSACTION_COMMIT_H_
 //   }
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace uphold {
 
@@ -119,7 +117,7 @@ using PostTransactionCommitCallback = std::function<void(
 
 class PostTransactionCommit {
  public:
-  explicit PostTransactionCommit(bat_ledger::LedgerImpl* ledger);
+  explicit PostTransactionCommit(LedgerImpl* ledger);
   ~PostTransactionCommit();
 
   void Request(
@@ -139,7 +137,7 @@ class PostTransactionCommit {
       const ledger::UrlResponse& response,
       PostTransactionCommitCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace uphold

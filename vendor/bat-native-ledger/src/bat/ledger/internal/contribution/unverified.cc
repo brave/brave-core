@@ -13,14 +13,14 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-Unverified::Unverified(bat_ledger::LedgerImpl* ledger) :
+Unverified::Unverified(LedgerImpl* ledger) :
     ledger_(ledger) {
 }
 
-Unverified::~Unverified() {
-}
+Unverified::~Unverified() = default;
 
 void Unverified::Contribute() {
   ledger_->wallet()->FetchBalance(
@@ -206,4 +206,5 @@ void Unverified::OnRemovePendingContribution(
       "");
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

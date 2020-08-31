@@ -42,11 +42,9 @@
 //   ]
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -57,7 +55,7 @@ using GetAvailableCallback = std::function<void(
 
 class GetAvailable {
  public:
-  explicit GetAvailable(bat_ledger::LedgerImpl* ledger);
+  explicit GetAvailable(LedgerImpl* ledger);
   ~GetAvailable();
 
   void Request(
@@ -78,7 +76,7 @@ class GetAvailable {
       const ledger::UrlResponse& response,
       GetAvailableCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

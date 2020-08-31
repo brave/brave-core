@@ -32,9 +32,10 @@ namespace {
       "5% transaction fee collected by Brave Software International";
 }  // namespace
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
-Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
+Uphold::Uphold(LedgerImpl* ledger) :
     transfer_(std::make_unique<UpholdTransfer>(ledger, this)),
     card_(std::make_unique<UpholdCard>(ledger, this)),
     user_(std::make_unique<UpholdUser>(ledger)),
@@ -208,7 +209,7 @@ void Uphold::DisconnectWallet() {
             wallet->address.substr(0, 5));
   }
 
-  wallet = ledger::wallet::ResetWallet(std::move(wallet));
+  wallet = wallet::ResetWallet(std::move(wallet));
 
   ledger_->ledger_client()->ShowNotification(
       "wallet_disconnected",
@@ -295,4 +296,5 @@ void Uphold::OnTransferFeeTimerElapsed(const std::string& id) {
   }
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

@@ -18,9 +18,10 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-ContributionAnonCard::ContributionAnonCard(bat_ledger::LedgerImpl* ledger) :
+ContributionAnonCard::ContributionAnonCard(LedgerImpl* ledger) :
     ledger_(ledger),
     payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
@@ -57,4 +58,5 @@ void ContributionAnonCard::OnSendTransaction(
   callback(ledger::Result::LEDGER_OK, "");
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

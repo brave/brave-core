@@ -17,7 +17,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
-namespace bat_ledger {
+namespace ledger {
 
 class MockLedgerImpl : public LedgerImpl {
  public:
@@ -25,11 +25,11 @@ class MockLedgerImpl : public LedgerImpl {
 
   ~MockLedgerImpl() override;
 
-  MOCK_CONST_METHOD0(database, braveledger_database::Database*());
+  MOCK_CONST_METHOD0(database, database::Database*());
 
   MOCK_METHOD2(Initialize, void(const bool, ledger::ResultCallback));
 };
 
-}  // namespace bat_ledger
+}  // namespace ledger
 
 #endif  // BAT_LEDGER_LEDGER_IMPL_MOCK_H_

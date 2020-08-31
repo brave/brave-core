@@ -13,16 +13,14 @@
 #include "bat/ledger/internal/attestation/attestation.h"
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace attestation {
 
 class AttestationIOS : public Attestation {
  public:
-  explicit AttestationIOS(bat_ledger::LedgerImpl* ledger);
+  explicit AttestationIOS(LedgerImpl* ledger);
   ~AttestationIOS() override;
 
   void Start(const std::string& payload, StartCallback callback) override;

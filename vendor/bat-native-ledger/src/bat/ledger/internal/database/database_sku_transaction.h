@@ -10,11 +10,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseSKUTransaction: public DatabaseTable {
  public:
-  explicit DatabaseSKUTransaction(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseSKUTransaction(LedgerImpl* ledger);
   ~DatabaseSKUTransaction() override;
 
   void InsertOrUpdate(
@@ -36,6 +37,7 @@ class DatabaseSKUTransaction: public DatabaseTable {
       ledger::GetSKUTransactionCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_SKU_TRANSACTION_H_

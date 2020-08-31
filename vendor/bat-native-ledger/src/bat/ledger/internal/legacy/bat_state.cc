@@ -17,7 +17,7 @@ using std::placeholders::_2;
 
 namespace braveledger_bat_state {
 
-LegacyBatState::LegacyBatState(bat_ledger::LedgerImpl* ledger) :
+LegacyBatState::LegacyBatState(ledger::LedgerImpl* ledger) :
       ledger_(ledger),
       state_(new ledger::ClientProperties()) {
 }

@@ -15,15 +15,14 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_publisher {
+namespace publisher {
 class PrefixListReader;
 }
 
-namespace braveledger_database {
+namespace database {
 
 class DatabaseInitialize;
 class DatabaseActivityInfo;
@@ -47,7 +46,7 @@ class DatabaseUnblindedToken;
 
 class Database {
  public:
-  explicit Database(bat_ledger::LedgerImpl* ledger);
+  explicit Database(LedgerImpl* ledger);
   virtual ~Database();
 
   void Initialize(
@@ -342,7 +341,7 @@ class Database {
       ledger::SearchPublisherPrefixListCallback callback);
 
   void ResetPublisherPrefixList(
-      std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
+      std::unique_ptr<publisher::PrefixListReader> reader,
       ledger::ResultCallback callback);
 
   void InsertServerPublisherInfo(
@@ -450,9 +449,10 @@ class Database {
   std::unique_ptr<DatabaseSKUOrder> sku_order_;
   std::unique_ptr<DatabaseSKUTransaction> sku_transaction_;
   std::unique_ptr<DatabaseUnblindedToken> unblinded_token_;
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_H_

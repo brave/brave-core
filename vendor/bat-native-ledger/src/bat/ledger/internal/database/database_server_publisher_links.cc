@@ -18,10 +18,11 @@ const char kTableName[] = "server_publisher_links";
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseServerPublisherLinks::DatabaseServerPublisherLinks(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -143,4 +144,5 @@ void DatabaseServerPublisherLinks::OnGetRecord(
   callback(links);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

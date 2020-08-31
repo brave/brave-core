@@ -7,7 +7,8 @@
 
 #include "bat/ledger/internal/promotion/promotion_util.h"
 
-namespace braveledger_promotion {
+namespace ledger {
+namespace promotion {
 
 std::string ParseOSToString(ledger::OperatingSystem os) {
   switch (static_cast<int>(os)) {
@@ -88,4 +89,5 @@ std::vector<ledger::PromotionType> GetEligiblePromotions() {
   };
 }
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger

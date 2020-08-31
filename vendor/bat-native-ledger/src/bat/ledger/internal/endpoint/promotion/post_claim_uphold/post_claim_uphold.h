@@ -31,11 +31,9 @@
 // Response body:
 // {Empty}
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -44,7 +42,7 @@ using PostClaimUpholdCallback = std::function<void(
 
 class PostClaimUphold {
  public:
-  explicit PostClaimUphold(bat_ledger::LedgerImpl* ledger);
+  explicit PostClaimUphold(LedgerImpl* ledger);
   ~PostClaimUphold();
 
   void Request(
@@ -66,7 +64,7 @@ class PostClaimUphold {
       const ledger::UrlResponse& response,
       PostClaimUpholdCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

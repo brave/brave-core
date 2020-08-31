@@ -12,15 +12,16 @@
 #include "bat/ledger/internal/database/database_table.h"
 #include "bat/ledger/internal/publisher/prefix_list_reader.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabasePublisherPrefixList : public DatabaseTable {
  public:
-  explicit DatabasePublisherPrefixList(bat_ledger::LedgerImpl* ledger);
+  explicit DatabasePublisherPrefixList(LedgerImpl* ledger);
   ~DatabasePublisherPrefixList() override;
 
   void Reset(
-      std::unique_ptr<braveledger_publisher::PrefixListReader> reader,
+      std::unique_ptr<publisher::PrefixListReader> reader,
       ledger::ResultCallback callback);
 
   void Search(
@@ -29,12 +30,13 @@ class DatabasePublisherPrefixList : public DatabaseTable {
 
  private:
   void InsertNext(
-      braveledger_publisher::PrefixIterator begin,
+      publisher::PrefixIterator begin,
       ledger::ResultCallback callback);
 
-  std::unique_ptr<braveledger_publisher::PrefixListReader> reader_;
+  std::unique_ptr<publisher::PrefixListReader> reader_;
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_PUBLISHER_PREFIX_LIST_H_

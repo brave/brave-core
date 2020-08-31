@@ -11,7 +11,8 @@
 
 #include "bat/ledger/mojom_structs.h"
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
 ledger::ReportType GetReportTypeFromRewardsType(const ledger::RewardsType type);
 
@@ -26,6 +27,7 @@ bool HaveEnoughFundsToContribute(
 
 int32_t GetVotesFromAmount(const double amount);
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_UTIL_H_

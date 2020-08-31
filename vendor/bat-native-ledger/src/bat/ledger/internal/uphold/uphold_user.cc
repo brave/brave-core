@@ -17,7 +17,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 User::User() :
   name(""),
@@ -28,7 +29,7 @@ User::User() :
 
 User::~User() = default;
 
-UpholdUser::UpholdUser(bat_ledger::LedgerImpl* ledger) :
+UpholdUser::UpholdUser(LedgerImpl* ledger) :
     ledger_(ledger),
     uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
 }
@@ -74,4 +75,5 @@ void UpholdUser::OnGet(
   callback(ledger::Result::LEDGER_OK, user);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

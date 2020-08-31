@@ -54,7 +54,7 @@ using std::placeholders::_1;
 namespace ledger {
 namespace database {
 
-DatabaseMigration::DatabaseMigration(bat_ledger::LedgerImpl* ledger) :
+DatabaseMigration::DatabaseMigration(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -69,7 +69,7 @@ void DatabaseMigration::Start(
 
   auto transaction = ledger::DBTransaction::New();
   int migrated_version = table_version;
-  const uint32_t target_version = braveledger_database::GetCurrentVersion();
+  const uint32_t target_version = database::GetCurrentVersion();
 
   if (target_version == table_version) {
     callback(ledger::Result::LEDGER_OK);
@@ -122,7 +122,7 @@ void DatabaseMigration::Start(
 
   transaction->version = migrated_version;
   transaction->compatible_version =
-      braveledger_database::GetCompatibleVersion();
+      database::GetCompatibleVersion();
   transaction->commands.push_back(std::move(command));
 
   command = ledger::DBCommand::New();

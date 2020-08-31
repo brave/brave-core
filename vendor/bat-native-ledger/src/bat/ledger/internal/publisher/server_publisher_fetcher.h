@@ -14,11 +14,10 @@
 #include "bat/ledger/internal/endpoint/private_cdn/private_cdn_server.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_publisher {
+namespace publisher {
 
 using FetchCallbackVector =
     std::vector<ledger::GetServerPublisherInfoCallback>;
@@ -27,7 +26,7 @@ using FetchCallbackVector =
 // whether a server publisher info record is expired
 class ServerPublisherFetcher {
  public:
-  explicit ServerPublisherFetcher(bat_ledger::LedgerImpl* ledger);
+  explicit ServerPublisherFetcher(LedgerImpl* ledger);
 
   ServerPublisherFetcher(const ServerPublisherFetcher&) = delete;
   ServerPublisherFetcher& operator=(const ServerPublisherFetcher&) = delete;
@@ -58,11 +57,12 @@ class ServerPublisherFetcher {
       const std::string& publisher_key,
       ledger::ServerPublisherInfoPtr server_info);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, FetchCallbackVector> callback_map_;
   std::unique_ptr<ledger::endpoint::PrivateCDNServer> private_cdn_server_;
 };
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_PUBLISHER_SERVER_PUBLISHER_FETCHER_H_

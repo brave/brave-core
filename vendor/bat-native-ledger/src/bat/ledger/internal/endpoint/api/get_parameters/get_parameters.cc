@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace api {
 
-GetParameters::GetParameters(bat_ledger::LedgerImpl* ledger):
+GetParameters::GetParameters(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

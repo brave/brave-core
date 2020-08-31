@@ -24,7 +24,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostClaimUphold::PostClaimUphold(bat_ledger::LedgerImpl* ledger):
+PostClaimUphold::PostClaimUphold(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -42,7 +42,7 @@ std::string PostClaimUphold::GetUrl() {
 
 std::string PostClaimUphold::GeneratePayload(const double user_funds) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
-  auto wallet_ptr = braveledger_uphold::GetWallet(std::move(wallets));
+  auto wallet_ptr = uphold::GetWallet(std::move(wallets));
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
     return "";

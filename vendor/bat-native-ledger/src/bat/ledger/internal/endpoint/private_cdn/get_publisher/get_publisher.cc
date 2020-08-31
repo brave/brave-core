@@ -22,8 +22,6 @@ using std::placeholders::_1;
 // for all publisher lookups. Do not add URL parameters or headers
 // whose size will vary depending on the publisher key.
 
-using brave::PrivateCdnHelper;
-
 namespace {
 
 ledger::PublisherBannerPtr GetPublisherBannerFromMessage(
@@ -143,7 +141,7 @@ namespace ledger {
 namespace endpoint {
 namespace private_cdn {
 
-GetPublisher::GetPublisher(bat_ledger::LedgerImpl* ledger):
+GetPublisher::GetPublisher(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -181,7 +179,7 @@ ledger::Result GetPublisher::ParseBody(
   }
 
   base::StringPiece body_payload(body.data(), body.size());
-  if (!PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload)) {
+  if (!brave::PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload)) {
     BLOG(0, "Publisher data response has invalid padding");
     return ledger::Result::LEDGER_ERROR;
   }

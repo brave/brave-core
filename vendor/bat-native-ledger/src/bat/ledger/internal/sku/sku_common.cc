@@ -11,9 +11,10 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
-SKUCommon::SKUCommon(bat_ledger::LedgerImpl* ledger) :
+SKUCommon::SKUCommon(LedgerImpl* ledger) :
     ledger_(ledger),
     order_(std::make_unique<SKUOrder>(ledger)),
     transaction_(std::make_unique<SKUTransaction>(ledger)) {
@@ -103,4 +104,5 @@ void SKUCommon::GetSKUTransactionByOrderId(
       create_callback);
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

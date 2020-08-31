@@ -16,7 +16,7 @@
 namespace ledger {
 namespace attestation {
 
-AttestationImpl::AttestationImpl(bat_ledger::LedgerImpl* ledger) :
+AttestationImpl::AttestationImpl(LedgerImpl* ledger) :
     Attestation(ledger) {
   #if defined(OS_IOS)
     platform_instance_ = std::make_unique<AttestationIOS>(ledger);

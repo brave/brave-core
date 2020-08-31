@@ -37,11 +37,9 @@
 //   "code": 401
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -49,7 +47,7 @@ using PutCaptchaCallback = std::function<void(const ledger::Result result)>;
 
 class PutCaptcha {
  public:
-  explicit PutCaptcha(bat_ledger::LedgerImpl* ledger);
+  explicit PutCaptcha(LedgerImpl* ledger);
   ~PutCaptcha();
 
   void Request(
@@ -69,7 +67,7 @@ class PutCaptcha {
       const ledger::UrlResponse& response,
       PutCaptchaCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

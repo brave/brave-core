@@ -11,11 +11,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseCredsBatch: public DatabaseTable {
  public:
-  explicit DatabaseCredsBatch(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseCredsBatch(LedgerImpl* ledger);
   ~DatabaseCredsBatch() override;
 
   void InsertOrUpdate(
@@ -59,6 +60,7 @@ class DatabaseCredsBatch: public DatabaseTable {
       ledger::GetCredsBatchListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_CREDS_BATCH_H_

@@ -18,8 +18,8 @@ int reconcile_interval = 0;  // minutes
 bool short_retries = false;
 
 // static
-ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
-  return new bat_ledger::LedgerImpl(client);
+Ledger* Ledger::CreateInstance(LedgerClient* client) {
+  return new LedgerImpl(client);
 }
 
 bool Ledger::IsMediaLink(const std::string& url,

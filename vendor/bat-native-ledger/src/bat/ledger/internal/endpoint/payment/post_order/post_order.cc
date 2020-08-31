@@ -21,7 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostOrder::PostOrder(bat_ledger::LedgerImpl* ledger):
+PostOrder::PostOrder(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

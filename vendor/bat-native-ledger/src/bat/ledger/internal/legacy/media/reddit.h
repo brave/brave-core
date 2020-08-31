@@ -14,7 +14,7 @@
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
@@ -22,7 +22,7 @@ namespace braveledger_media {
 
 class Reddit {
  public:
-  explicit Reddit(bat_ledger::LedgerImpl* ledger);
+  explicit Reddit(ledger::LedgerImpl* ledger);
 
   ~Reddit();
 
@@ -103,7 +103,7 @@ class Reddit {
       ledger::PublisherInfoCallback callback,
       const ledger::UrlResponse& response);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
 
   // For testing purposes
   friend class MediaRedditTest;

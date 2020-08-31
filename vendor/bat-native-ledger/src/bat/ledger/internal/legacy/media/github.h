@@ -16,7 +16,7 @@
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
 }
 
@@ -24,7 +24,7 @@ namespace braveledger_media {
 
 class GitHub {
  public:
-  explicit GitHub(bat_ledger::LedgerImpl* ledger);
+  explicit GitHub(ledger::LedgerImpl* ledger);
 
   static std::string GetLinkType(const std::string& url);
 
@@ -140,7 +140,7 @@ void OnMediaPublisherInfo(
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONStringValue);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONIntValue);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 }  // namespace braveledger_media
 #endif

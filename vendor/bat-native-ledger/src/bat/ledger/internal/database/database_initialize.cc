@@ -13,9 +13,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
-DatabaseInitialize::DatabaseInitialize(bat_ledger::LedgerImpl* ledger) :
+DatabaseInitialize::DatabaseInitialize(LedgerImpl* ledger) :
     ledger_(ledger) {
   migration_ =
       std::make_unique<ledger::database::DatabaseMigration>(ledger_);
@@ -123,4 +124,5 @@ void DatabaseInitialize::OnExecuteCreateScript(
   migration_->Start(table_version, callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

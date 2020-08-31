@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostCredentials::PostCredentials(bat_ledger::LedgerImpl* ledger):
+PostCredentials::PostCredentials(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

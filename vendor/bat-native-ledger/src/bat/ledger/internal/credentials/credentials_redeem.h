@@ -11,7 +11,8 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 struct CredentialsRedeem {
   CredentialsRedeem();
@@ -26,6 +27,7 @@ struct CredentialsRedeem {
   std::string contribution_id;
 };
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CREDENTIALS_CREDENTIALS_REDEEM_H_

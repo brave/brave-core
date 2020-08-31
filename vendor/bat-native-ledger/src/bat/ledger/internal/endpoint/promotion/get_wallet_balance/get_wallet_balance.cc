@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-GetWalletBalance::GetWalletBalance(bat_ledger::LedgerImpl* ledger):
+GetWalletBalance::GetWalletBalance(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

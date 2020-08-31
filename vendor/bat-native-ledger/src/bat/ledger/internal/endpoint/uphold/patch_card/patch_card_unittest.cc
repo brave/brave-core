@@ -30,13 +30,13 @@ class PatchCardTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<PatchCard> card_;
 
   PatchCardTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     card_ = std::make_unique<PatchCard>(mock_ledger_impl_.get());
   }
 };
@@ -103,7 +103,7 @@ TEST_F(PatchCardTest, ServerOK) {
             callback(response);
           }));
 
-  braveledger_uphold::UpdateCard card;
+  ::ledger::uphold::UpdateCard card;
   card.label = "Brave Browser";
   card.position = -1;
   card.starred = true;
@@ -129,7 +129,7 @@ TEST_F(PatchCardTest, ServerError401) {
             callback(response);
           }));
 
-  braveledger_uphold::UpdateCard card;
+  ::ledger::uphold::UpdateCard card;
   card.label = "Brave Browser";
   card.position = -1;
   card.starred = true;
@@ -155,7 +155,7 @@ TEST_F(PatchCardTest, ServerErrorRandom) {
             callback(response);
           }));
 
-  braveledger_uphold::UpdateCard card;
+  ::ledger::uphold::UpdateCard card;
   card.label = "Brave Browser";
   card.position = -1;
   card.starred = true;

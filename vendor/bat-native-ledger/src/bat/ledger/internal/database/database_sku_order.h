@@ -12,11 +12,12 @@
 #include "bat/ledger/internal/database/database_sku_order_items.h"
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseSKUOrder: public DatabaseTable {
  public:
-  explicit DatabaseSKUOrder(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseSKUOrder(LedgerImpl* ledger);
   ~DatabaseSKUOrder() override;
 
   void InsertOrUpdate(
@@ -54,6 +55,7 @@ class DatabaseSKUOrder: public DatabaseTable {
   std::unique_ptr<DatabaseSKUOrderItems> items_;
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_ORDER_H_

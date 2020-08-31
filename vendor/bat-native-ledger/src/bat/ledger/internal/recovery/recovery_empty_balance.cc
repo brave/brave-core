@@ -24,7 +24,7 @@ const int32_t kVersion = 1;
 namespace ledger {
 namespace recovery {
 
-EmptyBalance::EmptyBalance(bat_ledger::LedgerImpl* ledger):
+EmptyBalance::EmptyBalance(LedgerImpl* ledger):
     ledger_(ledger),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
   DCHECK(ledger_);
@@ -120,7 +120,7 @@ void EmptyBalance::OnCreds(ledger::CredsBatchList list) {
   for (auto& creds_batch : list) {
     unblinded_encoded_creds.clear();
     error = "";
-    bool result = braveledger_credentials::UnBlindCreds(
+    bool result = credential::UnBlindCreds(
         *creds_batch,
         &unblinded_encoded_creds,
         &error);

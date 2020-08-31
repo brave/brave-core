@@ -13,9 +13,10 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
-DatabaseMultiTables::DatabaseMultiTables(bat_ledger::LedgerImpl* ledger) {
+DatabaseMultiTables::DatabaseMultiTables(LedgerImpl* ledger) {
   DCHECK(ledger);
   ledger_ = ledger;
 }
@@ -59,7 +60,7 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
     }
 
     auto report = ledger::TransactionReportInfo::New();
-    report->type = braveledger_promotion::ConvertPromotionTypeToReportType(
+    report->type = promotion::ConvertPromotionTypeToReportType(
         promotion.second->type);
     report->amount = promotion.second->approximate_value;
     report->created_at = promotion.second->claimed_at;
@@ -69,4 +70,5 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
   callback(std::move(list));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

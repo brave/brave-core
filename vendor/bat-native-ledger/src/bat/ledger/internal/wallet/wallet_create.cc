@@ -18,7 +18,7 @@ using std::placeholders::_2;
 namespace ledger {
 namespace wallet {
 
-WalletCreate::WalletCreate(bat_ledger::LedgerImpl* ledger) :
+WalletCreate::WalletCreate(LedgerImpl* ledger) :
     ledger_(ledger),
     promotion_server_(std::make_unique<endpoint::PromotionServer>(ledger)) {
   DCHECK(ledger_);

@@ -13,7 +13,8 @@
 
 // npm run test -- brave_unit_tests --filter=ContributionMonthlyUtilTest.*
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
 class ContributionMonthlyUtilTest : public testing::Test {
  protected:
@@ -63,4 +64,5 @@ TEST_F(ContributionMonthlyUtilTest, GetTotalFromVerifiedTips) {
   EXPECT_EQ(amount, 86);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

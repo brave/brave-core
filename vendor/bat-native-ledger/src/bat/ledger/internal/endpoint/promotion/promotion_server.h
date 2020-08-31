@@ -28,16 +28,14 @@
 #include "bat/ledger/internal/endpoint/promotion/put_safetynet/put_safetynet.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 
 class PromotionServer {
  public:
-  explicit PromotionServer(bat_ledger::LedgerImpl* ledger);
+  explicit PromotionServer(LedgerImpl* ledger);
   ~PromotionServer();
 
   promotion::GetAvailable* get_available() const;

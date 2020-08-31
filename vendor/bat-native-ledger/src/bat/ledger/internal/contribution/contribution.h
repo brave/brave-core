@@ -25,19 +25,18 @@
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_uphold {
+namespace uphold {
 class Uphold;
 }
 
-namespace braveledger_contribution {
+namespace contribution {
 
 class Contribution {
  public:
-  explicit Contribution(bat_ledger::LedgerImpl* ledger);
+  explicit Contribution(LedgerImpl* ledger);
 
   ~Contribution();
 
@@ -176,11 +175,11 @@ class Contribution {
       const ledger::Result result,
       const std::string& contribution_id);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Unverified> unverified_;
   std::unique_ptr<Unblinded> unblinded_;
   std::unique_ptr<ContributionSKU> sku_;
-  std::unique_ptr<braveledger_uphold::Uphold> uphold_;
+  std::unique_ptr<uphold::Uphold> uphold_;
   std::unique_ptr<ContributionMonthly> monthly_;
   std::unique_ptr<ContributionAC> ac_;
   std::unique_ptr<ContributionTip> tip_;
@@ -192,5 +191,6 @@ class Contribution {
   bool queue_in_progress_ = false;
 };
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_

@@ -8,10 +8,11 @@
 #include "bat/ledger/internal/credentials/credentials_sku.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
-namespace braveledger_credentials {
+namespace ledger {
+namespace credential {
 
 std::unique_ptr<Credentials> CredentialsFactory::Create(
-    bat_ledger::LedgerImpl* ledger,
+    LedgerImpl* ledger,
     const ledger::CredsBatchType trigger_type) {
   DCHECK(ledger);
 
@@ -30,4 +31,5 @@ std::unique_ptr<Credentials> CredentialsFactory::Create(
   }
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

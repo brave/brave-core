@@ -10,11 +10,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseBalanceReport : public DatabaseTable {
  public:
-  explicit DatabaseBalanceReport(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseBalanceReport(LedgerImpl* ledger);
   ~DatabaseBalanceReport() override;
 
   void InsertOrUpdate(
@@ -53,6 +54,7 @@ class DatabaseBalanceReport : public DatabaseTable {
       ledger::GetBalanceReportListCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_BALANCE_REPORT_H_

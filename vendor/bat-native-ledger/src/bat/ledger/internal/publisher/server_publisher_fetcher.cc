@@ -26,7 +26,7 @@ namespace {
 
 constexpr size_t kQueryPrefixBytes = 2;
 
-int64_t GetCacheExpiryInSeconds(bat_ledger::LedgerImpl* ledger) {
+int64_t GetCacheExpiryInSeconds(ledger::LedgerImpl* ledger) {
   DCHECK(ledger);
   // NOTE: We are reusing the publisher prefix list refresh interval for
   // determining the cache lifetime of publisher details. At a later
@@ -37,9 +37,10 @@ int64_t GetCacheExpiryInSeconds(bat_ledger::LedgerImpl* ledger) {
 
 }  // namespace
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
-ServerPublisherFetcher::ServerPublisherFetcher(bat_ledger::LedgerImpl* ledger) :
+ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl* ledger) :
     ledger_(ledger),
     private_cdn_server_(
         std::make_unique<ledger::endpoint::PrivateCDNServer>(ledger)) {
@@ -147,4 +148,5 @@ void ServerPublisherFetcher::RunCallbacks(
   }
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

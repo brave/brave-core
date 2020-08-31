@@ -10,15 +10,14 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_database {
+namespace database {
 
 class DatabaseMultiTables {
  public:
-  explicit DatabaseMultiTables(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseMultiTables(LedgerImpl* ledger);
   ~DatabaseMultiTables();
 
   void GetTransactionReport(
@@ -33,9 +32,10 @@ class DatabaseMultiTables {
       const int year,
       ledger::GetTransactionReportCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_MULTI_TABLES_H_

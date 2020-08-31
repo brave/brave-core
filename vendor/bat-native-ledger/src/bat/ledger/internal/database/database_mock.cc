@@ -5,12 +5,14 @@
 
 #include "bat/ledger/internal/database/database_mock.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
-MockDatabase::MockDatabase(bat_ledger::LedgerImpl* ledger) :
+MockDatabase::MockDatabase(LedgerImpl* ledger) :
     Database(ledger)  {
 }
 
 MockDatabase::~MockDatabase() = default;
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

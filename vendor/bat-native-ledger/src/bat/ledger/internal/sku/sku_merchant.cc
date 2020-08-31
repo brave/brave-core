@@ -13,9 +13,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
-SKUMerchant::SKUMerchant(bat_ledger::LedgerImpl* ledger) :
+SKUMerchant::SKUMerchant(LedgerImpl* ledger) :
     ledger_(ledger),
     common_(std::make_unique<SKUCommon>(ledger)) {
   DCHECK(ledger_);
@@ -125,4 +126,5 @@ void SKUMerchant::Retry(
   NOTREACHED();
 }
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger

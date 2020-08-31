@@ -19,7 +19,8 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_uphold {
+namespace ledger {
+namespace uphold {
 
 UpdateCard::UpdateCard() :
   label(""),
@@ -28,7 +29,7 @@ UpdateCard::UpdateCard() :
 
 UpdateCard::~UpdateCard() = default;
 
-UpholdCard::UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
+UpholdCard::UpholdCard(LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold),
     uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
@@ -186,4 +187,5 @@ void UpholdCard::OnUpdate(
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_uphold
+}  // namespace uphold
+}  // namespace ledger

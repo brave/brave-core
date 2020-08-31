@@ -10,16 +10,14 @@
 
 #include "bat/ledger/internal/endpoint/promotion/promotion_server.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace recovery {
 
 class EmptyBalance {
  public:
-  explicit EmptyBalance(bat_ledger::LedgerImpl* ledger);
+  explicit EmptyBalance(LedgerImpl* ledger);
   ~EmptyBalance();
 
   void Check();
@@ -50,7 +48,7 @@ class EmptyBalance {
 
   void Sent(const ledger::Result result);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 

@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace payment {
 
-PostTransactionUphold::PostTransactionUphold(bat_ledger::LedgerImpl* ledger):
+PostTransactionUphold::PostTransactionUphold(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

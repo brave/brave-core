@@ -11,11 +11,12 @@
 
 #include "bat/ledger/internal/database/database_table.h"
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseServerPublisherAmounts: public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherAmounts(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseServerPublisherAmounts(LedgerImpl* ledger);
   ~DatabaseServerPublisherAmounts() override;
 
   void InsertOrUpdate(
@@ -36,6 +37,7 @@ class DatabaseServerPublisherAmounts: public DatabaseTable {
       ServerPublisherAmountsCallback callback);
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_SERVER_PUBLISHER_AMOUNTS_H_

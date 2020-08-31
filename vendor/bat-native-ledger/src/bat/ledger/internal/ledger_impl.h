@@ -33,7 +33,7 @@ namespace base {
 class SequencedTaskRunner;
 }
 
-namespace bat_ledger {
+namespace ledger {
 
 class LedgerImpl : public ledger::Ledger {
  public:
@@ -49,25 +49,25 @@ class LedgerImpl : public ledger::Ledger {
 
   ledger::LedgerClient* ledger_client() const;
 
-  braveledger_state::State* state() const;
+  state::State* state() const;
 
-  braveledger_promotion::Promotion* promotion() const;
+  promotion::Promotion* promotion() const;
 
-  braveledger_publisher::Publisher* publisher() const;
+  publisher::Publisher* publisher() const;
 
   braveledger_media::Media* media() const;
 
-  braveledger_contribution::Contribution* contribution() const;
+  contribution::Contribution* contribution() const;
 
-  ledger::wallet::Wallet* wallet() const;
+  wallet::Wallet* wallet() const;
 
-  braveledger_report::Report* report() const;
+  report::Report* report() const;
 
-  braveledger_sku::SKU* sku() const;
+  sku::SKU* sku() const;
 
-  braveledger_api::API* api() const;
+  api::API* api() const;
 
-  virtual braveledger_database::Database* database() const;
+  virtual database::Database* database() const;
 
   virtual void LoadURL(
       ledger::UrlRequestPtr request,
@@ -337,17 +337,17 @@ class LedgerImpl : public ledger::Ledger {
   void OnAllDone(const ledger::Result result, ledger::ResultCallback callback);
 
   ledger::LedgerClient* ledger_client_;
-  std::unique_ptr<braveledger_promotion::Promotion> promotion_;
-  std::unique_ptr<braveledger_publisher::Publisher> publisher_;
+  std::unique_ptr<promotion::Promotion> promotion_;
+  std::unique_ptr<publisher::Publisher> publisher_;
   std::unique_ptr<braveledger_media::Media> media_;
-  std::unique_ptr<braveledger_contribution::Contribution> contribution_;
-  std::unique_ptr<ledger::wallet::Wallet> wallet_;
-  std::unique_ptr<braveledger_database::Database> database_;
-  std::unique_ptr<braveledger_report::Report> report_;
-  std::unique_ptr<braveledger_sku::SKU> sku_;
-  std::unique_ptr<braveledger_state::State> state_;
-  std::unique_ptr<braveledger_api::API> api_;
-  std::unique_ptr<ledger::recovery::Recovery> recovery_;
+  std::unique_ptr<contribution::Contribution> contribution_;
+  std::unique_ptr<wallet::Wallet> wallet_;
+  std::unique_ptr<database::Database> database_;
+  std::unique_ptr<report::Report> report_;
+  std::unique_ptr<sku::SKU> sku_;
+  std::unique_ptr<state::State> state_;
+  std::unique_ptr<api::API> api_;
+  std::unique_ptr<recovery::Recovery> recovery_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 
@@ -359,6 +359,6 @@ class LedgerImpl : public ledger::Ledger {
   uint32_t last_shown_tab_id_;
 };
 
-}  // namespace bat_ledger
+}  // namespace ledger
 
 #endif  // BAT_LEDGER_LEDGER_IMPL_H_

@@ -9,7 +9,7 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "chrome/browser/ui/browser.h"
 #include "net/test/embedded_test_server/default_handlers.h"

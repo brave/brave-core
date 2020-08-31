@@ -24,7 +24,7 @@ bool GetStatisticalVotingWinner(
     double dart,
     const double amount,
     const std::vector<ledger::ContributionPublisher>& list,
-    braveledger_contribution::Winners* winners) {
+    ledger::contribution::Winners* winners) {
   DCHECK(winners);
 
   double upper = 0.0;
@@ -54,7 +54,7 @@ void GetStatisticalVotingWinners(
     uint32_t total_votes,
     const double amount,
     const ledger::ContributionPublisherList& list,
-    braveledger_contribution::Winners* winners) {
+    ledger::contribution::Winners* winners) {
   DCHECK(winners);
   std::vector<ledger::ContributionPublisher> converted_list;
 
@@ -79,14 +79,15 @@ void GetStatisticalVotingWinners(
 
 }  // namespace
 
-namespace braveledger_contribution {
+namespace ledger {
+namespace contribution {
 
-Unblinded::Unblinded(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+Unblinded::Unblinded(LedgerImpl* ledger) : ledger_(ledger) {
   DCHECK(ledger_);
-  credentials_promotion_ = braveledger_credentials::CredentialsFactory::Create(
+  credentials_promotion_ = credential::CredentialsFactory::Create(
       ledger_,
       ledger::CredsBatchType::PROMOTION);
-  credentials_sku_ = braveledger_credentials::CredentialsFactory::Create(
+  credentials_sku_ = credential::CredentialsFactory::Create(
       ledger_,
       ledger::CredsBatchType::SKU);
   DCHECK(credentials_promotion_ && credentials_sku_);
@@ -465,7 +466,7 @@ void Unblinded::OnProcessTokens(
         final_publisher,
         callback);
 
-    braveledger_credentials::CredentialsRedeem redeem;
+    credential::CredentialsRedeem redeem;
     redeem.publisher_key = (*publisher)->publisher_key;
     redeem.type = contribution->type;
     redeem.processor = contribution->processor;
@@ -623,4 +624,5 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
       callback);
 }
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger

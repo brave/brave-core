@@ -9,11 +9,15 @@
 #include "base/values.h"
 #include "bat/ledger/mojom_structs.h"
 
-namespace braveledger_contribution {
+namespace ledger {
+class LedgerImpl;
+
+namespace contribution {
 
 double GetTotalFromVerifiedTips(
     const ledger::PublisherInfoList& publisher_list);
 
-}  // namespace braveledger_contribution
+}  // namespace contribution
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_MONTHLY_UTIL_H_

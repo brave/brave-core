@@ -22,9 +22,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
-Publisher::Publisher(bat_ledger::LedgerImpl* ledger):
+Publisher::Publisher(LedgerImpl* ledger):
     ledger_(ledger),
     prefix_list_updater_(
         std::make_unique<PublisherPrefixListUpdater>(ledger)),
@@ -793,4 +794,5 @@ void Publisher::OnServerPublisherInfoLoaded(
   callback(std::move(server_info));
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostBatLoss::PostBatLoss(bat_ledger::LedgerImpl* ledger):
+PostBatLoss::PostBatLoss(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

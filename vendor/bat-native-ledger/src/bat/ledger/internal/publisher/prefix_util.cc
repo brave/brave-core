@@ -8,7 +8,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "crypto/sha2.h"
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 const size_t kMinPrefixSize = 4;
 const size_t kMaxPrefixSize = 32;
@@ -30,4 +31,5 @@ std::string GetHashPrefixInHex(
   return base::HexEncode(raw.data(), raw.size());
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

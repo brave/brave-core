@@ -13,11 +13,10 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
+namespace ledger {
 class LedgerImpl;
-}
 
-namespace braveledger_database {
+namespace database {
 
 using ContributionPublisherInfoPair =
     std::pair<std::string, ledger::PublisherInfoPtr>;
@@ -39,13 +38,14 @@ using ContributionPublisherPairListCallback =
 
 class DatabaseTable {
  public:
-  explicit DatabaseTable(bat_ledger::LedgerImpl* ledger);
+  explicit DatabaseTable(LedgerImpl* ledger);
   virtual ~DatabaseTable();
 
  protected:
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_DATABASE_DATABASE_TABLE_H_

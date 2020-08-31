@@ -12,7 +12,7 @@
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -21,7 +21,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSuggestionsClaim::PostSuggestionsClaim(bat_ledger::LedgerImpl* ledger):
+PostSuggestionsClaim::PostSuggestionsClaim(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -33,10 +33,10 @@ std::string PostSuggestionsClaim::GetUrl() {
 }
 
 std::string PostSuggestionsClaim::GeneratePayload(
-    const braveledger_credentials::CredentialsRedeem& redeem) {
+    const credential::CredentialsRedeem& redeem) {
   const std::string payment_id = ledger_->state()->GetPaymentId();
   base::Value credentials(base::Value::Type::LIST);
-  braveledger_credentials::GenerateCredentials(
+  credential::GenerateCredentials(
       redeem.token_list,
       payment_id,
       &credentials);
@@ -69,7 +69,7 @@ ledger::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
 }
 
 void PostSuggestionsClaim::Request(
-    const braveledger_credentials::CredentialsRedeem& redeem,
+    const credential::CredentialsRedeem& redeem,
     PostSuggestionsClaimCallback callback) {
   auto url_callback = std::bind(&PostSuggestionsClaim::OnRequest,
       this,

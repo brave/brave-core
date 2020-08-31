@@ -11,9 +11,10 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-StateMigrationV1::StateMigrationV1(bat_ledger::LedgerImpl* ledger) :
+StateMigrationV1::StateMigrationV1(LedgerImpl* ledger) :
     ledger_(ledger) {
 }
 
@@ -21,7 +22,7 @@ StateMigrationV1::~StateMigrationV1() = default;
 
 void StateMigrationV1::Migrate(ledger::ResultCallback callback) {
   legacy_publisher_ =
-      std::make_unique<braveledger_publisher::LegacyPublisherState>(ledger_);
+      std::make_unique<publisher::LegacyPublisherState>(ledger_);
 
   auto load_callback = std::bind(&StateMigrationV1::OnLoadState,
       this,
@@ -123,4 +124,5 @@ void StateMigrationV1::ProcessedPublisherSaved(
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger

@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PostSafetynet::PostSafetynet(bat_ledger::LedgerImpl* ledger):
+PostSafetynet::PostSafetynet(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

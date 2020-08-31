@@ -12,7 +12,8 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
@@ -21,7 +22,7 @@ const char kTableName[] = "creds_batch";
 }  // namespace
 
 DatabaseCredsBatch::DatabaseCredsBatch(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -373,4 +374,5 @@ void DatabaseCredsBatch::GetRecordsByTriggers(
       transaction_callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

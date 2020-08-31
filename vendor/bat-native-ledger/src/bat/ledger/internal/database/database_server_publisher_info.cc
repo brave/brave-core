@@ -19,10 +19,11 @@ const char kTableName[] = "server_publisher_info";
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger),
     banner_(std::make_unique<DatabaseServerPublisherBanner>(ledger)) {
 }
@@ -228,4 +229,5 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
       std::bind(&OnResultCallback, _1, callback));
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

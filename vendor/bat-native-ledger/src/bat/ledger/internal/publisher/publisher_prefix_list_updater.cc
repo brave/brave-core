@@ -25,10 +25,11 @@ constexpr int64_t kMaxRetryAfterFailureDelay = 4 * base::Time::kSecondsPerHour;
 
 }  // namespace
 
-namespace braveledger_publisher {
+namespace ledger {
+namespace publisher {
 
 PublisherPrefixListUpdater::PublisherPrefixListUpdater(
-    bat_ledger::LedgerImpl* ledger)
+    LedgerImpl* ledger)
       : ledger_(ledger),
       rewards_server_(
           std::make_unique<ledger::endpoint::RewardsServer>(ledger)) {}
@@ -156,4 +157,5 @@ base::TimeDelta PublisherPrefixListUpdater::GetRetryAfterFailureDelay() {
       retry_count_++);
 }
 
-}  // namespace braveledger_publisher
+}  // namespace publisher
+}  // namespace ledger

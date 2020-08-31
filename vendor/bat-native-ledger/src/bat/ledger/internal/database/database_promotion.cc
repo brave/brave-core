@@ -17,7 +17,8 @@
 
 using std::placeholders::_1;
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 namespace {
 
@@ -26,7 +27,7 @@ const char kTableName[] = "promotion";
 }  // namespace
 
 DatabasePromotion::DatabasePromotion(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -542,4 +543,5 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
       transaction_callback);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

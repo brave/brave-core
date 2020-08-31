@@ -29,11 +29,9 @@
 //   "scope": "accounts:read accounts:write cards:read cards:write user:read"
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace uphold {
 
@@ -43,7 +41,7 @@ using PostOauthCallback = std::function<void(
 
 class PostOauth {
  public:
-  explicit PostOauth(bat_ledger::LedgerImpl* ledger);
+  explicit PostOauth(LedgerImpl* ledger);
   ~PostOauth();
 
   void Request(
@@ -65,7 +63,7 @@ class PostOauth {
       const ledger::UrlResponse& response,
       PostOauthCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace uphold

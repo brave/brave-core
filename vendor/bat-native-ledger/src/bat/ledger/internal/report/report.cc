@@ -15,9 +15,10 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_report {
+namespace ledger {
+namespace report {
 
-Report::Report(bat_ledger::LedgerImpl* ledger):
+Report::Report(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -162,4 +163,5 @@ void Report::OnGetAllBalanceReports(
   callback(ids);
 }
 
-}  // namespace braveledger_report
+}  // namespace report
+}  // namespace ledger

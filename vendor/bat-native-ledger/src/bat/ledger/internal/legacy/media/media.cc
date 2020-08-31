@@ -16,7 +16,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-Media::Media(bat_ledger::LedgerImpl* ledger):
+Media::Media(ledger::LedgerImpl* ledger):
   ledger_(ledger),
   media_youtube_(new braveledger_media::YouTube(ledger)),
   media_twitch_(new braveledger_media::Twitch(ledger)),

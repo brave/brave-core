@@ -12,14 +12,15 @@
 
 #include "wrapper.hpp"  // NOLINT
 
+namespace ledger {
+namespace credential {
+
 using challenge_bypass_ristretto::BatchDLEQProof;
 using challenge_bypass_ristretto::PublicKey;
 using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::UnblindedToken;
 using challenge_bypass_ristretto::VerificationKey;
 using challenge_bypass_ristretto::VerificationSignature;
-
-namespace braveledger_credentials {
 
 std::vector<Token> GenerateCreds(const int count) {
   DCHECK_GT(count, 0);
@@ -272,4 +273,5 @@ bool GenerateSuggestionMock(
   return true;
 }
 
-}  // namespace braveledger_credentials
+}  // namespace credential
+}  // namespace ledger

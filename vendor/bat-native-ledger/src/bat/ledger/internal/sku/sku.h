@@ -12,7 +12,8 @@
 
 #include "bat/ledger/ledger.h"
 
-namespace braveledger_sku {
+namespace ledger {
+namespace sku {
 
 class SKU {
  public:
@@ -30,6 +31,7 @@ class SKU {
       const std::string& contribution_id = "") = 0;
 };
 
-}  // namespace braveledger_sku
+}  // namespace sku
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_SKU_H_

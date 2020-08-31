@@ -19,7 +19,7 @@ namespace ledger {
 namespace endpoint {
 namespace uphold {
 
-PatchCard::PatchCard(bat_ledger::LedgerImpl* ledger):
+PatchCard::PatchCard(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }
@@ -31,7 +31,7 @@ std::string PatchCard::GetUrl(const std::string& address) {
 }
 
 std::string PatchCard::GeneratePayload(
-    const braveledger_uphold::UpdateCard& card) {
+    const ::ledger::uphold::UpdateCard& card) {
   base::Value payload(base::Value::Type::DICTIONARY);
 
   if (!card.label.empty()) {
@@ -65,7 +65,7 @@ ledger::Result PatchCard::CheckStatusCode(const int status_code) {
 void PatchCard::Request(
     const std::string& token,
     const std::string& address,
-    const braveledger_uphold::UpdateCard& card,
+    const ::ledger::uphold::UpdateCard& card,
     PatchCardCallback callback) {
   auto url_callback = std::bind(&PatchCard::OnRequest,
       this,

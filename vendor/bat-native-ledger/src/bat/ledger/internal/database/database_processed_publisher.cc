@@ -19,10 +19,11 @@ const char kTableName[] = "processed_publisher";
 
 }  // namespace
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 DatabaseProcessedPublisher::DatabaseProcessedPublisher(
-    bat_ledger::LedgerImpl* ledger) :
+    LedgerImpl* ledger) :
     DatabaseTable(ledger) {
 }
 
@@ -118,4 +119,5 @@ void DatabaseProcessedPublisher::OnWasProcessed(
   callback(ledger::Result::LEDGER_OK);
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

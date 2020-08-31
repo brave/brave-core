@@ -8,6 +8,7 @@
 
 #include <string>
 
+// TODO add state namespace and drop state from variables
 namespace ledger {
   const char kStateEnabled[] = "enabled";
   const char kStateServerPublisherListStamp[] = "publisher_prefix_list_stamp";

@@ -16,16 +16,14 @@
 #include "bat/ledger/internal/endpoint/payment/post_votes/post_votes.h"
 #include "bat/ledger/ledger.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 
 class PaymentServer {
  public:
-  explicit PaymentServer(bat_ledger::LedgerImpl* ledger);
+  explicit PaymentServer(LedgerImpl* ledger);
   ~PaymentServer();
 
   payment::PostOrder* post_order() const;

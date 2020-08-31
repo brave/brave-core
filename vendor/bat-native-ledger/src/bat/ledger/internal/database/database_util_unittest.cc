@@ -8,7 +8,8 @@
 
 // npm run test -- brave_unit_tests --filter=DatabaseUtil.*
 
-namespace braveledger_database {
+namespace ledger {
+namespace database {
 
 class DatabaseUtil : public testing::Test {
 };
@@ -27,4 +28,5 @@ TEST(DatabaseUtil, GenerateStringInCase) {
   ASSERT_EQ(result, "\"id_1\", \"id_2\", \"id_3\"");
 }
 
-}  // namespace braveledger_database
+}  // namespace database
+}  // namespace ledger

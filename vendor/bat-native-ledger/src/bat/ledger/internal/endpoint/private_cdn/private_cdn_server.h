@@ -11,16 +11,14 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/endpoint/private_cdn/get_publisher/get_publisher.h"
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 
 class PrivateCDNServer {
  public:
-  explicit PrivateCDNServer(bat_ledger::LedgerImpl* ledger);
+  explicit PrivateCDNServer(LedgerImpl* ledger);
   ~PrivateCDNServer();
 
   private_cdn::GetPublisher* get_publisher() const;

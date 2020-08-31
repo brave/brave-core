@@ -43,11 +43,9 @@
 //   "data": {}
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace payment {
 
@@ -57,7 +55,7 @@ using GetCredentialsCallback = std::function<void(
 
 class GetCredentials {
  public:
-  explicit GetCredentials(bat_ledger::LedgerImpl* ledger);
+  explicit GetCredentials(LedgerImpl* ledger);
   ~GetCredentials();
 
   void Request(
@@ -80,7 +78,7 @@ class GetCredentials {
       const ledger::UrlResponse& response,
       GetCredentialsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace payment

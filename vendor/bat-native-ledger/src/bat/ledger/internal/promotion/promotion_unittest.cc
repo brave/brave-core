@@ -25,7 +25,8 @@ using ::testing::Invoke;
 using std::placeholders::_1;
 using std::placeholders::_2;
 
-namespace braveledger_promotion {
+namespace ledger {
+namespace promotion {
 
 std::string GetResponse(const std::string& url) {
   std::map<std::string, std::string> response;
@@ -58,16 +59,16 @@ class PromotionTest : public testing::Test {
 
  protected:
   std::unique_ptr<ledger::MockLedgerClient> mock_ledger_client_;
-  std::unique_ptr<bat_ledger::MockLedgerImpl> mock_ledger_impl_;
+  std::unique_ptr<ledger::MockLedgerImpl> mock_ledger_impl_;
   std::unique_ptr<Promotion> promotion_;
-  std::unique_ptr<braveledger_database::MockDatabase> mock_database_;
+  std::unique_ptr<database::MockDatabase> mock_database_;
 
   PromotionTest() {
     mock_ledger_client_ = std::make_unique<ledger::MockLedgerClient>();
     mock_ledger_impl_ =
-        std::make_unique<bat_ledger::MockLedgerImpl>(mock_ledger_client_.get());
+        std::make_unique<ledger::MockLedgerImpl>(mock_ledger_client_.get());
     promotion_ = std::make_unique<Promotion>(mock_ledger_impl_.get());
-    mock_database_ = std::make_unique<braveledger_database::MockDatabase>(
+    mock_database_ = std::make_unique<database::MockDatabase>(
         mock_ledger_impl_.get());
   }
 
@@ -133,4 +134,5 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
 }
 
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger

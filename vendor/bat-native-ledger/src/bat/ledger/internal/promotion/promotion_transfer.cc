@@ -15,12 +15,13 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_promotion {
+namespace ledger {
+namespace promotion {
 
-PromotionTransfer::PromotionTransfer(bat_ledger::LedgerImpl* ledger) :
+PromotionTransfer::PromotionTransfer(LedgerImpl* ledger) :
     ledger_(ledger) {
   DCHECK(ledger_);
-  credentials_ = braveledger_credentials::CredentialsFactory::Create(
+  credentials_ = credential::CredentialsFactory::Create(
       ledger_,
       ledger::CredsBatchType::PROMOTION);
   DCHECK(credentials_);
@@ -75,7 +76,7 @@ void PromotionTransfer::OnGetEligibleTokens(
     token_list.push_back(*item);
   }
 
-  braveledger_credentials::CredentialsRedeem redeem;
+  credential::CredentialsRedeem redeem;
   redeem.type = ledger::RewardsType::TRANSFER;
   redeem.processor = ledger::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = token_list;
@@ -94,4 +95,5 @@ void PromotionTransfer::OnGetEligibleTokens(
       });
 }
 
-}  // namespace braveledger_promotion
+}  // namespace promotion
+}  // namespace ledger

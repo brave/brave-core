@@ -14,7 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "base/memory/weak_ptr.h"
 #include "base/test/bind_test_util.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
 #include "brave/common/brave_paths.h"

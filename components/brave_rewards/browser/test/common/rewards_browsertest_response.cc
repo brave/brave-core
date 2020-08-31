@@ -14,7 +14,7 @@
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/publisher/protos/channel_response.pb.h"
 #include "bat/ledger/internal/publisher/protos/publisher_prefix_list.pb.h"
-#include "bat/ledger/internal/request/request_util.h"
+#include "bat/ledger/internal/common/request_util.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
@@ -208,7 +208,7 @@ void RewardsBrowserTestResponse::LoadMocks() {
   };
 
   for (auto& key : publisher_keys) {
-    std::string prefix = braveledger_publisher::GetHashPrefixRaw(key, 4);
+    std::string prefix = ledger::publisher::GetHashPrefixRaw(key, 4);
     publisher_prefixes_[prefix] = key;
   }
 }

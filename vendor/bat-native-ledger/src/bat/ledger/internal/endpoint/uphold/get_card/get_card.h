@@ -70,11 +70,9 @@
 //   ]
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace uphold {
 
@@ -84,7 +82,7 @@ using GetCardCallback = std::function<void(
 
 class GetCard {
  public:
-  explicit GetCard(bat_ledger::LedgerImpl* ledger);
+  explicit GetCard(LedgerImpl* ledger);
   ~GetCard();
 
   void Request(
@@ -105,7 +103,7 @@ class GetCard {
       const ledger::UrlResponse& response,
       GetCardCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace uphold

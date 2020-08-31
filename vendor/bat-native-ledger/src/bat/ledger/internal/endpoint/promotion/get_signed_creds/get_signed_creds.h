@@ -42,11 +42,9 @@
 //   "data": {}
 // }
 
-namespace bat_ledger {
-class LedgerImpl;
-}
-
 namespace ledger {
+class LedgerImpl;
+
 namespace endpoint {
 namespace promotion {
 
@@ -56,7 +54,7 @@ using GetSignedCredsCallback = std::function<void(
 
 class GetSignedCreds {
  public:
-  explicit GetSignedCreds(bat_ledger::LedgerImpl* ledger);
+  explicit GetSignedCreds(LedgerImpl* ledger);
   ~GetSignedCreds();
 
   void Request(
@@ -79,7 +77,7 @@ class GetSignedCreds {
       const ledger::UrlResponse& response,
       GetSignedCredsCallback callback);
 
-  bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  LedgerImpl* ledger_;  // NOT OWNED
 };
 
 }  // namespace promotion

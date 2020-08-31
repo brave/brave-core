@@ -10,7 +10,7 @@
 namespace ledger {
 namespace endpoint {
 
-PaymentServer::PaymentServer(bat_ledger::LedgerImpl* ledger):
+PaymentServer::PaymentServer(LedgerImpl* ledger):
     post_order_(std::make_unique<payment::PostOrder>(ledger)),
     post_credentials_(std::make_unique<payment::PostCredentials>(ledger)),
     get_credentials_(std::make_unique<payment::GetCredentials>(ledger)),

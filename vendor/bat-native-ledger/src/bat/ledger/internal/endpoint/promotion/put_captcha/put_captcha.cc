@@ -18,7 +18,7 @@ namespace ledger {
 namespace endpoint {
 namespace promotion {
 
-PutCaptcha::PutCaptcha(bat_ledger::LedgerImpl* ledger):
+PutCaptcha::PutCaptcha(LedgerImpl* ledger):
     ledger_(ledger) {
   DCHECK(ledger_);
 }

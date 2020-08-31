@@ -73,9 +73,10 @@ std::string ConvertInlineTipPlatformToKey(
 
 }  // namespace
 
-namespace braveledger_state {
+namespace ledger {
+namespace state {
 
-State::State(bat_ledger::LedgerImpl* ledger) :
+State::State(LedgerImpl* ledger) :
     ledger_(ledger),
     migration_(std::make_unique<StateMigration>(ledger)) {
   DCHECK(ledger_);
@@ -456,4 +457,5 @@ bool State::GetAnonTransferChecked() {
       ledger::kStateAnonTransferChecked);
 }
 
-}  // namespace braveledger_state
+}  // namespace state
+}  // namespace ledger
