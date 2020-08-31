@@ -689,6 +689,7 @@ test("brave_browser_tests") {
     sources += [
       "//brave/browser/extensions/brave_ipfs_client_updater_browsertest.cc",
       "//brave/browser/ipfs/ipfs_service_browsertest.cc",
+      "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
     ]
   }
 
