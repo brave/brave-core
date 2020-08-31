@@ -12,8 +12,8 @@ export const defaultState: IPFS.State = {
     peerCount: 0
   },
   addressesConfig: {
-    api: "",
-    gateway: "",
+    api: '',
+    gateway: '',
     swarm: []
   },
   daemonStatus: {

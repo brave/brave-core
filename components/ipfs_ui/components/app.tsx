@@ -43,7 +43,7 @@ export class IPFSPage extends React.Component<Props, {}> {
   }
 
   componentDidUpdate (prevProps: Props) {
-    if (prevProps.ipfsData.daemonStatus.launched != this.props.ipfsData.daemonStatus.launched) {
+    if (prevProps.ipfsData.daemonStatus.launched !== this.props.ipfsData.daemonStatus.launched) {
       setTimeout(this.refreshActions, 2000)
     }
   }

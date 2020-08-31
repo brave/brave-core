@@ -20,17 +20,17 @@ import * as ipfsActions from './actions/ipfs_actions'
 window.cr.define('ipfs', function () {
   'use strict'
 
-  function getDaemonStatus() {
+  function getDaemonStatus () {
     const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
     actions.getDaemonStatus()
   }
 
-  function getConnectedPeers() {
+  function getConnectedPeers () {
     const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
     actions.getConnectedPeers()
   }
 
-  function getAddressesConfig() {
+  function getAddressesConfig () {
     const actions = bindActionCreators(ipfsActions, store.dispatch.bind(store))
     actions.getAddressesConfig()
   }
@@ -68,7 +68,7 @@ window.cr.define('ipfs', function () {
     initialize,
     onGetConnectedPeers,
     onGetAddressesConfig,
-    onGetDaemonStatus,
+    onGetDaemonStatus
   }
 })
 

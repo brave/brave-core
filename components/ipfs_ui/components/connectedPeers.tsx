@@ -27,4 +27,3 @@ export class ConnectedPeers extends React.Component<Props, {}> {
     )
   }
 }
-
