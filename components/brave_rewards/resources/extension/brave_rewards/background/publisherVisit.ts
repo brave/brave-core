@@ -154,8 +154,8 @@ const handleSavePublisherVisitResponse = (tabId: number, mediaType: string, data
     })
 }
 
-chrome.runtime.onMessageExternal.addListener((msg, sender, sendResponse) => {
-  if (!sender || !sender.tab || !msg) {
+const processGreaselionMessage = (msg: any, sender: chrome.runtime.MessageSender) => {
+  if (!msg || !sender || !sender.tab) {
     return
   }
 
@@ -187,14 +187,10 @@ chrome.runtime.onMessageExternal.addListener((msg, sender, sendResponse) => {
       break
     }
   }
-})
+}
 
-chrome.runtime.onConnectExternal.addListener(function (port) {
-  if (port.name !== 'Greaselion') {
-    return
-  }
-
-  if (!port.sender || !port.sender.tab) {
+chrome.runtime.onConnectExternal.addListener(function (port: chrome.runtime.Port) {
+  if (!port || !port.sender || !port.sender.id || !port.sender.tab || port.name !== 'Greaselion') {
     return
   }
 
@@ -207,21 +203,39 @@ chrome.runtime.onConnectExternal.addListener(function (port) {
     greaselionPorts[tabId] = port
   }
 
-  port.onMessage.addListener(function (msg) {
-    if (!msg) {
+  port.onMessage.addListener((msg: any, port: chrome.runtime.Port) => {
+    if (!port.sender || !port.sender.id || !msg) {
       return
     }
-    switch (msg.type) {
-      case 'MediaDurationHandlerRegistrationRequest': {
-        const data = msg.data as MediaDurationHandlerRegistrationRequest
-        handleMediaDurationHandlerRegistrationRequest(tabId, msg.mediaType, data)
-        break
+
+    chrome.greaselion.isGreaselionExtension(port.sender.id, (valid: boolean) => {
+      if (!valid) {
+        return
       }
-      case 'MediaDurationMetadataResponse': {
-        const data = msg.data as MediaDurationMetadataResponse
-        handleMediaDurationMetadataResponse(tabId, msg.mediaType, data)
-        break
+      switch (msg.type) {
+        case 'MediaDurationHandlerRegistrationRequest': {
+          const data = msg.data as MediaDurationHandlerRegistrationRequest
+          handleMediaDurationHandlerRegistrationRequest(tabId, msg.mediaType, data)
+          break
+        }
+        case 'MediaDurationMetadataResponse': {
+          const data = msg.data as MediaDurationMetadataResponse
+          handleMediaDurationMetadataResponse(tabId, msg.mediaType, data)
+          break
+        }
       }
+    })
+  })
+})
+
+chrome.runtime.onMessageExternal.addListener((msg: any, sender: chrome.runtime.MessageSender) => {
+  if (!sender || !sender.id) {
+    return
+  }
+
+  chrome.greaselion.isGreaselionExtension(sender.id, (valid: boolean) => {
+    if (valid) {
+      processGreaselionMessage(msg, sender)
     }
   })
 })
