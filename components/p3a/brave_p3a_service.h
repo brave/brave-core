@@ -66,7 +66,8 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
 
   // Invoked by callbacks registered by our service. Since these callbacks
   // can fire on any thread, this method reposts everything to UI thread.
-  void OnHistogramChanged(base::StringPiece histogram_name,
+  void OnHistogramChanged(const char* histogram_name,
+                          uint64_t name_hash,
                           base::HistogramBase::Sample sample);
 
   void OnHistogramChangedOnUI(base::StringPiece histogram_name,
