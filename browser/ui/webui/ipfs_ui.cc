@@ -7,16 +7,15 @@
 
 #include <utility>
 
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ipfs/ipfs_service.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/common/webui_url_constants.h"
 #include "brave/components/ipfs/browser/addresses_config.h"
 #include "brave/components/ipfs_ui/resources/grit/ipfs_generated_map.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 IPFSDOMHandler::IPFSDOMHandler() : weak_ptr_factory_{this} {}
@@ -61,7 +60,8 @@ void IPFSDOMHandler::HandleGetConnectedPeers(const base::ListValue* args) {
     return;
 
   ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(Profile::FromWebUI(web_ui()));
+      ipfs::IpfsServiceFactory::GetForContext(
+          web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
@@ -86,7 +86,8 @@ void IPFSDOMHandler::HandleGetAddressesConfig(const base::ListValue* args) {
     return;
 
   ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(Profile::FromWebUI(web_ui()));
+      ipfs::IpfsServiceFactory::GetForContext(
+          web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
@@ -119,7 +120,8 @@ void IPFSDOMHandler::HandleGetDaemonStatus(const base::ListValue* args) {
     return;
 
   ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(Profile::FromWebUI(web_ui()));
+      ipfs::IpfsServiceFactory::GetForContext(
+          web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
@@ -136,7 +138,8 @@ void IPFSDOMHandler::HandleLaunchDaemon(const base::ListValue* args) {
     return;
 
   ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(Profile::FromWebUI(web_ui()));
+      ipfs::IpfsServiceFactory::GetForContext(
+          web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }
@@ -162,7 +165,8 @@ void IPFSDOMHandler::HandleShutdownDaemon(const base::ListValue* args) {
     return;
 
   ipfs::IpfsService* service =
-      ipfs::IpfsServiceFactory::GetForContext(Profile::FromWebUI(web_ui()));
+      ipfs::IpfsServiceFactory::GetForContext(
+          web_ui()->GetWebContents()->GetBrowserContext());
   if (!service) {
     return;
   }

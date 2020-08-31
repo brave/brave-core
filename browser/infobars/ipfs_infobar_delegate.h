@@ -6,7 +6,6 @@
 #ifndef BRAVE_BROWSER_INFOBARS_IPFS_INFOBAR_DELEGATE_H_
 #define BRAVE_BROWSER_INFOBARS_IPFS_INFOBAR_DELEGATE_H_
 
-#include "base/compiler_specific.h"
 #include "base/macros.h"
 #include "base/strings/string16.h"
 #include "components/infobars/core/confirm_infobar_delegate.h"

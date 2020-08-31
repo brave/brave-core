@@ -8,39 +8,31 @@
 #include <string>
 #include <utility>
 
-#include "base/feature_list.h"
-#include "base/strings/strcat.h"
-#include "base/strings/string_util.h"
 #include "base/task/post_task.h"
 #include "brave/common/url_constants.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "chrome/browser/external_protocol/external_protocol_handler.h"
-#include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/render_view_host.h"
-#include "extensions/browser/extension_registry.h"
-#include "extensions/common/constants.h"
-#include "extensions/common/extension_set.h"
-#include "net/base/escape.h"
 #include "url/gurl.h"
 
 namespace {
 
 bool IsIPFSDisabled(content::BrowserContext* browser_context) {
-  auto* prefs = Profile::FromBrowserContext(browser_context)->GetPrefs();
+  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
   return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_DISABLED;
 }
 
 bool IsIPFSLocalGateway(content::BrowserContext* browser_context) {
-  auto* prefs = Profile::FromBrowserContext(browser_context)->GetPrefs();
+  auto* prefs = user_prefs::UserPrefs::Get(browser_context);
   auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
       prefs->GetInteger(kIPFSResolveMethod));
   return resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_LOCAL;

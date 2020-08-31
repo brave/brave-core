@@ -106,6 +106,7 @@ source_set("extensions") {
     "//extensions/browser",
     "//extensions/common",
     "//third_party/re2",
+    "//ui/base",
     "//url",
   ]
 
@@ -121,7 +122,8 @@ source_set("extensions") {
       "api/ipfs_api.h",
     ]
     deps += [
-      "//brave/components/ipfs/browser"
+      "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
     ]
   }
 

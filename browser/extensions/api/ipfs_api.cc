@@ -8,24 +8,14 @@
 #include <memory>
 #include <string>
 
+#include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/ipfs/ipfs_service.h"
 #include "brave/browser/ipfs/ipfs_service_factory.h"
-#include "brave/browser/profiles/profile_util.h"
-#include "brave/common/extensions/extension_constants.h"
-#include "brave/common/pref_names.h"
-#include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
 #include "brave/components/ipfs/browser/features.h"
 #include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/extensions/api/tabs/tabs_constants.h"
-#include "chrome/browser/extensions/extension_tab_util.h"
-#include "chrome/browser/infobars/infobar_service.h"
-#include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
-#include "content/public/browser/web_contents.h"
-#include "extensions/browser/extension_util.h"
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
@@ -33,7 +23,7 @@ namespace {
 ipfs::IpfsService* GetIPFSService(
     content::BrowserContext* context) {
   return ipfs::IpfsServiceFactory::GetInstance()
-      ->GetForContext(Profile::FromBrowserContext(context));
+      ->GetForContext(context);
 }
 
 base::Value MakeSelectValue(const  base::string16& name,
