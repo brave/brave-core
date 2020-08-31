@@ -14,8 +14,8 @@
 #include "base/memory/singleton.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/browser/tor/tor_control.h"
 #include "brave/common/tor/tor_common.h"
-#include "brave/common/tor/tor_control.h"
 #include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
 
