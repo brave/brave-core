@@ -295,46 +295,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
                 Preferences.URP.referralLookupOutstanding.value = isFirstLaunch
             }
             
-            if Preferences.URP.referralLookupOutstanding.value == true {
-                var refCode: String?
-                
-                let savedRefCode: String? = ProcessInfo().operatingSystemVersion.majorVersion > 13
-                    ? nil : UIPasteboard.general.string
-                
-                if Preferences.URP.referralCode.value == nil {
-                    UrpLog.log("No ref code exists on launch, attempting clipboard retrieval")
-                    refCode = UserReferralProgram.sanitize(input: savedRefCode)
-                }
-                
-                if refCode != nil {
-                    UrpLog.log("Clipboard ref code found: " + (savedRefCode ?? "!Clipboard Empty!"))
-                    UrpLog.log("Clearing clipboard.")
-                    UIPasteboard.general.clearPasteboard()
-                }
-                
-                urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
-                    // Attempting to send ping after first urp lookup.
-                    // This way we can grab the referral code if it exists, see issue #2586.
-                    self.dau.sendPingToServer()
-                    if let code = referralCode {
-                        let retryTime = AppConstants.buildChannel.isPublic ? 1.days : 10.minutes
-                        let retryDeadline = Date() + retryTime
-                        
-                        Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = retryDeadline
-                        
-                        self.browserViewController.backgroundDataSource
-                            .fetchSpecificResource(.superReferral(code: code))
-                    } else {
-                        self.browserViewController.backgroundDataSource.startFetching()
-                    }
-                    
-                    guard let url = offerUrl?.asURL else { return }
-                    self.browserViewController.openReferralLink(url: url)
-                }
-            } else {
-                urp.pingIfEnoughTimePassed()
-                browserViewController.backgroundDataSource.startFetching()
-            }
+            handleReferralLookup(urp, checkClipboard: false)
         } else {
             log.error("Failed to initialize user referral program")
             UrpLog.log("Failed to initialize user referral program")
@@ -343,6 +304,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         AdblockResourceDownloader.shared.startLoading()
       
         return shouldPerformAdditionalDelegateHandling
+    }
+    
+    func handleReferralLookup(_ urp: UserReferralProgram, checkClipboard: Bool) {
+        let initialOnboarding =
+            Preferences.General.basicOnboardingProgress.value == OnboardingProgress.none.rawValue
+        
+        // FIXME: Update to iOS14 clipboard api once ready (#2838)
+        if initialOnboarding && UIPasteboard.general.hasStrings {
+            log.debug("Skipping URP call at app launch, this is handled in privacy consent onboarding screen")
+            return
+        }
+        
+        if Preferences.URP.referralLookupOutstanding.value == true {
+            var refCode: String?
+            
+            if Preferences.URP.referralCode.value == nil {
+                UrpLog.log("No ref code exists on launch, attempting clipboard retrieval")
+                let savedRefCode = checkClipboard ? UIPasteboard.general.string : nil
+                refCode = UserReferralProgram.sanitize(input: savedRefCode)
+                
+                if refCode != nil {
+                    UrpLog.log("Clipboard ref code found: " + (savedRefCode ?? "!Clipboard Empty!"))
+                    UrpLog.log("Clearing clipboard.")
+                    UIPasteboard.general.clearPasteboard()
+                }
+            }
+            
+            urp.referralLookup(refCode: refCode) { referralCode, offerUrl in
+                // Attempting to send ping after first urp lookup.
+                // This way we can grab the referral code if it exists, see issue #2586.
+                self.dau.sendPingToServer()
+                if let code = referralCode {
+                    let retryTime = AppConstants.buildChannel.isPublic ? 1.days : 10.minutes
+                    let retryDeadline = Date() + retryTime
+                    
+                    Preferences.NewTabPage.superReferrerThemeRetryDeadline.value = retryDeadline
+                    
+                    self.browserViewController.backgroundDataSource
+                        .fetchSpecificResource(.superReferral(code: code))
+                } else {
+                    self.browserViewController.backgroundDataSource.startFetching()
+                }
+                
+                guard let url = offerUrl?.asURL else { return }
+                self.browserViewController.openReferralLink(url: url)
+            }
+        } else {
+            urp.pingIfEnoughTimePassed()
+            browserViewController.backgroundDataSource.startFetching()
+        }
     }
 
     func application(_ application: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]) -> Bool {

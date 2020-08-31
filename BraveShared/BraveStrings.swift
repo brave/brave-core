@@ -629,6 +629,11 @@ extension Strings {
     public static let OBErrorTitle = NSLocalizedString("OBErrorTitle", bundle: Bundle.braveShared, value: "Sorry", comment: "A generic error title for onboarding")
     public static let OBErrorDetails = NSLocalizedString("OBErrorDetails", bundle: Bundle.braveShared, value: "Something went wrong while creating your wallet. Please try again", comment: "A generic error body for onboarding")
     public static let OBErrorOkay = NSLocalizedString("OBErrorOkay", bundle: Bundle.braveShared, value: "Okay", comment: "")
+    public static let OBPrivacyConsentTitle = NSLocalizedString("OBPrivacyConsentTitle", bundle: .braveShared, value: "Anonymous referral code check", comment: "")
+    public static let OBPrivacyConsentDetail = NSLocalizedString("OBPrivacyConsentDetail", bundle: .braveShared, value: "You may have downloaded Brave in support of your referrer. To detect your referrer, Brave performs a one-time check of your clipboard for the matching referral code. This check is limited to the code only and no other personal data will be transmitted.  If you opt out, your referrer won’t receive rewards from Brave.", comment: "")
+    public static let OBPrivacyConsentClipboardPermission = NSLocalizedString("OBPrivacyConsentClipboardPermission", bundle: .braveShared, value: "Allow Brave to check my clipboard for a matching referral code", comment: "")
+    public static let OBPrivacyConsentYesButton = NSLocalizedString("OBPrivacyConsentYesButton", bundle: .braveShared, value: "Allow one-time clipboard check", comment: "")
+    public static let OBPrivacyConsentNoButton = NSLocalizedString("OBPrivacyConsentNoButton", bundle: .braveShared, value: "Do not allow this check", comment: "")
 }
 
 // MARK: - Ads Notifications
