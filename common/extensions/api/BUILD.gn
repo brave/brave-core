@@ -63,6 +63,7 @@ brave_extensions_api_schema_sources = [
   "brave_shields.json",
   "brave_rewards.json",
   "brave_theme.json",
+  "greaselion.json",
   "rewards_notifications.json",
 ]
 
