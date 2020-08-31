@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 5a9144b438a6ccad97e90092d4982ec8f4a9dbb3..b548c1de87d93d6700d717006dfbe60df1726613 100644
+index 2da858b874e505c380a2fb09a1b8cf4b1619a61f..63e626d051c1a6207a7eb18e3d4bde274af45239 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -107,6 +107,7 @@ class LocationBarView : public LocationBar,
@@ -20,7 +20,7 @@ index 5a9144b438a6ccad97e90092d4982ec8f4a9dbb3..b548c1de87d93d6700d717006dfbe60d
    // Clears the location bar's state for |contents|.
 @@ -232,6 +234,7 @@ class LocationBarView : public LocationBar,
        security_state::SecurityLevel security_level) const override;
-   gfx::ImageSkia GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
+   ui::ImageModel GetLocationIcon(LocationIconView::Delegate::IconFetchedCallback
                                       on_icon_fetched) const override;
 +  BRAVE_LOCATION_BAR_VIEW_H_
  
