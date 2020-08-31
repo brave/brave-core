@@ -19,6 +19,8 @@ enum OnboardingState: Int {
 enum OnboardingProgress: Int {
     /// The user has never started any onboarding.
     case none
+    /// The user has completed the privacy consent
+    case privacyConsent
     /// The user has completed the search engine onboarding.
     case searchEngine
     /// The user has completed the rewards onboarding.

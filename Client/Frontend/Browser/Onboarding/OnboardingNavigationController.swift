@@ -4,6 +4,7 @@
 
 import UIKit
 import Shared
+import BraveShared
 import pop
 import Lottie
 import BraveRewards
@@ -55,7 +56,19 @@ class OnboardingNavigationController: UINavigationController {
                     if progress == .rewards || progress == .ads {
                         return BraveAds.isCurrentLocaleSupported() ? [.adsCountdown] : [.rewardsAgreement]
                     }
-                    return BraveAds.isCurrentLocaleSupported() ? [.searchEnginePicker, .shieldsInfo, .rewardsAgreement, .adsCountdown] : [.searchEnginePicker, .shieldsInfo, .rewardsAgreement]
+                    
+                    var newUserScreens: [Screens] = [.searchEnginePicker, .shieldsInfo, .rewardsAgreement]
+                    
+                    if BraveAds.isCurrentLocaleSupported() {
+                        newUserScreens.append(.adsCountdown)
+                    }
+                    
+                    // FIXME: Update to iOS14 clipboard api once ready (#2838)
+                    if Preferences.URP.referralCode.value == nil && UIPasteboard.general.hasStrings {
+                        newUserScreens.insert(.privacyConsent, at: 0)
+                    }
+                    
+                    return newUserScreens
                 case .existingUserRewardsOff(let progress):
                     //The user already made it to rewards and agreed so they should only see ads countdown
                     if progress == .rewards || progress == .ads {
@@ -79,6 +92,7 @@ class OnboardingNavigationController: UINavigationController {
     }
     
     fileprivate enum Screens {
+        case privacyConsent
         case searchEnginePicker
         case shieldsInfo
         case existingRewardsTurnOnAds
@@ -88,6 +102,7 @@ class OnboardingNavigationController: UINavigationController {
         /// Returns new ViewController associated with the screen type
         func viewController(with profile: Profile, rewards: BraveRewards?, theme: Theme) -> OnboardingViewController {
             switch self {
+            case .privacyConsent: return OnboardingPrivacyConsentViewController(profile: profile, rewards: rewards, theme: theme)
             case .searchEnginePicker:
                 return OnboardingSearchEnginesViewController(profile: profile, rewards: rewards, theme: theme)
             case .shieldsInfo:
@@ -103,6 +118,7 @@ class OnboardingNavigationController: UINavigationController {
         
         var type: OnboardingViewController.Type {
             switch self {
+            case .privacyConsent: return OnboardingPrivacyConsentViewController.self
             case .searchEnginePicker: return OnboardingSearchEnginesViewController.self
             case .shieldsInfo: return OnboardingShieldsViewController.self
             case .existingRewardsTurnOnAds: return OnboardingAdsAvailableController.self
