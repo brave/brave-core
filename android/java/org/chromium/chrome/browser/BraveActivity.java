@@ -451,6 +451,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
     }
 
+    public void dismissShieldsTooltip() {
+        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.dismissShieldsTooltip();
+        }
+    }
+
     public void openRewardsPanel() {
         BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
         assert layout != null;
