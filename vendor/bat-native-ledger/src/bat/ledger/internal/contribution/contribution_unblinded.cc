@@ -7,7 +7,6 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
-#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/contribution/contribution_sku.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
@@ -238,8 +237,6 @@ void Unblinded::PrepareTokens(
   }
 
   const std::string contribution_id = contribution->contribution_id;
-  const std::string contribution_string =
-      braveledger_bind_util::FromContributionToString(std::move(contribution));
 
   std::vector<std::string> token_id_list;
   for (const auto& item : token_list) {
@@ -251,7 +248,7 @@ void Unblinded::PrepareTokens(
       this,
       _1,
       std::move(token_list),
-      contribution_string,
+      std::make_shared<ledger::ContributionInfoPtr>(contribution->Clone()),
       types,
       callback);
 
@@ -264,7 +261,7 @@ void Unblinded::PrepareTokens(
 void Unblinded::OnMarkUnblindedTokensAsReserved(
     const ledger::Result result,
     const std::vector<ledger::UnblindedToken>& list,
-    const std::string& contribution_string,
+    std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
     const std::vector<ledger::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
@@ -273,15 +270,14 @@ void Unblinded::OnMarkUnblindedTokensAsReserved(
     return;
   }
 
-  auto contribution = braveledger_bind_util::FromStringToContribution(
-      contribution_string);
-  if (!contribution) {
+
+  if (!shared_contribution) {
     BLOG(0, "Contribution was not converted successfully");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
-  PreparePublishers(list, std::move(contribution), types, callback);
+  PreparePublishers(list, std::move(*shared_contribution), types, callback);
 }
 
 void Unblinded::PreparePublishers(
@@ -561,15 +557,12 @@ void Unblinded::Retry(
       return;
     }
     case ledger::ContributionStep::STEP_RESERVE: {
-      const std::string contribution_string =
-          braveledger_bind_util::FromContributionToString(
-              std::move(contribution));
       auto get_callback = std::bind(
           &Unblinded::OnReservedUnblindedTokensForRetryAttempt,
           this,
           _1,
           types,
-          contribution_string,
+          std::make_shared<ledger::ContributionInfoPtr>(contribution->Clone()),
           callback);
       ledger_->database()->GetReservedUnblindedTokens(
           contribution->contribution_id,
@@ -596,7 +589,7 @@ void Unblinded::Retry(
 void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
     const ledger::UnblindedTokenList& list,
     const std::vector<ledger::CredsBatchType>& types,
-    const std::string& contribution_string,
+    std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
     ledger::ResultCallback callback) {
   if (list.empty()) {
     BLOG(0, "Token list is empty");
@@ -604,9 +597,7 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
     return;
   }
 
-  auto contribution =
-      braveledger_bind_util::FromStringToContribution(contribution_string);
-  if (!contribution) {
+  if (!shared_contribution) {
     BLOG(0, "Contribution was not converted successfully");
     callback(ledger::Result::LEDGER_ERROR);
     return;
@@ -625,7 +616,11 @@ void Unblinded::OnReservedUnblindedTokensForRetryAttempt(
     converted_list.push_back(new_item);
   }
 
-  PreparePublishers(converted_list, std::move(contribution), types, callback);
+  PreparePublishers(
+      converted_list,
+      std::move(*shared_contribution),
+      types,
+      callback);
 }
 
 }  // namespace braveledger_contribution

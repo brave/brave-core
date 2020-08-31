@@ -6,7 +6,6 @@
 #include <utility>
 
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/sku/sku_brave.h"
 #include "bat/ledger/internal/sku/sku_util.h"

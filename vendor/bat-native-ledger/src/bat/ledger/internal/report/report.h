@@ -40,12 +40,12 @@ class Report {
       ledger::TransactionReportInfoList transaction_report,
       const ledger::ActivityMonth month,
       const uint32_t year,
-      const std::string& monthly_report_string,
+      std::shared_ptr<ledger::MonthlyReportInfoPtr> shared_report,
       ledger::GetMonthlyReportCallback callback);
 
   void OnContributions(
       ledger::ContributionReportInfoList contribution_report,
-      const std::string& monthly_report_string,
+      std::shared_ptr<ledger::MonthlyReportInfoPtr> shared_report,
       ledger::GetMonthlyReportCallback callback);
 
   void OnGetAllBalanceReports(

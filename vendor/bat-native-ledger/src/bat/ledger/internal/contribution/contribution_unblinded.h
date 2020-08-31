@@ -122,14 +122,14 @@ class Unblinded {
   void OnMarkUnblindedTokensAsReserved(
       const ledger::Result result,
       const std::vector<ledger::UnblindedToken>& list,
-      const std::string& contribution_string,
+      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
       const std::vector<ledger::CredsBatchType>& types,
       ledger::ResultCallback callback);
 
   void OnReservedUnblindedTokensForRetryAttempt(
       const ledger::UnblindedTokenList& list,
       const std::vector<ledger::CredsBatchType>& types,
-      const std::string& contribution_string,
+      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
       ledger::ResultCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

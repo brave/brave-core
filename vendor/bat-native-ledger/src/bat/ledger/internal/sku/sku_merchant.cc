@@ -6,7 +6,6 @@
 #include <utility>
 
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/sku/sku_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/sku/sku_merchant.h"
@@ -80,7 +79,7 @@ void SKUMerchant::OnOrder(
         std::bind(&SKUMerchant::OnServerPublisherInfo,
           this,
           _1,
-          braveledger_bind_util::FromSKUOrderToString(std::move(order)),
+          std::make_shared<ledger::SKUOrderPtr>(order->Clone()),
           wallet,
           callback);
 
@@ -95,11 +94,10 @@ void SKUMerchant::OnOrder(
 
 void SKUMerchant::OnServerPublisherInfo(
     ledger::ServerPublisherInfoPtr info,
-    const std::string& order_string,
+    std::shared_ptr<ledger::SKUOrderPtr> shared_order,
     const ledger::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
-  auto order = braveledger_bind_util::FromStringToSKUOrder(order_string);
-  if (!order || !info) {
+  if (!shared_order || !info) {
     BLOG(0, "Order/Publisher not found");
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
@@ -111,7 +109,11 @@ void SKUMerchant::OnServerPublisherInfo(
     return;
   }
 
-  common_->CreateTransaction(std::move(order), info->address, wallet, callback);
+  common_->CreateTransaction(
+      std::move(*shared_order),
+      info->address,
+      wallet,
+      callback);
 }
 
 void SKUMerchant::Retry(

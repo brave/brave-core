@@ -7,7 +7,6 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/database/database_contribution_queue.h"
 #include "bat/ledger/internal/database/database_util.h"
@@ -64,11 +63,14 @@ void DatabaseContributionQueue::InsertOrUpdate(
 
   transaction->commands.push_back(std::move(command));
 
+  auto shared_info =
+      std::make_shared<ledger::ContributionQueuePtr>(std::move(info));
+
   auto transaction_callback =
       std::bind(&DatabaseContributionQueue::OnInsertOrUpdate,
           this,
           _1,
-          braveledger_bind_util::FromContributionQueueToString(info->Clone()),
+          shared_info,
           callback);
 
   ledger_->ledger_client()->RunDBTransaction(
@@ -78,7 +80,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
 
 void DatabaseContributionQueue::OnInsertOrUpdate(
     ledger::DBCommandResponsePtr response,
-    const std::string& queue_string,
+    std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
     ledger::ResultCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
@@ -87,20 +89,16 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
     return;
   }
 
-  auto queue =
-      braveledger_bind_util::FromStringToContributionQueue(queue_string);
-
-  if (!queue) {
+  if (!shared_queue) {
     BLOG(0, "Queue is null");
     callback(ledger::Result::LEDGER_ERROR);
     return;
   }
 
   publishers_->InsertOrUpdate(
-      queue->id,
-      std::move(queue->publishers),
+      (*shared_queue)->id,
+      std::move((*shared_queue)->publishers),
       callback);
-  return;
 }
 
 void DatabaseContributionQueue::GetFirstRecord(
@@ -160,11 +158,14 @@ void DatabaseContributionQueue::OnGetFirstRecord(
   info->amount = GetDoubleColumn(record, 2);
   info->partial = static_cast<bool>(GetIntColumn(record, 3));
 
+  auto shared_info =
+      std::make_shared<ledger::ContributionQueuePtr>(info->Clone());
+
   auto publishers_callback =
       std::bind(&DatabaseContributionQueue::OnGetPublishers,
           this,
           _1,
-          braveledger_bind_util::FromContributionQueueToString(info->Clone()),
+          shared_info,
           callback);
 
   publishers_->GetRecordsByQueueId(info->id, publishers_callback);
@@ -172,20 +173,16 @@ void DatabaseContributionQueue::OnGetFirstRecord(
 
 void DatabaseContributionQueue::OnGetPublishers(
     ledger::ContributionQueuePublisherList list,
-    const std::string& queue_string,
+    std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
     ledger::GetFirstContributionQueueCallback callback) {
-  auto queue =
-      braveledger_bind_util::FromStringToContributionQueue(queue_string);
-
-  if (!queue) {
+  if (!shared_queue) {
     BLOG(0, "Queue is null");
     callback(nullptr);
     return;
   }
 
-  queue->publishers = std::move(list);
-
-  callback(std::move(queue));
+  (*shared_queue)->publishers = std::move(list);
+  callback(std::move(*shared_queue));
 }
 
 void DatabaseContributionQueue::MarkRecordAsComplete(

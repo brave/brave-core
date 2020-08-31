@@ -114,8 +114,6 @@ source_set("ledger") {
     "src/bat/ledger/internal/attestation/attestation_impl.h",
     "src/bat/ledger/internal/attestation/attestation_iosx.cc",
     "src/bat/ledger/internal/attestation/attestation_iosx.h",
-    "src/bat/ledger/internal/common/bind_util.cc",
-    "src/bat/ledger/internal/common/bind_util.h",
     "src/bat/ledger/internal/common/brotli_helpers.h",
     "src/bat/ledger/internal/common/brotli_helpers.cc",
     "src/bat/ledger/internal/common/security_helper.cc",

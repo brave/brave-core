@@ -117,9 +117,9 @@ class Contribution {
   void NotCompletedContributions(ledger::ContributionInfoList list);
 
   void OnBalance(
-      const std::string& contribution_queue,
       const ledger::Result result,
-      ledger::BalancePtr info);
+      ledger::BalancePtr info,
+      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue);
 
   void CreateNewEntry(
       const std::string& wallet_type,
@@ -131,13 +131,13 @@ class Contribution {
       const std::string& contribution_id,
       const std::string& wallet_type,
       const ledger::Balance& balance,
-      const std::string& queue_string);
+      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue);
 
   void OnQueueSaved(
       const ledger::Result result,
       const std::string& wallet_type,
       const ledger::Balance& balance,
-      const std::string& queue_string);
+      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue);
 
   void Process(
       ledger::ContributionQueuePtr queue,
@@ -170,7 +170,7 @@ class Contribution {
 
   void Retry(
       const ledger::Result result,
-      const std::string& contribution_string);
+      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution);
 
   void OnMarkUnblindedTokensAsSpendable(
       const ledger::Result result,
