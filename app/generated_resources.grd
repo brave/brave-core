@@ -3423,6 +3423,9 @@ are declared in tools/grit/grit_rule.gni.
         <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
           App: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
         </message>
+        <message name="IDS_TASK_MANAGER_TOOL_PREFIX" desc="The prefix for a tool process row in the Task Manager">
+          Tool: <ph name="PRINT_NAME">$1<ex>Manage Profiles</ex></ph>
+        </message>
         <message name="IDS_TASK_MANAGER_ARC_PREFIX_BACKGROUND_SERVICE" desc="The prefix for an ARC service process row">
           Service: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
         </message>
@@ -5456,6 +5459,20 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
+      <!-- Star View menu -->
+      <message name="IDS_STAR_VIEW_MENU_ADD_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for adding a bookmark.">
+        Add Bookmark
+      </message>
+      <message name="IDS_STAR_VIEW_MENU_EDIT_BOOKMARK" desc="The item label of the menu triggered from the star icon in the location bar for editing a bookmark.">
+        Edit Bookmark
+      </message>
+      <message name="IDS_STAR_VIEW_MENU_MOVE_TO_READ_LATER" desc="The item label of the menu triggered from the star icon in the location bar for moving the current tab to read later.">
+        Add to Read later
+      </message>
+      <message name="IDS_STAR_VIEW_MENU_MARK_AS_READ" desc="The item label of the menu triggered from the star icon in the location bar for marking the current tab's read later entry as read.">
+        Mark as Read
+      </message>
+
       <!--Tooltip strings-->
       <message name="IDS_TOOLTIP_BACK" desc="The tooltip for back button">
         Click to go back, hold to see history
@@ -5800,6 +5817,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_PASSWORD_MANAGER_SAVE_BUTTON" desc="Save button text for password manager">
           Save
+        </message>
+        <message name="IDS_PASSWORD_MANAGER_SAVE_BUBBLE_OPT_IN_BUTTON" desc="Text for action button in the save bubble that leads the user to opt in to the account-scoped password storage.">
+          Next
         </message>
         <message name="IDS_PASSWORD_MANAGER_MOVE_BUBBLE_OK_BUTTON" desc="Text for the ok button in the password manager move bubble.">
           Move
@@ -9046,9 +9066,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
 
       <!-- Live caption. -->
-      <message name="IDS_LIVE_CAPTION_BUBBLE_WAIT_TEXT" desc="Text displayed in the Live Caption bubble when it is waiting for captions from the speech service">
-        Detecting speech...
-      </message>
       <message name="IDS_LIVE_CAPTION_BUBBLE_CLOSE" desc="Tooltip for the Live Caption close button">
         Turn off Live Caption for now
       </message>
@@ -9060,6 +9077,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_LIVE_CAPTION_BUBBLE_ERROR" desc="Error message for the Live Caption bubble when Live Captions are unavailable.">
         Live Caption is not available right now
+      </message>
+      <message name="IDS_LIVE_CAPTION_BUBBLE_ACCESSIBLE_NAME" desc="Label of the Live Caption bubble for accessibility.">
+        Live Caption
       </message>
 
       <!-- Caret browsing. -->
@@ -10504,6 +10524,31 @@ Please help our engineers fix this problem. Tell us what happened right before y
         {NUM_EXTENSIONS, plural,
           =1 {Click to view the extension}
           other {Click to view these extensions}}
+      </message>
+    </if>
+
+    <if expr="is_macosx">
+      <!-- These strings are placeholders for strings that are filled in via
+           field trials, so they are *not* used as-is except in tests. -->
+      <message name="IDS_MAC_SYSTEM_INFOBAR_TEXT_ARM" desc="Mac system-specific infobar text for Arm64-on-Arm64." translateable="false">
+        This is an Arm64 Brave on Arm64, so things might not work quite right
+yet!
+      </message>
+      <message name="IDS_MAC_SYSTEM_INFOBAR_TEXT_ROSETTA" desc="Mac system-specific infobar text for Intel-on-Arm64." translateable="false">
+        This is an x86-64 Brave on Arm64, so things might not work quite right
+yet!
+      </message>
+      <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_TEXT_ARM" desc="Mac system-specific infobar link text for Arm64-on-Arm64." translateable="false">
+        Learn more
+      </message>
+      <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_URL_ARM" desc="Mac system-specific infobar link for Arm64-on-Arm64." translateable="false">
+        https://www.google.com
+      </message>
+      <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_TEXT_ROSETTA" desc="Mac system-specific infobar link text for Intel-on-Arm64." translateable="false">
+        Learn more
+      </message>
+      <message name="IDS_MAC_SYSTEM_INFOBAR_LINK_URL_ROSETTA" desc="Mac system-specific infobar link for Intel-on-Arm64." translateable="false">
+        https://www.google.com
       </message>
     </if>
   </messages>
