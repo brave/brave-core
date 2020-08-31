@@ -2,27 +2,36 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// MOCK DATA
+const topMovers = [
+  { currency: "BTC", tickerPrice: 18484.10, tickerChange: 210.01 },
+  { currency: "ETH", tickerPrice: 334.54, tickerChange: 152.78 },
+  { currency: "CRO", tickerPrice: 1.20, tickerChange: 89.12 }
+];
+
 import * as React from 'react'
 
 import createWidget from '../widget/index'
 import { StyledTitleTab } from '../widgetTitleTab'
 
+import currencyNames from './data'
+
 import {
-  WidgetWrapper,
-  Header,
-  StyledTitle,
+  ActionButton,
+  AssetIcon,
+  AssetIconWrapper,
+  BackArrow,
+  Box,
   CryptoDotComIcon,
+  FlexItem,
+  Header,
+  List,
+  ListItem,
+  PlainButton,
+  StyledTitle,
   StyledTitleText,
   Text,
-  Box,
-  ListItem,
-  ListInfo,
-  ListLabel,
-  ListIcon,
-  Balance,
-  ActionButton,
-  AssetIconWrapper,
-  AssetIcon
+  WidgetWrapper,
 } from './style'
 // import {
 //   SearchIcon,
@@ -30,13 +39,15 @@ import {
 //   HideIcon
 // } from '../exchangeWidget/shared-assets'
 import CryptoDotComLogo from './assets/cryptoDotCom-logo'
-// import { CaratLeftIcon, CaratDownIcon } from 'brave-ui/components/icons'
+import { CaratLeftIcon } from 'brave-ui/components/icons'
 
 // Utils
 import cryptoColors from '../exchangeWidget/colors'
 // import { getLocale } from '../../../../common/locale'
 
 interface State {
+  selectedView: string,
+  selectedAsset: string
 }
 
 interface Props {
@@ -54,7 +65,10 @@ interface Props {
 class CryptoDotCom extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = {}
+    this.state = {
+      selectedView: 'index',
+      selectedAsset: ''
+    }
   }
 
   componentDidMount () {}
@@ -63,15 +77,25 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
 
   componentWillUnmount () {}
 
+  setSelectedView = (view: string) => {
+    this.setState({
+      selectedView: view
+    })
+  }
+
+  setSelectedAsset = (asset: string) => {
+    this.setState({
+      selectedAsset: asset
+    })
+  }
+
   renderIconAsset = (key: string, isDetail: boolean = false) => {
-    const iconColor = cryptoColors[key] || '#fff'
-    const styles = { color: '#000', marginTop: '5px', marginLeft: '5px' }
+    const iconBgColor = cryptoColors[key] || '#fff'
 
     return (
-      <AssetIconWrapper style={{ background: iconColor }}>
+      <AssetIconWrapper style={{ background: iconBgColor, color: "#000" }}>
         <AssetIcon
           isDetail={isDetail}
-          style={styles}
           className={`crypto-icon icon-${key}`}
         />
       </AssetIconWrapper>
@@ -79,28 +103,79 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
   }
 
   renderIndexView () {
+    const { optInBTCPrice, onBtcPriceOptIn } = this.props;
     const currency = "BTC";
     return <>
-      <Box>
-        <ListItem hasBorder={false}>
-          <ListInfo isAsset={true} position={'left'}>
-            <ListIcon>
-              {this.renderIconAsset(currency.toLowerCase())}
-            </ListIcon>
-            <ListLabel>
-              {currency}
-            </ListLabel>
-          </ListInfo>
-          <ListInfo position={'right'}>
-            <Balance>
-              {0.00} {currency}
-            </Balance>
-          </ListInfo>
-        </ListItem>
+      <Box isFlex>
+        <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
+          {this.renderIconAsset(currency.toLowerCase())}
+        </FlexItem>
+        <FlexItem>
+            <Text>{currency}</Text>
+            <Text small $color="light">{currencyNames[currency]}</Text>
+        </FlexItem>
+        <FlexItem textAlign="right" flex={1}>
+          {optInBTCPrice ? (
+            <>
+              <Text>$18,484.10</Text>
+              <Text $color="green">210.01%</Text>
+            </>
+          ) : (
+            <PlainButton onClick={onBtcPriceOptIn} textColor="green">Show Price</PlainButton>
+          )}
+        </FlexItem>
+        <FlexItem style={{ paddingLeft: 5 }}>
+          <ActionButton small light>BUY</ActionButton>
+        </FlexItem>
       </Box>
-      <Text>Connect to Crypto.com to view buy and trade crypto, view account balance and upcoming events.</Text>
-      <ActionButton>View Top Movers</ActionButton>
+      <Text $hasSpacing>Connect to Crypto.com to view buy and trade crypto, view account balance and upcoming events.</Text>
+      <ActionButton onClick={() => this.setSelectedView('topMovers')}>View Top Movers</ActionButton>
     </>
+  }
+
+  renderTopMoversView () {
+    return (
+      <List>
+        {topMovers.map(({currency, tickerPrice, tickerChange}) => (
+          <ListItem isFlex onClick={() => this.setSelectedAsset(currency)}>
+            <FlexItem style={{ paddingLeft: 5, paddingRight: 5 }}>
+              {this.renderIconAsset(currency.toLowerCase())}
+            </FlexItem>
+            <FlexItem>
+              <Text>{currency}</Text>
+              <Text small $color="light">{currencyNames[currency]}</Text>
+            </FlexItem>
+            <FlexItem textAlign="right" flex={1}>
+              <Text>${tickerPrice.toFixed(2)}</Text>
+              <Text $color={tickerChange > 0 ? "green" : "red"}>{tickerChange}%</Text>
+            </FlexItem>
+          </ListItem>
+        ))}
+      </List>
+    );
+  }
+
+  renderAssetDetailView () {
+    const { selectedAsset: currency } = this.state;
+    return (
+      <Box isFlex>
+        <FlexItem>
+          <BackArrow>
+            <CaratLeftIcon onClick={() => this.setSelectedAsset('')} />
+          </BackArrow>
+        </FlexItem>
+        <FlexItem style={{ paddingRight: 5 }}>
+          {this.renderIconAsset(currency.toLowerCase())}
+        </FlexItem>
+        <FlexItem flex={1}>
+            <Text>{currency}</Text>
+            <Text small $color="light">{currencyNames[currency]}</Text>
+        </FlexItem>
+        <FlexItem style={{ paddingLeft: 5 }}>
+          <ActionButton small light>BUY</ActionButton>
+        </FlexItem>
+      </Box>
+    )
   }
 
   renderTitle () {
@@ -112,7 +187,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             <CryptoDotComLogo />
           </CryptoDotComIcon>
           <StyledTitleText>
-            {'Crypto.com'}
+            {'crypto.com'}
           </StyledTitleText>
         </StyledTitle>
       </Header>
@@ -129,6 +204,22 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     )
   }
 
+  renderSelectedView () {
+    const { selectedView } = this.state;
+    const { selectedAsset } = this.state;
+    
+    if (selectedAsset) {
+      return this.renderAssetDetailView();
+    }
+
+    switch(selectedView) {
+      case 'topMovers':
+        return this.renderTopMoversView()
+      default:
+        return this.renderIndexView()
+    }
+  }
+
   render () {
     const { showContent } = this.props
 
@@ -139,7 +230,7 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
     return (
       <WidgetWrapper tabIndex={0}>
         {this.renderTitle()}
-        {this.renderIndexView()}
+        {this.renderSelectedView()}
       </WidgetWrapper>
     )
   }

@@ -4,6 +4,6 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 export const enum types {
-  ON_TOTAL_PRICE_OPT_IN = '@@gemini/ON_TOTAL_PRICE_OPT_IN',
-  ON_BTC_PRICE_OPT_IN = '@@gemini/ON_BTC_PRICE_OPT_IN'
+  ON_TOTAL_PRICE_OPT_IN = '@@cryptoDotCom/ON_TOTAL_PRICE_OPT_IN',
+  ON_BTC_PRICE_OPT_IN = '@@cryptoDotCom/ON_BTC_PRICE_OPT_IN'
 }
