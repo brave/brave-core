@@ -69,9 +69,131 @@ const char k_youtube_ads_block_script[] =
     "    });"
     "})();";
 
+const char k_archive_ads_block_script[] =
+    "(function() {"
+      "const magic = String.fromCharCode(Date.now() % 26 + 97) +"
+      "              Math.floor(Math.random() * "
+      "                  982451653 + 982451653).toString(36);"
+      "let prop = 'navigator.brave';"
+      "let owner = window;"
+      "for (;;) {"
+      "    const pos = prop.indexOf('.');"
+      "    if ( pos === -1 ) { break; }"
+      "    owner = owner[prop.slice(0, pos)];"
+      "    if ( owner instanceof Object === false ) { return; }"
+      "    prop = prop.slice(pos + 1);"
+      "}"
+      "delete owner[prop];"
+      "Object.defineProperty(owner, prop, {"
+      "    set: function() {"
+      "        throw new ReferenceError(magic);"
+      "    }"
+      "});"
+      "const oe = window.onerror;"
+      "window.onerror = function(msg, src, line, col, error) {"
+      "    if ( typeof msg === 'string' && msg.indexOf(magic) !== -1 ) {"
+      "        return true;"
+      "    }"
+      "    if ( oe instanceof Function ) {"
+      "        return oe(msg, src, line, col, error);"
+      "    }"
+      "}.bind();"
+  "})();"
+  "(function() {"
+      "const target = 'navigator.brave';"
+      "if ( target === '' || target === '{{1}}' ) { return; }"
+      "const needle = '{{2}}';"
+      "let reText = '.?';"
+      "if ( needle !== '' && needle !== '{{2}}' ) {"
+      "    reText = /^\\/.+\\/$/.test(needle)"
+      "        ? needle.slice(1,-1)"
+      "        : needle.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');"
+      "}"
+      "const thisScript = document.currentScript;"
+      "const re = new RegExp(reText);"
+      "const chain = target.split('.');"
+      "let owner = window;"
+      "let prop;"
+      "for (;;) {"
+      "    prop = chain.shift();"
+      "    if ( chain.length === 0 ) { break; }"
+      "    owner = owner[prop];"
+      "    if ( owner instanceof Object === false ) { return; }"
+      "}"
+      "let value;"
+      "let desc = Object.getOwnPropertyDescriptor(owner, prop);"
+      "if ("
+      "    desc instanceof Object === false ||"
+      "    desc.get instanceof Function === false"
+      ") {"
+      "    value = owner[prop];"
+      "    desc = undefined;"
+      "}"
+      "const magic = String.fromCharCode(Date.now() % 26 + 97) + "
+      "              Math.floor(Math.random() * 982451653 + "
+      "                 982451653).toString(36);"
+      "const validate = function() {"
+      "    const e = document.currentScript;"
+      "    if ("
+      "        e instanceof HTMLScriptElement &&"
+      "        e.src === '' &&"
+      "        e !== thisScript &&"
+      "        re.test(e.textContent)"
+      "    ) {"
+      "        throw new ReferenceError(magic);"
+      "    }"
+      "};"
+      "Object.defineProperty(owner, prop, {"
+      "    get: function() {"
+      "        validate();"
+      "        return desc instanceof Object"
+      "            ? desc.get()"
+      "            : value;"
+      "    },"
+      "    set: function(a) {"
+      "        validate();"
+      "        if ( desc instanceof Object ) {"
+      "            desc.set(a);"
+      "        } else {"
+      "            value = a;"
+      "        }"
+      "    }"
+      "});"
+      "document.cookie = 'unsupported-browser=;"
+        " expires=Thu, 01 Jan 1970 00:00:01 GMT';"
+      "const oe = window.onerror;"
+      "window.onerror = function(msg) {"
+      "    if ( typeof msg === 'string' && msg.indexOf(magic) !== -1 ) {"
+      "        return true;"
+      "    }"
+      "    if ( oe instanceof Function ) {"
+      "        return oe.apply(this, arguments);"
+      "    }"
+      "}.bind();"
+  "})();";
+
 bool IsYouTubeDomain(const GURL& url) {
   if (net::registry_controlled_domains::SameDomainOrHost(
           url, GURL("https://www.youtube.com"),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return true;
+  }
+
+  return false;
+}
+
+bool IsArchiveDomain(const GURL& url) {
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          url, GURL("https://archive.is"),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ||
+      net::registry_controlled_domains::SameDomainOrHost(
+          url, GURL("https://archive.today"),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ||
+      net::registry_controlled_domains::SameDomainOrHost(
+          url, GURL("https://archive.vn"),
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ||
+      net::registry_controlled_domains::SameDomainOrHost(
+          url, GURL("https://archive.fo"),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return true;
   }
@@ -118,8 +240,10 @@ BackgroundVideoPlaybackTabHelper::~BackgroundVideoPlaybackTabHelper() {
 
 void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  // Filter only YT domains here
-  if (!IsYouTubeDomain(web_contents()->GetLastCommittedURL())) {
+  // Filter only YT and archive domains here
+  bool yt_domain = IsYouTubeDomain(web_contents()->GetLastCommittedURL());
+  bool archive_domain = IsArchiveDomain(web_contents()->GetLastCommittedURL());
+  if (!yt_domain && !archive_domain) {
     return;
   }
   if (IsBackgroundVideoPlaybackEnabled(web_contents())) {
@@ -129,9 +253,15 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
   }
   if (IsAdBlockEnabled(web_contents(),
       web_contents()->GetLastCommittedURL())) {
-    web_contents()->GetMainFrame()->ExecuteJavaScript(
-        base::UTF8ToUTF16(k_youtube_ads_block_script),
-        base::NullCallback());
+    if (yt_domain) {
+      web_contents()->GetMainFrame()->ExecuteJavaScript(
+          base::UTF8ToUTF16(k_youtube_ads_block_script),
+          base::NullCallback());
+    } else if (archive_domain) {
+      web_contents()->GetMainFrame()->ExecuteJavaScript(
+          base::UTF8ToUTF16(k_archive_ads_block_script),
+          base::NullCallback());
+    }
   }
 }
 
@@ -139,14 +269,22 @@ void BackgroundVideoPlaybackTabHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
     const blink::mojom::ResourceLoadInfo& resource_load_info) {
-  if (!render_frame_host || !IsYouTubeDomain(resource_load_info.final_url) ||
+  bool yt_domain = IsYouTubeDomain(resource_load_info.final_url);
+  bool archive_domain = IsArchiveDomain(resource_load_info.final_url);
+  if (!render_frame_host || (!yt_domain && !archive_domain) ||
       !IsAdBlockEnabled(web_contents(), resource_load_info.final_url)) {
     return;
   }
 
-  render_frame_host->ExecuteJavaScript(
-      base::UTF8ToUTF16(k_youtube_ads_block_script),
-      base::NullCallback());
+  if (yt_domain) {
+    render_frame_host->ExecuteJavaScript(
+        base::UTF8ToUTF16(k_youtube_ads_block_script),
+        base::NullCallback());
+  } else if (archive_domain) {
+    render_frame_host->ExecuteJavaScript(
+        base::UTF8ToUTF16(k_archive_ads_block_script),
+        base::NullCallback());
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BackgroundVideoPlaybackTabHelper)
