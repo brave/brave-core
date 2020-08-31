@@ -5,54 +5,56 @@
 
 package org.chromium.chrome.browser.brave_stats;
 
-import android.os.Bundle;
+import static org.chromium.ui.base.ViewUtils.dpToPx;
+
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.app.Dialog;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.content.res.Resources;
-import com.google.android.material.tabs.TabLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
-import android.widget.ImageView;
-import android.widget.FrameLayout;
-import android.util.DisplayMetrics;
-import android.content.res.Configuration;
-import android.widget.RadioGroup;
-import android.widget.RadioButton;
-import android.util.Pair;
-import android.content.pm.ActivityInfo;
-import android.content.DialogInterface;
 
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import android.view.ViewTreeObserver;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.tabs.TabLayout;
 
-import org.chromium.chrome.R;
-
-import org.chromium.chrome.browser.util.ConfigurationUtils;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.local_database.DatabaseHelper;
-import org.chromium.chrome.browser.local_database.BraveStatsTable;
-import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
+import org.chromium.base.ThreadUtils;
+import org.chromium.base.task.AsyncTask;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.local_database.BraveStatsTable;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
+import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.util.ConfigurationUtils;
+import org.chromium.ui.base.DeviceFormFactor;
 
-import java.util.List;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-
-import static org.chromium.ui.base.ViewUtils.dpToPx;
+import java.util.List;
 
 public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
@@ -103,7 +105,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
         emptyDataLayout = view.findViewById(R.id.brave_stats_empty_layout);
 
-            getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
+        getDialog().setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
@@ -123,7 +125,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 } else if (checkedId == R.id.months_radio) {
                     selectedDuration = DAYS_90;
                 }
-                updateBraveStatsLayout();
+                updateBraveStatsLayoutAsync();
             }
         });
 
@@ -161,7 +163,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 dismiss();
             }
         });
-        updateBraveStatsLayout();
+        updateBraveStatsLayoutAsync();
 
         dialog.setContentView(view);
     }
@@ -195,88 +197,149 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         super.onDestroyView();
     }
 
-    private void updateBraveStatsLayout() {
-        long totalSavedBandwidth = mDatabaseHelper.getTotalSavedBandwidthWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+    private void updateBraveStatsLayoutAsync() {
+        new AsyncTask<Void>() {
+            long adsTrackersCount = 0L;
+            long totalSavedBandwidth = 0L;
+            long adsTrackersCountToCheckForMonth = 0L;
+            long adsTrackersCountToCheckFor3Month = 0L;
+            @Override
+            protected Void doInBackground() {
+                adsTrackersCount =
+                        mDatabaseHelper
+                                .getAllStatsWithDate(BraveStatsUtil.getCalculatedDate(
+                                                             "yyyy-MM-dd", selectedDuration),
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0))
+                                .size();
+                totalSavedBandwidth = mDatabaseHelper.getTotalSavedBandwidthWithDate(
+                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration),
+                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                adsTrackersCountToCheckForMonth =
+                        mDatabaseHelper
+                                .getAllStatsWithDate(
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30),
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_7))
+                                .size();
+                adsTrackersCountToCheckFor3Month =
+                        mDatabaseHelper
+                                .getAllStatsWithDate(
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_90),
+                                        BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30))
+                                .size();
+                return null;
+            }
 
-        long adsTrackersCount = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0)).size();
-        long timeSavedCount = adsTrackersCount * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
+            @Override
+            protected void onPostExecute(Void result) {
+                assert ThreadUtils.runningOnUiThread();
+                if (isCancelled()) return;
+                Pair<String, String> adsTrackersPair =
+                        BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
+                adsTrackersCountText.setText(
+                        String.format(getResources().getString(R.string.ntp_stat_text),
+                                adsTrackersPair.first, adsTrackersPair.second));
 
-        Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
-        adsTrackersCountText.setText(String.format(getResources().getString(R.string.ntp_stat_text), adsTrackersPair.first, adsTrackersPair.second));
+                Pair<String, String> dataSavedPair =
+                        BraveStatsUtil.getBraveStatsStringFormNumberPair(totalSavedBandwidth, true);
+                dataSavedCountText.setText(dataSavedPair.first);
+                dataSavedText.setText(
+                        String.format(mContext.getResources().getString(R.string.data_saved_text),
+                                dataSavedPair.second));
 
-        Pair<String, String> dataSavedPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(totalSavedBandwidth, true);
-        dataSavedCountText.setText(dataSavedPair.first);
-        dataSavedText.setText(String.format(mContext.getResources().getString(R.string.data_saved_text), dataSavedPair.second));
+                long timeSavedCount =
+                        adsTrackersCount * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
+                timeSavedCountText.setText(
+                        BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000));
+                timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
 
-        timeSavedCountText.setText(BraveStatsUtil.getBraveStatsStringFromTime(timeSavedCount / 1000));
-        timeSavedText.setText(mContext.getResources().getString(R.string.time_saved_text));
+                if (adsTrackersCount > 0) {
+                    emptyDataLayout.setVisibility(View.GONE);
+                } else {
+                    emptyDataLayout.setVisibility(View.VISIBLE);
+                }
 
-        showWebsitesTrackers();
+                // Check for month option
+                if (adsTrackersCountToCheckForMonth > 0) {
+                    monthRadioButton.setEnabled(true);
+                    monthRadioButton.setAlpha(1.0f);
+                } else {
+                    monthRadioButton.setEnabled(false);
+                    monthRadioButton.setAlpha(0.2f);
+                }
 
-        if (adsTrackersCount > 0) {
-            emptyDataLayout.setVisibility(View.GONE);
-        } else {
-            emptyDataLayout.setVisibility(View.VISIBLE);
-        }
-
-        //Check for month option
-        long adsTrackersCountToCheckForMonth = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_7)).size();
-        if (adsTrackersCountToCheckForMonth > 0) {
-            monthRadioButton.setEnabled(true);
-            monthRadioButton.setAlpha(1.0f);
-        } else {
-            monthRadioButton.setEnabled(false);
-            monthRadioButton.setAlpha(0.2f);
-        }
-
-        //Check for 3 month option
-        long adsTrackersCountToCheckFor3Month = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_90), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", DAYS_30)).size();
-        if (adsTrackersCountToCheckFor3Month > 0) {
-            monthsRadioButton.setEnabled(true);
-            monthsRadioButton.setAlpha(1.0f);
-        } else {
-            monthsRadioButton.setEnabled(false);
-            monthsRadioButton.setAlpha(0.2f);
-        }
+                // Check for 3 month option
+                if (adsTrackersCountToCheckFor3Month > 0) {
+                    monthsRadioButton.setEnabled(true);
+                    monthsRadioButton.setAlpha(1.0f);
+                } else {
+                    monthsRadioButton.setEnabled(false);
+                    monthsRadioButton.setAlpha(0.2f);
+                }
+                showWebsitesTrackers();
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
     private void showWebsitesTrackers() {
-        List<Pair<String, Integer>> websiteTrackers = null;
-        LinearLayout rootView = null;
-        if (selectedType == WEBSITES) {
-            websiteTrackers = mDatabaseHelper.getStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
-            websitesLayout.setVisibility(View.VISIBLE);
-            trackersLayout.setVisibility(View.GONE);
-            rootView = websitesLayout;
-        } else {
-            websiteTrackers = mDatabaseHelper.getSitesWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
-            websitesLayout.setVisibility(View.GONE);
-            trackersLayout.setVisibility(View.VISIBLE);
-            rootView = trackersLayout;
-        }
-
-        rootView.removeAllViews();
-
-        if (websiteTrackers.size() > 0) {
-            for (Pair<String, Integer> statPair : websiteTrackers) {
-                LayoutInflater inflater = LayoutInflater.from(mContext);
-                ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.tracker_item_layout, null);
-
-                TextView mTrackerCountText = (TextView) layout.findViewById(R.id.tracker_count_text);
-                TextView mSiteText = (TextView) layout.findViewById(R.id.site_text);
-
-                mTrackerCountText.setText(String.valueOf(statPair.second));
-                mTrackerCountText.setTextColor(getResources().getColor(R.color.brave_stats_text_color));
-                mSiteText.setText(statPair.first);
-                mSiteText.setTextColor(getResources().getColor(R.color.brave_stats_text_color));
-
-                rootView.addView(layout);
+        new AsyncTask<Void>() {
+            List<Pair<String, Integer>> websiteTrackers = null;
+            @Override
+            protected Void doInBackground() {
+                if (selectedType == WEBSITES) {
+                    websiteTrackers = mDatabaseHelper.getStatsWithDate(
+                            BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration),
+                            BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                } else {
+                    websiteTrackers = mDatabaseHelper.getSitesWithDate(
+                            BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", selectedDuration),
+                            BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0));
+                }
+                return null;
             }
-            noDataText.setVisibility(View.GONE);
-            braveStatsSubSectionText.setVisibility(View.VISIBLE);
-        } else {
-            noDataText.setVisibility(View.VISIBLE);
-            braveStatsSubSectionText.setVisibility(View.GONE);
-        }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                assert ThreadUtils.runningOnUiThread();
+                if (isCancelled()) return;
+                LinearLayout rootView = null;
+                if (selectedType == WEBSITES) {
+                    websitesLayout.setVisibility(View.VISIBLE);
+                    trackersLayout.setVisibility(View.GONE);
+                    rootView = websitesLayout;
+                } else {
+                    websitesLayout.setVisibility(View.GONE);
+                    trackersLayout.setVisibility(View.VISIBLE);
+                    rootView = trackersLayout;
+                }
+
+                rootView.removeAllViews();
+
+                if (websiteTrackers.size() > 0) {
+                    for (Pair<String, Integer> statPair : websiteTrackers) {
+                        LayoutInflater inflater = LayoutInflater.from(mContext);
+                        ViewGroup layout =
+                                (ViewGroup) inflater.inflate(R.layout.tracker_item_layout, null);
+
+                        TextView mTrackerCountText =
+                                (TextView) layout.findViewById(R.id.tracker_count_text);
+                        TextView mSiteText = (TextView) layout.findViewById(R.id.site_text);
+
+                        mTrackerCountText.setText(String.valueOf(statPair.second));
+                        mTrackerCountText.setTextColor(
+                                getResources().getColor(R.color.brave_stats_text_color));
+                        mSiteText.setText(statPair.first);
+                        mSiteText.setTextColor(
+                                getResources().getColor(R.color.brave_stats_text_color));
+
+                        rootView.addView(layout);
+                    }
+                    noDataText.setVisibility(View.GONE);
+                    braveStatsSubSectionText.setVisibility(View.VISIBLE);
+                } else {
+                    noDataText.setVisibility(View.VISIBLE);
+                    braveStatsSubSectionText.setVisibility(View.GONE);
+                }
+            }
+        }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 }

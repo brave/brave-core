@@ -14,16 +14,16 @@ import android.util.Pair;
 
 import androidx.core.app.NotificationCompat;
 
-import org.chromium.chrome.R;
-
-import org.chromium.base.Log;
 import org.chromium.base.ContextUtils;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.local_database.DatabaseHelper;
-import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
+import org.chromium.base.Log;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
-import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
+import org.chromium.chrome.browser.local_database.DatabaseHelper;
+import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
 import org.chromium.chrome.browser.notifications.BraveSetDefaultBrowserNotificationService;
+import org.chromium.chrome.browser.notifications.channels.BraveChannelDefinitions;
+import org.chromium.chrome.browser.ntp.BraveNewTabPageLayout;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -34,7 +34,7 @@ public class RetentionNotificationUtil {
     public static String NOTIFICATION_TYPE = "notification_type";
     private static final String BRAVE_BROWSER = "Brave Browser";
 
-            public static final String HOUR_3 = "hour_3";
+    public static final String HOUR_3 = "hour_3";
     public static final String HOUR_24 = "hour_24";
     public static final String DAY_6 = "day_6";
     public static final String EVERY_SUNDAY = "every_sunday";
@@ -50,8 +50,12 @@ public class RetentionNotificationUtil {
 
     private static Map<String, RetentionNotification> mNotificationMap = new HashMap<String, RetentionNotification>() {
         {
-            put(HOUR_3, new RetentionNotification(3, 3 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER ));
-            put(HOUR_24, new RetentionNotification(24, 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(HOUR_3,
+                    new RetentionNotification(
+                            3, 3 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
+            put(HOUR_24,
+                    new RetentionNotification(
+                            24, 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(DAY_6, new RetentionNotification(6, 6 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(EVERY_SUNDAY, new RetentionNotification(7, -1, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
             put(DAY_10, new RetentionNotification(10, 10 * 24 * 60, BraveChannelDefinitions.ChannelId.BRAVE_BROWSER, BRAVE_BROWSER));
@@ -70,9 +74,9 @@ public class RetentionNotificationUtil {
         return mNotificationMap.get(notificationType);
     }
 
-    public static Notification getNotification(Context context, String notificationType) {
+    public static Notification getNotification(
+            Context context, String notificationType, String notificationText) {
         RetentionNotification retentionNotification = getNotificationObject(notificationType);
-        String notificationText = getNotificationText(context, notificationType);
         Log.e("NTP", notificationText);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, retentionNotification.getChannelId());
         builder.setContentTitle(retentionNotification.getNotificationTitle());
@@ -90,19 +94,12 @@ public class RetentionNotificationUtil {
         return builder.build();
     }
 
-    private static String getNotificationText(Context context, String notificationType) {
+    public static String getNotificationText(Context context, String notificationType) {
         DatabaseHelper mDatabaseHelper = DatabaseHelper.getInstance();
-        long totalSavedBandwidth = mDatabaseHelper.getTotalSavedBandwidth();
-        long adsTrackersCount = mDatabaseHelper.getAllStats().size();
-        long timeSavedCount = adsTrackersCount * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
-
-        long adsTrackersCountWeekly = mDatabaseHelper.getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 7), BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0)).size();
-
-        Pair<String, String> adsTrackersPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(adsTrackersCount, false);
-        Pair<String, String> dataSavedPair = BraveStatsUtil.getBraveStatsStringFormNumberPair(totalSavedBandwidth, true);
         switch (notificationType) {
         case HOUR_3:
             if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                long adsTrackersCount = mDatabaseHelper.getAllStats().size();
                 if (adsTrackersCount >= 5) {
                     return String.format(context.getResources().getString(R.string.notification_hour_3_text_1), adsTrackersCount);
                 } else {
@@ -113,11 +110,20 @@ public class RetentionNotificationUtil {
             }
         case HOUR_24:
             if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+                Pair<String, String> dataSavedPair =
+                        BraveStatsUtil.getBraveStatsStringFormNumberPair(
+                                mDatabaseHelper.getTotalSavedBandwidth(), true);
                 return String.format(context.getResources().getString(R.string.notification_hour_24_text_1), dataSavedPair.first, dataSavedPair.second);
             } else {
                 return context.getResources().getString(R.string.notification_hour_24_text_2);
             }
         case EVERY_SUNDAY:
+            long adsTrackersCountWeekly =
+                    mDatabaseHelper
+                            .getAllStatsWithDate(BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", -7),
+                                    BraveStatsUtil.getCalculatedDate("yyyy-MM-dd", 0))
+                            .size();
+            Log.e("NTP", "Weekly count : " + adsTrackersCountWeekly);
             return String.format(context.getResources().getString(R.string.notification_weekly_stats), adsTrackersCountWeekly);
         case DAY_6:
             return context.getResources().getString(R.string.notification_marketing);
