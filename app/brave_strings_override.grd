@@ -304,6 +304,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </message>
         </if>
 
+      <if expr="not is_android">
+        </if>
     </messages>
   </release>
 </grit>
