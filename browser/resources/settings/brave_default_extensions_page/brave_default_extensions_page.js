@@ -78,7 +78,8 @@ Polymer({
     this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked);
   },
 
-  restartBrowser_: function() {
+  restartBrowser_: function(e) {
+    e.stopPropagation();
     window.open("chrome://restart", "_self");
   },
 
@@ -101,5 +102,10 @@ Polymer({
   openWebStoreUrl_: function() {
     window.open(loadTimeData.getString('getMoreExtensionsUrl'));
   },
+
+  shouldShowRestartForGoogleLogin_: function(value) {
+    return this.browserProxy_.wasSignInEnabledAtStartup() != value;
+  },
+
 });
 })();

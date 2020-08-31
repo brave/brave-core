@@ -21,6 +21,7 @@ cr.define('settings', function() {
     isTorManaged() {}
     getRestartNeeded() {}
     getWeb3ProviderList() {}
+    wasSignInEnabledAtStartup() {}
   }
 
   /**
@@ -58,6 +59,9 @@ cr.define('settings', function() {
     /** @override */
     getWeb3ProviderList() {
       return new Promise(resolve => chrome.braveWallet.getWeb3ProviderList(resolve))
+    }
+    wasSignInEnabledAtStartup() {
+      return loadTimeData.getBoolean('signInAllowedOnNextStartupInitialValue');
     }
   }
 
