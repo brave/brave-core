@@ -65,6 +65,9 @@ public class HighlightDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {}
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.highlight_layout, container);
         highlightView = view.findViewById(R.id.highlight_view);
@@ -150,12 +153,14 @@ public class HighlightDialogFragment extends DialogFragment {
 
     private void highlightView(int position) {
         View view = getActivity().findViewById(highlightViews.get(position));
-        HighlightItem item = new HighlightItem(view);
-        highlightView.setHighlightItem(item);
-        if (position == 3) {
-            highlightView.setShouldShowHighlight(false);
-        } else {
-            highlightView.setShouldShowHighlight(true);
+        if (view != null) {
+            HighlightItem item = new HighlightItem(view);
+            highlightView.setHighlightItem(item);
+            if (position == 3) {
+                highlightView.setShouldShowHighlight(false);
+            } else {
+                highlightView.setShouldShowHighlight(true);
+            }
         }
     }
 
