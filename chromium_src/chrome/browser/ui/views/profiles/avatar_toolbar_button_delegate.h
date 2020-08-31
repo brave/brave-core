@@ -33,6 +33,7 @@ class BraveAvatarToolbarButtonDelegate : public AvatarToolbarButtonDelegate {
   ~BraveAvatarToolbarButtonDelegate() override = default;
 
   void Init(AvatarToolbarButton* button, Profile* profile) override;
+  gfx::Image GetGaiaAccountImage() const;
   AvatarToolbarButton::State GetState() const override;
 
  private:

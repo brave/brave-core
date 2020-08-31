@@ -78,6 +78,18 @@
         pref="{{prefs.brave.wallet.load_on_startup}}"
         label="$i18n{loadCryptoWalletsOnStartupDesc}">
     </settings-toggle-button>
+    <settings-toggle-button id="googleLoginForExtensions"
+        class="cr-row"
+        pref="{{prefs.signin.allowed_on_next_startup}}"
+        learn-more-url="$i18n{googleLoginLearnMoreURL}"
+        label="$i18n{googleLoginForExtensionsDesc}">
+        <template is="dom-if" if="[[shouldShowRestartForGoogleLogin_(
+          prefs.signin.allowed_on_next_startup.value)]]">
+        <cr-button on-click="restartBrowser_" slot="more-actions">
+          $i18n{restart}
+        </cr-button>
+        </template>
+    </settings-toggle-button>
     <settings-toggle-button id="hangoutsEnabled"
         class="cr-row"
         pref="{{prefs.brave.hangouts_enabled}}"

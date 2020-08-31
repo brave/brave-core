@@ -7,7 +7,9 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_AVATAR_TOOLBAR_BUTTON_H_
 
 #define GetAvatarIcon virtual GetAvatarIcon
+#define AvatarToolbarButtonDelegate BraveAvatarToolbarButtonDelegate
 #include "../../../../../../../chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+#undef AvatarToolbarButtonDelegate
 #undef GetAvatarIcon
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PROFILES_AVATAR_TOOLBAR_BUTTON_H_

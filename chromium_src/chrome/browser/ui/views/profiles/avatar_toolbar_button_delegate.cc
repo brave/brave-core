@@ -31,3 +31,6 @@ AvatarToolbarButton::State BraveAvatarToolbarButtonDelegate::GetState() const {
   return state;
 }
 
+gfx::Image BraveAvatarToolbarButtonDelegate::GetGaiaAccountImage() const {
+  return gfx::Image();
+}

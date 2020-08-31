@@ -40,6 +40,9 @@ void RegisterProfilePrefs(bool is_signin_profile,
   // Disable spell check service
   registry->SetDefaultPrefValue(
       spellcheck::prefs::kSpellCheckUseSpellingService, base::Value(false));
+
+  registry->SetDefaultPrefValue(prefs::kSigninAllowedOnNextStartup,
+                                base::Value(false));
 #if defined(OS_LINUX)
   // Use brave theme by default instead of gtk theme.
   registry->SetDefaultPrefValue(prefs::kUsesSystemTheme, base::Value(false));
