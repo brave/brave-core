@@ -199,8 +199,7 @@ void BraveP3AService::InitCallbacks() {
   for (const char* histogram_name : kCollectedHistograms) {
     base::StatisticsRecorder::SetCallback(
         histogram_name,
-        base::BindRepeating(&BraveP3AService::OnHistogramChanged, this,
-                            histogram_name));
+        base::BindRepeating(&BraveP3AService::OnHistogramChanged, this));
   }
 }
 
@@ -380,7 +379,8 @@ void BraveP3AService::StartScheduledUpload() {
   }
 }
 
-void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
+void BraveP3AService::OnHistogramChanged(const char* histogram_name,
+                                         uint64_t name_hash,
                                          base::HistogramBase::Sample sample) {
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
@@ -392,7 +392,7 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
     base::PostTask(FROM_HERE, {content::BrowserThread::UI},
                    base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI,
                                   this,
-                                  histogram_name,
+                                  base::StringPiece(histogram_name),
                                   kSuspendedMetricValue,
                                   kSuspendedMetricBucket));
     return;
