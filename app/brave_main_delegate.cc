@@ -38,7 +38,6 @@
 #include "components/safe_browsing/core/features.h"
 #include "components/security_state/core/features.h"
 #include "components/sync/base/sync_base_switches.h"
-#include "components/sync/driver/sync_driver_switches.h"
 #include "components/translate/core/browser/translate_prefs.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
