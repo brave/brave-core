@@ -91,11 +91,6 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "1bb9aa85741c6d1c077f043324aae835.svg", IDR_BRAVE_REWARDS_IMG_WELCOME_BG },            // NOLINT
         { "dcaf489409ca7908aef96547c9aad274.svg", IDR_BRAVE_REWARDS_IMG_TAP },                   // NOLINT
       }
-    }, {
-      std::string("tip"), {
-        { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_REWARDS_TIP_BG_1 },
-        { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_REWARDS_TIP_BG_2 },
-      }
 #endif
     }, {
       std::string("welcome"), {
@@ -823,48 +818,48 @@ void CustomizeWebUIHTMLSource(const std::string &name,
     }, {
 #endif
       std::string("tip"), {
-        { "about", IDS_BRAVE_UI_ABOUT },
         { "addFunds", IDS_BRAVE_UI_ADD_FUNDS },
-        { "autoTipText", IDS_BRAVE_UI_AUTO_TIP_TEXT },
-        { "bat", IDS_BRAVE_UI_BAT_TEXT },
         { "bap", IDS_BRAVE_UI_BAP_REWARDS_TEXT },
-        { "contributionAmount", IDS_BRAVE_UI_CONTRIBUTION_AMOUNT },
-        { "contributionNextDate",  IDS_BRAVE_REWARDS_LOCAL_CONTR_NEXT_DATE },
-        { "donationAmount", IDS_BRAVE_UI_DONATION_AMOUNT },
+        { "bapFunds", IDS_BRAVE_REWARDS_TIP_BAP_FUNDS },
+        { "bat", IDS_BRAVE_UI_BAT_TEXT },
+        { "batFunds", IDS_BRAVE_REWARDS_TIP_BAT_FUNDS },
+        { "cancel", IDS_BRAVE_REWARDS_TIP_CANCEL },
+        { "cancelConfirmationText", IDS_BRAVE_REWARDS_TIP_CANCEL_CONFIRMATION_TEXT },  // NOLINT
+        { "cancelMonthlyContribution", IDS_BRAVE_REWARDS_TIP_CANCEL_MONTHLY_CONTRIBUTION },  // NOLINT
+        { "changeAmount", IDS_BRAVE_REWARDS_TIP_CHANGE_AMOUNT },
+        { "confirmCancel", IDS_BRAVE_REWARDS_TIP_CONFIRM_CANCEL },
+        { "contributionAmount", IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_AMOUNT },  // NOLINT
+        { "contributionCanceled", IDS_BRAVE_REWARDS_TIP_CONTRIBUTION_CANCELED },  // NOLINT
+        { "currentlySupporting", IDS_BRAVE_REWARDS_TIP_CURRENTLY_SUPPORTING },
+        { "currentMonthlyContribution", IDS_BRAVE_REWARDS_TIP_CURRENT_MONTHLY_CONTRIBUTION },  // NOLINT
         { "doMonthly", IDS_BRAVE_UI_DO_MONTHLY },
-        { "firstTipDateText", IDS_BRAVE_UI_FIRST_TIP_TEXT },
-        { "makeMonthly", IDS_BRAVE_UI_MAKE_MONTHLY },
+        { "errorHasOccurred", IDS_BRAVE_REWARDS_TIP_ERROR_HAS_OCCURRED },
+        { "monthlyContribution", IDS_BRAVE_UI_MONTHLY_CONTRIBUTION },
+        { "monthlyContributionSet", IDS_BRAVE_REWARDS_TIP_MONTHLY_CONTRIBUTION_SET },  // NOLINT
+        { "monthlyText", IDS_BRAVE_UI_MONTHLY_TEXT },
+        { "nextContributionDate", IDS_BRAVE_REWARDS_TIP_NEXT_CONTRIBUTION_DATE },  // NOLINT
         { "notEnoughTokens", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS },
         { "notEnoughTokensLink", IDS_BRAVE_UI_NOT_ENOUGH_TOKENS_LINK },
         { "on", IDS_BRAVE_UI_ON },
-        { "monthlyText", IDS_BRAVE_UI_MONTHLY_TEXT },
-        { "monthlySet", IDS_BRAVE_UI_CONTRIBUTION_SET },
-        { "redditTipTitle", IDS_BRAVE_UI_REDDIT_TIP_TITLE },
-        { "redditTipTitleEmpty", IDS_BRAVE_UI_REDDIT_TIP_TITLE_EMPTY },
-        { "githubTipTitle", IDS_BRAVE_UI_GITHUB_TIP_TITLE },
-        { "githubTipTitleEmpty", IDS_BRAVE_UI_GITHUB_TIP_TITLE_EMPTY },
-        { "monthlyContribution", IDS_BRAVE_UI_MONTHLY_CONTRIBUTION },
-        { "nextContribution", IDS_BRAVE_UI_NEXT_CONTRIBUTION },
+        { "oneTimeTip", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP },
+        { "oneTimeTipAmount", IDS_BRAVE_REWARDS_TIP_ONE_TIME_TIP_AMOUNT },
         { "points", IDS_BRAVE_UI_POINTS },
+        { "postHeader", IDS_BRAVE_REWARDS_TIP_POST_HEADER },
+        { "postHeaderTwitter", IDS_BRAVE_REWARDS_TIP_POST_HEADER_TWITTER },
         { "rewardsBannerText1", IDS_BRAVE_UI_REWARDS_BANNER_TEXT1 },
-        { "rewardsBannerText2", IDS_BRAVE_UI_REWARDS_BANNER_TEXT2 },
-        { "rewardsBannerMonthlyText1", IDS_BRAVE_UI_REWARDS_BANNER_MONTHLY_TEXT1 },              // NOLINT
         { "sendDonation", IDS_BRAVE_UI_SEND_DONATION },
-        { "setContribution", IDS_BRAVE_UI_SET_CONTRIBUTION },
-        { "shareText", IDS_BRAVE_UI_SHARE_TEXT },
+        { "siteBannerConnectedText", IDS_BRAVE_UI_SITE_BANNER_CONNECTED_TEXT },
         { "siteBannerNoticeNote", IDS_BRAVE_UI_SITE_BANNER_NOTICE_NOTE },
         { "siteBannerNoticeText", IDS_BRAVE_UI_SITE_BANNER_NOTICE_TEXT },
-        { "siteBannerConnectedText", IDS_BRAVE_UI_SITE_BANNER_CONNECTED_TEXT },
-        { "tellOthers", IDS_BRAVE_UI_TELL_OTHERS },
-        { "thankYou", IDS_BRAVE_UI_THANK_YOU },
-        { "tipSent", IDS_BRAVE_UI_TIP_SENT },
-        { "tipText", IDS_BRAVE_UI_TIP_TEXT },
+        { "sorryToSeeYouGo", IDS_BRAVE_REWARDS_TIP_SORRY_TO_SEE_YOU_GO },
+        { "supportThisCreator", IDS_BRAVE_REWARDS_TIP_SUPPORT_THIS_CREATOR },
+        { "termsOfService", IDS_BRAVE_REWARDS_TIP_TERMS_OF_SERVICE },
+        { "thanksForTheSupport", IDS_BRAVE_REWARDS_TIP_THANKS_FOR_THE_SUPPORT },  // NOLINT
+        { "tipHasBeenSent", IDS_BRAVE_REWARDS_TIP_TIP_HAS_BEEN_SET },
+        { "tipPostSubtitle", IDS_BRAVE_REWARDS_TIP_TIP_POST_SUBTITLE },
         { "tokens", IDS_BRAVE_UI_TOKENS },
-        { "tweetNow", IDS_BRAVE_UI_TWEET_NOW },
-        { "tweetTipTitle", IDS_BRAVE_UI_TWEET_TIP_TITLE },
-        { "tweetTipTitleEmpty", IDS_BRAVE_UI_TWEET_TIP_TITLE_EMPTY },
-        { "unVerifiedTextMore", IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE },
-        { "walletBalance", IDS_BRAVE_UI_WALLET_BALANCE },
+        { "tweetAboutSupport", IDS_BRAVE_REWARDS_TIP_TWEET_ABOUT_SUPPORT },
+        { "unverifiedTextMore", IDS_BRAVE_UI_SITE_UNVERIFIED_TEXT_MORE },
         { "welcome", IDS_BRAVE_UI_WELCOME },
       }
     }, {

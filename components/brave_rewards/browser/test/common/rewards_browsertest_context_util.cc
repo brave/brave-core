@@ -418,15 +418,16 @@ void IsMediaTipsInjected(content::WebContents* context, bool should_appear) {
 
 std::vector<double> GetSiteBannerTipOptions(content::WebContents* context) {
   DCHECK(context);
-  WaitForElementToAppear(context, "[data-test-id=amount-wrapper] div span");
+  WaitForElementToAppear(context, "[data-test-id=tip-amount-options]");
   auto options = content::EvalJs(
       context,
       R"(
           const delay = t => new Promise(resolve => setTimeout(resolve, t));
-          delay(500).then(() => Array.prototype.map.call(
-              document.querySelectorAll(
-                  "[data-test-id=amount-wrapper] div span"),
-              node => parseFloat(node.innerText)))
+          delay(500).then(() => Array.from(
+            document.querySelectorAll(
+              "[data-test-id=tip-amount-options] [data-option-value]"
+            )
+          ).map(node => parseFloat(node.dataset.optionValue)))
       )",
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
       content::ISOLATED_WORLD_ID_CONTENT_END).ExtractList();
