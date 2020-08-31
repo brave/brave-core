@@ -1,5 +1,5 @@
 diff --git a/mojo/public/tools/bindings/chromium_bindings_configuration.gni b/mojo/public/tools/bindings/chromium_bindings_configuration.gni
-index 9296a358091a7d8b9f4a858cba7254ddc917de71..706bd2e9579bae4d0a7dfad4caac106135a196a2 100644
+index c2e01ab0c4161264b4c820fbe8f6c79ff6ba7901..81f302e0efd1254fc39dec088237cef04dcae17a 100644
 --- a/mojo/public/tools/bindings/chromium_bindings_configuration.gni
 +++ b/mojo/public/tools/bindings/chromium_bindings_configuration.gni
 @@ -4,6 +4,7 @@
@@ -8,5 +8,5 @@ index 9296a358091a7d8b9f4a858cba7254ddc917de71..706bd2e9579bae4d0a7dfad4caac1061
    "//chrome/chrome_cleaner/mojom/typemaps/typemaps.gni",
 +  "//brave/common/tor/typemaps.gni",
    "//chrome/common/importer/typemaps.gni",
-   "//chrome/common/media_router/mojom/typemaps.gni",
    "//chrome/typemaps.gni",
+   "//chromecast/typemaps.gni",
