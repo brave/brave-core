@@ -4,8 +4,6 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 assert(brave_wallet_enabled)
 
 source_set("browser") {
-    # Remove when https://github.com/brave/brave-browser/issues/10640 is resolved
-    check_includes = false
     public_deps = [
         "buildflags"
     ]
@@ -18,6 +16,8 @@ source_set("browser") {
 
     deps = [
         "//base",
+        "//brave/common:common",
+        "//brave/common:pref_names",
         "//components/keyed_service/content",
         "//components/keyed_service/core",
         "//content/public/browser",
