@@ -105,16 +105,6 @@
                 android:layout="@layout/new_tab_page_offline_card"
                 android:inflatedId="@+id/explore_offline_card" />
 
-            <!-- Search provider logo -->
-            <org.chromium.chrome.browser.ntp.LogoView
-                android:id="@+id/search_provider_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/ntp_logo_height"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="@dimen/ntp_logo_margin_top"
-                android:layout_marginBottom="23dp" />
-
             <!-- Search box -->
             <include layout="@layout/fake_search_box_layout"/>
 
