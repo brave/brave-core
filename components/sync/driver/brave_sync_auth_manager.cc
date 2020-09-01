@@ -41,7 +41,8 @@ void BraveSyncAuthManager::DeriveSigningKeys(const std::string& seed) {
       234, 28,  135, 54,  42,  9,   243, 39,  30,  179, 147, 194, 211,
       212, 239, 225, 52,  192, 219, 145, 40,  95,  19,  142, 98};
   std::vector<uint8_t> seed_bytes;
-  brave_sync::crypto::PassphraseToBytes32(seed, &seed_bytes);
+  if (!brave_sync::crypto::PassphraseToBytes32(seed, &seed_bytes))
+    return;
   const std::string info_str = "sync-auth-key";
   std::vector<uint8_t> info(info_str.begin(), info_str.end());
   brave_sync::crypto::DeriveSigningKeysFromSeed(seed_bytes, &HKDF_SALT, &info,

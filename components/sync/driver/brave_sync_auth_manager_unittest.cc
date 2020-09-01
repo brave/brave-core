@@ -132,6 +132,26 @@ TEST_F(BraveSyncAuthManagerTest, Reset) {
       auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
 }
 
+TEST_F(BraveSyncAuthManagerTest, MalformedSyncCode) {
+  base::MockCallback<AccountStateChangedCallback> account_state_changed;
+  base::MockCallback<CredentialsChangedCallback> credentials_changed;
+  EXPECT_CALL(account_state_changed, Run()).Times(0);
+  EXPECT_CALL(credentials_changed, Run()).Times(0);
+  auto auth_manager =
+      CreateAuthManager(account_state_changed.Get(), credentials_changed.Get());
+
+  SetNetworkTime();
+  auth_manager->RegisterForAuthNotifications();
+
+  auth_manager->DeriveSigningKeys("");
+  EXPECT_TRUE(
+      auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
+
+  auth_manager->DeriveSigningKeys("brave5566");
+  EXPECT_TRUE(
+      auth_manager->GetActiveAccountInfo().account_info.account_id.empty());
+}
+
 }  // namespace
 
 }  // namespace syncer
