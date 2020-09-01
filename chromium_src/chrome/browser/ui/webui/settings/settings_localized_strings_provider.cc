@@ -46,7 +46,7 @@ const char kBraveReleaseTagPrefix[] =
     "https://github.com/brave/brave-browser/releases/tag/v";
 const char kGoogleLoginLearnMoreURL[] =
     "https://github.com/brave/brave-browser/wiki/"
-    "Social-Blocking:-Allow-Google-login";
+    "Allow-Google-login---Third-Parties-and-Extensions";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -267,6 +267,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_BRAVE_WEB3_PROVIDER_DESC},
     {"loadCryptoWalletsOnStartupDesc",
       IDS_SETTINGS_LOAD_CRYPTO_WALLETS_ON_STARTUP},
+    {"googleLoginForExtensionsDesc",
+      IDS_SETTINGS_GOOGLE_LOGIN_FOR_EXTENSIONS},
     {"hangoutsEnabledDesc",
       IDS_SETTINGS_HANGOUTS_ENABLED_DESC},
     {"ipfsCompanionEnabledDesc",

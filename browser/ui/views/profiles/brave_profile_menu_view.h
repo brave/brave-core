@@ -21,6 +21,8 @@ class BraveProfileMenuView : public ProfileMenuView {
   // Helper methods for building the menu.
   void BuildIdentity() override;
   void BuildAutofillButtons() override;
+  void BuildSyncInfo() override;
+  void BuildFeatureButtons() override;
   gfx::ImageSkia GetSyncIcon() const override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveProfileMenuView);
