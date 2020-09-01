@@ -134,7 +134,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
   uint64_t last_fetch_sec = ledger_->state()->GetServerPublisherListStamp();
   uint64_t interval_sec = ledger_->ledger_client()->GetUint64Option(
-      ledger::kOptionPublisherListRefreshInterval);
+      ledger::option::kPublisherListRefreshInterval);
 
   auto now = base::Time::Now();
   auto fetch_time = base::Time::FromDoubleT(

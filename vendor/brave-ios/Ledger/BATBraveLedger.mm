@@ -75,7 +75,7 @@ const std::map<std::string, double> kDoubleOptions = {};
 const std::map<std::string, std::string> kStringOptions = {};
 const std::map<std::string, int64_t> kInt64Options = {};
 const std::map<std::string, uint64_t> kUInt64Options = {
-  {ledger::kOptionPublisherListRefreshInterval,
+  {ledger::option::kPublisherListRefreshInterval,
     7 * base::Time::kHoursPerDay * base::Time::kSecondsPerHour}
 };
 /// ---
