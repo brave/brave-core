@@ -46,6 +46,7 @@ class GreaselionServiceImpl : public GreaselionService {
   void SetFeatureEnabled(GreaselionFeature feature, bool enabled) override;
   void UpdateInstalledExtensions() override;
   bool IsGreaselionExtension(const std::string& id) override;
+  std::vector<extensions::ExtensionId> GetExtensionIdsForTesting() override;
   bool ready() override;
   void AddObserver(Observer* observer) override;
   void RemoveObserver(Observer* observer) override;

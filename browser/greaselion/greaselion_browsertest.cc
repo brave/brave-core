@@ -303,3 +303,26 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest,
   // Greaselion rule is active
   EXPECT_EQ(title, "Altered");
 }
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, IsGreaselionExtension) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GreaselionService* greaselion_service =
+      GreaselionServiceFactory::GetForBrowserContext(profile());
+  ASSERT_TRUE(greaselion_service);
+
+  auto extension_ids = greaselion_service->GetExtensionIdsForTesting();
+  ASSERT_GT(extension_ids.size(), 0UL);
+
+  EXPECT_TRUE(greaselion_service->IsGreaselionExtension(extension_ids[0]));
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, IsNotGreaselionExtension) {
+  ASSERT_TRUE(InstallMockExtension());
+
+  GreaselionService* greaselion_service =
+      GreaselionServiceFactory::GetForBrowserContext(profile());
+  ASSERT_TRUE(greaselion_service);
+
+  EXPECT_FALSE(greaselion_service->IsGreaselionExtension("INVALID"));
+}
