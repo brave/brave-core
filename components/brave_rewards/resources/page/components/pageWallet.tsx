@@ -750,6 +750,10 @@ class PageWallet extends React.Component<Props, State> {
     const { ui } = this.props.rewardsData
     const { walletRecoveryStatus } = ui
 
+    if (walletRecoveryStatus === null) {
+      return ''
+    }
+
     // ledger::Result::CORRUPTED_DATA
     if (walletRecoveryStatus === 17) {
       return <span dangerouslySetInnerHTML={{ __html: getLocale('walletRecoveryOutdated') }} />
