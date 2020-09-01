@@ -71,7 +71,7 @@ content::WebContents* OpenRewardsPopup(Browser* browser) {
       base::BindLambdaForTesting(check_load_is_rewards_panel));
 
   bool rewards_enabled = browser->profile()->GetPrefs()->
-      GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
+      GetBoolean(brave_rewards::prefs::kEnabled);
 
   if (rewards_enabled) {
     OpenRewardsPopupRewardsEnabled(browser);

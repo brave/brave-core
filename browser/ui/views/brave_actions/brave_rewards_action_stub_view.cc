@@ -80,7 +80,7 @@ BraveRewardsActionStubView::BraveRewardsActionStubView(Profile* profile,
   // during runtime. At time of implementation, this would only be different
   // after a restart.
   badge_text_pref_.Init(
-    brave_rewards::prefs::kRewardsBadgeText, profile->GetPrefs());
+    brave_rewards::prefs::kBadgeText, profile->GetPrefs());
   badge.reset(new IconWithBadgeImageSource::Badge(
           badge_text_pref_.GetValue(),
           SK_ColorWHITE,
@@ -124,7 +124,7 @@ void BraveRewardsActionStubView::ButtonPressed(
   // This cannot be done from the rewards service since it is not
   // involved in showing the pre-opt-in panel.
   if (badge_text_pref_.GetValue() != "") {
-    profile_->GetPrefs()->SetString(brave_rewards::prefs::kRewardsBadgeText,
+    profile_->GetPrefs()->SetString(brave_rewards::prefs::kBadgeText,
         "");
   }
   delegate_->OnRewardsStubButtonClicked();

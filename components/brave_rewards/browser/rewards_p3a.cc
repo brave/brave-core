@@ -97,7 +97,7 @@ void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
                                     const std::string& pref) {
   using brave_rewards::AdsP3AState;
   const bool rewards_enabled =
-      prefs->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled);
+      prefs->GetBoolean(brave_rewards::prefs::kEnabled);
   const bool ads_enabled = prefs->GetBoolean(brave_ads::prefs::kEnabled);
   if (pref == brave_ads::prefs::kEnabled) {
     if (ads_enabled) {
@@ -111,7 +111,7 @@ void UpdateAdsP3AOnPreferenceChange(PrefService *prefs,
                             AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
       prefs->SetBoolean(brave_ads::prefs::kAdsWereDisabled, true);
     }
-  } else if (pref == brave_rewards::prefs::kBraveRewardsEnabled) {
+  } else if (pref == brave_rewards::prefs::kEnabled) {
     // Rewards pref was changed.
     if (prefs->GetBoolean(brave_ads::prefs::kAdsWereDisabled)) {
       DCHECK(!ads_enabled);

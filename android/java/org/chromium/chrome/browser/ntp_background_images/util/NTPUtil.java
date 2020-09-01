@@ -150,7 +150,7 @@ public class NTPUtil {
         BraveRewardsNativeWorker mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
 
         if (sponsoredTab.shouldShowBanner()) {
-            if (PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)) {
+            if (PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED)) {
                 if (BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())) {
                     if (ntpImage instanceof Wallpaper) {
                         return SponsoredImageUtil.BR_ON_ADS_ON;

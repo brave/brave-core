@@ -91,7 +91,8 @@ void DatabaseInitialize::ExecuteCreateScript(
     return;
   }
 
-  ledger_->ledger_client()->ClearState(ledger::kStateServerPublisherListStamp);
+  ledger_->ledger_client()->ClearState(
+      ledger::state::kServerPublisherListStamp);
 
   auto script_callback = std::bind(&DatabaseInitialize::OnExecuteCreateScript,
       this,

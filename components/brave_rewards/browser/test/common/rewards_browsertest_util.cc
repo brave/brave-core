@@ -32,11 +32,11 @@ double IsRewardsEnabled(Browser* browser, const bool private_window) {
   if (private_window) {
     Profile* private_profile = profile->GetOffTheRecordProfile();
     return private_profile->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
+      brave_rewards::prefs::kEnabled);
   }
 
   return profile->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
+      brave_rewards::prefs::kEnabled);
 }
 
 GURL GetRewardsUrl() {

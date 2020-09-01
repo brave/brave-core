@@ -43,12 +43,12 @@ class PostBatLossTest : public testing::Test {
 
   void SetUp() override {
     const std::string payment_id = "this_is_id";
-    ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStatePaymentId))
+    ON_CALL(*mock_ledger_client_, GetStringState(ledger::state::kPaymentId))
       .WillByDefault(testing::Return(payment_id));
 
     const std::string wallet_passphrase =
         "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=";
-    ON_CALL(*mock_ledger_client_, GetStringState(ledger::kStateRecoverySeed))
+    ON_CALL(*mock_ledger_client_, GetStringState(ledger::state::kRecoverySeed))
       .WillByDefault(testing::Return(wallet_passphrase));
   }
 };

@@ -41,7 +41,7 @@ BraveComponentLoader::BraveComponentLoader(ExtensionSystem* extension_system,
       profile_prefs_(profile->GetPrefs()) {
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   pref_change_registrar_.Init(profile_prefs_);
-  pref_change_registrar_.Add(brave_rewards::prefs::kBraveRewardsEnabled,
+  pref_change_registrar_.Add(brave_rewards::prefs::kEnabled,
       base::Bind(&BraveComponentLoader::HandleRewardsEnabledStatus,
       base::Unretained(this)));
 #endif
@@ -130,7 +130,7 @@ void BraveComponentLoader::AddRewardsExtension() {
 
 void BraveComponentLoader::HandleRewardsEnabledStatus() {
   const bool is_rewards_enabled = profile_prefs_->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
+      brave_rewards::prefs::kEnabled);
   if (is_rewards_enabled) {
     AddRewardsExtension();
   }

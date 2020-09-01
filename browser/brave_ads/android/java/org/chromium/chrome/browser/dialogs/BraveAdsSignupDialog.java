@@ -48,7 +48,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-          && !PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
+          && !PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED)
           && hasElapsed24Hours(context)
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
@@ -63,7 +63,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && !PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-          && !PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
+          && !PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED)
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 
         boolean shouldShowForViewCount = shouldShowForViewCount();
@@ -77,7 +77,7 @@ public class BraveAdsSignupDialog {
           shouldShowOnboardingDialog()
           && !PackageUtils.isFirstInstall(context)
           && !BraveAdsNativeHelper.nativeIsBraveAdsEnabled(Profile.getLastUsedRegularProfile())
-          && PrefServiceBridge.getInstance().getBoolean(BravePref.BRAVE_REWARDS_ENABLED)
+          && PrefServiceBridge.getInstance().getBoolean(BravePref.ENABLED)
           && BraveAdsNativeHelper.nativeIsLocaleValid(Profile.getLastUsedRegularProfile())
           && ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REWARDS);
 

@@ -329,7 +329,7 @@ RewardsServiceImpl::~RewardsServiceImpl() {
 }
 
 void RewardsServiceImpl::ConnectionClosed() {
-  if (!profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabled)) {
+  if (!profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
     BLOG(1, "Rewards not enabled");
     return;
   }
@@ -360,7 +360,7 @@ void RewardsServiceImpl::Init(
     private_observers_.AddObserver(private_observer_.get());
   }
 
-  if (profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabled)) {
+  if (profile_->GetPrefs()->GetBoolean(prefs::kEnabled)) {
     StartLedger();
   }
 }
@@ -441,23 +441,23 @@ void RewardsServiceImpl::OnResult(
 void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {
   PrefService* pref_service = profile_->GetPrefs();
   const base::TimeDelta interval = pref_service->GetTimeDelta(
-      prefs::kRewardsBackupNotificationInterval);
+      prefs::kBackupNotificationInterval);
 
   // Don't display notification if it has already been shown or if
   // the balance is zero.
   if (interval.is_zero() ||
-      !pref_service->GetBoolean(prefs::kRewardsUserHasFunded)) {
+      !pref_service->GetBoolean(prefs::kUserHasFunded)) {
     return;
   }
 
   auto clear_backup_interval = [pref_service]() {
     pref_service->SetTimeDelta(
-        prefs::kRewardsBackupNotificationInterval,
+        prefs::kBackupNotificationInterval,
         base::TimeDelta());
   };
 
   // Don't display notification if a backup has already succeeded.
-  if (pref_service->GetBoolean(prefs::kRewardsBackupSucceeded)) {
+  if (pref_service->GetBoolean(prefs::kBackupSucceeded)) {
     clear_backup_interval();
     return;
   }
@@ -831,7 +831,7 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
   }
 
   EnableGreaseLion(profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveRewardsEnabled));
+      prefs::kEnabled));
 
   for (auto& observer : observers_) {
     observer.OnWalletInitialized(this, result);
@@ -1463,7 +1463,7 @@ void RewardsServiceImpl::GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const {
   if (!Connected()) {
     std::move(callback).Run(
-        profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabled));
+        profile_->GetPrefs()->GetBoolean(prefs::kEnabled));
     return;
   }
 
@@ -1721,7 +1721,7 @@ void RewardsServiceImpl::IsWalletCreated(
     const IsWalletCreatedCallback& callback) {
   if (!Connected()) {
     const auto stamp =
-        profile_->GetPrefs()->GetUint64(prefs::kStateCreationStamp);
+        profile_->GetPrefs()->GetUint64(prefs::kCreationStamp);
     callback.Run(stamp != 0u);
     return;
   }
@@ -2026,14 +2026,14 @@ void RewardsServiceImpl::StartNotificationTimers(bool main_enabled) {
   notification_startup_timer_->Start(
       FROM_HERE,
       pref_service->GetTimeDelta(
-        prefs::kRewardsNotificationStartupDelay),
+        prefs::kNotificationStartupDelay),
       this,
       &RewardsServiceImpl::OnNotificationTimerFired);
   DCHECK(notification_startup_timer_->IsRunning());
 
   // Periodic timer, runs once per day by default.
   base::TimeDelta periodic_timer_interval =
-      pref_service->GetTimeDelta(prefs::kRewardsNotificationTimerInterval);
+      pref_service->GetTimeDelta(prefs::kNotificationTimerInterval);
   notification_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   notification_periodic_timer_->Start(
       FROM_HERE, periodic_timer_interval, this,
@@ -2092,7 +2092,7 @@ void RewardsServiceImpl::OnMaybeShowNotificationAddFundsForTesting(
 
 bool RewardsServiceImpl::ShouldShowNotificationAddFunds() const {
   base::Time next_time =
-      profile_->GetPrefs()->GetTime(prefs::kRewardsAddFundsNotification);
+      profile_->GetPrefs()->GetTime(prefs::kAddFundsNotification);
   return (next_time.is_null() || base::Time::Now() > next_time);
 }
 
@@ -2100,7 +2100,7 @@ void RewardsServiceImpl::ShowNotificationAddFunds(bool sufficient) {
   if (sufficient) return;
 
   base::Time next_time = base::Time::Now() + base::TimeDelta::FromDays(3);
-  profile_->GetPrefs()->SetTime(prefs::kRewardsAddFundsNotification, next_time);
+  profile_->GetPrefs()->SetTime(prefs::kAddFundsNotification, next_time);
   RewardsNotificationService::RewardsNotificationArgs args;
   notification_service_->AddNotification(
       RewardsNotificationService::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS, args,
@@ -2416,7 +2416,7 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
 }
 
 void RewardsServiceImpl::SetBackupCompleted() {
-  profile_->GetPrefs()->SetBoolean(prefs::kRewardsBackupSucceeded, true);
+  profile_->GetPrefs()->SetBoolean(prefs::kBackupSucceeded, true);
 }
 
 void RewardsServiceImpl::GetRewardsInternalsInfo(
@@ -2492,7 +2492,7 @@ void RewardsServiceImpl::PrepareLedgerEnvForTesting() {
 
   bat_ledger_service_->SetTesting();
 
-  profile_->GetPrefs()->SetInteger(prefs::kStateMinVisitTime, 1);
+  profile_->GetPrefs()->SetInteger(prefs::kMinVisitTime, 1);
   SetShortRetries(true);
 
   // this is needed because we are using braveledger_request_util::buildURL
@@ -2756,7 +2756,7 @@ void RewardsServiceImpl::OnFetchBalance(
     ledger::BalancePtr balance) {
   if (balance) {
     if (balance->total > 0) {
-      profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
+      profile_->GetPrefs()->SetBoolean(prefs::kUserHasFunded, true);
     }
 
     // Record stats.
@@ -2786,7 +2786,7 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
 void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
                                             ledger::ExternalWalletPtr wallet) {
   auto* wallets =
-      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   base::Value new_wallets(wallets->Clone());
 
@@ -2809,7 +2809,7 @@ void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
 
   new_wallets.SetKey(wallet_type, std::move(new_wallet));
 
-  profile_->GetPrefs()->Set(prefs::kRewardsExternalWallets, new_wallets);
+  profile_->GetPrefs()->Set(prefs::kExternalWallets, new_wallets);
 }
 
 std::map<std::string, ledger::ExternalWalletPtr>
@@ -2817,7 +2817,7 @@ RewardsServiceImpl::GetExternalWallets() {
   std::map<std::string, ledger::ExternalWalletPtr> wallets;
 
   auto* dict =
-      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   for (const auto& it : dict->DictItems()) {
     ledger::ExternalWalletPtr wallet = ledger::ExternalWallet::New();
@@ -3034,7 +3034,7 @@ void RewardsServiceImpl::SetTransferFee(
   fee.SetDoubleKey("amount", transfer_fee->amount);
 
   auto* external_wallets =
-      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   base::Value new_external_wallets(external_wallets->Clone());
 
@@ -3055,7 +3055,7 @@ void RewardsServiceImpl::SetTransferFee(
   new_external_wallets.SetKey(wallet_type, std::move(new_wallet));
 
   profile_->GetPrefs()->Set(
-      prefs::kRewardsExternalWallets,
+      prefs::kExternalWallets,
       new_external_wallets);
 }
 
@@ -3064,7 +3064,7 @@ ledger::TransferFeeList RewardsServiceImpl::GetTransferFees(
   ledger::TransferFeeList fees;
 
   auto* external_wallets =
-      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   auto* wallet_key = external_wallets->FindKey(wallet_type);
 
@@ -3109,7 +3109,7 @@ void RewardsServiceImpl::RemoveTransferFee(
     const std::string& wallet_type,
     const std::string& id) {
   auto* external_wallets =
-      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+      profile_->GetPrefs()->GetDictionary(prefs::kExternalWallets);
 
   base::Value new_external_wallets(external_wallets->Clone());
 
@@ -3124,7 +3124,7 @@ void RewardsServiceImpl::RemoveTransferFee(
   }
 
   profile_->GetPrefs()->Set(
-      prefs::kRewardsExternalWallets,
+      prefs::kExternalWallets,
       new_external_wallets);
 }
 

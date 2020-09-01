@@ -24,7 +24,7 @@ StateMigrationV5::~StateMigrationV5() = default;
 
 void StateMigrationV5::Migrate(ledger::ResultCallback callback) {
   const auto seed = ledger_->ledger_client()->GetStringState(
-      ledger::kStateRecoverySeed);
+      ledger::state::kRecoverySeed);
   if (seed.empty()) {
     callback(ledger::Result::LEDGER_OK);
     return;
@@ -34,38 +34,39 @@ void StateMigrationV5::Migrate(ledger::ResultCallback callback) {
 
   // Auto contribute
   auto enabled = ledger_->ledger_client()->GetBooleanState(
-      ledger::kStateAutoContributeEnabled);
+      ledger::state::kAutoContributeEnabled);
   events.insert(std::make_pair(
-      ledger::kStateAutoContributeEnabled,
+      ledger::state::kAutoContributeEnabled,
       std::to_string(enabled)));
 
   // Seed
   if (seed.size() > 1) {
     const std::string event_string = seed.substr(0, 2);
-    events.insert(std::make_pair(ledger::kStateRecoverySeed, event_string));
+    events.insert(std::make_pair(ledger::state::kRecoverySeed, event_string));
   }
 
   // Payment id
   events.insert(std::make_pair(
-      ledger::kStatePaymentId,
-      ledger_->ledger_client()->GetStringState(ledger::kStatePaymentId)));
+      ledger::state::kPaymentId,
+      ledger_->ledger_client()->GetStringState(ledger::state::kPaymentId)));
 
   // Enabled
-  enabled = ledger_->ledger_client()->GetBooleanState(ledger::kStateEnabled);
-  events.insert(std::make_pair(ledger::kStateEnabled, std::to_string(enabled)));
+  enabled = ledger_->ledger_client()->GetBooleanState(ledger::state::kEnabled);
+  events.insert(
+      std::make_pair(ledger::state::kEnabled, std::to_string(enabled)));
 
   // Next reconcile
   const auto reconcile_stamp = ledger_->ledger_client()->GetUint64State(
-      ledger::kStateNextReconcileStamp);
+      ledger::state::kNextReconcileStamp);
   events.insert(std::make_pair(
-      ledger::kStateNextReconcileStamp,
+      ledger::state::kNextReconcileStamp,
       std::to_string(reconcile_stamp)));
 
   // Creation stamp
   const auto creation_stamp =
-      ledger_->ledger_client()->GetUint64State(ledger::kStateCreationStamp);
+      ledger_->ledger_client()->GetUint64State(ledger::state::kCreationStamp);
   events.insert(std::make_pair(
-      ledger::kStateCreationStamp,
+      ledger::state::kCreationStamp,
       std::to_string(creation_stamp)));
 
   ledger_->database()->SaveEventLogs(events, callback);

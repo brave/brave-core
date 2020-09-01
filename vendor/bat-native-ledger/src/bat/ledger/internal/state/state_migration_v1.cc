@@ -38,7 +38,8 @@ void StateMigrationV1::OnLoadState(
   if (result == ledger::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
     ledger_->publisher()->CalcScoreConsts(
-        ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
+        ledger_->ledger_client()->GetIntegerState(
+            ledger::state::kMinVisitTime));
 
     callback(ledger::Result::LEDGER_OK);
     return;
@@ -46,7 +47,8 @@ void StateMigrationV1::OnLoadState(
 
   if (result != ledger::Result::LEDGER_OK) {
     ledger_->publisher()->CalcScoreConsts(
-        ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
+        ledger_->ledger_client()->GetIntegerState(
+            ledger::state::kMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
     callback(ledger::Result::LEDGER_OK);
@@ -54,21 +56,21 @@ void StateMigrationV1::OnLoadState(
   }
 
   ledger_->ledger_client()->SetIntegerState(
-      ledger::kStateMinVisitTime,
+      ledger::state::kMinVisitTime,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisitTime()));
   ledger_->publisher()->CalcScoreConsts(
-      ledger_->ledger_client()->GetIntegerState(ledger::kStateMinVisitTime));
+      ledger_->ledger_client()->GetIntegerState(ledger::state::kMinVisitTime));
 
   ledger_->ledger_client()->SetIntegerState(
-      ledger::kStateMinVisits,
+      ledger::state::kMinVisits,
       static_cast<int>(legacy_publisher_->GetPublisherMinVisits()));
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAllowNonVerified,
+      ledger::state::kAllowNonVerified,
       legacy_publisher_->GetPublisherAllowNonVerified());
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::kStateAllowVideoContribution,
+      ledger::state::kAllowVideoContribution,
       legacy_publisher_->GetPublisherAllowVideos());
 
   ledger::BalanceReportInfoList reports;

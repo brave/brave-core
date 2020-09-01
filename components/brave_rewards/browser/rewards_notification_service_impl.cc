@@ -142,7 +142,7 @@ RewardsNotificationServiceImpl::GenerateRewardsNotificationTimestamp() const {
 
 void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
   std::string json =
-      profile_->GetPrefs()->GetString(prefs::kRewardsNotifications);
+      profile_->GetPrefs()->GetString(prefs::kNotifications);
   if (json.empty())
     return;
   base::Optional<base::Value> dictionary = base::JSONReader::Read(json);
@@ -248,7 +248,7 @@ void RewardsNotificationServiceImpl::StoreRewardsNotifications() {
     return;
   }
 
-  profile_->GetPrefs()->SetString(prefs::kRewardsNotifications, result);
+  profile_->GetPrefs()->SetString(prefs::kNotifications, result);
 }
 
 bool RewardsNotificationServiceImpl::Exists(RewardsNotificationID id) const {

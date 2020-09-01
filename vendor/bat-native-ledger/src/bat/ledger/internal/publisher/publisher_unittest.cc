@@ -64,13 +64,13 @@ class PublisherTest : public testing::Test {
     ON_CALL(*mock_ledger_impl_, database())
       .WillByDefault(testing::Return(mock_database_.get()));
 
-    ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::kStateScoreA))
+    ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::state::kScoreA))
       .WillByDefault(
           Invoke([this](const std::string& key) {
             return a_;
           }));
 
-    ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::kStateScoreB))
+    ON_CALL(*mock_ledger_client_, GetDoubleState(ledger::state::kScoreB))
       .WillByDefault(
           Invoke([this](const std::string& key) {
             return b_;
@@ -81,12 +81,12 @@ class PublisherTest : public testing::Test {
         Invoke([this](
             const std::string& key,
             double value) {
-          if (key == ledger::kStateScoreA) {
+          if (key == ledger::state::kScoreA) {
             a_ = value;
             return;
           }
 
-          if (key == ledger::kStateScoreB) {
+          if (key == ledger::state::kScoreB) {
             b_ = value;
             return;
           }
