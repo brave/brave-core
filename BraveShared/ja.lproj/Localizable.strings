@@ -30,19 +30,19 @@
 "BraveShieldsStatusValueUp" = "オン";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "Braveで表示した広告に対する報酬を受け取りましょう！";
+"MonthlyAdsClaimNotificationBody" = "タップしてTAPポイントを受け取る";
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "Brave Adsの報酬を受け取る";
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "いいえ";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "プライバシーに配慮した広告を見ることでトークンを獲得できます。";
+"OBAdsOptInMessage" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "プライバシーに配慮した広告を見ることでポイントを獲得できます。";
+"OBAdsOptInMessageJapan" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "Brave Adsが有効になりました！";
@@ -71,6 +71,21 @@
 /* Button to join Brave Rewards. */
 "OBJoinButton" = "参加する";
 
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "Braveはリファラルコードを確認するためにクリップポードの情報を使用します";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "誰かのリファラルリンクからBraveをダウンロードした可能性があります。その紹介者を確認するため、Braveはクリップボードにリファラルコードを存在するか一度だけ確認します。確認の対象はそのコードのみで、その他の個人データが外部に送信されることはありません。承認いただけなかった場合は、紹介者はBraveから報酬を受け取れなくなります。";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "許可しない";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "匿名のリファラルコードチェック ";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "一回限りのクリップボードチェックを許可する";
+
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "Rewardsを有効にすることで以下に同意したものと見なされます: ";
 
@@ -81,10 +96,10 @@
 "OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのクリエイターやサイトを支援することができます。";
+"OBRewardsDetailInAdRegion" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのクリエイターやサイトを支援することができます。";
+"OBRewardsDetailInAdRegionJapan" = "ブラウジング中にBATポイントを獲得し、同時にコンテンツクリエイターに還元することができます";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "ウェブサーフィン中に自動的にサイトを支援したり、好きなタイミングでチップを送ることが可能です。";
@@ -135,6 +150,222 @@
 "RestoredFavoritesFolderName" = "復元されたお気に入り";
 
 /* No comment provided by engineer. */
+"RewardsInternalsAmount" = "総額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "匿名";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "口座情報";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "申請日時";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "申請ID";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "本当にRewardのログを全て削除しますか？";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "ログを削除する";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "支援総額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "BTAポイント";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "なし";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "Uphold";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "所有額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "自動支援オフ";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "自動支援テーブルは空です";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "完了";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "クレデンシャル";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "外部トランザクション";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "失敗";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "ポイントがたりません";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "準備";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "積立";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Rewardsオフ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "スタート";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "支援";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "作成日: ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "デバイス情報";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "参加日: ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "参加ステータス";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "有効期限: ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "無効";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "キーインフォシード";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "過去のプロモーション";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "ログが%d 件表示中";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "ログ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "未参加";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "未対応";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "プロセッサー";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "有効";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "証明済み";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "破損";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "完了";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "終了";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "プロモーション";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "パブリッシャー";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "パブリッシャー";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "リトライ回数";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "自動支援";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "1回限りのチップ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "定期支払いチップ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "ウォレット・デバイス情報と残高情報 (常に共有)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "基本情報";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableContributionsDescription" = "チップや自動支援を通じてパブリッシャーに貢献した履歴";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "内部データ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Rewardsデータベース";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableLogsDescription" = "Rewards特有のログ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharablePromotionsDescription" = "広告視聴や助成プログラムを通じて、受け取り済みまたは保留中のBATプロモーション";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "共有";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsShareInternalsTitle" = "Rewards内部情報を共有";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningMessage" = "このページのデータは機密性が高い場合があります。ウォレットの秘密鍵と同じように扱ってください。共有する際は慎重に行ってください。";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "待機中";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "ステータス";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "ステップ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "支援済";
+
+/* 'Rewards' as in 'Brave Rewards' */
+"RewardsInternalsTitle" = "Rewards内部情報";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "総額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "残高総額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "タイプ";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "有効";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "バージョン";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "ウォレット作成日";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "ウォレット情報";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "ウォレットペイメントID";
+
+/* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "現在Braveのプライバシー保護機能オフの状態でブラウジングしています。Shieldをオンにした状態では不具合が発生しますか？";
 
 /* Text that informs a user about Brave Sync service deprecation. */
@@ -183,7 +414,7 @@
 "vpn.checkboxNoSellout" = "あなたの情報を第三者に共有・販売しません";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "Braveに限らず全てのアプリを保護";
+"vpn.checkboxProtectConnections" = "不要な通信をブロック";
 
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStoreレシート";
@@ -369,7 +600,7 @@
 "vpn.vpnErrorPurchaseFailedTitle" = "エラー";
 
 /* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "価格は地域によって異なる場合があります。定期購読は、iTunesアカウントを通じてお客様のクレジットカードに請求されます。購読は、1ヶ月（$9.99）または1年（$99.99）のプランが提供されており、それぞれ期間終了の24時間前までにキャンセルされない限り自動的に更新されます。一度開始されたサブスクリプションをキャンセルすることはできません。ご購入後はアカウント設定からサブスクリプションを管理することができます。無料トライアルは一度しか使用できません。無料トライアルの未使用部分は、サブスクリプションを購入した場合に失効します。";
+"vpn.vpnIAPBoilerPlate" = "サブスクリプションは、iTunesアカウントを介して請求されます。\n\n無料トライアルが提供されている場合、未使用の部分は、サブスクリプションを購入した時点で無効になります。\n\nサブスクリプションは、現在の期間終了の少なくとも24時間前にキャンセルされない限り、自動的に更新されます。\n\nサブスクリプションは「設定」で管理できます。\n\nBraveを使用することで、利用規約とプライバシーポリシーに同意したことになります。";
 
 /* Title Brave VPN menu item. */
 "vpn.vpnMenuItemTitle" = "Brave VPN";

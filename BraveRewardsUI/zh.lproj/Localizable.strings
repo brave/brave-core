@@ -311,12 +311,6 @@
 "BraveRewardsSettings" = "设置";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "通过在 Brave 中查看广告来赚取令牌。显示的广告是根据您的兴趣（根据您的浏览行为得出）。我们不会从您的浏览器获取任何个人数据或浏览历史记录。";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "通过在 Brave 上看广告来赚积分。显示的广告是根据您的兴趣（是根据您的浏览行为推断出的）提供的，我们不会从您的浏览器获取任何个人数据或浏览历史记录。";
-
-/* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "即将推出。";
 
 /* No comment provided by engineer. */
@@ -336,12 +330,6 @@
 
 /* The maximum amount of BAT to auto-contribute. E.g. 'Up to 20.0 BAT' */
 "BraveRewardsSettingsAutoContributeUpToValue" = "最高 %@";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "使用旧的浏览器时，您需要付费浏览网页并集中注意力来查看广告。您花费了宝贵的时间来下载侵入式广告技术（这种技术会在未经您的同意的情况下将宝贵的私人数据传输给广告商）。";
-
-/* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "我们会珍惜您的时间，为您的个人数据保密，实际上，您还会因关注网站而获得报酬。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "为什么应该选择 Brave Rewards？";
@@ -416,9 +404,6 @@
 "BraveRewardsTippingOneTimeTitle" = "您已将酬谢费发送给：";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "您可以通过发送酬谢费的方式来支持这位内容创建者。这是感谢他们提供优质内容的一种方式。经验证的创作者会在每个日历月的第一周按其获得的酬谢费来获得报酬。如果愿意，您可以安排每月提供酬谢费，以持续支持这个创作者。";
-
-/* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "欢迎！";
 
 /* No comment provided by engineer. */
@@ -435,9 +420,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingTitle" = "发送酬谢费";
-
-/* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "注意：该创建者尚未注册要接收 Brave 用户的捐赠。您的浏览器会继续尝试捐款，直到他们通过验证或直到 90 天为止。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "钱包余额";
@@ -462,9 +444,6 @@
 
 /* No comment provided by engineer. */
 "BraveRewardsTwoAdsPerHour" = "每小时 2 个广告";
-
-/* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "该创建者尚未注册要接收 Brave 用户的捐赠。您发送的所有酬谢费都会保留在您的钱包中，直到经过验证之后。";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "经 Brave 验证的创作者";
@@ -556,9 +535,6 @@
 /* We show this string in notification when tip fails */
 "NotificationContributeTipError" = "无法发送您的酬谢费。请稍后再试。";
 
-/* Panel notification text for Ads grant */
-"NotificationEarningsClaimDefault" = "您的 Ads 奖励就在这里！";
-
 /* Title for an error notification */
 "NotificationErrorTitle" = "哦哦！";
 
@@ -618,12 +594,6 @@
 
 /* Text describing the type of contribution */
 "RecurringText" = "循环支付";
-
-/* No comment provided by engineer. */
-"RewardsOptInDescription" = "现在，您可以通过查看尊重隐私的广告来获得代币了。";
-
-/* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "现在您就可以通过看尊重隐私的广告来赚积分了。";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "加入 Rewards";

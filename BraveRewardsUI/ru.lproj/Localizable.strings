@@ -62,6 +62,18 @@
 "BraveRewardsAdsPayoutDateFormat" = "МММ д";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargeting" = "Таргетинг на уровне штата";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingAutoDetect" = "Автоопределение";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisable" = "Отключить";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisabled" = "Отключено";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "В данный момент на вашем устройстве недоступны сервисы Brave Rewards и Ads.";
 
 /* No comment provided by engineer. */
@@ -311,10 +323,10 @@
 "BraveRewardsSettings" = "Настройки";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "Зарабатывайте токены, просматривая рекламу в Brave. Отображаемые объявления основаны на ваших предпочтениях, сформированных исходя из вашего поведения в Интернете. Браузер Brave никому не передает личные данные и историю посещений.";
+"BraveRewardsSettingsAdsBody" = "Включите Brave Ads, зарабатывайте баллы и тратьте их на поддержку авторов любимого контента! В верхней части окна браузера будут появляться небольшие рекламные объявления, не нарушающие вашу конфиденциальность.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "Зарабатывайте баллы за просмотр рекламы в Brave. Объявления отбираются с учетом ваших интересов, определяемых на основе действий в браузере. Ваши личные данные и история просмотра никогда не передаются за пределы браузера.";
+"BraveRewardsSettingsAdsBodyJapan" = "Включите Brave Ads, зарабатывайте баллы и тратьте их на поддержку авторов любимого контента! В верхней части окна браузера будут появляться небольшие рекламные объявления, не нарушающие вашу конфиденциальность.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Уже скоро.";
@@ -338,10 +350,10 @@
 "BraveRewardsSettingsAutoContributeUpToValue" = "До %@";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "В своем старом браузере вы платили за пользование Интернетом своим вниманием, просматривая рекламу. Вы тратили свое драгоценное время на загрузку инвазивной рекламы, которая передавала ваши ценные личные данные рекламодателям — без вашего на то согласия.";
+"BraveRewardsSettingsDisabledBody1" = "Благодаря Brave вы можете поддерживать любимых авторов, не тратя при этом денег. Пользуйтесь браузером, получайте баллы и отправляйте их любимым создателям контента.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "Здесь ценится ваше время, ваши личные данные надежно защищены, а вам платят за то, что вы просматриваете контент.";
+"BraveRewardsSettingsDisabledBody2" = "Мы ценим ваше время и не передаем никому ваши личные данные, а вы можете без труда поддерживать авторов контента.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "Зачем выбирать Brave Rewards?";
@@ -416,7 +428,7 @@
 "BraveRewardsTippingOneTimeTitle" = "Вы только что отправили платеж:";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "Вы можете поддержать этого создателя контента, отправив ему платеж. Так можно поблагодарить его за создание отличного контента. Проверенные создатели получают оплату с учетом отправленных платежей в течение первой недели каждого календарного месяца.\n\nПри желании вы можете настроить ежемесячный платеж, чтобы поддерживать этого создателя на постоянной основе.";
+"BraveRewardsTippingOverviewBody" = "Чтобы поддержать автора и поблагодарить за отличный контент, отправьте ему несколько баллов. Подтвержденные авторы получают баллы в первую неделю каждого месяца.\n\nПри желании вы можете включить регулярный перевод баллов и поддерживать этого автора ежемесячно.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "Добро пожаловать!";
@@ -437,7 +449,7 @@
 "BraveRewardsTippingTitle" = "Отправить платеж";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "Примечание: этот создатель еще не зарегистрировался для получение вкладов от пользователей Brave. Ваш браузер будет пытаться сделать вклад, пока создатель не пройдет проверку или пока не истечет 90 дней.";
+"BraveRewardsTippingUnverifiedDisclaimer" = "Обратите внимание! Автор ещё не зарегистрирован и не может получать баллы от пользователей Brave. Браузер будет пытаться отправить баллы в течение 90 дней, пока создатель контента не подтвердит свое авторство.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "баланс кошелька";
@@ -464,7 +476,7 @@
 "BraveRewardsTwoAdsPerHour" = "2 объявления в час";
 
 /* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "Этот создатель еще не зарегистрировался для получение вкладов от пользователей Brave. Все отправляемые вами платежи останутся в вашем кошельке, пока создатель не пройдет проверку.";
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Автор ещё не зарегистрирован и не может получать баллы от пользователей Brave. Пока создатель контента не подтвердит свое авторство, баллы, которые вы ему отправляете, останутся в вашем кошельке.";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "Проверенный создатель Brave";
@@ -557,7 +569,7 @@
 "NotificationContributeTipError" = "Невозможно отправить платеж. Пожалуйста, повторите попытку позже.";
 
 /* Panel notification text for Ads grant */
-"NotificationEarningsClaimDefault" = "Ваши награды от Ads готовы к получению!";
+"NotificationEarningsClaimDefault" = "У вас есть новые баллы.";
 
 /* Title for an error notification */
 "NotificationErrorTitle" = "Ой!";
@@ -620,10 +632,10 @@
 "RecurringText" = "Повторяющийся";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "Теперь вы можете зарабатывать токены за просмотр рекламы, которая не нарушает вашу конфиденциальность.";
+"RewardsOptInDescription" = "Пользуясь браузером, зарабатывайте баллы и вознаграждайте авторов за отличный контент.";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "Теперь вы можете зарабатывать баллы за просмотр рекламных объявлений, не нарушающих вашу конфиденциальность.";
+"RewardsOptInDescriptionJapan" = "Пользуясь браузером, зарабатывайте баллы и вознаграждайте авторов за отличный контент.";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Присоединиться к сервису Rewards";

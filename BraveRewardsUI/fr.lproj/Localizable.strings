@@ -62,6 +62,18 @@
 "BraveRewardsAdsPayoutDateFormat" = "d MMM";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargeting" = "Publicités ciblées selon votre région";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingAutoDetect" = "Détecter automatiquement";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisable" = "Désactiver";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisabled" = "Désactivé";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "Brave Rewards et Brave Ads ne sont pas disponibles sur votre appareil pour le moment.";
 
 /* No comment provided by engineer. */
@@ -311,10 +323,10 @@
 "BraveRewardsSettings" = "Paramètres";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "Gagnez des jetons en visionnant des publicités dans Brave. Les publicités présentées sont basées sur vos intérêts, tels que déduits de votre comportement de navigation. Les données personnelles et les historiques de navigation ne quittent jamais votre navigateur.";
+"BraveRewardsSettingsAdsBody" = "Activez Brave Ads et commencez à gagner des jetons pour soutenir vos créateurs préférés ! De petites publicités respectueuses de votre vie privée apparaîtront en haut du navigateur lorsque vous naviguez sur le Web.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "Gagnez des points en visionnant des publicités dans Brave. Les publicités présentées sont basées sur vos intérêts, tels que déduits de votre comportement de navigation. Les données personnelles et les historiques de navigation ne quittent jamais votre navigateur.";
+"BraveRewardsSettingsAdsBodyJapan" = "Activez Brave Ads et commencez à gagner des points pour soutenir vos créateurs préférés ! De petites publicités respectueuses de votre vie privée apparaîtront en haut du navigateur lorsque vous naviguez sur le Web.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Bientôt disponible.";
@@ -338,10 +350,10 @@
 "BraveRewardsSettingsAutoContributeUpToValue" = "Jusqu'à %@";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "Avec votre ancien navigateur, vous payiez pour naviguer sur le Web de la manière suivante : votre attention était utilisée pour visionner des publicités. Vous passiez une partie de votre temps à télécharger des technologies publicitaires invasives qui transmettaient vos données confidentielles précieuses à des annonceurs, et ce, sans votre consentement.";
+"BraveRewardsSettingsDisabledBody1" = "Brave vous permet d'offrir aux créateurs le soutien dont ils ont besoin entièrement gratuitement. Obtenez des jetons lorsque vous naviguez sur le Web, puis reversez-les aux créateurs que vous aimez.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "Un lieu où votre temps est valorisé, où vos données personnelles restent confidentielles et où vous êtes même récompensé pour votre attention.";
+"BraveRewardsSettingsDisabledBody2" = "Un lieu où votre temps est valorisé, où vos données personnelles restent confidentielles et où les créateurs de contenu sont récompensés grâce à vous.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "Pourquoi utiliser Brave Rewards ?";
@@ -416,7 +428,7 @@
 "BraveRewardsTippingOneTimeTitle" = "Vous venez d'envoyer un pourboire à :";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "Vous pouvez soutenir ce créateur de contenu en lui envoyant un pourboire. C'est une façon de le remercier pour la qualité de son contenu. Les créateurs validés perçoivent les pourboires au cours de la première semaine de chaque mois calendaire.\n\nSi vous le souhaitez, vous pouvez programmer des pourboires mensuels pour soutenir ce créateur de manière régulière.";
+"BraveRewardsTippingOverviewBody" = "Vous pouvez soutenir ce créateur de contenu en lui envoyant des jetons. C'est une façon de le remercier pour la qualité de son contenu. Les créateurs validés perçoivent leurs jetons au cours de la première semaine de chaque mois calendaire.\n\nSi vous le souhaitez, vous pouvez mettre en place des contributions mensuelles pour soutenir ce créateur de manière régulière.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "Bienvenue !";
@@ -437,7 +449,7 @@
 "BraveRewardsTippingTitle" = "Envoyer un pourboire";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "REMARQUE : Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Votre navigateur continuera d'essayer de verser des contributions jusqu'à ce que le créateur valide son inscription ou pendant une durée de 90 jours.";
+"BraveRewardsTippingUnverifiedDisclaimer" = "REMARQUE : Ce créateur ne s'est pas encore inscrit pour recevoir les jetons des utilisateurs de Brave. Votre navigateur continuera d'essayer de verser des contributions jusqu'à ce que le créateur valide son inscription ou pendant une durée de 90 jours.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "solde du portefeuille";
@@ -464,7 +476,7 @@
 "BraveRewardsTwoAdsPerHour" = "2 publicités par heure";
 
 /* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "Ce créateur ne s'est pas encore inscrit pour recevoir les contributions des utilisateurs de Brave. Tous les pourboires que vous envoyez resteront dans votre portefeuille jusqu'à ce que le créateur valide son inscription.";
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Ce créateur ne s'est pas encore inscrit pour recevoir les jetons des utilisateurs de Brave. Tous les jetons que vous envoyez resteront dans votre portefeuille jusqu'à ce que le créateur valide son inscription.";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "Créateur Brave validé";
@@ -557,7 +569,7 @@
 "NotificationContributeTipError" = "Impossible d'envoyer le pourboire. Veuillez réessayer plus tard.";
 
 /* Panel notification text for Ads grant */
-"NotificationEarningsClaimDefault" = "Vos récompenses provenant de Ads vous attendent !";
+"NotificationEarningsClaimDefault" = "De nouveaux jetons sont prêts à être récupérés.";
 
 /* Title for an error notification */
 "NotificationErrorTitle" = "Oups !";
@@ -620,10 +632,10 @@
 "RecurringText" = "Récurrent";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "Vous pouvez maintenant gagner des jetons en visionnant des publicités respectueuses de la vie privée.";
+"RewardsOptInDescription" = "Gagnez des jetons et récompensez les créateurs de contenu de qualité tout en naviguant";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "Vous pouvez maintenant gagner des points en visionnant des publicités respectueuses de la vie privée.";
+"RewardsOptInDescriptionJapan" = "Gagnez des points et récompensez les créateurs de contenu de qualité tout en naviguant";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Rejoindre Rewards";

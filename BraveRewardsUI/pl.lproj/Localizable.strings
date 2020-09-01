@@ -62,6 +62,18 @@
 "BraveRewardsAdsPayoutDateFormat" = "MMM d";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargeting" = "Targetowanie reklam na poziomie stanu";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingAutoDetect" = "Autowykrywanie";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisable" = "Wyłącz";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisabled" = "Wyłączone";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "Usługa Brave Rewards and Ads nie jest obecnie dostępna na Twoim urządzeniu.";
 
 /* No comment provided by engineer. */
@@ -311,10 +323,10 @@
 "BraveRewardsSettings" = "Ustawienia";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "Zarabiaj tokeny oglądając reklamy w Brave. Reklamy prezentowane są w oparciu o Twoje zainteresowania, co wynika z Twojego zachowania podczas przeglądania stron internetowych. Żadne dane osobowe ani historia przeglądania nie opuszczają przeglądarki.";
+"BraveRewardsSettingsAdsBody" = "Włącz Brave Ads i zacznij zarabiać tokeny, dzięki którym możesz wspierać ulubionych twórców! W górnej części przeglądarki będą się pojawiały małe reklamy nienaruszające prywatności.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "Zdobywaj punkty, oglądając reklamy w Brave. Reklamy prezentowane są w oparciu o Twoje zainteresowania, co wynika z Twojego zachowania podczas przeglądania stron internetowych. Żadne dane osobowe ani historia przeglądania nie opuszczają przeglądarki.";
+"BraveRewardsSettingsAdsBodyJapan" = "Włącz Brave Ads i zacznij zarabiać punkty, dzięki którym możesz wspierać ulubionych twórców! W górnej części przeglądarki będą się pojawiały małe reklamy nienaruszające prywatności.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "Już wkrótce.";
@@ -338,10 +350,10 @@
 "BraveRewardsSettingsAutoContributeUpToValue" = "Nawet %@";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "W swojej starej przeglądarce, płaciłeś za przeglądanie stron internetowych Twoją cenną uwagą poprzez przeglądanie reklam. Twój cenny czas był wykorzystywany na pobieranie inwazyjnych technologii reklamowych, które przesyłały Twoje cenne dane osobowe do reklamodawców – bez Twojej zgody.";
+"BraveRewardsSettingsDisabledBody1" = "Twórcy potrzebują Twojego wsparcia, a dzięki Brave jest ono możliwe całkowicie bezpłatnie. Teraz możesz gromadzić tokeny podczas przeglądania i wpłacać je twórcom, których lubisz.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "W którym ceniony jest Twój czas, Twoje dane osobowe są przechowywane w tajemnicy, a Ty rzeczywiście otrzymujesz wynagrodzenie za swoją uwagę.";
+"BraveRewardsSettingsDisabledBody2" = "W którym ceniony jest Twój czas, Twoje dane osobowe są przechowywane w tajemnicy, a Ty czujesz się dobrze, wspierając twórców treści.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "Dlaczego Brave Rewards?";
@@ -416,7 +428,7 @@
 "BraveRewardsTippingOneTimeTitle" = "Właśnie udało Ci się wysłać napiwek do:";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "Możesz wesprzeć tego twórcę treści, wysyłając napiwek. Jest to sposób podziękowania mu za tworzenie wspaniałych treści. Zweryfikowani twórcy otrzymują zapłatę za swoje napiwki w pierwszym tygodniu każdego miesiąca kalendarzowego.\n\nJeśli chcesz, możesz zaplanować comiesięczne napiwki, aby wspierać tego twórcę w sposób ciągły.";
+"BraveRewardsTippingOverviewBody" = "Możesz wesprzeć tego twórcę treści, wysyłając mu kilka tokenów. Jest to sposób podziękowania mu za tworzenie wspaniałych treści. Zweryfikowani twórcy otrzymują tokeny w pierwszym tygodniu każdego miesiąca kalendarzowego.\n\nJeśli chcesz, możesz zaplanować comiesięczne wpłaty, aby wspierać tego twórcę w sposób ciągły.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "Witamy!";
@@ -437,7 +449,7 @@
 "BraveRewardsTippingTitle" = "Wyślij napiwek";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "UWAGA: Ten twórca nie zapisał się jeszcze do otrzymywania wpłat od użytkowników Brave. Twoja przeglądarka będzie starała się przekazać darowiznę aż do momentu weryfikacji lub do upływu 90 dni. ";
+"BraveRewardsTippingUnverifiedDisclaimer" = "UWAGA: Ten twórca nie zapisał się jeszcze do otrzymywania tokenów od użytkowników Brave. Twoja przeglądarka będzie starała się przekazać darowiznę aż do momentu weryfikacji lub do upływu 90 dni. ";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "saldo portfela";
@@ -464,7 +476,7 @@
 "BraveRewardsTwoAdsPerHour" = "2 reklamy na godzinę";
 
 /* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "Ten twórca nie zapisał się jeszcze do otrzymywania datków od użytkowników Brave. Wszelkie napiwki, które wyślesz, pozostaną w Twoim portfelu, dopóki nie przejdzie on weryfikacji.";
+"BraveRewardsUnverifiedPublisherDisclaimer" = "Ten twórca nie zapisał się jeszcze do otrzymywania tokenów od użytkowników Brave. Wszelkie tokeny, które wyślesz, pozostaną w Twoim portfelu, dopóki nie przejdzie on weryfikacji.";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "Zweryfikowany twórca Brave";
@@ -557,7 +569,7 @@
 "NotificationContributeTipError" = "Nie można wysłać napiwku. Spróbuj ponownie później.";
 
 /* Panel notification text for Ads grant */
-"NotificationEarningsClaimDefault" = "Twoje nagrody z Ads już tu są!";
+"NotificationEarningsClaimDefault" = "Nowe tokeny są gotowe do odbioru.";
 
 /* Title for an error notification */
 "NotificationErrorTitle" = "Ojej!";
@@ -620,10 +632,10 @@
 "RecurringText" = "Powtarzające się";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "Teraz możesz zarabiać tokeny za oglądanie reklam szanujących prywatność.";
+"RewardsOptInDescription" = "Zarabiaj tokeny i, przeglądając, nagradzaj twórców za tworzenie świetnych treści";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "Teraz możesz zdobywać punkty za oglądanie reklam szanujących prywatność.";
+"RewardsOptInDescriptionJapan" = "Zarabiaj punkty i, przeglądając, nagradzaj twórców za tworzenie świetnych treści";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Dołącz do nagród";
