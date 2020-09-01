@@ -766,6 +766,13 @@ class PageWallet extends React.Component<Props, State> {
     return ''
   }
 
+  showLoginMessage = () => {
+    const { balance } = this.props.rewardsData
+    const walletStatus = this.getWalletStatus()
+
+    return walletStatus === 'unverified' && balance && balance.total < 25
+  }
+
   render () {
     const {
       recoveryKey,
@@ -802,7 +809,7 @@ class PageWallet extends React.Component<Props, State> {
           goToUphold={this.goToUphold}
           greetings={this.getGreetings()}
           onlyAnonWallet={onlyAnonWallet}
-          showLoginMessage={balance.total < 25}
+          showLoginMessage={this.showLoginMessage()}
         >
           {
             enabledMain
