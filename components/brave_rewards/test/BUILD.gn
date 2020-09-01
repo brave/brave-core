@@ -10,8 +10,6 @@ import("//testing/test.gni")
 source_set("brave_rewards_unit_tests") {
   testonly = true
 
-  # Remove when https://github.com/brave/brave-browser/issues/10615 is resolved
-  check_includes = false
   if (brave_rewards_enabled) {
     sources = [
       "//brave/components/brave_rewards/browser/rewards_service_impl_unittest.cc",
@@ -94,12 +92,15 @@ source_set("brave_rewards_unit_tests") {
     ]
 
     deps = [
+      "//base/test:test_support",
       "//brave/browser:browser_process",
       "//brave/components/brave_rewards/browser:browser",
       "//brave/components/brave_rewards/browser:testutil",
       "//brave/components/brave_rewards/resources:static_resources_grit",
       "//brave/components/challenge_bypass_ristretto",
+      "//brave/components/l10n/browser:browser",
       "//brave/vendor/bat-native-ledger",
+      "//brave/vendor/bat-native-ledger:publishers_proto",
       "//brave/vendor/bat-native-rapidjson",
       "//chrome/browser:browser",
       "//content/test:test_support",
