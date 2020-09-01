@@ -1,9 +1,6 @@
 import("//brave/components/brave_together/buildflags/buildflags.gni")
 
 source_set("browser") {
-  # Remove when https://github.com/brave/brave-browser/issues/10640 is resolved
-  check_includes = false
-
   sources = [
     "regions.h",
   ]
