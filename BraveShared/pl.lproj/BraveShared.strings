@@ -217,6 +217,9 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Anuluj";
 
+/* No comment provided by engineer. */
+"ClearData" = "Usuwanie danych";
+
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
 "ClearPrivateData" = "Usuń dane prywatne";
 
@@ -293,7 +296,7 @@
 "DDGCalloutEnable" = "Tak";
 
 /* DuckDuckGo message. */
-"DDGCalloutMessage" = "Podczas wyszukiwania w trybie prywatnym, Brave skorzysta z DuckDuckGo, aby wyświetlić wyniki wyszukiwania w prywatnej karcie. DuckDuckGo to wyszukiwarka, która nie śledzi Twojej historii wyszukiwania, dzięki czemu możesz korzystać z przeglądarki bez obaw o prywatność.";
+"DDGCalloutMessage" = "Podczas wyszukiwania w trybie prywatnym Brave skorzysta z DuckDuckGo, aby wyświetlić wyniki wyszukiwania w prywatnej karcie. DuckDuckGo to wyszukiwarka, która nie śledzi Twojej historii wyszukiwania, dzięki czemu możesz korzystać z przeglądarki bez obaw o prywatność.";
 
 /* DuckDuckGo callout no action. */
 "DDGCalloutNo" = "Nie";
@@ -590,19 +593,16 @@
 "ntp.braveSupportFavoriteTitle" = "Wsparcie Brave";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "Odbierz nagrody";
+"ntp.claimRewards" = "Odbierz tokeny";
 
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "W zeszłym miesiącu udało Ci się zarobić %@ na oglądaniu reklam szanujących prywatność.";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "Zarabiaj tokeny, oglądając reklamy szanujące prywatność.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Udało Ci się zarobić %@, przeglądając z Brave.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Zarabiaj tokeny, wyświetlając ten obraz. Włącz Brave Ads, aby odebrać swoją część.";
+"ntp.getPaidForThisImageTurnAds" = "Zarabiaj tokeny, wyświetlając ten obraz. Włącz Brave Ads i zacznij wspierać twórców.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Zarabiaj tokeny, wyświetlając ten obraz. Włącz Brave Rewards, aby odebrać swoją część.";
+"ntp.getPaidForThisImageTurnRewards" = "Zarabiaj tokeny, wyświetlając ten obraz. Włącz Brave Rewards i zacznij wspierać twórców.";
 
 /* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "Zarabiaj tokeny, wyświetlając ten obraz.";
@@ -614,7 +614,7 @@
 "ntp.hideSponsoredImages" = "Ukryj sponsorowane obrazy";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Za każdy sponsorowany obraz, który wyświetlisz, otrzymasz 70% przychodu w tokenach. Dzięki Brave Ads będziesz mieć zawsze kontrolę nad reklamami, które oglądasz.";
+"ntp.learnMoreAboutBrandedImages" = "Za wyświetlenie sponsorowanego obrazu otrzymasz tokeny, które można wykorzystać do wspierania twórców. Dzięki Brave Ads będziesz mieć zawsze kontrolę nad reklamami, które oglądasz.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Dowiedz się więcej o Brave Rewards";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "Pokaż więcej";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Możesz wspierać twórców internetowych tokenami.";
+"ntp.supportWebCreatorsWithTokens" = "Zarabiaj tokeny i, przeglądając, nagradzaj twórców za tworzenie świetnych treści.";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "Włącz Brave Ads";

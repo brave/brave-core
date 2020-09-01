@@ -217,6 +217,9 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Avbryt";
 
+/* No comment provided by engineer. */
+"ClearData" = "Sletter data";
+
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
 "ClearPrivateData" = "Fjern private data";
 
@@ -293,7 +296,7 @@
 "DDGCalloutEnable" = "Ja";
 
 /* DuckDuckGo message. */
-"DDGCalloutMessage" = "Med privat søk bruker Brave DuckDuckGo for å finne resultater på søket ditt så lenge du er i denne private fanen. DuckDuckGo er en søkemotor som ikke sporer søkehistorikken din, slik at du kan søke helt privat.";
+"DDGCalloutMessage" = "Med privat søk vil Brave bruke DuckDuckGo til å besvare søkene dine mens du er i denne private fanen. DuckDuckGo er en søkemotor som ikke sporer søkeloggen din, slik at du kan søke privat.";
 
 /* DuckDuckGo callout no action. */
 "DDGCalloutNo" = "Nei";
@@ -590,19 +593,16 @@
 "ntp.braveSupportFavoriteTitle" = "Brave-kundestøtte";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "Gjør krav på mine belønninger";
+"ntp.claimRewards" = "Krev inn tokener";
 
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "Du tjente %@ sist måned for å se på annonser som respekterer personvernet.";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "Tjene tokens for å se på annonser som respekterer personvernet.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Du tjente %@ ved å surfe med Brave.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Tjen opp tokens for å se dette bildet. Slå på Brave-annonser for å få din andel.";
+"ntp.getPaidForThisImageTurnAds" = "Tjen tokener ved å vise dette bildet. Slå på Brave-annonser og begynn å støtte skaperne.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Tjen opp tokens for å se dette bildet. Slå på Brave Rewards for å få din andel.";
+"ntp.getPaidForThisImageTurnRewards" = "Tjen tokener for å vise dette bildet. Slå på Brave Rewards og begynn å støtte skaperne.";
 
 /* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "Tjen opp tokens for å se dette bildet.";
@@ -614,7 +614,7 @@
 "ntp.hideSponsoredImages" = "Skjul sponsede bilder";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "For hvert sponsede bilde du ser, får du 70 % av inntjeningen i tokens. Med Brave-annonser har du alltid kontroll over annonsene du ser.";
+"ntp.learnMoreAboutBrandedImages" = "Når du viser et sponset bilde, tjener du tokener som kan brukes til å støtte skaperne. Med Brave-annonser har du alltid kontroll over annonsene du ser.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Lær mer om Brave Rewards";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "Vis mer";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Du kan skape nettskapere med tokens.";
+"ntp.supportWebCreatorsWithTokens" = "Tjen tokener og belønn skaperne for supert innhold mens du surfer.";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "Slå på Brave-annonser";
@@ -731,7 +731,7 @@
 "PrivateTabDetails" = "Det å bruke private faner påvirker kun det Brave gjør på enheten din, det forandrer ikke andres adferd.\n\nNettsteder får alltid vite IP-adressen din når du besøker dem. Ut ifra dette kan de ofte gjette omtrent hvor du befinner deg, men vanligvis er ikke dette mer nøyaktig enn hvilken by du er i. Noen ganger kan imidlertid posisjonen de anslår, være mer spesifikk. Nettsteder får også vite alt du spesifikt oppgir til dem, som søkeord. Hvis du logger på et nettsted, vet nettstedet at du eier den gjeldende kontoen. Du blir likevel logget ut når du lukker de private fanene, for Brave kaster informasjonskapselen som holder deg pålogget.\n\nDen som kobler deg til internett (vanligvis internettleverandøren din) kan se all aktiviteten på nettverket ditt. Ofte er internettleverandøren mobilleverandøren din. Hvis du er koblet til et WiFi-nettverk, er internettleverandøren eieren av nettverket, og hvis du bruker en VPN, er det den som drifter VPN-en. Internettleverandøren din kan se hvilke nettsteder du besøker, samtidig som du besøker dem. Hvis disse nettstedene bruker HTTPS, kan internettleverandøren gjøre mer enn en kvalifisert gjetning angående hva du foretar deg på slike nettsteder. Hvis et nettsted kun bruker HTTP, kan imidlertid internettleverandøren din se alt: søkeordene dine, hvilke sider du leser, og hvilke lenker du følger.\n\nHvis arbeidsgiveren din administrerer enheten din, kan arbeidsgiveren også se hva du gjør med den. Det å bruke private faner vil sannsynligvis ikke hindre at de finner ut hvilke nettsteder du har besøkt. Andre som har tilgang til enheten din, kan også ha installert programvare som overvåker aktiviteten din, og private faner beskytter deg heller ikke mot dette.";
 
 /* Private tab information link */
-"PrivateTabLink" = "Finn ut mer om private faner.";
+"PrivateTabLink" = "Lær om private faner.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Privat fane";

@@ -29,20 +29,8 @@
 /* Context: The 'Up' in 'Brave Shields Up' */
 "BraveShieldsStatusValueUp" = "开启";
 
-/* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "又到了为你在 Brave 中看的那些广告获得奖励的时候了。";
-
-/* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "领取你的 Brave ads 奖励";
-
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "通过查看尊重隐私的广告来赚代币。";
-
-/* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "通过查看尊重隐私的广告来赚代币。";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "Brave Ads 来了！";
@@ -79,12 +67,6 @@
 
 /* Title for rewards agreement onboarding screen */
 "OBRewardsAgreementTitle" = "Brave Rewards";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "通过查看尊重隐私的广告来赚取令牌，并用其来支持您最喜欢的网站和创建者。";
-
-/* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "通过查看尊重隐私的广告来赚取积分，并用其来支持您最喜欢的网站和创建者。";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "根据您的关注度来支持您最喜欢的网站和创建者。";
@@ -182,9 +164,6 @@
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "我们绝不会分享或出售您的信息";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "保护您所有的应用程序（不仅仅是 Brave）";
-
 /* AppStore Receipt field for customer support contact form. */
 "vpn.contactFormAppStoreReceipt" = "AppStore 收据";
 
@@ -260,9 +239,6 @@
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "所有订阅都会自动续订，但也可以在续订之前取消。";
 
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "通过此配置文件，VPN 可以始终在每个应用程序中自动连接并保护整个设备上的流量。此 VPN 连接将会被加密，并通过 Brave 的智能防火墙进行路由，以阻止广告和跟踪器。";
-
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "安装 VPN 配置文件";
 
@@ -291,7 +267,7 @@
 "vpn.popupCheckmarkSecureConnections" = "保护所有连接";
 
 /* It is used in context: 'Powered by BRAND_NAME' */
-"vpn.poweredBy" = "提供支持方：";
+"vpn.poweredBy" = "支持提供方：";
 
 /* Message to show when vpn configuration reset fails. */
 "vpn.resetVPNErrorBody" = "无法重置 VPN 配置，请稍后重试。";
@@ -301,9 +277,6 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "恢复";
-
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "保护您的连接并在整个设备上屏蔽广告和跟踪器。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "联系技术支持部门";
@@ -367,9 +340,6 @@
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "错误";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "价格可能会因位置而异。订阅将通过 iTunes 帐户从您的信用卡中扣除。订阅价格为 1 个月（$ 9.99）或  1 年（$ 99.99）。除非在当前期限结束前至少 24 小时取消，否则订阅将自动续订。激活后，您将无法取消订阅。购买后，您可以在“帐户设置”页面管理您的订阅。免费试用只能使用一次。在免费试用期间未使用的任何部分都会被没收。";
 
 /* Title Brave VPN menu item. */
 "vpn.vpnMenuItemTitle" = "Brave VPN";

@@ -217,6 +217,9 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Annulla";
 
+/* No comment provided by engineer. */
+"ClearData" = "Eliminazione dei dati";
+
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
 "ClearPrivateData" = "Cancella dati privati";
 
@@ -293,7 +296,7 @@
 "DDGCalloutEnable" = "Sì";
 
 /* DuckDuckGo message. */
-"DDGCalloutMessage" = "Con la ricerca privata, Brave userà DuckDuckGo per rispondere alle tue ricerche mentre ti trovi in questa scheda privata. DuckDuckGo è un motore di ricerca che non tiene traccia della cronologia di ricerca e ti permette quindi di effettuare le tue ricerche in modo privato.";
+"DDGCalloutMessage" = "Con la ricerca privata, Brave userà DuckDuckGo per rispondere alle ricerche eseguite in questa scheda. DuckDuckGo è un motore di ricerca che non tiene traccia della cronologia di ricerca e permette ricerche private.";
 
 /* DuckDuckGo callout no action. */
 "DDGCalloutNo" = "No";
@@ -590,19 +593,16 @@
 "ntp.braveSupportFavoriteTitle" = "Assistenza Brave";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "Riscatta i miei premi";
+"ntp.claimRewards" = "Richiedi i token";
 
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "Il mese scorso hai ricavato %@ dalla visualizzazione degli annunci che rispettano la privacy.";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "Guadagna dei token visualizzando annunci che rispettano la privacy.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Usando Brave hai guadagnato %@.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Ottieni dei token per la visualizzazione di questa immagine. Attiva Brave Ads per ricevere la parte che ti spetta.";
+"ntp.getPaidForThisImageTurnAds" = "Ottieni dei token per la visualizzazione di questa immagine. Attiva Brave Ads e sostieni gli autori.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Ottieni dei token per la visualizzazione di questa immagine. Attiva Brave Ads per ricevere la parte che ti spetta.";
+"ntp.getPaidForThisImageTurnRewards" = "Ottieni dei token per la visualizzazione di questa immagine. Attiva Brave Rewards e sostieni gli autori.";
 
 /* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "Ottieni dei token per la visualizzazione di questa immagine.";
@@ -614,7 +614,7 @@
 "ntp.hideSponsoredImages" = "Nascondi le immagini sponsorizzate";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Per ogni immagini sponsorizzata che visualizzi, ottieni il 70% dei ricavi in token. Con Brave Ads sai sempre quali annunci vedi.";
+"ntp.learnMoreAboutBrandedImages" = "Quando vedi un’immagine sponsorizzata, guadagni dei token con cui puoi sostenere chi crea i contenuti. Con Brave Ads, hai sempre il controllo sugli annunci che vedi.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Scopri di più su Brave Rewards";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "Mosta altro";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Puoi sostenere con dei token i creatori di contenuti web.";
+"ntp.supportWebCreatorsWithTokens" = "Ottieni dei token e mentre navighi potrai premiare gli autori per i contenuti che hanno creato.";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "Attiva Brave Ads";
@@ -731,7 +731,7 @@
 "PrivateTabDetails" = "L’uso delle schede private cambia soltanto quello che fa Brave sul tuo dispositivo, e non modifica il comportamento di nessun altro.\n\nI siti che visiti continuano a conoscere il tuo indirizzo IP. Partendo da questa informazione, spesso possono risalire alla tua posizione indicativa, in genere alla città in cui ti trovi; e a volte la conoscenza della posizione può essere molto più particolareggiata. Inoltre i siti sanno tutto quello che dici direttamente a loro, per esempio i termini che usi per le ricerche. Se fai il log‑in per accedere a un sito, questo saprà che sei tu il proprietario dell’account. Chiudendo la scheda privata, si continuerà a rimanere disconnessi perché Brave rimuoverà i cookie che servono a mantenere attivo l’accesso.\n\nIl tuo Internet service provider (ISP), cioè chi ti fornisce il collegamento a internet, chiunque esso sia, può vedere la tua attività di rete. Spesso si tratta del tuo operatore di telefonia mobile. Se ti connetti tramite una rete Wi‑Fi è il proprietario della rete, e se usi una VPN è chiunque gestisca la VPN. Il tuo ISP può vedere quali siti visiti mentre li visiti. Se questi siti usano il protocollo HTTPS, può al massimo ipotizzare quello che stai facendo durante la visita. Se però usano solo l’HTTP, allora il tuo ISP è in grado di vedere tutto: i termini di ricerca, le pagine che leggi e i link che apri.\n\nSe a gestire il tuo dispositivo è un datore di lavoro, potrebbe anche tenere traccia di quello che fai con il dispositivo. Usando le schede private, probabilmente non gli impedirai di sapere quali siti hai visitato. Qualcun altro con accesso al tuo dispositivo potrebbe inoltre avere installato del software che monitora la tua attività, e anche da questo le schede private non ti possono proteggere.";
 
 /* Private tab information link */
-"PrivateTabLink" = "Informazioni sulle schede private.";
+"PrivateTabLink" = "Scopri di più sulle schede private.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Scheda privata";

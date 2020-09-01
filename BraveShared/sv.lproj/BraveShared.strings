@@ -217,6 +217,9 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Avbryt";
 
+/* No comment provided by engineer. */
+"ClearData" = "Rensa data";
+
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
 "ClearPrivateData" = "Rensa privata data";
 
@@ -590,19 +593,16 @@
 "ntp.braveSupportFavoriteTitle" = "Brave Support";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "Hämta min belöning";
+"ntp.claimRewards" = "Hämta tokens";
 
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "Du tjänade %@ förra månaden från att visa annonser som respekterar sekretess.";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "Tjäna in symboler genom att visa annonser som respekterar sekretess.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Du tjänade %@ genom att surfa med Brave.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Tjäna mynt för att se den här bilden. Aktivera Brave-annonser för att göra anspråk på din del.";
+"ntp.getPaidForThisImageTurnAds" = "Tjäna tokens för att se den här bilden. Aktivera Brave-annonser och börja stödja skapare.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Tjäna mynt för att se den här bilden. Aktivera Brave Rewards för att göra anspråk på din del.";
+"ntp.getPaidForThisImageTurnRewards" = "Tjäna tokens för att se den här bilden. Aktivera Brave Rewards och börja stödja skapare.";
 
 /* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "Tjäna mynt för att se den här bilden.";
@@ -614,7 +614,7 @@
 "ntp.hideSponsoredImages" = "Dölj sponsrade bilder";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "För varje sponsrad bild som du ser får du 70 % av intäkterna i mynt. Med Brave-annonser har du alltid kontroll över annonserna du ser.";
+"ntp.learnMoreAboutBrandedImages" = "När du ser en sponsrad bild tjänar du tokens som kan användas för att stödja skapare. Med Brave-annonser har du alltid kontroll över de annonser du ser.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Lär dig mer om Brave Rewards";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "Visa mer";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Du kan stödja webbskapare med symboler.";
+"ntp.supportWebCreatorsWithTokens" = "Tjäna tokens och belöna skapare för bra innehåll medan du surfar.";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "Slå på Brave annonser";

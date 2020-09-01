@@ -217,6 +217,9 @@
 /* No comment provided by engineer. */
 "CancelButtonTitle" = "Batal";
 
+/* No comment provided by engineer. */
+"ClearData" = "Mengosongkan Data";
+
 /* Button in settings that clears private data for the selected items. Also used as section title in settings panel */
 "ClearPrivateData" = "Kosongkan Data Peribadi";
 
@@ -293,7 +296,7 @@
 "DDGCalloutEnable" = "Ya";
 
 /* DuckDuckGo message. */
-"DDGCalloutMessage" = "Dengan carian peribadi, Brave akan menggunakan DuckDuckGo untuk menjawab carian anda semasa anda berada di tab peribadi ini. DuckDuckGo ialah enjin carian yang tidak menjejaki sejarah carian anda. Ia membolehkan anda mencari secara peribadi.";
+"DDGCalloutMessage" = "Dengan carian peribadi, Brave akan menggunakan DuckDuckGo untuk menjawab carian anda semasa anda berada di Tab Peribadi ini. DuckDuckGo ialah enjin carian yang tidak menjejaki sejarah carian anda. Ia membolehkan anda mencari secara peribadi.";
 
 /* DuckDuckGo callout no action. */
 "DDGCalloutNo" = "Tidak";
@@ -590,19 +593,16 @@
 "ntp.braveSupportFavoriteTitle" = "Sokongan Berani";
 
 /* No comment provided by engineer. */
-"ntp.claimRewards" = "Tuntut ganjaran saya";
+"ntp.claimRewards" = "Tuntut Token";
 
-/* Placeholder example: 'You earned 42 BAT last month from viewing privacy-respecting ads.' */
-"ntp.earningsReport" = "Anda mendapat %@ bulan lepas daripada menonton iklan yang menghormati privasi.";
-
-/* No comment provided by engineer. */
-"ntp.earnTokensByViewingAds" = "Dapatkan token dengan menonton iklan yang menghormati privasi.";
+/* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
+"ntp.earningsReport" = "Anda mendapat %@ dengan menyemak lalu dengan Brave.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "Dapatkan token untuk melihat imej ini. Hidupkan Brave Ads untuk menuntut bahagian anda.";
+"ntp.getPaidForThisImageTurnAds" = "Dapatkan token untuk melihat imej ini. Hidupkan Brave Ads dan mula menyokong pencipta.";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "Dapatkan token untuk melihat imej ini. Hidupkan Brave Rewards untuk menuntut bahagian anda.";
+"ntp.getPaidForThisImageTurnRewards" = "Dapatkan token untuk melihat imej ini. Hidupkan Brave Rewards dan mula menyokong pencipta.";
 
 /* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "Dapatkan token untuk melihat imej ini.";
@@ -614,7 +614,7 @@
 "ntp.hideSponsoredImages" = "Sembunyikan imej tajaan";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "Bagi setiap imej tajaan yang anda lihat, anda akan menerima 70% daripada hasil dalam bentuk token. Dengan Brave Ads, anda sentiasa mengawal iklan yang anda lihat.";
+"ntp.learnMoreAboutBrandedImages" = "Apabila anda melihat imej yang ditaja, anda mendapat token yang boleh digunakan untuk menyokong pencipta. Dengan Brave Ads, anda sentiasa mengawal iklan yang anda lihat.";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "Ketahui lebih lanjut tentang Brave Rewards";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "Tunjukkan Lagi";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "Anda boleh menyokong pencipta web dengan token.";
+"ntp.supportWebCreatorsWithTokens" = "Dapatkan token dan beri ganjaran kepada pencipta untuk kandungan hebat sambil anda menyemak lalu.";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "Hidupkan Iklan Brave";
@@ -731,7 +731,7 @@
 "PrivateTabDetails" = "Penggunaan Tab Peribadi hanya dapat mengubah apa yang dibuat dengan Brave pada peranti anda, ia tidak mengubah tingkah laku orang lain.\n\nLaman sentiasa belajar alamat IP anda apabila anda melawat laman tersebut. Dengan ini, laman sering boleh meneka lokasi kasar anda - biasanya bandar anda. Kadang-kadang tekaan lokasi boleh menjadi lebih spesifik. Laman juga tahu semua perkara yang anda katakan kepada mereka secara khusus, seperti istilah carian. Jika anda log masuk ke laman, mereka akan mengetahui bahawa anda pemilik akaun itu. Anda masih akan dilog keluar apabila anda menutup Tab Peribadi kerana Brave akan membuang kuki yang mengekalkan log masuk anda.\n\nSesiapa pun yang menghubungkan anda kepada Internet (ISP anda) dapat melihat semua aktiviti rangkaian anda. Biasanya, ini merupakan pembawa mudah alih anda. Jika anda disambungkan ke rangkaian WiFi, ini merupakan pemilik rangkaian itu, dan jika anda menggunakan VPN, maka sesiapa pun yang menguruskan VPN itu. ISP anda boleh melihat laman web yang anda kunjungi semasa anda melawatnya. Sekiranya laman web tersebut menggunakan HTTPS, mereka hanya dapat meneka apa yang anda lakukan di laman web tersebut. Sekiranya laman hanya menggunakan HTTP maka ISP anda dapat melihat segala-galanya: istilah carian anda, laman yang anda baca, dan pautan yang anda ikuti.\n\nSekiranya majikan menguruskan peranti anda, mereka mungkin juga menjejaki apa yang anda lakukan dengannya. Penggunaan Tab Peribadi mungkin tidak dapat menghalang mereka daripada mengetahui laman yang telah anda lawati. Seseorang yang mempunyai akses ke peranti anda juga boleh memasangkan perisian yang memantau aktiviti anda, dan Tab Pribadi tidak akan melindungi anda daripada perbuatan tersebut.";
 
 /* Private tab information link */
-"PrivateTabLink" = "Ketahui tentang tab peribadi.";
+"PrivateTabLink" = "Ketahui tentang Tab Peribadi.";
 
 /* Default engine for private search. */
 "PrivateTabSearch" = "Tab Peribadi";

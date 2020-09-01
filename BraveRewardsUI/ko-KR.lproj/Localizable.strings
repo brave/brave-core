@@ -62,6 +62,18 @@
 "BraveRewardsAdsPayoutDateFormat" = "M월 d일";
 
 /* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargeting" = "주/도 수준 광고 타겟팅";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingAutoDetect" = "자동 감지";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisable" = "비활성화";
+
+/* No comment provided by engineer. */
+"BraveRewardsAdsSubdivisionTargetingDisabled" = "비활성화됨";
+
+/* No comment provided by engineer. */
 "BraveRewardsAdsUnsupportedDvice" = "지금은 기기에서 Brave Rewards 및 광고를 사용할 수 없습니다.";
 
 /* No comment provided by engineer. */
@@ -311,10 +323,10 @@
 "BraveRewardsSettings" = "설정";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "Brave에서 광고를 보면 토큰을 얻을 수 있습니다. 표시되는 광고는 사용자의 브라우징 이력을 통해 관심분야를 유추하여 이를 기반으로 합니다. 개인 데이터나 브라우징 기록은 절대 브라우저 외부로 유출되지 않습니다.";
+"BraveRewardsSettingsAdsBody" = "Brave Ads를 켜고 토큰을 얻어 이를 좋아하는 제작자에게 후원하세요! 브라우징할 때 작은 프라이버시 보장 광고가 브라우저 상단에 표시됩니다.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "Brave에서 광고를 보면 포인트를 얻을 수 있습니다. 표시되는 광고는 사용자의 브라우징 이력을 통해 관심분야를 유추하여 이를 기반으로 합니다. 개인 데이터나 브라우징 기록은 절대 브라우저 외부로 유출되지 않습니다.";
+"BraveRewardsSettingsAdsBodyJapan" = "Brave Ads를 켜고 포인트를 얻어 이를 좋아하는 제작자에게 후원하세요! 브라우징할 때 작은 프라이버시 보장 광고가 브라우저 상단에 표시됩니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "공개 예정.";
@@ -338,10 +350,10 @@
 "BraveRewardsSettingsAutoContributeUpToValue" = "최대 %@";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "기존의 브라우저에서는 광고를 보면서 여러분의 소중한 관심도를 소모해 웹브라우징에 대한 비용을 지불했습니다. 동의 없이 여러분의 귀중한 개인 데이터를 광고주에게 전송하는 침입성 광고 기술을 다운로드하는 데 금쪽같은 시간을 들이기도 했죠.";
+"BraveRewardsSettingsDisabledBody1" = "제작자에게는 후원이 필요한데, Brave는 완전히 무료로 후원이 가능하게 만들어졌습니다. 이제 브라우징하면서 토큰을 얻어 좋아하는 제작자에게 후원해줄 수 있습니다.";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "여러분의 시간을 귀하게 여기고, 사적인 개인 데이터를 보호하고, 광고에 관심도를 기울여준 만큼 실제로 이득을 얻는 인터넷 세계입니다.";
+"BraveRewardsSettingsDisabledBody2" = "여러분의 시간을 귀하게 여기고, 사적인 개인 데이터를 보호하고, 콘텐츠 제작자에게 후원한다는 뿌듯한 마음도 느낄 수 있는 브라우저입니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "왜 Brave Rewards일까요?";
@@ -416,7 +428,7 @@
 "BraveRewardsTippingOneTimeTitle" = "방금 다음 대상에게 팁을 보냈습니다.";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "팁을 보내 이 콘텐츠 제작자를 후원할 수 있습니다. 멋진 콘텐츠를 만들어준 데 대한 보답의 표현입니다. 확인된 제작자는 매달 첫째 주에 팁을 정산받을 수 있습니다.\n\n원한다면 월정기 팁을 설정하여 이 제작자를 정기적으로 후원해도 됩니다.";
+"BraveRewardsTippingOverviewBody" = "토큰을 보내 이 콘텐츠 제작자를 후원할 수 있습니다. 멋진 콘텐츠를 만들어준 데 대한 보답의 표현입니다. 확인된 제작자는 매달 첫째 주에 토큰을 받을 수 있습니다.\n\n원한다면 월정기 후원을 설정하여 이 제작자를 정기적으로 후원해도 됩니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "환영합니다!";
@@ -437,7 +449,7 @@
 "BraveRewardsTippingTitle" = "팁 보내기";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "참고: 아직 가입하지 않아 Brave 사용자로부터 후원금을 받을 수 없는 제작자입니다. 제작자가 확인되거나 90일이 경과될 때까지 브라우저에서 계속 후원을 시도합니다.";
+"BraveRewardsTippingUnverifiedDisclaimer" = "참고: 아직 가입하지 않아 Brave 사용자로부터 토큰을 받을 수 없는 제작자입니다. 제작자가 확인되거나 90일이 경과될 때까지 브라우저에서 계속 후원을 시도합니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "월렛 잔액";
@@ -464,7 +476,7 @@
 "BraveRewardsTwoAdsPerHour" = "시간당 광고 2개";
 
 /* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "아직 가입하지 않아 Brave 사용자로부터 후원금을 받을 수 없는 제작자입니다. 보내신 모든 팁은 제작자가 확인되기 전까지 월렛에 보관됩니다.";
+"BraveRewardsUnverifiedPublisherDisclaimer" = "아직 가입하지 않아 Brave 사용자로부터 토큰을 받을 수 없는 제작자입니다. 보내신 모든 토큰은 제작자가 확인되기 전까지 월렛에 보관됩니다.";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "Brave 확인 완료 제작자";
@@ -557,7 +569,7 @@
 "NotificationContributeTipError" = "팁을 보낼 수 없습니다. 나중에 다시 시도하세요.";
 
 /* Panel notification text for Ads grant */
-"NotificationEarningsClaimDefault" = "Ads에서 얻은 Reward가 여기 있습니다!";
+"NotificationEarningsClaimDefault" = "받을 준비가 된 새 토큰이 있습니다.";
 
 /* Title for an error notification */
 "NotificationErrorTitle" = "앗!";
@@ -620,10 +632,10 @@
 "RecurringText" = "정기";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "이제 프라이버시 보호 광고를 보고 토큰을 받을 수 있습니다.";
+"RewardsOptInDescription" = "브라우징하면서 토큰을 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하기";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "이제 프라이버시 보호 광고를 보고 포인트를 받을 수 있습니다.";
+"RewardsOptInDescriptionJapan" = "브라우징하면서 포인트를 얻어 좋은 콘텐츠를 만들어준 제작자에게 보답하기";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "Rewards 가입";

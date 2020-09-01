@@ -30,19 +30,19 @@
 "BraveShieldsStatusValueUp" = "開啟";
 
 /* The body of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationBody" = "該獎勵您在 Brave 所看過的廣告了。";
+"MonthlyAdsClaimNotificationBody" = "輕觸即可領取免費代幣。";
 
 /* The title of the notification that goes out monthly to users who can claim an ads grant */
-"MonthlyAdsClaimNotificationTitle" = "領取您的 Brave Ads 獎勵";
+"MonthlyAdsClaimNotificationTitle" = "Brave Rewards 💵🎁";
 
 /* For search suggestions prompt. This string should be short so it fits nicely on the prompt row. */
 "No" = "否";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessage" = "觀看尊重隱私的廣告賺取令牌。";
+"OBAdsOptInMessage" = "一邊瀏覽，一邊賺取代幣，用於獎勵優質容創作者。";
 
 /* Message when opting into brave Ads when region becomes available */
-"OBAdsOptInMessageJapan" = "觀看尊重隱私的廣告賺取點數。";
+"OBAdsOptInMessageJapan" = "一邊瀏覽，一邊賺取點數，用於獎勵優質容創作者。";
 
 /* Title when opting into brave Ads when region becomes available */
 "OBAdsOptInTitle" = "Brave Ads 在這裡！";
@@ -71,6 +71,21 @@
 /* Button to join Brave Rewards. */
 "OBJoinButton" = "加入";
 
+/* No comment provided by engineer. */
+"OBPrivacyConsentClipboardPermission" = "允許 Brave 檢查我的剪貼簿，尋找相符的推薦代碼";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentDetail" = "您可能因支持推薦者而下載 Brave。為偵測您的推薦者，Brave 將對您的剪貼簿執行一次性檢查，尋找相符的推薦代碼。Brave 只會檢查代碼，不會傳輸任何其他個人資料。如果您不允許檢查，您的推薦者將不會獲得 Brave 獎勵。";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentNoButton" = "不允許此檢查";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentTitle" = "匿名推薦代碼檢查";
+
+/* No comment provided by engineer. */
+"OBPrivacyConsentYesButton" = "允許一次性剪貼簿檢查";
+
 /* Detail text for rewards agreement onboarding screen */
 "OBRewardsAgreementDetail" = "啟用「獎勵」代表您同意";
 
@@ -81,10 +96,10 @@
 "OBRewardsAgreementTitle" = "Brave Rewards";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegion" = "觀看尊重隱私的廣告賺取代幣。 用它們來支持您喜歡的站點和創作者。";
+"OBRewardsDetailInAdRegion" = "一邊瀏覽，一邊賺取代幣，用於獎勵優質容創作者。";
 
 /* Detail text for rewards onboarding screen */
-"OBRewardsDetailInAdRegionJapan" = "觀看尊重隱私的廣告賺取點數。 用它們來支持您喜歡的站點和創作者。";
+"OBRewardsDetailInAdRegionJapan" = "一邊瀏覽，一邊賺取點數，用於獎勵優質容創作者。";
 
 /* Detail text for rewards onboarding screen */
 "OBRewardsDetailOutsideAdRegion" = "根據您的關注度來支持您喜歡的站點和創作者。";
@@ -135,6 +150,204 @@
 "RestoredFavoritesFolderName" = "恢復的最愛";
 
 /* No comment provided by engineer. */
+"RewardsInternalsAmount" = "金額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsAnonymous" = "匿名";
+
+/* No comment provided by engineer. */
+"RewardsInternalsBalanceInfoHeader" = "餘額資訊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimedAt" = "領取時間";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClaimID" = "領取 ID";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsConfirmation" = "確定要清除所有 Rewards 記錄？";
+
+/* No comment provided by engineer. */
+"RewardsInternalsClearLogsTitle" = "清除記錄";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionAmount" = "贊助金額";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorBraveTokens" = "Brave 代幣";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorNone" = "無";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUphold" = "持續";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionProcessorUserFunds" = "用戶資金";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepACOff" = "自動贊助已關閉";
+
+/* 'AC' refers to Auto-Contribute */
+"RewardsInternalsContributionsStepACTableEmpty" = "AC 表格空白";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCompleted" = "已完成";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepCreds" = "憑證";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepExternalTransaction" = "外部交易";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepFailed" = "失敗";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepNotEnoughFunds" = "資金不足";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepPrepare" = "準備";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepReserve" = "保留";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepRewardsOff" = "Rewards 已關閉";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsStepStart" = "開始";
+
+/* No comment provided by engineer. */
+"RewardsInternalsContributionsTitle" = "贊助";
+
+/* No comment provided by engineer. */
+"RewardsInternalsCreatedAt" = "建立時間";
+
+/* No comment provided by engineer. */
+"RewardsInternalsDeviceInfoHeader" = "裝置資訊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrolled" = "已註冊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsEnrollmentState" = "註冊狀態";
+
+/* No comment provided by engineer. */
+"RewardsInternalsExpiresAt" = "到期日";
+
+/* No comment provided by engineer. */
+"RewardsInternalsInvalid" = "無效";
+
+/* No comment provided by engineer. */
+"RewardsInternalsKeyInfoSeed" = "金鑰資訊種子";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLegacyPromotion" = "舊行銷活動";
+
+/* %d will be the number of logs currently being shown, i.e. '10 logs shown' */
+"RewardsInternalsLogsCount" = "顯示 %d 筆記錄";
+
+/* No comment provided by engineer. */
+"RewardsInternalsLogsTitle" = "記錄";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotEnrolled" = "未註冊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsNotSupported" = "未支持";
+
+/* No comment provided by engineer. */
+"RewardsInternalsProcessor" = "處理器";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusActive" = "進行中";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusAttested" = "已驗證";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusCorrupted" = "損毀";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusFinished" = "已結束";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionStatusOver" = "超過";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPromotionsTitle" = "行銷活動";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublisher" = "發佈者";
+
+/* No comment provided by engineer. */
+"RewardsInternalsPublishers" = "發佈者";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRetryCount" = "重試次數";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeAutoContribute" = "自動贊助";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeOneTimeTip" = "一次性小費";
+
+/* No comment provided by engineer. */
+"RewardsInternalsRewardsTypeRecurringTip" = "定期小費";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicDescription" = "錢包、裝置和餘額資訊 (一律共享)";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableBasicTitle" = "基本資訊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseDescription" = "內部資料存放區";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharableDatabaseTitle" = "Rewards 資料庫";
+
+/* No comment provided by engineer. */
+"RewardsInternalsShare" = "共享";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSharingWarningTitle" = "警告";
+
+/* No comment provided by engineer. */
+"RewardsInternalsStatus" = "狀態";
+
+/* i.e. 'Step: Started' */
+"RewardsInternalsStep" = "步驟";
+
+/* No comment provided by engineer. */
+"RewardsInternalsSupported" = "已支持";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalAmount" = "金額總計";
+
+/* No comment provided by engineer. */
+"RewardsInternalsTotalBalance" = "餘額總計";
+
+/* No comment provided by engineer. */
+"RewardsInternalsType" = "類型";
+
+/* No comment provided by engineer. */
+"RewardsInternalsValid" = "有效";
+
+/* No comment provided by engineer. */
+"RewardsInternalsVersion" = "版本";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletCreationDate" = "錢包建立日期";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletInfoHeader" = "錢包資訊";
+
+/* No comment provided by engineer. */
+"RewardsInternalsWalletPaymentID" = "錢包付款 ID";
+
+/* No comment provided by engineer. */
 "ShieldsDownDisclaimer" = "您目前是在沒有 Brave 隱私防護的情況下瀏覽此網站。開啟 Shields 時無法正常瀏覽嗎？";
 
 /* Text that informs a user about Brave Sync service deprecation. */
@@ -165,7 +378,7 @@
 "vpn.buyButton" = "購買";
 
 /* Title for screen to buy the VPN. */
-"vpn.buyVPNTitle" = "Brave 防火牆 + VPN";
+"vpn.buyVPNTitle" = "Brave Firewall + VPN";
 
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxBlockAds" = "封鎖不需要的網路連線";
@@ -182,11 +395,8 @@
 /* Text for a checkbox to present the user benefits for using Brave VPN */
 "vpn.checkboxNoSellout" = "我們絕不會洩漏或販賣您的資訊";
 
-/* Text for a checkbox to present the user benefits for using Brave VPN */
-"vpn.checkboxProtectConnections" = "保護您的所有應用程式 (不只是 Brave 而已)";
-
 /* AppStore Receipt field for customer support contact form. */
-"vpn.contactFormAppStoreReceipt" = "AppStore 收據";
+"vpn.contactFormAppStoreReceipt" = "App Store 收據";
 
 /* App Version field for customer support contact form. */
 "vpn.contactFormAppVersion" = "應用程式版本";
@@ -240,7 +450,7 @@
 "vpn.contactFormTimezone" = "iOS 時區";
 
 /* Title for contact form email. */
-"vpn.contactFormTitle" = "Brave 防火牆 + VPN 問題";
+"vpn.contactFormTitle" = "Brave Firewall + VPN 問題";
 
 /* Button text to enable Brave VPN */
 "vpn.enableButton" = "啟用";
@@ -259,9 +469,6 @@
 
 /* Disclaimer about in app subscription */
 "vpn.iapDisclaimer" = "所有訂閱都會自動續約，但可在續約前取消。";
-
-/* Text explaining how the VPN works. */
-"vpn.installProfileBody" = "此設定檔可讓 VPN 自動連線，並隨時確保您裝置上所有應用程式的流量安全無虞。此 VPN 連線會經過加密，並採用 Brave 智慧型防火牆的路由規則，有效封鎖廣告和追蹤程式。";
 
 /* Text for 'install vpn profile' button */
 "vpn.installProfileButtonText" = "安裝 VPN 設定檔";
@@ -301,9 +508,6 @@
 
 /* No comment provided by engineer. */
 "vpn.restorePurchases" = "還原";
-
-/* No comment provided by engineer. */
-"vpn.settingHeaderBody" = "保護您的連線，並協助您的裝置徹底封鎖廣告和追蹤程式。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "與技術支援人員聯絡";
@@ -348,7 +552,7 @@
 "vpn.vpnBackgroundNotificationBody" = "即使在背景運作，Brave 也會繼續為您提供防護。";
 
 /* Notification title to tell user that the vpn is turned on even in background */
-"vpn.vpnBackgroundNotificationTitle" = "Brave 防火牆 + VPN 已開啟";
+"vpn.vpnBackgroundNotificationTitle" = "Brave Firewall + VPN 已開啟";
 
 /* Message for an alert when the VPN can't be configured. */
 "vpn.vpnConfigGenericErrorBody" = "初始化 VPN 時發生問題。請再試一次，或嘗試在 VPN 設定頁面中重設組態。";
@@ -357,25 +561,22 @@
 "vpn.vpnConfigGenericErrorTitle" = "錯誤";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
-"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave 防火牆 + VPN 需要 VPN 設定檔，才能安裝到您的裝置上，發揮效用。";
+"vpn.vpnConfigPermissionDeniedErrorBody" = "Brave Firewall + VPN 需要 VPN 設定檔，才能安裝到您的裝置上，發揮效用。";
 
 /* Title for an alert when the user didn't allow to install VPN profile */
 "vpn.vpnConfigPermissionDeniedErrorTitle" = "權限遭拒";
 
 /* Message for error when VPN could not be purchased. */
-"vpn.vpnErrorPurchaseFailedBody" = "無法完成購買。請再試一次，或檢查您的 Apple 付款詳細資訊後重試。";
+"vpn.vpnErrorPurchaseFailedBody" = "無法完成購買。請再試一次，或到 Apple 帳戶查看付款詳細資訊後重試。";
 
 /* Title for error when VPN could not be purchased. */
 "vpn.vpnErrorPurchaseFailedTitle" = "錯誤";
-
-/* Disclaimer for user purchasing the VPN plan. */
-"vpn.vpnIAPBoilerPlate" = "各地價格可能不盡相同。我們會透過您在 iTunes 帳戶中提供的信用卡收取訂閱費用。您可以選擇 1 個月 ($9.99) 或 1 年 ($99.99) 訂閱方案，只要未在目前約期結束前 24 小時取消，系統就會自動為您續約。訂閱一旦生效即無法取消。您可以在購買後前往「帳戶設定」管理訂閱事宜。僅限免費試用一次。如果您在免費試用期結束前便選擇訂閱，未結束的效期即告失效。";
 
 /* Title Brave VPN menu item. */
 "vpn.vpnMenuItemTitle" = "Brave VPN";
 
 /* Message for alert to reset vpn configuration */
-"vpn.vpnResetAlertBody" = "此程序會重設您的 Brave 防火牆 + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";
+"vpn.vpnResetAlertBody" = "此程序會重設您的 Brave Firewall + VPN 組態，並修正任何錯誤。這會需要一點時間，請稍候。";
 
 /* Title for alert to reset vpn configuration */
 "vpn.vpnResetAlertTitle" = "重設組態";
