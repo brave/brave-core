@@ -5,6 +5,9 @@
 
 #include "brave/browser/brave_tab_helpers.h"
 
+#include "base/command_line.h"
+#include "base/feature_list.h"
+#include "brave/browser/brave_stats_tab_helper.h"
 #include "brave/browser/farbling/farbling_tab_helper.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
@@ -122,6 +125,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
   FarblingTabHelper::CreateForWebContents(web_contents);
+
+  brave::BraveStatsTabHelper::CreateForWebContents(web_contents);
 }
 
 }  // namespace brave

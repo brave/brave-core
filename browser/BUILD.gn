@@ -452,6 +452,8 @@ source_set("stats_updater") {
   defines = [ "BRAVE_STATS_API_KEY=\"$brave_stats_api_key\"" ]
 
   sources = [
+    "brave_stats_tab_helper.cc",
+    "brave_stats_tab_helper.h",
     "brave_stats_updater.cc",
     "brave_stats_updater.h",
     "brave_stats_updater_params.cc",

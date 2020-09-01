@@ -43,6 +43,7 @@ class BraveStatsUpdater {
 
   void Start();
   void Stop();
+  bool MaybeDoThresholdPing(int score);
 
   using StatsUpdatedCallback =
       base::RepeatingCallback<void(const std::string& url)>;
@@ -50,6 +51,7 @@ class BraveStatsUpdater {
   void SetStatsUpdatedCallback(StatsUpdatedCallback stats_updated_callback);
 
  private:
+  std::string BuildStatsEndpoint(const std::string& path);
   // Invoked from SimpleURLLoader after download is complete.
   void OnSimpleLoaderComplete(
       std::unique_ptr<brave::BraveStatsUpdaterParams> stats_updater_params,
@@ -62,13 +64,24 @@ class BraveStatsUpdater {
   void OnReferralInitialization();
 
   void StartServerPingStartupTimer();
+  void QueueServerPing();
   void SendServerPing();
 
-  friend class ::BraveStatsUpdaterBrowserTest;
-  static void SetBaseUpdateURLForTest(const std::string& base_update_url);
-  static std::string g_base_update_url_;
+  bool IsReferralInitialized();
 
+  enum ThresholdPingState {
+    THRESHOLD_PING_INVALID = 0,
+    THRESHOLD_PING_INACTIVE,
+    THRESHOLD_PING_QUEUED,
+    THRESHOLD_PING_FIRED
+  };
+
+  friend class ::BraveStatsUpdaterBrowserTest;
+
+  int threshold_score_;
+  ThresholdPingState threshold_ping_state_;
   PrefService* pref_service_;
+  std::string usage_server_;
   StatsUpdatedCallback stats_updated_callback_;
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   std::unique_ptr<base::OneShotTimer> server_ping_startup_timer_;
