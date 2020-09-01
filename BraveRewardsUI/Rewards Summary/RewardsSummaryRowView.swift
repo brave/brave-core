@@ -55,7 +55,7 @@ import BraveUI
       stackView.addArrangedSubview(cryptoValueLabel)
       stackView.setCustomSpacing(4.0, after: cryptoValueLabel)
       stackView.addArrangedSubview(cryptoCurrencyLabel)
-      stackView.addArrangedSubview(dollarValueLabel)
+//      stackView.addArrangedSubview(dollarValueLabel)
       
       paddingGuide.snp.makeConstraints {
         $0.top.bottom.equalTo(self).inset(12.0)
@@ -64,9 +64,9 @@ import BraveUI
       stackView.snp.makeConstraints {
         $0.edges.equalTo(paddingGuide)
       }
-      dollarValueLabel.snp.makeConstraints {
-        $0.width.greaterThanOrEqualTo(60.0)
-      }
+//      dollarValueLabel.snp.makeConstraints {
+//        $0.width.greaterThanOrEqualTo(60.0)
+//      }
     }
     
     convenience init(title: String, cryptoValueColor: UIColor = .black,
@@ -76,7 +76,7 @@ import BraveUI
       cryptoCurrencyLabel.text = Strings.BAT
       cryptoValueLabel.text = batValue
       cryptoValueLabel.appearanceTextColor = cryptoValueColor
-      dollarValueLabel.text = usdDollarValue
+//      dollarValueLabel.text = usdDollarValue
     }
     
     @available(*, unavailable)
