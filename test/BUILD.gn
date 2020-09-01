@@ -324,7 +324,7 @@ test("brave_unit_tests") {
 
   if (enable_brave_webtorrent) {
     sources += [
-      "//brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
+      "//brave/browser/net/brave_torrent_redirect_network_delegate_helper_unittest.cc",
       "//brave/browser/extensions/brave_webtorrent_navigation_throttle_unittest.cc",
     ]
   }
