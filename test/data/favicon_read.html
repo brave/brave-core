@@ -1,0 +1,33 @@
+<html>
+<head>
+<title>Favicon Read</title>
+<script>
+function redirectToNextHop() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const uid = urlParams.get('uid');
+
+  bit = parseInt(urlParams.get('bit') ? urlParams.get('bit') : "0");
+  nextBit = bit + 1;
+  if (bit > 3) {
+    url = new URL(window.location);
+    url.hostname = 'a.com';
+    url.pathname = '/simple.html';
+    url.search = '';
+    window.location = url.toString();
+  } else {
+    rand = parseInt(Math.random() * 1000000);
+    nextHop = new URL(window.location);
+    nextHop.hostname = 'fav' + bit + '.a.com';
+    nextHop.pathname = '/favicon_read.html';
+    nextHop.search = '?bit=' + nextBit + '&uid=' + uid + '&rand=' + rand;
+    window.location = nextHop.toString();
+  }
+}
+</script>
+</head>
+<body>
+<script>
+setTimeout(redirectToNextHop, 100);
+</script>
+</body>
+</html>
