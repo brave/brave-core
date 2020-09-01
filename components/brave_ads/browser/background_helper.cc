@@ -35,7 +35,7 @@ void BackgroundHelper::TriggerOnForeground() {
   }
 }
 
-#if !defined(OS_APPLE) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)  // NOLINT
+#if !defined(OS_MAC) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)  // NOLINT
 BackgroundHelper* BackgroundHelper::GetInstance() {
   // just return a dummy background helper for all other platforms
   return base::Singleton<BackgroundHelper>::get();
