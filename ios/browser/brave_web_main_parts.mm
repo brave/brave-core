@@ -110,8 +110,6 @@ void BraveWebMainParts::SetupFieldTrials() {
 
   // On iOS, GPU benchmarking is not supported. So, pass in a dummy value for
   // the name of the switch that enables gpu benchmarking.
-  // TODO(crbug.com/988603): This should also set up extra switch-dependent
-  // feature overrides.
   application_context_->GetVariationsService()->SetupFieldTrials(
       "dummy-enable-gpu-benchmarking", switches::kEnableFeatures,
       switches::kDisableFeatures, variation_ids,

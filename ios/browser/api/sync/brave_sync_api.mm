@@ -9,8 +9,9 @@
 #include <string>
 #include <vector>
 
-#include "base/scoped_observer.h"
 #include "base/json/json_writer.h"
+#include "base/memory/weak_ptr.h"
+#include "base/scoped_observer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
@@ -41,19 +42,28 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   BraveSyncWorker(ChromeBrowserState* browser_state_);
   ~BraveSyncWorker() override;
 
-  void SetSyncEnabled(bool enabled);
-  std::string GetSyncCode();
+  bool SetSyncEnabled(bool enabled);
+  std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
   const syncer::DeviceInfo* GetLocalDeviceInfo();
   std::vector<std::unique_ptr<syncer::DeviceInfo>> GetDeviceList();
+  bool IsSyncEnabled();
+  bool IsSyncFeatureActive();
+  bool ResetSync();
 
  private:
   // syncer::SyncServiceObserver implementation.
-  void OnStateChanged(syncer::SyncService* sync) override;
+  void OnStateChanged(syncer::SyncService* service) override;
+  void OnSyncShutdown(syncer::SyncService* service) override;
+
+  void OnLocalDeviceInfoDeleted();
 
   ChromeBrowserState* browser_state_;  // NOT OWNED
   ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
+  base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
+
+  DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };
 
 BraveSyncWorker::BraveSyncWorker(ChromeBrowserState* browser_state)
@@ -63,33 +73,24 @@ BraveSyncWorker::~BraveSyncWorker() {
   // Observer will be removed by ScopedObserver
 }
 
-void BraveSyncWorker::SetSyncEnabled(bool enabled) {
+bool BraveSyncWorker::SetSyncEnabled(bool enabled) {
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
   auto* sync_service =
       ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
 
   if (!setup_service || !sync_service)
-    return;
+    return false;
 
-  if (!sync_service_observer_.IsObserving(sync_service)) {
+  if (!sync_service_observer_.IsObserving(sync_service))
     sync_service_observer_.Add(sync_service);
-  }
 
   setup_service->SetSyncEnabled(enabled);
 
-  if (enabled && !sync_service->GetUserSettings()->IsFirstSetupComplete()) {
+  if (enabled && !sync_service->GetUserSettings()->IsFirstSetupComplete())
     setup_service->PrepareForFirstSyncSetup();
 
-    brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
-    std::string sync_code = brave_sync_prefs.GetSeed();
-
-    if (sync_code.empty()) {
-      std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
-      sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
-      brave_sync_prefs.SetSeed(sync_code);
-    }
-  }
+  return true;
 }
 
 const syncer::DeviceInfo* BraveSyncWorker::GetLocalDeviceInfo() {
@@ -115,27 +116,86 @@ BraveSyncWorker::GetDeviceList() {
   return tracker->GetAllDeviceInfo();
 }
 
-std::string BraveSyncWorker::GetSyncCode() {
+std::string BraveSyncWorker::GetOrCreateSyncCode() {
   brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
-  return brave_sync_prefs.GetSeed();
+  std::string sync_code = brave_sync_prefs.GetSeed();
+  if (sync_code.empty()) {
+    std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
+    sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
+    brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
+    brave_sync_prefs.SetSeed(sync_code);
+  }
+  return sync_code;
 }
 
 bool BraveSyncWorker::SetSyncCode(const std::string& sync_code) {
-  std::vector<uint8_t> seed;
+  if (sync_code.empty())
+    return false;
 
+  auto* sync_service =
+      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+  if (sync_service->GetUserSettings()->IsFirstSetupComplete())
+    return false;
+
+  std::vector<uint8_t> seed;
   if (!brave_sync::crypto::PassphraseToBytes32(sync_code, &seed))
     return false;
 
-  brave_sync::Prefs brave_sync_prefs{browser_state_->GetPrefs()};
+  brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
   brave_sync_prefs.SetSeed(sync_code);
   return true;
 }
 
+bool BraveSyncWorker::ResetSync() {
+  auto* sync_service =
+      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+
+  // Do not send self deleted commit if engine is not up and running
+  if (!sync_service || sync_service->GetTransportState() !=
+          syncer::SyncService::TransportState::ACTIVE) {
+    OnLocalDeviceInfoDeleted();
+    return true;
+  }
+
+  auto* local_device_info = GetLocalDeviceInfo();
+  if (!local_device_info) {
+    // May happens when we reset the chain immediately after connection
+    VLOG(1) << __func__ << " no local device info, cannot reset sync now";
+    return false;
+  }
+
+  auto* device_info_service =
+      DeviceInfoSyncServiceFactory::GetForBrowserState(browser_state_);
+  auto* tracker = device_info_service->GetDeviceInfoTracker();
+
+  if (!tracker)
+    return false;
+
+  tracker->DeleteDeviceInfo(local_device_info->guid(),
+                            base::BindOnce(&BraveSyncWorker::OnLocalDeviceInfoDeleted,
+                                           weak_ptr_factory_.GetWeakPtr()));
+
+  return true;
+}
+
+void BraveSyncWorker::OnLocalDeviceInfoDeleted() {
+  auto* sync_service =
+      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+
+  if (sync_service)
+    sync_service->StopAndClear();
+
+  brave_sync::Prefs brave_sync_prefs(browser_state_->GetPrefs());
+  brave_sync_prefs.Clear();
+}
+
 void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   // If the sync engine has shutdown for some reason, just give up
-  if (!service || !service->IsEngineInitialized()) {
+  if (!service || !service->IsEngineInitialized())
     return;
-  }
+
+  if (IsSyncFeatureActive())
+    LOG(ERROR) << "OMFG it worked!!!";
 
   auto* setup_service =
       SyncSetupServiceFactory::GetForBrowserState(browser_state_);
@@ -148,6 +208,31 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
     setup_service->SetFirstSetupComplete(
         syncer::SyncFirstSetupCompleteSource::ADVANCED_FLOW_CONFIRM);
   }
+}
+
+void BraveSyncWorker::OnSyncShutdown(syncer::SyncService* service) {
+  if (sync_service_observer_.IsObserving(service))
+    sync_service_observer_.Remove(service);
+}
+
+bool BraveSyncWorker::IsSyncEnabled() {
+  auto* setup_service =
+      SyncSetupServiceFactory::GetForBrowserState(browser_state_);
+
+  if (!setup_service)
+    return false;
+
+  return setup_service->IsSyncEnabled();
+}
+
+bool BraveSyncWorker::IsSyncFeatureActive() {
+  auto* sync_service =
+      ProfileSyncServiceFactory::GetForBrowserState(browser_state_);
+
+  if (!sync_service)
+    return false;
+
+  return sync_service->IsSyncFeatureActive();
 }
 
 }  // namespace
@@ -175,12 +260,16 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
   _worker.reset();
 }
 
-- (void)setSyncEnabled:(bool)enabled {
-  _worker->SetSyncEnabled(enabled);
+- (bool)setSyncEnabled:(bool)enabled {
+  return _worker->SetSyncEnabled(enabled);
 }
 
-- (NSString *)getSyncCode {
-  return base::SysUTF8ToNSString(_worker->GetSyncCode());
+- (NSString *)getOrCreateSyncCode {
+  std::string syncCode = _worker->GetOrCreateSyncCode();
+  if (syncCode.empty())
+    return nil;
+
+  return base::SysUTF8ToNSString(syncCode);
 }
 
 - (bool)setSyncCode:(NSString *)syncCode {
@@ -189,7 +278,7 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
 
 - (UIImage *)getQRCodeImage:(CGSize)size {
   std::vector<uint8_t> seed;
-  std::string sync_code = _worker->GetSyncCode();
+  std::string sync_code = _worker->GetOrCreateSyncCode();
   if (!brave_sync::crypto::PassphraseToBytes32(sync_code, &seed)) {
     return nil;
   }
@@ -248,4 +337,15 @@ void BraveSyncWorker::OnStateChanged(syncer::SyncService* service) {
     return base::SysUTF8ToNSString(json_string);
 }
 
+- (bool)resetSync {
+  return _worker->ResetSync();
+}
+
+- (bool)isSyncEnabled {
+  return _worker->IsSyncEnabled();
+}
+
+- (bool)isSyncFeatureActive {
+  return _worker->IsSyncFeatureActive();
+}
 @end

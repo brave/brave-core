@@ -12,16 +12,24 @@
 @interface BraveSyncAPI : NSObject
 - (instancetype)init;
 
-- (void)setSyncEnabled:(bool)enabled;
+- (bool)setSyncEnabled:(bool)enabled;
 
-- (NSString *)getSyncCode;
+- (bool)resetSync;
 
-- (bool)setSyncCode:(NSString *)sync_code;
+- (NSString *)getOrCreateSyncCode;
+
+// returns false is sync is already configured or if the sync code is invalid
+- (bool)setSyncCode:(NSString *)syncCode;
 
 - (UIImage *)getQRCodeImage:(CGSize)size;
 
 - (NSString *)getDeviceListJSON;
 
+// has the user enabled sync
+- (bool)isSyncEnabled;
+
+// is sync configured and running
+- (bool)isSyncFeatureActive;
 @end
 
 #endif  // BRAVE_IOS_BROWSER_API_SYNC_BRAVE_SYNC_API_H_

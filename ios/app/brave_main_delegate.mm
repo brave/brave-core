@@ -6,6 +6,10 @@
 #include "brave/ios/app/brave_main_delegate.h"
 
 #include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/mac/bundle_locations.h"
+#include "base/base_paths.h"
+#include "base/path_service.h"
 #include "components/sync/driver/sync_driver_switches.h"
 #include "components/sync/base/model_type.h"
 #include "components/browser_sync/browser_sync_switches.h"
@@ -29,7 +33,11 @@ const char kBraveSyncServiceURL[] = "https://sync-v2.brave.software/v2";
 
 }  // namespace
 
-BraveMainDelegate::BraveMainDelegate() {}
+BraveMainDelegate::BraveMainDelegate() {
+  base::FilePath path;
+  base::PathService::Get(base::DIR_MODULE, &path);
+  base::mac::SetOverrideFrameworkBundlePath(path);
+}
 
 BraveMainDelegate::~BraveMainDelegate() {}
 

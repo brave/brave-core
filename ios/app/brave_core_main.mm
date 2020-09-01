@@ -5,10 +5,6 @@
 
 #import "brave/ios/app/brave_core_main.h"
 
-#include "base/files/file_path.h"
-#include "base/mac/bundle_locations.h"
-#include "base/base_paths.h"
-#include "base/path_service.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/ios/app/brave_main_delegate.h"
 #import "brave/ios/browser/brave_web_client.h"
@@ -33,11 +29,6 @@
 
 - (instancetype)init {
   if ((self = [super init])) {
-    // TODO(bridiver) - this should probably go in BraveMainDelegate
-    base::FilePath path;
-    base::PathService::Get(base::DIR_MODULE, &path);
-    base::mac::SetOverrideFrameworkBundlePath(path);
-
     // Register all providers before calling any Chromium code.
     [ProviderRegistration registerProviders];
 
