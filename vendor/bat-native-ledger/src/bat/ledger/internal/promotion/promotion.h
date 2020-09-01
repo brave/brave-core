@@ -67,7 +67,7 @@ class Promotion {
 
   void LegacyClaimedSaved(
       const ledger::Result result,
-      const std::string& promotion_string);
+      std::shared_ptr<ledger::PromotionPtr> shared_promotion);
 
   void OnClaimPromotion(
       ledger::PromotionPtr promotion,
@@ -90,7 +90,7 @@ class Promotion {
 
   void AttestedSaved(
       const ledger::Result result,
-      const std::string& promotion_string,
+      std::shared_ptr<ledger::PromotionPtr> shared_promotion,
       ledger::AttestPromotionCallback callback);
 
   void Complete(

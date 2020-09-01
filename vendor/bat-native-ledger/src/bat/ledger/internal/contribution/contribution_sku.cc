@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "bat/ledger/global_constants.h"
-#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/contribution/contribution_sku.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -233,7 +232,7 @@ void ContributionSKU::OnGetOrder(
   auto save_callback = std::bind(&ContributionSKU::TransactionStepSaved,
       this,
       _1,
-      braveledger_bind_util::FromSKUOrderToString(std::move(order)),
+      std::make_shared<ledger::SKUOrderPtr>(std::move(order)),
       callback);
 
   ledger_->database()->UpdateContributionInfoStep(
@@ -244,7 +243,7 @@ void ContributionSKU::OnGetOrder(
 
 void ContributionSKU::TransactionStepSaved(
     const ledger::Result result,
-    const std::string& order_string,
+    std::shared_ptr<ledger::SKUOrderPtr> shared_order,
     ledger::ResultCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "External transaction step was not saved");
@@ -252,16 +251,15 @@ void ContributionSKU::TransactionStepSaved(
     return;
   }
 
-  auto order = braveledger_bind_util::FromStringToSKUOrder(order_string);
-  if (!order) {
+  if (!shared_order) {
     BLOG(0, "Order is corrupted");
     callback(ledger::Result::RETRY);
     return;
   }
 
-  DCHECK_EQ(order->items.size(), 1ul);
+  DCHECK_EQ((*shared_order)->items.size(), 1ul);
   braveledger_credentials::CredentialsTrigger trigger;
-  GetCredentialTrigger(order->Clone(), &trigger);
+  GetCredentialTrigger((*shared_order)->Clone(), &trigger);
 
   credentials_->Start(trigger, callback);
 }
@@ -406,7 +404,7 @@ void ContributionSKU::Retry(
   auto get_callback = std::bind(&ContributionSKU::OnOrder,
       this,
       _1,
-      braveledger_bind_util::FromContributionToString(contribution->Clone()),
+      std::make_shared<ledger::ContributionInfoPtr>(contribution->Clone()),
       callback);
 
   ledger_->database()->GetSKUOrderByContributionId(
@@ -416,11 +414,9 @@ void ContributionSKU::Retry(
 
 void ContributionSKU::OnOrder(
     ledger::SKUOrderPtr order,
-    const std::string& contribution_string,
+    std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
     ledger::ResultCallback callback) {
-  auto contribution = braveledger_bind_util::FromStringToContribution(
-      contribution_string);
-
+  auto contribution = std::move(*shared_contribution);
   if (!contribution) {
     BLOG(0, "Contribution is null");
     callback(ledger::Result::LEDGER_ERROR);

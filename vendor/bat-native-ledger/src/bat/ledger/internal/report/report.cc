@@ -9,7 +9,6 @@
 #include <iostream>
 
 #include "base/strings/string_split.h"
-#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/report/report.h"
 
@@ -55,16 +54,12 @@ void Report::OnBalance(
   auto monthly_report = ledger::MonthlyReportInfo::New();
   monthly_report->balance = std::move(balance_report);
 
-  const std::string monthly_report_string =
-      braveledger_bind_util::FromMonthlyReportToString(
-          std::move(monthly_report));
-
   auto transaction_callback = std::bind(&Report::OnTransactions,
       this,
       _1,
       month,
       year,
-      monthly_report_string,
+      std::make_shared<ledger::MonthlyReportInfoPtr>(std::move(monthly_report)),
       callback);
 
   ledger_->database()->GetTransactionReport(month, year, transaction_callback);
@@ -74,27 +69,20 @@ void Report::OnTransactions(
     ledger::TransactionReportInfoList transaction_report,
     const ledger::ActivityMonth month,
     const uint32_t year,
-    const std::string& monthly_report_string,
+    std::shared_ptr<ledger::MonthlyReportInfoPtr> shared_report,
     ledger::GetMonthlyReportCallback callback) {
-  auto monthly_report = braveledger_bind_util::FromStringToMonthlyReport(
-      monthly_report_string);
-
-  if (!monthly_report) {
+  if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  monthly_report->transactions = std::move(transaction_report);
-
-  const std::string callback_monthly_string =
-      braveledger_bind_util::FromMonthlyReportToString(
-          std::move(monthly_report));
+  (*shared_report)->transactions = std::move(transaction_report);
 
   auto contribution_callback = std::bind(&Report::OnContributions,
       this,
       _1,
-      callback_monthly_string,
+      shared_report,
       callback);
 
   ledger_->database()->GetContributionReport(
@@ -105,20 +93,17 @@ void Report::OnTransactions(
 
 void Report::OnContributions(
     ledger::ContributionReportInfoList contribution_report,
-    const std::string& monthly_report_string,
+    std::shared_ptr<ledger::MonthlyReportInfoPtr> shared_report,
     ledger::GetMonthlyReportCallback callback) {
-  auto monthly_report = braveledger_bind_util::FromStringToMonthlyReport(
-      monthly_report_string);
-
-  if (!monthly_report) {
+  if (!shared_report) {
     BLOG(0, "Could not parse monthly report");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  monthly_report->contributions = std::move(contribution_report);
+  (*shared_report)->contributions = std::move(contribution_report);
 
-  callback(ledger::Result::LEDGER_OK, std::move(monthly_report));
+  callback(ledger::Result::LEDGER_OK, std::move(*shared_report));
 }
 
 // This will be removed when we move reports in database and just order in db

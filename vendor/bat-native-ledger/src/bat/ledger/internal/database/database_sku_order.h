@@ -48,7 +48,7 @@ class DatabaseSKUOrder: public DatabaseTable {
 
   void OnGetRecordItems(
       ledger::SKUOrderItemList list,
-      const std::string& order_string,
+      std::shared_ptr<ledger::SKUOrderPtr> shared_order,
       ledger::GetSKUOrderCallback callback);
 
   std::unique_ptr<DatabaseSKUOrderItems> items_;

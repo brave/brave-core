@@ -67,7 +67,7 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   void OnGetPublishers(
       ledger::ContributionPublisherList list,
-      const std::string& contribution_string,
+      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
       ledger::GetContributionInfoCallback callback);
 
   void OnGetOneTimeTips(
@@ -80,7 +80,7 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   void OnGetContributionReportPublishers(
       std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-      const std::string& contribution_list_string,
+      std::shared_ptr<ledger::ContributionInfoList> shared_contributions,
       ledger::GetContributionReportCallback callback);
 
   void OnGetList(
@@ -89,7 +89,7 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   void OnGetListPublishers(
       ledger::ContributionPublisherList list,
-      const std::string& contribution_list_string,
+      std::shared_ptr<ledger::ContributionInfoList> shared_contributions,
       ledger::ContributionInfoListCallback callback);
 
   std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;

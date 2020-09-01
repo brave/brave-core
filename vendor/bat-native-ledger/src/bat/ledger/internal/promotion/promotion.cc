@@ -13,7 +13,6 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -219,7 +218,7 @@ void Promotion::OnGetAllPromotions(
       auto legacy_callback = std::bind(&Promotion::LegacyClaimedSaved,
           this,
           _1,
-          braveledger_bind_util::FromPromotionToString(item->Clone()));
+          std::make_shared<ledger::PromotionPtr>(item->Clone()));
       ledger_->database()->SavePromotion(item->Clone(), legacy_callback);
       continue;
     }
@@ -273,16 +272,13 @@ void Promotion::OnGetAllPromotionsFromDatabase(
 
 void Promotion::LegacyClaimedSaved(
     const ledger::Result result,
-    const std::string& promotion_string) {
+    std::shared_ptr<ledger::PromotionPtr> shared_promotion) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Save failed");
     return;
   }
 
-  auto promotion_ptr =
-      braveledger_bind_util::FromStringToPromotion(promotion_string);
-
-  GetCredentials(std::move(promotion_ptr), [](const ledger::Result _){});
+  GetCredentials(std::move(*shared_promotion), [](const ledger::Result _){});
 }
 
 void Promotion::Claim(
@@ -392,7 +388,7 @@ void Promotion::OnCompletedAttestation(
   auto save_callback = std::bind(&Promotion::AttestedSaved,
       this,
       _1,
-      braveledger_bind_util::FromPromotionToString(promotion->Clone()),
+      std::make_shared<ledger::PromotionPtr>(promotion->Clone()),
       callback);
 
   ledger_->database()->SavePromotion(promotion->Clone(), save_callback);
@@ -400,18 +396,14 @@ void Promotion::OnCompletedAttestation(
 
 void Promotion::AttestedSaved(
     const ledger::Result result,
-    const std::string& promotion_string,
+    std::shared_ptr<ledger::PromotionPtr> shared_promotion,
     ledger::AttestPromotionCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Save failed ");
     callback(result, nullptr);
     return;
   }
-
-  auto promotion_ptr =
-      braveledger_bind_util::FromStringToPromotion(promotion_string);
-
-  if (!promotion_ptr) {
+  if (!shared_promotion) {
     BLOG(1, "Promotion is null");
     callback(ledger::Result::LEDGER_ERROR, nullptr);
     return;
@@ -420,10 +412,10 @@ void Promotion::AttestedSaved(
   auto claim_callback = std::bind(&Promotion::Complete,
       this,
       _1,
-      promotion_ptr->id,
+      (*shared_promotion)->id,
       callback);
 
-  GetCredentials(std::move(promotion_ptr), claim_callback);
+  GetCredentials((*shared_promotion)->Clone(), claim_callback);
 }
 
 void Promotion::Complete(

@@ -68,7 +68,7 @@ class ContributionSKU {
 
   void TransactionStepSaved(
       const ledger::Result result,
-      const std::string& order_string,
+      std::shared_ptr<ledger::SKUOrderPtr> shared_order,
       ledger::ResultCallback callback);
 
   void Completed(
@@ -98,7 +98,7 @@ class ContributionSKU {
 
   void OnOrder(
       ledger::SKUOrderPtr order,
-      const std::string& contribution_string,
+      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
       ledger::ResultCallback callback);
 
   void RetryStartStep(

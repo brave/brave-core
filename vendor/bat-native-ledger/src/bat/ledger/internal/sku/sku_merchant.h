@@ -50,7 +50,7 @@ class SKUMerchant : public SKU  {
 
   void OnServerPublisherInfo(
       ledger::ServerPublisherInfoPtr info,
-      const std::string& order_string,
+      std::shared_ptr<ledger::SKUOrderPtr> shared_order,
       const ledger::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 

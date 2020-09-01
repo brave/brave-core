@@ -6,7 +6,6 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/bind_util.h"
 #include "bat/ledger/internal/database/database_sku_order.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -177,24 +176,23 @@ void DatabaseSKUOrder::OnGetRecord(
   auto items_callback = std::bind(&DatabaseSKUOrder::OnGetRecordItems,
       this,
       _1,
-      braveledger_bind_util::FromSKUOrderToString(info->Clone()),
+      std::make_shared<ledger::SKUOrderPtr>(info->Clone()),
       callback);
   items_->GetRecordsByOrderId(info->order_id, items_callback);
 }
 
 void DatabaseSKUOrder::OnGetRecordItems(
     ledger::SKUOrderItemList list,
-    const std::string& order_string,
+    std::shared_ptr<ledger::SKUOrderPtr> shared_order,
     ledger::GetSKUOrderCallback callback) {
-  auto order = braveledger_bind_util::FromStringToSKUOrder(order_string);
-  if (!order) {
+  if (!shared_order) {
     BLOG(1, "Order is null");
     callback({});
     return;
   }
 
-  order->items = std::move(list);
-  callback(std::move(order));
+  (*shared_order)->items = std::move(list);
+  callback(std::move(*shared_order));
 }
 
 void DatabaseSKUOrder::GetRecordByContributionId(

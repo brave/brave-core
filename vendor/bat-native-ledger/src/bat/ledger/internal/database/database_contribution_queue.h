@@ -32,7 +32,7 @@ class DatabaseContributionQueue: public DatabaseTable {
  private:
   void OnInsertOrUpdate(
       ledger::DBCommandResponsePtr response,
-      const std::string& queue_string,
+      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
       ledger::ResultCallback callback);
 
   void OnGetFirstRecord(
@@ -41,7 +41,7 @@ class DatabaseContributionQueue: public DatabaseTable {
 
   void OnGetPublishers(
       ledger::ContributionQueuePublisherList list,
-      const std::string& queue_string,
+      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
       ledger::GetFirstContributionQueueCallback callback);
 
   std::unique_ptr<DatabaseContributionQueuePublishers> publishers_;
