@@ -404,6 +404,7 @@
               {
                 "name": "properties",
                 "type": "object",
+                "optional": true,
                 "properties": {
                   "publisherKey": {
                     "type": "string"
@@ -455,13 +456,14 @@
               {
                 "name": "publisher",
                 "type": "object",
+                "optional": true,
                 "properties": {
                   "percentage": {
                     "type": "integer",
                     "description": "publisher attention score"
                   },
                   "excluded": {
-                    "type": "boolean",
+                    "type": "number",
                     "description": "is site excluded from auto contribute"
                   },
                   "provider": {

@@ -131,14 +131,12 @@ BraveRewardsGetPublisherInfoFunction::Run() {
 void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
     const int32_t result,
     std::unique_ptr<::brave_rewards::PublisherInfo> info) {
-  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-
   if (!info) {
-    Respond(
-        TwoArguments(std::make_unique<base::Value>(result), std::move(dict)));
+    Respond(OneArgument(std::make_unique<base::Value>(result)));
     return;
   }
 
+  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
   dict->SetStringKey("publisherKey", info->id);
   dict->SetStringKey("name", info->name);
   dict->SetIntKey("percentage", info->percent);
@@ -180,14 +178,12 @@ BraveRewardsGetPublisherPanelInfoFunction::Run() {
 void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
     const int32_t result,
     std::unique_ptr<::brave_rewards::PublisherInfo> info) {
-  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
-
   if (!info) {
-    Respond(
-        TwoArguments(std::make_unique<base::Value>(result), std::move(dict)));
+    Respond(OneArgument(std::make_unique<base::Value>(result)));
     return;
   }
 
+  auto dict = std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
   dict->SetStringKey("publisherKey", info->id);
   dict->SetStringKey("name", info->name);
   dict->SetIntKey("percentage", info->percent);
