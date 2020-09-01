@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.view.Gravity;
+import android.animation.ValueAnimator;
 import com.airbnb.lottie.LottieAnimationView;
 
 import org.chromium.base.ContextUtils;
@@ -63,9 +64,11 @@ public class OnboardingV2Fragment extends Fragment {
 
 	private int mPosition;
 	private HighlightDialogListener highlightDialogListener;
+	private boolean isFromStats;
 
 	private LottieAnimationView mAnimatedView;
 	private Button mAction;
+	private Button mLearnMoreButton;
 	private View mIndicator1;
 	private View mIndicator2;
 	private View mIndicator3;
@@ -92,10 +95,10 @@ public class OnboardingV2Fragment extends Fragment {
 	}
 
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mContext = ContextUtils.getApplicationContext();
-    }
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mContext = ContextUtils.getApplicationContext();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -125,13 +128,21 @@ public class OnboardingV2Fragment extends Fragment {
 			}
 		});
 
+		mLearnMoreButton = view.findViewById(R.id.btn_learn_more);
+		mLearnMoreButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				highlightDialogListener.onLearnMore();
+			}
+		});
+
 		updateActionText();
 
 		mAnimatedView = view.findViewById(R.id.onboarding_image);
 		if (mAnimations.get(mPosition) != null) {
 			mAnimatedView.setVisibility(View.VISIBLE);
 			mAnimatedView.setAnimation(mAnimations.get(mPosition));
-			mAnimatedView.loop(false);
+			mAnimatedView.setRepeatCount(ValueAnimator.INFINITE);
 		}
 
 		mIndicator1 = view.findViewById(R.id.indicator_1);
@@ -152,9 +163,11 @@ public class OnboardingV2Fragment extends Fragment {
 		case 3:
 			mIndicator4.setBackground(mContext.getResources().getDrawable(R.drawable.selected_indicator));
 			FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-            FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-    		params.gravity = Gravity.CENTER;
-    		mOnboardingLayout.setLayoutParams(params);
+			    FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+			params.gravity = Gravity.CENTER;
+			mOnboardingLayout.setLayoutParams(params);
+			if (isFromStats)
+				mLearnMoreButton.setVisibility(View.VISIBLE);
 			break;
 		}
 	}
@@ -166,6 +179,10 @@ public class OnboardingV2Fragment extends Fragment {
 	public void setHighlightListener(HighlightDialogListener highlightDialogListener) {
 		this.highlightDialogListener = highlightDialogListener;
 	}
+
+	public void setFromStats(boolean isFromStats) {
+        this.isFromStats = isFromStats;
+    }
 
 	private void updateActionText() {
 		if (mAction != null) {

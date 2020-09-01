@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import org.chromium.base.Log;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.CommandLine;
 import org.chromium.base.ContextUtils;
@@ -70,6 +71,9 @@ import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.OnboardingActivity;
 import org.chromium.chrome.browser.CrossPromotionalModalDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.brave_stats.BraveStatsUtil;
+import org.chromium.chrome.browser.ntp.NewTabPage;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -201,7 +205,6 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
 
-
         int appOpenCount = SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT);
         SharedPreferencesManager.getInstance().writeInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT, appOpenCount + 1);
 
@@ -214,6 +217,8 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             BraveSyncReflectionUtils.getSyncWorker();
         }
 
+        checkForNotificationData();
+
         if (!RateUtils.getInstance(this).getPrefRateEnabled()) {
             RateUtils.getInstance(this).setPrefRateEnabled(true);
             RateUtils.getInstance(this).setNextRateDateAndCount();
@@ -223,7 +228,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             showBraveRateDialog();
 
         if (PackageUtils.isFirstInstall(this)
-            && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
+                && SharedPreferencesManager.getInstance().readInt(BravePreferenceKeys.BRAVE_APP_OPEN_COUNT) == 1) {
             Calendar calender = Calendar.getInstance();
             calender.setTime(new Date());
             calender.add(Calendar.DATE, DAYS_4);
@@ -239,7 +244,7 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         if (onboardingActivity == null
-                && OnboardingPrefManager.getInstance().showOnboardingForSkip()) {
+                && OnboardingPrefManager.getInstance().showOnboardingForSkip(this)) {
             OnboardingPrefManager.getInstance().showOnboarding(this);
             OnboardingPrefManager.getInstance().setOnboardingShownForSkip(true);
         }
@@ -257,9 +262,64 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
             OnboardingPrefManager.getInstance().setCrossPromoModalShown(true);
         }
         BraveSyncReflectionUtils.showInformers();
+
+        if (!OnboardingPrefManager.getInstance().isOneTimeNotificationStarted()
+                && PackageUtils.isFirstInstall(this)) {
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_3);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.HOUR_24);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_6);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_10);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_30);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DAY_35);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_1);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_2);
+            RetentionNotificationUtil.scheduleNotification(this, RetentionNotificationUtil.DEFAULT_BROWSER_3);
+            OnboardingPrefManager.getInstance().setOneTimeNotificationStarted(true);
+        }
     }
 
-    public void showOnboarding() {
+    private void checkForNotificationData() {
+        Intent notifIntent = getIntent();
+        if (notifIntent != null && notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE) != null) {
+            Log.e("NTP", notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE));
+            String notificationType = notifIntent.getStringExtra(RetentionNotificationUtil.NOTIFICATION_TYPE);
+            switch (notificationType) {
+            case RetentionNotificationUtil.HOUR_3:
+            case RetentionNotificationUtil.HOUR_24:
+            case RetentionNotificationUtil.EVERY_SUNDAY:
+                checkForBraveStats();
+                break;
+            case RetentionNotificationUtil.DAY_6:
+            case RetentionNotificationUtil.BRAVE_STATS_ADS_TRACKERS:
+            case RetentionNotificationUtil.BRAVE_STATS_DATA:
+            case RetentionNotificationUtil.BRAVE_STATS_TIME:
+                if (!NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+                    getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+                }
+                break;
+            case RetentionNotificationUtil.DAY_10:
+            case RetentionNotificationUtil.DAY_30:
+            case RetentionNotificationUtil.DAY_35:
+                openRewardsPanel();
+                break;
+            }
+        }
+    }
+
+    public void checkForBraveStats() {
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+            BraveStatsUtil.showBraveStats();
+        } else {
+            if (!NewTabPage.isNTPUrl(getActivityTab().getUrlString())) {
+                OnboardingPrefManager.getInstance().setFromNotification(true);
+                getTabCreator(false).launchUrl(UrlConstants.NTP_URL, TabLaunchType.FROM_CHROME_UI);
+            } else {
+                showOnboardingV2(false);
+            }
+        }
+    }
+
+    public void showOnboardingV2(boolean fromStats) {
         OnboardingPrefManager.getInstance().setNewOnboardingShown(true);
         FragmentManager fm = getSupportFragmentManager();
         HighlightDialogFragment fragment = (HighlightDialogFragment) fm
@@ -271,8 +331,19 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         }
 
         fragment = new HighlightDialogFragment();
+        Bundle fragmentBundle = new Bundle();
+        fragmentBundle.putBoolean(OnboardingPrefManager.FROM_STATS, fromStats);
+        fragment.setArguments(fragmentBundle);
         transaction.add(fragment, HighlightDialogFragment.TAG_FRAGMENT);
         transaction.commit();
+    }
+
+    public void hideRewardsOnboardingIcon() {
+        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.hideRewardsOnboardingIcon();
+        }
     }
 
     private void createNotificationChannel() {
@@ -377,6 +448,14 @@ public abstract class BraveActivity<C extends ChromeActivityComponent> extends C
         assert layout != null;
         if (layout != null) {
             layout.dismissRewardsPanel();
+        }
+    }
+
+    public void dismissShieldsTooltip() {
+        BraveToolbarLayout layout = (BraveToolbarLayout)findViewById(R.id.toolbar);
+        assert layout != null;
+        if (layout != null) {
+            layout.dismissShieldsTooltip();
         }
     }
 

@@ -18,10 +18,13 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.notifications.BraveAdsNotificationBuilder;
 import org.chromium.chrome.browser.notifications.NotificationBuilderBase;
 import org.chromium.chrome.browser.notifications.NotificationUmaTracker;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
+import org.chromium.chrome.browser.notifications.retention.RetentionNotificationPublisher;
 import org.chromium.components.browser_ui.notifications.ChromeNotification;
 import org.chromium.components.browser_ui.notifications.NotificationManagerProxyImpl;
 import org.chromium.components.browser_ui.notifications.NotificationMetadata;
 import org.chromium.components.browser_ui.notifications.PendingIntentProvider;
+import org.chromium.chrome.browser.BraveActivity;
 
 import java.util.Locale;
 
@@ -34,7 +37,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     private static String BRAVE_ONBOARDING_ORIGIN_EN = "https://brave.com/my-first-ad/";
     private static String BRAVE_ONBOARDING_ORIGIN_DE = "https://brave.com/de/my-first-ad/";
     private static String BRAVE_ONBOARDING_ORIGIN_FR = "https://brave.com/fr/my-first-ad/";
-    private static final String DEEP_LINK = "deep_link";
+    public static final String DEEP_LINK = "deep_link";
 
     private static final String COUNTRY_CODE_DE = "de_DE";
     private static final String COUNTRY_CODE_FR = "fr_FR";
@@ -63,7 +66,7 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
         notificationManager.notify(notification);
     }
 
-    private static PendingIntentProvider getDeepLinkIntent(Context context) {
+    public static PendingIntentProvider getDeepLinkIntent(Context context) {
         Intent intent = new Intent(context, BraveOnboardingNotification.class);
         intent.setAction(DEEP_LINK);
         return new PendingIntentProvider(
@@ -74,13 +77,23 @@ public class BraveOnboardingNotification extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
+        BraveActivity braveActivity = BraveActivity.getBraveActivity();
         if (action != null && action.equals(DEEP_LINK)) {
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getNotificationUrl()));
-            webIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            webIntent.setPackage(context.getPackageName());
-            context.startActivity(webIntent);
+            if (braveActivity != null) {
+                braveActivity.openRewardsPanel();
+                Intent launchIntent = new Intent(Intent.ACTION_MAIN);
+                launchIntent.setPackage(context.getPackageName());
+                launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(launchIntent);
+            } else {
+                intent.putExtra(RetentionNotificationUtil.NOTIFICATION_TYPE, RetentionNotificationUtil.DAY_10);
+                RetentionNotificationPublisher.backgroundNotificationAction(context, intent);
+            }
         } else {
             showOnboardingNotification(context);
+            if (braveActivity != null) {
+                braveActivity.hideRewardsOnboardingIcon();
+            }
         }
     }
 

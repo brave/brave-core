@@ -133,17 +133,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public long insertStats(BraveStatsTable braveStat) {
         // if (!isAdsTrackerAlreadyAdded(braveStat)) {
-            SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
-            ContentValues values = new ContentValues();
-            values.put(BraveStatsTable.COLUMN_URL, braveStat.getUrl());
-            values.put(BraveStatsTable.COLUMN_DOMAIN, braveStat.getDomain());
-            values.put(BraveStatsTable.COLUMN_STAT_TYPE, braveStat.getStatType());
-            values.put(BraveStatsTable.COLUMN_STAT_SITE, braveStat.getStatSite());
-            values.put(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN, braveStat.getStatSiteDomain());
-            values.put(BraveStatsTable.COLUMN_TIMESTAMP, braveStat.getTimestamp());
+        ContentValues values = new ContentValues();
+        values.put(BraveStatsTable.COLUMN_URL, braveStat.getUrl());
+        values.put(BraveStatsTable.COLUMN_DOMAIN, braveStat.getDomain());
+        values.put(BraveStatsTable.COLUMN_STAT_TYPE, braveStat.getStatType());
+        values.put(BraveStatsTable.COLUMN_STAT_SITE, braveStat.getStatSite());
+        values.put(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN, braveStat.getStatSiteDomain());
+        values.put(BraveStatsTable.COLUMN_TIMESTAMP, braveStat.getTimestamp());
 
-            return  db.insert(BraveStatsTable.TABLE_NAME, null, values);
+        return  db.insert(BraveStatsTable.TABLE_NAME, null, values);
         // }
         // return -1;
     }
@@ -152,8 +152,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String sql = "SELECT * FROM "
                      + BraveStatsTable.TABLE_NAME
-                     + " WHERE " + BraveStatsTable.COLUMN_STAT_SITE + " = '" + braveStat.getStatSite()+"'"
-                     + " AND "+BraveStatsTable.COLUMN_URL+" = '"+braveStat.getUrl()+"'";
+                     + " WHERE " + BraveStatsTable.COLUMN_STAT_SITE + " = '" + braveStat.getStatSite() + "'"
+                     + " AND " + BraveStatsTable.COLUMN_URL + " = '" + braveStat.getUrl() + "'";
 
         Log.e("NTP", sql);
 
@@ -166,9 +166,38 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return count > 0;
     }
 
-    public List<BraveStatsTable> getAllStatsWithDate(String thresholdTime, String currentTime) {
+    public List<BraveStatsTable> getAllStats() {
         List<BraveStatsTable> braveStats = new ArrayList<>();
 
+        // Select All Query
+        String selectQuery = "SELECT  * FROM "
+                             + BraveStatsTable.TABLE_NAME;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                BraveStatsTable braveStat = new BraveStatsTable(
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_URL)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_DOMAIN)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_TYPE)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_STAT_SITE_DOMAIN)),
+                    cursor.getString(cursor.getColumnIndex(BraveStatsTable.COLUMN_TIMESTAMP)));
+
+                braveStats.add(braveStat);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return braveStats;
+    }
+
+    public List<BraveStatsTable> getAllStatsWithDate(String thresholdTime, String currentTime) {
+        List<BraveStatsTable> braveStats = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM "
                              + BraveStatsTable.TABLE_NAME
@@ -249,6 +278,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return braveStats;
     }
 
+    public void clearStatsTable() {
+        String selectQuery = "DELETE FROM " + BraveStatsTable.TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(selectQuery);
+    }
+
     public long insertSavedBandwidth(SavedBandwidthTable savedBandwidthTable) {
         // get writable database as we want to write data
         SQLiteDatabase db = this.getWritableDatabase();
@@ -259,34 +294,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         // insert row
         return db.insert(SavedBandwidthTable.TABLE_NAME, null, values);
-    }
-
-    public List<SavedBandwidthTable> getAllSavedBandwidthWithDate(String thresholdTime, String currentTime) {
-        List<SavedBandwidthTable> savedBandwidths = new ArrayList<>();
-
-        // Select All Query
-        String selectQuery = "SELECT  * FROM "
-                             + SavedBandwidthTable.TABLE_NAME
-                             + " WHERE " + BraveStatsTable.COLUMN_TIMESTAMP
-                             + " BETWEEN date('" + thresholdTime + "') AND date('" + currentTime + "')";
-
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
-            do {
-                SavedBandwidthTable savedBandwidthTable = new SavedBandwidthTable(
-                    cursor.getLong(cursor.getColumnIndex(SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH)),
-                    cursor.getString(cursor.getColumnIndex(SavedBandwidthTable.COLUMN_TIMESTAMP)));
-
-                savedBandwidths.add(savedBandwidthTable);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        return savedBandwidths;
     }
 
     public long getTotalSavedBandwidthWithDate(String thresholdTime, String currentTime) {
@@ -304,5 +311,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         cursor.close();
         return sum;
+    }
+
+    public long getTotalSavedBandwidth() {
+        int sum = 0;
+        String selectQuery = "SELECT  SUM(" + SavedBandwidthTable.COLUMN_SAVED_BANDWIDTH + ") as total FROM "
+                             + SavedBandwidthTable.TABLE_NAME;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst())
+            sum = cursor.getInt(cursor.getColumnIndex("total"));
+
+        cursor.close();
+        return sum;
+    }
+
+    public void clearSavedBandwidthTable() {
+        String selectQuery = "DELETE FROM " + SavedBandwidthTable.TABLE_NAME;
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(selectQuery);
     }
 }

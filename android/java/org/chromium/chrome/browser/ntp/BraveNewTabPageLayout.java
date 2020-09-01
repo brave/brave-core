@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -90,7 +91,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private static final String PREF_TRACKERS_BLOCKED_COUNT = "trackers_blocked_count";
     private static final String PREF_ADS_BLOCKED_COUNT = "ads_blocked_count";
     private static final String PREF_HTTPS_UPGRADES_COUNT = "https_upgrades_count";
-    private static final short MILLISECONDS_PER_ITEM = 50;
+    public static final short MILLISECONDS_PER_ITEM = 50;
 
     private ViewGroup mBraveStatsView;
 
@@ -114,6 +115,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
     private DatabaseHelper mDatabaseHelper;
 
     private ViewGroup mSiteSectionView;
+    private LottieAnimationView mBadgeAnimationView;
 
     private Tab mTab;
     private Activity mActivity;
@@ -150,19 +152,33 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         FrameLayout mBadgeLayout = findViewById(R.id.badge_layout);
         ImageView mBadgeImageView = findViewById(R.id.badge_image_view);
+        if (!BravePrefServiceBridge.getInstance().getBoolean(BravePref.NTP_SHOW_BACKGROUND_IMAGE)
+                || !NTPUtil.shouldEnableNTPFeature()) {
+            mBadgeImageView.setColorFilter(ContextCompat.getColor(ContextUtils.getApplicationContext(), R.color.brave_stats_badge_tint_color), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
         mBadgeImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
-                    BraveStatsUtil.showBraveStats();
-                } else {
-                    ((BraveActivity)mActivity).showOnboarding();
-                }
+                checkForBraveStats();
+                OnboardingPrefManager.getInstance().setShowBadgeAnimation(false);
             }
         });
 
-        if (OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            mBadgeLayout.setVisibility(View.VISIBLE);
+        mBadgeAnimationView = (LottieAnimationView) findViewById(R.id.badge_image);
+
+        mBraveStatsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkForBraveStats();
+            }
+        });
+    }
+
+    private void checkForBraveStats() {
+        if (OnboardingPrefManager.getInstance().isBraveStatsEnabled()) {
+            BraveStatsUtil.showBraveStats();
+        } else {
+            ((BraveActivity)mActivity).showOnboardingV2(true);
         }
     }
 
@@ -204,14 +220,23 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
         if (sponsoredTab == null) {
             initilizeSponsoredTab();
         }
-        if (getPlaceholder() != null) {
-            getPlaceholder().setVisibility(View.GONE);
+        if (getPlaceholder() != null
+                && ((ViewGroup)getPlaceholder().getParent()) != null) {
+            ((ViewGroup)getPlaceholder().getParent()).removeView(getPlaceholder());
         }
         checkAndShowNTPImage(false);
         mNTPBackgroundImagesBridge.addObserver(mNTPBackgroundImageServiceObserver);
         if (PackageUtils.isFirstInstall(ContextUtils.getApplicationContext())
                 && !OnboardingPrefManager.getInstance().isNewOnboardingShown()) {
-            ((BraveActivity)mActivity).showOnboarding();
+            ((BraveActivity)mActivity).showOnboardingV2(false);
+        }
+        if (OnboardingPrefManager.getInstance().isFromNotification() ) {
+            ((BraveActivity)mActivity).showOnboardingV2(false);
+            OnboardingPrefManager.getInstance().setFromNotification(false);
+        }
+        if (mBadgeAnimationView != null
+                && !OnboardingPrefManager.getInstance().shouldShowBadgeAnimation()) {
+            mBadgeAnimationView.setVisibility(View.INVISIBLE);
         }
     }
 
@@ -269,6 +294,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout {
 
         assert (activity instanceof BraveActivity);
         mActivity = activity;
+        ((BraveActivity)mActivity).dismissShieldsTooltip();
     }
 
     @Override
