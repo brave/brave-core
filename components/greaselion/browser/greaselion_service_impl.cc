@@ -194,6 +194,11 @@ bool GreaselionServiceImpl::IsGreaselionExtension(const std::string& id) {
                    id) != greaselion_extensions_.end();
 }
 
+std::vector<extensions::ExtensionId>
+GreaselionServiceImpl::GetExtensionIdsForTesting() {
+  return greaselion_extensions_;
+}
+
 void GreaselionServiceImpl::UpdateInstalledExtensions() {
   if (update_in_progress_)
     return;
