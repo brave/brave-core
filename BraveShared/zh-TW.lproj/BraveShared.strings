@@ -296,7 +296,7 @@
 "DDGCalloutEnable" = "是";
 
 /* DuckDuckGo message. */
-"DDGCalloutMessage" = "您在隱私分頁中搜尋時，Brave 會使用 DuckDuckGo 回應您的搜尋要求。DuckDuckGo 搜尋引擎不會收集您的搜尋記錄，可以保護您的搜尋隱私。";
+"DDGCalloutMessage" = "在隱私分頁中執行私密搜尋時，Brave 會使用 DuckDuckGo 回應您的搜尋要求。DuckDuckGo 搜尋引擎不會收集您的搜尋記錄，藉以保護您的搜尋隱私。";
 
 /* DuckDuckGo callout no action. */
 "DDGCalloutNo" = "否";
@@ -596,13 +596,13 @@
 "ntp.claimRewards" = "領取代幣";
 
 /* Placeholder example: 'You earned 42 BAT by browsing with Brave.' */
-"ntp.earningsReport" = "您使用 Brave 瀏覽，賺取了 %@。";
+"ntp.earningsReport" = "您使用 Brave 瀏覽期間，一共賺取了 %@。";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnAds" = "查看此圖片即可賺取代幣。快啟用 Brave Ads，開始支持創作者。";
+"ntp.getPaidForThisImageTurnAds" = "查看此圖片即可賺取代幣。立即啟用 Brave Ads，開始支持創作者。";
 
 /* No comment provided by engineer. */
-"ntp.getPaidForThisImageTurnRewards" = "查看此圖片即可賺取代幣。快啟用 Brave Rewards，開始支持創作者。";
+"ntp.getPaidForThisImageTurnRewards" = "查看此圖片即可賺取代幣。立即啟用 Brave Rewards，開始支持創作者。";
 
 /* No comment provided by engineer. */
 "ntp.getPaidToSeeThisImage" = "查看此圖片即可賺取代幣。";
@@ -614,7 +614,7 @@
 "ntp.hideSponsoredImages" = "隱藏贊助圖片";
 
 /* No comment provided by engineer. */
-"ntp.learnMoreAboutBrandedImages" = "查看贊助圖片即可賺取代幣，用於支持創作者。使用 Brave Ads，畫面所顯示的廣告全由您掌控。";
+"ntp.learnMoreAboutBrandedImages" = "查看贊助圖片即可賺取代幣，支持創作者。啟用 Brave Ads 後，畫面顯示什麼廣告全由您掌控。";
 
 /* No comment provided by engineer. */
 "ntp.learnMoreAboutRewards" = "深入了解 Brave Rewards";
@@ -644,7 +644,7 @@
 "ntp.showMoreFavorites" = "顯示更多";
 
 /* No comment provided by engineer. */
-"ntp.supportWebCreatorsWithTokens" = "一邊瀏覽，一邊賺取代幣，用於獎勵優質容創作者。";
+"ntp.supportWebCreatorsWithTokens" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者。";
 
 /* No comment provided by engineer. */
 "ntp.turnOnBraveAds" = "啟用 Brave Ads";

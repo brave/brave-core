@@ -62,7 +62,7 @@
 "BraveRewardsAdsPayoutDateFormat" = "月 日";
 
 /* No comment provided by engineer. */
-"BraveRewardsAdsSubdivisionTargeting" = "狀態層級廣告目標";
+"BraveRewardsAdsSubdivisionTargeting" = "州層級的廣告目標鎖定";
 
 /* No comment provided by engineer. */
 "BraveRewardsAdsSubdivisionTargetingAutoDetect" = "自動偵測";
@@ -323,10 +323,10 @@
 "BraveRewardsSettings" = "設定";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBody" = "啟用 Brave Ads 即可開始賺取代幣，用於支持您喜愛的創作者！當您瀏覽時，瀏覽器頂端會顯示小型的隱私保護廣告。";
+"BraveRewardsSettingsAdsBody" = "啟用 Brave Ads 即可開始賺取代幣，而您可使用代幣支持喜愛的創作者！當您瀏覽時，瀏覽器頂端會顯示小篇幅的隱私保護廣告。";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsAdsBodyJapan" = "啟用 Brave Ads 即可開始賺取點數，用於支持您喜愛的創作者！當您瀏覽時，瀏覽器頂端會顯示小型的隱私保護廣告。";
+"BraveRewardsSettingsAdsBodyJapan" = "啟用 Brave Ads 即可開始賺取點數，而您可使用點數支持喜愛的創作者！當您瀏覽時，瀏覽器頂端會顯示小篇幅的隱私保護廣告。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsAdsComingSoonText" = "即將推出。";
@@ -350,10 +350,10 @@
 "BraveRewardsSettingsAutoContributeUpToValue" = "最高 %@";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody1" = "由於創作者需要您的支持，Brave 讓您以完全免費的方式提供支持。現在起，您可以在瀏覽時收集代幣，用於贊助您喜愛的創作者。";
+"BraveRewardsSettingsDisabledBody1" = "有鑑於創作者需要您的支持，於是 Brave 以完全免費的方式，為您提供支持的管道。現在起，您可以在瀏覽時獲得代幣，並用來贊助您喜愛的創作者。";
 
 /* No comment provided by engineer. */
-"BraveRewardsSettingsDisabledBody2" = "您的時間具有價值，您的個人資料隱私獲得保障，您還可以透過支持內容創作者獲得滿足。";
+"BraveRewardsSettingsDisabledBody2" = "在這裡，您的時間備受重視，您的個人資料隱私備受保障，您還可以透過支持內容創作者，獲得滿滿的成就感。";
 
 /* No comment provided by engineer. */
 "BraveRewardsSettingsDisabledTitle1" = "為什麼要 Brave Rewards？";
@@ -428,7 +428,7 @@
 "BraveRewardsTippingOneTimeTitle" = "您已發送小費給：";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingOverviewBody" = "您可以發送一些代幣來支持內容創作者。這是感謝他們提供豐富內容的一種方式。通過驗證的創作者會在每個日曆月的第一周獲得代幣。\n\n如果願意，您可以安排每月贊助，持續支持該創作者。";
+"BraveRewardsTippingOverviewBody" = "您可以發送代幣給內容創作者，予以支持，感謝他們提供豐富的內容。通過驗證的創作者會在每月的第一週收到代幣。\n\n如果願意，您可以安排每月定期贊助，長期支持創作者。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingOverviewTitle" = "歡迎！";
@@ -449,7 +449,7 @@
 "BraveRewardsTippingTitle" = "發送小費";
 
 /* No comment provided by engineer. */
-"BraveRewardsTippingUnverifiedDisclaimer" = "注意：創作者尚未註冊接收 Brave 用戶的代幣。您的瀏覽器將繼續嘗試贊助，直到他們通過驗證或 90 天期滿為止。";
+"BraveRewardsTippingUnverifiedDisclaimer" = "注意：創作者尚未註冊，無法接收 Brave 使用者的代幣。在創作者通過驗證或 90 天期滿之前，您的瀏覽器會繼續嘗試贊助。";
 
 /* No comment provided by engineer. */
 "BraveRewardsTippingWalletBalanceTitle" = "錢包餘額";
@@ -476,7 +476,7 @@
 "BraveRewardsTwoAdsPerHour" = "每小時 2 則廣告";
 
 /* No comment provided by engineer. */
-"BraveRewardsUnverifiedPublisherDisclaimer" = "創作者尚未註冊接受 Brave 用戶的代幣。您發送的所有代幣都將保留在您的錢包，直到他們通過驗證。";
+"BraveRewardsUnverifiedPublisherDisclaimer" = "創作者尚未註冊，無法接收 Brave 使用者的代幣。創作者通過驗證前，您發送的所有代幣都將保留在您的錢包內。";
 
 /* No comment provided by engineer. */
 "BraveRewardsVerified" = "通過 Brave 驗證的創作者";
@@ -632,10 +632,10 @@
 "RecurringText" = "定期";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescription" = "一邊瀏覽，一邊賺取代幣，用於獎勵優質容創作者";
+"RewardsOptInDescription" = "一邊瀏覽，一邊賺取代幣，獎勵優質的內容創作者";
 
 /* No comment provided by engineer. */
-"RewardsOptInDescriptionJapan" = "一邊瀏覽，一邊賺取點數，用於獎勵優質容創作者";
+"RewardsOptInDescriptionJapan" = "一邊瀏覽，一邊賺取點數，獎勵優質的內容創作者";
 
 /* No comment provided by engineer. */
 "RewardsOptInJoinTitle" = "加入獎勵";
