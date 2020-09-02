@@ -181,8 +181,9 @@ void BraveMockRenderViewContextMenu::UpdateMenuItem(
          << " command_id: " << command_id;
 }
 
-void BraveMockRenderViewContextMenu::UpdateMenuIcon(int command_id,
-                                                    const ui::ImageModel& image) {
+void BraveMockRenderViewContextMenu::UpdateMenuIcon(
+    int command_id,
+    const ui::ImageModel& image) {
   for (auto& item : items_) {
     if (item.command_id == command_id) {
       return;
