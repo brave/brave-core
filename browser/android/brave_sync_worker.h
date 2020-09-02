@@ -68,8 +68,6 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
  private:
   syncer::SyncService* GetSyncService() const;
-  syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
-  syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;
   void MarkFirstSetupComplete();
 
   // syncer::SyncServiceObserver implementation.
@@ -84,7 +82,6 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
-  base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };
