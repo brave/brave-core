@@ -128,9 +128,14 @@ source_set("shield_exceptions") {
   ]
 
   deps = [
-    "//brave/extensions:common",
     "//url",
   ]
+
+  if (!is_ios) {
+    deps += [
+      "//brave/extensions:common",
+    ]
+  }
 }
 
 config("constants_configs") {

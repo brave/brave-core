@@ -1,0 +1,15 @@
+diff --git a/extensions/common/url_pattern.cc b/extensions/common/url_pattern.cc
+index e2a42b879a572be08d61b1a3946a56274240e95e..f85b4b338759f75463a4e596eab245184ee27ece 100644
+--- a/extensions/common/url_pattern.cc
++++ b/extensions/common/url_pattern.cc
+@@ -22,6 +22,10 @@
+ #include "url/gurl.h"
+ #include "url/url_util.h"
+ 
++#if defined(OS_IOS)
++Checks if build error happens.
++#endif
++
+ const char URLPattern::kAllUrlsPattern[] = "<all_urls>";
+ 
+ namespace {
