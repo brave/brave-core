@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.ntp;
+package org.chromium.chrome.browser.ntp.widget;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -20,8 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
-import org.chromium.chrome.browser.ntp.NTPWidgetManager;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetListAdapter;
 
 public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
@@ -31,7 +32,7 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
         this.ntpWidgetListener = ntpWidgetListener;
     }
 
-    static NTPWidgetBottomSheetDialogFragment newInstance() {
+    public static NTPWidgetBottomSheetDialogFragment newInstance() {
         return new NTPWidgetBottomSheetDialogFragment();
     }
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-package org.chromium.chrome.browser.ntp;
+package org.chromium.chrome.browser.ntp.widget;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -18,8 +18,9 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.ntp.NTPWidgetAdapter;
-import org.chromium.chrome.browser.ntp.NTPWidgetManager;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
+import org.chromium.chrome.browser.ntp.widget.SwipeAndDragHelper;
 
 import java.util.List;
 
