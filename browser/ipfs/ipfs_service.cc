@@ -10,6 +10,7 @@
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ipfs/ipfs_service_observer.h"
 #include "brave/common/pref_names.h"
@@ -189,8 +190,14 @@ std::unique_ptr<network::SimpleURLLoader> IpfsService::CreateURLLoader(
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = gurl;
   request->method = "POST";
-  request->headers.SetHeader(net::HttpRequestHeaders::kOrigin,
-                             server_endpoint_.spec());
+
+  // Remove trailing "/".
+  std::string origin = server_endpoint_.spec();
+  if (base::EndsWith(origin, "/", base::CompareCase::INSENSITIVE_ASCII)) {
+    origin.pop_back();
+  }
+  request->headers.SetHeader(net::HttpRequestHeaders::kOrigin, origin);
+
   auto url_loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
   return url_loader;
