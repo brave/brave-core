@@ -147,8 +147,8 @@ public class BraveSyncWorker {
         nativeFinalizeSyncSetup(mNativeBraveSyncWorker);
     }
 
-    public boolean ResetSync() {
-        return nativeResetSync(mNativeBraveSyncWorker);
+    public void ResetSync() {
+        nativeResetSync(mNativeBraveSyncWorker);
     }
 
     public boolean getSyncV1WasEnabled() {
@@ -180,7 +180,7 @@ public class BraveSyncWorker {
 
     private native boolean nativeIsFirstSetupComplete(long nativeBraveSyncWorker);
 
-    private native boolean nativeResetSync(long nativeBraveSyncWorker);
+    private native void nativeResetSync(long nativeBraveSyncWorker);
 
     private native boolean nativeGetSyncV1WasEnabled(long nativeBraveSyncWorker);
     private native boolean nativeGetSyncV2MigrateNoticeDismissed(long nativeBraveSyncWorker);

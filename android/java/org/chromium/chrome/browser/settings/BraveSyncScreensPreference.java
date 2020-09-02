@@ -960,16 +960,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             public void onClick(DialogInterface dialog, int button) {
                 if (button == AlertDialog.BUTTON_POSITIVE) {
                     if (getBraveSyncWorker() != null) {
-                        boolean resetResult = getBraveSyncWorker().ResetSync();
-                        if (!resetResult) {
-                            Toast.makeText(getActivity().getApplicationContext(),
-                                         getResources().getString(
-                                                 R.string.brave_sync_try_reset_later_text),
-                                         Toast.LENGTH_LONG)
-                                    .show();
-                            return;
-                        }
-
+                        getBraveSyncWorker().ResetSync();
                         startLeaveSyncChainOperations();
                     }
                 }

@@ -13,10 +13,10 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/crypto/crypto.h"
+#include "brave/components/sync/driver/brave_sync_profile_sync_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
-#include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -83,12 +83,10 @@ void BraveSyncHandler::HandleGetSyncCode(const base::ListValue* args) {
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
 
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  std::string sync_code = brave_sync_prefs.GetSeed();
-  if (sync_code.empty()) {
-    std::vector<uint8_t> seed = brave_sync::crypto::GetSeed();
-    sync_code = brave_sync::crypto::PassphraseFromBytes32(seed);
-  }
+  auto* sync_service = GetSyncService();
+  std::string sync_code;
+  if (sync_service)
+    sync_code = sync_service->GetOrCreateSyncCode();
 
   ResolveJavascriptCallback(*callback_id, base::Value(sync_code));
 }
@@ -154,17 +152,12 @@ void BraveSyncHandler::HandleSetSyncCode(const base::ListValue* args) {
     return;
   }
 
-  std::vector<uint8_t> seed;
-  if (!brave_sync::crypto::PassphraseToBytes32(sync_code->GetString(), &seed)) {
-    LOG(ERROR) << "invalid sync code";
+  auto* sync_service = GetSyncService();
+  if (!sync_service || !sync_service->SetSyncCode(sync_code->GetString())) {
     RejectJavascriptCallback(*callback_id, base::Value(false));
     return;
   }
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  if (!brave_sync_prefs.SetSeed(sync_code->GetString())) {
-    ResolveJavascriptCallback(*callback_id, base::Value(false));
-    return;
-  }
+
   ResolveJavascriptCallback(*callback_id, base::Value(true));
 }
 
@@ -173,30 +166,26 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   CHECK_EQ(1U, args->GetSize());
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
-  base::Value callback_id_arg(callback_id->Clone());
 
   auto* sync_service = GetSyncService();
-  // Do not send self deleted commit if engine is not up and running
-  if (!sync_service || sync_service->GetTransportState() !=
-      syncer::SyncService::TransportState::ACTIVE) {
-    OnSelfDeleted(std::move(callback_id_arg));
+  if (!sync_service) {
+    ResolveJavascriptCallback(*callback_id, base::Value(true));
     return;
   }
 
-  syncer::DeviceInfoTracker* tracker = GetDeviceInfoTracker();
-  DCHECK(tracker);
-  const syncer::DeviceInfo* local_device_info =
-      GetLocalDeviceInfoProvider()->GetLocalDeviceInfo();
-
-  tracker->DeleteDeviceInfo(local_device_info->guid(),
-                            base::BindOnce(&BraveSyncHandler::OnSelfDeleted,
-                                           weak_ptr_factory_.GetWeakPtr(),
-                                           std::move(callback_id_arg)));
+  base::Value callback_id_arg(callback_id->Clone());
+  auto* device_info_sync_service =
+      DeviceInfoSyncServiceFactory::GetForProfile(profile_);
+  sync_service->ResetSync(device_info_sync_service,
+                          base::BindOnce(&BraveSyncHandler::OnResetDone,
+                                         weak_ptr_factory_.GetWeakPtr(),
+                                         std::move(callback_id_arg)));
 }
 
-syncer::SyncService* BraveSyncHandler::GetSyncService() const {
+syncer::BraveProfileSyncService* BraveSyncHandler::GetSyncService() const {
   return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
-             ? ProfileSyncServiceFactory::GetForProfile(profile_)
+             ? static_cast<syncer::BraveProfileSyncService*>(
+                 ProfileSyncServiceFactory::GetForProfile(profile_))
              : nullptr;
 }
 
@@ -213,17 +202,7 @@ syncer::LocalDeviceInfoProvider* BraveSyncHandler::GetLocalDeviceInfoProvider()
   return device_info_sync_service->GetLocalDeviceInfoProvider();
 }
 
-void BraveSyncHandler::OnSelfDeleted(base::Value callback_id) {
-  auto* sync_service = GetSyncService();
-  if (sync_service) {
-    // This function will follow normal reset process and set SyncRequested to
-    // false
-    sync_service->StopAndClear();
-  }
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  brave_sync_prefs.Clear();
-  // Sync prefs will be clear in ProfileSyncService::StopImpl
-
+void BraveSyncHandler::OnResetDone(base::Value callback_id) {
   ResolveJavascriptCallback(callback_id, base::Value(true));
 }
 

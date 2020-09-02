@@ -16,7 +16,7 @@
 namespace syncer {
 class DeviceInfoTracker;
 class LocalDeviceInfoProvider;
-class SyncService;
+class BraveProfileSyncService;
 }  // namespace syncer
 class Profile;
 
@@ -42,10 +42,10 @@ class BraveSyncHandler : public settings::SettingsPageUIHandler,
   void HandleGetQRCode(const base::ListValue* args);
   void HandleReset(const base::ListValue* args);
 
-  void OnSelfDeleted(base::Value callback_id);
+  void OnResetDone(base::Value callback_id);
 
   base::Value GetSyncDeviceList();
-  syncer::SyncService* GetSyncService() const;
+  syncer::BraveProfileSyncService* GetSyncService() const;
   syncer::DeviceInfoTracker* GetDeviceInfoTracker() const;
   syncer::LocalDeviceInfoProvider* GetLocalDeviceInfoProvider() const;
 
