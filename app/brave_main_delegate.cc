@@ -42,6 +42,7 @@
 #include "content/public/common/content_features.h"
 #include "content/public/common/content_switches.h"
 #include "google_apis/gaia/gaia_switches.h"
+#include "net/base/features.h"
 #include "services/device/public/cpp/device_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/common/features.h"
@@ -202,6 +203,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       // Upgrade all mixed content
       blink::features::kMixedContentAutoupgrade.name,
       password_manager::features::kPasswordImport.name,
+      net::features::kLegacyTLSEnforced.name,
       // Remove URL bar mixed control and allow site specific override instead
       features::kMixedContentSiteSetting.name,
       // Warn about Mixed Content optionally blockable content
