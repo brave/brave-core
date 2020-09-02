@@ -630,9 +630,10 @@ void LedgerImpl::SaveMediaInfo(
 }
 
 void LedgerImpl::UpdateMediaDuration(
+    const uint64_t window_id,
     const std::string& publisher_key,
     uint64_t duration) {
-  publisher()->UpdateMediaDuration(publisher_key, duration);
+  publisher()->UpdateMediaDuration(window_id, publisher_key, duration);
 }
 
 void LedgerImpl::GetPublisherInfo(

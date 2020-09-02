@@ -68,11 +68,6 @@ class Database {
       type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoListCallback callback);
 
-  void UpdateActivityInfoDuration(
-    const std::string& publisher_key,
-    uint64_t duration,
-    ledger::ResultCallback callback);
-
   void DeleteActivityInfo(
       const std::string& publisher_key,
       ledger::ResultCallback callback);

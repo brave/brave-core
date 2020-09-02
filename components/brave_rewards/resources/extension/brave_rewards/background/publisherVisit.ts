@@ -57,7 +57,7 @@ const handleMediaDurationMetadataResponse = (tabId: number, mediaType: string, d
     return
   }
 
-  chrome.braveRewards.updateMediaDuration(publisherKey, data.duration)
+  chrome.braveRewards.updateMediaDuration(tabId, publisherKey, data.duration)
 }
 
 const handleMediaDurationHandlerRegistrationRequest = (tabId: number, mediaType: string, data: MediaDurationHandlerRegistrationRequest) => {

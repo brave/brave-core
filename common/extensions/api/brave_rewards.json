@@ -375,6 +375,10 @@
         "description": "Update the media duration for a given resource",
         "parameters": [
           {
+            "name": "windowId",
+            "type": "number"
+          },
+          {
             "name": "publisherKey",
             "type": "string"
           },

@@ -794,6 +794,7 @@ void Publisher::OnServerPublisherInfoLoaded(
 }
 
 void Publisher::UpdateMediaDuration(
+    const uint64_t window_id,
     const std::string& publisher_key,
     uint64_t duration) {
   BLOG(1, "Media duration: " << duration);
@@ -802,29 +803,32 @@ void Publisher::UpdateMediaDuration(
                 this,
                 _1,
                 _2,
-                publisher_key,
+                window_id,
                 duration));
 }
 
 void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
     type::Result result,
     type::PublisherInfoPtr info,
-    const std::string& publisher_key,
+    const uint64_t window_id,
     uint64_t duration) {
   if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to retrieve publisher info while updating media duration");
     return;
   }
 
-  ledger_->database()->UpdateActivityInfoDuration(
-      publisher_key,
+  ledger::VisitData visit_data;
+  visit_data.name = info->name;
+  visit_data.url = info->url;
+  visit_data.provider = info->provider;
+  visit_data.favicon_url = info->favicon_url;
+
+  SaveVideoVisit(
+      info->id,
+      visit_data,
       duration,
-      [publisher_key](const type::Result result) {
-        if (result != type::Result::LEDGER_OK) {
-          BLOG(0, "Failed to update media duration for publisher");
-          return;
-        }
-      });
+      window_id,
+      [=](type::Result, type::PublisherInfoPtr) {});
 }
 
 void Publisher::GetPublisherPanelInfo(

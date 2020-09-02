@@ -399,58 +399,6 @@ void DatabaseActivityInfo::OnGetRecordsList(
   callback(std::move(list));
 }
 
-void DatabaseActivityInfo::UpdateDuration(
-    const std::string& publisher_key,
-    uint64_t duration,
-    ledger::ResultCallback callback) {
-  if (publisher_key.empty()) {
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
-  auto get_callback = std::bind(
-      &DatabaseActivityInfo::OnGetRecordForUpdateDuration,
-      this,
-      _1,
-      duration,
-      callback);
-  GetRecord(publisher_key, get_callback);
-}
-
-void DatabaseActivityInfo::OnGetRecordForUpdateDuration(
-    type::ActivityInfoPtr activity_info,
-    uint64_t duration,
-    ledger::ResultCallback callback) {
-  if (!activity_info) {
-    BLOG(0, "Activity info was not found");
-    callback(type::Result::LEDGER_ERROR);
-    return;
-  }
-
-  auto transaction = type::DBTransaction::New();
-
-  const std::string query = base::StringPrintf(
-    "UPDATE %s SET duration = ? WHERE publisher_id = ?",
-    kTableName);
-
-  auto command = type::DBCommand::New();
-  command->type = type::DBCommand::Type::RUN;
-  command->command = query;
-
-  BindInt(command.get(), 0, activity_info->duration + duration);
-  BindString(command.get(), 1, activity_info->id);
-
-  transaction->commands.push_back(std::move(command));
-
-  auto transaction_callback = std::bind(&OnResultCallback,
-      _1,
-      callback);
-
-  ledger_->ledger_client()->RunDBTransaction(
-      std::move(transaction),
-      transaction_callback);
-}
-
 void DatabaseActivityInfo::DeleteRecord(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {

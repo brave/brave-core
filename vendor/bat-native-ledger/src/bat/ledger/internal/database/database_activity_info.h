@@ -38,11 +38,6 @@ class DatabaseActivityInfo: public DatabaseTable {
       type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoListCallback callback);
 
-  void UpdateDuration(
-      const std::string& publisher_key,
-      uint64_t duration,
-      ledger::ResultCallback callback);
-
   void DeleteRecord(
       const std::string& publisher_key,
       ledger::ResultCallback callback);
@@ -59,11 +54,6 @@ class DatabaseActivityInfo: public DatabaseTable {
   void OnGetRecordsList(
       type::DBCommandResponsePtr response,
       ledger::PublisherInfoListCallback callback);
-
-  void OnGetRecordForUpdateDuration(
-      type::ActivityInfoPtr activity_info,
-      uint64_t duration,
-      ledger::ResultCallback callback);
 };
 
 }  // namespace database

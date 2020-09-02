@@ -96,7 +96,10 @@ class Publisher {
       const std::string& publisher_key,
       client::GetServerPublisherInfoCallback callback);
 
-  void UpdateMediaDuration(const std::string& publisher_key, uint64_t duration);
+  void UpdateMediaDuration(
+      const uint64_t window_id,
+      const std::string& publisher_key,
+      uint64_t duration);
 
   void GetPublisherPanelInfo(
       const std::string& publisher_key,
@@ -111,7 +114,7 @@ class Publisher {
   void OnGetPublisherInfoForUpdateMediaDuration(
       type::Result result,
       type::PublisherInfoPtr info,
-      const std::string& publisher_key,
+      const uint64_t window_id,
       uint64_t duration);
 
   void OnGetPanelPublisherInfo(

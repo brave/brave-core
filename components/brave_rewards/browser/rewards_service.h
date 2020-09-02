@@ -277,6 +277,7 @@ class RewardsService : public KeyedService {
       SaveMediaInfoCallback callback) = 0;
 
   virtual void UpdateMediaDuration(
+      const uint64_t window_id,
       const std::string& publisher_key,
       uint64_t duration) = 0;
 
