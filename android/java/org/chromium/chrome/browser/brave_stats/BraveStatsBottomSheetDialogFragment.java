@@ -111,10 +111,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             public void onShow(DialogInterface dialog) {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
                 View bottomSheetInternal = (View)view.getParent();
-                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-                if (!isTablet) {
-                    bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-                }
+                bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
                 bottomSheetInternal.requestLayout();
             }
         });
