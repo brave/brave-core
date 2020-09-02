@@ -21,8 +21,8 @@ const std::vector<std::string> supported_countries = {
   // United States
   "US",
   // EU Countries
-  "BE", "BG", "CZ", "DK", "DE",
-  "EE", "IE", "EL", "ES", "FR",
+  "BE", "BG", "CZ", "DK",
+  "EE", "IE", "EL", "ES",
   "HR", "IT", "CY", "LV", "LT",
   "LU", "HU", "MT", "NL", "AT",
   "PL", "PT", "RO", "SI", "SK",
