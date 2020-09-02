@@ -26,10 +26,6 @@
 
 #include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
-#include "components/sync_device_info/device_info.h"
-#include "components/sync_device_info/device_info_sync_service.h"
-#include "components/sync_device_info/device_info_tracker.h"
-#include "components/sync_device_info/local_device_info_provider.h"
 #include "components/unified_consent/unified_consent_metrics.h"
 
 #include "content/public/browser/browser_thread.h"
@@ -193,21 +189,19 @@ bool BraveSyncWorker::IsFirstSetupComplete(
          sync_service->GetUserSettings()->IsFirstSetupComplete();
 }
 
-bool BraveSyncWorker::ResetSync(
+void BraveSyncWorker::ResetSync(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
   auto* sync_service =
     static_cast<syncer::BraveProfileSyncService*>(GetSyncService());
 
   if (!sync_service)
-    return true;
+    return;
 
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   sync_service->ResetSync(device_info_sync_service,
                           base::DoNothing::Once());
-
-  return true;
 }
 
 bool BraveSyncWorker::GetSyncV1WasEnabled(

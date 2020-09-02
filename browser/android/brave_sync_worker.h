@@ -16,11 +16,6 @@
 
 class Profile;
 
-namespace syncer {
-class DeviceInfoTracker;
-class LocalDeviceInfoProvider;
-}  // namespace syncer
-
 namespace chrome {
 namespace android {
 
@@ -51,7 +46,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
       JNIEnv* env,
       const base::android::JavaParamRef<jobject>& jcaller);
 
-  bool ResetSync(JNIEnv* env,
+  void ResetSync(JNIEnv* env,
                  const base::android::JavaParamRef<jobject>& jcaller);
 
   bool GetSyncV1WasEnabled(JNIEnv* env,
