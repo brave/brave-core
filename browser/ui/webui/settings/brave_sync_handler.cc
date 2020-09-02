@@ -17,7 +17,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/device_info_sync_service_factory.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
-#include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_user_settings.h"
 #include "components/sync_device_info/device_info_sync_service.h"
 #include "components/sync_device_info/device_info_tracker.h"
@@ -84,8 +83,7 @@ void BraveSyncHandler::HandleGetSyncCode(const base::ListValue* args) {
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
 
-  auto* sync_service =
-    static_cast<syncer::BraveProfileSyncService*>(GetSyncService());
+  auto* sync_service = GetSyncService();
   std::string sync_code;
   if (sync_service)
     sync_code = sync_service->GetOrCreateSyncCode();
@@ -154,8 +152,7 @@ void BraveSyncHandler::HandleSetSyncCode(const base::ListValue* args) {
     return;
   }
 
-  auto* sync_service =
-    static_cast<syncer::BraveProfileSyncService*>(GetSyncService());
+  auto* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(sync_code->GetString())) {
     RejectJavascriptCallback(*callback_id, base::Value(false));
     return;
@@ -170,8 +167,7 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
   const base::Value* callback_id;
   CHECK(args->Get(0, &callback_id));
 
-  auto* sync_service =
-    static_cast<syncer::BraveProfileSyncService*>(GetSyncService());
+  auto* sync_service = GetSyncService();
   if (!sync_service) {
     ResolveJavascriptCallback(*callback_id, base::Value(true));
     return;
@@ -186,9 +182,10 @@ void BraveSyncHandler::HandleReset(const base::ListValue* args) {
                                          std::move(callback_id_arg)));
 }
 
-syncer::SyncService* BraveSyncHandler::GetSyncService() const {
+syncer::BraveProfileSyncService* BraveSyncHandler::GetSyncService() const {
   return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
-             ? ProfileSyncServiceFactory::GetForProfile(profile_)
+             ? static_cast<syncer::BraveProfileSyncService*>(
+                 ProfileSyncServiceFactory::GetForProfile(profile_))
              : nullptr;
 }
 

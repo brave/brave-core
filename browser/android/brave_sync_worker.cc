@@ -95,8 +95,7 @@ static void JNI_BraveSyncWorker_MarkSyncV1WasEnabledAndMigrated(
 base::android::ScopedJavaLocalRef<jstring> BraveSyncWorker::GetSyncCodeWords(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
-  auto* sync_service =
-    static_cast<syncer::BraveProfileSyncService*>(GetSyncService());
+  auto* sync_service = GetSyncService();
   std::string sync_code;
   if (sync_service)
     sync_code = sync_service->GetOrCreateSyncCode();
@@ -111,8 +110,7 @@ void BraveSyncWorker::SaveCodeWords(
   std::string str_passphrase =
       base::android::ConvertJavaStringToUTF8(passphrase);
 
-  auto* sync_service =
-    static_cast<syncer::BraveProfileSyncService*>(GetSyncService());
+  auto* sync_service = GetSyncService();
   if (!sync_service || !sync_service->SetSyncCode(str_passphrase)) {
     const std::string error_msg =
       sync_service
@@ -125,9 +123,10 @@ void BraveSyncWorker::SaveCodeWords(
   passphrase_ = str_passphrase;
 }
 
-syncer::SyncService* BraveSyncWorker::GetSyncService() const {
+syncer::BraveProfileSyncService* BraveSyncWorker::GetSyncService() const {
   return ProfileSyncServiceFactory::IsSyncAllowed(profile_)
-             ? ProfileSyncServiceFactory::GetForProfile(profile_)
+             ? static_cast<syncer::BraveProfileSyncService*>(
+                 ProfileSyncServiceFactory::GetForProfile(profile_))
              : nullptr;
 }
 
@@ -192,8 +191,7 @@ bool BraveSyncWorker::IsFirstSetupComplete(
 void BraveSyncWorker::ResetSync(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& jcaller) {
-  auto* sync_service =
-    static_cast<syncer::BraveProfileSyncService*>(GetSyncService());
+  auto* sync_service = GetSyncService();
 
   if (!sync_service)
     return;

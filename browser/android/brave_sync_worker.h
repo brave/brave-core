@@ -11,10 +11,13 @@
 
 #include "base/android/jni_weak_ref.h"
 #include "base/scoped_observer.h"
-#include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 
 class Profile;
+
+namespace syncer {
+class BraveProfileSyncService;
+}  // namespace syncer
 
 namespace chrome {
 namespace android {
@@ -62,7 +65,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
       bool sync_v2_migration_notice_dismissed);
 
  private:
-  syncer::SyncService* GetSyncService() const;
+  syncer::BraveProfileSyncService* GetSyncService() const;
   void MarkFirstSetupComplete();
 
   // syncer::SyncServiceObserver implementation.
