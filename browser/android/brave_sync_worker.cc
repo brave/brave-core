@@ -199,7 +199,8 @@ void BraveSyncWorker::ResetSync(
   auto* device_info_sync_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
   sync_service->ResetSync(device_info_sync_service,
-                          base::DoNothing::Once());
+                          base::BindOnce(&BraveSyncWorker::OnResetDone,
+                                         weak_ptr_factory_.GetWeakPtr()));
 }
 
 bool BraveSyncWorker::GetSyncV1WasEnabled(
@@ -228,18 +229,13 @@ void BraveSyncWorker::SetSyncV2MigrateNoticeDismissed(
       sync_v2_migration_notice_dismissed);
 }
 
-void BraveSyncWorker::OnSelfDeleted() {
+void BraveSyncWorker::OnResetDone() {
   syncer::SyncService* sync_service = GetSyncService();
   if (sync_service) {
     if (sync_service_observer_.IsObserving(sync_service)) {
       sync_service_observer_.Remove(sync_service);
     }
-
-    sync_service->StopAndClear();
   }
-  brave_sync::Prefs brave_sync_prefs(profile_->GetPrefs());
-  brave_sync_prefs.Clear();
-  // Sync prefs will be clear in ProfileSyncService::StopImpl
 }
 
 namespace {

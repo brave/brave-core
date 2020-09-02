@@ -11,6 +11,7 @@
 
 #include "base/android/jni_weak_ref.h"
 #include "base/scoped_observer.h"
+#include "components/sync/driver/sync_service.h"
 #include "components/sync/driver/sync_service_observer.h"
 
 class Profile;
@@ -71,7 +72,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   // syncer::SyncServiceObserver implementation.
   void OnStateChanged(syncer::SyncService* sync) override;
 
-  void OnSelfDeleted();
+  void OnResetDone();
 
   JavaObjectWeakGlobalRef weak_java_brave_sync_worker_;
   Profile* profile_ = nullptr;
@@ -80,6 +81,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
 
   ScopedObserver<syncer::SyncService, syncer::SyncServiceObserver>
       sync_service_observer_{this};
+  base::WeakPtrFactory<BraveSyncWorker> weak_ptr_factory_{this};
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncWorker);
 };
