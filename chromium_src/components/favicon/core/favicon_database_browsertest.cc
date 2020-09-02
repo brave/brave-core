@@ -19,9 +19,9 @@
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 
-class BraveThumbnailDatabaseBrowserTest : public InProcessBrowserTest {
+class BraveFaviconDatabaseBrowserTest : public InProcessBrowserTest {
  public:
-  BraveThumbnailDatabaseBrowserTest()
+  BraveFaviconDatabaseBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   void SetUpOnMainThread() override {
@@ -39,10 +39,10 @@ class BraveThumbnailDatabaseBrowserTest : public InProcessBrowserTest {
     https_server_.ServeFilesFromDirectory(test_data_dir_);
     https_server_.AddDefaultHandlers(GetChromeTestDataDir());
     https_server_.RegisterRequestHandler(
-        base::BindRepeating(&BraveThumbnailDatabaseBrowserTest::HandleRequest,
+        base::BindRepeating(&BraveFaviconDatabaseBrowserTest::HandleRequest,
                             base::Unretained(this)));
     https_server_.RegisterRequestMonitor(
-        base::BindRepeating(&BraveThumbnailDatabaseBrowserTest::SaveRequest,
+        base::BindRepeating(&BraveFaviconDatabaseBrowserTest::SaveRequest,
                             base::Unretained(this)));
 
     ASSERT_TRUE(https_server_.Start());
@@ -90,7 +90,8 @@ class BraveThumbnailDatabaseBrowserTest : public InProcessBrowserTest {
 
     GURL requested_host("https://" + request.headers.at("Host"));
     GURL::Replacements replace_host;
-    replace_host.SetHostStr(requested_host.host());
+    std::string host_str = requested_host.host();
+    replace_host.SetHostStr(host_str);
 
     requests_.push_back(request.GetURL().ReplaceComponents(replace_host));
   }
@@ -126,13 +127,15 @@ class BraveThumbnailDatabaseBrowserTest : public InProcessBrowserTest {
 
   GURL read_url(std::string uid) {
     GURL::Replacements replace_query;
-    replace_query.SetQueryStr("uid=" + uid);
+    std::string uid_str = "uid=" + uid;
+    replace_query.SetQueryStr(uid_str);
     return read_url_.ReplaceComponents(replace_query);
   }
 
   GURL set_url(std::string values) {
     GURL::Replacements replace_query;
-    replace_query.SetQueryStr("values=" + values);
+    std::string values_str = "values=" + values;
+    replace_query.SetQueryStr(values_str);
     return set_url_.ReplaceComponents(replace_query);
   }
 
@@ -172,7 +175,7 @@ class BraveThumbnailDatabaseBrowserTest : public InProcessBrowserTest {
   net::test_server::EmbeddedTestServer https_server_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveThumbnailDatabaseBrowserTest, SetRead1001) {
+IN_PROC_BROWSER_TEST_F(BraveFaviconDatabaseBrowserTest, SetRead1001) {
   ClearRequests();
   NavigateToURLAndWaitForRedirects(set_url("1001"));
   EXPECT_EQ(WasRequested(fav0_url()), true);

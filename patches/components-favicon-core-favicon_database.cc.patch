@@ -1,8 +1,8 @@
-diff --git a/components/history/core/browser/thumbnail_database.cc b/components/history/core/browser/thumbnail_database.cc
-index 19c7722a778b24fcc50e7ab9a4e5e368399bf52d..11b2be6a2c3b428719aa9632d347b7aa2334957e 100644
---- a/components/history/core/browser/thumbnail_database.cc
-+++ b/components/history/core/browser/thumbnail_database.cc
-@@ -519,6 +519,7 @@ FaviconBitmapID ThumbnailDatabase::AddFaviconBitmap(
+diff --git a/components/favicon/core/favicon_database.cc b/components/favicon/core/favicon_database.cc
+index f74526ae523364a064918a3fc3d61a19c34a64a6..95dc2aad7d41c86628eba5fe8d5815e941761f43 100644
+--- a/components/favicon/core/favicon_database.cc
++++ b/components/favicon/core/favicon_database.cc
+@@ -496,6 +496,7 @@ FaviconBitmapID FaviconDatabase::AddFaviconBitmap(
      base::Time time,
      const gfx::Size& pixel_size) {
    DCHECK(icon_id);
@@ -10,7 +10,7 @@ index 19c7722a778b24fcc50e7ab9a4e5e368399bf52d..11b2be6a2c3b428719aa9632d347b7aa
  
    sql::Statement statement(db_.GetCachedStatement(
        SQL_FROM_HERE,
-@@ -573,8 +574,8 @@ bool ThumbnailDatabase::SetFaviconBitmap(
+@@ -550,8 +551,8 @@ bool FaviconDatabase::SetFaviconBitmap(
    } else {
      statement.BindNull(0);
    }
@@ -21,10 +21,10 @@ index 19c7722a778b24fcc50e7ab9a4e5e368399bf52d..11b2be6a2c3b428719aa9632d347b7aa
    statement.BindInt64(3, bitmap_id);
  
    return statement.Run();
-@@ -583,6 +584,7 @@ bool ThumbnailDatabase::SetFaviconBitmap(
- bool ThumbnailDatabase::SetFaviconBitmapLastUpdateTime(
-     FaviconBitmapID bitmap_id,
-     base::Time time) {
+@@ -559,6 +560,7 @@ bool FaviconDatabase::SetFaviconBitmap(
+ 
+ bool FaviconDatabase::SetFaviconBitmapLastUpdateTime(FaviconBitmapID bitmap_id,
+                                                      base::Time time) {
 +  return true; // Avoid changing the icon type to ON_VISIT.
    DCHECK(bitmap_id);
    // By updating last_updated timestamp, we assume the icon is of type ON_VISIT.
