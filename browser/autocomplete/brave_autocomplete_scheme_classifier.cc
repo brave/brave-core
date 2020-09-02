@@ -49,7 +49,8 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
 
 #if BUILDFLAG(IPFS_ENABLED)
   if (base::IsStringASCII(scheme) &&
-      base::LowerCaseEqualsASCII(scheme, kIPFSScheme)) {
+      (base::LowerCaseEqualsASCII(scheme, kIPFSScheme) ||
+       base::LowerCaseEqualsASCII(scheme, kIPNSScheme))) {
     return metrics::OmniboxInputType::URL;
   }
 #endif
