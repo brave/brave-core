@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 994cbdcd75b891421b401a479a4f479e571f70cd..2a166250ba17460ca5a2d04032b25ff039f7b1a5 100644
+index 74856aabf5aff72be70d4cd398fa8200dec49af4..48d763164d202bce9cef9ac1d89d0183644e3f84 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -33,7 +33,7 @@
