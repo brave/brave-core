@@ -66,7 +66,7 @@ TEST_F(GetWalletBalanceTest, ServerOK) {
         ledger::Balance expected_balance;
         expected_balance.total = 5;
         expected_balance.user_funds = 5;
-        expected_balance.wallets = {{ledger::kWalletAnonymous, 5}};
+        expected_balance.wallets = {{constant::kWalletAnonymous, 5}};
         EXPECT_EQ(result, ledger::Result::LEDGER_OK);
         EXPECT_TRUE(expected_balance.Equals(*balance));
       });

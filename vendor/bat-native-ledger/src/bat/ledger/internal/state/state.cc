@@ -14,7 +14,7 @@
 #include "bat/ledger/internal/state/state.h"
 #include "bat/ledger/internal/state/state_keys.h"
 #include "bat/ledger/internal/state/state_migration.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 namespace {
 
@@ -205,7 +205,7 @@ void State::SetReconcileStamp(const int reconcile_interval) {
   if (reconcile_interval > 0) {
     reconcile_stamp += reconcile_interval * 60;
   } else {
-    reconcile_stamp += braveledger_ledger::_reconcile_default_interval;
+    reconcile_stamp += constant::kReconcileInterval;
   }
 
   ledger_->database()->SaveEventLog(

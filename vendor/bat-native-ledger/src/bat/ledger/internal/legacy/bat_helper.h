@@ -12,7 +12,7 @@
 #include <functional>
 
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/ledger.h"
 
 namespace braveledger_bat_helper {

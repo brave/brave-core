@@ -29,14 +29,14 @@ TEST(WalletUtilTest, GetWallet) {
   auto diff = ledger::ExternalWallet::New();
   diff->address = "add1";
   wallets.insert(std::make_pair("different", std::move(diff)));
-  result = wallet::GetWallet(ledger::kWalletUphold, std::move(wallets));
+  result = wallet::GetWallet(constant::kWalletUphold, std::move(wallets));
   ASSERT_TRUE(!result);
 
   // uphold wallet
   auto uphold = ledger::ExternalWallet::New();
   uphold->address = "12355";
-  wallets.insert(std::make_pair(ledger::kWalletUphold, std::move(uphold)));
-  result = wallet::GetWallet(ledger::kWalletUphold, std::move(wallets));
+  wallets.insert(std::make_pair(constant::kWalletUphold, std::move(uphold)));
+  result = wallet::GetWallet(constant::kWalletUphold, std::move(wallets));
   ASSERT_EQ(result->address, "12355");
 }
 

@@ -11,6 +11,7 @@
 #include "bat/ledger/internal/database/database_publisher_info.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 
@@ -74,7 +75,7 @@ void DatabasePublisherInfo::InsertOrUpdate(
     command_icon->type = ledger::DBCommand::Type::RUN;
     command_icon->command = query_icon;
 
-    if (favicon == ledger::kClearFavicon) {
+    if (favicon == constant::kClearFavicon) {
       favicon.clear();
     }
 

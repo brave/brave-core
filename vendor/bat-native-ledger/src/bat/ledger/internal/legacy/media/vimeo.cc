@@ -14,7 +14,8 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/legacy/media/vimeo.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/legacy/static_values.h"
+#include "bat/ledger/internal/constants.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;

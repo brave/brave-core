@@ -402,7 +402,7 @@ void Contribution::OnEntrySaved(
     return;
   }
 
-  if (wallet_type == ledger::kWalletUnBlinded) {
+  if (wallet_type == constant::kWalletUnBlinded) {
     auto result_callback = std::bind(&Contribution::Result,
       this,
       _1,
@@ -412,7 +412,7 @@ void Contribution::OnEntrySaved(
         {ledger::CredsBatchType::PROMOTION},
         contribution_id,
         result_callback);
-  } else if (wallet_type == ledger::kWalletAnonymous) {
+  } else if (wallet_type == constant::kWalletAnonymous) {
     auto wallet = ledger::ExternalWallet::New();
     wallet->type = wallet_type;
 
@@ -422,7 +422,7 @@ void Contribution::OnEntrySaved(
       contribution_id);
 
     sku_->AnonUserFunds(contribution_id, std::move(wallet), result_callback);
-  } else if (wallet_type == ledger::kWalletUphold) {
+  } else if (wallet_type == constant::kWalletUphold) {
     auto result_callback = std::bind(&Contribution::Result,
         this,
         _1,
@@ -521,7 +521,7 @@ void Contribution::TransferFunds(
     return;
   }
 
-  if (wallet->type == ledger::kWalletUphold) {
+  if (wallet->type == constant::kWalletUphold) {
     uphold_->TransferFunds(
         transaction.amount,
         destination,
@@ -529,7 +529,7 @@ void Contribution::TransferFunds(
     return;
   }
 
-  if (wallet->type == ledger::kWalletAnonymous) {
+  if (wallet->type == constant::kWalletAnonymous) {
     anon_card_->SendTransaction(
         transaction.amount,
         transaction.order_id,
@@ -538,7 +538,7 @@ void Contribution::TransferFunds(
     return;
   }
 
-  if (wallet->type == ledger::kWalletUnBlinded) {
+  if (wallet->type == constant::kWalletUnBlinded) {
     sku_->Merchant(transaction, callback);
     return;
   }

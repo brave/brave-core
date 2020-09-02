@@ -3,19 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_STATIC_VALUES_H_
-#define BRAVELEDGER_STATIC_VALUES_H_
-
-#include <string>
-#include <vector>
-
-#define PREFIX_V1                       "/v1"
-#define PREFIX_V2                       "/v2"
-#define PREFIX_V3                       "/v3"
-#define PREFIX_V4                       "/v4"
-#define PREFIX_V5                       "/v5"
-
-#define SIGNATURE_ALGORITHM             "ed25519"
+#ifndef BRAVELEDGER_LEGACY_STATIC_VALUES_H_
+#define BRAVELEDGER_LEGACY_STATIC_VALUES_H_
 
 #define YOUTUBE_MEDIA_TYPE              "youtube"
 #define TWITCH_MEDIA_TYPE               "twitch"
@@ -40,23 +29,4 @@
 #define TWITCH_MINIMUM_SECONDS          10
 #define TWITCH_MAXIMUM_SECONDS_CHUNK    120
 
-namespace braveledger_ledger {
-
-// 30 days in seconds
-static const uint64_t _reconcile_default_interval = 30 * 24 * 60 * 60;
-
-// 1 day in seconds
-static const uint64_t _promotion_load_interval = 24 * 60 * 60;
-
-// pending contribution expiration in seconds (90 days)
-static const uint64_t _pending_contribution_expiration = 90 * 24 * 60 * 60;
-
-static const std::vector<std::string> _add_funds_limited_countries = {
-  "JP"
-};
-
-static const double _vote_price = 0.25;
-
-}  // namespace braveledger_ledger
-
-#endif  // BRAVELEDGER_STATIC_VALUES_H_
+#endif  // BRAVELEDGER_LEGACY_STATIC_VALUES_H_

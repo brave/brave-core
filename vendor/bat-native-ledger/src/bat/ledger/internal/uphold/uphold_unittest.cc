@@ -47,7 +47,7 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
   wallet->status = ledger::WalletStatus::CONNECTED;
   wallet->token = "token";
   wallet->address = "address";
-  wallets.insert(std::make_pair(ledger::kWalletUphold, std::move(wallet)));
+  wallets.insert(std::make_pair(constant::kWalletUphold, std::move(wallet)));
   EXPECT_CALL(*mock_ledger_client_, GetExternalWallets())
     .WillOnce(testing::Return(testing::ByMove(std::move(wallets))));
 

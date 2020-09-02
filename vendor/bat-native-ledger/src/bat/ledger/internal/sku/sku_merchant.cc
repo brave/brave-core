@@ -75,7 +75,7 @@ void SKUMerchant::OnOrder(
     return;
   }
 
-  if (wallet.type == ledger::kWalletUphold) {
+  if (wallet.type == constant::kWalletUphold) {
     auto publisher_callback =
         std::bind(&SKUMerchant::OnServerPublisherInfo,
           this,

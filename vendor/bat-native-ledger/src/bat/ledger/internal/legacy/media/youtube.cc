@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
 #include "bat/ledger/internal/legacy/media/youtube.h"
+#include "bat/ledger/internal/legacy/static_values.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;

@@ -2387,7 +2387,7 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       uphold->status = ledger::WalletStatus::VERIFIED;
       uphold->one_time_string = "";
       uphold->user_name = "Brave Test";
-      SaveExternalWallet(ledger::kWalletUphold, std::move(uphold));
+      SaveExternalWallet(ledger::constant::kWalletUphold, std::move(uphold));
       continue;
     }
 
@@ -2962,7 +2962,7 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
   }
 
   if (action == "authorization") {
-    if (wallet_type == ledger::kWalletUphold) {
+    if (wallet_type == ledger::constant::kWalletUphold) {
       ExternalWalletAuthorization(
           wallet_type,
           query_map,

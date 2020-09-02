@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/legacy/media/twitch.h"
+#include "bat/ledger/internal/legacy/static_values.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -332,7 +333,7 @@ void Twitch::ProcessActivityFromUrl(uint64_t window_id,
                                          const ledger::VisitData& visit_data,
                                          const std::string& publisher_blob) {
   if (publisher_blob.empty() ||
-      publisher_blob == ledger::kIgnorePublisherBlob) {
+      publisher_blob == ledger::constant::kIgnorePublisherBlob) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }

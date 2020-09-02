@@ -12,12 +12,13 @@
 
 #include "base/guid.h"
 #include "bat/ledger/global_constants.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/legacy/static_values.h"
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/publisher/publisher.h"
 #include "bat/ledger/internal/publisher/publisher_prefix_list_updater.h"
 #include "bat/ledger/internal/publisher/server_publisher_fetcher.h"
-#include "bat/ledger/internal/static_values.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -294,7 +295,7 @@ void Publisher::SaveVisitInternal(
         publisher_info->favicon_url = fav_icon;
     }
   } else {
-    publisher_info->favicon_url = ledger::kClearFavicon;
+    publisher_info->favicon_url = constant::kClearFavicon;
   }
 
   publisher_info->name = visit_data.name;
@@ -352,7 +353,7 @@ void Publisher::SaveVisitInternal(
   }
 
   if (panel_info) {
-    if (panel_info->favicon_url == ledger::kClearFavicon) {
+    if (panel_info->favicon_url == constant::kClearFavicon) {
       panel_info->favicon_url = std::string();
     }
 

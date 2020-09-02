@@ -27,11 +27,11 @@ const char kUpholdDestinationProduction[] =
     "5d4be2ad-1c65-4802-bea1-e0f3a3a487cb";
 
 std::string GetBraveDestination(const std::string& wallet_type) {
-  if (wallet_type == ledger::kWalletUphold) {
+  if (wallet_type == constant::kWalletUphold) {
     return GetUpholdDestination();
   }
 
-  if (wallet_type == ledger::kWalletAnonymous) {
+  if (wallet_type == constant::kWalletAnonymous) {
     return GetAnonCardDestination();
   }
 

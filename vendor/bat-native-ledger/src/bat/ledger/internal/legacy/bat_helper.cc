@@ -12,10 +12,11 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/strings/stringprintf.h"
 #include "base/strings/string_split.h"
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/logging/logging.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 #include "bat/ledger/ledger.h"
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -135,8 +136,11 @@ std::string sign(
             signedMsg.begin() + crypto_sign_BYTES,
             signature.begin());
 
-  return "keyId=\"" + key_id + "\",algorithm=\"" + SIGNATURE_ALGORITHM +
-    "\",headers=\"" + headers + "\",signature=\"" + getBase64(signature) + "\"";
+  return base::StringPrintf(
+      "keyId=\"%s\",algorithm=\"ed25519\",headers=\"%s\",signature=\"%s\"",
+      key_id.c_str(),
+      headers.c_str(),
+      getBase64(signature).c_str());
 }
 
 bool HasSameDomainAndPath(

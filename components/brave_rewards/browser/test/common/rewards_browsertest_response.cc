@@ -15,7 +15,6 @@
 #include "bat/ledger/internal/publisher/protos/channel_response.pb.h"
 #include "bat/ledger/internal/publisher/protos/publisher_prefix_list.pb.h"
 #include "bat/ledger/internal/common/request_util.h"
-#include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"

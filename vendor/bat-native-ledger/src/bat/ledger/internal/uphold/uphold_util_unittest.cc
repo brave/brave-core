@@ -157,7 +157,7 @@ TEST(UpholdUtilTest, GetWallet) {
   // uphold wallet
   auto uphold = ledger::ExternalWallet::New();
   uphold->address = "12355";
-  wallets.insert(std::make_pair(ledger::kWalletUphold, std::move(uphold)));
+  wallets.insert(std::make_pair(constant::kWalletUphold, std::move(uphold)));
   result = uphold::GetWallet(std::move(wallets));
   ASSERT_EQ(result->address, "12355");
 }

@@ -13,17 +13,15 @@
 
 #include "bat/ledger/export.h"
 
-// TODO add constants namespace
 namespace ledger {
-
-const char kClearFavicon[] = "clear";
-const char kIgnorePublisherBlob[] = "ignore";
+namespace constant {
 
 const char kWalletAnonymous[] = "anonymous";
 const char kWalletUphold[] = "uphold";
 const char kWalletUnBlinded[] = "blinded";
 
 
+}  // namespace constant
 }  // namespace ledger
 
 #endif  // BAT_LEDGER_PUBLISHER_INFO_HANDLER_

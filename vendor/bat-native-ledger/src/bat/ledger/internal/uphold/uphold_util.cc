@@ -104,7 +104,7 @@ std::string GetSecondStepVerify() {
 ledger::ExternalWalletPtr GetWallet(
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   for (auto& wallet : wallets) {
-    if (wallet.first == ledger::kWalletUphold) {
+    if (wallet.first == constant::kWalletUphold) {
       return std::move(wallet.second);
     }
   }

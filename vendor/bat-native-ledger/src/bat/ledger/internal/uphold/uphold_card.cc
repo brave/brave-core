@@ -118,7 +118,7 @@ void UpholdCard::OnCreate(
   }
   wallet_ptr->address = id;
   ledger_->ledger_client()->SaveExternalWallet(
-      ledger::kWalletUphold,
+      constant::kWalletUphold,
       wallet_ptr->Clone());
 
   auto update_callback = std::bind(&UpholdCard::OnCreateUpdate,

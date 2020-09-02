@@ -82,7 +82,7 @@ ledger::Result GetWalletBalance::ParseBody(
 
   balance->user_funds = balance->total;
   balance->wallets.insert(
-      std::make_pair(ledger::kWalletAnonymous, balance->total));
+      std::make_pair(constant::kWalletAnonymous, balance->total));
 
   return ledger::Result::LEDGER_OK;
 }

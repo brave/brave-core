@@ -14,7 +14,7 @@
 #include "bat/ledger/internal/credentials/credentials_sku.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -380,7 +380,7 @@ void CredentialsSKU::Unblind(
 
   common_->SaveUnblindedCreds(
       expires_at,
-      braveledger_ledger::_vote_price,
+      constant::kVotePrice,
       *creds,
       unblinded_encoded_creds,
       trigger,

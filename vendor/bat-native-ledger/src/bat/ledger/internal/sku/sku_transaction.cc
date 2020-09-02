@@ -21,15 +21,15 @@ namespace {
 
 ledger::SKUTransactionType GetTransactionTypeFromWalletType(
     const std::string& wallet_type) {
-  if (wallet_type == ledger::kWalletUphold) {
+  if (wallet_type == ledger::constant::kWalletUphold) {
     return ledger::SKUTransactionType::UPHOLD;
   }
 
-  if (wallet_type == ledger::kWalletAnonymous) {
+  if (wallet_type == ledger::constant::kWalletAnonymous) {
     return ledger::SKUTransactionType::ANONYMOUS_CARD;
   }
 
-  if (wallet_type == ledger::kWalletUnBlinded) {
+  if (wallet_type == ledger::constant::kWalletUnBlinded) {
     return ledger::SKUTransactionType::TOKENS;
   }
 

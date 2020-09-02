@@ -11,7 +11,7 @@
 #include "bat/ledger/internal/contribution/contribution_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/sku/sku_brave.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -189,7 +189,7 @@ void ContributionSKU::GetContributionInfo(
   ledger::SKUOrderItem new_item = item;
   new_item.quantity = GetVotesFromAmount(contribution->amount);
   new_item.type = ledger::SKUOrderItemType::SINGLE_USE;
-  new_item.price = braveledger_ledger::_vote_price;
+  new_item.price = ledger::constant::kVotePrice;
 
   std::vector<ledger::SKUOrderItem> items;
   items.push_back(new_item);
@@ -488,12 +488,12 @@ void ContributionSKU::RetryStartStep(
         order_id,
         contribution->contribution_id,
         callback);
-    ledger_->wallet()->GetExternalWallet(ledger::kWalletUphold, get_callback);
+    ledger_->wallet()->GetExternalWallet(constant::kWalletUphold, get_callback);
     return;
   }
 
   auto wallet = ledger::ExternalWallet::New();
-  wallet->type = ledger::kWalletAnonymous;
+  wallet->type = constant::kWalletAnonymous;
 
   if (!order) {
     AnonUserFunds(contribution->contribution_id, std::move(wallet), callback);

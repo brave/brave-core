@@ -6,7 +6,8 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/media.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/legacy/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 namespace ledger {
 

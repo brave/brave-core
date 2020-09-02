@@ -85,7 +85,7 @@ void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
 void Wallet::GetExternalWallet(
     const std::string& wallet_type,
     ledger::ExternalWalletCallback callback) {
-  if (wallet_type == ledger::kWalletUphold) {
+  if (wallet_type == constant::kWalletUphold) {
     uphold_->GenerateExternalWallet(
         [this, callback, wallet_type](const ledger::Result result) {
           if (result != ledger::Result::LEDGER_OK &&
@@ -117,7 +117,7 @@ void Wallet::ExternalWalletAuthorization(
     return;
   }
 
-  if (wallet_type == ledger::kWalletUphold) {
+  if (wallet_type == constant::kWalletUphold) {
     uphold_->WalletAuthorization(args, callback);
     return;
   }

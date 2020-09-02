@@ -12,7 +12,7 @@
 #include "bat/ledger/internal/database/database_pending_contribution.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 using std::placeholders::_1;
 
@@ -197,7 +197,7 @@ void DatabasePendingContribution::OnGetAllRecords(
         GetIntColumn(record_pointer, 11));
     info->expiration_date =
         info->added_date +
-        braveledger_ledger::_pending_contribution_expiration;
+        constant::kPendingContributionExpirationInterval;
 
     list.push_back(std::move(info));
   }

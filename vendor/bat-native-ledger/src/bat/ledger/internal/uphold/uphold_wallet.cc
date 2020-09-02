@@ -41,7 +41,7 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) {
     }
   }
 
-  wallet->type = ledger::kWalletUphold;
+  wallet->type = constant::kWalletUphold;
 
   if (wallet->one_time_string.empty()) {
     wallet->one_time_string = GenerateRandomString(ledger::is_testing);
@@ -55,7 +55,7 @@ void UpholdWallet::Generate(ledger::ResultCallback callback) {
 
   wallet = GenerateLinks(std::move(wallet));
   ledger_->ledger_client()->SaveExternalWallet(
-      ledger::kWalletUphold,
+      constant::kWalletUphold,
       wallet->Clone());
 
   if (wallet->status == ledger::WalletStatus::CONNECTED ||
@@ -106,7 +106,7 @@ void UpholdWallet::OnGenerate(
   }
 
   ledger_->ledger_client()->SaveExternalWallet(
-      ledger::kWalletUphold,
+      constant::kWalletUphold,
       wallet_ptr->Clone());
 
   if (wallet_ptr->status != ledger::WalletStatus::PENDING &&
@@ -143,7 +143,7 @@ void UpholdWallet::OnCreateCard(
   wallet_ptr->address = address;
   wallet_ptr = GenerateLinks(std::move(wallet_ptr));
   ledger_->ledger_client()->SaveExternalWallet(
-      ledger::kWalletUphold,
+      constant::kWalletUphold,
       wallet_ptr->Clone());
 
   if (wallet_ptr->status == ledger::WalletStatus::VERIFIED) {
@@ -170,7 +170,7 @@ ledger::WalletStatus UpholdWallet::GetNewStatus(
           [](ledger::Result _){});
       ledger_->database()->SaveEventLog(
           ledger::log::kWalletVerified,
-          ledger::kWalletUphold);
+          constant::kWalletUphold);
       break;
     }
     case ledger::WalletStatus::VERIFIED: {

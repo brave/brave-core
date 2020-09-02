@@ -797,7 +797,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
              completion:(void (^)(BATResult result, NSString *orderID))completion
 {
   auto wallet = ledger::ExternalWallet::New();
-  wallet->type = ledger::kWalletUnBlinded;
+  wallet->type = ledger::constant::kWalletUnBlinded;
   
   ledger->ProcessSKU(VectorFromNSArray(items, ^ledger::SKUOrderItem(BATSKUOrderItem *item) {
     return *item.cppObjPtr;

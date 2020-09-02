@@ -19,7 +19,7 @@
 #include "bat/ledger/internal/legacy/wallet_info_properties.h"
 #include "bat/ledger/internal/promotion/promotion_transfer.h"
 #include "bat/ledger/internal/promotion/promotion_util.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 #include "wrapper.hpp"  // NOLINT
 
@@ -555,7 +555,7 @@ void Promotion::Refresh(const bool retry_after_error) {
     BLOG(1, "Failed to refresh promotion, will try again in "
         << start_timer_in);
   } else {
-    const auto default_time = braveledger_ledger::_promotion_load_interval;
+    const auto default_time = constant::kPromotionRefreshInterval;
     const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
     const uint64_t last_promo_stamp =
         ledger_->state()->GetPromotionLastFetchStamp();

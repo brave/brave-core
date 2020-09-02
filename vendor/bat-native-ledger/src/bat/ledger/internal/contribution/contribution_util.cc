@@ -7,7 +7,7 @@
 
 #include "bat/ledger/global_constants.h"
 #include "bat/ledger/internal/contribution/contribution_util.h"
-#include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/internal/constants.h"
 
 namespace ledger {
 namespace contribution {
@@ -33,15 +33,15 @@ ledger::ReportType GetReportTypeFromRewardsType(
 }
 
 ledger::ContributionProcessor GetProcessor(const std::string& wallet_type) {
-  if (wallet_type == ledger::kWalletUnBlinded) {
+  if (wallet_type == constant::kWalletUnBlinded) {
     return ledger::ContributionProcessor::BRAVE_TOKENS;
   }
 
-  if (wallet_type == ledger::kWalletAnonymous) {
+  if (wallet_type == constant::kWalletAnonymous) {
     return ledger::ContributionProcessor::BRAVE_USER_FUNDS;
   }
 
-  if (wallet_type == ledger::kWalletUphold) {
+  if (wallet_type == constant::kWalletUphold) {
     return ledger::ContributionProcessor::UPHOLD;
   }
 
@@ -49,19 +49,19 @@ ledger::ContributionProcessor GetProcessor(const std::string& wallet_type) {
 }
 
 std::string GetNextProcessor(const std::string& current_processor) {
-  if (current_processor == ledger::kWalletUnBlinded) {
-    return ledger::kWalletAnonymous;
+  if (current_processor == constant::kWalletUnBlinded) {
+    return constant::kWalletAnonymous;
   }
 
-  if (current_processor == ledger::kWalletAnonymous) {
-    return ledger::kWalletUphold;
+  if (current_processor == constant::kWalletAnonymous) {
+    return constant::kWalletUphold;
   }
 
-  if (current_processor == ledger::kWalletUphold) {
+  if (current_processor == constant::kWalletUphold) {
     return "";
   }
 
-  return ledger::kWalletUnBlinded;
+  return constant::kWalletUnBlinded;
 }
 
 bool HaveEnoughFundsToContribute(
@@ -90,8 +90,8 @@ bool HaveEnoughFundsToContribute(
 }
 
 int32_t GetVotesFromAmount(const double amount) {
-  DCHECK_GT(braveledger_ledger::_vote_price, 0);
-  return std::floor(amount / braveledger_ledger::_vote_price);
+  DCHECK_GT(ledger::constant::kVotePrice, 0);
+  return std::floor(amount / constant::kVotePrice);
 }
 
 }  // namespace contribution
