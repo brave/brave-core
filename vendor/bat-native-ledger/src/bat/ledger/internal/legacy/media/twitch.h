@@ -84,7 +84,7 @@ class Twitch {
 
   void FetchDataFromUrl(
       const std::string& url,
-      ledger::LoadURLCallback callback);
+      ledger::client::LoadURLCallback callback);
 
   void OnEmbedResponse(
       const uint64_t duration,

@@ -27,7 +27,7 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
 
   void GetRecord(
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   void DeleteExpiredRecords(
       const int64_t max_age_seconds,
@@ -37,13 +37,13 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
   void OnGetRecordBanner(
       ledger::PublisherBannerPtr banner,
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
       const std::string& publisher_key,
       const ledger::PublisherBanner& banner,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   void OnExpiredRecordsSelected(
       ledger::DBCommandResponsePtr response,

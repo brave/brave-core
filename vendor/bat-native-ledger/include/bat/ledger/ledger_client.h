@@ -15,57 +15,34 @@
 #include "bat/ledger/mojom_structs.h"
 #include "bat/ledger/export.h"
 
-// TODO should we put this in client namespace?
 namespace ledger {
+namespace client {
 
-using PublisherInfoCallback =
-    std::function<void(const Result, PublisherInfoPtr)>;
-// TODO(nejczdovc) we should be providing result back as well
-using PublisherInfoListCallback =
-    std::function<void(PublisherInfoList)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
+
 using LoadURLCallback = std::function<void(const ledger::UrlResponse&)>;
-using OnLoadCallback = std::function<void(const Result,
-                                          const std::string&)>;
-using PendingContributionInfoListCallback =
-    std::function<void(PendingContributionInfoList)>;
-using PendingContributionsTotalCallback = std::function<void(double)>;
-using GetExternalWalletsCallback =
-    std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
-using GetServerPublisherInfoCallback =
-    std::function<void(ledger::ServerPublisherInfoPtr)>;
-using ResultCallback = std::function<void(const Result)>;
-using GetFirstContributionQueueCallback =
-    std::function<void(ContributionQueuePtr)>;
-using GetPromotionCallback = std::function<void(PromotionPtr)>;
-using GetUnblindedTokenListCallback = std::function<void(UnblindedTokenList)>;
-using GetAllPromotionsCallback = std::function<void(PromotionMap)>;
 
-using GetTransactionReportCallback =
-    std::function<void(ledger::TransactionReportInfoList)>;
-
-using GetContributionReportCallback =
-    std::function<void(ledger::ContributionReportInfoList)>;
-
-using GetContributionInfoCallback =
-    std::function<void(ContributionInfoPtr)>;
+using OnLoadCallback = std::function<void(const Result, const std::string&)>;
 
 using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
+
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
 
-using GetCredsBatchCallback = std::function<void(CredsBatchPtr)>;
-using GetCredsBatchListCallback = std::function<void(CredsBatchList)>;
-using GetPromotionListCallback = std::function<void(PromotionList)>;
+using ResultCallback = std::function<void(const Result)>;
 
-using SKUOrderCallback =
-    std::function<void(const Result, const std::string&)>;
+using GetPromotionListCallback = std::function<void(PromotionList)>;
 
 using TransactionCallback =
     std::function<void(const Result, const std::string&)>;
 
-using GetSKUOrderCallback = std::function<void(SKUOrderPtr)>;
-using GetSKUTransactionCallback = std::function<void(SKUTransactionPtr)>;
+using GetExternalWalletsCallback =
+    std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
+
+using GetServerPublisherInfoCallback =
+    std::function<void(ledger::ServerPublisherInfoPtr)>;
+
+}  // namespace client
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -75,9 +52,9 @@ class LEDGER_EXPORT LedgerClient {
       const Result result,
       ContributionInfoPtr contribution) = 0;
 
-  virtual void LoadLedgerState(OnLoadCallback callback) = 0;
+  virtual void LoadLedgerState(client::OnLoadCallback callback) = 0;
 
-  virtual void LoadPublisherState(OnLoadCallback callback) = 0;
+  virtual void LoadPublisherState(client::OnLoadCallback callback) = 0;
 
   virtual void OnPanelPublisherInfo(
       ledger::Result result,
@@ -87,13 +64,13 @@ class LEDGER_EXPORT LedgerClient {
   virtual void FetchFavIcon(
       const std::string& url,
       const std::string& favicon_key,
-      FetchIconCallback callback) = 0;
+      client::FetchIconCallback callback) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual void LoadURL(
       ledger::UrlRequestPtr request,
-      ledger::LoadURLCallback callback) = 0;
+      client::LoadURLCallback callback) = 0;
 
   virtual void Log(
       const char* file,
@@ -158,7 +135,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void ShowNotification(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ResultCallback callback) = 0;
+      client::ResultCallback callback) = 0;
 
   virtual void SetTransferFee(
       const std::string& wallet_type,
@@ -179,9 +156,9 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void RunDBTransaction(
       ledger::DBTransactionPtr transaction,
-      ledger::RunDBTransactionCallback callback) = 0;
+      client::RunDBTransactionCallback callback) = 0;
 
-  virtual void GetCreateScript(ledger::GetCreateScriptCallback callback) = 0;
+  virtual void GetCreateScript(client::GetCreateScriptCallback callback) = 0;
 
   virtual void PendingContributionSaved(const ledger::Result result) = 0;
 
@@ -189,7 +166,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void WalletDisconnected(const std::string& wallet_type) = 0;
 
-  virtual void DeleteLog(ledger::ResultCallback callback) = 0;
+  virtual void DeleteLog(client::ResultCallback callback) = 0;
 };
 
 }  // namespace ledger

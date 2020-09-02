@@ -79,7 +79,7 @@ void DatabasePromotion::InsertOrUpdate(
 
 void DatabasePromotion::GetRecord(
     const std::string& id,
-    ledger::GetPromotionCallback callback) {
+    GetPromotionCallback callback) {
   if (id.empty()) {
     BLOG(1, "Id is empty");
     return callback({});
@@ -128,7 +128,7 @@ void DatabasePromotion::GetRecord(
 
 void DatabasePromotion::OnGetRecord(
     ledger::DBCommandResponsePtr response,
-    ledger::GetPromotionCallback callback) {
+    GetPromotionCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -374,7 +374,7 @@ void DatabasePromotion::CredentialCompleted(
 
 void DatabasePromotion::GetRecords(
     const std::vector<std::string>& ids,
-    ledger::GetPromotionListCallback callback) {
+    client::GetPromotionListCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
     callback({});
@@ -424,7 +424,7 @@ void DatabasePromotion::GetRecords(
 
 void DatabasePromotion::OnGetRecords(
     ledger::DBCommandResponsePtr response,
-    ledger::GetPromotionListCallback callback) {
+    client::GetPromotionListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -460,7 +460,7 @@ void DatabasePromotion::OnGetRecords(
 
 void DatabasePromotion::GetRecordsByType(
     const std::vector<ledger::PromotionType>& types,
-    ledger::GetPromotionListCallback callback) {
+    client::GetPromotionListCallback callback) {
   if (types.empty()) {
     BLOG(1, "List of types is empty");
     callback({});

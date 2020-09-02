@@ -77,7 +77,7 @@ class Contribution {
       const ledger::SKUTransaction& transaction,
       const std::string& destination,
       ledger::ExternalWalletPtr wallet,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void SKUAutoContribution(
       const std::string& contribution_id,

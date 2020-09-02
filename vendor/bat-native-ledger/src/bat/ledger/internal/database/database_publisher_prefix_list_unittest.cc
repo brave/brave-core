@@ -86,7 +86,7 @@ TEST_F(DatabasePublisherPrefixListTest, Reset) {
 
   auto on_run_db_transaction = [&](
       ledger::DBTransactionPtr transaction,
-      ledger::RunDBTransactionCallback callback) {
+      ledger::client::RunDBTransactionCallback callback) {
     ASSERT_TRUE(transaction);
     if (transaction) {
       for (auto& command : transaction->commands) {

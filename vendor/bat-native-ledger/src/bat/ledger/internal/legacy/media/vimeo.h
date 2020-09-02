@@ -66,7 +66,7 @@ class Vimeo {
 
   void FetchDataFromUrl(
     const std::string& url,
-    ledger::LoadURLCallback callback);
+    ledger::client::LoadURLCallback callback);
 
   void OnMediaActivityError(uint64_t window_id = 0);
 

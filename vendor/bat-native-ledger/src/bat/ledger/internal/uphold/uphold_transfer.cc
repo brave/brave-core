@@ -29,7 +29,7 @@ UpholdTransfer::~UpholdTransfer() = default;
 
 void UpholdTransfer::Start(
     const Transaction& transaction,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
@@ -53,7 +53,7 @@ void UpholdTransfer::Start(
 void UpholdTransfer::OnCreateTransaction(
     const ledger::Result result,
     const std::string& id,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   if (result == ledger::Result::EXPIRED_TOKEN) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
@@ -71,7 +71,7 @@ void UpholdTransfer::OnCreateTransaction(
 
 void UpholdTransfer::CommitTransaction(
     const std::string& transaction_id,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   auto wallets = ledger_->ledger_client()->GetExternalWallets();
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
@@ -101,7 +101,7 @@ void UpholdTransfer::CommitTransaction(
 void UpholdTransfer::OnCommitTransaction(
     const ledger::Result result,
     const std::string& transaction_id,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   if (result == ledger::Result::EXPIRED_TOKEN) {
     callback(ledger::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();

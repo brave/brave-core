@@ -47,7 +47,7 @@ TEST_F(PutSafetynetTest, ServerOK) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -68,7 +68,7 @@ TEST_F(PutSafetynetTest, ServerError400) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
@@ -89,7 +89,7 @@ TEST_F(PutSafetynetTest, ServerError401) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
@@ -110,7 +110,7 @@ TEST_F(PutSafetynetTest, ServerError500) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;

@@ -46,7 +46,7 @@ TEST_F(PatchCardTest, ServerOK) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -121,7 +121,7 @@ TEST_F(PatchCardTest, ServerError401) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
@@ -147,7 +147,7 @@ TEST_F(PatchCardTest, ServerErrorRandom) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;

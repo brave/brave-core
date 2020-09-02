@@ -107,7 +107,7 @@ class YouTube {
                          const std::string& channel_id);
 
   void FetchDataFromUrl(const std::string& url,
-                        ledger::LoadURLCallback callback);
+                        ledger::client::LoadURLCallback callback);
 
   void WatchPath(uint64_t window_id,
                  const ledger::VisitData& visit_data);

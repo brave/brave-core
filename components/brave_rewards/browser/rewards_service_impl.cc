@@ -886,7 +886,7 @@ void RewardsServiceImpl::OnReconcileComplete(
 }
 
 void RewardsServiceImpl::LoadLedgerState(
-    ledger::OnLoadCallback callback) {
+    ledger::client::OnLoadCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadStateOnFileTaskRunner, ledger_state_path_),
       base::BindOnce(&RewardsServiceImpl::OnLedgerStateLoaded,
@@ -895,7 +895,7 @@ void RewardsServiceImpl::LoadLedgerState(
 }
 
 void RewardsServiceImpl::OnLedgerStateLoaded(
-    ledger::OnLoadCallback callback,
+    ledger::client::OnLoadCallback callback,
     std::pair<std::string, base::Value> state) {
   if (!Connected()) {
     return;
@@ -922,7 +922,7 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
 }
 
 void RewardsServiceImpl::LoadPublisherState(
-    ledger::OnLoadCallback callback) {
+    ledger::client::OnLoadCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner, publisher_state_path_),
       base::BindOnce(&RewardsServiceImpl::OnPublisherStateLoaded,
@@ -931,7 +931,7 @@ void RewardsServiceImpl::LoadPublisherState(
 }
 
 void RewardsServiceImpl::OnPublisherStateLoaded(
-    ledger::OnLoadCallback callback,
+    ledger::client::OnLoadCallback callback,
     const std::string& data) {
   if (!Connected()) {
     return;
@@ -945,7 +945,7 @@ void RewardsServiceImpl::OnPublisherStateLoaded(
 
 void RewardsServiceImpl::LoadURL(
     ledger::UrlRequestPtr request,
-    ledger::LoadURLCallback callback) {
+    ledger::client::LoadURLCallback callback) {
   if (!request || request->url.empty()) {
     ledger::UrlResponse response;
     response.status_code = net::HTTP_BAD_REQUEST;
@@ -1027,7 +1027,7 @@ void RewardsServiceImpl::LoadURL(
 
 void RewardsServiceImpl::OnURLLoaderComplete(
     network::SimpleURLLoader* loader,
-    ledger::LoadURLCallback callback,
+    ledger::client::LoadURLCallback callback,
     std::unique_ptr<std::string> response_body) {
 
   DCHECK(url_loaders_.find(loader) != url_loaders_.end());
@@ -1791,9 +1791,10 @@ void RewardsServiceImpl::GetAutoContributionAmount(
   bat_ledger_->GetAutoContributionAmount(callback);
 }
 
-void RewardsServiceImpl::FetchFavIcon(const std::string& url,
-                                      const std::string& favicon_key,
-                                      ledger::FetchIconCallback callback) {
+void RewardsServiceImpl::FetchFavIcon(
+    const std::string& url,
+    const std::string& favicon_key,
+    ledger::client::FetchIconCallback callback) {
   GURL parsedUrl(url);
 
   if (!parsedUrl.is_valid()) {
@@ -1818,7 +1819,7 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
 }
 
 void RewardsServiceImpl::OnFetchFavIconCompleted(
-    ledger::FetchIconCallback callback,
+    ledger::client::FetchIconCallback callback,
     const std::string& favicon_key,
     const GURL& url,
     const SkBitmap& image) {
@@ -1843,7 +1844,7 @@ void RewardsServiceImpl::OnFetchFavIconCompleted(
 
 void RewardsServiceImpl::OnSetOnDemandFaviconComplete(
     const std::string& favicon_url,
-    ledger::FetchIconCallback callback, bool success) {
+    ledger::client::FetchIconCallback callback, bool success) {
   if (!Connected()) {
     return;
   }
@@ -3326,7 +3327,7 @@ ledger::DBCommandResponsePtr RunDBTransactionOnFileTaskRunner(
 
 void RewardsServiceImpl::RunDBTransaction(
     ledger::DBTransactionPtr transaction,
-    ledger::RunDBTransactionCallback callback) {
+    ledger::client::RunDBTransactionCallback callback) {
   DCHECK(ledger_database_);
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
@@ -3340,13 +3341,13 @@ void RewardsServiceImpl::RunDBTransaction(
 }
 
 void RewardsServiceImpl::OnRunDBTransaction(
-    ledger::RunDBTransactionCallback callback,
+    ledger::client::RunDBTransactionCallback callback,
     ledger::DBCommandResponsePtr response) {
   callback(std::move(response));
 }
 
 void RewardsServiceImpl::GetCreateScript(
-    ledger::GetCreateScriptCallback callback) {
+    ledger::client::GetCreateScriptCallback callback) {
   callback("", 0);
 }
 

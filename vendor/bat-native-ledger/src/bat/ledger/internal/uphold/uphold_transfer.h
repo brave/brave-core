@@ -30,22 +30,22 @@ class UpholdTransfer {
 
   void Start(
       const Transaction& transaction,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
  private:
   void OnCreateTransaction(
       const ledger::Result result,
       const std::string& id,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void CommitTransaction(
       const std::string& transaction_id,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void OnCommitTransaction(
       const ledger::Result result,
       const std::string& transaction_id,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED

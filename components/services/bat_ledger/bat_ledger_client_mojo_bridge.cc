@@ -23,14 +23,14 @@ BatLedgerClientMojoBridge::BatLedgerClientMojoBridge(
 BatLedgerClientMojoBridge::~BatLedgerClientMojoBridge() = default;
 
 void OnLoadURL(
-    const ledger::LoadURLCallback& callback,
+    const ledger::client::LoadURLCallback& callback,
     ledger::UrlResponsePtr response_ptr) {
   callback(response_ptr ? *response_ptr : ledger::UrlResponse());
 }
 
 void BatLedgerClientMojoBridge::LoadURL(
     ledger::UrlRequestPtr request,
-    ledger::LoadURLCallback callback) {
+    ledger::client::LoadURLCallback callback) {
   if (!Connected())
     return;
 
@@ -61,14 +61,14 @@ void BatLedgerClientMojoBridge::Log(
 }
 
 void BatLedgerClientMojoBridge::OnLoadLedgerState(
-    ledger::OnLoadCallback callback,
+    ledger::client::OnLoadCallback callback,
     const ledger::Result result,
     const std::string& data) {
   callback(result, data);
 }
 
 void BatLedgerClientMojoBridge::LoadLedgerState(
-    ledger::OnLoadCallback callback) {
+    ledger::client::OnLoadCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
@@ -81,14 +81,14 @@ void BatLedgerClientMojoBridge::LoadLedgerState(
 }
 
 void BatLedgerClientMojoBridge::OnLoadPublisherState(
-    ledger::OnLoadCallback callback,
+    ledger::client::OnLoadCallback callback,
     const ledger::Result result,
     const std::string& data) {
   callback(result, data);
 }
 
 void BatLedgerClientMojoBridge::LoadPublisherState(
-    ledger::OnLoadCallback callback) {
+    ledger::client::OnLoadCallback callback) {
   if (!Connected()) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
@@ -114,14 +114,14 @@ void BatLedgerClientMojoBridge::OnPanelPublisherInfo(
       windowId);
 }
 
-void OnFetchFavIcon(const ledger::FetchIconCallback& callback,
+void OnFetchFavIcon(const ledger::client::FetchIconCallback& callback,
     bool success, const std::string& favicon_url) {
   callback(success, favicon_url);
 }
 
 void BatLedgerClientMojoBridge::FetchFavIcon(const std::string& url,
     const std::string& favicon_key,
-    ledger::FetchIconCallback callback) {
+    ledger::client::FetchIconCallback callback) {
   if (!Connected()) {
     callback(false, "");
     return;
@@ -300,7 +300,7 @@ void BatLedgerClientMojoBridge::SaveExternalWallet(
 }
 
 void OnShowNotification(
-    const ledger::ResultCallback& callback,
+    const ledger::client::ResultCallback& callback,
     const ledger::Result result) {
   callback(result);
 }
@@ -308,7 +308,7 @@ void OnShowNotification(
 void BatLedgerClientMojoBridge::ShowNotification(
     const std::string& type,
     const std::vector<std::string>& args,
-    ledger::ResultCallback callback) {
+    ledger::client::ResultCallback callback) {
   bat_ledger_client_->ShowNotification(
       type,
       args,
@@ -349,28 +349,28 @@ void BatLedgerClientMojoBridge::ReconcileStampReset() {
 }
 
 void OnRunDBTransaction(
-    const ledger::RunDBTransactionCallback& callback,
+    const ledger::client::RunDBTransactionCallback& callback,
     ledger::DBCommandResponsePtr response) {
   callback(std::move(response));
 }
 
 void BatLedgerClientMojoBridge::RunDBTransaction(
     ledger::DBTransactionPtr transaction,
-    ledger::RunDBTransactionCallback callback) {
+    ledger::client::RunDBTransactionCallback callback) {
   bat_ledger_client_->RunDBTransaction(
       std::move(transaction),
       base::BindOnce(&OnRunDBTransaction, std::move(callback)));
 }
 
 void OnGetCreateScript(
-    const ledger::GetCreateScriptCallback& callback,
+    const ledger::client::GetCreateScriptCallback& callback,
     const std::string& script,
     const int table_version) {
   callback(script, table_version);
 }
 
 void BatLedgerClientMojoBridge::GetCreateScript(
-    ledger::GetCreateScriptCallback callback) {
+    ledger::client::GetCreateScriptCallback callback) {
   bat_ledger_client_->GetCreateScript(
       base::BindOnce(&OnGetCreateScript, std::move(callback)));
 }
@@ -390,13 +390,13 @@ void BatLedgerClientMojoBridge::WalletDisconnected(
 }
 
 void OnDeleteLog(
-    const ledger::ResultCallback callback,
+    const ledger::client::ResultCallback callback,
     const ledger::Result result) {
   callback(result);
 }
 
 void BatLedgerClientMojoBridge::DeleteLog(
-    ledger::ResultCallback callback) {
+    ledger::client::ResultCallback callback) {
   bat_ledger_client_->DeleteLog(
       base::BindOnce(&OnDeleteLog, std::move(callback)));
 }

@@ -108,7 +108,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
 
 void DatabaseSKUTransaction::GetRecordByOrderId(
     const std::string& order_id,
-    ledger::GetSKUTransactionCallback callback) {
+    GetSKUTransactionCallback callback) {
   if (order_id.empty()) {
     BLOG(1, "Order id is empty");
     callback(nullptr);
@@ -150,7 +150,7 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
 
 void DatabaseSKUTransaction::OnGetRecord(
     ledger::DBCommandResponsePtr response,
-    ledger::GetSKUTransactionCallback callback) {
+    GetSKUTransactionCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

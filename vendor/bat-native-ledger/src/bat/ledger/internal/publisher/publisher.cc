@@ -43,7 +43,7 @@ bool Publisher::ShouldFetchServerPublisherInfo(
 
 void Publisher::FetchServerPublisherInfo(
     const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   server_publisher_fetcher_->Fetch(publisher_key, callback);
 }
 
@@ -764,7 +764,7 @@ void Publisher::OnGetPublisherBannerPublisher(
 
 void Publisher::GetServerPublisherInfo(
     const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   ledger_->database()->GetServerPublisherInfo(
       publisher_key,
       std::bind(&Publisher::OnServerPublisherInfoLoaded,
@@ -777,7 +777,7 @@ void Publisher::GetServerPublisherInfo(
 void Publisher::OnServerPublisherInfoLoaded(
     ledger::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   if (ShouldFetchServerPublisherInfo(server_info.get())) {
     // Store the current server publisher info so that if fetching fails
     // we can execute the callback with the last known valid data.

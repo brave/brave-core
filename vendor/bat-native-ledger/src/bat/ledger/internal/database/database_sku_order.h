@@ -15,6 +15,8 @@
 namespace ledger {
 namespace database {
 
+using GetSKUOrderCallback = std::function<void(SKUOrderPtr)>;
+
 class DatabaseSKUOrder: public DatabaseTable {
  public:
   explicit DatabaseSKUOrder(LedgerImpl* ledger);
@@ -31,11 +33,11 @@ class DatabaseSKUOrder: public DatabaseTable {
 
   void GetRecord(
       const std::string& order_id,
-      ledger::GetSKUOrderCallback callback);
+      GetSKUOrderCallback callback);
 
   void GetRecordByContributionId(
       const std::string& contribution_id,
-      ledger::GetSKUOrderCallback callback);
+      GetSKUOrderCallback callback);
 
   void SaveContributionIdForSKUOrder(
       const std::string& order_id,
@@ -45,12 +47,12 @@ class DatabaseSKUOrder: public DatabaseTable {
  private:
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
-      ledger::GetSKUOrderCallback callback);
+      GetSKUOrderCallback callback);
 
   void OnGetRecordItems(
       ledger::SKUOrderItemList list,
       std::shared_ptr<ledger::SKUOrderPtr> shared_order,
-      ledger::GetSKUOrderCallback callback);
+      GetSKUOrderCallback callback);
 
   std::unique_ptr<DatabaseSKUOrderItems> items_;
 };

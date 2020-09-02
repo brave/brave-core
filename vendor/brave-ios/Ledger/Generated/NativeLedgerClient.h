@@ -15,10 +15,10 @@ public:
 private:
   __unsafe_unretained id<NativeLedgerClientBridge> bridge_;
 
-  void FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) override;
-  void LoadLedgerState(ledger::OnLoadCallback callback) override;
-  void LoadPublisherState(ledger::OnLoadCallback callback) override;
-  void LoadURL(ledger::UrlRequestPtr request, ledger::LoadURLCallback callback) override;
+  void FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::client::FetchIconCallback callback) override;
+  void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
+  void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
+  void LoadURL(ledger::UrlRequestPtr request, ledger::client::LoadURLCallback callback) override;
   void Log(const char * file, const int line, const int verbose_level, const std::string & message) override;
   void OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) override;
   void OnReconcileComplete(ledger::Result result, ledger::ContributionInfoPtr contribution) override;
@@ -40,7 +40,7 @@ private:
   void ClearState(const std::string& name) override;
   std::map<std::string, ledger::ExternalWalletPtr> GetExternalWallets() override;
   void SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) override;
-  void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::ResultCallback callback) override;
+  void ShowNotification(const std::string& type, const std::vector<std::string>& args,  ledger::client::ResultCallback callback) override;
   void SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) override;
   ledger::TransferFeeList GetTransferFees(const std::string& wallet_type) override;
   void RemoveTransferFee(const std::string& wallet_type, const std::string& id) override;
@@ -53,10 +53,10 @@ private:
   ledger::ClientInfoPtr GetClientInfo() override;
   void UnblindedTokensReady() override;
   void ReconcileStampReset() override;
-  void RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::RunDBTransactionCallback callback) override;
-  void GetCreateScript(ledger::GetCreateScriptCallback callback) override;
+  void RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::client::RunDBTransactionCallback callback) override;
+  void GetCreateScript(ledger::client::GetCreateScriptCallback callback) override;
   void PendingContributionSaved(const ledger::Result result) override;
   void ClearAllNotifications() override;
   void WalletDisconnected(const std::string& wallet_type) override;
-  void DeleteLog(ledger::ResultCallback callback) override;
+  void DeleteLog(ledger::client::ResultCallback callback) override;
 };

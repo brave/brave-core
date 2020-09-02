@@ -33,7 +33,7 @@ void ContributionAnonCard::SendTransaction(
     const double amount,
     const std::string& order_id,
     const std::string& destination,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   auto url_callback = std::bind(&ContributionAnonCard::OnSendTransaction,
       this,
       _1,
@@ -48,7 +48,7 @@ void ContributionAnonCard::SendTransaction(
 
 void ContributionAnonCard::OnSendTransaction(
     const ledger::Result result,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Problem sending transaction");
     callback(ledger::Result::LEDGER_ERROR, "");

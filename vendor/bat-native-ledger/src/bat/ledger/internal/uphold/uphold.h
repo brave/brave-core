@@ -59,7 +59,7 @@ class Uphold {
   void TransferFunds(
       const double amount,
       const std::string& address,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void WalletAuthorization(
       const std::map<std::string, std::string>& args,

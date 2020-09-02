@@ -46,7 +46,7 @@ TEST_F(GetCaptchaTest, ServerOK) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -71,7 +71,7 @@ TEST_F(GetCaptchaTest, ServerError400) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
@@ -91,7 +91,7 @@ TEST_F(GetCaptchaTest, ServerError404) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
@@ -112,7 +112,7 @@ TEST_F(GetCaptchaTest, ServerError500) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
@@ -133,7 +133,7 @@ TEST_F(GetCaptchaTest, ServerErrorRandom) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;

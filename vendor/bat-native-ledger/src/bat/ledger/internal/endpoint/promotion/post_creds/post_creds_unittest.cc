@@ -59,7 +59,7 @@ TEST_F(PostCredsTest, ServerOK) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
@@ -86,7 +86,7 @@ TEST_F(PostCredsTest, ServerError400) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
@@ -110,7 +110,7 @@ TEST_F(PostCredsTest, ServerError403) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 403;
             response.url = request->url;
@@ -134,7 +134,7 @@ TEST_F(PostCredsTest, ServerError409) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
@@ -158,7 +158,7 @@ TEST_F(PostCredsTest, ServerError410) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 410;
             response.url = request->url;
@@ -182,7 +182,7 @@ TEST_F(PostCredsTest, ServerError500) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
@@ -206,7 +206,7 @@ TEST_F(PostCredsTest, ServerErrorRandom) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;

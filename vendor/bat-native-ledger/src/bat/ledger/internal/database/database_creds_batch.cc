@@ -74,7 +74,7 @@ void DatabaseCredsBatch::InsertOrUpdate(
 void DatabaseCredsBatch::GetRecordByTrigger(
     const std::string& trigger_id,
     const ledger::CredsBatchType trigger_type,
-    ledger::GetCredsBatchCallback callback) {
+    GetCredsBatchCallback callback) {
   DCHECK(!trigger_id.empty());
   auto transaction = ledger::DBTransaction::New();
 
@@ -118,7 +118,7 @@ void DatabaseCredsBatch::GetRecordByTrigger(
 
 void DatabaseCredsBatch::OnGetRecordByTrigger(
     ledger::DBCommandResponsePtr response,
-    ledger::GetCredsBatchCallback callback) {
+    GetCredsBatchCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -191,7 +191,7 @@ void DatabaseCredsBatch::SaveSignedCreds(
 }
 
 void DatabaseCredsBatch::GetAllRecords(
-    ledger::GetCredsBatchListCallback callback) {
+    GetCredsBatchListCallback callback) {
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -230,7 +230,7 @@ void DatabaseCredsBatch::GetAllRecords(
 
 void DatabaseCredsBatch::OnGetRecords(
     ledger::DBCommandResponsePtr response,
-    ledger::GetCredsBatchListCallback callback) {
+    GetCredsBatchListCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -335,7 +335,7 @@ void DatabaseCredsBatch::UpdateRecordsStatus(
 
 void DatabaseCredsBatch::GetRecordsByTriggers(
     const std::vector<std::string>& trigger_ids,
-    ledger::GetCredsBatchListCallback callback) {
+    GetCredsBatchListCallback callback) {
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(

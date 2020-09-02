@@ -51,7 +51,7 @@ ServerPublisherFetcher::~ServerPublisherFetcher() = default;
 
 void ServerPublisherFetcher::Fetch(
     const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   FetchCallbackVector& callbacks = callback_map_[publisher_key];
   callbacks.push_back(callback);
   if (callbacks.size() > 1) {

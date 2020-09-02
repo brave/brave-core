@@ -46,7 +46,7 @@ TEST_F(GetPublisherTest, ServerError404) {
       .WillByDefault(
           Invoke([](
               ledger::UrlRequestPtr request,
-              ledger::LoadURLCallback callback) {
+              client::LoadURLCallback callback) {
             ledger::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;

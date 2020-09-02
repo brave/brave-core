@@ -6,29 +6,9 @@
 #include <utility>
 
 #include "bat/ledger/internal/database/database.h"
-#include "bat/ledger/internal/database/database_activity_info.h"
-#include "bat/ledger/internal/database/database_balance_report.h"
-#include "bat/ledger/internal/database/database_contribution_info.h"
-#include "bat/ledger/internal/database/database_contribution_queue.h"
-#include "bat/ledger/internal/database/database_creds_batch.h"
-#include "bat/ledger/internal/database/database_event_log.h"
-#include "bat/ledger/internal/database/database_initialize.h"
-#include "bat/ledger/internal/database/database_media_publisher_info.h"
-#include "bat/ledger/internal/database/database_multi_tables.h"
-#include "bat/ledger/internal/database/database_pending_contribution.h"
-#include "bat/ledger/internal/database/database_processed_publisher.h"
-#include "bat/ledger/internal/database/database_promotion.h"
-#include "bat/ledger/internal/database/database_publisher_info.h"
-#include "bat/ledger/internal/database/database_publisher_prefix_list.h"
-#include "bat/ledger/internal/database/database_recurring_tip.h"
-#include "bat/ledger/internal/database/database_server_publisher_info.h"
-#include "bat/ledger/internal/database/database_sku_order.h"
-#include "bat/ledger/internal/database/database_sku_transaction.h"
-#include "bat/ledger/internal/database/database_unblinded_token.h"
 #include "bat/ledger/internal/database/database_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/logging/event_log_keys.h"
-#include "bat/ledger/internal/publisher/prefix_list_reader.h"
 
 using std::placeholders::_1;
 
@@ -169,7 +149,7 @@ void Database::SaveContributionInfo(
 
 void Database::GetContributionInfo(
     const std::string& contribution_id,
-    ledger::GetContributionInfoCallback callback) {
+    GetContributionInfoCallback callback) {
   contribution_info_->GetRecord(contribution_id, callback);
 }
 
@@ -244,7 +224,7 @@ void Database::SaveContributionQueue(
 }
 
 void Database::GetFirstContributionQueue(
-    ledger::GetFirstContributionQueueCallback callback) {
+    GetFirstContributionQueueCallback callback) {
   return contribution_queue_->GetFirstRecord(callback);
 }
 
@@ -266,7 +246,7 @@ void Database::SaveCredsBatch(
 void Database::GetCredsBatchByTrigger(
     const std::string& trigger_id,
     const ledger::CredsBatchType trigger_type,
-    ledger::GetCredsBatchCallback callback) {
+    GetCredsBatchCallback callback) {
   creds_batch_->GetRecordByTrigger(trigger_id, trigger_type, callback);
 }
 
@@ -276,7 +256,7 @@ void Database::SaveSignedCreds(
   creds_batch_->SaveSignedCreds(std::move(info), callback);
 }
 
-void Database::GetAllCredsBatches(ledger::GetCredsBatchListCallback callback) {
+void Database::GetAllCredsBatches(GetCredsBatchListCallback callback) {
   creds_batch_->GetAllRecords(callback);
 }
 
@@ -302,7 +282,7 @@ void Database::UpdateCredsBatchesStatus(
 
 void Database::GetCredsBatchesByTriggers(
     const std::vector<std::string>& trigger_ids,
-    ledger::GetCredsBatchListCallback callback) {
+    GetCredsBatchListCallback callback) {
   creds_batch_->GetRecordsByTriggers(trigger_ids, callback);
 }
 
@@ -405,7 +385,7 @@ void Database::SavePromotion(
 
 void Database::GetPromotion(
     const std::string& id,
-    ledger::GetPromotionCallback callback) {
+    GetPromotionCallback callback) {
   promotion_->GetRecord(id, callback);
 }
 
@@ -442,13 +422,13 @@ void Database::PromotionCredentialCompleted(
 
 void Database::GetPromotionList(
     const std::vector<std::string>& ids,
-    ledger::GetPromotionListCallback callback) {
+    client::GetPromotionListCallback callback) {
   promotion_->GetRecords(ids, callback);
 }
 
 void Database::GetPromotionListByType(
     const std::vector<ledger::PromotionType>& types,
-    ledger::GetPromotionListCallback callback) {
+    client::GetPromotionListCallback callback) {
   promotion_->GetRecordsByType(types, callback);
 }
 
@@ -515,7 +495,7 @@ void Database::RemoveRecurringTip(
  */
 void Database::SearchPublisherPrefixList(
     const std::string& publisher_prefix,
-    ledger::SearchPublisherPrefixListCallback callback) {
+    SearchPublisherPrefixListCallback callback) {
   publisher_prefix_list_->Search(publisher_prefix, callback);
 }
 
@@ -533,7 +513,7 @@ void Database::InsertServerPublisherInfo(
 
 void Database::GetServerPublisherInfo(
     const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   server_publisher_info_->GetRecord(publisher_key, callback);
 }
 
@@ -561,13 +541,13 @@ void Database::UpdateSKUOrderStatus(
 
 void Database::GetSKUOrder(
     const std::string& order_id,
-    ledger::GetSKUOrderCallback callback) {
+    GetSKUOrderCallback callback) {
   sku_order_->GetRecord(order_id, callback);
 }
 
 void Database::GetSKUOrderByContributionId(
     const std::string& contribution_id,
-    ledger::GetSKUOrderCallback callback) {
+    GetSKUOrderCallback callback) {
   sku_order_->GetRecordByContributionId(contribution_id, callback);
 }
 
@@ -602,7 +582,7 @@ void Database::SaveSKUExternalTransaction(
 
 void Database::GetSKUTransactionByOrderId(
     const std::string& order_id,
-    ledger::GetSKUTransactionCallback callback) {
+    GetSKUTransactionCallback callback) {
   sku_transaction_->GetRecordByOrderId(order_id, callback);
 }
 
@@ -647,19 +627,19 @@ void Database::MarkUnblindedTokensAsSpendable(
 
 void Database::GetSpendableUnblindedTokensByTriggerIds(
     const std::vector<std::string>& trigger_ids,
-    ledger::GetUnblindedTokenListCallback callback) {
+    GetUnblindedTokenListCallback callback) {
   unblinded_token_->GetSpendableRecordsByTriggerIds(trigger_ids, callback);
 }
 
 void Database::GetReservedUnblindedTokens(
     const std::string& redeem_id,
-    ledger::GetUnblindedTokenListCallback callback) {
+    GetUnblindedTokenListCallback callback) {
   unblinded_token_->GetReservedRecordList(redeem_id, callback);
 }
 
 void Database::GetSpendableUnblindedTokensByBatchTypes(
     const std::vector<ledger::CredsBatchType>& batch_types,
-    ledger::GetUnblindedTokenListCallback callback) {
+    GetUnblindedTokenListCallback callback) {
   unblinded_token_->GetSpendableRecordListByBatchTypes(batch_types, callback);
 }
 

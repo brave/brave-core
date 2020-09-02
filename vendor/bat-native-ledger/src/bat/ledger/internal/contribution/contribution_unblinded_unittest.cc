@@ -8,7 +8,9 @@
 
 #include "base/test/task_environment.h"
 #include "bat/ledger/internal/contribution/contribution_unblinded.h"
+#include "bat/ledger/internal/database/database_contribution_info.h"
 #include "bat/ledger/internal/database/database_mock.h"
+#include "bat/ledger/internal/database/database_unblinded_token.h"
 #include "bat/ledger/internal/ledger_client_mock.h"
 #include "bat/ledger/internal/ledger_impl_mock.h"
 
@@ -51,7 +53,7 @@ class UnblindedTest : public ::testing::Test {
     .WillByDefault(
       Invoke([](
           const std::string& id,
-          ledger::GetContributionInfoCallback callback) {
+          database::GetContributionInfoCallback callback) {
         auto info = ledger::ContributionInfo::New();
         info->contribution_id = contribution_id;
         info->amount = 5.0;
@@ -69,7 +71,7 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
     .WillByDefault(
       Invoke([](
           const std::string&,
-          ledger::GetUnblindedTokenListCallback callback) {
+          database::GetUnblindedTokenListCallback callback) {
         ledger::UnblindedTokenList list;
 
         auto info = ledger::UnblindedToken::New();

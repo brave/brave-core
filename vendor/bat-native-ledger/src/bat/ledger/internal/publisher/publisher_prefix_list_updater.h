@@ -21,6 +21,8 @@ class LedgerImpl;
 
 namespace publisher {
 
+using PublisherPrefixListUpdatedCallback = std::function<void()>;
+
 // Automatically updates the publisher prefix list store on regular
 // intervals.
 class PublisherPrefixListUpdater {
@@ -34,7 +36,7 @@ class PublisherPrefixListUpdater {
   ~PublisherPrefixListUpdater();
 
   // Starts the auto updater
-  void StartAutoUpdate(ledger::PublisherPrefixListUpdatedCallback callback);
+  void StartAutoUpdate(PublisherPrefixListUpdatedCallback callback);
 
   // Cancels the auto updater
   void StopAutoUpdate();
@@ -57,7 +59,7 @@ class PublisherPrefixListUpdater {
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;
-  ledger::PublisherPrefixListUpdatedCallback on_updated_callback_;
+  PublisherPrefixListUpdatedCallback on_updated_callback_;
   std::unique_ptr<ledger::endpoint::RewardsServer> rewards_server_;
 };
 

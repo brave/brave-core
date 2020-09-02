@@ -112,7 +112,7 @@ database::Database* LedgerImpl::database() const {
 
 void LedgerImpl::LoadURL(
     ledger::UrlRequestPtr request,
-    ledger::LoadURLCallback callback) {
+    client::LoadURLCallback callback) {
   DCHECK(request);
   if (shutting_down_) {
     BLOG(1, request->url + " will not be executed as we are shutting down");

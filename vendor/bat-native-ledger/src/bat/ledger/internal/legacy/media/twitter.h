@@ -77,7 +77,7 @@ class Twitter {
 
   void FetchDataFromUrl(
       const std::string& url,
-      ledger::LoadURLCallback callback);
+      ledger::client::LoadURLCallback callback);
 
   void OnMediaPublisherActivity(
       ledger::Result result,

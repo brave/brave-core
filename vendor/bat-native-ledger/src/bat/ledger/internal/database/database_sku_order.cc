@@ -107,7 +107,7 @@ void DatabaseSKUOrder::UpdateStatus(
 
 void DatabaseSKUOrder::GetRecord(
     const std::string& order_id,
-    ledger::GetSKUOrderCallback callback) {
+    GetSKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(1, "Order id is empty");
     callback({});
@@ -150,7 +150,7 @@ void DatabaseSKUOrder::GetRecord(
 
 void DatabaseSKUOrder::OnGetRecord(
     ledger::DBCommandResponsePtr response,
-    ledger::GetSKUOrderCallback callback) {
+    GetSKUOrderCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -185,7 +185,7 @@ void DatabaseSKUOrder::OnGetRecord(
 void DatabaseSKUOrder::OnGetRecordItems(
     ledger::SKUOrderItemList list,
     std::shared_ptr<ledger::SKUOrderPtr> shared_order,
-    ledger::GetSKUOrderCallback callback) {
+    GetSKUOrderCallback callback) {
   if (!shared_order) {
     BLOG(1, "Order is null");
     callback({});
@@ -198,7 +198,7 @@ void DatabaseSKUOrder::OnGetRecordItems(
 
 void DatabaseSKUOrder::GetRecordByContributionId(
     const std::string& contribution_id,
-    ledger::GetSKUOrderCallback callback) {
+    GetSKUOrderCallback callback) {
   if (contribution_id.empty()) {
     BLOG(1, "Contribution id is empty");
     callback({});

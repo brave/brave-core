@@ -37,7 +37,7 @@ PublisherPrefixListUpdater::PublisherPrefixListUpdater(
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
 void PublisherPrefixListUpdater::StartAutoUpdate(
-    ledger::PublisherPrefixListUpdatedCallback callback) {
+    PublisherPrefixListUpdatedCallback callback) {
   on_updated_callback_ = callback;
   auto_update_ = true;
   if (!timer_.IsRunning()) {

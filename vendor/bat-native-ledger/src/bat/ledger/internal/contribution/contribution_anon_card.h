@@ -28,12 +28,12 @@ class ContributionAnonCard {
       const double amount,
       const std::string& order_id,
       const std::string& destination,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
  private:
   void OnSendTransaction(
       const ledger::Result result,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;

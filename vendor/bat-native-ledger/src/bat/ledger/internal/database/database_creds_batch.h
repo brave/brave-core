@@ -14,6 +14,9 @@
 namespace ledger {
 namespace database {
 
+using GetCredsBatchCallback = std::function<void(CredsBatchPtr)>;
+using GetCredsBatchListCallback = std::function<void(CredsBatchList)>;
+
 class DatabaseCredsBatch: public DatabaseTable {
  public:
   explicit DatabaseCredsBatch(LedgerImpl* ledger);
@@ -26,13 +29,13 @@ class DatabaseCredsBatch: public DatabaseTable {
   void GetRecordByTrigger(
       const std::string& trigger_id,
       const ledger::CredsBatchType trigger_type,
-      ledger::GetCredsBatchCallback callback);
+      GetCredsBatchCallback callback);
 
   void SaveSignedCreds(
       ledger::CredsBatchPtr creds,
       ledger::ResultCallback callback);
 
-  void GetAllRecords(ledger::GetCredsBatchListCallback callback);
+  void GetAllRecords(GetCredsBatchListCallback callback);
 
   void UpdateStatus(
       const std::string& trigger_id,
@@ -48,16 +51,16 @@ class DatabaseCredsBatch: public DatabaseTable {
 
   void GetRecordsByTriggers(
       const std::vector<std::string>& trigger_ids,
-      ledger::GetCredsBatchListCallback callback);
+      GetCredsBatchListCallback callback);
 
  private:
   void OnGetRecordByTrigger(
       ledger::DBCommandResponsePtr response,
-      ledger::GetCredsBatchCallback callback);
+      GetCredsBatchCallback callback);
 
   void OnGetRecords(
       ledger::DBCommandResponsePtr response,
-      ledger::GetCredsBatchListCallback callback);
+      GetCredsBatchListCallback callback);
 };
 
 }  // namespace database

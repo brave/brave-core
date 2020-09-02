@@ -25,32 +25,69 @@ extern bool is_testing;
 extern int reconcile_interval;  // minutes
 extern bool short_retries;
 
-using SearchPublisherPrefixListCallback = std::function<void(bool)>;
-using PublisherPrefixListUpdatedCallback = std::function<void()>;
-using PublisherBannerCallback = std::function<void(PublisherBannerPtr banner)>;
+using PublisherBannerCallback = std::function<void(PublisherBannerPtr)>;
+
 using GetRewardsParametersCallback = std::function<void(RewardsParametersPtr)>;
+
 using OnRefreshPublisherCallback = std::function<void(PublisherStatus)>;
+
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
+
 using FetchBalanceCallback = std::function<void(Result, BalancePtr)>;
+
 using ExternalWalletCallback = std::function<void(Result, ExternalWalletPtr)>;
+
 using ExternalWalletAuthorizationCallback =
     std::function<void(Result, std::map<std::string, std::string>)>;
+
 using FetchPromotionCallback = std::function<void(Result, PromotionList)>;
+
 using ClaimPromotionCallback =
     std::function<void(const Result, const std::string&)>;
+
 using RewardsInternalsInfoCallback =
     std::function<void(RewardsInternalsInfoPtr)>;
+
 using AttestPromotionCallback =
     std::function<void(const Result, PromotionPtr promotion)>;
+
 using GetBalanceReportCallback =
     std::function<void(const Result, BalanceReportInfoPtr)>;
+
 using GetBalanceReportListCallback = std::function<void(BalanceReportInfoList)>;
+
 using ContributionInfoListCallback = std::function<void(ContributionInfoList)>;
+
 using GetMonthlyReportCallback =
     std::function<void(const Result, MonthlyReportInfoPtr)>;
+
 using GetAllMonthlyReportIdsCallback =
     std::function<void(const std::vector<std::string>&)>;
+
 using GetEventLogsCallback = std::function<void(EventLogs)>;
+
+using SKUOrderCallback =
+    std::function<void(const Result, const std::string&)>;
+
+using GetContributionReportCallback =
+    std::function<void(ledger::ContributionReportInfoList)>;
+
+using GetTransactionReportCallback =
+    std::function<void(ledger::TransactionReportInfoList)>;
+
+using GetAllPromotionsCallback = std::function<void(PromotionMap)>;
+
+using ResultCallback = std::function<void(const Result)>;
+
+using PendingContributionsTotalCallback = std::function<void(double)>;
+
+using PendingContributionInfoListCallback =
+    std::function<void(PendingContributionInfoList)>;
+
+using PublisherInfoListCallback = std::function<void(PublisherInfoList)>;
+
+using PublisherInfoCallback =
+    std::function<void(const Result, PublisherInfoPtr)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -240,6 +277,7 @@ class LEDGER_EXPORT Ledger {
   virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
 
   virtual void GetOneTimeTips(PublisherInfoListCallback callback) = 0;
+
   virtual void RefreshPublisher(
       const std::string& publisher_key,
       OnRefreshPublisherCallback callback) = 0;

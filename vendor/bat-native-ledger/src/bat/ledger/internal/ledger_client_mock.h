@@ -29,10 +29,10 @@ class MockLedgerClient : public LedgerClient {
       ContributionInfoPtr contribution));
 
   MOCK_METHOD1(LoadLedgerState, void(
-      ledger::OnLoadCallback callback));
+      client::OnLoadCallback callback));
 
   MOCK_METHOD1(LoadPublisherState, void(
-      ledger::OnLoadCallback callback));
+      client::OnLoadCallback callback));
 
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,
@@ -42,14 +42,14 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD3(FetchFavIcon, void(
       const std::string& url,
       const std::string& favicon_key,
-      ledger::FetchIconCallback callback));
+      client::FetchIconCallback callback));
 
   MOCK_METHOD1(URIEncode, std::string(
       const std::string& value));
 
   MOCK_METHOD2(LoadURL, void(
       ledger::UrlRequestPtr request,
-      ledger::LoadURLCallback callback));
+      client::LoadURLCallback callback));
 
   MOCK_METHOD2(SetPublisherExclude, void(
       const std::string& publisher_key,
@@ -142,7 +142,7 @@ class MockLedgerClient : public LedgerClient {
   MOCK_METHOD3(ShowNotification, void(
       const std::string& type,
       const std::vector<std::string>& args,
-      ledger::ResultCallback callback));
+      client::ResultCallback callback));
 
   MOCK_METHOD2(SetTransferFee, void(
       const std::string& wallet_type,
@@ -163,9 +163,9 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD2(RunDBTransaction, void(
       ledger::DBTransactionPtr,
-      ledger::RunDBTransactionCallback));
+      client::RunDBTransactionCallback));
 
-  MOCK_METHOD1(GetCreateScript, void(ledger::GetCreateScriptCallback));
+  MOCK_METHOD1(GetCreateScript, void(client::GetCreateScriptCallback));
 
   MOCK_METHOD1(PendingContributionSaved, void(const ledger::Result result));
 
@@ -173,7 +173,7 @@ class MockLedgerClient : public LedgerClient {
 
   MOCK_METHOD1(WalletDisconnected, void(const std::string& wallet_type));
 
-  MOCK_METHOD1(DeleteLog, void(const ledger::ResultCallback callback));
+  MOCK_METHOD1(DeleteLog, void(const client::ResultCallback callback));
 };
 
 }  // namespace ledger

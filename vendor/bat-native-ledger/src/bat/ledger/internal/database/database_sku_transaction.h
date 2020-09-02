@@ -13,6 +13,8 @@
 namespace ledger {
 namespace database {
 
+using GetSKUTransactionCallback = std::function<void(SKUTransactionPtr)>;
+
 class DatabaseSKUTransaction: public DatabaseTable {
  public:
   explicit DatabaseSKUTransaction(LedgerImpl* ledger);
@@ -29,12 +31,12 @@ class DatabaseSKUTransaction: public DatabaseTable {
 
   void GetRecordByOrderId(
       const std::string& order_id,
-      ledger::GetSKUTransactionCallback callback);
+      GetSKUTransactionCallback callback);
 
  private:
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
-      ledger::GetSKUTransactionCallback callback);
+      GetSKUTransactionCallback callback);
 };
 
 }  // namespace database

@@ -16,6 +16,8 @@
 namespace ledger {
 namespace database {
 
+using GetContributionInfoCallback = std::function<void(ContributionInfoPtr)>;
+
 class DatabaseContributionInfo: public DatabaseTable {
  public:
   explicit DatabaseContributionInfo(LedgerImpl* ledger);
@@ -27,7 +29,7 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   void GetRecord(
       const std::string& contribution_id,
-      ledger::GetContributionInfoCallback callback);
+      GetContributionInfoCallback callback);
 
   void GetAllRecords(ledger::ContributionInfoListCallback callback);
 
@@ -64,12 +66,12 @@ class DatabaseContributionInfo: public DatabaseTable {
  private:
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
-      ledger::GetContributionInfoCallback callback);
+      GetContributionInfoCallback callback);
 
   void OnGetPublishers(
       ledger::ContributionPublisherList list,
       std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
-      ledger::GetContributionInfoCallback callback);
+      GetContributionInfoCallback callback);
 
   void OnGetOneTimeTips(
       ledger::DBCommandResponsePtr response,

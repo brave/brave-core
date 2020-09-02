@@ -15,6 +15,8 @@
 namespace ledger {
 namespace database {
 
+using SearchPublisherPrefixListCallback = std::function<void(bool)>;
+
 class DatabasePublisherPrefixList : public DatabaseTable {
  public:
   explicit DatabasePublisherPrefixList(LedgerImpl* ledger);
@@ -26,7 +28,7 @@ class DatabasePublisherPrefixList : public DatabaseTable {
 
   void Search(
       const std::string& publisher_key,
-      ledger::SearchPublisherPrefixListCallback callback);
+      SearchPublisherPrefixListCallback callback);
 
  private:
   void InsertNext(

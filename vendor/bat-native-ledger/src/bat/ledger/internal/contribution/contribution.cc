@@ -514,7 +514,7 @@ void Contribution::TransferFunds(
     const ledger::SKUTransaction& transaction,
     const std::string& destination,
     ledger::ExternalWalletPtr wallet,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   if (!wallet) {
      BLOG(0, "Wallet is null");
     callback(ledger::Result::LEDGER_ERROR, "");

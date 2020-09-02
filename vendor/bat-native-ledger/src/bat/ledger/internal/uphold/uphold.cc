@@ -171,7 +171,7 @@ void Uphold::OnFetchBalance(
 void Uphold::TransferFunds(
     const double amount,
     const std::string& address,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   Transaction transaction;
   transaction.address = address;
   transaction.amount = amount;

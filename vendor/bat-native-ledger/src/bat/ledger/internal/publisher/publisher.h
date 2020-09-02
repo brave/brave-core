@@ -33,7 +33,7 @@ class Publisher {
 
   void FetchServerPublisherInfo(
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   void RefreshPublisher(
       const std::string& publisher_key,
@@ -94,7 +94,7 @@ class Publisher {
 
   void GetServerPublisherInfo(
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
  private:
   void onPublisherActivitySave(
@@ -176,7 +176,7 @@ class Publisher {
   void OnServerPublisherInfoLoaded(
       ledger::ServerPublisherInfoPtr server_info,
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PublisherPrefixListUpdater> prefix_list_updater_;

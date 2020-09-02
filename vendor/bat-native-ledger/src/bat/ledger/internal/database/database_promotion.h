@@ -15,6 +15,8 @@
 namespace ledger {
 namespace database {
 
+using GetPromotionCallback = std::function<void(PromotionPtr)>;
+
 class DatabasePromotion: public DatabaseTable {
  public:
   explicit DatabasePromotion(LedgerImpl* ledger);
@@ -26,11 +28,11 @@ class DatabasePromotion: public DatabaseTable {
 
   void GetRecord(
       const std::string& id,
-      ledger::GetPromotionCallback callback);
+      GetPromotionCallback callback);
 
   void GetRecords(
       const std::vector<std::string>& ids,
-      ledger::GetPromotionListCallback callback);
+      client::GetPromotionListCallback callback);
 
   void GetAllRecords(
       ledger::GetAllPromotionsCallback callback);
@@ -56,7 +58,7 @@ class DatabasePromotion: public DatabaseTable {
 
   void GetRecordsByType(
       const std::vector<ledger::PromotionType>& types,
-      ledger::GetPromotionListCallback callback);
+      client::GetPromotionListCallback callback);
 
   void UpdateRecordsBlankPublicKey(
       const std::vector<std::string>& ids,
@@ -65,7 +67,7 @@ class DatabasePromotion: public DatabaseTable {
  private:
   void OnGetRecord(
       ledger::DBCommandResponsePtr response,
-      ledger::GetPromotionCallback callback);
+      GetPromotionCallback callback);
 
   void OnGetAllRecords(
       ledger::DBCommandResponsePtr response,
@@ -73,7 +75,7 @@ class DatabasePromotion: public DatabaseTable {
 
   void OnGetRecords(
       ledger::DBCommandResponsePtr response,
-      ledger::GetPromotionListCallback callback);
+      client::GetPromotionListCallback callback);
 };
 
 }  // namespace database

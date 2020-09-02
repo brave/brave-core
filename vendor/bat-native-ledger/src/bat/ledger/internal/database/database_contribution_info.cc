@@ -101,7 +101,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
 
 void DatabaseContributionInfo::GetRecord(
     const std::string& contribution_id,
-    ledger::GetContributionInfoCallback callback) {
+    GetContributionInfoCallback callback) {
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -141,7 +141,7 @@ void DatabaseContributionInfo::GetRecord(
 
 void DatabaseContributionInfo::OnGetRecord(
     ledger::DBCommandResponsePtr response,
-    ledger::GetContributionInfoCallback callback) {
+    GetContributionInfoCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
@@ -182,7 +182,7 @@ void DatabaseContributionInfo::OnGetRecord(
 void DatabaseContributionInfo::OnGetPublishers(
     ledger::ContributionPublisherList list,
     std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
-    ledger::GetContributionInfoCallback callback) {
+    GetContributionInfoCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
     BLOG(1, "Contribution is null");

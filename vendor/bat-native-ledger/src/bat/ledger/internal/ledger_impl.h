@@ -71,7 +71,7 @@ class LedgerImpl : public ledger::Ledger {
 
   virtual void LoadURL(
       ledger::UrlRequestPtr request,
-      ledger::LoadURLCallback callback);
+      client::LoadURLCallback callback);
 
  private:
   void OnInitialized(

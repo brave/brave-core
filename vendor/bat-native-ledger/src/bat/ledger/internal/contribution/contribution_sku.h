@@ -35,7 +35,7 @@ class ContributionSKU {
 
   void Merchant(
       const ledger::SKUTransaction& transaction,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void Retry(
       const ledger::ContributionInfoPtr contribution,
@@ -84,16 +84,16 @@ class ContributionSKU {
   void GetUnblindedTokens(
       ledger::UnblindedTokenList list,
       const ledger::SKUTransaction& transaction,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void GetOrderMerchant(
       ledger::SKUOrderPtr order,
       const credential::CredentialsRedeem& redeem,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void OnRedeemTokens(
       const ledger::Result result,
-      ledger::TransactionCallback callback);
+      client::TransactionCallback callback);
 
   void OnOrder(
       ledger::SKUOrderPtr order,

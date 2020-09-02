@@ -51,7 +51,7 @@ class GitHub {
 
   void FetchDataFromUrl(
       const std::string& url,
-      ledger::LoadURLCallback callback);
+      ledger::client::LoadURLCallback callback);
 
   void OnUserPage(
       const uint64_t duration,

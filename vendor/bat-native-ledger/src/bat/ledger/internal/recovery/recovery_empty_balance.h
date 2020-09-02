@@ -25,11 +25,11 @@ class EmptyBalance {
  private:
   void OnAllContributions(ledger::ContributionInfoList list);
 
-  void GetPromotions(ledger::GetPromotionListCallback callback);
+  void GetPromotions(client::GetPromotionListCallback callback);
 
   void OnPromotions(
       ledger::PromotionMap promotions,
-      ledger::GetPromotionListCallback callback);
+      client::GetPromotionListCallback callback);
 
   void GetCredsByPromotions(ledger::PromotionList list);
 

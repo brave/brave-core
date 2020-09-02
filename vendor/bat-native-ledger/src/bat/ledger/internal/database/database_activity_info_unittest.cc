@@ -78,7 +78,7 @@ TEST_F(DatabaseActivityInfoTest, InsertOrUpdateOk) {
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
@@ -118,7 +118,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListEmpty) {
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
@@ -157,7 +157,7 @@ TEST_F(DatabaseActivityInfoTest, GetRecordsListOk) {
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
@@ -201,7 +201,7 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(

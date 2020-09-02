@@ -23,11 +23,11 @@ class MockDatabase : public Database {
 
   MOCK_METHOD2(GetContributionInfo, void(
       const std::string& contribution_id,
-      ledger::GetContributionInfoCallback callback));
+      GetContributionInfoCallback callback));
 
   MOCK_METHOD2(GetReservedUnblindedTokens, void(
       const std::string& redeem_id,
-      ledger::GetUnblindedTokenListCallback callback));
+      GetUnblindedTokenListCallback callback));
 
   MOCK_METHOD2(SavePromotion, void(
       ledger::PromotionPtr info,

@@ -20,7 +20,7 @@ class LedgerImpl;
 namespace publisher {
 
 using FetchCallbackVector =
-    std::vector<ledger::GetServerPublisherInfoCallback>;
+    std::vector<client::GetServerPublisherInfoCallback>;
 
 // Fetches server publisher info and provides methods for determining
 // whether a server publisher info record is expired
@@ -40,7 +40,7 @@ class ServerPublisherFetcher {
   // Fetches server publisher info for the specified publisher key
   void Fetch(
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   // Purges expired records from the backing database
   void PurgeExpiredRecords();

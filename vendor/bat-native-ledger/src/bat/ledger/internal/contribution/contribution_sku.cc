@@ -306,7 +306,7 @@ void ContributionSKU::CredsStepSaved(
 
 void ContributionSKU::Merchant(
     const ledger::SKUTransaction& transaction,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens,
       this,
       _1,
@@ -321,7 +321,7 @@ void ContributionSKU::Merchant(
 void ContributionSKU::GetUnblindedTokens(
     ledger::UnblindedTokenList list,
     const ledger::SKUTransaction& transaction,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   if (list.empty()) {
     BLOG(0, "List is empty");
     callback(ledger::Result::LEDGER_ERROR, "");
@@ -363,7 +363,7 @@ void ContributionSKU::GetUnblindedTokens(
 void ContributionSKU::GetOrderMerchant(
     ledger::SKUOrderPtr order,
     const credential::CredentialsRedeem& redeem,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
     callback(ledger::Result::LEDGER_ERROR, "");
@@ -383,7 +383,7 @@ void ContributionSKU::GetOrderMerchant(
 
 void ContributionSKU::OnRedeemTokens(
     const ledger::Result result,
-    ledger::TransactionCallback callback) {
+    client::TransactionCallback callback) {
   if (result != ledger::Result::LEDGER_OK) {
     BLOG(0, "Problem redeeming tokens");
     callback(result, "");

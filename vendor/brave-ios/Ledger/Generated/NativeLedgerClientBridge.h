@@ -8,10 +8,10 @@
 @protocol NativeLedgerClientBridge
 @required
 
-- (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback;
-- (void)loadLedgerState:(ledger::OnLoadCallback)callback;
-- (void)loadPublisherState:(ledger::OnLoadCallback)callback;
-- (void)loadURL:(ledger::UrlRequestPtr)request callback:(ledger::LoadURLCallback)callback;
+- (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::client::FetchIconCallback)callback;
+- (void)loadLedgerState:(ledger::client::OnLoadCallback)callback;
+- (void)loadPublisherState:(ledger::client::OnLoadCallback)callback;
+- (void)loadURL:(ledger::UrlRequestPtr)request callback:(ledger::client::LoadURLCallback)callback;
 - (void)log:(const char *)file line:(const int)line verboseLevel:(const int)verbose_level message:(const std::string &) message;
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId;
 - (void)onReconcileComplete:(ledger::Result)result contribution:(ledger::ContributionInfoPtr)contribution;
@@ -33,7 +33,7 @@
 - (void)clearState:(const std::string&)name;
 - (std::map<std::string, ledger::ExternalWalletPtr>)getExternalWallets;
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
-- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::ResultCallback)callback;
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(ledger::client::ResultCallback)callback;
 - (void)setTransferFee:(const std::string&)wallet_type transfer_fee:(ledger::TransferFeePtr)transfer_fee;
 - (void)removeTransferFee:(const std::string&)wallet_type id:(const std::string&)id;
 - (ledger::TransferFeeList)getTransferFees:(const std::string&)wallet_type;
@@ -46,11 +46,11 @@
 - (ledger::ClientInfoPtr)getClientInfo;
 - (void)unblindedTokensReady;
 - (void)reconcileStampReset;
-- (void)runDBTransaction:(ledger::DBTransactionPtr)transaction callback:(ledger::RunDBTransactionCallback)callback;
-- (void)getCreateScript:(ledger::GetCreateScriptCallback)callback;
+- (void)runDBTransaction:(ledger::DBTransactionPtr)transaction callback:(ledger::client::RunDBTransactionCallback)callback;
+- (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback;
 - (void)pendingContributionSaved:(const ledger::Result)result;
 - (void)clearAllNotifications;
 - (void)walletDisconnected:(const std::string&)wallet_type;
-- (void)deleteLog:(ledger::ResultCallback)callback;
+- (void)deleteLog:(ledger::client::ResultCallback)callback;
 
 @end

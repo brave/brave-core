@@ -354,9 +354,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnCreateWallet(CreateWalletCallback callback,
                       ledger::Result result);
-  void OnLedgerStateLoaded(ledger::OnLoadCallback callback,
+  void OnLedgerStateLoaded(ledger::client::OnLoadCallback callback,
                               std::pair<std::string, base::Value> data);
-  void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
+  void OnPublisherStateLoaded(ledger::client::OnLoadCallback callback,
                               const std::string& data);
   void OnGetRewardsParameters(
       GetRewardsParametersCallback callback,
@@ -369,12 +369,8 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PromotionPtr promotion);
   void TriggerOnRewardsMainEnabled(bool rewards_main_enabled);
   void OnRestorePublishers(const ledger::Result result);
-  void OnPublisherInfoListLoaded(uint32_t start,
-                                 uint32_t limit,
-                                 ledger::PublisherInfoListCallback callback,
-                                 ledger::PublisherInfoList list);
   void OnSavedState(ledger::ResultCallback callback, bool success);
-  void OnLoadedState(ledger::OnLoadCallback callback,
+  void OnLoadedState(ledger::client::OnLoadCallback callback,
                      const std::string& value);
   void OnResetState(ledger::ResultCallback callback,
                                  bool success);
@@ -406,7 +402,7 @@ class RewardsServiceImpl : public RewardsService,
     ledger::PendingContributionInfoList list);
 
   void OnURLLoaderComplete(network::SimpleURLLoader* loader,
-                           ledger::LoadURLCallback callback,
+                           ledger::client::LoadURLCallback callback,
                            std::unique_ptr<std::string> response_body);
 
   void StartNotificationTimers(bool main_enabled);
@@ -494,11 +490,11 @@ class RewardsServiceImpl : public RewardsService,
       AttestPromotionCallback callback,
       const ledger::Result result,
       ledger::PromotionPtr promotion);
-  void LoadLedgerState(ledger::OnLoadCallback callback) override;
-  void LoadPublisherState(ledger::OnLoadCallback callback) override;
+  void LoadLedgerState(ledger::client::OnLoadCallback callback) override;
+  void LoadPublisherState(ledger::client::OnLoadCallback callback) override;
   void LoadURL(
       ledger::UrlRequestPtr request,
-      ledger::LoadURLCallback callback) override;
+      ledger::client::LoadURLCallback callback) override;
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisits(int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
@@ -508,13 +504,13 @@ class RewardsServiceImpl : public RewardsService,
                             uint64_t window_id) override;
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
-                    ledger::FetchIconCallback callback) override;
-  void OnFetchFavIconCompleted(ledger::FetchIconCallback callback,
+                    ledger::client::FetchIconCallback callback) override;
+  void OnFetchFavIconCompleted(ledger::client::FetchIconCallback callback,
                           const std::string& favicon_key,
                           const GURL& url,
                           const SkBitmap& image);
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
-                                    ledger::FetchIconCallback callback,
+                                    ledger::client::FetchIconCallback callback,
                                     bool success);
 
   bool MaybeTailDiagnosticLog(
@@ -614,10 +610,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void RunDBTransaction(
       ledger::DBTransactionPtr transaction,
-      ledger::RunDBTransactionCallback callback) override;
+      ledger::client::RunDBTransactionCallback callback) override;
 
   void GetCreateScript(
-      ledger::GetCreateScriptCallback callback) override;
+      ledger::client::GetCreateScriptCallback callback) override;
 
   void PendingContributionSaved(const ledger::Result result) override;
 
@@ -684,7 +680,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::MonthlyReportInfoPtr report);
 
   void OnRunDBTransaction(
-      ledger::RunDBTransactionCallback callback,
+      ledger::client::RunDBTransactionCallback callback,
       ledger::DBCommandResponsePtr response);
 
   void OnGetAllMonthlyReportIds(

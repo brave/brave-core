@@ -15,6 +15,9 @@
 namespace ledger {
 namespace database {
 
+using GetFirstContributionQueueCallback =
+    std::function<void(ContributionQueuePtr)>;
+
 class DatabaseContributionQueue: public DatabaseTable {
  public:
   explicit DatabaseContributionQueue(LedgerImpl* ledger);
@@ -24,7 +27,7 @@ class DatabaseContributionQueue: public DatabaseTable {
       ledger::ContributionQueuePtr info,
       ledger::ResultCallback callback);
 
-  void GetFirstRecord(ledger::GetFirstContributionQueueCallback callback);
+  void GetFirstRecord(GetFirstContributionQueueCallback callback);
 
   void MarkRecordAsComplete(
       const std::string& id,
@@ -38,12 +41,12 @@ class DatabaseContributionQueue: public DatabaseTable {
 
   void OnGetFirstRecord(
       ledger::DBCommandResponsePtr response,
-      ledger::GetFirstContributionQueueCallback callback);
+      GetFirstContributionQueueCallback callback);
 
   void OnGetPublishers(
       ledger::ContributionQueuePublisherList list,
       std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
-      ledger::GetFirstContributionQueueCallback callback);
+      GetFirstContributionQueueCallback callback);
 
   std::unique_ptr<DatabaseContributionQueuePublishers> publishers_;
 };

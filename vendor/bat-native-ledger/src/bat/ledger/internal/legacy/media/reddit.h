@@ -51,7 +51,7 @@ class Reddit {
 
   void FetchDataFromUrl(
       const std::string& url,
-      ledger::LoadURLCallback callback);
+      ledger::client::LoadURLCallback callback);
 
   void GetPublisherPanelInfo(
       uint64_t window_id,

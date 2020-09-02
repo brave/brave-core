@@ -11,16 +11,16 @@ NativeLedgerClient::~NativeLedgerClient() {
   bridge_ = nil;
 }
 
-void NativeLedgerClient::FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::FetchIconCallback callback) {
+void NativeLedgerClient::FetchFavIcon(const std::string & url, const std::string & favicon_key, ledger::client::FetchIconCallback callback) {
   [bridge_ fetchFavIcon:url faviconKey:favicon_key callback:callback];
 }
-void NativeLedgerClient::LoadLedgerState(ledger::OnLoadCallback callback) {
+void NativeLedgerClient::LoadLedgerState(ledger::client::OnLoadCallback callback) {
   [bridge_ loadLedgerState:callback];
 }
-void NativeLedgerClient::LoadPublisherState(ledger::OnLoadCallback callback) {
+void NativeLedgerClient::LoadPublisherState(ledger::client::OnLoadCallback callback) {
   [bridge_ loadPublisherState:callback];
 }
-void NativeLedgerClient::LoadURL(ledger::UrlRequestPtr request, ledger::LoadURLCallback callback) {
+void NativeLedgerClient::LoadURL(ledger::UrlRequestPtr request, ledger::client::LoadURLCallback callback) {
   [bridge_ loadURL:std::move(request) callback:callback];
 }
 void NativeLedgerClient::Log(const char * file, const int line, const int verbose_level, const std::string & message) {
@@ -86,7 +86,7 @@ std::map<std::string, ledger::ExternalWalletPtr> NativeLedgerClient::GetExternal
 void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) {
   [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];
 }
-void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, ledger::ResultCallback callback) {
+void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, ledger::client::ResultCallback callback) {
   [bridge_ showNotification:type args:args callback:callback];
 }
 void NativeLedgerClient::SetTransferFee(const std::string& wallet_type, ledger::TransferFeePtr transfer_fee) {
@@ -125,10 +125,10 @@ void NativeLedgerClient::UnblindedTokensReady() {
 void NativeLedgerClient::ReconcileStampReset() {
   [bridge_ reconcileStampReset];
 }
-void NativeLedgerClient::RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::RunDBTransactionCallback callback) {
+void NativeLedgerClient::RunDBTransaction(ledger::DBTransactionPtr transaction, ledger::client::RunDBTransactionCallback callback) {
   [bridge_ runDBTransaction:std::move(transaction) callback:callback];
 }
-void NativeLedgerClient::GetCreateScript(ledger::GetCreateScriptCallback callback) {
+void NativeLedgerClient::GetCreateScript(ledger::client::GetCreateScriptCallback callback) {
   [bridge_ getCreateScript:callback];
 }
 void NativeLedgerClient::PendingContributionSaved(const ledger::Result result) {
@@ -140,6 +140,6 @@ void NativeLedgerClient::ClearAllNotifications() {
 void NativeLedgerClient::WalletDisconnected(const std::string& wallet_type) {
   [bridge_ walletDisconnected:wallet_type];
 }
-void NativeLedgerClient::DeleteLog(ledger::ResultCallback callback) {
+void NativeLedgerClient::DeleteLog(ledger::client::ResultCallback callback) {
   [bridge_ deleteLog:callback];
 }

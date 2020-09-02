@@ -66,7 +66,7 @@ void EmptyBalance::OnAllContributions(ledger::ContributionInfoList list) {
   GetPromotions(get_callback);
 }
 
-void EmptyBalance::GetPromotions(ledger::GetPromotionListCallback callback) {
+void EmptyBalance::GetPromotions(client::GetPromotionListCallback callback) {
   auto get_callback = std::bind(&EmptyBalance::OnPromotions,
     this,
     _1,
@@ -77,7 +77,7 @@ void EmptyBalance::GetPromotions(ledger::GetPromotionListCallback callback) {
 
 void EmptyBalance::OnPromotions(
     ledger::PromotionMap promotions,
-    ledger::GetPromotionListCallback callback) {
+    client::GetPromotionListCallback callback) {
   ledger::PromotionList list;
 
   for (auto& promotion : promotions) {

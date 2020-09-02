@@ -103,7 +103,7 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
 }
 
 void DatabaseContributionQueue::GetFirstRecord(
-    ledger::GetFirstContributionQueueCallback callback) {
+    GetFirstContributionQueueCallback callback) {
   auto transaction = ledger::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
@@ -138,7 +138,7 @@ void DatabaseContributionQueue::GetFirstRecord(
 
 void DatabaseContributionQueue::OnGetFirstRecord(
     ledger::DBCommandResponsePtr response,
-    ledger::GetFirstContributionQueueCallback callback) {
+    GetFirstContributionQueueCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
@@ -175,7 +175,7 @@ void DatabaseContributionQueue::OnGetFirstRecord(
 void DatabaseContributionQueue::OnGetPublishers(
     ledger::ContributionQueuePublisherList list,
     std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
-    ledger::GetFirstContributionQueueCallback callback) {
+    GetFirstContributionQueueCallback callback) {
   if (!shared_queue) {
     BLOG(0, "Queue is null");
     callback(nullptr);

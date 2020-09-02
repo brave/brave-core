@@ -61,7 +61,7 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
@@ -88,7 +88,7 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
@@ -115,7 +115,7 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 2u);
           ASSERT_EQ(
@@ -142,7 +142,7 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
       .WillByDefault(
         Invoke([&](
             ledger::DBTransactionPtr transaction,
-            ledger::RunDBTransactionCallback callback) {
+            ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(

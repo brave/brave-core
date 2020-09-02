@@ -324,7 +324,7 @@ typedef NS_ENUM(NSInteger, BATLedgerDatabaseMigrationType) {
   rewardsDatabase = ledger::LedgerDatabase::CreateInstance(base::FilePath(dbPath.UTF8String));
 }
 
-- (void)getCreateScript:(ledger::GetCreateScriptCallback)callback
+- (void)getCreateScript:(ledger::client::GetCreateScriptCallback)callback
 {
   NSString *migrationScript = @"";
   switch (self.migrationType) {
@@ -1656,7 +1656,7 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - State
 
-- (void)loadLedgerState:(ledger::OnLoadCallback)callback
+- (void)loadLedgerState:(ledger::client::OnLoadCallback)callback
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:"ledger_state.json"];
   if (contents.length() > 0) {
@@ -1667,7 +1667,7 @@ BATLedgerBridge(BOOL,
   [self startNotificationTimers];
 }
 
-- (void)loadPublisherState:(ledger::OnLoadCallback)callback
+- (void)loadPublisherState:(ledger::client::OnLoadCallback)callback
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:"publisher_state.json"];
   if (contents.length() > 0) {
@@ -1677,7 +1677,7 @@ BATLedgerBridge(BOOL,
   }
 }
 
-- (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback
+- (void)loadState:(const std::string &)name callback:(ledger::client::OnLoadCallback)callback
 {
   const auto key = [NSString stringWithUTF8String:name.c_str()];
   const auto value = self.state[key];
@@ -1726,7 +1726,7 @@ BATLedgerBridge(BOOL,
   self.commonOps.customUserAgent = [customUserAgent stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
 }
 
-- (void)loadURL:(ledger::UrlRequestPtr)request callback:(ledger::LoadURLCallback)callback
+- (void)loadURL:(ledger::UrlRequestPtr)request callback:(ledger::client::LoadURLCallback)callback
 {
   std::map<ledger::UrlMethod, std::string> methodMap {
     {ledger::UrlMethod::GET, "GET"},
@@ -1761,7 +1761,7 @@ BATLedgerBridge(BOOL,
   return std::string(encoded.UTF8String);
 }
 
-- (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback
+- (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::client::FetchIconCallback)callback
 {
   if (!self.faviconFetcher) {
     callback(NO, std::string());
@@ -1888,7 +1888,7 @@ BATLedgerBridge(BOOL,
 }
 
 - (void)runDBTransaction:(ledger::DBTransactionPtr)transaction
-                callback:(ledger::RunDBTransactionCallback)callback
+                callback:(ledger::client::RunDBTransactionCallback)callback
 {
   if (!rewardsDatabase || transaction.get() == nullptr) {
     auto response = ledger::DBCommandResponse::New();

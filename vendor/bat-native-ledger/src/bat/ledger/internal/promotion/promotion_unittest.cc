@@ -89,7 +89,7 @@ class PromotionTest : public testing::Test {
       .WillByDefault(
         Invoke([](
             ledger::UrlRequestPtr request,
-            ledger::LoadURLCallback callback) {
+            client::LoadURLCallback callback) {
           ledger::UrlResponse response;
           response.status_code = 200;
           response.url = request->url;

@@ -13,36 +13,32 @@
 #include <string>
 #include <vector>
 
+#include "bat/ledger/internal/database/database_activity_info.h"
+#include "bat/ledger/internal/database/database_balance_report.h"
+#include "bat/ledger/internal/database/database_contribution_info.h"
+#include "bat/ledger/internal/database/database_contribution_queue.h"
+#include "bat/ledger/internal/database/database_creds_batch.h"
+#include "bat/ledger/internal/database/database_event_log.h"
+#include "bat/ledger/internal/database/database_initialize.h"
+#include "bat/ledger/internal/database/database_media_publisher_info.h"
+#include "bat/ledger/internal/database/database_multi_tables.h"
+#include "bat/ledger/internal/database/database_pending_contribution.h"
+#include "bat/ledger/internal/database/database_processed_publisher.h"
+#include "bat/ledger/internal/database/database_promotion.h"
+#include "bat/ledger/internal/database/database_publisher_info.h"
+#include "bat/ledger/internal/database/database_publisher_prefix_list.h"
+#include "bat/ledger/internal/database/database_recurring_tip.h"
+#include "bat/ledger/internal/database/database_server_publisher_info.h"
+#include "bat/ledger/internal/database/database_sku_order.h"
+#include "bat/ledger/internal/database/database_sku_transaction.h"
+#include "bat/ledger/internal/database/database_unblinded_token.h"
+#include "bat/ledger/internal/publisher/prefix_list_reader.h"
 #include "bat/ledger/ledger.h"
 
 namespace ledger {
 class LedgerImpl;
 
-namespace publisher {
-class PrefixListReader;
-}
-
 namespace database {
-
-class DatabaseInitialize;
-class DatabaseActivityInfo;
-class DatabaseBalanceReport;
-class DatabaseCredsBatch;
-class DatabaseEventLog;
-class DatabaseContributionInfo;
-class DatabaseContributionQueue;
-class DatabaseMediaPublisherInfo;
-class DatabaseMultiTables;
-class DatabasePendingContribution;
-class DatabaseProcessedPublisher;
-class DatabasePromotion;
-class DatabasePublisherInfo;
-class DatabasePublisherPrefixList;
-class DatabaseRecurringTip;
-class DatabaseServerPublisherInfo;
-class DatabaseSKUOrder;
-class DatabaseSKUTransaction;
-class DatabaseUnblindedToken;
 
 class Database {
  public:
@@ -112,7 +108,7 @@ class Database {
 
   void GetContributionInfo(
       const std::string& contribution_id,
-      ledger::GetContributionInfoCallback callback);
+      GetContributionInfoCallback callback);
 
   void GetOneTimeTips(
       const ledger::ActivityMonth month,
@@ -155,7 +151,7 @@ class Database {
       ledger::ResultCallback callback);
 
   void GetFirstContributionQueue(
-      ledger::GetFirstContributionQueueCallback callback);
+      GetFirstContributionQueueCallback callback);
 
   void MarkContributionQueueAsComplete(
       const std::string& id,
@@ -171,13 +167,13 @@ class Database {
   void GetCredsBatchByTrigger(
       const std::string& trigger_id,
       const ledger::CredsBatchType trigger_type,
-      ledger::GetCredsBatchCallback callback);
+      GetCredsBatchCallback callback);
 
   void SaveSignedCreds(
       ledger::CredsBatchPtr info,
       ledger::ResultCallback callback);
 
-  void GetAllCredsBatches(ledger::GetCredsBatchListCallback callback);
+  void GetAllCredsBatches(GetCredsBatchListCallback callback);
 
   void UpdateCredsBatchStatus(
       const std::string& trigger_id,
@@ -193,7 +189,7 @@ class Database {
 
   void GetCredsBatchesByTriggers(
       const std::vector<std::string>& trigger_ids,
-      ledger::GetCredsBatchListCallback callback);
+      GetCredsBatchListCallback callback);
 
   /**
    * EVENT LOG
@@ -266,7 +262,7 @@ class Database {
 
   void GetPromotion(
       const std::string& id,
-      ledger::GetPromotionCallback callback);
+      GetPromotionCallback callback);
 
   virtual void GetAllPromotions(ledger::GetAllPromotionsCallback callback);
 
@@ -291,11 +287,11 @@ class Database {
 
   void GetPromotionList(
       const std::vector<std::string>& ids,
-      ledger::GetPromotionListCallback callback);
+      client::GetPromotionListCallback callback);
 
   void GetPromotionListByType(
       const std::vector<ledger::PromotionType>& types,
-      ledger::GetPromotionListCallback callback);
+      client::GetPromotionListCallback callback);
 
   void UpdatePromotionsBlankPublicKey(
       const std::vector<std::string>& ids,
@@ -338,7 +334,7 @@ class Database {
    */
   void SearchPublisherPrefixList(
       const std::string& publisher_key,
-      ledger::SearchPublisherPrefixListCallback callback);
+      SearchPublisherPrefixListCallback callback);
 
   void ResetPublisherPrefixList(
       std::unique_ptr<publisher::PrefixListReader> reader,
@@ -354,7 +350,7 @@ class Database {
 
   void GetServerPublisherInfo(
       const std::string& publisher_key,
-      ledger::GetServerPublisherInfoCallback callback);
+      client::GetServerPublisherInfoCallback callback);
 
   /**
    * SKU ORDER
@@ -368,11 +364,11 @@ class Database {
 
   void GetSKUOrder(
       const std::string& order_id,
-      ledger::GetSKUOrderCallback callback);
+      GetSKUOrderCallback callback);
 
   void GetSKUOrderByContributionId(
       const std::string& contribution_id,
-      ledger::GetSKUOrderCallback callback);
+      GetSKUOrderCallback callback);
 
   void SaveContributionIdForSKUOrder(
       const std::string& order_id,
@@ -393,7 +389,7 @@ class Database {
 
   void GetSKUTransactionByOrderId(
       const std::string& order_id,
-      ledger::GetSKUTransactionCallback callback);
+      GetSKUTransactionCallback callback);
 
   /**
    * UNBLINDED TOKEN
@@ -419,15 +415,15 @@ class Database {
 
   void GetSpendableUnblindedTokensByTriggerIds(
       const std::vector<std::string>& trigger_ids,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
   void GetReservedUnblindedTokens(
       const std::string& redeem_id,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
   void GetSpendableUnblindedTokensByBatchTypes(
       const std::vector<ledger::CredsBatchType>& batch_types,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
  private:
   std::unique_ptr<DatabaseInitialize> initialize_;

@@ -14,6 +14,8 @@
 namespace ledger {
 namespace database {
 
+using GetUnblindedTokenListCallback = std::function<void(UnblindedTokenList)>;
+
 class DatabaseUnblindedToken: public DatabaseTable {
  public:
   explicit DatabaseUnblindedToken(LedgerImpl* ledger);
@@ -25,7 +27,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   void GetSpendableRecordsByTriggerIds(
       const std::vector<std::string>& trigger_ids,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
   void MarkRecordListAsSpent(
       const std::vector<std::string>& ids,
@@ -44,16 +46,16 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   void GetReservedRecordList(
       const std::string& redeem_id,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
   void GetSpendableRecordListByBatchTypes(
       const std::vector<ledger::CredsBatchType>& batch_types,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
  private:
   void OnGetRecords(
       ledger::DBCommandResponsePtr response,
-      ledger::GetUnblindedTokenListCallback callback);
+      GetUnblindedTokenListCallback callback);
 
   void OnMarkRecordListAsReserved(
       ledger::DBCommandResponsePtr response,

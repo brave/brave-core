@@ -64,7 +64,7 @@ void DatabaseServerPublisherInfo::InsertOrUpdate(
 
 void DatabaseServerPublisherInfo::GetRecord(
     const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
     callback(nullptr);
@@ -85,7 +85,7 @@ void DatabaseServerPublisherInfo::GetRecord(
 void DatabaseServerPublisherInfo::OnGetRecordBanner(
     ledger::PublisherBannerPtr banner,
     const std::string& publisher_key,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   auto transaction = ledger::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT status, address, updated_at "
@@ -127,7 +127,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
     ledger::DBCommandResponsePtr response,
     const std::string& publisher_key,
     const ledger::PublisherBanner& banner,
-    ledger::GetServerPublisherInfoCallback callback) {
+    client::GetServerPublisherInfoCallback callback) {
   if (!response ||
       response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");

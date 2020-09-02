@@ -60,7 +60,7 @@ DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;
 
 void DatabasePublisherPrefixList::Search(
     const std::string& publisher_key,
-    ledger::SearchPublisherPrefixListCallback callback) {
+    SearchPublisherPrefixListCallback callback) {
   std::string hex = publisher::GetHashPrefixInHex(
       publisher_key,
       kHashPrefixSize);
