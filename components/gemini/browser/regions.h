@@ -19,12 +19,11 @@ const std::vector<std::string> supported_regions = {
   // United States
   "US",
   // EU Countries
-  "BE", "BG", "CZ", "DK", "DE",
-  "EE", "IE", "EL", "ES", "FR",
-  "HR", "IT", "CY", "LV", "LT",
-  "LU", "HU", "MT", "NL", "AT",
-  "PL", "PT", "RO", "SI", "SK",
-  "FI", "SE"
+  "BE", "BG", "CZ", "DK", "EE",
+  "IE", "EL", "ES", "HR", "IT",
+  "CY", "LV", "LT", "LU", "HU",
+  "MT", "NL", "AT", "PL", "PT",
+  "RO", "SI", "SK", "FI", "SE"
 };
 
 }  // namespace gemini
