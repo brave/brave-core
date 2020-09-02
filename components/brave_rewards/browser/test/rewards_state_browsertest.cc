@@ -10,7 +10,6 @@
 #include "bat/ledger/mojom_structs.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/common/brave_paths.h"
-#include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
@@ -190,24 +189,28 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
       4,
       2020,
       base::BindLambdaForTesting(
-          [&](const int result, const brave_rewards::BalanceReport& report) {
-        EXPECT_EQ(report.grants, 4.1);
-        EXPECT_EQ(report.earning_from_ads, 4.2);
-        EXPECT_EQ(report.auto_contribute, 4.3);
-        EXPECT_EQ(report.recurring_donation, 4.4);
-        EXPECT_EQ(report.one_time_donation, 4.5);
+          [&](
+              const ledger::Result result,
+              ledger::BalanceReportInfoPtr report) {
+        EXPECT_EQ(report->grants, 4.1);
+        EXPECT_EQ(report->earning_from_ads, 4.2);
+        EXPECT_EQ(report->auto_contribute, 4.3);
+        EXPECT_EQ(report->recurring_donation, 4.4);
+        EXPECT_EQ(report->one_time_donation, 4.5);
       }));
 
   rewards_service_->GetBalanceReport(
       5,
       2020,
       base::BindLambdaForTesting(
-          [&](const int result, const brave_rewards::BalanceReport& report) {
-        EXPECT_EQ(report.grants, 5.1);
-        EXPECT_EQ(report.earning_from_ads, 5.2);
-        EXPECT_EQ(report.auto_contribute, 5.3);
-        EXPECT_EQ(report.recurring_donation, 5.4);
-        EXPECT_EQ(report.one_time_donation, 5.5);
+          [&](
+              const ledger::Result result,
+              ledger::BalanceReportInfoPtr report) {
+        EXPECT_EQ(report->grants, 5.1);
+        EXPECT_EQ(report->earning_from_ads, 5.2);
+        EXPECT_EQ(report->auto_contribute, 5.3);
+        EXPECT_EQ(report->recurring_donation, 5.4);
+        EXPECT_EQ(report->one_time_donation, 5.5);
       }));
 }
 

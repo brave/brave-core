@@ -10,8 +10,8 @@
 #include <string>
 #include <vector>
 
-#include "bat/ledger/public/interfaces/ledger.mojom.h"
-#include "bat/ledger/public/interfaces/ledger_database.mojom.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger_database.mojom.h"
 
 namespace ledger {
 /**

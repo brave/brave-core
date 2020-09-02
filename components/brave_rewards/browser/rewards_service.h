@@ -14,23 +14,11 @@
 #include "base/callback_forward.h"
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_rewards/browser/auto_contribution_props.h"
-#include "brave/components/brave_rewards/browser/balance.h"
-#include "brave/components/brave_rewards/browser/balance_report.h"
-#include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/contribution_info.h"
-#include "brave/components/brave_rewards/browser/event_log.h"
-#include "brave/components/brave_rewards/browser/external_wallet.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
-#include "brave/components/brave_rewards/browser/pending_contribution.h"
-#include "brave/components/brave_rewards/browser/promotion.h"
-#include "brave/components/brave_rewards/browser/rewards_internals_info.h"
+#include "brave/vendor/bat-native-ledger/include/bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
-#include "brave/components/brave_rewards/browser/monthly_report.h"
-#include "brave/components/brave_rewards/browser/rewards_parameters.h"
 #include "build/build_config.h"
-#include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
@@ -51,11 +39,11 @@ class RewardsServiceObserver;
 class RewardsServicePrivateObserver;
 
 using GetContentSiteListCallback =
-    base::Callback<void(std::unique_ptr<ContentSiteList>)>;
+    base::Callback<void(ledger::PublisherInfoList list)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetAutoContributionAmountCallback = base::Callback<void(double)>;
 using GetAutoContributePropertiesCallback = base::Callback<void(
-    std::unique_ptr<brave_rewards::AutoContributeProps>)>;
+    ledger::AutoContributePropertiesPtr)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(int)>;
 using GetPublisherMinVisitsCallback = base::Callback<void(int)>;
 using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
@@ -65,64 +53,65 @@ using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
-using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
-    std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
+using GetRewardsInternalsInfoCallback =
+    base::OnceCallback<void(ledger::RewardsInternalsInfoPtr info)>;
 using SaveRecurringTipCallback = base::OnceCallback<void(bool)>;
-using GetRecurringTipsCallback = base::OnceCallback<void(
-    std::unique_ptr<brave_rewards::ContentSiteList>)>;
-using GetOneTimeTipsCallback = base::OnceCallback<void(
-    std::unique_ptr<brave_rewards::ContentSiteList>)>;
+using GetRecurringTipsCallback =
+    base::OnceCallback<void(ledger::PublisherInfoList list)>;
+using GetOneTimeTipsCallback =
+    base::OnceCallback<void(ledger::PublisherInfoList list)>;
 using GetPublisherBannerCallback =
-    base::OnceCallback<void(std::unique_ptr<brave_rewards::PublisherBanner>)>;
+    base::OnceCallback<void(ledger::PublisherBannerPtr banner)>;
 using RefreshPublisherCallback =
-    base::OnceCallback<void(uint32_t, const std::string&)>;
+    base::OnceCallback<void(const ledger::PublisherStatus, const std::string&)>;
 using SaveMediaInfoCallback =
-    base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
+    base::OnceCallback<void(ledger::PublisherInfoPtr publisher)>;
 using GetInlineTippingPlatformEnabledCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
-using GetPendingContributionsCallback = base::OnceCallback<void(
-    std::unique_ptr<brave_rewards::PendingContributionInfoList>)>;
+using GetPendingContributionsCallback =
+    base::OnceCallback<void(ledger::PendingContributionInfoList list)>;
 using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 using FetchBalanceCallback = base::OnceCallback<void(
-    int32_t,
-    std::unique_ptr<brave_rewards::Balance>)>;
+    const ledger::Result,
+    ledger::BalancePtr)>;
 using GetExternalWalletCallback = base::OnceCallback<void(
-    int32_t result,
-    std::unique_ptr<brave_rewards::ExternalWallet> wallet)>;
+    const ledger::Result result,
+    ledger::ExternalWalletPtr wallet)>;
 using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
-    int32_t result,
+    const ledger::Result result,
     const std::string&,
     const std::string&,
     const std::map<std::string, std::string>&)>;
-using CreateWalletCallback = base::OnceCallback<void(int32_t)>;
+using CreateWalletCallback = base::OnceCallback<void(const ledger::Result)>;
 using ClaimPromotionCallback = base::OnceCallback<void(
-    const int32_t,
+    const ledger::Result,
     const std::string&,
     const std::string&,
     const std::string&)>;
 using AttestPromotionCallback = base::OnceCallback<void(
-    const int32_t,
-    std::unique_ptr<brave_rewards::Promotion> promotion)>;
-using GetAnonWalletStatusCallback = base::OnceCallback<void(const uint32_t)>;
+    const ledger::Result result,
+    ledger::PromotionPtr promotion)>;
+using GetAnonWalletStatusCallback =
+    base::OnceCallback<void(const ledger::Result)>;
 
 using GetBalanceReportCallback = base::OnceCallback<void(
-    const int32_t,
-    const brave_rewards::BalanceReport&)>;
+    const ledger::Result,
+    ledger::BalanceReportInfoPtr report)>;
 
-using GetMonthlyReportCallback = base::OnceCallback<void(
-    const MonthlyReport&)>;
+using GetMonthlyReportCallback =
+    base::OnceCallback<void(ledger::MonthlyReportInfoPtr report)>;
 
 using GetAllMonthlyReportIdsCallback =
     base::OnceCallback<void(const std::vector<std::string>&)>;
 
-using GetAllContributionsCallback = base::OnceCallback<void(
-    const std::vector<brave_rewards::ContributionInfo>&)>;
+using GetAllContributionsCallback =
+    base::OnceCallback<void(ledger::ContributionInfoList contributions)>;
 
 using GetAllPromotionsCallback =
-    base::OnceCallback<void(const std::vector<brave_rewards::Promotion>&)>;
+    base::OnceCallback<void(ledger::PromotionList list)>;
 
-using GetRewardsParametersCallback = base::OnceCallback<void(
-    std::unique_ptr<brave_rewards::RewardsParameters>)>;
+using GetRewardsParametersCallback =
+    base::OnceCallback<void(ledger::RewardsParametersPtr)>;
 
 using LoadDiagnosticLogCallback = base::OnceCallback<void(const std::string&)>;
 
@@ -130,8 +119,7 @@ using ClearDiagnosticLogCallback = base::OnceCallback<void(const bool success)>;
 
 using SuccessCallback = base::OnceCallback<void(const bool success)>;
 
-using GetEventLogsCallback =
-    base::OnceCallback<void(const std::vector<brave_rewards::EventLog>&)>;
+using GetEventLogsCallback = base::OnceCallback<void(ledger::EventLogs logs)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -227,7 +215,7 @@ class RewardsService : public KeyedService {
       const std::string& publisher_key,
       double amount,
       const bool recurring,
-      std::unique_ptr<brave_rewards::ContentSite> site) = 0;
+      ledger::PublisherInfoPtr publisher) = 0;
 
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
   virtual void GetRecurringTips(GetRecurringTipsCallback callback) = 0;

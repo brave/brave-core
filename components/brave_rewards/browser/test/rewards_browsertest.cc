@@ -340,10 +340,11 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
 
   base::RunLoop run_loop;
   auto test_callback =
-      [&](int32_t result,
-          std::unique_ptr<brave_rewards::ExternalWallet> wallet) {
+      [&](
+          const ledger::Result result,
+          ledger::ExternalWalletPtr wallet) {
         auto requests = response_->GetRequests();
-        EXPECT_EQ(result, static_cast<int>(ledger::Result::LEDGER_OK));
+        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
         EXPECT_FALSE(requests.empty());
 
         // Should not attempt to call /v2/wallet/UUID/claim endpoint

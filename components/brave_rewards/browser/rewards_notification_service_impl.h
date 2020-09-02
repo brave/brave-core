@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/values.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -49,25 +50,25 @@ class RewardsNotificationServiceImpl
   bool Exists(RewardsNotificationID id) const override;
 
  private:
-  bool IsAds(const uint32_t promotion_type);
-  std::string GetPromotionIdPrefix(const uint32_t promotion_type);
+  bool IsAds(const ledger::PromotionType promotion_type);
+  std::string GetPromotionIdPrefix(const ledger::PromotionType promotion_type);
 
   // RewardsServiceObserver impl
   void OnFetchPromotions(
       RewardsService* rewards_service,
-      const uint32_t result,
-      const std::vector<Promotion>& list) override;
+      const ledger::Result result,
+      const ledger::PromotionList& list) override;
   void OnPromotionFinished(
       RewardsService* rewards_service,
-      const uint32_t result,
-      Promotion promotion) override;
+      const ledger::Result result,
+      ledger::PromotionPtr promotion) override;
   void OnReconcileComplete(
       RewardsService* rewards_service,
-      unsigned int result,
+      const ledger::Result result,
       const std::string& contribution_id,
       const double amount,
-      const int32_t type,
-      const int32_t processor) override;
+      const ledger::RewardsType type,
+      const ledger::ContributionProcessor processor) override;
 
   void TriggerOnNotificationAdded(
       const RewardsNotification& rewards_notification);

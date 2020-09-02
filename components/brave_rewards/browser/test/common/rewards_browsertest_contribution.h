@@ -94,15 +94,15 @@ class RewardsBrowserTestContribution
 
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
-      int result) override;
+      const ledger::Result result) override;
 
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
-      unsigned int result,
+      const ledger::Result result,
       const std::string& contribution_id,
       const double amount,
-      const int32_t type,
-      const int32_t processor) override;
+      const ledger::RewardsType type,
+      const ledger::ContributionProcessor processor) override;
 
   void WaitForRecurringTipToBeSaved();
 

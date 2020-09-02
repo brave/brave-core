@@ -367,10 +367,6 @@ source_set("browser_process") {
         "brave_rewards/android/brave_rewards_native_worker.cc",
         "brave_rewards/android/brave_rewards_native_worker.h",
       ]
-
-      deps += [
-        "//brave/vendor/bat-native-ledger:headers",
-      ]
     } else {
       sources += [
         "brave_rewards/tip_dialog.cc",
@@ -381,6 +377,7 @@ source_set("browser_process") {
     deps += [
       "//brave/components/brave_rewards/browser",
       "//brave/components/services/bat_ledger/public/cpp:manifest",
+      "//brave/vendor/bat-native-ledger:headers",
     ]
   }
 

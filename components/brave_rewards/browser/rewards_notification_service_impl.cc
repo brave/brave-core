@@ -313,12 +313,13 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
   TriggerOnGetAllNotifications(rewards_notifications_list);
 }
 
-bool RewardsNotificationServiceImpl::IsAds(const uint32_t promotion_type) {
-  return promotion_type == 1;  // ledger:PromotionType::ADS
+bool RewardsNotificationServiceImpl::IsAds(
+    const ledger::PromotionType promotion_type) {
+  return promotion_type == ledger::PromotionType::ADS;
 }
 
 std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
-    const uint32_t promotion_type) {
+    const ledger::PromotionType promotion_type) {
   return IsAds(promotion_type)
       ? "rewards_notification_grant_ads_"
       : "rewards_notification_grant_";
@@ -326,19 +327,19 @@ std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
 
 void RewardsNotificationServiceImpl::OnFetchPromotions(
     RewardsService* rewards_service,
-    const uint32_t result,
-    const std::vector<Promotion>& list) {
+    const ledger::Result result,
+    const ledger::PromotionList& list) {
   if (static_cast<ledger::Result>(result) != ledger::Result::LEDGER_OK) {
     return;
   }
 
-  for (auto & item : list) {
-    if (item.status == 4) {  // ledger::PromotionStatus::FINISHED
+  for (const auto& item : list) {
+    if (item->status == ledger::PromotionStatus::FINISHED) {
       continue;
     }
 
-    const std::string prefix = GetPromotionIdPrefix(item.type);
-    auto notification_type = IsAds(item.type)
+    const std::string prefix = GetPromotionIdPrefix(item->type);
+    auto notification_type = IsAds(item->type)
         ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS
         : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT;
 
@@ -352,50 +353,47 @@ void RewardsNotificationServiceImpl::OnFetchPromotions(
     AddNotification(
         notification_type,
         args,
-        prefix + item.promotion_id,
+        prefix + item->id,
         only_once);
   }
 }
 
 void RewardsNotificationServiceImpl::OnPromotionFinished(
     RewardsService* rewards_service,
-    const uint32_t result,
-    Promotion promotion) {
-  std::string prefix = GetPromotionIdPrefix(promotion.type);
+    const ledger::Result result,
+    ledger::PromotionPtr promotion) {
+  std::string prefix = GetPromotionIdPrefix(promotion->type);
+  DeleteNotification(prefix + promotion->id);
 
-  DeleteNotification(prefix + promotion.promotion_id);
   // We keep it for back compatibility
-  if (!IsAds(promotion.type)) {
+  if (!IsAds(promotion->type)) {
     DeleteNotification("rewards_notification_grant");
   }
 }
 
 void RewardsNotificationServiceImpl::OnReconcileComplete(
     RewardsService* rewards_service,
-    unsigned int result,
+    const ledger::Result result,
     const std::string& contribution_id,
     const double amount,
-    const int32_t type,
-    const int32_t processor) {
-  auto converted_result = static_cast<ledger::Result>(result);
-  auto converted_type = static_cast<ledger::RewardsType>(type);
-
-  if (converted_type == ledger::RewardsType::ONE_TIME_TIP) {
+    const ledger::RewardsType type,
+    const ledger::ContributionProcessor processor) {
+  if (type == ledger::RewardsType::ONE_TIME_TIP) {
     return;
   }
 
   const bool completed_auto_contribute =
-      converted_result == ledger::Result::LEDGER_OK &&
-      converted_type == ledger::RewardsType::AUTO_CONTRIBUTE;
+      result == ledger::Result::LEDGER_OK &&
+      type == ledger::RewardsType::AUTO_CONTRIBUTE;
 
   if (completed_auto_contribute ||
-      converted_result == ledger::Result::NOT_ENOUGH_FUNDS ||
-      converted_result == ledger::Result::LEDGER_ERROR ||
-      converted_result == ledger::Result::TIP_ERROR) {
+      result == ledger::Result::NOT_ENOUGH_FUNDS ||
+      result == ledger::Result::LEDGER_ERROR ||
+      result == ledger::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(contribution_id);
-    args.push_back(std::to_string(result));
-    args.push_back(std::to_string(type));
+    args.push_back(std::to_string(static_cast<int>(result)));
+    args.push_back(std::to_string(static_cast<int>(type)));
     args.push_back(std::to_string(amount));
 
     AddNotification(

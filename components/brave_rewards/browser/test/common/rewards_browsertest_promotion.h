@@ -34,7 +34,7 @@ class RewardsBrowserTestPromotion
 
   void WaitForUnblindedTokensReady();
 
-  brave_rewards::Promotion GetPromotion();
+  ledger::PromotionPtr GetPromotion();
 
   std::string GetPromotionId();
 
@@ -43,13 +43,13 @@ class RewardsBrowserTestPromotion
  private:
   void OnFetchPromotions(
       brave_rewards::RewardsService* rewards_service,
-      unsigned int result,
-      const std::vector<brave_rewards::Promotion>& promotions) override;
+      const ledger::Result result,
+      const ledger::PromotionList& list) override;
 
   void OnPromotionFinished(
       brave_rewards::RewardsService* rewards_service,
-      const uint32_t result,
-      brave_rewards::Promotion promotion) override;
+      const ledger::Result result,
+      ledger::PromotionPtr promotion) override;
 
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;
@@ -62,7 +62,7 @@ class RewardsBrowserTestPromotion
   bool unblinded_tokens_ = false;
   bool should_succeed_ = true;
 
-  brave_rewards::Promotion promotion_;
+  ledger::PromotionPtr promotion_;
   Browser* browser_;  // NOT OWNED
   brave_rewards::RewardsServiceImpl* rewards_service_;  // NOT OWNED
 };

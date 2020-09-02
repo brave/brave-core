@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_BRAVE_REWARDS_EXTENSION_REWARDS_NOTIFICATION_SERVICE_OBSERVER_H_
 
 #include "base/macros.h"
+#include "bat/ledger/mojom_structs.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 
 class Profile;

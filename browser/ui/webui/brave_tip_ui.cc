@@ -17,7 +17,6 @@
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
@@ -36,6 +35,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "bat/ledger/mojom_structs.h"
 
 using content::WebUIMessageHandler;
 
@@ -60,27 +60,24 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void GetRecurringTips(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
   void OnReconcileStamp(uint64_t reconcile_stamp);
-  void OnGetRecurringTips(
-      std::unique_ptr<brave_rewards::ContentSiteList> list);
+  void OnGetRecurringTips(ledger::PublisherInfoList list);
   void TweetTip(const base::ListValue *args);
   void OnlyAnonWallet(const base::ListValue* args);
   void GetExternalWallet(const base::ListValue* args);
   void OnExternalWallet(
-      const int32_t result,
-      std::unique_ptr<brave_rewards::ExternalWallet> wallet);
+      const ledger::Result result,
+      ledger::ExternalWalletPtr wallet);
 
-  void OnPublisherBanner(
-      std::unique_ptr<brave_rewards::PublisherBanner> banner);
+  void OnPublisherBanner(ledger::PublisherBannerPtr banner);
 
   void OnTwitterShareURL(const std::string& url);
 
   void FetchBalance(const base::ListValue* args);
   void OnFetchBalance(
-    int32_t result,
-    std::unique_ptr<brave_rewards::Balance> balance);
+    const ledger::Result result,
+    ledger::BalancePtr balance);
 
-  void OnGetRewardsParameters(
-      std::unique_ptr<brave_rewards::RewardsParameters> parameters);
+  void OnGetRewardsParameters(ledger::RewardsParametersPtr parameters);
 
   // RewardsServiceObserver implementation
   void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
@@ -91,11 +88,11 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
 
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
-      unsigned int result,
+      const ledger::Result result,
       const std::string& contribution_id,
       const double amount,
-      const int32_t type,
-      const int32_t processor) override;
+      const ledger::RewardsType type,
+      const ledger::ContributionProcessor processor) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   base::WeakPtrFactory<RewardsTipDOMHandler> weak_factory_;
@@ -188,7 +185,7 @@ static std::unique_ptr<base::ListValue> CreateListOfDoubles(
 }
 
 void RewardsTipDOMHandler::OnGetRewardsParameters(
-    std::unique_ptr<brave_rewards::RewardsParameters> parameters) {
+    ledger::RewardsParametersPtr parameters) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -235,29 +232,26 @@ void RewardsTipDOMHandler::GetRecurringTips(
   }
 }
 
-void RewardsTipDOMHandler::OnGetRecurringTips(
-    std::unique_ptr<brave_rewards::ContentSiteList> list) {
+void RewardsTipDOMHandler::OnGetRecurringTips(ledger::PublisherInfoList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   auto publishers = std::make_unique<base::ListValue>();
-
-  if (list) {
-    for (auto const& item : *list) {
-      auto publisher = std::make_unique<base::DictionaryValue>();
-      publisher->SetString("publisherKey", item.id);
-      publisher->SetInteger("monthlyDate", item.reconcile_stamp);
-      publishers->Append(std::move(publisher));
-    }
+  for (auto const& item : list) {
+    auto publisher = std::make_unique<base::DictionaryValue>();
+    publisher->SetString("publisherKey", item->id);
+    publisher->SetInteger("monthlyDate", item->reconcile_stamp);
+    publishers->Append(std::move(publisher));
   }
 
   web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.recurringTips", *publishers);
+      "brave_rewards_tip.recurringTips",
+      *publishers);
 }
 
 void RewardsTipDOMHandler::OnPublisherBanner(
-    std::unique_ptr<brave_rewards::PublisherBanner> banner) {
+    ledger::PublisherBannerPtr banner) {
   if (!web_ui()->CanCallJavascript()) {
      return;
   }
@@ -400,27 +394,29 @@ void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
 }
 
 void RewardsTipDOMHandler::OnFetchBalance(
-    int32_t result,
-    std::unique_ptr<brave_rewards::Balance> balance) {
-  if (web_ui()->CanCallJavascript()) {
-    base::DictionaryValue data;
-    data.SetInteger("status", result);
-    auto balance_value = std::make_unique<base::DictionaryValue>();
-
-    if (result == 0 && balance) {
-      balance_value->SetDouble("total", balance->total);
-
-      auto wallets = std::make_unique<base::DictionaryValue>();
-      for (auto const& wallet : balance->wallets) {
-        wallets->SetDouble(wallet.first, wallet.second);
-      }
-      balance_value->SetDictionary("wallets", std::move(wallets));
-
-      data.SetDictionary("balance", std::move(balance_value));
-    }
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.balance", data);
+    const ledger::Result result,
+    ledger::BalancePtr balance) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
   }
+
+  base::DictionaryValue data;
+  data.SetInteger("status", static_cast<int>(result));
+  auto balance_value = std::make_unique<base::DictionaryValue>();
+
+  if (result == ledger::Result::LEDGER_OK && balance) {
+    balance_value->SetDouble("total", balance->total);
+
+    auto wallets = std::make_unique<base::DictionaryValue>();
+    for (auto const& wallet : balance->wallets) {
+      wallets->SetDouble(wallet.first, wallet.second);
+    }
+    balance_value->SetDictionary("wallets", std::move(wallets));
+
+    data.SetDictionary("balance", std::move(balance_value));
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.balance", data);
 }
 
 void RewardsTipDOMHandler::FetchBalance(const base::ListValue* args) {
@@ -446,8 +442,8 @@ void RewardsTipDOMHandler::GetExternalWallet(
 }
 
 void RewardsTipDOMHandler::OnExternalWallet(
-    const int32_t result,
-    std::unique_ptr<brave_rewards::ExternalWallet> wallet) {
+    const ledger::Result result,
+    ledger::ExternalWalletPtr wallet) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -485,18 +481,18 @@ void RewardsTipDOMHandler::OnlyAnonWallet(const base::ListValue* args) {
 
 void RewardsTipDOMHandler::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
-    unsigned int result,
+    const ledger::Result result,
     const std::string& contribution_id,
     const double amount,
-    const int32_t type,
-    const int32_t processor) {
+    const ledger::RewardsType type,
+    const ledger::ContributionProcessor processor) {
   if (!web_ui()->CanCallJavascript()) {
      return;
   }
 
   base::DictionaryValue complete;
   complete.SetKey("result", base::Value(static_cast<int>(result)));
-  complete.SetKey("type", base::Value(type));
+  complete.SetKey("type", base::Value(static_cast<int>(result)));
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_tip.reconcileComplete",
