@@ -109,4 +109,5 @@
     <color name="brave_stats_empty_bg_color">#335DB5FC</color>
     <color name="brave_stats_empty_border_color">#5DB5FC</color>
     <color name="brave_stats_badge_tint_color">#495057</color>
+    <color name="brave_stats_radio_button_active">@android:color/white</color>
 </resources>
