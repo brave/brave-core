@@ -13,7 +13,7 @@
 #include "base/threading/thread_checker.h"
 #include "ios/chrome/browser/application_context_impl.h"
 
-class BrowserPolicyCOnnectorIOS;
+class BrowserPolicyConnectorIOS;
 class SafeBrowsingService;
 
 namespace base {
