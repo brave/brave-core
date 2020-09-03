@@ -8,11 +8,15 @@ source_set("browser") {
     "features.h",
     "ipfs_json_parser.cc",
     "ipfs_json_parser.h",
+    "translate_ipfs_uri.cc",
+    "translate_ipfs_uri.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/brave_component_updater/browser/",
+    "//brave/components/ipfs/common",
     "//third_party/re2",
+    "//url",
   ]
 }

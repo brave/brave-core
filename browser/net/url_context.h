@@ -91,6 +91,7 @@ struct BraveRequestInfo {
   BlockedBy blocked_by = kNotBlocked;
   bool cancel_request_explicitly = false;
   std::string mock_data_url;
+  bool ipfs_local = true;
 
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.

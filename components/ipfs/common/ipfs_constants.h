@@ -14,6 +14,10 @@ extern const char kConfigPath[];
 extern const char kArgQueryParam[];
 extern const char kAddressesField[];
 extern const char kShutdownPath[];
+extern const char kIPFSScheme[];
+extern const char kIPNSScheme[];
+extern const char kDefaultIPFSGateway[];
+extern const char kDefaultIPFSLocalGateway[];
 
 enum class IPFSResolveMethodTypes {
   IPFS_GATEWAY,

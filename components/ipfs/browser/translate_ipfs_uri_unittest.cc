@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ipfs/content_browser_client_helper.h"
+#include "brave/components/ipfs/browser/translate_ipfs_uri.h"
 
 #include <memory>
 #include <vector>
@@ -28,57 +28,57 @@ using IPFSBraveContentBrowserClientTest = testing::Test;
 
 namespace ipfs {
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURLNotIPFSScheme) {
+TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURINotIPFSScheme) {
   GURL url("http://a.com/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
   ASSERT_FALSE(
-      ContentBrowserClientHelper::TranslateIPFSURL(url, &new_url, false));
+      ipfs::TranslateIPFSURI(url, &new_url, false));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURLIPFSScheme) {
+TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSScheme) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
   ASSERT_TRUE(
-      ContentBrowserClientHelper::TranslateIPFSURL(url, &new_url, false));
+      ipfs::TranslateIPFSURI(url, &new_url, false));
   EXPECT_EQ(new_url, GURL(
       "https://dweb.link/ipfs/QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURLIPNSScheme) {
+TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSScheme) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   GURL new_url;
   ASSERT_TRUE(
-      ContentBrowserClientHelper::TranslateIPFSURL(url, &new_url, false));
+      ipfs::TranslateIPFSURI(url, &new_url, false));
   EXPECT_EQ(new_url, GURL(
       "https://dweb.link/ipns/QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURLIPFSSchemeLocal) {
+TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeLocal) {
   GURL url("ipfs://QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG");
   GURL new_url;
   ASSERT_TRUE(
-      ContentBrowserClientHelper::TranslateIPFSURL(url, &new_url, true));
+      ipfs::TranslateIPFSURI(url, &new_url, true));
   EXPECT_EQ(new_url, GURL(
       "http://127.0.0.1:8080/ipfs/"
       "QmfM2r8seH2GiRaC4esTjeraXEachRt8ZsSeGaWTPLyMoG"));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURLIPNSSchemeLocal) {
+TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPNSSchemeLocal) {
   GURL url("ipns://QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd");
   GURL new_url;
   ASSERT_TRUE(
-      ContentBrowserClientHelper::TranslateIPFSURL(url, &new_url, true));
+      ipfs::TranslateIPFSURI(url, &new_url, true));
   EXPECT_EQ(new_url, GURL(
       "http://127.0.0.1:8080/ipns/"
       "QmSrPmbaUKA3ZodhzPWZnpFgcPMFWF4QsxXbkWfEptTBJd"));
 }
 
-TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURLIPFSSchemeWithPath) {
+TEST_F(IPFSBraveContentBrowserClientTest, TranslateIPFSURIIPFSSchemeWithPath) {
   GURL url("ipfs://bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"
            "/wiki/Vincent_van_Gogh.html");
   GURL new_url;
   ASSERT_TRUE(
-      ContentBrowserClientHelper::TranslateIPFSURL(url, &new_url, false));
+      ipfs::TranslateIPFSURI(url, &new_url, false));
   EXPECT_EQ(new_url, GURL(
       "https://dweb.link/ipfs/"
       "bafybeiemxf5abjwjbikoz4mc3a3dla6ual3jsgpdr4cjr3oz3evfyavhwq"

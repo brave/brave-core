@@ -16,6 +16,10 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
 
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/common/ipfs_constants.h"
+#endif
+
 BraveAutocompleteSchemeClassifier::BraveAutocompleteSchemeClassifier(
     Profile* profile)
     : ChromeAutocompleteSchemeClassifier(profile) {
@@ -49,8 +53,8 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
 
 #if BUILDFLAG(IPFS_ENABLED)
   if (base::IsStringASCII(scheme) &&
-      (base::LowerCaseEqualsASCII(scheme, kIPFSScheme) ||
-       base::LowerCaseEqualsASCII(scheme, kIPNSScheme))) {
+      (base::LowerCaseEqualsASCII(scheme, ipfs::kIPFSScheme) ||
+       base::LowerCaseEqualsASCII(scheme, ipfs::kIPNSScheme))) {
     return metrics::OmniboxInputType::URL;
   }
 #endif
