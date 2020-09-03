@@ -132,7 +132,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnIsWalletCreated(bool created);
   void GetPendingContributionsTotal(const base::ListValue* args);
   void OnGetPendingContributionsTotal(double amount);
-  void OnPublisherInfoUpdated(
+  void OnContentSiteUpdated(
       brave_rewards::RewardsService* rewards_service) override;
   void GetTransactionHistory(const base::ListValue* args);
   void GetRewardsMainEnabled(const base::ListValue* args);
@@ -822,7 +822,7 @@ void RewardsDOMHandler::OnAutoContributePropsReady(
                  weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnPublisherInfoUpdated(
+void RewardsDOMHandler::OnContentSiteUpdated(
     brave_rewards::RewardsService* rewards_service) {
   rewards_service_->GetAutoContributeProperties(
       base::Bind(&RewardsDOMHandler::OnAutoContributePropsReady,
@@ -1141,7 +1141,7 @@ void RewardsDOMHandler::GetOneTimeTips(const base::ListValue *args) {
 
 void RewardsDOMHandler::GetContributionList(const base::ListValue *args) {
   if (rewards_service_) {
-    OnPublisherInfoUpdated(rewards_service_);
+    OnContentSiteUpdated(rewards_service_);
   }
 }
 

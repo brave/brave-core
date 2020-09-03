@@ -22,8 +22,6 @@
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
-#include "brave/components/brave_rewards/browser/balance_report.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/publisher_info.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
@@ -35,8 +33,6 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/gfx/image/image.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
-#include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 
 #if defined(OS_ANDROID)
 #include "brave/components/safetynet/safetynet_check.h"
@@ -134,23 +130,19 @@ class RewardsServiceImpl : public RewardsService,
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
-  void GetPublisherInfoList(
+  void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
       uint64_t min_visit_time,
       uint64_t reconcile_stamp,
       bool allow_non_verified,
       uint32_t min_visits,
-      const GetPublisherInfoListCallback& callback) override;
-
-  void GetExcludedList(const GetPublisherInfoListCallback& callback) override;
-
       const GetContentSiteListCallback& callback) override;
 
   void GetExcludedList(const GetContentSiteListCallback& callback) override;
 
-  void OnGetPublisherInfoList(
-      const GetPublisherInfoListCallback& callback,
+  void OnGetContentSiteList(
+      const GetContentSiteListCallback& callback,
       ledger::type::PublisherInfoList list);
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
@@ -265,7 +257,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void SavePublisherInfo(
       const uint64_t window_id,
-      std::unique_ptr<brave_rewards::PublisherInfo> publisher_info,
+      ledger::PublisherInfoPtr publisher_info,
       SavePublisherInfoCallback callback) override;
 
   void SetInlineTippingPlatformEnabled(

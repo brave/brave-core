@@ -570,14 +570,14 @@ void RewardsServiceImpl::CreateWalletAttestationResult(
 }
 #endif
 
-void RewardsServiceImpl::GetPublisherInfoList(
+void RewardsServiceImpl::GetContentSiteList(
     uint32_t start,
     uint32_t limit,
     uint64_t min_visit_time,
     uint64_t reconcile_stamp,
     bool allow_non_verified,
     uint32_t min_visits,
-    const GetPublisherInfoListCallback& callback) {
+    const GetContentSiteListCallback& callback) {
   if (!Connected()) {
     return;
   }
@@ -597,25 +597,25 @@ void RewardsServiceImpl::GetPublisherInfoList(
       start,
       limit,
       std::move(filter),
-      base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList,
+      base::BindOnce(&RewardsServiceImpl::OnGetContentSiteList,
                      AsWeakPtr(),
                      callback));
 }
 
 void RewardsServiceImpl::GetExcludedList(
-    const GetPublisherInfoListCallback& callback) {
+    const GetContentSiteListCallback& callback) {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->GetExcludedList(base::BindOnce(
-      &RewardsServiceImpl::OnGetPublisherInfoList,
+      &RewardsServiceImpl::OnGetContentSiteList,
       AsWeakPtr(),
       callback));
 }
 
-void RewardsServiceImpl::OnGetPublisherInfoList(
-    const GetPublisherInfoListCallback& callback,
+void RewardsServiceImpl::OnGetContentSiteList(
+    const GetContentSiteListCallback& callback,
     ledger::type::PublisherInfoList list) {
   callback.Run(std::move(list));
 }
@@ -1966,14 +1966,7 @@ void RewardsServiceImpl::OnPublisherInfo(
     return;
   }
 
-  brave_rewards::PublisherInfo rewards_publisher_info =
-      PublisherInfoToRewardsPublisherInfo(*info);
-
-  auto rewards_publisher_info_ptr =
-      std::make_unique<brave_rewards::PublisherInfo>(rewards_publisher_info);
-  std::move(callback).Run(
-      result_converted,
-      std::move(rewards_publisher_info_ptr));
+  std::move(callback).Run(result_converted, std::move(info));
 }
 
 void RewardsServiceImpl::GetPublisherPanelInfo(
@@ -2000,45 +1993,20 @@ void RewardsServiceImpl::OnPublisherPanelInfo(
     return;
   }
 
-  brave_rewards::PublisherInfo rewards_publisher_info =
-      PublisherInfoToRewardsPublisherInfo(*info);
-
-  auto rewards_publisher_info_ptr =
-      std::make_unique<brave_rewards::PublisherInfo>(rewards_publisher_info);
-  std::move(callback).Run(
-      result_converted,
-      std::move(rewards_publisher_info_ptr));
+  std::move(callback).Run(result_converted, std::move(info));
 }
 
 void RewardsServiceImpl::SavePublisherInfo(
     const uint64_t window_id,
-    std::unique_ptr<brave_rewards::PublisherInfo> publisher_info,
+    ledger::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  auto ledger_publisher_info = ledger::PublisherInfo::New();
-  ledger_publisher_info->id = publisher_info->id;
-  ledger_publisher_info->duration = publisher_info->duration;
-  ledger_publisher_info->score = publisher_info->score;
-  ledger_publisher_info->visits = publisher_info->visits;
-  ledger_publisher_info->percent = publisher_info->percent;
-  ledger_publisher_info->weight = publisher_info->weight;
-  ledger_publisher_info->excluded =
-      static_cast<ledger::PublisherExclude>(publisher_info->excluded);
-  ledger_publisher_info->reconcile_stamp = publisher_info->reconcile_stamp;
-  ledger_publisher_info->status =
-      static_cast<ledger::PublisherStatus>(publisher_info->status);
-  ledger_publisher_info->status_updated_at = publisher_info->status_updated_at;
-  ledger_publisher_info->name = publisher_info->name;
-  ledger_publisher_info->url = publisher_info->url;
-  ledger_publisher_info->provider = publisher_info->provider;
-  ledger_publisher_info->favicon_url = publisher_info->favicon_url;
-
   bat_ledger_->SavePublisherInfo(
       window_id,
-      std::move(ledger_publisher_info),
+      std::move(publisher_info),
       base::BindOnce(&RewardsServiceImpl::OnSavePublisherInfo,
           AsWeakPtr(),
           std::move(callback)));

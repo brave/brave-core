@@ -131,7 +131,7 @@ BraveRewardsGetPublisherInfoFunction::Run() {
 
 void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
     const int32_t result,
-    std::unique_ptr<::brave_rewards::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   if (!info) {
     Respond(OneArgument(std::make_unique<base::Value>(result)));
     return;
@@ -141,8 +141,8 @@ void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
   dict->SetStringKey("publisherKey", info->id);
   dict->SetStringKey("name", info->name);
   dict->SetIntKey("percentage", info->percent);
-  dict->SetIntKey("status", info->status);
-  dict->SetIntKey("excluded", info->excluded);
+  dict->SetIntKey("status", static_cast<int>(info->status));
+  dict->SetIntKey("excluded", static_cast<int>(info->excluded));
   dict->SetStringKey("url", info->url);
   dict->SetStringKey("provider", info->provider);
   dict->SetStringKey("favIconUrl", info->favicon_url);
@@ -178,7 +178,7 @@ BraveRewardsGetPublisherPanelInfoFunction::Run() {
 
 void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
     const int32_t result,
-    std::unique_ptr<::brave_rewards::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   if (!info) {
     Respond(OneArgument(std::make_unique<base::Value>(result)));
     return;
@@ -188,8 +188,8 @@ void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
   dict->SetStringKey("publisherKey", info->id);
   dict->SetStringKey("name", info->name);
   dict->SetIntKey("percentage", info->percent);
-  dict->SetIntKey("status", info->status);
-  dict->SetIntKey("excluded", info->excluded);
+  dict->SetIntKey("status", static_cast<int>(info->status));
+  dict->SetIntKey("excluded", static_cast<int>(info->excluded));
   dict->SetStringKey("url", info->url);
   dict->SetStringKey("provider", info->provider);
   dict->SetStringKey("favIconUrl", info->favicon_url);
@@ -215,7 +215,7 @@ BraveRewardsSavePublisherInfoFunction::Run() {
     return RespondNow(NoArguments());
   }
 
-  auto publisher_info = std::make_unique<::brave_rewards::PublisherInfo>();
+  auto publisher_info = ledger::PublisherInfo::New();
   publisher_info->id = params->publisher_key;
   publisher_info->name = params->publisher_name;
   publisher_info->url = params->url;

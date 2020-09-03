@@ -68,7 +68,7 @@ using RefreshPublisherCallback =
         const std::string&)>;
 using GetPublisherInfoCallback = base::OnceCallback<void(
     const int32_t,
-    std::unique_ptr<brave_rewards::PublisherInfo>)>;
+    ledger::PublisherInfoPtr)>;
 using SavePublisherInfoCallback = base::OnceCallback<void(const int32_t)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(ledger::type::PublisherInfoPtr publisher)>;
@@ -138,16 +138,16 @@ class RewardsService : public KeyedService {
 
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
-  virtual void GetPublisherInfoList(
+  virtual void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
       uint64_t min_visit_time,
       uint64_t reconcile_stamp,
       bool allow_non_verified,
       uint32_t min_visits,
-      const GetPublisherInfoListCallback& callback) = 0;
+      const GetContentSiteListCallback& callback) = 0;
   virtual void GetExcludedList(
-      const GetPublisherInfoListCallback& callback) = 0;
+      const GetContentSiteListCallback& callback) = 0;
   virtual void FetchPromotions() = 0;
   // Used by desktop
   virtual void ClaimPromotion(
@@ -291,7 +291,7 @@ class RewardsService : public KeyedService {
 
   virtual void SavePublisherInfo(
       const uint64_t window_id,
-      std::unique_ptr<brave_rewards::PublisherInfo> publisher_info,
+      ledger::PublisherInfoPtr publisher_info,
       SavePublisherInfoCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(
