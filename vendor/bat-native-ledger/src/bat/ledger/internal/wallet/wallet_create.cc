@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
@@ -35,7 +35,7 @@ void WalletCreate::Start(ledger::ResultCallback callback) {
     return;
   }
 
-  const auto key_info_seed = braveledger_helper::Security::GenerateSeed();
+  const auto key_info_seed = util::Security::GenerateSeed();
   ledger_->state()->SetRecoverySeed(key_info_seed);
 
   auto url_callback = std::bind(&WalletCreate::OnCreate,
@@ -67,7 +67,7 @@ void WalletCreate::OnCreate(
     ledger_->state()->SetPromotionCorruptedMigrated(true);
   }
   ledger_->state()->SetCreationStamp(
-      braveledger_time_util::GetCurrentTimeStamp());
+      util::GetCurrentTimeStamp());
   ledger_->state()->SetInlineTippingPlatformEnabled(
       type::InlineTipsPlatforms::REDDIT,
       true);

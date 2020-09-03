@@ -8,7 +8,7 @@
 
 #include "base/json/json_writer.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/credentials/credentials_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -78,7 +78,7 @@ void PostSuggestionsClaim::Request(
 
   const std::string payload = GeneratePayload(redeem);
 
-  auto headers = braveledger_request_util::BuildSignHeaders(
+  auto headers = util::BuildSignHeaders(
       "post /v1/suggestions/claim",
       payload,
       ledger_->state()->GetPaymentId(),

@@ -7,9 +7,10 @@
 
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 
-namespace braveledger_request_util {
+namespace ledger {
+namespace util {
 
 std::string SignatureHeaderValue(
     const std::string& data,
@@ -20,7 +21,7 @@ std::string SignatureHeaderValue(
   DCHECK(!private_key.empty());
 
   auto digest_header_value =
-      braveledger_helper::Security::DigestValue(body);
+      util::Security::DigestValue(body);
 
   std::vector<std::map<std::string, std::string>> headers;
   headers.push_back({{"digest", digest_header_value}});
@@ -30,7 +31,7 @@ std::string SignatureHeaderValue(
     headers.push_back({{"(request-target)", data}});
   }
 
-  return braveledger_helper::Security::Sign(
+  return util::Security::Sign(
       headers,
       key_id,
       private_key);
@@ -43,7 +44,7 @@ std::map<std::string, std::string> GetSignHeaders(
     const std::vector<uint8_t>& private_key,
     const bool idempotency_key) {
   const std::string digest_header =
-      braveledger_helper::Security::DigestValue(body).c_str();
+      util::Security::DigestValue(body).c_str();
   const std::string signature_header = SignatureHeaderValue(
       data,
       body,
@@ -81,4 +82,5 @@ std::vector<std::string> BuildSignHeaders(
   };
 }
 
-}  // namespace braveledger_request_util
+}  // namespace util
+}  // namespace ledger

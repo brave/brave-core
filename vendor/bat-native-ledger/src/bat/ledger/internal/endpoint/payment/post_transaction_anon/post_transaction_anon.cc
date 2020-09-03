@@ -51,7 +51,7 @@ std::string PostTransactionAnon::GeneratePayload(
   std::string octets_json;
   base::JSONWriter::Write(octets, &octets_json);
 
-  const auto sign_headers = braveledger_request_util::GetSignHeaders(
+  const auto sign_headers = util::GetSignHeaders(
       order_id,
       octets_json,
       "primary",

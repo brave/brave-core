@@ -120,7 +120,7 @@ void PostCreds::Request(
 
   const std::string& payload = GeneratePayload(std::move(blinded_creds));
 
-  const auto headers = braveledger_request_util::BuildSignHeaders(
+  const auto headers = util::BuildSignHeaders(
       "post /v1/promotions/" + promotion_id,
       payload,
       ledger_->state()->GetPaymentId(),

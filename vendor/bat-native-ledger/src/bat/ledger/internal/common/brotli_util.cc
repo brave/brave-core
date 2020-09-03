@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "bat/ledger/internal/common/brotli_helpers.h"
+#include "bat/ledger/internal/common/brotli_util.h"
 
 #include <vector>
 
@@ -77,7 +77,8 @@ class BrotliStreamDecoder {
 
 }  // namespace
 
-namespace braveledger_helpers {
+namespace ledger {
+namespace util {
 
 bool DecodeBrotliString(
     base::StringPiece input,
@@ -119,4 +120,5 @@ bool DecodeBrotliStringWithBuffer(
   return result == BrotliStreamDecoder::Result::Done;
 }
 
-}  // namespace braveledger_helpers
+}  // namespace util
+}  // namespace ledger

@@ -86,7 +86,7 @@ void Contribution::Initialize() {
 void Contribution::CheckContributionQueue() {
   base::TimeDelta delay = ledger::is_testing
       ? base::TimeDelta::FromSeconds(1)
-      : braveledger_time_util::GetRandomizedDelay(
+      : util::GetRandomizedDelay(
           base::TimeDelta::FromSeconds(15));
 
   BLOG(1, "Queue timer set for " << delay);
@@ -237,8 +237,8 @@ void Contribution::ContributionCompleted(
 
   if (result == type::Result::LEDGER_OK) {
     ledger_->database()->SaveBalanceReportInfoItem(
-        braveledger_time_util::GetCurrentMonth(),
-        braveledger_time_util::GetCurrentYear(),
+        util::GetCurrentMonth(),
+        util::GetCurrentYear(),
         GetReportTypeFromRewardsType(contribution->type),
         contribution->amount,
         [](const type::Result){});
@@ -333,7 +333,7 @@ void Contribution::CreateNewEntry(
   const std::string contribution_id = base::GenerateGUID();
 
   auto contribution = type::ContributionInfo::New();
-  const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
+  const uint64_t now = util::GetCurrentTimeStamp();
   contribution->contribution_id = contribution_id;
   contribution->amount = queue->amount;
   contribution->type = queue->type;
@@ -593,7 +593,7 @@ void Contribution::Result(
   if (result == type::Result::RETRY) {
     SetRetryTimer(
         contribution_id,
-        braveledger_time_util::GetRandomizedDelay(
+        util::GetRandomizedDelay(
             base::TimeDelta::FromSeconds(45)));
     return;
   }
@@ -619,12 +619,12 @@ void Contribution::OnResult(
         type::ContributionProcessor::BRAVE_TOKENS) {
       SetRetryTimer(
           contribution->contribution_id,
-          braveledger_time_util::GetRandomizedDelay(
+          util::GetRandomizedDelay(
               base::TimeDelta::FromSeconds(45)));
     } else {
       SetRetryTimer(
           contribution->contribution_id,
-          braveledger_time_util::GetRandomizedDelay(
+          util::GetRandomizedDelay(
               base::TimeDelta::FromSeconds(450)));
     }
 

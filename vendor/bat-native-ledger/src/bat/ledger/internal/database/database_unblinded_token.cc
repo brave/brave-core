@@ -175,7 +175,7 @@ void DatabaseUnblindedToken::MarkRecordListAsSpent(
   command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
-  BindInt64(command.get(), 0, braveledger_time_util::GetCurrentTimeStamp());
+  BindInt64(command.get(), 0, util::GetCurrentTimeStamp());
   BindString(command.get(), 1, redeem_id);
   BindInt(command.get(), 2, static_cast<int>(redeem_type));
 
@@ -220,7 +220,7 @@ void DatabaseUnblindedToken::MarkRecordListAsReserved(
   command->command = query;
 
   BindString(command.get(), 0, redeem_id);
-  BindInt64(command.get(), 1, braveledger_time_util::GetCurrentTimeStamp());
+  BindInt64(command.get(), 1, util::GetCurrentTimeStamp());
   BindInt64(command.get(), 2, ids.size());
 
   transaction->commands.push_back(std::move(command));

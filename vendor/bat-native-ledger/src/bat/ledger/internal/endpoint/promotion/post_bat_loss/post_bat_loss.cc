@@ -64,7 +64,7 @@ void PostBatLoss::Request(
       payment_id.c_str(),
       version);
 
-  const auto headers = braveledger_request_util::BuildSignHeaders(
+  const auto headers = util::BuildSignHeaders(
       header_url,
       payload,
       payment_id,

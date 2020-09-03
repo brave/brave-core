@@ -13,11 +13,12 @@
 #include "base/time/time.h"
 #include "bat/ledger/mojom_structs.h"
 
-namespace braveledger_time_util {
+namespace ledger {
+namespace util {
 
-ledger::type::ActivityMonth GetCurrentMonth();
+type::ActivityMonth GetCurrentMonth();
 
-ledger::type::ActivityMonth GetMonth(const base::Time& time);
+type::ActivityMonth GetMonth(const base::Time& time);
 
 uint32_t GetCurrentYear();
 
@@ -32,6 +33,7 @@ base::TimeDelta GetRandomizedDelayWithBackoff(
     base::TimeDelta max_delay,
     int backoff_count);
 
-}  // namespace braveledger_time_util
+}  // namespace util
+}  // namespace ledger
 
 #endif  // BRAVELEDGER_COMMON_TIME_UTIL_H_

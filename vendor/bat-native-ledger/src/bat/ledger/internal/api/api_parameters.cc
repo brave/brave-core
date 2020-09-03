@@ -94,7 +94,7 @@ void APIParameters::SetRefreshTimer(
   }
 
   base::TimeDelta start_in =
-      base_delay + braveledger_time_util::GetRandomizedDelay(delay);
+      base_delay + util::GetRandomizedDelay(delay);
 
   BLOG(1, "Params timer set for " << start_in);
 

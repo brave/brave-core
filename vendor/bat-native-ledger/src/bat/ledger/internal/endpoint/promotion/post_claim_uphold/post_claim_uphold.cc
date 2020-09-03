@@ -12,7 +12,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/uphold/uphold_util.h"
@@ -59,12 +59,12 @@ std::string PostClaimUphold::GeneratePayload(const double user_funds) {
   base::JSONWriter::Write(octets, &octets_json);
 
   const std::string header_digest =
-      braveledger_helper::Security::DigestValue(octets_json);
+      util::Security::DigestValue(octets_json);
 
   std::vector<std::map<std::string, std::string>> headers;
   headers.push_back({{"digest", header_digest}});
 
-  const std::string header_signature = braveledger_helper::Security::Sign(
+  const std::string header_signature = util::Security::Sign(
       headers,
       "primary",
       ledger_->state()->GetRecoverySeed());

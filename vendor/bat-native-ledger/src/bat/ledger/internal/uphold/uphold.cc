@@ -241,7 +241,7 @@ void Uphold::SaveTransferFee(type::TransferFeePtr transfer_fee) {
 void Uphold::StartTransferFeeTimer(const std::string& fee_id) {
   DCHECK(!fee_id.empty());
 
-  base::TimeDelta delay = braveledger_time_util::GetRandomizedDelay(
+  base::TimeDelta delay = util::GetRandomizedDelay(
       base::TimeDelta::FromSeconds(45));
 
   BLOG(1, "Uphold transfer fee timer set for " << delay);

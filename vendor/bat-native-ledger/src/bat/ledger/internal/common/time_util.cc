@@ -8,17 +8,18 @@
 #include <algorithm>
 #include "brave_base/random.h"
 
-namespace braveledger_time_util {
+namespace ledger {
+namespace util {
 
-ledger::type::ActivityMonth GetCurrentMonth() {
+type::ActivityMonth GetCurrentMonth() {
   base::Time now = base::Time::Now();
   return GetMonth(now);
 }
 
-ledger::type::ActivityMonth GetMonth(const base::Time& time) {
+type::ActivityMonth GetMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  return (ledger::type::ActivityMonth)exploded.month;
+  return (type::ActivityMonth)exploded.month;
 }
 
 uint32_t GetCurrentYear() {
@@ -49,4 +50,5 @@ base::TimeDelta GetRandomizedDelayWithBackoff(
   return GetRandomizedDelay(std::min(delay, max_delay));
 }
 
-}  // namespace braveledger_time_util
+}  // namespace util
+}  // namespace ledger

@@ -157,7 +157,7 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
     const int64_t max_age_seconds,
     ledger::ResultCallback callback) {
   int64_t cutoff =
-      braveledger_time_util::GetCurrentTimeStamp() - max_age_seconds;
+      util::GetCurrentTimeStamp() - max_age_seconds;
 
   auto transaction = type::DBTransaction::New();
 

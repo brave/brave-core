@@ -49,7 +49,7 @@ void HandleExpiredPromotions(
     return;
   }
 
-  const uint64_t current_time = braveledger_time_util::GetCurrentTimeStamp();
+  const uint64_t current_time = util::GetCurrentTimeStamp();
 
   for (auto& item : *promotions) {
     if (!item.second || item.second->status == type::PromotionStatus::OVER) {
@@ -123,7 +123,7 @@ void Promotion::Fetch(ledger::FetchPromotionCallback callback) {
   if (!ledger::is_testing) {
     const uint64_t last_promo_stamp =
         ledger_->state()->GetPromotionLastFetchStamp();
-    const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
+    const uint64_t now = util::GetCurrentTimeStamp();
     if (now - last_promo_stamp < kFetchPromotionsThresholdInSeconds) {
       auto all_callback = std::bind(
           &Promotion::OnGetAllPromotionsFromDatabase,
@@ -438,8 +438,8 @@ void Promotion::OnComplete(
     BLOG(1, "Promotion completed with result " << result);
   if (promotion && result == type::Result::LEDGER_OK) {
     ledger_->database()->SaveBalanceReportInfoItem(
-        braveledger_time_util::GetCurrentMonth(),
-        braveledger_time_util::GetCurrentYear(),
+        util::GetCurrentMonth(),
+        util::GetCurrentYear(),
         ConvertPromotionTypeToReportType(promotion->type),
         promotion->approximate_value,
         [](const type::Result){});
@@ -452,7 +452,7 @@ void Promotion::ProcessFetchedPromotions(
     const type::Result result,
     type::PromotionList promotions,
     ledger::FetchPromotionCallback callback) {
-  const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
+  const uint64_t now = util::GetCurrentTimeStamp();
   ledger_->state()->SetPromotionLastFetchStamp(now);
   last_check_timer_.Stop();
   const bool retry = result != type::Result::LEDGER_OK &&
@@ -549,14 +549,14 @@ void Promotion::Refresh(const bool retry_after_error) {
   base::TimeDelta start_timer_in;
 
   if (retry_after_error) {
-    start_timer_in = braveledger_time_util::GetRandomizedDelay(
+    start_timer_in = util::GetRandomizedDelay(
         base::TimeDelta::FromSeconds(300));
 
     BLOG(1, "Failed to refresh promotion, will try again in "
         << start_timer_in);
   } else {
     const auto default_time = constant::kPromotionRefreshInterval;
-    const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
+    const uint64_t now = util::GetCurrentTimeStamp();
     const uint64_t last_promo_stamp =
         ledger_->state()->GetPromotionLastFetchStamp();
 

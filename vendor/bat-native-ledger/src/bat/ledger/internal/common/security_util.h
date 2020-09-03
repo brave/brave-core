@@ -3,14 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_COMMON_SECURITY_HELPER_H_
-#define BRAVELEDGER_COMMON_SECURITY_HELPER_H_
+#ifndef BRAVELEDGER_COMMON_SECURITY_UTIL_H_
+#define BRAVELEDGER_COMMON_SECURITY_UTIL_H_
 
 #include <map>
 #include <string>
 #include <vector>
 
-namespace braveledger_helper {
+namespace ledger {
+namespace util {
 
 class Security {
  public:
@@ -41,6 +42,7 @@ class Security {
   static std::string GetPublicKeyHexFromSeed(const std::vector<uint8_t>& seed);
 };
 
-}  // namespace braveledger_helper
+}  // namespace util
+}  // namespace ledger
 
-#endif  // BRAVELEDGER_COMMON_SECURITY_HELPER_H_
+#endif  // BRAVELEDGER_COMMON_SECURITY_UTIL_H_

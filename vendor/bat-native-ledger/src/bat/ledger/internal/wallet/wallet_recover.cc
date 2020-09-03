@@ -9,7 +9,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/string_split.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 #include "wally_bip39.h"  // NOLINT
@@ -66,7 +66,7 @@ void WalletRecover::Start(
   }
 
   const std::string public_key_hex =
-      braveledger_helper::Security::GetPublicKeyHexFromSeed(new_seed);
+      util::Security::GetPublicKeyHexFromSeed(new_seed);
 
   auto url_callback = std::bind(&WalletRecover::OnRecover,
       this,

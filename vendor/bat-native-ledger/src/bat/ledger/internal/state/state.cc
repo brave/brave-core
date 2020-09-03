@@ -201,7 +201,7 @@ uint64_t State::GetReconcileStamp() {
 }
 
 void State::SetReconcileStamp(const int reconcile_interval) {
-  uint64_t reconcile_stamp = braveledger_time_util::GetCurrentTimeStamp();
+  uint64_t reconcile_stamp = util::GetCurrentTimeStamp();
   if (reconcile_interval > 0) {
     reconcile_stamp += reconcile_interval * 60;
   } else {

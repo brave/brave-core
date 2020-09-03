@@ -8,7 +8,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/brotli_helpers.h"
+#include "bat/ledger/internal/common/brotli_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/endpoint/private_cdn/private_cdn_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -93,7 +93,7 @@ void GetServerInfoForEmptyResponse(
   BLOG(1, "Server did not return an entry for publisher " << publisher_key);
   info->publisher_key = publisher_key;
   info->status = ledger::type::PublisherStatus::NOT_VERIFIED;
-  info->updated_at = braveledger_time_util::GetCurrentTimeStamp();
+  info->updated_at = ledger::util::GetCurrentTimeStamp();
 }
 
 ledger::type::Result ServerPublisherInfoFromMessage(
@@ -114,7 +114,7 @@ ledger::type::Result ServerPublisherInfoFromMessage(
     info->publisher_key = entry.channel_identifier();
     info->status = GetPublisherStatusFromMessage(entry);
     info->address = GetPublisherAddressFromMessage(entry);
-    info->updated_at = braveledger_time_util::GetCurrentTimeStamp();
+    info->updated_at = ledger::util::GetCurrentTimeStamp();
 
     if (entry.has_site_banner_details()) {
       info->banner =
@@ -128,7 +128,7 @@ ledger::type::Result ServerPublisherInfoFromMessage(
 
 bool DecompressMessage(base::StringPiece payload, std::string* output) {
   constexpr size_t buffer_size = 32 * 1024;
-  return braveledger_helpers::DecodeBrotliStringWithBuffer(
+  return ledger::util::DecodeBrotliStringWithBuffer(
       payload,
       buffer_size,
       output);

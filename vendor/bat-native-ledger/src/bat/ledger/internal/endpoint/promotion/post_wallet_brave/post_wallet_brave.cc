@@ -8,7 +8,7 @@
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/endpoint/promotion/promotions_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/common/request_util.h"
@@ -80,10 +80,10 @@ type::Result PostWalletBrave::ParseBody(
 void PostWalletBrave::Request(
     PostWalletBraveCallback callback) {
   const auto seed = ledger_->state()->GetRecoverySeed();
-  const auto headers = braveledger_request_util::BuildSignHeaders(
+  const auto headers = util::BuildSignHeaders(
       "post /v3/wallet/brave",
       "",
-      braveledger_helper::Security::GetPublicKeyHexFromSeed(seed),
+      util::Security::GetPublicKeyHexFromSeed(seed),
       seed);
 
   auto url_callback = std::bind(&PostWalletBrave::OnRequest,

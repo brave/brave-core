@@ -62,7 +62,7 @@ void DatabaseContributionInfo::InsertOrUpdate(
 
   auto created_at = info->created_at;
   if (info->created_at == 0) {
-    created_at = braveledger_time_util::GetCurrentTimeStamp();
+    created_at = util::GetCurrentTimeStamp();
   }
 
   auto transaction = type::DBTransaction::New();

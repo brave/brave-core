@@ -354,7 +354,7 @@ void DatabasePromotion::CredentialCompleted(
   command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
-  const uint64_t current_time = braveledger_time_util::GetCurrentTimeStamp();
+  const uint64_t current_time = util::GetCurrentTimeStamp();
 
   BindInt(command.get(), 0,
       static_cast<int>(type::PromotionStatus::FINISHED));

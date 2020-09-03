@@ -16,7 +16,7 @@
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/legacy/bat_helper.h"
 #include "bat/ledger/internal/constants.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 
 #include "tweetnacl.h"  // NOLINT
 
@@ -35,7 +35,8 @@ const int kSaltLength = 64;
 
 }  // namespace
 
-namespace braveledger_helper {
+namespace ledger {
+namespace util {
 
 std::string Security::GetBase64(const std::vector<uint8_t>& data) {
   DCHECK_NE(data.size(), 0UL);
@@ -190,4 +191,5 @@ std::string Security::GetPublicKeyHexFromSeed(
   return Uint8ToHex(public_key);
 }
 
-}  // namespace braveledger_helper
+}  // namespace util
+}  // namespace ledger

@@ -53,7 +53,7 @@ void DatabaseEventLog::Insert(
   BindString(command.get(), 0, base::GenerateGUID());
   BindString(command.get(), 1, key);
   BindString(command.get(), 2, value);
-  BindInt64(command.get(), 3, braveledger_time_util::GetCurrentTimeStamp());
+  BindInt64(command.get(), 3, util::GetCurrentTimeStamp());
 
   transaction->commands.push_back(std::move(command));
 
@@ -72,7 +72,7 @@ void DatabaseEventLog::InsertRecords(
   }
 
   auto transaction = type::DBTransaction::New();
-  auto time = braveledger_time_util::GetCurrentTimeStamp();
+  auto time = util::GetCurrentTimeStamp();
   const std::string base_query = base::StringPrintf(
       "INSERT INTO %s (event_log_id, key, value, created_at) VALUES ",
       kTableName);

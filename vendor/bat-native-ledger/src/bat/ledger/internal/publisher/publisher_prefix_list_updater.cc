@@ -115,7 +115,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
   // In order to avoid unecessary server load, do not attempt to retry
   // using a failure delay if the database insert was unsuccessful.
   ledger_->state()->SetServerPublisherListStamp(
-      braveledger_time_util::GetCurrentTimeStamp());
+      util::GetCurrentTimeStamp());
 
   if (auto_update_) {
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
@@ -151,7 +151,7 @@ base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
 }
 
 base::TimeDelta PublisherPrefixListUpdater::GetRetryAfterFailureDelay() {
-  return braveledger_time_util::GetRandomizedDelayWithBackoff(
+  return util::GetRandomizedDelayWithBackoff(
       base::TimeDelta::FromSeconds(kRetryAfterFailureDelay),
       base::TimeDelta::FromSeconds(kMaxRetryAfterFailureDelay),
       retry_count_++);

@@ -62,7 +62,7 @@ void Unverified::OnContributeUnverifiedPublishers(
     return;
   }
 
-  const auto now = braveledger_time_util::GetCurrentTimeStamp();
+  const auto now = util::GetCurrentTimeStamp();
 
   type::PendingContributionInfoPtr current;
 
@@ -149,7 +149,7 @@ void Unverified::QueueSaved(
 
   base::TimeDelta delay = ledger::is_testing
       ? base::TimeDelta::FromSeconds(2)
-      : braveledger_time_util::GetRandomizedDelay(
+      : util::GetRandomizedDelay(
           base::TimeDelta::FromSeconds(45));
 
   BLOG(1, "Unverified contribution timer set for " << delay);

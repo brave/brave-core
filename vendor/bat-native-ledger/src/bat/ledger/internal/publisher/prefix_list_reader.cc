@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "bat/ledger/internal/common/brotli_helpers.h"
+#include "bat/ledger/internal/common/brotli_util.h"
 #include "bat/ledger/internal/publisher/prefix_util.h"
 #include "bat/ledger/internal/publisher/protos/publisher_prefix_list.pb.h"
 
@@ -54,7 +54,7 @@ PrefixListReader::ParseError PrefixListReader::Parse(
       break;
     }
     case publishers_pb::PublisherPrefixList::BROTLI_COMPRESSION: {
-      bool decoded = braveledger_helpers::DecodeBrotliString(
+      bool decoded = util::DecodeBrotliString(
           message.prefixes(),
           uncompressed_size,
           &uncompressed);

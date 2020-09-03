@@ -205,7 +205,7 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
   command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
-  BindInt64(command.get(), 0, braveledger_time_util::GetCurrentTimeStamp());
+  BindInt64(command.get(), 0, util::GetCurrentTimeStamp());
   BindString(command.get(), 1, id);
 
   transaction->commands.push_back(std::move(command));

@@ -42,7 +42,7 @@ void DatabasePendingContribution::InsertOrUpdateList(
   }
 
   auto transaction = type::DBTransaction::New();
-  const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
+  const uint64_t now = util::GetCurrentTimeStamp();
 
   const std::string query = base::StringPrintf(
     "INSERT INTO %s (pending_contribution_id, publisher_id, amount, "

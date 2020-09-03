@@ -7,7 +7,7 @@
 
 #include "base/task/post_task.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
-#include "bat/ledger/internal/common/security_helper.h"
+#include "bat/ledger/internal/common/security_util.h"
 #include "bat/ledger/internal/common/time_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/legacy/media/helper.h"
@@ -578,15 +578,15 @@ void LedgerImpl::GetRewardsInternalsInfo(
 
   // Retrieve the key info seed and validate it.
   const auto seed = state()->GetRecoverySeed();
-  if (!braveledger_helper::Security::IsSeedValid(seed)) {
+  if (!util::Security::IsSeedValid(seed)) {
     info->is_key_info_seed_valid = false;
   } else {
     std::vector<uint8_t> secret_key =
-        braveledger_helper::Security::GetHKDF(seed);
+        util::Security::GetHKDF(seed);
     std::vector<uint8_t> public_key;
     std::vector<uint8_t> new_secret_key;
     info->is_key_info_seed_valid =
-        braveledger_helper::Security::GetPublicKeyFromSeed(
+        util::Security::GetPublicKeyFromSeed(
             secret_key,
             &public_key,
             &new_secret_key);
@@ -607,8 +607,8 @@ void LedgerImpl::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
 
 void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
   database()->GetOneTimeTips(
-      braveledger_time_util::GetCurrentMonth(),
-      braveledger_time_util::GetCurrentYear(),
+      util::GetCurrentMonth(),
+      util::GetCurrentYear(),
       callback);
 }
 
