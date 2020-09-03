@@ -48,9 +48,9 @@
                     android:textColor="@color/brave_stats_ads_color"/>
 
                 <TextView
+                    android:id="@+id/ads_trackers_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ads_trackers_text"
                     android:textSize="12sp"
                     android:layout_margin="16dp"
                     android:fontFamily="sans-serif"

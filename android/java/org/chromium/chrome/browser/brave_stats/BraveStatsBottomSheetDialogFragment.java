@@ -68,6 +68,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
 
     private TextView adsTrackersCountText;
+    private TextView adsTrackersText;
     private TextView dataSavedCountText;
     private TextView dataSavedText;
     private TextView timeSavedCountText;
@@ -110,10 +111,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
             public void onShow(DialogInterface dialog) {
                 BottomSheetDialog d = (BottomSheetDialog) dialog;
                 View bottomSheetInternal = (View)view.getParent();
-                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-                if (!isTablet) {
-                    bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
-                }
+                bottomSheetInternal.getLayoutParams().height = ViewGroup.LayoutParams.MATCH_PARENT;
                 bottomSheetInternal.requestLayout();
             }
         });
@@ -138,6 +136,7 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
 
         LinearLayout layout = view.findViewById(R.id.brave_stats_layout);
         adsTrackersCountText = layout.findViewById(R.id.ads_trackers_count_text);
+        adsTrackersText = layout.findViewById(R.id.ads_trackers_text);
         dataSavedCountText = layout.findViewById(R.id.data_saved_count_text);
         dataSavedText = layout.findViewById(R.id.data_saved_text);
         timeSavedCountText = layout.findViewById(R.id.time_saved_count_text);
@@ -170,27 +169,6 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
         updateBraveStatsLayoutAsync();
 
         dialog.setContentView(view);
-    }
-
-    private void setWidthForDialog() {
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
-        if (isTablet) {
-            getDialog().getWindow().setLayout(dpToPx(getActivity(), 400), -1);
-        } else {
-            getDialog().getWindow().setLayout(-1, -1);
-        }
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        setWidthForDialog();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setWidthForDialog();
     }
 
     @Override
@@ -244,9 +222,22 @@ public class BraveStatsBottomSheetDialogFragment extends BottomSheetDialogFragme
                 Pair<String, String> dataSavedPair =
                         BraveStatsUtil.getBraveStatsStringFormNumberPair(totalSavedBandwidth, true);
                 dataSavedCountText.setText(dataSavedPair.first);
-                dataSavedText.setText(
+                boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
+                if (isTablet) {
+                    adsTrackersText.setText(
+                        String.format(mContext.getResources().getString(R.string.trackers_and_ads),
+                                dataSavedPair.second));
+                    dataSavedText.setText(
+                        String.format(mContext.getResources().getString(R.string.data_saved_tablet_text),
+                                dataSavedPair.second));
+                } else {
+                    adsTrackersText.setText(
+                        String.format(mContext.getResources().getString(R.string.ads_trackers_text),
+                                dataSavedPair.second));
+                    dataSavedText.setText(
                         String.format(mContext.getResources().getString(R.string.data_saved_text),
                                 dataSavedPair.second));
+                }
 
                 long timeSavedCount =
                         adsTrackersCount * BraveNewTabPageLayout.MILLISECONDS_PER_ITEM;
