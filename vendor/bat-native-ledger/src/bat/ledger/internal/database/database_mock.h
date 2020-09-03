@@ -30,7 +30,7 @@ class MockDatabase : public Database {
       GetUnblindedTokenListCallback callback));
 
   MOCK_METHOD2(SavePromotion, void(
-      ledger::PromotionPtr info,
+      type::PromotionPtr info,
       ledger::ResultCallback callback));
 
   MOCK_METHOD1(GetAllPromotions,

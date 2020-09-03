@@ -10,9 +10,9 @@
 namespace ledger {
 namespace wallet {
 
-ledger::ExternalWalletPtr GetWallet(
+type::ExternalWalletPtr GetWallet(
     const std::string& wallet_type,
-    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+    std::map<std::string, type::ExternalWalletPtr> wallets) {
   for (auto& wallet : wallets) {
     if (wallet.first == wallet_type) {
       return std::move(wallet.second);
@@ -22,19 +22,19 @@ ledger::ExternalWalletPtr GetWallet(
   return nullptr;
 }
 
-ledger::ExternalWalletPtr ResetWallet(ledger::ExternalWalletPtr wallet) {
+type::ExternalWalletPtr ResetWallet(type::ExternalWalletPtr wallet) {
   if (!wallet) {
     return nullptr;
   }
 
   const auto status = wallet->status;
-  wallet = ledger::ExternalWallet::New();
+  wallet = type::ExternalWallet::New();
 
-  if (status != ledger::WalletStatus::NOT_CONNECTED) {
-    if (status == ledger::WalletStatus::VERIFIED) {
-      wallet->status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
+  if (status != type::WalletStatus::NOT_CONNECTED) {
+    if (status == type::WalletStatus::VERIFIED) {
+      wallet->status = type::WalletStatus::DISCONNECTED_VERIFIED;
     } else {
-      wallet->status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+      wallet->status = type::WalletStatus::DISCONNECTED_NOT_VERIFIED;
     }
   }
 

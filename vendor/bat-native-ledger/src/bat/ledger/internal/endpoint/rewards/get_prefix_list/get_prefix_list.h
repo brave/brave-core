@@ -25,7 +25,7 @@ namespace endpoint {
 namespace rewards {
 
 using GetPrefixListCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& body)>;
 
 class GetPrefixList {
@@ -38,10 +38,10 @@ class GetPrefixList {
  private:
   std::string GetUrl();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetPrefixListCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

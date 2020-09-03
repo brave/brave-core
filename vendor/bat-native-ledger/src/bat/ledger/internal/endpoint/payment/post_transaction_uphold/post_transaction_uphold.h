@@ -49,7 +49,7 @@ namespace endpoint {
 namespace payment {
 
 using PostTransactionUpholdCallback = std::function<void(
-    const ledger::Result result)>;
+    const type::Result result)>;
 
 class PostTransactionUphold {
  public:
@@ -57,18 +57,18 @@ class PostTransactionUphold {
   ~PostTransactionUphold();
 
   void Request(
-      const ledger::SKUTransaction& transaction,
+      const type::SKUTransaction& transaction,
       PostTransactionUpholdCallback callback);
 
  private:
   std::string GetUrl(const std::string& order_id);
 
-  std::string GeneratePayload(const ledger::SKUTransaction& transaction);
+  std::string GeneratePayload(const type::SKUTransaction& transaction);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostTransactionUpholdCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -79,15 +79,15 @@ class State {
   void SetPaymentId(const std::string& id);
 
   bool GetInlineTippingPlatformEnabled(
-      const ledger::InlineTipsPlatforms platform);
+      const type::InlineTipsPlatforms platform);
 
   void SetInlineTippingPlatformEnabled(
-      const ledger::InlineTipsPlatforms platform,
+      const type::InlineTipsPlatforms platform,
       const bool enabled);
 
-  void SetRewardsParameters(const ledger::RewardsParameters& parameters);
+  void SetRewardsParameters(const type::RewardsParameters& parameters);
 
-  ledger::RewardsParametersPtr GetRewardsParameters();
+  type::RewardsParametersPtr GetRewardsParameters();
 
   double GetRate();
 

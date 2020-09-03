@@ -103,19 +103,19 @@ export const getWalletStatus = (externalWallet?: RewardsExtension.ExternalWallet
   }
 
   switch (externalWallet.status) {
-    // ledger::WalletStatus::CONNECTED
+    // ledger::type::WalletStatus::CONNECTED
     case 1:
       return 'connected'
-    // ledger::WalletStatus::VERIFIED
+    // ledger::type::WalletStatus::VERIFIED
     case 2:
       return 'verified'
-    // ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED
+    // ledger::type::WalletStatus::DISCONNECTED_NOT_VERIFIED
     case 3:
       return 'disconnected_unverified'
-    // ledger::WalletStatus::DISCONNECTED_VERIFIED
+    // ledger::type::WalletStatus::DISCONNECTED_VERIFIED
     case 4:
       return 'disconnected_verified'
-    // ledger::WalletStatus::PENDING
+    // ledger::type::WalletStatus::PENDING
     case 5:
       return 'pending'
     default:

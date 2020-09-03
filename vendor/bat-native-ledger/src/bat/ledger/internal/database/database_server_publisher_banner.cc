@@ -31,21 +31,21 @@ DatabaseServerPublisherBanner::DatabaseServerPublisherBanner(
 DatabaseServerPublisherBanner::~DatabaseServerPublisherBanner() = default;
 
 void DatabaseServerPublisherBanner::InsertOrUpdate(
-    ledger::DBTransaction* transaction,
-    const ledger::ServerPublisherInfo& server_info) {
+    type::DBTransaction* transaction,
+    const type::ServerPublisherInfo& server_info) {
   DCHECK(transaction);
   DCHECK(!server_info.publisher_key.empty());
 
   // Do not insert a record if there is no banner data
   // or if banner data is empty.
-  ledger::PublisherBanner default_banner;
+  type::PublisherBanner default_banner;
   if (!server_info.banner || server_info.banner->Equals(default_banner)) {
     BLOG(1, "Empty publisher banner data, skipping insert");
     return;
   }
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, title, description, background, logo) "
@@ -65,15 +65,15 @@ void DatabaseServerPublisherBanner::InsertOrUpdate(
 }
 
 void DatabaseServerPublisherBanner::DeleteRecords(
-    ledger::DBTransaction* transaction,
+    type::DBTransaction* transaction,
     const std::string& publisher_key_list) {
   DCHECK(transaction);
   if (publisher_key_list.empty()) {
     return;
   }
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_key IN (%s)",
       kTableName,
@@ -93,24 +93,24 @@ void DatabaseServerPublisherBanner::GetRecord(
     callback(nullptr);
     return;
   }
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT title, description, background, logo "
       "FROM %s "
       "WHERE publisher_key=?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -128,11 +128,11 @@ void DatabaseServerPublisherBanner::GetRecord(
 }
 
 void DatabaseServerPublisherBanner::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     const std::string& publisher_key,
     ledger::PublisherBannerCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
@@ -151,7 +151,7 @@ void DatabaseServerPublisherBanner::OnGetRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  ledger::PublisherBanner banner;
+  type::PublisherBanner banner;
   banner.publisher_key = publisher_key;
   banner.title = GetStringColumn(record, 0);
   banner.description = GetStringColumn(record, 1);
@@ -170,7 +170,7 @@ void DatabaseServerPublisherBanner::OnGetRecord(
 
 void DatabaseServerPublisherBanner::OnGetRecordLinks(
     const std::map<std::string, std::string>& links,
-    const ledger::PublisherBanner& banner,
+    const type::PublisherBanner& banner,
     ledger::PublisherBannerCallback callback) {
   auto banner_new = banner;
 
@@ -190,9 +190,9 @@ void DatabaseServerPublisherBanner::OnGetRecordLinks(
 
 void DatabaseServerPublisherBanner::OnGetRecordAmounts(
     const std::vector<double>& amounts,
-    const ledger::PublisherBanner& banner,
+    const type::PublisherBanner& banner,
     ledger::PublisherBannerCallback callback) {
-  auto banner_pointer = ledger::PublisherBanner::New(banner);
+  auto banner_pointer = type::PublisherBanner::New(banner);
   banner_pointer->amounts = amounts;
   callback(std::move(banner_pointer));
 }

@@ -46,43 +46,43 @@ std::string AttestationIOS::ParseStartPayload(
   return *key;
 }
 
-ledger::Result AttestationIOS::ParseClaimSolution(
+type::Result AttestationIOS::ParseClaimSolution(
     const std::string& response,
     std::string* nonce,
     std::string* blob,
     std::string* signature) {
   base::Optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* nonce_parsed = dictionary->FindStringKey("nonce");
   if (!nonce_parsed) {
     BLOG(0, "Nonce is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* blob_parsed = dictionary->FindStringKey("blob");
   if (!blob_parsed) {
     BLOG(0, "Blob is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* signature_parsed = dictionary->FindStringKey("signature");
   if (!signature_parsed) {
     BLOG(0, "Signature is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   *nonce = *nonce_parsed;
   *blob = *blob_parsed;
   *signature = *signature_parsed;
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void AttestationIOS::Start(
@@ -93,7 +93,7 @@ void AttestationIOS::Start(
 
   if (key.empty()) {
     BLOG(0, "Key is empty");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
   auto url_callback = std::bind(&AttestationIOS::OnStart,
@@ -106,16 +106,16 @@ void AttestationIOS::Start(
 }
 
 void AttestationIOS::OnStart(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& nonce,
     StartCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to start attestation");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, nonce);
+  callback(type::Result::LEDGER_OK, nonce);
 }
 
 void AttestationIOS::Confirm(
@@ -124,12 +124,12 @@ void AttestationIOS::Confirm(
   std::string nonce;
   std::string blob;
   std::string signature;
-  const ledger::Result result =
+  const type::Result result =
       ParseClaimSolution(solution, &nonce, &blob, &signature);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to parse solution");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -146,15 +146,15 @@ void AttestationIOS::Confirm(
 }
 
 void AttestationIOS::OnConfirm(
-    const ledger::Result result,
+    const type::Result result,
     ConfirmCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace attestation

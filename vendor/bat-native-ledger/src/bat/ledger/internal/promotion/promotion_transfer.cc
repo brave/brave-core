@@ -23,7 +23,7 @@ PromotionTransfer::PromotionTransfer(LedgerImpl* ledger) :
   DCHECK(ledger_);
   credentials_ = credential::CredentialsFactory::Create(
       ledger_,
-      ledger::CredsBatchType::PROMOTION);
+      type::CredsBatchType::PROMOTION);
   DCHECK(credentials_);
 }
 
@@ -41,7 +41,7 @@ void PromotionTransfer::Start(ledger::ResultCallback callback) {
 }
 
 void PromotionTransfer::GetEligibleTokens(
-    ledger::PromotionList promotions,
+    type::PromotionList promotions,
     ledger::ResultCallback callback) {
   auto tokens_callback = std::bind(&PromotionTransfer::OnGetEligibleTokens,
       this,
@@ -63,30 +63,30 @@ void PromotionTransfer::GetEligibleTokens(
 }
 
 void PromotionTransfer::OnGetEligibleTokens(
-    ledger::UnblindedTokenList list,
+    type::UnblindedTokenList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "No eligible tokens");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
-  std::vector<ledger::UnblindedToken> token_list;
+  std::vector<type::UnblindedToken> token_list;
   for (auto& item : list) {
     token_list.push_back(*item);
   }
 
   credential::CredentialsRedeem redeem;
-  redeem.type = ledger::RewardsType::TRANSFER;
-  redeem.processor = ledger::ContributionProcessor::BRAVE_TOKENS;
+  redeem.type = type::RewardsType::TRANSFER;
+  redeem.processor = type::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = token_list;
 
   const double transfer_amount =
       token_list.size() * ledger::constant::kVotePrice;
   credentials_->RedeemTokens(
       redeem,
-      [this, transfer_amount, callback](const ledger::Result result) {
-        if (result == ledger::Result::LEDGER_OK) {
+      [this, transfer_amount, callback](const type::Result result) {
+        if (result == type::Result::LEDGER_OK) {
             ledger_->database()->SaveEventLog(
                 ledger::log::kPromotionsClaimed,
                 std::to_string(transfer_amount));

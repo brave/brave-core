@@ -35,44 +35,44 @@ std::string GetWalletBalance::GetUrl() {
   return GetServerUrl(path);
 }
 
-ledger::Result GetWalletBalance::CheckStatusCode(const int status_code) {
+type::Result GetWalletBalance::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid payment id");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized payment id");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_SERVICE_UNAVAILABLE) {
     BLOG(0, "No conversion rate yet in ratios service");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result GetWalletBalance::ParseBody(
+type::Result GetWalletBalance::ParseBody(
     const std::string& body,
-    ledger::Balance* balance) {
+    type::Balance* balance) {
   DCHECK(balance);
 
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto confirmed = dictionary->FindDoubleKey("confirmed");
@@ -84,7 +84,7 @@ ledger::Result GetWalletBalance::ParseBody(
   balance->wallets.insert(
       std::make_pair(constant::kWalletAnonymous, balance->total));
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void GetWalletBalance::Request(GetWalletBalanceCallback callback) {
@@ -92,26 +92,26 @@ void GetWalletBalance::Request(GetWalletBalanceCallback callback) {
       this,
       _1,
       callback);
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetWalletBalance::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     GetWalletBalanceCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, nullptr);
     return;
   }
 
-  ledger::Balance balance;
+  type::Balance balance;
   result = ParseBody(response.body, &balance);
-  callback(result, ledger::Balance::New(balance));
+  callback(result, type::Balance::New(balance));
 }
 
 }  // namespace promotion

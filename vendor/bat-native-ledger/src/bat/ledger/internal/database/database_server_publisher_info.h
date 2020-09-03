@@ -22,7 +22,7 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
   ~DatabaseServerPublisherInfo() override;
 
   void InsertOrUpdate(
-      const ledger::ServerPublisherInfo& server_info,
+      const type::ServerPublisherInfo& server_info,
       ledger::ResultCallback callback);
 
   void GetRecord(
@@ -35,18 +35,18 @@ class DatabaseServerPublisherInfo: public DatabaseTable {
 
  private:
   void OnGetRecordBanner(
-      ledger::PublisherBannerPtr banner,
+      type::PublisherBannerPtr banner,
       const std::string& publisher_key,
       client::GetServerPublisherInfoCallback callback);
 
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       const std::string& publisher_key,
-      const ledger::PublisherBanner& banner,
+      const type::PublisherBanner& banner,
       client::GetServerPublisherInfoCallback callback);
 
   void OnExpiredRecordsSelected(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::ResultCallback callback);
 
   std::unique_ptr<DatabaseServerPublisherBanner> banner_;

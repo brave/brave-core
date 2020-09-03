@@ -21,16 +21,16 @@ std::string UrlRequestToString(
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& content_type,
-    const UrlMethod method);
+    const type::UrlMethod method);
 
 // DEPRECATED (use LogUrlResponse)
 std::string UrlResponseToString(
     const char* func,
-    const ledger::UrlResponse& response);
+    const type::UrlResponse& response);
 
 void LogUrlResponse(
     const char* func,
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     const bool long_response = false);
 
 }  // namespace ledger

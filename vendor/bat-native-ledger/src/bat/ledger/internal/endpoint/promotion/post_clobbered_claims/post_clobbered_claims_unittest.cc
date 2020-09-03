@@ -46,9 +46,9 @@ TEST_F(PostClobberedClaimsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -60,8 +60,8 @@ TEST_F(PostClobberedClaimsTest, ServerOK) {
 
   claims_->Request(
       std::move(corrupted_claims),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
 }
 
@@ -69,9 +69,9 @@ TEST_F(PostClobberedClaimsTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -83,8 +83,8 @@ TEST_F(PostClobberedClaimsTest, ServerError400) {
 
   claims_->Request(
       std::move(corrupted_claims),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -92,9 +92,9 @@ TEST_F(PostClobberedClaimsTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -106,8 +106,8 @@ TEST_F(PostClobberedClaimsTest, ServerError500) {
 
   claims_->Request(
       std::move(corrupted_claims),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -115,9 +115,9 @@ TEST_F(PostClobberedClaimsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -129,8 +129,8 @@ TEST_F(PostClobberedClaimsTest, ServerErrorRandom) {
 
   claims_->Request(
       std::move(corrupted_claims),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

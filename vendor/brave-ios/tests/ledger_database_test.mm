@@ -69,11 +69,11 @@
   const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
   
   auto migrationResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrationResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrationResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT name FROM sqlite_master WHERE type='table' ORDER BY name"
-        columnTypes:{ ledger::DBCommand::RecordBindingType::STRING_TYPE }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK, @"Failed to grab table names");
+        columnTypes:{ ledger::type::DBCommand::RecordBindingType::STRING_TYPE }];
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK, @"Failed to grab table names");
   
   XCTAssert(response->result->is_records());
   const auto tableNames = [[NSMutableArray alloc] init];
@@ -113,11 +113,11 @@
   const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
   
   auto migrationResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrationResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrationResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT name FROM sqlite_master WHERE (type='index' AND name NOT LIKE 'sqlite%') ORDER BY name;"
-                          columnTypes:{ ledger::DBCommand::RecordBindingType::STRING_TYPE }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK, @"Failed to grab table names");
+                          columnTypes:{ ledger::type::DBCommand::RecordBindingType::STRING_TYPE }];
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK, @"Failed to grab table names");
   
   XCTAssert(response->result->is_records());
   const auto indexNames = [[NSMutableArray alloc] init];
@@ -160,17 +160,17 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT publisher_id, excluded, name, favIcon, url, provider FROM publisher_info;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -196,17 +196,17 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT publisher_id, excluded, name, favIcon, url, provider FROM publisher_info;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -229,13 +229,13 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT media_key, publisher_id FROM media_publisher_info;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -259,18 +259,18 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT publisher_id, duration, visits, score, percent, weight, reconcile_stamp FROM activity_info;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -289,7 +289,7 @@
   contribution.publisherID = @"brave.com";
   contribution.probi = @"1000000000000000000";
   contribution.date = [[NSDate date] timeIntervalSince1970];
-  contribution.type = static_cast<int32_t>(ledger::RewardsType::ONE_TIME_TIP);
+  contribution.type = static_cast<int32_t>(ledger::type::RewardsType::ONE_TIME_TIP);
   contribution.month = 2;
   contribution.year = 2020;
   
@@ -298,17 +298,17 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT publisher_id, probi, date, type, month, year FROM contribution_info;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -324,7 +324,7 @@
 {
   ContributionQueue *queue = [self coreDataModelOfClass:ContributionQueue.self];
   queue.id = 10;
-  queue.type = static_cast<int32_t>(ledger::RewardsType::ONE_TIME_TIP);
+  queue.type = static_cast<int32_t>(ledger::type::RewardsType::ONE_TIME_TIP);
   queue.partial = false;
   queue.amount = 1000.0;
   
@@ -333,16 +333,16 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT contribution_queue_id, type, amount, partial, created_at FROM contribution_queue;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -354,7 +354,7 @@
   
   // Check that the autoincrementing sequence is set correctly
   const auto sequenceResponse = [self readSQL:@"SELECT seq FROM sqlite_sequence WHERE name = 'contribution_queue';" columnTypes:{
-    ledger::DBCommand::RecordBindingType::INT64_TYPE
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE
   }];
   const auto sequenceRecord = std::move(sequenceResponse->result->get_records()[0]);
   XCTAssertEqual(sequenceRecord->fields[0]->get_int64_value(), queue.id);
@@ -364,7 +364,7 @@
 {
   ContributionQueue *queue = [self coreDataModelOfClass:ContributionQueue.self];
   queue.id = 1;
-  queue.type = static_cast<int32_t>(ledger::RewardsType::ONE_TIME_TIP);
+  queue.type = static_cast<int32_t>(ledger::type::RewardsType::ONE_TIME_TIP);
   queue.partial = false;
   queue.amount = 1000.0;
   
@@ -378,14 +378,14 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT contribution_queue_id, publisher_key, amount_percent FROM contribution_queue_publishers;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::DOUBLE_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -398,13 +398,13 @@
 {
   const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT key, value FROM meta;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssert(response->result->get_records().size() > 0);
   
   const auto metaTable = [[NSMutableDictionary alloc] init];
@@ -425,23 +425,23 @@
   contribution.amount = 10;
   contribution.addedDate = [[NSDate date] timeIntervalSince1970];
   contribution.viewingID = [NSUUID UUID].UUIDString;
-  contribution.type = static_cast<int32_t>(ledger::RewardsType::ONE_TIME_TIP);
+  contribution.type = static_cast<int32_t>(ledger::type::RewardsType::ONE_TIME_TIP);
   
   const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
   const auto insertLine = [BATLedgerDatabase pendingContributionInsertFor:contribution];
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT publisher_id, amount, added_date, viewing_id, type FROM pending_contribution;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -469,20 +469,20 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT promotion_id, version, type, public_keys, suggestions, approximate_value, status, expires_at, created_at FROM promotion;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -513,18 +513,18 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT promotion_id, tokens, blinded_creds, signed_creds, public_key, batch_proof, claim_id FROM promotion_creds;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -550,18 +550,18 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT promotion_id, tokens, blinded_creds, signed_creds, public_key, batch_proof, claim_id FROM promotion_creds;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -586,14 +586,14 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT publisher_id, amount, added_date FROM recurring_donation;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -616,17 +616,17 @@
   XCTAssert([migration containsString:insertLine]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT token_id, token_value, public_key, value, promotion_id, created_at FROM unblinded_tokens;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::INT_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-    ledger::DBCommand::RecordBindingType::STRING_TYPE,
-    ledger::DBCommand::RecordBindingType::INT64_TYPE
+    ledger::type::DBCommand::RecordBindingType::INT_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE,
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -639,7 +639,7 @@
   
   // Check that the autoincrementing sequence is set correctly
   const auto sequenceResponse = [self readSQL:@"SELECT seq FROM sqlite_sequence WHERE name = 'unblinded_tokens';" columnTypes:{
-    ledger::DBCommand::RecordBindingType::INT64_TYPE
+    ledger::type::DBCommand::RecordBindingType::INT64_TYPE
   }];
   const auto sequenceRecord = std::move(sequenceResponse->result->get_records()[0]);
   XCTAssertEqual(sequenceRecord->fields[0]->get_int64_value(), token.tokenID);
@@ -680,7 +680,7 @@
   XCTAssert(![migration containsString:pubInfoString]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
 }
 
 #pragma mark -
@@ -699,12 +699,12 @@
   XCTAssert([insert containsString:@"'''Brave Software'''"]);
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT name FROM publisher_info;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -733,12 +733,12 @@
   
   const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT tokens FROM promotion_creds;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -763,12 +763,12 @@
   const auto migration = [BATLedgerDatabase migrateCoreDataToSQLTransaction];
   
   const auto migrateResponse = [self executeSQLCommand:migration];
-  XCTAssertEqual(migrateResponse->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(migrateResponse->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   
   const auto response = [self readSQL:@"SELECT name FROM publisher_info;" columnTypes:{
-    ledger::DBCommand::RecordBindingType::STRING_TYPE
+    ledger::type::DBCommand::RecordBindingType::STRING_TYPE
   }];
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK);
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK);
   XCTAssertEqual(response->result->get_records().size(), 1);
   
   const auto record = std::move(response->result->get_records()[0]);
@@ -836,44 +836,44 @@
 
 - (void)initializeSQLiteDatabase
 {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = ledger::type::DBTransaction::New();
   transaction->version = 10;
   transaction->compatible_version = 1;
   
-  const auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::INITIALIZE;
+  const auto command = ledger::type::DBCommand::New();
+  command->type = ledger::type::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(command->Clone());
   
-  auto response = ledger::DBCommandResponse::New();
+  auto response = ledger::type::DBCommandResponse::New();
   rewardsDatabase->RunTransaction(std::move(transaction), response.get());
-  XCTAssertEqual(response->status, ledger::DBCommandResponse::Status::RESPONSE_OK, @"Failed to initialize SQLite database");
+  XCTAssertEqual(response->status, ledger::type::DBCommandResponse::Status::RESPONSE_OK, @"Failed to initialize SQLite database");
 }
 
-- (ledger::DBCommandResponsePtr)executeSQLCommand:(NSString *)sqlCommand
+- (ledger::type::DBCommandResponsePtr)executeSQLCommand:(NSString *)sqlCommand
 {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = ledger::type::DBTransaction::New();
   
-  const auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
+  const auto command = ledger::type::DBCommand::New();
+  command->type = ledger::type::DBCommand::Type::EXECUTE;
   command->command = sqlCommand.UTF8String;
   transaction->commands.push_back(command->Clone());
   
-  auto response = ledger::DBCommandResponse::New();
+  auto response = ledger::type::DBCommandResponse::New();
   rewardsDatabase->RunTransaction(std::move(transaction), response.get());
   return response->Clone();
 }
 
-- (ledger::DBCommandResponsePtr)readSQL:(NSString *)sqlCommand columnTypes:(std::vector<ledger::DBCommand::RecordBindingType>)bindings
+- (ledger::type::DBCommandResponsePtr)readSQL:(NSString *)sqlCommand columnTypes:(std::vector<ledger::type::DBCommand::RecordBindingType>)bindings
 {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = ledger::type::DBTransaction::New();
   
-  const auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  const auto command = ledger::type::DBCommand::New();
+  command->type = ledger::type::DBCommand::Type::READ;
   command->command = sqlCommand.UTF8String;
   command->record_bindings = bindings;
   transaction->commands.push_back(command->Clone());
   
-  auto response = ledger::DBCommandResponse::New();
+  auto response = ledger::type::DBCommandResponse::New();
   rewardsDatabase->RunTransaction(std::move(transaction), response.get());
   return response->Clone();
 }

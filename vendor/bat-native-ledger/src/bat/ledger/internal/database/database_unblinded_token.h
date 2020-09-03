@@ -14,7 +14,8 @@
 namespace ledger {
 namespace database {
 
-using GetUnblindedTokenListCallback = std::function<void(UnblindedTokenList)>;
+using GetUnblindedTokenListCallback =
+    std::function<void(type::UnblindedTokenList)>;
 
 class DatabaseUnblindedToken: public DatabaseTable {
  public:
@@ -22,7 +23,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
   ~DatabaseUnblindedToken() override;
 
   void InsertOrUpdateList(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
   void GetSpendableRecordsByTriggerIds(
@@ -31,7 +32,7 @@ class DatabaseUnblindedToken: public DatabaseTable {
 
   void MarkRecordListAsSpent(
       const std::vector<std::string>& ids,
-      ledger::RewardsType redeem_type,
+      type::RewardsType redeem_type,
       const std::string& redeem_id,
       ledger::ResultCallback callback);
 
@@ -49,16 +50,16 @@ class DatabaseUnblindedToken: public DatabaseTable {
       GetUnblindedTokenListCallback callback);
 
   void GetSpendableRecordListByBatchTypes(
-      const std::vector<ledger::CredsBatchType>& batch_types,
+      const std::vector<type::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
 
  private:
   void OnGetRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetUnblindedTokenListCallback callback);
 
   void OnMarkRecordListAsReserved(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       size_t expected_row_count,
       ledger::ResultCallback callback);
 };

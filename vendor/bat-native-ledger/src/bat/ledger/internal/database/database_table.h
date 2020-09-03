@@ -19,7 +19,7 @@ class LedgerImpl;
 namespace database {
 
 using ContributionPublisherInfoPair =
-    std::pair<std::string, ledger::PublisherInfoPtr>;
+    std::pair<std::string, type::PublisherInfoPtr>;
 
 using ServerPublisherLinksCallback =
     std::function<void(const std::map<std::string, std::string>& links)>;
@@ -28,10 +28,10 @@ using ServerPublisherAmountsCallback =
     std::function<void(const std::vector<double>& amounts)>;
 
 using ContributionQueuePublishersListCallback =
-    std::function<void(ledger::ContributionQueuePublisherList)>;
+    std::function<void(type::ContributionQueuePublisherList)>;
 
 using ContributionPublisherListCallback =
-    std::function<void(ledger::ContributionPublisherList)>;
+    std::function<void(type::ContributionPublisherList)>;
 
 using ContributionPublisherPairListCallback =
     std::function<void(std::vector<ContributionPublisherInfoPair>)>;

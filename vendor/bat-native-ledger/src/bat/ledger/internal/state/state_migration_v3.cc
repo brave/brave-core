@@ -16,7 +16,7 @@ void StateMigrationV3::Migrate(ledger::ResultCallback callback) {
   // In this migration we migrated anon address to uphold wallet in preferences
   // because anon address was removed we can also remove this step
   // Ref: https://github.com/brave/brave-browser/issues/11150
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace state

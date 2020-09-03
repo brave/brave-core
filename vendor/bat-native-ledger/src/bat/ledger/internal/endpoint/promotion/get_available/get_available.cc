@@ -42,55 +42,55 @@ std::string GetAvailable::GetUrl(const std::string& platform) {
   return GetServerUrl(path);
 }
 
-ledger::Result GetAvailable::CheckStatusCode(const int status_code) {
+type::Result GetAvailable::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid paymentId or platform in request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_NOT_FOUND) {
     BLOG(0, "Unrecognized paymentId/promotion combination");
-    return ledger::Result::NOT_FOUND;
+    return type::Result::NOT_FOUND;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result GetAvailable::ParseBody(
+type::Result GetAvailable::ParseBody(
     const std::string& body,
-    ledger::PromotionList* list,
+    type::PromotionList* list,
     std::vector<std::string>* corrupted_promotions) {
   DCHECK(list && corrupted_promotions);
 
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   auto* promotions = dictionary->FindListKey("promotions");
   if (!promotions) {
-    return ledger::Result::LEDGER_OK;
+    return type::Result::LEDGER_OK;
   }
 
   const auto promotion_size = promotions->GetList().size();
   for (auto& item : promotions->GetList()) {
-    ledger::PromotionPtr promotion = ledger::Promotion::New();
+    type::PromotionPtr promotion = type::Promotion::New();
 
     const auto* id = item.FindStringKey("id");
     if (!id) {
@@ -139,9 +139,9 @@ ledger::Result GetAvailable::ParseBody(
     }
 
     if (*available) {
-      promotion->status = ledger::PromotionStatus::ACTIVE;
+      promotion->status = type::PromotionStatus::ACTIVE;
     } else {
-      promotion->status = ledger::PromotionStatus::OVER;
+      promotion->status = type::PromotionStatus::OVER;
     }
 
     auto* expires_at = item.FindStringKey("expiresAt");
@@ -173,10 +173,10 @@ ledger::Result GetAvailable::ParseBody(
   }
 
   if (promotion_size != list->size()) {
-    return ledger::Result::CORRUPTED_DATA;
+    return type::Result::CORRUPTED_DATA;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void GetAvailable::Request(
@@ -187,21 +187,21 @@ void GetAvailable::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(platform);
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetAvailable::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     GetAvailableCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  ledger::PromotionList list;
+  type::PromotionList list;
   std::vector<std::string> corrupted_promotions;
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, std::move(list), corrupted_promotions);
     return;
   }

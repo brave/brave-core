@@ -32,7 +32,7 @@ class RewardsBrowserTestContribution
   void TipViaCode(
       const std::string& publisher_key,
       const double amount,
-      const ledger::PublisherStatus status,
+      const ledger::type::PublisherStatus status,
       const int32_t number_of_contributions = 0,
       const bool recurring = false);
 
@@ -61,8 +61,8 @@ class RewardsBrowserTestContribution
   void UpdateContributionBalance(
       const double amount,
       const bool verified = false,
-      const ledger::ContributionProcessor processor =
-          ledger::ContributionProcessor::BRAVE_TOKENS);
+      const ledger::type::ContributionProcessor processor =
+          ledger::type::ContributionProcessor::BRAVE_TOKENS);
 
   void WaitForMultipleTipReconcileCompleted(const int32_t needed);
 
@@ -75,17 +75,18 @@ class RewardsBrowserTestContribution
   void WaitForMultipleACReconcileCompleted(
     const int32_t needed);
 
-  ledger::Result GetACStatus();
+  ledger::type::Result GetACStatus();
 
-  std::vector<ledger::Result> GetMultipleACStatus();
+  std::vector<ledger::type::Result> GetMultipleACStatus();
 
   void SetUpUpholdWallet(
     const double balance,
-    const ledger::WalletStatus status = ledger::WalletStatus::VERIFIED);
+    const ledger::type::WalletStatus status =
+        ledger::type::WalletStatus::VERIFIED);
 
-  std::vector<ledger::Result> GetMultipleTipStatus();
+  std::vector<ledger::type::Result> GetMultipleTipStatus();
 
-  ledger::Result GetTipStatus();
+  ledger::type::Result GetTipStatus();
 
  private:
   content::WebContents* contents();
@@ -94,15 +95,15 @@ class RewardsBrowserTestContribution
 
   void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result) override;
+      const ledger::type::Result result) override;
 
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::RewardsType type,
-      const ledger::ContributionProcessor processor) override;
+      const ledger::type::RewardsType type,
+      const ledger::type::ContributionProcessor processor) override;
 
   void WaitForRecurringTipToBeSaved();
 
@@ -121,7 +122,8 @@ class RewardsBrowserTestContribution
 
   bool tip_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_tip_completed_loop_;
-  ledger::Result tip_reconcile_status_ = ledger::Result::LEDGER_ERROR;
+  ledger::type::Result tip_reconcile_status_ =
+      ledger::type::Result::LEDGER_ERROR;
   bool pending_tip_saved_ = false;
   std::unique_ptr<base::RunLoop> wait_for_pending_tip_saved_loop_;
   bool recurring_tip_saved_ = false;
@@ -130,15 +132,16 @@ class RewardsBrowserTestContribution
   std::unique_ptr<base::RunLoop> wait_for_multiple_tip_completed_loop_;
   int32_t multiple_tip_reconcile_count_ = 0;
   int32_t multiple_tip_reconcile_needed_ = 0;
-  std::vector<ledger::Result> multiple_tip_reconcile_status_ = {};
+  std::vector<ledger::type::Result> multiple_tip_reconcile_status_ = {};
   bool multiple_ac_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_multiple_ac_completed_loop_;
   int32_t multiple_ac_reconcile_count_ = 0;
   int32_t multiple_ac_reconcile_needed_ = 0;
-  std::vector<ledger::Result> multiple_ac_reconcile_status_ = {};
+  std::vector<ledger::type::Result> multiple_ac_reconcile_status_ = {};
   bool ac_reconcile_completed_ = false;
   std::unique_ptr<base::RunLoop> wait_for_ac_completed_loop_;
-  ledger::Result ac_reconcile_status_ = ledger::Result::LEDGER_ERROR;
+  ledger::type::Result ac_reconcile_status_ =
+      ledger::type::Result::LEDGER_ERROR;
 
   Browser* browser_;  // NOT OWNED
   brave_rewards::RewardsServiceImpl* rewards_service_;  // NOT OWNED

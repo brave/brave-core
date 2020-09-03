@@ -32,15 +32,15 @@ DatabaseRecurringTip::DatabaseRecurringTip(
 DatabaseRecurringTip::~DatabaseRecurringTip() = default;
 
 void DatabaseRecurringTip::InsertOrUpdate(
-    ledger::RecurringTipPtr info,
+    type::RecurringTipPtr info,
     ledger::ResultCallback callback) {
   if (!info || info->publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -48,8 +48,8 @@ void DatabaseRecurringTip::InsertOrUpdate(
       "VALUES (?, ?, ?)",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->publisher_key);
@@ -69,7 +69,7 @@ void DatabaseRecurringTip::InsertOrUpdate(
 
 void DatabaseRecurringTip::GetAllRecords(
     ledger::PublisherInfoListCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
@@ -80,20 +80,20 @@ void DatabaseRecurringTip::GetAllRecords(
     "ON spi.publisher_key = pi.publisher_id ",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -109,18 +109,18 @@ void DatabaseRecurringTip::GetAllRecords(
 }
 
 void DatabaseRecurringTip::OnGetAllRecords(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  ledger::PublisherInfoList list;
+  type::PublisherInfoList list;
   for (auto const& record : response->result->get_records()) {
-    auto info = ledger::PublisherInfo::New();
+    auto info = type::PublisherInfo::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
@@ -145,18 +145,18 @@ void DatabaseRecurringTip::DeleteRecord(
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "DELETE FROM %s WHERE publisher_id = ?",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);

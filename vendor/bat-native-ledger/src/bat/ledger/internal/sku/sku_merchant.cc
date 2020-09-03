@@ -25,13 +25,13 @@ SKUMerchant::SKUMerchant(LedgerImpl* ledger) :
 SKUMerchant::~SKUMerchant() = default;
 
 void SKUMerchant::Process(
-    const std::vector<ledger::SKUOrderItem>& items,
-    ledger::ExternalWalletPtr wallet,
+    const std::vector<type::SKUOrderItem>& items,
+    type::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback,
     const std::string& contribution_id) {
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -46,11 +46,11 @@ void SKUMerchant::Process(
 }
 
 void SKUMerchant::OrderCreated(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& order_id,
-    const ledger::ExternalWallet& wallet,
+    const type::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order was not successful");
     callback(result, "");
     return;
@@ -66,12 +66,12 @@ void SKUMerchant::OrderCreated(
 }
 
 void SKUMerchant::OnOrder(
-    ledger::SKUOrderPtr order,
-    const ledger::ExternalWallet& wallet,
+    type::SKUOrderPtr order,
+    const type::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -80,7 +80,7 @@ void SKUMerchant::OnOrder(
         std::bind(&SKUMerchant::OnServerPublisherInfo,
           this,
           _1,
-          std::make_shared<ledger::SKUOrderPtr>(order->Clone()),
+          std::make_shared<type::SKUOrderPtr>(order->Clone()),
           wallet,
           callback);
 
@@ -94,19 +94,19 @@ void SKUMerchant::OnOrder(
 }
 
 void SKUMerchant::OnServerPublisherInfo(
-    ledger::ServerPublisherInfoPtr info,
-    std::shared_ptr<ledger::SKUOrderPtr> shared_order,
-    const ledger::ExternalWallet& wallet,
+    type::ServerPublisherInfoPtr info,
+    std::shared_ptr<type::SKUOrderPtr> shared_order,
+    const type::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!shared_order || !info) {
     BLOG(0, "Order/Publisher not found");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   if (info->address.empty()) {
     BLOG(0, "Publisher address is empty");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -119,7 +119,7 @@ void SKUMerchant::OnServerPublisherInfo(
 
 void SKUMerchant::Retry(
     const std::string& order_id,
-    ledger::ExternalWalletPtr wallet,
+    type::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
   // We will implement retry logic when we will have more complex flows,
   // right now there is nothing to retry

@@ -18,19 +18,19 @@ class UpholdUtilsTest : public testing::Test {
 };
 
 TEST(UpholdUtilsTest, GetServerUrlDevelopment) {
-  ledger::_environment = ledger::Environment::DEVELOPMENT;
+  ledger::_environment = type::Environment::DEVELOPMENT;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api-sandbox.uphold.com/test");
 }
 
 TEST(UpholdUtilsTest, GetServerUrlStaging) {
-  ledger::_environment = ledger::Environment::STAGING;
+  ledger::_environment = type::Environment::STAGING;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api-sandbox.uphold.com/test");
 }
 
 TEST(UpholdUtilsTest, GetServerUrlProduction) {
-  ledger::_environment = ledger::Environment::PRODUCTION;
+  ledger::_environment = type::Environment::PRODUCTION;
   const std::string url = GetServerUrl("/test");
   ASSERT_EQ(url, "https://api.uphold.com/test");
 }

@@ -38,45 +38,45 @@ std::string GetParameters::GetUrl(const std::string& currency) {
   return GetServerUrl(path);
 }
 
-ledger::Result GetParameters::CheckStatusCode(const int status_code) {
+type::Result GetParameters::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::RETRY_SHORT;
+    return type::Result::RETRY_SHORT;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::RETRY_SHORT;
+    return type::Result::RETRY_SHORT;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result GetParameters::ParseBody(
+type::Result GetParameters::ParseBody(
     const std::string& body,
-    ledger::RewardsParameters* parameters) {
+    type::RewardsParameters* parameters) {
   DCHECK(parameters);
 
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto rate = dictionary->FindDoubleKey("batRate");
   if (!rate) {
     BLOG(0, "Missing BAT rate");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
   parameters->rate = *rate;
 
@@ -84,14 +84,14 @@ ledger::Result GetParameters::ParseBody(
       dictionary->FindDoublePath("autocontribute.defaultChoice");
   if (!ac_choice) {
     BLOG(0, "Invalid auto-contribute default choice");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
   parameters->auto_contribute_choice = *ac_choice;
 
   auto* ac_choices = dictionary->FindListPath("autocontribute.choices");
   if (!ac_choices || ac_choices->GetList().empty()) {
     BLOG(0, "Missing auto-contribute choices");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   for (const auto& choice : ac_choices->GetList()) {
@@ -104,7 +104,7 @@ ledger::Result GetParameters::ParseBody(
   auto* tip_choices = dictionary->FindListPath("tips.defaultTipChoices");
   if (!tip_choices || tip_choices->GetList().empty()) {
     BLOG(0, "Missing default tip choices");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   for (const auto& choice : tip_choices->GetList()) {
@@ -118,7 +118,7 @@ ledger::Result GetParameters::ParseBody(
       dictionary->FindListPath("tips.defaultMonthlyChoices");
   if (!monthly_tip_choices || monthly_tip_choices->GetList().empty()) {
     BLOG(0, "Missing tips default monthly choices");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   for (const auto& choice : monthly_tip_choices->GetList()) {
@@ -128,7 +128,7 @@ ledger::Result GetParameters::ParseBody(
     parameters->monthly_tip_choices.push_back(choice.GetDouble());
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void GetParameters::Request(GetParametersCallback callback) {
@@ -137,20 +137,20 @@ void GetParameters::Request(GetParametersCallback callback) {
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetParameters::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     GetParametersCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  ledger::RewardsParameters parameters;
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::RewardsParameters parameters;
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, parameters);
     return;
   }

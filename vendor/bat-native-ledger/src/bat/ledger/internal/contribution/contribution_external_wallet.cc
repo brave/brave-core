@@ -30,7 +30,7 @@ void ContributionExternalWallet::Process(
     ledger::ResultCallback callback) {
   if (contribution_id.empty()) {
     BLOG(0, "Contribution id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -38,7 +38,7 @@ void ContributionExternalWallet::Process(
 
   if (wallets.empty()) {
     BLOG(0, "No external wallets");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -46,7 +46,7 @@ void ContributionExternalWallet::Process(
 
   if (!wallet) {
     BLOG(0, "External wallet null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -59,12 +59,12 @@ void ContributionExternalWallet::Process(
 }
 
 void ContributionExternalWallet::ContributionInfo(
-    ledger::ContributionInfoPtr contribution,
-    const ledger::ExternalWallet& wallet,
+    type::ContributionInfoPtr contribution,
+    const type::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -73,17 +73,17 @@ void ContributionExternalWallet::ContributionInfo(
   // In the future we will allow user to pick which wallet to use via UI
   // and then we will extend this function
   if (wallet.token.empty() ||
-      wallet.status != ledger::WalletStatus::VERIFIED) {
+      wallet.status != type::WalletStatus::VERIFIED) {
     BLOG(0, "Wallet token is empty/wallet is not verified. Wallet status: "
         << wallet.status);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  if (contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+  if (contribution->type == type::RewardsType::AUTO_CONTRIBUTE) {
     ledger_->contribution()->SKUAutoContribution(
         contribution->contribution_id,
-        ledger::ExternalWallet::New(wallet),
+        type::ExternalWallet::New(wallet),
         callback);
     return;
   }
@@ -112,31 +112,31 @@ void ContributionExternalWallet::ContributionInfo(
   }
 
   // we processed all publishers
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void ContributionExternalWallet::OnSavePendingContribution(
-    const ledger::Result result) {
-  if (result != ledger::Result::LEDGER_OK) {
+    const type::Result result) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Problem saving pending");
   }
   ledger_->ledger_client()->PendingContributionSaved(result);
 }
 
 void ContributionExternalWallet::OnServerPublisherInfo(
-    ledger::ServerPublisherInfoPtr info,
+    type::ServerPublisherInfoPtr info,
     const std::string& contribution_id,
     const double amount,
-    const ledger::RewardsType type,
+    const type::RewardsType type,
     const bool single_publisher,
     ledger::ResultCallback callback) {
   if (!info) {
     BLOG(0, "Publisher not found");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  if (info->status != ledger::PublisherStatus::VERIFIED) {
+  if (info->status != type::PublisherStatus::VERIFIED) {
     BLOG(1, "Publisher not verified");
 
     auto save_callback =
@@ -144,18 +144,18 @@ void ContributionExternalWallet::OnServerPublisherInfo(
             this,
             _1);
 
-    auto contribution = ledger::PendingContribution::New();
+    auto contribution = type::PendingContribution::New();
     contribution->publisher_key = info->publisher_key;
     contribution->amount = amount;
     contribution->type = type;
 
-    ledger::PendingContributionList list;
+    type::PendingContributionList list;
     list.push_back(std::move(contribution));
 
     ledger_->database()->SavePendingContribution(
         std::move(list),
         save_callback);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -173,7 +173,7 @@ void ContributionExternalWallet::OnServerPublisherInfo(
 }
 
 void ContributionExternalWallet::Completed(
-    const ledger::Result result,
+    const type::Result result,
     const bool single_publisher,
     ledger::ResultCallback callback) {
   if (single_publisher) {
@@ -181,11 +181,11 @@ void ContributionExternalWallet::Completed(
     return;
   }
 
-  callback(ledger::Result::RETRY);
+  callback(type::Result::RETRY);
 }
 
 void ContributionExternalWallet::Retry(
-    ledger::ContributionInfoPtr contribution,
+    type::ContributionInfoPtr contribution,
     ledger::ResultCallback callback) {
   Process(contribution->contribution_id, callback);
 }

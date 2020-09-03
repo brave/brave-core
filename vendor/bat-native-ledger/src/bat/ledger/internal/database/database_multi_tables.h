@@ -21,14 +21,14 @@ class DatabaseMultiTables {
   ~DatabaseMultiTables();
 
   void GetTransactionReport(
-      const ledger::ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       ledger::GetTransactionReportCallback callback);
 
  private:
   void OnGetTransactionReportPromotion(
-      ledger::PromotionMap promotions,
-      const ledger::ActivityMonth month,
+      type::PromotionMap promotions,
+      const type::ActivityMonth month,
       const int year,
       ledger::GetTransactionReportCallback callback);
 

@@ -25,32 +25,32 @@ class SKUMerchant : public SKU  {
   ~SKUMerchant() override;
 
   void Process(
-      const std::vector<ledger::SKUOrderItem>& items,
-      ledger::ExternalWalletPtr wallet,
+      const std::vector<type::SKUOrderItem>& items,
+      type::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback,
       const std::string& contribution_id = "") override;
 
   void Retry(
       const std::string& order_id,
-      ledger::ExternalWalletPtr wallet,
+      type::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback) override;
 
  private:
   void OrderCreated(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
-      const ledger::ExternalWallet& wallet,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   void OnOrder(
-      ledger::SKUOrderPtr order,
-      const ledger::ExternalWallet& wallet,
+      type::SKUOrderPtr order,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   void OnServerPublisherInfo(
-      ledger::ServerPublisherInfoPtr info,
-      std::shared_ptr<ledger::SKUOrderPtr> shared_order,
-      const ledger::ExternalWallet& wallet,
+      type::ServerPublisherInfoPtr info,
+      std::shared_ptr<type::SKUOrderPtr> shared_order,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

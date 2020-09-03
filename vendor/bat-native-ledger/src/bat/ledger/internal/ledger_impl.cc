@@ -111,7 +111,7 @@ database::Database* LedgerImpl::database() const {
 }
 
 void LedgerImpl::LoadURL(
-    ledger::UrlRequestPtr request,
+    type::UrlRequestPtr request,
     client::LoadURLCallback callback) {
   DCHECK(request);
   if (shutting_down_) {
@@ -175,11 +175,11 @@ void LedgerImpl::InitializeDatabase(
 }
 
 void LedgerImpl::OnInitialized(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
   initializing_ = false;
 
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result == type::Result::LEDGER_OK) {
     StartServices();
   } else {
     BLOG(0, "Failed to initialize wallet " << result);
@@ -189,9 +189,9 @@ void LedgerImpl::OnInitialized(
 }
 
 void LedgerImpl::OnDatabaseInitialized(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Database could not be initialized. Error: " << result);
     callback(result);
     return;
@@ -206,20 +206,20 @@ void LedgerImpl::OnDatabaseInitialized(
 }
 
 void LedgerImpl::OnStateInitialized(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to initialize state");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void LedgerImpl::CreateWallet(ledger::ResultCallback callback) {
   wallet()->CreateWalletIfNecessary([this, callback](
-      const ledger::Result result) {
-    if (result == ledger::Result::WALLET_CREATED) {
+      const type::Result result) {
+    if (result == type::Result::WALLET_CREATED) {
       StartServices();
     }
 
@@ -235,7 +235,7 @@ void LedgerImpl::OneTimeTip(
 }
 
 void LedgerImpl::OnLoad(
-    ledger::VisitDataPtr visit_data,
+    type::VisitDataPtr visit_data,
     const uint64_t& current_time) {
   if (!visit_data.get()) {
     return;
@@ -303,7 +303,7 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
       iter->second,
       duration,
       0,
-      [](ledger::Result, ledger::PublisherInfoPtr){});
+      [](type::Result, type::PublisherInfoPtr){});
 }
 
 void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {
@@ -323,7 +323,7 @@ void LedgerImpl::OnXHRLoad(
     const std::map<std::string, std::string>& parts,
     const std::string& first_party_url,
     const std::string& referrer,
-    ledger::VisitDataPtr visit_data) {
+    type::VisitDataPtr visit_data) {
   std::string type = media()->GetLinkType(
       url,
       first_party_url,
@@ -341,7 +341,7 @@ void LedgerImpl::OnPostData(
     const std::string& first_party_url,
     const std::string& referrer,
     const std::string& post_data,
-    ledger::VisitDataPtr visit_data) {
+    type::VisitDataPtr visit_data) {
   std::string type = media()->GetLinkType(
       url,
       first_party_url,
@@ -379,7 +379,7 @@ std::string LedgerImpl::URIEncode(const std::string& value) {
 void LedgerImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
-    ledger::ActivityInfoFilterPtr filter,
+    type::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoListCallback callback) {
   database()->GetActivityInfoList(
       start,
@@ -491,7 +491,7 @@ std::string LedgerImpl::GetWalletPassphrase() const {
 }
 
 void LedgerImpl::GetBalanceReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetBalanceReportCallback callback) const {
   database()->GetBalanceReportInfo(month, year, callback);
@@ -502,8 +502,8 @@ void LedgerImpl::GetAllBalanceReports(
   database()->GetAllBalanceReports(callback);
 }
 
-ledger::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
-  auto props = ledger::AutoContributeProperties::New();
+type::AutoContributePropertiesPtr LedgerImpl::GetAutoContributeProperties() {
+  auto props = type::AutoContributeProperties::New();
   props->enabled_contribute = state()->GetAutoContributeEnabled();
   props->contribution_min_time = state()->GetPublisherMinVisitTime();
   props->contribution_min_visits = state()->GetPublisherMinVisits();
@@ -521,7 +521,7 @@ void LedgerImpl::RecoverWallet(
 
 void LedgerImpl::SetPublisherExclude(
     const std::string& publisher_id,
-    const ledger::PublisherExclude& exclude,
+    const type::PublisherExclude& exclude,
     ledger::ResultCallback callback) {
   publisher()->SetPublisherExclude(publisher_id, exclude, callback);
 }
@@ -537,7 +537,7 @@ bool LedgerImpl::IsWalletCreated() {
 
 void LedgerImpl::GetPublisherActivityFromUrl(
     uint64_t windowId,
-    ledger::VisitDataPtr visit_data,
+    type::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
   publisher()->GetPublisherActivityFromUrl(
       windowId,
@@ -568,7 +568,7 @@ void LedgerImpl::HasSufficientBalanceToReconcile(
 
 void LedgerImpl::GetRewardsInternalsInfo(
     ledger::RewardsInternalsInfoCallback callback) {
-  ledger::RewardsInternalsInfoPtr info = ledger::RewardsInternalsInfo::New();
+  type::RewardsInternalsInfoPtr info = type::RewardsInternalsInfo::New();
 
   // Retrieve the payment id.
   info->payment_id = state()->GetPaymentId();
@@ -596,7 +596,7 @@ void LedgerImpl::GetRewardsInternalsInfo(
 }
 
 void LedgerImpl::SaveRecurringTip(
-    ledger::RecurringTipPtr info,
+    type::RecurringTipPtr info,
     ledger::ResultCallback callback) {
   database()->SaveRecurringTip(std::move(info), callback);
 }
@@ -630,13 +630,13 @@ void LedgerImpl::SaveMediaInfo(
 }
 
 void LedgerImpl::SetInlineTippingPlatformEnabled(
-    const ledger::InlineTipsPlatforms platform,
+    const type::InlineTipsPlatforms platform,
     bool enabled) {
   state()->SetInlineTippingPlatformEnabled(platform, enabled);
 }
 
 bool LedgerImpl::GetInlineTippingPlatformEnabled(
-    const ledger::InlineTipsPlatforms platform) {
+    const type::InlineTipsPlatforms platform) {
   return state()->GetInlineTippingPlatformEnabled(platform);
 }
 
@@ -649,7 +649,7 @@ std::string LedgerImpl::GetShareURL(
 void LedgerImpl::GetPendingContributions(
     ledger::PendingContributionInfoListCallback callback) {
   database()->GetPendingContributions([this, callback](
-      ledger::PendingContributionInfoList list) {
+      type::PendingContributionInfoList list) {
     // The publisher status field may be expired. Attempt to refresh
     // expired publisher status values before executing callback.
     publisher::RefreshPublisherStatus(
@@ -711,14 +711,14 @@ void LedgerImpl::GetAnonWalletStatus(ledger::ResultCallback callback) {
 }
 
 void LedgerImpl::GetTransactionReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   database()->GetTransactionReport(month, year, callback);
 }
 
 void LedgerImpl::GetContributionReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetContributionReportCallback callback) {
   database()->GetContributionReport(month, year, callback);
@@ -730,13 +730,13 @@ void LedgerImpl::GetAllContributions(
 }
 
 void LedgerImpl::SavePublisherInfo(
-    ledger::PublisherInfoPtr info,
+    type::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
   database()->SavePublisherInfo(std::move(info), callback);
 }
 
 void LedgerImpl::GetMonthlyReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetMonthlyReportCallback callback) {
   report()->GetMonthly(month, year, callback);
@@ -748,8 +748,8 @@ void LedgerImpl::GetAllMonthlyReportIds(
 }
 
 void LedgerImpl::ProcessSKU(
-    const std::vector<ledger::SKUOrderItem>& items,
-    ledger::ExternalWalletPtr wallet,
+    const std::vector<type::SKUOrderItem>& items,
+    type::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
   sku()->Process(items, std::move(wallet), callback);
 }
@@ -759,10 +759,10 @@ void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
   ledger_client_->ClearAllNotifications();
 
   wallet()->DisconnectAllWallets([this, callback](
-      const ledger::Result result){
+      const type::Result result){
     BLOG_IF(
       1,
-      result != ledger::Result::LEDGER_OK,
+      result != type::Result::LEDGER_OK,
       "Not all wallets were disconnected");
     auto finish_callback = std::bind(&LedgerImpl::OnAllDone,
         this,
@@ -773,7 +773,7 @@ void LedgerImpl::Shutdown(ledger::ResultCallback callback) {
 }
 
 void LedgerImpl::OnAllDone(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
   database()->Close(callback);
 }

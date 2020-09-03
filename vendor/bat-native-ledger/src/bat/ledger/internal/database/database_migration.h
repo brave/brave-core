@@ -27,7 +27,7 @@ class DatabaseMigration {
 
  private:
   void GenerateCommand(
-      ledger::DBTransaction* transaction,
+      type::DBTransaction* transaction,
       const std::string& query);
 
   LedgerImpl* ledger_;  // NOT OWNED

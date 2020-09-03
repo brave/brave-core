@@ -63,22 +63,22 @@ std::string PostVotes::GeneratePayload(
   return json;
 }
 
-ledger::Result PostVotes::CheckStatusCode(const int status_code) {
+type::Result PostVotes::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::RETRY_SHORT;
+    return type::Result::RETRY_SHORT;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::RETRY_SHORT;
+    return type::Result::RETRY_SHORT;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostVotes::Request(
@@ -89,16 +89,16 @@ void PostVotes::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(redeem);
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostVotes::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostVotesCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

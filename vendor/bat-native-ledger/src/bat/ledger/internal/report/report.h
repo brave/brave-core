@@ -23,7 +23,7 @@ class Report {
   ~Report();
 
   void GetMonthly(
-      const ledger::ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       ledger::GetMonthlyReportCallback callback);
 
@@ -31,26 +31,26 @@ class Report {
 
  private:
   void OnBalance(
-      const ledger::Result result,
-      ledger::BalanceReportInfoPtr balance_report,
-      const ledger::ActivityMonth month,
+      const type::Result result,
+      type::BalanceReportInfoPtr balance_report,
+      const type::ActivityMonth month,
       const uint32_t year,
       ledger::GetMonthlyReportCallback callback);
 
   void OnTransactions(
-      ledger::TransactionReportInfoList transaction_report,
-      const ledger::ActivityMonth month,
+      type::TransactionReportInfoList transaction_report,
+      const type::ActivityMonth month,
       const uint32_t year,
-      std::shared_ptr<ledger::MonthlyReportInfoPtr> shared_report,
+      std::shared_ptr<type::MonthlyReportInfoPtr> shared_report,
       ledger::GetMonthlyReportCallback callback);
 
   void OnContributions(
-      ledger::ContributionReportInfoList contribution_report,
-      std::shared_ptr<ledger::MonthlyReportInfoPtr> shared_report,
+      type::ContributionReportInfoList contribution_report,
+      std::shared_ptr<type::MonthlyReportInfoPtr> shared_report,
       ledger::GetMonthlyReportCallback callback);
 
   void OnGetAllBalanceReports(
-      ledger::BalanceReportInfoList reports,
+      type::BalanceReportInfoList reports,
       ledger::GetAllMonthlyReportIdsCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

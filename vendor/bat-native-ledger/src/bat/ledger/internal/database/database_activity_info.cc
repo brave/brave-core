@@ -21,7 +21,7 @@ const char kTableName[] = "activity_info";
 std::string GenerateActivityFilterQuery(
     const int start,
     const int limit,
-    ledger::ActivityInfoFilterPtr filter) {
+    ledger::type::ActivityInfoFilterPtr filter) {
   std::string query = "";
   if (!filter) {
     return query;
@@ -39,14 +39,14 @@ std::string GenerateActivityFilterQuery(
     query += " AND ai.duration >= ?";
   }
 
-  if (filter->excluded != ledger::ExcludeFilter::FILTER_ALL &&
+  if (filter->excluded != ledger::type::ExcludeFilter::FILTER_ALL &&
       filter->excluded !=
-        ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+        ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded = ?";
   }
 
   if (filter->excluded ==
-    ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+    ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded != ?";
   }
 
@@ -82,8 +82,8 @@ std::string GenerateActivityFilterQuery(
 }
 
 void GenerateActivityFilterBind(
-    ledger::DBCommand* command,
-    ledger::ActivityInfoFilterPtr filter) {
+    ledger::type::DBCommand* command,
+    ledger::type::ActivityInfoFilterPtr filter) {
   if (!command || !filter) {
     return;
   }
@@ -101,9 +101,9 @@ void GenerateActivityFilterBind(
     ledger::database::BindInt(command, column++, filter->min_duration);
   }
 
-  if (filter->excluded != ledger::ExcludeFilter::FILTER_ALL &&
+  if (filter->excluded != ledger::type::ExcludeFilter::FILTER_ALL &&
       filter->excluded !=
-      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+      ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     ledger::database::BindInt(
         command,
         column++,
@@ -111,11 +111,11 @@ void GenerateActivityFilterBind(
   }
 
   if (filter->excluded ==
-      ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
+      ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED) {
     ledger::database::BindInt(
         command,
         column++,
-        static_cast<int>(ledger::PublisherExclude::EXCLUDED));
+        static_cast<int>(ledger::type::PublisherExclude::EXCLUDED));
   }
 
   if (filter->percent > 0) {
@@ -140,10 +140,10 @@ DatabaseActivityInfo::DatabaseActivityInfo(
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;
 
 void DatabaseActivityInfo::NormalizeList(
-    ledger::PublisherInfoList list,
+    type::PublisherInfoList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
   std::string main_query;
@@ -157,45 +157,45 @@ void DatabaseActivityInfo::NormalizeList(
   }
 
   if (main_query.empty()) {
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
+  auto transaction = type::DBTransaction::New();
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::EXECUTE;
   command->command = main_query;
 
   transaction->commands.push_back(std::move(command));
 
-  auto shared_list = std::make_shared<ledger::PublisherInfoList>(
+  auto shared_list = std::make_shared<type::PublisherInfoList>(
       std::move(list));
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
-      [this, shared_list, callback](ledger::DBCommandResponsePtr response) {
+      [this, shared_list, callback](type::DBCommandResponsePtr response) {
         if (!response || response->status !=
-              ledger::DBCommandResponse::Status::RESPONSE_OK) {
-          callback(ledger::Result::LEDGER_ERROR);
+              type::DBCommandResponse::Status::RESPONSE_OK) {
+          callback(type::Result::LEDGER_ERROR);
           return;
         }
 
         ledger_->ledger_client()->PublisherListNormalized(
             std::move(*shared_list));
 
-        callback(ledger::Result::LEDGER_OK);
+        callback(type::Result::LEDGER_OK);
       });
 }
 
 void DatabaseActivityInfo::InsertOrUpdate(
-    ledger::PublisherInfoPtr info,
+    type::PublisherInfoPtr info,
     ledger::ResultCallback callback) {
   if (!info) {
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_id, duration, score, percent, "
@@ -203,8 +203,8 @@ void DatabaseActivityInfo::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -229,14 +229,14 @@ void DatabaseActivityInfo::InsertOrUpdate(
 void DatabaseActivityInfo::GetRecordsList(
     const int start,
     const int limit,
-    ledger::ActivityInfoFilterPtr filter,
+    type::ActivityInfoFilterPtr filter,
     ledger::PublisherInfoListCallback callback) {
   if (!filter) {
     callback({});
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   std::string query = base::StringPrintf(
     "SELECT ai.publisher_id, ai.duration, ai.score, "
@@ -253,27 +253,27 @@ void DatabaseActivityInfo::GetRecordsList(
 
   query += GenerateActivityFilterQuery(start, limit, filter->Clone());
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   GenerateActivityFilterBind(command.get(), filter->Clone());
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -289,17 +289,17 @@ void DatabaseActivityInfo::GetRecordsList(
 }
 
 void DatabaseActivityInfo::OnGetRecordsList(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::PublisherInfoListCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     callback({});
     return;
   }
 
-  ledger::PublisherInfoList list;
+  type::PublisherInfoList list;
   for (auto const& record : response->result->get_records()) {
-    auto info = ledger::PublisherInfo::New();
+    auto info = type::PublisherInfo::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
@@ -310,7 +310,7 @@ void DatabaseActivityInfo::OnGetRecordsList(
     info->status = static_cast<ledger::mojom::PublisherStatus>(
         GetIntColumn(record_pointer, 5));
     info->status_updated_at = GetInt64Column(record_pointer, 6);
-    info->excluded = static_cast<ledger::PublisherExclude>(
+    info->excluded = static_cast<type::PublisherExclude>(
         GetIntColumn(record_pointer, 7));
     info->name = GetStringColumn(record_pointer, 8);
     info->url = GetStringColumn(record_pointer, 9);
@@ -329,18 +329,18 @@ void DatabaseActivityInfo::DeleteRecord(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_id = ? AND reconcile_stamp = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);

@@ -20,11 +20,11 @@ class DatabaseServerPublisherAmounts: public DatabaseTable {
   ~DatabaseServerPublisherAmounts() override;
 
   void InsertOrUpdate(
-      ledger::DBTransaction* transaction,
-      const ledger::ServerPublisherInfo& server_info);
+      type::DBTransaction* transaction,
+      const type::ServerPublisherInfo& server_info);
 
   void DeleteRecords(
-      ledger::DBTransaction* transaction,
+      type::DBTransaction* transaction,
       const std::string& publisher_key_list);
 
   void GetRecord(
@@ -33,7 +33,7 @@ class DatabaseServerPublisherAmounts: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ServerPublisherAmountsCallback callback);
 };
 

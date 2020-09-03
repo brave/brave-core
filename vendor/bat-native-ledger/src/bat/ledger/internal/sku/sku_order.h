@@ -25,17 +25,17 @@ class SKUOrder {
   ~SKUOrder();
 
   void Create(
-      const std::vector<ledger::SKUOrderItem>& items,
+      const std::vector<type::SKUOrderItem>& items,
       ledger::SKUOrderCallback callback);
 
  private:
   void OnCreate(
-      const ledger::Result result,
-      ledger::SKUOrderPtr order,
+      const type::Result result,
+      type::SKUOrderPtr order,
       ledger::SKUOrderCallback callback);
 
   void OnCreateSave(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
       ledger::SKUOrderCallback callback);
 

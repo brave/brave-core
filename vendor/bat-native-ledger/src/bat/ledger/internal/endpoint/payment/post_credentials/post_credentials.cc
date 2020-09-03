@@ -49,27 +49,27 @@ std::string PostCredentials::GeneratePayload(
   return json;
 }
 
-ledger::Result PostCredentials::CheckStatusCode(const int status_code) {
+type::Result PostCredentials::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_CONFLICT) {
     BLOG(0, "Credentials already exist for this order");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostCredentials::Request(
@@ -83,16 +83,16 @@ void PostCredentials::Request(
       _1,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(order_id);
   request->content = GeneratePayload(item_id, type, std::move(blinded_creds));
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostCredentials::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostCredentialsCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

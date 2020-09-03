@@ -50,7 +50,7 @@ class LegacyBatState {
 
  private:
   void OnLoad(
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& data,
       ledger::ResultCallback callback);
 

@@ -45,9 +45,9 @@ TEST_F(GetMeTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -146,8 +146,8 @@ TEST_F(GetMeTest, ServerOK) {
 
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const ledger::Result result, const ::ledger::uphold::User& user) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [&](const type::Result result, const ::ledger::uphold::User& user) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(user.name, "John");
         EXPECT_EQ(user.member_at, "2019-07-27T11:32:33.310Z");
         EXPECT_EQ(user.verified, true);
@@ -160,9 +160,9 @@ TEST_F(GetMeTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -172,8 +172,8 @@ TEST_F(GetMeTest, ServerError401) {
   ::ledger::uphold::User expected_user;
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const ledger::Result result, const ::ledger::uphold::User& user) {
-        EXPECT_EQ(result, ledger::Result::EXPIRED_TOKEN);
+      [&](const type::Result result, const ::ledger::uphold::User& user) {
+        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
       });
 }
 
@@ -181,9 +181,9 @@ TEST_F(GetMeTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -193,8 +193,8 @@ TEST_F(GetMeTest, ServerErrorRandom) {
   ::ledger::uphold::User expected_user;
   me_->Request(
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [&](const ledger::Result result, const ::ledger::uphold::User& user) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [&](const type::Result result, const ::ledger::uphold::User& user) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

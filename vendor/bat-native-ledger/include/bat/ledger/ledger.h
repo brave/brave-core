@@ -19,75 +19,81 @@
 
 namespace ledger {
 
-extern Environment _environment;
+extern type::Environment _environment;
 extern bool is_debug;
 extern bool is_testing;
 extern int reconcile_interval;  // minutes
 extern bool short_retries;
 
-using PublisherBannerCallback = std::function<void(PublisherBannerPtr)>;
+using PublisherBannerCallback = std::function<void(type::PublisherBannerPtr)>;
 
-using GetRewardsParametersCallback = std::function<void(RewardsParametersPtr)>;
+using GetRewardsParametersCallback =
+    std::function<void(type::RewardsParametersPtr)>;
 
-using OnRefreshPublisherCallback = std::function<void(PublisherStatus)>;
+using OnRefreshPublisherCallback = std::function<void(type::PublisherStatus)>;
 
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 
-using FetchBalanceCallback = std::function<void(Result, BalancePtr)>;
+using FetchBalanceCallback =
+    std::function<void(type::Result, type::BalancePtr)>;
 
-using ExternalWalletCallback = std::function<void(Result, ExternalWalletPtr)>;
+using ExternalWalletCallback =
+    std::function<void(type::Result, type::ExternalWalletPtr)>;
 
 using ExternalWalletAuthorizationCallback =
-    std::function<void(Result, std::map<std::string, std::string>)>;
+    std::function<void(type::Result, std::map<std::string, std::string>)>;
 
-using FetchPromotionCallback = std::function<void(Result, PromotionList)>;
+using FetchPromotionCallback =
+    std::function<void(type::Result, type::PromotionList)>;
 
 using ClaimPromotionCallback =
-    std::function<void(const Result, const std::string&)>;
+    std::function<void(const type::Result, const std::string&)>;
 
 using RewardsInternalsInfoCallback =
-    std::function<void(RewardsInternalsInfoPtr)>;
+    std::function<void(type::RewardsInternalsInfoPtr)>;
 
 using AttestPromotionCallback =
-    std::function<void(const Result, PromotionPtr promotion)>;
+    std::function<void(const type::Result, type::PromotionPtr)>;
 
 using GetBalanceReportCallback =
-    std::function<void(const Result, BalanceReportInfoPtr)>;
+    std::function<void(const type::Result, type::BalanceReportInfoPtr)>;
 
-using GetBalanceReportListCallback = std::function<void(BalanceReportInfoList)>;
+using GetBalanceReportListCallback =
+    std::function<void(type::BalanceReportInfoList)>;
 
-using ContributionInfoListCallback = std::function<void(ContributionInfoList)>;
+using ContributionInfoListCallback =
+    std::function<void(type::ContributionInfoList)>;
 
 using GetMonthlyReportCallback =
-    std::function<void(const Result, MonthlyReportInfoPtr)>;
+    std::function<void(const type::Result, type::MonthlyReportInfoPtr)>;
 
 using GetAllMonthlyReportIdsCallback =
     std::function<void(const std::vector<std::string>&)>;
 
-using GetEventLogsCallback = std::function<void(EventLogs)>;
+using GetEventLogsCallback = std::function<void(type::EventLogs)>;
 
 using SKUOrderCallback =
-    std::function<void(const Result, const std::string&)>;
+    std::function<void(const type::Result, const std::string&)>;
 
 using GetContributionReportCallback =
-    std::function<void(ledger::ContributionReportInfoList)>;
+    std::function<void(type::ContributionReportInfoList)>;
 
 using GetTransactionReportCallback =
-    std::function<void(ledger::TransactionReportInfoList)>;
+    std::function<void(type::TransactionReportInfoList)>;
 
-using GetAllPromotionsCallback = std::function<void(PromotionMap)>;
+using GetAllPromotionsCallback = std::function<void(type::PromotionMap)>;
 
-using ResultCallback = std::function<void(const Result)>;
+using ResultCallback = std::function<void(const type::Result)>;
 
 using PendingContributionsTotalCallback = std::function<void(double)>;
 
 using PendingContributionInfoListCallback =
-    std::function<void(PendingContributionInfoList)>;
+    std::function<void(type::PendingContributionInfoList)>;
 
-using PublisherInfoListCallback = std::function<void(PublisherInfoList)>;
+using PublisherInfoListCallback = std::function<void(type::PublisherInfoList)>;
 
 using PublisherInfoCallback =
-    std::function<void(const Result, PublisherInfoPtr)>;
+    std::function<void(const type::Result, type::PublisherInfoPtr)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -117,7 +123,7 @@ class LEDGER_EXPORT Ledger {
       ResultCallback callback) = 0;
 
   virtual void OnLoad(
-      VisitDataPtr visit_data,
+      type::VisitDataPtr visit_data,
       const uint64_t& current_time) = 0;
 
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
@@ -136,7 +142,7 @@ class LEDGER_EXPORT Ledger {
       const std::map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
-      VisitDataPtr visit_data) = 0;
+      type::VisitDataPtr visit_data) = 0;
 
 
   virtual void OnPostData(
@@ -144,13 +150,13 @@ class LEDGER_EXPORT Ledger {
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      VisitDataPtr visit_data) = 0;
+      type::VisitDataPtr visit_data) = 0;
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual void GetActivityInfoList(
       uint32_t start, uint32_t limit,
-      ActivityInfoFilterPtr filter,
+      type::ActivityInfoFilterPtr filter,
       PublisherInfoListCallback callback) = 0;
 
   virtual void GetExcludedList(PublisherInfoListCallback callback) = 0;
@@ -227,14 +233,14 @@ class LEDGER_EXPORT Ledger {
   virtual std::string GetWalletPassphrase() const = 0;
 
   virtual void GetBalanceReport(
-      ActivityMonth month,
+      type::ActivityMonth month,
       int year,
       GetBalanceReportCallback callback) const = 0;
 
   virtual void GetAllBalanceReports(
       GetBalanceReportListCallback callback) const = 0;
 
-  virtual AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
+  virtual type::AutoContributePropertiesPtr GetAutoContributeProperties() = 0;
 
   virtual void RecoverWallet(
       const std::string& pass_phrase,
@@ -242,7 +248,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetPublisherExclude(
       const std::string& publisher_id,
-      const PublisherExclude& exclude,
+      const type::PublisherExclude& exclude,
       ResultCallback callback) = 0;
 
   virtual void RestorePublishers(ResultCallback callback) = 0;
@@ -251,7 +257,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
-      VisitDataPtr visit_data,
+      type::VisitDataPtr visit_data,
       const std::string& publisher_blob) = 0;
 
   virtual void GetPublisherBanner(
@@ -271,7 +277,7 @@ class LEDGER_EXPORT Ledger {
       RewardsInternalsInfoCallback callback) = 0;
 
   virtual void SaveRecurringTip(
-      RecurringTipPtr info,
+      type::RecurringTipPtr info,
       ResultCallback callback) = 0;
 
   virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
@@ -290,11 +296,11 @@ class LEDGER_EXPORT Ledger {
       PublisherInfoCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(
-      const InlineTipsPlatforms platform,
+      const type::InlineTipsPlatforms platform,
       bool enabled) = 0;
 
   virtual bool GetInlineTippingPlatformEnabled(
-      const InlineTipsPlatforms platform) = 0;
+      const type::InlineTipsPlatforms platform) = 0;
 
   virtual std::string GetShareURL(
       const std::string& type,
@@ -332,23 +338,23 @@ class LEDGER_EXPORT Ledger {
   virtual void GetAnonWalletStatus(ResultCallback callback) = 0;
 
   virtual void GetTransactionReport(
-      const ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       GetTransactionReportCallback callback) = 0;
 
   virtual void GetContributionReport(
-      const ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       GetContributionReportCallback callback) = 0;
 
   virtual void GetAllContributions(ContributionInfoListCallback callback) = 0;
 
   virtual void SavePublisherInfo(
-      PublisherInfoPtr info,
+      type::PublisherInfoPtr info,
       ResultCallback callback) = 0;
 
   virtual void GetMonthlyReport(
-      const ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       GetMonthlyReportCallback callback) = 0;
 
@@ -356,8 +362,8 @@ class LEDGER_EXPORT Ledger {
       GetAllMonthlyReportIdsCallback callback) = 0;
 
   virtual void ProcessSKU(
-      const std::vector<SKUOrderItem>& items,
-      ExternalWalletPtr wallet,
+      const std::vector<type::SKUOrderItem>& items,
+      type::ExternalWalletPtr wallet,
       SKUOrderCallback callback) = 0;
 
   virtual void Shutdown(ResultCallback callback) = 0;

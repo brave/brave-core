@@ -34,7 +34,7 @@ class UpholdTransfer {
 
  private:
   void OnCreateTransaction(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& id,
       client::TransactionCallback callback);
 
@@ -43,7 +43,7 @@ class UpholdTransfer {
       client::TransactionCallback callback);
 
   void OnCommitTransaction(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& transaction_id,
       client::TransactionCallback callback);
 

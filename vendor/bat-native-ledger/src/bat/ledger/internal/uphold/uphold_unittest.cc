@@ -42,9 +42,9 @@ class UpholdTest : public testing::Test {
 TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
   EXPECT_CALL(*mock_ledger_client_, LoadURL(_, _)).Times(0);
 
-  std::map<std::string, ledger::ExternalWalletPtr> wallets;
-  auto wallet = ledger::ExternalWallet::New();
-  wallet->status = ledger::WalletStatus::CONNECTED;
+  std::map<std::string, type::ExternalWalletPtr> wallets;
+  auto wallet = type::ExternalWallet::New();
+  wallet->status = type::WalletStatus::CONNECTED;
   wallet->token = "token";
   wallet->address = "address";
   wallets.insert(std::make_pair(constant::kWalletUphold, std::move(wallet)));
@@ -53,8 +53,8 @@ TEST_F(UpholdTest, FetchBalanceConnectedWallet) {
 
   FetchBalanceCallback callback =
       std::bind(
-          [&](ledger::Result result, double balance) {
-            ASSERT_EQ(result, ledger::Result::LEDGER_OK);
+          [&](type::Result result, double balance) {
+            ASSERT_EQ(result, type::Result::LEDGER_OK);
             ASSERT_EQ(balance, 0.0);
           },
           _1,

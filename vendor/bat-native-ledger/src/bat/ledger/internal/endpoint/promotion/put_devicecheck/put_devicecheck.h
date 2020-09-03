@@ -41,7 +41,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PutDevicecheckCallback = std::function<void(const ledger::Result result)>;
+using PutDevicecheckCallback = std::function<void(const type::Result result)>;
 
 class PutDevicecheck {
  public:
@@ -61,10 +61,10 @@ class PutDevicecheck {
       const std::string& blob,
       const std::string& signature);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PutDevicecheckCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

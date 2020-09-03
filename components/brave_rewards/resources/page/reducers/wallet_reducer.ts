@@ -182,16 +182,16 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       const status = action.payload.status
       let ui = state.ui
 
-      if (status === 0) { // on ledger::Result::LEDGER_OK
+      if (status === 0) { // on ledger::type::Result::LEDGER_OK
         state.balance = action.payload.balance
         ui.walletServerProblem = false
 
         if (ui.emptyWallet && state.balance && state.balance.total > 0) {
           ui.emptyWallet = false
         }
-      } else if (status === 1) { // on ledger::Result::LEDGER_ERROR
+      } else if (status === 1) { // on ledger::type::Result::LEDGER_ERROR
         ui.walletServerProblem = true
-      } else if (status === 24) { // on ledger::Result::EXPIRED_TOKEN
+      } else if (status === 24) { // on ledger::type::Result::EXPIRED_TOKEN
         chrome.send('brave_rewards.getExternalWallet', ['uphold'])
         state.balance.total = action.payload.balance.total || 0
       }
@@ -209,7 +209,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_EXTERNAL_WALLET: {
       state = { ...state }
 
-      if (action.payload.result === 24) { // on ledger::Result::EXPIRED_TOKEN
+      if (action.payload.result === 24) { // on ledger::type::Result::EXPIRED_TOKEN
         chrome.send('brave_rewards.getExternalWallet', ['uphold'])
         break
       }

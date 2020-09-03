@@ -12,40 +12,40 @@
 namespace ledger {
 namespace contribution {
 
-ledger::ReportType GetReportTypeFromRewardsType(
-    const ledger::RewardsType type) {
+type::ReportType GetReportTypeFromRewardsType(
+    const type::RewardsType type) {
   switch (static_cast<int>(type)) {
-    case static_cast<int>(ledger::RewardsType::AUTO_CONTRIBUTE): {
-      return ledger::ReportType::AUTO_CONTRIBUTION;
+    case static_cast<int>(type::RewardsType::AUTO_CONTRIBUTE): {
+      return type::ReportType::AUTO_CONTRIBUTION;
     }
-    case static_cast<int>(ledger::RewardsType::ONE_TIME_TIP): {
-      return ledger::ReportType::TIP;
+    case static_cast<int>(type::RewardsType::ONE_TIME_TIP): {
+      return type::ReportType::TIP;
     }
-    case static_cast<int>(ledger::RewardsType::RECURRING_TIP): {
-      return ledger::ReportType::TIP_RECURRING;
+    case static_cast<int>(type::RewardsType::RECURRING_TIP): {
+      return type::ReportType::TIP_RECURRING;
     }
     default: {
       // missing conversion, returning dummy value.
       NOTREACHED();
-      return ledger::ReportType::TIP;
+      return type::ReportType::TIP;
     }
   }
 }
 
-ledger::ContributionProcessor GetProcessor(const std::string& wallet_type) {
+type::ContributionProcessor GetProcessor(const std::string& wallet_type) {
   if (wallet_type == constant::kWalletUnBlinded) {
-    return ledger::ContributionProcessor::BRAVE_TOKENS;
+    return type::ContributionProcessor::BRAVE_TOKENS;
   }
 
   if (wallet_type == constant::kWalletAnonymous) {
-    return ledger::ContributionProcessor::BRAVE_USER_FUNDS;
+    return type::ContributionProcessor::BRAVE_USER_FUNDS;
   }
 
   if (wallet_type == constant::kWalletUphold) {
-    return ledger::ContributionProcessor::UPHOLD;
+    return type::ContributionProcessor::UPHOLD;
   }
 
-  return ledger::ContributionProcessor::NONE;
+  return type::ContributionProcessor::NONE;
 }
 
 std::string GetNextProcessor(const std::string& current_processor) {

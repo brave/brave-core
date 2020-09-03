@@ -35,8 +35,8 @@ namespace endpoint {
 namespace promotion {
 
 using GetWalletBalanceCallback = std::function<void(
-    const ledger::Result result,
-    ledger::BalancePtr balance)>;
+    const type::Result result,
+    type::BalancePtr balance)>;
 
 class GetWalletBalance {
  public:
@@ -48,14 +48,14 @@ class GetWalletBalance {
  private:
   std::string GetUrl();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
-      ledger::Balance* balance);
+      type::Balance* balance);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetWalletBalanceCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -11,7 +11,7 @@
 
 namespace ledger {
 
-Environment _environment = Environment::PRODUCTION;
+type::Environment _environment = type::Environment::PRODUCTION;
 
 bool is_debug = false;
 bool is_testing = false;

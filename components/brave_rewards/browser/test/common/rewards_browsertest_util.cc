@@ -61,8 +61,8 @@ void EnableRewardsViaCode(
   base::RunLoop run_loop;
   bool wallet_created = false;
   rewards_service->CreateWallet(
-      base::BindLambdaForTesting([&](const ledger::Result result) {
-        wallet_created = result == ledger::Result::WALLET_CREATED;
+      base::BindLambdaForTesting([&](const ledger::type::Result result) {
+        wallet_created = result == ledger::type::Result::WALLET_CREATED;
         run_loop.Quit();
       }));
 
@@ -115,7 +115,7 @@ void NavigateToPublisherPage(
 void WaitForLedgerStop(brave_rewards::RewardsServiceImpl* rewards_service) {
   base::RunLoop run_loop;
   rewards_service->StopLedger(
-      base::BindLambdaForTesting([&](const ledger::Result) {
+      base::BindLambdaForTesting([&](const ledger::type::Result) {
         run_loop.Quit();
       }));
   run_loop.Run();

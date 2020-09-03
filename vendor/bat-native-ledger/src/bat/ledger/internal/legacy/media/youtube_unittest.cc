@@ -21,7 +21,7 @@ class MediaYouTubeTest : public testing::Test {
 
 TEST(MediaYouTubeTest, GetMediaIdFromUrl) {
   // missing video id
-  ledger::VisitData data;
+  ledger::type::VisitData data;
   data.url = "https://www.youtube.com/watch";
 
   std::string media =

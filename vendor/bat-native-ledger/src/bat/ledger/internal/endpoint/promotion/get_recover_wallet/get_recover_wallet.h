@@ -39,7 +39,7 @@ namespace endpoint {
 namespace promotion {
 
 using GetRecoverWalletCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& payment_id)>;
 
 class GetRecoverWallet {
@@ -54,14 +54,14 @@ class GetRecoverWallet {
  private:
   std::string GetUrl(const std::string& public_key_hex);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* payment_id);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetRecoverWalletCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

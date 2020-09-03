@@ -130,7 +130,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, AutoContribution) {
   rewards_service_->StartMonthlyContributionForTest();
 
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), ledger::type::Result::LEDGER_OK);
 
   contribution_->IsBalanceCorrect();
 
@@ -176,7 +176,7 @@ IN_PROC_BROWSER_TEST_F(
   rewards_service_->StartMonthlyContributionForTest();
 
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), ledger::type::Result::LEDGER_OK);
 
   contribution_->IsBalanceCorrect();
 
@@ -212,17 +212,17 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->SetUpUpholdWallet(50.0);
   rewards_browsertest_helper::EnableRewards(browser());
 
-  ledger::SKUOrderItemList items;
-  auto item = ledger::SKUOrderItem::New();
+  ledger::type::SKUOrderItemList items;
+  auto item = ledger::type::SKUOrderItem::New();
   item->order_item_id = "ed193339-e58c-483c-8d61-7decd3c24827";
   item->order_id = "a38b211b-bf78-42c8-9479-b11e92e3a76c";
   item->quantity = 80;
   item->price = 0.25;
   item->description = "description";
-  item->type = ledger::SKUOrderItemType::SINGLE_USE;
+  item->type = ledger::type::SKUOrderItemType::SINGLE_USE;
   items.push_back(std::move(item));
 
-  auto order = ledger::SKUOrder::New();
+  auto order = ledger::type::SKUOrder::New();
   order->order_id = "a38b211b-bf78-42c8-9479-b11e92e3a76c";
   order->total_amount = 20;
   order->merchant_id = "";
@@ -244,7 +244,7 @@ IN_PROC_BROWSER_TEST_F(
   rewards_service_->StartMonthlyContributionForTest();
 
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), ledger::type::Result::LEDGER_OK);
 
   contribution_->IsBalanceCorrect();
 
@@ -363,27 +363,27 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "brave.com",
       1.0,
-      ledger::PublisherStatus::NOT_VERIFIED);
+      ledger::type::PublisherStatus::NOT_VERIFIED);
   contribution_->TipViaCode(
       "brave.com",
       5.0,
-      ledger::PublisherStatus::NOT_VERIFIED);
+      ledger::type::PublisherStatus::NOT_VERIFIED);
   contribution_->TipViaCode(
       "3zsistemi.si",
       10.0,
-      ledger::PublisherStatus::NOT_VERIFIED);
+      ledger::type::PublisherStatus::NOT_VERIFIED);
   contribution_->TipViaCode(
       "3zsistemi.si",
       5.0,
-      ledger::PublisherStatus::NOT_VERIFIED);
+      ledger::type::PublisherStatus::NOT_VERIFIED);
   contribution_->TipViaCode(
       "3zsistemi.si",
       10.0,
-      ledger::PublisherStatus::NOT_VERIFIED);
+      ledger::type::PublisherStatus::NOT_VERIFIED);
   contribution_->TipViaCode(
       "3zsistemi.si",
       10.0,
-      ledger::PublisherStatus::NOT_VERIFIED);
+      ledger::type::PublisherStatus::NOT_VERIFIED);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
 
   response_->SetAlternativePublisherList(false);
@@ -404,7 +404,7 @@ IN_PROC_BROWSER_TEST_F(
   // Wait for new verified publisher to be processed
   contribution_->WaitForMultipleTipReconcileCompleted(3);
   for (const auto status : contribution_->GetMultipleTipStatus()) {
-    ASSERT_EQ(status, ledger::Result::LEDGER_OK);
+    ASSERT_EQ(status, ledger::type::Result::LEDGER_OK);
   }
   contribution_->UpdateContributionBalance(-25.0, false);
 
@@ -455,7 +455,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "duckduckgo.com",
       amount,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       1);
   contribution_->VerifyTip(amount, true, false, true);
 }
@@ -475,18 +475,18 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "duckduckgo.com",
       amount,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       1);
   total_amount += amount;
 
   contribution_->TipViaCode(
       "laurenwags.github.io",
       amount,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       1);
   total_amount += amount;
 
-  ledger::TransferFeeList transfer_fees =
+  ledger::type::TransferFeeList transfer_fees =
       rewards_service_->GetTransferFeesForTesting("uphold");
 
   ASSERT_EQ(transfer_fees.size(), 2UL);
@@ -508,7 +508,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "bumpsmack.com",
       amount,
-      ledger::PublisherStatus::CONNECTED,
+      ledger::type::PublisherStatus::CONNECTED,
       1);
   contribution_->VerifyTip(amount, true, false, true);
 }
@@ -526,7 +526,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "bumpsmack.com",
       amount,
-      ledger::PublisherStatus::CONNECTED,
+      ledger::type::PublisherStatus::CONNECTED,
       1);
   contribution_->VerifyTip(amount, true, false, true);
 }
@@ -535,7 +535,7 @@ IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     TipConnectedPublisherConnected) {
   response_->SetVerifiedWallet(true);
-  contribution_->SetUpUpholdWallet(50.0, ledger::WalletStatus::CONNECTED);
+  contribution_->SetUpUpholdWallet(50.0, ledger::type::WalletStatus::CONNECTED);
 
   rewards_browsertest_helper::EnableRewards(browser());
   rewards_browsertest_helper::ReloadCurrentSite(browser());
@@ -544,7 +544,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "bumpsmack.com",
       amount,
-      ledger::PublisherStatus::CONNECTED,
+      ledger::type::PublisherStatus::CONNECTED,
       0);
 
   contribution_->IsBalanceCorrect();
@@ -569,7 +569,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "bumpsmack.com",
       amount,
-      ledger::PublisherStatus::CONNECTED,
+      ledger::type::PublisherStatus::CONNECTED,
       0);
 
   contribution_->IsBalanceCorrect();
@@ -588,7 +588,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
 
   rewards_service_->OnTip("duckduckgo.com", 2.5, false);
   contribution_->WaitForTipReconcileCompleted();
-  ASSERT_EQ(contribution_->GetTipStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetTipStatus(), ledger::type::Result::LEDGER_OK);
   ASSERT_EQ(contribution_->GetReconcileTipTotal(), 2.5);
 }
 
@@ -608,7 +608,7 @@ IN_PROC_BROWSER_TEST_F(
   rewards_service_->OnTip("duckduckgo.com", 2.5, true);
   rewards_service_->StartMonthlyContributionForTest();
   contribution_->WaitForTipReconcileCompleted();
-  ASSERT_EQ(contribution_->GetTipStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetTipStatus(), ledger::type::Result::LEDGER_OK);
 
   ASSERT_EQ(contribution_->GetReconcileTipTotal(), 2.5);
 }
@@ -630,7 +630,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "duckduckgo.com",
       25.0,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       0,
       true);
 
@@ -644,11 +644,11 @@ IN_PROC_BROWSER_TEST_F(
 
   // Wait for reconciliation to complete
   contribution_->WaitForTipReconcileCompleted();
-  ASSERT_EQ(contribution_->GetTipStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetTipStatus(), ledger::type::Result::LEDGER_OK);
 
   // Wait for reconciliation to complete successfully
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), ledger::type::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
   contribution_->IsBalanceCorrect();
@@ -668,28 +668,28 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "duckduckgo.com",
       5.0,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       0,
       true);
 
   contribution_->TipViaCode(
       "site1.com",
       10.0,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       0,
       true);
 
   contribution_->TipViaCode(
       "site2.com",
       10.0,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       0,
       true);
 
   contribution_->TipViaCode(
       "site3.com",
       10.0,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       0,
       true);
   contribution_->AddBalance(promotion_->ClaimPromotionViaCode());
@@ -705,11 +705,11 @@ IN_PROC_BROWSER_TEST_F(
 
   // Wait for reconciliation to complete
   contribution_->WaitForMultipleTipReconcileCompleted(3);
-  ASSERT_EQ(contribution_->GetTipStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetTipStatus(), ledger::type::Result::LEDGER_OK);
 
   // Wait for reconciliation to complete successfully
   contribution_->WaitForACReconcileCompleted();
-  ASSERT_EQ(contribution_->GetACStatus(), ledger::Result::LEDGER_OK);
+  ASSERT_EQ(contribution_->GetACStatus(), ledger::type::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
   contribution_->IsBalanceCorrect();
@@ -738,17 +738,17 @@ IN_PROC_BROWSER_TEST_F(
   // 30 form unblinded and 20 from uphold
   rewards_service_->SetAutoContributionAmount(50.0);
 
-  ledger::SKUOrderItemList items;
-  auto item = ledger::SKUOrderItem::New();
+  ledger::type::SKUOrderItemList items;
+  auto item = ledger::type::SKUOrderItem::New();
   item->order_item_id = "ed193339-e58c-483c-8d61-7decd3c24827";
   item->order_id = "a38b211b-bf78-42c8-9479-b11e92e3a76c";
   item->quantity = 80;
   item->price = 0.25;
   item->description = "description";
-  item->type = ledger::SKUOrderItemType::SINGLE_USE;
+  item->type = ledger::type::SKUOrderItemType::SINGLE_USE;
   items.push_back(std::move(item));
 
-  auto order = ledger::SKUOrder::New();
+  auto order = ledger::type::SKUOrder::New();
   order->order_id = "a38b211b-bf78-42c8-9479-b11e92e3a76c";
   order->total_amount = 20;
   order->merchant_id = "";
@@ -762,8 +762,8 @@ IN_PROC_BROWSER_TEST_F(
   // Wait for reconciliation to complete successfully
   contribution_->WaitForMultipleACReconcileCompleted(2);
   auto statuses = contribution_->GetMultipleACStatus();
-  ASSERT_EQ(statuses[0], ledger::Result::LEDGER_OK);
-  ASSERT_EQ(statuses[1], ledger::Result::LEDGER_OK);
+  ASSERT_EQ(statuses[0], ledger::type::Result::LEDGER_OK);
+  ASSERT_EQ(statuses[1], ledger::type::Result::LEDGER_OK);
 
   rewards_browsertest_util::WaitForElementThenClick(
       contents(),
@@ -908,7 +908,7 @@ IN_PROC_BROWSER_TEST_F(
   contribution_->TipViaCode(
       "3zsistemi.si",
       10.0,
-      ledger::PublisherStatus::VERIFIED,
+      ledger::type::PublisherStatus::VERIFIED,
       0,
       true);
 

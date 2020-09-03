@@ -43,7 +43,7 @@ void UpholdUser::Get(GetUserCallback callback) {
   if (!wallet) {
     User user;
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, user);
+    callback(type::Result::LEDGER_ERROR, user);
     return;
   }
 
@@ -57,22 +57,22 @@ void UpholdUser::Get(GetUserCallback callback) {
 }
 
 void UpholdUser::OnGet(
-    const ledger::Result result,
+    const type::Result result,
     const User& user,
     GetUserCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
+  if (result == type::Result::EXPIRED_TOKEN) {
     BLOG(0, "Expired token");
-    callback(ledger::Result::EXPIRED_TOKEN, user);
+    callback(type::Result::EXPIRED_TOKEN, user);
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Couldn't get user");
-    callback(ledger::Result::LEDGER_ERROR, user);
+    callback(type::Result::LEDGER_ERROR, user);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, user);
+  callback(type::Result::LEDGER_OK, user);
 }
 
 }  // namespace uphold

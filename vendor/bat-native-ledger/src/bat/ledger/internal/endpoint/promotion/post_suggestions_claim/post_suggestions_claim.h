@@ -44,7 +44,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostSuggestionsClaimCallback = std::function<void(
-    const ledger::Result result)>;
+    const type::Result result)>;
 
 class PostSuggestionsClaim {
  public:
@@ -61,10 +61,10 @@ class PostSuggestionsClaim {
   std::string GeneratePayload(
       const credential::CredentialsRedeem& redeem);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostSuggestionsClaimCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

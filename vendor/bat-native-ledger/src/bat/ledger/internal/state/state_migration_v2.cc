@@ -34,17 +34,17 @@ void StateMigrationV2::Migrate(ledger::ResultCallback callback) {
 }
 
 void StateMigrationV2::OnLoadState(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::NO_LEDGER_STATE) {
+  if (result == type::Result::NO_LEDGER_STATE) {
     BLOG(1, "No ledger state");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to load ledger state file, setting default values");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -91,7 +91,7 @@ void StateMigrationV2::OnLoadState(
       ledger::state::kInlineTipGithubEnabled,
       legacy_state_->GetInlineTipSetting("github"));
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace state

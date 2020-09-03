@@ -33,15 +33,15 @@ DatabasePendingContribution::DatabasePendingContribution(
 DatabasePendingContribution::~DatabasePendingContribution() = default;
 
 void DatabasePendingContribution::InsertOrUpdateList(
-    ledger::PendingContributionList list,
+    type::PendingContributionList list,
     ledger::ResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
 
   const std::string query = base::StringPrintf(
@@ -50,8 +50,8 @@ void DatabasePendingContribution::InsertOrUpdateList(
     kTableName);
 
   for (const auto& item : list) {
-    auto command = ledger::DBCommand::New();
-    command->type = ledger::DBCommand::Type::RUN;
+    auto command = type::DBCommand::New();
+    command->type = type::DBCommand::Type::RUN;
     command->command = query;
 
     BindNull(command.get(), 0);
@@ -75,17 +75,17 @@ void DatabasePendingContribution::InsertOrUpdateList(
 
 void DatabasePendingContribution::GetReservedAmount(
     ledger::PendingContributionsTotalCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "SELECT SUM(amount) FROM %s",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -102,10 +102,10 @@ void DatabasePendingContribution::GetReservedAmount(
 }
 
 void DatabasePendingContribution::OnGetReservedAmount(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::PendingContributionsTotalCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(0.0);
     return;
@@ -123,7 +123,7 @@ void DatabasePendingContribution::OnGetReservedAmount(
 
 void DatabasePendingContribution::GetAllRecords(
     ledger::PendingContributionInfoListCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "SELECT pc.pending_contribution_id, pi.publisher_id, pi.name, "
     "pi.url, pi.favIcon, spi.status, spi.updated_at, pi.provider, "
@@ -134,23 +134,23 @@ void DatabasePendingContribution::GetAllRecords(
     "ON spi.publisher_key = pi.publisher_id",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -167,18 +167,18 @@ void DatabasePendingContribution::GetAllRecords(
 }
 
 void DatabasePendingContribution::OnGetAllRecords(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::PendingContributionInfoListCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  ledger::PendingContributionInfoList list;
+  type::PendingContributionInfoList list;
   for (auto const& record : response->result->get_records()) {
-    auto info = ledger::PendingContributionInfo::New();
+    auto info = type::PendingContributionInfo::New();
     auto* record_pointer = record.get();
 
     info->id = GetInt64Column(record_pointer, 0);
@@ -193,7 +193,7 @@ void DatabasePendingContribution::OnGetAllRecords(
     info->amount = GetDoubleColumn(record_pointer, 8);
     info->added_date = GetInt64Column(record_pointer, 9);
     info->viewing_id = GetStringColumn(record_pointer, 10);
-    info->type = static_cast<ledger::RewardsType>(
+    info->type = static_cast<type::RewardsType>(
         GetIntColumn(record_pointer, 11));
     info->expiration_date =
         info->added_date +
@@ -210,17 +210,17 @@ void DatabasePendingContribution::DeleteRecord(
     ledger::ResultCallback callback) {
   if (id == 0) {
     BLOG(1, "Id is 0");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
     "DELETE FROM %s WHERE pending_contribution_id = ?",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt64(command.get(), 0, id);
@@ -238,11 +238,11 @@ void DatabasePendingContribution::DeleteRecord(
 
 void DatabasePendingContribution::DeleteAllRecords(
     ledger::ResultCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf("DELETE FROM %s", kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   transaction->commands.push_back(std::move(command));

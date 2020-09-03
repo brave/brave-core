@@ -45,9 +45,9 @@ TEST_F(PostTransactionTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 202;
             response.url = request->url;
             response.body = R"({
@@ -134,8 +134,8 @@ TEST_F(PostTransactionTest, ServerOK) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       transaction,
-      [](const ledger::Result result, const std::string& id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, const std::string& id) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(id, "d382d3ae-8462-4b2c-9b60-b669539f41b2");
       });
 }
@@ -144,9 +144,9 @@ TEST_F(PostTransactionTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -161,8 +161,8 @@ TEST_F(PostTransactionTest, ServerError401) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       transaction,
-      [](const ledger::Result result, const std::string& id) {
-        EXPECT_EQ(result, ledger::Result::EXPIRED_TOKEN);
+      [](const type::Result result, const std::string& id) {
+        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(id, "");
       });
 }
@@ -171,9 +171,9 @@ TEST_F(PostTransactionTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -188,8 +188,8 @@ TEST_F(PostTransactionTest, ServerErrorRandom) {
       "bd91a720-f3f9-42f8-b2f5-19548004f6a7",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
       transaction,
-      [](const ledger::Result result, const std::string& id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(id, "");
       });
 }

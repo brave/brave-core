@@ -14,9 +14,9 @@
 namespace ledger {
 namespace contribution {
 
-ledger::ReportType GetReportTypeFromRewardsType(const ledger::RewardsType type);
+type::ReportType GetReportTypeFromRewardsType(const type::RewardsType type);
 
-ledger::ContributionProcessor GetProcessor(const std::string& wallet_type);
+type::ContributionProcessor GetProcessor(const std::string& wallet_type);
 
 std::string GetNextProcessor(const std::string& current_processor);
 

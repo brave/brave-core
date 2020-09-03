@@ -33,25 +33,25 @@ void StateMigrationV1::Migrate(ledger::ResultCallback callback) {
 }
 
 void StateMigrationV1::OnLoadState(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::NO_PUBLISHER_STATE) {
+  if (result == type::Result::NO_PUBLISHER_STATE) {
     BLOG(1, "No publisher state");
     ledger_->publisher()->CalcScoreConsts(
         ledger_->ledger_client()->GetIntegerState(
             ledger::state::kMinVisitTime));
 
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     ledger_->publisher()->CalcScoreConsts(
         ledger_->ledger_client()->GetIntegerState(
             ledger::state::kMinVisitTime));
 
     BLOG(0, "Failed to load publisher state file, setting default values");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -73,7 +73,7 @@ void StateMigrationV1::OnLoadState(
       ledger::state::kAllowVideoContribution,
       legacy_publisher_->GetPublisherAllowVideos());
 
-  ledger::BalanceReportInfoList reports;
+  type::BalanceReportInfoList reports;
   legacy_publisher_->GetAllBalanceReports(&reports);
   if (!reports.empty()) {
     auto save_callback = std::bind(&StateMigrationV1::BalanceReportsSaved,
@@ -91,9 +91,9 @@ void StateMigrationV1::OnLoadState(
 }
 
 void StateMigrationV1::BalanceReportsSaved(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Balance report save failed");
     callback(result);
     return;
@@ -115,15 +115,15 @@ void StateMigrationV1::SaveProcessedPublishers(
 }
 
 void StateMigrationV1::ProcessedPublisherSaved(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Processed publisher save failed");
     callback(result);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace state

@@ -341,7 +341,7 @@ void RewardsBrowserTestResponse::ClearRequests() {
   requests_.clear();
 }
 
-void RewardsBrowserTestResponse::SetSKUOrder(ledger::SKUOrderPtr order) {
+void RewardsBrowserTestResponse::SetSKUOrder(ledger::type::SKUOrderPtr order) {
   order_ = std::move(order);
 }
 

@@ -19,7 +19,7 @@ class DatabasePublisherInfo: public DatabaseTable {
   ~DatabasePublisherInfo() override;
 
   void InsertOrUpdate(
-      ledger::PublisherInfoPtr info,
+      type::PublisherInfoPtr info,
       ledger::ResultCallback callback);
 
   void GetRecord(
@@ -27,7 +27,7 @@ class DatabasePublisherInfo: public DatabaseTable {
       ledger::PublisherInfoCallback callback);
 
   void GetPanelRecord(
-      ledger::ActivityInfoFilterPtr filter,
+      type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback);
 
   void RestorePublishers(ledger::ResultCallback callback);
@@ -36,15 +36,15 @@ class DatabasePublisherInfo: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);
 
   void OnGetPanelRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);
 
   void OnGetExcludedList(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoListCallback callback);
 };
 

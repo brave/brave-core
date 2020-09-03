@@ -45,17 +45,17 @@ TEST_F(GetPrefixListTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "blob";
             callback(response);
           }));
 
-  list_->Request([](const ledger::Result result, const std::string& blob) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+  list_->Request([](const type::Result result, const std::string& blob) {
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_EQ(blob, "blob");
   });
 }
@@ -64,17 +64,17 @@ TEST_F(GetPrefixListTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  list_->Request([](const ledger::Result result, const std::string& blob) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+  list_->Request([](const type::Result result, const std::string& blob) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
     EXPECT_EQ(blob, "");
   });
 }
@@ -83,17 +83,17 @@ TEST_F(GetPrefixListTest, ServerBodyEmpty) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
             callback(response);
           }));
 
-  list_->Request([](const ledger::Result result, const std::string& blob) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+  list_->Request([](const type::Result result, const std::string& blob) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
     EXPECT_EQ(blob, "");
   });
 }

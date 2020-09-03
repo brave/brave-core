@@ -43,19 +43,19 @@ void WalletClaim::Start(ledger::ResultCallback callback) {
 }
 
 void WalletClaim::OnBalance(
-    const ledger::Result result,
-    ledger::BalancePtr balance,
+    const type::Result result,
+    type::BalancePtr balance,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK || !balance) {
+  if (result != type::Result::LEDGER_OK || !balance) {
     BLOG(0, "Anon funds transfer failed");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (ledger_->state()->GetAnonTransferChecked() &&
       balance->user_funds == 0) {
     BLOG(1, "Second ping with zero balance");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -64,7 +64,7 @@ void WalletClaim::OnBalance(
 
   if (!wallet_ptr) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -79,21 +79,21 @@ void WalletClaim::OnBalance(
 }
 
 void WalletClaim::OnTransferFunds(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result == type::Result::LEDGER_OK) {
     ledger_->state()->SetAnonTransferChecked(true);
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
-  if (result == ledger::Result::ALREADY_EXISTS) {
+  if (result == type::Result::ALREADY_EXISTS) {
     ledger_->state()->SetAnonTransferChecked(true);
-    callback(ledger::Result::ALREADY_EXISTS);
+    callback(type::Result::ALREADY_EXISTS);
     return;
   }
 
-  callback(ledger::Result::LEDGER_ERROR);
+  callback(type::Result::LEDGER_ERROR);
 }
 
 }  // namespace wallet

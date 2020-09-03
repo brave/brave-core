@@ -23,30 +23,30 @@ class EmptyBalance {
   void Check();
 
  private:
-  void OnAllContributions(ledger::ContributionInfoList list);
+  void OnAllContributions(type::ContributionInfoList list);
 
   void GetPromotions(client::GetPromotionListCallback callback);
 
   void OnPromotions(
-      ledger::PromotionMap promotions,
+      type::PromotionMap promotions,
       client::GetPromotionListCallback callback);
 
-  void GetCredsByPromotions(ledger::PromotionList list);
+  void GetCredsByPromotions(type::PromotionList list);
 
-  void OnCreds(ledger::CredsBatchList list);
+  void OnCreds(type::CredsBatchList list);
 
-  void OnSaveUnblindedCreds(const ledger::Result result);
+  void OnSaveUnblindedCreds(const type::Result result);
 
   void GetAllTokens(
-      ledger::PromotionList list,
+      type::PromotionList list,
       const double contribution_sum);
 
   void ReportResults(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       const double contribution_sum,
       const double promotion_sum);
 
-  void Sent(const ledger::Result result);
+  void Sent(const type::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

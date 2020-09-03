@@ -39,7 +39,7 @@ struct User {
   ~User();
 };
 
-using GetUserCallback = std::function<void(const ledger::Result, const User&)>;
+using GetUserCallback = std::function<void(const type::Result, const User&)>;
 
 class UpholdUser {
  public:
@@ -51,7 +51,7 @@ class UpholdUser {
 
  private:
   void OnGet(
-      const ledger::Result result,
+      const type::Result result,
       const User& user,
       GetUserCallback callback);
 

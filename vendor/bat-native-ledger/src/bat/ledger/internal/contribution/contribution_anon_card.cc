@@ -47,15 +47,15 @@ void ContributionAnonCard::SendTransaction(
 }
 
 void ContributionAnonCard::OnSendTransaction(
-    const ledger::Result result,
+    const type::Result result,
     client::TransactionCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Problem sending transaction");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, "");
+  callback(type::Result::LEDGER_OK, "");
 }
 
 }  // namespace contribution

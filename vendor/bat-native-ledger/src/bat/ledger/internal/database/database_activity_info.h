@@ -19,17 +19,17 @@ class DatabaseActivityInfo: public DatabaseTable {
   ~DatabaseActivityInfo() override;
 
   void InsertOrUpdate(
-      ledger::PublisherInfoPtr info,
+      type::PublisherInfoPtr info,
       ledger::ResultCallback callback);
 
   void NormalizeList(
-      ledger::PublisherInfoList list,
+      type::PublisherInfoList list,
       ledger::ResultCallback callback);
 
   void GetRecordsList(
       const int start,
       const int limit,
-      ledger::ActivityInfoFilterPtr filter,
+      type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoListCallback callback);
 
   void DeleteRecord(
@@ -38,11 +38,11 @@ class DatabaseActivityInfo: public DatabaseTable {
 
  private:
   void CreateInsertOrUpdate(
-      ledger::DBTransaction* transaction,
-      ledger::PublisherInfoPtr info);
+      type::DBTransaction* transaction,
+      type::PublisherInfoPtr info);
 
   void OnGetRecordsList(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoListCallback callback);
 };
 

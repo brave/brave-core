@@ -55,17 +55,17 @@ class Database {
    * ACTIVITY INFO
    */
   void SaveActivityInfo(
-      ledger::PublisherInfoPtr info,
+      type::PublisherInfoPtr info,
       ledger::ResultCallback callback);
 
   void NormalizeActivityInfoList(
-      ledger::PublisherInfoList list,
+      type::PublisherInfoList list,
       ledger::ResultCallback callback);
 
   void GetActivityInfoList(
       uint32_t start,
       uint32_t limit,
-      ledger::ActivityInfoFilterPtr filter,
+      type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoListCallback callback);
 
   void DeleteActivityInfo(
@@ -76,22 +76,22 @@ class Database {
    * BALANCE REPORT
    */
   void SaveBalanceReportInfo(
-      ledger::BalanceReportInfoPtr info,
+      type::BalanceReportInfoPtr info,
       ledger::ResultCallback callback);
 
   void SaveBalanceReportInfoList(
-      ledger::BalanceReportInfoList list,
+      type::BalanceReportInfoList list,
       ledger::ResultCallback callback);
 
   void SaveBalanceReportInfoItem(
-      ledger::ActivityMonth month,
+      type::ActivityMonth month,
       int year,
-      ledger::ReportType type,
+      type::ReportType type,
       double amount,
       ledger::ResultCallback callback);
 
   void GetBalanceReportInfo(
-      ledger::ActivityMonth month,
+      type::ActivityMonth month,
       int year,
       ledger::GetBalanceReportCallback callback);
 
@@ -103,7 +103,7 @@ class Database {
    * CONTRIBUTION INFO
    */
   void SaveContributionInfo(
-      ledger::ContributionInfoPtr info,
+      type::ContributionInfoPtr info,
       ledger::ResultCallback callback);
 
   void GetContributionInfo(
@@ -111,12 +111,12 @@ class Database {
       GetContributionInfoCallback callback);
 
   void GetOneTimeTips(
-      const ledger::ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       ledger::PublisherInfoListCallback callback);
 
   void GetContributionReport(
-      const ledger::ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       ledger::GetContributionReportCallback callback);
 
@@ -125,12 +125,12 @@ class Database {
 
   void UpdateContributionInfoStep(
       const std::string& contribution_id,
-      const ledger::ContributionStep step,
+      const type::ContributionStep step,
       ledger::ResultCallback callback);
 
   void UpdateContributionInfoStepAndCount(
       const std::string& contribution_id,
-      const ledger::ContributionStep step,
+      const type::ContributionStep step,
       const int32_t retry_count,
       ledger::ResultCallback callback);
 
@@ -147,7 +147,7 @@ class Database {
    * CONTRIBUTION QUEUE
    */
   void SaveContributionQueue(
-      ledger::ContributionQueuePtr info,
+      type::ContributionQueuePtr info,
       ledger::ResultCallback callback);
 
   void GetFirstContributionQueue(
@@ -161,30 +161,30 @@ class Database {
    * CREDS BATCH
    */
   void SaveCredsBatch(
-      ledger::CredsBatchPtr info,
+      type::CredsBatchPtr info,
       ledger::ResultCallback callback);
 
   void GetCredsBatchByTrigger(
       const std::string& trigger_id,
-      const ledger::CredsBatchType trigger_type,
+      const type::CredsBatchType trigger_type,
       GetCredsBatchCallback callback);
 
   void SaveSignedCreds(
-      ledger::CredsBatchPtr info,
+      type::CredsBatchPtr info,
       ledger::ResultCallback callback);
 
   void GetAllCredsBatches(GetCredsBatchListCallback callback);
 
   void UpdateCredsBatchStatus(
       const std::string& trigger_id,
-      const ledger::CredsBatchType trigger_type,
-      const ledger::CredsBatchStatus status,
+      const type::CredsBatchType trigger_type,
+      const type::CredsBatchStatus status,
       ledger::ResultCallback callback);
 
   void UpdateCredsBatchesStatus(
       const std::vector<std::string>& trigger_ids,
-      const ledger::CredsBatchType trigger_type,
-      const ledger::CredsBatchStatus status,
+      const type::CredsBatchType trigger_type,
+      const type::CredsBatchStatus status,
       ledger::ResultCallback callback);
 
   void GetCredsBatchesByTriggers(
@@ -219,7 +219,7 @@ class Database {
    * for queries that are not limited to one table
    */
   void GetTransactionReport(
-      const ledger::ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       ledger::GetTransactionReportCallback callback);
 
@@ -227,7 +227,7 @@ class Database {
    * PENDING CONTRIBUTION
    */
   void SavePendingContribution(
-      ledger::PendingContributionList list,
+      type::PendingContributionList list,
       ledger::ResultCallback callback);
 
   void GetPendingContributionsTotal(
@@ -257,7 +257,7 @@ class Database {
    * PROMOTION
    */
   virtual void SavePromotion(
-      ledger::PromotionPtr info,
+      type::PromotionPtr info,
       ledger::ResultCallback callback);
 
   void GetPromotion(
@@ -273,12 +273,12 @@ class Database {
 
   void UpdatePromotionStatus(
       const std::string& promotion_id,
-      const ledger::PromotionStatus status,
+      const type::PromotionStatus status,
       ledger::ResultCallback callback);
 
   void UpdatePromotionsStatus(
       const std::vector<std::string>& promotion_ids,
-      const ledger::PromotionStatus status,
+      const type::PromotionStatus status,
       ledger::ResultCallback callback);
 
   void PromotionCredentialCompleted(
@@ -290,7 +290,7 @@ class Database {
       client::GetPromotionListCallback callback);
 
   void GetPromotionListByType(
-      const std::vector<ledger::PromotionType>& types,
+      const std::vector<type::PromotionType>& types,
       client::GetPromotionListCallback callback);
 
   void UpdatePromotionsBlankPublicKey(
@@ -301,7 +301,7 @@ class Database {
    * PUBLISHER INFO
    */
   void SavePublisherInfo(
-      ledger::PublisherInfoPtr publisher_info,
+      type::PublisherInfoPtr publisher_info,
       ledger::ResultCallback callback);
 
   void GetPublisherInfo(
@@ -309,7 +309,7 @@ class Database {
       ledger::PublisherInfoCallback callback);
 
   void GetPanelPublisherInfo(
-      ledger::ActivityInfoFilterPtr filter,
+      type::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback);
 
   void RestorePublishers(ledger::ResultCallback callback);
@@ -320,7 +320,7 @@ class Database {
    * RECURRING TIPS
    */
   void SaveRecurringTip(
-      ledger::RecurringTipPtr info,
+      type::RecurringTipPtr info,
       ledger::ResultCallback callback);
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback);
@@ -341,7 +341,7 @@ class Database {
       ledger::ResultCallback callback);
 
   void InsertServerPublisherInfo(
-      const ledger::ServerPublisherInfo& server_info,
+      const type::ServerPublisherInfo& server_info,
       ledger::ResultCallback callback);
 
   void DeleteExpiredServerPublisherInfo(
@@ -355,11 +355,11 @@ class Database {
   /**
    * SKU ORDER
    */
-  void SaveSKUOrder(ledger::SKUOrderPtr order, ledger::ResultCallback callback);
+  void SaveSKUOrder(type::SKUOrderPtr order, ledger::ResultCallback callback);
 
   void UpdateSKUOrderStatus(
       const std::string& order_id,
-      const ledger::SKUOrderStatus status,
+      const type::SKUOrderStatus status,
       ledger::ResultCallback callback);
 
   void GetSKUOrder(
@@ -379,7 +379,7 @@ class Database {
    * SKU TRANSACTION
    */
   void SaveSKUTransaction(
-      ledger::SKUTransactionPtr transaction,
+      type::SKUTransactionPtr transaction,
       ledger::ResultCallback callback);
 
   void SaveSKUExternalTransaction(
@@ -395,12 +395,12 @@ class Database {
    * UNBLINDED TOKEN
    */
   void SaveUnblindedTokenList(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
   void MarkUnblindedTokensAsSpent(
       const std::vector<std::string>& ids,
-      ledger::RewardsType redeem_type,
+      type::RewardsType redeem_type,
       const std::string& redeem_id,
       ledger::ResultCallback callback);
 
@@ -422,7 +422,7 @@ class Database {
       GetUnblindedTokenListCallback callback);
 
   void GetSpendableUnblindedTokensByBatchTypes(
-      const std::vector<ledger::CredsBatchType>& batch_types,
+      const std::vector<type::CredsBatchType>& batch_types,
       GetUnblindedTokenListCallback callback);
 
  private:

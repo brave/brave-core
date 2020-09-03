@@ -273,7 +273,7 @@ void Twitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
   auto user_id = data.find("user_id");
   auto screen_name = data.find("screen_name");
   if (user_id == data.end() || screen_name == data.end()) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
@@ -336,15 +336,15 @@ void Twitter::OnMediaPublisherInfo(
     const std::string& screen_name,
     const std::string& publisher_name,
     ledger::PublisherInfoCallback callback,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  if (result != ledger::Result::LEDGER_OK  &&
-    result != ledger::Result::NOT_FOUND) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info) {
+  if (result != ledger::type::Result::LEDGER_OK  &&
+    result != ledger::type::Result::NOT_FOUND) {
+    callback(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
-  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+  if (!publisher_info || result == ledger::type::Result::NOT_FOUND) {
     SavePublisherInfo(0,
                       user_id,
                       screen_name,
@@ -371,12 +371,12 @@ void Twitter::SavePublisherInfo(
   const std::string media_key = GetMediaKey(screen_name);
 
   if (publisher_key.empty()) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(ledger::type::Result::LEDGER_ERROR, nullptr);
     BLOG(0, "Publisher key is missing for: " << media_key);
     return;
   }
 
-  ledger::VisitDataPtr visit_data = ledger::VisitData::New();
+  ledger::type::VisitDataPtr visit_data = ledger::type::VisitData::New();
   visit_data->provider = TWITTER_MEDIA_TYPE;
   visit_data->url = url;
   visit_data->favicon_url = favicon_url;
@@ -393,39 +393,39 @@ void Twitter::SavePublisherInfo(
     ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
-        [](const ledger::Result) {});
+        [](const ledger::type::Result) {});
   }
 }
 
 void Twitter::FetchDataFromUrl(
     const std::string& url,
     ledger::client::LoadURLCallback callback) {
-  auto request = ledger::UrlRequest::New();
+  auto request = ledger::type::UrlRequest::New();
   request->url = url;
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), callback);
 }
 
-void Twitter::OnMediaActivityError(const ledger::VisitData& visit_data,
+void Twitter::OnMediaActivityError(const ledger::type::VisitData& visit_data,
                                         uint64_t window_id) {
   std::string url = TWITTER_TLD;
   std::string name = TWITTER_MEDIA_TYPE;
 
   DCHECK(!url.empty());
 
-  ledger::VisitData new_visit_data;
+  ledger::type::VisitData new_visit_data;
   new_visit_data.domain = url;
   new_visit_data.url = "https://" + url;
   new_visit_data.path = "/";
   new_visit_data.name = name;
 
   ledger_->publisher()->GetPublisherActivityFromUrl(
-      window_id, ledger::VisitData::New(new_visit_data), std::string());
+      window_id, ledger::type::VisitData::New(new_visit_data), std::string());
 }
 
 void Twitter::ProcessActivityFromUrl(
     uint64_t window_id,
-    const ledger::VisitData& visit_data) {
+    const ledger::type::VisitData& visit_data) {
   // not all url's are publisher specific
   if (IsExcludedPath(visit_data.path)) {
     OnMediaActivityError(visit_data, window_id);
@@ -452,18 +452,18 @@ void Twitter::ProcessActivityFromUrl(
 }
 
 void Twitter::OnMediaPublisherActivity(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info,
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info,
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& media_key) {
-  if (result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::NOT_FOUND) {
+  if (result != ledger::type::Result::LEDGER_OK &&
+      result != ledger::type::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
-  if (!info || result == ledger::Result::NOT_FOUND) {
+  if (!info || result == ledger::type::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromUrl(visit_data.path);
     const std::string user_id = GetUserIdFromUrl(visit_data.path);
     const std::string url = GetProfileURL(user_name, user_id);
@@ -485,11 +485,11 @@ void Twitter::OnMediaPublisherActivity(
 // Gets publisher panel info where we know that publisher info exists
 void Twitter::GetPublisherPanelInfo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& publisher_key) {
   auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
-    ledger::ExcludeFilter::FILTER_ALL,
+    ledger::type::ExcludeFilter::FILTER_ALL,
     false,
     ledger_->state()->GetReconcileStamp(),
     true,
@@ -506,11 +506,11 @@ void Twitter::GetPublisherPanelInfo(
 
 void Twitter::OnPublisherPanelInfo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& publisher_key,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  if (!info || result == ledger::Result::NOT_FOUND) {
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (!info || result == ledger::type::Result::NOT_FOUND) {
     auto url_callback = std::bind(&Twitter::OnUserPage,
         this,
         window_id,
@@ -527,8 +527,8 @@ void Twitter::OnPublisherPanelInfo(
 
 void Twitter::OnUserPage(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const ledger::UrlResponse& response) {
+    const ledger::type::VisitData& visit_data,
+    const ledger::type::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(visit_data, window_id);
     return;
@@ -552,7 +552,7 @@ void Twitter::OnUserPage(
       user_name,
       publisher_name,
       window_id,
-      [](ledger::Result, ledger::PublisherInfoPtr) {});
+      [](ledger::type::Result, ledger::type::PublisherInfoPtr) {});
 }
 
 }  // namespace braveledger_media

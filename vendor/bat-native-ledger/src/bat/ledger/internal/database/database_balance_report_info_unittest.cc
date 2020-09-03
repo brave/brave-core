@@ -43,7 +43,7 @@ class DatabaseBalanceReportTest : public ::testing::Test {
 };
 
 TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
-  auto info = ledger::BalanceReportInfo::New();
+  auto info = type::BalanceReportInfo::New();
   info->id = "2020_05";
   info->grants = 1.0;
   info->earning_from_ads = 1.0;
@@ -60,20 +60,20 @@ TEST_F(DatabaseBalanceReportTest, InsertOrUpdateOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
+            type::DBTransactionPtr transaction,
             ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::RUN);
+              type::DBCommand::Type::RUN);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 6u);
         }));
 
   balance_report_->InsertOrUpdate(
       std::move(info),
-      [](const ledger::Result){});
+      [](const type::Result){});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
@@ -87,19 +87,19 @@ TEST_F(DatabaseBalanceReportTest, GetAllRecordsOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
+            type::DBTransactionPtr transaction,
             ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::READ);
+              type::DBCommand::Type::READ);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 6u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
         }));
 
-  balance_report_->GetAllRecords([](ledger::BalanceReportInfoList) {});
+  balance_report_->GetAllRecords([](type::BalanceReportInfoList) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
@@ -114,22 +114,22 @@ TEST_F(DatabaseBalanceReportTest, GetRecordOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
+            type::DBTransactionPtr transaction,
             ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 2u);
           ASSERT_EQ(
               transaction->commands[1]->type,
-              ledger::DBCommand::Type::READ);
+              type::DBCommand::Type::READ);
           ASSERT_EQ(transaction->commands[1]->command, query);
           ASSERT_EQ(transaction->commands[1]->record_bindings.size(), 6u);
           ASSERT_EQ(transaction->commands[1]->bindings.size(), 1u);
         }));
 
   balance_report_->GetRecord(
-      ledger::ActivityMonth::MAY,
+      type::ActivityMonth::MAY,
       2020,
-      [](ledger::Result, ledger::BalanceReportInfoPtr) {});
+      [](type::Result, type::BalanceReportInfoPtr) {});
 }
 
 TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
@@ -141,19 +141,19 @@ TEST_F(DatabaseBalanceReportTest, DeleteAllRecordsOk) {
   ON_CALL(*mock_ledger_client_, RunDBTransaction(_, _))
       .WillByDefault(
         Invoke([&](
-            ledger::DBTransactionPtr transaction,
+            type::DBTransactionPtr transaction,
             ledger::client::RunDBTransactionCallback callback) {
           ASSERT_TRUE(transaction);
           ASSERT_EQ(transaction->commands.size(), 1u);
           ASSERT_EQ(
               transaction->commands[0]->type,
-              ledger::DBCommand::Type::EXECUTE);
+              type::DBCommand::Type::EXECUTE);
           ASSERT_EQ(transaction->commands[0]->command, query);
           ASSERT_EQ(transaction->commands[0]->record_bindings.size(), 0u);
           ASSERT_EQ(transaction->commands[0]->bindings.size(), 0u);
         }));
 
-  balance_report_->DeleteAllRecords([](ledger::Result) {});
+  balance_report_->DeleteAllRecords([](type::Result) {});
 }
 
 }  // namespace database

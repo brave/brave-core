@@ -21,7 +21,7 @@ class DatabasePendingContribution: public DatabaseTable {
   ~DatabasePendingContribution() override;
 
   void InsertOrUpdateList(
-      ledger::PendingContributionList list,
+      type::PendingContributionList list,
       ledger::ResultCallback callback);
 
   void GetReservedAmount(ledger::PendingContributionsTotalCallback callback);
@@ -34,11 +34,11 @@ class DatabasePendingContribution: public DatabaseTable {
 
  private:
   void OnGetReservedAmount(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PendingContributionsTotalCallback callback);
 
   void OnGetAllRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PendingContributionInfoListCallback callback);
 };
 

@@ -14,8 +14,8 @@
 namespace ledger {
 namespace database {
 
-using GetCredsBatchCallback = std::function<void(CredsBatchPtr)>;
-using GetCredsBatchListCallback = std::function<void(CredsBatchList)>;
+using GetCredsBatchCallback = std::function<void(type::CredsBatchPtr)>;
+using GetCredsBatchListCallback = std::function<void(type::CredsBatchList)>;
 
 class DatabaseCredsBatch: public DatabaseTable {
  public:
@@ -23,30 +23,30 @@ class DatabaseCredsBatch: public DatabaseTable {
   ~DatabaseCredsBatch() override;
 
   void InsertOrUpdate(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       ledger::ResultCallback callback);
 
   void GetRecordByTrigger(
       const std::string& trigger_id,
-      const ledger::CredsBatchType trigger_type,
+      const type::CredsBatchType trigger_type,
       GetCredsBatchCallback callback);
 
   void SaveSignedCreds(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       ledger::ResultCallback callback);
 
   void GetAllRecords(GetCredsBatchListCallback callback);
 
   void UpdateStatus(
       const std::string& trigger_id,
-      const ledger::CredsBatchType trigger_type,
-      const ledger::CredsBatchStatus status,
+      const type::CredsBatchType trigger_type,
+      const type::CredsBatchStatus status,
       ledger::ResultCallback callback);
 
   void UpdateRecordsStatus(
       const std::vector<std::string>& trigger_ids,
-      const ledger::CredsBatchType trigger_type,
-      const ledger::CredsBatchStatus status,
+      const type::CredsBatchType trigger_type,
+      const type::CredsBatchStatus status,
       ledger::ResultCallback callback);
 
   void GetRecordsByTriggers(
@@ -55,11 +55,11 @@ class DatabaseCredsBatch: public DatabaseTable {
 
  private:
   void OnGetRecordByTrigger(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetCredsBatchCallback callback);
 
   void OnGetRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetCredsBatchListCallback callback);
 };
 

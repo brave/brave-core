@@ -71,9 +71,9 @@ void PublisherPrefixListUpdater::OnFetchTimerElapsed() {
 }
 
 void PublisherPrefixListUpdater::OnFetchCompleted(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& body) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Invalid server response for publisher prefix list");
     StartFetchTimer(FROM_HERE, GetRetryAfterFailureDelay());
     return;
@@ -108,7 +108,7 @@ void PublisherPrefixListUpdater::OnFetchCompleted(
 }
 
 void PublisherPrefixListUpdater::OnPrefixListInserted(
-    const ledger::Result result) {
+    const type::Result result) {
   // At this point we have received a valid response from the server
   // and we've attempted to insert it into the database. Store the last
   // successful fetch time for calculation of next refresh interval.
@@ -121,7 +121,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
     StartFetchTimer(FROM_HERE, GetAutoUpdateDelay());
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Error updating publisher prefix list table: " << result);
     return;
   }

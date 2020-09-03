@@ -50,93 +50,93 @@ class Promotion {
 
  private:
   void OnFetch(
-      const ledger::Result result,
-      ledger::PromotionList list,
+      const type::Result result,
+      type::PromotionList list,
       const std::vector<std::string>& corrupted_promotions,
       ledger::FetchPromotionCallback callback);
 
   void OnGetAllPromotions(
-      ledger::PromotionMap promotions,
-      std::shared_ptr<ledger::PromotionList> list,
+      type::PromotionMap promotions,
+      std::shared_ptr<type::PromotionList> list,
       ledger::FetchPromotionCallback callback);
 
   void OnGetAllPromotionsFromDatabase(
-      ledger::PromotionMap promotions,
+      type::PromotionMap promotions,
       ledger::FetchPromotionCallback callback);
 
   void LegacyClaimedSaved(
-      const ledger::Result result,
-      std::shared_ptr<ledger::PromotionPtr> shared_promotion);
+      const type::Result result,
+      std::shared_ptr<type::PromotionPtr> shared_promotion);
 
   void OnClaimPromotion(
-      ledger::PromotionPtr promotion,
+      type::PromotionPtr promotion,
       const std::string& payload,
       ledger::ClaimPromotionCallback callback);
 
   void OnAttestPromotion(
-      ledger::PromotionPtr promotion,
+      type::PromotionPtr promotion,
       const std::string& solution,
       ledger::AttestPromotionCallback callback);
 
   void OnAttestedPromotion(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& promotion_id,
       ledger::AttestPromotionCallback callback);
 
   void OnCompletedAttestation(
-      ledger::PromotionPtr promotion,
+      type::PromotionPtr promotion,
       ledger::AttestPromotionCallback callback);
 
   void AttestedSaved(
-      const ledger::Result result,
-      std::shared_ptr<ledger::PromotionPtr> shared_promotion,
+      const type::Result result,
+      std::shared_ptr<type::PromotionPtr> shared_promotion,
       ledger::AttestPromotionCallback callback);
 
   void Complete(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& promotion_string,
       ledger::AttestPromotionCallback callback);
 
   void OnComplete(
-      ledger::PromotionPtr promotion,
-      const ledger::Result result,
+      type::PromotionPtr promotion,
+      const type::Result result,
       ledger::AttestPromotionCallback callback);
 
   void ProcessFetchedPromotions(
-      const ledger::Result result,
-      ledger::PromotionList promotions,
+      const type::Result result,
+      type::PromotionList promotions,
       ledger::FetchPromotionCallback callback);
 
   void GetCredentials(
-      ledger::PromotionPtr promotion,
+      type::PromotionPtr promotion,
       ledger::ResultCallback callback);
 
   void CredentialsProcessed(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& promotion_id,
       ledger::ResultCallback callback);
 
-  void Retry(ledger::PromotionMap promotions);
+  void Retry(type::PromotionMap promotions);
 
-  void CheckForCorrupted(const ledger::PromotionMap& promotions);
+  void CheckForCorrupted(const type::PromotionMap& promotions);
 
-  void CorruptedPromotionFixed(const ledger::Result result);
+  void CorruptedPromotionFixed(const type::Result result);
 
-  void CheckForCorruptedCreds(ledger::CredsBatchList list);
+  void CheckForCorruptedCreds(type::CredsBatchList list);
 
   void CorruptedPromotions(
-      ledger::PromotionList promotions,
+      type::PromotionList promotions,
       const std::vector<std::string>& ids);
 
   void OnCheckForCorrupted(
-      const ledger::Result result,
+      const type::Result result,
       const std::vector<std::string>& promotion_id_list);
 
   void ErrorStatusSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::vector<std::string>& promotion_id_list);
 
-  void ErrorCredsStatusSaved(const ledger::Result result);
+  void ErrorCredsStatusSaved(const type::Result result);
 
   void OnRetryTimerElapsed();
 

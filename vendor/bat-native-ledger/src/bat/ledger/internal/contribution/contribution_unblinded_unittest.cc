@@ -54,11 +54,11 @@ class UnblindedTest : public ::testing::Test {
       Invoke([](
           const std::string& id,
           database::GetContributionInfoCallback callback) {
-        auto info = ledger::ContributionInfo::New();
+        auto info = type::ContributionInfo::New();
         info->contribution_id = contribution_id;
         info->amount = 5.0;
-        info->type = ledger::RewardsType::ONE_TIME_TIP;
-        info->step = ledger::ContributionStep::STEP_NO;
+        info->type = type::RewardsType::ONE_TIME_TIP;
+        info->step = type::ContributionStep::STEP_NO;
         info->retry_count = 0;
 
         callback(std::move(info));
@@ -72,9 +72,9 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
       Invoke([](
           const std::string&,
           database::GetUnblindedTokenListCallback callback) {
-        ledger::UnblindedTokenList list;
+        type::UnblindedTokenList list;
 
-        auto info = ledger::UnblindedToken::New();
+        auto info = type::UnblindedToken::New();
         info->id = 1;
         info->token_value = "asdfasdfasdfsad=";
         info->value = 2;
@@ -85,10 +85,10 @@ TEST_F(UnblindedTest, NotEnoughFunds) {
       }));
 
   unblinded_->Start(
-      {ledger::CredsBatchType::PROMOTION},
+      {type::CredsBatchType::PROMOTION},
       contribution_id,
-      [](const ledger::Result result) {
-        ASSERT_EQ(result, ledger::Result::NOT_ENOUGH_FUNDS);
+      [](const type::Result result) {
+        ASSERT_EQ(result, type::Result::NOT_ENOUGH_FUNDS);
       });
 }
 

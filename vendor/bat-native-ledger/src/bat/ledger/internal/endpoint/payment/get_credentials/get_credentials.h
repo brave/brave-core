@@ -50,8 +50,8 @@ namespace endpoint {
 namespace payment {
 
 using GetCredentialsCallback = std::function<void(
-    const ledger::Result result,
-    ledger::CredsBatchPtr batch)>;
+    const type::Result result,
+    type::CredsBatchPtr batch)>;
 
 class GetCredentials {
  public:
@@ -68,14 +68,14 @@ class GetCredentials {
       const std::string& order_id,
       const std::string& item_id);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
-      ledger::CredsBatch* batch);
+      type::CredsBatch* batch);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetCredentialsCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

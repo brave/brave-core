@@ -131,7 +131,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     CallbackCalled();
   }
 
-  void OnGetEnvironmentWrapper(ledger::Environment environment) {
+  void OnGetEnvironmentWrapper(ledger::type::Environment environment) {
     OnGetEnvironment(environment);
     CallbackCalled();
   }
@@ -141,7 +141,7 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
     CallbackCalled();
   }
 
-  MOCK_METHOD1(OnGetEnvironment, void(ledger::Environment));
+  MOCK_METHOD1(OnGetEnvironment, void(ledger::type::Environment));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileInterval, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));
@@ -154,29 +154,30 @@ class RewardsFlagBrowserTest : public InProcessBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsStaging) {
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING)).Times(2);
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::STAGING))
+      .Times(2);
   EXPECT_CALL(*this, OnGetEnvironment(
-      ledger::Environment::PRODUCTION)).Times(3);
+      ledger::type::Environment::PRODUCTION)).Times(3);
 
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
   testing::InSequence s;
 
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->HandleFlags("staging=true");
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->HandleFlags("staging=1");
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::Environment::STAGING);
+  rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
   rewards_service_->HandleFlags("staging=false");
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::Environment::STAGING);
+  rewards_service_->SetEnvironment(ledger::type::Environment::STAGING);
   rewards_service_->HandleFlags("staging=werwe");
   GetEnvironment();
 }
@@ -209,30 +210,30 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDebug) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsDevelopment) {
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::DEVELOPMENT))
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::DEVELOPMENT))
       .Times(2);
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION))
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::PRODUCTION))
       .Times(3);
 
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
   testing::InSequence s;
 
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=true");
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=1");
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=false");
   GetEnvironment();
 
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->HandleFlags("development=werwe");
   GetEnvironment();
 }
@@ -274,14 +275,14 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsShortRetries) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::STAGING));
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::STAGING));
   EXPECT_CALL(*this, OnGetDebug(true));
   EXPECT_CALL(*this, OnGetReconcileInterval(10));
   EXPECT_CALL(*this, OnGetShortRetries(true));
 
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
   testing::InSequence s;
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->SetDebug(true);
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetShortRetries(false);
@@ -296,14 +297,14 @@ IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsMultipleFlags) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsFlagBrowserTest, HandleFlagsWrongInput) {
-  EXPECT_CALL(*this, OnGetEnvironment(ledger::Environment::PRODUCTION));
+  EXPECT_CALL(*this, OnGetEnvironment(ledger::type::Environment::PRODUCTION));
   EXPECT_CALL(*this, OnGetDebug(false));
   EXPECT_CALL(*this, OnGetReconcileInterval(0));
   EXPECT_CALL(*this, OnGetShortRetries(false));
 
   rewards_browsertest_util::EnableRewardsViaCode(browser(), rewards_service_);
   testing::InSequence s;
-  rewards_service_->SetEnvironment(ledger::Environment::PRODUCTION);
+  rewards_service_->SetEnvironment(ledger::type::Environment::PRODUCTION);
   rewards_service_->SetDebug(false);
   rewards_service_->SetReconcileInterval(0);
   rewards_service_->SetShortRetries(false);

@@ -27,15 +27,15 @@ const char kUserFundsSKUStaging[] = "AgEJYnJhdmUuY29tAiFicmF2ZSBhbm9uLWNhcmQtdm9
 const char kUserFundsSKUProduction[] = "AgEJYnJhdmUuY29tAiFicmF2ZSBhbm9uLWNhcmQtdm90ZSBza3UgdG9rZW4gdjEAAhJza3U9YW5vbi1jYXJkLXZvdGUAAgpwcmljZT0wLjI1AAIMY3VycmVuY3k9QkFUAAIMZGVzY3JpcHRpb249AAIaY3JlZGVudGlhbF90eXBlPXNpbmdsZS11c2UAAAYgrMZm85YYwnmjPXcegy5pBM5C+ZLfrySZfYiSe13yp8o=";  //NOLINT
 
 std::string GetACSKU() {
-  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+  if (ledger::_environment == ledger::type::Environment::PRODUCTION) {
     return kACSKUProduction;
   }
 
-  if (ledger::_environment == ledger::Environment::STAGING) {
+  if (ledger::_environment == ledger::type::Environment::STAGING) {
     return kACSKUStaging;
   }
 
-  if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
+  if (ledger::_environment == ledger::type::Environment::DEVELOPMENT) {
     return kACSKUDev;
   }
 
@@ -44,15 +44,15 @@ std::string GetACSKU() {
 }
 
 std::string GetUserFundsSKU() {
-  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+  if (ledger::_environment == ledger::type::Environment::PRODUCTION) {
     return kUserFundsSKUProduction;
   }
 
-  if (ledger::_environment == ledger::Environment::STAGING) {
+  if (ledger::_environment == ledger::type::Environment::STAGING) {
     return kUserFundsSKUStaging;
   }
 
-  if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
+  if (ledger::_environment == ledger::type::Environment::DEVELOPMENT) {
     return kUserFundsSKUDev;
   }
 
@@ -61,7 +61,7 @@ std::string GetUserFundsSKU() {
 }
 
 void GetCredentialTrigger(
-    ledger::SKUOrderPtr order,
+    ledger::type::SKUOrderPtr order,
     ledger::credential::CredentialsTrigger* trigger) {
   DCHECK(trigger);
 
@@ -75,7 +75,7 @@ void GetCredentialTrigger(
 
   trigger->id = order->order_id;
   trigger->size = order->items[0]->quantity;
-  trigger->type = ledger::CredsBatchType::SKU;
+  trigger->type = ledger::type::CredsBatchType::SKU;
   trigger->data = data;
 }
 
@@ -89,7 +89,7 @@ ContributionSKU::ContributionSKU(LedgerImpl* ledger) :
   DCHECK(ledger_);
   credentials_ = credential::CredentialsFactory::Create(
       ledger_,
-      ledger::CredsBatchType::SKU);
+      type::CredsBatchType::SKU);
   DCHECK(credentials_);
   sku_ = sku::SKUFactory::Create(
       ledger_,
@@ -101,15 +101,15 @@ ContributionSKU::~ContributionSKU() = default;
 
 void ContributionSKU::AutoContribution(
     const std::string& contribution_id,
-    ledger::ExternalWalletPtr wallet,
+    type::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  ledger::SKUOrderItem item;
+  type::SKUOrderItem item;
   item.sku = GetACSKU();
 
   Start(
@@ -121,15 +121,15 @@ void ContributionSKU::AutoContribution(
 
 void ContributionSKU::AnonUserFunds(
     const std::string& contribution_id,
-    ledger::ExternalWalletPtr wallet,
+    type::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  ledger::SKUOrderItem item;
+  type::SKUOrderItem item;
   item.sku = GetUserFundsSKU();
 
   Start(
@@ -141,12 +141,12 @@ void ContributionSKU::AnonUserFunds(
 
 void ContributionSKU::Start(
     const std::string& contribution_id,
-    const ledger::SKUOrderItem& item,
-    ledger::ExternalWalletPtr wallet,
+    const type::SKUOrderItem& item,
+    type::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -161,13 +161,13 @@ void ContributionSKU::Start(
 }
 
 void ContributionSKU::GetContributionInfo(
-    ledger::ContributionInfoPtr contribution,
-    const ledger::SKUOrderItem& item,
-    const ledger::ExternalWallet& wallet,
+    type::ContributionInfoPtr contribution,
+    const type::SKUOrderItem& item,
+    const type::ExternalWallet& wallet,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution not found");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -186,27 +186,27 @@ void ContributionSKU::GetContributionInfo(
       contribution->contribution_id,
       complete_callback);
 
-  ledger::SKUOrderItem new_item = item;
+  type::SKUOrderItem new_item = item;
   new_item.quantity = GetVotesFromAmount(contribution->amount);
-  new_item.type = ledger::SKUOrderItemType::SINGLE_USE;
+  new_item.type = type::SKUOrderItemType::SINGLE_USE;
   new_item.price = ledger::constant::kVotePrice;
 
-  std::vector<ledger::SKUOrderItem> items;
+  std::vector<type::SKUOrderItem> items;
   items.push_back(new_item);
 
   sku_->Process(
       items,
-      ledger::ExternalWallet::New(wallet),
+      type::ExternalWallet::New(wallet),
       process_callback,
       contribution->contribution_id);
 }
 
 void ContributionSKU::GetOrder(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& order_id,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "SKU was not processed");
     callback(result);
     return;
@@ -221,32 +221,32 @@ void ContributionSKU::GetOrder(
 }
 
 void ContributionSKU::OnGetOrder(
-    ledger::SKUOrderPtr order,
+    type::SKUOrderPtr order,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   auto save_callback = std::bind(&ContributionSKU::TransactionStepSaved,
       this,
       _1,
-      std::make_shared<ledger::SKUOrderPtr>(std::move(order)),
+      std::make_shared<type::SKUOrderPtr>(std::move(order)),
       callback);
 
   ledger_->database()->UpdateContributionInfoStep(
       contribution_id,
-      ledger::ContributionStep::STEP_EXTERNAL_TRANSACTION,
+      type::ContributionStep::STEP_EXTERNAL_TRANSACTION,
       save_callback);
 }
 
 void ContributionSKU::TransactionStepSaved(
-    const ledger::Result result,
-    std::shared_ptr<ledger::SKUOrderPtr> shared_order,
+    const type::Result result,
+    std::shared_ptr<type::SKUOrderPtr> shared_order,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "External transaction step was not saved");
     callback(result);
     return;
@@ -254,7 +254,7 @@ void ContributionSKU::TransactionStepSaved(
 
   if (!shared_order) {
     BLOG(0, "Order is corrupted");
-    callback(ledger::Result::RETRY);
+    callback(type::Result::RETRY);
     return;
   }
 
@@ -266,11 +266,11 @@ void ContributionSKU::TransactionStepSaved(
 }
 
 void ContributionSKU::Completed(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& contribution_id,
-    const ledger::RewardsType type,
+    const type::RewardsType type,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order not completed");
     callback(result);
     return;
@@ -284,28 +284,28 @@ void ContributionSKU::Completed(
 
   ledger_->database()->UpdateContributionInfoStep(
       contribution_id,
-      ledger::ContributionStep::STEP_CREDS,
+      type::ContributionStep::STEP_CREDS,
       save_callback);
 }
 
 void ContributionSKU::CredsStepSaved(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Creds step not saved");
     callback(result);
     return;
   }
 
   ledger_->contribution()->StartUnblinded(
-      {ledger::CredsBatchType::SKU},
+      {type::CredsBatchType::SKU},
       contribution_id,
       callback);
 }
 
 void ContributionSKU::Merchant(
-    const ledger::SKUTransaction& transaction,
+    const type::SKUTransaction& transaction,
     client::TransactionCallback callback) {
   auto get_callback = std::bind(&ContributionSKU::GetUnblindedTokens,
       this,
@@ -314,21 +314,21 @@ void ContributionSKU::Merchant(
       callback);
 
   ledger_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {ledger::CredsBatchType::PROMOTION},
+      {type::CredsBatchType::PROMOTION},
       get_callback);
 }
 
 void ContributionSKU::GetUnblindedTokens(
-    ledger::UnblindedTokenList list,
-    const ledger::SKUTransaction& transaction,
+    type::UnblindedTokenList list,
+    const type::SKUTransaction& transaction,
     client::TransactionCallback callback) {
   if (list.empty()) {
     BLOG(0, "List is empty");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  std::vector<ledger::UnblindedToken> token_list;
+  std::vector<type::UnblindedToken> token_list;
   double current_amount = 0.0;
   for (auto& item : list) {
     if (current_amount >= transaction.amount) {
@@ -341,13 +341,13 @@ void ContributionSKU::GetUnblindedTokens(
 
   if (current_amount < transaction.amount) {
     BLOG(0, "Not enough funds");
-    callback(ledger::Result::NOT_ENOUGH_FUNDS, "");
+    callback(type::Result::NOT_ENOUGH_FUNDS, "");
     return;
   }
 
   credential::CredentialsRedeem redeem;
-  redeem.type = ledger::RewardsType::PAYMENT;
-  redeem.processor = ledger::ContributionProcessor::BRAVE_TOKENS;
+  redeem.type = type::RewardsType::PAYMENT;
+  redeem.processor = type::ContributionProcessor::BRAVE_TOKENS;
   redeem.token_list = token_list;
   redeem.order_id = transaction.order_id;
 
@@ -361,12 +361,12 @@ void ContributionSKU::GetUnblindedTokens(
 }
 
 void ContributionSKU::GetOrderMerchant(
-    ledger::SKUOrderPtr order,
+    type::SKUOrderPtr order,
     const credential::CredentialsRedeem& redeem,
     client::TransactionCallback callback) {
   if (!order) {
     BLOG(0, "Order was not found");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -382,9 +382,9 @@ void ContributionSKU::GetOrderMerchant(
 }
 
 void ContributionSKU::OnRedeemTokens(
-    const ledger::Result result,
+    const type::Result result,
     client::TransactionCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Problem redeeming tokens");
     callback(result, "");
     return;
@@ -394,18 +394,18 @@ void ContributionSKU::OnRedeemTokens(
 }
 
 void ContributionSKU::Retry(
-    const ledger::ContributionInfoPtr contribution,
+    const type::ContributionInfoPtr contribution,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution was not found");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   auto get_callback = std::bind(&ContributionSKU::OnOrder,
       this,
       _1,
-      std::make_shared<ledger::ContributionInfoPtr>(contribution->Clone()),
+      std::make_shared<type::ContributionInfoPtr>(contribution->Clone()),
       callback);
 
   ledger_->database()->GetSKUOrderByContributionId(
@@ -414,48 +414,48 @@ void ContributionSKU::Retry(
 }
 
 void ContributionSKU::OnOrder(
-    ledger::SKUOrderPtr order,
-    std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
+    type::SKUOrderPtr order,
+    std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
     ledger::ResultCallback callback) {
   auto contribution = std::move(*shared_contribution);
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   switch (contribution->step) {
-    case ledger::ContributionStep::STEP_START: {
+    case type::ContributionStep::STEP_START: {
       RetryStartStep(
           std::move(contribution),
           std::move(order),
           callback);
       return;
     }
-    case ledger::ContributionStep::STEP_EXTERNAL_TRANSACTION: {
+    case type::ContributionStep::STEP_EXTERNAL_TRANSACTION: {
       RetryExternalTransactionStep(
           std::move(contribution),
           std::move(order),
           callback);
       return;
     }
-    case ledger::ContributionStep::STEP_PREPARE:
-    case ledger::ContributionStep::STEP_RESERVE:
-    case ledger::ContributionStep::STEP_CREDS: {
+    case type::ContributionStep::STEP_PREPARE:
+    case type::ContributionStep::STEP_RESERVE:
+    case type::ContributionStep::STEP_CREDS: {
       ledger_->contribution()->RetryUnblinded(
-          {ledger::CredsBatchType::SKU},
+          {type::CredsBatchType::SKU},
           contribution->contribution_id,
           callback);
       return;
     }
-    case ledger::ContributionStep::STEP_RETRY_COUNT:
-    case ledger::ContributionStep::STEP_REWARDS_OFF:
-    case ledger::ContributionStep::STEP_AC_OFF:
-    case ledger::ContributionStep::STEP_AC_TABLE_EMPTY:
-    case ledger::ContributionStep::STEP_NOT_ENOUGH_FUNDS:
-    case ledger::ContributionStep::STEP_FAILED:
-    case ledger::ContributionStep::STEP_COMPLETED:
-    case ledger::ContributionStep::STEP_NO: {
+    case type::ContributionStep::STEP_RETRY_COUNT:
+    case type::ContributionStep::STEP_REWARDS_OFF:
+    case type::ContributionStep::STEP_AC_OFF:
+    case type::ContributionStep::STEP_AC_TABLE_EMPTY:
+    case type::ContributionStep::STEP_NOT_ENOUGH_FUNDS:
+    case type::ContributionStep::STEP_FAILED:
+    case type::ContributionStep::STEP_COMPLETED:
+    case type::ContributionStep::STEP_NO: {
       BLOG(0, "Step not correct " << contribution->step);
       NOTREACHED();
       return;
@@ -464,17 +464,17 @@ void ContributionSKU::OnOrder(
 }
 
 void ContributionSKU::RetryStartStep(
-    ledger::ContributionInfoPtr contribution,
-    ledger::SKUOrderPtr order,
+    type::ContributionInfoPtr contribution,
+    type::SKUOrderPtr order,
     ledger::ResultCallback callback) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  if (contribution->processor == ledger::ContributionProcessor::UPHOLD &&
-      contribution->type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+  if (contribution->processor == type::ContributionProcessor::UPHOLD &&
+      contribution->type == type::RewardsType::AUTO_CONTRIBUTE) {
     std::string order_id;
     if (order) {
       order_id = order->order_id;
@@ -492,7 +492,7 @@ void ContributionSKU::RetryStartStep(
     return;
   }
 
-  auto wallet = ledger::ExternalWallet::New();
+  auto wallet = type::ExternalWallet::New();
   wallet->type = constant::kWalletAnonymous;
 
   if (!order) {
@@ -511,14 +511,14 @@ void ContributionSKU::RetryStartStep(
 }
 
 void ContributionSKU::RetryStartStepExternalWallet(
-    const ledger::Result result,
-    ledger::ExternalWalletPtr wallet,
+    const type::Result result,
+    type::ExternalWalletPtr wallet,
     const std::string& order_id,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
-  if (!wallet || result != ledger::Result::LEDGER_OK) {
+  if (!wallet || result != type::Result::LEDGER_OK) {
     BLOG(0, "External wallet is missing");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -538,12 +538,12 @@ void ContributionSKU::RetryStartStepExternalWallet(
 }
 
 void ContributionSKU::RetryExternalTransactionStep(
-    ledger::ContributionInfoPtr contribution,
-    ledger::SKUOrderPtr order,
+    type::ContributionInfoPtr contribution,
+    type::SKUOrderPtr order,
     ledger::ResultCallback callback) {
   if (!contribution || !order) {
     BLOG(0, "Contribution/order is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 

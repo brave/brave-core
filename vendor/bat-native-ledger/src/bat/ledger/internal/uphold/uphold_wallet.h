@@ -26,17 +26,17 @@ class UpholdWallet {
 
  private:
   void OnGenerate(
-      const ledger::Result result,
+      const type::Result result,
       const User& user,
       ledger::ResultCallback callback);
 
   void OnCreateCard(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& address,
       ledger::ResultCallback callback);
 
-  ledger::WalletStatus GetNewStatus(
-      const ledger::WalletStatus old_status,
+  type::WalletStatus GetNewStatus(
+      const type::WalletStatus old_status,
       const User& user);
 
   LedgerImpl* ledger_;  // NOT OWNED

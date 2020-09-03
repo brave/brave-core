@@ -71,16 +71,16 @@ void AttestationAndroid::Start(
 }
 
 void AttestationAndroid::OnStart(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& nonce,
     StartCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to start attestation");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, nonce);
+  callback(type::Result::LEDGER_OK, nonce);
 }
 
 void AttestationAndroid::Confirm(
@@ -99,15 +99,15 @@ void AttestationAndroid::Confirm(
 }
 
 void AttestationAndroid::OnConfirm(
-    const ledger::Result result,
+    const type::Result result,
     ConfirmCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Failed to confirm attestation");
     callback(result);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace attestation

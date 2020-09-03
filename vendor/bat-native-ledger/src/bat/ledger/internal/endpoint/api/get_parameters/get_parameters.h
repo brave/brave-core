@@ -56,8 +56,8 @@ namespace endpoint {
 namespace api {
 
 using GetParametersCallback = std::function<void(
-    const ledger::Result result,
-    const ledger::RewardsParameters&)>;
+    const type::Result result,
+    const type::RewardsParameters&)>;
 
 class GetParameters {
  public:
@@ -69,14 +69,14 @@ class GetParameters {
  private:
   std::string GetUrl(const std::string& currency = "");
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
-      ledger::RewardsParameters* parameters);
+      type::RewardsParameters* parameters);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetParametersCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

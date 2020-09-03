@@ -28,11 +28,11 @@ class PromotionTransfer {
 
  private:
   void GetEligibleTokens(
-      ledger::PromotionList promotions,
+      type::PromotionList promotions,
       ledger::ResultCallback callback);
 
   void OnGetEligibleTokens(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       ledger::ResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

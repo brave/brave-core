@@ -16,7 +16,8 @@
 namespace ledger {
 namespace database {
 
-using GetContributionInfoCallback = std::function<void(ContributionInfoPtr)>;
+using GetContributionInfoCallback =
+    std::function<void(type::ContributionInfoPtr)>;
 
 class DatabaseContributionInfo: public DatabaseTable {
  public:
@@ -24,7 +25,7 @@ class DatabaseContributionInfo: public DatabaseTable {
   ~DatabaseContributionInfo() override;
 
   void InsertOrUpdate(
-      ledger::ContributionInfoPtr info,
+      type::ContributionInfoPtr info,
       ledger::ResultCallback callback);
 
   void GetRecord(
@@ -34,12 +35,12 @@ class DatabaseContributionInfo: public DatabaseTable {
   void GetAllRecords(ledger::ContributionInfoListCallback callback);
 
   void GetOneTimeTips(
-      const ledger::ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       ledger::PublisherInfoListCallback callback);
 
   void GetContributionReport(
-      const ledger::ActivityMonth month,
+      const type::ActivityMonth month,
       const int year,
       ledger::GetContributionReportCallback callback);
 
@@ -47,12 +48,12 @@ class DatabaseContributionInfo: public DatabaseTable {
 
   void UpdateStep(
       const std::string& contribution_id,
-      const ledger::ContributionStep step,
+      const type::ContributionStep step,
       ledger::ResultCallback callback);
 
   void UpdateStepAndCount(
       const std::string& contribution_id,
-      const ledger::ContributionStep step,
+      const type::ContributionStep step,
       const int32_t retry_count,
       ledger::ResultCallback callback);
 
@@ -65,34 +66,34 @@ class DatabaseContributionInfo: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetContributionInfoCallback callback);
 
   void OnGetPublishers(
-      ledger::ContributionPublisherList list,
-      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
+      type::ContributionPublisherList list,
+      std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
       GetContributionInfoCallback callback);
 
   void OnGetOneTimeTips(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoListCallback callback);
 
   void OnGetContributionReport(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::GetContributionReportCallback callback);
 
   void OnGetContributionReportPublishers(
       std::vector<ContributionPublisherInfoPair> publisher_pair_list,
-      std::shared_ptr<ledger::ContributionInfoList> shared_contributions,
+      std::shared_ptr<type::ContributionInfoList> shared_contributions,
       ledger::GetContributionReportCallback callback);
 
   void OnGetList(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::ContributionInfoListCallback callback);
 
   void OnGetListPublishers(
-      ledger::ContributionPublisherList list,
-      std::shared_ptr<ledger::ContributionInfoList> shared_contributions,
+      type::ContributionPublisherList list,
+      std::shared_ptr<type::ContributionInfoList> shared_contributions,
       ledger::ContributionInfoListCallback callback);
 
   std::unique_ptr<DatabaseContributionInfoPublishers> publishers_;

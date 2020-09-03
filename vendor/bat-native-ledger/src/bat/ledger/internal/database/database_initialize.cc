@@ -27,11 +27,11 @@ DatabaseInitialize::~DatabaseInitialize() = default;
 void DatabaseInitialize::Start(
     const bool execute_create_script,
     ledger::ResultCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   transaction->version = GetCurrentVersion();
   transaction->compatible_version = GetCompatibleVersion();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::INITIALIZE;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::INITIALIZE;
   transaction->commands.push_back(std::move(command));
 
   ledger_->ledger_client()->RunDBTransaction(
@@ -44,13 +44,13 @@ void DatabaseInitialize::Start(
 }
 
 void DatabaseInitialize::OnInitialize(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     const bool execute_create_script,
     ledger::ResultCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(ledger::Result::DATABASE_INIT_FAILED);
+    callback(type::Result::DATABASE_INIT_FAILED);
     return;
   }
 
@@ -61,9 +61,9 @@ void DatabaseInitialize::OnInitialize(
 
   if (!response->result ||
       response->result->get_value()->which() !=
-      ledger::DBValue::Tag::INT_VALUE) {
+      type::DBValue::Tag::INT_VALUE) {
     BLOG(0, "DB init failed");
-    callback(ledger::Result::DATABASE_INIT_FAILED);
+    callback(type::Result::DATABASE_INIT_FAILED);
     return;
   }
 
@@ -87,7 +87,7 @@ void DatabaseInitialize::ExecuteCreateScript(
     ledger::ResultCallback callback) {
   if (script.empty()) {
     BLOG(1, "Script is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -100,9 +100,9 @@ void DatabaseInitialize::ExecuteCreateScript(
       table_version,
       callback);
 
-  auto transaction = ledger::DBTransaction::New();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
+  auto transaction = type::DBTransaction::New();
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::EXECUTE;
   command->command = script;
   transaction->commands.push_back(std::move(command));
 
@@ -112,13 +112,13 @@ void DatabaseInitialize::ExecuteCreateScript(
 }
 
 void DatabaseInitialize::OnExecuteCreateScript(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     const int table_version,
     ledger::ResultCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(ledger::Result::DATABASE_INIT_FAILED);
+    callback(type::Result::DATABASE_INIT_FAILED);
     return;
   }
 

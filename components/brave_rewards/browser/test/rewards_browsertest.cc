@@ -341,10 +341,10 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ZeroBalanceWalletClaimNotCalled) {
   base::RunLoop run_loop;
   auto test_callback =
       [&](
-          const ledger::Result result,
-          ledger::ExternalWalletPtr wallet) {
+          const ledger::type::Result result,
+          ledger::type::ExternalWalletPtr wallet) {
         auto requests = response_->GetRequests();
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+        EXPECT_EQ(result, ledger::type::Result::LEDGER_OK);
         EXPECT_FALSE(requests.empty());
 
         // Should not attempt to call /v2/wallet/UUID/claim endpoint

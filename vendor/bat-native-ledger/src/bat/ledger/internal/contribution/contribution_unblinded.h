@@ -22,8 +22,8 @@ class LedgerImpl;
 namespace contribution {
 
 using GetContributionInfoAndUnblindedTokensCallback = std::function<void(
-    ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::UnblindedToken>& list)>;
+    type::ContributionInfoPtr contribution,
+    const std::vector<type::UnblindedToken>& list)>;
 
 using Winners = std::map<std::string, uint32_t>;
 
@@ -33,23 +33,23 @@ class Unblinded {
   ~Unblinded();
 
   void Start(
-      const std::vector<ledger::CredsBatchType>& types,
+      const std::vector<type::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void Retry(
-      const std::vector<ledger::CredsBatchType>& types,
-      ledger::ContributionInfoPtr contribution,
+      const std::vector<type::CredsBatchType>& types,
+      type::ContributionInfoPtr contribution,
       ledger::ResultCallback callback);
 
  private:
   void GetContributionInfoAndUnblindedTokens(
-      const std::vector<ledger::CredsBatchType>& types,
+      const std::vector<type::CredsBatchType>& types,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnUnblindedTokens(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
@@ -58,77 +58,77 @@ class Unblinded {
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnReservedUnblindedTokens(
-      ledger::UnblindedTokenList list,
+      type::UnblindedTokenList list,
       const std::string& contribution_id,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void OnGetContributionInfo(
-      ledger::ContributionInfoPtr contribution,
-      const std::vector<ledger::UnblindedToken>& list,
+      type::ContributionInfoPtr contribution,
+      const std::vector<type::UnblindedToken>& list,
       GetContributionInfoAndUnblindedTokensCallback callback);
 
   void PrepareTokens(
-      ledger::ContributionInfoPtr contribution,
-      const std::vector<ledger::UnblindedToken>& list,
-      const std::vector<ledger::CredsBatchType>& types,
+      type::ContributionInfoPtr contribution,
+      const std::vector<type::UnblindedToken>& list,
+      const std::vector<type::CredsBatchType>& types,
       ledger::ResultCallback callback);
 
   void PreparePublishers(
-      const std::vector<ledger::UnblindedToken>& list,
-      ledger::ContributionInfoPtr contribution,
-      const std::vector<ledger::CredsBatchType>& types,
+      const std::vector<type::UnblindedToken>& list,
+      type::ContributionInfoPtr contribution,
+      const std::vector<type::CredsBatchType>& types,
       ledger::ResultCallback callback);
 
-  ledger::ContributionPublisherList PrepareAutoContribution(
-      const std::vector<ledger::UnblindedToken>& list,
-      ledger::ContributionInfoPtr contribution);
+  type::ContributionPublisherList PrepareAutoContribution(
+      const std::vector<type::UnblindedToken>& list,
+      type::ContributionInfoPtr contribution);
 
   void OnPrepareAutoContribution(
-      const ledger::Result result,
-      const std::vector<ledger::CredsBatchType>& types,
+      const type::Result result,
+      const std::vector<type::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void PrepareStepSaved(
-      const ledger::Result result,
-      const std::vector<ledger::CredsBatchType>& types,
+      const type::Result result,
+      const std::vector<type::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void ProcessTokens(
-      const std::vector<ledger::CredsBatchType>& types,
+      const std::vector<type::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void OnProcessTokens(
-      ledger::ContributionInfoPtr contribution,
-      const std::vector<ledger::UnblindedToken>& list,
+      type::ContributionInfoPtr contribution,
+      const std::vector<type::UnblindedToken>& list,
       ledger::ResultCallback callback);
 
   void TokenProcessed(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id,
       const std::string& publisher_key,
       const bool final_publisher,
       ledger::ResultCallback callback);
 
   void ContributionAmountSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id,
       const bool final_publisher,
       ledger::ResultCallback callback);
 
   void OnMarkUnblindedTokensAsReserved(
-      const ledger::Result result,
-      const std::vector<ledger::UnblindedToken>& list,
-      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
-      const std::vector<ledger::CredsBatchType>& types,
+      const type::Result result,
+      const std::vector<type::UnblindedToken>& list,
+      std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
+      const std::vector<type::CredsBatchType>& types,
       ledger::ResultCallback callback);
 
   void OnReservedUnblindedTokensForRetryAttempt(
-      const ledger::UnblindedTokenList& list,
-      const std::vector<ledger::CredsBatchType>& types,
-      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution,
+      const type::UnblindedTokenList& list,
+      const std::vector<type::CredsBatchType>& types,
+      std::shared_ptr<type::ContributionInfoPtr> shared_contribution,
       ledger::ResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

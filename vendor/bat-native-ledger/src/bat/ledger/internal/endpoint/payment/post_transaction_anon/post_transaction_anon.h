@@ -50,7 +50,7 @@ namespace endpoint {
 namespace payment {
 
 using PostTransactionAnonCallback = std::function<void(
-    const ledger::Result result)>;
+    const type::Result result)>;
 
 class PostTransactionAnon {
  public:
@@ -71,10 +71,10 @@ class PostTransactionAnon {
       const std::string& order_id,
       const std::string& destination);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostTransactionAnonCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -35,18 +35,18 @@ std::unique_ptr<base::ListValue> ParseStringToBaseList(
     const std::string& string_list);
 
 bool UnBlindCreds(
-    const ledger::CredsBatch& creds,
+    const type::CredsBatch& creds,
     std::vector<std::string>* unblinded_encoded_creds,
     std::string* error);
 
 bool UnBlindCredsMock(
-    const ledger::CredsBatch& creds,
+    const type::CredsBatch& creds,
     std::vector<std::string>* unblinded_encoded_creds);
 
-std::string ConvertRewardTypeToString(const ledger::RewardsType type);
+std::string ConvertRewardTypeToString(const type::RewardsType type);
 
 void GenerateCredentials(
-    const std::vector<ledger::UnblindedToken>& token_list,
+    const std::vector<type::UnblindedToken>& token_list,
     const std::string& body,
     base::Value* credentials);
 

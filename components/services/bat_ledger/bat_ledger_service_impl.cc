@@ -37,7 +37,8 @@ void BatLedgerServiceImpl::Create(
   std::move(callback).Run();
 }
 
-void BatLedgerServiceImpl::SetEnvironment(ledger::Environment environment) {
+void BatLedgerServiceImpl::SetEnvironment(
+    ledger::type::Environment environment) {
   DCHECK(!initialized_ || testing());
   ledger::_environment = environment;
 }

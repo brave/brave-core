@@ -20,27 +20,30 @@ namespace client {
 
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 
-using LoadURLCallback = std::function<void(const ledger::UrlResponse&)>;
+using LoadURLCallback = std::function<void(const type::UrlResponse&)>;
 
-using OnLoadCallback = std::function<void(const Result, const std::string&)>;
+using OnLoadCallback =
+    std::function<void(const type::Result, const std::string&)>;
 
-using RunDBTransactionCallback = std::function<void(DBCommandResponsePtr)>;
+using RunDBTransactionCallback =
+    std::function<void(type::DBCommandResponsePtr)>;
 
 using GetCreateScriptCallback =
     std::function<void(const std::string&, const int)>;
 
-using ResultCallback = std::function<void(const Result)>;
+using ResultCallback =
+    std::function<void(const type::Result)>;
 
-using GetPromotionListCallback = std::function<void(PromotionList)>;
+using GetPromotionListCallback = std::function<void(type::PromotionList)>;
 
 using TransactionCallback =
-    std::function<void(const Result, const std::string&)>;
+    std::function<void(const type::Result, const std::string&)>;
 
 using GetExternalWalletsCallback =
-    std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
+    std::function<void(std::map<std::string, type::ExternalWalletPtr>)>;
 
 using GetServerPublisherInfoCallback =
-    std::function<void(ledger::ServerPublisherInfoPtr)>;
+    std::function<void(type::ServerPublisherInfoPtr)>;
 
 }  // namespace client
 
@@ -49,16 +52,16 @@ class LEDGER_EXPORT LedgerClient {
   virtual ~LedgerClient() = default;
 
   virtual void OnReconcileComplete(
-      const Result result,
-      ContributionInfoPtr contribution) = 0;
+      const type::Result result,
+      type::ContributionInfoPtr contribution) = 0;
 
   virtual void LoadLedgerState(client::OnLoadCallback callback) = 0;
 
   virtual void LoadPublisherState(client::OnLoadCallback callback) = 0;
 
   virtual void OnPanelPublisherInfo(
-      ledger::Result result,
-      ledger::PublisherInfoPtr publisher_info,
+      type::Result result,
+      type::PublisherInfoPtr publisher_info,
       uint64_t windowId) = 0;
 
   virtual void FetchFavIcon(
@@ -69,7 +72,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual std::string URIEncode(const std::string& value) = 0;
 
   virtual void LoadURL(
-      ledger::UrlRequestPtr request,
+      type::UrlRequestPtr request,
       client::LoadURLCallback callback) = 0;
 
   virtual void Log(
@@ -78,7 +81,7 @@ class LEDGER_EXPORT LedgerClient {
       const int verbose_level,
       const std::string& message) = 0;
 
-  virtual void PublisherListNormalized(ledger::PublisherInfoList list) = 0;
+  virtual void PublisherListNormalized(type::PublisherInfoList list) = 0;
 
   virtual void SetBooleanState(const std::string& name, bool value) = 0;
 
@@ -121,16 +124,16 @@ class LEDGER_EXPORT LedgerClient {
   virtual uint64_t GetUint64Option(const std::string& name) const = 0;
 
   virtual void OnContributeUnverifiedPublishers(
-      Result result,
+      type::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) = 0;
 
-  virtual std::map<std::string, ledger::ExternalWalletPtr>
+  virtual std::map<std::string, type::ExternalWalletPtr>
   GetExternalWallets() = 0;
 
   virtual void SaveExternalWallet(
       const std::string& wallet_type,
-      ledger::ExternalWalletPtr wallet) = 0;
+      type::ExternalWalletPtr wallet) = 0;
 
   virtual void ShowNotification(
       const std::string& type,
@@ -139,28 +142,28 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void SetTransferFee(
       const std::string& wallet_type,
-      ledger::TransferFeePtr transfer_fee) = 0;
+      type::TransferFeePtr transfer_fee) = 0;
 
-  virtual ledger::TransferFeeList GetTransferFees(
+  virtual type::TransferFeeList GetTransferFees(
       const std::string& wallet_type) = 0;
 
   virtual void RemoveTransferFee(
       const std::string& wallet_type,
       const std::string& id) = 0;
 
-  virtual ledger::ClientInfoPtr GetClientInfo() = 0;
+  virtual type::ClientInfoPtr GetClientInfo() = 0;
 
   virtual void UnblindedTokensReady() = 0;
 
   virtual void ReconcileStampReset() = 0;
 
   virtual void RunDBTransaction(
-      ledger::DBTransactionPtr transaction,
+      type::DBTransactionPtr transaction,
       client::RunDBTransactionCallback callback) = 0;
 
   virtual void GetCreateScript(client::GetCreateScriptCallback callback) = 0;
 
-  virtual void PendingContributionSaved(const ledger::Result result) = 0;
+  virtual void PendingContributionSaved(const type::Result result) = 0;
 
   virtual void ClearAllNotifications() = 0;
 

@@ -41,7 +41,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace payment {
 
-using PostVotesCallback = std::function<void(const ledger::Result result)>;
+using PostVotesCallback = std::function<void(const type::Result result)>;
 
 class PostVotes {
  public:
@@ -58,10 +58,10 @@ class PostVotes {
   std::string GeneratePayload(
       const credential::CredentialsRedeem& redeem);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostVotesCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -36,9 +36,9 @@ class UpholdCard;
 class UpholdAuthorization;
 class UpholdWallet;
 
-using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
+using FetchBalanceCallback = std::function<void(type::Result, double)>;
 using CreateCardCallback =
-    std::function<void(ledger::Result, const std::string&)>;
+    std::function<void(type::Result, const std::string&)>;
 
 class Uphold {
  public:
@@ -50,7 +50,7 @@ class Uphold {
 
   void StartContribution(
       const std::string& contribution_id,
-      ledger::ServerPublisherInfoPtr info,
+      type::ServerPublisherInfoPtr info,
       const double amount,
       ledger::ResultCallback callback);
 
@@ -75,7 +75,7 @@ class Uphold {
 
  private:
   void ContributionCompleted(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& transaction_id,
       const std::string& contribution_id,
       const double fee,
@@ -83,20 +83,20 @@ class Uphold {
       ledger::ResultCallback callback);
 
   void OnFetchBalance(
-      const ledger::Result result,
+      const type::Result result,
       const double available,
       FetchBalanceCallback callback);
 
-  void SaveTransferFee(ledger::TransferFeePtr transfer_fee);
+  void SaveTransferFee(type::TransferFeePtr transfer_fee);
 
   void StartTransferFeeTimer(const std::string& fee_id);
 
   void OnTransferFeeCompleted(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& transaction_id,
-      const ledger::TransferFee& transfer_fee);
+      const type::TransferFee& transfer_fee);
 
-  void TransferFee(const ledger::TransferFee& transfer_fee);
+  void TransferFee(const type::TransferFee& transfer_fee);
 
   void OnTransferFeeTimerElapsed(const std::string& id);
 

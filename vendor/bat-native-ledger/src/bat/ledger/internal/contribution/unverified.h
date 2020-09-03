@@ -31,27 +31,27 @@ class Unverified {
 
  private:
   void WasPublisherProcessed(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& publisher_key,
       const std::string& name);
 
   void ProcessedPublisherSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& publisher_key,
       const std::string& name);
 
-  void OnRemovePendingContribution(ledger::Result result);
+  void OnRemovePendingContribution(type::Result result);
 
   void OnContributeUnverifiedBalance(
-      ledger::Result result,
-      ledger::BalancePtr properties);
+      type::Result result,
+      type::BalancePtr properties);
 
   void OnContributeUnverifiedPublishers(
       double balance,
-      const ledger::PendingContributionInfoList& list);
+      const type::PendingContributionInfoList& list);
 
   void QueueSaved(
-      const ledger::Result result,
+      const type::Result result,
       const uint64_t pending_contribution_id);
 
   LedgerImpl* ledger_;  // NOT OWNED

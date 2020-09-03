@@ -48,10 +48,10 @@ void LegacyPublisherState::Load(ledger::ResultCallback callback) {
 }
 
 void LegacyPublisherState::OnLoad(
-    const ledger::Result result,
+    const ledger::type::Result result,
     const std::string& data,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != ledger::type::Result::LEDGER_OK) {
     callback(result);
     return;
   }
@@ -59,12 +59,12 @@ void LegacyPublisherState::OnLoad(
   ledger::PublisherSettingsProperties state;
   const ledger::PublisherSettingsState publisher_settings_state;
   if (!publisher_settings_state.FromJson(data.c_str(), &state)) {
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(ledger::type::Result::LEDGER_ERROR);
     return;
   }
 
   state_.reset(new ledger::PublisherSettingsProperties(state));
-  callback(ledger::Result::LEDGER_OK);
+  callback(ledger::type::Result::LEDGER_OK);
 }
 
 std::vector<std::string>
@@ -73,11 +73,11 @@ LegacyPublisherState::GetAlreadyProcessedPublishers() const {
 }
 
 void LegacyPublisherState::GetAllBalanceReports(
-    ledger::BalanceReportInfoList* reports) {
+    ledger::type::BalanceReportInfoList* reports) {
   DCHECK(reports);
 
   for (auto const& report : state_->monthly_balances) {
-    auto report_ptr = ledger::BalanceReportInfo::New();
+    auto report_ptr = ledger::type::BalanceReportInfo::New();
     report_ptr->id = report.first;
     report_ptr->grants = report.second.grants;
     report_ptr->earning_from_ads = report.second.ad_earnings;

@@ -45,9 +45,9 @@ TEST_F(GetCardTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -106,8 +106,8 @@ TEST_F(GetCardTest, ServerOK) {
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const ledger::Result result, const double available) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, const double available) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(available, 4.0);
       });
 }
@@ -116,9 +116,9 @@ TEST_F(GetCardTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -128,8 +128,8 @@ TEST_F(GetCardTest, ServerError401) {
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const ledger::Result result, const double available) {
-        EXPECT_EQ(result, ledger::Result::EXPIRED_TOKEN);
+      [](const type::Result result, const double available) {
+        EXPECT_EQ(result, type::Result::EXPIRED_TOKEN);
         EXPECT_EQ(available, 0.0);
       });
 }
@@ -138,9 +138,9 @@ TEST_F(GetCardTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -150,8 +150,8 @@ TEST_F(GetCardTest, ServerErrorRandom) {
   card_->Request(
       "193a77cf-02e8-4e10-8127-8a1b5a8bfece",
       "4c2b665ca060d912fec5c735c734859a06118cc8",
-      [](const ledger::Result result, const double available) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const double available) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(available, 0.0);
       });
 }

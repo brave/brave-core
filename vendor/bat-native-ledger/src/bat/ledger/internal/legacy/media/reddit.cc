@@ -32,7 +32,7 @@ Reddit::~Reddit() {
 
 void Reddit::ProcessActivityFromUrl(
     uint64_t window_id,
-    const ledger::VisitData& visit_data) {
+    const ledger::type::VisitData& visit_data) {
   if (visit_data.path.find("/user/") != std::string::npos) {
     UserPath(window_id, visit_data);
     return;
@@ -41,22 +41,22 @@ void Reddit::ProcessActivityFromUrl(
 }
 
 void Reddit::OnMediaActivityError(
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     uint64_t window_id) {
 
-  ledger::VisitData new_visit_data;
+  ledger::type::VisitData new_visit_data;
   new_visit_data.domain = REDDIT_TLD;
   new_visit_data.url = "https://" + (std::string)REDDIT_TLD;
   new_visit_data.path = "/";
   new_visit_data.name = REDDIT_MEDIA_TYPE;
 
   ledger_->publisher()->GetPublisherActivityFromUrl(
-      window_id, ledger::VisitData::New(new_visit_data), std::string());
+      window_id, ledger::type::VisitData::New(new_visit_data), std::string());
 }
 
 void Reddit::UserPath(
     uint64_t window_id,
-    const ledger::VisitData& visit_data) {
+    const ledger::type::VisitData& visit_data) {
   const std::string user = GetUserNameFromUrl(visit_data.path);
 
   if (user.empty()) {
@@ -77,10 +77,10 @@ void Reddit::UserPath(
 
 void Reddit::OnUserActivity(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+    const ledger::type::VisitData& visit_data,
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info) {
+  if (!publisher_info || result == ledger::type::Result::NOT_FOUND) {
     const std::string user_name = GetUserNameFromUrl(visit_data.path);
     const std::string url = GetProfileUrl(user_name);
     auto url_callback = std::bind(&Reddit::OnUserPage,
@@ -100,9 +100,9 @@ void Reddit::OnUserActivity(
 void Reddit::OnPageDataFetched(
     const std::string& user_name,
     ledger::PublisherInfoCallback callback,
-    const ledger::UrlResponse& response) {
+    const ledger::type::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
-    callback(ledger::Result::TIP_ERROR, nullptr);
+    callback(ledger::type::Result::TIP_ERROR, nullptr);
     return;
   }
 
@@ -129,7 +129,7 @@ void Reddit::FetchDataFromUrl(
     reddit_url = reddit_url.ReplaceComponents(replacements);
   }
 
-  auto request = ledger::UrlRequest::New();
+  auto request = ledger::type::UrlRequest::New();
   request->url = reddit_url.spec();
   request->skip_log = true;
   ledger_->LoadURL(std::move(request), callback);
@@ -163,11 +163,11 @@ std::string Reddit::GetProfileUrl(const std::string& screen_name) {
 
 void Reddit::GetPublisherPanelInfo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& publisher_key) {
   auto filter = ledger_->publisher()->CreateActivityFilter(
     publisher_key,
-    ledger::ExcludeFilter::FILTER_ALL,
+    ledger::type::ExcludeFilter::FILTER_ALL,
     false,
     ledger_->state()->GetReconcileStamp(),
     true,
@@ -184,11 +184,11 @@ void Reddit::GetPublisherPanelInfo(
 
 void Reddit::OnPublisherPanelInfo(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    const ledger::type::VisitData& visit_data,
     const std::string& publisher_key,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  if (!info || result == ledger::Result::NOT_FOUND) {
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr info) {
+  if (!info || result == ledger::type::Result::NOT_FOUND) {
     auto url_callback = std::bind(&Reddit::OnUserPage,
         this,
         window_id,
@@ -238,14 +238,14 @@ std::string Reddit::GetPublisherName(const std::string& response) {
 }
 
 void Reddit::OnRedditSaved(
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info) {
 }
 
 void Reddit::OnUserPage(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const ledger::UrlResponse& response) {
+    const ledger::type::VisitData& visit_data,
+    const ledger::type::UrlResponse& response) {
   if (response.status_code != net::HTTP_OK) {
     OnMediaActivityError(visit_data, window_id);
     return;
@@ -284,20 +284,20 @@ std::string Reddit::GetProfileImageUrl(const std::string& response) {
 void Reddit::OnMediaPublisherInfo(
     const std::string& user_name,
     ledger::PublisherInfoCallback callback,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  if (result != ledger::Result::LEDGER_OK &&
-      result != ledger::Result::NOT_FOUND) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info) {
+  if (result != ledger::type::Result::LEDGER_OK &&
+      result != ledger::type::Result::NOT_FOUND) {
+    callback(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
   GURL url(REDDIT_USER_URL + ledger_->ledger_client()->URIEncode(user_name));
   if (!url.is_valid()) {
-    callback(ledger::Result::TIP_ERROR, nullptr);
+    callback(ledger::type::Result::TIP_ERROR, nullptr);
     return;
   }
 
-  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+  if (!publisher_info || result == ledger::type::Result::NOT_FOUND) {
     FetchDataFromUrl(url.spec(),
         std::bind(&Reddit::OnPageDataFetched,
           this,
@@ -318,7 +318,7 @@ void Reddit::SavePublisherInfo(
   const std::string publisher_key = GetPublisherKey(user_id);
   const std::string media_key = GetMediaKey(user_name, REDDIT_MEDIA_TYPE);
   if (publisher_key.empty()) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(ledger::type::Result::LEDGER_ERROR, nullptr);
     BLOG(0, "Publisher key is missing for: " << media_key);
     return;
   }
@@ -326,7 +326,7 @@ void Reddit::SavePublisherInfo(
   const std::string url = GetProfileUrl(user_name);
   const std::string favicon_url = GetProfileImageUrl(data);
 
-  ledger::VisitDataPtr visit_data = ledger::VisitData::New();
+  ledger::type::VisitDataPtr visit_data = ledger::type::VisitData::New();
   visit_data->provider = REDDIT_MEDIA_TYPE;
   visit_data->url = url;
   visit_data->favicon_url = favicon_url;
@@ -343,7 +343,7 @@ void Reddit::SavePublisherInfo(
     ledger_->database()->SaveMediaPublisherInfo(
         media_key,
         publisher_key,
-        [](const ledger::Result) {});
+        [](const ledger::type::Result) {});
   }
 }
 
@@ -352,7 +352,7 @@ void Reddit::SaveMediaInfo(
     ledger::PublisherInfoCallback callback) {
   auto user_name = data.find("user_name");
   if (user_name == data.end()) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    callback(ledger::type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 

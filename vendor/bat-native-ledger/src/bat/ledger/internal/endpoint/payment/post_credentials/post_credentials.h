@@ -43,7 +43,7 @@ namespace endpoint {
 namespace payment {
 
 using PostCredentialsCallback = std::function<void(
-    const ledger::Result result)>;
+    const type::Result result)>;
 
 class PostCredentials {
  public:
@@ -65,10 +65,10 @@ class PostCredentials {
       const std::string& type,
       std::unique_ptr<base::ListValue> blinded_creds);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostCredentialsCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

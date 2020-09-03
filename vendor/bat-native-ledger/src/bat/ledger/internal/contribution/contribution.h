@@ -50,8 +50,8 @@ class Contribution {
   // Does final stage in contribution
   // Sets reports and contribution info
   void ContributionCompleted(
-      const ledger::Result result,
-      ledger::ContributionInfoPtr contribution);
+      const type::Result result,
+      type::ContributionInfoPtr contribution);
 
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
@@ -74,23 +74,23 @@ class Contribution {
   void CheckContributionQueue();
 
   void TransferFunds(
-      const ledger::SKUTransaction& transaction,
+      const type::SKUTransaction& transaction,
       const std::string& destination,
-      ledger::ExternalWalletPtr wallet,
+      type::ExternalWalletPtr wallet,
       client::TransactionCallback callback);
 
   void SKUAutoContribution(
       const std::string& contribution_id,
-      ledger::ExternalWalletPtr wallet,
+      type::ExternalWalletPtr wallet,
       ledger::ResultCallback callback);
 
   void StartUnblinded(
-      const std::vector<ledger::CredsBatchType>& types,
+      const std::vector<type::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
   void RetryUnblinded(
-      const std::vector<ledger::CredsBatchType>& types,
+      const std::vector<type::CredsBatchType>& types,
       const std::string& contribution_id,
       ledger::ResultCallback callback);
 
@@ -99,65 +99,65 @@ class Contribution {
  private:
   // Start point for contribution
   // In this step we get balance from the server
-  void Start(ledger::ContributionQueuePtr info);
+  void Start(type::ContributionQueuePtr info);
 
   void StartAutoContribute(
-      const ledger::Result result,
+      const type::Result result,
       const uint64_t reconcile_stamp);
 
   void ContributionCompletedSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id);
 
-  void OnProcessContributionQueue(ledger::ContributionQueuePtr info);
+  void OnProcessContributionQueue(type::ContributionQueuePtr info);
 
   void CheckNotCompletedContributions();
 
-  void NotCompletedContributions(ledger::ContributionInfoList list);
+  void NotCompletedContributions(type::ContributionInfoList list);
 
   void OnBalance(
-      const ledger::Result result,
-      ledger::BalancePtr info,
-      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue);
+      const type::Result result,
+      type::BalancePtr info,
+      std::shared_ptr<type::ContributionQueuePtr> shared_queue);
 
   void CreateNewEntry(
       const std::string& wallet_type,
-      ledger::BalancePtr balance,
-      ledger::ContributionQueuePtr queue);
+      type::BalancePtr balance,
+      type::ContributionQueuePtr queue);
 
   void OnEntrySaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id,
       const std::string& wallet_type,
-      const ledger::Balance& balance,
-      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue);
+      const type::Balance& balance,
+      std::shared_ptr<type::ContributionQueuePtr> shared_queue);
 
   void OnQueueSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& wallet_type,
-      const ledger::Balance& balance,
-      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue);
+      const type::Balance& balance,
+      std::shared_ptr<type::ContributionQueuePtr> shared_queue);
 
   void Process(
-      ledger::ContributionQueuePtr queue,
-      ledger::BalancePtr balance);
+      type::ContributionQueuePtr queue,
+      type::BalancePtr balance);
 
   void MarkContributionQueueAsComplete(const std::string& id);
 
-  void OnMarkContributionQueueAsComplete(const ledger::Result result);
+  void OnMarkContributionQueueAsComplete(const type::Result result);
 
   void RetryUnblindedContribution(
-      ledger::ContributionInfoPtr contribution,
-      const std::vector<ledger::CredsBatchType>& types,
+      type::ContributionInfoPtr contribution,
+      const std::vector<type::CredsBatchType>& types,
       ledger::ResultCallback callback);
 
   void Result(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id);
 
   void OnResult(
-      ledger::ContributionInfoPtr contribution,
-      const ledger::Result result);
+      type::ContributionInfoPtr contribution,
+      const type::Result result);
 
   void SetRetryTimer(
       const std::string& contribution_id,
@@ -165,14 +165,14 @@ class Contribution {
 
   void OnRetryTimerElapsed(const std::string& contribution_id);
 
-  void SetRetryCounter(ledger::ContributionInfoPtr contribution);
+  void SetRetryCounter(type::ContributionInfoPtr contribution);
 
   void Retry(
-      const ledger::Result result,
-      std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution);
+      const type::Result result,
+      std::shared_ptr<type::ContributionInfoPtr> shared_contribution);
 
   void OnMarkUnblindedTokensAsSpendable(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& contribution_id);
 
   LedgerImpl* ledger_;  // NOT OWNED

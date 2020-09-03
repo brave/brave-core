@@ -46,9 +46,9 @@ TEST_F(PostCredentialsTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -63,8 +63,8 @@ TEST_F(PostCredentialsTest, ServerOK) {
       "ff50981d-47de-4210-848d-995e186901a1",
       "single-use",
       std::move(blinded),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
 }
 
@@ -72,9 +72,9 @@ TEST_F(PostCredentialsTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -89,8 +89,8 @@ TEST_F(PostCredentialsTest, ServerError400) {
       "ff50981d-47de-4210-848d-995e186901a1",
       "single-use",
       std::move(blinded),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -98,9 +98,9 @@ TEST_F(PostCredentialsTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
@@ -115,8 +115,8 @@ TEST_F(PostCredentialsTest, ServerError409) {
       "ff50981d-47de-4210-848d-995e186901a1",
       "single-use",
       std::move(blinded),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -124,9 +124,9 @@ TEST_F(PostCredentialsTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -141,8 +141,8 @@ TEST_F(PostCredentialsTest, ServerError500) {
       "ff50981d-47de-4210-848d-995e186901a1",
       "single-use",
       std::move(blinded),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -150,9 +150,9 @@ TEST_F(PostCredentialsTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -167,8 +167,8 @@ TEST_F(PostCredentialsTest, ServerErrorRandom) {
       "ff50981d-47de-4210-848d-995e186901a1",
       "single-use",
       std::move(blinded),
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

@@ -20,7 +20,7 @@ struct CredentialsTrigger {
   ~CredentialsTrigger();
 
   std::string id;
-  ledger::CredsBatchType type;
+  type::CredsBatchType type;
   int size;
   std::vector<std::string> data;
 };

@@ -24,37 +24,37 @@ class SKUTransaction {
   ~SKUTransaction();
 
   void Create(
-      ledger::SKUOrderPtr order,
+      type::SKUOrderPtr order,
       const std::string& destination,
-      const ledger::ExternalWallet& wallet,
+      const type::ExternalWallet& wallet,
       ledger::ResultCallback callback);
 
   void SendExternalTransaction(
-      const ledger::Result result,
-      const ledger::SKUTransaction& transaction,
+      const type::Result result,
+      const type::SKUTransaction& transaction,
       ledger::ResultCallback callback);
 
  private:
   void OnTransactionSaved(
-      const ledger::Result result,
-      const ledger::SKUTransaction& transaction,
+      const type::Result result,
+      const type::SKUTransaction& transaction,
       const std::string& destination,
-      const ledger::ExternalWallet& wallet,
+      const type::ExternalWallet& wallet,
       ledger::ResultCallback callback);
 
   void OnTransfer(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& external_transaction_id,
-      const ledger::SKUTransaction& transaction,
+      const type::SKUTransaction& transaction,
       ledger::ResultCallback callback);
 
   void OnSaveSKUExternalTransaction(
-      const ledger::Result result,
-      const ledger::SKUTransaction& transaction,
+      const type::Result result,
+      const type::SKUTransaction& transaction,
       ledger::ResultCallback callback);
 
   void OnSendExternalTransaction(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

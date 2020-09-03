@@ -16,7 +16,7 @@ namespace ledger {
 namespace database {
 
 using GetFirstContributionQueueCallback =
-    std::function<void(ContributionQueuePtr)>;
+    std::function<void(type::ContributionQueuePtr)>;
 
 class DatabaseContributionQueue: public DatabaseTable {
  public:
@@ -24,7 +24,7 @@ class DatabaseContributionQueue: public DatabaseTable {
   ~DatabaseContributionQueue() override;
 
   void InsertOrUpdate(
-      ledger::ContributionQueuePtr info,
+      type::ContributionQueuePtr info,
       ledger::ResultCallback callback);
 
   void GetFirstRecord(GetFirstContributionQueueCallback callback);
@@ -35,17 +35,17 @@ class DatabaseContributionQueue: public DatabaseTable {
 
  private:
   void OnInsertOrUpdate(
-      ledger::DBCommandResponsePtr response,
-      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
+      type::DBCommandResponsePtr response,
+      std::shared_ptr<type::ContributionQueuePtr> shared_queue,
       ledger::ResultCallback callback);
 
   void OnGetFirstRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetFirstContributionQueueCallback callback);
 
   void OnGetPublishers(
-      ledger::ContributionQueuePublisherList list,
-      std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
+      type::ContributionQueuePublisherList list,
+      std::shared_ptr<type::ContributionQueuePtr> shared_queue,
       GetFirstContributionQueueCallback callback);
 
   std::unique_ptr<DatabaseContributionQueuePublishers> publishers_;

@@ -57,9 +57,9 @@ TEST_F(PostWalletBraveTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 201;
             response.url = request->url;
             response.body = R"({
@@ -69,8 +69,8 @@ TEST_F(PostWalletBraveTest, ServerOK) {
           }));
 
   wallet_->Request(
-      [](const ledger::Result result, const std::string& payment_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, const std::string& payment_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(payment_id, "37742974-3b80-461a-acfb-937e105e5af4");
       });
 }
@@ -79,9 +79,9 @@ TEST_F(PostWalletBraveTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -89,8 +89,8 @@ TEST_F(PostWalletBraveTest, ServerError400) {
           }));
 
   wallet_->Request(
-      [](const ledger::Result result, const std::string& payment_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& payment_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(payment_id, "");
       });
 }
@@ -99,9 +99,9 @@ TEST_F(PostWalletBraveTest, ServerError503) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 503;
             response.url = request->url;
             response.body = "";
@@ -109,8 +109,8 @@ TEST_F(PostWalletBraveTest, ServerError503) {
           }));
 
   wallet_->Request(
-      [](const ledger::Result result, const std::string& payment_id) {
-        EXPECT_EQ(result, ledger::Result::BAD_REGISTRATION_RESPONSE);
+      [](const type::Result result, const std::string& payment_id) {
+        EXPECT_EQ(result, type::Result::BAD_REGISTRATION_RESPONSE);
         EXPECT_EQ(payment_id, "");
       });
 }
@@ -119,9 +119,9 @@ TEST_F(PostWalletBraveTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -129,8 +129,8 @@ TEST_F(PostWalletBraveTest, ServerErrorRandom) {
           }));
 
   wallet_->Request(
-      [](const ledger::Result result, const std::string& payment_id) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& payment_id) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(payment_id, "");
       });
 }

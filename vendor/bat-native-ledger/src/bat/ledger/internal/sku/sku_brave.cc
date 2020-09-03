@@ -25,13 +25,13 @@ SKUBrave::SKUBrave(LedgerImpl* ledger) :
 SKUBrave::~SKUBrave() = default;
 
 void SKUBrave::Process(
-    const std::vector<ledger::SKUOrderItem>& items,
-    ledger::ExternalWalletPtr wallet,
+    const std::vector<type::SKUOrderItem>& items,
+    type::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback,
     const std::string& contribution_id) {
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -47,12 +47,12 @@ void SKUBrave::Process(
 }
 
 void SKUBrave::OrderCreated(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& order_id,
-    const ledger::ExternalWallet& wallet,
+    const type::ExternalWallet& wallet,
     const std::string& contribution_id,
     ledger::SKUOrderCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order was not successful");
     callback(result, "");
     return;
@@ -72,11 +72,11 @@ void SKUBrave::OrderCreated(
 }
 
 void SKUBrave::ContributionIdSaved(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& order_id,
-    const ledger::ExternalWallet& wallet,
+    const type::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Contribution id not saved");
     callback(result, "");
     return;
@@ -92,12 +92,12 @@ void SKUBrave::ContributionIdSaved(
 }
 
 void SKUBrave::CreateTransaction(
-    ledger::SKUOrderPtr order,
-    const ledger::ExternalWallet& wallet,
+    type::SKUOrderPtr order,
+    const type::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order not found");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -108,11 +108,11 @@ void SKUBrave::CreateTransaction(
 
 void SKUBrave::Retry(
     const std::string& order_id,
-    ledger::ExternalWalletPtr wallet,
+    type::ExternalWalletPtr wallet,
     ledger::SKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(0, "Order id is empty");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
   auto get_callback = std::bind(&SKUBrave::OnOrder,
@@ -125,35 +125,35 @@ void SKUBrave::Retry(
 }
 
 void SKUBrave::OnOrder(
-    ledger::SKUOrderPtr order,
-    const ledger::ExternalWallet& wallet,
+    type::SKUOrderPtr order,
+    const type::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   switch (order->status) {
-    case ledger::SKUOrderStatus::PENDING: {
+    case type::SKUOrderStatus::PENDING: {
       ContributionIdSaved(
-          ledger::Result::LEDGER_OK,
+          type::Result::LEDGER_OK,
           order->order_id,
           wallet,
           callback);
       return;
     }
-    case ledger::SKUOrderStatus::PAID: {
+    case type::SKUOrderStatus::PAID: {
       common_->SendExternalTransaction(order->order_id, callback);
       return;
     }
-    case ledger::SKUOrderStatus::FULFILLED: {
-      callback(ledger::Result::LEDGER_OK, order->order_id);
+    case type::SKUOrderStatus::FULFILLED: {
+      callback(type::Result::LEDGER_OK, order->order_id);
       return;
     }
-    case ledger::SKUOrderStatus::CANCELED:
-    case ledger::SKUOrderStatus::NONE: {
-      callback(ledger::Result::LEDGER_ERROR, "");
+    case type::SKUOrderStatus::CANCELED:
+    case type::SKUOrderStatus::NONE: {
+      callback(type::Result::LEDGER_ERROR, "");
       return;
     }
   }

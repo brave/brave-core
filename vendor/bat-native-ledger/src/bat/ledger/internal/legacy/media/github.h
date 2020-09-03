@@ -33,20 +33,20 @@ class GitHub {
       ledger::PublisherInfoCallback callback);
 
   void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::VisitData& visit_data);
+                              const ledger::type::VisitData& visit_data);
 
   void ProcessMedia(
       const std::map<std::string, std::string> parts,
-      const ledger::VisitData& visit_data);
+      const ledger::type::VisitData& visit_data);
 
   ~GitHub();
 
  private:
   void OnMediaPublisherActivity(
-      ledger::Result result,
-      ledger::PublisherInfoPtr info,
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info,
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       const std::string& media_key);
 
   void FetchDataFromUrl(
@@ -56,8 +56,8 @@ class GitHub {
   void OnUserPage(
       const uint64_t duration,
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
-      const ledger::UrlResponse& response);
+      const ledger::type::VisitData& visit_data,
+      const ledger::type::UrlResponse& response);
 
   void SavePublisherInfo(
       const uint64_t duration,
@@ -70,22 +70,22 @@ class GitHub {
 
   void GetPublisherPanelInfo(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       const std::string& publisher_key);
 
   void OnPublisherPanelInfo(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       const std::string& publisher_key,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
 
   void OnMediaActivityError(
       uint64_t window_id);
 
 void OnMetaDataGet(
       ledger::PublisherInfoCallback callback,
-      const ledger::UrlResponse& response);
+      const ledger::type::UrlResponse& response);
 
 void OnMediaPublisherInfo(
     uint64_t window_id,
@@ -94,8 +94,8 @@ void OnMediaPublisherInfo(
     const std::string& publisher_name,
     const std::string& profile_picture,
     ledger::PublisherInfoCallback callback,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info);
+    ledger::type::Result result,
+    ledger::type::PublisherInfoPtr publisher_info);
 
   static std::string GetUserNameFromURL(const std::string& path);
 

@@ -35,7 +35,7 @@ class ServerPublisherFetcher {
 
   // Returns a value indicating whether a server info record with
   // the specified last update time is expired
-  bool IsExpired(ledger::ServerPublisherInfo* server_info);
+  bool IsExpired(type::ServerPublisherInfo* server_info);
 
   // Fetches server publisher info for the specified publisher key
   void Fetch(
@@ -47,15 +47,15 @@ class ServerPublisherFetcher {
 
  private:
   void OnFetchCompleted(
-      const ledger::Result result,
-      ledger::ServerPublisherInfoPtr info,
+      const type::Result result,
+      type::ServerPublisherInfoPtr info,
       const std::string& publisher_key);
 
   FetchCallbackVector GetCallbacks(const std::string& publisher_key);
 
   void RunCallbacks(
       const std::string& publisher_key,
-      ledger::ServerPublisherInfoPtr server_info);
+      type::ServerPublisherInfoPtr server_info);
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, FetchCallbackVector> callback_map_;

@@ -113,7 +113,7 @@ namespace endpoint {
 namespace uphold {
 
 using PostTransactionCommitCallback = std::function<void(
-    const ledger::Result result)>;
+    const type::Result result)>;
 
 class PostTransactionCommit {
  public:
@@ -131,10 +131,10 @@ class PostTransactionCommit {
     const std::string& address,
     const std::string& transaction_id);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostTransactionCommitCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

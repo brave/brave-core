@@ -26,17 +26,17 @@ class StateMigrationV1 {
 
  private:
   void OnLoadState(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   void BalanceReportsSaved(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   void SaveProcessedPublishers(ledger::ResultCallback callback);
 
   void ProcessedPublisherSaved(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   std::unique_ptr<publisher::LegacyPublisherState>

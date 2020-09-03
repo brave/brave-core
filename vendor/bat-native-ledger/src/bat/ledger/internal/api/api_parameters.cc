@@ -27,7 +27,7 @@ APIParameters::~APIParameters() = default;
 
 void APIParameters::Initialize() {
   if (ledger_->state()->GetRewardsMainEnabled()) {
-    Fetch([](ledger::RewardsParametersPtr) {});
+    Fetch([](type::RewardsParametersPtr) {});
   }
 }
 
@@ -50,15 +50,15 @@ void APIParameters::Fetch(ledger::GetRewardsParametersCallback callback) {
 }
 
 void APIParameters::OnFetch(
-    const ledger::Result result,
-    const ledger::RewardsParameters& parameters) {
-  if (result == ledger::Result::RETRY_SHORT) {
+    const type::Result result,
+    const type::RewardsParameters& parameters) {
+  if (result == type::Result::RETRY_SHORT) {
     RunCallbacks();
     SetRefreshTimer(base::TimeDelta::FromSeconds(90));
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(1, "Couldn't parse response");
     RunCallbacks();
     SetRefreshTimer(base::TimeDelta::FromMinutes(10));
@@ -101,7 +101,7 @@ void APIParameters::SetRefreshTimer(
   refresh_timer_.Start(FROM_HERE, start_in,
       base::BindOnce(&APIParameters::Fetch,
           base::Unretained(this),
-          [](ledger::RewardsParametersPtr) {}));
+          [](type::RewardsParametersPtr) {}));
 }
 
 }  // namespace api

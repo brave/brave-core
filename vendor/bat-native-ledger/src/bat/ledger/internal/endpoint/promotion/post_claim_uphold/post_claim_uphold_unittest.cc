@@ -45,9 +45,9 @@ TEST_F(PostClaimUpholdTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -56,8 +56,8 @@ TEST_F(PostClaimUpholdTest, ServerOK) {
 
   claim_->Request(
       30.0,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
 }
 
@@ -65,9 +65,9 @@ TEST_F(PostClaimUpholdTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -76,8 +76,8 @@ TEST_F(PostClaimUpholdTest, ServerError400) {
 
   claim_->Request(
       30.0,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -85,9 +85,9 @@ TEST_F(PostClaimUpholdTest, ServerError403) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 403;
             response.url = request->url;
             response.body = "";
@@ -96,8 +96,8 @@ TEST_F(PostClaimUpholdTest, ServerError403) {
 
   claim_->Request(
       30.0,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -105,9 +105,9 @@ TEST_F(PostClaimUpholdTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
@@ -116,8 +116,8 @@ TEST_F(PostClaimUpholdTest, ServerError404) {
 
   claim_->Request(
       30.0,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::NOT_FOUND);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::NOT_FOUND);
       });
 }
 
@@ -125,9 +125,9 @@ TEST_F(PostClaimUpholdTest, ServerError409) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 409;
             response.url = request->url;
             response.body = "";
@@ -136,8 +136,8 @@ TEST_F(PostClaimUpholdTest, ServerError409) {
 
   claim_->Request(
       30.0,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::ALREADY_EXISTS);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::ALREADY_EXISTS);
       });
 }
 
@@ -145,9 +145,9 @@ TEST_F(PostClaimUpholdTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -156,8 +156,8 @@ TEST_F(PostClaimUpholdTest, ServerError500) {
 
   claim_->Request(
       30.0,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -165,9 +165,9 @@ TEST_F(PostClaimUpholdTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -176,8 +176,8 @@ TEST_F(PostClaimUpholdTest, ServerErrorRandom) {
 
   claim_->Request(
       30.0,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

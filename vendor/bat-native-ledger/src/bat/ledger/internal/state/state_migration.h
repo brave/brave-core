@@ -30,7 +30,7 @@ class StateMigration {
 
  private:
   void OnMigration(
-      ledger::Result result,
+      type::Result result,
       const int version,
       ledger::ResultCallback callback);
 

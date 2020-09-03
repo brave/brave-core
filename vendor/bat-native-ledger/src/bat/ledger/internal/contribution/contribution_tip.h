@@ -28,13 +28,13 @@ class ContributionTip {
 
  private:
   void ServerPublisher(
-      ledger::ServerPublisherInfoPtr server_info,
+      type::ServerPublisherInfoPtr server_info,
       const std::string& publisher_key,
       const double amount,
       ledger::ResultCallback callback);
 
   void QueueSaved(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   void SavePending(
@@ -43,7 +43,7 @@ class ContributionTip {
       ledger::ResultCallback callback);
 
   void OnSavePending(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

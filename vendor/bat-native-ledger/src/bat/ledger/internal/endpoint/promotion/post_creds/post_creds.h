@@ -45,7 +45,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostCredsCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& claim_id)>;
 
 class PostCreds {
@@ -63,14 +63,14 @@ class PostCreds {
 
   std::string GeneratePayload(std::unique_ptr<base::ListValue> blinded_creds);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* claim_id);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostCredsCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

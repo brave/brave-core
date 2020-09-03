@@ -35,7 +35,7 @@ std::string UrlRequestToString(
     const std::vector<std::string>& headers,
     const std::string& content,
     const std::string& content_type,
-    const UrlMethod method) {
+    const type::UrlMethod method) {
   std::string log = "\n[ REQUEST ]";
   log += base::StringPrintf("\n> URL: %s", url.c_str());
 
@@ -64,7 +64,7 @@ std::string UrlRequestToString(
 
 std::string UrlResponseToString(
     const char* func,
-    const ledger::UrlResponse& response) {
+    const type::UrlResponse& response) {
   std::string result;
   if (!response.error.empty()) {
     result = "Error (" + response.error + ")";
@@ -97,7 +97,7 @@ std::string UrlResponseToString(
 
 void LogUrlResponse(
     const char* func,
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     const bool long_response) {
   std::string result;
   if (!response.error.empty()) {

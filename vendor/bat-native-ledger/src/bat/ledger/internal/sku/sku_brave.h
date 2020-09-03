@@ -25,38 +25,38 @@ class SKUBrave : public SKU  {
   ~SKUBrave() override;
 
   void Process(
-      const std::vector<ledger::SKUOrderItem>& items,
-      ledger::ExternalWalletPtr wallet,
+      const std::vector<type::SKUOrderItem>& items,
+      type::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback,
       const std::string& contribution_id = "") override;
 
   void Retry(
       const std::string& order_id,
-      ledger::ExternalWalletPtr wallet,
+      type::ExternalWalletPtr wallet,
       ledger::SKUOrderCallback callback) override;
 
  private:
   void OrderCreated(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
-      const ledger::ExternalWallet& wallet,
+      const type::ExternalWallet& wallet,
       const std::string& contribution_id,
       ledger::SKUOrderCallback callback);
 
   void ContributionIdSaved(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& order_id,
-      const ledger::ExternalWallet& wallet,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   void CreateTransaction(
-      ledger::SKUOrderPtr order,
-      const ledger::ExternalWallet& wallet,
+      type::SKUOrderPtr order,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   void OnOrder(
-      ledger::SKUOrderPtr order,
-      const ledger::ExternalWallet& wallet,
+      type::SKUOrderPtr order,
+      const type::ExternalWallet& wallet,
       ledger::SKUOrderCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

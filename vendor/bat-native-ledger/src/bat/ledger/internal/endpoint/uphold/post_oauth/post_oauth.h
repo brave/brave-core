@@ -36,7 +36,7 @@ namespace endpoint {
 namespace uphold {
 
 using PostOauthCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& token)>;
 
 class PostOauth {
@@ -53,14 +53,14 @@ class PostOauth {
 
   std::string GeneratePayload(const std::string& code);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* token);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostOauthCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

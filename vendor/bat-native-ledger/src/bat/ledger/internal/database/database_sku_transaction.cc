@@ -30,15 +30,15 @@ DatabaseSKUTransaction::DatabaseSKUTransaction(
 DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;
 
 void DatabaseSKUTransaction::InsertOrUpdate(
-    ledger::SKUTransactionPtr transaction,
+    type::SKUTransactionPtr transaction,
     ledger::ResultCallback callback) {
   if (!transaction) {
     BLOG(1, "Transcation is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto db_transaction = ledger::DBTransaction::New();
+  auto db_transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -47,8 +47,8 @@ void DatabaseSKUTransaction::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, transaction->transaction_id);
@@ -76,7 +76,7 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
   if (transaction_id.empty() || external_transaction_id.empty()) {
     BLOG(1, "Data is empty " <<
         transaction_id << "/" << external_transaction_id);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -85,16 +85,16 @@ void DatabaseSKUTransaction::SaveExternalTransaction(
       "external_transaction_id = ?, status = ? WHERE transaction_id = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, external_transaction_id);
   BindInt(command.get(), 1, static_cast<int>(
-      ledger::SKUTransactionStatus::COMPLETED));
+      type::SKUTransactionStatus::COMPLETED));
   BindString(command.get(), 2, transaction_id);
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
   auto transaction_callback = std::bind(&OnResultCallback,
@@ -114,26 +114,26 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
     callback(nullptr);
     return;
   }
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "SELECT transaction_id, order_id, external_transaction_id, amount, type, "
     "status FROM %s WHERE order_id = ?",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -149,10 +149,10 @@ void DatabaseSKUTransaction::GetRecordByOrderId(
 }
 
 void DatabaseSKUTransaction::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     GetSKUTransactionCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
@@ -167,15 +167,15 @@ void DatabaseSKUTransaction::OnGetRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = ledger::SKUTransaction::New();
+  auto info = type::SKUTransaction::New();
   info->transaction_id = GetStringColumn(record, 0);
   info->order_id = GetStringColumn(record, 1);
   info->external_transaction_id = GetStringColumn(record, 2);
   info->amount = GetDoubleColumn(record, 3);
   info->type =
-      static_cast<ledger::SKUTransactionType>(GetIntColumn(record, 4));
+      static_cast<type::SKUTransactionType>(GetIntColumn(record, 4));
   info->status =
-      static_cast<ledger::SKUTransactionStatus>(GetIntColumn(record, 5));
+      static_cast<type::SKUTransactionStatus>(GetIntColumn(record, 5));
 
   callback(std::move(info));
 }

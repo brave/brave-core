@@ -86,7 +86,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace uphold {
 
-using PatchCardCallback = std::function<void(const ledger::Result result)>;
+using PatchCardCallback = std::function<void(const type::Result result)>;
 
 class PatchCard {
  public:
@@ -104,10 +104,10 @@ class PatchCard {
 
   std::string GeneratePayload(const ::ledger::uphold::UpdateCard& card);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PatchCardCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

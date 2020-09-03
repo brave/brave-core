@@ -37,7 +37,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostDevicecheckCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& nonce)>;
 
 class PostDevicecheck {
@@ -52,14 +52,14 @@ class PostDevicecheck {
 
   std::string GeneratePayload(const std::string& key);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* nonce);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostDevicecheckCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

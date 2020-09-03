@@ -29,8 +29,8 @@ DatabaseSKUOrderItems::DatabaseSKUOrderItems(LedgerImpl* ledger) :
 DatabaseSKUOrderItems::~DatabaseSKUOrderItems() = default;
 
 void DatabaseSKUOrderItems::InsertOrUpdateList(
-    ledger::DBTransaction* transaction,
-    ledger::SKUOrderItemList list) {
+    type::DBTransaction* transaction,
+    type::SKUOrderItemList list) {
   DCHECK(transaction);
   if (list.empty()) {
     BLOG(1, "List is empty");
@@ -45,8 +45,8 @@ void DatabaseSKUOrderItems::InsertOrUpdateList(
       kTableName);
 
   for (auto& item : list) {
-    auto command = ledger::DBCommand::New();
-    command->type = ledger::DBCommand::Type::RUN;
+    auto command = type::DBCommand::New();
+    command->type = type::DBCommand::Type::RUN;
     command->command = query;
 
     BindString(command.get(), 0, item->order_item_id);
@@ -72,29 +72,29 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT order_item_id, order_id, sku, quantity, price, name, "
       "description, type, expires_at FROM %s WHERE order_id = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -111,20 +111,20 @@ void DatabaseSKUOrderItems::GetRecordsByOrderId(
 }
 
 void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     GetSKUOrderItemsCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  ledger::SKUOrderItemList list;
-  ledger::SKUOrderItemPtr info = nullptr;
+  type::SKUOrderItemList list;
+  type::SKUOrderItemPtr info = nullptr;
   for (auto const& record : response->result->get_records()) {
     auto* record_pointer = record.get();
-    info = ledger::SKUOrderItem::New();
+    info = type::SKUOrderItem::New();
 
     info->order_item_id = GetStringColumn(record_pointer, 0);
     info->order_id = GetStringColumn(record_pointer, 1);
@@ -134,7 +134,7 @@ void DatabaseSKUOrderItems::OnGetRecordsByOrderId(
     info->name = GetStringColumn(record_pointer, 5);
     info->description = GetStringColumn(record_pointer, 6);
     info->type =
-        static_cast<ledger::SKUOrderItemType>(GetIntColumn(record_pointer, 7));
+        static_cast<type::SKUOrderItemType>(GetIntColumn(record_pointer, 7));
     info->expires_at = GetInt64Column(record_pointer, 8);
 
     list.push_back(std::move(info));

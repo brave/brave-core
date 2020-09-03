@@ -33,7 +33,7 @@ void WalletRecover::Start(
     ledger::ResultCallback callback) {
   if (pass_phrase.empty()) {
     BLOG(0, "Pass phrase is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -45,7 +45,7 @@ void WalletRecover::Start(
 
   if (phrase_split.size() == 16) {
     BLOG(0, "Pass phrase is niceware, update to bip39");
-    callback(ledger::Result::CORRUPTED_DATA);
+    callback(type::Result::CORRUPTED_DATA);
     return;
   }
 
@@ -61,7 +61,7 @@ void WalletRecover::Start(
 
   if (result != 0 || written == 0) {
     BLOG(0, "Result: " << result << " Size: " << written);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -81,11 +81,11 @@ void WalletRecover::Start(
 }
 
 void WalletRecover::OnRecover(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& payment_id,
     const std::vector<uint8_t>& new_seed,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result);
     return;
   }
@@ -96,7 +96,7 @@ void WalletRecover::OnRecover(
   ledger_->state()->SetAnonTransferChecked(false);
   ledger_->state()->SetPromotionLastFetchStamp(0);
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace wallet

@@ -33,7 +33,7 @@ std::string PostOrder::GetUrl() {
 }
 
 std::string PostOrder::GeneratePayload(
-    const std::vector<ledger::SKUOrderItem>& items) {
+    const std::vector<type::SKUOrderItem>& items) {
   base::Value order_items(base::Value::Type::LIST);
   for (const auto& item : items) {
     base::Value order_item(base::Value::Type::DICTIONARY);
@@ -51,34 +51,34 @@ std::string PostOrder::GeneratePayload(
   return json;
 }
 
-ledger::Result PostOrder::CheckStatusCode(const int status_code) {
+type::Result PostOrder::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::RETRY_SHORT;
+    return type::Result::RETRY_SHORT;
   }
 
   if (status_code == net::HTTP_INTERNAL_SERVER_ERROR) {
     BLOG(0, "Internal server error");
-    return ledger::Result::RETRY_SHORT;
+    return type::Result::RETRY_SHORT;
   }
 
   if (status_code != net::HTTP_CREATED) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result PostOrder::ParseBody(
+type::Result PostOrder::ParseBody(
     const std::string& body,
-    const std::vector<ledger::SKUOrderItem>& order_items,
-    ledger::SKUOrder* order) {
+    const std::vector<type::SKUOrderItem>& order_items,
+    type::SKUOrder* order) {
   DCHECK(order);
 
   base::Optional<base::Value> dictionary = base::JSONReader::Read(body);
   if (!dictionary || !dictionary->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* id = dictionary->FindStringKey("id");
@@ -88,7 +88,7 @@ ledger::Result PostOrder::ParseBody(
 
   if (order->order_id.empty()) {
     BLOG(0, "Order id empty");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* total_amount = dictionary->FindStringKey("totalPrice");
@@ -110,21 +110,21 @@ ledger::Result PostOrder::ParseBody(
     order->location = *location;
   }
 
-  order->status = ledger::SKUOrderStatus::PENDING;
+  order->status = type::SKUOrderStatus::PENDING;
 
   auto* items = dictionary->FindListKey("items");
   if (!items) {
-    return ledger::Result::LEDGER_OK;
+    return type::Result::LEDGER_OK;
   }
 
   if (items->GetList().size() != order_items.size()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   int count = 0;
   for (auto& item : items->GetList()) {
-    auto order_item = ledger::SKUOrderItem::New();
+    auto order_item = type::SKUOrderItem::New();
     order_item->order_id = order->order_id;
     order_item->sku = order_items[count].sku;
     order_item->type = order_items[count].type;
@@ -162,11 +162,11 @@ ledger::Result PostOrder::ParseBody(
     count++;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostOrder::Request(
-    const std::vector<ledger::SKUOrderItem>& items,
+    const std::vector<type::SKUOrderItem>& items,
     PostOrderCallback callback) {
   auto url_callback = std::bind(&PostOrder::OnRequest,
       this,
@@ -174,28 +174,28 @@ void PostOrder::Request(
       items,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload(items);
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostOrder::OnRequest(
-    const ledger::UrlResponse& response,
-    const std::vector<ledger::SKUOrderItem>& items,
+    const type::UrlResponse& response,
+    const std::vector<type::SKUOrderItem>& items,
     PostOrderCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, nullptr);
     return;
   }
 
-  auto order = ledger::SKUOrder::New();
+  auto order = type::SKUOrder::New();
   result = ParseBody(response.body, items, order.get());
   callback(result, std::move(order));
 }

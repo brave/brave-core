@@ -20,9 +20,9 @@ struct CredentialsRedeem {
   ~CredentialsRedeem();
 
   std::string publisher_key;
-  ledger::RewardsType type;
-  ledger::ContributionProcessor processor;
-  std::vector<ledger::UnblindedToken> token_list;
+  type::RewardsType type;
+  type::ContributionProcessor processor;
+  std::vector<type::UnblindedToken> token_list;
   std::string order_id;
   std::string contribution_id;
 };

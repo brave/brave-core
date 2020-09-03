@@ -15,7 +15,7 @@
 namespace ledger {
 namespace database {
 
-using GetPromotionCallback = std::function<void(PromotionPtr)>;
+using GetPromotionCallback = std::function<void(type::PromotionPtr)>;
 
 class DatabasePromotion: public DatabaseTable {
  public:
@@ -23,7 +23,7 @@ class DatabasePromotion: public DatabaseTable {
   ~DatabasePromotion() override;
 
   void InsertOrUpdate(
-      ledger::PromotionPtr info,
+      type::PromotionPtr info,
       ledger::ResultCallback callback);
 
   void GetRecord(
@@ -44,12 +44,12 @@ class DatabasePromotion: public DatabaseTable {
 
   void UpdateStatus(
       const std::string& promotion_id,
-      const ledger::PromotionStatus status,
+      const type::PromotionStatus status,
       ledger::ResultCallback callback);
 
   void UpdateRecordsStatus(
       const std::vector<std::string>& ids,
-      const ledger::PromotionStatus status,
+      const type::PromotionStatus status,
       ledger::ResultCallback callback);
 
   void CredentialCompleted(
@@ -57,7 +57,7 @@ class DatabasePromotion: public DatabaseTable {
       ledger::ResultCallback callback);
 
   void GetRecordsByType(
-      const std::vector<ledger::PromotionType>& types,
+      const std::vector<type::PromotionType>& types,
       client::GetPromotionListCallback callback);
 
   void UpdateRecordsBlankPublicKey(
@@ -66,15 +66,15 @@ class DatabasePromotion: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetPromotionCallback callback);
 
   void OnGetAllRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::GetAllPromotionsCallback callback);
 
   void OnGetRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       client::GetPromotionListCallback callback);
 };
 

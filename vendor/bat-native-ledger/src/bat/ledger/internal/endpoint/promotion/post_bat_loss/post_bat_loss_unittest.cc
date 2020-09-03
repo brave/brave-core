@@ -57,9 +57,9 @@ TEST_F(PostBatLossTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -69,8 +69,8 @@ TEST_F(PostBatLossTest, ServerOK) {
   loss_->Request(
       30.0,
       1,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
 }
 
@@ -78,9 +78,9 @@ TEST_F(PostBatLossTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -90,8 +90,8 @@ TEST_F(PostBatLossTest, ServerError500) {
   loss_->Request(
       30.0,
       1,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -99,9 +99,9 @@ TEST_F(PostBatLossTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -111,8 +111,8 @@ TEST_F(PostBatLossTest, ServerErrorRandom) {
   loss_->Request(
       30.0,
       1,
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

@@ -30,7 +30,7 @@ class DatabaseEventLog: public DatabaseTable {
 
  private:
   void OnGetAllRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::GetEventLogsCallback callback);
 };
 

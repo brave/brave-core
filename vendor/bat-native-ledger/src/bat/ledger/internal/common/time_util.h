@@ -15,9 +15,9 @@
 
 namespace braveledger_time_util {
 
-ledger::ActivityMonth GetCurrentMonth();
+ledger::type::ActivityMonth GetCurrentMonth();
 
-ledger::ActivityMonth GetMonth(const base::Time& time);
+ledger::type::ActivityMonth GetMonth(const base::Time& time);
 
 uint32_t GetCurrentYear();
 

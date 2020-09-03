@@ -20,7 +20,7 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
 
   void InsertOrUpdate(
       const std::string& id,
-      ledger::ContributionQueuePublisherList list,
+      type::ContributionQueuePublisherList list,
       ledger::ResultCallback callback);
 
   void GetRecordsByQueueId(
@@ -29,7 +29,7 @@ class DatabaseContributionQueuePublishers: public DatabaseTable {
 
  private:
   void OnGetRecordsByQueueId(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ContributionQueuePublishersListCallback callback);
 };
 

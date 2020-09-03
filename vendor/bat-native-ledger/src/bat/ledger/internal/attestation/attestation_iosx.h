@@ -33,19 +33,19 @@ class AttestationIOS : public Attestation {
   std::string ParseStartPayload(
       const std::string& response);
 
-  ledger::Result ParseClaimSolution(
+  type::Result ParseClaimSolution(
       const std::string& response,
       std::string* nonce,
       std::string* blob,
       std::string* signature);
 
   void OnStart(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& nonce,
       StartCallback callback);
 
   void OnConfirm(
-      const ledger::Result result,
+      const type::Result result,
       ConfirmCallback callback);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

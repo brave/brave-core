@@ -45,9 +45,9 @@ TEST_F(GetCaptchaTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body =
@@ -57,8 +57,8 @@ TEST_F(GetCaptchaTest, ServerOK) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const ledger::Result result, const std::string& image) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, const std::string& image) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
         EXPECT_EQ(
             image,
             "data:image/jpeg;base64,YVdwaGFYTnFaR1p2YVdGemFtWnZjMkZwYW"
@@ -70,9 +70,9 @@ TEST_F(GetCaptchaTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -81,8 +81,8 @@ TEST_F(GetCaptchaTest, ServerError400) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const ledger::Result result, const std::string& image) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& image) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -90,9 +90,9 @@ TEST_F(GetCaptchaTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
@@ -101,8 +101,8 @@ TEST_F(GetCaptchaTest, ServerError404) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const ledger::Result result, const std::string& image) {
-        EXPECT_EQ(result, ledger::Result::NOT_FOUND);
+      [](const type::Result result, const std::string& image) {
+        EXPECT_EQ(result, type::Result::NOT_FOUND);
         EXPECT_EQ(image, "");
       });
 }
@@ -111,9 +111,9 @@ TEST_F(GetCaptchaTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -122,8 +122,8 @@ TEST_F(GetCaptchaTest, ServerError500) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const ledger::Result result, const std::string& image) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& image) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(image, "");
       });
 }
@@ -132,9 +132,9 @@ TEST_F(GetCaptchaTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -143,8 +143,8 @@ TEST_F(GetCaptchaTest, ServerErrorRandom) {
 
   captcha_->Request(
       "d155d2d2-2627-425b-9be8-44ae9f541762",
-      [](const ledger::Result result, const std::string& image) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result, const std::string& image) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
         EXPECT_EQ(image, "");
       });
 }

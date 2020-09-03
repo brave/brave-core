@@ -48,9 +48,9 @@ class PublisherPrefixListUpdater {
 
   void OnFetchTimerElapsed();
   void OnFetchCompleted(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& body);
-  void OnPrefixListInserted(const ledger::Result result);
+  void OnPrefixListInserted(const type::Result result);
 
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();

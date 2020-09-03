@@ -22,9 +22,9 @@ class ContributionAC {
   void Process(const uint64_t reconcile_stamp);
 
  private:
-  void PreparePublisherList(ledger::PublisherInfoList list);
+  void PreparePublisherList(type::PublisherInfoList list);
 
-  void QueueSaved(const ledger::Result result);
+  void QueueSaved(const type::Result result);
 
   LedgerImpl* ledger_;  // NOT OWNED
 };

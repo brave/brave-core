@@ -24,9 +24,9 @@ using std::placeholders::_1;
 
 namespace {
 
-ledger::PublisherBannerPtr GetPublisherBannerFromMessage(
+ledger::type::PublisherBannerPtr GetPublisherBannerFromMessage(
     const publishers_pb::SiteBannerDetails& banner_details) {
-  auto banner = ledger::PublisherBanner::New();
+  auto banner = ledger::type::PublisherBanner::New();
 
   banner->title = banner_details.title();
   banner->description = banner_details.description();
@@ -60,14 +60,14 @@ ledger::PublisherBannerPtr GetPublisherBannerFromMessage(
   return banner;
 }
 
-ledger::PublisherStatus GetPublisherStatusFromMessage(
+ledger::type::PublisherStatus GetPublisherStatusFromMessage(
     const publishers_pb::ChannelResponse& response) {
-  auto status = ledger::PublisherStatus::CONNECTED;
+  auto status = ledger::type::PublisherStatus::CONNECTED;
   for (const auto& wallet : response.wallets()) {
     if (wallet.has_uphold_wallet()) {
       switch (wallet.uphold_wallet().wallet_state()) {
         case publishers_pb::UPHOLD_ACCOUNT_KYC:
-          return ledger::PublisherStatus::VERIFIED;
+          return ledger::type::PublisherStatus::VERIFIED;
         default: {}
       }
     }
@@ -87,23 +87,23 @@ std::string GetPublisherAddressFromMessage(
 
 void GetServerInfoForEmptyResponse(
     const std::string& publisher_key,
-    ledger::ServerPublisherInfo* info) {
+    ledger::type::ServerPublisherInfo* info) {
   DCHECK(info);
 
   BLOG(1, "Server did not return an entry for publisher " << publisher_key);
   info->publisher_key = publisher_key;
-  info->status = ledger::PublisherStatus::NOT_VERIFIED;
+  info->status = ledger::type::PublisherStatus::NOT_VERIFIED;
   info->updated_at = braveledger_time_util::GetCurrentTimeStamp();
 }
 
-ledger::Result ServerPublisherInfoFromMessage(
+ledger::type::Result ServerPublisherInfoFromMessage(
     const publishers_pb::ChannelResponseList& message,
     const std::string& expected_key,
-    ledger::ServerPublisherInfo* info) {
+    ledger::type::ServerPublisherInfo* info) {
   DCHECK(info);
 
   if (expected_key.empty()) {
-    return ledger::Result::LEDGER_ERROR;
+    return ledger::type::Result::LEDGER_ERROR;
   }
 
   for (const auto& entry : message.channel_responses()) {
@@ -120,10 +120,10 @@ ledger::Result ServerPublisherInfoFromMessage(
       info->banner =
           GetPublisherBannerFromMessage(entry.site_banner_details());
     }
-    return ledger::Result::LEDGER_OK;;
+    return ledger::type::Result::LEDGER_OK;;
   }
 
-  return ledger::Result::LEDGER_ERROR;
+  return ledger::type::Result::LEDGER_ERROR;
 }
 
 bool DecompressMessage(base::StringPiece payload, std::string* output) {
@@ -155,33 +155,33 @@ std::string GetPublisher::GetUrl(const std::string& hash_prefix) {
   return GetServerUrl(path);
 }
 
-ledger::Result GetPublisher::CheckStatusCode(const int status_code) {
+type::Result GetPublisher::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_NOT_FOUND) {
-    return ledger::Result::NOT_FOUND;
+    return type::Result::NOT_FOUND;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result GetPublisher::ParseBody(
+type::Result GetPublisher::ParseBody(
     const std::string& body,
     const std::string& publisher_key,
-    ledger::ServerPublisherInfo* info) {
+    type::ServerPublisherInfo* info) {
   DCHECK(info);
 
   if (body.empty()) {
     BLOG(0, "Publisher data empty");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::StringPiece body_payload(body.data(), body.size());
   if (!brave::PrivateCdnHelper::GetInstance()->RemovePadding(&body_payload)) {
     BLOG(0, "Publisher data response has invalid padding");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   std::string message_string;
@@ -195,15 +195,15 @@ ledger::Result GetPublisher::ParseBody(
   publishers_pb::ChannelResponseList message;
   if (!message.ParseFromString(message_string)) {
     BLOG(0, "Error parsing publisher data protobuf message");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   auto result = ServerPublisherInfoFromMessage(message, publisher_key, info);
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     GetServerInfoForEmptyResponse(publisher_key, info);
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void GetPublisher::Request(
@@ -216,38 +216,38 @@ void GetPublisher::Request(
       publisher_key,
       callback);
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl(hash_prefix);
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void GetPublisher::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     const std::string& publisher_key,
     GetPublisherCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   auto result = CheckStatusCode(response.status_code);
 
-  auto info = ledger::ServerPublisherInfo::New();
-  if (result == ledger::Result::NOT_FOUND) {
+  auto info = type::ServerPublisherInfo::New();
+  if (result == type::Result::NOT_FOUND) {
     GetServerInfoForEmptyResponse(publisher_key, info.get());
-    callback(ledger::Result::LEDGER_OK, std::move(info));
+    callback(type::Result::LEDGER_OK, std::move(info));
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
-    callback(ledger::Result::LEDGER_ERROR, nullptr);
+  if (result != type::Result::LEDGER_OK) {
+    callback(type::Result::LEDGER_ERROR, nullptr);
     return;
   }
 
   result = ParseBody(response.body, publisher_key, info.get());
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, nullptr);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, std::move(info));
+  callback(type::Result::LEDGER_OK, std::move(info));
 }
 
 }  // namespace private_cdn

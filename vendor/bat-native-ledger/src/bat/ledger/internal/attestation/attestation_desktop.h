@@ -30,27 +30,27 @@ class AttestationDesktop : public Attestation {
       ConfirmCallback callback) override;
 
  private:
-  ledger::Result ParseClaimSolution(
+  type::Result ParseClaimSolution(
       const std::string& response,
       int* x,
       int* y,
       std::string* captcha_id);
 
   void DownloadCaptchaImage(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& hint,
       const std::string& captcha_id,
       StartCallback callback);
 
   void OnDownloadCaptchaImage(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& image,
       const std::string& hint,
       const std::string& captcha_id,
       StartCallback callback);
 
   void OnConfirm(
-      const ledger::Result result,
+      const type::Result result,
       ConfirmCallback callback);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

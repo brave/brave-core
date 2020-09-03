@@ -65,26 +65,26 @@ void DatabasePublisherPrefixList::Search(
       publisher_key,
       kHashPrefixSize);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = base::StringPrintf(
       "SELECT EXISTS(SELECT hash_prefix FROM %s WHERE hash_prefix = x'%s')",
       kTableName,
       hex.c_str());
 
   command->record_bindings = {
-    ledger::DBCommand::RecordBindingType::BOOL_TYPE
+    type::DBCommand::RecordBindingType::BOOL_TYPE
   };
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   transaction->commands.push_back(std::move(command));
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
-      [callback](ledger::DBCommandResponsePtr response) {
+      [callback](type::DBCommandResponsePtr response) {
         if (!response || !response->result ||
             response->status !=
-              ledger::DBCommandResponse::Status::RESPONSE_OK ||
+              type::DBCommandResponse::Status::RESPONSE_OK ||
             response->result->get_records().empty()) {
           BLOG(0, "Unexpected database result while searching "
               "publisher prefix list.");
@@ -100,12 +100,12 @@ void DatabasePublisherPrefixList::Reset(
     ledger::ResultCallback callback) {
   if (reader_) {
     BLOG(1, "Publisher prefix list batch insert in progress");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
   if (reader->empty()) {
     BLOG(0, "Cannot reset with an empty publisher prefix list");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
   reader_ = std::move(reader);
@@ -117,12 +117,12 @@ void DatabasePublisherPrefixList::InsertNext(
     ledger::ResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   if (begin == reader_->begin()) {
     BLOG(1, "Clearing publisher prefixes table");
-    auto command = ledger::DBCommand::New();
-    command->type = ledger::DBCommand::Type::RUN;
+    auto command = type::DBCommand::New();
+    command->type = type::DBCommand::Type::RUN;
     command->command = base::StringPrintf("DELETE FROM %s", kTableName);
     transaction->commands.push_back(std::move(command));
   }
@@ -132,8 +132,8 @@ void DatabasePublisherPrefixList::InsertNext(
   BLOG(1, "Inserting " << std::get<size_t>(insert_tuple)
       << " records into publisher prefix table");
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s (hash_prefix) VALUES %s",
       kTableName,
@@ -145,18 +145,18 @@ void DatabasePublisherPrefixList::InsertNext(
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
-      [this, iter, callback](ledger::DBCommandResponsePtr response) {
+      [this, iter, callback](type::DBCommandResponsePtr response) {
         if (!response ||
             response->status !=
-              ledger::DBCommandResponse::Status::RESPONSE_OK) {
+              type::DBCommandResponse::Status::RESPONSE_OK) {
           reader_ = nullptr;
-          callback(ledger::Result::LEDGER_ERROR);
+          callback(type::Result::LEDGER_ERROR);
           return;
         }
 
         if (iter == reader_->end()) {
           reader_ = nullptr;
-          callback(ledger::Result::LEDGER_OK);
+          callback(type::Result::LEDGER_OK);
           return;
         }
 

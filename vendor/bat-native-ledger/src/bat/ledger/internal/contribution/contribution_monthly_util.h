@@ -15,7 +15,7 @@ class LedgerImpl;
 namespace contribution {
 
 double GetTotalFromVerifiedTips(
-    const ledger::PublisherInfoList& publisher_list);
+    const type::PublisherInfoList& publisher_list);
 
 }  // namespace contribution
 }  // namespace ledger

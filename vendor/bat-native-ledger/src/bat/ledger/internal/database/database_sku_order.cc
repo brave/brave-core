@@ -30,15 +30,15 @@ DatabaseSKUOrder::DatabaseSKUOrder(
 DatabaseSKUOrder::~DatabaseSKUOrder() = default;
 
 void DatabaseSKUOrder::InsertOrUpdate(
-    ledger::SKUOrderPtr order,
+    type::SKUOrderPtr order,
     ledger::ResultCallback callback) {
   if (!order) {
     BLOG(1, "Order is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -47,8 +47,8 @@ void DatabaseSKUOrder::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, order->order_id);
@@ -73,22 +73,22 @@ void DatabaseSKUOrder::InsertOrUpdate(
 
 void DatabaseSKUOrder::UpdateStatus(
     const std::string& order_id,
-    const ledger::SKUOrderStatus status,
+    const type::SKUOrderStatus status,
     ledger::ResultCallback callback) {
   if (order_id.empty()) {
     BLOG(1, "Order id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET status = ? WHERE order_id = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -114,26 +114,26 @@ void DatabaseSKUOrder::GetRecord(
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT order_id, total_amount, merchant_id, location, status, "
       "created_at FROM %s WHERE order_id = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, order_id);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -149,10 +149,10 @@ void DatabaseSKUOrder::GetRecord(
 }
 
 void DatabaseSKUOrder::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     GetSKUOrderCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
@@ -166,25 +166,25 @@ void DatabaseSKUOrder::OnGetRecord(
   }
 
   auto* record = response->result->get_records()[0].get();
-  auto info = ledger::SKUOrder::New();
+  auto info = type::SKUOrder::New();
   info->order_id = GetStringColumn(record, 0);
   info->total_amount = GetDoubleColumn(record, 1);
   info->merchant_id = GetStringColumn(record, 2);
   info->location = GetStringColumn(record, 3);
-  info->status = static_cast<ledger::SKUOrderStatus>(GetIntColumn(record, 4));
+  info->status = static_cast<type::SKUOrderStatus>(GetIntColumn(record, 4));
   info->created_at = GetInt64Column(record, 5);
 
   auto items_callback = std::bind(&DatabaseSKUOrder::OnGetRecordItems,
       this,
       _1,
-      std::make_shared<ledger::SKUOrderPtr>(info->Clone()),
+      std::make_shared<type::SKUOrderPtr>(info->Clone()),
       callback);
   items_->GetRecordsByOrderId(info->order_id, items_callback);
 }
 
 void DatabaseSKUOrder::OnGetRecordItems(
-    ledger::SKUOrderItemList list,
-    std::shared_ptr<ledger::SKUOrderPtr> shared_order,
+    type::SKUOrderItemList list,
+    std::shared_ptr<type::SKUOrderPtr> shared_order,
     GetSKUOrderCallback callback) {
   if (!shared_order) {
     BLOG(1, "Order is null");
@@ -204,26 +204,26 @@ void DatabaseSKUOrder::GetRecordByContributionId(
     callback({});
     return;
   }
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT order_id, total_amount, merchant_id, location, status, "
       "created_at FROM %s WHERE contribution_id = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -245,18 +245,18 @@ void DatabaseSKUOrder::SaveContributionIdForSKUOrder(
   if (order_id.empty() || contribution_id.empty()) {
     BLOG(1, "Order/contribution id is empty " <<
         order_id << "/" << contribution_id);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET contribution_id = ? WHERE order_id = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, contribution_id);

@@ -34,17 +34,17 @@ class Credentials {
       ledger::ResultCallback callback) = 0;
 
   virtual void Claim(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;
 
   virtual void Unblind(
-      ledger::CredsBatchPtr creds,
+      type::CredsBatchPtr creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;
 
   virtual void Completed(
-      const ledger::Result result,
+      const type::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback) = 0;
 };

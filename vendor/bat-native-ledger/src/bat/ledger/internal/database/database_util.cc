@@ -20,90 +20,90 @@ namespace ledger {
 namespace database {
 
 void BindNull(
-    ledger::DBCommand* command,
+    type::DBCommand* command,
     const int index) {
   if (!command) {
     return;
   }
 
-  auto binding = ledger::DBCommandBinding::New();
+  auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = ledger::DBValue::New();
+  binding->value = type::DBValue::New();
   binding->value->set_null_value(0);
   command->bindings.push_back(std::move(binding));
 }
 
 void BindInt(
-    ledger::DBCommand* command,
+    type::DBCommand* command,
     const int index,
     const int32_t value) {
   if (!command) {
     return;
   }
 
-  auto binding = ledger::DBCommandBinding::New();
+  auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = ledger::DBValue::New();
+  binding->value = type::DBValue::New();
   binding->value->set_int_value(value);
   command->bindings.push_back(std::move(binding));
 }
 
 void BindInt64(
-    ledger::DBCommand* command,
+    type::DBCommand* command,
     const int index,
     const int64_t value) {
   if (!command) {
     return;
   }
 
-  auto binding = ledger::DBCommandBinding::New();
+  auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = ledger::DBValue::New();
+  binding->value = type::DBValue::New();
   binding->value->set_int64_value(value);
   command->bindings.push_back(std::move(binding));
 }
 
 void BindDouble(
-    ledger::DBCommand* command,
+    type::DBCommand* command,
     const int index,
     const double value) {
   if (!command) {
     return;
   }
 
-  auto binding = ledger::DBCommandBinding::New();
+  auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = ledger::DBValue::New();
+  binding->value = type::DBValue::New();
   binding->value->set_double_value(value);
   command->bindings.push_back(std::move(binding));
 }
 
 void BindBool(
-    ledger::DBCommand* command,
+    type::DBCommand* command,
     const int index,
     const bool value) {
   if (!command) {
     return;
   }
 
-  auto binding = ledger::DBCommandBinding::New();
+  auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = ledger::DBValue::New();
+  binding->value = type::DBValue::New();
   binding->value->set_bool_value(value);
   command->bindings.push_back(std::move(binding));
 }
 
 void BindString(
-    ledger::DBCommand* command,
+    type::DBCommand* command,
     const int index,
     const std::string& value) {
   if (!command) {
     return;
   }
 
-  auto binding = ledger::DBCommandBinding::New();
+  auto binding = type::DBCommandBinding::New();
   binding->index = index;
-  binding->value = ledger::DBValue::New();
+  binding->value = type::DBValue::New();
   binding->value->set_string_value(value);
   command->bindings.push_back(std::move(binding));
 }
@@ -117,23 +117,23 @@ int32_t GetCompatibleVersion() {
 }
 
 void OnResultCallback(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::ResultCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
-    callback(ledger::Result::LEDGER_ERROR);
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
-int GetIntColumn(ledger::DBRecord* record, const int index) {
+int GetIntColumn(type::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return 0;
   }
 
-  if (record->fields.at(index)->which() != ledger::DBValue::Tag::INT_VALUE) {
+  if (record->fields.at(index)->which() != type::DBValue::Tag::INT_VALUE) {
     DCHECK(false);
     return 0;
   }
@@ -141,12 +141,12 @@ int GetIntColumn(ledger::DBRecord* record, const int index) {
   return record->fields.at(index)->get_int_value();
 }
 
-int64_t GetInt64Column(ledger::DBRecord* record, const int index) {
+int64_t GetInt64Column(type::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return 0;
   }
 
-  if (record->fields.at(index)->which() != ledger::DBValue::Tag::INT64_VALUE) {
+  if (record->fields.at(index)->which() != type::DBValue::Tag::INT64_VALUE) {
     DCHECK(false);
     return 0;
   }
@@ -154,12 +154,12 @@ int64_t GetInt64Column(ledger::DBRecord* record, const int index) {
   return record->fields.at(index)->get_int64_value();
 }
 
-double GetDoubleColumn(ledger::DBRecord* record, const int index) {
+double GetDoubleColumn(type::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return 0.0;
   }
 
-  if (record->fields.at(index)->which() != ledger::DBValue::Tag::DOUBLE_VALUE) {
+  if (record->fields.at(index)->which() != type::DBValue::Tag::DOUBLE_VALUE) {
     DCHECK(false);
     return 0.0;
   }
@@ -167,12 +167,12 @@ double GetDoubleColumn(ledger::DBRecord* record, const int index) {
   return record->fields.at(index)->get_double_value();
 }
 
-bool GetBoolColumn(ledger::DBRecord* record, const int index) {
+bool GetBoolColumn(type::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return false;
   }
 
-  if (record->fields.at(index)->which() != ledger::DBValue::Tag::BOOL_VALUE) {
+  if (record->fields.at(index)->which() != type::DBValue::Tag::BOOL_VALUE) {
     DCHECK(false);
     return false;
   }
@@ -180,12 +180,12 @@ bool GetBoolColumn(ledger::DBRecord* record, const int index) {
   return record->fields.at(index)->get_bool_value();
 }
 
-std::string GetStringColumn(ledger::DBRecord* record, const int index) {
+std::string GetStringColumn(type::DBRecord* record, const int index) {
   if (!record || static_cast<int>(record->fields.size()) < index) {
     return "";
   }
 
-  if (record->fields.at(index)->which() != ledger::DBValue::Tag::STRING_VALUE) {
+  if (record->fields.at(index)->which() != type::DBValue::Tag::STRING_VALUE) {
     DCHECK(false);
     return "";
   }

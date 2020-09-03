@@ -190,8 +190,8 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
       2020,
       base::BindLambdaForTesting(
           [&](
-              const ledger::Result result,
-              ledger::BalanceReportInfoPtr report) {
+              const ledger::type::Result result,
+              ledger::type::BalanceReportInfoPtr report) {
         EXPECT_EQ(report->grants, 4.1);
         EXPECT_EQ(report->earning_from_ads, 4.2);
         EXPECT_EQ(report->auto_contribute, 4.3);
@@ -204,8 +204,8 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, State_1) {
       2020,
       base::BindLambdaForTesting(
           [&](
-              const ledger::Result result,
-              ledger::BalanceReportInfoPtr report) {
+              const ledger::type::Result result,
+              ledger::type::BalanceReportInfoPtr report) {
         EXPECT_EQ(report->grants, 5.1);
         EXPECT_EQ(report->earning_from_ads, 5.2);
         EXPECT_EQ(report->auto_contribute, 5.3);

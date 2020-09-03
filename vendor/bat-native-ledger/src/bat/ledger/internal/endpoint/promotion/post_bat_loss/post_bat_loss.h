@@ -32,7 +32,7 @@ class LedgerImpl;
 namespace endpoint {
 namespace promotion {
 
-using PostBatLossCallback = std::function<void(const ledger::Result result)>;
+using PostBatLossCallback = std::function<void(const type::Result result)>;
 
 class PostBatLoss {
  public:
@@ -49,10 +49,10 @@ class PostBatLoss {
 
   std::string GeneratePayload(const double amount);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostBatLossCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

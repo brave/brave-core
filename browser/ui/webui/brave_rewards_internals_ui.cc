@@ -46,16 +46,16 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   bool IsRewardsEnabled() const;
   void HandleGetRewardsEnabled(const base::ListValue* args);
   void HandleGetRewardsInternalsInfo(const base::ListValue* args);
-  void OnGetRewardsInternalsInfo(ledger::RewardsInternalsInfoPtr info);
+  void OnGetRewardsInternalsInfo(ledger::type::RewardsInternalsInfoPtr info);
   void OnPreferenceChanged();
   void GetBalance(const base::ListValue* args);
   void OnGetBalance(
-    const ledger::Result result,
-    ledger::BalancePtr balance);
+    const ledger::type::Result result,
+    ledger::type::BalancePtr balance);
   void GetContributions(const base::ListValue* args);
-  void OnGetContributions(ledger::ContributionInfoList contributions);
+  void OnGetContributions(ledger::type::ContributionInfoList contributions);
   void GetPromotions(const base::ListValue* args);
-  void OnGetPromotions(ledger::PromotionList list);
+  void OnGetPromotions(ledger::type::PromotionList list);
   void GetPartialLog(const base::ListValue* args);
   void OnGetPartialLog(const std::string& log);
   void GetFulllLog(const base::ListValue* args);
@@ -64,10 +64,10 @@ class RewardsInternalsDOMHandler : public content::WebUIMessageHandler {
   void OnClearLog(const bool success);
   void GetExternalWallet(const base::ListValue* args);
   void OnGetExternalWallet(
-      const ledger::Result result,
-      ledger::ExternalWalletPtr wallet);
+      const ledger::type::Result result,
+      ledger::type::ExternalWalletPtr wallet);
   void GetEventLogs(const base::ListValue* args);
-  void OnGetEventLogs(ledger::EventLogs logs);
+  void OnGetEventLogs(ledger::type::EventLogs logs);
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
   Profile* profile_;
@@ -178,7 +178,7 @@ void RewardsInternalsDOMHandler::OnPreferenceChanged() {
 }
 
 void RewardsInternalsDOMHandler::OnGetRewardsInternalsInfo(
-    ledger::RewardsInternalsInfoPtr info) {
+    ledger::type::RewardsInternalsInfoPtr info) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -203,15 +203,15 @@ void RewardsInternalsDOMHandler::GetBalance(const base::ListValue* args) {
 }
 
 void RewardsInternalsDOMHandler::OnGetBalance(
-    const ledger::Result result,
-    ledger::BalancePtr balance) {
+    const ledger::type::Result result,
+    ledger::type::BalancePtr balance) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
   base::Value balance_value(base::Value::Type::DICTIONARY);
 
-  if (result == ledger::Result::LEDGER_OK && balance) {
+  if (result == ledger::type::Result::LEDGER_OK && balance) {
     balance_value.SetDoubleKey("total", balance->total);
 
     base::Value wallets(base::Value::Type::DICTIONARY);
@@ -237,7 +237,7 @@ void RewardsInternalsDOMHandler::GetContributions(const base::ListValue *args) {
 }
 
 void RewardsInternalsDOMHandler::OnGetContributions(
-    ledger::ContributionInfoList contributions) {
+    ledger::type::ContributionInfoList contributions) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -284,7 +284,8 @@ void RewardsInternalsDOMHandler::GetPromotions(const base::ListValue *args) {
       weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetPromotions(ledger::PromotionList list) {
+void RewardsInternalsDOMHandler::OnGetPromotions(
+    ledger::type::PromotionList list) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -394,8 +395,8 @@ void RewardsInternalsDOMHandler::GetExternalWallet(
 }
 
 void RewardsInternalsDOMHandler::OnGetExternalWallet(
-    const ledger::Result result,
-    ledger::ExternalWalletPtr wallet) {
+    const ledger::type::Result result,
+    ledger::type::ExternalWalletPtr wallet) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -427,7 +428,7 @@ void RewardsInternalsDOMHandler::GetEventLogs(const base::ListValue* args) {
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::EventLogs logs) {
+void RewardsInternalsDOMHandler::OnGetEventLogs(ledger::type::EventLogs logs) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }

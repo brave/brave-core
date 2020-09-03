@@ -28,7 +28,7 @@ class DatabaseInitialize {
 
  private:
   void OnInitialize(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       const bool execute_create_script,
       ledger::ResultCallback callback);
 
@@ -44,7 +44,7 @@ class DatabaseInitialize {
       ledger::ResultCallback callback);
 
   void OnExecuteCreateScript(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       const int table_version,
       ledger::ResultCallback callback);
 

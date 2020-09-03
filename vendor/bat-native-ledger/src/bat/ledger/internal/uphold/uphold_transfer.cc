@@ -34,7 +34,7 @@ void UpholdTransfer::Start(
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -51,18 +51,18 @@ void UpholdTransfer::Start(
 }
 
 void UpholdTransfer::OnCreateTransaction(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& id,
     client::TransactionCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
-    callback(ledger::Result::EXPIRED_TOKEN, "");
+  if (result == type::Result::EXPIRED_TOKEN) {
+    callback(type::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     // TODO(nejczdovc): add retry logic to all errors in this function
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -76,13 +76,13 @@ void UpholdTransfer::CommitTransaction(
   auto wallet = GetWallet(std::move(wallets));
   if (!wallet) {
     BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
   if (transaction_id.empty()) {
     BLOG(0, "Transaction id not found");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -99,21 +99,21 @@ void UpholdTransfer::CommitTransaction(
 }
 
 void UpholdTransfer::OnCommitTransaction(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& transaction_id,
     client::TransactionCallback callback) {
-  if (result == ledger::Result::EXPIRED_TOKEN) {
-    callback(ledger::Result::EXPIRED_TOKEN, "");
+  if (result == type::Result::EXPIRED_TOKEN) {
+    callback(type::Result::EXPIRED_TOKEN, "");
     uphold_->DisconnectWallet();
     return;
   }
 
-  if (result != ledger::Result::LEDGER_OK) {
-    callback(ledger::Result::LEDGER_ERROR, "");
+  if (result != type::Result::LEDGER_OK) {
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, transaction_id);
+  callback(type::Result::LEDGER_OK, transaction_id);
 }
 
 }  // namespace uphold

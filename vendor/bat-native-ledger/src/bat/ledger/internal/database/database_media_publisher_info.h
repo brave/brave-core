@@ -29,7 +29,7 @@ class DatabaseMediaPublisherInfo: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoCallback callback);
 };
 

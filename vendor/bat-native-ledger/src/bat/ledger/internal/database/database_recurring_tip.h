@@ -19,7 +19,7 @@ class DatabaseRecurringTip: public DatabaseTable {
   ~DatabaseRecurringTip() override;
 
   void InsertOrUpdate(
-      ledger::RecurringTipPtr info,
+      type::RecurringTipPtr info,
       ledger::ResultCallback callback);
 
   void GetAllRecords(ledger::PublisherInfoListCallback callback);
@@ -30,7 +30,7 @@ class DatabaseRecurringTip: public DatabaseTable {
 
  private:
   void OnGetAllRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::PublisherInfoListCallback callback);
 };
 

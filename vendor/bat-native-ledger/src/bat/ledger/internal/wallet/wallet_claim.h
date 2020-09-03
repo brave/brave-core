@@ -27,12 +27,12 @@ class WalletClaim {
 
  private:
   void OnBalance(
-      const ledger::Result result,
-      ledger::BalancePtr properties,
+      const type::Result result,
+      type::BalancePtr properties,
       ledger::ResultCallback callback);
 
   void OnTransferFunds(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

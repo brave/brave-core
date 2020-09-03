@@ -17,10 +17,10 @@ class LedgerImpl;
 namespace attestation {
 
 using StartCallback =
-    std::function<void(const ledger::Result, const std::string&)>;
+    std::function<void(const type::Result, const std::string&)>;
 
 using ConfirmCallback =
-    std::function<void(const ledger::Result)>;
+    std::function<void(const type::Result)>;
 
 class Attestation {
  public:

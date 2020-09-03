@@ -26,7 +26,7 @@ void StateMigrationV5::Migrate(ledger::ResultCallback callback) {
   const auto seed = ledger_->ledger_client()->GetStringState(
       ledger::state::kRecoverySeed);
   if (seed.empty()) {
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 

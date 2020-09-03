@@ -45,9 +45,9 @@ TEST_F(GetParametersTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -77,15 +77,15 @@ TEST_F(GetParametersTest, ServerOK) {
           }));
 
   parameters_->Request([](
-      const ledger::Result result,
-      const ledger::RewardsParameters& parameters) {
-    ledger::RewardsParameters expected_parameters;
+      const type::Result result,
+      const type::RewardsParameters& parameters) {
+    type::RewardsParameters expected_parameters;
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
     expected_parameters.auto_contribute_choices = {5, 10, 15};
     expected_parameters.tip_choices = {1, 10, 100};
     expected_parameters.monthly_tip_choices = {5, 10, 15};
-    EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
 }
@@ -94,9 +94,9 @@ TEST_F(GetParametersTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -104,9 +104,9 @@ TEST_F(GetParametersTest, ServerError400) {
           }));
 
   parameters_->Request([](
-      const ledger::Result result,
-      const ledger::RewardsParameters& parameters) {
-    EXPECT_EQ(result, ledger::Result::RETRY_SHORT);
+      const type::Result result,
+      const type::RewardsParameters& parameters) {
+    EXPECT_EQ(result, type::Result::RETRY_SHORT);
   });
 }
 
@@ -114,9 +114,9 @@ TEST_F(GetParametersTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -124,9 +124,9 @@ TEST_F(GetParametersTest, ServerError500) {
           }));
 
   parameters_->Request([](
-      const ledger::Result result,
-      const ledger::RewardsParameters& parameters) {
-    EXPECT_EQ(result, ledger::Result::RETRY_SHORT);
+      const type::Result result,
+      const type::RewardsParameters& parameters) {
+    EXPECT_EQ(result, type::Result::RETRY_SHORT);
   });
 }
 
@@ -134,9 +134,9 @@ TEST_F(GetParametersTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -144,9 +144,9 @@ TEST_F(GetParametersTest, ServerErrorRandom) {
           }));
 
   parameters_->Request([](
-      const ledger::Result result,
-      const ledger::RewardsParameters& parameters) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      const type::Result result,
+      const type::RewardsParameters& parameters) {
+    EXPECT_EQ(result, type::Result::LEDGER_ERROR);
   });
 }
 
@@ -154,9 +154,9 @@ TEST_F(GetParametersTest, WrongListValues) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -190,10 +190,10 @@ TEST_F(GetParametersTest, WrongListValues) {
           }));
 
   parameters_->Request([](
-      const ledger::Result result,
-      const ledger::RewardsParameters& parameters) {
-    ledger::RewardsParameters expected_parameters;
-    EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      const type::Result result,
+      const type::RewardsParameters& parameters) {
+    type::RewardsParameters expected_parameters;
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
     EXPECT_TRUE(expected_parameters.Equals(parameters));
@@ -204,9 +204,9 @@ TEST_F(GetParametersTest, DoubleListValues) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = R"({
@@ -236,15 +236,15 @@ TEST_F(GetParametersTest, DoubleListValues) {
           }));
 
   parameters_->Request([](
-      const ledger::Result result,
-      const ledger::RewardsParameters& parameters) {
-    ledger::RewardsParameters expected_parameters;
+      const type::Result result,
+      const type::RewardsParameters& parameters) {
+    type::RewardsParameters expected_parameters;
     expected_parameters.rate = 0.2476573499489187;
     expected_parameters.auto_contribute_choice = 20;
     expected_parameters.auto_contribute_choices = {5, 10.5, 15};
     expected_parameters.tip_choices = {1, 10.5, 100};
     expected_parameters.monthly_tip_choices = {5, 10.5, 15};
-    EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_TRUE(expected_parameters.Equals(parameters));
   });
 }

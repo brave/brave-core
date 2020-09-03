@@ -49,8 +49,8 @@ namespace endpoint {
 namespace promotion {
 
 using GetAvailableCallback = std::function<void(
-    const ledger::Result result,
-    ledger::PromotionList list,
+    const type::Result result,
+    type::PromotionList list,
     const std::vector<std::string>& corrupted_promotions)>;
 
 class GetAvailable {
@@ -65,15 +65,15 @@ class GetAvailable {
  private:
   std::string GetUrl(const std::string& platform);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
-      ledger::PromotionList* list,
+      type::PromotionList* list,
       std::vector<std::string>* corrupted_promotions);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetAvailableCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

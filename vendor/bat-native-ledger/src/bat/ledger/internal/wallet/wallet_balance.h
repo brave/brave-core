@@ -34,27 +34,27 @@ class WalletBalance {
 
  private:
   void OnFetch(
-      const ledger::Result result,
-      ledger::BalancePtr balance,
+      const type::Result result,
+      type::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
   void GetUnblindedTokens(
-      ledger::BalancePtr balance,
+      type::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
   void OnGetUnblindedTokens(
-      ledger::Balance info,
+      type::Balance info,
       ledger::FetchBalanceCallback callback,
-      ledger::UnblindedTokenList list);
+      type::UnblindedTokenList list);
 
   void ExternalWallets(
-      ledger::BalancePtr balance,
+      type::BalancePtr balance,
       ledger::FetchBalanceCallback callback);
 
   void OnUpholdFetchBalance(
-      ledger::Balance info,
+      type::Balance info,
       ledger::FetchBalanceCallback callback,
-      const ledger::Result result,
+      const type::Result result,
       const double balance);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -28,7 +28,7 @@ class WalletCreate {
 
  private:
   void OnCreate(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& payment_id,
       ledger::ResultCallback callback);
 

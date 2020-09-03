@@ -88,9 +88,9 @@ class PromotionTest : public testing::Test {
     ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
         Invoke([](
-            ledger::UrlRequestPtr request,
+            type::UrlRequestPtr request,
             client::LoadURLCallback callback) {
-          ledger::UrlResponse response;
+          type::UrlResponse response;
           response.status_code = 200;
           response.url = request->url;
           response.body = GetResponse(request->url);
@@ -101,8 +101,8 @@ class PromotionTest : public testing::Test {
 TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   ledger::FetchPromotionCallback fetch_promotion_callback =
       std::bind(
-          [&](ledger::Result result,
-              ledger::PromotionList promotions) {
+          [&](type::Result result,
+              type::PromotionList promotions) {
           },
       _1,
       _2);
@@ -111,15 +111,15 @@ TEST_F(PromotionTest, LegacyPromotionIsNotOverwritten) {
   ON_CALL(*mock_database_, GetAllPromotions(_))
     .WillByDefault(
         Invoke([&inserted](ledger::GetAllPromotionsCallback callback) {
-          auto promotion = ledger::Promotion::New();
-          ledger::PromotionMap map;
+          auto promotion = type::Promotion::New();
+          type::PromotionMap map;
           if (inserted) {
             const std::string id = "36baa4c3-f92d-4121-b6d9-db44cb273a02";
             promotion->id = id;
             promotion->public_keys =
                 "[\"vNnt88kCh650dFFHt+48SS4d4skQ2FYSxmmlzmKDgkE=\"]";
             promotion->legacy_claimed = true;
-            promotion->status = ledger::PromotionStatus::ATTESTED;
+            promotion->status = type::PromotionStatus::ATTESTED;
             map.insert(std::make_pair(id, std::move(promotion)));
           }
 

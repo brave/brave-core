@@ -38,7 +38,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostClaimUpholdCallback = std::function<void(
-    const ledger::Result result)>;
+    const type::Result result)>;
 
 class PostClaimUphold {
  public:
@@ -54,14 +54,14 @@ class PostClaimUphold {
 
   std::string GeneratePayload(const double user_funds);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* payment_id);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostClaimUpholdCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -29,7 +29,7 @@ class DatabaseProcessedPublisher : public DatabaseTable {
 
  private:
   void OnWasProcessed(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::ResultCallback callback);
 };
 

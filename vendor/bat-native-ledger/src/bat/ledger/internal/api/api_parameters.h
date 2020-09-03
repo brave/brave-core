@@ -29,8 +29,8 @@ class APIParameters {
 
  private:
   void OnFetch(
-      const ledger::Result result,
-      const ledger::RewardsParameters& parameters);
+      const type::Result result,
+      const type::RewardsParameters& parameters);
 
   void RunCallbacks();
 

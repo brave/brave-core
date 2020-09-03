@@ -33,7 +33,7 @@ void CredentialsCommon::GetBlindedCreds(
 
   if (creds.empty()) {
     BLOG(0, "Creds are empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -42,20 +42,20 @@ void CredentialsCommon::GetBlindedCreds(
 
   if (blinded_creds.empty()) {
     BLOG(0, "Blinded creds are empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   const std::string blinded_creds_json = GetBlindedCredsJSON(blinded_creds);
 
-  auto creds_batch = ledger::CredsBatch::New();
+  auto creds_batch = type::CredsBatch::New();
   creds_batch->creds_id = base::GenerateGUID();
   creds_batch->size = trigger.size;
   creds_batch->creds = creds_json;
   creds_batch->blinded_creds = blinded_creds_json;
   creds_batch->trigger_id = trigger.id;
   creds_batch->trigger_type = trigger.type;
-  creds_batch->status = ledger::CredsBatchStatus::BLINDED;
+  creds_batch->status = type::CredsBatchStatus::BLINDED;
 
   auto save_callback = std::bind(&CredentialsCommon::BlindedCredsSaved,
       this,
@@ -66,28 +66,28 @@ void CredentialsCommon::GetBlindedCreds(
 }
 
 void CredentialsCommon::BlindedCredsSaved(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Creds batch save failed");
-    callback(ledger::Result::RETRY);
+    callback(type::Result::RETRY);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void CredentialsCommon::SaveUnblindedCreds(
     const uint64_t expires_at,
     const double token_value,
-    const ledger::CredsBatch& creds,
+    const type::CredsBatch& creds,
     const std::vector<std::string>& unblinded_encoded_creds,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  ledger::UnblindedTokenList list;
-  ledger::UnblindedTokenPtr unblinded;
+  type::UnblindedTokenList list;
+  type::UnblindedTokenPtr unblinded;
   for (auto & cred : unblinded_encoded_creds) {
-    unblinded = ledger::UnblindedToken::New();
+    unblinded = type::UnblindedToken::New();
     unblinded->token_value = cred;
     unblinded->public_key = creds.public_key;
     unblinded->value = token_value;
@@ -106,19 +106,19 @@ void CredentialsCommon::SaveUnblindedCreds(
 }
 
 void CredentialsCommon::OnSaveUnblindedCreds(
-    const ledger::Result result,
+    const type::Result result,
     const CredentialsTrigger& trigger,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Token list not saved");
-    callback(ledger::Result::RETRY);
+    callback(type::Result::RETRY);
     return;
   }
 
   ledger_->database()->UpdateCredsBatchStatus(
       trigger.id,
       trigger.type,
-      ledger::CredsBatchStatus::FINISHED,
+      type::CredsBatchStatus::FINISHED,
       callback);
 }
 

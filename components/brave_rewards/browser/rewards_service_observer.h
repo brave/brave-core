@@ -23,21 +23,21 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnWalletInitialized(
       RewardsService* rewards_service,
-      const ledger::Result result) {}
+      const ledger::type::Result result) {}
 
   virtual void OnFetchPromotions(
       RewardsService* rewards_service,
-      const ledger::Result result,
-      const ledger::PromotionList& list) {}
+      const ledger::type::Result result,
+      const ledger::type::PromotionList& list) {}
 
   virtual void OnRecoverWallet(
       RewardsService* rewards_service,
-      const ledger::Result result) {}
+      const ledger::type::Result result) {}
 
   virtual void OnPromotionFinished(
       RewardsService* rewards_service,
-      const ledger::Result result,
-      ledger::PromotionPtr promotion) {}
+      const ledger::type::Result result,
+      ledger::type::PromotionPtr promotion) {}
 
   virtual void OnContentSiteUpdated(
       RewardsService* rewards_service) {}
@@ -49,11 +49,11 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnReconcileComplete(
       RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& contribution_id,
       const double amount,
-      const ledger::RewardsType type,
-      const ledger::ContributionProcessor processor) {}
+      const ledger::type::RewardsType type,
+      const ledger::type::ContributionProcessor processor) {}
 
   virtual void OnAdsEnabled(
       brave_rewards::RewardsService* rewards_service,
@@ -65,11 +65,11 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnPendingContributionSaved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result) {}
+      const ledger::type::Result result) {}
 
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
-      ledger::PublisherInfoList list) {}
+      ledger::type::PublisherInfoList list) {}
 
   virtual void OnTransactionHistoryChanged(
       brave_rewards::RewardsService* rewards_service) {}
@@ -84,11 +84,11 @@ class RewardsServiceObserver : public base::CheckedObserver {
 
   virtual void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result) {}
+      const ledger::type::Result result) {}
 
   virtual void OnDisconnectWallet(
       brave_rewards::RewardsService* rewards_service,
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& wallet_type) {}
 
   virtual void OnUnblindedTokensReady(

@@ -35,7 +35,7 @@ content::WebContents* RewardsBrowserTestContribution::contents() {
 void RewardsBrowserTestContribution::TipViaCode(
     const std::string& publisher_key,
     const double amount,
-    const ledger::PublisherStatus status,
+    const ledger::type::PublisherStatus status,
     const int32_t number_of_contributions,
     const bool recurring) {
   pending_tip_saved_ = false;
@@ -43,7 +43,7 @@ void RewardsBrowserTestContribution::TipViaCode(
   multiple_tip_reconcile_count_ = 0;
 
   bool should_contribute = number_of_contributions > 0;
-  auto publisher = ledger::PublisherInfo::New();
+  auto publisher = ledger::type::PublisherInfo::New();
   publisher->id = publisher_key;
   publisher->name = publisher_key;
   publisher->url = publisher_key;
@@ -134,8 +134,8 @@ void RewardsBrowserTestContribution::TipPublisher(
     if (should_contribute) {
       WaitForTipReconcileCompleted();
       const auto result = should_contribute
-          ? ledger::Result::LEDGER_OK
-          : ledger::Result::RECURRING_TABLE_EMPTY;
+          ? ledger::type::Result::LEDGER_OK
+          : ledger::type::Result::RECURRING_TABLE_EMPTY;
       ASSERT_EQ(tip_reconcile_status_, result);
     }
 
@@ -152,7 +152,7 @@ void RewardsBrowserTestContribution::TipPublisher(
         static_cast<int32_t>(multiple_tip_reconcile_status_.size()),
         number_of_contributions);
     for (const auto status : multiple_tip_reconcile_status_) {
-      ASSERT_EQ(status, ledger::Result::LEDGER_OK);
+      ASSERT_EQ(status, ledger::type::Result::LEDGER_OK);
     }
   }
 
@@ -261,8 +261,8 @@ void RewardsBrowserTestContribution::WaitForPendingTipToBeSaved() {
 
 void RewardsBrowserTestContribution::OnPendingContributionSaved(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result) {
-  if (result != ledger::Result::LEDGER_OK) {
+    const ledger::type::Result result) {
+  if (result != ledger::type::Result::LEDGER_OK) {
     return;
   }
 
@@ -283,19 +283,19 @@ void RewardsBrowserTestContribution::WaitForTipReconcileCompleted() {
 
 void RewardsBrowserTestContribution::OnReconcileComplete(
     brave_rewards::RewardsService* rewards_service,
-    const ledger::Result result,
+    const ledger::type::Result result,
     const std::string& contribution_id,
     const double amount,
-    const ledger::RewardsType type,
-    const ledger::ContributionProcessor processor) {
-  if (result == ledger::Result::LEDGER_OK) {
+    const ledger::type::RewardsType type,
+    const ledger::type::ContributionProcessor processor) {
+  if (result == ledger::type::Result::LEDGER_OK) {
     UpdateContributionBalance(
         amount,
         true,
         processor);
   }
 
-  if (type == ledger::RewardsType::AUTO_CONTRIBUTE) {
+  if (type == ledger::type::RewardsType::AUTO_CONTRIBUTE) {
     ac_reconcile_completed_ = true;
     ac_reconcile_status_ = result;
     if (wait_for_ac_completed_loop_) {
@@ -314,9 +314,9 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
     }
   }
 
-  if (type == ledger::RewardsType::ONE_TIME_TIP ||
-      type == ledger::RewardsType::RECURRING_TIP) {
-    if (result == ledger::Result::LEDGER_OK) {
+  if (type == ledger::type::RewardsType::ONE_TIME_TIP ||
+      type == ledger::type::RewardsType::RECURRING_TIP) {
+    if (result == ledger::type::Result::LEDGER_OK) {
       reconciled_tip_total_ += amount;
     }
 
@@ -343,15 +343,15 @@ void RewardsBrowserTestContribution::OnReconcileComplete(
 void RewardsBrowserTestContribution::UpdateContributionBalance(
     const double amount,
     const bool verified,
-    const ledger::ContributionProcessor processor) {
+    const ledger::type::ContributionProcessor processor) {
   if (verified) {
-    if (processor == ledger::ContributionProcessor::BRAVE_TOKENS ||
-        processor == ledger::ContributionProcessor::BRAVE_USER_FUNDS) {
+    if (processor == ledger::type::ContributionProcessor::BRAVE_TOKENS ||
+        processor == ledger::type::ContributionProcessor::BRAVE_USER_FUNDS) {
       balance_ -= amount;
       return;
     }
 
-    if (processor == ledger::ContributionProcessor::UPHOLD) {
+    if (processor == ledger::type::ContributionProcessor::UPHOLD) {
       external_balance_ -= amount;
       return;
     }
@@ -429,15 +429,15 @@ std::string RewardsBrowserTestContribution::GetStringPendingBalance() {
   return balance + " BAT";
 }
 
-ledger::Result RewardsBrowserTestContribution::GetACStatus() {
+ledger::type::Result RewardsBrowserTestContribution::GetACStatus() {
   return ac_reconcile_status_;
 }
 
 void RewardsBrowserTestContribution::SetUpUpholdWallet(
     const double balance,
-    const ledger::WalletStatus status) {
+    const ledger::type::WalletStatus status) {
   external_balance_ = balance;
-  auto wallet = ledger::ExternalWallet::New();
+  auto wallet = ledger::type::ExternalWallet::New();
   wallet->token = "token";
   wallet->address = rewards_browsertest_util::GetUpholdExternalAddress();
   wallet->status = status;
@@ -450,16 +450,16 @@ double RewardsBrowserTestContribution::GetReconcileTipTotal() {
   return reconciled_tip_total_;
 }
 
-std::vector<ledger::Result>
+std::vector<ledger::type::Result>
 RewardsBrowserTestContribution::GetMultipleTipStatus() {
   return multiple_tip_reconcile_status_;
 }
 
-ledger::Result RewardsBrowserTestContribution::GetTipStatus() {
+ledger::type::Result RewardsBrowserTestContribution::GetTipStatus() {
   return tip_reconcile_status_;
 }
 
-std::vector<ledger::Result>
+std::vector<ledger::type::Result>
 RewardsBrowserTestContribution::GetMultipleACStatus() {
   return multiple_ac_reconcile_status_;
 }

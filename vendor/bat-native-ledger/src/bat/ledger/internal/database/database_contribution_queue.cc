@@ -32,29 +32,29 @@ DatabaseContributionQueue::DatabaseContributionQueue(
 DatabaseContributionQueue::~DatabaseContributionQueue() = default;
 
 void DatabaseContributionQueue::InsertOrUpdate(
-    ledger::ContributionQueuePtr info,
+    type::ContributionQueuePtr info,
     ledger::ResultCallback callback) {
   if (!info) {
     BLOG(0, "Queue is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (info->id.empty()) {
     BLOG(0, "Queue id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
     "INSERT OR REPLACE INTO %s (contribution_queue_id, type, amount, partial) "
     "VALUES (?, ?, ?, ?)",
     kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -65,7 +65,7 @@ void DatabaseContributionQueue::InsertOrUpdate(
   transaction->commands.push_back(std::move(command));
 
   auto shared_info =
-      std::make_shared<ledger::ContributionQueuePtr>(std::move(info));
+      std::make_shared<type::ContributionQueuePtr>(std::move(info));
 
   auto transaction_callback =
       std::bind(&DatabaseContributionQueue::OnInsertOrUpdate,
@@ -80,19 +80,19 @@ void DatabaseContributionQueue::InsertOrUpdate(
 }
 
 void DatabaseContributionQueue::OnInsertOrUpdate(
-    ledger::DBCommandResponsePtr response,
-    std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
+    type::DBCommandResponsePtr response,
+    std::shared_ptr<type::ContributionQueuePtr> shared_queue,
     ledger::ResultCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is not ok");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (!shared_queue) {
     BLOG(0, "Queue is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -104,7 +104,7 @@ void DatabaseContributionQueue::OnInsertOrUpdate(
 
 void DatabaseContributionQueue::GetFirstRecord(
     GetFirstContributionQueueCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT contribution_queue_id, type, amount, partial "
@@ -112,15 +112,15 @@ void DatabaseContributionQueue::GetFirstRecord(
       "ORDER BY created_at ASC LIMIT 1",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -137,10 +137,10 @@ void DatabaseContributionQueue::GetFirstRecord(
 }
 
 void DatabaseContributionQueue::OnGetFirstRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     GetFirstContributionQueueCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
@@ -153,14 +153,14 @@ void DatabaseContributionQueue::OnGetFirstRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = ledger::ContributionQueue::New();
+  auto info = type::ContributionQueue::New();
   info->id = GetStringColumn(record, 0);
-  info->type = static_cast<ledger::RewardsType>(GetIntColumn(record, 1));
+  info->type = static_cast<type::RewardsType>(GetIntColumn(record, 1));
   info->amount = GetDoubleColumn(record, 2);
   info->partial = static_cast<bool>(GetIntColumn(record, 3));
 
   auto shared_info =
-      std::make_shared<ledger::ContributionQueuePtr>(info->Clone());
+      std::make_shared<type::ContributionQueuePtr>(info->Clone());
 
   auto publishers_callback =
       std::bind(&DatabaseContributionQueue::OnGetPublishers,
@@ -173,8 +173,8 @@ void DatabaseContributionQueue::OnGetFirstRecord(
 }
 
 void DatabaseContributionQueue::OnGetPublishers(
-    ledger::ContributionQueuePublisherList list,
-    std::shared_ptr<ledger::ContributionQueuePtr> shared_queue,
+    type::ContributionQueuePublisherList list,
+    std::shared_ptr<type::ContributionQueuePtr> shared_queue,
     GetFirstContributionQueueCallback callback) {
   if (!shared_queue) {
     BLOG(0, "Queue is null");
@@ -191,18 +191,18 @@ void DatabaseContributionQueue::MarkRecordAsComplete(
     ledger::ResultCallback callback) {
   if (id.empty()) {
     BLOG(1, "Id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "UPDATE %s SET completed_at = ? WHERE contribution_queue_id = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt64(command.get(), 0, braveledger_time_util::GetCurrentTimeStamp());

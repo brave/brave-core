@@ -13,7 +13,7 @@
 namespace ledger {
 namespace database {
 
-using GetSKUTransactionCallback = std::function<void(SKUTransactionPtr)>;
+using GetSKUTransactionCallback = std::function<void(type::SKUTransactionPtr)>;
 
 class DatabaseSKUTransaction: public DatabaseTable {
  public:
@@ -21,7 +21,7 @@ class DatabaseSKUTransaction: public DatabaseTable {
   ~DatabaseSKUTransaction() override;
 
   void InsertOrUpdate(
-      ledger::SKUTransactionPtr info,
+      type::SKUTransactionPtr info,
       ledger::ResultCallback callback);
 
   void SaveExternalTransaction(
@@ -35,7 +35,7 @@ class DatabaseSKUTransaction: public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetSKUTransactionCallback callback);
 };
 

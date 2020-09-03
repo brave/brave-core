@@ -10,15 +10,15 @@
 
 namespace braveledger_time_util {
 
-ledger::ActivityMonth GetCurrentMonth() {
+ledger::type::ActivityMonth GetCurrentMonth() {
   base::Time now = base::Time::Now();
   return GetMonth(now);
 }
 
-ledger::ActivityMonth GetMonth(const base::Time& time) {
+ledger::type::ActivityMonth GetMonth(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  return (ledger::ActivityMonth)exploded.month;
+  return (ledger::type::ActivityMonth)exploded.month;
 }
 
 uint32_t GetCurrentYear() {

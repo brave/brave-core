@@ -30,8 +30,8 @@ DatabaseServerPublisherAmounts::DatabaseServerPublisherAmounts(
 DatabaseServerPublisherAmounts::~DatabaseServerPublisherAmounts() = default;
 
 void DatabaseServerPublisherAmounts::InsertOrUpdate(
-    ledger::DBTransaction* transaction,
-    const ledger::ServerPublisherInfo& server_info) {
+    type::DBTransaction* transaction,
+    const type::ServerPublisherInfo& server_info) {
   DCHECK(transaction && !server_info.publisher_key.empty());
   if (!server_info.banner || server_info.banner->amounts.empty()) {
     return;
@@ -50,8 +50,8 @@ void DatabaseServerPublisherAmounts::InsertOrUpdate(
   // Remove trailing comma
   value_list.pop_back();
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s VALUES %s",
       kTableName,
@@ -61,15 +61,15 @@ void DatabaseServerPublisherAmounts::InsertOrUpdate(
 }
 
 void DatabaseServerPublisherAmounts::DeleteRecords(
-    ledger::DBTransaction* transaction,
+    type::DBTransaction* transaction,
     const std::string& publisher_key_list) {
   DCHECK(transaction);
   if (publisher_key_list.empty()) {
     return;
   }
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_key IN (%s)",
       kTableName,
@@ -86,19 +86,19 @@ void DatabaseServerPublisherAmounts::GetRecord(
     callback({});
     return;
   }
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT amount FROM %s WHERE publisher_key=?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -115,10 +115,10 @@ void DatabaseServerPublisherAmounts::GetRecord(
 }
 
 void DatabaseServerPublisherAmounts::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ServerPublisherAmountsCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;

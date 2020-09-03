@@ -32,17 +32,17 @@ class UpholdAuthorization {
 
  private:
   void OnAuthorize(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& token,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnGetUser(
-      const ledger::Result result,
+      const type::Result result,
       const User& user,
       ledger::ExternalWalletAuthorizationCallback callback);
 
   void OnCardCreate(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& address,
       ledger::ExternalWalletAuthorizationCallback callback);
 

@@ -26,7 +26,7 @@ class StateMigrationV2 {
 
  private:
   void OnLoadState(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   std::unique_ptr<braveledger_bat_state::LegacyBatState> legacy_state_;

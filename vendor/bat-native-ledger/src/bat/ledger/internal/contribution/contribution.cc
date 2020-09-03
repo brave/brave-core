@@ -26,29 +26,29 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 
 namespace {
-ledger::ContributionStep ConvertResultIntoContributionStep(
-    const ledger::Result result) {
+ledger::type::ContributionStep ConvertResultIntoContributionStep(
+    const ledger::type::Result result) {
   switch (result) {
-    case ledger::Result::LEDGER_OK: {
-      return ledger::ContributionStep::STEP_COMPLETED;
+    case ledger::type::Result::LEDGER_OK: {
+      return ledger::type::ContributionStep::STEP_COMPLETED;
     }
-    case ledger::Result::AC_TABLE_EMPTY: {
-      return ledger::ContributionStep::STEP_AC_TABLE_EMPTY;
+    case ledger::type::Result::AC_TABLE_EMPTY: {
+      return ledger::type::ContributionStep::STEP_AC_TABLE_EMPTY;
     }
-    case ledger::Result::NOT_ENOUGH_FUNDS: {
-      return ledger::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
+    case ledger::type::Result::NOT_ENOUGH_FUNDS: {
+      return ledger::type::ContributionStep::STEP_NOT_ENOUGH_FUNDS;
     }
-    case ledger::Result::REWARDS_OFF: {
-      return ledger::ContributionStep::STEP_REWARDS_OFF;
+    case ledger::type::Result::REWARDS_OFF: {
+      return ledger::type::ContributionStep::STEP_REWARDS_OFF;
     }
-    case ledger::Result::AC_OFF: {
-      return ledger::ContributionStep::STEP_AC_OFF;
+    case ledger::type::Result::AC_OFF: {
+      return ledger::type::ContributionStep::STEP_AC_OFF;
     }
-    case ledger::Result::TOO_MANY_RESULTS: {
-      return ledger::ContributionStep::STEP_RETRY_COUNT;
+    case ledger::type::Result::TOO_MANY_RESULTS: {
+      return ledger::type::ContributionStep::STEP_RETRY_COUNT;
     }
     default: {
-      return ledger::ContributionStep::STEP_FAILED;
+      return ledger::type::ContributionStep::STEP_FAILED;
     }
   }
 }
@@ -108,7 +108,7 @@ void Contribution::ProcessContributionQueue() {
 }
 
 void Contribution::OnProcessContributionQueue(
-    ledger::ContributionQueuePtr info) {
+    type::ContributionQueuePtr info) {
   if (!info) {
     queue_in_progress_ = false;
     return;
@@ -127,7 +127,7 @@ void Contribution::CheckNotCompletedContributions() {
 }
 
 void Contribution::NotCompletedContributions(
-    ledger::ContributionInfoList list) {
+    type::ContributionInfoList list) {
   if (list.empty()) {
     return;
   }
@@ -170,9 +170,9 @@ void Contribution::StartMonthlyContribution() {
 }
 
 void Contribution::StartAutoContribute(
-    const ledger::Result result,
+    const type::Result result,
     const uint64_t reconcile_stamp) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Monthly contribution failed");
   }
 
@@ -180,10 +180,10 @@ void Contribution::StartAutoContribute(
 }
 
 void Contribution::OnBalance(
-    const ledger::Result result,
-    ledger::BalancePtr info,
-    std::shared_ptr<ledger::ContributionQueuePtr> shared_queue) {
-  if (result != ledger::Result::LEDGER_OK || !shared_queue) {
+    const type::Result result,
+    type::BalancePtr info,
+    std::shared_ptr<type::ContributionQueuePtr> shared_queue) {
+  if (result != type::Result::LEDGER_OK || !shared_queue) {
     queue_in_progress_ = false;
     BLOG(0, "We couldn't get balance from the server.");
     return;
@@ -192,12 +192,12 @@ void Contribution::OnBalance(
   Process(std::move(*shared_queue), std::move(info));
 }
 
-void Contribution::Start(ledger::ContributionQueuePtr info) {
+void Contribution::Start(type::ContributionQueuePtr info) {
   auto fetch_callback = std::bind(&Contribution::OnBalance,
       this,
       _1,
       _2,
-      std::make_shared<ledger::ContributionQueuePtr>(std::move(info)));
+      std::make_shared<type::ContributionQueuePtr>(std::move(info)));
   ledger_->wallet()->FetchBalance(fetch_callback);
 }
 
@@ -222,8 +222,8 @@ void Contribution::SetReconcileTimer() {
 }
 
 void Contribution::ContributionCompleted(
-    const ledger::Result result,
-    ledger::ContributionInfoPtr contribution) {
+    const type::Result result,
+    type::ContributionInfoPtr contribution) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return;
@@ -235,13 +235,13 @@ void Contribution::ContributionCompleted(
       result,
       contribution->Clone());
 
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result == type::Result::LEDGER_OK) {
     ledger_->database()->SaveBalanceReportInfoItem(
         braveledger_time_util::GetCurrentMonth(),
         braveledger_time_util::GetCurrentYear(),
         GetReportTypeFromRewardsType(contribution->type),
         contribution->amount,
-        [](const ledger::Result){});
+        [](const type::Result){});
   }
 
   auto save_callback = std::bind(&Contribution::ContributionCompletedSaved,
@@ -257,9 +257,9 @@ void Contribution::ContributionCompleted(
 }
 
 void Contribution::ContributionCompletedSaved(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& contribution_id) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Contribution step and count failed");
   }
 
@@ -284,7 +284,7 @@ void Contribution::OneTimeTip(
 }
 
 void Contribution::OnMarkContributionQueueAsComplete(
-    const ledger::Result result) {
+    const type::Result result) {
   queue_in_progress_ = false;
   CheckContributionQueue();
 }
@@ -304,8 +304,8 @@ void Contribution::MarkContributionQueueAsComplete(const std::string& id) {
 
 void Contribution::CreateNewEntry(
     const std::string& wallet_type,
-    ledger::BalancePtr balance,
-    ledger::ContributionQueuePtr queue) {
+    type::BalancePtr balance,
+    type::ContributionQueuePtr queue) {
   if (!queue) {
     BLOG(1, "Queue is null");
     return;
@@ -332,17 +332,17 @@ void Contribution::CreateNewEntry(
 
   const std::string contribution_id = base::GenerateGUID();
 
-  auto contribution = ledger::ContributionInfo::New();
+  auto contribution = type::ContributionInfo::New();
   const uint64_t now = braveledger_time_util::GetCurrentTimeStamp();
   contribution->contribution_id = contribution_id;
   contribution->amount = queue->amount;
   contribution->type = queue->type;
-  contribution->step = ledger::ContributionStep::STEP_START;
+  contribution->step = type::ContributionStep::STEP_START;
   contribution->retry_count = 0;
   contribution->created_at = now;
   contribution->processor = GetProcessor(wallet_type);
 
-  ledger::ContributionQueuePublisherList queue_publishers;
+  type::ContributionQueuePublisherList queue_publishers;
   for (auto& item : queue->publishers) {
     queue_publishers.push_back(item->Clone());
   }
@@ -357,9 +357,9 @@ void Contribution::CreateNewEntry(
   BLOG(1, "Creating contribution(" << wallet_type << ") for " <<
       queue->amount << " type " << queue->type);
 
-  ledger::ContributionPublisherList publisher_list;
+  type::ContributionPublisherList publisher_list;
   for (const auto& item : queue_publishers) {
-    auto publisher = ledger::ContributionPublisher::New();
+    auto publisher = type::ContributionPublisher::New();
     publisher->contribution_id = contribution_id;
     publisher->publisher_key = item->publisher_key;
     publisher->total_amount =
@@ -371,7 +371,7 @@ void Contribution::CreateNewEntry(
   contribution->publishers = std::move(publisher_list);
 
   auto shared_queue =
-      std::make_shared<ledger::ContributionQueuePtr>(std::move(queue));
+      std::make_shared<type::ContributionQueuePtr>(std::move(queue));
 
   auto save_callback = std::bind(&Contribution::OnEntrySaved,
       this,
@@ -387,12 +387,12 @@ void Contribution::CreateNewEntry(
 }
 
 void Contribution::OnEntrySaved(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& contribution_id,
     const std::string& wallet_type,
-    const ledger::Balance& balance,
-    std::shared_ptr<ledger::ContributionQueuePtr> shared_queue) {
-  if (result != ledger::Result::LEDGER_OK) {
+    const type::Balance& balance,
+    std::shared_ptr<type::ContributionQueuePtr> shared_queue) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Contribution was not saved correctly");
     return;
   }
@@ -409,11 +409,11 @@ void Contribution::OnEntrySaved(
       contribution_id);
 
     StartUnblinded(
-        {ledger::CredsBatchType::PROMOTION},
+        {type::CredsBatchType::PROMOTION},
         contribution_id,
         result_callback);
   } else if (wallet_type == constant::kWalletAnonymous) {
-    auto wallet = ledger::ExternalWallet::New();
+    auto wallet = type::ExternalWallet::New();
     wallet->type = wallet_type;
 
     auto result_callback = std::bind(&Contribution::Result,
@@ -448,11 +448,11 @@ void Contribution::OnEntrySaved(
 }
 
 void Contribution::OnQueueSaved(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& wallet_type,
-    const ledger::Balance& balance,
-    std::shared_ptr<ledger::ContributionQueuePtr> shared_queue) {
-  if (result != ledger::Result::LEDGER_OK) {
+    const type::Balance& balance,
+    std::shared_ptr<type::ContributionQueuePtr> shared_queue) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Queue was not saved successfully");
     return;
   }
@@ -464,13 +464,13 @@ void Contribution::OnQueueSaved(
 
   CreateNewEntry(
       GetNextProcessor(wallet_type),
-      ledger::Balance::New(balance),
+      type::Balance::New(balance),
       std::move(*shared_queue));
 }
 
 void Contribution::Process(
-    ledger::ContributionQueuePtr queue,
-    ledger::BalancePtr balance) {
+    type::ContributionQueuePtr queue,
+    type::BalancePtr balance) {
   if (!queue) {
     BLOG(0, "Queue is null");
     return;
@@ -511,13 +511,13 @@ void Contribution::Process(
 }
 
 void Contribution::TransferFunds(
-    const ledger::SKUTransaction& transaction,
+    const type::SKUTransaction& transaction,
     const std::string& destination,
-    ledger::ExternalWalletPtr wallet,
+    type::ExternalWalletPtr wallet,
     client::TransactionCallback callback) {
   if (!wallet) {
      BLOG(0, "Wallet is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -549,20 +549,20 @@ void Contribution::TransferFunds(
 
 void Contribution::SKUAutoContribution(
     const std::string& contribution_id,
-    ledger::ExternalWalletPtr wallet,
+    type::ExternalWalletPtr wallet,
     ledger::ResultCallback callback) {
   sku_->AutoContribution(contribution_id, std::move(wallet), callback);
 }
 
 void Contribution::StartUnblinded(
-    const std::vector<ledger::CredsBatchType>& types,
+    const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
   unblinded_->Start(types, contribution_id, callback);
 }
 
 void Contribution::RetryUnblinded(
-    const std::vector<ledger::CredsBatchType>& types,
+    const std::vector<type::CredsBatchType>& types,
     const std::string& contribution_id,
     ledger::ResultCallback callback) {
 
@@ -576,21 +576,21 @@ void Contribution::RetryUnblinded(
 }
 
 void Contribution::RetryUnblindedContribution(
-    ledger::ContributionInfoPtr contribution,
-    const std::vector<ledger::CredsBatchType>& types,
+    type::ContributionInfoPtr contribution,
+    const std::vector<type::CredsBatchType>& types,
     ledger::ResultCallback callback) {
   unblinded_->Retry(types, std::move(contribution), callback);
 }
 
 void Contribution::Result(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& contribution_id) {
-  if (result == ledger::Result::RETRY_SHORT) {
+  if (result == type::Result::RETRY_SHORT) {
     SetRetryTimer(contribution_id, base::TimeDelta::FromSeconds(5));
     return;
   }
 
-  if (result == ledger::Result::RETRY) {
+  if (result == type::Result::RETRY) {
     SetRetryTimer(
         contribution_id,
         braveledger_time_util::GetRandomizedDelay(
@@ -607,16 +607,16 @@ void Contribution::Result(
 }
 
 void Contribution::OnResult(
-    ledger::ContributionInfoPtr contribution,
-    const ledger::Result result) {
+    type::ContributionInfoPtr contribution,
+    const type::Result result) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return;
   }
 
-  if (result == ledger::Result::RETRY_LONG) {
+  if (result == type::Result::RETRY_LONG) {
     if (contribution->processor ==
-        ledger::ContributionProcessor::BRAVE_TOKENS) {
+        type::ContributionProcessor::BRAVE_TOKENS) {
       SetRetryTimer(
           contribution->contribution_id,
           braveledger_time_util::GetRandomizedDelay(
@@ -667,17 +667,17 @@ void Contribution::OnRetryTimerElapsed(const std::string& contribution_id) {
   ledger_->database()->GetContributionInfo(contribution_id, callback);
 }
 
-void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
+void Contribution::SetRetryCounter(type::ContributionInfoPtr contribution) {
   if (!contribution) {
     BLOG(0, "Contribution is null");
     return;
   }
 
   if (contribution->retry_count == 3 &&
-      contribution->step != ledger::ContributionStep::STEP_PREPARE) {
+      contribution->step != type::ContributionStep::STEP_PREPARE) {
     BLOG(0, "Contribution failed after 3 retries");
     ledger_->contribution()->ContributionCompleted(
-        ledger::Result::TOO_MANY_RESULTS,
+        type::Result::TOO_MANY_RESULTS,
         std::move(contribution));
     return;
   }
@@ -685,7 +685,7 @@ void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
   auto save_callback = std::bind(&Contribution::Retry,
       this,
       _1,
-      std::make_shared<ledger::ContributionInfoPtr>(contribution->Clone()));
+      std::make_shared<type::ContributionInfoPtr>(contribution->Clone()));
 
   ledger_->database()->UpdateContributionInfoStepAndCount(
       contribution->contribution_id,
@@ -695,19 +695,19 @@ void Contribution::SetRetryCounter(ledger::ContributionInfoPtr contribution) {
 }
 
 void Contribution::OnMarkUnblindedTokensAsSpendable(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& contribution_id) {
   BLOG_IF(
       1,
-      result != ledger::Result::LEDGER_OK,
+      result != type::Result::LEDGER_OK,
       "Failed to mark unblinded tokens as unreserved for contribution "
           << contribution_id);
 }
 
 void Contribution::Retry(
-    const ledger::Result result,
-    std::shared_ptr<ledger::ContributionInfoPtr> shared_contribution) {
-  if (result != ledger::Result::LEDGER_OK) {
+    const type::Result result,
+    std::shared_ptr<type::ContributionInfoPtr> shared_contribution) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Retry count update failed");
     return;
   }
@@ -725,16 +725,16 @@ void Contribution::Retry(
   if (!ledger_->state()->GetRewardsMainEnabled()) {
     BLOG(1, "Rewards is disabled, completing contribution");
     ledger_->contribution()->ContributionCompleted(
-        ledger::Result::REWARDS_OFF,
+        type::Result::REWARDS_OFF,
         std::move(*shared_contribution));
     return;
   }
 
-  if ((*shared_contribution)->type == ledger::RewardsType::AUTO_CONTRIBUTE &&
+  if ((*shared_contribution)->type == type::RewardsType::AUTO_CONTRIBUTE &&
       !ledger_->state()->GetAutoContributeEnabled()) {
     BLOG(1, "AC is disabled, completing contribution");
     ledger_->contribution()->ContributionCompleted(
-        ledger::Result::AC_OFF,
+        type::Result::AC_OFF,
         std::move(*shared_contribution));
     return;
   }
@@ -748,16 +748,16 @@ void Contribution::Retry(
     (*shared_contribution)->contribution_id);
 
   switch ((*shared_contribution)->processor) {
-    case ledger::ContributionProcessor::BRAVE_TOKENS: {
+    case type::ContributionProcessor::BRAVE_TOKENS: {
       RetryUnblindedContribution(
           (*shared_contribution)->Clone(),
-          {ledger::CredsBatchType::PROMOTION},
+          {type::CredsBatchType::PROMOTION},
           result_callback);
       return;
     }
-    case ledger::ContributionProcessor::UPHOLD: {
+    case type::ContributionProcessor::UPHOLD: {
       if ((*shared_contribution)->type ==
-          ledger::RewardsType::AUTO_CONTRIBUTE) {
+          type::RewardsType::AUTO_CONTRIBUTE) {
         sku_->Retry((*shared_contribution)->Clone(), result_callback);
         return;
       }
@@ -765,13 +765,13 @@ void Contribution::Retry(
       external_wallet_->Retry((*shared_contribution)->Clone(), result_callback);
       return;
     }
-    case ledger::ContributionProcessor::BRAVE_USER_FUNDS: {
+    case type::ContributionProcessor::BRAVE_USER_FUNDS: {
       sku_->Retry((*shared_contribution)->Clone(), result_callback);
       return;
     }
-    case ledger::ContributionProcessor::NONE: {
+    case type::ContributionProcessor::NONE: {
       Result(
-          ledger::Result::LEDGER_ERROR,
+          type::Result::LEDGER_ERROR,
           (*shared_contribution)->contribution_id);
       return;
     }
@@ -781,7 +781,7 @@ void Contribution::Retry(
 void Contribution::GetRecurringTips(
     ledger::PublisherInfoListCallback callback) {
   ledger_->database()->GetRecurringTips([this, callback](
-      ledger::PublisherInfoList list) {
+      type::PublisherInfoList list) {
     // The publisher status field may be expired. Attempt to refresh
     // expired publisher status values before executing callback.
     publisher::RefreshPublisherStatus(

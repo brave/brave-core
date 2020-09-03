@@ -45,9 +45,9 @@ TEST_F(GetPublisherTest, ServerError404) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 404;
             response.url = request->url;
             response.body = "";
@@ -57,10 +57,10 @@ TEST_F(GetPublisherTest, ServerError404) {
   publisher_->Request(
       "brave.com",
       "ce55",
-      [](const ledger::Result result, ledger::ServerPublisherInfoPtr info) {
-    EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result, type::ServerPublisherInfoPtr info) {
+    EXPECT_EQ(result, type::Result::LEDGER_OK);
     EXPECT_EQ(info->publisher_key, "brave.com");
-    EXPECT_EQ(info->status, ledger::PublisherStatus::NOT_VERIFIED);
+    EXPECT_EQ(info->status, type::PublisherStatus::NOT_VERIFIED);
   });
 }
 

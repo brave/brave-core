@@ -42,20 +42,20 @@ std::string PostCaptcha::GeneratePayload() {
   return json;
 }
 
-ledger::Result PostCaptcha::CheckStatusCode(const int status_code) {
+type::Result PostCaptcha::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
-ledger::Result PostCaptcha::ParseBody(
+type::Result PostCaptcha::ParseBody(
     const std::string& body,
     std::string* hint,
     std::string* captcha_id) {
@@ -64,31 +64,31 @@ ledger::Result PostCaptcha::ParseBody(
   base::Optional<base::Value> value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
     BLOG(0, "Invalid JSON");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* captcha_id_parse = dictionary->FindStringKey("captchaId");
   if (!captcha_id_parse) {
     BLOG(0, "Captcha id is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   const auto* hint_parse = dictionary->FindStringKey("hint");
   if (!hint_parse) {
     BLOG(0, "Hint is wrong");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   *captcha_id = *captcha_id_parse;
   *hint = *hint_parse;
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostCaptcha::Request(PostCaptchaCallback callback) {
@@ -97,24 +97,24 @@ void PostCaptcha::Request(PostCaptchaCallback callback) {
       _1,
       callback);
 
-    auto request = ledger::UrlRequest::New();
+    auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = GeneratePayload();
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostCaptcha::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostCaptchaCallback callback) {
   ledger::LogUrlResponse(__func__, response);
 
   std::string hint;
   std::string captcha_id;
-  ledger::Result result = CheckStatusCode(response.status_code);
+  type::Result result = CheckStatusCode(response.status_code);
 
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     callback(result, hint, captcha_id);
     return;
   }

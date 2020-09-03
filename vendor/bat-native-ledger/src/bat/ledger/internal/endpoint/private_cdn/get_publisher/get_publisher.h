@@ -28,8 +28,8 @@ namespace endpoint {
 namespace private_cdn {
 
 using GetPublisherCallback = std::function<void(
-    const ledger::Result result,
-    ledger::ServerPublisherInfoPtr info)>;
+    const type::Result result,
+    type::ServerPublisherInfoPtr info)>;
 
 class GetPublisher {
  public:
@@ -44,15 +44,15 @@ class GetPublisher {
  private:
   std::string GetUrl(const std::string& hash_prefix);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       const std::string& publisher_key,
-      ledger::ServerPublisherInfo* info);
+      type::ServerPublisherInfo* info);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       const std::string& publisher_key,
       GetPublisherCallback callback);
 

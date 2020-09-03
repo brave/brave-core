@@ -28,7 +28,7 @@ void ContributionTip::Process(
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(0, "Failed to do tip due to missing publisher key");
-    callback(ledger::Result::NOT_FOUND);
+    callback(type::Result::NOT_FOUND);
     return;
   }
 
@@ -45,17 +45,17 @@ void ContributionTip::Process(
 }
 
 void ContributionTip::ServerPublisher(
-    ledger::ServerPublisherInfoPtr server_info,
+    type::ServerPublisherInfoPtr server_info,
     const std::string& publisher_key,
     const double amount,
     ledger::ResultCallback callback) {
-  auto status = ledger::PublisherStatus::NOT_VERIFIED;
+  auto status = type::PublisherStatus::NOT_VERIFIED;
   if (server_info) {
     status = server_info->status;
   }
 
   // Save to the pending list if not verified
-  if (status == ledger::PublisherStatus::NOT_VERIFIED) {
+  if (status == type::PublisherStatus::NOT_VERIFIED) {
     BLOG(1, "Saving pending publisher " << publisher_key);
     auto save_callback = std::bind(&ContributionTip::OnSavePending,
         this,
@@ -69,15 +69,15 @@ void ContributionTip::ServerPublisher(
     return;
   }
 
-  ledger::ContributionQueuePublisherList queue_list;
-  auto publisher = ledger::ContributionQueuePublisher::New();
+  type::ContributionQueuePublisherList queue_list;
+  auto publisher = type::ContributionQueuePublisher::New();
   publisher->publisher_key = publisher_key;
   publisher->amount_percent = 100.0;
   queue_list.push_back(std::move(publisher));
 
-  auto queue = ledger::ContributionQueue::New();
+  auto queue = type::ContributionQueue::New();
   queue->id = base::GenerateGUID();
-  queue->type = ledger::RewardsType::ONE_TIME_TIP;
+  queue->type = type::RewardsType::ONE_TIME_TIP;
   queue->amount = amount;
   queue->partial = false;
   queue->publishers = std::move(queue_list);
@@ -91,36 +91,36 @@ void ContributionTip::ServerPublisher(
 }
 
 void ContributionTip::QueueSaved(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result == ledger::Result::LEDGER_OK) {
+  if (result == type::Result::LEDGER_OK) {
     ledger_->contribution()->ProcessContributionQueue();
   } else {
     BLOG(0, "Queue was not saved");
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 void ContributionTip::SavePending(
     const std::string& publisher_key,
     const double amount,
     ledger::ResultCallback callback) {
-  auto contribution = ledger::PendingContribution::New();
+  auto contribution = type::PendingContribution::New();
   contribution->publisher_key = publisher_key;
   contribution->amount = amount;
-  contribution->type = ledger::RewardsType::ONE_TIME_TIP;
+  contribution->type = type::RewardsType::ONE_TIME_TIP;
 
-  ledger::PendingContributionList list;
+  type::PendingContributionList list;
   list.push_back(std::move(contribution));
 
   ledger_->database()->SavePendingContribution(std::move(list), callback);
 }
 
 void ContributionTip::OnSavePending(
-    const ledger::Result result,
+    const type::Result result,
     ledger::ResultCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Pending tip save failed");
   } else {
     ledger_->ledger_client()->PendingContributionSaved(result);

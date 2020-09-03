@@ -75,23 +75,23 @@ void ServerPublisherFetcher::Fetch(
 }
 
 void ServerPublisherFetcher::OnFetchCompleted(
-    const ledger::Result result,
-    ledger::ServerPublisherInfoPtr info,
+    const type::Result result,
+    type::ServerPublisherInfoPtr info,
     const std::string& publisher_key) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     RunCallbacks(publisher_key, nullptr);
     return;
   }
 
   // Create a shared pointer to a mojo struct so that it can be copied
   // into a callback.
-  auto shared_info = std::make_shared<ledger::ServerPublisherInfoPtr>(
+  auto shared_info = std::make_shared<type::ServerPublisherInfoPtr>(
       std::move(info));
 
   // Store the result for subsequent lookups.
   ledger_->database()->InsertServerPublisherInfo(**shared_info,
-      [this, publisher_key, shared_info](ledger::Result result) {
-        if (result != ledger::Result::LEDGER_OK) {
+      [this, publisher_key, shared_info](type::Result result) {
+        if (result != type::Result::LEDGER_OK) {
           BLOG(0, "Error saving server publisher info record");
         }
         RunCallbacks(publisher_key, std::move(*shared_info));
@@ -99,7 +99,7 @@ void ServerPublisherFetcher::OnFetchCompleted(
 }
 
 bool ServerPublisherFetcher::IsExpired(
-    ledger::ServerPublisherInfo* server_info) {
+    type::ServerPublisherInfo* server_info) {
   if (!server_info) {
     return true;
   }
@@ -140,7 +140,7 @@ FetchCallbackVector ServerPublisherFetcher::GetCallbacks(
 
 void ServerPublisherFetcher::RunCallbacks(
     const std::string& publisher_key,
-    ledger::ServerPublisherInfoPtr server_info) {
+    type::ServerPublisherInfoPtr server_info) {
   FetchCallbackVector callbacks = GetCallbacks(publisher_key);
   DCHECK(!callbacks.empty());
   for (auto& callback : callbacks) {

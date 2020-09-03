@@ -58,7 +58,7 @@ std::string Media::GetLinkType(
 void Media::ProcessMedia(
     const std::map<std::string, std::string>& parts,
     const std::string& type,
-    ledger::VisitDataPtr visit_data) {
+    ledger::type::VisitDataPtr visit_data) {
   if (parts.empty() ||
       !ledger_->state()->GetRewardsMainEnabled() ||
       !visit_data) {
@@ -88,7 +88,7 @@ void Media::ProcessMedia(
 
 void Media::GetMediaActivityFromUrl(
     uint64_t window_id,
-    ledger::VisitDataPtr visit_data,
+    ledger::type::VisitDataPtr visit_data,
     const std::string& type,
     const std::string& publisher_blob) {
   if (type == YOUTUBE_MEDIA_TYPE) {
@@ -111,7 +111,7 @@ void Media::GetMediaActivityFromUrl(
   }
 }
 
-void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
+void Media::OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
                                        const std::string& type,
                                        uint64_t window_id) {
   std::string url;

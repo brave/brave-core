@@ -31,7 +31,7 @@ class WalletRecover {
 
  private:
   void OnRecover(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& payment_id,
       const std::vector<uint8_t>& new_seed,
       ledger::ResultCallback callback);

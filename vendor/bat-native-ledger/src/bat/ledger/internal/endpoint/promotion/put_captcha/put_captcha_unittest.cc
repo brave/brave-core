@@ -46,9 +46,9 @@ TEST_F(PutCaptchaTest, ServerOK) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 200;
             response.url = request->url;
             response.body = "";
@@ -59,8 +59,8 @@ TEST_F(PutCaptchaTest, ServerOK) {
       10,
       20,
       "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_OK);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_OK);
       });
 }
 
@@ -68,9 +68,9 @@ TEST_F(PutCaptchaTest, ServerError400) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 400;
             response.url = request->url;
             response.body = "";
@@ -81,8 +81,8 @@ TEST_F(PutCaptchaTest, ServerError400) {
       10,
       20,
       "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::CAPTCHA_FAILED);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
       });
 }
 
@@ -90,9 +90,9 @@ TEST_F(PutCaptchaTest, ServerError401) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 401;
             response.url = request->url;
             response.body = "";
@@ -103,8 +103,8 @@ TEST_F(PutCaptchaTest, ServerError401) {
       10,
       20,
       "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::CAPTCHA_FAILED);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::CAPTCHA_FAILED);
       });
 }
 
@@ -112,9 +112,9 @@ TEST_F(PutCaptchaTest, ServerError500) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 500;
             response.url = request->url;
             response.body = "";
@@ -125,8 +125,8 @@ TEST_F(PutCaptchaTest, ServerError500) {
       10,
       20,
       "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 
@@ -134,9 +134,9 @@ TEST_F(PutCaptchaTest, ServerErrorRandom) {
   ON_CALL(*mock_ledger_client_, LoadURL(_, _))
       .WillByDefault(
           Invoke([](
-              ledger::UrlRequestPtr request,
+              type::UrlRequestPtr request,
               client::LoadURLCallback callback) {
-            ledger::UrlResponse response;
+            type::UrlResponse response;
             response.status_code = 453;
             response.url = request->url;
             response.body = "";
@@ -147,8 +147,8 @@ TEST_F(PutCaptchaTest, ServerErrorRandom) {
       10,
       20,
       "83b3b77b-e7c3-455b-adda-e476fa0656d2",
-      [](const ledger::Result result) {
-        EXPECT_EQ(result, ledger::Result::LEDGER_ERROR);
+      [](const type::Result result) {
+        EXPECT_EQ(result, type::Result::LEDGER_ERROR);
       });
 }
 

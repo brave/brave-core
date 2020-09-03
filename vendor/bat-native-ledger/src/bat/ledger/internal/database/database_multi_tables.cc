@@ -24,7 +24,7 @@ DatabaseMultiTables::DatabaseMultiTables(LedgerImpl* ledger) {
 DatabaseMultiTables::~DatabaseMultiTables() = default;
 
 void DatabaseMultiTables::GetTransactionReport(
-    const ledger::ActivityMonth month,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   auto promotion_callback = std::bind(
@@ -38,16 +38,16 @@ void DatabaseMultiTables::GetTransactionReport(
 }
 
 void DatabaseMultiTables::OnGetTransactionReportPromotion(
-    ledger::PromotionMap promotions,
-    const ledger::ActivityMonth month,
+    type::PromotionMap promotions,
+    const type::ActivityMonth month,
     const int year,
     ledger::GetTransactionReportCallback callback) {
   const auto converted_month = static_cast<int>(month);
-  ledger::TransactionReportInfoList list;
+  type::TransactionReportInfoList list;
 
   for (const auto& promotion : promotions) {
     if (!promotion.second ||
-        promotion.second->status != ledger::PromotionStatus::FINISHED ||
+        promotion.second->status != type::PromotionStatus::FINISHED ||
         promotion.second->claimed_at == 0) {
       continue;
     }
@@ -59,7 +59,7 @@ void DatabaseMultiTables::OnGetTransactionReportPromotion(
       continue;
     }
 
-    auto report = ledger::TransactionReportInfo::New();
+    auto report = type::TransactionReportInfo::New();
     report->type = promotion::ConvertPromotionTypeToReportType(
         promotion.second->type);
     report->amount = promotion.second->approximate_value;

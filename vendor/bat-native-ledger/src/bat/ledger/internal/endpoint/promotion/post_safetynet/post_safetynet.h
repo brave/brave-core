@@ -38,7 +38,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostSafetynetCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& nonce)>;
 
 class PostSafetynet {
@@ -53,14 +53,14 @@ class PostSafetynet {
 
   std::string GeneratePayload();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* nonce);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostSafetynetCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

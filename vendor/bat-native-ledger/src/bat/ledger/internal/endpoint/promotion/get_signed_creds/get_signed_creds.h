@@ -49,8 +49,8 @@ namespace endpoint {
 namespace promotion {
 
 using GetSignedCredsCallback = std::function<void(
-    const ledger::Result result,
-    ledger::CredsBatchPtr batch)>;
+    const type::Result result,
+    type::CredsBatchPtr batch)>;
 
 class GetSignedCreds {
  public:
@@ -67,14 +67,14 @@ class GetSignedCreds {
     const std::string& promotion_id,
     const std::string& claim_id);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
-      ledger::CredsBatch* batch);
+      type::CredsBatch* batch);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetSignedCredsCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -24,19 +24,19 @@ SKUCommon::SKUCommon(LedgerImpl* ledger) :
 SKUCommon::~SKUCommon() = default;
 
 void SKUCommon::CreateOrder(
-    const std::vector<ledger::SKUOrderItem>& items,
+    const std::vector<type::SKUOrderItem>& items,
     ledger::SKUOrderCallback callback) {
   order_->Create(items, callback);
 }
 
 void SKUCommon::CreateTransaction(
-    ledger::SKUOrderPtr order,
+    type::SKUOrderPtr order,
     const std::string& destination,
-    const ledger::ExternalWallet& wallet,
+    const type::ExternalWallet& wallet,
     ledger::SKUOrderCallback callback) {
   if (!order) {
     BLOG(0, "Order not found");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -54,16 +54,16 @@ void SKUCommon::CreateTransaction(
 }
 
 void SKUCommon::OnTransactionCompleted(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& order_id,
     ledger::SKUOrderCallback callback) {
-  if (result != ledger::Result::LEDGER_OK) {
+  if (result != type::Result::LEDGER_OK) {
     BLOG(0, "Order status was not updated");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK, order_id);
+  callback(type::Result::LEDGER_OK, order_id);
 }
 
 void SKUCommon::SendExternalTransaction(
@@ -71,7 +71,7 @@ void SKUCommon::SendExternalTransaction(
     ledger::SKUOrderCallback callback) {
   if (order_id.empty()) {
     BLOG(0, "Order id is empty");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -84,11 +84,11 @@ void SKUCommon::SendExternalTransaction(
 }
 
 void SKUCommon::GetSKUTransactionByOrderId(
-    ledger::SKUTransactionPtr transaction,
+    type::SKUTransactionPtr transaction,
     ledger::SKUOrderCallback callback) {
   if (!transaction) {
     BLOG(0, "Transaction is null");
-    callback(ledger::Result::LEDGER_ERROR, "");
+    callback(type::Result::LEDGER_ERROR, "");
     return;
   }
 
@@ -99,7 +99,7 @@ void SKUCommon::GetSKUTransactionByOrderId(
     callback);
 
   transaction_->SendExternalTransaction(
-      ledger::Result::LEDGER_OK,
+      type::Result::LEDGER_OK,
       *transaction,
       create_callback);
 }

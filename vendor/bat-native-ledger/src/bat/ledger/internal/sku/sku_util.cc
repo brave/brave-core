@@ -40,15 +40,15 @@ std::string GetBraveDestination(const std::string& wallet_type) {
 }
 
 std::string GetAnonCardDestination() {
-  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+  if (ledger::_environment == type::Environment::PRODUCTION) {
     return kAnonCardDestinationProduction;
   }
 
-  if (ledger::_environment == ledger::Environment::STAGING) {
+  if (ledger::_environment == type::Environment::STAGING) {
     return kAnonCardDestinationStaging;
   }
 
-  if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
+  if (ledger::_environment == type::Environment::DEVELOPMENT) {
     return kAnonCardDestinationDev;
   }
 
@@ -57,15 +57,15 @@ std::string GetAnonCardDestination() {
 }
 
 std::string GetUpholdDestination() {
-  if (ledger::_environment == ledger::Environment::PRODUCTION) {
+  if (ledger::_environment == type::Environment::PRODUCTION) {
     return kUpholdDestinationProduction;
   }
 
-  if (ledger::_environment == ledger::Environment::STAGING) {
+  if (ledger::_environment == type::Environment::STAGING) {
     return kUpholdDestinationStaging;
   }
 
-  if (ledger::_environment == ledger::Environment::DEVELOPMENT) {
+  if (ledger::_environment == type::Environment::DEVELOPMENT) {
     return kUpholdDestinationDev;
   }
 

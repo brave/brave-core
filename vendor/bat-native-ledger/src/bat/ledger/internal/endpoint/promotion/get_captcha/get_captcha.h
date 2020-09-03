@@ -30,7 +30,7 @@ namespace endpoint {
 namespace promotion {
 
 using GetCaptchaCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& image)>;
 
 class GetCaptcha {
@@ -45,14 +45,14 @@ class GetCaptcha {
  private:
   std::string GetUrl(const std::string& captcha_id);
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* image);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetCaptchaCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

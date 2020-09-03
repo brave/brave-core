@@ -19,22 +19,22 @@ class DatabaseBalanceReport : public DatabaseTable {
   ~DatabaseBalanceReport() override;
 
   void InsertOrUpdate(
-      ledger::BalanceReportInfoPtr info,
+      type::BalanceReportInfoPtr info,
       ledger::ResultCallback callback);
 
   void InsertOrUpdateList(
-      ledger::BalanceReportInfoList list,
+      type::BalanceReportInfoList list,
       ledger::ResultCallback callback);
 
   void SetAmount(
-      ledger::ActivityMonth month,
+      type::ActivityMonth month,
       int year,
-      ledger::ReportType type,
+      type::ReportType type,
       double amount,
       ledger::ResultCallback callback);
 
   void GetRecord(
-      ledger::ActivityMonth month,
+      type::ActivityMonth month,
       int year,
       ledger::GetBalanceReportCallback callback);
 
@@ -46,11 +46,11 @@ class DatabaseBalanceReport : public DatabaseTable {
 
  private:
   void OnGetRecord(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::GetBalanceReportCallback callback);
 
   void OnGetAllRecords(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ledger::GetBalanceReportListCallback callback);
 };
 

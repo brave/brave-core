@@ -14,7 +14,7 @@
 namespace ledger {
 namespace database {
 
-using GetSKUOrderItemsCallback = std::function<void(ledger::SKUOrderItemList)>;
+using GetSKUOrderItemsCallback = std::function<void(type::SKUOrderItemList)>;
 
 class DatabaseSKUOrderItems: public DatabaseTable {
  public:
@@ -22,8 +22,8 @@ class DatabaseSKUOrderItems: public DatabaseTable {
   ~DatabaseSKUOrderItems() override;
 
   void InsertOrUpdateList(
-      ledger::DBTransaction* transaction,
-      ledger::SKUOrderItemList list);
+      type::DBTransaction* transaction,
+      type::SKUOrderItemList list);
 
   void GetRecordsByOrderId(
       const std::string& order_id,
@@ -31,7 +31,7 @@ class DatabaseSKUOrderItems: public DatabaseTable {
 
  private:
   void OnGetRecordsByOrderId(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       GetSKUOrderItemsCallback callback);
 };
 

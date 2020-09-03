@@ -20,8 +20,8 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
   ~DatabaseContributionInfoPublishers() override;
 
   void InsertOrUpdate(
-      ledger::DBTransaction* transaction,
-      ledger::ContributionInfoPtr info);
+      type::DBTransaction* transaction,
+      type::ContributionInfoPtr info);
 
   void GetRecordByContributionList(
       const std::vector<std::string>& contribution_ids,
@@ -38,11 +38,11 @@ class DatabaseContributionInfoPublishers: public DatabaseTable {
 
  private:
   void OnGetRecordByContributionList(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ContributionPublisherListCallback callback);
 
   void OnGetContributionPublisherInfoMap(
-      ledger::DBCommandResponsePtr response,
+      type::DBCommandResponsePtr response,
       ContributionPublisherPairListCallback callback);
 };
 

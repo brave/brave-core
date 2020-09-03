@@ -13,19 +13,19 @@ namespace credential {
 
 std::unique_ptr<Credentials> CredentialsFactory::Create(
     LedgerImpl* ledger,
-    const ledger::CredsBatchType trigger_type) {
+    const type::CredsBatchType trigger_type) {
   DCHECK(ledger);
 
   switch (trigger_type) {
-    case ledger::CredsBatchType::NONE: {
+    case type::CredsBatchType::NONE: {
       return nullptr;
     }
 
-    case ledger::CredsBatchType::PROMOTION: {
+    case type::CredsBatchType::PROMOTION: {
       return std::make_unique<CredentialsPromotion>(ledger);
     }
 
-    case ledger::CredsBatchType::SKU: {
+    case type::CredsBatchType::SKU: {
       return std::make_unique<CredentialsSKU>(ledger);
     }
   }

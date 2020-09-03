@@ -50,22 +50,22 @@ std::string PostSuggestionsClaim::GeneratePayload(
   return json;
 }
 
-ledger::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
+type::Result PostSuggestionsClaim::CheckStatusCode(const int status_code) {
   if (status_code == net::HTTP_BAD_REQUEST) {
     BLOG(0, "Invalid request");
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
   if (status_code == net::HTTP_SERVICE_UNAVAILABLE) {
     BLOG(0, "No conversion rate yet in ratios service");
-    return ledger::Result::BAD_REGISTRATION_RESPONSE;
+    return type::Result::BAD_REGISTRATION_RESPONSE;
   }
 
   if (status_code != net::HTTP_OK) {
-    return ledger::Result::LEDGER_ERROR;
+    return type::Result::LEDGER_ERROR;
   }
 
-  return ledger::Result::LEDGER_OK;
+  return type::Result::LEDGER_OK;
 }
 
 void PostSuggestionsClaim::Request(
@@ -84,17 +84,17 @@ void PostSuggestionsClaim::Request(
       ledger_->state()->GetPaymentId(),
       ledger_->state()->GetRecoverySeed());
 
-  auto request = ledger::UrlRequest::New();
+  auto request = type::UrlRequest::New();
   request->url = GetUrl();
   request->content = payload;
   request->headers = headers;
   request->content_type = "application/json; charset=utf-8";
-  request->method = ledger::UrlMethod::POST;
+  request->method = type::UrlMethod::POST;
   ledger_->LoadURL(std::move(request), url_callback);
 }
 
 void PostSuggestionsClaim::OnRequest(
-    const ledger::UrlResponse& response,
+    const type::UrlResponse& response,
     PostSuggestionsClaimCallback callback) {
   ledger::LogUrlResponse(__func__, response);
   callback(CheckStatusCode(response.status_code));

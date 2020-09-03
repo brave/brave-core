@@ -34,19 +34,19 @@ void DatabaseProcessedPublisher::InsertOrUpdateList(
     ledger::ResultCallback callback) {
   if (list.empty()) {
     BLOG(1, "List is empty");
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR IGNORE INTO %s (publisher_key) VALUES (?);",
       kTableName);
 
   for (const auto& publisher_key : list) {
-    auto command = ledger::DBCommand::New();
-    command->type = ledger::DBCommand::Type::RUN;
+    auto command = type::DBCommand::New();
+    command->type = type::DBCommand::Type::RUN;
     command->command = query;
 
     BindString(command.get(), 0, publisher_key);
@@ -68,24 +68,24 @@ void DatabaseProcessedPublisher::WasProcessed(
     ledger::ResultCallback callback) {
   if (publisher_key.empty()) {
     BLOG(1, "Publisher key is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT publisher_key FROM %s WHERE publisher_key = ?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -102,21 +102,21 @@ void DatabaseProcessedPublisher::WasProcessed(
 }
 
 void DatabaseProcessedPublisher::OnWasProcessed(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::ResultCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
   if (response->result->get_records().empty()) {
-    callback(ledger::Result::NOT_FOUND);
+    callback(type::Result::NOT_FOUND);
     return;
   }
 
-  callback(ledger::Result::LEDGER_OK);
+  callback(type::Result::LEDGER_OK);
 }
 
 }  // namespace database

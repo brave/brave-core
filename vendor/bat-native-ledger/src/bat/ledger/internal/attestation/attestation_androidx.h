@@ -36,12 +36,12 @@ class AttestationAndroid : public Attestation {
       std::string* nonce);
 
   void OnStart(
-      const ledger::Result result,
+      const type::Result result,
       const std::string& confirmation,
       StartCallback callback);
 
   void OnConfirm(
-      const ledger::Result result,
+      const type::Result result,
       ConfirmCallback callback);
 
   std::unique_ptr<endpoint::PromotionServer> promotion_server_;

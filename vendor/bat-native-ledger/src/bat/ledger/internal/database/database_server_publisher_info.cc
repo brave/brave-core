@@ -31,18 +31,18 @@ DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;
 
 void DatabaseServerPublisherInfo::InsertOrUpdate(
-    const ledger::ServerPublisherInfo& server_info,
+    const type::ServerPublisherInfo& server_info,
     ledger::ResultCallback callback) {
   if (server_info.publisher_key.empty()) {
     BLOG(0, "Publisher key is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
       "(publisher_key, status, address, updated_at) "
@@ -83,31 +83,31 @@ void DatabaseServerPublisherInfo::GetRecord(
 }
 
 void DatabaseServerPublisherInfo::OnGetRecordBanner(
-    ledger::PublisherBannerPtr banner,
+    type::PublisherBannerPtr banner,
     const std::string& publisher_key,
     client::GetServerPublisherInfoCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   const std::string query = base::StringPrintf(
       "SELECT status, address, updated_at "
       "FROM %s WHERE publisher_key=?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
 
   if (!banner) {
-    banner = ledger::PublisherBanner::New();
+    banner = type::PublisherBanner::New();
   }
 
   auto transaction_callback =
@@ -124,12 +124,12 @@ void DatabaseServerPublisherInfo::OnGetRecordBanner(
 }
 
 void DatabaseServerPublisherInfo::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     const std::string& publisher_key,
-    const ledger::PublisherBanner& banner,
+    const type::PublisherBanner& banner,
     client::GetServerPublisherInfoCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback(nullptr);
     return;
@@ -142,7 +142,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 
   auto* record = response->result->get_records()[0].get();
 
-  auto info = ledger::ServerPublisherInfo::New();
+  auto info = type::ServerPublisherInfo::New();
   info->publisher_key = publisher_key;
   info->status = static_cast<ledger::mojom::PublisherStatus>(
       GetIntColumn(record, 0));
@@ -159,18 +159,18 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
   int64_t cutoff =
       braveledger_time_util::GetCurrentTimeStamp() - max_age_seconds;
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   // Get a list of publisher keys that are older than |max_age_seconds|.
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = base::StringPrintf(
       "SELECT publisher_key FROM %s WHERE updated_at < ?",
       kTableName);
   BindInt64(command.get(), 0, cutoff);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -187,12 +187,12 @@ void DatabaseServerPublisherInfo::DeleteExpiredRecords(
 }
 
 void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::ResultCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Unable to query for expired records");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -203,20 +203,20 @@ void DatabaseServerPublisherInfo::OnExpiredRecordsSelected(
 
   // Exit if there are no records to delete.
   if (publisher_keys.empty()) {
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
   std::string publisher_key_list = GenerateStringInCase(publisher_keys);
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   // Delete records in child tables.
   banner_->DeleteRecords(transaction.get(), publisher_key_list);
 
   // Delete records in this table.
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = base::StringPrintf(
       "DELETE FROM %s WHERE publisher_key IN (%s)",
       kTableName,

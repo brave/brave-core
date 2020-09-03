@@ -39,11 +39,11 @@ class LegacyPublisherState {
 
   std::vector<std::string> GetAlreadyProcessedPublishers() const;
 
-  void GetAllBalanceReports(ledger::BalanceReportInfoList* reports);
+  void GetAllBalanceReports(ledger::type::BalanceReportInfoList* reports);
 
  private:
   void OnLoad(
-      const ledger::Result result,
+      const ledger::type::Result result,
       const std::string& data,
       ledger::ResultCallback callback);
 

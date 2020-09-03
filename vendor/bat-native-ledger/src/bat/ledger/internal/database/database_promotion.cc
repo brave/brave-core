@@ -34,15 +34,15 @@ DatabasePromotion::DatabasePromotion(
 DatabasePromotion::~DatabasePromotion() = default;
 
 void DatabasePromotion::InsertOrUpdate(
-    ledger::PromotionPtr info,
+    type::PromotionPtr info,
     ledger::ResultCallback callback) {
   if (!info) {
     BLOG(1, "Info is null");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s "
@@ -51,8 +51,8 @@ void DatabasePromotion::InsertOrUpdate(
       "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, info->id);
@@ -85,7 +85,7 @@ void DatabasePromotion::GetRecord(
     return callback({});
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT promotion_id, version, type, public_keys, suggestions, "
@@ -93,24 +93,24 @@ void DatabasePromotion::GetRecord(
       "FROM %s WHERE promotion_id=?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, id);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::BOOL_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::BOOL_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -127,10 +127,10 @@ void DatabasePromotion::GetRecord(
 }
 
 void DatabasePromotion::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     GetPromotionCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
@@ -144,14 +144,14 @@ void DatabasePromotion::OnGetRecord(
   }
 
   auto* record = response->result->get_records()[0].get();
-  auto info = ledger::Promotion::New();
+  auto info = type::Promotion::New();
   info->id = GetStringColumn(record, 0);
   info->version = GetIntColumn(record, 1);
-  info->type = static_cast<ledger::PromotionType>(GetIntColumn(record, 2));
+  info->type = static_cast<type::PromotionType>(GetIntColumn(record, 2));
   info->public_keys = GetStringColumn(record, 3);
   info->suggestions = GetInt64Column(record, 4);
   info->approximate_value = GetDoubleColumn(record, 5);
-  info->status = static_cast<ledger::PromotionStatus>(GetIntColumn(record, 6));
+  info->status = static_cast<type::PromotionStatus>(GetIntColumn(record, 6));
   info->expires_at = GetInt64Column(record, 7);
   info->claimed_at = GetInt64Column(record, 8);
   info->claim_id = GetStringColumn(record, 9);
@@ -162,7 +162,7 @@ void DatabasePromotion::OnGetRecord(
 
 void DatabasePromotion::GetAllRecords(
     ledger::GetAllPromotionsCallback callback) {
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT "
@@ -171,22 +171,22 @@ void DatabasePromotion::GetAllRecords(
       "FROM %s",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::BOOL_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::BOOL_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -203,29 +203,29 @@ void DatabasePromotion::GetAllRecords(
 }
 
 void DatabasePromotion::OnGetAllRecords(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::GetAllPromotionsCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  ledger::PromotionMap map;
+  type::PromotionMap map;
   for (auto const& record : response->result->get_records()) {
-    auto info = ledger::Promotion::New();
+    auto info = type::Promotion::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
     info->version = GetIntColumn(record_pointer, 1);
     info->type =
-        static_cast<ledger::PromotionType>(GetIntColumn(record_pointer, 2));
+        static_cast<type::PromotionType>(GetIntColumn(record_pointer, 2));
     info->public_keys = GetStringColumn(record_pointer, 3);
     info->suggestions = GetInt64Column(record_pointer, 4);
     info->approximate_value = GetDoubleColumn(record_pointer, 5);
     info->status =
-        static_cast<ledger::PromotionStatus>(GetIntColumn(record_pointer, 6));
+        static_cast<type::PromotionStatus>(GetIntColumn(record_pointer, 6));
     info->expires_at = GetInt64Column(record_pointer, 7);
     info->claimed_at = GetInt64Column(record_pointer, 8);
     info->claim_id = GetStringColumn(record_pointer, 9);
@@ -243,7 +243,7 @@ void DatabasePromotion::SaveClaimId(
     ledger::ResultCallback callback) {
   if (promotion_id.empty() || claim_id.empty()) {
     BLOG(1, "Data is empty " << promotion_id << "/" << claim_id);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -251,9 +251,9 @@ void DatabasePromotion::SaveClaimId(
       "UPDATE %s SET claim_id = ? WHERE promotion_id = ?",
       kTableName);
 
-  auto transaction = ledger::DBTransaction::New();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto transaction = type::DBTransaction::New();
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, claim_id);
@@ -272,11 +272,11 @@ void DatabasePromotion::SaveClaimId(
 
 void DatabasePromotion::UpdateStatus(
     const std::string& promotion_id,
-    const ledger::PromotionStatus status,
+    const type::PromotionStatus status,
     ledger::ResultCallback callback) {
   if (promotion_id.empty()) {
     BLOG(0, "Promotion id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -284,9 +284,9 @@ void DatabasePromotion::UpdateStatus(
       "UPDATE %s SET status = ? WHERE promotion_id = ?",
       kTableName);
 
-  auto transaction = ledger::DBTransaction::New();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto transaction = type::DBTransaction::New();
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -305,11 +305,11 @@ void DatabasePromotion::UpdateStatus(
 
 void DatabasePromotion::UpdateRecordsStatus(
     const std::vector<std::string>& ids,
-    const ledger::PromotionStatus status,
+    const type::PromotionStatus status,
     ledger::ResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -318,9 +318,9 @@ void DatabasePromotion::UpdateRecordsStatus(
       kTableName,
       GenerateStringInCase(ids).c_str());
 
-  auto transaction = ledger::DBTransaction::New();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto transaction = type::DBTransaction::New();
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindInt(command.get(), 0, static_cast<int>(status));
@@ -341,7 +341,7 @@ void DatabasePromotion::CredentialCompleted(
     ledger::ResultCallback callback) {
   if (promotion_id.empty()) {
     BLOG(1, "Promotion id is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -349,15 +349,15 @@ void DatabasePromotion::CredentialCompleted(
       "UPDATE %s SET status = ?, claimed_at = ? WHERE promotion_id = ?",
       kTableName);
 
-  auto transaction = ledger::DBTransaction::New();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto transaction = type::DBTransaction::New();
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   const uint64_t current_time = braveledger_time_util::GetCurrentTimeStamp();
 
   BindInt(command.get(), 0,
-      static_cast<int>(ledger::PromotionStatus::FINISHED));
+      static_cast<int>(type::PromotionStatus::FINISHED));
   BindInt64(command.get(), 1, current_time);
   BindString(command.get(), 2, promotion_id);
 
@@ -381,7 +381,7 @@ void DatabasePromotion::GetRecords(
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT "
@@ -391,22 +391,22 @@ void DatabasePromotion::GetRecords(
       kTableName,
       GenerateStringInCase(ids).c_str());
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::BOOL_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::BOOL_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -423,30 +423,30 @@ void DatabasePromotion::GetRecords(
 }
 
 void DatabasePromotion::OnGetRecords(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     client::GetPromotionListCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
     callback({});
     return;
   }
 
-  ledger::PromotionList list;
-  ledger::PromotionPtr info;
+  type::PromotionList list;
+  type::PromotionPtr info;
   for (auto const& record : response->result->get_records()) {
-    info = ledger::Promotion::New();
+    info = type::Promotion::New();
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
     info->version = GetIntColumn(record_pointer, 1);
     info->type =
-        static_cast<ledger::PromotionType>(GetIntColumn(record_pointer, 2));
+        static_cast<type::PromotionType>(GetIntColumn(record_pointer, 2));
     info->public_keys = GetStringColumn(record_pointer, 3);
     info->suggestions = GetInt64Column(record_pointer, 4);
     info->approximate_value = GetDoubleColumn(record_pointer, 5);
     info->status =
-        static_cast<ledger::PromotionStatus>(GetIntColumn(record_pointer, 6));
+        static_cast<type::PromotionStatus>(GetIntColumn(record_pointer, 6));
     info->expires_at = GetInt64Column(record_pointer, 7);
     info->claimed_at = GetInt64Column(record_pointer, 8);
     info->claim_id = GetStringColumn(record_pointer, 9);
@@ -459,14 +459,14 @@ void DatabasePromotion::OnGetRecords(
 }
 
 void DatabasePromotion::GetRecordsByType(
-    const std::vector<ledger::PromotionType>& types,
+    const std::vector<type::PromotionType>& types,
     client::GetPromotionListCallback callback) {
   if (types.empty()) {
     BLOG(1, "List of types is empty");
     callback({});
     return;
   }
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   std::vector<std::string> in_case;
 
@@ -481,22 +481,22 @@ void DatabasePromotion::GetRecordsByType(
       kTableName,
       base::JoinString(in_case, ",").c_str());
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::DOUBLE_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::BOOL_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::DOUBLE_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::BOOL_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -517,7 +517,7 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
     ledger::ResultCallback callback) {
   if (ids.empty()) {
     BLOG(1, "List of ids is empty");
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
@@ -528,9 +528,9 @@ void DatabasePromotion::UpdateRecordsBlankPublicKey(
       kTableName,
       GenerateStringInCase(ids).c_str());
 
-  auto transaction = ledger::DBTransaction::New();
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
+  auto transaction = type::DBTransaction::New();
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::EXECUTE;
   command->command = query;
   transaction->commands.push_back(std::move(command));
 

@@ -35,7 +35,7 @@ class Twitter {
       const std::map<std::string, std::string>& args);
 
   void ProcessActivityFromUrl(uint64_t window_id,
-                              const ledger::VisitData& visit_data);
+                              const ledger::type::VisitData& visit_data);
 
  private:
   static std::string GetProfileURL(const std::string& screen_name,
@@ -61,8 +61,8 @@ class Twitter {
       const std::string& screen_name,
       const std::string& publisher_name,
       ledger::PublisherInfoCallback callback,
-      ledger::Result result,
-      ledger::PublisherInfoPtr publisher_info);
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr publisher_info);
 
   void SavePublisherInfo(
       const uint64_t duration,
@@ -72,7 +72,7 @@ class Twitter {
       const uint64_t window_id,
       ledger::PublisherInfoCallback callback);
 
-  void OnMediaActivityError(const ledger::VisitData& visit_data,
+  void OnMediaActivityError(const ledger::type::VisitData& visit_data,
                             uint64_t window_id);
 
   void FetchDataFromUrl(
@@ -80,28 +80,28 @@ class Twitter {
       ledger::client::LoadURLCallback callback);
 
   void OnMediaPublisherActivity(
-      ledger::Result result,
-      ledger::PublisherInfoPtr info,
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info,
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       const std::string& media_key);
 
   void GetPublisherPanelInfo(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       const std::string& publisher_key);
 
   void OnPublisherPanelInfo(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
+      const ledger::type::VisitData& visit_data,
       const std::string& publisher_key,
-      ledger::Result result,
-      ledger::PublisherInfoPtr info);
+      ledger::type::Result result,
+      ledger::type::PublisherInfoPtr info);
 
   void OnUserPage(
       uint64_t window_id,
-      const ledger::VisitData& visit_data,
-      const ledger::UrlResponse& response);
+      const ledger::type::VisitData& visit_data,
+      const ledger::type::UrlResponse& response);
 
   ledger::LedgerImpl* ledger_;  // NOT OWNED
 

@@ -32,18 +32,18 @@ class CredentialsCommon {
   void SaveUnblindedCreds(
       const uint64_t expires_at,
       const double token_value,
-      const ledger::CredsBatch& creds,
+      const type::CredsBatch& creds,
       const std::vector<std::string>& unblinded_encoded_creds,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 
  private:
   void BlindedCredsSaved(
-      const ledger::Result result,
+      const type::Result result,
       ledger::ResultCallback callback);
 
   void OnSaveUnblindedCreds(
-      const ledger::Result result,
+      const type::Result result,
       const CredentialsTrigger& trigger,
       ledger::ResultCallback callback);
 

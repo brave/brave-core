@@ -15,16 +15,16 @@
 namespace ledger {
 namespace promotion {
 
-std::string ParseOSToString(ledger::OperatingSystem os);
+std::string ParseOSToString(type::OperatingSystem os);
 
-std::string ParseClientInfoToString(ledger::ClientInfoPtr info);
+std::string ParseClientInfoToString(type::ClientInfoPtr info);
 
-ledger::PromotionType ConvertStringToPromotionType(const std::string& type);
+type::PromotionType ConvertStringToPromotionType(const std::string& type);
 
-ledger::ReportType ConvertPromotionTypeToReportType(
-    const ledger::PromotionType type);
+type::ReportType ConvertPromotionTypeToReportType(
+    const type::PromotionType type);
 
-std::vector<ledger::PromotionType> GetEligiblePromotions();
+std::vector<type::PromotionType> GetEligiblePromotions();
 
 }  // namespace promotion
 }  // namespace ledger

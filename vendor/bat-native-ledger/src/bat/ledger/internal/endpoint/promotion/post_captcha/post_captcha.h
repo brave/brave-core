@@ -36,7 +36,7 @@ namespace endpoint {
 namespace promotion {
 
 using PostCaptchaCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const std::string& hint,
     const std::string& captcha_id)>;
 
@@ -52,15 +52,15 @@ class PostCaptcha {
 
   std::string GeneratePayload();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       std::string* hint,
       std::string* captcha_id);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       PostCaptchaCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

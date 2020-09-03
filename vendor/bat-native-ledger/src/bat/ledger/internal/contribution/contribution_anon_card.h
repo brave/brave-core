@@ -32,7 +32,7 @@ class ContributionAnonCard {
 
  private:
   void OnSendTransaction(
-      const ledger::Result result,
+      const type::Result result,
       client::TransactionCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

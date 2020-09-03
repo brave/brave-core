@@ -36,10 +36,10 @@ class Media {
 
   void ProcessMedia(const std::map<std::string, std::string>& parts,
                     const std::string& type,
-                    ledger::VisitDataPtr visit_data);
+                    ledger::type::VisitDataPtr visit_data);
 
   void GetMediaActivityFromUrl(uint64_t windowId,
-                               ledger::VisitDataPtr visit_data,
+                               ledger::type::VisitDataPtr visit_data,
                                const std::string& type,
                                const std::string& publisher_blob);
 
@@ -52,7 +52,7 @@ class Media {
       const std::map<std::string, std::string>& args);
 
  private:
-  void OnMediaActivityError(ledger::VisitDataPtr visit_data,
+  void OnMediaActivityError(ledger::type::VisitDataPtr visit_data,
                           const std::string& type,
                           uint64_t windowId);
 

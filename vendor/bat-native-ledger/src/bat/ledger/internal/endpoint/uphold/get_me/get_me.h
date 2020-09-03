@@ -116,7 +116,7 @@ namespace endpoint {
 namespace uphold {
 
 using GetMeCallback = std::function<void(
-    const ledger::Result result,
+    const type::Result result,
     const ::ledger::uphold::User& user)>;
 
 class GetMe {
@@ -131,14 +131,14 @@ class GetMe {
  private:
   std::string GetUrl();
 
-  ledger::Result CheckStatusCode(const int status_code);
+  type::Result CheckStatusCode(const int status_code);
 
-  ledger::Result ParseBody(
+  type::Result ParseBody(
       const std::string& body,
       ::ledger::uphold::User* user);
 
   void OnRequest(
-      const ledger::UrlResponse& response,
+      const type::UrlResponse& response,
       GetMeCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED

@@ -35,18 +35,18 @@ void DatabaseMediaPublisherInfo::InsertOrUpdate(
     ledger::ResultCallback callback) {
   if (media_key.empty() || publisher_key.empty()) {
     BLOG(1, "Data is empty " << media_key << "/" << publisher_key);
-    callback(ledger::Result::LEDGER_ERROR);
+    callback(type::Result::LEDGER_ERROR);
     return;
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "INSERT OR REPLACE INTO %s (media_key, publisher_id) VALUES (?, ?)",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::RUN;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::RUN;
   command->command = query;
 
   BindString(command.get(), 0, media_key);
@@ -68,10 +68,10 @@ void DatabaseMediaPublisherInfo::GetRecord(
     ledger::PublisherInfoCallback callback) {
   if (media_key.empty()) {
     BLOG(1, "Media key is empty");
-    return callback(ledger::Result::LEDGER_ERROR, {});
+    return callback(type::Result::LEDGER_ERROR, {});
   }
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
 
   const std::string query = base::StringPrintf(
       "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
@@ -83,21 +83,21 @@ void DatabaseMediaPublisherInfo::GetRecord(
       "WHERE mpi.media_key=?",
       kTableName);
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::READ;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::READ;
   command->command = query;
 
   BindString(command.get(), 0, media_key);
 
   command->record_bindings = {
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::STRING_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE,
-      ledger::DBCommand::RecordBindingType::INT64_TYPE,
-      ledger::DBCommand::RecordBindingType::INT_TYPE
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::STRING_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE,
+      type::DBCommand::RecordBindingType::INT64_TYPE,
+      type::DBCommand::RecordBindingType::INT_TYPE
   };
 
   transaction->commands.push_back(std::move(command));
@@ -114,24 +114,24 @@ void DatabaseMediaPublisherInfo::GetRecord(
 }
 
 void DatabaseMediaPublisherInfo::OnGetRecord(
-    ledger::DBCommandResponsePtr response,
+    type::DBCommandResponsePtr response,
     ledger::PublisherInfoCallback callback) {
   if (!response ||
-      response->status != ledger::DBCommandResponse::Status::RESPONSE_OK) {
+      response->status != type::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(1, "Response is wrong");
-    callback(ledger::Result::LEDGER_ERROR, {});
+    callback(type::Result::LEDGER_ERROR, {});
     return;
   }
 
   if (response->result->get_records().size() != 1) {
     BLOG(1, "Record size is not correct: " <<
         response->result->get_records().size());
-    callback(ledger::Result::NOT_FOUND, {});
+    callback(type::Result::NOT_FOUND, {});
     return;
   }
 
   auto* record = response->result->get_records()[0].get();
-  auto info = ledger::PublisherInfo::New();
+  auto info = type::PublisherInfo::New();
 
   info->id = GetStringColumn(record, 0);
   info->name = GetStringColumn(record, 1);
@@ -142,9 +142,9 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
       static_cast<ledger::mojom::PublisherStatus>(GetIntColumn(record, 5));
   info->status_updated_at = GetInt64Column(record, 6);
   info->excluded =
-      static_cast<ledger::PublisherExclude>(GetIntColumn(record, 7));
+      static_cast<type::PublisherExclude>(GetIntColumn(record, 7));
 
-  callback(ledger::Result::LEDGER_OK, std::move(info));
+  callback(type::Result::LEDGER_OK, std::move(info));
 }
 
 }  // namespace database

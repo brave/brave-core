@@ -67,12 +67,12 @@ void DatabaseMigration::Start(
   const uint32_t start_version = table_version + 1;
   DCHECK_GT(start_version, 0u);
 
-  auto transaction = ledger::DBTransaction::New();
+  auto transaction = type::DBTransaction::New();
   int migrated_version = table_version;
   const uint32_t target_version = database::GetCurrentVersion();
 
   if (target_version == table_version) {
-    callback(ledger::Result::LEDGER_OK);
+    callback(type::Result::LEDGER_OK);
     return;
   }
 
@@ -117,16 +117,16 @@ void DatabaseMigration::Start(
     migrated_version = i;
   }
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::MIGRATE;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::MIGRATE;
 
   transaction->version = migrated_version;
   transaction->compatible_version =
       database::GetCompatibleVersion();
   transaction->commands.push_back(std::move(command));
 
-  command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::VACUUM;
+  command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::VACUUM;
   transaction->commands.push_back(std::move(command));
 
   const std::string message = base::StringPrintf(
@@ -136,23 +136,23 @@ void DatabaseMigration::Start(
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),
-      [this, callback, message](ledger::DBCommandResponsePtr response) {
+      [this, callback, message](type::DBCommandResponsePtr response) {
         if (response &&
             response->status ==
-              ledger::DBCommandResponse::Status::RESPONSE_OK) {
+              type::DBCommandResponse::Status::RESPONSE_OK) {
           ledger_->database()->SaveEventLog(
               ledger::log::kDatabaseMigrated,
               message);
-          callback(ledger::Result::LEDGER_OK);
+          callback(type::Result::LEDGER_OK);
           return;
         }
 
-        callback(ledger::Result::LEDGER_ERROR);
+        callback(type::Result::LEDGER_ERROR);
       });
 }
 
 void DatabaseMigration::GenerateCommand(
-    ledger::DBTransaction* transaction,
+    type::DBTransaction* transaction,
     const std::string& query) {
   DCHECK(transaction);
 
@@ -160,8 +160,8 @@ void DatabaseMigration::GenerateCommand(
   // remove all unnecessary spaces and new lines
   re2::RE2::GlobalReplace(&optimized_query, "\\s\\s+", " ");
 
-  auto command = ledger::DBCommand::New();
-  command->type = ledger::DBCommand::Type::EXECUTE;
+  auto command = type::DBCommand::New();
+  command->type = type::DBCommand::Type::EXECUTE;
   command->command = optimized_query;
   transaction->commands.push_back(std::move(command));
 }

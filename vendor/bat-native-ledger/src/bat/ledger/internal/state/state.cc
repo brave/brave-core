@@ -53,18 +53,18 @@ std::vector<double> StringToVectorDouble(const std::string& items_string) {
 }
 
 std::string ConvertInlineTipPlatformToKey(
-    const ledger::InlineTipsPlatforms platform) {
+    const ledger::type::InlineTipsPlatforms platform) {
   switch (platform) {
-    case ledger::InlineTipsPlatforms::REDDIT: {
+    case ledger::type::InlineTipsPlatforms::REDDIT: {
       return ledger::state::kInlineTipRedditEnabled;
     }
-    case ledger::InlineTipsPlatforms::TWITTER: {
+    case ledger::type::InlineTipsPlatforms::TWITTER: {
       return ledger::state::kInlineTipTwitterEnabled;
     }
-    case ledger::InlineTipsPlatforms::GITHUB: {
+    case ledger::type::InlineTipsPlatforms::GITHUB: {
       return ledger::state::kInlineTipGithubEnabled;
     }
-    case ledger::InlineTipsPlatforms::NONE: {
+    case ledger::type::InlineTipsPlatforms::NONE: {
       NOTREACHED();
       return "";
     }
@@ -264,20 +264,20 @@ void State::SetPaymentId(const std::string& id) {
 }
 
 bool State::GetInlineTippingPlatformEnabled(
-    const ledger::InlineTipsPlatforms platform) {
+    const type::InlineTipsPlatforms platform) {
   return ledger_->ledger_client()->GetBooleanState(
       ConvertInlineTipPlatformToKey(platform));
 }
 
 void State::SetInlineTippingPlatformEnabled(
-    const ledger::InlineTipsPlatforms platform,
+    const type::InlineTipsPlatforms platform,
     const bool enabled) {
   const std::string platform_string = ConvertInlineTipPlatformToKey(platform);
   ledger_->database()->SaveEventLog(platform_string, std::to_string(enabled));
   ledger_->ledger_client()->SetBooleanState(platform_string, enabled);
 }
 
-void State::SetRewardsParameters(const ledger::RewardsParameters& parameters) {
+void State::SetRewardsParameters(const type::RewardsParameters& parameters) {
   ledger_->ledger_client()->SetDoubleState(kParametersRate, parameters.rate);
   ledger_->ledger_client()->SetDoubleState(
       kParametersAutoContributeChoice,
@@ -293,8 +293,8 @@ void State::SetRewardsParameters(const ledger::RewardsParameters& parameters) {
       VectorDoubleToString(parameters.monthly_tip_choices));
 }
 
-ledger::RewardsParametersPtr State::GetRewardsParameters() {
-  auto parameters = ledger::RewardsParameters::New();
+type::RewardsParametersPtr State::GetRewardsParameters() {
+  auto parameters = type::RewardsParameters::New();
   parameters->rate = GetRate();
   parameters->auto_contribute_choice = GetAutoContributeChoice();
   parameters->auto_contribute_choices = GetAutoContributeChoices();

@@ -40,16 +40,16 @@ std::string GetWithdrawUrl(const std::string& address);
 
 std::string GetSecondStepVerify();
 
-ledger::ExternalWalletPtr GetWallet(
-      std::map<std::string, ledger::ExternalWalletPtr> wallets);
+type::ExternalWalletPtr GetWallet(
+      std::map<std::string, type::ExternalWalletPtr> wallets);
 
 std::string GenerateRandomString(bool testing);
 
 std::string GetAccountUrl();
 
-ledger::ExternalWalletPtr GenerateLinks(ledger::ExternalWalletPtr wallet);
+type::ExternalWalletPtr GenerateLinks(type::ExternalWalletPtr wallet);
 
-std::string GenerateVerifyLink(ledger::ExternalWalletPtr wallet);
+std::string GenerateVerifyLink(type::ExternalWalletPtr wallet);
 
 }  // namespace uphold
 }  // namespace ledger

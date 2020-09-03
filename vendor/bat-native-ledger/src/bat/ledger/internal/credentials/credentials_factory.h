@@ -20,7 +20,7 @@ class CredentialsFactory {
  public:
   static std::unique_ptr<Credentials> Create(
       LedgerImpl* ledger,
-      const ledger::CredsBatchType trigger_type);
+      const type::CredsBatchType trigger_type);
 };
 
 }  // namespace credential

@@ -24,8 +24,8 @@ class LEDGER_EXPORT LedgerDatabase {
   static LedgerDatabase* CreateInstance(const base::FilePath& path);
 
   virtual void RunTransaction(
-      DBTransactionPtr transaction,
-      DBCommandResponse* command_response) = 0;
+      type::DBTransactionPtr transaction,
+      type::DBCommandResponse* command_response) = 0;
 };
 
 }  // namespace ledger

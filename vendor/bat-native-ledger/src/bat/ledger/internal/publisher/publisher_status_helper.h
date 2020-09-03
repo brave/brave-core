@@ -16,13 +16,13 @@ namespace publisher {
 // Refreshes the publisher status for each entry in the specified list
 void RefreshPublisherStatus(
     LedgerImpl* ledger,
-    ledger::PublisherInfoList&& info_list,
+    type::PublisherInfoList&& info_list,
     ledger::PublisherInfoListCallback callback);
 
 // Refreshes the publisher status for each entry in the specified list
 void RefreshPublisherStatus(
     LedgerImpl* ledger,
-    ledger::PendingContributionInfoList&& list,
+    type::PendingContributionInfoList&& list,
     ledger::PendingContributionInfoListCallback callback);
 
 
