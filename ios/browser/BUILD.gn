@@ -10,6 +10,8 @@ source_set("browser") {
   configs += [ "//build/config/compiler:enable_arc" ]
 
   sources = [
+    "brave_application_context_impl.h",
+    "brave_application_context_impl.mm",
     "brave_web_client.h",
     "brave_web_client.mm",
     "brave_web_main_parts.h",
@@ -20,12 +22,16 @@ source_set("browser") {
     "metrics",
     "//base",
     "//components/flags_ui",
+    "//components/gcm_driver",
     "//components/metrics_services_manager",
+    "//components/prefs",
     "//components/variations/service",
     "//ios/chrome/browser",
     "//ios/chrome/browser:chrome_paths",
     "//ios/chrome/browser/browser_state",
     "//ios/chrome/browser/flags",
+    "//ios/chrome/browser/policy",
+    "//ios/chrome/browser/safe_browsing",
     "//ios/web/public",
     "//ios/web/public/init",
     "//ios/web/public/thread",

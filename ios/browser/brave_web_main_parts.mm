@@ -12,10 +12,10 @@
 #include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
 #include "base/task/thread_pool.h"
+#include "brave/ios/browser/brave_application_context_impl.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/metrics_services_manager/metrics_services_manager.h"
 #include "components/variations/service/variations_service.h"
-#include "ios/chrome/browser/application_context_impl.h"
 #include "ios/chrome/browser/browser_state/browser_state_keyed_service_factories.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/browser_state/chrome_browser_state_manager.h"
@@ -66,7 +66,7 @@ void BraveWebMainParts::PreCreateThreads() {
 
   base::FilePath local_state_path;
   CHECK(base::PathService::Get(ios::FILE_LOCAL_STATE, &local_state_path));
-  application_context_.reset(new ApplicationContextImpl(
+  application_context_.reset(new BraveApplicationContextImpl(
       local_state_task_runner.get(), *base::CommandLine::ForCurrentProcess(),
       l10n_util::GetLocaleOverride()));
   DCHECK_EQ(application_context_.get(), GetApplicationContext());
