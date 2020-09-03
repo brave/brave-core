@@ -61,7 +61,7 @@ std::string GenerateActivityFilterQuery(
   if (!filter->non_verified) {
     const std::string status = base::StringPrintf(
         " AND spi.status != %1d",
-        ledger::mojom::PublisherStatus::NOT_VERIFIED);
+        ledger::type::PublisherStatus::NOT_VERIFIED);
     query += status;
   }
 
@@ -307,7 +307,7 @@ void DatabaseActivityInfo::OnGetRecordsList(
     info->score = GetDoubleColumn(record_pointer, 2);
     info->percent = GetInt64Column(record_pointer, 3);
     info->weight = GetDoubleColumn(record_pointer, 4);
-    info->status = static_cast<ledger::mojom::PublisherStatus>(
+    info->status = static_cast<type::PublisherStatus>(
         GetIntColumn(record_pointer, 5));
     info->status_updated_at = GetInt64Column(record_pointer, 6);
     info->excluded = static_cast<type::PublisherExclude>(

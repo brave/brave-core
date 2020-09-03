@@ -41,7 +41,7 @@ class APIParameters {
   LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer refresh_timer_;
   std::vector<ledger::GetRewardsParametersCallback> callbacks_;
-  std::unique_ptr<ledger::endpoint::APIServer> api_server_;
+  std::unique_ptr<endpoint::APIServer> api_server_;
 };
 
 }  // namespace api

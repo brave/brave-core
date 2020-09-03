@@ -43,7 +43,7 @@ namespace publisher {
 ServerPublisherFetcher::ServerPublisherFetcher(LedgerImpl* ledger) :
     ledger_(ledger),
     private_cdn_server_(
-        std::make_unique<ledger::endpoint::PrivateCDNServer>(ledger)) {
+        std::make_unique<endpoint::PrivateCDNServer>(ledger)) {
   DCHECK(ledger);
 }
 

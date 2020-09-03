@@ -22,7 +22,7 @@ namespace uphold {
 UpholdTransfer::UpholdTransfer(LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold),
-    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
+    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdTransfer::~UpholdTransfer() = default;

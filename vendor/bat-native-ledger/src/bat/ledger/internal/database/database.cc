@@ -474,7 +474,7 @@ void Database::SaveRecurringTip(
     type::RecurringTipPtr info,
     ledger::ResultCallback callback) {
   if (info) {
-    SaveEventLog(ledger::log::kRecurringTipAdded, info->publisher_key);
+    SaveEventLog(log::kRecurringTipAdded, info->publisher_key);
   }
   recurring_tip_->InsertOrUpdate(std::move(info), callback);
 }
@@ -486,7 +486,7 @@ void Database::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
 void Database::RemoveRecurringTip(
     const std::string& publisher_key,
     ledger::ResultCallback callback) {
-  SaveEventLog(ledger::log::kRecurringTipRemoved, publisher_key);
+  SaveEventLog(log::kRecurringTipRemoved, publisher_key);
   recurring_tip_->DeleteRecord(publisher_key, callback);
 }
 

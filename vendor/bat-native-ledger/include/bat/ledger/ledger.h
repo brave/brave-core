@@ -97,9 +97,10 @@ using PublisherInfoCallback =
 
 class LEDGER_EXPORT Ledger {
  public:
-  static bool IsMediaLink(const std::string& url,
-                          const std::string& first_party_url,
-                          const std::string& referrer);
+  static bool IsMediaLink(
+      const std::string& url,
+      const std::string& first_party_url,
+      const std::string& referrer);
 
   Ledger() = default;
   virtual ~Ledger() = default;

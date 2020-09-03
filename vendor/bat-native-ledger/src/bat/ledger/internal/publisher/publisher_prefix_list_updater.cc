@@ -32,7 +32,7 @@ PublisherPrefixListUpdater::PublisherPrefixListUpdater(
     LedgerImpl* ledger)
       : ledger_(ledger),
       rewards_server_(
-          std::make_unique<ledger::endpoint::RewardsServer>(ledger)) {}
+          std::make_unique<endpoint::RewardsServer>(ledger)) {}
 
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;
 
@@ -134,7 +134,7 @@ void PublisherPrefixListUpdater::OnPrefixListInserted(
 base::TimeDelta PublisherPrefixListUpdater::GetAutoUpdateDelay() {
   uint64_t last_fetch_sec = ledger_->state()->GetServerPublisherListStamp();
   uint64_t interval_sec = ledger_->ledger_client()->GetUint64Option(
-      ledger::option::kPublisherListRefreshInterval);
+      option::kPublisherListRefreshInterval);
 
   auto now = base::Time::Now();
   auto fetch_time = base::Time::FromDoubleT(

@@ -169,7 +169,7 @@ type::WalletStatus UpholdWallet::GetNewStatus(
           {"Uphold"},
           [](type::Result _){});
       ledger_->database()->SaveEventLog(
-          ledger::log::kWalletVerified,
+          log::kWalletVerified,
           constant::kWalletUphold);
       break;
     }

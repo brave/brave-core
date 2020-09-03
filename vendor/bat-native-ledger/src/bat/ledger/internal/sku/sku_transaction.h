@@ -58,7 +58,7 @@ class SKUTransaction {
       ledger::ResultCallback callback);
 
   LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
+  std::unique_ptr<endpoint::PaymentServer> payment_server_;
 };
 
 }  // namespace sku

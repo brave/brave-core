@@ -129,7 +129,7 @@ void DatabaseRecurringTip::OnGetAllRecords(
     info->favicon_url = GetStringColumn(record_pointer, 3);
     info->weight = GetDoubleColumn(record_pointer, 4);
     info->reconcile_stamp = GetInt64Column(record_pointer, 5);
-    info->status = static_cast<ledger::mojom::PublisherStatus>(
+    info->status = static_cast<type::PublisherStatus>(
         GetInt64Column(record_pointer, 6));
     info->status_updated_at = GetInt64Column(record_pointer, 7);
     info->provider = GetStringColumn(record_pointer, 8);

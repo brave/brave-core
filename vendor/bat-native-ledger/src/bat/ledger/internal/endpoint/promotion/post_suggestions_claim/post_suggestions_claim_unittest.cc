@@ -43,12 +43,12 @@ class PostSuggestionsClaimTest : public testing::Test {
 
   void SetUp() override {
     const std::string payment_id = "this_is_id";
-    ON_CALL(*mock_ledger_client_, GetStringState(ledger::state::kPaymentId))
+    ON_CALL(*mock_ledger_client_, GetStringState(state::kPaymentId))
       .WillByDefault(testing::Return(payment_id));
 
     const std::string wallet_passphrase =
         "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg=";
-    ON_CALL(*mock_ledger_client_, GetStringState(ledger::state::kRecoverySeed))
+    ON_CALL(*mock_ledger_client_, GetStringState(state::kRecoverySeed))
       .WillByDefault(testing::Return(wallet_passphrase));
   }
 };

@@ -34,7 +34,7 @@ using BalancePtr = mojom::BalancePtr;
 using BalanceReportInfo = mojom::BalanceReportInfo;
 using BalanceReportInfoPtr = mojom::BalanceReportInfoPtr;
 using BalanceReportInfoList =
-    std::vector<ledger::mojom::BalanceReportInfoPtr>;
+    std::vector<mojom::BalanceReportInfoPtr>;
 
 using ClientInfo = mojom::ClientInfo;
 using ClientInfoPtr = mojom::ClientInfoPtr;
@@ -53,12 +53,12 @@ using ContributionReportInfo = mojom::ContributionReportInfo;
 using ContributionReportInfoPtr = mojom::ContributionReportInfoPtr;
 using ContributionReportInfoList = std::vector<ContributionReportInfoPtr>;
 
-using ContributionQueue = ledger::mojom::ContributionQueue;
-using ContributionQueuePtr = ledger::mojom::ContributionQueuePtr;
+using ContributionQueue = mojom::ContributionQueue;
+using ContributionQueuePtr = mojom::ContributionQueuePtr;
 
-using ContributionQueuePublisher = ledger::mojom::ContributionQueuePublisher;
+using ContributionQueuePublisher = mojom::ContributionQueuePublisher;
 using ContributionQueuePublisherPtr =
-    ledger::mojom::ContributionQueuePublisherPtr;
+    mojom::ContributionQueuePublisherPtr;
 using ContributionQueuePublisherList =
     std::vector<ContributionQueuePublisherPtr>;
 
@@ -72,11 +72,11 @@ using CredsBatchType = mojom::CredsBatchType;
 
 using CredsBatchStatus = mojom::CredsBatchStatus;
 
-using EventLog = ledger::mojom::EventLog;
-using EventLogPtr = ledger::mojom::EventLogPtr;
+using EventLog = mojom::EventLog;
+using EventLogPtr = mojom::EventLogPtr;
 using EventLogs = std::vector<EventLogPtr>;
 
-using Environment = ledger::mojom::Environment;
+using Environment = mojom::Environment;
 
 using ExcludeFilter = mojom::ExcludeFilter;
 

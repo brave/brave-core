@@ -19,7 +19,7 @@ namespace api {
 
 APIParameters::APIParameters(LedgerImpl* ledger) :
     ledger_(ledger),
-    api_server_(std::make_unique<ledger::endpoint::APIServer>(ledger)) {
+    api_server_(std::make_unique<endpoint::APIServer>(ledger)) {
   DCHECK(ledger_ && api_server_);
 }
 

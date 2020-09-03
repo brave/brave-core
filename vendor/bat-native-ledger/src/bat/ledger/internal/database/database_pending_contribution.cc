@@ -186,7 +186,7 @@ void DatabasePendingContribution::OnGetAllRecords(
     info->name = GetStringColumn(record_pointer, 2);
     info->url = GetStringColumn(record_pointer, 3);
     info->favicon_url = GetStringColumn(record_pointer, 4);
-    info->status = static_cast<ledger::mojom::PublisherStatus>(
+    info->status = static_cast<type::PublisherStatus>(
         GetInt64Column(record_pointer, 5));
     info->status_updated_at = GetInt64Column(record_pointer, 6);
     info->provider = GetStringColumn(record_pointer, 7);

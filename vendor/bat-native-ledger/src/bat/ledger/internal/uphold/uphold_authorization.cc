@@ -25,7 +25,7 @@ UpholdAuthorization::UpholdAuthorization(
     LedgerImpl* ledger, Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold),
-    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
+    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdAuthorization::~UpholdAuthorization() = default;
@@ -229,7 +229,7 @@ void UpholdAuthorization::OnCardCreate(
 
   if (!address.empty()) {
     ledger_->database()->SaveEventLog(
-        ledger::log::kWalletConnected,
+        log::kWalletConnected,
         static_cast<std::string>(constant::kWalletUphold) + "/" +
             address.substr(0, 5));
   }

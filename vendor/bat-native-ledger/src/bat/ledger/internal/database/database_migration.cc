@@ -141,7 +141,7 @@ void DatabaseMigration::Start(
             response->status ==
               type::DBCommandResponse::Status::RESPONSE_OK) {
           ledger_->database()->SaveEventLog(
-              ledger::log::kDatabaseMigrated,
+              log::kDatabaseMigrated,
               message);
           callback(type::Result::LEDGER_OK);
           return;

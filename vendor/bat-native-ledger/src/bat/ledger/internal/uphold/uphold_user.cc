@@ -31,7 +31,7 @@ User::~User() = default;
 
 UpholdUser::UpholdUser(LedgerImpl* ledger) :
     ledger_(ledger),
-    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)) {
+    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)) {
 }
 
 UpholdUser::~UpholdUser() = default;

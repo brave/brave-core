@@ -97,7 +97,7 @@ class CredentialsSKU : public Credentials {
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;
-  std::unique_ptr<ledger::endpoint::PaymentServer> payment_server_;
+  std::unique_ptr<endpoint::PaymentServer> payment_server_;
 };
 
 }  // namespace credential

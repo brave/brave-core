@@ -75,7 +75,7 @@ namespace credential {
 CredentialsSKU::CredentialsSKU(LedgerImpl* ledger) :
     ledger_(ledger),
     common_(std::make_unique<CredentialsCommon>(ledger)),
-    payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
+    payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_ && common_);
 }
 

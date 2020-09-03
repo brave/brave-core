@@ -49,7 +49,7 @@ class UpholdTransfer {
 
   LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;  // NOT OWNED
-  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
+  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };
 
 }  // namespace uphold

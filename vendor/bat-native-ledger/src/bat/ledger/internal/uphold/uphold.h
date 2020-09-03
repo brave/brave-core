@@ -105,7 +105,7 @@ class Uphold {
   std::unique_ptr<UpholdUser> user_;
   std::unique_ptr<UpholdAuthorization> authorization_;
   std::unique_ptr<UpholdWallet> wallet_;
-  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
+  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
   LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, base::OneShotTimer> transfer_fee_timers_;
 };

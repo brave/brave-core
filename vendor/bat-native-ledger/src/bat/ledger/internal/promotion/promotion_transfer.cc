@@ -82,13 +82,13 @@ void PromotionTransfer::OnGetEligibleTokens(
   redeem.token_list = token_list;
 
   const double transfer_amount =
-      token_list.size() * ledger::constant::kVotePrice;
+      token_list.size() * constant::kVotePrice;
   credentials_->RedeemTokens(
       redeem,
       [this, transfer_amount, callback](const type::Result result) {
         if (result == type::Result::LEDGER_OK) {
             ledger_->database()->SaveEventLog(
-                ledger::log::kPromotionsClaimed,
+                log::kPromotionsClaimed,
                 std::to_string(transfer_amount));
         }
         callback(result);

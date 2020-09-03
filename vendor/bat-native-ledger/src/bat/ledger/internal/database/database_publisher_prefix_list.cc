@@ -113,7 +113,7 @@ void DatabasePublisherPrefixList::Reset(
 }
 
 void DatabasePublisherPrefixList::InsertNext(
-    ::ledger::publisher::PrefixIterator begin,
+    publisher::PrefixIterator begin,
     ledger::ResultCallback callback) {
   DCHECK(reader_ && begin != reader_->end());
 
@@ -141,7 +141,7 @@ void DatabasePublisherPrefixList::InsertNext(
 
   transaction->commands.push_back(std::move(command));
 
-  auto iter = std::get<::ledger::publisher::PrefixIterator>(insert_tuple);
+  auto iter = std::get<publisher::PrefixIterator>(insert_tuple);
 
   ledger_->ledger_client()->RunDBTransaction(
       std::move(transaction),

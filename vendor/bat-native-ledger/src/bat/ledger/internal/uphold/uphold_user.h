@@ -58,7 +58,7 @@ class UpholdUser {
   UserStatus GetStatus(const std::string& status);
 
   LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<ledger::endpoint::UpholdServer> uphold_server_;
+  std::unique_ptr<endpoint::UpholdServer> uphold_server_;
 };
 
 }  // namespace uphold

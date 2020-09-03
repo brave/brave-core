@@ -189,7 +189,7 @@ void ContributionSKU::GetContributionInfo(
   type::SKUOrderItem new_item = item;
   new_item.quantity = GetVotesFromAmount(contribution->amount);
   new_item.type = type::SKUOrderItemType::SINGLE_USE;
-  new_item.price = ledger::constant::kVotePrice;
+  new_item.price = constant::kVotePrice;
 
   std::vector<type::SKUOrderItem> items;
   items.push_back(new_item);

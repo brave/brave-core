@@ -49,46 +49,46 @@ void StateMigrationV2::OnLoadState(
   }
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::state::kEnabled,
+      kEnabled,
       legacy_state_->GetRewardsMainEnabled());
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::state::kAutoContributeEnabled,
+      kAutoContributeEnabled,
       legacy_state_->GetAutoContributeEnabled());
 
   if (legacy_state_->GetUserChangedContribution()) {
     ledger_->ledger_client()->SetDoubleState(
-      ledger::state::kAutoContributeAmount,
+      kAutoContributeAmount,
       legacy_state_->GetAutoContributionAmount());
   }
 
   ledger_->ledger_client()->SetUint64State(
-      ledger::state::kNextReconcileStamp,
+      kNextReconcileStamp,
       legacy_state_->GetReconcileStamp());
 
   ledger_->ledger_client()->SetUint64State(
-      ledger::state::kCreationStamp,
+      kCreationStamp,
       legacy_state_->GetCreationStamp());
 
   const auto seed = legacy_state_->GetRecoverySeed();
   ledger_->ledger_client()->SetStringState(
-      ledger::state::kRecoverySeed,
+      kRecoverySeed,
       base::Base64Encode(seed));
 
   ledger_->ledger_client()->SetStringState(
-      ledger::state::kPaymentId,
+      kPaymentId,
       legacy_state_->GetPaymentId());
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::state::kInlineTipRedditEnabled,
+      kInlineTipRedditEnabled,
       legacy_state_->GetInlineTipSetting("reddit"));
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::state::kInlineTipTwitterEnabled,
+      kInlineTipTwitterEnabled,
       legacy_state_->GetInlineTipSetting("twitter"));
 
   ledger_->ledger_client()->SetBooleanState(
-      ledger::state::kInlineTipGithubEnabled,
+      kInlineTipGithubEnabled,
       legacy_state_->GetInlineTipSetting("github"));
 
   callback(type::Result::LEDGER_OK);

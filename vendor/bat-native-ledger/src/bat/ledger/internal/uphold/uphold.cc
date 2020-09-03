@@ -41,7 +41,7 @@ Uphold::Uphold(LedgerImpl* ledger) :
     user_(std::make_unique<UpholdUser>(ledger)),
     authorization_(std::make_unique<UpholdAuthorization>(ledger, this)),
     wallet_(std::make_unique<UpholdWallet>(ledger, this)),
-    uphold_server_(std::make_unique<ledger::endpoint::UpholdServer>(ledger)),
+    uphold_server_(std::make_unique<endpoint::UpholdServer>(ledger)),
     ledger_(ledger) {
 }
 
@@ -204,7 +204,7 @@ void Uphold::DisconnectWallet() {
 
   if (!wallet->address.empty()) {
     ledger_->database()->SaveEventLog(
-        ledger::log::kWalletDisconnected,
+        log::kWalletDisconnected,
         static_cast<std::string>(constant::kWalletUphold) + "/" +
             wallet->address.substr(0, 5));
   }

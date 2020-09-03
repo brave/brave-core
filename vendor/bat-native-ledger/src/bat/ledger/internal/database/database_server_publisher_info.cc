@@ -144,7 +144,7 @@ void DatabaseServerPublisherInfo::OnGetRecord(
 
   auto info = type::ServerPublisherInfo::New();
   info->publisher_key = publisher_key;
-  info->status = static_cast<ledger::mojom::PublisherStatus>(
+  info->status = static_cast<type::PublisherStatus>(
       GetIntColumn(record, 0));
   info->address = GetStringColumn(record, 1);
   info->updated_at = GetInt64Column(record, 2);

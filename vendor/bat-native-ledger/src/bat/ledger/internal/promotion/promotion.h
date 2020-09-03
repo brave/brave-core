@@ -145,7 +145,7 @@ class Promotion {
   std::unique_ptr<ledger::attestation::AttestationImpl> attestation_;
   std::unique_ptr<PromotionTransfer> transfer_;
   std::unique_ptr<credential::Credentials> credentials_;
-  std::unique_ptr<ledger::endpoint::PromotionServer> promotion_server_;
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
   LedgerImpl* ledger_;  // NOT OWNED
   base::OneShotTimer last_check_timer_;
   base::OneShotTimer retry_timer_;

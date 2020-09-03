@@ -90,7 +90,7 @@ bool HaveEnoughFundsToContribute(
 }
 
 int32_t GetVotesFromAmount(const double amount) {
-  DCHECK_GT(ledger::constant::kVotePrice, 0);
+  DCHECK_GT(constant::kVotePrice, 0);
   return std::floor(amount / constant::kVotePrice);
 }
 

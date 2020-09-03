@@ -139,7 +139,7 @@ void DatabaseMediaPublisherInfo::OnGetRecord(
   info->favicon_url = GetStringColumn(record, 3);
   info->provider = GetStringColumn(record, 4);
   info->status =
-      static_cast<ledger::mojom::PublisherStatus>(GetIntColumn(record, 5));
+      static_cast<type::PublisherStatus>(GetIntColumn(record, 5));
   info->status_updated_at = GetInt64Column(record, 6);
   info->excluded =
       static_cast<type::PublisherExclude>(GetIntColumn(record, 7));

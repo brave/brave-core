@@ -44,9 +44,9 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
 
   ~DatabasePublisherPrefixListTest() override {}
 
-  std::unique_ptr<::ledger::publisher::PrefixListReader>
+  std::unique_ptr<publisher::PrefixListReader>
   CreateReader(uint32_t prefix_count) {
-    auto reader = std::make_unique<::ledger::publisher::PrefixListReader>();
+    auto reader = std::make_unique<publisher::PrefixListReader>();
     if (prefix_count == 0) {
       return reader;
     }

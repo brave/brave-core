@@ -147,7 +147,7 @@ void Wallet::DisconnectWallet(
 
   if (!wallet_ptr->address.empty()) {
     ledger_->database()->SaveEventLog(
-        ledger::log::kWalletDisconnected,
+        log::kWalletDisconnected,
         static_cast<std::string>(wallet_type) + "/" +
             wallet_ptr->address.substr(0, 5));
   }

@@ -87,7 +87,7 @@ void ContributionAC::PreparePublisherList(type::PublisherInfoList list) {
   queue->publishers = std::move(queue_list);
 
   ledger_->database()->SaveEventLog(
-      ledger::log::kACAddedToQueue,
+      log::kACAddedToQueue,
       std::to_string(queue->amount));
 
   auto save_callback = std::bind(&ContributionAC::QueueSaved,

@@ -20,7 +20,7 @@ namespace sku {
 
 SKUOrder::SKUOrder(LedgerImpl* ledger) :
     ledger_(ledger),
-    payment_server_(std::make_unique<ledger::endpoint::PaymentServer>(ledger)) {
+    payment_server_(std::make_unique<endpoint::PaymentServer>(ledger)) {
   DCHECK(ledger_);
 }
 

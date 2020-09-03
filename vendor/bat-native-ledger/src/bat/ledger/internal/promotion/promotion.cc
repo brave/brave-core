@@ -78,7 +78,7 @@ Promotion::Promotion(LedgerImpl* ledger) :
         (ledger)),
     transfer_(std::make_unique<PromotionTransfer>(ledger)),
     promotion_server_(
-        std::make_unique<ledger::endpoint::PromotionServer>(ledger)),
+        std::make_unique<endpoint::PromotionServer>(ledger)),
     ledger_(ledger) {
   DCHECK(ledger_);
   credentials_ = credential::CredentialsFactory::Create(

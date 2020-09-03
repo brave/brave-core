@@ -166,7 +166,7 @@ void DatabasePublisherInfo::OnGetRecord(
   info->url = GetStringColumn(record, 2);
   info->favicon_url = GetStringColumn(record, 3);
   info->provider = GetStringColumn(record, 4);
-  info->status = static_cast<ledger::mojom::PublisherStatus>(
+  info->status = static_cast<type::PublisherStatus>(
       GetInt64Column(record, 5));
   info->status_updated_at = GetInt64Column(record, 6);
   info->excluded = static_cast<type::PublisherExclude>(
@@ -255,7 +255,7 @@ void DatabasePublisherInfo::OnGetPanelRecord(
   info->favicon_url = GetStringColumn(record, 3);
   info->provider = GetStringColumn(record, 4);
   info->status =
-      static_cast<ledger::mojom::PublisherStatus>(GetInt64Column(record, 5));
+      static_cast<type::PublisherStatus>(GetInt64Column(record, 5));
   info->excluded = static_cast<type::PublisherExclude>(
       GetIntColumn(record, 6));
   info->percent = GetIntColumn(record, 7);
@@ -354,7 +354,7 @@ void DatabasePublisherInfo::OnGetExcludedList(
     auto* record_pointer = record.get();
 
     info->id = GetStringColumn(record_pointer, 0);
-    info->status = static_cast<ledger::mojom::PublisherStatus>(
+    info->status = static_cast<type::PublisherStatus>(
         GetInt64Column(record_pointer, 1));
     info->name = GetStringColumn(record_pointer, 2);
     info->favicon_url = GetStringColumn(record_pointer, 3);

@@ -59,7 +59,7 @@ class ServerPublisherFetcher {
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, FetchCallbackVector> callback_map_;
-  std::unique_ptr<ledger::endpoint::PrivateCDNServer> private_cdn_server_;
+  std::unique_ptr<endpoint::PrivateCDNServer> private_cdn_server_;
 };
 
 }  // namespace publisher

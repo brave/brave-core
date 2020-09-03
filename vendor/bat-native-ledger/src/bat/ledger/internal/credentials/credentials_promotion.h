@@ -117,7 +117,7 @@ class CredentialsPromotion : public Credentials {
 
   LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<CredentialsCommon> common_;
-  std::unique_ptr<ledger::endpoint::PromotionServer> promotion_server_;
+  std::unique_ptr<endpoint::PromotionServer> promotion_server_;
 };
 
 }  // namespace credential
