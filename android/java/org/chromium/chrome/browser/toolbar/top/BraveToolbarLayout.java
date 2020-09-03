@@ -753,8 +753,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
     }
 
     if (checkForRewardsOnboarding()) {
-      mBraveRewardsOnboardingIcon.setVisibility(View.VISIBLE);
-      mBraveRewardsNotificationsCount.setVisibility(View.GONE);
+      if (mBraveRewardsOnboardingIcon != null) {
+        mBraveRewardsOnboardingIcon.setVisibility(View.VISIBLE);
+      }
+      if (mBraveRewardsNotificationsCount != null) {
+        mBraveRewardsNotificationsCount.setVisibility(View.GONE);
+      }
     }
   }
 
