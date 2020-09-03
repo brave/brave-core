@@ -188,6 +188,13 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     return;
   }
   PublicKey public_key = PublicKey::decode_base64(*public_key_base64);
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    OnRefill(FAILED, false);
+    return;
+  }
 
   // Validate public key
   if (*public_key_base64 != public_key_) {
@@ -208,6 +215,13 @@ void RefillUnblindedTokens::OnGetSignedTokens(
 
   BatchDLEQProof batch_dleq_proof =
       BatchDLEQProof::decode_base64(*batch_proof_base64);
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    OnRefill(FAILED, false);
+    return;
+  }
 
   // Get signed tokens
   const base::Value* signed_tokens_list =
@@ -223,6 +237,13 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     DCHECK(value.is_string());
     const std::string signed_token_base64 = value.GetString();
     SignedToken signed_token = SignedToken::decode_base64(signed_token_base64);
+    if (challenge_bypass_ristretto::exception_occurred()) {
+      challenge_bypass_ristretto::TokenException e =
+          challenge_bypass_ristretto::get_last_exception();
+      BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+      OnRefill(FAILED, false);
+      return;
+    }
 
     signed_tokens.push_back(signed_token);
   }
@@ -231,6 +252,13 @@ void RefillUnblindedTokens::OnGetSignedTokens(
   const std::vector<UnblindedToken> batch_dleq_proof_unblinded_tokens =
       batch_dleq_proof.verify_and_unblind(tokens_, blinded_tokens_,
           signed_tokens, public_key);
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    OnRefill(FAILED, false);
+    return;
+  }
 
   if (batch_dleq_proof_unblinded_tokens.empty()) {
     BLOG(1, "Failed to verify and unblind tokens");
@@ -246,12 +274,28 @@ void RefillUnblindedTokens::OnGetSignedTokens(
     BLOG(1, "  Blinded tokens (" << blinded_tokens_.size() << "):");
     for (const auto& blinded_token : blinded_tokens_) {
       const std::string blinded_token_base64 = blinded_token.encode_base64();
+      if (challenge_bypass_ristretto::exception_occurred()) {
+        challenge_bypass_ristretto::TokenException e =
+            challenge_bypass_ristretto::get_last_exception();
+        BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+        OnRefill(FAILED, false);
+        return;
+      }
+
       BLOG(1, "    " << blinded_token_base64);
     }
 
     BLOG(1, "  Signed tokens (" << signed_tokens.size() << "):");
     for (const auto& signed_token : signed_tokens) {
       const std::string signed_token_base64 = signed_token.encode_base64();
+      if (challenge_bypass_ristretto::exception_occurred()) {
+        challenge_bypass_ristretto::TokenException e =
+            challenge_bypass_ristretto::get_last_exception();
+        BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+        OnRefill(FAILED, false);
+        return;
+      }
+
       BLOG(1, "    " << signed_token_base64);
     }
 

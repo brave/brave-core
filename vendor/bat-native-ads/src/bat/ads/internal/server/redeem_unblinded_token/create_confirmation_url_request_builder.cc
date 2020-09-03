@@ -21,10 +21,6 @@
 
 namespace ads {
 
-using challenge_bypass_ristretto::VerificationKey;
-using challenge_bypass_ristretto::VerificationSignature;
-using challenge_bypass_ristretto::TokenPreimage;
-
 CreateConfirmationUrlRequestBuilder::CreateConfirmationUrlRequestBuilder(
     const ConfirmationInfo& confirmation)
     : confirmation_(confirmation) {

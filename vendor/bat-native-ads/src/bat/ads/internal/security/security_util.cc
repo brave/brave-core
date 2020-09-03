@@ -18,6 +18,7 @@
 #include "tweetnacl.h"  // NOLINT
 #include "wrapper.hpp"
 #include "bat/ads/internal/confirmations/confirmation_info.h"
+#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/server/redeem_unblinded_token/create_confirmation_util.h"
 
 namespace ads {
@@ -186,11 +187,30 @@ bool Verify(
 
   VerificationSignature verification_signature =
       VerificationSignature::decode_base64(*signature);
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return false;
+  }
 
   const std::string payload = CreateConfirmationRequestDTO(confirmation);
 
   UnblindedToken unblinded_token = confirmation.unblinded_token.value;
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return false;
+  }
+
   VerificationKey verification_key = unblinded_token.derive_verification_key();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return false;
+  }
 
   return verification_key.verify(verification_signature, payload);
 }

@@ -326,6 +326,12 @@ bool ConfirmationsState::GetConfirmationsFromDictionary(
     }
     confirmation.unblinded_token.value =
         UnblindedToken::decode_base64(*unblinded_token_base64);
+    if (challenge_bypass_ristretto::exception_occurred()) {
+      challenge_bypass_ristretto::TokenException e =
+          challenge_bypass_ristretto::get_last_exception();
+      BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+      continue;
+    }
 
     const std::string* public_key_base64 =
         token_info_dictionary->FindStringKey("public_key");
@@ -336,6 +342,12 @@ bool ConfirmationsState::GetConfirmationsFromDictionary(
     }
     confirmation.unblinded_token.public_key =
         PublicKey::decode_base64(*public_key_base64);
+    if (challenge_bypass_ristretto::exception_occurred()) {
+      challenge_bypass_ristretto::TokenException e =
+          challenge_bypass_ristretto::get_last_exception();
+      BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+      continue;
+    }
 
     // Payment token
     const std::string* payment_token_base64 =

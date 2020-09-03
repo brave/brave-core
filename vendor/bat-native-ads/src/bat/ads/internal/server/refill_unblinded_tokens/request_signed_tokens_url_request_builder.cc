@@ -95,6 +95,13 @@ std::string RequestSignedTokensUrlRequestBuilder::BuildBody() const {
 
   for (const auto& blinded_token : blinded_tokens_) {
     const std::string blinded_token_base64 = blinded_token.encode_base64();
+    if (challenge_bypass_ristretto::exception_occurred()) {
+      challenge_bypass_ristretto::TokenException e =
+          challenge_bypass_ristretto::get_last_exception();
+      BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+      return "";
+    }
+
     base::Value blinded_token_base64_value = base::Value(blinded_token_base64);
     list.Append(std::move(blinded_token_base64_value));
   }

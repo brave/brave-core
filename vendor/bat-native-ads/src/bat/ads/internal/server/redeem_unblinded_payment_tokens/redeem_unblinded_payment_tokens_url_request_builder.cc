@@ -119,13 +119,47 @@ base::Value RedeemUnblindedPaymentTokensUrlRequestBuilder::CreateCredential(
 
   VerificationKey verification_key =
       unblinded_token.value.derive_verification_key();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return credential;
+  }
+
   VerificationSignature verification_signature = verification_key.sign(payload);
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return credential;
+  }
+
   const std::string verification_signature_base64 =
       verification_signature.encode_base64();
-  credential.SetKey("signature", base::Value(verification_signature_base64));
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return credential;
+  }
 
   TokenPreimage token_preimage = unblinded_token.value.preimage();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return credential;
+  }
+
   const std::string token_preimage_base64 = token_preimage.encode_base64();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return credential;
+  }
+
+  credential.SetKey("signature", base::Value(verification_signature_base64));
   credential.SetKey("t", base::Value(token_preimage_base64));
 
   return credential;

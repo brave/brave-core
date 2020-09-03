@@ -19,6 +19,14 @@ std::vector<Token> GenerateTokens(
 
   for (int i = 0; i < count; i++) {
     const Token token = Token::random();
+
+    if (challenge_bypass_ristretto::exception_occurred()) {
+      challenge_bypass_ristretto::TokenException e =
+          challenge_bypass_ristretto::get_last_exception();
+      BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+      break;
+    }
+
     tokens.push_back(token);
   }
 
@@ -33,6 +41,13 @@ std::vector<BlindedToken> BlindTokens(
   for (unsigned int i = 0; i < tokens.size(); i++) {
     Token token = tokens.at(i);
     const BlindedToken blinded_token = token.blind();
+
+    if (challenge_bypass_ristretto::exception_occurred()) {
+      challenge_bypass_ristretto::TokenException e =
+          challenge_bypass_ristretto::get_last_exception();
+      BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+      break;
+    }
 
     blinded_tokens.push_back(blinded_token);
   }

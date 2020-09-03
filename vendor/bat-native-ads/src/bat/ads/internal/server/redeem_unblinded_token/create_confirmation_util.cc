@@ -13,6 +13,7 @@
 #include "wrapper.hpp"
 #include "bat/ads/ads.h"
 #include "bat/ads/internal/locale/country_code_util.h"
+#include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/platform/platform_helper.h"
 
 namespace ads {
@@ -69,19 +70,51 @@ std::string CreateCredential(
     const std::string& payload) {
   DCHECK(!payload.empty());
 
-  base::Value dictionary(base::Value::Type::DICTIONARY);
-
-  dictionary.SetKey("payload", base::Value(payload));
-
   VerificationKey verification_key =
       unblinded_token.value.derive_verification_key();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return "";
+  }
+
   VerificationSignature verification_signature = verification_key.sign(payload);
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return "";
+  }
+
   const std::string verification_signature_base64 =
       verification_signature.encode_base64();
-  dictionary.SetKey("signature", base::Value(verification_signature_base64));
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return "";
+  }
 
   TokenPreimage token_preimage = unblinded_token.value.preimage();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return "";
+  }
+
   const std::string token_preimage_base64 = token_preimage.encode_base64();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return "";
+  }
+
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+  dictionary.SetKey("payload", base::Value(payload));
+  dictionary.SetKey("signature", base::Value(verification_signature_base64));
   dictionary.SetKey("t", base::Value(token_preimage_base64));
 
   std::string json;

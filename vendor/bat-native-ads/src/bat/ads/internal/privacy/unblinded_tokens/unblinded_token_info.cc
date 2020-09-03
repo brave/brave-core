@@ -5,6 +5,10 @@
 
 #include "bat/ads/internal/privacy/unblinded_tokens/unblinded_token_info.h"
 
+#include <string>
+
+#include "bat/ads/internal/logging.h"
+
 namespace ads {
 namespace privacy {
 
@@ -19,8 +23,41 @@ UnblindedTokenInfo::~UnblindedTokenInfo() = default;
 
 bool UnblindedTokenInfo::operator==(
     const UnblindedTokenInfo& rhs) const {
-  return public_key.encode_base64() == rhs.public_key.encode_base64() &&
-      value.encode_base64() == rhs.value.encode_base64();
+
+  const std::string public_key_base64 = public_key.encode_base64();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return false;
+  }
+
+  const std::string rhs_public_key_base64 = rhs.public_key.encode_base64();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return false;
+  }
+
+  const std::string value_base64 = value.encode_base64();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return false;
+  }
+
+  const std::string rhs_value_base64 = rhs.value.encode_base64();
+  if (challenge_bypass_ristretto::exception_occurred()) {
+    challenge_bypass_ristretto::TokenException e =
+        challenge_bypass_ristretto::get_last_exception();
+    BLOG(0, "Challenge Bypass Ristretto Error: " << e.what());
+    return false;
+  }
+
+  return public_key_base64 == rhs_public_key_base64 &&
+      value_base64 == rhs_value_base64;
 }
 
 bool UnblindedTokenInfo::operator!=(
