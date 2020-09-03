@@ -7,6 +7,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "brave/common/brave_wallet_constants.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,6 +21,10 @@
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
 #include "content/public/test/browser_test.h"
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/common/ipfs_constants.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
@@ -62,6 +67,13 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(
           brave_rewards::prefs::kHideBraveRewardsButton));
+#if BUILDFLAG(IPFS_ENABLED)
+  EXPECT_EQ(
+      browser()->profile()->GetPrefs()->GetInteger(kIPFSResolveMethod),
+      static_cast<int>((ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY)));
+  EXPECT_FALSE(
+      browser()->profile()->GetPrefs()->GetBoolean(kIPFSBinaryAvailable));
+#endif
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
   EXPECT_EQ(

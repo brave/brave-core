@@ -1,0 +1,18 @@
+source_set("browser") {
+  sources = [
+    "addresses_config.cc",
+    "addresses_config.h",
+    "brave_ipfs_client_updater.cc",
+    "brave_ipfs_client_updater.h",
+    "features.cc",
+    "features.h",
+    "ipfs_json_parser.cc",
+    "ipfs_json_parser.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser/",
+    "//third_party/re2",
+  ]
+}

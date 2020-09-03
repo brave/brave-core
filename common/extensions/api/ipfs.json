@@ -1,0 +1,57 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "ipfs",
+    "description": "Use the <code>chrome.ipfs</code> API to control IPFS functionality.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/ipfs_api.h"
+    },
+    "events": [
+    ],
+    "functions": [
+      {
+        "name": "getIPFSResolveMethodList",
+        "type": "function",
+        "description": "Get methods for resolving IPFS URIs",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called when IPFS resolve methods list are fetched",
+            "parameters": [
+              {
+                "name": "types",
+                "type": "string",
+                "description": "json stringified avalable IPFS resolve methods list"
+              }
+            ]
+          }
+        ]
+      }, {
+        "name": "getIPFSEnabled",
+        "type": "function",
+        "description": "Get to see if the IPFS feature flag is enabled",
+        "parameters": [
+          {
+            "name": "callback",
+            "type": "function",
+            "description": "Function called with enabled status",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "types": [
+    ],
+    "properties": {
+    }
+  }
+]

@@ -11,6 +11,7 @@
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_shields/common/features.h"
 #include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -47,6 +48,18 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
 #define BRAVE_SYNC_FEATURE_ENTRIES
 #endif
 
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/browser/features.h"
+
+#define BRAVE_IPFS_FEATURE_ENTRIES                                         \
+    {"brave-ipfs",                                                         \
+     flag_descriptions::kBraveIpfsName,                                    \
+     flag_descriptions::kBraveIpfsDescription, kOsDesktop,                 \
+     FEATURE_VALUE_TYPE(ipfs::features::kIpfsFeature)},
+#else
+#define BRAVE_IPFS_FEATURE_ENTRIES
+#endif
+
 #define BRAVE_FEATURE_ENTRIES \
     ,                                                                      \
     {"use-dev-updater-url",                                                \
@@ -67,6 +80,7 @@ using ntp_background_images::features::kBraveNTPSuperReferralWallpaper;
      FEATURE_VALUE_TYPE(kBraveAdblockCosmeticFiltering)},                  \
     SPEEDREADER_FEATURE_ENTRIES                                            \
     BRAVE_SYNC_FEATURE_ENTRIES                                             \
+    BRAVE_IPFS_FEATURE_ENTRIES                                             \
     {"brave-super-referral",                                               \
      flag_descriptions::kBraveSuperReferralName,                           \
      flag_descriptions::kBraveSuperReferralDescription,                    \

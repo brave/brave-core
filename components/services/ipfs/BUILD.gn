@@ -1,0 +1,12 @@
+source_set("ipfs") {
+  sources = [
+    "ipfs_service_impl.cc",
+    "ipfs_service_impl.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/services/ipfs/public/mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+}

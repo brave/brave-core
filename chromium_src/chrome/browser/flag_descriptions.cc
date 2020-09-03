@@ -31,6 +31,9 @@ const char kBraveSyncName[] = "Enable Brave Sync v2";
 const char kBraveSyncDescription[] =
     "Brave Sync v2 integrates with chromium sync engine with Brave specific "
     "authentication flow and enforce client side encryption";
+const char kBraveIpfsName[] = "Enable IPFS";
+const char kBraveIpfsDescription[] =
+    "Enable native support of IPFS.";
 const char kBraveSuperReferralName[] = "Enable Brave Super Referral";
 const char kBraveSuperReferralDescription[] =
     "Use custom theme for Brave Super Referral";

@@ -20,6 +20,7 @@ Polymer({
     showRestartToast_: Boolean,
     torEnabled_: Boolean,
     disableTorOption_: Boolean,
+    ipfsEnabled_: Boolean,
   },
 
   /** @private {?settings.BraveDefaultExtensionsBrowserProxy} */
@@ -59,6 +60,12 @@ Polymer({
     })
     this.browserProxy_.getWeb3ProviderList().then(list => {
       this.braveWeb3Providers_ = JSON.parse(list)
+    });
+    this.browserProxy_.getIPFSResolveMethodList().then(list => {
+      this.ipfsResolveMethod_ = JSON.parse(list)
+    });
+    this.browserProxy_.getIPFSEnabled().then(enabled => {
+      this.ipfsEnabled_ = enabled
     });
   },
 

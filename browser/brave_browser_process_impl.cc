@@ -74,6 +74,10 @@
 #include "brave/common/tor/pref_names.h"
 #endif
 
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/components/ipfs/browser/brave_ipfs_client_updater.h"
+#endif
+
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #endif
@@ -410,3 +414,15 @@ BraveBrowserProcessImpl::user_model_file_service() {
 }
 
 #endif  // BUILDFLAG(BRAVE_ADS_ENABLED)
+
+#if BUILDFLAG(IPFS_ENABLED)
+ipfs::BraveIpfsClientUpdater*
+BraveBrowserProcessImpl::ipfs_client_updater() {
+  if (ipfs_client_updater_)
+    return ipfs_client_updater_.get();
+
+  ipfs_client_updater_ = ipfs::BraveIpfsClientUpdaterFactory(
+      brave_component_updater_delegate());
+  return ipfs_client_updater_.get();
+}
+#endif  // BUILDFLAG(IPFS_ENABLED)

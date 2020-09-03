@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
@@ -46,6 +47,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/ipfs_service.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -134,6 +139,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kFBEmbedControlType, true);
   registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
   registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);
+
+#if BUILDFLAG(IPFS_ENABLED)
+  ipfs::IpfsService::RegisterPrefs(registry);
+#endif
 
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

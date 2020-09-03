@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "IPFS_ENABLED=$ipfs_enabled",
+  ]
+}

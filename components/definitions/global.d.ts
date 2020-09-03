@@ -67,6 +67,9 @@ declare global {
     brave_rewards_internals: {
       initialize: () => void
     }
+    ipfs: {
+      initialize: () => void
+    }
     sync_ui_exports: {
       initialize: () => void
     }

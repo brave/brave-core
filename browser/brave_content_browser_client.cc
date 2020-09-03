@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/bind.h"
+#include "base/feature_list.h"
 #include "base/json/json_reader.h"
 #include "base/rand_util.h"
 #include "base/task/post_task.h"
@@ -31,6 +32,8 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
+#include "brave/components/ipfs/browser/features.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/speedreader/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -81,6 +84,11 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
 #include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
 #include "brave/browser/extensions/brave_webtorrent_navigation_throttle.h"
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+#include "brave/browser/ipfs/content_browser_client_helper.h"
+#include "brave/browser/ipfs/ipfs_navigation_throttle.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -160,6 +168,16 @@ void BraveContentBrowserClient::BrowserURLHandlerCreated(
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
 #endif
+#if BUILDFLAG(IPFS_ENABLED)
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature)) {
+    handler->AddHandlerPair(
+        &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
+        content::BrowserURLHandler::null_handler());
+    handler->AddHandlerPair(
+        &ipfs::ContentBrowserClientHelper::HandleIPFSURLRewrite,
+        &ipfs::ContentBrowserClientHelper::HandleIPFSURLReverseRewrite);
+  }
+#endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
@@ -187,6 +205,16 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     webtorrent::HandleMagnetProtocol(url, std::move(web_contents_getter),
                                      page_transition, has_user_gesture,
                                      initiating_origin);
+    return true;
+  }
+#endif
+#if BUILDFLAG(IPFS_ENABLED)
+  if (base::FeatureList::IsEnabled(ipfs::features::kIpfsFeature) &&
+      ipfs::ContentBrowserClientHelper::IsIPFSProtocol(url)) {
+    ipfs::ContentBrowserClientHelper::HandleIPFSProtocol(url,
+        std::move(web_contents_getter),
+        page_transition, has_user_gesture,
+        initiating_origin);
     return true;
   }
 #endif
@@ -490,6 +518,11 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
     tor::TorNavigationThrottle::MaybeCreateThrottleFor(handle);
   if (tor_navigation_throttle)
     throttles.push_back(std::move(tor_navigation_throttle));
+#endif
+
+#if BUILDFLAG(IPFS_ENABLED)
+  throttles.push_back(
+      std::make_unique<ipfs::IpfsNavigationThrottle>(handle));
 #endif
 
   return throttles;

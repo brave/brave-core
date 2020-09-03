@@ -12,6 +12,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -136,6 +137,7 @@ source_set("browser_process") {
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
     "//brave/components/greaselion/browser/buildflags",
+    "//brave/components/ipfs/browser/buildflags",
     "//brave/components/l10n/browser",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_tiles",
@@ -306,6 +308,31 @@ source_set("browser_process") {
   if (ntp_widget_utils_enabled) {
     deps += [
       "//brave/components/ntp_widget_utils/browser",
+    ]
+  }
+
+  if (ipfs_enabled) {
+    sources += [
+      "ipfs/content_browser_client_helper.cc",
+      "ipfs/content_browser_client_helper.h",
+      "ipfs/ipfs_navigation_throttle.cc",
+      "ipfs/ipfs_navigation_throttle.h",
+      "ipfs/ipfs_service.cc",
+      "ipfs/ipfs_service.h",
+      "ipfs/ipfs_service_factory.cc",
+      "ipfs/ipfs_service_factory.h",
+      "ipfs/ipfs_service_observer.h",
+      "ipfs/ipfs_tab_helper.cc",
+      "ipfs/ipfs_tab_helper.h",
+    ]
+
+    deps += [
+      "//brave/browser/infobars",
+      "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
+      "//brave/components/services/ipfs/public/mojom",
+      "//extensions/browser",
+      "//extensions/common",
     ]
   }
 

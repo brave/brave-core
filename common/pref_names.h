@@ -47,6 +47,8 @@ extern const char kTwitterEmbedControlType[];
 extern const char kLinkedInEmbedControlType[];
 extern const char kWebTorrentEnabled[];
 extern const char kHangoutsEnabled[];
+extern const char kIPFSResolveMethod[];
+extern const char kIPFSBinaryAvailable[];
 extern const char kIPFSCompanionEnabled[];
 extern const char kNewTabPageShowClock[];
 extern const char kNewTabPageShowTopSites[];

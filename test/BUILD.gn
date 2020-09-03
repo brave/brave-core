@@ -14,6 +14,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/greaselion/browser/buildflags/buildflags.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//brave/components/speedreader/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//components/gcm_driver/config.gni")
@@ -225,6 +226,20 @@ test("brave_unit_tests") {
   if (is_mac) {
     sources += [
       "//brave/chromium_src/chrome/common/chrome_constants_unittest_mac.cc",
+    ]
+  }
+
+  if (ipfs_enabled) {
+    sources += [
+      "//brave/browser/ipfs/ipfs_navigation_throttle_unittest.cc",
+      "//brave/browser/ipfs/content_browser_client_helper_unittest.cc",
+      "//brave/components/ipfs/browser/ipfs_json_parser_unittest.cc",
+      "//brave/components/ipfs/common/ipfs_utils_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
     ]
   }
 
@@ -671,6 +686,14 @@ test("brave_browser_tests") {
     ]
   }
 
+  if (ipfs_enabled) {
+    sources += [
+      "//brave/browser/extensions/brave_ipfs_client_updater_browsertest.cc",
+      "//brave/browser/ipfs/ipfs_service_browsertest.cc",
+      "//brave/browser/ipfs/ipfs_tab_helper_browsertest.cc",
+    ]
+  }
+
   if (enable_brave_wayback_machine) {
     sources += [
       "//brave/components/brave_wayback_machine/brave_wayback_machine_browsertest.cc",
@@ -715,6 +738,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/browser/buildflags:buildflags",
     "//brave/components/brave_sync/buildflags:buildflags",
     "//brave/components/brave_wallet/browser/buildflags:buildflags",
+    "//brave/components/ipfs/browser/buildflags:buildflags",
     "//chrome/browser/ui",
     "//chrome/test:test_support_ui",
     "//components/embedder_support",

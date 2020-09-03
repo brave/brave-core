@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="ipfs_enabled">
+     <message name="IDS_IPFS_CONNECTED_PEERS_TITLE" desc="Number of peers connected">Connected peers:</message>
+     <message name="IDS_IPFS_ADDRESSES_CONFIG_TITLE" desc="Title of addresses config section">Addresses Config</message>
+     <message name="IDS_IPFS_DAEMON_STATUS_TITLE" desc="Title of daemon status section">Daemon Status</message>
+     <message name="IDS_IPFS_API" desc="Title of the API config">API</message>
+     <message name="IDS_IPFS_GATEWAY" desc="Title of the gateway config">Gateway</message>
+     <message name="IDS_IPFS_SWARM" desc="Title of the swarm config">Swarm</message>
+     <message name="IDS_IPFS_LAUNCHED" desc="Title of the launched status">Launched</message>
+     <message name="IDS_IPFS_LAUNCH" desc="Text of launch action">Launch</message>
+     <message name="IDS_IPFS_SHUTDOWN" desc="Text of shutdown action">Shutdown</message>
+  </if>
+</grit-part>

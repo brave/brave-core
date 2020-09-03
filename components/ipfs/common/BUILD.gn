@@ -1,0 +1,13 @@
+source_set("common") {
+  sources = [
+    "ipfs_constants.cc",
+    "ipfs_constants.h",
+    "ipfs_utils.cc",
+    "ipfs_utils.h",
+  ]
+
+  deps = [
+    "//extensions/common",
+    "//url",
+  ]
+}

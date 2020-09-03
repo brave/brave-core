@@ -21,4 +21,17 @@ content::GetServiceSandboxType<brave::mojom::ProfileImport>() {
   return content::SandboxType::kNoSandbox;
 }
 
+// ipfs::mojom::IpfsService
+namespace ipfs {
+namespace mojom {
+class IpfsService;
+}  // namespace mojom
+}  // namespace ipfs
+
+template <>
+inline content::SandboxType
+content::GetServiceSandboxType<ipfs::mojom::IpfsService>() {
+  return content::SandboxType::kNoSandbox;
+}
+
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SERVICE_SANDBOX_TYPE_H_

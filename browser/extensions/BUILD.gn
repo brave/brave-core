@@ -6,6 +6,7 @@ import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_together/buildflags/buildflags.gni")
+import("//brave/components/ipfs/browser/buildflags/buildflags.gni")
 import("//brave/components/ntp_widget_utils/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -86,6 +87,7 @@ source_set("extensions") {
     "//brave/components/brave_shields/browser",
     "//brave/components/brave_shields/common",
     "//brave/components/brave_wayback_machine:buildflags",
+    "//brave/components/ipfs/browser/buildflags",
     "//chrome/browser/extensions",
     "//chrome/common",
     "//components/gcm_driver:gcm_driver",
@@ -100,6 +102,7 @@ source_set("extensions") {
     "//extensions/browser",
     "//extensions/common",
     "//third_party/re2",
+    "//ui/base",
     "//url",
   ]
 
@@ -107,6 +110,17 @@ source_set("extensions") {
     deps += [
       "//brave/components/ntp_widget_utils/browser",
     ]    
+  }
+
+  if (ipfs_enabled) {
+    sources += [
+      "api/ipfs_api.cc",
+      "api/ipfs_api.h",
+    ]
+    deps += [
+      "//brave/components/ipfs/browser",
+      "//brave/components/ipfs/common",
+    ]
   }
 
   if (brave_rewards_enabled) {

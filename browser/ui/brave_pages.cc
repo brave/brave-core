@@ -55,4 +55,10 @@ void ShowExtensionSettings(Browser* browser) {
       GetSingletonTabNavigateParams(browser, GURL(kExtensionSettingsURL)));
 }
 
+void ShowIPFS(Browser* browser) {
+  ShowSingletonTabOverwritingNTP(
+      browser,
+      GetSingletonTabNavigateParams(browser, GURL(kBraveUIIPFSURL)));
+}
+
 }  // namespace brave

@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 
+#include "brave/components/ipfs/browser/buildflags/buildflags.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/url_constants.h"
 #include "components/grit/brave_components_resources.h"
@@ -781,6 +782,20 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "customFiltersInstructions", IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS },                // NOLINT
       }
     }, {
+#if BUILDFLAG(IPFS_ENABLED)
+      std::string("ipfs"), {
+        { "connectedPeersTitle", IDS_IPFS_CONNECTED_PEERS_TITLE },
+        { "addressesConfigTitle", IDS_IPFS_ADDRESSES_CONFIG_TITLE },
+        { "daemonStatusTitle", IDS_IPFS_DAEMON_STATUS_TITLE },
+        { "api", IDS_IPFS_API },
+        { "gateway", IDS_IPFS_GATEWAY },
+        { "swarm", IDS_IPFS_SWARM },
+        { "launched", IDS_IPFS_LAUNCHED },
+        { "launch", IDS_IPFS_LAUNCH },
+        { "shutdown", IDS_IPFS_SHUTDOWN },
+      }
+    }, {
+#endif
       std::string("tip"), {
         { "about", IDS_BRAVE_UI_ABOUT },
         { "addFunds", IDS_BRAVE_UI_ADD_FUNDS },
