@@ -66,13 +66,13 @@ class BatAdsPurchaseIntentClassifierTest : public ::testing::Test {
           "funnel_sites": [
             {
               "sites": [
-                "http://brave.com", "http://crave.com"
+                "https://brave.com", "https://crave.com"
               ],
               "segments": [1, 2]
             },
             {
               "sites": [
-                "http://frexample.org", "http://example.org"
+                "https://frexample.org", "https://example.org"
               ],
               "segments": [0]
             }

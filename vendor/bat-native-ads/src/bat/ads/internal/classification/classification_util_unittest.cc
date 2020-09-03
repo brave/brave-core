@@ -62,5 +62,41 @@ TEST(BatAdsClassificationUtilTest,
   EXPECT_EQ(expected_categories, categories);
 }
 
+TEST(BatAdsClassificationUtilTest,
+    GetParentCategories) {
+  // Arrange
+  const std::vector<std::string> categories = {
+    "technology & computing-software",
+    "personal-finance-banking",
+    "automobiles"
+  };
+
+  // Act
+  const CategoryList parent_categories = GetParentCategories(categories);
+
+  // Assert
+  const std::vector<std::string> expected_parent_categories = {
+    "technology & computing",
+    "personal-finance",
+    "automobiles"
+  };
+
+  EXPECT_EQ(expected_parent_categories, parent_categories);
+}
+
+TEST(BatAdsClassificationUtilTest,
+    GetParentCategoriesForEmptyList) {
+  // Arrange
+  const std::vector<std::string> categories = {};
+
+  // Act
+  const CategoryList parent_categories = GetParentCategories(categories);
+
+  // Assert
+  const std::vector<std::string> expected_parent_categories = {};
+
+  EXPECT_EQ(expected_parent_categories, parent_categories);
+}
+
 }  // namespace classification
 }  // namespace ads
