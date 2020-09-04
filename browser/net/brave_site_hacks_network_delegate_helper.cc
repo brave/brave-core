@@ -19,6 +19,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_util.h"
 #include "content/public/common/referrer.h"
 #include "extensions/common/url_pattern.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 #include "third_party/blink/public/common/loader/network_utils.h"
 #include "third_party/blink/public/common/loader/referrer_utils.h"
@@ -73,10 +74,19 @@ DECLARE_LAZY_MATCHER(tracker_appended_matcher,
 
 #undef DECLARE_LAZY_MATCHER
 
-void ApplyPotentialQueryStringFilter(const GURL& request_url,
+void ApplyPotentialQueryStringFilter(const GURL& initiator_url,
+                                     const GURL& request_url,
                                      std::string* new_url_spec) {
   DCHECK(new_url_spec);
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.SiteHacks.QueryFilter");
+
+  // Same-site requests are exempted from the filter.
+  if (net::registry_controlled_domains::SameDomainOrHost(
+          initiator_url, request_url,
+          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
+    return;
+  }
+
   std::string new_query = request_url.query();
   // Note: the ordering of these replacements is important.
   const int replacement_count =
@@ -124,8 +134,9 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
 int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
                                      std::shared_ptr<BraveRequestInfo> ctx) {
   ApplyPotentialReferrerBlock(ctx);
-  if (ctx->request_url.has_query()) {
-    ApplyPotentialQueryStringFilter(ctx->request_url, &ctx->new_url_spec);
+  if (ctx->request_url.has_query() && ctx->initiator_url.is_valid()) {
+    ApplyPotentialQueryStringFilter(ctx->initiator_url, ctx->request_url,
+                                    &ctx->new_url_spec);
   }
   return net::OK;
 }
