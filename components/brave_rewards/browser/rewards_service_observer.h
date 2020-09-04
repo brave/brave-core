@@ -39,9 +39,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
       const ledger::type::Result result,
       ledger::type::PromotionPtr promotion) {}
 
-  virtual void OnContentSiteUpdated(
-      RewardsService* rewards_service) {}
-
   virtual void OnExcludedSitesChanged(
       RewardsService* rewards_service,
       std::string publisher_id,

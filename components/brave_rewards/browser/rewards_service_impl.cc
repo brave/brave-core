@@ -570,52 +570,38 @@ void RewardsServiceImpl::CreateWalletAttestationResult(
 }
 #endif
 
-void RewardsServiceImpl::GetContentSiteList(
+void RewardsServiceImpl::GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
-    uint64_t min_visit_time,
-    uint64_t reconcile_stamp,
-    bool allow_non_verified,
-    uint32_t min_visits,
-    const GetContentSiteListCallback& callback) {
+    ledger::type::ActivityInfoFilterPtr filter,
+    const GetPublisherInfoListCallback& callback) {
   if (!Connected()) {
     return;
   }
-
-  auto filter = ledger::type::ActivityInfoFilter::New();
-  filter->min_duration = min_visit_time;
-  auto pair =
-      ledger::type::ActivityInfoFilterOrderPair::New("ai.percent", false);
-  filter->order_by.push_back(std::move(pair));
-  filter->reconcile_stamp = reconcile_stamp;
-  filter->excluded = ledger::type::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
-  filter->percent = 1;
-  filter->non_verified = allow_non_verified;
-  filter->min_visits = min_visits;
 
   bat_ledger_->GetActivityInfoList(
       start,
       limit,
       std::move(filter),
-      base::BindOnce(&RewardsServiceImpl::OnGetContentSiteList,
+      base::BindOnce(&RewardsServiceImpl::OnGetPublisherInfoList,
                      AsWeakPtr(),
                      callback));
 }
 
 void RewardsServiceImpl::GetExcludedList(
-    const GetContentSiteListCallback& callback) {
+    const GetPublisherInfoListCallback& callback) {
   if (!Connected()) {
     return;
   }
 
   bat_ledger_->GetExcludedList(base::BindOnce(
-      &RewardsServiceImpl::OnGetContentSiteList,
+      &RewardsServiceImpl::OnGetPublisherInfoList,
       AsWeakPtr(),
       callback));
 }
 
-void RewardsServiceImpl::OnGetContentSiteList(
-    const GetContentSiteListCallback& callback,
+void RewardsServiceImpl::OnGetPublisherInfoList(
+    const GetPublisherInfoListCallback& callback,
     ledger::type::PublisherInfoList list) {
   callback.Run(std::move(list));
 }
@@ -1998,7 +1984,7 @@ void RewardsServiceImpl::OnPublisherPanelInfo(
 
 void RewardsServiceImpl::SavePublisherInfo(
     const uint64_t window_id,
-    ledger::PublisherInfoPtr publisher_info,
+    ledger::type::PublisherInfoPtr publisher_info,
     SavePublisherInfoCallback callback) {
   if (!Connected()) {
     return;

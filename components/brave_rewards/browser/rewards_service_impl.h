@@ -22,7 +22,6 @@
 #include "base/values.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_client.h"
-#include "brave/components/brave_rewards/browser/publisher_info.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
 #include "brave/components/greaselion/browser/buildflags/buildflags.h"
@@ -130,19 +129,16 @@ class RewardsServiceImpl : public RewardsService,
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
-  void GetContentSiteList(
-      uint32_t start,
-      uint32_t limit,
-      uint64_t min_visit_time,
-      uint64_t reconcile_stamp,
-      bool allow_non_verified,
-      uint32_t min_visits,
-      const GetContentSiteListCallback& callback) override;
+  void GetActivityInfoList(
+      const uint32_t start,
+      const uint32_t limit,
+      ledger::type::ActivityInfoFilterPtr filter,
+      const GetPublisherInfoListCallback& callback) override;
 
-  void GetExcludedList(const GetContentSiteListCallback& callback) override;
+  void GetExcludedList(const GetPublisherInfoListCallback& callback) override;
 
-  void OnGetContentSiteList(
-      const GetContentSiteListCallback& callback,
+  void OnGetPublisherInfoList(
+      const GetPublisherInfoListCallback& callback,
       ledger::type::PublisherInfoList list);
   void OnLoad(SessionID tab_id, const GURL& url) override;
   void OnUnload(SessionID tab_id) override;
@@ -257,7 +253,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void SavePublisherInfo(
       const uint64_t window_id,
-      ledger::PublisherInfoPtr publisher_info,
+      ledger::type::PublisherInfoPtr publisher_info,
       SavePublisherInfoCallback callback) override;
 
   void SetInlineTippingPlatformEnabled(

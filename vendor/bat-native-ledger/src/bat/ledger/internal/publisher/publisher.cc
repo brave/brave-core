@@ -817,7 +817,7 @@ void Publisher::OnGetPublisherInfoForUpdateMediaDuration(
     return;
   }
 
-  ledger::VisitData visit_data;
+  type::VisitData visit_data;
   visit_data.name = info->name;
   visit_data.url = info->url;
   visit_data.provider = info->provider;

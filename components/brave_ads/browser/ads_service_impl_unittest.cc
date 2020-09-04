@@ -39,16 +39,13 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(
       GetRewardsParameters,
       void(brave_rewards::GetRewardsParametersCallback callback));
-  MOCK_METHOD7(GetContentSiteList,
-      void(uint32_t,
-           uint32_t,
-           uint64_t,
-           uint64_t,
-           bool,
-           uint32_t,
-           const brave_rewards::GetContentSiteListCallback&));
+  MOCK_METHOD4(GetActivityInfoList,
+      void(const uint32_t,
+           const uint32_t,
+           ledger::type::ActivityInfoFilterPtr,
+           const brave_rewards::GetPublisherInfoListCallback&));
   MOCK_METHOD1(GetExcludedList,
-      void(const brave_rewards::GetContentSiteListCallback&));
+      void(const brave_rewards::GetPublisherInfoListCallback&));
   MOCK_METHOD0(FetchPromotions, void());
   MOCK_METHOD2(ClaimPromotion, void(const std::string&,
       brave_rewards::ClaimPromotionCallback));
@@ -157,7 +154,7 @@ class MockRewardsService : public RewardsService {
       brave_rewards::GetPublisherInfoCallback callback));
   MOCK_METHOD3(SavePublisherInfo, void(
       const uint64_t,
-      ledger::PublisherInfoPtr,
+      ledger::type::PublisherInfoPtr,
       brave_rewards::SavePublisherInfoCallback callback));
   MOCK_METHOD2(SetInlineTippingPlatformEnabled,
              void(const std::string& key, bool enabled));

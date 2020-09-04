@@ -131,7 +131,7 @@ BraveRewardsGetPublisherInfoFunction::Run() {
 
 void BraveRewardsGetPublisherInfoFunction::OnGetPublisherInfo(
     const int32_t result,
-    ledger::PublisherInfoPtr info) {
+    ledger::type::PublisherInfoPtr info) {
   if (!info) {
     Respond(OneArgument(std::make_unique<base::Value>(result)));
     return;
@@ -178,7 +178,7 @@ BraveRewardsGetPublisherPanelInfoFunction::Run() {
 
 void BraveRewardsGetPublisherPanelInfoFunction::OnGetPublisherPanelInfo(
     const int32_t result,
-    ledger::PublisherInfoPtr info) {
+    ledger::type::PublisherInfoPtr info) {
   if (!info) {
     Respond(OneArgument(std::make_unique<base::Value>(result)));
     return;
@@ -215,7 +215,7 @@ BraveRewardsSavePublisherInfoFunction::Run() {
     return RespondNow(NoArguments());
   }
 
-  auto publisher_info = ledger::PublisherInfo::New();
+  auto publisher_info = ledger::type::PublisherInfo::New();
   publisher_info->id = params->publisher_key;
   publisher_info->name = params->publisher_name;
   publisher_info->url = params->url;

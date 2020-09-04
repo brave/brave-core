@@ -35,7 +35,6 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
       RewardsService*,
       const ledger::type::Result,
       ledger::type::PromotionPtr));
-  MOCK_METHOD1(OnContentSiteUpdated, void(RewardsService*));
   MOCK_METHOD6(OnReconcileComplete, void(
       RewardsService*,
       const ledger::type::Result,

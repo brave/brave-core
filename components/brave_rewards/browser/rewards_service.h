@@ -38,7 +38,7 @@ class RewardsNotificationService;
 class RewardsServiceObserver;
 class RewardsServicePrivateObserver;
 
-using GetContentSiteListCallback =
+using GetPublisherInfoListCallback =
     base::Callback<void(ledger::type::PublisherInfoList list)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetAutoContributionAmountCallback = base::Callback<void(double)>;
@@ -68,7 +68,7 @@ using RefreshPublisherCallback =
         const std::string&)>;
 using GetPublisherInfoCallback = base::OnceCallback<void(
     const int32_t,
-    ledger::PublisherInfoPtr)>;
+    ledger::type::PublisherInfoPtr)>;
 using SavePublisherInfoCallback = base::OnceCallback<void(const int32_t)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(ledger::type::PublisherInfoPtr publisher)>;
@@ -138,16 +138,13 @@ class RewardsService : public KeyedService {
 
   virtual void CreateWallet(CreateWalletCallback callback) = 0;
   virtual void GetRewardsParameters(GetRewardsParametersCallback callback) = 0;
-  virtual void GetContentSiteList(
-      uint32_t start,
-      uint32_t limit,
-      uint64_t min_visit_time,
-      uint64_t reconcile_stamp,
-      bool allow_non_verified,
-      uint32_t min_visits,
-      const GetContentSiteListCallback& callback) = 0;
+  virtual void GetActivityInfoList(
+      const uint32_t start,
+      const uint32_t limit,
+      ledger::type::ActivityInfoFilterPtr filter,
+      const GetPublisherInfoListCallback& callback) = 0;
   virtual void GetExcludedList(
-      const GetContentSiteListCallback& callback) = 0;
+      const GetPublisherInfoListCallback& callback) = 0;
   virtual void FetchPromotions() = 0;
   // Used by desktop
   virtual void ClaimPromotion(
@@ -291,7 +288,7 @@ class RewardsService : public KeyedService {
 
   virtual void SavePublisherInfo(
       const uint64_t window_id,
-      ledger::PublisherInfoPtr publisher_info,
+      ledger::type::PublisherInfoPtr publisher_info,
       SavePublisherInfoCallback callback) = 0;
 
   virtual void SetInlineTippingPlatformEnabled(

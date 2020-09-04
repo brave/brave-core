@@ -62,7 +62,9 @@ class BraveRewardsGetPublisherInfoFunction : public ExtensionFunction {
   ResponseAction Run() override;
 
  private:
-  void OnGetPublisherInfo(const int32_t result, ledger::PublisherInfoPtr info);
+  void OnGetPublisherInfo(
+      const int32_t result,
+      ledger::type::PublisherInfoPtr info);
 };
 
 class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
@@ -77,7 +79,7 @@ class BraveRewardsGetPublisherPanelInfoFunction : public ExtensionFunction {
  private:
   void OnGetPublisherPanelInfo(
       const int32_t result,
-      ledger::PublisherInfoPtr info);
+      ledger::type::PublisherInfoPtr info);
 };
 
 class BraveRewardsSavePublisherInfoFunction : public ExtensionFunction {
