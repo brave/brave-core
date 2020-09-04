@@ -662,6 +662,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
       <message name="IDS_SETTINGS_RESOLVE_IPFS_URLS_DESC" desc="The description for how to handle IPFS URIs">
         Method to resolve IPFS locations
       </message>
+      <message name="IDS_IPFS_RESOLVE_OPTION_ASK" desc="Select control value for which IPFS resolve method to use">
+        Ask
+      </message>
       <message name="IDS_IPFS_RESOLVE_OPTION_GATEWAY" desc="Select control value for which IPFS resolve method to use">
         Gateway
       </message>

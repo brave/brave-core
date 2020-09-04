@@ -16,6 +16,7 @@ extern const char kAddressesField[];
 extern const char kShutdownPath[];
 
 enum class IPFSResolveMethodTypes {
+  IPFS_ASK,
   IPFS_GATEWAY,
   IPFS_LOCAL,
   IPFS_DISABLED,

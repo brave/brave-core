@@ -129,9 +129,25 @@ TEST_F(IpfsNavigationThrottleUnitTest, DeferUntilIpfsProcessLaunched) {
       << GetIPNSURL();
 }
 
-TEST_F(IpfsNavigationThrottleUnitTest, ProceedForNonLocalNodeMode) {
+TEST_F(IpfsNavigationThrottleUnitTest, ProceedForGatewayNodeMode) {
   profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
       static_cast<int>(IPFSResolveMethodTypes::IPFS_GATEWAY));
+
+  content::MockNavigationHandle test_handle(web_contents());
+  test_handle.set_url(GetIPFSURL());
+  auto throttle = std::make_unique<IpfsNavigationThrottle>(&test_handle);
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+      << GetIPFSURL();
+
+  profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_DISABLED));
+  EXPECT_EQ(NavigationThrottle::PROCEED, throttle->WillStartRequest().action())
+      << GetIPFSURL();
+}
+
+TEST_F(IpfsNavigationThrottleUnitTest, ProceedForAskNodeMode) {
+  profile()->GetPrefs()->SetInteger(kIPFSResolveMethod,
+      static_cast<int>(IPFSResolveMethodTypes::IPFS_ASK));
 
   content::MockNavigationHandle test_handle(web_contents());
   test_handle.set_url(GetIPFSURL());

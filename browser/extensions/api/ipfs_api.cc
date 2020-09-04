@@ -43,6 +43,9 @@ ExtensionFunction::ResponseAction
 IpfsGetIPFSResolveMethodListFunction::Run() {
   base::Value list(base::Value::Type::LIST);
   list.Append(MakeSelectValue(
+      l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_ASK),
+      ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+  list.Append(MakeSelectValue(
       l10n_util::GetStringUTF16(IDS_IPFS_RESOLVE_OPTION_GATEWAY),
       ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
 

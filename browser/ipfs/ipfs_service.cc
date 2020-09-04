@@ -90,7 +90,7 @@ IpfsService::~IpfsService() = default;
 // static
 void IpfsService::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(kIPFSResolveMethod,
-      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY));
+      static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
   registry->RegisterBooleanPref(kIPFSBinaryAvailable, false);
 }
 

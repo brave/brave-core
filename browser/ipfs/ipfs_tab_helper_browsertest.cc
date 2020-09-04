@@ -160,7 +160,7 @@ IN_PROC_BROWSER_TEST_F(IPFSTabHelperTest, InfobarAddWithSettings) {
   // Pref for Wallet should still be ask by default
   auto method = static_cast<ipfs::IPFSResolveMethodTypes>(
       browser()->profile()->GetPrefs()->GetInteger(kIPFSResolveMethod));
-  ASSERT_EQ(method, ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY);
+  ASSERT_EQ(method, ipfs::IPFSResolveMethodTypes::IPFS_ASK);
   WaitForTabCount(2);
   RemoveInfoBarObserver(infobar_service);
 }

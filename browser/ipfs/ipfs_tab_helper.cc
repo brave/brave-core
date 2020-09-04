@@ -10,6 +10,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/infobars/ipfs_infobar_delegate.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/ipfs/common/ipfs_constants.h"
 #include "brave/components/ipfs/common/ipfs_utils.h"
 #include "chrome/browser/infobars/infobar_service.h"
 #include "components/prefs/pref_service.h"
@@ -30,7 +31,9 @@ void IPFSTabHelper::UpdateActiveState(content::NavigationHandle* handle) {
   DCHECK(handle);
   DCHECK(handle->IsInMainFrame());
   active_ = true;
-  if (!pref_service_->GetBoolean(kIPFSBinaryAvailable) &&
+  auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
+      pref_service_->GetInteger(kIPFSResolveMethod));
+  if (resolve_method == ipfs::IPFSResolveMethodTypes::IPFS_ASK &&
       IpfsUtils::IsIPFSURL(handle->GetURL())) {
     InfoBarService* infobar_service =
         InfoBarService::FromWebContents(web_contents());
