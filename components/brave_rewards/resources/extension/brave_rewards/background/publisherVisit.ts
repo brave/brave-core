@@ -74,7 +74,7 @@ const handleMediaDurationHandlerRegistrationRequest = (tabId: number, mediaType:
   chrome.webRequest.onCompleted.addListener(
     // Listener
     function (details) {
-      const port = greaselionPorts[tabId]
+      const port = greaselionPorts.get(tabId)
       if (!port) {
         return
       }
@@ -189,7 +189,7 @@ const processGreaselionMessage = (msg: any, sender: chrome.runtime.MessageSender
   }
 }
 
-chrome.runtime.onConnectExternal.addListener(function (port: chrome.runtime.Port) {
+chrome.runtime.onConnectExternal.addListener((port: chrome.runtime.Port) => {
   if (!port || !port.sender || !port.sender.id || !port.sender.tab || port.name !== 'Greaselion') {
     return
   }
@@ -199,8 +199,8 @@ chrome.runtime.onConnectExternal.addListener(function (port: chrome.runtime.Port
     return
   }
 
-  if (!greaselionPorts[tabId]) {
-    greaselionPorts[tabId] = port
+  if (!greaselionPorts.get(tabId)) {
+    greaselionPorts.set(tabId, port)
   }
 
   port.onMessage.addListener((msg: any, port: chrome.runtime.Port) => {
@@ -225,6 +225,15 @@ chrome.runtime.onConnectExternal.addListener(function (port: chrome.runtime.Port
         }
       }
     })
+  })
+
+  port.onDisconnect.addListener((port: chrome.runtime.Port) => {
+    if (chrome.runtime.lastError) {
+      console.error(`Greaselion port disconnected due to error: ${chrome.runtime.lastError}`)
+    }
+    if (port.sender && port.sender.tab && port.sender.tab.id) {
+      greaselionPorts.delete(port.sender.tab.id)
+    }
   })
 })
 
