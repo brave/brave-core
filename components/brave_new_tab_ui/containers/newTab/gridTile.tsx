@@ -37,7 +37,7 @@ interface Props {
 class TopSite extends React.PureComponent<Props, {}> {
   onIgnoredTopSite (site: NewTab.Site) {
     deleteMostVisitedTile(site.url)
-    this.props.actions.showGridSiteRemovedNotification(true)
+    this.props.actions.showTilesRemovedNotice(true)
   }
 
   render () {
@@ -55,9 +55,7 @@ class TopSite extends React.PureComponent<Props, {}> {
         }}
       >
         <TileActionsContainer>
-          <TileAction
-            onClick={this.onIgnoredTopSite.bind(this, siteData)}
-          >
+          <TileAction onClick={this.onIgnoredTopSite.bind(this, siteData)}>
             <CloseStrokeIcon />
           </TileAction>
         </TileActionsContainer>

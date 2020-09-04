@@ -27,68 +27,13 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
   const startingState = state
 
   switch (action.type) {
-    case types.GRID_SITES_SET_FIRST_RENDER_DATA: {
-      // Update existing default SR top sites in gridSites.
-      if (payload.defaultSuperReferralTopSites) {
-        state = gridSitesState
-            .gridSitesReducerUpdateDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
-      }
-
-      // If there are legacy values from a previous
-      // storage, update first render data with it
-      state = gridSitesState
-        .gridSitesReducerSetFirstRenderDataFromLegacy(
-          state,
-          startingState.legacy
-        )
-      // Now that we stored the legacy reference, delete it
-      // so it won't override gridSites in further updates
-      if (startingState.legacy) {
-        delete startingState.legacy
-      }
-
-      // New profiles just store what comes from Chromium
-      state = gridSitesState
-        .gridSitesReducerSetFirstRenderData(state, payload.topSites)
-
-      // Handle default top sites data only once.
-      if (payload.defaultSuperReferralTopSites && !storage.isDefaultSuperReferralTopSitesAddedToPinnedSites()) {
-        state = gridSitesState
-          .gridSitesReducerSetDefaultSuperReferralTopSites(state, payload.defaultSuperReferralTopSites)
-        storage.setDefaultSuperReferralTopSitesAddedToPinnedSites()
-      }
-
-      // Cached gridSites can be updated when history has modified.
-      state = gridSitesState.gridSitesReducerDataUpdated(state, state.gridSites)
-      break
-    }
-
     case types.GRID_SITES_DATA_UPDATED: {
-      state = gridSitesState
-        .gridSitesReducerDataUpdated(state, payload.gridSites)
-      break
-    }
-
-    case types.GRID_SITES_UNDO_REMOVE_SITE: {
-      state = gridSitesState
-        .gridSitesReducerUndoRemoveSite(state)
-      break
-    }
-
-    case types.GRID_SITES_UNDO_REMOVE_ALL_SITES: {
-      state = gridSitesState
-        .gridSitesReducerUndoRemoveAllSites(state)
-      break
-    }
-
-    case types.GRID_SITES_ADD_SITES: {
-      state = gridSitesState.gridSitesReducerAddSiteOrSites(state, payload.site)
+      state = gridSitesState.tilesUpdated(state, payload.gridSites)
       break
     }
 
     case types.GRID_SITES_SHOW_SITE_REMOVED_NOTIFICATION: {
-      state = gridSitesState
-        .gridSitesReducerShowSiteRemovedNotification(state, payload.shouldShow)
+      state = gridSitesState.showTilesRemovedNotice(state, payload.shouldShow)
       break
     }
   }

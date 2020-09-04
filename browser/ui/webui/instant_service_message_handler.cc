@@ -88,10 +88,10 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
     const InstantMostVisitedInfo& info) {
   base::Value result(base::Value::Type::DICTIONARY);
   base::Value tiles(base::Value::Type::LIST);
-
+  int tile_id = 1;
+  // See chrome/common/search/instant_types.h for more info
   for (auto& tile : info.items) {
     base::Value tile_value(base::Value::Type::DICTIONARY);
-
     if (tile.title.empty()) {
       tile_value.SetStringKey("title", tile.url.spec());
       tile_value.SetIntKey("title_direction", base::i18n::LEFT_TO_RIGHT);
@@ -100,17 +100,18 @@ void InstantServiceMessageHandler::MostVisitedInfoChanged(
       tile_value.SetIntKey("title_direction",
           base::i18n::GetFirstStrongCharacterDirection(tile.title));
     }
+    tile_value.SetIntKey("id", tile_id++);
     tile_value.SetStringKey("url", tile.url.spec());
-    // ..
+    tile_value.SetStringKey("favicon", tile.favicon.spec());
+    tile_value.SetIntKey("source", static_cast<int32_t>(tile.title_source));
     tiles.Append(std::move(tile_value));
   }
-
-  //..
+  result.SetBoolKey("custom_links_enabled", !info.use_most_visited);
   result.SetKey("tiles", std::move(tiles));
   result.SetBoolKey("visible", info.is_visible);
-
   top_site_tiles_ = std::move(result);
 
+  // Notify listeners of this update (ex: new tab page)
   if (IsJavascriptAllowed()) {
     FireWebUIListener("most-visited-info-changed", top_site_tiles_);
   }

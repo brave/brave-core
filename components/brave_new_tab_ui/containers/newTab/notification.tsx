@@ -39,16 +39,16 @@ export default class Notification extends React.Component<Props, {}> {
 
   onUndoRemoveTopSite = () => {
     undoMostVisitedTileAction()
-    this.props.actions.showGridSiteRemovedNotification(false)
+    this.props.actions.showTilesRemovedNotice(false)
   }
 
   onUndoRemoveAllTopSites = () => {
     restoreMostVisitedDefaults()
-    this.props.actions.showGridSiteRemovedNotification(false)
+    this.props.actions.showTilesRemovedNotice(false)
   }
 
   onHideSiteRemovalNotification = () => {
-    this.props.actions.showGridSiteRemovedNotification(false)
+    this.props.actions.showTilesRemovedNotice(false)
   }
 
   render () {

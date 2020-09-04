@@ -63,7 +63,7 @@ class TopSitesList extends React.PureComponent<Props, {}> {
         >
           {
             // Grid sites are currently limited to 6 tiles
-            gridSites.slice(0, 100)//MAX_GRID_SIZE)
+            gridSites.slice(0, MAX_GRID_SIZE)
               .map((siteData: NewTab.Site, index: number) => (
                 <GridSiteTile
                   key={siteData.id}
