@@ -137,8 +137,8 @@ class CryptoDotCom extends React.PureComponent<Props, State> {
             <ActionButton small={true} light={true}>BUY</ActionButton>
           </FlexItem>
         </Box>
-        <Text center={true} style={{ marginTop: '1em' }}>Get 2% bonus on deposits</Text>
-        <Text center={true}>Stop paying trading fees</Text>
+        <Text center={true} style={{ padding: '1em 0 0.5em', fontSize: 15 }}>Get 2% bonus on deposits</Text>
+        <Text center={true} style={{ fontSize: 15 }}>Stop paying trading fees</Text>
         <ActionAnchor href='#' style={{ margin: '1em 0' }}>Buy Bitcoin Now</ActionAnchor>
         <PlainButton textColor='light' onClick={this.setSelectedView.bind(this, 'topMovers')} style={{ margin: '0 auto' }}>View Crypto.com Markets</PlainButton>
       </>
