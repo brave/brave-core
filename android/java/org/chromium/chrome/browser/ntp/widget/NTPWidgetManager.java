@@ -21,6 +21,7 @@ public class NTPWidgetManager {
     public static final String PREF_FAVORITES = "favorites";
     public static final String PREF_BRAVE_REWARDS = "brave_rewards";
     public static final String PREF_BINANCE = "binance";
+    public static final String PREF_NTP_WIDGET_ORDER = "ntp_widget_order";
 
     private static NTPWidgetManager sInstance;
 
@@ -59,29 +60,13 @@ public class NTPWidgetManager {
         sharedPreferencesEditor.apply();
     }
 
-    public List<NTPWidgetItem> getWidgetList() {
-        Map<Integer, NTPWidgetItem> ntpWidgetMap = new TreeMap<>();
-        if (getPrivateStatsWidget() != -1) {
-            ntpWidgetMap.put(getPrivateStatsWidget(),
-                    new NTPWidgetItem(PREF_PRIVATE_STATS, "Privacy Stats",
-                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-        }
-        if (getFavoritesWidget() != -1) {
-            ntpWidgetMap.put(getFavoritesWidget(),
-                    new NTPWidgetItem(PREF_FAVORITES, "Favorites",
-                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-        }
-        if (getBraveRewardsWidget() != -1) {
-            ntpWidgetMap.put(getBraveRewardsWidget(),
-                    new NTPWidgetItem(PREF_BRAVE_REWARDS, "Brave Rewards",
-                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-        }
-        if (getBinanceWidget() != -1) {
-            ntpWidgetMap.put(getBinanceWidget(),
-                    new NTPWidgetItem(PREF_BINANCE, "Binance",
-                            "Trackers &amp; Ads Blocked, Saved Bandwidth, and Time Saved Estimates."));
-        }
+    public int getNTPWidgetOrder() {
+        return mSharedPreferences.getInt(PREF_NTP_WIDGET_ORDER, 0);
+    }
 
-        return new ArrayList<NTPWidgetItem>(ntpWidgetMap.values());
+    public void setNTPWidgetOrder(int position) {
+        SharedPreferences.Editor sharedPreferencesEditor = mSharedPreferences.edit();
+        sharedPreferencesEditor.putInt(PREF_NTP_WIDGET_ORDER, position);
+        sharedPreferencesEditor.apply();
     }
 }

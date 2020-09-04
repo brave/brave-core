@@ -5,10 +5,13 @@
 
 package org.chromium.chrome.browser.ntp.widget;
 
+import android.view.View;
+
 public class NTPWidgetItem {
     private String widgetType;
     private String widgetTitle;
     private String widgetText;
+    private View widgetView;
 
     public NTPWidgetItem(String widgetType, String widgetTitle, String widgetText) {
         this.widgetType = widgetType;
@@ -20,6 +23,7 @@ public class NTPWidgetItem {
         this.widgetType = ntpWidgetItem.widgetType;
         this.widgetTitle = ntpWidgetItem.widgetTitle;
         this.widgetText = ntpWidgetItem.widgetText;
+        this.widgetView = ntpWidgetItem.widgetView;
     }
 
     public String getWidgetType() {
@@ -32,5 +36,13 @@ public class NTPWidgetItem {
 
     public String getWidgetText() {
         return widgetText;
+    }
+
+    public View getWidgetView() {
+        return widgetView;
+    }
+
+    public void setWidgetView(View widgetView) {
+        this.widgetView = widgetView;
     }
 }

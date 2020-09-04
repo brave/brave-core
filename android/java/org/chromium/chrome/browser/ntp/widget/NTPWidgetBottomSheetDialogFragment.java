@@ -21,12 +21,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetAdapter;
-import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
 import org.chromium.chrome.browser.ntp.widget.NTPWidgetListAdapter;
+import org.chromium.chrome.browser.ntp.widget.NTPWidgetManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener;
     private NTPWidgetListAdapter ntpWidgetListAdapter;
+    private List<NTPWidgetItem> widgetList = new ArrayList<NTPWidgetItem>();
 
     public void setNTPWidgetListener(NTPWidgetAdapter.NTPWidgetListener ntpWidgetListener) {
         this.ntpWidgetListener = ntpWidgetListener;
@@ -34,6 +38,10 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
 
     public static NTPWidgetBottomSheetDialogFragment newInstance() {
         return new NTPWidgetBottomSheetDialogFragment();
+    }
+
+    public void setWidgetList(List<NTPWidgetItem> widgetList) {
+        this.widgetList = widgetList;
     }
 
     @Nullable
@@ -46,18 +54,16 @@ public class NTPWidgetBottomSheetDialogFragment extends BottomSheetDialogFragmen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        RecyclerView userRecyclerView = view.findViewById(R.id.recyclerview_user_list);
-        userRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView widgetsRecyclerView = view.findViewById(R.id.recyclerview_user_list);
+        widgetsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         ntpWidgetListAdapter = new NTPWidgetListAdapter();
         SwipeAndDragHelper swipeAndDragHelper = new SwipeAndDragHelper(ntpWidgetListAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(swipeAndDragHelper);
         ntpWidgetListAdapter.setTouchHelper(touchHelper);
         ntpWidgetListAdapter.setNTPWidgetListener(ntpWidgetListener);
-        userRecyclerView.setAdapter(ntpWidgetListAdapter);
-        touchHelper.attachToRecyclerView(userRecyclerView);
-
-        ntpWidgetListAdapter.setWidgetList(NTPWidgetManager.getInstance().getWidgetList());
+        widgetsRecyclerView.setAdapter(ntpWidgetListAdapter);
+        touchHelper.attachToRecyclerView(widgetsRecyclerView);
+        ntpWidgetListAdapter.setWidgetList(widgetList);
     }
 
     @Override

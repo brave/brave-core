@@ -44,7 +44,6 @@
 
     <color name="brave_stats_ads_color">#FF7654</color>
     <color name="brave_stats_data_saved_color">#737ADE</color>
-    <color name="brave_state_time_count_color">#F0F2FF</color>
 
     <color name="brave_stats_title_color">#84889C</color>
     <color name="brave_stats_text_color">#F0F2FF</color>

@@ -88,7 +88,6 @@ public class NTPWidgetListAdapter extends RecyclerView.Adapter<RecyclerView.View
         NTPWidgetItem ntpWidgetItem = widgetList.get(position);
         NTPWidgetManager.getInstance().setWidget(ntpWidgetItem.getWidgetType(), -1);
         widgetList.remove(position);
-        ntpWidgetListener.removeFromBottomSheet();
         notifyItemRemoved(position);
     }
 
