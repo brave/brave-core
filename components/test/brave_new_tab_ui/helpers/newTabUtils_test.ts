@@ -109,30 +109,6 @@ describe('new tab util files tests', () => {
         .toBe(`chrome://favicon/size/64@1x/${url}`)
     })
   })
-  describe('isGridSitePinned', () => {
-    it('returns true if site.pinnedIndex is defined', () => {
-      const site: NewTab.Site = {
-        id: '',
-        url: 'https://brave.com',
-        title: 'brave',
-        favicon: '',
-        letter: '',
-        pinnedIndex: 1337
-      }
-      expect(newTabUtils.isGridSitePinned(site)).toBe(true)
-    })
-    it('returns false if site.pinnedIndex is not defined', () => {
-      const site: NewTab.Site = {
-        id: '',
-        url: 'https://brave.com',
-        title: 'brave',
-        favicon: '',
-        letter: '',
-        pinnedIndex: undefined
-      }
-      expect(newTabUtils.isGridSitePinned(site)).toBe(false)
-    })
-  })
   describe('isExistingGridSite', () => {
     const sites: chrome.topSites.MostVisitedURL[] = [
       { url: 'https://brave.com', title: 'brave' },

@@ -11,11 +11,17 @@
 #include "base/macros.h"
 #include "content/public/browser/web_ui_controller.h"
 
+class InstantService;
+class Profile;
+
 class BraveNewTabUI : public content::WebUIController {
  public:
   BraveNewTabUI(content::WebUI* web_ui, const std::string& name);
   ~BraveNewTabUI() override;
  private:
+  Profile* profile_;
+  InstantService* instant_service_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveNewTabUI);
 };
 

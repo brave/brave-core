@@ -11,7 +11,6 @@ import {
   SortEnd,
   SortableContainerProps
 } from 'react-sortable-hoc'
-import arrayMove from 'array-move'
 
 // Feature-specific components
 import { List } from '../../components/default/gridSites'
@@ -20,11 +19,12 @@ import createWidget from '../../components/default/widget'
 // Component groups
 import GridSiteTile from './gridTile'
 
-// Helpers
-import { isGridSitePinned } from '../../helpers/newTabUtils'
-
 // Constants
 import { MAX_GRID_SIZE } from '../../constants/new_tab_ui'
+
+import {
+  reorderMostVisitedTile
+} from '../../api/topSites'
 
 // Types
 import * as newTabActions from '../../actions/new_tab_actions'
@@ -42,12 +42,7 @@ const DynamicList = SortableContainer((props: DynamicListProps) => {
 
 class TopSitesList extends React.PureComponent<Props, {}> {
   onSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
-    // do not update topsites order if the drag destination is a pinned tile
-    if (this.props.gridSites[newIndex].pinnedIndex) {
-      return
-    }
-    const items = arrayMove(this.props.gridSites, oldIndex, newIndex)
-    this.props.actions.gridSitesDataUpdated(items)
+    reorderMostVisitedTile(this.props.gridSites[oldIndex].url, newIndex)
   }
 
   render () {
@@ -68,15 +63,13 @@ class TopSitesList extends React.PureComponent<Props, {}> {
         >
           {
             // Grid sites are currently limited to 6 tiles
-            gridSites.slice(0, MAX_GRID_SIZE)
+            gridSites.slice(0, 100)//MAX_GRID_SIZE)
               .map((siteData: NewTab.Site, index: number) => (
                 <GridSiteTile
                   key={siteData.id}
                   actions={actions}
                   index={index}
                   siteData={siteData}
-                  // Do not allow sorting pinned items
-                  disabled={isGridSitePinned(siteData)}
                 />
           ))}
         </DynamicList>

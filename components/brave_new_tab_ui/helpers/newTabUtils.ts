@@ -33,12 +33,6 @@ export const generateGridSiteFavicon = (url: string): string => {
   return `chrome://favicon/size/64@1x/${url}`
 }
 
-export const isGridSitePinned = (
-  gridSite: NewTab.Site
-): boolean => {
-  return gridSite.pinnedIndex !== undefined
-}
-
 export const isExistingGridSite = (
   sitesData: NewTab.Site[],
   topOrGridSite: chrome.topSites.MostVisitedURL | NewTab.Site

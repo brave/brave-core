@@ -69,18 +69,6 @@ export const gridSitesReducer: Reducer<NewTab.GridSitesState | undefined> = (
       break
     }
 
-    case types.GRID_SITES_TOGGLE_SITE_PINNED: {
-      state = gridSitesState
-        .gridSitesReducerToggleSitePinned(state, payload.pinnedSite)
-      break
-    }
-
-    case types.GRID_SITES_REMOVE_SITE: {
-      state = gridSitesState
-        .gridSitesReducerRemoveSite(state, payload.removedSite)
-      break
-    }
-
     case types.GRID_SITES_UNDO_REMOVE_SITE: {
       state = gridSitesState
         .gridSitesReducerUndoRemoveSite(state)

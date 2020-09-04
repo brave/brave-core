@@ -8,7 +8,6 @@ import {
   generateGridSitePropertiesFromDefaultSuperReferralTopSite,
   isExistingGridSite,
   getTopSitesWhitelist,
-  isGridSitePinned,
   filterFromExcludedSites,
   filterDuplicatedSitesbyIndexOrUrl
 } from '../helpers/newTabUtils'
@@ -17,20 +16,6 @@ export function gridSitesReducerSetFirstRenderDataFromLegacy (
   state: NewTab.GridSitesState,
   legacyState: NewTab.LegacyState | undefined
 ) {
-  if (legacyState === undefined) {
-    return state
-  }
-  const { ignoredTopSites, pinnedTopSites } = legacyState
-
-  if (ignoredTopSites.length > 0) {
-    for (const ignoredTopSite of ignoredTopSites) {
-      state = gridSitesReducerRemoveSite(state, ignoredTopSite)
-    }
-  }
-
-  if (pinnedTopSites.length > 0) {
-    state = gridSitesReducerAddSiteOrSites(state, pinnedTopSites)
-  }
   return state
 }
 
@@ -120,63 +105,7 @@ export function gridSitesReducerDataUpdated (
   state: NewTab.GridSitesState,
   sitesData: NewTab.Site[]
 ): NewTab.GridSitesState {
-  let updatedGridSites: NewTab.Site[] = []
-  let isolatedPinnedSites: NewTab.Site[] = []
-
-  // Separate pinned sites from un-pinned sites. This step is needed
-  // since the list length is unknown, so pinned items need the updated
-  // list to be full before looking for its index.
-  // See test "preserve pinnedIndex positions after random reordering"
-  for (const site of sitesData) {
-    if (site.pinnedIndex !== undefined) {
-      isolatedPinnedSites.push(site)
-    } else {
-      updatedGridSites.push(site)
-    }
-  }
-  // Get the pinned site and add it to the index specified by pinnedIndex.
-  // all items after it will be pushed one index up.
-  for (const pinnedSite of isolatedPinnedSites) {
-    if (pinnedSite.pinnedIndex !== undefined) {
-      updatedGridSites.splice(pinnedSite.pinnedIndex, 0, pinnedSite)
-    }
-  }
-
-  state = { ...state, gridSites: updatedGridSites }
-  return state
-}
-
-export function gridSitesReducerToggleSitePinned (
-  state: NewTab.GridSitesState,
-  pinnedSite: NewTab.Site
-): NewTab.GridSitesState {
-  const updatedGridSites: NewTab.Site[] = []
-  for (const [index, gridSite] of state.gridSites.entries()) {
-    if (gridSite.url === pinnedSite.url) {
-      updatedGridSites.push({
-        ...gridSite,
-        pinnedIndex: isGridSitePinned(gridSite) ? undefined : index
-      })
-    } else {
-      updatedGridSites.push(gridSite)
-    }
-  }
-  state = gridSitesReducerDataUpdated(state, updatedGridSites)
-  return state
-}
-
-export function gridSitesReducerRemoveSite (
-  state: NewTab.GridSitesState,
-  removedSite: NewTab.Site
-): NewTab.GridSitesState {
-  state = {
-    ...state,
-    removedSites: [ ...state.removedSites, removedSite ]
-  }
-
-  const filterRemovedFromGridSites =
-    filterFromExcludedSites(state.gridSites, state.removedSites)
-  state = gridSitesReducerDataUpdated(state, filterRemovedFromGridSites)
+  state = { ...state, gridSites: sitesData }
   return state
 }
 
